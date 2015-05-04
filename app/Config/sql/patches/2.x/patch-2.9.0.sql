@@ -14,7 +14,7 @@ BEGIN;
 --------------------------------------------------------------------------------
 -- INFO: attention à ne pas passer ce morceau plusieurs fois!
 --------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION public.update_duree_engag_integer( p_table TEXT ) RETURNS VOID AS
+CREATE OR REPLACE FUNCTION public.update_duree_engag_integer( p_table TEXT ) RETURNS BOOLEAN AS
 $$
 	DECLARE
 		v_query text;
@@ -34,14 +34,21 @@ $$
 
 		RAISE NOTICE  '%', v_query;
 		EXECUTE v_query;
+
+		RETURN true;
 	END;
 $$
 LANGUAGE plpgsql;
 
-SELECT public.update_duree_engag_integer( 'bilansparcours66' );
-SELECT public.update_duree_engag_integer( 'contratsinsertion' );
-SELECT public.update_duree_engag_integer( 'proposcontratsinsertioncovs58' );
-SELECT public.update_duree_engag_integer( 'decisionsproposcontratsinsertioncovs58' );
+-- On met à jour les durées SSI la table version n'existe pas (le patch 2.9.0 n'a pas encore été passé)
+SELECT
+		EXISTS(SELECT * FROM information_schema.columns WHERE table_name = 'version')
+		OR (
+			( SELECT public.update_duree_engag_integer( 'bilansparcours66' ) )
+			AND ( SELECT public.update_duree_engag_integer( 'contratsinsertion' ) )
+			AND ( SELECT public.update_duree_engag_integer( 'proposcontratsinsertioncovs58' ) )
+			AND ( SELECT public.update_duree_engag_integer( 'decisionsproposcontratsinsertioncovs58' ) )
+		);
 
 DROP FUNCTION public.update_duree_engag_integer( p_table TEXT );
 
@@ -53,6 +60,7 @@ DROP FUNCTION public.update_duree_engag_integer( p_table TEXT );
 
 SELECT alter_enumtype( 'TYPE_THEMECOV58', ARRAY['proposorientationscovs58','proposcontratsinsertioncovs58','proposnonorientationsproscovs58','proposorientssocialescovs58','nonorientationsproscovs58','regressionsorientationscovs58']);
 
+DELETE FROM themescovs58 WHERE name IN ( 'nonorientationsproscovs58', 'regressionsorientationscovs58' );
 INSERT INTO themescovs58 ( name ) VALUES
 	( 'nonorientationsproscovs58' ),
 	( 'regressionsorientationscovs58' );
@@ -226,12 +234,19 @@ COMMENT ON FUNCTION cakephp_validate_compare_dates( p_check1 TIMESTAMP, p_check2
 -- positif et la date de fin doit être strictement supérieure à la date de début
 --------------------------------------------------------------------------------
 
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_duree_engag_comparison_chk' );
 ALTER TABLE proposcontratsinsertioncovs58 ADD CONSTRAINT proposcontratsinsertioncovs58_duree_engag_comparison_chk CHECK ( cakephp_validate_comparison( duree_engag, '>', 0 ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_dd_ci_compare_dates_chk' );
 ALTER TABLE proposcontratsinsertioncovs58 ADD CONSTRAINT proposcontratsinsertioncovs58_dd_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( dd_ci, df_ci, '<' ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_df_ci_compare_dates_chk' );
 ALTER TABLE proposcontratsinsertioncovs58 ADD CONSTRAINT proposcontratsinsertioncovs58_df_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( df_ci, dd_ci, '>' ) );
 
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'decisionsproposcontratsinsertioncovs58', 'decisionsproposcontratsinsertioncovs58_duree_engag_comparison_chk' );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'decisionsproposcontratsinsertioncovs58', 'decisionsproposcontratsinsertioncovs58_duree_engag_comparison_c' );
 ALTER TABLE decisionsproposcontratsinsertioncovs58 ADD CONSTRAINT decisionsproposcontratsinsertioncovs58_duree_engag_comparison_chk CHECK ( cakephp_validate_comparison( duree_engag, '>', 0 ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'decisionsproposcontratsinsertioncovs58', 'decisionsproposcontratsinsertioncovs58_dd_ci_compare_dates_chk' );
 ALTER TABLE decisionsproposcontratsinsertioncovs58 ADD CONSTRAINT decisionsproposcontratsinsertioncovs58_dd_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( dd_ci, df_ci, '<' ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'decisionsproposcontratsinsertioncovs58', 'decisionsproposcontratsinsertioncovs58_df_ci_compare_dates_chk' );
 ALTER TABLE decisionsproposcontratsinsertioncovs58 ADD CONSTRAINT decisionsproposcontratsinsertioncovs58_df_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( df_ci, dd_ci, '>' ) );
 
 /*
@@ -259,14 +274,22 @@ CG 976
 -- On détruit les contraintes de Foreign Key pour éviter les problêmes
 --------------------------------------------------------------------------------
 
-ALTER TABLE accompagnementscuis66 DROP CONSTRAINT accompagnementscuis66_cui66_id_fkey;
-ALTER TABLE accompagnementscuis66 DROP CONSTRAINT accompagnementscuis66_immersioncui_id_fkey;
-ALTER TABLE cuis DROP CONSTRAINT cuis_adressecui_id_fkey;
-ALTER TABLE cuis DROP CONSTRAINT cuis_partenairecui_id_fkey;
-ALTER TABLE cuis DROP CONSTRAINT cuis_personne_id_fkey1;
-ALTER TABLE cuis DROP CONSTRAINT cuis_personnecui_id_fkey;
-ALTER TABLE cuis DROP CONSTRAINT cuis_user_id_fkey;
-ALTER TABLE decisionscuis66 DROP CONSTRAINT decisionscuis66_cui66_id_fkey;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'accompagnementscuis66', 'accompagnementscuis66_cui66_id_fkey' );
+--ALTER TABLE accompagnementscuis66 DROP CONSTRAINT accompagnementscuis66_cui66_id_fkey;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'accompagnementscuis66', 'accompagnementscuis66_immersioncui_id_fkey' );
+--ALTER TABLE accompagnementscuis66 DROP CONSTRAINT accompagnementscuis66_immersioncui_id_fkey;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'cuis', 'cuis_adressecui_id_fkey' );
+--ALTER TABLE cuis DROP CONSTRAINT cuis_adressecui_id_fkey;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'cuis', 'cuis_partenairecui_id_fkey' );
+--ALTER TABLE cuis DROP CONSTRAINT cuis_partenairecui_id_fkey;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'cuis', 'cuis_personne_id_fkey1' );
+--ALTER TABLE cuis DROP CONSTRAINT cuis_personne_id_fkey1;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'cuis', 'cuis_personnecui_id_fkey' );
+--ALTER TABLE cuis DROP CONSTRAINT cuis_personnecui_id_fkey;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'cuis', 'cuis_user_id_fkey' );
+--ALTER TABLE cuis DROP CONSTRAINT cuis_user_id_fkey;
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'decisionscuis66', 'decisionscuis66_cui66_id_fkey' );
+--ALTER TABLE decisionscuis66 DROP CONSTRAINT decisionscuis66_cui66_id_fkey;
 
 
 
@@ -300,7 +323,7 @@ cuis,
 partenairescuis66,
 personnescuis,
 partenairescuis,
-adressescuis;
+adressescuis CASCADE;
 
 --------------------------------------------------------------------------------
 -- On Creer la table adressescuis (CERFA)
@@ -367,29 +390,29 @@ ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_organismerecouvremen
 -- On Creer la table personnescuis (CERFA)
 --------------------------------------------------------------------------------
 
---CREATE TABLE personnescuis
---(
---  id SERIAL NOT NULL PRIMARY KEY,
---  civilite VARCHAR(3),
---  nomfamille VARCHAR(50),
---  nomusage VARCHAR(50),
---  prenom1 VARCHAR(50),
---  prenom2 VARCHAR(50),
---  prenom3 VARCHAR(50),
---  adressecui_id INTEGER REFERENCES adressescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
---  numeroide INTEGER,
---  datenaissance DATE,
---  villenaissance VARCHAR(100),
---  nir CHAR(15),
---  nationalite VARCHAR(7),
---  numallocataire INTEGER,
---  organismepayeur VARCHAR(7)
---);
---COMMENT ON TABLE personnescuis IS 'Lié au CERFA CUI';
+CREATE TABLE personnescuis
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  civilite VARCHAR(3),
+  nomfamille VARCHAR(50),
+  nomusage VARCHAR(50),
+  prenom1 VARCHAR(50),
+  prenom2 VARCHAR(50),
+  prenom3 VARCHAR(50),
+  adressecui_id INTEGER REFERENCES adressescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  numeroide INTEGER,
+  datenaissance DATE,
+  villenaissance VARCHAR(100),
+  nir CHAR(15),
+  nationalite VARCHAR(7),
+  numallocataire INTEGER,
+  organismepayeur VARCHAR(7)
+);
+COMMENT ON TABLE personnescuis IS 'Lié au CERFA CUI';
 
---CREATE INDEX personnescuis_nomusage_idx ON personnescuis(nomusage);
---CREATE INDEX personnescuis_nir_idx ON personnescuis(nir);
---CREATE INDEX personnescuis_numallocataire_idx ON personnescuis(numallocataire);
+CREATE INDEX personnescuis_nomusage_idx ON personnescuis(nomusage);
+CREATE INDEX personnescuis_nir_idx ON personnescuis(nir);
+CREATE INDEX personnescuis_numallocataire_idx ON personnescuis(numallocataire);
 
 --------------------------------------------------------------------------------
 -- On Creer la table partenairescuis66 (CG 66)
@@ -485,7 +508,7 @@ CREATE TABLE cuis
 	faitle						DATE,				-- Dates
 	signaturele					DATE,				-- Dates
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
-	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
 	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
 );
@@ -687,7 +710,7 @@ CREATE TABLE propositionscuis66
 	observation TEXT,
 	avis VARCHAR(15) NOT NULL,
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
-	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
 	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
 );
@@ -709,7 +732,7 @@ CREATE TABLE decisionscuis66
 	datedecision TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 	observation TEXT,
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
-	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
 	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
 );
@@ -758,7 +781,7 @@ CREATE TABLE accompagnementscuis66
 	datedefin DATE NOT NULL,
 	datedesignature DATE NOT NULL,
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
-	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
 	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
 );
@@ -781,7 +804,7 @@ CREATE TABLE suspensionscuis66
 	datefin						DATE NOT NULL,
 	motif						INTEGER NOT NULL,
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
-	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
 	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
 );
@@ -803,7 +826,7 @@ CREATE TABLE rupturescuis66
 	dateenregistrement			DATE NOT NULL,
 	motif						INTEGER NOT NULL,
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
-	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
 	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
 );
@@ -833,7 +856,7 @@ CREATE TABLE emailscuis
 	commentaire					TEXT,
 	dateenvoi					TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
-	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
 	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
 );

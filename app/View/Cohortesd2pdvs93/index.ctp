@@ -1,8 +1,7 @@
 <div id="Cohortesd2pdv93IndexAjaxContainer">
-	<noscript>
-		<p class="error">Cette fonctionnalité nécessite l'utilisation de javascript, mais javascript n'est pas activé dans votre navigateur.</p>
-	</noscript>
 	<?php
+		echo $this->element( 'required_javascript' );
+
 		echo $this->Default3->titleForLayout();
 
 		if( Configure::read( 'debug' ) > 0 ) {

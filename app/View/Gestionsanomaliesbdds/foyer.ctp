@@ -1,9 +1,7 @@
 <?php /*$urlParams = $this->request->params['named'];*/ ?>
 <h1><?php echo $this->pageTitle = 'Résolution des problèmes de personnes au sein d\'un foyer';?></h1>
 
-<noscript>
-	<p class="error">Cette fonctionnalité nécessite l'utilisation de javascript, mais javascript n'est pas activé dans votre navigateur.</p>
-</noscript>
+<?php echo $this->element( 'required_javascript' );?>
 
 <h2>Informations concernant le foyer</h2>
 <?php

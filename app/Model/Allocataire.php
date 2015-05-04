@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AbstractSearch', 'Model/Abstractclass' );
+	App::uses( 'ConfigurableQueryFields', 'Utility' );
 
 	/**
 	 * La classe Allocataire comporte des méthodes de base pour les recherches,
@@ -65,16 +66,18 @@
 
 			if( $query === false ) {
 				$query = array(
-					'fields' => Hash::merge(
-						$Personne->fields(),
-						$Personne->Calculdroitrsa->fields(),
-						$Personne->Foyer->fields(),
-						$Personne->Prestation->fields(),
-						$Personne->Foyer->Adressefoyer->fields(),
-						$Personne->Foyer->Adressefoyer->Adresse->fields(),
-						$Personne->Foyer->Dossier->fields(),
-						$Personne->Foyer->Dossier->Situationdossierrsa->fields(),
-						$Personne->Foyer->Dossier->Detaildroitrsa->fields()
+					'fields' => ConfigurableQueryFields::getModelsFields(
+						array(
+							$Personne,
+							$Personne->Calculdroitrsa,
+							$Personne->Foyer,
+							$Personne->Prestation,
+							$Personne->Foyer->Adressefoyer,
+							$Personne->Foyer->Adressefoyer->Adresse,
+							$Personne->Foyer->Dossier,
+							$Personne->Foyer->Dossier->Situationdossierrsa,
+							$Personne->Foyer->Dossier->Detaildroitrsa
+						)
 					),
 					'joins' => array(
 						$Personne->join( 'Calculdroitrsa', array( 'type' => $types['Calculdroitrsa'] ) ),

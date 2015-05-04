@@ -209,12 +209,6 @@ msgstr "3 - L’action est mobilisée à l’initiative du prescripteur"
 
 
 
-msgid "ENUM::EMBAUCHEINSERTION::0"
-msgstr "ENUM::EMBAUCHEINSERTION::0"
-
-msgid "ENUM::EMBAUCHEINSERTION::1"
-msgstr "ENUM::EMBAUCHEINSERTION::1"
-
 msgid "ENUM::INSCRITPOLEEMPLOI::0_5"
 msgstr "Moins de 6 mois"
 

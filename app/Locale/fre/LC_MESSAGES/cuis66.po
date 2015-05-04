@@ -651,20 +651,13 @@ msgid "Cui.periodeprofessionnalisation"
 msgstr "Périodes de professionnalisation"
 
 msgid "Cui.validationacquis"
-msgstr "Une ou plusieurs de ces actions s’inscrivent elles dans le cadre de la
-validation des acquis de l’expérience ?"
-
-msgid "Cui.periodeimmersion"
-msgstr "Si CAE, l’employeur envisage-t-il de mettre en œuvre des périodes d’immersion ?"
+msgstr "Une ou plusieurs de ces actions s’inscrivent elles dans le cadre de la validation des acquis de l’expérience ?"
 
 msgid "Cui.exclusifcg"
 msgstr "Financement exclusif du conseil général :"
 
 msgid "Cui.organismepayeur"
 msgstr "Organisme payeur de l’aide du conseil général à l’employeur :"
-
-msgid "Cui.validationacquis"
-msgstr "Une ou plusieurs de ces actions s’inscrivent elles dans le cadre de la validation des acquis de l’expérience ?"
 
 ################################################################################
 # Email Cui

@@ -32,7 +32,7 @@
 		</title>
 		<?php
 			if( Configure::read( 'debug' ) ) {
-				echo $this->Xhtml->css( array( 'all.reset' ), 'stylesheet', array( 'media' => 'all' ) );		
+				echo $this->Xhtml->css( array( 'all.reset' ), 'stylesheet', array( 'media' => 'all' ) );
 				echo $this->Xhtml->css( array( 'all.base' ), 'stylesheet', array( 'media' => 'all' ) );
 				echo $this->Xhtml->css( array( 'bootstrap.custom' ), 'stylesheet', array( 'media' => 'all' ) ); // Ajoute quelques styles issu de bootstrap
 				echo $this->Xhtml->css( array( 'screen.generic' ), 'stylesheet', array( 'media' => 'screen,presentation' ) );
@@ -46,13 +46,13 @@
 				echo $this->html->script( 'webrsa.additional' );
 				echo $this->Html->script( 'webrsa.validaterules' );
 				echo $this->Html->script( 'webrsa.validateforms' );
-				
+
 			}
 			else {
 				echo $this->Xhtml->css( array( 'webrsa' ), 'stylesheet' );
 				echo $this->Html->script( 'webrsa' );
 			}
-			
+
 			echo $this->fetch( 'meta' );
 			echo $this->fetch( 'css' );
 			echo $this->fetch( 'script' );
@@ -159,8 +159,8 @@
 			?>
 			<div id="pageContent"><div id="incrustation_erreur"></div>
 				<?php
-					if( Configure::read( 'debug' ) > 0 ) { echo $this->MagicSearch->generateSearchMenu(); }
-				
+					/*if( Configure::read( 'debug' ) > 0 ) { echo $this->MagicSearch->generateSearchMenu(); }*/
+
 					if ($this->Session->check( 'Message.flash' ) ) {
 						echo $this->Session->flash();
 					}

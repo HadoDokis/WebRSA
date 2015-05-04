@@ -17,7 +17,7 @@
 	class Cui extends AppModel
 	{
 		public $name = 'Cui';
-		
+
 		public $recursive = -1;
 
         public $belongsTo = array(
@@ -31,11 +31,11 @@
 				'foreignKey' => 'partenaire_id',
 				//'dependent' => false,
 			),
-			'Personnecui' => array( // Fait un instantané de la personne, qui ne sera lié qu'au CUI
+			/*'Personnecui' => array( // Fait un instantané de la personne, qui ne sera lié qu'au CUI
 				'className' => 'Personnecui',
 				'foreignKey' => 'personnecui_id',
-				//'dependent' => true, 
-			),
+				//'dependent' => true,
+			),*/
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
@@ -51,7 +51,7 @@
 				'counterCache' => null
 			),
         );
-		
+
 		public $hasOne = array(
 			'Cui66' => array(
 				'className' => 'Cui66',
@@ -62,7 +62,7 @@
 				'dependent' => true
 			),
 		);
-		
+
 		public $hasMany = array(
 			'Emailcui' => array(
 				'className' => 'Emailcui',
@@ -73,7 +73,7 @@
 				'dependent' => true
 			),
 		);
-		
+
 		/**
 		 *
 		 * @var array
@@ -105,7 +105,7 @@
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
-		
+
 		/**
 		 * Recherche des données CAF liées à l'allocataire dans le cadre du CUI.
 		 *

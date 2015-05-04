@@ -17,9 +17,7 @@
 	</ul>
 	</div>
 <?php else: ?>
-	<noscript>
-		<p class="error">Cette fonctionnalité nécessite l'utilisation de javascript, mais javascript n'est pas activé dans votre navigateur.</p>
-	</noscript>
+	<?php echo $this->element( 'required_javascript' );?>
 
 	<?php if( isset( $validationErrors ) && !empty( $validationErrors ) ): ?>
 		<div class="errorslist">

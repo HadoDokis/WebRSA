@@ -20,9 +20,9 @@
 			echo $this->Html->tag( 'p', __d( $this->request->params['controller'], $message ), array( 'class' => "message {$class}" ) );
 		}
 	}
-	
-	$perm['edit'] = !$this->Permissions->checkDossier( 'Rupturescuis66', 'edit', $dossierMenu ) || in_array( $etatdossiercui66, array( 'annule' ) ? 'true' : 'false';
-	$perm['delete'] = !$this->Permissions->checkDossier( 'Rupturescuis66', 'delete', $dossierMenu ) || in_array( $etatdossiercui66, array( 'annule' ) ? 'true' : 'false';
+
+	$perm['edit'] = !$this->Permissions->checkDossier( 'Rupturescuis66', 'edit', $dossierMenu ) || in_array( $etatdossiercui66, array( 'annule' ) ) ? 'true' : 'false';
+	$perm['delete'] = !$this->Permissions->checkDossier( 'Rupturescuis66', 'delete', $dossierMenu ) || in_array( $etatdossiercui66, array( 'annule' ) ) ? 'true' : 'false';
 
 	echo $this->Default3->index(
 		$results,
@@ -47,7 +47,7 @@
 			'paginate' => false,
 		)
 	);
-	
+
 	echo '<br />' . $this->Default->button(
 		'back',
 		array(

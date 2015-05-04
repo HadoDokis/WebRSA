@@ -917,5 +917,64 @@
 
 			return $results;
 		}
+
+		/**
+		 * Ajoute des conditions sur les thématiques de RDV.
+		 *
+		 * A utiliser dans les cohortes et moteur de recherche.
+		 *
+		 * Exemple:
+		 * <pre>$this->conditionsThematique(
+		 *	array(),
+		 *	array(
+		 *		'Rendezvous' => array(
+		 *			'thematiquerdv_id' => array(
+		 *				0 => 3,
+		 *				1 => 5
+		 *			)
+		 *		)
+		 *	),
+		 *	'Rendezvous.thematiquerdv_id'
+		 * );</pre>
+		 * retournera
+		 * <pre>array( Rendezvous.id IN ( SELECT "rendezvous_thematiquesrdvs"."rendezvous_id" AS rendezvous_thematiquesrdvs__rendezvous_id FROM thematiquesrdvs AS thematiquesrdvs INNER JOIN "public"."rendezvous_thematiquesrdvs" AS rendezvous_thematiquesrdvs ON ("rendezvous_thematiquesrdvs"."rendezvous_id" = "Rendezvous"."id") WHERE "rendezvous_thematiquesrdvs"."rendezvous_id" = "Rendezvous"."id" AND "rendezvous_thematiquesrdvs"."thematiquerdv_id" IN ('3', '5') )  )</pre>
+		 *
+		 * @param array $conditions Les conditions déjà existantes
+		 * @param array $search Les critères renvoyés par le formulaire de recherche
+		 * @param mixed $paths Le chemin (ou les chemins) sur lesquels on cherche à appliquer ces filtres.
+		 * @return array
+		 */
+		public function conditionsThematique( $conditions, $search, $paths, array $replacements = array() ) {
+			$paths = (array)$paths;
+			$replacements += array(
+				'RendezvousThematiquerdv' => 'rendezvous_thematiquesrdvs',
+				'Thematiquerdv' => 'thematiquesrdvs'
+			);
+
+			foreach( $paths as $path ) {
+				$thematiquerdv_id = Hash::get( $search, $path );
+				if( !empty( $thematiquerdv_id ) ) {
+					$qd = array(
+						'alias' => 'Thematiquerdv',
+						'fields' => array( 'RendezvousThematiquerdv.rendezvous_id' ),
+						'contain' => false,
+						'joins' => array(
+							$this->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
+						),
+						'conditions' => array(
+							'RendezvousThematiquerdv.rendezvous_id = Rendezvous.id',
+							'RendezvousThematiquerdv.thematiquerdv_id' => $thematiquerdv_id,
+						)
+
+					);
+					$qd = array_words_replace( $qd, $replacements );
+
+					$sq = $this->Thematiquerdv->sq( $qd );
+					$conditions[] = "Rendezvous.id IN ( {$sq} )";
+				}
+			}
+
+			return $conditions;
+		}
 	}
 ?>

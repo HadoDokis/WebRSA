@@ -128,6 +128,7 @@
 
 	<?php if( is_array( $dsps ) && count( $dsps ) > 0  ):?>
 		<?php
+			// TODO: à factoriser avec Cohortesrendezvous::cohorte() + les exportcsv
 			$fields = Hash::normalize( (array)Configure::read( 'Dsps.index.fields' ) );
 
 			$virtualFields = array();

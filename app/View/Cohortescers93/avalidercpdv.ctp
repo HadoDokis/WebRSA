@@ -1,7 +1,6 @@
-<noscript>
-	<p class="error">Cette fonctionnalité nécessite l'utilisation de javascript, mais javascript n'est pas activé dans votre navigateur.</p>
-</noscript>
 <?php
+	echo $this->element( 'required_javascript' );
+
 	$title_for_layout = '3. Validation Responsable';
 	$this->set( compact( 'title_for_layout' ) );
 	echo $this->Xhtml->tag( 'h1', $title_for_layout );
