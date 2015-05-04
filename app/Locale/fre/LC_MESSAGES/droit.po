@@ -3455,3 +3455,14 @@ msgstr "Recherche de demandes de maintien dans le social (COV, nouveau)"
 
 msgid "Nonorientationsproscovs58:exportcsv"
 msgstr "Export CSV des résultats de la recherche de demandes de maintien dans le social (COV, nouveau)"
+
+#===============================================================================
+
+msgid "Module:Cohortesrendezvous"
+msgstr "Module cohorte de rendez-vous"
+
+msgid "Cohortesrendezvous:cohorte"
+msgstr "Cohorte de rendez-vous"
+
+msgid "Cohortesrendezvous:exportcsv"
+msgstr "Export CSV des résultats de la cohorte de rendez-vous"
