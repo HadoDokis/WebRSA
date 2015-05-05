@@ -26,6 +26,8 @@
 				<?php echo $this->Checks->table( $results['Environment']['files'] );?>
 				<h4>Cache</h4>
 				<?php echo $this->Checks->table( $results['Environment']['cache'] );?>
+				<h4>Espace libre</h4>
+				<?php echo $this->Checks->table( $results['Environment']['freespace'] );?>
 			</div>
 			<div id="php">
 				<h3 class="title">PHP</h3>
