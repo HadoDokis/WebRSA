@@ -780,5 +780,41 @@
 
 			return $return;
 		}
+
+		/**
+		 * Vérifie l'espace disponible (par-rapport au seuil) pour tous les
+		 * répertoires passés en paramètre.
+		 *
+		 * @param string|array $directories Le ou les répertoires à vé"rifier.
+		 *	Il est possible de passer un array avec le chemin en clé et un array
+		 *	en valeur, contenant la clé threshold pour ce répertoire en particulier.
+		 * @param array $params La clé threshold permet de spécifier le nombre
+		 *	 d'octets minimum requis (l'équivalent de 100 Mo par défaut).
+		 * @return array
+		 */
+		public function freespace( $directories, array $params = array() ) {
+			$directories = Hash::normalize( (array)$directories );
+			$params += array( 'threshold' => 104857600 );
+			$return = array();
+
+			foreach( $directories as $directory => $options ) {
+				$return[$directory] = array(
+					'success' => true,
+					'message' => null
+				);
+				$options = (array)$options;
+				$options += $params;
+
+				$freeBytes = disk_free_space( $directory );
+
+				if( $freeBytes < $options['threshold'] ) {
+					$return[$directory]['success'] = false;
+					$msgstr = 'L\'espace disponible dans le répertoire %s devrait être d\'au moins %s mais il ne reste actuellement que %s';
+					$return[$directory]['message'] = sprintf( $msgstr, $directory, byteSize( $options['threshold'] ), byteSize( $freeBytes ) );
+				}
+			}
+
+			return $return;
+		}
 	}
 ?>

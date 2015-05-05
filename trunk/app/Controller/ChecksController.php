@@ -134,8 +134,18 @@
 						),
 						ROOT.DS
 					),
-					'cache' => $this->Check->cachePermissions()
-				),
+					'cache' => $this->Check->cachePermissions(),
+					'freespace' => $this->Check->freespace(
+						array(
+							// 1. Répertoire temporaire de CakePHP
+							TMP,
+							// 2. Répertoire temporaire pour les PDF.
+							Configure::read( 'Cohorte.dossierTmpPdfs' ),
+							// 3. Répertoire de cache des wsdl
+							ini_get( 'soap.wsdl_cache_dir' ),
+						)
+					)
+				)
 			);
 		}
 
@@ -311,7 +321,7 @@
 		public function index() {
 			$this->Gedooo->makeTmpDir( Configure::read( 'Cohorte.dossierTmpPdfs' ) );
 
-			$results = Set::merge(
+			$results = Hash::merge(
 				$this->_apache(),
 				$this->_php(),
 				$this->_environment(),
