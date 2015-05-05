@@ -91,18 +91,52 @@
 		}
 
 		/**
+		 * Retourne les options nécessaires aux différentes vues, en fonction des
+		 * clés de params.
+		 *
+		 * @param array $params Les types d'options à inclure. Par défaut: array(
+		 *	'find' => true, 'allocataires' => true, 'ajax' => false )
+		 * @return array
+		 */
+		protected function _getOptions( array $params = array() ) {
+			$params += array( 'find' => true, 'allocataires' => true, 'ajax' => false );
+			$result = $this->Rendezvous->enums();
+
+			if( $params['allocataires'] === true ) {
+				$result = Hash::merge( $result, $this->Allocataires->options() );
+			}
+
+			if( $params['find'] === true ) {
+				$result = Hash::merge(
+					$result,
+					array(
+						'Rendezvous' => array(
+							'statutrdv_id' => $this->Rendezvous->Statutrdv->find( 'list' ),
+							'typerdv_id' => $this->Rendezvous->Typerdv->find( 'list' ),
+							'permanence_id' => $this->Rendezvous->Permanence->find( 'list' )
+						)
+					)
+				);
+
+				if( $params['ajax'] === false && Configure::read( 'Rendezvous.useThematique' ) === true ) {
+					$result['RendezvousThematiquerdv']['thematiquerdv_id'] = $this->Rendezvous->Thematiquerdv->find( 'list', array( 'fields' => array( 'Thematiquerdv.id', 'Thematiquerdv.name', 'Thematiquerdv.typerdv_id' ) ) );
+				}
+			}
+
+			return $result;
+		}
+
+		/**
 		 *
 		 */
 		public function cohorte() {
 			$this->Workflowscers93->assertUserExterne();
 
 			if( $this->request->is( 'ajax' ) ) {
-				// TODO: à placer dans saveCohorte
-//$this->log( var_export( $this->request->data, true ), LOG_DEBUG );
+				// TODO: à placer dans la méthode saveCohorte
 				$json = array( 'success' => true, 'errors' => array() );
 
 				$dossiers_ids = Hash::extract( $this->request->data, 'Cohorte.Hidden.Dossier.{n}.id' );
-// TODO: dans la méthode saveCohorte ?
 				// a. Acquisition des jetons
 				$this->Cohortes->get( $dossiers_ids );
 
@@ -150,7 +184,6 @@
 					$rendezvous_id = Hash::get( $data, 'id' );
 					$rendezvous_ids = Hash::extract( $this->request->data, 'Cohorte.Hidden.Rendezvous.{n}.id' );
 					array_remove( $rendezvous_ids, $rendezvous_id );
-					$this->log( var_export( $rendezvous_ids, true ), LOG_DEBUG );
 
 					$search = (array)Hash::get( $this->request->data, 'Search' );
 					$query = $this->_getQuery( $search );
@@ -185,43 +218,15 @@
 					$this->layout = 'ajax';
 					$this->render( '/Elements/json' );
 				}
-
-				// TODO: afficher que ça s'est bien passé, etc...
 			}
 			else {
-				// Obtention immédiate des résultats
-				// TODO: valeurs par défaut éventuelles des filtres du moteur de recherche
-				/*$cohorte = (array)Hash::get( $this->request->data, 'Cohorte' );
-
-				// 1. Traitement du formulaire de sélection si nécessaire
-				if( !empty( $cohorte ) ) {
-					$dossiers_ids = array_filter( Hash::extract( $cohorte, 'Dossier.{n}.id' ) );
-
-					// a. Acquisition des jetons
-					$this->Cohortes->get( $dossiers_ids );
-
-					// b. Traitement du formulaire de cohorte
-					$data = array_filter( (array)Hash::extract( $cohorte, 'Rendezvous' ) ); // FIXME: sera uniquemnt fait par ajax
-					if( !empty( $data ) ) {
-						$this->Rendezvous->begin();
-						if( $this->Cohorterendezvous->saveCohorte( $data, $this->Session->read( 'Auth.User.id' ) ) ) {
-							$this->Rendezvous->commit();
-							$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-							$this->request->data = Hash::insert( $this->request->data, 'Cohorte', array() );
-						}
-						else {
-							$this->Rendezvous->rollback();
-							$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-						}
-					}
-
-					// c. On relache les jetons
-					$this->Cohortes->release( $dossiers_ids );
-				}*/
-
-				// 2. Traitement du formulaire de recherche
+				// Traitement du formulaire de recherche
 				if( empty( $this->request->data ) ) {
 					$this->request->data = $this->Filtresdefaut->values();
+				}
+				// On relache les jetons obtenus lors de l'accès précédent à la page
+				else {
+					$this->Cohortes->cleanCurrent();
 				}
 
 				$search = (array)Hash::get( $this->request->data, 'Search' );
@@ -242,26 +247,7 @@
 				$this->set( compact( 'results' ) );
 			}
 
-			// Options, TODO: factoriser
-			$options = Hash::merge(
-				$this->Allocataires->options(),
-				$this->Rendezvous->enums(),
-				// TODO: pas si ajax
-				array(
-					'Rendezvous' => array(
-						'statutrdv_id' => $this->Rendezvous->Statutrdv->find( 'list' ),
-						'typerdv_id' => $this->Rendezvous->Typerdv->find( 'list' ),
-						'permanence_id' => $this->Rendezvous->Permanence->find( 'list' )
-					)
-				)
-			);
-
-			// TODO: pas si ajax
-            if( Configure::read( 'Rendezvous.useThematique' ) ) {
-				$options['RendezvousThematiquerdv']['thematiquerdv_id'] = $this->Rendezvous->Thematiquerdv->find( 'list', array( 'fields' => array( 'Thematiquerdv.id', 'Thematiquerdv.name', 'Thematiquerdv.typerdv_id' ) ) );
-            }
-
-			$this->set( compact( 'options' ) );
+			$this->set( array( 'options' => $this->_getOptions( array( 'ajax' => $this->request->is( 'ajax' ) ) ) ) );
 		}
 
 		/**
@@ -282,17 +268,10 @@
 
 			$this->Rendezvous->forceVirtualFields = true;
 			$results = $this->Rendezvous->find( 'all', $query );
+			$options = $this->_getOptions( array( 'find' => false ) );
 
 			$this->layout = null;
-			$this->set( compact( 'results' ) );
-
-			// Options, TODO: factoriser
-			$options = Hash::merge(
-				$this->Allocataires->options(),
-				$this->Rendezvous->enums()
-			);
-
-			$this->set( compact( 'options' ) );
+			$this->set( compact( 'results', 'options' ) );
 		}
 	}
 ?>
