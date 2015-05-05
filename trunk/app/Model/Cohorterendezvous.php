@@ -128,7 +128,8 @@
 				'Rendezvous.structurereferente_id',
 				'Rendezvous.referent_id',
 				'Rendezvous.statutrdv_id',
-				'Rendezvous.permanence_id'
+				'Rendezvous.permanence_id',
+				'Rendezvous.typerdv_id'
 			);
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );

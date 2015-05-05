@@ -102,6 +102,26 @@
 		}
 
 		/**
+		 * Nettoyage des jetons stockés dans la session, pour la page en cours
+		 * (contrôleur, action, page).
+		 *
+		 * @return void
+		 */
+		public function cleanCurrent() {
+			if( $this->active() ) {
+				$page = ( isset( $this->Controller->request->params['named']['page'] ) ? $this->Controller->request->params['named']['page'] : 1 );
+				$sessionKey = $this->sessionKey().".{$page}";
+				$dossiers_ids = (array)$this->Session->read( $sessionKey );
+
+				if( !empty( $dossiers_ids ) ) {
+					return $this->release( $dossiers_ids );
+				}
+			}
+
+			return true;
+		}
+
+		/**
 		 * Retourne la clé sous laquelle seront stockés les identifiants des dossiers dans la Session.
 		 *
 		 * @return string

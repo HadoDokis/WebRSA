@@ -189,7 +189,6 @@
 			// TODO: infobulle
 
 			if( !empty( $results ) ) {
-				echo $this->Default3->DefaultForm->buttons( array( 'Save' ) );
 				echo $this->Default3->DefaultForm->end();
 
 				echo $this->Observer->disableFormOnSubmit( 'CohortesrendezvousCohorteForm' );
@@ -211,116 +210,121 @@
 	echo $this->element(
 		'modalbox',
 		array(
-			'modalid' => "ModelLoadingCog",
-			// TODO: enregistrement en cours, ...
-			'modalcontent' => null,
-			'modalmessage' => null
+			'modalid' => "ModalLoadingCog",
+			'modalmessage' => 'Enregistrement en cours...',
+			'modalcontent' => null
 		)
 	);
 ?>
 <script type="text/javascript">
 	//<![CDATA[
 	document.observe( "dom:loaded", function() {
-		// TODO: try / catch
-		var observeRow = function ( tr ) {
-			var select = $(tr).select( 'select' )[0],
-				fields = $(tr).select( 'input', 'select' );
+		var defaultModalMessage = $( 'ModalLoadingCog' ).select( 'div.message' )[0].innerHTML,
+			observeRow = function ( tr ) {
+				var select = $(tr).select( 'select' )[0],
+					fields = $(tr).select( 'input', 'select' );
 
-			// TODO: les empécher de modifier pendant que la requête est en cours (modal + cog)
-			$( select ).observe( 'change', function( event ) {
-				var key,
-					// 0. Moteur de recherche -> data[Search]
-					requestData = $( 'CohortesrendezvousCohorteSearchForm' ).serialize( true ),
-					// requestData = {},
-					// 1. Ensemble des champs cachés du formulaire -> data[Cohorte][Hidden]
-					allHiddenFields = Form.serializeElements( $$( '#TableCohortesrendezvousCohorte tbody tr input[type=hidden]' ), { hash: true, submit: false } ),
-					// 2. Ligne qui a changé -> data[Cohorte][Changed]
-					allChangedFields = Form.serializeElements( fields, { hash: true, submit: false } ),
-					rowOffset = $(event).element().name.replace( /^.*\]\[([0-9]+)\]\[.*$/g, '$1' );
+				$( select ).observe( 'change', function( event ) {
+					var key,
+						// 0. Moteur de recherche -> data[Search]
+						requestData = $( 'CohortesrendezvousCohorteSearchForm' ).serialize( true ),
+						// 1. Ensemble des champs cachés du formulaire -> data[Cohorte][Hidden]
+						allHiddenFields = Form.serializeElements( $$( '#TableCohortesrendezvousCohorte tbody tr input[type=hidden]' ), { hash: true, submit: false } ),
+						// 2. Ligne qui a changé -> data[Cohorte][Changed]
+						allChangedFields = Form.serializeElements( fields, { hash: true, submit: false } ),
+						rowOffset = $(event).element().name.replace( /^.*\]\[([0-9]+)\]\[.*$/g, '$1' );
 
-				// Renommage des clés des champs cachés
-				for( key in allHiddenFields ) {
-					if( allHiddenFields.hasOwnProperty( key ) ) {
-						requestData[key.replace( '[Cohorte]', '[Cohorte][Hidden]' )] = allHiddenFields[key];
-					}
-				}
+					// On remet la valeur par défaut du message de la boîte modale
+					$( 'ModalLoadingCog' ).select( 'div.message' )[0].update( defaultModalMessage );
 
-				// Renommage des clés de l'enregistrement modifié
-				for( key in allChangedFields ) {
-					if( allChangedFields.hasOwnProperty( key ) ) {
-						requestData[key.replace( '[Cohorte]', '[Cohorte][Changed]' )] = allChangedFields[key];
-					}
-				}
-
-				// 3. Offset de la ligne qui a changé -> data[Cohorte][Changed][offset]
-				requestData['data[Cohorte][Changed][offset]'] = rowOffset;
-
-				var remplaceur = function( match, attribute, value, offset, string ) {
-				  return attribute + '="' + value.replace( /0/g, rowOffset ) + '"';
-				};
-
-				new Ajax.Request(
-					'<?php echo Router::url();?>',
-					{
-						asynchronous: true,
-						evalScripts: true,
-						parameters: requestData,
-						onCreate: function() {
-							$( 'ModelLoadingCog' ).show();
-						},
-						onSuccess: function( request ) {
-							// TODO: try/catch, onError, ...
-							// Soit on reçoit une erreur en JSON
-							try {
-								var json = request.responseText.evalJSON( true );
-
-								// 1. Suppression de l'erreur précédente éventuelle
-								$(tr).select( '.error-message' ).each( function( error ) {
-									$(error).remove();
-								} );
-
-								// 2. Traitement du retour en erreur
-								if( json.success != true ) {
-									for( var key in json.errors ) {
-										if( json.errors.hasOwnProperty( key ) ) {
-											var td = $(select).up( 'div.input.select' ).up( 'td' );
-											var message = json.errors[key]['statutrdv_id'][0]; // TODO: si 1 / si plusieurs
-											var div = new Element( 'div', { 'class': 'error-message' } ).update( message );
-											$( td ).removeClassName( 'error' );
-											$( td ).addClassName( 'error' );
-											$( td ).insert( { 'bottom' : div } );
-										}
-									}
-								}
-							// Soit on reçoit du HTML en cas de succès
-							} catch( e ) {
-								var newTr = request.responseText;
-								$(tr).remove();
-								// Ajout de la nouvelle rangée
-								newTr = newTr.replace( '<tbody>', '' ).replace( '</tbody>', '' );
-								newTr = newTr.replace( /(name|id)="([^"]+)"/g, remplaceur );
-
-								$( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ).insert( { 'bottom' : newTr } );
-								var tbody = $( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ),
-									newRows = $(tbody).childElements();
-								observeRow( newRows[newRows.length - 1] );
-
-								// Mise à jour des classes odd/even des rangées
-								var index = 1;
-								$$( '#TableCohortesrendezvousCohorte tbody tr' ).each( function( row ) {
-									$(row).removeClassName( 'even' );
-									$(row).removeClassName( 'odd' );
-									$(row).addClassName( ( index % 2 === 0 ) ? 'even' : 'odd' );
-									index++;
-								} );
-							}
-
-							$( 'ModelLoadingCog' ).hide();
+					// Renommage des clés des champs cachés
+					for( key in allHiddenFields ) {
+						if( allHiddenFields.hasOwnProperty( key ) ) {
+							requestData[key.replace( '[Cohorte]', '[Cohorte][Hidden]' )] = allHiddenFields[key];
 						}
 					}
-				);
-			} );
-		};
+
+					// Renommage des clés de l'enregistrement modifié
+					for( key in allChangedFields ) {
+						if( allChangedFields.hasOwnProperty( key ) ) {
+							requestData[key.replace( '[Cohorte]', '[Cohorte][Changed]' )] = allChangedFields[key];
+						}
+					}
+
+					// 3. Offset de la ligne qui a changé -> data[Cohorte][Changed][offset]
+					requestData['data[Cohorte][Changed][offset]'] = rowOffset;
+
+					var remplaceur = function( match, attribute, value, offset, string ) {
+					  return attribute + '="' + value.replace( /0/g, rowOffset ) + '"';
+					};
+
+					new Ajax.Request(
+						'<?php echo Router::url();?>',
+						{
+							asynchronous: true,
+							evalScripts: true,
+							parameters: requestData,
+							onCreate: function() {
+								$( 'ModalLoadingCog' ).show();
+							},
+							onSuccess: function( request ) {
+								// Soit on reçoit une erreur en JSON
+								try {
+									var json = request.responseText.evalJSON( true );
+
+									// 1. Suppression de l'erreur précédente éventuelle
+									$(tr).select( '.error-message' ).each( function( error ) {
+										$(error).remove();
+									} );
+
+									// 2. Traitement du retour en erreur
+									if( json.success != true ) {
+										for( var key in json.errors ) {
+											if( json.errors.hasOwnProperty( key ) ) {
+												var td = $(select).up( 'div.input.select' ).up( 'td' );
+												// TODO: si 1 / si plusieurs
+												var message = json.errors[key]['statutrdv_id'][0];
+												var div = new Element( 'div', { 'class': 'error-message' } ).update( message );
+												$( td ).removeClassName( 'error' );
+												$( td ).addClassName( 'error' );
+												$( td ).insert( { 'bottom' : div } );
+											}
+										}
+									}
+								// Soit on reçoit du HTML en cas de succès
+								} catch( e ) {
+									var newTr = request.responseText;
+									$(tr).remove();
+									// Ajout de la nouvelle rangée
+									newTr = newTr.replace( '<tbody>', '' ).replace( '</tbody>', '' );
+									newTr = newTr.replace( /(name|id)="([^"]+)"/g, remplaceur );
+
+									$( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ).insert( { 'bottom' : newTr } );
+									var tbody = $( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ),
+										newRows = $(tbody).childElements();
+									observeRow( newRows[newRows.length - 1] );
+
+									// Mise à jour des classes odd/even des rangées
+									var index = 1;
+									$$( '#TableCohortesrendezvousCohorte tbody tr' ).each( function( row ) {
+										$(row).removeClassName( 'even' );
+										$(row).removeClassName( 'odd' );
+										$(row).addClassName( ( index % 2 === 0 ) ? 'even' : 'odd' );
+										index++;
+									} );
+								}
+
+								$( 'ModalLoadingCog' ).hide();
+							},
+							onFailure: function( request ) {
+								var errorText = 'Erreur lors de l\'enregistrement: erreur ' + request.status + ', ' + request.statusText;
+								errorText += '<br />Vous pouvez fermer ce message d\'erreur et recharger la page avant de réessayer.';
+								$( 'ModalLoadingCog' ).select( 'div.message' )[0].update( errorText );
+							}
+						}
+					);
+				} );
+			};
 
 		$$( '#TableCohortesrendezvousCohorte tbody tr' ).each( function( tr ) {
 			observeRow( tr );
