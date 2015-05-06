@@ -86,7 +86,7 @@
 			.$this->SearchForm->dateRange( 'Search.Rendezvous.daterdv', array( 'domain' => 'cohortesrendezvous' ) )
 		);
 
-		/* TODO: Permanence liée à la structure */
+		// TODO: Permanence liée à la structure
 
 		echo $this->Observer->dependantSelect(
 			array( 'Search.Rendezvous.structurereferente_id' => 'Search.Rendezvous.referent_id' )
@@ -158,15 +158,32 @@
 			)
 		);
 
+		// On prépare les paramètres de pagination à la main en cas de requête Ajax.
+		$urlParams = (array)$this->request->data;
+		unset( $urlParams['Cohorte'] );
+		$urlParams = Hash::flatten( $urlParams, '__' );
+		$this->Default3->DefaultPaginator->options(
+			array( 'url' => $urlParams )
+		);
+		$paginationFormat = SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) );
+
 		// 1. On est en ajax
 		if( $this->request->is( 'ajax' ) ) {
-			echo $this->Default3->DefaultTable->tbody(
-				$results,
-				$fields,
-				array(
-					'options' => $options
+			$pagination = $this->Default3->pagination( array( 'format' => $paginationFormat ) );
+
+			$json = array(
+				'success' => true,
+				'pagination' => $pagination,
+				'tr' => $this->Default3->DefaultTable->tbody(
+					$results,
+					$fields,
+					array(
+						'options' => $options
+					)
 				)
 			);
+
+			echo $this->element( 'json', compact( 'json' ) );
 		}
 		// 2. On n'est pas en ajax
 		else {
@@ -174,15 +191,11 @@
 				echo $this->Default3->DefaultForm->create( null, array( 'id' => 'CohortesrendezvousCohorteForm' ) );
 			}
 
-			$this->Default3->DefaultPaginator->options(
-				array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
-			);
-
 			echo $this->Default3->index(
 				$results,
 				$fields,
 				array(
-					'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ),
+					'format' => $paginationFormat,
 					'options' => $options
 				)
 			);
@@ -219,7 +232,14 @@
 <script type="text/javascript">
 	//<![CDATA[
 	document.observe( "dom:loaded", function() {
+		// TODO: une fonction makeAjaxCohorte() ?
+		// Paramètres: modalLoadingId, searchFormId, resultTableId, resultFormId, ... + les autres plus compliqués
 		var defaultModalMessage = $( 'ModalLoadingCog' ).select( 'div.message' )[0].innerHTML,
+			setModalError = function( msgpart ) {
+				var errorText = 'Erreur lors de l\'enregistrement: ' + msgpart;
+				errorText += '<br />Vous pouvez fermer ce message d\'erreur et recharger la page avant de réessayer.';
+				$( 'ModalLoadingCog' ).select( 'div.message' )[0].update( errorText );
+			},
 			observeRow = function ( tr ) {
 				var select = $(tr).select( 'select' )[0],
 					fields = $(tr).select( 'input', 'select' );
@@ -282,44 +302,86 @@
 										for( var key in json.errors ) {
 											if( json.errors.hasOwnProperty( key ) ) {
 												var td = $(select).up( 'div.input.select' ).up( 'td' );
-												// TODO: si 1 / si plusieurs
-												var message = json.errors[key]['statutrdv_id'][0];
-												var div = new Element( 'div', { 'class': 'error-message' } ).update( message );
+												var messages = json.errors[key]['statutrdv_id'];
+												var div = new Element( 'div', { 'class': 'error-message' } );
+												if( messages.length === 1 ) {
+													(div).update( messages[0] );
+												}
+												else {
+													var ul = new Element( 'ul' );
+													$(messages).each( function( message ) {
+														var li = new Element( 'li', {} ).update( message );
+														$(ul).insert( { 'bottom' : li } );
+													} );
+													$(div).update( ul );
+												}
+
 												$( td ).removeClassName( 'error' );
 												$( td ).addClassName( 'error' );
 												$( td ).insert( { 'bottom' : div } );
 											}
 										}
 									}
-								// Soit on reçoit du HTML en cas de succès
+									// ... et aussi en cas de succès
+									else {
+										// Suppression de la ligne enregistrée
+										$(tr).remove();
+
+										// Ajout de la nouvelle rangée, si elle existe
+										if( json.tr !== '' && json.tr !== null ) {
+											var newTr = json.tr;
+
+											newTr = newTr.replace( '<tbody>', '' ).replace( '</tbody>', '' );
+											newTr = newTr.replace( /(name|id)="([^"]+)"/g, remplaceur );
+
+											$( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ).insert( { 'bottom' : newTr } );
+											var tbody = $( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ),
+												newRows = $(tbody).childElements();
+											observeRow( newRows[newRows.length - 1] );
+										}
+
+										// S'il reste des enregistrements, mise à jour des classes odd/even des rangées, mise à jour de la pagination
+										var index = 1,
+											rows = $$( '#TableCohortesrendezvousCohorte tbody tr' );
+										if( $(rows).length > 0 ) {
+											$(rows).each( function( row ) {
+												$(row).removeClassName( 'even' );
+												$(row).removeClassName( 'odd' );
+												$(row).addClassName( ( index % 2 === 0 ) ? 'even' : 'odd' );
+												index++;
+											} );
+										}
+										// Lorsqu'il n'y a plus de résultats, on remplace la pagination et le tableau par un message
+										else {
+											var actions = $( 'CohortesrendezvousCohorteForm' ).next( 'ul.actionMenu' );
+											var emptyMessage = '<?php echo js_escape( $this->Default3->DefaultHtml->tag( 'p', 'Aucun enregistrement', array( 'class' => 'notice' ) ) );?>';
+											$( 'CohortesrendezvousCohorteForm' ).replace( emptyMessage );
+
+											if( actions !== undefined ) {
+												$(actions).select( 'li a' ).each( function(link) {
+													// span à la place du a, on ajoute la classe disabled
+													var span = new Element( 'span' );
+													$(span).innerHTML = $(link).innerHTML;
+													$(span).addClassName( $(link).readAttribute( 'class' ) );
+													$(span).addClassName( 'disabled' );
+													$(link).replace( span );
+												} );
+											}
+										}
+
+										$$( 'div.pagination' ).each( function( block ) {
+											$(block).replace( json.pagination );
+										} );
+									}
+
+									$( 'ModalLoadingCog' ).hide();
+								// Soit on reçoit autre chose, ce qui équivaut à une erreur inattendue
 								} catch( e ) {
-									var newTr = request.responseText;
-									$(tr).remove();
-									// Ajout de la nouvelle rangée
-									newTr = newTr.replace( '<tbody>', '' ).replace( '</tbody>', '' );
-									newTr = newTr.replace( /(name|id)="([^"]+)"/g, remplaceur );
-
-									$( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ).insert( { 'bottom' : newTr } );
-									var tbody = $( 'TableCohortesrendezvousCohorte' ).down( 'tbody' ),
-										newRows = $(tbody).childElements();
-									observeRow( newRows[newRows.length - 1] );
-
-									// Mise à jour des classes odd/even des rangées
-									var index = 1;
-									$$( '#TableCohortesrendezvousCohorte tbody tr' ).each( function( row ) {
-										$(row).removeClassName( 'even' );
-										$(row).removeClassName( 'odd' );
-										$(row).addClassName( ( index % 2 === 0 ) ? 'even' : 'odd' );
-										index++;
-									} );
+									setModalError( 'erreur inattendue, ' + e );
 								}
-
-								$( 'ModalLoadingCog' ).hide();
 							},
 							onFailure: function( request ) {
-								var errorText = 'Erreur lors de l\'enregistrement: erreur ' + request.status + ', ' + request.statusText;
-								errorText += '<br />Vous pouvez fermer ce message d\'erreur et recharger la page avant de réessayer.';
-								$( 'ModalLoadingCog' ).select( 'div.message' )[0].update( errorText );
+								setModalError( 'erreur ' + request.status + ', ' + request.statusText );
 							}
 						}
 					);

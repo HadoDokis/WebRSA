@@ -45,7 +45,10 @@
 		public function paginate( $object = null, $scope = array( ), $whitelist = array( ), $progressivePaginate = null ) {
 			$Controller = $this->_Collection->getController();
 
-			if( is_null( $progressivePaginate ) ) {
+			$Paginator = $this->getPaginator( $progressivePaginate );
+
+			return $Paginator->paginate( $object, $scope, $whitelist );
+			/*if( is_null( $progressivePaginate ) ) {
 				$progressivePaginate = SearchProgressivePagination::enabled( $Controller->name, $Controller->action );
 			}
 
@@ -56,6 +59,24 @@
 			else {
 				SearchProgressivePagination::disable( $Controller->name, $Controller->action );
 				return $this->_Collection->load( 'Paginator', $Controller->paginate )->paginate( $object, $scope, $whitelist );
+			}*/
+		}
+
+		// TODO: tests
+		public function getPaginator( $progressivePaginate = null ) {
+			$Controller = $this->_Collection->getController();
+
+			if( is_null( $progressivePaginate ) ) {
+				$progressivePaginate = SearchProgressivePagination::enabled( $Controller->name, $Controller->action );
+			}
+
+			if( $progressivePaginate ) {
+				SearchProgressivePagination::enable( $Controller->name, $Controller->action );
+				return $this->_Collection->load( 'Search.ProgressivePaginator', $Controller->paginate );
+			}
+			else {
+				SearchProgressivePagination::disable( $Controller->name, $Controller->action );
+				return $this->_Collection->load( 'Paginator', $Controller->paginate );
 			}
 		}
 

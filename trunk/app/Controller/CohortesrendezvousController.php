@@ -71,21 +71,20 @@
 		 * Retourne le query à utiliser dans la méthode cohorte, que l'appel ait
 		 * été fait en ajax ou non.
 		 *
-		 * @param array $search
+		 * @param array $search Les filtres venant du moteur de recherche
+		 * @param array $fieldsConfigureKeys Le nom des clés de configuration dans
+		 *	lesquelles récupérer les champs nécessaires.
 		 * @return array
 		 */
-		protected function _getQuery( array $search ) {
+		protected function _getQuery( array $search, array $fieldsConfigureKeys ) {
 			$query = $this->Cohorterendezvous->cohorte( $search );
 			$query = $this->Cohortes->qdConditions( $query );
+			$query = $this->Allocataires->completeSearchQuery( $query );
+
+			$query = ConfigurableQueryFields::getFieldsByKeys( $fieldsConfigureKeys, $query );
 
 			$query['limit'] = 10;
-
-			$query = $this->Allocataires->completeSearchQuery( $query );
 			$query['conditions']['Rendezvous.structurereferente_id'] = $this->Workflowscers93->getUserStructurereferenteId();
-			$this->Rendezvous->forceVirtualFields = true;
-
-			$keys = array( "{$this->name}.cohorte.fields", "{$this->name}.cohorte.innerTable" );
-			$query = ConfigurableQueryFields::getFieldsByKeys( $keys, $query );
 
 			return $query;
 		}
@@ -179,14 +178,15 @@
 				// En cas de succès, on renvoie le nouveau résultat en Ajax/HTML
 				if( $json['success'] ) {
 					$this->Rendezvous->commit();
-					$this->Cohortes->release( array( Hash::get( $this->request->data, "Cohorte.Changed.Dossier.{$offset}.id" ) ) );
+					$dossier_id = Hash::get( $this->request->data, "Cohorte.Changed.Dossier.{$offset}.id" );
+					$this->Cohortes->release( array( $dossier_id ) );
 
 					$rendezvous_id = Hash::get( $data, 'id' );
 					$rendezvous_ids = Hash::extract( $this->request->data, 'Cohorte.Hidden.Rendezvous.{n}.id' );
 					array_remove( $rendezvous_ids, $rendezvous_id );
 
 					$search = (array)Hash::get( $this->request->data, 'Search' );
-					$query = $this->_getQuery( $search );
+					$query = $this->_getQuery( $search, array( "{$this->name}.cohorte.fields", "{$this->name}.cohorte.innerTable" ) );
 					$query['conditions'][] = array(
 						'NOT' => array(
 							'Rendezvous.id' => $rendezvous_ids
@@ -196,16 +196,80 @@
 					// Il faut garder le tri et la page
 					$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
 					$page = Hash::get( $this->request->params, 'named.page' );
+					$limit = $query['limit'];
 					if( empty( $page ) || $page < 1 ) {
 						$page = 1;
 					}
 					$query['offset'] = ( $page -1 ) * $query['limit'];
 					$query['limit'] = 1;
 
+					$this->Rendezvous->forceVirtualFields = true;
 					$results = $this->Rendezvous->find( 'all', $query );
 
-					// Acquisition des jetons du jeu de résultat
-					$dossiers_ids = array_filter( Hash::extract( $results, '{n}.Dossier.id' ) );
+					// TODO: début mise à jour des liens de pagination
+					// Il me faut envoyer à la vue, pagination normale et progressive:
+					$nombre_total = Hash::get( $search, 'Pagination.nombre_total' );
+					$Paginator = $this->Components->load( 'Search.SearchPaginator' )->getPaginator( !$nombre_total );
+					$options = $Paginator->mergeOptions( $this->Rendezvous->alias );
+					$options = $Paginator->validateSort( $this->Rendezvous, $options );
+					$options = $Paginator->checkLimit( $options );
+
+					// Puisque les enregistrements déjà présents ne sont plus comptabilisés, on les ajoute à la main
+					$hiddenCount = max( count( Hash::get( $this->request->data, "Cohorte.Hidden.Rendezvous" ) ) - 1, 0 );
+
+					if( $nombre_total ) {
+						$count = $this->Rendezvous->find( 'count', $query ) + $hiddenCount;
+					}
+					// Sinon, on s'arrange pour que les enregistrements déjà présents ne soient pas pris en compte
+					else {
+						$query['limit'] = $limit + 1;
+						$query['fields'] = array( 'Rendezvous.id' );
+						$count = count( (array)$this->Rendezvous->find( 'all', $query ) );
+						$count = min( $limit + 1, $count + $hiddenCount ) + ( ( $page - 1 ) * $limit );
+					}
+
+					$defaults = $Paginator->getDefaults( $this->Rendezvous->alias );
+					unset( $defaults[0] );
+
+					$pageCount = intval( ceil( $count / $limit ) );
+					$page = max( min( $page, $pageCount ), 1 );
+
+					$paging = array(
+						'page' => $page,
+						'current' => min( $limit, $count ),
+						'count' => $count,
+						'prevPage' => ($page > 1),
+						'nextPage' => ($count > ($page * $limit)),
+						'pageCount' => $pageCount,
+						'order' => $query['order'],
+						'limit' => $limit,
+						'options' => Hash::diff( $options, $defaults ),
+						'paramType' => $options['paramType']
+					);
+
+					// TODO: à factoriser, ou que sais-je ?
+					if( !isset( $this->request['paging'] ) ) {
+						$this->request['paging'] = array( );
+					}
+					$this->request['paging'] = array_merge(
+							(array)$this->request['paging'],
+							array( $this->Rendezvous->alias => $paging )
+					);
+
+					if( !in_array( 'Paginator', $this->helpers ) && !array_key_exists( 'Paginator', $this->helpers ) ) {
+						$this->helpers[] = 'Paginator';
+					}
+
+					// Acquisition des jetons du jeu de résultat, on ajoute les ids des dossiers se trouvant déjà dans la cohorte
+					$dossiers_ids = array_merge(
+						$dossiers_ids,
+						array_filter( Hash::extract( $results, '{n}.Dossier.id' ) )
+					);
+					// Si on a un second enregistrement du même dossier, on garde l'id
+					if( array_remove( $dossiers_ids, $dossier_id ) > 1 ) {
+						$dossiers_ids[] = $dossier_id;
+					}
+
 					$this->Cohortes->get( $dossiers_ids );
 
 					$this->set( compact( 'results' ) );
@@ -230,8 +294,9 @@
 				}
 
 				$search = (array)Hash::get( $this->request->data, 'Search' );
+				$query = $this->_getQuery( $search, array( "{$this->name}.cohorte.fields", "{$this->name}.cohorte.innerTable" ) );
 
-				$query = $this->_getQuery( $search );
+				$this->Rendezvous->forceVirtualFields = true;
 				$this->paginate = $query;
 				$results = $this->paginate(
 					$this->Rendezvous,
@@ -257,14 +322,8 @@
 			$this->Workflowscers93->assertUserExterne();
 			$search = (array)Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' );
 
-			$query = $this->Cohorterendezvous->cohorte( $search );
-			$query = $this->Cohortes->qdConditions( $query );
-			$query = $this->Allocataires->completeSearchQuery( $query );
-			$query['conditions']['Rendezvous.structurereferente_id'] = $this->Workflowscers93->getUserStructurereferenteId();
+			$query = $this->_getQuery( $search, array( "{$this->name}.{$this->action}" ) );
 			unset( $query['limit'] );
-
-			$query = ConfigurableQueryFields::getFieldsByKeys( "{$this->name}.{$this->action}", $query );
-			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
 
 			$this->Rendezvous->forceVirtualFields = true;
 			$results = $this->Rendezvous->find( 'all', $query );
