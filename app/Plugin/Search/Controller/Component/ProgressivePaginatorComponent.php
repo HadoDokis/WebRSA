@@ -158,6 +158,7 @@
 				}
 				// Début modification
 				// $results = $object->find( $type, array_merge( $parameters, $extra ) );
+				// TODO: factoriser / recopier ?
 				$querydata = array_merge( $parameters, $extra );
 				$querydata['offset'] = ( max( 0, $page - 1 ) * $querydata['limit'] );
 				$querydata['limit'] = ( $querydata['limit'] + 1 );

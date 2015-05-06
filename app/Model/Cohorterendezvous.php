@@ -99,9 +99,9 @@
 
 				// 3. Tri par défaut: date, heure, id
 				$query['order'] = array(
-					'Rendezvous.daterdv DESC',
-					'Rendezvous.heurerdv DESC',
-					'Rendezvous.id DESC'
+					'Rendezvous.daterdv' => 'ASC',
+					'Rendezvous.heurerdv' => 'ASC',
+					'Rendezvous.id' => 'ASC'
 				);
 
 				Cache::write( $cacheKey, $query );
