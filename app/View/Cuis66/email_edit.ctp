@@ -60,7 +60,7 @@
 	 */
 	$('LoadEmailModel').onclick = function(){
 		var insertDate = $F('EmailcuiInsertiondateYear') + '-' + $F('EmailcuiInsertiondateMonth') + '-' + $F('EmailcuiInsertiondateDay');
-		new Ajax.Request('/cuis66/ajax_generate_email/', {
+		new Ajax.Request('<?php echo Router::url( array( 'controller' => 'cuis66', 'action' => 'ajax_generate_email' ) ); ?>/', {
 			asynchronous:true, 
 			evalScripts:true, 
 			parameters: {

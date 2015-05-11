@@ -129,7 +129,7 @@ msgid "ENUM::ETATDOSSIERCUI66::decisionsanssuite"
 msgstr "Traité (Décision sans suite)"
 
 msgid "ENUM::ETATDOSSIERCUI66::nonvalide"
-msgstr "nonvalide"
+msgstr "Traité (Dossier non éligible)"
 
 msgid "ENUM::ETATDOSSIERCUI66::annule"
 msgstr "Annulé"

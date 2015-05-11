@@ -618,7 +618,7 @@
 			if ( $different ){
 				$result = $result && $this->Historiquepositioncui66->saveMany( $updateValues );
 			}
-		debug($result);
+		
 			return $result;
 		}
 
