@@ -403,6 +403,7 @@ $irregularPlural = array(
 	'motifsuspensioncui66' => 'motifssuspensioncuis66',
 	'motifsuspensioncui66_suspensioncui66' => 'motifssuspensioncuis66_suspensionscuis66',
 	'historiquepositioncui66' => 'historiquepositionscuis66',
+	'piecemanquantecui66' => 'piecesmanquantescuis66',
 
 	'offreinsertion' => 'offresinsertion',
     'propoorientsocialecov58' => 'proposorientssocialescovs58',

@@ -678,6 +678,9 @@ msgstr "Insérer date"
 msgid "Emailcui.commentaire"
 msgstr "Insérer commentaire"
 
+msgid "Emailcui.piecesmanquantes"
+msgstr "Pièces manquantes"
+
 msgid "Emailcui.chargermodel"
 msgstr "Charger un modèle"
 

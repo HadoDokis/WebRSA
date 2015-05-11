@@ -109,12 +109,24 @@
 						'emailemployeur' => $record['Adressecui']['email'],
 					),
 				);
+				
+				$query = array(
+					'fields' => array( 'Decisioncui66.id' ),
+					'conditions' => array( 'cui66_id' => $record['Cui66']['id'] ),
+					'order' => array( 'Decisioncui66.datedecision DESC')
+				);
+				$record = $this->Cui->Cui66->Decisioncui66->find( 'first', $query );
+				
+				if ( !empty($record) ){
+					$result['Emailcui']['decisioncui66_id'] = $record['Decisioncui66']['id'];
+				}
 			}
 			// Mise à jour
 			else {
 				$query = $this->queryView($email_id);
 				$result = $this->find( 'first', $query );
 				$result['Emailcui']['pj'] = explode( '_', $result['Emailcui']['pj'] );
+				$result['Emailcui']['piecesmanquantes'] = explode( '_', $result['Emailcui']['piecesmanquantes'] );
 			}
 			
 			return $result;
@@ -138,6 +150,7 @@
 		public function saveAddEdit( array $data, $user_id = null ) {
 			$data['Emailcui']['user_id'] = $user_id;
 			$data['Emailcui']['pj'] = implode( '_', $data['Emailcui']['pj'] );
+			$data['Emailcui']['piecesmanquantes'] = implode( '_', $data['Emailcui']['piecesmanquantes'] );
 			
 			$this->create($data);
 			$success = $this->save($data);
@@ -173,8 +186,11 @@
 				$options['Piecemailcui66'][$file['Piecemailcui66']['id']] = $file['Piecemailcui66']['name'];
 			}
 			
+			// Pièces manquante
+			$options['Piecemanquantecui66'] = ClassRegistry::init( 'Piecemanquantecui66' )->find( 'list', array( 'order' => 'name' ) );
+			
 			// Modeles d'e-mail parametrable
-			$options['Emailcui']['textmailcui66_id'] = ClassRegistry::init( 'Textmailcui66' )->find( 'list' );
+			$options['Emailcui']['textmailcui66_id'] = ClassRegistry::init( 'Textmailcui66' )->find( 'list', array( 'order' => 'name' ) );
 
 			$options = Hash::merge(
 				$options,

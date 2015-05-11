@@ -25,7 +25,7 @@
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaAllocatairesliesComponent extends Component
+	abstract class WebrsaAllocatairesliesComponent extends Component
 	{
 		/**
 		 * Paramètres de ce component
@@ -108,6 +108,10 @@
 			$Controller->view = $params['view'];
 			$Controller->layout = $params['layout'];
 		}
+		
+		abstract public function prepareAddEditFormData( $personne_id, $id, $user_id );
+
+		abstract public function saveAddEditFormData( $data, $user_id );
 
 		// Template method
 		public function addEdit( $id = null, $params = array() ) {
@@ -142,8 +146,7 @@
 
 			if( !empty( $Controller->request->data ) ) {
 				$Model->begin();
-				// TODO: Component::saveAddEditFormData()
-				if( $Model->saveAddEdit( $Controller->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
+				if( $Model->saveAddEditFormData( $Controller->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
 					$Model->commit();
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -155,8 +158,7 @@
 				}
 			}
 			else {
-				// TODO: Component::prepareAddEditFormData()
-				$Controller->request->data = $Model->prepareFormDataAddEdit( $personne_id, $id, $this->Session->read( 'Auth.User.id' ) );
+				$Controller->request->data = $Model->prepareAddEditFormData( $personne_id, $id, $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$options = $Model->options( array( 'allocataire' => true, 'find' => true, 'autre' => true ) );

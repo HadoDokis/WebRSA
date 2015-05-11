@@ -23,10 +23,12 @@
 				'Emailcui.partenairecui_id' => array( 'type' => 'hidden' ),
 				'Emailcui.partenairecui66_id' => array( 'type' => 'hidden' ),
 				'Emailcui.adressecui_id' => array( 'type' => 'hidden' ),
+				'Emailcui.decisioncui66_id' => array( 'type' => 'hidden' ),
 				'Emailcui.emailredacteur',
 				'Emailcui.emailemployeur',
 				'Emailcui.insertiondate' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 				'Emailcui.commentaire',
+				'Emailcui.piecesmanquantes' => array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Piecemanquantecui66'] ),
 			) ,
 			array( 'options' => $options )
 		)
@@ -60,6 +62,15 @@
 	 */
 	$('LoadEmailModel').onclick = function(){
 		var insertDate = $F('EmailcuiInsertiondateYear') + '-' + $F('EmailcuiInsertiondateMonth') + '-' + $F('EmailcuiInsertiondateDay');
+		
+		var piecesmanquantes = [];
+		$$('input[type="checkbox"][name="data[Emailcui][piecesmanquantes][]"]').each(function( input ){
+			if ( input.checked ){
+				piecesmanquantes.push( input.value );
+			}
+		});
+		piecesmanquantes = piecesmanquantes.join('_');
+		
 		new Ajax.Request('<?php echo Router::url( array( 'controller' => 'cuis66', 'action' => 'ajax_generate_email' ) ); ?>/', {
 			asynchronous:true, 
 			evalScripts:true, 
@@ -67,9 +78,15 @@
 				'Emailcui.id': $F('EmailcuiId'),
 				'Cui.id': $F('EmailcuiCuiId'),
 				'Cui66.id': $F('EmailcuiCui66Id'),
+				'Personne.id': $F('EmailcuiPersonneId'),
+				'Partenairecui.id': $F('EmailcuiPartenairecuiId'),
+				'Partenairecui66.id': $F('EmailcuiPartenairecui66Id'),
+				'Adressecui.id': $F('EmailcuiAdressecuiId'),
+				'Decisioncui66.id': $F('EmailcuiDecisioncui66Id'),
 				'Emailcui.textmailcui66_id': $F('EmailcuiTextmailcui66Id'),
 				'Emailcui.insertiondate': insertDate,
-				'Emailcui.commentaire': $F('EmailcuiCommentaire')
+				'Emailcui.commentaire': $F('EmailcuiCommentaire'),
+				'Emailcui.piecesmanquantes': piecesmanquantes
 			}, 
 			requestHeaders: {Accept: 'application/json'},
 			onComplete:function(request, json) {
