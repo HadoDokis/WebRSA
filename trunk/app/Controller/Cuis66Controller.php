@@ -229,8 +229,8 @@
 				$this->Cui->Cui66->begin();
 				if( $this->Cui->Cui66->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) { // FIXME!
 					$this->Cui->Cui66->commit();
-					
-					$this->Cui->Cui66->updatePositionsCuisById( $this->Cui->Cui66->id );
+					$cui_id = $this->request->data['Cui']['id'];
+					$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
 					// TODO Sauvegarder les informations de Partenairecui dans les parametrages (Voir confirmation)
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -374,6 +374,7 @@
 		public function annule( $cui66_id ){
 			$query = array(
 				'fields' => array(
+					'Cui.id',
 					'Cui.personne_id'
 				),
 				'conditions' => array(
@@ -385,6 +386,7 @@
 			);
 			$result = $this->Cui->find('first');
 			
+			$cui_id = $result['Cui']['id'];
 			$personne_id = $result['Cui']['personne_id'];
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -400,7 +402,7 @@
 				$this->Cui->Cui66->begin();
 				if( $this->Cui->Cui66->annule( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
 					$this->Cui->Cui66->commit();
-					$this->Cui->Cui66->updatePositionsCuisById( $this->Cui->Cui66->id );
+					$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Le CUI à été annulé.', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );

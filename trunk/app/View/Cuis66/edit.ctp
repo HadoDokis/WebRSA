@@ -495,7 +495,7 @@
 	 * @returns {void}
 	 */
 	$('PartenaireCharger').onclick = function(){
-		new Ajax.Request('/partenaires/ajax_coordonnees/'+$F('CuiPartenaireId'), {
+		new Ajax.Request('<?php echo Router::url( array( 'controller' => 'partenaires', 'action' => 'ajax_coordonnees' ) ); ?>/'+$F('CuiPartenaireId'), {
 			asynchronous:true, 
 			evalScripts:true, 
 			onComplete:function(request, json) {
