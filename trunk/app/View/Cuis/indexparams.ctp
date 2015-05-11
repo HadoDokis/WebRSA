@@ -50,6 +50,19 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
+
+                echo $this->Xhtml->tableCells(
+                    array(
+                        __d( 'piecemanquantecui66', 'Pièces manquantes mails employeur' ),
+                        $this->Xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'piecesmanquantescuis66', 'action' => 'index' ),
+                            $this->Permissions->check( 'piecesmanquantescuis66', 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
 				
 				echo $this->Xhtml->tableCells(
 					array(

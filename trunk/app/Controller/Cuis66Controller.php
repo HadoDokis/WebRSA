@@ -556,6 +556,7 @@
 			$query = $this->Cui->Emailcui->queryView( $email_id );
 			$result = $this->Cui->Emailcui->find( 'first', $query );
 			$result['Emailcui']['pj'] = explode( '_', $result['Emailcui']['pj'] );
+			$result['Emailcui']['piecesmanquantes'] = explode( '_', $result['Emailcui']['piecesmanquantes'] );
 			$this->request->data = $result;
 			
 			// Options
@@ -576,7 +577,7 @@
 			
 			$filesNames = array();
 			foreach( $filesIds as $fileId ){
-				$filesNames = array_merge( $filesNames, ClassRegistry::init( 'Piecemailcui66' )->getFichiersLiesById( $fileId ) );
+				$filesNames = array_merge( $filesNames, $Piecemailcui66->getFichiersLiesById( $fileId ) );
 			}
 			
 			$Email = new CakeEmail( $this->configEmail );
@@ -625,16 +626,25 @@
 				)
 			);
 			$modelEmail = ClassRegistry::init( 'Textmailcui66' )->find( 'first', $query );
-					
+			
+			$options = $this->Cui->Emailcui->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
+			debug($options);
 			$text = $modelEmail['Textmailcui66']['contenu'];
 			preg_match_all('/#([A-Z][a-z_0-9]+)\.([a-z_0-9]+)#/', $text, $matches);
 			
 			$erreurs = array();
 			foreach( $this->request->data as $input => $data ){
 				if ( $input === 'Emailcui_insertiondate' ){
-					$input = str_replace( '.id', '_id', str_replace( '_', '.', $input ) );
 					$formatedDate = strftime("%A %d %B %Y", strtotime($data));
-					$text = str_replace( '#' . $input . '#', $formatedDate, $text );
+					$text = str_replace( '#Emailcui.insersiondate#', $formatedDate, $text );
+				}
+				elseif ( $input === 'Emailcui_piecesmanquantes' ){
+					$piecesmanquantes = explode( '_', $data);
+					
+					foreach ($piecesmanquantes as $num_piece => $id_piece){
+						$piecesmanquantes[$num_piece] = $options['Piecemanquantecui66'][$id_piece];
+					}
+					$text = str_replace( '#Emailcui.piecesmanquantes#', implode("\n", $piecesmanquantes), $text );
 				}
 				elseif ( preg_match( '/^Emailcui_[\w]+$/', $input ) ){
 					$input = str_replace( '.id', '_id', str_replace( '_', '.', $input ) );
@@ -656,8 +666,7 @@
 
 					$fieldValue = $$modelName->field( $fieldName );
 					
-					
-					$isDate = preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $fieldValue);
+					$isDate = preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $fieldValue);
 					
 					if ( $isDate ){
 						$tradFieldValue = strftime("%A %d %B %Y", strtotime($fieldValue));

@@ -850,7 +850,8 @@ CREATE TABLE emailscuis
 	emailredacteur				VARCHAR(50),
 	emailemployeur				VARCHAR(50) NOT NULL,
 	titre						VARCHAR(50) NOT NULL,
-	pj							VARCHAR(50),
+	pj							VARCHAR(255),
+	piecesmanquantes			VARCHAR(255),
 	message						TEXT NOT NULL,
 	insertiondate				DATE,
 	commentaire					TEXT,
@@ -875,6 +876,36 @@ CREATE TABLE historiquepositionscuis66
 	created						TIMESTAMP WITHOUT TIME ZONE -- Créé le...
 );
 CREATE INDEX historiquepositionscuis66_cui66_id_idx ON historiquepositionscuis66(cui66_id);
+
+--------------------------------------------------------------------------------
+-- Historique des changements de positions du Cui (CG 66)
+--------------------------------------------------------------------------------
+
+-- DROP TABLE piecesmanquantescuis66;
+CREATE TABLE piecesmanquantescuis66
+(
+  id serial NOT NULL,
+  name character varying(250) NOT NULL,
+  created timestamp without time zone,
+  modified timestamp without time zone,
+  CONSTRAINT piecesmanquantescuis66_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE piecesmanquantescuis66
+  OWNER TO webrsa;
+COMMENT ON TABLE piecesmanquantescuis66
+  IS 'Liste des pièces manquantes pour les CUIs (CG66)';
+
+-- Index: piecesmanquantescuis66_name_idx
+
+-- DROP INDEX piecesmanquantescuis66_name_idx;
+
+CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx
+  ON piecesmanquantescuis66
+  USING btree
+  (name COLLATE pg_catalog."default");
 
 -- *****************************************************************************
 COMMIT;
