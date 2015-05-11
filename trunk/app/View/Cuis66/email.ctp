@@ -48,7 +48,7 @@
 				'class' => 'impression',
 				'disabled' => !$this->Permissions->checkDossier( 'Cuis66', 'email_impression', $dossierMenu )
 			),
-			'/Cuis66/email_delete/#Emailcui.personne_id#/#Emailcui.id#' => array(
+			'/Cuis66/email_delete/#Emailcui.id#' => array(
 				'title' => __d('cuis66', '/Cuis66/email_delete'),
 				'class' => 'delete',
 				'disabled' => '( "#Emailcui.dateenvoi#" ) || ' . $email_delete
