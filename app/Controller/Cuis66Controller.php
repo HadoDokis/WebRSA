@@ -435,6 +435,19 @@
 			$this->redirect($this->referer());
 		}
 		
+		public function email_delete( $id ){			
+			$this->Cui->Emailcui->begin();
+			$success = $this->Cui->Emailcui->delete($id);
+			$this->_setFlashResult('Delete', $success);
+
+			if ($success) {
+				$this->Cui->Emailcui->commit();
+			} else {
+				$this->Cui->Emailcui->rollback();
+			}
+			$this->redirect($this->referer());
+		}
+		
 		public function notification( $cui66_id ){
 			$this->Cui->Cui66->id = $cui66_id;
 			$this->Cui->Cui66->saveField( 'notifie', 1 );
