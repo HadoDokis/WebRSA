@@ -902,10 +902,7 @@ COMMENT ON TABLE piecesmanquantescuis66
 
 -- DROP INDEX piecesmanquantescuis66_name_idx;
 
-CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx
-  ON piecesmanquantescuis66
-  USING btree
-  (name COLLATE pg_catalog."default");
+CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx ON piecesmanquantescuis66(name);
 
 -- *****************************************************************************
 COMMIT;
