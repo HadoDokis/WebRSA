@@ -776,9 +776,9 @@
 				$libderact66 = $dsp['Dsp']['libsecactderact66_secteur_id'].'_'.$dsp['Dsp']['libderact66_metier_id'];
 				$libactdomi66 = $dsp['Dsp']['libsecactdomi66_secteur_id'].'_'.$dsp['Dsp']['libactdomi66_metier_id'];
 				$libemploirech66 = $dsp['Dsp']['libsecactrech66_secteur_id'].'_'.$dsp['Dsp']['libemploirech66_metier_id'];
-				$dsp['Dsp']['libderact66_metier_id'] = $libderact66 === '_' ? '' : $libderact66;
-				$dsp['Dsp']['libactdomi66_metier_id'] = $libactdomi66 === '_' ? '' : $libactdomi66;
-				$dsp['Dsp']['libemploirech66_metier_id'] = $libemploirech66 === '_' ? '' : $libemploirech66;
+				$dsp['Dsp']['libderact66_metier_id'] = preg_match('/_$/', $libderact66) ? '' : $libderact66;
+				$dsp['Dsp']['libactdomi66_metier_id'] = preg_match('/_$/', $libactdomi66) ? '' : $libactdomi66;
+				$dsp['Dsp']['libemploirech66_metier_id'] = preg_match('/_$/', $libemploirech66) ? '' : $libemploirech66;
 
 				// Début ROME V3
 				foreach( array( 'Deractromev3', 'Deractdomiromev3', 'Actrechromev3' ) as $alias ) {
