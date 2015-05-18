@@ -48,6 +48,13 @@
 				'fields' => null,
 				'order' => null
 			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => null,
+				'fields' => null,
+				'order' => null
+			),
 			'Photographe' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',
@@ -734,29 +741,15 @@
 				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
-			/*// Soumis à droits et devoirs / au moins soumis une fois durant l'année
-			$conditiondd = 'Situationallocataire.toppersdrodevorsa = \'1\'';
-			$dd_annee = Hash::get( $search, 'Search.soumis_dd_dans_annee' );
-			if( $dd_annee ) {
-				$sq = $Questionnaired1pdv93->Personne->Historiquedroit->sq(
-					array(
-						'alias' => 'historiquesdroits',
-						'fields' => array( 'historiquesdroits.personne_id' ),
-						'contain' => false,
-						'conditions' => array(
-							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
-							'historiquesdroits.toppersdrodevorsa' => 1,
-							"( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( DATE '{$annee}-01-01', DATE '{$annee}-12-31' )"
-						)
-					)
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv = array(
+					$conditionpdv,
+					"Rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
 				);
-				$conditiondd = array(
-					'OR' => array(
-						$conditiondd,
-						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
-					)
-				);
-			}*/
+				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+			}
 
 			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
 
@@ -794,7 +787,8 @@
 					$this->Populationd1d2pdv93->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->fields(),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->fields(),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->fields(),
-					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Structurereferente->fields()
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Structurereferente->fields(),
+					array( $this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Referent->sqVirtualField( 'nom_complet' ) )
 				),
 				'conditions' => array(
 					'Tableausuivipdv93.id' => $id,
@@ -808,6 +802,7 @@
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Situationallocataire', array( 'INNER' ) ),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'INNER' ) ),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Referent', array( 'INNER' ) ),
 				),
 				'order' => array(
 					'Rendezvous.daterdv ASC',
@@ -834,7 +829,8 @@
 					$this->Populationd1d2pdv93->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->fields(),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->fields(),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->fields(),
-					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Structurereferente->fields()
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Structurereferente->fields(),
+					array( $this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Referent->sqVirtualField( 'nom_complet' ) )
 				),
 				'conditions' => array(
 					'Tableausuivipdv93.id' => $id,
@@ -848,6 +844,7 @@
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Situationallocataire', array( 'INNER' ) ),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'INNER' ) ),
 					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Referent', array( 'INNER' ) ),
 				),
 				'order' => array(
 					'Rendezvous.daterdv ASC',
@@ -898,18 +895,6 @@
 		 */
 		public function tableaud1( array $search ) {
 			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
-
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
-			}
-
-			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
 
 			$results = array();
 			$categories = array_keys( $this->tableaud1Categories() );
@@ -1104,6 +1089,16 @@
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
 				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv = array(
+					$conditionpdv,
+					"Rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+				);
+				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
 			}
 
 			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
@@ -1338,6 +1333,16 @@
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
 				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv = array(
+					$conditionpdv,
+					"referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+				);
+				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
 			}
 
 			// Filtre sur les DSP mises à jour dans l'année
@@ -1668,6 +1673,16 @@
 				$conditionpdv = "Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv = array(
+					$conditionpdv,
+					"Referent.id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+				);
+				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+			}
+
 			// Filtre sur le type d'action
 			$conditiontype = null;
 			$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
@@ -1711,7 +1726,7 @@
 			}
 
 			// Ajout des libellés des catégories et des thématiques
-			$Dbo = $Ficheprescription93->getDataSource();
+			$Dbo = $this->getDataSource();
 			$categories = $this->_tableau1b41b5Categories( 'tableau1b4', $search );
 
 			$conditionsTotal = array( 'OR' => array() );
@@ -1820,7 +1835,7 @@
 			}
 
 			// Pour chacune des catégories du tableau 1B4 et 1B5, on vérifie que les conditions correspondent à du paramétrage
-			$Dbo = ClassRegistry::init( 'Thematiquefp93' )->getDataSource();
+			$Dbo = $this->getDataSource();
 
 			foreach( array( 'tableau1b4', 'tableau1b5' ) as $tableau ) {
 				$expected = (array)Configure::read( "Tableausuivi93.{$tableau}.categories" );
@@ -1859,6 +1874,16 @@
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
 				$conditionpdv = "Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv = array(
+					$conditionpdv,
+					"Referent.id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+				);
+				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
 			}
 
 			// Filtre sur le type d'action
@@ -1967,7 +1992,7 @@
 				$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
 
 				$Thematiquefp93 = ClassRegistry::init( 'Thematiquefp93' );
-				$Dbo = $Thematiquefp93->getDataSource();
+				$Dbo = $this->getDataSource();
 
 				$base = array(
 					'fields' => array(
@@ -2035,7 +2060,7 @@
 			$base = $this->_tableau1b5Base( $search );
 
 			// Ajout des libellés des catégories et des thématiques
-			$Dbo = $Ficheprescription93->getDataSource();
+			$Dbo = $this->getDataSource();
 			$categories = $this->_tableau1b41b5Categories( 'tableau1b5', $search );
 
 			$vFields = array(
@@ -2186,6 +2211,16 @@
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
 				$conditionpdv = "AND rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv = array(
+					$conditionpdv,
+					"rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+				);
+				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
 			}
 
 			// S'assure-ton qu'il existe au moins un RDV individuel ?
@@ -2344,6 +2379,7 @@
 					'name' => $action,
 					'annee' => Hash::get( $search, 'Search.annee' ),
 					'structurereferente_id' => Hash::get( $search, 'Search.structurereferente_id' ),
+					'referent_id' => suffix( Hash::get( $search, 'Search.referent_id' ) ),
 					'version' => app_version(),
 					'search' => serialize( $search ),
 					'results' => serialize( $results ),
@@ -2373,7 +2409,7 @@
 			$success = $this->save() && $success;
 
 			// TODO: mise à jour des modified ?
-			if( empty( $found ) && in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
+			if( $success && empty( $found ) && in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
 				$dn = ( $action == 'tableaud1' ? 'd1' : 'd2' );
 				$Modelquestionnaire = ClassRegistry::init( "Questionnaire{$dn}pdv93" );
 
@@ -2389,7 +2425,7 @@
 				unset( $querydata['group'] );
 				$sq = $Modelquestionnaire->sq( $querydata );
 
-				$Dbo = $this->Populationd1d2pdv93->getDataSource();
+				$Dbo = $this->getDataSource();
 				$table = $Dbo->fullTableName( $this->Populationd1d2pdv93 );
 				$sql = "INSERT INTO {$table} ( questionnaire{$dn}pdv93_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
 				$success = ( $this->Populationd1d2pdv93->query( $sql ) !== false ) && $success;
@@ -2418,6 +2454,43 @@
 					'order' => array( 'Pdv.lib_struc' )
 				)
 			);
+		}
+
+		/**
+		 * Retourne la liste des référents des PDV pour lesquels les tableaux de
+		 * PDV doivent être calculés.
+		 *
+		 * @see Tableausuivipdv93.conditionsPdv dans le webrsa.inc
+		 *
+		 * @param integer $structurereferente_id L'id du PDV pour filtrage éventuel
+		 * @return array
+		 */
+		public function listeReferentsPdvs( $structurereferente_id = null ) {
+			$query = array(
+				'fields' => array(
+					'( "Structurereferente"."id" || \'_\' || "Referent"."id" ) AS "Referent__id"',
+					'Referent.nom_complet'
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Pdv->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+					$this->Pdv->Referent->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array_words_replace(
+					(array)Configure::read( 'Tableausuivipdv93.conditionsPdv' ),
+					array( 'Pdv' => 'Structurereferente' )
+				),
+				'order' => array( 'Referent.nom_complet_court' )
+			);
+
+			if( !empty( $structurereferente_id ) ) {
+				$query['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
+			}
+
+			$results = $this->Pdv->Referent->find( 'all', $query );
+			$results = Hash::combine( $results, '{n}.Referent.id', '{n}.Referent.nom_complet' );
+
+			return $results;
 		}
 
 		/**

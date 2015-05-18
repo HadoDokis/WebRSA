@@ -59,6 +59,7 @@
 		 */
 		public function main() {
 			$pdvs = $this->Tableausuivipdv93->listePdvs();
+			$referents = $this->Tableausuivipdv93->listeReferentsPdvs();
 			$search = array( 'Search' => array( 'annee' => date( 'Y' ), 'rdv_structurereferente' => false ) );
 			$success = true;
 			$tableaux = array_keys( $this->Tableausuivipdv93->tableaux );
@@ -71,10 +72,20 @@
 				$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
 			}
 
-			// Sauvegarde par PDV - FIXME: que certaines structures référentes ?
+			// Sauvegarde par PDV
 			foreach( $pdvs as $pdv_id => $label ) {
 				$search['Search']['structurereferente_id'] = $pdv_id;
 				$this->out( "Enregistrement des tableaux de suivi du PDV {$label} pour l'année {$search['Search']['annee']}" );
+				foreach( $tableaux as $tableau ) {
+					$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
+				}
+			}
+
+			// Sauvegarde par référent de PDV
+			foreach( $referents as $referent_id => $label ) {
+				$search['Search']['structurereferente_id'] = prefix( $referent_id );
+				$search['Search']['referent_id'] = suffix( $referent_id );
+				$this->out( "Enregistrement des tableaux de suivi du référent {$label} pour l'année {$search['Search']['annee']}" );
 				foreach( $tableaux as $tableau ) {
 					$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
 				}

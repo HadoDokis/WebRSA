@@ -23,6 +23,9 @@ msgstr "Année d'opération"
 msgid "Search.structurereferente_id"
 msgstr "Projet de ville"
 
+msgid "Search.referent_id"
+msgstr "Référent"
+
 msgid "Search.dsps_maj_dans_annee"
 msgstr "Dont les DSP ont été mises à jour dans l'année"
 
@@ -214,6 +217,9 @@ msgstr "Année"
 
 msgid "Pdv.lib_struc"
 msgstr "PDV"
+
+msgid "Referent.nom_complet"
+msgstr "Référent"
 
 msgid "Tableausuivipdv93.name"
 msgstr "Tableau"

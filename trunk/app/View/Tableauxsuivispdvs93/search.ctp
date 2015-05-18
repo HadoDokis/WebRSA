@@ -1,4 +1,9 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+
 	if( $this->action == 'view' ) {
 		$name = $tableausuivipdv93['Tableausuivipdv93']['name'];
 		$tableausuivipdv93['Tableausuivipdv93']['name'] = strtoupper( preg_replace( '/^tableau/', '', $tableausuivipdv93['Tableausuivipdv93']['name'] ) );
@@ -75,6 +80,7 @@
 		array(
 			'Search.annee' => array( 'empty' => ( $tableau == 'index' ? true : false ) ),
 			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
+			'Search.referent_id' => array( 'empty' => true, 'type' => 'select' ), // FIXME: si on fixe le référent ?
 			'Search.user_id' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
 			'Search.tableau' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
 			'Search.typethematiquefp93_id' => $params_typethematiquefp93_id,
@@ -85,6 +91,13 @@
 		array(
 			'options' => $options,
 			'buttons' => ( in_array( $this->action, array( 'view', 'historiser' ) ) ? false : array( 'Search' ) )
+		)
+	);
+
+	// FIXME: si on fixe le CG!
+	echo $this->Observer->dependantSelect(
+		array(
+			'Search.structurereferente_id' => 'Search.referent_id'
 		)
 	);
 ?>

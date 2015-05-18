@@ -9,6 +9,7 @@
 			array(
 				'Tableausuivipdv93.annee' => array( 'type' => 'text', 'class' => 'integer number' ),
 				'Pdv.lib_struc',
+				'Referent.nom_complet',
 				'Tableausuivipdv93.name',
 				'Tableausuivipdv93.version',
 				'Photographe.nom_complet',

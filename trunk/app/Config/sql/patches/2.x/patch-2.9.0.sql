@@ -904,6 +904,16 @@ COMMENT ON TABLE piecesmanquantescuis66
 
 CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx ON piecesmanquantescuis66(name);
 
+--------------------------------------------------------------------------------
+-- Ticket #6054: ajout du référent aux tableaux de suivi
+--------------------------------------------------------------------------------
+
+SELECT add_missing_table_field( 'public', 'tableauxsuivispdvs93', 'referent_id', 'INTEGER');
+ALTER TABLE tableauxsuivispdvs93 ALTER COLUMN referent_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_referent_id_fkey', 'referents', 'referent_id', true );
+DROP INDEX IF EXISTS tableauxsuivispdvs93_referent_id_idx;
+CREATE INDEX tableauxsuivispdvs93_referent_id_idx ON tableauxsuivispdvs93(referent_id);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
