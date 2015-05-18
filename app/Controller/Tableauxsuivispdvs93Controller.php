@@ -476,6 +476,14 @@
 			}
 
 			$this->request->data = $this->_applyStructurereferente( unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] ) );
+
+			// On préfixe l'id du référent avec l'id de sa structure si ce n'est pas déjà fait
+			$referent_id = Hash::get( $this->request->data, 'Search.referent_id' );
+			if( !empty( $referent_id ) && strpos( $referent_id, '_' ) === false ) {
+				$structurereferente_id = Hash::get( $this->request->data, 'Search.structurereferente_id' );
+				$this->request->data = Hash::insert( $this->request->data, 'Search.referent_id', "{$structurereferente_id}_{$referent_id}" );
+			}
+
 			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
 			$this->set( compact( 'results', 'tableausuivipdv93', 'id' ) );
 
