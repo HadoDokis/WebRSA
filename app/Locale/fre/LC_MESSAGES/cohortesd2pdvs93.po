@@ -92,6 +92,9 @@ msgstr "Date premier RDV"
 msgid "Structurereferente.lib_struc"
 msgstr "PDV"
 
+msgid "Referent.nom_complet"
+msgstr "Référent"
+
 msgid "Questionnaired2pdv93.created"
 msgstr "Date sortie"
 

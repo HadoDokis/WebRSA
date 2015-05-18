@@ -8,6 +8,7 @@
 			__d( 'cohortesd2pdvs93', 'Rendezvous.daterdv' ),
 			__d( 'cohortesd2pdvs93', 'Questionnaired2pdv93.date_validation' ),
 			__d( 'cohortesd2pdvs93', 'Structurereferente.lib_struc' ),
+			__d( 'cohortesd2pdvs93', 'Referent.nom_complet' ),
 			// Allocataire
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.nom' ),
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.prenom' ),
@@ -45,6 +46,7 @@
 				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Rendezvous.daterdv' ) ),
 				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Questionnaired2pdv93.date_validation' ) ),
 				Hash::get( $result, 'Structurereferente.lib_struc' ),
+				Hash::get( $result, 'Referent.nom_complet' ),
 				// Allocataire
 				Hash::get( $result, 'Situationallocataire.nom' ),
 				Hash::get( $result, 'Situationallocataire.prenom' ),

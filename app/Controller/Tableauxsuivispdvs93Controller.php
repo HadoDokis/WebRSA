@@ -48,6 +48,7 @@
 		 * @var array
 		 */
 		public $components = array(
+			'InsertionsAllocataires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'index',
@@ -117,6 +118,7 @@
 			// TODO: dans le beforeFilter ?
 			$years = array_reverse( range( 2009, date( 'Y' ) ) );
 			$structurereferente_id = $this->Tableausuivipdv93->listePdvs();
+
 			if( $this->action == 'index' ) {
 				$structurereferente_id = Hash::merge( array( 'NULL' => 'Conseil général' ), $structurereferente_id );
 			}
@@ -125,6 +127,7 @@
 				'Search' => array(
 					'annee' => array_combine( $years, $years ),
 					'structurereferente_id' => $structurereferente_id,
+					'referent_id' => $this->Tableausuivipdv93->listeReferentsPdvs( $user_structurereferente_id ),
 					'user_id' => $this->Tableausuivipdv93->listePhotographes(),
 					'tableau' => $this->Tableausuivipdv93->tableaux,
 					'typethematiquefp93_id' => ClassRegistry::init( 'Thematiquefp93' )->enum( 'type' )
@@ -219,7 +222,12 @@
 						'Tableausuivipdv93.name' => $action,
 					),
 					'contain' => array(
-						'Pdv'
+						'Pdv',
+						'Referent' => array(
+							'fields' => array(
+								$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' )
+							)
+						)
 					),
 				)
 			);
@@ -263,13 +271,22 @@
 			$lieu = preg_replace( '/[^a-z0-9\-_]+/i', '_', $lieu );
 			$lieu = trim( $lieu, '_' );
 
-			return sprintf(
-				"%s-%s-%s-%d-%s",
-				$type,
-				$tableausuivipdv93['Tableausuivipdv93']['name'],
-				$lieu,
-				$tableausuivipdv93['Tableausuivipdv93']['annee'],
-				date( 'Ymd-His' )
+			$referent = Hash::get( $tableausuivipdv93, 'Referent.nom_complet' );
+			$referent = preg_replace( '/[^a-z0-9\-_]+/i', '_', $referent );
+			$referent = trim( $referent, '_' );
+
+			return implode(
+				'-',
+				Hash::filter(
+					array(
+						$type,
+						$tableausuivipdv93['Tableausuivipdv93']['name'],
+						$lieu,
+						$referent,
+						$tableausuivipdv93['Tableausuivipdv93']['annee'],
+						date( 'Ymd-His' )
+					)
+				)
 			).'.csv';
 		}
 
@@ -293,7 +310,12 @@
 						'Tableausuivipdv93.name' => $action,
 					),
 					'contain' => array(
-						'Pdv'
+						'Pdv',
+						'Referent' => array(
+							'fields' => array(
+								$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' )
+							)
+						)
 					),
 				)
 			);
@@ -358,6 +380,8 @@
 						'Tableausuivipdv93.id',
 						'Tableausuivipdv93.annee',
 						'Pdv.lib_struc',
+						//'Referent.nom_complet',
+						$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' ),
 						'Tableausuivipdv93.name',
 						'Tableausuivipdv93.version',
 						"( CASE WHEN \"Photographe\".\"id\" IS NOT NULL THEN {$vfNomcomplet} ELSE 'Photographie automatique' END ) AS \"Photographe__nom_complet\"",
@@ -366,11 +390,13 @@
 					),
 					'contain' => array(
 						'Pdv',
+						'Referent',
 						'Photographe'
 					),
 					'order' => array(
 						'Tableausuivipdv93.annee DESC',
 						'Pdv.lib_struc ASC',
+						'Referent.nom_complet ASC',
 						'Tableausuivipdv93.name ASC',
 						'Tableausuivipdv93.modified DESC'
 					),
@@ -399,6 +425,14 @@
 					}
 					else {
 						$querydata['conditions']['Tableausuivipdv93.user_id'] = $search['Search']['user_id'];
+					}
+				}
+				if( !empty( $search['Search']['referent_id'] ) ) {
+					if( $search['Search']['referent_id'] == 'NULL' ) {
+						$querydata['conditions'][] = 'Tableausuivipdv93.referent_id IS NULL';
+					}
+					else {
+						$querydata['conditions']['Tableausuivipdv93.referent_id'] = suffix( $search['Search']['referent_id'] );
 					}
 				}
 				if( !empty( $search['Search']['tableau'] ) ) {

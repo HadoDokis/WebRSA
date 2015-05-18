@@ -339,6 +339,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Tableausuivipdv93' => array(
+				'className' => 'Tableausuivipdv93',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(
