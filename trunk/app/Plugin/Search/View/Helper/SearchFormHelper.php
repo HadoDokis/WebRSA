@@ -121,7 +121,9 @@
 
 		/**
 		 * Méthode générique permettant de filtrer sur une plage de dates.
-		 *
+		 * 
+		 * params['addYear'] Ajoute X années au "maxYear" du "TO"
+		 * 
 		 * @todo Options: dateFormat, maxYear, minYear, ...
 		 *
 		 * @param string $path
@@ -133,7 +135,11 @@
 				'domain' => 'search_plugin',
 				'options' => array(),
 				'legend' => null,
-				'hide' => false
+				'hide' => false,
+				'minYear_from' => date( 'Y' ) - 120,
+				'minYear_to' => date( 'Y' ) - 120,
+				'maxYear_from' => date( 'Y' ),
+				'maxYear_to' => date( 'Y' ) + 5,
 			);
 			$params = $params + $default;
 
@@ -152,8 +158,25 @@
 			$input .= $this->Html->tag(
 				'fieldset',
 				$this->Html->tag( 'legend', $legend )
-				.$this->Form->input( $path.'_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'default' => strtotime( '-1 week' ) ) )
-				.$this->Form->input( $path.'_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) ),
+				.$this->Form->input( $path.'_from', 
+					array( 
+						'label' => 'Du (inclus)', 
+						'type' => 'date', 
+						'dateFormat' => 'DMY', 
+						'maxYear' => $params['maxYear_from'], 
+						'minYear' => $params['minYear_from'], 
+						'default' => strtotime( '-1 week' ) 
+					) 
+				)
+				.$this->Form->input( $path.'_to', 
+					array( 
+						'label' => 'Au (inclus)', 
+						'type' => 'date', 
+						'dateFormat' => 'DMY', 
+						'maxYear' => $params['maxYear_to'], 
+						'minYear' => $params['minYear_to']
+					)
+				),
 				array( 'id' => $fieldsetId )
 			);
 

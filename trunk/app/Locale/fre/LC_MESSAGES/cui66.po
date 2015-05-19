@@ -133,3 +133,15 @@ msgstr "Traité (Dossier non éligible)"
 
 msgid "ENUM::ETATDOSSIERCUI66::annule"
 msgstr "Annulé"
+
+msgid "ENUM::ETATDOSSIERCUI66::dossiernonrecu"
+msgstr "En attente de relance (Dossier non complet)"
+
+msgid "ENUM::ETATDOSSIERCUI66::dossierrelance"
+msgstr "Relance le %s (Dossier non complet)"
+
+msgid "ENUM::NOTIFIE::0"
+msgstr "&nbsp;"
+
+msgid "ENUM::NOTIFIE::1"
+msgstr "Oui"

@@ -38,17 +38,17 @@
 	// Ajout des dates sur certaines positions du CUI
 	foreach( $results as $key => $value ){
 		$etat = $value['Cui66']['etatdossiercui66'];
-		if ( in_array( $etat, array( 'contratsuspendu', 'rupturecontrat' ) ) ){
-			$insert = $etat === 'contratsuspendu' ? new DateTime($value['Suspensioncui66']['datefin']) : 
-				( $etat === 'rupturecontrat' ? new DateTime($value['Rupturecui66']['daterupture']) : null )
-			;
+		$insert = '';
+		if ( in_array( $etat, array( 'contratsuspendu', 'rupturecontrat', 'dossierrelance' ) ) ){
+			switch ( $etat ){
+				case 'contratsuspendu': $insert = new DateTime($value['Suspensioncui66']['datefin']); break;
+				case 'rupturecontrat': $insert = new DateTime($value['Rupturecui66']['daterupture']); break;
+				case 'dossierrelance': $insert = new DateTime($value['Emailcui']['dateenvoi']); break;
+				default: $insert = '';
+			}
 			$insert = date_format($insert, 'd/m/Y');
-			
-			$results[$key]['Cui66']['positioncui66'] = sprintf( __d('cui66', 'ENUM::ETATDOSSIERCUI66::' . $etat  ), $insert );
 		}
-		else{
-			$results[$key]['Cui66']['positioncui66'] = __d('cui66', 'ENUM::ETATDOSSIERCUI66::' . $etat  );
-		}
+		$results[$key]['Cui66']['positioncui66'] = sprintf( __d('cui66', 'ENUM::ETATDOSSIERCUI66::' . $etat  ), $insert );
 	}
 	
 	echo $this->Default3->index(
@@ -56,12 +56,15 @@
 		array(
 			'Cui.faitle',
 			'Cui66.positioncui66',
+			'Historiquepositioncui66.created',
+			'Cui66.positioncui66',
 			'Cui.secteurmarchand' => array( 'type' => 'select' ),
 			'Partenairecui.raisonsociale',
 			'Cui.effetpriseencharge',
 			'Cui.finpriseencharge',
 			'Decisioncui66.decision',
 			'Decisioncui66.datedecision',
+			'Cui66.notifie' => array( 'type' => 'select' ),
 			'/Cuis66/view/#Cui.id#' => array(
 				'title' => __d('cuis66', '/Cuis66/view'),
 				'disabled' => $perm['view']
@@ -87,7 +90,7 @@
 			'/Cuis66/notification/#Cui66.id#' => array(
 				'title' => __d('cuis66', '/Cuis66/notification'),
 				'class' => 'alert',
-				'disabled' => $perm['notification']
+				'disabled' => '( #Cui66.notifie# === 1 || !in_array( \'#Cui66.etatdossiercui66#\', array( \'attentenotification\' ) ) ) || ' . $perm['notification']
 			),
 			'/Accompagnementscuis66/index/#Cui.id#' => array(
 				'title' => __d('cuis66', '/Accompagnementscuis66/index'),

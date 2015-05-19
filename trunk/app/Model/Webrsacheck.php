@@ -307,6 +307,8 @@
 				'Nonorganismeagree.Structurereferente.id' => 'isarray',
                 'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray',
                 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe' => 'string',
+				'Criterescuis.index.fields' => 'isarray',
+				'Criterescuis.exportcsv' => 'isarray'
 			);
 		}
 
@@ -937,7 +939,11 @@
 		 */
 		public function allCheckParametrage() {
 			$errors = array( );
-			$modelNames = array( 'Dsp', 'Cohorterendezvous' );
+
+			$modelNames = array( 'Dsp', 'Criterecui' );
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$modelNames[] = 'Cohorterendezvous';
+			}
 
 			foreach( $modelNames as $modelName ) {
 				$Model = ClassRegistry::init( $modelName );

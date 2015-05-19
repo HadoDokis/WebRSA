@@ -40,10 +40,10 @@
 		 *
 		 * @var array
 		 */
-		public $actsAs = array(
+		/*public $actsAs = array(
 			'Formattable',
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
-		);
+		);*/
 	}
 ?>

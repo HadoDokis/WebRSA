@@ -632,6 +632,7 @@ CREATE TABLE cuis66
 	dossiereligible SMALLINT,			-- etat dossier
 	dateeligibilite DATE,				-- etat dossier
 	dossiercomplet SMALLINT,			-- etat dossier
+	notedossier TEXT,					-- etat dossier
 	datecomplet DATE,					-- etat dossier
 	commentairedossier TEXT,			-- etat dossier
 	zonecouverte VARCHAR(3),			-- le salarié
@@ -689,7 +690,7 @@ CREATE INDEX cuis66_cui_id_idx ON cuis66(cui_id);
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_typeformulaire_in_list_chk CHECK ( cakephp_validate_in_list( typeformulaire, ARRAY['CUI','CUIAvenir'] ) );
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_typecontrat_in_list_chk CHECK ( cakephp_validate_in_list( typecontrat, ARRAY['ACI','Hors','CIE','EAV','CCDI'] ) );
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_zonecouverte_in_list_chk CHECK ( cakephp_validate_in_list( zonecouverte, ARRAY['ZUS','ZRR'] ) );
-ALTER TABLE cuis66 ADD CONSTRAINT cuis66_etatdossiercui66_in_list_chk CHECK ( cakephp_validate_in_list( etatdossiercui66, ARRAY['attentepiece','dossierrecu','dossiereligible','attentemail','formulairecomplet','attenteavis','attentedecision','attentenotification','encours','perime','rupturecontrat','contratsuspendu','decisionsanssuite','nonvalide','annule'] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_etatdossiercui66_in_list_chk CHECK ( cakephp_validate_in_list( etatdossiercui66, ARRAY['attentepiece','dossierrecu','dossiernonrecu','dossierrelance','dossiereligible','attentemail','formulairecomplet','attenteavis','attentedecision','attentenotification','encours','perime','rupturecontrat','contratsuspendu','decisionsanssuite','nonvalide','annule'] ) );
 
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossierrecu_in_list_chk CHECK ( cakephp_validate_in_list( dossierrecu, ARRAY[0,1] ) );
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossiereligible_in_list_chk CHECK ( cakephp_validate_in_list( dossiereligible, ARRAY[0,1] ) );

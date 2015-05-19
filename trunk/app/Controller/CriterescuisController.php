@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'ConfigurableQueryFields', 'Utility' );
 
 	/**
 	 * La classe CriterescuisController implémente un moteur de recherche par CUIs (CG 58, 66 et 93).
@@ -17,159 +18,131 @@
 	{
 		public $name = 'Criterescuis';
 
-		public $uses = array( 'Criterecui', 'Cui', 'Option', 'Structurereferente' );
+		/**
+		 * Modèles utilisés
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Criterecui', 'Cui' );
 
-		public $helpers = array( 'Csv', 'Search' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
-			'Gestionzonesgeos',
-			'InsertionsAllocataires',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+			'Allocataires',
+			'Search.Filtresdefaut' => array( 'search' ),
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'search' => array(
+						'filter' => 'Search'
+					)
+				)
+			)
 		);
 
-		public $aucunDroit = array( 'exportcsv' );
-
 		/**
-		 * Envoi des options communes dans les vues.
+		 * Helpers utilisés.
 		 *
-		 * @return void
+		 * @var array
 		 */
-		protected function _setOptions(){
-			$options = array();
-			$struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-			$this->set( 'struct', $struct );
-			$this->set( 'rolepers', $this->Option->rolepers() );
-			$this->set(
-				'trancheage',
-				array(
-					'0_24' => '- 25 ans',
-					'25_34' => '25 - 34 ans',
-					'35_44' => '35 - 44 ans',
-					'45_54' => '45 - 54 ans',
-					'55_999' => '+ 55 ans'
-				)
-			);
+		public $helpers = array(
+			'Allocataires',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Search.SearchForm',
+			'Romev3',
+		);
 
-			$qual = $this->Option->qual();
-			$this->set( 'qual', $qual );
-			$options = $this->Cui->enums();
-
-			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-
-			$valeursSecteurcui = $this->Cui->Secteurcui->find(
-				'all',
-				array(
-					'order' => array( 'Secteurcui.isnonmarchand DESC', 'Secteurcui.name ASC' )
-				)
-			);
-			$secteur_isnonmarchand_id = Hash::extract( $valeursSecteurcui, '{n}.Secteurcui[isnonmarchand=1].id' );
-
-			$secteurscuis = $this->Cui->Secteurcui->find(
-				'list',
-				array(
-					'contain' => false,
-					'order' => array( 'Secteurcui.name' )
-				)
-			);
-
-            $employeursCui = $this->Cui->Partenaire->find(
-				'list',
-				array(
-					'conditions' => array(
-						'Partenaire.iscui' => '1'
-					),
-					'order' => array( 'Partenaire.libstruc ASC' )
-				)
-			);
-
-            // Information salaries emploi proposé
-            $secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
-				'list',
-				array(
-					'contain' => false,
-					'order' => array( 'Libsecactderact66Secteur.code' )
-				)
-			);
-			$this->set( 'secteursactivites', $secteursactivites );
-
-			$codesromemetiersdsps66 = $this->Cui->Personne->Dsp->Libderact66Metier->find(
-				'all',
-				array(
-					'contain' => false,
-					'order' => array( 'Libderact66Metier.code' )
-				)
-			);
-			foreach( $codesromemetiersdsps66 as $coderomemetierdsp66 ) {
-				$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
-			}
-                    
-                    
-            $this->set( compact( 'secteur_isnonmarchand_id', 'secteurscuis', 'employeursCui', 'options', 'qual' ) );
-		}
-
-		/**
-		 * Moteur de recherche par CUI.
-		 *
-		 * @return void
-		 */
-		public function index() {
+		// TODO: nom de méthode search()
+		public function search() {
 			if( !empty( $this->request->data ) ) {
-				$paginate = $this->Criterecui->search(
-					(array)$this->Session->read( 'Auth.Zonegeographique' ),
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data
+				$search = (array)Hash::get( $this->request->data, 'Search' );
+				$query = $this->Criterecui->search( $search );
+				$query = $this->Allocataires->completeSearchQuery( $query );
+				$query = ConfigurableQueryFields::getFieldsByKeys( array( 'Criterescuis.search.fields' ), $query );
+				$query['limit'] = 10;
+
+				$this->Cui->forceVirtualFields = true;
+				$this->paginate = $query;
+				$results = $this->paginate(
+					$this->Cui,
+					array(),
+					array(),
+					!Hash::get( $search, 'Pagination.nombre_total' )
 				);
-				$paginate['limit'] = 10;
-				$paginate = $this->_qdAddFilters( $paginate );
-				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
-
-				$this->paginate = $paginate;
-				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
-				$criterescuis = $this->paginate( 'Cui', array(), array(), $progressivePaginate );
-
-				foreach( $criterescuis as $i => $criterecui ) {
-					if( !empty( $criterecui['Partenaire']['libstruc'] ) ) {
-						$nomemployeur = $criterecui['Partenaire']['libstruc'];
-					}
-					else {
-						$nomemployeur = $criterecui['Cui']['nomemployeur'];
-					}
-					$criterescuis[$i]['Cui']['nomemployeur'] = $nomemployeur;
-				}
-
-				$this->set( 'criterescuis', $criterescuis );
+				$this->set( compact( 'results' ) );
 			}
-			$this->_setOptions();
-			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
-			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
-
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			
+			$options = $this->_getOptions();
+			$this->set( compact( 'options' ) );
 		}
-
+		
+		protected function _getOptions() {
+			// Tables suplémentaire pour un CG donné
+			$cgDepartement = Configure::read( 'Cg.departement' );
+			$modelCuiDpt = 'Cui' . $cgDepartement;
+			$options = array();
+			if( isset( $this->Cui->{$modelCuiDpt} ) ) {
+				$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->enums() );
+				
+				// Liste de modeles potentiel pour un CG donné
+				$modelPotentiel = array(
+					'Accompagnementcui' . $cgDepartement,
+					'Decisioncui' . $cgDepartement,
+					'Propositioncui' . $cgDepartement,
+					'Rupturecui' . $cgDepartement,
+					'Suspensioncui' . $cgDepartement,
+				);
+				
+				foreach ( $modelPotentiel as $modelName ){
+					if ( isset( $this->Cui->{$modelCuiDpt}->{$modelName} ) ){
+						$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->{$modelName}->enums() );
+					}
+				}
+			}
+			
+			return Hash::merge(
+				$options,
+				$this->Allocataires->options(),
+				$this->Cui->enums(),
+				$this->Cui->Emailcui->options()
+			);
+		}
+		
 		/**
-		 * Export du tableau en CSV.
 		 *
-		 * @return void
+		 * @param array $search Les filtres venant du moteur de recherche
+		 * @param array $fieldsConfigureKeys Le nom des clés de configuration dans
+		 *	lesquelles récupérer les champs nécessaires.
+		 * @return array
+		 */
+		protected function _getQuery( array $search, array $fieldsConfigureKeys ) {
+			$query = $this->Criterecui->search( $search );
+			$query = $this->Allocataires->completeSearchQuery( $query );
+
+			$query = ConfigurableQueryFields::getFieldsByKeys( $fieldsConfigureKeys, $query );
+
+			return $query;
+		}
+		
+		/**
+		 * Export du tableau de résultats de la cohorte en CSV.
 		 */
 		public function exportcsv() {
-			$querydata = $this->Criterecui->search(
-				(array)$this->Session->read( 'Auth.Zonegeographique' ),
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Hash::expand( $this->request->params['named'], '__' )
-			);
-			unset( $querydata['limit'] );
-			$querydata = $this->_qdAddFilters( $querydata );
-			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$search = (array)Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' );
 
-			$cuis = $this->Cui->find( 'all', $querydata );
+			$query = $this->_getQuery( $search, array( "{$this->name}.{$this->action}" ) );
+			unset( $query['limit'] );
 
-			$this->_setOptions();
-			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->Cui->forceVirtualFields = true;
+			$results = $this->Cui->find( 'all', $query );
+			$options = $this->_getOptions();
 
-			$this->layout = '';
-			$this->set( compact( 'cuis' ) );
+			$this->layout = null;
+			$this->set( compact( 'results', 'options' ) );
 		}
 	}
 ?>
