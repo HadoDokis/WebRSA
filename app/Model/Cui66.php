@@ -13,7 +13,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Cui66 extends AppModel
+	class Cui66 extends AppModel // TODO : Passage en En attente d'avis technique avant meme l'envoi d'un e-mail
 	{
 		public $name = 'Cui66';
 
@@ -121,7 +121,7 @@
 						'Personne.id' => $personne_id
 					),
 					'joins' => array(
-						$this->Cui->Personne->join( 'Titresejour', 
+						$this->Cui->Personne->join( 'Titresejour',
 							array(
 								'type' => 'LEFT OUTER', 
 								'conditions' => "Titresejour.id IN ( {$sqDernierTitresejour} )"
@@ -131,7 +131,7 @@
 					)
 				);
 				$record = $this->Cui->Personne->find( 'first', $query );
-
+// TODO changement de position lors d'une suspension
 				$result = array(
 					'Cui' => array(
 						'personne_id' => $personne_id,
@@ -142,7 +142,8 @@
 						'avecenfant' => $record['Foyer']['nb_enfants'] >= 1 ? 1 : 0,
 						'demandeenregistree' => date_format(new DateTime(), 'Y-m-d'),
 						'datefinsejour' => Hash::get( $record, 'Titresejour.dftitsej' ),
-						'etatdossiercui66' => 'attentemail'
+						'etatdossiercui66' => 'attentemail',
+						'notifie' => 0
 					),
 					'Partenairecui66' => array(
 						'nbcontratsaidescg' => '0', // FIXME
@@ -190,6 +191,67 @@
 			
 			return $query;
 		}
+		
+		public function queryIndex($personne_id){
+			// Utile pour l'affichage des dates de relance par email
+			$sqRelanceQuery = array(
+				'alias' => 'emailscuis',
+				'fields' => 'emailscuis.id',
+				'conditions' => array(
+					'emailscuis.dateenvoi IS NOT NULL',
+					'UPPER(textsmailscuis66.name) LIKE \'%RELANCE%\'',
+					'emailscuis.cui_id = Cui66.cui_id'
+				),
+				'joins' => array( 
+					array_words_replace(
+						$this->Cui->Emailcui->join( 'Textmailcui66', array( 'type' => 'INNER' ) ), 
+						array( 'Emailcui' => 'emailscuis', 'Textmailcui66' => 'textsmailscuis66' )
+					)
+				),
+				'order' => 'emailscuis.dateenvoi DESC',
+				'limit' => 1
+			);
+			$sqRelanceMail = $this->Cui->Emailcui->sq( $sqRelanceQuery );
+			
+			// Utile pour l'affichage des changements de positions du CUI
+			$sqDateChangementQuery = array(
+				'alias' => 'historiquepositionscuis66',
+				'fields' => 'historiquepositionscuis66.id',
+				'conditions' => array(
+					'historiquepositionscuis66.cui66_id = Cui66.id'
+				),
+				'order' => 'historiquepositionscuis66.created DESC',
+				'limit' => 1
+			);
+			$sqDateChangementPosition = $this->Cui->Cui66->Historiquepositioncui66->sq( $sqDateChangementQuery );
+
+			$query = array(
+				'fields' => array_merge(
+					$this->Cui->fields(),
+					array('Cui.dureecontrat', 'Emailcui.dateenvoi', 'Historiquepositioncui66.created'),
+					$this->Cui->Cui66->fields(),
+					$this->Cui->Partenairecui->fields(),
+					$this->Cui->Cui66->Decisioncui66->fields(),
+					$this->Cui->Cui66->Suspensioncui66->fields(),
+					$this->Cui->Cui66->Rupturecui66->fields()
+				),
+				'conditions' => array(
+					'Cui.personne_id' => $personne_id
+				),
+				'joins' => array(
+					$this->Cui->join( 'Cui66', array( 'type' => 'INNER' ) ),
+					$this->Cui->join( 'Partenairecui' ),
+					$this->Cui->join( 'Emailcui', array( 'conditions' => "Emailcui.id IN ({$sqRelanceMail})" ) ),
+					$this->Cui->Cui66->join( 'Decisioncui66' ),
+					$this->Cui->Cui66->join( 'Suspensioncui66' ),
+					$this->Cui->Cui66->join( 'Rupturecui66' ),
+					$this->Cui->Cui66->join( 'Historiquepositioncui66', array( 'conditions' => "Historiquepositioncui66.id IN ({$sqDateChangementPosition})") ),
+				),
+				'order' => array( 'Cui.created DESC' )
+			);
+			
+			return $query;
+		}
 
 		/**
 		 * 
@@ -202,11 +264,6 @@
 			$success = true;
 
 			$data['Cui']['user_id'] = $user_id;
-			
-			// Dans le cas d'un ajout, on initialise la position du CUI
-			if ( empty($data['Cui']['id']) ){
-				$data['Cui66']['etatdossiercui66'] = 'attentepiece';
-			}
 			
 			// Si un code famille (rome v3) est vide, on ne sauvegarde pas le code rome
 			if ( !isset($data['Entreeromev3']['familleromev3_id']) || $data['Entreeromev3']['familleromev3_id'] === '' ){ 
@@ -369,9 +426,8 @@
 				FROM suspensionscuis66 AS suspensioncui66_sq
 				WHERE suspensioncui66_sq.cui66_id = Cui66.id
 				AND suspensioncui66_sq.datedebut IS NOT NULL
-				AND suspensioncui66_sq.datedebut < NOW()::date
 				AND suspensioncui66_sq.datefin IS NOT NULL
-				AND suspensioncui66_sq.datefin > NOW()::date
+				AND NOW()::date BETWEEN suspensioncui66_sq.datedebut AND suspensioncui66_sq.datefin
 				LIMIT 1
 			)';
 			
@@ -397,7 +453,20 @@
 				LIMIT 1
 			)';
 			
+			// /!\ Attention, le mot relance doit être placé dans le textsmailscuis66.name pour être pris en compte
+			$emailRelance = 'EXISTS(
+				SELECT emailcui_sq.id
+				FROM emailscuis AS emailcui_sq
+				INNER JOIN textsmailscuis66 ON (textsmailscuis66.id = emailcui_sq.textmailcui66_id)
+				WHERE emailcui_sq.dateenvoi IS NOT NULL
+				AND UPPER(textsmailscuis66.name) LIKE \'%RELANCE%\'
+				AND emailcui_sq.cui_id = Cui66.cui_id
+				LIMIT 1
+			)'; // TODO faut que ça marche
+					
 			
+			// TODO : Corriger le definition initiale de la position vers attentemail
+			// TODO : Ajouter une position -> condition(email initial envoyé, dossier non reçu, email de relance envoyé)
 			$return = array(
 				// 1. Annulé
 				'annule' => array(
@@ -408,17 +477,23 @@
 				
 				// 2. Traité (Décision sans suite)
 				'decisionsanssuite' => array(
-					array(
-						$this->alias.'.notifie' => 1,
-						$decisionRefus
-					),
+					'OR' => array(
+						array(
+							$this->alias.'.notifie' => 1,
+							$decisionRefus
+						),
+						array(
+							$this->alias.'.dossierrecu IS NOT NULL',
+							$this->alias.'.dossierrecu' => 0
+						)
+					)
 				),
 				
 				// 3. Traité (Dossier non éligible)
 				'nonvalide' => array(
 					array(
 						$this->alias.'.dossiereligible IS NOT NULL',
-						$this->alias.'.dossiereligible' => '0'
+						$this->alias.'.dossiereligible' => 0
 					)
 				),
 				
@@ -470,7 +545,26 @@
 				// 12. En attente d'avis techniques
 				'attenteavis' => array(
 					array(
+						$emailInitial,
 						$formulaireRempli
+					)
+				),				
+				
+				// X. Relance le %s (Dossier non reçu) TODO SQL et date
+				'dossierrelance' => array(
+					array(
+						$emailRelance,
+						$this->alias.'.dossiercomplet IS NOT NULL',
+						$this->alias.'.dossiercomplet' => 0
+					)
+				),
+				
+				// X. En attente de relance (Dossier non reçu) TODO SQL
+				'dossiernonrecu' => array(
+					array(
+						$emailInitial,
+						$this->alias.'.dossiercomplet IS NOT NULL',
+						$this->alias.'.dossiercomplet' => 0
 					)
 				),
 				
@@ -525,7 +619,7 @@
 			foreach( $this->_getConditionsPositionsCuis() as $keyPosition => $conditionsPosition ) {
 				if( !$found ) {
 					if( $keyPosition != $etatdossiercui66 ) {
-						$conditions[] = array( 'NOT' => array( $conditionsPosition ) );
+//						$conditions[] = array( 'NOT' => array( $conditionsPosition ) );
 					}
 					else {
 						$conditions[] = array( $conditionsPosition );
@@ -557,6 +651,7 @@
 				$return .= "WHEN {$conditions} THEN '{$etatdossiercui66}' ";
 			}
 
+			// Position par defaut : En attente d'envoi de l'e-mail pour l'employeur
 			$return = "( CASE {$return} ELSE 'attentemail' END )";
 
 			return $return;
@@ -593,7 +688,7 @@
 			$conditionsSql = $Dbo->conditions( $conditions, true, true, $this );
 			
 			$sql = "UPDATE {$tableName} AS {$sq}{$this->alias}{$eq} SET {$sq}etatdossiercui66{$eq} = {$case} FROM {$tableNameCui} AS {$sq}{$this->Cui->alias}{$eq} {$conditionsSql} AND {$sq}{$this->Cui->alias}{$eq}.{$sq}id{$eq} = {$sq}{$this->alias}{$eq}.{$sq}cui_id{$eq};";
-
+//debug(str_replace('WHEN', "\n\nWHEN", $sql));die();
 			$result = $Dbo->query( $sql ) !== false;
 			
 			// On regarde si des valeurs ont changés

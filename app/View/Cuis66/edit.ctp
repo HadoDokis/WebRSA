@@ -23,7 +23,8 @@
 				'Cui.partenairecui_id' => array( 'type' => 'hidden' ),
 				'Cui.entreeromev3_id' => array( 'type' => 'hidden' ),
 				'Cui66.id' => array( 'type' => 'hidden' ),
-				'Cui66.cui_id' => array( 'type' => 'hidden' ),	
+				'Cui66.cui_id' => array( 'type' => 'hidden' ),
+				'Cui66.notifie' => array( 'type' => 'hidden' ),
 				'Adresse.id' => array( 'type' => 'hidden' ),
 				'Partenairecui.id' => array( 'type' => 'hidden' ),
 				'Partenairecui.adressecui_id' => array( 'type' => 'hidden' ),
@@ -173,11 +174,12 @@
 		. $this->Default3->subform(
 			array(
 				'Cui66.dossiereligible' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.dateeligibilite' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Cui66.dateeligibilite' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui66.dossierrecu' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datereception' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Cui66.datereception' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui66.dossiercomplet' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datecomplet' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 )
+				'Cui66.datecomplet' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+				'Cui66.notedossier'
 			),
 			array( 'options' => $options )
 		) . '</fieldset>'
@@ -238,7 +240,7 @@
 	echo '</div>' . $this->Default3->subform(
 			array(
 				'Cui66.zonecouverte' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datefinsejour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Cui66.datefinsejour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 			),
 			array( 'options' => $options )
 		)
@@ -289,8 +291,8 @@
 		. $this->Default3->subform(
 			array(
 				'Cui.typecontrat' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.typecontrat' ) ),
-				'Cui.dateembauche' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
-				'Cui.findecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Cui.dateembauche' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+				'Cui.findecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 			),
 			array( 'options' => $options )
 		) 
@@ -368,9 +370,9 @@
 	echo '<fieldset id="CuiPrise_en_charge"><legend>' . __d('cuis66', 'Cui.prise_en_charge') . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Cui.effetpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
-				'Cui.finpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
-				'Cui.decisionpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Cui.effetpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+				'Cui.finpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+				'Cui.decisionpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui.dureehebdoretenu' => array( 'class' => 'heures_minutes'),
 				'Cui.operationspeciale' => array( 'type' => 'text' ),
 				'Cui.tauxfixeregion' => array( 'type' => 'text', 'class' => 'percent'),
@@ -394,7 +396,7 @@
 	echo '<fieldset id="CuiDate"><legend>' . __d('cuis66', 'Cui.date') . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Cui.faitle' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Cui.faitle' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui66.demandeenregistree' => array( 'view' => true, 'hidden' => true, 'type' => 'date' )
 			),
 			array( 'options' => $options )

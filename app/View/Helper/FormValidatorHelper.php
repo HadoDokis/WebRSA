@@ -71,24 +71,31 @@
 		 * On peut manuelement renseigner les règles dans $additionnalFields
 		 * On peut également désactiver la lecture de $this->request->data
 		 * 
-		 * @param type $additionnalFields
-		 * @param type $useRequestData
+		 * @param array $additionnalFields
+		 * @param mixed $useRequestData
 		 * @return \FormValidatorHelper
 		 */
 		public function generateValidationRules( $additionnalFields=array(), $useRequestData=true ){
 			$json = array();
 		
 			if ( $useRequestData ){
-				if ( count($this->request->data) === 0 ){
+				$requestDataIsString = is_string($useRequestData) && isset($this->request->data[$useRequestData]);
+				$requestData = $requestDataIsString ? $this->request->data[$useRequestData] : $this->request->data;
+				
+				if ( count($requestData) === 0 ){
 					$this->validationJson = 'undefined';
 					return $this;
 				}
 				
-				foreach ( $this->request->data as $modelName => $champs ){
+				foreach ( $requestData as $modelName => $champs ){
 					$Model = ClassRegistry::init( $modelName );
 					$validate = $Model->validate;
 					$array = array($modelName => $validate);
 					$json = array_merge($json, $array);
+				}
+				
+				if ( $requestDataIsString ){
+					$json = array( $useRequestData => $json );
 				}
 			}
 			
@@ -220,7 +227,12 @@
 			}
 			
 			$validationRules = json_decode( $this->validationJson, true );
-			$validationDates = $validationRules;
+			
+			if ( is_string($useRequestData) && isset($validationRules[$useRequestData]) ){
+				$validationRules = $validationRules[$useRequestData];
+			}
+			
+			$validationCustom = $validationRules;
 			
 			if ( $validationRules === null ){
 				return $this;
@@ -228,18 +240,22 @@
 			
 			foreach( $validationRules as $modelName => $model ){
 				foreach( $model as $fieldName => $field ){
-					$validationDates[$modelName][$fieldName] = $this->_onlyThisRule($rules, $allowEmpty, $validationDates[$modelName][$fieldName], $field);
-					if ( $validationDates[$modelName][$fieldName] === null ){
-						unset( $validationDates[$modelName][$fieldName] );
+					$validationCustom[$modelName][$fieldName] = $this->_onlyThisRule($rules, $allowEmpty, $validationCustom[$modelName][$fieldName], $field);
+					if ( $validationCustom[$modelName][$fieldName] === null ){
+						unset( $validationCustom[$modelName][$fieldName] );
 					}
 				}
 				
-				if ( empty($validationDates[$modelName]) ){
-					unset( $validationDates[$modelName] );
+				if ( empty($validationCustom[$modelName]) ){
+					unset( $validationCustom[$modelName] );
 				}
 			}
 			
-			$this->validationJson = json_encode($validationDates);
+			if ( is_string($useRequestData) && isset($validationRules[$useRequestData]) ){
+				$validationCustom = array( $useRequestData => $validationCustom );
+			}
+			
+			$this->validationJson = json_encode($validationCustom);
 			return $this;
 		}
 		

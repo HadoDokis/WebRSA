@@ -22,173 +22,275 @@
 
 		public $actsAs = array( 'Conditionnable' );
 
+
 		/**
-		 * Traitement du formulaire de recherche concernant les CUIs.
+		 * @todo permettre de paramétrer les champs
+		 * @todo mettre les critères par défaut dans le webrsa.inc
 		 *
-		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
-		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
-		 * @param array $criterescuis Critères du formulaire de recherche
 		 * @return array
 		 */
-		public function search( $mesCodesInsee, $filtre_zone_geo, $criterescuis ) {
-			/// Conditions de base
+		public function searchQuery() {
+			$Allocataire = ClassRegistry::init( 'Allocataire' );
 			$Cui = ClassRegistry::init( 'Cui' );
 
-			// Un dossier possède un seul detail du droit RSA mais ce dernier possède plusieurs details de calcul
-			// donc on limite au dernier detail de calcul du droit rsa
-			$sqDernierDetailcalculdroitrsa = $Cui->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
 
-			$conditions = array(
-				'Prestation.natprest' => 'RSA',
-				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-				array(
-					'OR' => array(
-						'Adressefoyer.id IS NULL',
-						'Adressefoyer.id IN ( '.$Cui->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+			if( $query === false ) {
+				$query = $Allocataire->searchQuery();
+
+				// 1. Ajout des champs supplémentaires
+				$query['fields'] = array_merge(
+					$query['fields'],
+					ConfigurableQueryFields::getModelsFields(
+						array(
+							$Cui,
+							$Cui->Emailcui,
+							$Cui->Partenairecui,
+							$Cui->Partenairecui->Adressecui,
+						)
+					),
+					// Champs nécessaires au traitement de la search
+					array(
+						'Cui.id',
+						'Cui.personne_id'
 					)
-				),
-				"Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )"
-			);
+				);
 
-			$conditions = $this->conditionsAdresse( $conditions, $criterescuis, $filtre_zone_geo, $mesCodesInsee );
-			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterescuis );
-			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterescuis );
-
-
-			/// Critères
-			$datecontrat = Set::extract( $criterescuis, 'Cui.datecontrat' );
-			$secteurcui_id = Set::extract( $criterescuis, 'Cui.secteurcui_id' );
-			$isaci = Set::extract( $criterescuis, 'Cui.isaci' );
-			$nir = Set::extract( $criterescuis, 'Cui.nir' );
-			$oridemrsa = Set::extract( $criterescuis, 'Dossier.oridemrsa' );
-			$handicap = Set::extract( $criterescuis, 'Cui.handicap' );
-			$niveauformation = Set::extract( $criterescuis, 'Cui.niveauformation' );
-			$compofamiliale = Set::extract( $criterescuis, 'Cui.compofamiliale' );
-			$typecui = Set::extract( $criterescuis, 'Cui.typecui' );
-            $positioncui66 = Set::extract( $criterescuis, 'Cui.positioncui66' );
-            $decisioncui = Set::extract( $criterescuis, 'Cui.decisioncui' );
-            $employeur_id = Set::extract( $criterescuis, 'Cui.partenaire_id' );
-
-
-			// Origine de la demande
-			if( !empty( $oridemrsa ) ) {
-				$conditions[] = 'Detaildroitrsa.oridemrsa IN ( \''.implode( '\', \'', $oridemrsa ).'\' )';
-			}
-
-			/// Critères sur les dates du CUI - date de saisi du contrat, date de fin de titre de séjour,
-            foreach( array( 'datecontrat', 'datefintitresejour' ) as $date ) {
-                if( isset( $criterescuis['Cui'][$date] ) && !empty( $criterescuis['Cui'][$date] ) ) {
-                    $valid_from = ( valid_int( $criterescuis['Cui']["{$date}_from"]['year'] ) && valid_int( $criterescuis['Cui']["{$date}_from"]['month'] ) && valid_int( $criterescuis['Cui']["{$date}_from"]['day'] ) );
-                    $valid_to = ( valid_int( $criterescuis['Cui']["{$date}_to"]['year'] ) && valid_int( $criterescuis['Cui']["{$date}_to"]['month'] ) && valid_int( $criterescuis['Cui']["{$date}_to"]['day'] ) );
-                    if( $valid_from && $valid_to ) {
-                        $conditions[] = 'Cui.'.$date.' BETWEEN \''.implode( '-', array( $criterescuis['Cui']["{$date}_from"]['year'], $criterescuis['Cui']["{$date}_from"]['month'], $criterescuis['Cui']["{$date}_from"]['day'] ) ).'\' AND \''.implode( '-', array( $criterescuis['Cui']["{$date}_to"]['year'], $criterescuis['Cui']["{$date}_to"]['month'], $criterescuis['Cui']["{$date}_to"]['day'] ) ).'\'';
-                    }
-                }
-            }
-
-			// Type de CUI
-			if( !empty( $typecui ) ) {
-				$conditions[] = 'Cui.typecui = \''.Sanitize::clean( $typecui, array( 'encode' => false ) ).'\'';
-			}
-
-			// Secteur du contrat
-			if( !empty( $secteurcui_id ) ) {
-				$conditions[] = 'Cui.secteurcui_id = \''.Sanitize::clean( $secteurcui_id, array( 'encode' => false ) ).'\'';
-			}
-
-			// Hors ACI /ACI
-			if( !empty( $isaci ) ) {
-				$conditions[] = 'Cui.isaci = \''.Sanitize::clean( $isaci, array( 'encode' => false ) ).'\'';
-			}
-
-			// Handicape ?
-			if( !empty( $handicap ) ) {
-				$conditions[] = 'Cui.handicap = \''.Sanitize::clean( $handicap, array( 'encode' => false ) ).'\'';
-			}
-
-			// Niveau de formation
-			if( !empty( $niveauformation ) ) {
-				$conditions[] = 'Cui.niveauformation = \''.Sanitize::clean( $niveauformation, array( 'encode' => false ) ).'\'';
-			}
-
-			// Composition du foyer
-			if( !empty( $compofamiliale ) ) {
-				$conditions[] = 'Cui.compofamiliale = \''.Sanitize::clean( $compofamiliale, array( 'encode' => false ) ).'\'';
-			}
-
-			// Position du CUI
-			if( !empty( $positioncui66 ) ) {
-				$conditions[] = 'Cui.positioncui66 = \''.Sanitize::clean( $positioncui66, array( 'encode' => false ) ).'\'';
-			}
-
-            // Décision sur CUI
-			if( !empty( $decisioncui ) ) {
-				$conditions[] = 'Cui.decisioncui = \''.Sanitize::clean( $decisioncui, array( 'encode' => false ) ).'\'';
-			}
-
- 			// Sur l'employeur (partenaire)
-            if( isset( $employeur_id ) && !empty( $employeur_id ) ) {
-                $conditions[] = 'Cui.partenaire_id = \''.Sanitize::clean( $employeur_id, array( 'encode' => false ) ).'\'';
-            }
-
- 			// Sur le secteur proposé
-            $secteurproposeId = Hash::get( $criterescuis, 'Cui.secteuremploipropose_id' );
-            if( isset( $secteurproposeId ) && !empty( $secteurproposeId ) ) {
-                $conditions[] = 'Cui.secteuremploipropose_id = \''.Sanitize::clean( $secteurproposeId, array( 'encode' => false ) ).'\'';
-            }
-
- 			// Sur le métier proposé
-            $metierproposeId = Hash::get( $criterescuis, 'Cui.metieremploipropose_id' );
-            if( isset( $metierproposeId ) && !empty( $metierproposeId ) ) {
-                $conditions[] = 'Cui.metieremploipropose_id = \''.Sanitize::clean( suffix($metierproposeId), array( 'encode' => false ) ).'\'';
-            }
-
- 			// Sur le poste proposé
-            $postepropose = Hash::get( $criterescuis, 'Cui.postepropose' );
-            if( isset( $postepropose ) && !empty( $postepropose ) ) {
-                $conditions[] = array('Cui.postepropose ILIKE \''.$this->wildcard( $postepropose ).'\'');
-            }
-
-			$query = array(
-				'fields' => array_merge(
-					$Cui->fields(),
-					$Cui->Personne->fields(),
-					$Cui->Partenaire->fields(),
-					$Cui->Personne->Foyer->fields(),
-					$Cui->Personne->Prestation->fields(),
-					$Cui->Personne->Foyer->Dossier->fields(),
-					$Cui->Personne->Foyer->Dossier->Situationdossierrsa->fields(),
-					$Cui->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
-					$Cui->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->fields(),
-					$Cui->Personne->Foyer->Adressefoyer->fields(),
-					$Cui->Personne->Foyer->Adressefoyer->Adresse->fields(),
-					$Cui->Personne->Calculdroitrsa->fields(),
-                    array(
-                        'Titresejour.dftitsej'
-                    )
-				),
-				'joins' => array(
+				// 2. Ajout des jointures supplémentaires
+				
+				// Joiture spéciale pour les emails
+				$emailQuery = array(
+					'alias' => 'emailscuis',
+					'fields' => array( "emailscuis.id" ),
+					'contain' => false,
+					'conditions' => array(
+						"emailscuis.cui_id = Cui.id",
+						"emailscuis.dateenvoi IS NOT NULL",
+					),
+					'order' => array(
+						"emailscuis.dateenvoi" => "DESC",
+					),
+					'limit' => 1
+				);
+				
+				
+				array_unshift(
+					$query['joins'],
 					$Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$Cui->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
-					$Cui->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
-					$Cui->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$Cui->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
-                    $Cui->Personne->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
-					$Cui->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$Cui->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
-					$Cui->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
-					$Cui->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
-					$Cui->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
-					$Cui->Personne->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => $conditions,
-				'contain' => false,
-				'limit' => 10
-			);
+					$Cui->join( 'Partenairecui', array( 'type' => 'LEFT OUTER' ) ),
+					$Cui->join( 'Emailcui', 
+						array( 
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								"Emailcui.id IN ( ".$Cui->Emailcui->sq( $emailQuery )." )"
+							)
+						) 
+					),
+					$Cui->Partenairecui->join( 'Adressecui', array( 'type' => 'LEFT OUTER' ) )
+				);
+				
+				// Ajout des tables spécifiques
+				$cgDepartement = Configure::read( 'Cg.departement' );
+				$modelCuiDpt = 'Cui' . $cgDepartement;
+				if( isset( $Cui->{$modelCuiDpt} ) ) {
+					$foreignKey = strtolower($modelCuiDpt) . '_id';
+					
+					// Liste de modeles obligatoire pour un CG donné
+					$modelList = array(
+						$Cui->{$modelCuiDpt}
+					);
+					
+					array_push(
+						$query['joins'],
+						$Cui->join( $modelCuiDpt, array( 'type' => 'INNER' ) )
+					);
+					
+					// Liste de modeles potentiel pour un CG donné
+					$modelPotentiel = array(
+						'Accompagnementcui' . $cgDepartement,
+						'Decisioncui' . $cgDepartement,
+						'Propositioncui' . $cgDepartement,
+						'Rupturecui' . $cgDepartement,
+						'Suspensioncui' . $cgDepartement,
+						'Historiquepositioncui' . $cgDepartement,
+					);
+					foreach ( $modelPotentiel as $modelName ){
+						if ( isset( $Cui->{$modelCuiDpt}->{$modelName} ) ){
+							$tableName = Inflector::tableize($modelName);
+							$subQuery = array(
+								'alias' => $tableName,
+								'fields' => array( "{$tableName}.id" ),
+								'contain' => false,
+								'conditions' => array(
+									"{$tableName}.{$foreignKey} = {$modelCuiDpt}.id"
+								),
+								'order' => array(
+									"{$tableName}.created" => "DESC"
+								),
+								'limit' => 1
+							);
 
-			$query = $Cui->Personne->PersonneReferent->completeQdReferentParcours( $query, $criterescuis );
+							array_push($modelList, $Cui->{$modelCuiDpt}->{$modelName});
+							array_push(
+								$query['joins'],
+								$Cui->{$modelCuiDpt}->join( $modelName, array( 'type' => 'LEFT OUTER',
+									'conditions' => array(
+										"{$modelName}.id IN ( ".$Cui->{$modelCuiDpt}->{$modelName}->sq( $subQuery )." )"
+									)) )
+							);
+						}
+					}
+					
+					$query['fields'] = array_merge(
+						$query['fields'],
+						ConfigurableQueryFields::getModelsFields( $modelList )
+					);
+				}
+
+				// 3. Tri par défaut: date, heure, id
+				$query['order'] = array(
+					'Personne.nom' => 'ASC',
+					'Personne.prenom' => 'ASC',
+					'Cui.id' => 'ASC'
+				);
+				
+				// 4. Si on utilise les cantons, on ajoute une jointure
+				if( Configure::read( 'CG.cantons' ) ) {
+					$Canton = ClassRegistry::init( 'Canton' );
+					$query['fields']['Canton.canton'] = 'Canton.canton';
+					$query['joins'][] = $Canton->joinAdresse();
+				}
+
+				Cache::write( $cacheKey, $query );
+			}
 
 			return $query;
+		}
+
+		/**
+		 * @todo: filtres spécifiques aux RDV
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		public function searchConditions( array $query, array $search ) {
+			$Allocataire = ClassRegistry::init( 'Allocataire' );
+			$Cui = ClassRegistry::init( 'Cui' );
+
+			$query = $Allocataire->searchConditions( $query, $search );
+			
+			$paths = array(
+				'Cui.niveauformation',
+				'Cui.inscritpoleemploi',
+				'Cui.sansemploi',
+				'Cui.beneficiairede',
+				'Cui.majorationrsa',
+				'Cui.rsadepuis',
+				'Cui.travailleurhandicape',
+			);
+			
+			$pathsDate = array( 
+				'Cui.dateembauche',
+				'Cui.findecontrat',
+				'Cui.effetpriseencharge',
+				'Cui.finpriseencharge',
+				'Cui.decisionpriseencharge',
+				'Cui.faitle',
+			);
+
+			if ( Configure::read( 'Cg.departement' ) == 66 ){
+				$paths = array_merge( $paths, 
+					array( 
+						'Cui66.typeformulaire',
+						'Cui.secteurmarchand',
+						'Cui66.typecontrat',
+						'Cui66.dossiereligible',
+						'Cui66.dossierrecu',
+						'Cui66.dossiercomplet',
+						'Cui66.etatdossiercui66',
+						'Emailcui.textmailcui66_id',
+						'Decisioncui66.decision',
+					)
+				);
+				foreach( $paths as $path ) {
+					$value = Hash::get( $search, $path );
+					if( $value !== null && $value !== '' ) {
+						$query['conditions'][$path] = $value;
+					}
+				}
+				
+				$pathsDate = array_merge( $pathsDate, 
+					array( 
+						'Cui66.dateeligibilite',
+						'Cui66.datereception',
+						'Cui66.datecomplet',
+						'Emailcui.insertiondate',
+						'Emailcui.created',
+						'Emailcui.dateenvoi',
+						'Decisioncui66.datedecision',
+						'Historiquepositioncui66.created',
+					)
+				);
+			}
+			
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
+
+			return $query;
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function search( array $search ) {
+			$query = $this->searchQuery();
+			$query = $this->searchConditions( $query, $search );
+
+			return $query;
+		}
+
+
+		/**
+		 * Vérification que les champs spécifiés dans le paramétrage par les clés
+		 * Cohortesrendezvous.search.fields, Cohortesrendezvous.search.innerTable
+		 * et Cohortesrendezvous.exportcsv dans le webrsa.inc existent bien dans
+		 * la requête de recherche renvoyée par la méthode search().
+		 *
+		 * @return array
+		 */
+		public function checkParametrage() {
+			$keys = array( 'Criterescuis.search.fields', 'Criterescuis.exportcsv' );
+			$query = $this->search( array() );
+
+			$return = ConfigurableQueryFields::getErrors( $keys, $query );
+
+			return $return;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/search).
+		 *
+		 * Export de la liste des champs disponibles pour le moteur de recherche
+		 * dans le fichier app/tmp/Cohorterendezvous__searchQuery__cgXX.csv.
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$success = true;
+
+			$query = $this->searchQuery();
+			$success = $success && !empty( $query );
+
+			// Export des champs disponibles
+			$fileName = TMP.DS.'logs'.DS.__CLASS__.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
+			ConfigurableQueryFields::exportQueryFields( $query, Inflector::tableize( $this->name ), $fileName );
+
+			return $success;
 		}
 	}
 ?>

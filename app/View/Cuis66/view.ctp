@@ -151,6 +151,7 @@
 				'Cui66.dateeligibilite' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
 				'Cui66.dossiercomplet',
 				'Cui66.datecomplet' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+				'Cui66.notedossier' => array( 'type' => 'textarea' ),
 			),
 			array( 'options' => $options )
 		) . '</fieldset>'

@@ -19,6 +19,37 @@ var debugMode = false;
 var verbose = false;
 var ultraVerbose = false;
 
+
+/**
+ * Permet de récupérer le nom d'un element débarassé de la premiere paire de crochets si besoin est
+ * ex : data[Search][Monmodel][Monchamp] deviens data[Monmodel][Monchamp]
+ * 
+ * @param {String} name
+ * @returns {String}
+ */
+function getRealName( name ){
+	'use strict';
+	var crochets = /^[^\[]*(\[[^\]]*\]){2}\[([^\]]*)\](.*)$/g,
+		result = crochets.exec( name ),
+		i,
+		dateList = ['day', 'month', 'year'],
+		after;
+
+	if ( result !== null && result.length > 2 && result[2] !== undefined ){
+		for ( i=0; i<dateList.length; i++ ){
+			if ( result[2] === dateList[i] ){
+				return name;
+			}
+		}
+		
+		after = result.length > 3 ? result[3] : '';
+		
+		name = 'data' + result[1] + '[' + result[2] + ']' + after;
+	}
+	
+	return name;
+}
+
 /**
  * On lui donne un nom d'editable et il renvoi le nom du model dont il dépend
  * getModelName( data[Monmodel][Mon_field] ) = 'Monmodel'
@@ -29,6 +60,7 @@ var ultraVerbose = false;
 function getModelName( name ){
 	'use strict';
 	var crochet1, crochet2;
+	name = getRealName( name );
 	crochet1 = name.indexOf('[');
 	crochet2 = name.indexOf(']');
 	
@@ -50,6 +82,7 @@ function getModelName( name ){
 function getFieldName( name ){
 	'use strict';
 	var crochet1, crochet2, crochet3, crochet4;
+	name = getRealName( name );
 	crochet1 = name.indexOf('[');
 	crochet2 = name.indexOf(']');
 	crochet3 = name.indexOf('[', crochet1 +1);
@@ -73,8 +106,10 @@ function getFieldName( name ){
  */
 function getThirdParam( name ){
 	'use strict';
-	var crochets = /^[^\[]*(\[[^\]]*\]){2}\[([^\]]*)\].*$/g,
-		result = crochets.exec( name );
+	var crochets, result;
+	name = getRealName( name );
+	crochets = /^[^\[]*(\[[^\]]*\]){2}\[([^\]]*)\].*$/g,
+	result = crochets.exec( name );
 
 	if( result === null || result.length < 3 ) {
 		return null;

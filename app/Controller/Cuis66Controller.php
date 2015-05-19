@@ -154,29 +154,8 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
-
-			$query = array(
-				'fields' => array_merge(
-					$this->Cui->fields(),
-					array('Cui.dureecontrat'),
-					$this->Cui->Cui66->fields(),
-					$this->Cui->Partenairecui->fields(),
-					$this->Cui->Cui66->Decisioncui66->fields(),
-					$this->Cui->Cui66->Suspensioncui66->fields(),
-					$this->Cui->Cui66->Rupturecui66->fields()
-				),
-				'conditions' => array(
-					'Cui.personne_id' => $personne_id
-				),
-				'joins' => array(
-					$this->Cui->join( 'Cui66', array( 'type' => 'INNER' ) ),
-					$this->Cui->join( 'Partenairecui' ),
-					$this->Cui->Cui66->join( 'Decisioncui66' ),
-					$this->Cui->Cui66->join( 'Suspensioncui66' ),
-					$this->Cui->Cui66->join( 'Rupturecui66' )
-				),
-				'order' => array( 'Cui.created DESC' )
-			);
+			
+			$query = $this->Cui->Cui66->queryIndex($personne_id);
 			$results = $this->Cui->find( 'all', $query );
 			
 			$messages = $this->Cui->Cui66->messages( $personne_id );
@@ -237,7 +216,7 @@
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
-					$this->Cui->Cui66->rollback();
+					$this->Cui->Cui66->rollback();debug($this->Cui->Cui66->validationErrors);
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
@@ -598,13 +577,15 @@
 				$Email->replyTo( $data['emailredacteur'] );
 			}
 			
-			$Email	->to( $data['emailemployeur'] )
-					->subject( $data['titre'] )
+			$Email	->subject( $data['titre'] )
 					->attachments( $filesNames );
 			
 			// Si le mode debug est activé, on envoi l'e-mail à l'éméteur ( @see app/Config/email.php )
 			if ( WebrsaEmailConfig::isTestEnvironment() ){
-				$Email->to ( WebrsaEmailConfig::getValue( $this->configEmail, 'to', $Email->from() ) );
+				$Email->to ( WebrsaEmailConfig::getValue( $this->configEmail, 'to', $Email->to() ) );
+			}
+			else{
+				$Email->to( $data['emailemployeur'] );
 			}
 		
 			$this->Cui->Emailcui->id = $email_id;
@@ -641,7 +622,7 @@
 			$modelEmail = ClassRegistry::init( 'Textmailcui66' )->find( 'first', $query );
 			
 			$options = $this->Cui->Emailcui->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
-			debug($options);
+			
 			$text = $modelEmail['Textmailcui66']['contenu'];
 			preg_match_all('/#([A-Z][a-z_0-9]+)\.([a-z_0-9]+)#/', $text, $matches);
 			
@@ -655,7 +636,7 @@
 					$piecesmanquantes = explode( '_', $data);
 					
 					foreach ($piecesmanquantes as $num_piece => $id_piece){
-						$piecesmanquantes[$num_piece] = $options['Piecemanquantecui66'][$id_piece];
+						$piecesmanquantes[$num_piece] = isset($options['Piecemanquantecui66'][$id_piece]) ? $options['Piecemanquantecui66'][$id_piece] : '';
 					}
 					$text = str_replace( '#Emailcui.piecesmanquantes#', implode("\n", $piecesmanquantes), $text );
 				}

@@ -51,7 +51,7 @@
 			);
 			
 			if ( $action === 'add' ){
-				$query['conditions']['Cui66.id'] = $id;
+				$query['conditions']['Cui66.cui_id'] = $id;
 			}
 			else{
 				$query['conditions']['Decisioncui66.id'] = $id;

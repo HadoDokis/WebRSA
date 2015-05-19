@@ -101,7 +101,7 @@ function zeroFillDate( dateString ){
 function inArray( needle, haystack ){
 	'use strict';
 	var key;
-	if ( needle === null || typeof toString(needle) !== 'string' || !Array.isArray( haystack ) ){
+	if ( needle === null || typeof toString(needle) !== 'string' || !Array.isArray( haystack ) ){
 		return false;
 	}
 	for (key in haystack){
@@ -144,6 +144,13 @@ document.observe( "dom:loaded", function(){
 
 	// Rend les boutons radio décochable si ils portent la class uncheckable
 	$$('input[type="radio"].uncheckable').each(function( radio ){
+		// Ajoute un hidden vide si le bouton n'en possède pas
+		var parent = radio.up('fieldset');
+		var hidden = parent !== null ? parent.select('input[type="hidden"][name="' + radio.name + '"]').first() : undefined;
+		if ( hidden === undefined ){
+			parent.insert({top: '<input type="hidden" name="' + radio.name + '" value="" />'});
+		}
+		
 		radio.state = radio.checked;
 		uncheckable( radio );
 	});

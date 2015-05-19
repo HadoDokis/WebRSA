@@ -108,7 +108,10 @@
 			),
 			'Par Contrats' => array(
 				'Par CER' => array( 'url' => array( 'controller' => 'criteresci', 'action' => 'index'  ) ),
-				'Par CUI' => array( 'url' => array( 'controller' => 'criterescuis', 'action' => 'index'  ) ),
+				'Par CUI' => array( 
+					'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
+				),
 			),
 			'Par Entretiens' => array( 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
 			'Par Fiches de candidature' => array(

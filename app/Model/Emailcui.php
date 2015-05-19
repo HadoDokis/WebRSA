@@ -25,6 +25,11 @@
 				'foreignKey' => 'cui_id',
 				'dependent' => true,
 			),
+			'Textmailcui66' => array(
+				'className' => 'Textmailcui66',
+				'foreignKey' => 'textmailcui66_id',
+				'dependent' => false
+			)
 		);
 		
 		/**
@@ -147,10 +152,10 @@
 		 * @param array $data
 		 * @return boolean
 		 */
-		public function saveAddEdit( array $data, $user_id = null ) {
+		public function saveAddEdit( array $data, $user_id = null ) {debug($data);
 			$data['Emailcui']['user_id'] = $user_id;
-			$data['Emailcui']['pj'] = implode( '_', $data['Emailcui']['pj'] );
-			$data['Emailcui']['piecesmanquantes'] = implode( '_', $data['Emailcui']['piecesmanquantes'] );
+			$data['Emailcui']['pj'] = is_array($data['Emailcui']['pj']) ? implode( '_', $data['Emailcui']['pj'] ) : '';
+			$data['Emailcui']['piecesmanquantes'] = is_array($data['Emailcui']['piecesmanquantes']) ? implode( '_', $data['Emailcui']['piecesmanquantes'] ) : '';
 			
 			$this->create($data);
 			$success = $this->save($data);
@@ -168,29 +173,31 @@
 		public function options( array $params = array() ) {
 			$options = array();
 			
-			// Fichiers liés
-			$query = array(
-				'fields' => array(
-					'Piecemailcui66.id',
-					'Piecemailcui66.name'
-				),
-				'recursive' => -1,
-				'conditions' => array(
-					'Piecemailcui66.isactif' => '1',
-					'Piecemailcui66.haspiecejointe' => '1'
-				),
-				'depend' => false
-			);
-			$files = ClassRegistry::init( 'Piecemailcui66' )->find( 'all', $query );
-			foreach( $files as $file ){
-				$options['Piecemailcui66'][$file['Piecemailcui66']['id']] = $file['Piecemailcui66']['name'];
+			if ( Configure::read( 'Cg.departement' ) == 66 ){
+				// Fichiers liés
+				$query = array(
+					'fields' => array(
+						'Piecemailcui66.id',
+						'Piecemailcui66.name'
+					),
+					'recursive' => -1,
+					'conditions' => array(
+						'Piecemailcui66.isactif' => '1',
+						'Piecemailcui66.haspiecejointe' => '1'
+					),
+					'depend' => false
+				);
+				$files = ClassRegistry::init( 'Piecemailcui66' )->find( 'all', $query );
+				foreach( $files as $file ){
+					$options['Piecemailcui66'][$file['Piecemailcui66']['id']] = $file['Piecemailcui66']['name'];
+				}
+
+				// Pièces manquante
+				$options['Piecemanquantecui66'] = ClassRegistry::init( 'Piecemanquantecui66' )->find( 'list', array( 'order' => 'name' ) );
+
+				// Modeles d'e-mail parametrable
+				$options['Emailcui']['textmailcui66_id'] = ClassRegistry::init( 'Textmailcui66' )->find( 'list', array( 'order' => 'name' ) );
 			}
-			
-			// Pièces manquante
-			$options['Piecemanquantecui66'] = ClassRegistry::init( 'Piecemanquantecui66' )->find( 'list', array( 'order' => 'name' ) );
-			
-			// Modeles d'e-mail parametrable
-			$options['Emailcui']['textmailcui66_id'] = ClassRegistry::init( 'Textmailcui66' )->find( 'list', array( 'order' => 'name' ) );
 
 			$options = Hash::merge(
 				$options,
