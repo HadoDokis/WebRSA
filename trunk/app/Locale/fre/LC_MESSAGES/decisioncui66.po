@@ -20,10 +20,10 @@ msgstr ""
 ###############################################################################
 
 msgid "ENUM::DECISION::accord"
-msgstr "Accord"
+msgstr "Accordé"
 
 msgid "ENUM::DECISION::refus"
-msgstr "Refus"
+msgstr "Refusé"
 
 msgid "ENUM::DECISION::ajourne"
 msgstr "Ajourné"

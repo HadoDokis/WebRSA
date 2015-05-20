@@ -23,9 +23,9 @@
 				'Accompagnementcui66.organismesuivi',
 				'Accompagnementcui66.nomredacteur',
 				'Accompagnementcui66.observation',
-				'Accompagnementcui66.datededebut',
-				'Accompagnementcui66.datedefin',
-				'Accompagnementcui66.datedesignature',
+				'Accompagnementcui66.datededebut' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Accompagnementcui66.datedefin' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Accompagnementcui66.datedesignature' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 			) ,
 			array( 'options' => $options )
 		)

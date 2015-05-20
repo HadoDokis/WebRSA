@@ -20,6 +20,7 @@
 				'Propositioncui66.donneuravis',
 				'Propositioncui66.dateproposition',
 				'Propositioncui66.avis',
+				'Propositioncui66.motif' => array( 'type' => 'select' ),
 				'Propositioncui66.observation',
 			),
 			array(
@@ -36,6 +37,7 @@
 				'Decisioncui66.id' => array( 'type' => 'hidden' ),
 				'Decisioncui66.cui66_id' => array( 'type' => 'hidden' ),
 				'Decisioncui66.decision',
+				'Decisioncui66.motif' => array( 'empty' => true ),
 				'Decisioncui66.datedecision' => array( 'dateFormat' => 'DMY', 'timeFormat' => 24, 'minYear' => 2009, 'maxYear' => date('Y')+1 ),
 				'Decisioncui66.observation',
 			) ,
@@ -48,3 +50,10 @@
 	echo $this->Default3->DefaultForm->end();
 	echo $this->Observer->disableFormOnSubmit( 'Decisioncui66AddEditForm' );
 	
+	echo $this->Observer->disableFieldsOnValue(
+		'Decisioncui66.decision',
+		array( 'Decisioncui66.motif' ),
+		array( 'accord' ),
+		true,
+		true
+	);

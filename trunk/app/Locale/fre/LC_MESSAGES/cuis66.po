@@ -36,6 +36,9 @@ msgstr "Ajout d'un Contrat Unique d'Insertion"
 msgid "/Cuis66/edit/:heading"
 msgstr "Modification d'un Contrat Unique d'Insertion"
 
+msgid "/Cuis66/view/:heading"
+msgstr "Vue d'un Contrat Unique d'Insertion"
+
 msgid "/Cuis66/view"
 msgstr "Voir"
 
@@ -309,6 +312,9 @@ msgstr "Dossier complet ?"
 
 msgid "Cui66.datecomplet"
 msgstr "Date du dossier complet"
+
+msgid "Cui66.notedossier"
+msgstr "Commentaire sur le dossier"
 
 ###############################################################################
 # E-mail employeur
@@ -589,6 +595,12 @@ msgstr "Décision sur le CUI"
 msgid "Decisionscuis66.datedecision"
 msgstr "Date de la décision"
 
+msgid "Cui66.notifie"
+msgstr "Notifié"
+
+msgid "Historiquepositioncui66.created"
+msgstr "Date du dernier changement de position"
+
 ################################################################################
 # Fieldset du formulaire CUI
 ################################################################################
@@ -658,6 +670,9 @@ msgstr "Financement exclusif du conseil général :"
 
 msgid "Cui.organismepayeur"
 msgstr "Organisme payeur de l’aide du conseil général à l’employeur :"
+
+msgid "Cui66.positions"
+msgstr "Position du CUI"
 
 ################################################################################
 # Email Cui

@@ -306,6 +306,13 @@
 			$this->create($data);
 			$success = $success && $this->save();
 			
+			// Dans le cas d'un ajout, on met à jour les parametrages des partenaires
+			if ( empty($data['Cui']['id']) ){
+				$data = $this->Cui->Partenairecui->Partenairecui66->addPartenaireData( $data );
+				$this->Cui->Partenaire->create($data['Partenaire']);
+				$success = $success && $this->Cui->Partenaire->save();
+			}
+			
 			return $success;
 		}
 		

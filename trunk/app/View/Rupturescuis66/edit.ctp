@@ -19,7 +19,7 @@
 				'Rupturecui66.id' => array( 'type' => 'hidden' ),
 				'Rupturecui66.cui66_id' => array( 'type' => 'hidden' ),
 				'Rupturecui66.observation',
-				'Rupturecui66.daterupture' => array( 'dateFormat' => 'DMY' ),
+				'Rupturecui66.daterupture' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 				'Rupturecui66.motif' => array( 'type' => 'select' ),
 				'Rupturecui66.dateenregistrement' => array( 'view' => true, 'hidden' => true, 'type' => 'date' )
 			) ,
