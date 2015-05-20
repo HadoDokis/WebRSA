@@ -19,9 +19,10 @@
 				'Propositioncui66.id' => array( 'type' => 'hidden' ),
 				'Propositioncui66.cui66_id' => array( 'type' => 'hidden' ),
 				'Propositioncui66.donneuravis',
-				'Propositioncui66.dateproposition' => array( 'dateFormat' => 'DMY' ),
+				'Propositioncui66.dateproposition' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 				'Propositioncui66.observation',
 				'Propositioncui66.avis',
+				'Propositioncui66.motif',
 			) ,
 			array( 'options' => $options )
 		)
@@ -32,3 +33,10 @@
 	echo $this->Default3->DefaultForm->end();
 	echo $this->Observer->disableFormOnSubmit( 'Propositioncui66AddEditForm' );
 	
+	echo $this->Observer->disableFieldsOnValue(
+		'Propositioncui66.avis',
+		array( 'Propositioncui66.motif' ),
+		array( 'attentedecision', 'accord' ),
+		true,
+		true
+	);

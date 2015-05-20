@@ -153,7 +153,7 @@
 				'Apre.periodeMontantMaxComplementaires' => 'integer',
 				'Apre.pourcentage.montantversement' => 'numeric',
 				'Apre.suffixe' =>  array(
-					array( 'rule' => 'inList', array( 66 ), 'allowEmpty' =>true ),
+					array( 'rule' => 'inList', array( 66, '66' ), 'allowEmpty' =>true ),
 				),
 				'CG.cantons' => 'boolean',
 				'Cg.departement' => array(
@@ -307,7 +307,7 @@
 				'Nonorganismeagree.Structurereferente.id' => 'isarray',
                 'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray',
                 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe' => 'string',
-				'Criterescuis.index.fields' => 'isarray',
+				'Criterescuis.search.fields' => 'isarray',
 				'Criterescuis.exportcsv' => 'isarray'
 			);
 		}

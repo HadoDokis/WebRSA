@@ -704,12 +704,13 @@ ALTER TABLE cuis66 ADD CONSTRAINT cuis66_notifie_in_list_chk CHECK ( cakephp_val
 
 CREATE TABLE propositionscuis66
 (
-	id SERIAL NOT NULL PRIMARY KEY,
-	cui66_id INTEGER NOT NULL REFERENCES cuis66(id),
-	donneuravis VARCHAR(8) NOT NULL,
-	dateproposition DATE NOT NULL,
-	observation TEXT,
-	avis VARCHAR(15) NOT NULL,
+	id							SERIAL NOT NULL PRIMARY KEY,
+	cui66_id					INTEGER NOT NULL REFERENCES cuis66(id),
+	donneuravis					VARCHAR(8) NOT NULL,
+	dateproposition				DATE NOT NULL,
+	observation					TEXT,
+	avis						VARCHAR(15) NOT NULL,
+	motif						INTEGER,
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
@@ -727,10 +728,11 @@ ALTER TABLE propositionscuis66 ADD CONSTRAINT cuis_propositions66_avis_in_list_c
 
 CREATE TABLE decisionscuis66
 (
-	id SERIAL NOT NULL PRIMARY KEY,
-	cui66_id INTEGER NOT NULL REFERENCES cuis66(id),
-	decision VARCHAR(9) NOT NULL,
-	datedecision TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+	id SERIAL					NOT NULL PRIMARY KEY,
+	cui66_id					INTEGER NOT NULL REFERENCES cuis66(id),
+	decision					VARCHAR(9) NOT NULL,
+	motif						INTEGER,
+	datedecision				TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 	observation TEXT,
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
@@ -904,6 +906,19 @@ COMMENT ON TABLE piecesmanquantescuis66
 -- DROP INDEX piecesmanquantescuis66_name_idx;
 
 CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx ON piecesmanquantescuis66(name);
+
+-------------------------------------------------------------------------------------
+-- Ajout d'une table de paramétrage pour les motifs de décision de refus de CUI
+-------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS motifsrefuscuis66 CASCADE;
+CREATE TABLE motifsrefuscuis66(
+  id			SERIAL NOT NULL PRIMARY KEY,
+  name			VARCHAR(250) NOT NULL,
+  created		TIMESTAMP WITHOUT TIME ZONE,
+  modified		TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifsrefuscuis66 IS 'Liste des motifs de décision de refus de CUIs (CG66)';
 
 --------------------------------------------------------------------------------
 -- Ticket #6054: ajout du référent aux tableaux de suivi

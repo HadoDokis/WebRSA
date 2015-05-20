@@ -20,8 +20,8 @@
 				'Suspensioncui66.cui66_id' => array( 'type' => 'hidden' ),
 				'Suspensioncui66.observation',
 				'Suspensioncui66.duree',
-				'Suspensioncui66.datedebut' => array( 'dateFormat' => 'DMY' ),
-				'Suspensioncui66.datefin' => array( 'dateFormat' => 'DMY' ),
+				'Suspensioncui66.datedebut' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
+				'Suspensioncui66.datefin' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 				'Suspensioncui66.motif' => array( 'type' => 'select' ),
 				
 			) ,

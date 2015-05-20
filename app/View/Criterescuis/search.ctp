@@ -22,7 +22,13 @@
 	);
 
 	// 1. Moteur de recherche
-	echo $this->Xform->create( null, array( 'id' => 'CriterescuisSearchSearchForm', 'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Xform->create( null, 
+		array( 
+			'id' => 'CriterescuisSearchSearchForm', 
+			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
+			'url' => $this->Html->url( array( 'controller' => 'criterescuis', 'action' => 'search' ) )
+		)
+	);
 
 	echo $this->Allocataires->blocDossier(
 		array(
@@ -69,7 +75,7 @@
 		echo '<fieldset><legend id="Cui66Choixformulaire">' . __d('cuis66', 'Cui66.positions') . '</legend>'
 			. $this->Default3->subform(
 				array(
-					'Search.Cui66.etatdossiercui66' => array( 'empty' => true, 'options' => $options['Cui66']['etatdossiercui66'], 'label' => __d( 'cuis66', 'Cui66.etatdossiercui66' ) )
+					'Search.Cui66.etatdossiercui66' => array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Cui66']['etatdossiercui66'], 'label' => __d( 'cuis66', 'Cui66.etatdossiercui66' ) )
 				)
 			) 
 			. $this->SearchForm->dateRange( 'Search.Historiquepositioncui66.created', $paramDate )	

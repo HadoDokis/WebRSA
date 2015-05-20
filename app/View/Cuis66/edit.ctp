@@ -66,12 +66,11 @@
 	echo '<fieldset><legend>' . __d('cuis66', 'Partenaire.charger') . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Cui.partenaire_id' => array( 'empty' => true, 'type' => 'select' ),		
-				//'Partenaire.actioncandidat_id' => array( 'empty' => true, 'type' => 'select' )
+				'Cui.partenaire_id' => array( 'empty' => true, 'type' => 'select' ),
 			),
 			array( 'options' => $options )
 		) 
-		. '<div class="submit"><input type="button" id="PartenaireCharger" value="Charger" /><input type="button" id="PartenaireUpdate" value="Mettre à jour" /></div></fieldset>'
+		. '<div class="submit"><input type="button" id="PartenaireCharger" value="Charger" /></div></fieldset>'
 		. $this->Default3->subform(
 			array(
 				'Partenairecui.raisonsociale',

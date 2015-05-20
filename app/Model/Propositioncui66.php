@@ -96,10 +96,13 @@
 		 */
 		public function options( array $params = array() ) {
 			$options = array();
+			
+			$optionRefus = $this->enums();
+			$optionRefus['Propositioncui66']['motif'] = ClassRegistry::init( 'motifrefuscui66' )->find( 'list' );
 
 			$options = Hash::merge(
 				$options,
-				$this->enums()
+				$optionRefus
 			);
 
 			return $options;

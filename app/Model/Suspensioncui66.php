@@ -51,6 +51,7 @@
 				$result = array(
 					'Suspensioncui66' => array(
 						'cui66_id' => $cui66_id,
+						'duree' => 'journee'
 					)
 				);
 			}

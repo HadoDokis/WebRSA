@@ -65,6 +65,7 @@
 			'Decisioncui66.decision',
 			'Decisioncui66.datedecision',
 			'Cui66.notifie' => array( 'type' => 'select' ),
+			'Cui66.raisonannulation',
 			'/Cuis66/view/#Cui.id#' => array(
 				'title' => __d('cuis66', '/Cuis66/view'),
 				'disabled' => $perm['view']

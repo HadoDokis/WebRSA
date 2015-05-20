@@ -93,52 +93,6 @@
 		);
 		
 		/**
-		 * Fait le lien entre la table Partenaire et Les nouvelles tables pour le CUI
-		 * 
-		 * @var type 
-		 */
-		public $correspondancesChamps = array(
-			'canton' => 'Adressecui.canton',
-			'clerib' => 'Partenairecui66.clerib',
-			'codeban' => 'Partenairecui66.codebanque',
-			'codepartenaire' => 'Partenairecui66.codepartenaire',
-			'codepostal' => 'Adressecui.codepostal',
-			'compladr' => 'Adressecui.complement',
-//			'directeur' => '',
-			'email' => 'Adressecui.email',
-			'guiban' => 'Partenairecui66.codeguichet',
-//			'libstruc' => '',
-			'nometaban' => 'Partenairecui66.etablissementbancaire',
-//			'nomresponsable' => '',
-			'nomtiturib' => 'Partenairecui66.nomtitulairerib',
-			'nomvoie' => 'Adressecui.nomvoie',
-			'numcompt' => 'Partenairecui66.numerocompte',
-			'numfax' => 'Adressecui.numfax',
-			'numtel' => 'Adressecui.numtel',
-			'numvoie' => 'Adressecui.numvoie',
-			'orgrecouvcotis' => 'Partenairecui.organismerecouvrement',
-//			'president' => '',
-			'siret' => 'Partenairecui.siret',
-			'statut' => 'Partenairecui.statut',
-			'typevoie' => 'Adressecui.typevoie',
-			'ville' => 'Adressecui.commune',
-			'libstruc' => 'Partenairecui.raisonsociale',
-		);
-		public $removeMe = array(
-'Partenairecui.naf', // TODO
-'Partenairecui.effectif' => array( 'type' => 'text' ), // TODO
-'Partenairecui.organismerecouvrement' => array( 'empty' => true ), // TODO Vérifier le champ
-'Partenairecui.assurancechomage', // TODO
-'Partenairecui66.objet', // TODO
-'Partenairecui66.nblits', // TODO
-'Partenairecui66.nbcontratsaideshorscg', // TODO
-'Partenairecui66.nbcontratsaidescg' => array( 'view' => true, 'hidden' => true ), // TODO
-'Partenairecui.ajourversement', // TODO
-'Partenairecui.raisonsociale', // TODO virer la clé étrangère ?
-'Partenairecui.enseigne', // TODO
-			);
-		
-		/**
 		 * Nom de l'array contenant la config pour l'envoi d'e-mails
 		 * @see app/Config/email.php
 		 * @var String
@@ -206,9 +160,9 @@
 
 			if( !empty( $this->request->data ) ) {
 				$this->Cui->Cui66->begin();
-				if( $this->Cui->Cui66->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) { // FIXME!
+				if( $this->Cui->Cui66->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
 					$this->Cui->Cui66->commit();
-					$cui_id = $this->request->data['Cui']['id'];
+					$cui_id = $this->Cui->id;
 					$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
 					// TODO Sauvegarder les informations de Partenairecui dans les parametrages (Voir confirmation)
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
@@ -216,7 +170,7 @@
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
-					$this->Cui->Cui66->rollback();debug($this->Cui->Cui66->validationErrors);
+					$this->Cui->Cui66->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
@@ -274,7 +228,7 @@
 			$personne = $this->Cui->Personne->find('first', $queryPersonne);
 			$personne['Foyer']['nb_enfants'] = $this->Cui->Personne->Prestation->getNbEnfants( $personne_id );
 
-			$correspondancesChamps = json_encode( $this->correspondancesChamps );
+			$correspondancesChamps = json_encode( $this->Cui->Partenairecui->Partenairecui66->correspondancesChamps );
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne', 'mailEmployeur', 'correspondancesChamps' ) );
 			$this->render( 'edit' );
 		}

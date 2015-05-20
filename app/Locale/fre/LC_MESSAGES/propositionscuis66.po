@@ -55,5 +55,8 @@ msgstr "Date de proposition"
 msgid "Propositioncui66.avis"
 msgstr "Avis"
 
+msgid "Propositioncui66.motif"
+msgstr "Motif"
+
 msgid "Propositioncui66.observation"
 msgstr "Observations"

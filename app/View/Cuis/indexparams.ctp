@@ -40,6 +40,19 @@
 
                 echo $this->Xhtml->tableCells(
                     array(
+                        h( 'Motifs de Décision de refus' ),
+                        $this->Xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'motifsrefuscuis66', 'action' => 'index' ),
+                            $this->Permissions->check( 'motifsrefuscuis66', 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+
+                echo $this->Xhtml->tableCells(
+                    array(
                         h( 'Pièces liées aux mails employeur' ),
                         $this->Xhtml->viewLink(
                             'Voir la table',

@@ -29,6 +29,7 @@
 		array(
 			'Decisioncui66.datedecision',
 			'Decisioncui66.decision',
+			'Decisioncui66.motif' => array( 'type' => 'select' ),
 			'Decisioncui66.observation',
 			'/Decisionscuis66/edit/#Decisioncui66.id#/' => array(
 				'title' => __d('propositionscuis66', '/Decisionscuis66/edit'),
