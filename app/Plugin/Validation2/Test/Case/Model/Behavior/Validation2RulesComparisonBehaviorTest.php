@@ -285,5 +285,32 @@
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la méthode Validation2RulesComparisonBehavior::checkDureeDates
+		 *
+		 * @return void
+		 */
+		public function testCheckDureeDates() {
+			$result = $this->Site->checkDureeDates( null, null, null );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// Avec une durée incorrecte
+			$data = array( 'dd' => '2015-05-20', 'df' => '2016-05-19' );
+			$this->Site->create( $data );
+
+			$result = $this->Site->checkDureeDates( array( 'duree' => '10' ), 'dd', 'df' );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// Avec une durée correcte
+			$data = array( 'dd' => '2015-05-20', 'df' => '2016-03-19' );
+			$this->Site->create( $data );
+
+			$result = $this->Site->checkDureeDates( array( 'duree' => '10' ), 'dd', 'df' );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>

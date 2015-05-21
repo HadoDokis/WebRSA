@@ -1431,7 +1431,7 @@
 		 *
 		 * @var array
 		 */
-		public $etat_dossier_orientation = array( 'oriente', 'en_attente', 'non_oriente' );
+		public $etat_dossier_orientation = array( 'oriente', 'en_attente', 'non_oriente', 'en_cours_reorientation' );
 
 		public function enums() {
 			$cacheKey = implode( '_', array( $this->useDbConfig, $this->alias, __FUNCTION__ ) );
@@ -1569,6 +1569,7 @@
 				$existsPassagecov58 = "EXISTS( {$existsPassagecov58[0]} )";
 
 				$return = '( CASE
+						WHEN ( ( '.$existsOrientsstruct.' ) AND ( '.$existsPassagecommissionep.' OR '.$existsPassagecov58.' ) ) THEN \'en_cours_reorientation\'
 						WHEN ( '.$existsOrientsstruct.' ) THEN \'oriente\'
 						WHEN ( '.$existsPassagecommissionep.' OR '.$existsPassagecov58.' ) THEN \'en_attente\'
 						ELSE \'non_oriente\'

@@ -27,7 +27,8 @@
 				'suffix' => array( 'structurereferente_id', 'referent_id' ),
 			),
 			'Postgres.PostgresAutovalidate',
-			'Validation2.Validation2Formattable'
+			'Validation2.Validation2Formattable',
+			'Validation2.Validation2RulesComparison'
 		);
 
 		/**
@@ -53,6 +54,12 @@
 				'notEmpty' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
+				)
+			),
+			'duree_engag' => array(
+				'checkDureeDates' => array(
+					'rule' => array( 'checkDureeDates', 'dd_ci', 'df_ci' ),
+					'message' => 'Les dates de début et de fin ne correspondent pas à la durée'
 				)
 			)
 		);

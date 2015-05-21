@@ -80,6 +80,19 @@
 				[ null, '', 'annule', 'reporte' ],
 				true
 			);
+
+			Commission.preremplissageDecisionOrientation(
+				'Decisionnonorientationprocov58',
+				'<?php echo $i;?>',
+				[
+					{
+					value: 'maintienref',
+					typeorient_id: '<?php echo $dossiers[$theme]['liste'][$i]['Nonorientationprocov58']['Orientstruct']['typeorient_id'];?>',
+					structurereferente_id: '<?php echo $dossiers[$theme]['liste'][$i]['Nonorientationprocov58']['Orientstruct']['structurereferente_id'];?>',
+					referent_id: '<?php echo $dossiers[$theme]['liste'][$i]['Nonorientationprocov58']['Orientstruct']['referent_id'];?>'
+					}
+				]
+			);
 		<?php endfor;?>
 	} );
 </script>

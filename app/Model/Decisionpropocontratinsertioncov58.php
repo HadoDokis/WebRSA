@@ -28,7 +28,23 @@
 					'referent_id'
 				)
 			),
-			'Enumerable'
+			'Enumerable',
+			'Validation2.Validation2RulesComparison'
+		);
+
+		/**
+		 * Règles de validation à appliquer en plus de celles déduites de la
+		 * base de données.
+		 *
+		 * @var array
+		 */
+		public $validate = array(
+			'duree_engag' => array(
+				'checkDureeDates' => array(
+					'rule' => array( 'checkDureeDates', 'dd_ci', 'df_ci' ),
+					'message' => 'Les dates de début et de fin ne correspondent pas à la durée'
+				)
+			)
 		);
 
 		public $belongsTo = array(

@@ -88,6 +88,25 @@
 				[ null, '', 'annule', 'reporte' ],
 				true
 			);
+
+			Commission.preremplissageDecisionOrientation(
+				'Decisionregressionorientationcov58',
+				'<?php echo $i;?>',
+				[
+					{
+						value: 'accepte',
+						typeorient_id: '<?php echo $dossiers[$theme]['liste'][$i]['Regressionorientationcov58']['typeorient_id'];?>',
+						structurereferente_id: '<?php echo $dossiers[$theme]['liste'][$i]['Regressionorientationcov58']['structurereferente_id'];?>',
+						referent_id: '<?php echo $dossiers[$theme]['liste'][$i]['Regressionorientationcov58']['referent_id'];?>'
+					},
+					{
+						value: 'refuse',
+						typeorient_id: '<?php echo $dossiers[$theme]['liste'][$i]['Regressionorientationcov58']['Orientstruct']['typeorient_id'];?>',
+						structurereferente_id: '<?php echo $dossiers[$theme]['liste'][$i]['Regressionorientationcov58']['Orientstruct']['structurereferente_id'];?>',
+						referent_id: '<?php echo $dossiers[$theme]['liste'][$i]['Regressionorientationcov58']['Orientstruct']['referent_id'];?>'
+					},
+				]
+			);
 		<?php endfor;?>
 	} );
 </script>

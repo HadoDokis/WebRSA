@@ -2223,3 +2223,66 @@ function getCakeQueriesCount() {
 
 	return count;
 }
+
+/**
+ * Objet contenant des méthodes utilitaires pouvant être utilisées dans la prise
+ * de décision de différentes thématiques de COV et d'EP.
+ *
+ * @namespace Commission
+ */
+var Commission = {
+	myTriggerEvent: function( id, name ) {
+		try {
+			Element.getStorage( id )
+				.get( 'prototype_event_registry' )
+				.get( name )
+				.each( function( wrapper ){ wrapper.handler(); } );
+		} catch( e ) {
+			console.log( e );
+		}
+	},
+	preremplissageDecisionOrientation: function( modele, index, preremplissages ) {
+		var select = modele + index + 'Decisioncov';
+
+		$( select ).observe( 'change', function( event ) {
+			var found = false;
+
+			$( preremplissages ).each( function( preremplissage ) {
+				if( found === false && $F( select ) === preremplissage.value ) {
+					found = true;
+
+					// Type d'orientation
+					$( modele + index + 'TypeorientId' ).value = preremplissage.typeorient_id;
+					Commission.myTriggerEvent( modele + index + 'TypeorientId', 'change' );
+
+					// Structure référente
+					$( modele + index + 'StructurereferenteId' ).value = preremplissage.typeorient_id + '_' + preremplissage.structurereferente_id;
+					Commission.myTriggerEvent( modele + index + 'StructurereferenteId', 'change' );
+
+					// Référent
+					if( preremplissage.referent_id !== '' ) { // TODO: à vérifier
+						$( modele + index + 'ReferentId' ).value = preremplissage.structurereferente_id + '_' + preremplissage.referent_id;
+					}
+					else {
+						$( modele + index + 'ReferentId' ).value = '';
+					}
+					Commission.myTriggerEvent( modele + index + 'ReferentId', 'change' );
+				}
+			} );
+
+			if( found === false ) {
+				// Type d'orientation
+				$( modele + index + 'TypeorientId' ).value = '';
+				Commission.myTriggerEvent( modele + index + 'TypeorientId', 'change' );
+
+				// Structure référente
+				$( modele + index + 'StructurereferenteId' ).value = '';
+				Commission.myTriggerEvent( modele + index + 'StructurereferenteId', 'change' );
+
+				// Référent
+				$( modele + index + 'ReferentId' ).value = '';
+				Commission.myTriggerEvent( modele + index + 'ReferentId', 'change' );
+			}
+		} );
+	}
+};

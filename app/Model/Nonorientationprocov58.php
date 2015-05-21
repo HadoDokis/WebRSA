@@ -131,6 +131,7 @@
 				'Orientstruct' => array(
 					'Typeorient',
 					'Structurereferente',
+					'Referent'
 				)
 			);
 

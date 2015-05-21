@@ -104,6 +104,9 @@ msgstr "En attente"
 msgid "ENUM::ETAT_DOSSIER_ORIENTATION::non_oriente"
 msgstr "Non orienté"
 
+msgid "ENUM::ETAT_DOSSIER_ORIENTATION::en_cours_reorientation"
+msgstr "En cours de réorientation"
+
 ###############################################################################
 
 msgid "Foyer.Modecontact.numtel"
