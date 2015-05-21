@@ -884,7 +884,7 @@ CREATE INDEX historiquepositionscuis66_cui66_id_idx ON historiquepositionscuis66
 -- Historique des changements de positions du Cui (CG 66)
 --------------------------------------------------------------------------------
 
-DROP TABLE piecesmanquantescuis66;
+DROP TABLE IF EXISTS piecesmanquantescuis66;
 CREATE TABLE piecesmanquantescuis66
 (
   id serial NOT NULL,
