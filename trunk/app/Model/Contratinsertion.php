@@ -62,8 +62,10 @@
 			'StorablePdf' => array(
 				'active' => STORABLE_PDF_ACTIVE,
 				'afterSave' => 'deleteAll'
-			)
+			),
+			'Validation2.Validation2RulesComparison'
 		);
+
 		public $validate = array(
 			'actions_prev' => array(
 				'notEmpty' => array(
@@ -153,6 +155,10 @@
 				array(
 					'rule' => 'numeric',
 					'message' => 'Veuillez entrer une valeur numérique.'
+				),
+				'checkDureeDates' => array(
+					'rule' => array( 'checkDureeDates', 'dd_ci', 'df_ci' ),
+					'message' => 'Les dates de début et de fin ne correspondent pas à la durée'
 				)
 			),
 			'nature_projet' => array(

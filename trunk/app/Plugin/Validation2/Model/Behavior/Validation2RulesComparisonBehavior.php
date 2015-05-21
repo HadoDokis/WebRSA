@@ -265,5 +265,37 @@
 			$found = $Model->find( 'first', $querydata );
 			return empty( $found );
 		}
+
+		/**
+		 * Vérifie que la durée en mois contenue dans le champ soit bien cohérente
+		 * avec la durée définie par les dates de début et de fin, bornes comprises,
+		 * avec arrondi.
+		 *
+		 * @param Model $Model
+		 * @param array $checks
+		 * @param string $dateDebut Le champ représentant la date de début
+		 * @param string $dateFin Le champ représentant la date de fin
+		 * @return boolean
+		 */
+		public function checkDureeDates( Model $Model, $checks, $dateDebut, $dateFin ) {
+			if( !is_array( $checks ) ) {
+				return false;
+			}
+
+			$success = true;
+
+			$dd = Hash::get( $Model->data, "{$Model->alias}.{$dateDebut}" );
+			$df = Hash::get( $Model->data, "{$Model->alias}.{$dateFin}" );
+
+			$expected = round( ( strtotime( $df ) - strtotime( $dd ) ) / ( 60 * 60 * 24 * 30 ) );
+
+			if( !empty( $checks ) ) {
+				foreach( $checks as $value ) {
+					$success = ( $expected == $value ) && $success;
+				}
+			}
+
+			return $success;
+		}
 	}
 ?>

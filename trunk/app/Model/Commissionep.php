@@ -623,7 +623,7 @@
 					}
 				}
 			}
-debug( $validates );
+
 			// Restauration des règles de validation
 			foreach( $validates as $alias => $validate ) {
 				$this->Passagecommissionep->{$modeleDecision}->validate = $validates[$modeleDecision];

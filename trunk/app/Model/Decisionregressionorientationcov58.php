@@ -92,6 +92,10 @@
 			'decisioncov' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' )
+				),
+				'checkDecisionAccepteOuRefuse' => array(
+					'rule' => array( 'checkDecisionAccepteOuRefuse' ),
+					'message' => 'Décision et type d\'orientation non cohérents'
 				)
 			),
 			'typeorient_id' => array(
@@ -129,6 +133,39 @@
 				'Structurereferente',
 				'Referent'
 			);
+		}
+
+		/**
+		 * Vérifie que lorsque la décision est accepte, alors le type
+		 * d'orientation ne sera pas de l'emploi et lorsque la décision est un
+		 * refus, alors le type d'orientation sera de l'emploi.
+		 *
+		 * @param array $checks
+		 * @return boolean
+		 */
+		public function checkDecisionAccepteOuRefuse( $checks ) {
+			if( !is_array( $checks ) ) {
+				return false;
+			}
+
+			$typeorientEmploiIds = (array)Configure::read( 'Typeorient.emploi_id' );
+			$success = true;
+			$typeorient_id = Hash::get( $this->data, "{$this->alias}.typeorient_id" );
+
+			if( !empty( $checks ) ) {
+				foreach( $checks as $value ) {
+					if( !empty( $value ) && !empty( $typeorient_id ) ) {
+						if( $value === 'accepte' ) {
+							$success = !in_array( $typeorient_id, $typeorientEmploiIds ) && $success;
+						}
+						else if( $value === 'refuse' ) {
+							$success = in_array( $typeorient_id, $typeorientEmploiIds ) && $success;
+						}
+					}
+				}
+			}
+
+			return $success;
 		}
 	}
 ?>
