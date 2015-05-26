@@ -1,18 +1,18 @@
 <?php
 	/**
-	 * Code source de la classe DepartementTest.
+	 * Code source de la classe DepartementUtilityTest.
 	 *
 	 * @package app.Test.Case.Utility
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'Departement', 'Utility' );
+	App::uses( 'DepartementUtility', 'Utility' );
 
 	/**
 	 * Surcharge de la classe pour pouvoir accéder aux méthodes protégées
 	 *
 	 * @package app.Test.Case.Utility
 	 */
-	class DepartementTestMoi extends Departement
+	class DepartementUtilityTestMoi extends DepartementUtility
 	{
 		public static function compareTypeorient( array $data1, array $data2 ) {
 			return self::_compareTypeorient( $data1, $data2 );
@@ -20,11 +20,11 @@
 	}
 
 	/**
-	 * La classe DepartementTest réalise les tests unitaires de la classe utilitaire Departement.
+	 * La classe DepartementUtilityTest réalise les tests unitaires de la classe utilitaire DepartementUtility.
 	 *
 	 * @package app.Test.Case.Utility
 	 */
-	class DepartementTest extends CakeTestCase
+	class DepartementUtilityTest extends CakeTestCase
 	{
 		protected $type = 'Utility';
 
@@ -37,7 +37,7 @@
 		}
 
 		/**
-		 * Test de la méthode Departement::getTypeorientName() pour le CG 66
+		 * Test de la méthode DepartementUtility::getTypeorientName() pour le CG 66
 		 */
 		public function testGetTypeorientName() {
 			$CG = Configure::read( 'Cg.departement' );
@@ -66,7 +66,7 @@
 		}
 
 		/**
-		 * Test de la méthode Departement::compareTypeorient() pour le CG 66
+		 * Test de la méthode DepartementUtility::compareTypeorient() pour le CG 66
 		 */
 		public function testCompareTypeorientCg66() {
 			// 1. Test de maintien de l'orientation
@@ -95,12 +95,12 @@
 		}
 
 		protected function _renderCompareTypeorientTest( $in1, $in2, $expected ){
-			$result = DepartementTestMoi::compareTypeorient( $in1, $in2 );
+			$result = DepartementUtilityTestMoi::compareTypeorient( $in1, $in2 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
 		protected function _renderGetTypeorientNameTest( $in1, $in2, $expected ){
-			$result = DepartementTestMoi::getTypeorientName( $in1, $in2 );
+			$result = DepartementUtilityTestMoi::getTypeorientName( $in1, $in2 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
