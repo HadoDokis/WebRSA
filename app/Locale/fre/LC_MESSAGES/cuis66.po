@@ -96,6 +96,9 @@ msgstr "Raison de l'annulation"
 msgid "/Cuis66/annule/:heading"
 msgstr "Annulation d'un CUI"
 
+msgid "Cuis66::filelink"
+msgstr "Fichiers liés au CUI"
+
 ###############################################################################
 # Choix Formulaire
 ###############################################################################
@@ -601,6 +604,9 @@ msgstr "Notifié"
 msgid "Historiquepositioncui66.created"
 msgstr "Date du dernier changement de position"
 
+msgid "Fichiermodule.nombre"
+msgstr " "
+
 ################################################################################
 # Fieldset du formulaire CUI
 ################################################################################
@@ -750,3 +756,12 @@ msgstr "Ruptures"
 
 msgid "/Cuis66/notification"
 msgstr "Notification"
+
+msgid "/Cuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Cuis66/impression_fichedeliaison"
+msgstr "Fiche de liaison"
+
+msgid "/Cuis66/impression"
+msgstr "Imprimer"

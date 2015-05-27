@@ -36,16 +36,9 @@
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
+			'Fileuploader',
 			'Gestionzonesgeos',
-			//'Gedooo.Gedooo',
-			//'InsertionsAllocataires',
-			'Jetons2', // FIXME: à cause de DossiersMenus
-			//'Search.Filtresdefaut' => array( 'search' ),
-			/*'Search.SearchPrg' => array(
-				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
-				)
-			),*/
+			'Jetons2',
 			'WebrsaModelesLiesCuis66',
 		);
 
@@ -59,11 +52,9 @@
 				'className' => 'Prototype.PrototypeAjax',
 				'useBuffer' => false
 			),
-			//'Allocataires',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
-			//'Search.SearchForm',
 			'Observer' => array(
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => true
@@ -83,11 +74,77 @@
 			'edit' => 'update',
 			'delete' => 'delete',
 			'view' => 'read',
+			'filelink' => 'view',
+			'ajaxfileupload' => 'add',
+			'ajaxfiledelete' => 'delete',
+			'fileview' => 'view',
+			'download' => 'view',
 		);
 		
+		/**
+		 * Envoi d'un fichier temporaire depuis le formualaire.
+		 */
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		 * Suppression d'un fichier temporaire.
+		 */
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		 * Visualisation d'un fichier temporaire.
+		 *
+		 * @param integer $id
+		 */
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		 * Visualisation d'un fichier stocké.
+		 *
+		 * @param integer $id
+		 */
+		public function download( $id ) {
+			$this->Fileuploader->download( $id );
+		}
+
+		/**
+		 * Liste des fichiers liés à une orientation.
+		 *
+		 * @param integer $id
+		 */
+		public function filelink( $id ) {
+			$query = array(
+				'fields' => array(
+					'Cui.personne_id',
+					'Cui.id'
+				),
+				'joins' => array(
+					$this->Decisioncui66->join( 'Cui66' ),
+					$this->Decisioncui66->Cui66->join( 'Cui' ),
+				),
+				'conditions' => array( 'Decisioncui66.id' => $id )
+			);
+			$result = $this->Decisioncui66->find( 'first', $query );
+			$personne_id = $result['Cui']['personne_id'];
+			$cui_id = $result['Cui']['id'];
+			
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $cui_id ) );
+			$urlmenu = "/cuis66/index/{$personne_id}";
+			
+			$options = $this->Decisioncui66->enums();
+			$this->set( compact( 'options', 'dossierMenu', 'urlmenu' ) );
+		}
 		
 		/**
-		 * Liste des Emails du CUI du bénéficiaire.
+		 * Liste des Decisions du CUI du bénéficiaire.
 		 * 
 		 * @param integer $cui_id
 		 */
@@ -97,11 +154,13 @@
 				'view' => 'index',
 				'urlmenu' => "/Cuis66/index/#0.Cui.personne_id#"
 			);
-			return $this->WebrsaModelesLiesCuis66->index( $cui_id, $params );
+			$customQuery['fields'][] = $this->Decisioncui66->Fichiermodule->sqNbFichiersLies( $this->Decisioncui66, 'nombre' );
+			
+			$this->WebrsaModelesLiesCuis66->index( $cui_id, $params, $customQuery );
 		}
 			
 		/**
-		 * Formulaire d'ajout d'avis technique CUI
+		 * Formulaire d'ajout de decisions du CUI
 		 *
 		 * @param integer $cui_id L'id du CUI
 		 */
@@ -111,7 +170,7 @@
 		}
 		
 		/**
-		 * Méthode générique d'ajout et de modification d'avis technique
+		 * Méthode générique d'ajout et de modification d'une decisions
 		 *
 		 * @param integer $id L'id du CUI (add) ou de la proposition (edit)
 		 */
@@ -127,8 +186,65 @@
 			$this->set ( compact( 'results' ) );
 		}
 		
+		/**
+		 * Suppression d'une décision
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
 		public function delete( $id ){
 			return $this->WebrsaModelesLiesCuis66->delete( $id );
+		}
+		
+		
+		/**
+		 * Impression générique
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		public function impression( $id ){
+			return $this->WebrsaModelesLiesCuis66->impression( $id );
+		}
+		
+		/**
+		 * Impression decision élu
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		public function impression_decisionelu( $id ){
+			return $this->WebrsaModelesLiesCuis66->impression( $id, 'decisionelu' );
+		}
+		
+		/**
+		 * Impression notification bénéficiaire
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		public function impression_notifbenef( $id ){
+			return $this->WebrsaModelesLiesCuis66->impression( $id, 'notifbenef' );
+		}
+		
+		/**
+		 * Impression notification employeur
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		public function impression_notifemployeur( $id ){
+			return $this->WebrsaModelesLiesCuis66->impression( $id, 'notifemployeur' );
+		}
+		
+		/**
+		 * Impression attestation de compétence
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		public function impression_attestationcompetence( $id ){
+			return $this->WebrsaModelesLiesCuis66->impression( $id, 'attestationcompetence' );
 		}
 	}
 ?>

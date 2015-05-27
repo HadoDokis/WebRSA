@@ -1,7 +1,5 @@
 <?php $this->pageTitle = 'Paramétrages des CUIs';?>
 <h1>Paramétrage des CUIs</h1>
-
-<?php echo $this->Form->create( 'Cuis', array() );?>
 	<table >
 		<thead>
 			<tr>
@@ -122,9 +120,16 @@
 			?>
 		</tbody>
 	</table>
-	<div class="submit">
-		<?php
-			echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-		?>
-	</div>
-<?php echo $this->Form->end();?>
+<br />
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'parametrages',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

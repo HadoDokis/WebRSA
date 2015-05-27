@@ -22,6 +22,7 @@
 	$perm['view'] = !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'view', $dossierMenu ) ? 'true' : 'false';
 	$perm['edit'] = !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'edit', $dossierMenu ) ? 'true' : 'false';
 	$perm['delete'] = !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'delete', $dossierMenu ) ? 'true' : 'false';
+	$perm['impression'] = !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'impression', $dossierMenu ) ? 'true' : 'false';
 
 	echo $this->Default3->index(
 		$results,
@@ -39,11 +40,21 @@
 				'class' => 'edit',
 				'disabled' => $perm['edit']
 			),
+			'/Accompagnementscuis66/impression/#Accompagnementcui66.id#/' => array(
+				'title' => __d('accompagnementscuis66', '/Accompagnementscuis66/impression'),
+				'class' => 'impression',
+				'disabled' => $perm['impression']
+			),
 			'/Accompagnementscuis66/delete/#Accompagnementcui66.id#/' => array(
 				'title' => __d('accompagnementscuis66', '/Accompagnementscuis66/delete'),
 				'class' => 'edit',
 				'disabled' => $perm['delete']
 			),
+			'/Accompagnementscuis66/filelink/#Accompagnementcui66.id#' => array(
+				'title' => __d('accompagnementscuis66', '/Accompagnementscuis66/filelink'),
+				'disabled' => !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'filelink', $dossierMenu )
+			),
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		),
 		array(
 			'options' => $options,

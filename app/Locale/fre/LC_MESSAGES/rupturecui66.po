@@ -27,3 +27,16 @@ msgstr "Après-midi"
 
 msgid "ENUM::DUREE::journee"
 msgstr "Journée"
+
+###############################################################################
+# PJ
+###############################################################################
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "Rupturecui66.haspiecejointe"
+msgstr "Pièces jointes"

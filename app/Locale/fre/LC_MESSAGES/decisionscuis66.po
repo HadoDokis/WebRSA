@@ -51,3 +51,24 @@ msgstr "Modifier"
 
 msgid "/Decisionscuis66/delete"
 msgstr "Supprimer"
+
+msgid "/Decisionscuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "Fichiermodule.nombre"
+msgstr " "
+
+msgid "/Decisionscuis66/impression"
+msgstr "Imprimer"
+
+msgid "/Decisionscuis66/impression_decisionelu"
+msgstr "Décision élu"
+
+msgid "/Decisionscuis66/impression_notifbenef"
+msgstr "Notification bénéficiaire"
+
+msgid "/Decisionscuis66/impression_notifemployeur"
+msgstr "Notification employeur"
+
+msgid "/Decisionscuis66/impression_attestationcompetence"
+msgstr "Attestation de compétence"

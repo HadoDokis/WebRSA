@@ -34,7 +34,7 @@
 			'Session'			
 		);
 
-		public function index( $cui_id, $params = array() ){
+		public function index( $cui_id, $params = array(), $customQuery = array() ){
 			$Controller = $this->_Collection->getController();
 
 			$params += array(
@@ -71,6 +71,7 @@
 				),
 				'order' => array( $params['modelClass'] . '.created DESC' )
 			);
+			$query = Hash::merge( $query, $customQuery );
 			$results = $Model->Cui66->find( 'all', $query );
 			
 			$messages = $Model->messages( $personne_id );
@@ -124,9 +125,9 @@
 
 			$query = $Model->queryView( $id );
 			$result = $Model->find( 'first', $query );
-			if ( isset($result['Entreeromev3']) ){
-				foreach( array_keys( $Model->Immersioncui66->Entreeromev3->belongsTo ) as $romev3Alias ) {
-					$result['Entreeromev3'][$romev3Alias] = $result[$romev3Alias];
+			if ( isset($result['Immersionromev3']) ){
+				foreach( array_keys( $Model->Immersioncui66->Immersionromev3->belongsTo ) as $romev3Alias ) {
+					$result['Immersionromev3'][$romev3Alias] = $result[$romev3Alias];
 					unset( $result[$romev3Alias] );
 				}
 			}
@@ -259,6 +260,103 @@
 			}
 			$this->Jetons2->release($dossierMenu['Dossier']['id']);
 			$Controller->redirect($Controller->referer());
+		}
+		
+		
+		/**
+		 * On lui donne l'id du Modèle lié au CUI et il renvoi le PDF
+		 * 
+		 * @param integer $id
+		 * @param string $modeleOdt
+		 * @return PDF
+		 */
+		protected function _getCuiPdf( $id, $modeleOdt = null, $options = null ){
+			$Controller = $this->_Collection->getController();
+			$Model = $Controller->{$Controller->modelClass};
+			
+			$path = 
+				$modeleOdt === null || !isset($Model->modelesOdt[$modeleOdt]) 
+				? sprintf( $Model->modelesOdt['default'], $Model->alias )
+				: sprintf( $Model->modelesOdt[$modeleOdt], $Model->alias )
+			;
+			$query = $Model->queryImpression( $id, $modeleOdt );
+			$Model->forceVirtualFields = true;
+			
+			$data = $Model->find( 'all', $query );
+			$options = array_merge(
+				$Model->options(),
+				$Model->Cui66->options()
+			);
+			
+			$result = $Model->ged(
+				$data,
+				$path,
+				true,
+				$options
+			);
+			
+			return $result;
+		}
+		
+		/**
+		 * Méthode générique d'impression d'un Modèle lié au CUI.
+		 * 
+		 * @param integer $id
+		 * @param string $modeleOdt
+		 */
+		public function impression( $id, $modeleOdt = null ){
+			$Controller = $this->_Collection->getController();
+			$Model = $Controller->{$Controller->modelClass};
+			
+			// On vérifi que les méthodes et les propriétés sont bien défini et que le modele demandé existe bien (null == 'default')
+			if ( !method_exists($Model, 'queryImpression') ){
+				$this->Session->setFlash('queryImpression() n\'existe pas dans ' . $Model->alias);
+				throw new NotImplementedException('queryImpression() n\'existe pas dans ' . $Model->alias );
+			}
+			if ( 
+				!property_exists($Model, 'modelesOdt') 
+				|| !isset($Model->modelesOdt['default']) 
+				|| ($modeleOdt !== null && !isset($Model->modelesOdt[$modeleOdt])) 
+			){
+				$this->Session->setFlash('modelesOdt n\'existe pas dans ' . $Model->alias);
+				throw new NotImplementedException('modelesOdt n\'existe pas dans ' . $Model->alias );
+			}
+			
+			// On vérifi que Gedooo est bien dans le model
+			if( $Model->Behaviors->attached( 'Gedooo.Gedooo' ) === false ) {
+				$Model->Behaviors->attach( 'Gedooo.Gedooo' );
+			}
+			
+			$query = array(
+				'fields' => array(
+					'Cui.personne_id',
+					'Cui.id'
+				),
+				'joins' => array(
+					$Model->join( 'Cui66' ),
+					$Model->Cui66->join( 'Cui' )
+				),
+				'conditions' => array(
+					$Model->alias . '.id' => $id
+				)
+			);
+			$result = $Model->find( 'first', $query );
+			
+			$personne_id = Hash::get( $result, 'Cui.personne_id' );
+			$cui_id = Hash::get( $result, 'Cui.id' );
+			
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$pdf = $this->_getCuiPdf( $id, $modeleOdt );
+
+			if( !empty( $pdf ) ) {
+				$pdfSuffix = $modeleOdt === null ? $Model->alias : $Model->alias . '-' . $modeleOdt;
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'cui_%s_%d_%d-%s.pdf', $pdfSuffix, $cui_id, $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le PDF.', 'default', array( 'class' => 'error' ) );
+				$Controller->redirect( $Controller->referer() );
+			}
 		}
 	}
 ?>

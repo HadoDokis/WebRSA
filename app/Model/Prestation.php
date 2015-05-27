@@ -38,21 +38,5 @@
 				'order' => ''
 			)
 		);
-		
-		
-		public function getNbEnfants( $personne_id ){
-			$query = array(
-				'fields' => array('COUNT(*)'),
-				'conditions' => array(
-					'Prestation.personne_id' => $personne_id,
-					'Prestation.natprest' => 'RSA',
-					'Prestation.rolepers' => 'ENF'
-				),
-			);
-			
-			$result = $this->find('first', $query);
-			
-			return $result[0]['count'];
-		}
 	}
 ?>

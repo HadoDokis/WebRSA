@@ -182,9 +182,26 @@
 		 */
 		public function ajax_coordonnees( $id ){
 			$fields = $this->Partenaire->fields();
-			$fields[] = 'Raisonsocialepartenairecui66.name';
+			
+			if ( Configure::read( 'Cg.departement' ) == 66 ){
+				$sqNbContratCui = $this->Partenaire->Cui->Partenairecui->Partenairecui66->sqNbCuisActif( $id );
+			}
+			else{
+				$queryNbContrat = array(
+					'fields' => array( 'COUNT(*)' ),
+					'conditions' => array( 'Cui.partenaire_id' => $id )
+				);
+				$sqNbContratCui = $this->Partenaire->Cui->sq( $queryNbContrat );
+			}
+			
 			$query = array(
-				'fields' => $fields,
+				'fields' => array_merge(
+					$fields,
+					array(
+						'Raisonsocialepartenairecui66.name',
+						"({$sqNbContratCui}) AS \"Partenaire__nbcontratsaidescg\"",
+					)
+				),
 				'recursive' => -1,
 				'joins' => array(
 					$this->Partenaire->join( 'Raisonsocialepartenairecui66' )

@@ -30,3 +30,16 @@ msgstr "Ajourné"
 
 msgid "ENUM::DECISION::sanssuite"
 msgstr "Sans suite"
+
+###############################################################################
+# PJ
+###############################################################################
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "Decisioncui66.haspiecejointe"
+msgstr "Pièces jointes"

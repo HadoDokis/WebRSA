@@ -57,7 +57,17 @@
 			),
 		);
 
-		//The Associations below have been created with all possible keys, those that are not needed can be removed
+
+        public $belongsTo = array(
+			'Departement' => array(
+				'className' => 'Departement',
+				'foreignKey' => false,
+				'conditions' => array(
+					'SUBSTRING( "Adresse"."codepos" FROM 1 FOR 2 ) = "Departement"."numdep"'
+				),
+				'dependent' => false
+			)
+        );
 
 		public $hasMany = array(
 			'Adressefoyer' => array(

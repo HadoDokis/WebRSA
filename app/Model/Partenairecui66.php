@@ -44,7 +44,7 @@
 		/**
 		 * Fait le lien entre la table Partenaire et Les nouvelles tables pour le CUI
 		 * 
-		 * @var type 
+		 * @var array 
 		 */
 		public $correspondancesChamps = array(
 			'id' => 'Cui.partenaire_id',
@@ -69,6 +69,7 @@
 			'typevoie' => 'Adressecui.typevoie',
 			'ville' => 'Adressecui.commune',
 			'libstruc' => 'Partenairecui.raisonsociale',
+			'nbcontratsaidescg' => 'Partenairecui66.nbcontratsaidescg',
 		);
 		
 		/**
@@ -105,6 +106,36 @@
 			}
 			
 			return $data;
+		}
+		
+		/**
+		 * Requète permettant de connaitre le nombre de Cuis actif d'un partenaire en fonction
+		 * de l'id du partenaire.
+		 * lié à la table partenaires et stocké dans la table cuis (CG 66)
+		 * 
+		 * @param integer $partenaire_id
+		 * @return array
+		 */
+		public function sqNbCuisActif( $partenaire_id ){
+			$query = array(
+				'fields' => array(
+					'COUNT(*) AS "Cui__nbcuisactif"'
+				),
+				'joins' => array(
+					$this->join( 'Partenairecui'),
+					$this->Partenairecui->join( 'Cui' ),
+					$this->Partenairecui->Cui->join( 'Cui66' )
+				),
+				'conditions' => array(
+					'Cui66.etatdossiercui66' => array(
+						'encours',
+						'contratsuspendu'
+					),
+					'Cui.partenaire_id' => $partenaire_id
+				)
+			);
+			
+			return $this->sq( $query );
 		}
 	}
 ?>

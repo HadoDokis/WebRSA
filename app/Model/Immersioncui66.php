@@ -21,7 +21,7 @@
 		public $recursive = -1;
 		
         public $belongsTo = array(
-			'Entreeromev3' => array(
+			'Immersionromev3' => array(
 				'className' => 'Entreeromev3',
 				'foreignKey' => 'entreeromev3_id',
 				'conditions' => null,

@@ -332,12 +332,12 @@ adressescuis CASCADE;
 CREATE TABLE adressescuis
 (
   id SERIAL NOT NULL PRIMARY KEY,
-  numvoie VARCHAR(6),
-  typevoie VARCHAR(50),
-  nomvoie VARCHAR(32),
+  numvoie VARCHAR(6) NOT NULL,
+  typevoie VARCHAR(6) NOT NULL,
+  nomvoie VARCHAR(30) NOT NULL,
   complement VARCHAR(255),
-  codepostal CHAR(5),
-  commune VARCHAR(100),
+  codepostal CHAR(5) NOT NULL,
+  commune VARCHAR(45) NOT NULL,
   numtel VARCHAR(10),
   email VARCHAR(100),
   numfax VARCHAR(10),
@@ -364,7 +364,7 @@ CREATE INDEX adressescuis_commune_idx ON adressescuis(commune);
 CREATE TABLE partenairescuis
 (
 	id SERIAL NOT NULL PRIMARY KEY,
-	raisonsociale VARCHAR(255) NOT NULL,
+	raisonsociale VARCHAR(100) NOT NULL,
 	enseigne VARCHAR(255),
 	adressecui_id INTEGER REFERENCES adressescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	siret VARCHAR(14),
@@ -385,6 +385,9 @@ ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_ajourversement_in_li
 
 -- Enums VARCHAR(6)
 ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_organismerecouvrement_in_list_chk CHECK ( cakephp_validate_in_list( organismerecouvrement, ARRAY['URS','MSA','AUT'] ) );
+
+-- Elargissement de la capacité du libstruc de la table Partenaire
+ALTER TABLE partenaires ALTER COLUMN libstruc TYPE VARCHAR(100);
 
 --------------------------------------------------------------------------------
 -- On Creer la table personnescuis (CERFA)
@@ -510,7 +513,7 @@ CREATE TABLE cuis
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
-	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+	haspiecejointe				CHAR(1) NOT NULL DEFAULT '0' -- Pieces Jointes
 );
 COMMENT ON TABLE cuis IS 'CERFA CUI';
 COMMENT ON COLUMN cuis.secteurmarchand IS 'Cadre reserve au prescripteur';
@@ -572,7 +575,7 @@ COMMENT ON COLUMN cuis.adressautreorganisme IS 'Decision de prise en charge';
 COMMENT ON COLUMN cuis.created IS 'Dates';
 COMMENT ON COLUMN cuis.signaturele IS 'Dates';
 COMMENT ON COLUMN cuis.modified IS 'Modifié le...';
-COMMENT ON COLUMN cuis.nbpj IS 'Nombre de Pieces Jointes';
+COMMENT ON COLUMN cuis.nbpj IS 'Pieces Jointes';
 COMMENT ON COLUMN cuis.user_id IS 'Modifié par...';
 
 CREATE INDEX cui_personne_id_idx ON cuis(personne_id);
@@ -601,6 +604,7 @@ ALTER TABLE cuis ADD CONSTRAINT cuis_formation_in_list_chk CHECK ( cakephp_valid
 ALTER TABLE cuis ADD CONSTRAINT cuis_organismepayeur_in_list_chk CHECK ( cakephp_validate_in_list( organismepayeur, ARRAY['CG','CAF','MSA','ASP','AUTRE'] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_niveauformation_in_list_chk CHECK ( cakephp_validate_in_list( niveauformation, ARRAY['00','10','20','30','40','41','50','51','60','70'] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_niveauqualif_in_list_chk CHECK ( cakephp_validate_in_list( niveauqualif, ARRAY['00','10','20','30','40','41','50','51','60','70'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_haspiecejointe_in_list_chk CHECK ( cakephp_validate_in_list( haspiecejointe, ARRAY['0','1'] ) );
 
 -- Enums Accompagnement/Formation
 ALTER TABLE cuis ADD CONSTRAINT cuis_remobilisationemploi_in_list_chk CHECK ( cakephp_validate_in_list( remobilisationemploi, ARRAY[1,2,3] ) );
@@ -714,7 +718,7 @@ CREATE TABLE propositionscuis66
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
-	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+	haspiecejointe				CHAR(1) NOT NULL DEFAULT '0' -- Pieces Jointes
 );
 CREATE INDEX propositionscuis66_id_idx ON propositionscuis66(cui66_id);
 
@@ -737,7 +741,7 @@ CREATE TABLE decisionscuis66
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
-	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+	haspiecejointe				CHAR(1) NOT NULL DEFAULT '0' -- Pieces Jointes
 );
 CREATE INDEX decisionscuis66_cui66_id_idx ON decisionscuis66(cui66_id);
 
@@ -786,7 +790,7 @@ CREATE TABLE accompagnementscuis66
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
-	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+	haspiecejointe				CHAR(1) NOT NULL DEFAULT '0' -- Pieces Jointes
 );
 CREATE INDEX accompagnementscuis66_cui66_id_idx ON accompagnementscuis66(cui66_id);
 
@@ -809,7 +813,7 @@ CREATE TABLE suspensionscuis66
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
-	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+	haspiecejointe				CHAR(1) NOT NULL DEFAULT '0' -- Pieces Jointes
 );
 CREATE INDEX suspensionscuis66_cui66_id_idx ON suspensionscuis66(cui66_id);
 
@@ -831,7 +835,7 @@ CREATE TABLE rupturescuis66
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
-	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+	haspiecejointe				CHAR(1) NOT NULL DEFAULT '0' -- Pieces Jointes
 );
 CREATE INDEX rupturescuis66_cui66_id_idx ON rupturescuis66(cui66_id);
 
@@ -862,7 +866,7 @@ CREATE TABLE emailscuis
 	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
 	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
 	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
-	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+	haspiecejointe				CHAR(1) NOT NULL DEFAULT '0' -- Pieces Jointes
 );
 CREATE INDEX emailscuis_cui_id_idx ON emailscuis(cui_id);
 CREATE INDEX emailscuis_personne_id_idx ON emailscuis(personne_id);
@@ -881,7 +885,7 @@ CREATE TABLE historiquepositionscuis66
 CREATE INDEX historiquepositionscuis66_cui66_id_idx ON historiquepositionscuis66(cui66_id);
 
 --------------------------------------------------------------------------------
--- Historique des changements de positions du Cui (CG 66)
+-- Pieces manquante d'un Cui pour les e-mails (CG 66)
 --------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS piecesmanquantescuis66;
@@ -906,6 +910,26 @@ COMMENT ON TABLE piecesmanquantescuis66
 -- DROP INDEX piecesmanquantescuis66_name_idx;
 
 CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx ON piecesmanquantescuis66(name);
+
+
+-------------------------------------------------------------------------------------
+-- Modification des parametrages des taux CG
+-------------------------------------------------------------------------------------
+
+DROP TABLE tauxcgscuis;
+CREATE TABLE tauxcgscuis
+(
+	id						SERIAL NOT NULL PRIMARY KEY,
+	typeformulaire			VARCHAR(255),
+	secteurmarchand			VARCHAR(255),
+	typecontrat				VARCHAR(255),
+	tauxfixeregion			SMALLINT,
+	priseenchargeeffectif	SMALLINT,
+	tauxcg					SMALLINT,
+	created					TIMESTAMP WITHOUT TIME ZONE -- Créé le...
+	modified				TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
+);
+
 
 -------------------------------------------------------------------------------------
 -- Ajout d'une table de paramétrage pour les motifs de décision de refus de CUI

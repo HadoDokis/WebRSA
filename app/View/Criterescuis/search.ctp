@@ -26,7 +26,7 @@
 		array( 
 			'id' => 'CriterescuisSearchSearchForm', 
 			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
-			'url' => Router::url( array( 'controller' => 'criterescuis', 'action' => 'search' ) )
+			'url' => Router::url( array( 'controller' => 'criterescuis', 'action' => 'search' ), true )
 		)
 	);
 

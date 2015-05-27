@@ -32,15 +32,20 @@
 			'Rupturecui66.dateenregistrement',
 			'Rupturecui66.motif' => array( 'type' => 'select' ),
 			'/Rupturescuis66/edit/#Rupturecui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Rupturescuis66/edit'),
+				'title' => __d('rupturescuis66', '/Rupturescuis66/edit'),
 				'class' => 'edit',
 				'disabled' => $perm['edit']
 			),
 			'/Rupturescuis66/delete/#Rupturecui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Rupturescuis66/delete'),
+				'title' => __d('rupturescuis66', '/Rupturescuis66/delete'),
 				'class' => 'edit',
 				'disabled' => $perm['delete']
 			),
+			'/Rupturescuis66/filelink/#Rupturecui66.id#' => array(
+				'title' => __d('rupturescuis66', '/Rupturescuis66/filelink'),
+				'disabled' => !$this->Permissions->checkDossier( 'Rupturescuis66', 'filelink', $dossierMenu )
+			),
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		),
 		array(
 			'options' => $options,

@@ -26,7 +26,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Propositioncui66', 'Option' ); // FIXME: pour Cui66, passer par Propo...
+		public $uses = array( 'Propositioncui66', 'Option' );
 		
 		/**
 		 * Components utilisés.
@@ -36,16 +36,9 @@
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
+			'Fileuploader',
 			'Gestionzonesgeos',
-			//'Gedooo.Gedooo',
-			//'InsertionsAllocataires',
-			'Jetons2', // FIXME: à cause de DossiersMenus
-			//'Search.Filtresdefaut' => array( 'search' ),
-			/*'Search.SearchPrg' => array(
-				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
-				)
-			),*/
+			'Jetons2',
 			'WebrsaModelesLiesCuis66',
 		);
 
@@ -83,10 +76,78 @@
 			'edit' => 'update',
 			'delete' => 'delete',
 			'view' => 'read',
+			'filelink' => 'view',
+			'ajaxfileupload' => 'add',
+			'ajaxfiledelete' => 'delete',
+			'fileview' => 'view',
+			'download' => 'view',
+			'impression' => 'view',
 		);
 		
+		/**
+		 * Envoi d'un fichier temporaire depuis le formualaire.
+		 */
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		 * Suppression d'un fichier temporaire.
+		 */
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		 * Visualisation d'un fichier temporaire.
+		 *
+		 * @param integer $id
+		 */
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		 * Visualisation d'un fichier stocké.
+		 *
+		 * @param integer $id
+		 */
+		public function download( $id ) {
+			$this->Fileuploader->download( $id );
+		}
+
+		/**
+		 * Liste des fichiers liés à une orientation.
+		 *
+		 * @param integer $id
+		 */
+		public function filelink( $id ) {
+			$query = array(
+				'fields' => array(
+					'Cui.personne_id',
+					'Cui.id'
+				),
+				'joins' => array(
+					$this->Propositioncui66->join( 'Cui66' ),
+					$this->Propositioncui66->Cui66->join( 'Cui' ),
+				),
+				'conditions' => array( 'Propositioncui66.id' => $id )
+			);
+			$result = $this->Propositioncui66->find( 'first', $query );
+			$personne_id = $result['Cui']['personne_id'];
+			$cui_id = $result['Cui']['id'];
+			
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $cui_id ) );
+			$urlmenu = "/cuis66/index/{$personne_id}";
+			
+			$options = $this->Propositioncui66->enums();
+			$this->set( compact( 'options', 'dossierMenu', 'urlmenu' ) );
+		}
 		
 		/**
+		 * Liste des avis techniques
 		 * 
 		 * @param integer $cui_id
 		 */
@@ -95,10 +156,15 @@
 				'modelClass' => 'Propositioncui66',
 				'urlmenu' => "/Cuis66/index/#0.Cui.personne_id#"
 			);
-			return $this->WebrsaModelesLiesCuis66->index( $cui_id, $params );
+			$customQuery['fields'][] = $this->Propositioncui66->Fichiermodule->sqNbFichiersLies( $this->Propositioncui66, 'nombre' );
+			
+			$this->WebrsaModelesLiesCuis66->index( $cui_id, $params, $customQuery );
+			
+			//$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nombre' ),
 		}
 		
 		/**
+		 * Visualisation d'un avis technique
 		 * 
 		 * @param integer $id
 		 */
@@ -135,8 +201,34 @@
 			return $this->WebrsaModelesLiesCuis66->addEdit( $id, $params );
 		}
 		
+		/**
+		 * Suppression d'un avis technique
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
 		public function delete( $id ){
 			return $this->WebrsaModelesLiesCuis66->delete( $id );
+		}
+		
+		/**
+		 * Impression générique
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		public function impression( $id ){
+			return $this->WebrsaModelesLiesCuis66->impression( $id );
+		}
+		
+		/**
+		 * Impression avis élu
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		public function impression_aviselu( $id ){
+			return $this->WebrsaModelesLiesCuis66->impression( $id, 'aviselu' );
 		}
 	}
 ?>

@@ -113,6 +113,17 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'partenaire_id',
+			)
+		);
+		
+		public $hasMany = array(
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'partenaire_id',
 			)
 		);
 		
@@ -161,5 +172,20 @@
 			return $query;
 		}
 
+		/**
+		 * Permet de récupérer le dernier code partenaire (sous forme de 3 chiffres)
+		 * Utile pour le calcul d'un nouveau code partenaire
+		 * 
+		 * @return array
+		 */
+		public function sqGetLastCodePartenaire(){
+			$query = array(
+				'fields' => array( 'Partenaire.codepartenaire' ),
+				'conditions' => array( "Partenaire.codepartenaire ~ '^[0-9]{3}$'" ),
+				'order' => array( 'Partenaire.codepartenaire' => 'DESC' ),
+				'limit' => 1
+			);
+			return $this->sq( $query );
+		}
 	}
 ?>

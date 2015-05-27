@@ -39,3 +39,16 @@ msgstr "Refusé"
 
 msgid "ENUM::AVIS::avisreserve"
 msgstr "Avis réservé"
+
+###############################################################################
+# PJ
+###############################################################################
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "Propositioncui66.haspiecejointe"
+msgstr "Pièces jointes"

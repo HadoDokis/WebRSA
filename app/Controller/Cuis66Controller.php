@@ -38,16 +38,10 @@
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
+			'Fileuploader',
 			'Gestionzonesgeos',
-			//'Gedooo.Gedooo',
-			//'InsertionsAllocataires',
-			'Jetons2', // FIXME: à cause de DossiersMenus
-			//'Search.Filtresdefaut' => array( 'search' ),
-			/*'Search.SearchPrg' => array(
-				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
-				)
-			),*/
+			'Gedooo.Gedooo',
+			'Jetons2',
 		);
 
 		/**
@@ -60,16 +54,16 @@
 				'className' => 'Prototype.PrototypeAjax',
 				'useBuffer' => false
 			),
-			//'Allocataires',
+			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
-			//'Search.SearchForm',
+			'Fileuploader',
 			'Observer' => array(
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => true
 			),
-			'Romev3', 'Cake1xLegacy.Ajax'
+			'Romev3', 
 		);
 
 		/**
@@ -90,6 +84,12 @@
 			'email_add' => 'create',
 			'email_edit' => 'update',
 			'email_delete' => 'delete',
+			'impression' => 'view',
+			'filelink' => 'view',
+			'ajaxfileupload' => 'add',
+			'ajaxfiledelete' => 'delete',
+			'fileview' => 'view',
+			'download' => 'view',
 		);
 		
 		/**
@@ -98,6 +98,55 @@
 		 * @var String
 		 */
 		public $configEmail = 'mail_employeur_cui';
+		
+		/**
+		 * Envoi d'un fichier temporaire depuis le formualaire.
+		 */
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		 * Suppression d'un fichier temporaire.
+		 */
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		 * Visualisation d'un fichier temporaire.
+		 *
+		 * @param integer $id
+		 */
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		 * Visualisation d'un fichier stocké.
+		 *
+		 * @param integer $id
+		 */
+		public function download( $id ) {
+			$this->Fileuploader->download( $id );
+		}
+
+		/**
+		 * Liste des fichiers liés à une orientation.
+		 *
+		 * @param integer $cui_id
+		 */
+		public function filelink( $cui_id ) {
+			$personne_id = $this->Cui->personneId( $cui_id );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$this->set( compact( 'dossierMenu' ) );
+
+			$this->Fileuploader->filelink( $cui_id, array( 'action' => 'index', $personne_id ) );
+			$this->set( 'urlmenu', "/cuis66/index/{$personne_id}" );
+
+			$options = $this->Cui->enums();
+			$this->set( compact( 'options' ) );
+		}
 		
 		/**
 		 * Liste des CUI du bénéficiaire.
@@ -114,11 +163,13 @@
 			
 			$messages = $this->Cui->Cui66->messages( $personne_id );
 			$addEnabled = $this->Cui->Cui66->addEnabled( $messages );
+			
+			$isRsaSocle = $this->Cui->isRsaSocle( $personne_id );
 
 			// Options
 			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
 
-			$this->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options' ) );
+			$this->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle' ) );
 		}
 		
 		/**
@@ -158,13 +209,13 @@
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
+			// On tente la sauvegarde
 			if( !empty( $this->request->data ) ) {
 				$this->Cui->Cui66->begin();
 				if( $this->Cui->Cui66->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
 					$this->Cui->Cui66->commit();
 					$cui_id = $this->Cui->id;
 					$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
-					// TODO Sauvegarder les informations de Partenairecui dans les parametrages (Voir confirmation)
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -189,50 +240,21 @@
 			$options['Adressecui']['canton2'] = $options['Adressecui']['canton'];
 
 			$urlmenu = "/cuis66/index/{$personne_id}";
-
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
 			
-			$queryPersonne = $Allocataire->searchQuery();
-			$queryPersonne['conditions']['Personne.id'] = $personne_id;
-			$queryPersonne['fields'] = array_merge(
-				array(				
-					'Dossier.matricule',
-					'Dossier.dtdemrsa',
-					'Dossier.fonorg',
-					'Referentparcours.nom_complet' => $queryPersonne['fields']['Referentparcours.nom_complet'],
-					'Titresejour.dftitsej',
-					'Departement.name'
-				),
-				$this->Cui->Personne->fields(),
-				$this->Cui->Personne->Foyer->Adressefoyer->Adresse->fields()
-			);
-			
-			// Jointure spéciale adresse actuelle / département pour obtenir le nom du dpt
-			$queryPersonne['joins'][] = array(
-				'table' => 'departements',
-				'alias' => 'Departement',
-				'type' => 'LEFT OUTER',
-				'conditions' => array(
-					'SUBSTRING( Adresse.codepos FROM 1 FOR 2 ) = Departement.numdep'
-				)
-			);
-			$queryPersonne['joins'][] = array(
-				'table' => 'titressejour',
-				'alias' => 'Titresejour',
-				'type' => 'LEFT OUTER',
-				'conditions' => array(
-					'Titresejour.personne_id' => $personne_id
-				)
-			);
-			
-			$personne = $this->Cui->Personne->find('first', $queryPersonne);
-			$personne['Foyer']['nb_enfants'] = $this->Cui->Personne->Prestation->getNbEnfants( $personne_id );
+			$queryPersonne = $this->Cui->Cui66->queryPersonne( $personne_id );
+			$this->Cui->Personne->forceVirtualFields = true;
+			$personne = $this->Cui->Personne->find( 'first', $queryPersonne );
 
 			$correspondancesChamps = json_encode( $this->Cui->Partenairecui->Partenairecui66->correspondancesChamps );
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne', 'mailEmployeur', 'correspondancesChamps' ) );
 			$this->render( 'edit' );
 		}
 		
+		/**
+		 * Vue d'un CUI
+		 * 
+		 * @param type $id
+		 */
 		public function view( $id = null ) {
 			$personne_id = $this->Cui->personneId( $id );
 
@@ -303,7 +325,11 @@
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne' ) );
 		}
 		
-		
+		/**
+		 * Permet d'annuler un CUI
+		 * 
+		 * @param type $cui66_id
+		 */
 		public function annule( $cui66_id ){
 			$query = array(
 				'fields' => array(
@@ -354,7 +380,11 @@
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu' ) );
 		}
 		
-		
+		/**
+		 * Supprime un CUI
+		 * 
+		 * @param type $cui_id
+		 */
 		public function delete( $cui_id ){
 			$this->Cui->begin();
 			$success = $this->Cui->delete($cui_id);
@@ -368,6 +398,11 @@
 			$this->redirect($this->referer());
 		}
 		
+		/**
+		 * Supprime un E-mail du CUI
+		 * 
+		 * @param type $id
+		 */
 		public function email_delete( $id ){			
 			$this->Cui->Emailcui->begin();
 			$success = $this->Cui->Emailcui->delete($id);
@@ -381,6 +416,12 @@
 			$this->redirect($this->referer());
 		}
 		
+		/**
+		 * Passe le champ Cui66.notifie à 1
+		 * Utile pour un changement de position/etat du CUI
+		 * 
+		 * @param type $cui66_id
+		 */
 		public function notification( $cui66_id ){
 			$this->Cui->Cui66->id = $cui66_id;
 			$this->Cui->Cui66->saveField( 'notifie', 1 );
@@ -490,6 +531,13 @@
 			$this->render( 'email_edit' );
 		}
 		
+		/**
+		 * Vue d'un E-mail
+		 * 
+		 * @param type $personne_id
+		 * @param type $id
+		 * @throws NotFoundException
+		 */
 		public function email_view( $personne_id = null, $id = null ) {
 			if ( ($personne_id === null && $id === null) || ($this->action === 'email_add' && $id === null) || ($personne_id !== null && !is_numeric($personne_id)) || ($id !== null && !is_numeric($id)) ){
 				throw new NotFoundException();
@@ -513,6 +561,14 @@
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne', 'mailEmployeur', 'correspondancesChamps', 'files' ) );
 		}
 		
+		/**
+		 * Envoi d'un E-mail
+		 * 
+		 * @param type $personne_id
+		 * @param type $cui_id
+		 * @param type $email_id
+		 * @throws Exception
+		 */
 		public function email_send( $personne_id, $cui_id, $email_id ){
 			$datas = $this->Cui->Emailcui->find('first', array( 'conditions' => array( 'Emailcui.id' => $email_id ) ) );
 			$data = $datas['Emailcui'];
@@ -567,6 +623,9 @@
 			$this->redirect( array( 'action' => 'email', $personne_id, $cui_id ) );
 		}
 		
+		/**
+		 * Permet de récupérer en base les informations nécéssaire afin de générer le texte d'un e-mail
+		 */
 		public function ajax_generate_email(){
 			$query = array(
 				'conditions' => array(
@@ -651,5 +710,80 @@
 			$this->layout = 'ajax';
 			$this->render( '/Elements/json' );
 		}
-	} // FIXME: Cui.findecontrat reste en base si on passe d'un cdd à un cdi
+		
+		/**
+		 * On lui donne l'id du CUI et le modèle de document et il renvoi le pdf
+		 * 
+		 * @param integer $cui_id
+		 * @param string $modeleOdt
+		 * @return PDF
+		 */
+		protected function _getCuiPdf( $cui_id, $modeleOdt = null ){
+			$modeleOdt = 
+				$modeleOdt === null || !isset($this->Cui->Cui66->modelesOdt[$modeleOdt]) 
+				? $this->Cui->Cui66->modelesOdt['default'] 
+				: $this->Cui->Cui66->modelesOdt[$modeleOdt]
+			;
+			$query = $this->Cui->Cui66->queryImpression( $cui_id );
+			$this->Cui->Cui66->forceVirtualFields = true;
+			
+			$data = $this->Cui->Cui66->find( 'first', $query );
+			$options = $this->Cui->Cui66->options();
+			
+			$result = $this->Cui->ged(
+				$data,
+				$modeleOdt,
+				false,
+				$options
+			);
+			
+			return $result;
+		}
+		
+		/**
+		 * Méthode générique d'impression d'un Cui.
+		 * 
+		 * @param integer $cui_id
+		 * @param string $modeleOdt
+		 */
+		protected function _impression( $cui_id, $modeleOdt = null ){
+			$personne_id = $this->Cui->personneId( $cui_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$pdf = $this->_getCuiPdf( $cui_id, $modeleOdt );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'cui_%d-%s.pdf', $cui_id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le PDF.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
+		/**
+		 * Fiche de laison d'un Cui (ou fiche de synthèse)
+		 *
+		 * @param integer $cui_id La clé primaire du CUI
+		 */
+		public function impression_fichedeliaison( $cui_id ) {
+			$this->_impression($cui_id, 'ficheLiaison');
+		}
+		
+		/**
+		 * Impression d'un CUI
+		 *
+		 * @param integer $cui_id La clé primaire du CUI
+		 */
+		public function impression( $cui_id ) {
+			$this->_impression($cui_id);
+		}
+		
+		/**
+		 * Parametrages liés au CUI
+		 */
+		public function indexparams(){
+			
+		}
+	}
 ?>
