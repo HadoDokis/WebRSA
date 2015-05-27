@@ -917,7 +917,7 @@ CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx ON piecesmanquantescuis66(na
 -------------------------------------------------------------------------------------
 
 DROP TABLE tauxcgscuis;
-CREATE TABLE tauxcgscuis
+CREATE TABLE tauxcgscuis66
 (
 	id						SERIAL NOT NULL PRIMARY KEY,
 	typeformulaire			VARCHAR(255),
