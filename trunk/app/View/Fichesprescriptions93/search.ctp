@@ -32,6 +32,8 @@
 	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93', array( 'type' => 'text', 'domain' => 'fichesprescriptions93' ) );
 
+	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.created', array( 'domain' => 'fichesprescriptions93' ) );
+	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_signature', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.rdvprestataire_date', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_transmission', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_retour', array( 'domain' => 'fichesprescriptions93' ) );
