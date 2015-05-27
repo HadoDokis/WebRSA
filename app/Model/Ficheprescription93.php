@@ -460,7 +460,7 @@
 			}
 
 			// 5. Plages de dates
-			$paths = array( 'Ficheprescription93.rdvprestataire_date', 'Ficheprescription93.date_transmission', 'Ficheprescription93.date_retour', 'Ficheprescription93.df_action' );
+			$paths = array( 'Ficheprescription93.created', 'Ficheprescription93.date_signature', 'Ficheprescription93.rdvprestataire_date', 'Ficheprescription93.date_transmission', 'Ficheprescription93.date_retour', 'Ficheprescription93.df_action' );
 			foreach( $paths as $path ) {
 				$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $path );
 			}

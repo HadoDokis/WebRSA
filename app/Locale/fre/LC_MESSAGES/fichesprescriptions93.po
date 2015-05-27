@@ -53,6 +53,12 @@ msgstr "Intitulé"
 msgid "Search.Ficheprescription93.actionfp93"
 msgstr "Intitulé"
 
+msgid "Search.Ficheprescription93.created"
+msgstr "Date de création"
+
+msgid "Search.Ficheprescription93.date_signature"
+msgstr "Date de signature"
+
 msgid "Search.Ficheprescription93.rdvprestataire_date"
 msgstr "Date de rendez-vous"
 
