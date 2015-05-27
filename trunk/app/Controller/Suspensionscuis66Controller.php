@@ -36,16 +36,9 @@
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
+			'Fileuploader',
 			'Gestionzonesgeos',
-			//'Gedooo.Gedooo',
-			//'InsertionsAllocataires',
-			'Jetons2', // FIXME: à cause de DossiersMenus
-			//'Search.Filtresdefaut' => array( 'search' ),
-			/*'Search.SearchPrg' => array(
-				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
-				)
-			),*/
+			'Jetons2',
 			'WebrsaModelesLiesCuis66',
 		);
 
@@ -59,11 +52,9 @@
 				'className' => 'Prototype.PrototypeAjax',
 				'useBuffer' => false
 			),
-			//'Allocataires',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
-			//'Search.SearchForm',
 			'Observer' => array(
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => true
@@ -83,10 +74,77 @@
 			'edit' => 'update',
 			'delete' => 'delete',
 			'view' => 'read',
+			'filelink' => 'view',
+			'ajaxfileupload' => 'add',
+			'ajaxfiledelete' => 'delete',
+			'fileview' => 'view',
+			'download' => 'view',
 		);
 		
+		/**
+		 * Envoi d'un fichier temporaire depuis le formualaire.
+		 */
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		 * Suppression d'un fichier temporaire.
+		 */
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		 * Visualisation d'un fichier temporaire.
+		 *
+		 * @param integer $id
+		 */
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		 * Visualisation d'un fichier stocké.
+		 *
+		 * @param integer $id
+		 */
+		public function download( $id ) {
+			$this->Fileuploader->download( $id );
+		}
+
+		/**
+		 * Liste des fichiers liés à une orientation.
+		 *
+		 * @param integer $id
+		 */
+		public function filelink( $id ) {
+			$query = array(
+				'fields' => array(
+					'Cui.personne_id',
+					'Cui.id'
+				),
+				'joins' => array(
+					$this->Suspensioncui66->join( 'Cui66' ),
+					$this->Suspensioncui66->Cui66->join( 'Cui' ),
+				),
+				'conditions' => array( 'Suspensioncui66.id' => $id )
+			);
+			$result = $this->Suspensioncui66->find( 'first', $query );
+			$personne_id = $result['Cui']['personne_id'];
+			$cui_id = $result['Cui']['id'];
+			
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $cui_id ) );
+			$urlmenu = "/cuis66/index/{$personne_id}";
+			
+			$options = $this->Suspensioncui66->enums();
+			$this->set( compact( 'options', 'dossierMenu', 'urlmenu' ) );
+		}
 		
 		/**
+		 * Liste des suspensions du CUI d'un allocataire
 		 * 
 		 * @param integer $cui_id
 		 */
@@ -95,10 +153,13 @@
 				'modelClass' => 'Suspensioncui66',
 				'urlmenu' => "/Cuis66/index/#0.Cui.personne_id#"
 			);
-			return $this->WebrsaModelesLiesCuis66->index( $cui_id, $params );
+			$customQuery['fields'][] = $this->Suspensioncui66->Fichiermodule->sqNbFichiersLies( $this->Suspensioncui66, 'nombre' );
+			
+			$this->WebrsaModelesLiesCuis66->index( $cui_id, $params, $customQuery );
 		}
 		
 		/**
+		 * Visualisation
 		 * 
 		 * @param integer $id
 		 */
@@ -135,6 +196,12 @@
 			return $this->WebrsaModelesLiesCuis66->addEdit( $id, $params );
 		}
 		
+		/**
+		 * Suppression
+		 * 
+		 * @param integer $id
+		 * @return type
+		 */
 		public function delete( $id ){
 			return $this->WebrsaModelesLiesCuis66->delete( $id );
 		}

@@ -15,10 +15,22 @@
 	 */
 	class Decisioncui66 extends AppModel
 	{
+		/**
+		 * Alias de la table et du model
+		 * @var string
+		 */
 		public $name = 'Decisioncui66';
 		
+		/**
+		 * Recurcivité du model 
+		 * @var integer
+		 */
 		public $recursive = -1;
 		
+		/**
+		 * Possède des clefs étrangères vers d'autres models
+		 * @var array
+		 */
         public $belongsTo = array(
 			'Cui66' => array(
 				'className' => 'Cui66',
@@ -26,6 +38,29 @@
 				'dependent' => true,
 			),
         );
+		
+		/**
+		 * Ces models possèdent une clef étrangère vers ce model
+		 * @var array
+		 */
+		public $hasMany = array(
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Decisioncui66\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+		);
 		
 		/**
 		 * Behaviors utilisés par le modèle.
@@ -38,6 +73,25 @@
 			'Validation2.Validation2Formattable',
 		);
 		
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'default' => 'CUI/%s/impression.odt',
+			'decisionelu' => 'CUI/%s/decisionelu.odt',
+			'notifbenef' => 'CUI/%s/notifbenef.odt',
+			'notifemployeur' => 'CUI/%s/notifemployeur.odt',
+			'attestationcompetence' => 'CUI/%s/attestationcompetence.odt',
+		);
+		
+		/**
+		 * Récupère les informations pour l'affichage des propositions dans les décisions
+		 * 
+		 * @param type $id
+		 * @param type $action
+		 * @return type
+		 */
 		public function getPropositions( $id, $action ){
 			$query = array(
 				'fields' => array_merge(
@@ -61,6 +115,7 @@
 		}
 		
 		/**
+		 * Récupère les donnés par defaut dans le cas d'un ajout, ou récupère les données stocké en base dans le cas d'une modification
 		 * 
 		 * @param integer $cui66_id
 		 * @param integer $id
@@ -79,11 +134,16 @@
 				);
 				$decision = $this->find( 'first', $query );
 			}
+			
+			if ( empty($decision) ){
+				throw new HttpException(404, "HTTP/1.1 404 Not Found");
+			}
 
 			return $decision;
 		}
 		
 		/**
+		 * Sauvegarde du formulaire
 		 * 
 		 * @param array $data
 		 * @return boolean
@@ -118,6 +178,60 @@
 			);
 
 			return $options;
+		}
+		
+		/**
+		 * Requete de vue
+		 * 
+		 * @param string $id
+		 * @return array
+		 */
+		public function queryView( $id ){
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Cui66->Propositioncui66->fields()
+				),
+				'joins' => array(
+					$this->join( 'Cui66', array( 'type' => 'INNER' ) ),
+					$this->Cui66->join( 'Propositioncui66', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					'Decisioncui66.id' => $id
+				),
+				'order' => array( 
+					'Decisioncui66.created' => 'DESC', 
+					'Propositioncui66.created' => 'DESC' 
+				)
+			);
+			
+			return $query;
+		}
+		
+		/**
+		 * Requète d'impression
+		 * 
+		 * @param integer $id
+		 * @param string $modeleOdt
+		 * @return type
+		 */
+		public function queryImpression( $id, $modeleOdt = null ){
+			$queryView = $this->queryView( $id );
+			$queryImpressionCui66 = $this->Cui66->queryImpression( 'Cui66.cui_id' ); 
+			
+			$query['fields'] = array_merge( $queryView['fields'], $queryImpressionCui66['fields'] );
+			
+			$query['joins'] = array_merge( 
+				array( 
+					$this->join( 'Cui66' ),
+					$this->Cui66->join( 'Propositioncui66', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				$queryImpressionCui66['joins']
+			);
+			$query['conditions'] = $queryView['conditions'];
+			$query['order'] = $queryView['order'];
+			
+			return $query;
 		}
 	}
 ?>

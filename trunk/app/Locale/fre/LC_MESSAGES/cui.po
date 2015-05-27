@@ -337,3 +337,16 @@ msgstr "ATA"
 
 msgid "ENUM::BENEFICIAIREDE::RSA"
 msgstr "RSA"
+
+###############################################################################
+# PJ
+###############################################################################
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "Cui.haspiecejointe"
+msgstr "Pièces jointes"

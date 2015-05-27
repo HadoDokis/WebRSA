@@ -51,3 +51,12 @@ msgstr "Modifier"
 
 msgid "/Rupturescuis66/delete"
 msgstr "Supprimer"
+
+msgid "/Rupturescuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "Rupturescuis66::filelink"
+msgstr "Fichiers liés"
+
+msgid "Fichiermodule.nombre"
+msgstr " "

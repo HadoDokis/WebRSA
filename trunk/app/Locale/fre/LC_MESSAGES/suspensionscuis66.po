@@ -63,3 +63,12 @@ msgstr "Supprimer"
 
 msgid "Suspensioncui66.motif"
 msgstr "Motif"
+
+msgid "/Suspensionscuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "Suspensionscuis66::filelink"
+msgstr "Fichiers liés"
+
+msgid "Fichiermodule.nombre"
+msgstr " "

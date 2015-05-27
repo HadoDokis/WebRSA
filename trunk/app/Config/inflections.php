@@ -434,6 +434,7 @@ $irregularPlural = array(
     'statistiqueministerielle' => 'statistiquesministerielles',
     'raisonsocialepartenairecui66' => 'raisonssocialespartenairescuis66',
     'tauxcgcui' => 'tauxcgscuis',
+    'tauxcgcui66' => 'tauxcgscuis66',
     'situationallocataire' => 'situationsallocataires',
     'questionnaired1pdv93' => 'questionnairesd1pdvs93',
     'tableausuivipdv93' => 'tableauxsuivispdvs93',

@@ -60,3 +60,18 @@ msgstr "Motif"
 
 msgid "Propositioncui66.observation"
 msgstr "Observations"
+
+msgid "/Propositionscuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "Propositionscuis66::filelink"
+msgstr "Fichiers liés"
+
+msgid "Fichiermodule.nombre"
+msgstr " "
+
+msgid "/Propositionscuis66/impression_aviselu"
+msgstr "Avis élu"
+
+msgid "/Propositionscuis66/impression"
+msgstr "Imprimer"

@@ -54,7 +54,10 @@
 					? array( 'controller' => 'parametrages', 'action' => 'cataloguesromesv3' )
 					: null
 				,
-				'CUIs' => array( 'controller' => 'cuis', 'action' => 'indexparams' ),
+				'CUIs' => ( Configure::read( 'Cg.departement' ) == 66 )
+					? array( 'controller' => 'cuis66', 'action' => 'indexparams' )
+					: null
+				,
 				'DSPs' => array( 'controller' => 'gestionsdsps', 'action' => 'index' ),
 				'Équipes pluridisciplinaires' => array( 'controller' => 'gestionseps', 'action' => 'index' ),
 				'Fiches de prescription' => ( Configure::read( 'Cg.departement' ) == 93 )

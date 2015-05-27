@@ -412,11 +412,11 @@ function getValue( editable ){
 	
 	switch ( cas ){
 		case 'date': valeur = thisDate; break;
-		case 'normal': valeur = isTelephone( editable ) ? String( editable.value ).replace(/[^\d]/g, '') : String( editable.value ); break;
+		case 'normal': valeur = isTelephone( editable ) ? String( editable.value ).replace(/[\W]/g, '') : String( editable.value ); break;
 		case 'radio': valeur = getRadioValue( targets ); break;
 		default: debug( '/!\\ BUG /!\\ valeur non trouvé dans ' + editable.name ); return null;
 	}
-	
+	console.log(valeur);
 	values[rules[editable.index].name].value = valeur;
 	debug( ('Valeur trouvé : ' + valeur), true, true );
 	return thisDate || formatValue( editable, valeur );
@@ -728,26 +728,32 @@ function addEvent( editable, type ){
 	
 	if ( type === 'editable' ){
 		// On lui attribu les evenements onchange et onkeypress qui déclancherons la validation
-		editable.onchange = function(){
+		Event.observe( editable, 'change', function(){
 			// On ne lance la validation que si une différence est trouvé entre l'ancienne et la nouvelle valeur
 			getValue( this );
 			if ( values[this.name].value !== values[this.name].oldValue ){
 				validateWithTimeout( this, true );
 			}
 			values[this.name].oldValue = String( values[this.name].value );
-		}; // jshint ignore:line
+		}); // jshint ignore:line
 
-		editable.onkeypress = function(){
+		Event.observe( editable, 'keypress', function(){
 			values[this.name].oldValue = values[this.name].oldValue === null ? String( values[this.name].value ) : values[this.name].oldValue;
 			getValue( this );
 			// Lance la validation mais sans affichage d'erreur
 			validateWithTimeout( this, false );
-		};
+		});
 	}
 	else{
-		editable.onsubmit = function(){
-			return checkAll( this );
-		};
+		Event.observe(
+			editable,
+			'submit',
+			function( event ) {
+				if( $$( 'input[type=hidden][name="data[Cancel]"]' ).length === 0 && checkAll( this ) === false ) {
+					Event.stop( event );
+				}
+			}
+		);
 	}
 }
 
@@ -769,7 +775,7 @@ function initEditables( editables ){
 		debug( ('window.onload - Element '+name), true, true );
 		
 		// Si l'editable n'a pas de nom, on passe à un autre
-		if ( name === undefined || name === '' ){
+		if ( name === undefined || name === '' || name === 'Cancel' ){
 			continue;
 		}
 				
@@ -855,15 +861,6 @@ function init(){
 	
 	// Editable fait référence à tout ce qui est modifiable par l'utilisateur (input, select et textarea)
 	editables = $$('form input, form select, form textarea');
-	
-	// Empeche les boutons annuler de bloquer le formulaire
-	$$('input[type="submit"][name="Cancel"], input[type="submit"][name="Annuler"]').each(function( cancelButton ){
-		cancelButton.onclick = function(){
-			var form = cancelButton.up('form');
-			form.insert('<input type="hidden" name="' + cancelButton.name + '" value="' + cancelButton.value + '"');
-			setTimeout(function(){ form.submit(); }, 20);
-		};
-	});
 	
 	initEditables( editables );
 	

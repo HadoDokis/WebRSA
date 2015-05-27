@@ -6,7 +6,12 @@
 	
 	echo $this->Default3->titleForLayout();
 
-	echo $this->element( 'ancien_dossier' ); // FIXME ???
+	echo $this->element( 'ancien_dossier' );
+	
+	// On affiche une alerte si la personne n'est pas en rsa socle
+	if ( !$isRsaSocle ){
+		echo '<p class="error">' . __d( 'cuis', 'Personne.rsasocle' ) . '</p>';
+	}
 
 	echo $this->Default3->actions(
 		array(
@@ -23,18 +28,40 @@
 		}
 	}
 	
-	$perm['view'] =!$this->Permissions->checkDossier( 'Cuis66', 'view', $dossierMenu ) ? 'true' : 'false';
-	$perm['edit'] =!$this->Permissions->checkDossier( 'Cuis66', 'edit', $dossierMenu ) ? 'true' : 'false';
-	$perm['email'] =!$this->Permissions->checkDossier( 'Cuis66', 'email', $dossierMenu ) ? 'true' : 'false';
-	$perm['Propositionscuis66.index'] =!$this->Permissions->checkDossier( 'Propositionscuis66', 'index', $dossierMenu ) ? 'true' : 'false';
-	$perm['Decisionscuis66.index'] =!$this->Permissions->checkDossier( 'Decisionscuis66', 'index', $dossierMenu ) ? 'true' : 'false';
-	$perm['notification'] =!$this->Permissions->checkDossier( 'Cuis66', 'notification', $dossierMenu ) ? 'true' : 'false';
-	$perm['Accompagnementscuis66.index'] =!$this->Permissions->checkDossier( 'Accompagnementscuis66', 'index', $dossierMenu ) ? 'true' : 'false';
-	$perm['Suspensionscuis66.index'] =!$this->Permissions->checkDossier( 'Suspensionscuis66', 'index', $dossierMenu ) ? 'true' : 'false';
-	$perm['Rupturescuis66.index'] =!$this->Permissions->checkDossier( 'Rupturescuis66', 'index', $dossierMenu ) ? 'true' : 'false';
-	$perm['annule'] =!$this->Permissions->checkDossier( 'Cuis66', 'annule', $dossierMenu ) ? 'true' : 'false';
-	$perm['delete'] =!$this->Permissions->checkDossier( 'Cuis66', 'delete', $dossierMenu ) ? 'true' : 'false';
-
+	// Liste des permissions liés aux actions. 
+	// Dans le cas d'un autre controller que Cuis66, on le renseigne avec Controller.action
+	$perms = array(
+		'view',
+		'edit',
+		'impression_fichedeliaison',
+		'impression',
+		'email',
+		'Propositionscuis66.index',
+		'Decisionscuis66.index',
+		'notification',
+		'Accompagnementscuis66.index',
+		'Suspensionscuis66.index',
+		'Rupturescuis66.index',
+		'annule',
+		'delete',
+	);
+	
+	// Attribu à $perm[$nomDeLaction] la valeur 'true' ou 'false' (string)
+	// Utile pour defaut3 avec son eval() 
+	// ex: '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['edit']
+	foreach( $perms as $permission ){
+		$controllerName = 'Cuis66';
+		$actionName = $permission;
+		
+		if ( strpos($permission, '.') !== false ){
+			$divide = explode( '.', $permission );
+			$controllerName = $divide[0];
+			$actionName = $divide[1];
+		}
+		
+		$perm[$permission] = !$this->Permissions->checkDossier( $controllerName, $actionName, $dossierMenu ) ? 'true' : 'false';
+	}
+	
 	// Ajout des dates sur certaines positions du CUI
 	foreach( $results as $key => $value ){
 		$etat = $value['Cui66']['etatdossiercui66'];
@@ -73,6 +100,15 @@
 			'/Cuis66/edit/#Cui.id#' => array(
 				'title' => __d('cuis66', '/Cuis66/edit'),
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['edit']
+			),
+			'/Cuis66/impression_fichedeliaison/#Cui.id#' => array(
+				'title' => __d('cuis66', '/Cuis66/impression_fichedeliaison'),
+				'disabled' => $perm['impression_fichedeliaison'],
+				'class' => 'impression'
+			),
+			'/Cuis66/impression/#Cui.id#' => array(
+				'title' => __d('cuis66', '/Cuis66/impression'),
+				'disabled' => $perm['impression'],
 			),
 			'/Cuis66/email/#Cui.personne_id#/#Cui.id#' => array(
 				'title' => __d('cuis66', '/Cuis66/email'),
@@ -117,6 +153,11 @@
 				'title' => __d('cuis66', '/Cuis66/delete'),
 				'disabled' => $perm['delete']
 			),
+			'/Cuis66/filelink/#Cui.id#' => array(
+				'title' => __d('cuis66', '/Cuis66/filelink'),
+				'disabled' => !$this->Permissions->checkDossier( 'Cuis66', 'filelink', $dossierMenu )
+			),
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		),
 		array(
 			'options' => $options,

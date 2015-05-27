@@ -27,3 +27,16 @@ msgstr "Formation"
 
 msgid "ENUM::GENRE::bilan"
 msgstr "Bilan"
+
+###############################################################################
+# PJ
+###############################################################################
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "Accompagnementcui66.haspiecejointe"
+msgstr "Pièces jointes"

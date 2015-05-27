@@ -21,6 +21,8 @@
 	
 	$perm['view'] = !$this->Permissions->checkDossier( 'Propositionscuis66', 'view', $dossierMenu ) ? 'true' : 'false';
 	$perm['edit'] = !$this->Permissions->checkDossier( 'Propositionscuis66', 'edit', $dossierMenu ) ? 'true' : 'false';
+	$perm['impression'] = !$this->Permissions->checkDossier( 'Propositionscuis66', 'impression', $dossierMenu ) ? 'true' : 'false';
+	$perm['impression_aviselu'] = !$this->Permissions->checkDossier( 'Propositionscuis66', 'impression_aviselu', $dossierMenu ) ? 'true' : 'false';
 	$perm['delete'] = !$this->Permissions->checkDossier( 'Propositionscuis66', 'delete', $dossierMenu ) ? 'true' : 'false';
 
 	echo $this->Default3->index(
@@ -38,11 +40,26 @@
 				'class' => 'edit',
 				'disabled' => $perm['edit']
 			),
+			'/Propositionscuis66/impression_aviselu/#Propositioncui66.id#/' => array(
+				'title' => __d('propositionscuis66', '/Propositionscuis66/impression_aviselu'),
+				'class' => 'impression',
+				'disabled' => $perm['impression_aviselu']
+			),
+			'/Propositionscuis66/impression/#Propositioncui66.id#/' => array(
+				'title' => __d('propositionscuis66', '/Propositionscuis66/impression'),
+				'class' => 'impression',
+				'disabled' => $perm['impression']
+			),
 			'/Propositionscuis66/delete/#Propositioncui66.id#/' => array(
 				'title' => __d('propositionscuis66', '/Propositionscuis66/delete'),
 				'class' => 'edit',
 				'disabled' => $perm['delete']
 			),
+			'/Propositionscuis66/filelink/#Propositioncui66.id#' => array(
+				'title' => __d('propositionscuis66', '/Propositionscuis66/filelink'),
+				'disabled' => !$this->Permissions->checkDossier( 'Propositionscuis66', 'filelink', $dossierMenu )
+			),
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		),
 		array(
 			'options' => $options,

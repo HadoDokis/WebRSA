@@ -102,9 +102,9 @@
 		* Chemin relatif pour les modèles de documents .odt utilisés lors des
 		* impressions. Utiliser %s pour remplacer par l'alias.
 		*/
-		public $modelesOdt = array(
-			'CUI/notifelucui.odt',
-		);
+//		public $modelesOdt = array(
+//			'CUI/notifelucui.odt',
+//		);
 
 
 		/**

@@ -16,30 +16,34 @@
 	 */
 	class Cui extends AppModel
 	{
+		/**
+		 * Alias de la table et du model
+		 * @var string
+		 */
 		public $name = 'Cui';
 
+		/**
+		 * Recurcivité du model 
+		 * @var integer
+		 */
 		public $recursive = -1;
 
+		/**
+		 * Possède des clefs étrangères vers d'autres models
+		 * @var array
+		 */
         public $belongsTo = array(
 			'Partenairecui' => array(
 				'className' => 'Partenairecui',
 				'foreignKey' => 'partenairecui_id',
-				//'dependent' => false,
 			),
 			'Partenaire' => array(
 				'className' => 'Partenaire',
 				'foreignKey' => 'partenaire_id',
-				//'dependent' => false,
 			),
-			/*'Personnecui' => array( // Fait un instantané de la personne, qui ne sera lié qu'au CUI
-				'className' => 'Personnecui',
-				'foreignKey' => 'personnecui_id',
-				//'dependent' => true,
-			),*/
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
-				//'dependent' => true,
 			),
 			'Entreeromev3' => array(
 				'className' => 'Entreeromev3',
@@ -52,6 +56,10 @@
 			),
         );
 
+		/**
+		 * Ces models possèdent une clef étrangère vers ce model
+		 * @var array
+		 */
 		public $hasOne = array(
 			'Cui66' => array(
 				'className' => 'Cui66',
@@ -63,6 +71,10 @@
 			),
 		);
 
+		/**
+		 * Ces models possèdent une clef étrangère vers ce model
+		 * @var array
+		 */
 		public $hasMany = array(
 			'Emailcui' => array(
 				'className' => 'Emailcui',
@@ -72,10 +84,26 @@
 				'order' => null,
 				'dependent' => true
 			),
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Cui\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		/**
-		 *
+		 * Champs suplémentaire virtuel (n'existe pas en base)
 		 * @var array
 		 */
 		public $virtualFields = array(
@@ -92,16 +120,8 @@
 		 */
 		public $actsAs = array(
 			'Allocatairelie',
-			//'Conditionnable',
-			'Formattable'/* => array(
-				'phone' => array( 'prestatairefp93_tel', 'prestatairefp93_fax' )
-			)*/,
-			//'Gedooo.Gedooo',
-			/*'ModelesodtConditionnables' => array(
-				93 => array(
-					'Ficheprescription93/ficheprescription.odt',
-				)
-			),*/
+			'Formattable',
+			'Gedooo.Gedooo',
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
@@ -141,8 +161,6 @@
 					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-//                    $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
-//                    $this->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
                     $this->Personne->join(
                         'PersonneReferent',
                         array(
@@ -175,15 +193,6 @@
 							'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
 						)
 					),
-//                    array(
-//						'OR' => array(
-//                            array(
-//                                'PersonneReferent.personne_id' =>  $personne_id,
-//                                'PersonneReferent.dfdesignation IS NULL'
-//                            ),
-//							'PersonneReferent.personne_id IS NULL'
-//						)
-//					)
 				),
 				'contain' => false
 			);
@@ -203,5 +212,33 @@
 			return $dataCaf;
 		}
 
+		/**
+		 * Permet de savoir si une personne lié au CUI possède un RSA Socle
+		 * 
+		 * @param numeric $personne_id
+		 * @return boolean
+		 */
+		public function isRsaSocle( $personne_id ){
+			$vfRsaSocle = $this->Personne->Foyer->Dossier->Detaildroitrsa->vfRsaSocle();
+			$result = $this->Personne->find(
+				'first',
+				array(
+					'fields' => array(
+						"( {$vfRsaSocle} ) AS \"Dossier__rsasocle\""
+					),
+					'joins' => array(
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa' )
+					),
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'recursive' => -1
+				)
+			);			
+			$isRsaSocle = isset($result['Dossier']['rsasocle']) && $result['Dossier']['rsasocle'] === true ? true : false;
+			return $isRsaSocle;
+		}
 	}
 ?>

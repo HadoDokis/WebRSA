@@ -44,7 +44,7 @@
 			) ,
 			array( 'options' => $options )
 		)
-		. $this->Romev3->fieldsetView( 'Entreeromev3', $this->request->data, array( 'options' => $options ) )
+		. $this->Romev3->fieldsetView( 'Immersionromev3', $this->request->data, array( 'options' => $options ) )
 		. '</fieldset>'
 	;
 	

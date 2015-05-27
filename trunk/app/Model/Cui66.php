@@ -15,10 +15,22 @@
 	 */
 	class Cui66 extends AppModel // TODO : Passage en En attente d'avis technique avant meme l'envoi d'un e-mail
 	{
+		/**
+		 * Alias de la table et du model
+		 * @var string
+		 */
 		public $name = 'Cui66';
 
+		/**
+		 * Recurcivité du model 
+		 * @var integer
+		 */
 		public $recursive = -1;
 		
+		/**
+		 * Possède des clefs étrangères vers d'autres models
+		 * @var array
+		 */
         public $belongsTo = array(
 			'Cui' => array(
 				'className' => 'Cui',
@@ -32,6 +44,10 @@
 			),
         );
 		
+		/**
+		 * Ces models possèdent une clef étrangère vers ce model
+		 * @var array
+		 */
 		public $hasMany = array(
 			'Propositioncui66' => array(
 				'className' => 'Propositioncui66',
@@ -77,6 +93,15 @@
 		);
 		
 		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'ficheLiaison' => 'CUI/synthesecui66.odt',
+			'default' => 'CUI/impression.odt',
+		);
+		
+		/**
 		 * Permet de savoir si un ajout est possible à partir des messages
 		 * renvoyés par la méthode messages.
 		 *
@@ -98,6 +123,7 @@
 		}
 
 		/**
+		 * Récupère les donnés par defaut dans le cas d'un ajout, ou récupère les données stocké en base dans le cas d'une modification
 		 * 
 		 * @param integer $personne_id
 		 * @param integer $id
@@ -109,12 +135,14 @@
 				$sqDernierTitresejour = $this->Cui->Personne->Titresejour->sqDernier();
 				$sqNbEnfants = $this->Cui->Personne->Foyer->vfNbEnfants();
 				$sqNbBeneficiaires = $this->Cui->Personne->Foyer->sqNombreBeneficiaires();
+				$sqLastCodepartenaire = $this->Cui->Partenaire->sqGetLastCodePartenaire();
 
 				$query = array(
 					'fields' => array(
 						'Titresejour.dftitsej',
 						"( {$sqNbEnfants} ) AS \"Foyer__nb_enfants\"",
 						"( {$sqNbBeneficiaires} ) AS \"Foyer__nb_beneficiaires\"",
+						"( {$sqLastCodepartenaire} ) AS \"Partenairecui__codepartenaire\"",
 					),
 					'recursive' => -1,
 					'conditions' => array(
@@ -131,7 +159,13 @@
 					)
 				);
 				$record = $this->Cui->Personne->find( 'first', $query );
-// TODO changement de position lors d'une suspension
+
+				$record['Partenairecui']['codepartenaire'] = str_pad( ($record['Partenairecui']['codepartenaire'] +1), 3, '0', STR_PAD_LEFT );
+
+				/** 
+				 * INFO: si one ne met pas le modèle Adressecui dans le $this->request->data, il n'est
+				 * pas instancié dans la vue, donc pas d'astérisque ni validation javascript...
+				 */
 				$result = array(
 					'Cui' => array(
 						'personne_id' => $personne_id,
@@ -146,8 +180,10 @@
 						'notifie' => 0
 					),
 					'Partenairecui66' => array(
-						'nbcontratsaidescg' => '0', // FIXME
-					)
+						'nbcontratsaidescg' => '0',
+						'codepartenaire' => $record['Partenairecui']['codepartenaire']
+					),
+					'Adressecui' => array()
 				);
 			}
 			// Mise à jour
@@ -161,12 +197,24 @@
 			return $result;
 		}
 		
+		/**
+		 * Change la valeur de Cui66.etatdossiercui66 en annule
+		 * 
+		 * @param array $data
+		 * @return boolean
+		 */
 		public function annule( $data ){
 			$data['Cui66']['etatdossiercui66'] = 'annule';
 			return $this->save( $data );
 		}
 		
-		public function queryView($id){
+		/**
+		 * Revoi la requete pour récuperer toutes les données pour l'affichage d'un CUI (Hors modules)
+		 * 
+		 * @param integer $id
+		 * @return array
+		 */
+		public function queryView( $id ){
 			$query = array(
 				'fields' => array_merge(
 					$this->fields(),
@@ -192,6 +240,12 @@
 			return $query;
 		}
 		
+		/**
+		 * Revoi la requete pour récuperer toutes les données pour l'affichage de l'index du CUI
+		 * 
+		 * @param integer $personne_id
+		 * @return array
+		 */
 		public function queryIndex($personne_id){
 			// Utile pour l'affichage des dates de relance par email
 			$sqRelanceQuery = array(
@@ -233,7 +287,10 @@
 					$this->Cui->Partenairecui->fields(),
 					$this->Cui->Cui66->Decisioncui66->fields(),
 					$this->Cui->Cui66->Suspensioncui66->fields(),
-					$this->Cui->Cui66->Rupturecui66->fields()
+					$this->Cui->Cui66->Rupturecui66->fields(),
+					array(
+						$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nombre' ),
+					)
 				),
 				'conditions' => array(
 					'Cui.personne_id' => $personne_id
@@ -252,8 +309,52 @@
 			
 			return $query;
 		}
+		
+		/**
+		 * Requète d'impression
+		 * 
+		 * @param type $cui_id
+		 * @return type
+		 */
+		public function queryImpression( $cui_id ){
+			$queryView = $this->queryView( $cui_id );
+			$queryPersonne = $this->queryPersonne( 'Cui.personne_id' );
+			
+			$query['fields'] = array_merge( $queryView['fields'], $queryPersonne['fields'] );
+			$query['joins'] = array_merge( $queryView['joins'], array( $this->Cui->join( 'Personne' ) ), $queryPersonne['joins'] );
+			$query['conditions'] = $queryView['conditions'];
+			
+			return $query;
+		}
 
 		/**
+		 * Permet d'obtenir les informations lié à un Allocataire d'un Cui
+		 * 
+		 * @param integer $id
+		 * @return array
+		 */
+		public function queryPersonne( $personne_id ){
+			$query = ClassRegistry::init( 'Allocataire' )->searchQuery();
+
+			$query['fields'] = array_merge(
+				$query['fields'],
+				array(
+					'Titresejour.dftitsej',
+					'Departement.name',
+					'( '.$this->Cui->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nb_enfants"'
+				)
+			);
+
+			$query['joins'][] = $this->Cui->Personne->Foyer->Adressefoyer->Adresse->join( 'Departement', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Cui->Personne->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) );
+			
+			$query['conditions']['Personne.id'] = $personne_id;
+			
+			return $query;
+		}
+
+		/**
+		 * Sauvegarde d'un CUI
 		 * 
 		 * @param array $data
 		 * @return boolean
@@ -282,6 +383,11 @@
 				$data['Cui']['entreeromev3_id'] = $this->Cui->Entreeromev3->id;
 			}
 			
+			// Si le contrat est un CDI, on s'assure que la date de fin soit nulle
+			if ( $data['Cui']['typecontrat'] === 'CDI' ){
+				$data['Cui']['findecontrat'] = null;
+			}
+			
 			// Partenairecui possède une Adressecui, on commence par cette dernière
 			$this->Cui->Partenairecui->Adressecui->create($data);
 			$success = $success && $this->Cui->Partenairecui->Adressecui->save();
@@ -297,6 +403,35 @@
 			$this->Cui->Partenairecui->Partenairecui66->create($data);
 			$success = $success && $this->Cui->Partenairecui->Partenairecui66->save();
 
+			// Dans le cas d'un ajout, on met à jour les parametrages des partenaires
+			if ( empty($data['Cui']['id']) ){
+				$data = $this->Cui->Partenairecui->Partenairecui66->addPartenaireData( $data );
+				$this->Cui->Partenaire->create($data['Partenaire']);
+				$success = $success && $this->Cui->Partenaire->save();
+				$data['Cui']['partenaire_id'] = $this->Cui->Partenaire->id;
+			}
+			
+			if ( empty($data['Cui']['tauxfixeregion']) && empty($data['Cui']['priseenchargeeffectif']) && empty($data['Cui']['tauxcg']) ){
+				$Tauxcgcui66 = ClassRegistry::init( 'Tauxcgcui66' );
+				$query = array(
+					'conditions' => array(
+						'Tauxcgcui66.typeformulaire' => $data['Cui66']['typeformulaire'],
+						'Tauxcgcui66.secteurmarchand' => $data['Cui']['secteurmarchand'],
+						'Tauxcgcui66.typecontrat' => $data['Cui66']['typecontrat'],
+					),
+					'order' => array(
+						'created' => 'DESC'
+					)
+				);
+				$result = $Tauxcgcui66->find( 'first', $query );
+				
+				if ( !empty($result) ){
+					$data['Cui']['tauxfixeregion'] = $result['Tauxcgcui66']['tauxfixeregion'];
+					$data['Cui']['priseenchargeeffectif'] = $result['Tauxcgcui66']['priseenchargeeffectif'];
+					$data['Cui']['tauxcg'] = $result['Tauxcgcui66']['tauxcg'];
+				}
+			}
+			
 			// Cui66 possède un Cui
 			$this->Cui->create($data);
 			$success = $success && $this->Cui->save();
@@ -306,12 +441,7 @@
 			$this->create($data);
 			$success = $success && $this->save();
 			
-			// Dans le cas d'un ajout, on met à jour les parametrages des partenaires
-			if ( empty($data['Cui']['id']) ){
-				$data = $this->Cui->Partenairecui->Partenairecui66->addPartenaireData( $data );
-				$this->Cui->Partenaire->create($data['Partenaire']);
-				$success = $success && $this->Cui->Partenaire->save();
-			}
+
 			
 			return $success;
 		}
@@ -469,11 +599,8 @@
 				AND UPPER(textsmailscuis66.name) LIKE \'%RELANCE%\'
 				AND emailcui_sq.cui_id = Cui66.cui_id
 				LIMIT 1
-			)'; // TODO faut que ça marche
-					
+			)';
 			
-			// TODO : Corriger le definition initiale de la position vers attentemail
-			// TODO : Ajouter une position -> condition(email initial envoyé, dossier non reçu, email de relance envoyé)
 			$return = array(
 				// 1. Annulé
 				'annule' => array(
@@ -621,17 +748,11 @@
 		 */
 		public function getConditionsPositioncui( $etatdossiercui66 ) {
 			$conditions = array();
-			$found = false;
 
 			foreach( $this->_getConditionsPositionsCuis() as $keyPosition => $conditionsPosition ) {
-				if( !$found ) {
-					if( $keyPosition != $etatdossiercui66 ) {
-//						$conditions[] = array( 'NOT' => array( $conditionsPosition ) );
-					}
-					else {
-						$conditions[] = array( $conditionsPosition );
-						$found = true;
-					}
+				if ( $keyPosition === $etatdossiercui66 ) {
+					$conditions[] = array( $conditionsPosition );
+					break;
 				}
 			}
 
@@ -695,7 +816,7 @@
 			$conditionsSql = $Dbo->conditions( $conditions, true, true, $this );
 			
 			$sql = "UPDATE {$tableName} AS {$sq}{$this->alias}{$eq} SET {$sq}etatdossiercui66{$eq} = {$case} FROM {$tableNameCui} AS {$sq}{$this->Cui->alias}{$eq} {$conditionsSql} AND {$sq}{$this->Cui->alias}{$eq}.{$sq}id{$eq} = {$sq}{$this->alias}{$eq}.{$sq}cui_id{$eq};";
-//debug(str_replace('WHEN', "\n\nWHEN", $sql));die();
+
 			$result = $Dbo->query( $sql ) !== false;
 			
 			// On regarde si des valeurs ont changés
@@ -728,7 +849,7 @@
 		 * Mise à jour des positions des CUI qui devraient se trouver dans une
 		 * position donnée.
 		 *
-		 * @param integer $personne_id
+		 * @param integer $etatdossiercui66
 		 * @return boolean
 		 */
 		public function updatePositionsCuisByPosition( $etatdossiercui66 ) {

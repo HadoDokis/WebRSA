@@ -31,19 +31,24 @@
 			'Suspensioncui66.duree',
 			'Suspensioncui66.motif' => array( 'type' => 'select' ),
 			'/Suspensionscuis66/view/#Suspensioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Suspensionscuis66/view'),
+				'title' => __d('suspensionscuis66', '/Suspensionscuis66/view'),
 				'disabled' => $perm['view']
 			),
 			'/Suspensionscuis66/edit/#Suspensioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Suspensionscuis66/edit'),
+				'title' => __d('suspensionscuis66', '/Suspensionscuis66/edit'),
 				'class' => 'edit',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['edit']
 			),
 			'/Suspensionscuis66/delete/#Suspensioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Suspensionscuis66/delete'),
+				'title' => __d('suspensionscuis66', '/Suspensionscuis66/delete'),
 				'class' => 'edit',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['delete']
 			),
+			'/Suspensionscuis66/filelink/#Suspensioncui66.id#' => array(
+				'title' => __d('suspensionscuis66', '/Suspensionscuis66/filelink'),
+				'disabled' => !$this->Permissions->checkDossier( 'Suspensionscuis66', 'filelink', $dossierMenu )
+			),
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		),
 		array(
 			'options' => $options,

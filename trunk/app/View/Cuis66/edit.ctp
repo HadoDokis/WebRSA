@@ -94,9 +94,9 @@
 				'Adressecui.complement',
 				'Adressecui.codepostal',
 				'Adressecui.commune',
-				'Adressecui.numtel',
+				'Adressecui.numtel' => array( 'maxLength' => 14 ),
 				'Adressecui.email',
-				'Adressecui.numfax',
+				'Adressecui.numfax' => array( 'maxLength' => 14 ),
 				'Adressecui.canton' => array( 'empty' => true ),
 			),
 			array( 'options' => $options )
@@ -115,9 +115,9 @@
 				'Adressecui.complement2',
 				'Adressecui.codepostal2',
 				'Adressecui.commune2',
-				'Adressecui.numtel2',
+				'Adressecui.numtel2' => array( 'maxLength' => 14 ),
 				'Adressecui.email2',
-				'Adressecui.numfax2',
+				'Adressecui.numfax2' => array( 'maxLength' => 14 ),
 				'Adressecui.canton2' => array( 'empty' => true ),
 			),
 			array( 'options' => $options )
@@ -151,7 +151,7 @@
 				'Partenairecui66.clerib',
 				'Partenairecui66.nblits',
 				'Partenairecui66.nbcontratsaideshorscg',
-				'Partenairecui66.nbcontratsaidescg' => array( 'view' => true, 'hidden' => true ),
+				'Partenairecui66.nbcontratsaidescg',
 			),
 			array( 'options' => $options )
 		)
@@ -164,7 +164,7 @@
 		)
 		. '</fieldset>'
 	;
-	
+
 /***********************************************************************************
  * DOSSIER RECU/ELIGIBLE/COMPLET
 /***********************************************************************************/
@@ -482,7 +482,7 @@
 		var key, champ, correspondancesChamps = <?php echo $correspondancesChamps;?>;
 		for (key in correspondancesChamps){
 			if (correspondancesChamps.hasOwnProperty(key)){
-				champ = $( fieldId(correspondancesChamps[key]) );
+				champ = $( fieldId(correspondancesChamps[key]) );console.log( champ );
 				if (champ !== null){
 					champ.value = json[key];
 					champ.simulate('change');

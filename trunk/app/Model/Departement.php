@@ -16,6 +16,24 @@
 	class Departement extends AppModel
 	{
 		public $name = 'Departement';
+		
+		public $hasMany = array(
+			'Adresse' => array(
+				'className' => 'Adresse',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'"Departement"."numdep" = SUBSTRING( "Adresse"."codepos" FROM 1 FOR 2 )'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 
 		public $validate = array(
 			'numdep' => array(

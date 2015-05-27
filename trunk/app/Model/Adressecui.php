@@ -52,7 +52,7 @@
 				'phoneFr' => array(
 					'rule' => array( 'phoneFr' ),
 					'allowEmpty' => true,
-				)
+				),
 			),
 			'numfax' => array(
 				'phoneFr' => array(
