@@ -7,25 +7,20 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	 App::uses( 'AbstractAppModelLieCui66', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Accompagnementcui66 est la classe contenant les accompagnements du CUI pour le CG 66.
 	 *
 	 * @package app.Model
 	 */
-	class Accompagnementcui66 extends AppModel
+	class Accompagnementcui66 extends AbstractAppModelLieCui66
 	{
 		/**
 		 * Alias de la table et du model
 		 * @var string
 		 */
 		public $name = 'Accompagnementcui66';
-		
-		/**
-		 * Recurcivité du model 
-		 * @var integer
-		 */
-		public $recursive = -1;
 		
 		/**
 		 * Possède des clefs étrangères vers d'autres models
@@ -45,48 +40,6 @@
         );
 		
 		/**
-		 * Ces models possèdent une clef étrangère vers ce model
-		 * @var array
-		 */
-		public $hasMany = array(
-			'Fichiermodule' => array(
-				'className' => 'Fichiermodule',
-				'foreignKey' => false,
-				'dependent' => false,
-				'conditions' => array(
-					'Fichiermodule.modele = \'Accompagnementcui66\'',
-					'Fichiermodule.fk_value = {$__cakeID__$}'
-				),
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);
-		
-		/**
-		 * Behaviors utilisés par le modèle.
-		 *
-		 * @var array
-		 */
-		public $actsAs = array(
-			'Formattable',
-			'Postgres.PostgresAutovalidate',
-			'Validation2.Validation2Formattable',
-		);
-		
-		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			'default' => 'CUI/%s/impression.odt',
-		);
-		
-		/**
 		 * Récupère les donnés par defaut dans le cas d'un ajout, ou récupère les données stocké en base dans le cas d'une modification
 		 * 
 		 * @param integer $cui66_id
@@ -94,23 +47,11 @@
 		 * @return array
 		 */
 		public function prepareAddEditFormData( $cui66_id, $id = null ) {
-			// Ajout
-			if( empty( $id ) ) {
-				$result = array(
-					'Accompagnementcui66' => array(
-						'cui66_id' => $cui66_id,
-					)
-				);
-			}
-			// Mise à jour
-			else {
-				$query = $this->queryView( $id, false );
-				$result = $this->find( 'first', $query );
-				$result = $this->Immersioncui66->Immersionromev3->prepareFormDataAddEdit( $result );
-			}
+			$result = parent::prepareAddEditFormData($cui66_id, $id);
 			
-			if ( empty($result) ){
-				throw new HttpException(404, "HTTP/1.1 404 Not Found");
+			// Modification
+			if( !empty( $id ) ) {
+				$result = $this->Immersioncui66->Immersionromev3->prepareFormDataAddEdit( $result );
 			}
 
 			return $result;
@@ -163,7 +104,8 @@
 			$success = true;
 			
 			// Si le genre d'accompagnement est immersion
-			if ( isset($data['Immersioncui66']) && $data['Accompagnementcui66']['genre'] === 'immersion' ){$data['Immersioncui66']['user_id'] = $user_id;//FIXME
+			if ( isset($data['Immersioncui66']) && $data['Accompagnementcui66']['genre'] === 'immersion' ){
+				$data['Immersioncui66']['user_id'] = $user_id;//FIXME
 				unset( $this->Immersioncui66->Immersionromev3->validate['familleromev3_id']['notEmpty'] );
 				// Si un code famille (rome v3) est vide, on ne sauvegarde pas le code rome
 				if ( !isset($data['Immersionromev3']['familleromev3_id']) || $data['Immersionromev3']['familleromev3_id'] === '' ){ 
@@ -226,30 +168,19 @@
 
 			return $options;
 		}
-		
+
 		/**
-		 * Requète d'impression
+		 * FIXME: doc
 		 * 
-		 * @param integer $id
-		 * @param string $modeleOdt
-		 * @return type
+		 * @param type $cui66_id
+		 * @return string
 		 */
-		public function queryImpression( $id, $modeleOdt = null ){
-			$queryView = $this->queryView( $id, true );
-			$queryImpressionCui66 = $this->Cui66->queryImpression( 'Cui66.cui_id' ); 
+		public function getCompleteDataImpressionQuery( $cui66_id ) {
+			$query = parent::getCompleteDataImpressionQuery( $cui66_id );
 
-			$query['fields'] = array_merge( $queryView['fields'], $queryImpressionCui66['fields'] );
-
-			$query['joins'] = array_merge( 
-				array( 
-					$this->join( 'Cui66' ),
-				),
-				$queryView['joins'],
-				$queryImpressionCui66['joins']
-			);
-
-			$query['conditions'] = $queryView['conditions'];
-
+			$query['fields'] = array_merge( $query['fields'], $this->Immersioncui66->fields() );
+			$query['contain'] = array( 'Immersioncui66' );
+					
 			return $query;
 		}
 	}

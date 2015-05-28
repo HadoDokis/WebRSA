@@ -43,3 +43,20 @@ msgstr "Oui"
 
 msgid "Decisioncui66.haspiecejointe"
 msgstr "Pièces jointes"
+
+###############################################################################
+
+msgid "Decisioncui66.formulaire"
+msgstr "Prise de décision"
+
+msgid "Decisioncui66.decision"
+msgstr "Décision"
+
+msgid "Decisioncui66.motif"
+msgstr "Motif"
+
+msgid "Decisioncui66.datedecision"
+msgstr "Date de la décision"
+
+msgid "Decisioncui66.observation"
+msgstr "Observation"

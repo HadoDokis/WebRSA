@@ -40,3 +40,32 @@ msgstr "Oui"
 
 msgid "Accompagnementcui66.haspiecejointe"
 msgstr "Pièces jointes"
+
+##############################################################################
+
+msgid "Accompagnementcui66.formulaire"
+msgstr "Accompagnement"
+
+msgid "Accompagnementcui66.genre"
+msgstr "Type d'accompagnement"
+
+msgid "Accompagnementcui66.organismesuivi"
+msgstr "Organisme de suivi"
+
+msgid "Accompagnementcui66.nomredacteur"
+msgstr "Nom du rédacteur"
+
+msgid "Accompagnementcui66.observation"
+msgstr "Observation"
+
+msgid "Accompagnementcui66.datededebut"
+msgstr "Date de début"
+
+msgid "Accompagnementcui66.datedefin"
+msgstr "Date de fin"
+
+msgid "Accompagnementcui66.datedesignature"
+msgstr "Date de la signature"
+
+msgid "Accompagnementcui66.entreprise"
+msgstr "Immersion"

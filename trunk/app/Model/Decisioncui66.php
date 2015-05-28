@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractAppModelLieCui66', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Decisioncui66 est la classe contenant les avis techniques du CUI pour le CG 66.
 	 *
 	 * @package app.Model
 	 */
-	class Decisioncui66 extends AppModel
+	class Decisioncui66 extends AbstractAppModelLieCui66
 	{
 		/**
 		 * Alias de la table et du model
@@ -22,55 +23,12 @@
 		public $name = 'Decisioncui66';
 		
 		/**
-		 * Recurcivité du model 
-		 * @var integer
+		 * Order des find par défaut
+		 * @var type 
 		 */
-		public $recursive = -1;
-		
-		/**
-		 * Possède des clefs étrangères vers d'autres models
-		 * @var array
-		 */
-        public $belongsTo = array(
-			'Cui66' => array(
-				'className' => 'Cui66',
-				'foreignKey' => 'cui66_id',
-				'dependent' => true,
-			),
-        );
-		
-		/**
-		 * Ces models possèdent une clef étrangère vers ce model
-		 * @var array
-		 */
-		public $hasMany = array(
-			'Fichiermodule' => array(
-				'className' => 'Fichiermodule',
-				'foreignKey' => false,
-				'dependent' => false,
-				'conditions' => array(
-					'Fichiermodule.modele = \'Decisioncui66\'',
-					'Fichiermodule.fk_value = {$__cakeID__$}'
-				),
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);
-		
-		/**
-		 * Behaviors utilisés par le modèle.
-		 *
-		 * @var array
-		 */
-		public $actsAs = array(
-			'Formattable',
-			'Postgres.PostgresAutovalidate',
-			'Validation2.Validation2Formattable',
+		public $order =  array(
+			'Decisioncui66.datedecision' => 'DESC',
+			'Decisioncui66.created' => 'DESC'
 		);
 		
 		/**
@@ -141,21 +99,6 @@
 
 			return $decision;
 		}
-		
-		/**
-		 * Sauvegarde du formulaire
-		 * 
-		 * @param array $data
-		 * @return boolean
-		 */
-		public function saveAddEditFormData( array $data, $user_id = null ) {
-			$data['Decisioncui66']['user_id'] = $user_id;
-			
-			$this->create($data);
-			$success = $this->save();
-			
-			return $success;
-		}
 				
 		/**
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
@@ -178,60 +121,6 @@
 			);
 
 			return $options;
-		}
-		
-		/**
-		 * Requete de vue
-		 * 
-		 * @param string $id
-		 * @return array
-		 */
-		public function queryView( $id ){
-			$query = array(
-				'fields' => array_merge(
-					$this->fields(),
-					$this->Cui66->Propositioncui66->fields()
-				),
-				'joins' => array(
-					$this->join( 'Cui66', array( 'type' => 'INNER' ) ),
-					$this->Cui66->join( 'Propositioncui66', array( 'type' => 'LEFT OUTER' ) ),
-				),
-				'conditions' => array(
-					'Decisioncui66.id' => $id
-				),
-				'order' => array( 
-					'Decisioncui66.created' => 'DESC', 
-					'Propositioncui66.created' => 'DESC' 
-				)
-			);
-			
-			return $query;
-		}
-		
-		/**
-		 * Requète d'impression
-		 * 
-		 * @param integer $id
-		 * @param string $modeleOdt
-		 * @return type
-		 */
-		public function queryImpression( $id, $modeleOdt = null ){
-			$queryView = $this->queryView( $id );
-			$queryImpressionCui66 = $this->Cui66->queryImpression( 'Cui66.cui_id' ); 
-			
-			$query['fields'] = array_merge( $queryView['fields'], $queryImpressionCui66['fields'] );
-			
-			$query['joins'] = array_merge( 
-				array( 
-					$this->join( 'Cui66' ),
-					$this->Cui66->join( 'Propositioncui66', array( 'type' => 'LEFT OUTER' ) ),
-				),
-				$queryImpressionCui66['joins']
-			);
-			$query['conditions'] = $queryView['conditions'];
-			$query['order'] = $queryView['order'];
-			
-			return $query;
 		}
 	}
 ?>

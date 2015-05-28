@@ -214,7 +214,7 @@
 		 * @param integer $id
 		 * @return array
 		 */
-		public function queryView( $id ){
+		public function queryView( $id = null ){
 			$query = array(
 				'fields' => array_merge(
 					$this->fields(),
@@ -225,9 +225,7 @@
 					$this->Cui->fields()
 				),
 				'recursive' => -1,
-				'conditions' => array(
-					'Cui.id' => $id
-				),
+				'conditions' => array(),
 				'joins' => array(
 					$this->join( 'Cui', array( 'type' => 'INNER' ) ),
 					$this->Cui->join( 'Partenairecui' ),
@@ -236,6 +234,10 @@
 					$this->Cui->Partenairecui->join( 'Adressecui' ),						
 				)
 			);
+			
+			if( $id !== null ) {
+				$query['conditions']['Cui.id'] = $id;
+			}
 			
 			return $query;
 		}
@@ -316,7 +318,7 @@
 		 * @param type $cui_id
 		 * @return type
 		 */
-		public function queryImpression( $cui_id ){
+		public function queryImpression( $cui_id = null ){
 			$queryView = $this->queryView( $cui_id );
 			$queryPersonne = $this->queryPersonne( 'Cui.personne_id' );
 			
@@ -884,6 +886,33 @@
 			);
 
 			return $return;
+		}
+
+		/**
+		 * FIXME: doc
+		 * 
+		 * @param array $data
+		 * @return type
+		 */
+		public function completeDataImpression( array $data ) {
+			$cui66_id = Hash::get( $data, 'Cui66.id' );
+			$data = array( $data );
+
+			$modeles = array(
+				'Propositioncui66',
+				'Decisioncui66',
+				'Accompagnementcui66',
+				'Suspensioncui66',
+				'Rupturecui66'
+			);
+			
+			foreach( $modeles as $modele ) {
+				$query = $this->{$modele}->getCompleteDataImpressionQuery( $cui66_id );
+				$data[$modele] = $this->{$modele}->find( 'all', $query );
+			}
+
+			return $data;
+
 		}
 
 	}

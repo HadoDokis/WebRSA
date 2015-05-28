@@ -41,40 +41,50 @@ msgid "ENUM::AJOURVERSEMENT::1"
 msgstr "Oui"
 
 
+
 ####################################### Traductions champs CUI #######################################
 
-msgid "Partenairecui.employeur"
-msgstr "L'Employeur"
+msgid "Partenairecui66.informationssup"
+msgstr "Informations additionnelles pour le cg66"
 
-msgid "Partenairecui.raisonsociale"
-msgstr "Dénomination, raison sociale"
+msgid "Partenairecui66.codepartenaire"
+msgstr "Code partenaire"
 
-msgid "Partenairecui.enseigne"
-msgstr "Enseigne"
+msgid "Partenairecui66.objet"
+msgstr "Objet"
 
-msgid "Partenairecui.adresseemployeur"
-msgstr "Adresse de l'employeur"
+msgid "Partenairecui66.nomtitulairerib"
+msgstr "Nom titulaire du compte RIB"
 
-msgid "Partenairecui.adresseadministrative"
-msgstr "Adresse administrative"
+msgid "Partenairecui66.codebanque"
+msgstr "Code banque"
 
-msgid "Partenairecui.remarque"
-msgstr "Si l'adresse à laquelle les documents administratifs et financiers doivent etre envoyés est différente de l'adresse employeur, remplir la partie ci-dessous"
+msgid "Partenairecui66.codeguichet"
+msgstr "Code guichet"
 
-msgid "Partenairecui.utiliseradradministrative"
-msgstr "Utiliser une adresse administrative différente"
+msgid "Partenairecui66.numerocompte"
+msgstr "Numéro de compte"
 
-msgid "Partenairecui.siret"
-msgstr "N° SIRET"
+msgid "Partenairecui66.etablissementbancaire"
+msgstr "Etablissement bancaire"
 
-msgid "Partenairecui.naf"
-msgstr "Code NAF2"
+msgid "Partenairecui66.clerib"
+msgstr "Clé RIB"
 
-msgid "Partenairecui.statut"
-msgstr "Statut de l'employeur"
+msgid "Partenairecui66.nblits"
+msgstr "Nombre de lits"
 
-msgid "Partenairecui.effectif"
-msgstr "Effectif salarié au 31 décembre"
+msgid "Partenairecui66.nbcontratsaideshorscg"
+msgstr "Nombre de contrats aidés hors CG"
 
-msgid "Partenairecui.organismerecouvrement"
-msgstr "Organisme de recouvrement des cotisations sociales :"
+msgid "Partenairecui66.nbcontratsaidescg"
+msgstr "Nombre de contrats aidés CG"
+
+msgid "Entreeromev3"
+msgstr "Code ROME (v3)"
+
+msgid "Decisionscuis66.decision"
+msgstr "Décision sur le CUI"
+
+msgid "Decisionscuis66.datedecision"
+msgstr "Date de la décision"

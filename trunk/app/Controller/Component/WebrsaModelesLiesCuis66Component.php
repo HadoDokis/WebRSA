@@ -279,15 +279,25 @@
 				? sprintf( $Model->modelesOdt['default'], $Model->alias )
 				: sprintf( $Model->modelesOdt[$modeleOdt], $Model->alias )
 			;
-			$query = $Model->queryImpression( $id, $modeleOdt );
-			$Model->forceVirtualFields = true;
 			
-			$data = $Model->find( 'all', $query );
+			$Model->forceVirtualFields = true;
+			$Model->Cui66->forceVirtualFields = true;
+			
+			$queryImpressionCui66 = $Model->Cui66->queryImpression();
+
+			$queryImpressionCui66['fields'] = array_merge( $queryImpressionCui66['fields'], $Model->fields() );
+			$queryImpressionCui66['joins'][] = $Model->Cui66->join( $Model->alias, array( 'type' => 'INNER' ) );
+			$queryImpressionCui66['conditions']["{$Model->alias}.{$Model->primaryKey}"] = $id;
+
+			$dataCui66 = $Model->Cui66->find( 'first', $queryImpressionCui66 );
+
+			$data = $Model->Cui66->completeDataImpression( $dataCui66 );
+			
 			$options = array_merge(
 				$Model->options(),
 				$Model->Cui66->options()
 			);
-			
+
 			$result = $Model->ged(
 				$data,
 				$path,
@@ -309,10 +319,6 @@
 			$Model = $Controller->{$Controller->modelClass};
 			
 			// On vérifi que les méthodes et les propriétés sont bien défini et que le modele demandé existe bien (null == 'default')
-			if ( !method_exists($Model, 'queryImpression') ){
-				$this->Session->setFlash('queryImpression() n\'existe pas dans ' . $Model->alias);
-				throw new NotImplementedException('queryImpression() n\'existe pas dans ' . $Model->alias );
-			}
 			if ( 
 				!property_exists($Model, 'modelesOdt') 
 				|| !isset($Model->modelesOdt['default']) 
@@ -357,6 +363,32 @@
 				$this->Session->setFlash( 'Impossible de générer le PDF.', 'default', array( 'class' => 'error' ) );
 				$Controller->redirect( $Controller->referer() );
 			}
+		}
+		
+		/**
+		 * On lui donne l'id d'un modèle lié au CUI et il retourne l'id du CUI
+		 * 
+		 * @param integer $id
+		 * @return integer
+		 */
+		public function getCuiId( $id ){
+			$Controller = $this->_Collection->getController();
+			$Model = $Controller->{$Controller->modelClass};
+			
+			$query = array(
+				'fields' => array(
+					'Cui66.cui_id'
+				),
+				'joins' => array(
+					$Model->join( 'Cui66' )
+				),
+				'conditions' => array(
+					$Model->alias . '.id' => $id
+				),
+			);
+			$result = $Model->find( 'first', $query );
+			
+			return $result['Cui66']['cui_id'];
 		}
 	}
 ?>

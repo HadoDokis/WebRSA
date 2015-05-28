@@ -30,3 +30,50 @@ msgstr "Découverte du métier"
 
 msgid "ENUM::OBJECTIFPRINCIPAL::demarcherecrutement"
 msgstr "Démarche de recrutement"
+
+##############################################################################
+
+msgid "Immersioncui66.nomentreprise"
+msgstr "Nom de l'entreprise"
+
+msgid "Immersioncui66.numvoie"
+msgstr "Numéro de la voie"
+
+msgid "Immersioncui66.typevoie"
+msgstr "Type de voie"
+
+msgid "Immersioncui66.nomvoie"
+msgstr "Nom de la voie"
+
+msgid "Immersioncui66.complementadresse"
+msgstr "Complément d'adresse"
+
+msgid "Immersioncui66.codepostal"
+msgstr "Code postal"
+
+msgid "Immersioncui66.commune"
+msgstr "Commune"
+
+msgid "Immersioncui66.activiteprincipale"
+msgstr "Activité principale"
+
+msgid "Immersioncui66.objectifprincipal"
+msgstr "Objectif principal"
+
+msgid "Immersionromev3"
+msgstr "Code ROME (v3)"
+
+msgid "Immersionromev3.romev3"
+msgstr "Recherche rapide"
+
+msgid "Immersionromev3.familleromev3_id"
+msgstr "Code famille"
+
+msgid "Immersionromev3.domaineromev3_id"
+msgstr "Code domaine"
+
+msgid "Immersionromev3.metierromev3_id"
+msgstr "Code métier"
+
+msgid "Immersionromev3.appellationromev3_id"
+msgstr "Appellation métier"
