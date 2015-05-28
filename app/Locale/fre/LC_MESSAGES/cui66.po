@@ -145,3 +145,101 @@ msgstr "&nbsp;"
 
 msgid "ENUM::NOTIFIE::1"
 msgstr "Oui"
+
+####################################### Traductions champs CUI #######################################
+
+msgid "Cui66.annulationform"
+msgstr "Formulaire"
+
+msgid "Cui66.raisonannulation"
+msgstr "Raison de l'annulation"
+
+msgid "Cui66.choixformulaire"
+msgstr "Choix du formulaire"
+
+msgid "Cui66.typeformulaire"
+msgstr "Type de formulaire"
+
+msgid "Cui66.typecontrat"
+msgstr "Type de contrat"
+
+msgid "Cui66.codecdiae"
+msgstr "Code d'agrément CDIAE"
+
+msgid "Cui66.actioncandidat_id"
+msgstr "Action engagée par l'employeur"
+
+msgid "Cui66.dossier"
+msgstr "Dossier Reçu/Éligible/complet"
+
+msgid "Cui66.dossierrecu"
+msgstr "Dossier reçu ?"
+
+msgid "Cui66.datereception"
+msgstr "Date de réception du dossier"
+
+msgid "Cui66.dossiereligible"
+msgstr "Dossier éligible ?"
+
+msgid "Cui66.dateeligibilite"
+msgstr "Date d'éligibilité du dossier"
+
+msgid "Cui66.dossiercomplet"
+msgstr "Dossier complet ?"
+
+msgid "Cui66.datecomplet"
+msgstr "Date du dossier complet"
+
+msgid "Cui66.notedossier"
+msgstr "Commentaire sur le dossier"
+
+msgid "Cui66.mailinitial"
+msgstr "E-mail Initial pour l'employeur"
+
+msgid "Cui66.mailemployeur"
+msgstr "Mail à l'employeur ?"
+
+msgid "Cui66.modelemail"
+msgstr "Modèle de mail"
+
+msgid "Cui66.dateretour"
+msgstr "Retour au plus tard le"
+
+msgid "Cui66.commentairemail"
+msgstr "Commentaire reporté dans le mail"
+
+msgid "Cui66.mailpj"
+msgstr "Choix des pièces à joindre au mail de l'employeur"
+
+msgid "Cui66.mailrelance"
+msgstr "E-mail de relance à l'employeur"
+
+msgid "Cui66.typemailrelance"
+msgstr "Type de mail de relance"
+
+msgid "Cui66.datebutoirrelance"
+msgstr "Date butoir pour transmission des pièces"
+
+msgid "Cui66.commentairerelance"
+msgstr "Commentaire du mail de relance"
+
+msgid "Cui66.zonecouverte"
+msgstr "Zone couverte par l'adresse de l'allocataire"
+
+msgid "Cui66.datefinsejour"
+msgstr "Date de fin de titre de séjour"
+
+msgid "Cui66.defaultprestation"
+msgstr "Aucune prestation trouvée"
+
+msgid "Cui66.demandeenregistree"
+msgstr "Demande enregistrée le"
+
+msgid "Cui66.etatdossiercui66"
+msgstr "Position du CUI"
+
+msgid "Cui66.positioncui66"
+msgstr "Position du CUI"
+
+msgid "Cui66.notifie"
+msgstr "Notifié"

@@ -40,3 +40,20 @@ msgstr "Oui"
 
 msgid "Suspensioncui66.haspiecejointe"
 msgstr "Pièces jointes"
+
+###############################################################################
+
+msgid "Suspensioncui66.formulaire"
+msgstr "Formulaire"
+
+msgid "Suspensioncui66.observation"
+msgstr "Observations"
+
+msgid "Suspensioncui66.duree"
+msgstr "Format de journée"
+
+msgid "Suspensioncui66.datedebut"
+msgstr "Date de début"
+
+msgid "Suspensioncui66.datefin"
+msgstr "Date de fin"

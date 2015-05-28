@@ -52,3 +52,23 @@ msgstr "Oui"
 
 msgid "Propositioncui66.haspiecejointe"
 msgstr "Pièces jointes"
+
+###############################################################################
+
+msgid "Propositioncui66.formulaire"
+msgstr "Avis technique"
+
+msgid "Propositioncui66.donneuravis"
+msgstr "Avis du/de"
+
+msgid "Propositioncui66.dateproposition"
+msgstr "Date de proposition"
+
+msgid "Propositioncui66.avis"
+msgstr "Avis"
+
+msgid "Propositioncui66.motif"
+msgstr "Motif"
+
+msgid "Propositioncui66.observation"
+msgstr "Observations"

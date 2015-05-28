@@ -350,3 +350,150 @@ msgstr "Oui"
 
 msgid "Cui.haspiecejointe"
 msgstr "Pièces jointes"
+
+
+####################################### Traductions champs CUI #######################################
+
+msgid "Cui.secteur"
+msgstr "Secteur"
+
+msgid "Cui.secteurmarchand"
+msgstr "Secteur marchand/non marchand"
+
+msgid "Cui.numconventionindividuelle"
+msgstr "N° de convention individuelle"
+
+msgid "Cui.numconventionobjectif"
+msgstr "N° de convention annuelle d'objectifs et de moyens"
+
+msgid "Cui.partenaire_id"
+msgstr "Nom de l'employeur"
+
+msgid "Cui.voletdroit"
+msgstr "Volet de droite"
+
+msgid "Cui.dureecontrat"
+msgstr "Durée du contrat (Date de début/Date de fin d'un Contrat CDD)"
+
+msgid "Cui.situationsalarie"
+msgstr "Situation du salarié avant la signature de la convention"
+
+msgid "Cui.niveauformation"
+msgstr "Niveau de formation"
+
+msgid "Cui.contrattravail"
+msgstr "Contrat de travail"
+
+msgid "Cui.dateembauche"
+msgstr "Date d'embauche prévu"
+
+msgid "Cui.findecontrat"
+msgstr "Date prévue de fin de contrat (si CDD)"
+
+msgid "Cui.salairebrut"
+msgstr "Salaire brut mensuel"
+
+msgid "Cui.dureehebdo"
+msgstr "Durée hebdomadaire de travail prévue du salarié"
+
+msgid "Cui.dureecollectivehebdo"
+msgstr "Durée collective hebdomadaire de travail"
+
+msgid "Cui.accompagnement"
+msgstr "Les actions d'accompagnement et de formation prévues"
+
+msgid "Cui.nomtuteur"
+msgstr "Nom du tuteur désigné par l’employeur"
+
+msgid "Cui.fonctiontuteur"
+msgstr "Fonction du tuteur"
+
+msgid "Cui.organismedesuivi"
+msgstr "Organisme chargé du suivi"
+
+msgid "Cui.nomreferent"
+msgstr "Nom du référent"
+
+msgid "Cui.small_title_accompagnement"
+msgstr "Actions d’accompagnement professionnel"
+
+msgid "Cui.remobilisationemploi"
+msgstr "Remobilisation vers l’emploi"
+
+msgid "Cui.aidepriseposte"
+msgstr "Aide à la prise de poste"
+
+msgid "Cui.elaborationprojet"
+msgstr "Elaboration du projet professionnel et appui à sa réalisation"
+
+msgid "Cui.evaluationcompetences"
+msgstr "Evaluation des capacités et des compétences"
+
+msgid "Cui.aiderechercheemploi"
+msgstr "Aide à la recherche d’emploi"
+
+msgid "Cui.autre"
+msgstr "Autre"
+
+msgid "Cui.autrecommentaire"
+msgstr "Autre : précisez"
+
+msgid "Cui.small_title_formation"
+msgstr "Actions de formation"
+
+msgid "Cui.adaptationauposte"
+msgstr "Adaptation au poste de travail"
+
+msgid "Cui.remiseaniveau"
+msgstr "Remise à niveau"
+
+msgid "Cui.prequalification"
+msgstr "Préqualification"
+
+msgid "Cui.acquisitioncompetences"
+msgstr "Acquisition de nouvelles compétences"
+
+msgid "Cui.formationqualifiante"
+msgstr "Formation qualifiante"
+
+msgid "Cui.niveauqualif"
+msgstr "Si oui, niveau de qualification visé"
+
+msgid "Cui.prise_en_charge"
+msgstr "Décision de prise en charge (Cadre réservé au prescripteur)"
+
+msgid "Cui.effetpriseencharge"
+msgstr "Date d’effet de la prise en charge"
+
+msgid "Cui.finpriseencharge"
+msgstr "Date de fin de la prise en charge"
+
+msgid "Cui.decisionpriseencharge"
+msgstr "Date d’effet de la décision modificatrice"
+
+msgid "Cui.dureehebdoretenu"
+msgstr "Durée hebdomadaire retenue pour le calcul de l’aide"
+
+msgid "Cui.operationspeciale"
+msgstr "Opération spéciale"
+
+msgid "Cui.tauxfixeregion"
+msgstr "Taux fixé par l’arrêté du préfet de région"
+
+msgid "Cui.priseenchargeeffectif"
+msgstr "Taux de prise en charge effectif"
+
+msgid "Cui.tauxcg"
+msgstr "Si oui, taux"
+
+msgid "Cui.intituleautreorganisme"
+msgstr "Organisme"
+
+msgid "Cui.adressautreorganisme"
+msgstr "Adresse"
+
+msgid "Cui.date"
+msgstr "Dates"
+
+msgid "Cui.faitle"
+msgstr "Demande faite le"

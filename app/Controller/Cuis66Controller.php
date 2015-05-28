@@ -729,7 +729,9 @@
 			
 			$data = $this->Cui->Cui66->find( 'first', $query );
 			$options = $this->Cui->Cui66->options();
-			
+
+			$data = $this->Cui->Cui66->completeDataImpression( $data );
+
 			$result = $this->Cui->ged(
 				$data,
 				$modeleOdt,
