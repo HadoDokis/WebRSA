@@ -266,12 +266,20 @@
 
 		// TODO: nom de la fonction + utiliser dans Cer93::getCompletedRomev3Joins()
 		public function getCompletedRomev3Joins( array $query, $type = 'LEFT OUTER', array $aliases = array() ) {
+			$aliases += array(
+				$this->alias => $this->alias,
+				'Familleromev3' => 'Familleromev3',
+				'Domaineromev3' => 'Domaineromev3',
+				'Metierromev3' => 'Metierromev3',
+				'Appellationromev3' => 'Appellationromev3'
+			);
+
 			$fields = array(
 				"Familleromev3.code",
 				"Familleromev3.name",
-				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" ) AS \"Domaineromev3__code\"",
+				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" ) AS \"{$aliases['Domaineromev3']}__code\"",
 				"Domaineromev3.name",
-				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" || \"Metierromev3\".\"code\" ) AS \"Metierromev3__code\"",
+				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" || \"Metierromev3\".\"code\" ) AS \"{$aliases['Metierromev3']}__code\"",
 				"Metierromev3.name",
 				"Appellationromev3.name"
 			);
