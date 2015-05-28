@@ -575,7 +575,7 @@ COMMENT ON COLUMN cuis.adressautreorganisme IS 'Decision de prise en charge';
 COMMENT ON COLUMN cuis.created IS 'Dates';
 COMMENT ON COLUMN cuis.signaturele IS 'Dates';
 COMMENT ON COLUMN cuis.modified IS 'Modifié le...';
-COMMENT ON COLUMN cuis.nbpj IS 'Pieces Jointes';
+--COMMENT ON COLUMN cuis.nbpj IS 'Pieces Jointes';
 COMMENT ON COLUMN cuis.user_id IS 'Modifié par...';
 
 CREATE INDEX cui_personne_id_idx ON cuis(personne_id);
@@ -926,8 +926,8 @@ CREATE TABLE tauxcgscuis66
 	tauxfixeregion			SMALLINT,
 	priseenchargeeffectif	SMALLINT,
 	tauxcg					SMALLINT,
-	created					TIMESTAMP WITHOUT TIME ZONE -- Créé le...
-	modified				TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...
+	created					TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified				TIMESTAMP WITHOUT TIME ZONE -- Modifié le...
 );
 
 
