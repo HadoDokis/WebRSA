@@ -916,7 +916,8 @@ CREATE UNIQUE INDEX piecesmanquantescuis66_name_idx ON piecesmanquantescuis66(na
 -- Modification des parametrages des taux CG
 -------------------------------------------------------------------------------------
 
-DROP TABLE tauxcgscuis;
+DROP TABLE IF EXISTS tauxcgscuis;
+DROP TABLE IF EXISTS tauxcgscuis66;
 CREATE TABLE tauxcgscuis66
 (
 	id						SERIAL NOT NULL PRIMARY KEY,
