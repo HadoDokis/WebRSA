@@ -529,6 +529,21 @@
 	}
 	$('Cui66Dossierrecu').observe( 'change', hiddenForm);
 	hiddenForm();
+	
+	/**
+	 * Si Dénomination, raison sociale est modifié, on regarde dans Nom de l'employeur si la valeur est présente.
+	 * Si elle est présente, on la selectionne, sinon, on met à vide.
+	 */
+	Event.observe( $('PartenairecuiRaisonsociale'), 'change', function(){
+		var denomination = this;
+		$('CuiPartenaireId').select( 'option' ).each(function( option ){
+			option.selected = false;
+			if( option.innerHTML.toUpperCase() === denomination.value.toUpperCase() ){
+				option.selected = true;
+				denomination.value = option.innerHTML;
+			}
+		});
+	});
 </script>
 <?php
 	// Ici on défini les champs à faire apparaitre que si certains autres portent une certaine valeur
