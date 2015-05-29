@@ -135,6 +135,40 @@ function fieldId( modelField ){
 	return result;
 }
 
+/**
+ * Equivalent javascript de la fonction php sprintf
+ * Fonctionne uniquement pour %s et %d
+ * 
+ * @param {String} Phrase contenant des %s ou %d
+ * @param {String} replace - ajoutez autant d'arguments que nécéssaire
+ * @returns {String}
+ */
+function sprintf() {
+    var args = arguments,
+    string = args[0],
+    i = 1;
+    return string.replace(/%((%)|s|d)/g, function (m) {
+        // m is the matched format, e.g. %s, %d
+        var val = null;
+        if (m[2]) {
+            val = m[2];
+        } else {
+            val = args[i];
+            // A switch statement so that the formatter can be extended. Default is %s
+            switch (m) {
+                case '%d':
+                    val = parseFloat(val);
+                    if (isNaN(val)) {
+                        val = 0;
+                    }
+                    break;
+            }
+            i++;
+        }
+        return val;
+    });
+}
+
 /*************************************************************************
  * Execution systématique												 *
  *************************************************************************/

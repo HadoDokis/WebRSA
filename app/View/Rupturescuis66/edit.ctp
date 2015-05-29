@@ -13,7 +13,7 @@
  * Formulaire Rupture
 /***********************************************************************************/
 	
-	echo '<fieldset><legend>' . __d('suspensionscuis66', 'Rupturecui66.formulaire') . '</legend>'
+	echo '<fieldset><legend>' . __d('rupturescuis66', 'Rupturecui66.formulaire') . '</legend>'
 		. $this->Default3->subform(
 			array(
 				'Rupturecui66.id' => array( 'type' => 'hidden' ),
