@@ -355,7 +355,8 @@
 				return array(
 					'E' => 'En attente de décision',
 					'V' => 'Validation le',
-					'N' => 'Non validé'
+					'N' => 'Non validé',
+					'A' => 'Annulé'
 				);
 			}
 			else{
