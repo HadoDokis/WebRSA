@@ -714,15 +714,13 @@
 			if( $pdf ) {
 				$success = true;
 
-				if( isset( $this->request->params['named']['save'] ) && $this->request->params['named']['save'] ) {
-					$this->Decisiondossierpcg66->begin();
-					$success = $this->Decisiondossierpcg66->updateDossierpcg66Dateimpression( $id );
-					if( $success ) {
-						$this->Decisiondossierpcg66->commit();
-					}
-					else {
-						$this->Decisiondossierpcg66->rollback();
-					}
+				$this->Decisiondossierpcg66->begin();
+				$success = $this->Decisiondossierpcg66->updateDossierpcg66Dateimpression( $id );
+				if( $success ) {
+					$this->Decisiondossierpcg66->commit();
+				}
+				else {
+					$this->Decisiondossierpcg66->rollback();
 				}
 
 				if( $success ) {

@@ -623,27 +623,35 @@ class Decisiondossierpcg66 extends AppModel {
     }
 
     /**
-     *
-     */
+	 * Change un etat de dossier PCG dans le cas ou la position est 'decisionvalid'.
+	 * Ajoute une date d'impression.
+	 * Renvoi vrai si le dossier PCG a déjà été imprimmé.
+	 * 
+	 * @param mixed $ids
+	 * @return boolean
+	 */
     public function updateDossierpcg66Dateimpression($ids) {
-        return $this->Dossierpcg66->updateAllUnBound(
-                        array(
-                    'Dossierpcg66.dateimpression' => "'" . date('Y-m-d') . "'",
-                    'Dossierpcg66.etatdossierpcg' => '\'atttransmisop\''
-                        ), array(
-                    'Dossierpcg66.id IN ('
-                    . $this->sq(
-                            array(
-                                'alias' => 'decisionsdossierspcgs66',
-                                'fields' => array('decisionsdossierspcgs66.dossierpcg66_id'),
-                                'conditions' => array(
-                                    'decisionsdossierspcgs66.id' => $ids
-                                ),
-                                'contain' => false
-                            )
-                    )
-                    . ')'
-                        )
+		$query = array(
+			'fields' => array( 'Dossierpcg66.id' ),
+			'conditions' => array(
+				'Decisiondossierpcg66.id' => $ids,
+				'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
+			),
+			'contain' => false,
+			'joins' => array(
+				$this->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'INNER' ) )
+			)
+		);
+		$results = $this->Dossierpcg66->find( 'all', $query );
+
+        return ( count( $results ) === 0 ) || $this->Dossierpcg66->updateAllUnBound(
+			array(
+				'Dossierpcg66.dateimpression' => "'" . date('Y-m-d') . "'",
+				'Dossierpcg66.etatdossierpcg' => '\'atttransmisop\''
+			), 
+			array(
+				'Dossierpcg66.id' => Hash::extract( $results, '{n}.Dossierpcg66.id' )
+			)
         );
     }
 
