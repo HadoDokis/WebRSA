@@ -1536,6 +1536,7 @@ class ContratsinsertionController extends AppController
             $this->Contratinsertion->begin();
 
 			$this->request->data['Contratinsertion']['positioncer'] = 'annule';
+			$this->request->data['Contratinsertion']['decision_ci'] = 'A';
 
             $saved = $this->Contratinsertion->save($this->request->data);
 

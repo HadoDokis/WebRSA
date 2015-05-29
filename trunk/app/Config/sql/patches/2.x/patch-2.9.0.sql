@@ -978,6 +978,13 @@ SELECT add_missing_constraint ( 'public', 'tableauxsuivispdvs93', 'tableauxsuivi
 DROP INDEX IF EXISTS tableauxsuivispdvs93_referent_id_idx;
 CREATE INDEX tableauxsuivispdvs93_referent_id_idx ON tableauxsuivispdvs93(referent_id);
 
+
+--------------------------------------------------------------------------------
+-- Ticket #9354: Les décisions passent à annulé si la position est à annulé
+--------------------------------------------------------------------------------
+
+UPDATE contratsinsertion SET decision_ci = 'A' WHERE positioncer = 'annule';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
