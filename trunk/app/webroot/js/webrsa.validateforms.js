@@ -1,4 +1,4 @@
-/*global console, validationJS, document, validationRules, validationOnsubmit, traductions, Validation, validationOnchange, setTimeout, $, $$, giveDefaultValue*/
+/*global console, validationJS, document, validationRules, validationOnsubmit, traductions, Validation, validationOnchange, setTimeout, $, $$, giveDefaultValue, sprintf*/
 
 /*
  * Fait le lien entre FormValidatorHelper et webrsa.validaterules.js
@@ -416,7 +416,7 @@ function getValue( editable ){
 		case 'radio': valeur = getRadioValue( targets ); break;
 		default: debug( '/!\\ BUG /!\\ valeur non trouvé dans ' + editable.name ); return null;
 	}
-	console.log(valeur);
+	
 	values[rules[editable.index].name].value = valeur;
 	debug( ('Valeur trouvé : ' + valeur), true, true );
 	return thisDate || formatValue( editable, valeur );
@@ -448,6 +448,32 @@ function removeError( editable ){
 }
 
 /**
+ * Insert les paramètres de la validation dans les %s / %d
+ * 
+ * @param {Object} editable
+ * @param {String} message
+ * @returns {String}
+ */
+function insertMessageVar( editable, message ){
+	'use strict';
+	var editableRules = getRules( editable.name ),
+		i;
+
+	for(i=0; i<editableRules.length; i++){
+		if ( editableRules[i].message === message ){
+			switch( editableRules[i].params.length ){
+				case 1: message = sprintf( message, editableRules[i].params[0] ); break;
+				case 2: message = sprintf( message, editableRules[i].params[0], editableRules[i].params[1] ); break;
+				case 3: message = sprintf( message, editableRules[i].params[0], editableRules[i].params[1], editableRules[i].params[2] ); break;
+			}
+			break;
+		}
+	}
+	
+	return message;
+}
+
+/**
  * Affiche l'érreur lié à un editable (ex: Champ obligatoire)
  * 
  * @param {HTML} editable
@@ -463,7 +489,7 @@ function showError( editable, message ){
 	
 	setTimeout(function(){
 		// Si aucun message n'est indiqué, on affiche Champ obligatoire, sinon le message
-		message = message === undefined || message === null ? 'Champ obligatoire' : message;
+		message = message === undefined || message === null ? 'Champ obligatoire' : insertMessageVar( editable, message );
 
 		// On attribu la class error à la div maman de l'editable
 		parentDiv = editable.up('div');

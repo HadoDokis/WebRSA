@@ -735,7 +735,7 @@
 			$result = $this->Cui->ged(
 				$data,
 				$modeleOdt,
-				false,
+				true,
 				$options
 			);
 			
