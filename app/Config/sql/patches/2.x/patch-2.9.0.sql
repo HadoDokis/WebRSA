@@ -386,6 +386,12 @@ ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_ajourversement_in_li
 -- Enums VARCHAR(6)
 ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_organismerecouvrement_in_list_chk CHECK ( cakephp_validate_in_list( organismerecouvrement, ARRAY['URS','MSA','AUT'] ) );
 
+-- INTEGER basic rule
+ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_statut_inclusive_range CHECK ( cakephp_validate_inclusive_range (statut, 0, 2147483647) );
+ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_effectif_inclusive_range CHECK ( cakephp_validate_inclusive_range (effectif, 0, 2147483647) );
+
+cuis_partenaires_organismerecouvrement_in_list_chk CHECK ( cakephp_validate_in_list( organismerecouvrement, ARRAY['URS','MSA','AUT'] ) );
+
 -- Elargissement de la capacité du libstruc de la table Partenaire
 ALTER TABLE partenaires ALTER COLUMN libstruc TYPE VARCHAR(100);
 
@@ -439,6 +445,14 @@ CREATE TABLE partenairescuis66
 );
 CREATE INDEX partenairescuis66_partenairecui_id_idx ON partenairescuis66(partenairecui_id);
 
+-- INTEGER basic rule
+ALTER TABLE partenairescuis66 ADD CONSTRAINT cuis_partenaires66_codebanque_inclusive_range CHECK ( cakephp_validate_inclusive_range (codebanque, 0, 2147483647) );
+ALTER TABLE partenairescuis66 ADD CONSTRAINT cuis_partenaires66_codeguichet_inclusive_range CHECK ( cakephp_validate_inclusive_range (codeguichet, 0, 2147483647) );
+ALTER TABLE partenairescuis66 ADD CONSTRAINT cuis_partenaires66_clerib_inclusive_range CHECK ( cakephp_validate_inclusive_range (clerib, 0, 2147483647) );
+ALTER TABLE partenairescuis66 ADD CONSTRAINT cuis_partenaires66_nblits_inclusive_range CHECK ( cakephp_validate_inclusive_range (nblits, 0, 2147483647) );
+ALTER TABLE partenairescuis66 ADD CONSTRAINT cuis_partenaires66_nbcontratsaideshorscg_inclusive_range CHECK ( cakephp_validate_inclusive_range (nbcontratsaideshorscg, 0, 2147483647) );
+ALTER TABLE partenairescuis66 ADD CONSTRAINT cuis_partenaires66_nbcontratsaidescg_inclusive_range CHECK ( cakephp_validate_inclusive_range (nbcontratsaidescg, 0, 2147483647) );
+
 --------------------------------------------------------------------------------
 -- On Creer la table cuis (CERFA)
 --------------------------------------------------------------------------------
@@ -453,12 +467,12 @@ CREATE TABLE cuis
 	partenairecui_id			INTEGER REFERENCES partenairescuis(id) ON DELETE SET NULL ON UPDATE CASCADE,
 --	personnecui_id				INTEGER REFERENCES personnescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	secteurmarchand				SMALLINT NOT NULL,
-	numconventionindividuelle	INTEGER,			-- Cadre reserve au prescripteur
-	numconventionobjectif		INTEGER,			-- Cadre reserve au prescripteur
+	numconventionindividuelle	VARCHAR(100),		-- Cadre reserve au prescripteur
+	numconventionobjectif		VARCHAR(100),		-- Cadre reserve au prescripteur
 	datedepot					DATE,				-- Cadre reserve au prescripteur
-	prescripteur				INTEGER,			-- Cadre reserve au prescripteur
+	prescripteur				VARCHAR(100),		-- Cadre reserve au prescripteur
 	embaucheinsertion			SMALLINT,
-	numannexefinanciere			INTEGER,			-- Employeur
+	numannexefinanciere			VARCHAR(100),		-- Employeur
 	niveauformation				VARCHAR(2),			-- Situation du salarié
 	inscritpoleemploi			VARCHAR(10),		-- Situation du salarié
 	sansemploi					VARCHAR(10),		-- Situation du salarié
@@ -470,7 +484,7 @@ CREATE TABLE cuis
 	dateembauche				DATE,				-- Contrat de travail
 	findecontrat				DATE,				-- Contrat de travail
 	entreeromev3_id				INTEGER REFERENCES entreesromesv3(id) ON DELETE SET NULL ON UPDATE CASCADE,			-- Contrat de travail
-	salairebrut					INTEGER,			-- Contrat de travail
+	salairebrut					NUMERIC(6,2),			-- Contrat de travail
 	dureehebdo					INTEGER,			-- Contrat de travail
 	modulation					SMALLINT,
 	dureecollectivehebdo		INTEGER,			-- Contrat de travail
@@ -500,7 +514,7 @@ CREATE TABLE cuis
 	finpriseencharge			DATE,				-- Decision de prise en charge
 	decisionpriseencharge		DATE,				-- Decision de prise en charge
 	dureehebdoretenu			INTEGER,			-- Decision de prise en charge
-	operationspeciale			INTEGER,			-- Decision de prise en charge
+	operationspeciale			VARCHAR(100),		-- Decision de prise en charge
 	tauxfixeregion				SMALLINT,			-- Decision de prise en charge
 	priseenchargeeffectif		SMALLINT,			-- Decision de prise en charge
 	exclusifcg					SMALLINT,
@@ -618,6 +632,15 @@ ALTER TABLE cuis ADD CONSTRAINT cuis_remiseaniveau_in_list_chk CHECK ( cakephp_v
 ALTER TABLE cuis ADD CONSTRAINT cuis_prequalification_in_list_chk CHECK ( cakephp_validate_in_list( prequalification, ARRAY[1,2,3] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_acquisitioncompetences_in_list_chk CHECK ( cakephp_validate_in_list( acquisitioncompetences, ARRAY[1,2,3] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_formationqualifiante_in_list_chk CHECK ( cakephp_validate_in_list( formationqualifiante, ARRAY[1,2,3] ) );
+
+-- INTEGER basic rule
+ALTER TABLE cuis ADD CONSTRAINT cuis_salairebrut_inclusive_range CHECK ( cakephp_validate_inclusive_range (salairebrut, 0, 999999) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dureehebdo_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureehebdo, 0, 60*24*7) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dureecollectivehebdo_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureecollectivehebdo, 0, 60*24*7) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dureehebdoretenu_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureehebdoretenu, 0, 60*24*7) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_tauxfixeregion_inclusive_range CHECK ( cakephp_validate_inclusive_range (tauxfixeregion, 0, 100) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_priseenchargeeffectif_inclusive_range CHECK ( cakephp_validate_inclusive_range (priseenchargeeffectif, 0, 100) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_tauxcg_inclusive_range CHECK ( cakephp_validate_inclusive_range (tauxcg, 0, 100) );
 
 --------------------------------------------------------------------------------
 -- On Creer la table cuis66 (CG 66)
