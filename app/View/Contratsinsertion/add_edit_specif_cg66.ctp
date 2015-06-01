@@ -628,9 +628,8 @@ Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( 
 <fieldset>
 <table class="wide noborder">
 	<tr>
-		<td colspan="2" class="noborder center">
-			<em>Le présent contrat est conclu pour une durée de <?php echo REQUIRED_MARK;?></em>
-			<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => false, 'div' => false, 'type' => 'select', 'options' => $duree_engag, 'empty' => true )  ); ?>
+		<td colspan="2" class="noborder contratinsertion_duree_engag">
+			<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Le présent contrat est conclu pour une durée de '.REQUIRED_MARK, 'type' => 'select', 'options' => $duree_engag, 'empty' => true )  ); ?>
 		</td>
 	</tr>
 	<tr>
