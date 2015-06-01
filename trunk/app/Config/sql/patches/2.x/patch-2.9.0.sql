@@ -380,17 +380,15 @@ COMMENT ON TABLE partenairescuis IS 'Entreprise/mairie/association partenaire du
 CREATE INDEX partenairescuis_raisonsociale_idx ON partenairescuis(raisonsociale);
 
 -- Booleans CHAR(1)
-ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_assurancechomage_in_list_chk CHECK ( cakephp_validate_in_list( assurancechomage, ARRAY[0,1] ) );
-ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_ajourversement_in_list_chk CHECK ( cakephp_validate_in_list( ajourversement, ARRAY[0,1] ) );
+ALTER TABLE partenairescuis ADD CONSTRAINT partenairescuis_assurancechomage_in_list_chk CHECK ( cakephp_validate_in_list( assurancechomage, ARRAY[0,1] ) );
+ALTER TABLE partenairescuis ADD CONSTRAINT partenairescuis_ajourversement_in_list_chk CHECK ( cakephp_validate_in_list( ajourversement, ARRAY[0,1] ) );
 
 -- Enums VARCHAR(6)
-ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_organismerecouvrement_in_list_chk CHECK ( cakephp_validate_in_list( organismerecouvrement, ARRAY['URS','MSA','AUT'] ) );
+ALTER TABLE partenairescuis ADD CONSTRAINT partenairescuis_organismerecouvrement_in_list_chk CHECK ( cakephp_validate_in_list( organismerecouvrement, ARRAY['URS','MSA','AUT'] ) );
 
 -- INTEGER basic rule
-ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_statut_inclusive_range CHECK ( cakephp_validate_inclusive_range (statut, 0, 2147483647) );
-ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_effectif_inclusive_range CHECK ( cakephp_validate_inclusive_range (effectif, 0, 2147483647) );
-
-cuis_partenaires_organismerecouvrement_in_list_chk CHECK ( cakephp_validate_in_list( organismerecouvrement, ARRAY['URS','MSA','AUT'] ) );
+ALTER TABLE partenairescuis ADD CONSTRAINT partenairescuis_statut_inclusive_range CHECK ( cakephp_validate_inclusive_range (statut, 0, 2147483647) );
+ALTER TABLE partenairescuis ADD CONSTRAINT partenairescuis_effectif_inclusive_range CHECK ( cakephp_validate_inclusive_range (effectif, 0, 2147483647) );
 
 -- Elargissement de la capacité du libstruc de la table Partenaire
 ALTER TABLE partenaires ALTER COLUMN libstruc TYPE VARCHAR(100);
@@ -983,6 +981,12 @@ CREATE INDEX tableauxsuivispdvs93_referent_id_idx ON tableauxsuivispdvs93(refere
 -- Ticket #9354: Les décisions passent à annulé si la position est à annulé
 --------------------------------------------------------------------------------
 
+ALTER TABLE contratsinsertion DROP CONSTRAINT contratsinsertion_decision_ci_datevalidation_ci_check;
+ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_decision_ci_datevalidation_ci_check CHECK(
+    ( decision_ci = 'V' AND datevalidation_ci IS NOT NULL )
+    OR ( decision_ci <> 'V' AND datevalidation_ci IS NULL )
+    OR ( decision_ci = 'A' )
+);
 UPDATE contratsinsertion SET decision_ci = 'A' WHERE positioncer = 'annule';
 
 -- *****************************************************************************

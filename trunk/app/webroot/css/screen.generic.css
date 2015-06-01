@@ -1928,3 +1928,13 @@ body.cohortesrendezvous table #TableCohortesrendezvousCohorteColumnInputDataCoho
 body.cohortesrendezvous table #TableCohortesrendezvousCohorteColumnInputDataCohorteDossierId {
 	display: none;
 }
+/* Formulaire du CER du CD 66 */
+body.contratsinsertion.add td.contratinsertion_duree_engag label, body.contratsinsertion.edit td.contratinsertion_duree_engag label {
+	font-style: italic;
+	text-align: right;
+	padding-right: 1em;
+}
+
+body.contratsinsertion.add td.contratinsertion_duree_engag div.select select, body.contratsinsertion.edit td.contratinsertion_duree_engag div.select select {
+	display: inline-block;
+}
