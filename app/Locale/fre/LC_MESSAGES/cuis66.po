@@ -579,6 +579,12 @@ msgstr "Dates"
 msgid "Cui.faitle"
 msgstr "Demande faite le"
 
+msgid "Cui66.datebutoir_select"
+msgstr "Délai avant cloture automatique"
+
+msgid "Cui66.datebutoir"
+msgstr "Date de cloture automatique"
+
 msgid "Cui66.demandeenregistree"
 msgstr "Demande enregistrée le"
 
@@ -761,7 +767,7 @@ msgid "/Cuis66/filelink"
 msgstr "Fichiers liés"
 
 msgid "/Cuis66/impression_fichedeliaison"
-msgstr "Fiche de liaison"
+msgstr "Fiche de synthèse"
 
 msgid "/Cuis66/impression"
 msgstr "Imprimer"

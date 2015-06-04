@@ -396,6 +396,8 @@
 		. $this->Default3->subform(
 			array(
 				'Cui.faitle' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+				'Cui66.datebutoir_select' => array( 'empty' => true, 'type' => 'select' ),
+				'Cui66.datebutoir' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui66.demandeenregistree' => array( 'view' => true, 'hidden' => true, 'type' => 'date' )
 			),
 			array( 'options' => $options )
@@ -544,6 +546,49 @@
 			}
 		});
 	});
+	
+	/**
+	 * Gestion de la date de cloture automatique en fonction du délai avant cloture automatique
+	 */
+	function setDateCloture(){
+		'use strict';
+		var duree = parseInt( $F('Cui66DatebutoirSelect') ),
+			jour = parseInt( $F('CuiFaitleDay') ),
+			mois = parseInt( $F('CuiFaitleMonth') ),
+			annee = parseInt( $F('CuiFaitleYear') ),
+			dateButoir,
+			memJour,
+			memMois;
+			
+		if ( isNaN(duree*2) ){
+			return false;
+		}
+		
+		dateButoir = new Date(annee, mois + duree, jour -1);
+		
+		$('Cui66DatebutoirDay').select('option').each(function(option){
+			option.selected = false;
+			if ( parseInt(option.value) === dateButoir.getDate() ){
+				option.selected = true;
+			}
+		});
+		$('Cui66DatebutoirMonth').select('option').each(function(option){
+			option.selected = false;
+			if ( parseInt(option.value) === dateButoir.getMonth() ){
+				option.selected = true;
+			}
+		});
+		$('Cui66DatebutoirYear').select('option').each(function(option){
+			option.selected = false;
+			if ( parseInt(option.value) === dateButoir.getFullYear() ){
+				option.selected = true;
+			}
+		});
+	}
+	Event.observe( $('Cui66DatebutoirSelect'), 'change', setDateCloture);
+	Event.observe( $('CuiFaitleDay'), 'change', setDateCloture);
+	Event.observe( $('CuiFaitleMonth'), 'change', setDateCloture);
+	Event.observe( $('CuiFaitleyear'), 'change', setDateCloture);
 </script>
 <?php
 	// Ici on défini les champs à faire apparaitre que si certains autres portent une certaine valeur

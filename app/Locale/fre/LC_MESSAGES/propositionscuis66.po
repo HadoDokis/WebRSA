@@ -74,4 +74,4 @@ msgid "/Propositionscuis66/impression_aviselu"
 msgstr "Avis élu"
 
 msgid "/Propositionscuis66/impression"
-msgstr "Imprimer"
+msgstr "Fiche de liaison commission"
