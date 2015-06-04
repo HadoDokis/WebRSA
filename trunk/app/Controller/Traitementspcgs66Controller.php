@@ -982,7 +982,43 @@ class Traitementspcgs66Controller extends AppController {
      */
     public function delete($id) {
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
+		
+		$this->Traitementpcg66->begin();
+		
+		// On récupère l'id du dossier pcg
+		$data = $this->Traitementpcg66->find( 'first', 
+			array(
+				'fields' => 'Personnepcg66.dossierpcg66_id',
+				'conditions' => array(
+					'Traitementpcg66.id' => $id,
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
+					$this->Traitementpcg66->Personnepcg66->join('Dossierpcg66', array('type' => 'INNER')),
+				)
+			)
+		);
+		$success = !empty($data);
+		$success = $success && $this->Traitementpcg66->delete($id);
+		
+		// On recalcule la position du dossier pcg
+		$success = $success && $this->Traitementpcg66->Personnepcg66->Dossierpcg66->updatePositionsPcgsById( $data['Personnepcg66']['dossierpcg66_id'] );
+		
+		if ( $success ){
+			$this->Session->setFlash( __( 'Delete->success' ), 'flash/success' );
+			$this->Traitementpcg66->commit();
+		}
+		else{
+			$this->Session->setFlash( __( 'Delete->error' ), 'flash/error' );
+			$this->Traitementpcg66->rollback();
+		}
 
+		$this->redirect($this->referer());
+		
+		
+		/* @deprecated
+		 
         $traitementpcg66 = $this->Traitementpcg66->find(
                 'first', array(
             'fields' => array_merge(
@@ -1008,6 +1044,8 @@ class Traitementspcgs66Controller extends AppController {
 
 
         $this->Default->delete($id);
+
+		 */
     }
 
     /**
