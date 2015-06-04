@@ -311,6 +311,24 @@
 			$result = $this->Site->checkDureeDates( array( 'duree' => '10' ), 'dd', 'df' );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			
+			// Durée de 3, 6, 9 et 12 mois
+			foreach( array(3,6,9,12) as $duree ){
+				// Pour chaques jours d'une année
+				$timestampDebut = strtotime( '2014-12-31' );
+				for($i=1;$i<366; $i++){
+					$timestampDebut = strtotime( '+1 days', $timestampDebut );
+					
+					// Même fonctionnement que le javascript (+X mois -1 jour)
+					$timestampFin = strtotime( '-1 days', strtotime( '+' . $duree . ' months', $timestampDebut ) );
+					
+					$data = array( 'dd' => date('Y-m-d', $timestampDebut), 'df' => date('Y-m-d', $timestampFin) );
+					$this->Site->create( $data );
+					$result = $this->Site->checkDureeDates( array( 'duree' => $duree ), 'dd', 'df' );
+					$expected = true;
+					$this->assertEqual( $result, $expected, var_export( $result, true ) );
+				}
+			}
 		}
 	}
 ?>
