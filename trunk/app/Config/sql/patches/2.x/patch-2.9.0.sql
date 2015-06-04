@@ -633,9 +633,9 @@ ALTER TABLE cuis ADD CONSTRAINT cuis_formationqualifiante_in_list_chk CHECK ( ca
 
 -- INTEGER basic rule
 ALTER TABLE cuis ADD CONSTRAINT cuis_salairebrut_inclusive_range CHECK ( cakephp_validate_inclusive_range (salairebrut, 0, 999999) );
-ALTER TABLE cuis ADD CONSTRAINT cuis_dureehebdo_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureehebdo, 0, 60*24*7) );
-ALTER TABLE cuis ADD CONSTRAINT cuis_dureecollectivehebdo_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureecollectivehebdo, 0, 60*24*7) );
-ALTER TABLE cuis ADD CONSTRAINT cuis_dureehebdoretenu_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureehebdoretenu, 0, 60*24*7) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dureehebdo_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureehebdo, 0, 10080) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dureecollectivehebdo_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureecollectivehebdo, 0, 10080) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dureehebdoretenu_inclusive_range CHECK ( cakephp_validate_inclusive_range (dureehebdoretenu, 0, 10080) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_tauxfixeregion_inclusive_range CHECK ( cakephp_validate_inclusive_range (tauxfixeregion, 0, 100) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_priseenchargeeffectif_inclusive_range CHECK ( cakephp_validate_inclusive_range (priseenchargeeffectif, 0, 100) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_tauxcg_inclusive_range CHECK ( cakephp_validate_inclusive_range (tauxcg, 0, 100) );
@@ -675,7 +675,7 @@ CREATE TABLE cuis66
 	operationspeciale VARCHAR(100),		-- Prise en charge
 	subventionemployeur SMALLINT,		-- Prise en charge
 	demandeenregistree DATE,				-- Date
-	dateenvoimail DATE,					-- Date
+	datebutoir DATE,					-- Date
 	etatdossiercui66 VARCHAR(20),		-- Hors formulaire
 	notifie SMALLINT NOT NULL DEFAULT 0,-- Hors formulaire
 	raisonannulation TEXT				-- Hors formulaire
@@ -705,7 +705,7 @@ COMMENT ON COLUMN cuis66.aidecomplementaire IS 'Prise en charge';
 COMMENT ON COLUMN cuis66.operationspeciale IS 'Prise en charge';
 COMMENT ON COLUMN cuis66.subventionemployeur IS 'Prise en charge';
 COMMENT ON COLUMN cuis66.demandeenregistree IS 'Date';
-COMMENT ON COLUMN cuis66.dateenvoimail IS 'Date';
+COMMENT ON COLUMN cuis66.datebutoir IS 'Date';
 COMMENT ON COLUMN cuis66.etatdossiercui66 IS 'Hors formulaire';
 
 CREATE INDEX cuis66_etatdossiercui66_idx ON cuis66(etatdossiercui66);

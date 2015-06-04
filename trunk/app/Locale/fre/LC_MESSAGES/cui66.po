@@ -96,7 +96,7 @@ msgid "ENUM::ETATDOSSIERCUI66::dossierrecu"
 msgstr "En attente de pièces (Dossier non complet)"
 
 msgid "ENUM::ETATDOSSIERCUI66::dossiereligible"
-msgstr "En attente de pièces (Dossier non reçu)"
+msgstr "En attente de pièces"
 
 msgid "ENUM::ETATDOSSIERCUI66::attentemail"
 msgstr "En attente d'envoi de l'e-mail pour l'employeur"
@@ -145,6 +145,19 @@ msgstr "&nbsp;"
 
 msgid "ENUM::NOTIFIE::1"
 msgstr "Oui"
+
+###############################################################################
+# Date butoir (select)
+###############################################################################
+
+msgid "ENUM::DATEBUTOIR_SELECT::1"
+msgstr "1 mois"
+
+msgid "ENUM::DATEBUTOIR_SELECT::2"
+msgstr "2 mois"
+
+msgid "ENUM::DATEBUTOIR_SELECT::3"
+msgstr "3 mois"
 
 ####################################### Traductions champs CUI #######################################
 

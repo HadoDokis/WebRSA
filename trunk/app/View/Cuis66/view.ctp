@@ -355,6 +355,7 @@ if ( !in_array($this->request->data['Cui66']['etatdossiercui66'], array( 'attent
 		. $this->Default3->subformView(
 			array(
 				'Cui.faitle' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+				'Cui66.datebutoir' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
 				'Cui66.demandeenregistree' => array( 'type' => 'date', 'dateFormat' => 'DMY' )
 			),
 			array( 'options' => $options )

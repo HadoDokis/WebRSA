@@ -473,12 +473,23 @@
 				);
 			}
 
+			$datebutoir_select = array(
+				'Cui66' => array(
+					'datebutoir_select' => array(
+						1 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::1' ),
+						2 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::2' ),
+						3 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::3' ),
+					)
+				)
+			);
+			
 			$options = Hash::merge(
 				$options,
 				$this->enums(),
 				$this->Decisioncui66->enums(),
 				$this->Cui->enums(),
-				$this->Cui->Partenairecui->enums()
+				$this->Cui->Partenairecui->enums(),
+				$datebutoir_select
 			);
 
 			return $options;
@@ -621,6 +632,19 @@
 						array(
 							$this->alias.'.dossierrecu IS NOT NULL',
 							$this->alias.'.dossierrecu' => 0
+						),
+						array(
+							$this->alias.'.etatdossiercui66' => array(
+								'attentemail',
+								'attentepiece',
+								'dossiereligible',
+								'dossierrecu',
+								'formulairecomplet',
+								'attenteavis',
+								'attentedecision'
+							),
+							$this->alias.'.datebutoir IS NOT NULL',
+							$this->alias.'.datebutoir <= NOW()::DATE'
 						)
 					)
 				),
@@ -722,7 +746,7 @@
 					)
 				),
 				
-				// 13. En attente de pièces (Dossier non complet)
+				// 13. En attente de pièces
 				'dossiereligible' => array(
 					array(
 						$emailInitial,
