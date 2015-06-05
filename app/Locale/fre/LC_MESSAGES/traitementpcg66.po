@@ -180,6 +180,9 @@ msgstr "Non"
 msgid "ENUM::PROPODECISION::O"
 msgstr "Oui"
 
+msgid "Traitementpcg66.created"
+msgstr "Date de création du traitement"
+
 ###############################################################################
 
 msgid "ENUM::REGIME::fagri"
