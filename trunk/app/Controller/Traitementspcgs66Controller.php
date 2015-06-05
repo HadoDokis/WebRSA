@@ -308,6 +308,7 @@ class Traitementspcgs66Controller extends AppController {
                 'Traitementpcg66.clos',
                 'Traitementpcg66.annule',
                 'Traitementpcg66.motifannulation',
+                'Traitementpcg66.created',
             ),
             'joins' => array(
                 $this->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
