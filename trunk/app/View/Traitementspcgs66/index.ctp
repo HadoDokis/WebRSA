@@ -32,7 +32,7 @@
 	}
 	else{
 		$pagination = $this->Xpaginator2->paginationBlock( 'Traitementpcg66', Set::merge( $this->request->params['pass'], $this->request->params['named'] ) );
-debug($listeTraitements);
+
 		echo $this->Default2->index(
 			$listeTraitements,
 			array(
