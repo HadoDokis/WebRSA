@@ -121,7 +121,6 @@
 					$data[8] = '&nbsp;';
 				}
 				
-				
 				// Decision du CG
 				if ($bilanparcours66['Decisiondefautinsertionep66']['decision']){
 					$avis = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Decisiondefautinsertionep66']['decision'] );
@@ -130,7 +129,7 @@
 						$avis .= __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Decisiondefautinsertionep66']['decisionsup'] ) . ' - ';
 					}
 					
-					if ($bilanparcours66['Decisionpdo']['libelle']){
+					if ($bilanparcours66['Decisionpdo']['libelle'] && in_array($bilanparcours66['Dossierpcg66']['etatdossierpcg'], array( 'transmisop' ))){
 						$avis .= '<br /><br />CGA : ' . $bilanparcours66['Decisionpdo']['libelle'];
 					}
 					
