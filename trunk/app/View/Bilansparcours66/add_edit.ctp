@@ -284,7 +284,7 @@
 	<fieldset>
 		<?php
 			/// Aucune proposition requise pour le bilan
-			$tmp = radioBilan( $this, 'Bilanparcours66.proposition', 'aucun', 'Aucune proposition' );
+			$tmp = radioBilan( $this, 'Bilanparcours66.proposition', 'aucun', 'Bilan de parcours simple' );
 			echo $this->Xhtml->tag( 'h3', $tmp );
 			echo $this->Xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'N' ) );
 		?>
