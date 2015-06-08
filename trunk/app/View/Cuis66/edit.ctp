@@ -35,7 +35,8 @@
 				'Cui66.encouple' => array( 'type' => 'hidden' ),
 				'Cui66.avecenfant' => array( 'type' => 'hidden' ),
 				'Cui66.etatdossiercui66' => array( 'type' => 'hidden' ),
-				'Cui66.typeformulaire' => array( 'empty' => true )
+				'Cui66.typeformulaire' => array( 'empty' => true ),
+				'Cui66.renouvellement',
 			),
 			array( 'options' => $options )
 		) . '</fieldset>'

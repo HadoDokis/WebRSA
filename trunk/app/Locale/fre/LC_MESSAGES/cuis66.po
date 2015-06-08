@@ -157,6 +157,9 @@ msgstr "Enseigne"
 # Adresse employeur
 ###############################################################################
 
+msgid "Cui66.renouvellement"
+msgstr "Renouvellement"
+
 msgid "Partenairecui.adresseemployeur"
 msgstr "Adresse de l'employeur"
 
