@@ -100,4 +100,6 @@
 			'Search.structurereferente_id' => 'Search.referent_id'
 		)
 	);
+
+	echo $this->Observer->disableFormOnSubmit( Inflector::camelize( Inflector::underscore( Inflector::classify( $this->request->params['controller'] ) )."_{$this->request->params['action']}_form" ) );
 ?>

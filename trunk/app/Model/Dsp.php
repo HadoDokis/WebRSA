@@ -263,6 +263,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Populationb3pdv93' => array(
+				'className' => 'Populationb3pdv93',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 		public $validate = array(
 			'annobtnivdipmax' => array(

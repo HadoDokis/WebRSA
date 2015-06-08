@@ -991,6 +991,50 @@ ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_decision_ci_datev
 );
 UPDATE contratsinsertion SET decision_ci = 'A' WHERE positioncer = 'annule';
 
+--------------------------------------------------------------------------------
+-- 20150602: table permettant de stocker les ids ... pris
+-- en compte pour le tableau 1B3
+--------------------------------------------------------------------------------
+DROP TABLE IF EXISTS populationsb3pdvs93 CASCADE;
+CREATE TABLE populationsb3pdvs93 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    rendezvous_id				INTEGER NOT NULL REFERENCES rendezvous(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    dsp_id						INTEGER NOT NULL REFERENCES dsps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    dsp_rev_id					INTEGER DEFAULT NULL REFERENCES dsps_revs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    tableausuivipdv93_id		INTEGER NOT NULL REFERENCES tableauxsuivispdvs93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created                     TIMESTAMP WITHOUT TIME ZONE,
+    modified                    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE populationsb3pdvs93 IS 'La population prise en compte pour le tableau hisoricisé 1B3';
+
+--------------------------------------------------------------------------------
+-- 20150601: table permettant de stocker les ids des fiches de prescription pris
+-- en compte pour les tableaux 1B4 et 1B5
+--------------------------------------------------------------------------------
+DROP TABLE IF EXISTS populationsb4b5pdvs93 CASCADE;
+CREATE TABLE populationsb4b5pdvs93 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    ficheprescription93_id		INTEGER NOT NULL REFERENCES fichesprescriptions93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    tableausuivipdv93_id		INTEGER NOT NULL REFERENCES tableauxsuivispdvs93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created                     TIMESTAMP WITHOUT TIME ZONE,
+    modified                    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE populationsb4b5pdvs93 IS 'La population prise en compte pour les tableaux hisoricisés 1B4 et 1B5';
+
+--------------------------------------------------------------------------------
+-- 20150601: table permettant de stocker les ids des rendez-vous pris en compte
+-- pour le tableau 1B6
+--------------------------------------------------------------------------------
+DROP TABLE IF EXISTS populationsb6pdvs93 CASCADE;
+CREATE TABLE populationsb6pdvs93 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    rendezvous_id				INTEGER NOT NULL REFERENCES rendezvous(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    tableausuivipdv93_id		INTEGER NOT NULL REFERENCES tableauxsuivispdvs93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created                     TIMESTAMP WITHOUT TIME ZONE,
+    modified                    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE populationsb6pdvs93 IS 'La population prise en compte pour le tableau hisoricisé 1B6';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

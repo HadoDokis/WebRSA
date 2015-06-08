@@ -468,6 +468,9 @@ $irregularPlural = array(
 	'demenagementhorsdpt' => 'demenagementshorsdpts',
 	'prestatairehorspdifp93' => 'prestataireshorspdifps93',
 	'cohorterendezvous' => 'cohortesrendezvous',
+	'populationb3pdv93' => 'populationsb3pdvs93',
+	'populationb4b5pdv93' => 'populationsb4b5pdvs93',
+	'populationb6pdv93' => 'populationsb6pdvs93',
 );
 
 /**

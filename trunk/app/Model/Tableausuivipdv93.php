@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'Sanitize', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'Utility' );
 
 	/**
 	 * La classe Tableausuivipdv93 ...
@@ -70,6 +71,39 @@
 		 * @var array
 		 */
 		public $hasMany = array(
+			'Populationb3pdv93' => array(
+				'className' => 'Populationb3pdv93',
+				'foreignKey' => 'tableausuivipdv93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
+			'Populationb4b5pdv93' => array(
+				'className' => 'Populationb4b5pdv93',
+				'foreignKey' => 'tableausuivipdv93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
+			'Populationb6pdv93' => array(
+				'className' => 'Populationb6pdv93',
+				'foreignKey' => 'tableausuivipdv93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 			'Populationd1d2pdv93' => array(
 				'className' => 'Populationd1d2pdv93',
 				'foreignKey' => 'tableausuivipdv93_id',
@@ -248,6 +282,76 @@
 		 * @var array
 		 */
 		protected $_categories1b5 = null;
+
+		/**
+		 * Liste des catégories utilisées pour le tableau 1B3 avec, pour chacune
+		 * d'entre elles, un array contenant la table (liée) concernée, son alias,
+		 * la colonne concernée et les valeurs concernées.
+		 *
+		 * @var array
+		 */
+		protected $_categories1b3 = array(
+			'sante' => array(
+				'table' => 'detailsdifsocs',
+				'alias' => 'sante',
+				'column' => 'difsoc',
+				'values' => array( '0402', '0403' )
+			),
+			'logement' => array(
+				'table' => 'detailsdiflogs',
+				'alias' => 'detailsdiflogs',
+				'column' => 'diflog',
+				'values' => array( '1004', '1005', '1006', '1007', '1008', '1009' )
+			),
+			'familiales' => array(
+				'table' => 'detailsaccosocfams',
+				'alias' => 'detailsaccosocfams',
+				'column' => 'nataccosocfam',
+				'values' => array( '0412' )
+			),
+			'modes_gardes' => array(
+				'table' => 'detailsdifdisps',
+				'alias' => 'detailsdifdisps',
+				'column' => 'difdisp',
+				'values' => array( '0502', '0503', '0504' )
+			),
+			'surendettement' => array(
+				'table' => 'detailsdifsocs',
+				'alias' => 'surendettement',
+				'column' => 'difsoc',
+				'values' => array( '0406' )
+			),
+			'administratives' => array(
+				'table' => 'detailsdifsocs',
+				'alias' => 'administratives',
+				'column' => 'difsoc',
+				'values' => array( '0405' )
+			),
+			'linguistiques' => array(
+				'table' => 'detailsdifsocs',
+				'alias' => 'linguistiques',
+				'column' => 'difsoc',
+				'values' => array( '0404' )
+			),
+			'qualification_professionnelle' => array(
+				'table' => 'dsps',
+				'alias' => 'nivetu',
+				'column' => 'nivetu',
+				'values' => array( '1206', '1207' )
+			),
+			'acces_emploi' => array(
+				'table' => 'dsps',
+				'alias' => 'topengdemarechemploi',
+				'column' => 'topengdemarechemploi',
+				'values' => array( '0' )
+			),
+			'autres' => array(
+				'table' => 'detailsaccosocindis',
+				'alias' => 'detailsaccosocindis',
+				'column' => 'nataccosocindi',
+				'values' => array( '0420' )
+			)
+		);
 
 		/**
 		 *
@@ -778,7 +882,7 @@
 		 * @param integer $id La clé primaire du tableau de suivi D1 historisé
 		 * @return array
 		 */
-		public function qdExportcsvCorpusD1( $id ) {
+		public function qdExportcsvCorpusd1( $id ) {
 			$querydata = array(
 				'fields' => array_merge(
 					$this->Populationd1d2pdv93->fields(),
@@ -820,7 +924,7 @@
 		 * @param integer $id La clé primaire du tableau de suivi D2 historisé
 		 * @return array
 		 */
-		public function qdExportcsvCorpusD2( $id ) {
+		public function qdExportcsvCorpusd2( $id ) {
 			$querydata = array(
 				'fields' => array_merge(
 					$this->Populationd1d2pdv93->fields(),
@@ -1316,6 +1420,201 @@
 		}
 
 		/**
+		 * Retourne les conditions - dans les clés "annee", "conditionpdv" et
+		 * "conditionmaj" - à utiliser dans les requêtes du tableau 1B3 et issues
+		 * des filtres du moteur de recherche.
+		 *
+		 * @param array $search Les filtres du moteur de recherche
+		 * @return array
+		 */
+		protected function _tableau1b3Conditions( array $search ) { // Conditions venant du filtre de recherche
+			$conditions = array(
+				'annee' => Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) ),
+				'conditionpdv' => null,
+				'conditionmaj' => null,
+			);
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditions['conditionpdv'] = "AND rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditions['conditionpdv'] = array(
+					$conditions['conditionpdv'],
+					"rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+				);
+				$conditions['conditionpdv'] = $this->getDataSource()->conditions( $conditions['conditionpdv'], true, false );
+			}
+
+			// Filtre sur les DSP mises à jour dans l'année
+			$dsp_maj = Hash::get( $search, 'Search.dsps_maj_dans_annee' );
+			if( !empty( $dsp_maj ) ) {
+				$conditions['conditionmaj'] = "AND dsps_revs.id IS NOT NULL AND EXTRACT( 'YEAR' FROM dsps_revs.modified ) = '{$conditions['annee']}'";
+			}
+
+			return $conditions;
+		}
+
+		/**
+		 * Retourne la sous-requête permettant de comptabiliser le nombre de DSP
+		 * ou DSP CG par catégorie pour les valeurs d'une certaine colonne d'une
+		 * table liée à la table dsps(_revs) en fonction des filtres du moteur
+		 * de recherche.
+		 *
+		 * @param array $search Les filtres du moteur de recherche
+		 * @param string $categorie Le nom de la catégorie calculée
+		 * @param string $table Le nom de la table liée à la table dsps(_revs)
+		 * @param string $alias L'alias pour la table liée
+		 * @param string $column Le colonne à prendre en compte
+		 * @param array $values Les valeurs de la colonne entrant dans la catégorie
+		 * @return string
+		 */
+		protected function _tableau1b3CategorieSubtable( array $search, $categorie, $table, $alias, $column, array $values ) {
+			$conditions = $this->_tableau1b3Conditions( $search );
+
+			$sql = "SELECT
+							'{$categorie}'::text AS \"difficultes_exprimees\",
+							dsps.id AS dsp, dsps_revs.id AS dsp_rev
+						FROM personnes
+							INNER JOIN dsps on (personnes.id=dsps.personne_id)
+							INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+							--
+							LEFT OUTER JOIN {$table} AS {$alias} ON (
+								dsps.id = {$alias}.dsp_id
+								AND {$alias}.{$column} IN ( '".implode( "', '", $values )."' )
+							)
+							LEFT OUTER JOIN dsps_revs ON (
+								dsps.personne_id = dsps_revs.personne_id
+								AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id)
+							)
+							LEFT OUTER JOIN {$table}_revs {$alias}_revs ON (
+								dsps_revs.id = {$alias}_revs.dsp_rev_id
+								AND {$alias}_revs.{$column} IN ( '".implode( "', '", $values )."' )
+							)
+							--
+						WHERE
+							-- si pas de DSP MAJ on prend la DSP CAF
+							(
+								(dsps_revs.id IS NULL AND {$alias}.{$column} IS NOT NULL)
+								OR (dsps_revs.id IS NOT NULL AND {$alias}_revs.{$column} IS NOT NULL)
+							)
+							-- Dont le type de RDV est individuel
+							AND rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+							-- avec un RDV honore durant l'annee N
+							AND EXTRACT('YEAR' FROM rendezvous.daterdv) = '{$conditions['annee']}' AND ".$this->_conditionStatutRdv()."
+							-- pour la structure referente X (eventuellement)
+							{$conditions['conditionpdv']}
+							{$conditions['conditionmaj']}
+							-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv();
+
+			return $sql;
+		}
+
+		/**
+		 * Retourne la sous-requête permettant de comptabiliser le nombre de DSP
+		 * ou DSP CG par catégorie pour les valeurs d'une certaine colonne de la
+		 * table dsps ou dsps_revs en fonction des filtres du moteur de recherche.
+		 *
+		 * @param array $search Les filtres du moteur de recherche
+		 * @param string $categorie Le nom de la catégorie calculée
+		 * @param string $alias L'alias pour la table dsps(_revs)
+		 * @param string $column Le colonne à prendre en compte
+		 * @param array $values Les valeurs de la colonne entrant dans la catégorie
+		 * @return string
+		 */
+		protected function _tableau1b3Categorie( array $search, $categorie, $alias, $column, array $values ) {
+			$conditions = $this->_tableau1b3Conditions( $search );
+
+			$sql = "SELECT
+							'{$categorie}'::text AS \"difficultes_exprimees\",
+							dsps.id AS dsp, dsps_revs.id AS dsp_rev
+						FROM personnes
+							INNER JOIN dsps on (personnes.id=dsps.personne_id)
+							INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+							--
+							LEFT OUTER JOIN dsps_revs ON (
+								dsps.personne_id = dsps_revs.personne_id
+								AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id)
+							)
+							LEFT OUTER JOIN dsps AS {$alias} ON (
+								dsps.id = {$alias}.id
+								AND {$alias}.{$column} IN ( '".implode( "', '", $values )."' )
+							)
+							LEFT OUTER JOIN dsps_revs AS {$alias}_revs ON (
+								dsps_revs.id = {$alias}_revs.id
+								AND {$alias}_revs.{$column} IN ( '".implode( "', '", $values )."' )
+							)
+							--
+						WHERE
+							-- si pas de DSP MAJ on prend la DSP CAF
+							(
+								(dsps_revs.id IS NULL AND {$alias}.{$column} IS NOT NULL)
+								OR (dsps_revs.id IS NOT NULL AND {$alias}_revs.{$column} IS NOT NULL)
+							)
+							-- Dont le type de RDV est individuel
+							AND rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+							-- avec un RDV honore durant l'annee N
+							AND EXTRACT('YEAR' FROM rendezvous.daterdv) = '{$conditions['annee']}' AND ".$this->_conditionStatutRdv()."
+							-- pour la structure referente X (eventuellement)
+							{$conditions['conditionpdv']}
+							{$conditions['conditionmaj']}
+							-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv();
+
+			return $sql;
+		}
+
+		/**
+		 * Retourne la requête d'insertion dans la table de la population 1B3.
+		 *
+		 * @param array $search
+		 * @return string
+		 */
+		public function sqlInsertTableau1b3( array $search ) {
+			$sqls = array();
+
+			foreach( $this->_categories1b3 as $categorie => $params ) {
+				if( $params['table'] === 'dsps' ) {
+					$sql = '( '.$this->_tableau1b3Categorie(
+						$search,
+						$categorie,
+						$params['alias'],
+						$params['column'],
+						$params['values']
+					).' )';
+				}
+				else {
+					$sql = '( '.$this->_tableau1b3CategorieSubtable(
+						$search,
+						$categorie,
+						$params['table'],
+						$params['alias'],
+						$params['column'],
+						$params['values']
+					).' )';
+				}
+
+				$sqls[] = preg_replace( '/\'.*\'::text AS "difficultes_exprimees"/', 'rendezvous.id AS rdv', $sql );
+			}
+
+			$sql = 'SELECT "ids"."rdv", "ids"."dsp", "ids"."dsp_rev", \''.$this->id.'\', NOW(), NOW() FROM ( '
+				.implode( ' UNION ', $sqls )
+				.' ) AS "ids" GROUP BY "ids"."rdv", "ids"."dsp", "ids"."dsp_rev"';
+
+
+			$Dbo = $this->getDataSource();
+			$table = $Dbo->fullTableName( $this->Populationb3pdv93 );
+			$sql = "INSERT INTO {$table} ( rendezvous_id, dsp_id, dsp_rev_id, tableausuivipdv93_id, created, modified ) {$sql};";
+
+			return $sql;
+		}
+
+		/**
 		 * Volet I problématiques 1-B-3: problématiques des bénéficiaires de
 		 * l'opération.
 		 *
@@ -1324,247 +1623,33 @@
 		 */
 		public function tableau1b3( array $search ) {
 			$Dsp = ClassRegistry::init( 'Dsp' );
+			$sqls = array();
 
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			foreach( $this->_categories1b3 as $categorie => $params ) {
+				if( $params['table'] === 'dsps' ) {
+					$sqls[] = '( '.$this->_tableau1b3Categorie(
+						$search,
+						$categorie,
+						$params['alias'],
+						$params['column'],
+						$params['values']
+					).' )';
+				}
+				else {
+					$sqls[] = '( '.$this->_tableau1b3CategorieSubtable(
+						$search,
+						$categorie,
+						$params['table'],
+						$params['alias'],
+						$params['column'],
+						$params['values']
+					).' )';
+				}
 			}
 
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv = array(
-					$conditionpdv,
-					"referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
-				);
-				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
-			}
-
-			// Filtre sur les DSP mises à jour dans l'année
-			$conditionmaj = null;
-			$dsp_maj = Hash::get( $search, 'Search.dsps_maj_dans_annee' );
-			if( !empty( $dsp_maj ) ) {
-				$conditionmaj = "AND dsps_revs.id IS NOT NULL AND EXTRACT( 'YEAR' FROM dsps_revs.modified ) = '{$annee}'";
-			}
-
-			$sql = "SELECT \"difficultes_exprimees\", COUNT(*) FROM (
-	(
-		SELECT 'sante'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN detailsdifsocs sante ON (dsps.id = sante.dsp_id AND sante.difsoc IN ('0402','0403') )
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsdifsocs_revs sante_revs ON (dsps_revs.id = sante_revs.dsp_rev_id AND sante_revs.difsoc IN ('0402','0403') )
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND sante.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND sante_revs.difsoc IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-
-	)  UNION
-	(
-		SELECT 'logement'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsdiflogs ON (dsps.id = detailsdiflogs.dsp_id AND detailsdiflogs.diflog IN ('1004', '1005', '1006', '1007', '1008', '1009'))
-			LEFT OUTER JOIN detailsdiflogs_revs ON (dsps_revs.id = detailsdiflogs_revs.dsp_rev_id AND detailsdiflogs_revs.diflog IN ('1004', '1005', '1006', '1007', '1008', '1009'))
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND detailsdiflogs.diflog IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND detailsdiflogs_revs.diflog IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'familiales'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsaccosocfams ON (dsps.id = detailsaccosocfams.dsp_id AND detailsaccosocfams.nataccosocfam='0412')
-			LEFT OUTER JOIN detailsaccosocfams_revs ON (dsps_revs.id = detailsaccosocfams_revs.dsp_rev_id AND detailsaccosocfams_revs.nataccosocfam='0412')
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND detailsaccosocfams.nataccosocfam IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND detailsaccosocfams_revs.nataccosocfam IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'modes_gardes'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsdifdisps ON (dsps.id = detailsdifdisps.dsp_id AND detailsdifdisps.difdisp IN ('0502', '0503', '0504'))
-			LEFT OUTER JOIN detailsdifdisps_revs ON (dsps_revs.id = detailsdifdisps_revs.dsp_rev_id AND detailsdifdisps_revs.difdisp IN ('0502', '0503', '0504'))
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND detailsdifdisps.difdisp IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND detailsdifdisps_revs.difdisp IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'surendettement'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsdifsocs surendettement ON (dsps.id = surendettement.dsp_id AND surendettement.difsoc='0406')
-			LEFT OUTER JOIN detailsdifsocs_revs surendettement_revs ON (dsps_revs.id = surendettement_revs.dsp_rev_id AND surendettement_revs.difsoc='0406')
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND surendettement.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND surendettement_revs.difsoc IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'administratives'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsdifsocs administratives ON (dsps.id = administratives.dsp_id AND administratives.difsoc='0405')
-			LEFT OUTER JOIN detailsdifsocs_revs administratives_revs ON (dsps_revs.id = administratives_revs.dsp_rev_id AND administratives_revs.difsoc='0405')
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND administratives.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND administratives_revs.difsoc IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'linguistiques'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsdifsocs linguistiques ON (dsps.id = linguistiques.dsp_id AND linguistiques.difsoc='0404')
-			LEFT OUTER JOIN detailsdifsocs_revs linguistiques_revs ON (dsps_revs.id = linguistiques_revs.dsp_rev_id AND linguistiques_revs.difsoc='0404')
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND linguistiques.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND linguistiques_revs.difsoc IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-				-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'qualification_professionnelle'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN dsps nivetu ON (dsps.id=nivetu.id AND nivetu.nivetu IN ('1206','1207'))
-			LEFT OUTER JOIN dsps_revs nivetu_revs ON (dsps_revs.id=nivetu_revs.id AND nivetu_revs.nivetu IN ('1206','1207'))
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND nivetu.nivetu IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND nivetu_revs.nivetu IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'acces_emploi'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN dsps topengdemarechemploi ON (dsps.id=topengdemarechemploi.id AND topengdemarechemploi.topengdemarechemploi='0')
-			LEFT OUTER JOIN dsps_revs topengdemarechemploi_revs ON (dsps_revs.id=topengdemarechemploi_revs.id AND topengdemarechemploi_revs.topengdemarechemploi='0')
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND topengdemarechemploi.topengdemarechemploi IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND topengdemarechemploi_revs.topengdemarechemploi IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	) UNION
-	(
-		SELECT 'autres'::text AS \"difficultes_exprimees\",
-		-- liste ids
-		dsps.id AS dsp, dsps_revs.id AS dsp_rev
-		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
-			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-			LEFT OUTER JOIN detailsaccosocindis ON (dsps.id = detailsaccosocindis.dsp_id AND detailsaccosocindis.nataccosocindi='0420' )
-			LEFT OUTER JOIN detailsaccosocindis_revs ON (dsps_revs.id = detailsaccosocindis_revs.dsp_rev_id AND detailsaccosocindis_revs.nataccosocindi='0420' )
-		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
-			((dsps_revs.id IS NULL AND detailsaccosocindis.nataccosocindi IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND  detailsaccosocindis_revs.nataccosocindi IS NOT NULL))
-			AND -- Dont le type de RDV est individuel
-			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-			-- avec un RDV honore durant l'annee N
-			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
-			-- pour la structure referente X (eventuellement)
-			{$conditionpdv}
-			{$conditionmaj}
-			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
-			AND ".$this->_conditionStructurereferenteIsPdv()."
-	)
-)  as liste_difficultes group by \"difficultes_exprimees\"; ";
+			$sql = 'SELECT "difficultes_exprimees", COUNT(*) FROM ( '
+				.implode( ' UNION ', $sqls )
+				.' )  AS "liste_difficultes" GROUP BY "difficultes_exprimees";';
 
 			$results = $Dsp->query( $sql );
 			$results = Hash::combine( $results, '{n}.0.difficultes_exprimees', '{n}.0.count' );
@@ -1654,13 +1739,15 @@
 		}
 
 		/**
-		 * Tableau 1-B-4: prescriptions vers les acteurs sociaux,
-		 * culturels et de sante.
+		 * Retourne la query de base utillisé dans les tableaux 1B et 1B5, suivant
+		 * le tableau.
 		 *
 		 * @param array $search
+		 * @param string $tableau
 		 * @return array
 		 */
-		public function tableau1b4( array $search ) {
+		protected function _qdTableau1b41b5( array $search, $tableau ) {
+			// Début TODO factorisaton query de base
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
 
 			// Filtre sur l'année
@@ -1697,7 +1784,7 @@
 			}
 
 			// Le query de base
-			$base = array(
+			$query = array(
 				'fields' => array(),
 				'joins' => array(
 					$Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
@@ -1720,10 +1807,46 @@
 			);
 
 			// Ajout des conditions de base définies dans le webrsa.inc pour l'ensemble du tableau
-			$conditions = (array)Configure::read( 'Tableausuivi93.tableau1b4.conditions' );
+			$conditions = (array)Configure::read( "Tableausuivi93.{$tableau}.conditions" );
 			if( !empty( $conditions ) ) {
-				$base['conditions'][] = $conditions;
+				$query['conditions'][] = $conditions;
 			}
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le query de base pour le tableau 1B4.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function qdTableau1b4( array $search ) {
+			return $this->_qdTableau1b41b5( $search, 'tableau1b4' );
+		}
+
+		/**
+		 * Retourne le query "de base" pour le tableau 1B5 (pour l'insertion dans
+		 * la table de la population).
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function qdTableau1b5( array $search ) {
+			return $this->_qdTableau1b41b5( $search, 'tableau1b5' );
+		}
+
+		/**
+		 * Tableau 1-B-4: prescriptions vers les acteurs sociaux,
+		 * culturels et de sante.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function tableau1b4( array $search ) {
+			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+
+			$base = $this->qdTableau1b4( $search );
 
 			// Ajout des libellés des catégories et des thématiques
 			$Dbo = $this->getDataSource();
@@ -1804,6 +1927,187 @@
 		}
 
 		/**
+		 * Retourne le query contenant tous les champs pour l'export CSV du corpus
+		 * du tableau 1B3 dont les résultats ont été enregistrés dans les modèles
+		 * Tableausuivipdv93 et Populationb3pdv93.
+		 *
+		 * @param integer $id L'id de l'enregistrement du tableau 1B3 dans Tableausuivipdv93
+		 * @return string
+		 */
+		public function qdExportcsvCorpus1b3( $id ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = array(
+					'fields' => ConfigurableQueryFields::getModelsFields(
+						array(
+							$this->Populationb3pdv93,
+							$this->Populationb3pdv93->Dsp,
+							$this->Populationb3pdv93->DspRev,
+							$this->Populationb3pdv93->Rendezvous,
+							$this->Populationb3pdv93->Rendezvous->Personne,
+							$this->Populationb3pdv93->Rendezvous->Structurereferente,
+							$this->Populationb3pdv93->Rendezvous->Referent
+						)
+					),
+					'conditions' => array(
+						// INFO: la condition sur l'id se trouvera plus bas à cause de la mise en cache
+						'Tableausuivipdv93.name' => 'tableau1b3',
+					),
+					'joins' => array(
+						$this->join( 'Populationb3pdv93', array( 'type' => 'INNER' ) ),
+						$this->Populationb3pdv93->join( 'Dsp', array( 'type' => 'INNER' ) ),
+						$this->Populationb3pdv93->join( 'DspRev', array( 'type' => 'LEFT OUTER' ) ),
+						// On s'arrange pour avoir le rendez-vous le plus récent de la population
+						$this->Populationb3pdv93->join(
+							'Rendezvous',
+								array(
+								'type' => 'INNER',
+								'conditions' => array(
+									'Rendezvous.id IN (
+										SELECT rendezvous.id
+											FROM populationsb3pdvs93
+												INNER JOIN rendezvous ON ( populationsb3pdvs93.rendezvous_id = rendezvous.id )
+											WHERE rendezvous.personne_id = "Dsp"."personne_id"
+											ORDER BY rendezvous.daterdv DESC, rendezvous.heurerdv DESC
+											LIMIT 1
+
+									)'
+								)
+							)
+						),
+						$this->Populationb3pdv93->Rendezvous->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Populationb3pdv93->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->Populationb3pdv93->Rendezvous->join( 'Referent', array( 'type' => 'INNER' ) )
+					),
+					'order' => array(
+						'Personne.nom' => 'ASC',
+						'Personne.prenom' => 'ASC'
+					)
+				);
+
+				$query = $this->_completeQueryDonneesCaf( $query );
+
+				foreach( $this->_categories1b3 as $categorie => $params ) {
+					if( $params['table'] === 'dsps' ) {
+						$query['fields']["Difficulte.{$categorie}"] = "(
+							\"Dsp\".{$params['column']} IN ( '".implode( "', '", $params['values'] )."' )
+							OR
+							\"DspRev\".{$params['column']} IN ( '".implode( "', '", $params['values'] )."' )
+						) AS \"Difficulte__{$categorie}\"";
+					}
+					else {
+						$query['fields']["Difficulte.{$categorie}"] = "( EXISTS(
+							SELECT *
+							FROM {$params['table']} AS {$params['alias']}
+							WHERE {$params['alias']}.dsp_id = \"Dsp\".\"id\"
+							AND {$params['alias']}.{$params['column']} IN ( '".implode( "', '", $params['values'] )."' )
+						)
+						OR EXISTS(
+							SELECT *
+							FROM {$params['table']}_revs AS {$params['alias']}_revs
+							WHERE {$params['alias']}_revs.dsp_rev_id = \"DspRev\".\"id\"
+							AND {$params['alias']}_revs.{$params['column']} IN ( '".implode( "', '", $params['values'] )."' )
+						) ) AS \"Difficulte__{$categorie}\"";
+					}
+				}
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			// Ajout de la condition sur l'id en-dehors de la partie mise en cache
+			$query['conditions']['Tableausuivipdv93.id'] = $id;
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le querydata nécessaire à l'export du corpus pris en compte
+		 * dans les historiques de tableau 1B4 et 1B5 suivant le nom du tableau.
+		 *
+		 * @param string $tableau Le nom du tableau
+		 * @return array
+		 */
+		protected function _qdExportcsvCorpus1b41b5( $tableau ) {
+			$query = array(
+				'fields' => ConfigurableQueryFields::getModelsFields(
+					array(
+						$this->Populationb4b5pdv93,
+						$this->Populationb4b5pdv93->Ficheprescription93,
+						$this->Populationb4b5pdv93->Ficheprescription93->Actionfp93,
+						$this->Populationb4b5pdv93->Ficheprescription93->Adresseprestatairefp93,
+						$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93,
+						$this->Populationb4b5pdv93->Ficheprescription93->Personne,
+						$this->Populationb4b5pdv93->Ficheprescription93->Referent,
+						$this->Populationb4b5pdv93->Ficheprescription93->Adresseprestatairefp93->Prestatairefp93,
+						$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93,
+						$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93->Thematiquefp93,
+						$this->Populationb4b5pdv93->Ficheprescription93->Referent->Structurereferente
+					)
+				),
+				'conditions' => array(
+					// INFO: la condition sur l'id se trouvera en-dehors à cause de la mise en cache
+					'Tableausuivipdv93.name' => $tableau,
+					'EXTRACT( \'YEAR\' FROM Ficheprescription93.date_signature ) = Tableausuivipdv93.annee'
+				),
+				'joins' => array(
+					$this->join( 'Populationb4b5pdv93', array( 'type' => 'INNER' ) ),
+					$this->Populationb4b5pdv93->join( 'Ficheprescription93', array( 'type' => 'INNER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->join( 'Adresseprestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
+					$this->Populationb4b5pdv93->Ficheprescription93->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+				),
+				'order' => array(
+					'Personne.nom' => 'ASC',
+					'Personne.prenom' => 'ASC'
+				)
+			);
+
+			$query = $this->_completeQueryDonneesCaf( $query );
+
+			// Ajout des conditions communes concernant les exports CSV
+			$query['conditions']['Ficheprescription93.statut <>'] = '99annulee';
+
+			// Ajout des conditions de base définies dans le webrsa.inc pour l'ensemble du tableau
+			$conditions = (array)Configure::read( "Tableausuivi93.{$tableau}.conditions" );
+			if( !empty( $conditions ) ) {
+				$query['conditions'][] = $conditions;
+			}
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le querydata nécessaire à l'export CSV du corpus pris en
+		 * compte dans un historique de tableau 1B4.
+		 *
+		 * @param integer $id La clé primaire du tableau de suivi 1B4 historisé
+		 * @return array
+		 */
+		public function qdExportcsvCorpus1b4( $id ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = $this->_qdExportcsvCorpus1b41b5( 'tableau1b4' );
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			// Ajout de la condition sur l'id en-dehors de la partie mise en cache
+			$query['conditions']['Tableausuivipdv93.id'] = $id;
+
+			return $query;
+		}
+
+		/**
 		 * Fournit la vérification des morceaux de querydata définis dans le
 		 * webrsa.inc pour les clés Tableausuivi93.tableau1b4 et
 		 * Tableausuivi93.tableau1b5.
@@ -1858,76 +2162,27 @@
 		}
 
 		/**
-		 * Requête de base pour le tableau 1B5.
+		 * Vérification que les champs spécifiés dans le paramétrage par les clés
+		 * Tableauxsuivispdvs93.<tableau>.exportcsvcorpus dans le webrsa.inc
+		 * existent bien dans la requête d'export des corpus, où <tableau> peut
+		 * valoir tableau1b3, tableau1b4, tableau1b5 ou tableau1b6.
 		 *
-		 * @param array $search
 		 * @return array
 		 */
-		protected function _tableau1b5Base( array $search ) {
-			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+		public function checkParametrage() {
+			$return = array();
 
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+			foreach( array_keys( $this->tableaux ) as $tableau ) {
+				if( !in_array( $tableau, array( 'tableaud1', 'tableaud2' ) ) ) {
+					$keys = array( "Tableauxsuivispdvs93.{$tableau}.exportcsvcorpus" );
+					$method = "qdExportcsvCorpus".str_replace( 'tableau', '', $tableau );
+					$query = $this->{$method}( null );
 
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+					$return = Hash::merge( $return, ConfigurableQueryFields::getErrors( $keys, $query ) );
+				}
 			}
 
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv = array(
-					$conditionpdv,
-					"Referent.id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
-				);
-				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
-			}
-
-			// Filtre sur le type d'action
-			$conditiontype = null;
-			$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
-			if( !empty( $typethematiquefp93_id ) ) {
-				$conditiontype = "Thematiquefp93.type = '".Sanitize::clean( $typethematiquefp93_id, array( 'encode' => false ) )."'";
-			}
-
-			$conditionsrdv = $this->_conditionsFicheprescription93Rendezvous( $search, 'AND' );
-			if( $conditionsrdv !== null ) {
-				$conditionsrdv = preg_replace( '/^AND /', '', $conditionsrdv );
-			}
-
-			// Le query de base
-			$query = array(
-				'fields' => array(),
-				'joins' => array(
-					$Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
-					$Ficheprescription93->join( 'Adresseprestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
-					$Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-					$Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
-					$Ficheprescription93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
-					$Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
-					$Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
-				),
-				'conditions' => array(
-					'Ficheprescription93.statut <>' => '99annulee',
-					"EXTRACT( 'YEAR' FROM Ficheprescription93.date_signature )" => $annee,
-					$this->_conditionStructurereferenteIsPdv( 'Referent.structurereferente_id' ),
-					$conditionpdv,
-					$conditionsrdv,
-					$conditiontype
-				),
-				'contain' => false
-			);
-
-			// Ajout des conditions de base définies dans le webrsa.inc pour l'ensemble du tableau
-			$conditions = (array)Configure::read( 'Tableausuivi93.tableau1b5.conditions' );
-			if( !empty( $conditions ) ) {
-				$query['conditions'][] = $conditions;
-			}
-
-			return $query;
+			return $return;
 		}
 
 		/**
@@ -1941,7 +2196,7 @@
 		 */
 		protected function _tableau1b5Totaux( array $search ) {
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
-			$query = $this->_tableau1b5Base( $search );
+			$query = $this->_qdTableau1b41b5( $search, 'tableau1b5' );
 
 			// Ajout des conditions des différentes catégories
 			$categories = $this->_tableau1b41b5Categories( 'tableau1b5', $search );
@@ -2057,7 +2312,7 @@
 		 */
 		protected function _tableau1b5Results( array $search ) {
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
-			$base = $this->_tableau1b5Base( $search );
+			$base = $this->_qdTableau1b41b5( $search, 'tableau1b5' );
 
 			// Ajout des libellés des catégories et des thématiques
 			$Dbo = $this->getDataSource();
@@ -2174,12 +2429,134 @@
 		}
 
 		/**
-		 * Tableau 1-B-6: Actions collectives
+		 * Retourne le querydata nécessaire à l'export CSV du corpus pris en
+		 * compte dans un historique de tableau 1B5.
 		 *
-		 * @param array $search
+		 * @param integer $id La clé primaire du tableau de suivi 1B5 historisé
 		 * @return array
 		 */
-		public function tableau1b6( array $search ) {
+		public function qdExportcsvCorpus1b5( $id ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = $this->_qdExportcsvCorpus1b41b5( 'tableau1b5' );
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			// Ajout de la condition sur l'id en-dehors de la partie mise en cache
+			$query['conditions']['Tableausuivipdv93.id'] = $id;
+
+			// Ajout de champs se trouvant dans les tableaux de résultats
+			$query['fields']['Ficheprescription93.personne_a_integre'] = '( CASE WHEN "Ficheprescription93"."personne_a_integre" = \'1\' THEN \'Oui\' ELSE NULL END ) AS "Ficheprescription93__personne_a_integre"';
+			$query['fields']['Ficheprescription93.personne_pas_deplace'] = '( CASE WHEN "Ficheprescription93"."benef_retour_presente" IN ( \'non\', \'excuse\' ) THEN \'Oui\' ELSE NULL END ) AS "Ficheprescription93__personne_pas_deplace"';
+			$query['fields']['Ficheprescription93.en_attente'] = '( CASE WHEN ( "Ficheprescription93"."date_signature_partenaire" IS NULL ) AND ( "Ficheprescription93"."benef_retour_presente" IS NULL OR "Ficheprescription93"."benef_retour_presente" = \'oui\' ) THEN \'Oui\' ELSE NULL END ) AS "Ficheprescription93__en_attente"';
+
+			return $query;
+		}
+
+		/**
+		 * Complète un querydata d'export du corpus avec les champs et les
+		 * jointures (à partir du modèle Personne) pour les modèles Foyer,
+		 * Prestation, Dossier, Adressefoyer et Adresse.
+		 *
+		 * @param array $query Le querydata à compléter
+		 * @return array
+		 */
+		protected function _completeQueryDonneesCaf( array $query ) {
+			// Ajout des champs
+			$query['fields'] += ConfigurableQueryFields::getModelsFields(
+				array(
+					$this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer,
+					$this->Populationb4b5pdv93->Ficheprescription93->Personne->Prestation,
+					$this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer->Dossier,
+					$this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer->Adressefoyer,
+					$this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer->Adressefoyer->Adresse
+				)
+			);
+
+			// Ajout des jointures
+			$query['joins'][] = $this->Populationb4b5pdv93->Ficheprescription93->Personne->join( 'Foyer', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $this->Populationb4b5pdv93->Ficheprescription93->Personne->join( 'Prestation', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer->join(
+				'Adressefoyer',
+				array(
+					'type' => 'INNER',
+					'conditions' => array(
+						'Adressefoyer.id IN( '.$this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				)
+			);
+			$query['joins'][] = $this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $this->Populationb4b5pdv93->Ficheprescription93->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) );
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le querydata nécessaire à l'export CSV du corpus pris en
+		 * compte dans un historique de tableau 1B6.
+		 *
+		 * @param integer $id La clé primaire du tableau de suivi 1B6 historisé
+		 * @return array
+		 */
+		public function qdExportcsvCorpus1b6( $id ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = array(
+					'fields' => ConfigurableQueryFields::getModelsFields(
+						array(
+							$this->Populationb6pdv93,
+							$this->Populationb6pdv93->Rendezvous,
+							$this->Populationb6pdv93->Rendezvous->Personne,
+							$this->Populationb6pdv93->Rendezvous->Referent,
+							$this->Populationb6pdv93->Rendezvous->RendezvousThematiquerdv,
+							$this->Populationb6pdv93->Rendezvous->RendezvousThematiquerdv->Thematiquerdv,
+							$this->Populationb6pdv93->Rendezvous->Structurereferente,
+							$this->Populationb6pdv93->Rendezvous->Typerdv,
+							$this->Populationb6pdv93->Rendezvous->Statutrdv
+						)
+					),
+					'conditions' => array(
+						'Tableausuivipdv93.name' => 'tableau1b6'
+					),
+					'joins' => array(
+						$this->join( 'Populationb6pdv93', array( 'type' => 'INNER' ) ),
+						$this->Populationb6pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+						$this->Populationb6pdv93->Rendezvous->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Populationb6pdv93->Rendezvous->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Populationb6pdv93->Rendezvous->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) ),
+						$this->Populationb6pdv93->Rendezvous->RendezvousThematiquerdv->join( 'Thematiquerdv', array( 'type' => 'INNER' ) ),
+						$this->Populationb6pdv93->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->Populationb6pdv93->Rendezvous->join( 'Typerdv', array( 'type' => 'INNER' ) ),
+						$this->Populationb6pdv93->Rendezvous->join( 'Statutrdv', array( 'type' => 'INNER' ) ),
+					),
+					'order' => array(
+						'Personne.nom' => 'ASC',
+						'Personne.prenom' => 'ASC'
+					)
+				);
+
+				$query = $this->_completeQueryDonneesCaf( $query );
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			$query['conditions']['Tableausuivipdv93.id'] = $id;
+
+			return $query;
+		}
+
+		/**
+		 * Retourne les enregistrements des thématiques de rendez-vous à prendre
+		 * en compte dans le tableau 1B6, le modèle est aliasé par Tableau1b6.
+		 *
+		 * @return array
+		 */
+		protected function _tableau1b6Thematiquesrdvs() {
 			$Thematiquerdv = ClassRegistry::init( array( 'class' => 'Thematiquerdv', 'alias' => 'Tableau1b6' ) );
 
 			$cases = array();
@@ -2202,6 +2579,20 @@
 					'order' => array( 'Tableau1b6.name ASC' )
 				)
 			);
+
+			return $results;
+		}
+
+		/**
+		 * Tableau 1-B-6: Actions collectives
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function tableau1b6( array $search ) {
+			$Thematiquerdv = ClassRegistry::init( array( 'class' => 'Thematiquerdv', 'alias' => 'Tableau1b6' ) );
+
+			$results = $this->_tableau1b6Thematiquesrdvs();
 
 			// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
@@ -2241,6 +2632,7 @@
 						{$conditionpdv}
 				)";
 			}
+			// Fin TODO factoriser
 
 			// Liste des thématiques collectives
 			$thematiquesrdvs_ids = (array)Hash::extract( $results, '{n}.Tableau1b6.id' );
@@ -2270,7 +2662,7 @@
 			$sql = "SELECT
 							thematiquesrdvs.name AS \"Tableau1b6__name\",
 							COUNT(DISTINCT rendezvous.daterdv||' '||rendezvous.heurerdv) AS \"Tableau1b6__count_seances\",
-                                                        COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes\",
+                            COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes\",
 							COUNT(DISTINCT rendezvous.id) AS \"Tableau1b6__count_participations\"
 						FROM rendezvous
 							INNER JOIN typesrdv ON ( typesrdv.id = rendezvous.typerdv_id )
@@ -2325,6 +2717,88 @@
 			}
 
 			return $results;
+		}
+
+		/**
+		 * Querydata permettant de récupérer les rendez-vous du tableau 1B6 pour
+		 * les enregistrer dans la table de la population 1B6.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function qdTableau1b6( array $search ) {
+			$Rendezvous = ClassRegistry::init( 'Rendezvous' );
+
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv = array(
+					$conditionpdv,
+					"Rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+				);
+				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+			}
+
+			// S'assure-t-on qu'il existe au moins un RDV individuel ?
+			$conditionrdv = null;
+			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
+			if( $rdv_structurereferente ) {
+				$conditionrdv = "AND Rendezvous.personne_id IN (
+					SELECT DISTINCT rdvindividuelhonore.personne_id
+						FROM rendezvous AS rdvindividuelhonore
+					WHERE
+						-- avec un RDV honoré durant l'année N
+						EXTRACT('YEAR' FROM rdvindividuelhonore.daterdv) = '{$annee}'
+						-- Dont le type de RDV est individuel
+						AND rdvindividuelhonore.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+						AND rdvindividuelhonore.".$this->_conditionStatutRdv()."
+						-- dont la SR du rendez-vous collectif est la même que celle du RDV individuel
+						AND rendezvous.structurereferente_id = rdvindividuelhonore.structurereferente_id
+						{$conditionpdv}
+				)";
+			}
+
+			$thematiquesrdvs_ids = Hash::extract( $this->_tableau1b6Thematiquesrdvs(), '{n}.Tableau1b6.id' );
+
+			$query = array(
+				'fields' => array_merge(
+					$Rendezvous->fields(),
+					$Rendezvous->Personne->fields(),
+					$Rendezvous->Referent->fields(),
+					$Rendezvous->RendezvousThematiquerdv->fields(),
+					$Rendezvous->Structurereferente->fields(),
+					$Rendezvous->Typerdv->fields(),
+					$Rendezvous->RendezvousThematiquerdv->Thematiquerdv->fields(),
+					array( $Rendezvous->Referent->sqVirtualField( 'nom_complet' ) )
+				),
+				'joins' => array(
+					$Rendezvous->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Rendezvous->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$Rendezvous->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) ),
+					$Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+					$Rendezvous->join( 'Typerdv', array( 'type' => 'INNER' ) ),
+					$Rendezvous->RendezvousThematiquerdv->join( 'Thematiquerdv', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'RendezvousThematiquerdv.thematiquerdv_id' => $thematiquesrdvs_ids,
+					"EXTRACT( 'YEAR' FROM \"Rendezvous\".\"daterdv\" )" => $annee,
+					$conditionpdv,
+					$conditionrdv
+				),
+				'contain' => false
+			);
+
+			return $query;
 		}
 
 		/**
@@ -2409,26 +2883,99 @@
 			$success = $this->save() && $success;
 
 			// TODO: mise à jour des modified ?
-			if( $success && empty( $found ) && in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
-				$dn = ( $action == 'tableaud1' ? 'd1' : 'd2' );
-				$Modelquestionnaire = ClassRegistry::init( "Questionnaire{$dn}pdv93" );
+			if( $success && empty( $found ) ) {
+				if( in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
+					$dn = ( $action == 'tableaud1' ? 'd1' : 'd2' );
+					$Modelquestionnaire = ClassRegistry::init( "Questionnaire{$dn}pdv93" );
 
-				$method = "qdTableau{$dn}"; // TODO: qd pour D1
-				$querydata = $this->{$method}( $search );
+					$method = "qdTableau{$dn}"; // TODO: qd pour D1
+					$querydata = $this->{$method}( $search );
 
-				$querydata['fields'] = array(
-					"\"Questionnaire{$dn}pdv93\".\"id\" AS \"Populationd1d2pdv93__questionnaire{$dn}pdv93_id\"",
-					"'{$this->id}' AS \"Populationd1d2pdv93__tableausuivipdv93_id\"",
-					"NOW() AS \"Populationd1d2pdv93__created\"",
-					"NOW() AS \"Populationd1d2pdv93__modified\"",
-				);
-				unset( $querydata['group'] );
-				$sq = $Modelquestionnaire->sq( $querydata );
+					$querydata['fields'] = array(
+						"\"Questionnaire{$dn}pdv93\".\"id\" AS \"Populationd1d2pdv93__questionnaire{$dn}pdv93_id\"",
+						"'{$this->id}' AS \"Populationd1d2pdv93__tableausuivipdv93_id\"",
+						"NOW() AS \"Populationd1d2pdv93__created\"",
+						"NOW() AS \"Populationd1d2pdv93__modified\"",
+					);
+					unset( $querydata['group'] );
+					$sq = $Modelquestionnaire->sq( $querydata );
 
-				$Dbo = $this->getDataSource();
-				$table = $Dbo->fullTableName( $this->Populationd1d2pdv93 );
-				$sql = "INSERT INTO {$table} ( questionnaire{$dn}pdv93_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
-				$success = ( $this->Populationd1d2pdv93->query( $sql ) !== false ) && $success;
+					$Dbo = $this->getDataSource();
+					$table = $Dbo->fullTableName( $this->Populationd1d2pdv93 );
+					$sql = "INSERT INTO {$table} ( questionnaire{$dn}pdv93_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
+					$success = ( $this->Populationd1d2pdv93->query( $sql ) !== false ) && $success;
+				}
+				else if( $action === 'tableau1b3' ) {
+					$sql = $this->sqlInsertTableau1b3( $search );
+					$success = ( $this->Populationb3pdv93->query( $sql ) !== false ) && $success;
+				}
+				else if( in_array( $action, array( 'tableau1b4', 'tableau1b5' ) ) ) {
+					$dn = ( $action == 'tableau1b4' ? '1b4' : '1b5' );
+					$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+
+					$method = "qdTableau{$dn}";
+					$query = $this->{$method}( $search );
+
+					$query['fields'] = array(
+						"\"Ficheprescription93\".\"id\" AS \"Populationb4b5pdv93__ficheprescription93_id\"",
+						"'{$this->id}' AS \"Populationb4b5pdv93__tableausuivipdv93_id\"",
+						"NOW() AS \"Populationb4b5pdv93__created\"",
+						"NOW() AS \"Populationb4b5pdv93__modified\"",
+					);
+
+					// Ajout des conditions des différentes catégories
+					$categories = $this->_tableau1b41b5Categories( $action, $search );
+					if( !empty( $categories ) ) {
+						$query['conditions'][] = array( 'OR' => Hash::extract( $categories, '{s}.{s}' ) );
+					}
+					else {
+						$query['conditions'][] = '0 = 1';
+					}
+
+					// FIXME: pour 1B4 aussi ? D'autres jointures ?
+					if( $action === 'tableau1b5' ) {
+						$query['joins'] = array(
+							$this->Populationb4b5pdv93->Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
+							$this->Populationb4b5pdv93->Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Populationb4b5pdv93->Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+							$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+							$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) )
+						);
+					}
+
+					//unset( $query['group'] );
+					$sq = $Ficheprescription93->sq( $query );
+
+					$Dbo = $this->getDataSource();
+					$table = $Dbo->fullTableName( $this->Populationb4b5pdv93 );
+					$sql = "INSERT INTO {$table} ( ficheprescription93_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
+
+					$success = ( $this->Populationb4b5pdv93->query( $sql ) !== false ) && $success;
+				}
+				else if( in_array( $action, array( 'tableau1b6' ) ) ) {
+					$Rendezvous = ClassRegistry::init( 'Rendezvous' );
+
+					$method = "qdTableau1b6";
+					$querydata = $this->{$method}( $search );
+
+					$querydata['fields'] = array(
+						"\"Rendezvous\".\"id\" AS \"Populationb6pdv93__rendezvous_id\"",
+						"'{$this->id}' AS \"Populationb6pdv93__tableausuivipdv93_id\"",
+						"NOW() AS \"Populationb6pdv93__created\"",
+						"NOW() AS \"Populationb6pdv93__modified\"",
+					);
+					unset( $querydata['group'] ); // TODO: group by Rendezvous.id ?
+					$sq = $Rendezvous->sq( $querydata );
+
+					$Dbo = $this->getDataSource();
+					$table = $Dbo->fullTableName( $this->Populationb6pdv93 );
+					$sql = "INSERT INTO {$table} ( rendezvous_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
+
+					$success = ( $this->Populationb6pdv93->query( $sql ) !== false ) && $success;
+				}
+				else {
+					throw new RuntimeException();
+				}
 			}
 
 			return $success;
@@ -2516,6 +3063,79 @@
 			$list = Hash::merge( array( 'NULL' => 'Photographie automatique' ), $list );
 
 			return $list;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application.
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$success = true;
+
+			$methods = array(
+				'tableau1b3' => 'qdExportcsvCorpus1b3',
+				'tableau1b4' => 'qdExportcsvCorpus1b4',
+				'tableau1b5' => 'qdExportcsvCorpus1b5',
+				'tableau1b6' => 'qdExportcsvCorpus1b6'
+			);
+
+			foreach( $methods as $tableau => $method ) {
+				$query = $this->{$method}();
+				$success = !empty( $query ) && $success;
+
+				$fileName = TMP.DS.'logs'.DS.__CLASS__."__{$tableau}.csv";
+				ConfigurableQueryFields::exportQueryFields( $query, 'tableauxsuivispdvs93', $fileName );
+			}
+
+			return $success;
+		}
+
+		/**
+		 * Retourne les options à utiliser dans les exports CSV, en fonction du
+		 * nom du tableau.
+		 *
+		 * @param string $tableau Le nom du tableau
+		 * @return array
+		 */
+		public function getOptions( $tableau ) {
+			$options = array();
+
+			if( in_array( $tableau, array( 'tableaud1', 'tableaud2' ) ) ) {
+				$options = Hash::merge(
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->enums(),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->enums(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->enums()
+				);
+				// INFO: pour que l'intitulé des 1207 ne soit pas "Non scolarisé" mais "Niveau VI (6e à 4e ou formation préprofessionnelle de 1 an et non scolarisé)"
+				$options['Questionnaired1pdv93']['nivetu'][1207] = $options['Questionnaired1pdv93']['nivetu'][1206];
+			}
+			// Options pour le tableau 1B3, on n'a pas besoin de ce qu'il y a au-dessus
+			else {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
+				$options = $Allocataire->options();
+
+				if( $tableau === 'tableau1b3' ) {
+					$options['Difficulte'] = array();
+					foreach( array_keys( $this->_categories1b3 ) as $categorie ) {
+						$options['Difficulte'][$categorie] = array( '1' => 'Oui' );
+					}
+				}
+				else if( $tableau === 'tableau1b4' ) {
+					$options = Hash::merge(
+						$options,
+						$this->Populationb4b5pdv93->Ficheprescription93->enums(),
+						$this->Populationb4b5pdv93->Ficheprescription93->Actionfp93->enums(),
+						$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->enums(),
+						$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93->enums(),
+						$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93->Thematiquefp93->enums()
+					);
+				}
+			}
+
+			return $options;
 		}
 	}
 ?>

@@ -210,7 +210,7 @@
 		 * @throws NotFoundException
 		 */
 		public function exportcsvcorpus( $action, $id ) {
-			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
+			if( !in_array( $action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
 				throw new NotFoundException();
 			}
 
@@ -237,26 +237,44 @@
 			}
 
 			if( $action === 'tableaud1' ) {
-				$querydata = $this->Tableausuivipdv93->qdExportcsvCorpusD1( $id );
+				$query = $this->Tableausuivipdv93->qdExportcsvCorpusd1( $id );
 			}
-			else {
-				$querydata = $this->Tableausuivipdv93->qdExportcsvCorpusD2( $id );
+			else if( $action === 'tableaud2' ) {
+				$query = $this->Tableausuivipdv93->qdExportcsvCorpusd2( $id );
+			}
+			else if( $action === 'tableau1b3' ) {
+				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b3( $id );
+			}
+			else if( $action === 'tableau1b4' ) {
+				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b4( $id );
+			}
+			else if( $action === 'tableau1b5' ) {
+				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b5( $id );
+			}
+			else if( $action === 'tableau1b6' ) {
+				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b6( $id );
 			}
 
-			$results = $this->Tableausuivipdv93->find( 'all', $querydata );
+			// TODO: prendre uniquement les champs dont on a besoin
+			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {
+				$query = ConfigurableQueryFields::getFieldsByKeys( "{$this->name}.{$action}.{$this->request->action}", $query );
+			}
 
-			$options = Hash::merge(
-				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired1pdv93->enums(),
-				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired2pdv93->enums(),
-				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->enums()
-			);
-			// INFO: pour que l'intitulé des 1207 ne soit pas "Non scolarisé" mais "Niveau VI (6e à 4e ou formation préprofessionnelle de 1 an et non scolarisé)"
-			$options['Questionnaired1pdv93']['nivetu'][1207] = $options['Questionnaired1pdv93']['nivetu'][1206];
+			$this->Tableausuivipdv93->forceVirtualFields = true;
+			$results = $this->Tableausuivipdv93->find( 'all', $query );
 
+			$options = $this->Tableausuivipdv93->getOptions( $action );
 			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
 
-			$this->set( compact( 'results', 'options', 'csvfile' ) );
+			$this->set( compact( 'results', 'options', 'csvfile', 'action' ) );
 			$this->layout = null;
+
+			if( in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {
+				$this->view = 'exportcsvcorpus_d1d2';
+			}
+			else {
+				$this->view = 'exportcsvcorpus';
+			}
 		}
 
 		/**
@@ -293,12 +311,14 @@
 		/**
 		 * Export des données d'un tableau D1 ou D2 au format CSV.
 		 *
+		 * @fixme 1B4, 1B5
+		 *
 		 * @param string $action
 		 * @param integer $id
 		 * @throws NotFoundException
 		 */
 		public function exportcsvdonnees( $action, $id ) {
-			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
+			if( !in_array( $action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
 				throw new NotFoundException();
 			}
 
@@ -330,8 +350,11 @@
 				$categories = $this->Tableausuivipdv93->tableaud1Categories();
 				$this->set( 'columns', $this->Tableausuivipdv93->columns_d1 );
 			}
-			else {
+			else if( $action === 'tableaud2' ) {
 				$categories = $this->Tableausuivipdv93->tableaud2Categories();
+			}
+			else if( $action === 'tableau1b3' ) {
+				$categories = $this->Tableausuivipdv93->problematiques();
 			}
 
 			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
