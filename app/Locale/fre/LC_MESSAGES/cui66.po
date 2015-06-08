@@ -89,6 +89,12 @@ msgstr "ZRR - Zone de Revitalisation Rurale"
 # Etat / Position Cui
 ###############################################################################
 
+msgid "ENUM::RENOUVELLEMENT::0"
+msgstr "Non"
+
+msgid "ENUM::RENOUVELLEMENT::1"
+msgstr "Oui"
+
 msgid "ENUM::ETATDOSSIERCUI66::attentepiece"
 msgstr "En attente de pièces (Verification éligibilité)"
 
@@ -256,3 +262,6 @@ msgstr "Position du CUI"
 
 msgid "Cui66.notifie"
 msgstr "Notifié"
+
+msgid "Cui66.renouvellement"
+msgstr "Renouvellement"

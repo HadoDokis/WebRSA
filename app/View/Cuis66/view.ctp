@@ -17,7 +17,8 @@
 	echo '<fieldset><legend id="Cui66Choixformulaire">' . __d('cuis66', 'Cui66.choixformulaire') . '</legend>'
 		. $this->Default3->subformView(
 			array(
-				'Cui66.typeformulaire'
+				'Cui66.typeformulaire',
+				'Cui66.renouvellement',
 			),
 			array( 'options' => $options )
 		) . '</fieldset>'

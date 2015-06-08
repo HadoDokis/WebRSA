@@ -652,6 +652,7 @@ CREATE TABLE cuis66
 	typeformulaire VARCHAR(10) NOT NULL,-- CUI, CUI - Emploi avenir
 	typecontrat VARCHAR(8) NOT NULL,	-- ACI, Hors ACI, CIE, EAV
 	codecdiae VARCHAR(100),				-- CDIAE
+	renouvellement SMALLINT,
 	dossierrecu SMALLINT,				-- etat dossier
 	datereception DATE,					-- etat dossier
 	dossiereligible SMALLINT,			-- etat dossier
@@ -721,6 +722,7 @@ ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossierrecu_in_list_chk CHECK ( cakephp
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossiereligible_in_list_chk CHECK ( cakephp_validate_in_list( dossiereligible, ARRAY[0,1] ) );
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossiercomplet_in_list_chk CHECK ( cakephp_validate_in_list( dossiercomplet, ARRAY[0,1] ) );
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_notifie_in_list_chk CHECK ( cakephp_validate_in_list( notifie, ARRAY[0,1] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_renouvellement_in_list_chk CHECK ( cakephp_validate_in_list( renouvellement, ARRAY[0,1] ) );
 
 
 --------------------------------------------------------------------------------
