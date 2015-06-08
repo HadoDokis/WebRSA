@@ -3083,7 +3083,7 @@
 			);
 
 			foreach( $methods as $tableau => $method ) {
-				$query = $this->{$method}();
+				$query = $this->{$method}( null );
 				$success = !empty( $query ) && $success;
 
 				$fileName = TMP.DS.'logs'.DS.__CLASS__."__{$tableau}.csv";
