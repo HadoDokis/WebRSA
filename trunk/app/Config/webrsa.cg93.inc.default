@@ -1799,7 +1799,24 @@
 		)
 	);
 
-	// TODO
+	/**
+	 * Liste des champs pris en compte dans l'export CSV des corpus des tableaux
+	 * de suivi 1B3, 1B4, 1B5 et 1B6.
+	 *
+	 * La liste complète des champs utilisables pour chacun des tableaux se
+	 * trouvera dans le répertoire /app/tmp/logs après le lancement du shell de
+	 * Prechargement, lorsque la valeur de "production" sera à true dans le fichier
+	 * app/Config/core.php.
+	 *
+	 * Les fichiers concernés sont: Tableausuivipdv93__tableau1b3.csv, Tableausuivipdv93__tableau1b4.csv,
+	 * Tableausuivipdv93__tableau1b5.csv et Tableausuivipdv93__tableau1b6.csv.
+	 *
+	 * Après avoir configuré ces champs, vérifiez qu'il n'y ait pas d'erreur en
+	 * vous rendant dans le partie "Vérification de l'application", onglet "Environnement logiciel"
+	 * > "WebRSA" > "Champs spécifiés dans le webrsa.inc" (ceux qui commencent par "Tableauxsuivispdvs93").
+	 *
+	 * @var array
+	 */
 	Configure::write(
 		'Tableauxsuivispdvs93',
 		array(
