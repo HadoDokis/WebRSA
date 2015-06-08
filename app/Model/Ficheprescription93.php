@@ -103,6 +103,25 @@
 		);
 
 		/**
+		 * Associations "Has many".
+		 *
+		 * @var array
+		 */
+		public $hasMany = array(
+			'Populationb4b5pdv93' => array(
+				'className' => 'Populationb4b5pdv93',
+				'foreignKey' => 'ficheprescription93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			)
+		);
+
+		/**
 		 * Associations "Belongs to".
 		 *
 		 * @var array

@@ -14,8 +14,8 @@
 	else {
 		$actions = $this->Default3->DefaultAction->back();
 
-		// On permet l'export CSV des tableaux D1 et D2
-		if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableaud1', 'tableaud2' ) ) ) {
+		// On permet l'export CSV des tableaux
+		if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableaud1', 'tableaud2', 'tableau1b3', 'tableau1b4', 'tableau1b5', 'tableau1b6' ) ) ) {
 			// Export CSv du tableau de résultats
 			$url = array( 'action' => 'exportcsvdonnees', $tableausuivipdv93['Tableausuivipdv93']['name'], $id );
 			$actions[DefaultUrl::toString( $url )] = array(

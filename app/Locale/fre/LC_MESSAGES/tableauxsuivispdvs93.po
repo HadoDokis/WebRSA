@@ -436,3 +436,99 @@ msgstr "Nbre d'invitations"
 
 msgid "Tableau1b6.count_participations"
 msgstr "Nbre  de participations"
+
+# ------------------------------------------------------------------------------
+# Export CSV du tableau 1B3
+# ------------------------------------------------------------------------------
+
+msgid "Rendezvous.daterdv"
+msgstr "Date du RDV"
+
+msgid "Structurereferente.lib_struc"
+msgstr "PDV"
+
+msgid "Personne.nom"
+msgstr "Nom"
+
+msgid "Personne.prenom"
+msgstr "Prénom"
+
+msgid "Personne.dtnai"
+msgstr "Date de naissance"
+
+msgid "Personne.sexe"
+msgstr "Sexe"
+
+msgid "Prestation.rolepers"
+msgstr "Rôle de l'allocataire"
+
+msgid "Adresse.codepos"
+msgstr "Code postal"
+
+msgid "Adresse.nomcom"
+msgstr "Nom de commune"
+
+msgid "Foyer.sitfam"
+msgstr "Situation familiale"
+
+msgid "Dossier.matricule"
+msgstr "N° CAF/MSA"
+
+msgid "Difficulte.sante"
+msgstr "Difficultés de santé"
+
+msgid "Difficulte.logement"
+msgstr "Difficultés de logement"
+
+msgid "Difficulte.familiales"
+msgstr "Difficultés familiales"
+
+msgid "Difficulte.modes_gardes"
+msgstr "Difficultés de modes de garde"
+
+msgid "Difficulte.surendettement"
+msgstr "Difficultés de surendettement"
+
+msgid "Difficulte.administratives"
+msgstr "Difficultés administrative(s)"
+
+msgid "Difficulte.linguistiques"
+msgstr "Difficultés linguistique(s)"
+
+msgid "Difficulte.qualification_professionnelle"
+msgstr "Difficultés de qualification professionnelle"
+
+msgid "Difficulte.acces_emploi"
+msgstr "Difficultés d'accés à l'emploi"
+
+msgid "Difficulte.autres"
+msgstr "Autres difficultés"
+
+# ------------------------------------------------------------------------------
+# Export CSV du tableau 1B4
+# ------------------------------------------------------------------------------
+
+msgid "Ficheprescription93.date_signature"
+msgstr "Date de signature"
+
+msgid "Thematiquefp93.type"
+msgstr "Type de prescription"
+
+msgid "Thematiquefp93.name"
+msgstr "Thématique"
+
+msgid "Categoriefp93.name"
+msgstr "Catégorie"
+
+# ------------------------------------------------------------------------------
+# Export CSV du tableau 1B5
+# ------------------------------------------------------------------------------
+
+msgid "Ficheprescription93.personne_a_integre"
+msgstr "Personne a intégré l'action"
+
+msgid "Ficheprescription93.personne_pas_deplace"
+msgstr "Bénéficiaire pas déplacé"
+
+msgid "Ficheprescription93.en_attente"
+msgstr "Fiche en attente"

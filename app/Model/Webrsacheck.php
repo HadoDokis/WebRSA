@@ -360,6 +360,10 @@
 				'Rendezvous.Typerdv.individuel_id' => 'integer',
 				'Cohortesrendezvous.cohorte.fields' => 'isarray',
 				'Cohortesrendezvous.exportcsv' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b3.exportcsvcorpus' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b4.exportcsvcorpus' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b5.exportcsvcorpus' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b6.exportcsvcorpus' => 'isarray',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
@@ -943,6 +947,7 @@
 			$modelNames = array( 'Dsp', 'Criterecui' );
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$modelNames[] = 'Cohorterendezvous';
+				$modelNames[] = 'Tableausuivipdv93';
 			}
 
 			foreach( $modelNames as $modelName ) {

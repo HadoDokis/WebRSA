@@ -1798,4 +1798,107 @@
 			)
 		)
 	);
+
+	// TODO
+	Configure::write(
+		'Tableauxsuivispdvs93',
+		array(
+			'tableau1b3' => array(
+				'exportcsvcorpus' => array(
+					// Rendez-vous
+					'Rendezvous.daterdv',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					// Allocataire
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.sexe',
+					'Prestation.rolepers',
+					'Adresse.codepos',
+					'Adresse.nomcom',
+					'Foyer.sitfam',
+					'Dossier.matricule',
+					// Difficultés exprimées
+					'Difficulte.sante',
+					'Difficulte.logement',
+					'Difficulte.familiales',
+					'Difficulte.modes_gardes',
+					'Difficulte.surendettement',
+					'Difficulte.administratives',
+					'Difficulte.linguistiques',
+					'Difficulte.qualification_professionnelle',
+					'Difficulte.acces_emploi',
+					'Difficulte.autres'
+				)
+			),
+			'tableau1b4' => array(
+				'exportcsvcorpus' => array(
+					// Fiche de prescription
+					'Ficheprescription93.date_signature',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					// Allocataire
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.sexe',
+					'Prestation.rolepers',
+					'Adresse.codepos',
+					'Adresse.nomcom',
+					'Foyer.sitfam',
+					'Dossier.matricule',
+					// Fiche de prescription
+					'Thematiquefp93.type',
+					'Thematiquefp93.name',
+					'Categoriefp93.name',
+				)
+			),
+			'tableau1b5' => array(
+				'exportcsvcorpus' => array(
+					// Fiche de prescription
+					'Ficheprescription93.date_signature',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					'Ficheprescription93.personne_a_integre',
+					'Ficheprescription93.personne_pas_deplace',
+					'Ficheprescription93.en_attente',
+					// Allocataire
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.sexe',
+					'Prestation.rolepers',
+					'Adresse.codepos',
+					'Adresse.nomcom',
+					'Foyer.sitfam',
+					'Dossier.matricule',
+					// Fiche de prescription
+					'Thematiquefp93.type',
+					'Thematiquefp93.name',
+					'Categoriefp93.name',
+				)
+			),
+			'tableau1b6' => array(
+				'exportcsvcorpus' => array(
+					// Rendez-vous
+					'Rendezvous.daterdv',
+					'Thematiquerdv.name',
+					'Statutrdv.libelle',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					// Allocataire
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.sexe',
+					'Prestation.rolepers',
+					'Adresse.codepos',
+					'Adresse.nomcom',
+					'Foyer.sitfam',
+					'Dossier.matricule',
+				)
+			),
+		)
+	);
 ?>

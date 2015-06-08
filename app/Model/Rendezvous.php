@@ -266,6 +266,32 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Populationb3pdv93' => array(
+				'className' => 'Populationb3pdv93',
+				'foreignKey' => 'rendezvous_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Populationb6pdv93' => array(
+				'className' => 'Populationb6pdv93',
+				'foreignKey' => 'rendezvous_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Sanctionrendezvousep58' => array(
 				'className' => 'Sanctionrendezvousep58',
 				'foreignKey' => 'rendezvous_id',
@@ -278,7 +304,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			)
 		);
 
 		/**
