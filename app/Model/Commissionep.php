@@ -342,7 +342,6 @@
 		* @return array
 		* @access public
 		*/
-
 		public function prepareFormData( $commissionep_id, $dossiers, $niveauDecision ) {
 			$data = array();
 
@@ -1022,293 +1021,451 @@
 		}
 
 		/**
-		*
-		*/
+		 *
+		 * Ctte méthode est utilisée par getFicheSynthese() et par getPdfOrdredujour()
+		 *
+		 * @param array|string $conditions
+		 * @param boolean $fiche Si on veut le querydata pour la fiche synthétique
+		 * @return array
+		 */
+		protected function _qdFichesSynthetiques( $conditions, $fiche = false ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( compact( 'fiche' ) ) );
+			$query = Cache::read( $cacheKey );
 
-		protected function _qdFichesSynthetiques( $conditions ) {
-			// Permet d'obtenir une et une seule entrée de la table informationspe
-			$sqDerniereInformationpe = ClassRegistry::init( 'Informationpe' )->sqDerniere( 'Personne' );
-			$conditions[] = array(
-				'OR' => array(
-					"Informationpe.id IS NULL",
-					"Informationpe.id IN ( {$sqDerniereInformationpe} )"
-				)
-			);
+			if( $query === false ) {
+				// Permet d'obtenir une et une seule entrée de la table informationspe
+				$sqDerniereInformationpe = ClassRegistry::init( 'Informationpe' )->sqDerniere( 'Personne' );
 
-			$querydata = array(
-				'fields' => array(
-					'Dossierep.themeep',
-					'Foyer.sitfam',
-					'(
-						SELECT
-								dossiers.dtdemrsa
-							FROM personnes
-								INNER JOIN prestations ON (
-									personnes.id = prestations.personne_id
-									AND prestations.natprest = \'RSA\'
-								)
-								INNER JOIN foyers ON (
-									personnes.foyer_id = foyers.id
-								)
-								INNER JOIN dossiers ON (
-									dossiers.id = foyers.dossier_id
-								)
-							WHERE
-								prestations.rolepers IN ( \'DEM\', \'CJT\' )
-								AND (
-									(
-										nir_correct13( "Personne"."nir" )
-										AND nir_correct13( personnes.nir )
-										AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM "Personne"."nir" ) FROM 1 FOR 13 )
-										AND personnes.dtnai = "Personne"."dtnai"
+				$query = array(
+					'fields' => array(
+						'Dossierep.themeep',
+						'Foyer.sitfam',
+						'(
+							SELECT
+									dossiers.dtdemrsa
+								FROM personnes
+									INNER JOIN prestations ON (
+										personnes.id = prestations.personne_id
+										AND prestations.natprest = \'RSA\'
 									)
-									OR
-									(
-										UPPER(personnes.nom) = UPPER("Personne"."nom")
-										AND UPPER(personnes.prenom) = UPPER("Personne"."prenom")
-										AND personnes.dtnai = "Personne"."dtnai"
+									INNER JOIN foyers ON (
+										personnes.foyer_id = foyers.id
 									)
-								)
-							ORDER BY dossiers.dtdemrsa ASC
-							LIMIT 1
-					) AS "Dossier__dtdemrsa"',
-					'( CASE WHEN "Serviceinstructeur"."lib_service" IS NULL THEN \'Hors département\' ELSE "Serviceinstructeur"."lib_service" END ) AS "Serviceinstructeur__lib_service"',
-					'',
-					'Orientstruct.date_valid',
-					'( CASE WHEN "Historiqueetatpe"."etat" IN ( NULL, \'cessation\' ) THEN \'Non\' ELSE \'Oui\' END ) AS "Historiqueetatpe__inscritpe"',
-					'Adresse.nomcom',
-				),
-				'joins' => array(
-					array(
-						'table'      => 'passagescommissionseps',
-						'alias'      => 'Passagecommissionep',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
-					),
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-					),
-					array(
-						'table'      => 'suivisinstruction',
-						'alias'      => 'Suiviinstruction',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Suiviinstruction.dossier_id = Dossier.id',
-							'Suiviinstruction.id IN (
-								'.ClassRegistry::init( 'Suiviinstruction' )->sq(
-									array(
-										'alias' => 'suivisinstruction',
-										'fields' => array( 'suivisinstruction.id' ),
-										'conditions' => array( 'suivisinstruction.dossier_id = Dossier.id' ),
-										'order' => array( 'suivisinstruction.date_etat_instruction DESC' ),
-										'limit' => 1,
+									INNER JOIN dossiers ON (
+										dossiers.id = foyers.dossier_id
 									)
-								).'
-							)',
-
-						)
-					),
-					array(
-						'table'      => 'servicesinstructeurs',
-						'alias'      => 'Serviceinstructeur',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Suiviinstruction.numdepins = Serviceinstructeur.numdepins',
-							'Suiviinstruction.typeserins = Serviceinstructeur.typeserins',
-							'Suiviinstruction.numcomins = Serviceinstructeur.numcomins',
-							'Suiviinstruction.numagrins = Serviceinstructeur.numagrins',
-						)
-					),
-					array(
-						'table'      => 'orientsstructs',
-						'alias'      => 'Orientstruct',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Orientstruct.personne_id = Personne.id',
-							// TODO: sous-requête dans le modèle Orientstruct pour en connaître la dernière
-							'Orientstruct.id IN (
-								'.ClassRegistry::init( 'Orientstruct' )->sq(
-									array(
-										'alias' => 'orientsstructs',
-										'fields' => array( 'orientsstructs.id' ),
-										'conditions' => array(
-											'orientsstructs.personne_id = Personne.id',
-											'orientsstructs.statut_orient' => 'Orienté',
-										),
-										'order' => array( 'orientsstructs.date_valid DESC' ),
-										'limit' => 1,
+								WHERE
+									prestations.rolepers IN ( \'DEM\', \'CJT\' )
+									AND (
+										(
+											nir_correct13( "Personne"."nir" )
+											AND nir_correct13( personnes.nir )
+											AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM "Personne"."nir" ) FROM 1 FOR 13 )
+											AND personnes.dtnai = "Personne"."dtnai"
+										)
+										OR
+										(
+											UPPER(personnes.nom) = UPPER("Personne"."nom")
+											AND UPPER(personnes.prenom) = UPPER("Personne"."prenom")
+											AND personnes.dtnai = "Personne"."dtnai"
+										)
 									)
-								).'
-							)',
-						)
-					),
-					ClassRegistry::init( 'Informationpe' )->joinPersonneInformationpe(),
-					array(
-						'table'      => 'historiqueetatspe',
-						'alias'      => 'Historiqueetatpe',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Historiqueetatpe.informationpe_id = Informationpe.id',
-							'Historiqueetatpe.id IN (
-										SELECT h.id
-											FROM historiqueetatspe AS h
-											WHERE h.informationpe_id = Informationpe.id
-											ORDER BY h.date DESC
-											LIMIT 1
-							)'
-						)
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							// FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
-						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					)
-				),
-				'conditions' => $conditions,
-				'order' => array(
-					'Dossierep.themeep DESC',
-					'Adresse.nomcom ASC'
-				)
-			);
-
-			/*
-			FIXME: utilisé dans getPdfOrdredujour mais également dans le fonction getFicheSynthese -> vérifier si ça ne casse pas
-			OK - N° dossier: dossier_numdemrsa (pas encore présent)
-			OK - Situation familiale: foyer_sitfam et foyer_nbenfants (pas encore présent)
-			OK - Structure référente: structurereferente_lib_struc (pas encore présent) -> celle de l'orientation
-			OK - Référent unique: referent_nom_complet (pas encore présent) -> personnes_referents
-			OK - Si demande de maintien dans le social (Nonorientationproep58), proposition: si on parle de la structure, du référent et du contrat actuel, alors on peut l'ajouter (pas encore présent)oui c'est bien ça
-			OK - Si réorientation, proposition: si on parle de la structure et du référent de la proposition d'orientation, alors on peut l'ajouter (pas encore présent)oui c'est ça
-			*/
-			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				// Nombre d'enfants
-				$vfNbEnfants = $this->Passagecommissionep->Dossierep->Personne->Foyer->vfNbEnfants();
-				$vfNbEnfants = "( {$vfNbEnfants} ) AS \"Foyer__nbenfants\"";
-				$querydata['fields'][] = $vfNbEnfants;
-
-				$querydata['fields'][] = 'Dossier.numdemrsa';
-
-				// Structure référente
-				$querydata['fields'] = array_merge(
-					$querydata['fields'],
-					$this->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->fields()
-				);
-				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
-
-				// Référent unique
-				$querydata['fields'] = array_merge(
-					$querydata['fields'],
-					$this->Passagecommissionep->Dossierep->Personne->PersonneReferent->Referent->fields()
-				);
-				$querydata['fields'][] = $this->Passagecommissionep->Dossierep->Personne->PersonneReferent->Referent->sqVirtualField( 'nom_complet' );
-				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
-				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) );
-
-				// Si demande de maintien dans le social (Nonorientationproep58), proposition: si on parle de la structure, du référent et du contrat actuel, alors on peut l'ajouter (pas encore présent)oui c'est bien ça
-				$querydataNonorientationproep58 = array(
-					'fields' => array_merge(
-						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->fields(),
-						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->Structurereferente->fields(),
-						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->Referent->fields()
+								ORDER BY dossiers.dtdemrsa ASC
+								LIMIT 1
+						) AS "Dossier__dtdemrsa"',
+						'( CASE WHEN "Serviceinstructeur"."lib_service" IS NULL THEN \'Hors département\' ELSE "Serviceinstructeur"."lib_service" END ) AS "Serviceinstructeur__lib_service"',
+						'',
+						'Orientstruct.date_valid',
+						'( CASE WHEN "Historiqueetatpe"."etat" IN ( NULL, \'cessation\' ) THEN \'Non\' ELSE \'Oui\' END ) AS "Historiqueetatpe__inscritpe"',
+						'Adresse.nomcom',
 					),
 					'joins' => array(
+						$this->Passagecommissionep->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->join(
+							'Suiviinstruction',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Suiviinstruction.id IN (
+										'.$this->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->Suiviinstruction->sqDernier2().'
+									)',
+								)
+							)
+						),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->Suiviinstruction->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->join(
+							'Orientstruct',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Orientstruct.id IN (
+										'.$this->Passagecommissionep->Dossierep->Personne->Orientstruct->sqDerniere().'
+									)'
+								)
+							)
+						),
+						ClassRegistry::init( 'Informationpe' )->joinPersonneInformationpe(),
 						array(
-							'table'      => 'contratsinsertion',
-							'alias'      => 'Contratinsertion',
+							'table'      => 'historiqueetatspe',
+							'alias'      => 'Historiqueetatpe',
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Contratinsertion.personne_id = Orientstruct.personne_id',
-//								'Contratinsertion.structurereferente_id = Orientstruct.structurereferente_id'
+								'Historiqueetatpe.informationpe_id = Informationpe.id',
+								'Historiqueetatpe.id IN (
+											SELECT h.id
+												FROM historiqueetatspe AS h
+												WHERE h.informationpe_id = Informationpe.id
+												ORDER BY h.date DESC
+												LIMIT 1
+								)'
 							)
 						),
-						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' =>'LEFT OUTER' ) ),
-						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->join( 'Referent', array( 'type' =>'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->join(
+							'Adressefoyer',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Adressefoyer.id IN (
+										'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+									)'
+								)
+							)
+						),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'conditions' => array(
-						'OR' => array(
-							'Contratinsertion.id IS NULL',
-							'Contratinsertion.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->sqDernierContrat().' )'
+						array(
+							'OR' => array(
+								"Informationpe.id IS NULL",
+								"Informationpe.id IN ( {$sqDerniereInformationpe} )"
+							)
 						)
-					)
-				);
-				$querydataNonorientationproep58 = array_words_replace(
-					$querydataNonorientationproep58,
-					array(
-						'Structurereferente' => 'Structurereferentecer',
-						'Referent' => 'Referentcer',
-					)
-				);
-				$querydata['fields'] = array_merge( $querydata['fields'], $querydataNonorientationproep58['fields'] );
-				$querydata['joins'] = array_merge( $querydata['joins'], $querydataNonorientationproep58['joins'] );
-				$querydata['conditions'] = array_merge( $querydata['conditions'], $querydataNonorientationproep58['conditions'] );
-
-				// Regressionorientationep58
-				$querydataRegressionorientationep58 = array(
-					'fields' => array_merge(
-						$this->Passagecommissionep->Dossierep->Regressionorientationep58->fields(),
-						$this->Passagecommissionep->Dossierep->Regressionorientationep58->Typeorient->fields(),
-						$this->Passagecommissionep->Dossierep->Regressionorientationep58->Structurereferente->fields(),
-						$this->Passagecommissionep->Dossierep->Regressionorientationep58->Referent->fields()
 					),
-					'joins' => array(
-						$this->Passagecommissionep->Dossierep->join( 'Regressionorientationep58', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+					'order' => array(
+						'Dossierep.themeep DESC',
+						'Adresse.nomcom ASC'
 					)
 				);
-				$querydataRegressionorientationep58 = array_words_replace(
-					$querydataRegressionorientationep58,
-					array(
-						'Typeorient' => 'Typeorientpropo',
-						'Structurereferente' => 'Structurereferentepropo',
-						'Referent' => 'Referentpropo',
-					)
-				);
-				$querydata['fields'] = array_merge( $querydata['fields'], $querydataRegressionorientationep58['fields'] );
-				$querydata['joins'] = array_merge( $querydata['joins'], $querydataRegressionorientationep58['joins'] );
+
+				/*
+				FIXME: utilisé dans getPdfOrdredujour mais également dans le fonction getFicheSynthese -> vérifier si ça ne casse pas
+				OK - N° dossier: dossier_numdemrsa (pas encore présent)
+				OK - Situation familiale: foyer_sitfam et foyer_nbenfants (pas encore présent)
+				OK - Structure référente: structurereferente_lib_struc (pas encore présent) -> celle de l'orientation
+				OK - Référent unique: referent_nom_complet (pas encore présent) -> personnes_referents
+				OK - Si demande de maintien dans le social (Nonorientationproep58), proposition: si on parle de la structure, du référent et du contrat actuel, alors on peut l'ajouter (pas encore présent)oui c'est bien ça
+				OK - Si réorientation, proposition: si on parle de la structure et du référent de la proposition d'orientation, alors on peut l'ajouter (pas encore présent)oui c'est ça
+				*/
+				if( Configure::read( 'Cg.departement' ) == 58 ) {
+					// Nombre d'enfants -> TODO: factoriser avec ce qui se trouve au 93
+					$vfNbEnfants = $this->Passagecommissionep->Dossierep->Personne->Foyer->vfNbEnfants();
+					$vfNbEnfants = "( {$vfNbEnfants} ) AS \"Foyer__nbenfants\"";
+					$query['fields'][] = $vfNbEnfants;
+
+					$query['fields'][] = 'Dossier.numdemrsa';
+
+					// Structure référente
+					$query['fields'] = array_merge(
+						$query['fields'],
+						$this->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->fields()
+					);
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
+
+					// Référent unique
+					$query['fields'] = array_merge(
+						$query['fields'],
+						$this->Passagecommissionep->Dossierep->Personne->PersonneReferent->Referent->fields()
+					);
+					$query['fields'][] = $this->Passagecommissionep->Dossierep->Personne->PersonneReferent->Referent->sqVirtualField( 'nom_complet' );
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) );
+
+					// Si demande de maintien dans le social (Nonorientationproep58), proposition: si on parle de la structure, du référent et du contrat actuel, alors on peut l'ajouter (pas encore présent)oui c'est bien ça
+					$queryNonorientationproep58 = array(
+						'fields' => array_merge(
+							$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->fields(),
+							$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->Structurereferente->fields(),
+							$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->Referent->fields()
+						),
+						'joins' => array(
+							array(
+								'table'      => 'contratsinsertion',
+								'alias'      => 'Contratinsertion',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Contratinsertion.personne_id = Orientstruct.personne_id',
+	//								'Contratinsertion.structurereferente_id = Orientstruct.structurereferente_id'
+								)
+							),
+							$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' =>'LEFT OUTER' ) ),
+							$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->join( 'Referent', array( 'type' =>'LEFT OUTER' ) ),
+						),
+						'conditions' => array(
+							'OR' => array(
+								'Contratinsertion.id IS NULL',
+								'Contratinsertion.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->sqDernierContrat().' )'
+							)
+						)
+					);
+					$queryNonorientationproep58 = array_words_replace(
+						$queryNonorientationproep58,
+						array(
+							'Structurereferente' => 'Structurereferentecer',
+							'Referent' => 'Referentcer',
+						)
+					);
+					$query['fields'] = array_merge( $query['fields'], $queryNonorientationproep58['fields'] );
+					$query['joins'] = array_merge( $query['joins'], $queryNonorientationproep58['joins'] );
+					$query['conditions'] = array_merge( $query['conditions'], $queryNonorientationproep58['conditions'] );
+
+					// Regressionorientationep58
+					$queryRegressionorientationep58 = array(
+						'fields' => array_merge(
+							$this->Passagecommissionep->Dossierep->Regressionorientationep58->fields(),
+							$this->Passagecommissionep->Dossierep->Regressionorientationep58->Typeorient->fields(),
+							$this->Passagecommissionep->Dossierep->Regressionorientationep58->Structurereferente->fields(),
+							$this->Passagecommissionep->Dossierep->Regressionorientationep58->Referent->fields()
+						),
+						'joins' => array(
+							$this->Passagecommissionep->Dossierep->join( 'Regressionorientationep58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+						)
+					);
+					$queryRegressionorientationep58 = array_words_replace(
+						$queryRegressionorientationep58,
+						array(
+							'Typeorient' => 'Typeorientpropo',
+							'Structurereferente' => 'Structurereferentepropo',
+							'Referent' => 'Referentpropo',
+						)
+					);
+					$query['fields'] = array_merge( $query['fields'], $queryRegressionorientationep58['fields'] );
+					$query['joins'] = array_merge( $query['joins'], $queryRegressionorientationep58['joins'] );
+				}
+				else if( Configure::read( 'Cg.departement' ) == 93 && $fiche ) {
+					// Nombre d'enfants -> TODO: factoriser avec ce qui se trouve au 58
+					$sqNbenfants = $this->Passagecommissionep->Dossierep->Personne->Foyer->vfNbEnfants();
+					$query['fields'][] = "( {$sqNbenfants} ) AS \"Foyer__nbenfants\"";
+
+					// Age
+					$query['fields'][] = $this->Passagecommissionep->Dossierep->Personne->sqVirtualField( 'age' );
+
+					// Affiliation CAF
+					$query['fields'][] = 'Dossiercaf.ddratdos';
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->Personne->join( 'Dossiercaf', array( 'type' => 'LEFT OUTER' ) );
+
+					// Détails de la commission
+					$query['fields'] = array_merge(
+						$query['fields'],
+						array(
+							'Commissionep.dateseance',
+							'Commissionep.salle',
+							'Commissionep.lieuseance',
+							'Commissionep.adresseseance',
+							'Commissionep.codepostalseance',
+							'Commissionep.villeseance'
+						)
+					);
+					$query['joins'][] = $this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) );
+
+					// Thématique, type de suspension
+					$query['fields'][] = 'Nonrespectsanctionep93.origine';
+					$query['fields'][] = 'Nonrespectsanctionep93.rgpassage';
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->join( 'Nonrespectsanctionep93', array( 'type' => 'LEFT OUTER' ) );
+
+					// Première et seconde relance
+					$relances = array( 1 => 'Relance1', 2 => 'Relance2' );
+					foreach( $relances as $numrelance => $alias ) {
+						$query['fields'][] = "{$alias}.dateimpression";
+
+						$query['joins'][] = array_words_replace(
+							$this->Passagecommissionep->Dossierep->Nonrespectsanctionep93->join(
+								'Relancenonrespectsanctionep93',
+								array(
+									'type' => 'LEFT OUTER',
+									'conditions' => array(
+										'Relancenonrespectsanctionep93.numrelance' => $numrelance
+									)
+								)
+							),
+							array( 'Relancenonrespectsanctionep93' => $alias )
+						);
+					}
+
+					// -----------------------------------------------------------------------------
+					// Nonrespectsanctionep93
+					//	-> Nonrespect1, Passage1, Commission1, Decision1ep
+					// -----------------------------------------------------------------------------
+					foreach( array( 1, 2, 3 ) as $passage ) {
+						$replacements = array(
+							'Nonrespectsanctionep93' => "Nonrespect{$passage}",
+							'Dossierep' => "Dossier{$passage}",
+							'Commissionep' => "Commission{$passage}",
+							'Passagecommissionep' => "Passage{$passage}"
+						);
+
+						$query['joins'][] = array(
+							'table' => 'nonrespectssanctionseps93',
+							'alias' => "Nonrespect{$passage}",
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								"Nonrespect{$passage}.rgpassage" => $passage,
+								'OR' => array(
+									array(
+										"Nonrespectsanctionep93.orientstruct_id IS NOT NULL",
+										"Nonrespect{$passage}.orientstruct_id = Nonrespectsanctionep93.orientstruct_id"
+									),
+									array(
+										"Nonrespectsanctionep93.contratinsertion_id IS NOT NULL",
+										"Nonrespect{$passage}.contratinsertion_id = Nonrespectsanctionep93.contratinsertion_id"
+									),
+									array(
+										"Nonrespectsanctionep93.propopdo_id IS NOT NULL",
+										"Nonrespect{$passage}.propopdo_id = Nonrespectsanctionep93.propopdo_id"
+									),
+									array(
+										"Nonrespectsanctionep93.historiqueetatpe_id IS NOT NULL",
+										"Nonrespect{$passage}.historiqueetatpe_id = Nonrespectsanctionep93.historiqueetatpe_id"
+									)
+								)
+							)
+						);
+
+						/*$relances = array(
+							1 => "{$replacements['Nonrespectsanctionep93']}relance1",
+							2 => "{$replacements['Nonrespectsanctionep93']}relance2"
+						);
+						foreach( $relances as $numrelance => $alias ) {
+							$query['fields'][] = "{$alias}.dateimpression";
+
+							$query['joins'][] = array_words_replace(
+								$this->Passagecommissionep->Dossierep->Nonrespectsanctionep93->join(
+									'Relancenonrespectsanctionep93',
+									array(
+										'type' => 'LEFT OUTER',
+										'conditions' => array(
+											'Relancenonrespectsanctionep93.numrelance' => $numrelance
+										)
+									)
+								),
+								array( 'Nonrespectsanctionep93' => $replacements['Nonrespectsanctionep93'], 'Relancenonrespectsanctionep93' => $alias )
+							);
+						}*/
+
+
+						$query['joins'][] = array_words_replace(
+							$this->Passagecommissionep->Dossierep->Nonrespectsanctionep93->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						);
+
+						$query['fields'][] = "{$replacements['Passagecommissionep']}.impressionconvocation";
+						$query['joins'][] = array_words_replace(
+							$this->Passagecommissionep->Dossierep->Nonrespectsanctionep93->Dossierep->join(
+								'Passagecommissionep',
+								array(
+									'type' => 'LEFT OUTER',
+									'conditions' => array(
+										'Passagecommissionep.id IN ( '.$this->Passagecommissionep->sqDernier().' )'
+									)
+								)
+							),
+							$replacements
+						);
+
+						$query['joins'][] = array_words_replace(
+							$this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						);
+
+						// FIXME: les autres thématiques ?
+						foreach( array( 'ep', 'cg' ) as $etape ) {
+							$alias = "Decision{$passage}{$etape}";
+							$replacements['Decisionnonrespectsanctionep93'] = $alias;
+
+							$query['fields'][] = "{$alias}.decision";
+							$query['fields'][] = "{$alias}.commentaire";
+
+							$query['joins'][] = array_words_replace(
+								$this->Passagecommissionep->join(
+									'Decisionnonrespectsanctionep93',
+									array(
+										'type' => 'LEFT OUTER',
+										'conditions' => array(
+											'Decisionnonrespectsanctionep93.etape' => $etape
+										)
+									)
+								),
+								$replacements
+							);
+						}
+					}
+
+					// Service référent
+					$query['fields'][] = 'Structurereferente.lib_struc';
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->Personne->Orientstruct->join( 'Structurereferente' );
+
+					// Dernière Dsp / DspRev
+					$query['fields'] = array_merge(
+						$query['fields'],
+						array(
+							'( CASE WHEN "DspRev"."id" IS NOT NULL THEN "DspRev"."natlog" ELSE "Dsp"."natlog" END ) AS "Dsp__natlog"',
+							'( CASE WHEN "DspRev"."id" IS NOT NULL THEN "DspRev"."nivetu" ELSE "Dsp"."nivetu" END ) AS "Dsp__nivetu"'
+						)
+					);
+					$sqDerniereDsp = $this->Passagecommissionep->Dossierep->Personne->Dsp->sqDerniereDsp();
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->Personne->join(
+						'Dsp',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								"Dsp.id IN ( {$sqDerniereDsp} )"
+							)
+						)
+					);
+					$sqDerniereDsp = $this->Passagecommissionep->Dossierep->Personne->DspRev->sqDerniere();
+					$query['joins'][] = $this->Passagecommissionep->Dossierep->Personne->join(
+						'DspRev',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								"DspRev.id IN ( {$sqDerniereDsp} )"
+							)
+						)
+					);
+
+					// Inscription RSA -> FIXME: voir au-dessus pour le premier dossier
+					$query['fields'][] = 'Dossier.dtdemrsa';
+
+
+					// Radiation Pôle Emploi ?
+					$query['fields'] = array_merge(
+						$query['fields'],
+						array(
+							'Radiationpe.date',
+							'Radiationpe.etat',
+							'Radiationpe.code',
+							'Radiationpe.motif'
+						)
+					);
+					$query['joins'][] = array_words_replace(
+						$this->Passagecommissionep->Dossierep->Nonrespectsanctionep93->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+						array( 'Historiqueetatpe' => 'Radiationpe' )
+					);
+				}
+
+				Cache::write( $cacheKey, $query );
 			}
 
-			return $querydata;
+			$query['conditions'][] = $conditions;
+
+			return $query;
 		}
 
 		/**
@@ -1839,6 +1996,8 @@
 		*/
 
 		public function getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser = false ) {
+			$Dossierep = ClassRegistry::init( 'Dossierep' );
+
 			$queryData = array(
 				'fields' => array(
 					'Dossierep.id',
@@ -1881,46 +2040,21 @@
 
 				),
 				'joins' => array(
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
+					$Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Dossierep->Personne->Foyer->join(
+						'Adressefoyer',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Adressefoyer.id IN (
+									'.$Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+								)'
+							)
 						)
 					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					)
+					$Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'conditions' => array(
 					'Dossierep.id' => $dossierep_id
@@ -1932,24 +2066,66 @@
 
 			$fichessynthetiques = $this->Passagecommissionep->Dossierep->find(
 				'first',
-				$this->_qdFichesSynthetiques( array( 'Passagecommissionep.commissionep_id' => $commissionep_id , 'Passagecommissionep.dossierep_id' => $dossierep_id ) )
+				$this->_qdFichesSynthetiques( array( 'Passagecommissionep.commissionep_id' => $commissionep_id , 'Passagecommissionep.dossierep_id' => $dossierep_id ), true )
 			);
 
 			$dataFiche = Set::merge( $dossierep, $fichessynthetiques );
-
-			$modeleOption = ClassRegistry::init( 'Option' );
-
-			$options['Foyer']['sitfam'] = $modeleOption->sitfam();
-			$options['Personne']['qual'] = $modeleOption->qual();
-
 			$dataFiche['Dossierep']['anonymiser'] = ( $anonymiser ? 1 : 0 );
 
+			$options = $this->getOptions( array( 'fiche' => true ) );
+debug( $dataFiche );die();
 			return $this->ged(
 				$dataFiche,
 				"{$this->alias}/fichesynthese.odt",
 				false,
 				$options
 			);
+		}
+
+		/**
+		 * Retourne les options liées aux différentes méthodes du modèle.
+		 *
+		 * Clés possibles du paramètre $params:
+		 *	- fiche (pour la fiche de synthèse)
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		public function getOptions( array $params = array() ) {
+			$params += array( 'fiche' => false );
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $params ) );
+			$result = Cache::read( $cacheKey );
+
+			if( $result === false ) {
+				$result = $this->enums();
+				if( $params['fiche'] ) {
+					$Option = ClassRegistry::init( 'Option' );
+
+					$result['Foyer']['sitfam'] = $Option->sitfam();
+					$result['Personne']['qual'] = $Option->qual();
+
+					if( Configure::read( 'Cg.departement' ) == 93 ) {
+						$result['Dsp'] = array(
+							'natlog' => $this->Passagecommissionep->Dossierep->Personne->Dsp->enum( 'natlog' ),
+							'nivetu' => $this->Passagecommissionep->Dossierep->Personne->Dsp->enum( 'nivetu' )
+						);
+						$result['Nonrespectsanctionep93']['origine'] = $this->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enum( 'origine' );
+						$result['Dossierep']['themeep'] = $this->Passagecommissionep->Dossierep->enum( 'themeep' );
+
+						$decisions = $this->Passagecommissionep->Decisionnonrespectsanctionep93->enum( 'decision' );
+						foreach( array( 1, 2, 3 ) as $passage ) {
+							foreach( array( 'ep', 'cg' ) as $niveau ) {
+								$result["Decision{$passage}{$niveau}"]['decision'] = $decisions;
+							}
+						}
+					}
+				}
+
+				Cache::write( $cacheKey, $result );
+			}
+
+			return $result;
 		}
 
 		/**
@@ -2020,6 +2196,31 @@
 			}
 
 			return $querydata;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$success = parent::prechargement() !== false;
+
+			$query = $this->_qdFichesSynthetiques( array() );
+			$success = !empty( $query ) && $success;
+
+			$query = $this->_qdFichesSynthetiques( array(), true );
+			$success = !empty( $query ) && $success;
+
+			$options = $this->getOptions( array( 'fiche' => false ) );
+			$success = !empty( $options ) && $success;
+
+			$options = $this->getOptions( array( 'fiche' => true ) );
+			$success = !empty( $options ) && $success;
+
+			return $success;
 		}
 	}
 ?>
