@@ -1548,8 +1548,6 @@
                 $modele = 'convocationep_participant.odt';
             }
 
-//debug($convocation);
-//die();
 			return $this->ged(
 				$convocation,
 				"{$this->alias}/{$modele}",
@@ -2073,7 +2071,7 @@
 			$dataFiche['Dossierep']['anonymiser'] = ( $anonymiser ? 1 : 0 );
 
 			$options = $this->getOptions( array( 'fiche' => true ) );
-debug( $dataFiche );die();
+
 			return $this->ged(
 				$dataFiche,
 				"{$this->alias}/fichesynthese.odt",
