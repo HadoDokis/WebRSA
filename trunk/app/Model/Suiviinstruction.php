@@ -92,6 +92,8 @@
 
 		/**
 		 *
+		 * @deprecated Utiliser sqDernier2 puis renommer
+		 *
 		 * @param type $field
 		 * @return type
 		 */
@@ -106,6 +108,28 @@
 					ORDER BY {$table}.id DESC
 					LIMIT 1
 			";
+		}
+
+		/**
+		 * Retourne la sous-requête permettant de trouver le dernier suivi
+		 * d'instruction d'un dossier par-rapport au champ date_etat_instruction.
+		 *
+		 * @param type $field Le champ de la requête principale représentant l'id du dossier
+		 * @return string
+		 */
+		public function sqDernier2( $field = 'Dossier.id' ) {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+			$alias = $dbo->fullTableName( $this, false, false );
+
+			return $this->sq(
+				array(
+					'alias' => $alias,
+					'fields' => array( "{$alias}.id" ),
+					'conditions' => array( "{$alias}.dossier_id = {$field}" ),
+					'order' => array( "{$alias}.date_etat_instruction DESC" ),
+					'limit' => 1,
+				)
+			);
 		}
 
 		/**
