@@ -189,6 +189,35 @@
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
+		/**
+		 * Test de la méthode AllocatairesComponent::addAllConditions() avec paramètres
+		 */
+		public function testAddAllConditionsParams() {
+			Configure::write( 'Recherche.qdFilters.Serviceinstructeur', true );
+			$sqrecherche = '( SELECT COUNT(dossier_id) FROM suivisinstruction WHERE suivisinstruction.dossier_id = Dossier.id ) = 0';
+			CakeTestSession::write( 'Auth.Serviceinstructeur.sqrecherche', $sqrecherche );
+
+			Configure::write( 'CG.cantons', false );
+
+			Configure::write( 'Cg.departement', 66 );
+			CakeTestSession::write( 'Auth.User.type', 'externe_ci' );
+
+			CakeTestSession::write( 'Auth.User.filtre_zone_geo', true );
+			CakeTestSession::write( 'Auth.Zonegeographique', array( '66000' ) );
+
+			$result = $this->Controller->Allocataires->addAllConditions( array() );
+			$expected = array(
+				'conditions' => array(
+					'( Adresse.numcom IN ( \'66000\' ) )',
+					array(
+						'Dossier.id IN ( SELECT "foyers"."dossier_id" AS "foyers__dossier_id" FROM "foyers" AS "foyers" INNER JOIN "public"."personnes" AS "personnes" ON ("personnes"."foyer_id" = "foyers"."id") INNER JOIN "public"."orientsstructs" AS "orientsstructs" ON ("orientsstructs"."personne_id" = "personnes"."id") INNER JOIN "public"."prestations" AS "prestations" ON ("prestations"."personne_id" = "personnes"."id" AND "prestations"."natprest" = \'RSA\')  WHERE "foyers"."dossier_id" = "Dossier"."id" AND "orientsstructs"."id" IN ( SELECT "derniersorientations"."id" AS derniersorientations__id FROM orientsstructs AS derniersorientations   WHERE "derniersorientations"."personne_id" = "personnes"."id" AND "derniersorientations"."statut_orient" = \'Orienté\' AND "derniersorientations"."date_valid" IS NOT NULL   ORDER BY "derniersorientations"."date_valid" DESC  LIMIT 1 )    )',
+					),
+					'( SELECT COUNT(dossier_id) FROM suivisinstruction WHERE suivisinstruction.dossier_id = Dossier.id ) = 0',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
 
 		/**
 		 * Test de la méthode AllocatairesComponent::paginate()

@@ -53,6 +53,15 @@ msgstr "Intitulé"
 msgid "Search.Ficheprescription93.actionfp93"
 msgstr "Intitulé"
 
+msgid "Search.Ficheprescription93.Referent"
+msgstr "Filtrer par prescripteur"
+
+msgid "Search.Ficheprescription93.structurereferente_id"
+msgstr "Structure du prescripteur"
+
+msgid "Search.Ficheprescription93.referent_id"
+msgstr "Prescripteur"
+
 msgid "Search.Ficheprescription93.created"
 msgstr "Date de création"
 

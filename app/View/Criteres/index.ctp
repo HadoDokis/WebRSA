@@ -269,7 +269,8 @@
 							array(
 								$this->Xhtml->viewLink(
 									'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
-									array( 'controller' => 'orientsstructs', 'action' => 'index', $orient['Personne']['id'] )
+									array( 'controller' => 'orientsstructs', 'action' => 'index', $orient['Personne']['id'] ),
+									$this->Permissions->check( 'orientsstructs', 'index' ) && !Hash::get( $orient, 'Orientstruct.horszone' )
 								),
 								array( 'class' => 'noprint' )
 							),

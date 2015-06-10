@@ -25,12 +25,10 @@
 		/**
 		 * Traitement du formulaire de recherche par rendez-vous.
 		 *
-		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
-		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
 		 * @param array $criteresrdv Critères du formulaire de recherche
 		 * @return string
 		 */
-		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresrdv, $conditionStructure = array() ) { //FIXME Arnaud
+		public function search( $criteresrdv ) {
 			/// Conditions de base
 			$conditions = array();
 
@@ -44,8 +42,7 @@
 
 
 			/// Filtre zone géographique
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			$conditions = $this->conditionsAdresse( $conditions, $criteresrdv, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criteresrdv );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresrdv );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresrdv );
 
@@ -86,14 +83,6 @@
 			}
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
-
-
-			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
-			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$conditions[] = $conditionStructure;
-			}
-			// Arnaud
 
 			// Recherche par thématique de rendez-vous si nécessaire
 			$conditions = $this->Dossier->Foyer->Personne->Rendezvous->conditionsThematique( $conditions, $criteresrdv, 'Critererdv.thematiquerdv_id' );

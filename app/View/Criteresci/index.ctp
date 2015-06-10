@@ -394,7 +394,8 @@
                                     array(
                                         $this->Xhtml->viewLink(
                                             'Voir le dossier « '.$title.' »',
-                                            array( 'controller' => $controller, 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
+                                            array( 'controller' => $controller, 'action' => 'index', $contrat['Contratinsertion']['personne_id'] ),
+											$this->Permissions->check( $controller, 'index' ) && !Hash::get( $contrat, 'Contratinsertion.horszone' )
                                         ),
                                         array( 'class' => 'noprint' )
                                     ),

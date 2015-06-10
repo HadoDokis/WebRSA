@@ -1799,6 +1799,10 @@ body.fichesprescriptions93.search td.action a.index {
 	background-image: url("../img/icons/zoom.png");
 }
 
+body.fichesprescriptions93.search td.action span.index.disabled {
+	background-image: url("../img/icons/zoom_disabled.png");
+}
+
 body.fichesprescriptions93.search td.data.boolean.true {
 	background-image: url("../img/icons/lock.png");
 }

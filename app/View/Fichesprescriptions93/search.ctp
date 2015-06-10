@@ -32,6 +32,12 @@
 	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93', array( 'type' => 'text', 'domain' => 'fichesprescriptions93' ) );
 
+	// TODO: fieldset
+	echo '<fieldset><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93.Referent' ).'</legend>';
+	echo $this->Xform->input( 'Search.Ficheprescription93.structurereferente_id', array( 'type' => 'select', 'empty' => true, 'options' => $options['PersonneReferent']['structurereferente_id'], 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.referent_id', array( 'type' => 'select', 'empty' => true, 'options' => $options['PersonneReferent']['referent_id'], 'domain' => 'fichesprescriptions93' ) );
+	echo '</fieldset>';
+
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.created', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_signature', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.rdvprestataire_date', array( 'domain' => 'fichesprescriptions93' ) );
@@ -83,11 +89,11 @@
 				'Actionfp93.name',
 				'Dossier.locked' => array( 'type' => 'boolean' ),
 				"/Fichesprescriptions93/edit/#Ficheprescription93.id#" => array(
-					'disabled' => "( '#Ficheprescription93.id#' == '' || !'".$this->Permissions->check( 'Fichesprescriptions93', 'edit' )."' )",
+					'disabled' => "( !empty( '#Referent.horszone#' ) || '#Ficheprescription93.id#' == '' || !'".$this->Permissions->check( 'Fichesprescriptions93', 'edit' )."' )",
 					'class' => 'external'
 				),
 				"/Fichesprescriptions93/index/#Personne.id#" => array(
-					'disabled' => "( !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )",
+					'disabled' => "( !empty( '#Referent.horszone#' ) || !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )",
 					'class' => 'external'
 				),
 			),
@@ -97,8 +103,6 @@
 			)
 		);
 	}
-
-//	debug( $options );
 ?>
 <?php if( isset( $results ) ):?>
 <ul class="actionMenu">
@@ -162,4 +166,6 @@
 			'onload' => !empty( $this->request->data )
 		)
 	);
+
+	echo $this->Observer->dependantSelect( array( 'Search.Ficheprescription93.structurereferente_id' => 'Search.Ficheprescription93.referent_id' ) );
 ?>

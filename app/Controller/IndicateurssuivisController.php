@@ -140,7 +140,7 @@
 
 			$query = $this->Indicateursuivi->search58( $search );
 
-			$query = $this->Allocataires->completeSearchQuery( $query, false );
+			$query = $this->Allocataires->completeSearchQuery( $query, array( 'limit' => false ) );
 			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
 
 			$this->Personne->forceVirtualFields = true;

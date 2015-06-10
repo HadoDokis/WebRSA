@@ -25,7 +25,8 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
-			'InsertionsAllocataires'
+			'InsertionsAllocataires',
+			'Workflowscers93'
 		);
 
 		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
@@ -108,7 +109,7 @@
 					$this->request->data
 				);
 
-				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
+				$paginate = $this->Gestionzonesgeos->completeQuery( $paginate, 'Contratinsertion.structurereferente_id' );
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$paginate = $this->_qdAddFilters( $paginate );
 
@@ -197,7 +198,7 @@
 				Hash::expand( $this->request->params['named'], '__' )
 			);
 
-			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
+			$querydata = $this->Gestionzonesgeos->completeQuery( $querydata, 'Contratinsertion.structurereferente_id' );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$querydata = $this->_qdAddFilters( $querydata );
 
