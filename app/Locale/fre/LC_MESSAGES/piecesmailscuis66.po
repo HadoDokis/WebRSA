@@ -17,22 +17,10 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-##############################################################################
+###############################################################################
 
-msgid "Piecemanquantecui66::index::empty"
-msgstr "Vide"
-
-msgid "Piecesmanquantescuis66::delete::confirm"
-msgstr "Supprimer cette pièce manquante ?"
-
-msgid "Piecesmanquantescuis66::delete"
-msgstr "Supprimer"
-
-msgid "Piecesmanquantescuis66::edit"
-msgstr "Modifier"
-
-msgid "Piecesmanquantescuis66::add"
+msgid "/Piecesmailscuis66/add"
 msgstr "Ajouter"
 
-msgid "Piecemanquantecui66.actif"
-msgstr "Actif"
+msgid "/Piecesmailscuis66/add/:title"
+msgstr "Ajouter"

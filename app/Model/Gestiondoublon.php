@@ -270,7 +270,7 @@
 					$ids = Hash::extract( $results, "{n}.{$modelName}.{n}.id" );
 					$idsAGarder = Hash::extract( $data, "{$modelName}.id" );
 					$idsASupprimer = array_diff( $ids, $idsAGarder );
-
+debug(['results'=>$results, 'data'=>$data]);die();//FIXME
 					if( !empty( $idsAGarder ) ) {
 						$success = $Foyer->{$modelName}->updateAllUnbound(
 							array( "{$modelName}.foyer_id" => $foyerAGarderId ),

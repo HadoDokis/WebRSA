@@ -174,29 +174,19 @@
 			$options = array();
 			
 			if ( Configure::read( 'Cg.departement' ) == 66 ){
-				// Fichiers liés
-				$query = array(
-					'fields' => array(
-						'Piecemailcui66.id',
-						'Piecemailcui66.name'
-					),
-					'recursive' => -1,
-					'conditions' => array(
-						'Piecemailcui66.isactif' => '1',
-						'Piecemailcui66.haspiecejointe' => '1'
-					),
-					'depend' => false
-				);
-				$files = ClassRegistry::init( 'Piecemailcui66' )->find( 'all', $query );
-				foreach( $files as $file ){
-					$options['Piecemailcui66'][$file['Piecemailcui66']['id']] = $file['Piecemailcui66']['name'];
-				}
+				$Piecemailcui66 = ClassRegistry::init( 'Piecemailcui66' );
+				$options['Emailcui']['pj'] = $Piecemailcui66->find( 'list' );
+				$options['Emailcui']['pj_actif'] = $Piecemailcui66->find( 'list', array( 'conditions' => array( 'actif' => true ), 'order' => 'name' ) );
 
 				// Pièces manquante
-				$options['Piecemanquantecui66'] = ClassRegistry::init( 'Piecemanquantecui66' )->find( 'list', array( 'order' => 'name' ) );
+				$Piecemanquantecui66 = ClassRegistry::init( 'Piecemanquantecui66' );
+				$options['Emailcui']['piecesmanquantes'] = $Piecemanquantecui66->find( 'list', array( 'order' => 'name' ) );
+				$options['Emailcui']['piecesmanquantes_actif'] = $Piecemanquantecui66->find( 'list', array( 'conditions' => array( 'actif' => true ), 'order' => 'name' ) );
 
 				// Modeles d'e-mail parametrable
-				$options['Emailcui']['textmailcui66_id'] = ClassRegistry::init( 'Textmailcui66' )->find( 'list', array( 'order' => 'name' ) );
+				$Textmailcui66 = ClassRegistry::init( 'Textmailcui66' );
+				$options['Emailcui']['textmailcui66_id'] = $Textmailcui66->find( 'list', array( 'order' => 'name' ) );
+				$options['Emailcui']['textmailcui66_id_actif'] = $Textmailcui66->find( 'list', array( 'conditions' => array( 'actif' => true ), 'order' => 'name' ) );
 			}
 
 			$options = Hash::merge(

@@ -418,6 +418,9 @@ msgstr "Date de demande RSA"
 msgid "Dossier.date_entree_dispositif"
 msgstr "Date d'entrée dans le dispositif"
 
+msgid "Personne.rsasocle"
+msgstr "Cette personne ne possède pas de RSA Socle."
+
 ################################################################################
 # Fieldset du formulaire CUI
 ################################################################################

@@ -93,6 +93,9 @@
 				);
 				$this->assert( !empty( $this->request->data ), 'error404' );
 			}
+			else{
+				$this->request->data['Textmailcui66']['actif'] = true;
+			}
 
 			$this->render( 'add_edit' );
 		}

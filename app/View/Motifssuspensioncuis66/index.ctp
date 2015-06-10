@@ -8,6 +8,7 @@ echo $this->Default2->index(
     $motifssuspensioncuis66,
     array(
         'Motifsuspensioncui66.name',
+        'Motifsuspensioncui66.actif' => array( 'type' => 'boolean' ),
     ),
     array(
         'cohorte' => false,

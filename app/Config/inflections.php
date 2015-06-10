@@ -397,6 +397,7 @@ $irregularPlural = array(
 	'propodecisioncui66' => 'proposdecisionscuis66',
 	'emailcui' => 'emailscuis',
 	'piecemailcui66' => 'piecesmailscuis66',
+	'typecontratcui66' => 'typescontratscuis66',
 	'textmailcui66' => 'textsmailscuis66',
 	'motifrupturecui66' => 'motifsrupturescuis66',
 	'motifrupturecui66_rupturecui66' => 'motifsrupturescuis66_rupturescuis66',

@@ -13,7 +13,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Cui66 extends AppModel // TODO : Passage en En attente d'avis technique avant meme l'envoi d'un e-mail
+	class Cui66 extends AppModel
 	{
 		/**
 		 * Alias de la table et du model
@@ -113,11 +113,18 @@
 		}
 		
 		/**
+		 * Affiche des messages dans index
+		 * 
 		 * @param integer $personne_id
 		 * @return array
 		 */
 		public function messages( $personne_id ) {
 			$messages = array();
+			$isRsaSocle = $this->Cui->isRsaSocle( $personne_id );
+			
+			if ( !$isRsaSocle ){
+				$messages['Personne.rsasocle'] = 'error';
+			}
 
 			return $messages;
 		}
@@ -192,6 +199,14 @@
 				$result = $this->find( 'first', $query );
 
 				$result = $this->Cui->Entreeromev3->prepareFormDataAddEdit( $result );
+				
+				// Ajoute un champ virtuel
+				foreach ($this->Cui->beneficiairede as $key => $value){
+					$keyName = 'beneficiaire_' . strtolower($value);
+					if ( $result['Cui'][$keyName] === 1 ){
+						$result['Cui']['beneficiairede'][] = $key;
+					}
+				}
 			}
 
 			return $result;
@@ -332,7 +347,7 @@
 		/**
 		 * Permet d'obtenir les informations lié à un Allocataire d'un Cui
 		 * 
-		 * @param integer $id
+		 * @param integer $personne_id
 		 * @return array
 		 */
 		public function queryPersonne( $personne_id ){
@@ -365,6 +380,21 @@
 			// INFO: champ non obligatoire
 			unset( $this->Cui->Entreeromev3->validate['familleromev3_id']['notEmpty'] );
 			$success = true;
+			
+			// Transforme le champ virtuel beneficiairede type hasAndBelongsToMany en 4 champs de type smallint (boolean)
+			foreach ($this->Cui->beneficiairede as $value){
+				$keyName = 'beneficiaire_' . strtolower($value);
+				$data['Cui'][$keyName] = 0;
+			}
+			if ( is_array($data['Cui']['beneficiairede']) ){
+				foreach( $data['Cui']['beneficiairede'] as $value ){
+					if ( isset($this->Cui->beneficiairede[$value]) ){
+						$keyName = 'beneficiaire_' . strtolower($this->Cui->beneficiairede[$value]);
+						$data['Cui'][$keyName] = 1;
+					}
+				}
+				unset($data['Cui']['beneficiairede']);
+			}
 
 			$data['Cui']['user_id'] = $user_id;
 			
@@ -483,11 +513,15 @@
 				)
 			);
 			
+			$Typecontratcui66 = ClassRegistry::init( 'Typecontratcui66' );
+			$options['Cui66']['typecontrat'] = $Typecontratcui66->find( 'list', array( 'order' => 'name' ) );
+			$options['Cui66']['typecontrat_actif'] = $Typecontratcui66->find( 'list', array( 'conditions' => array( 'actif' => true ), 'order' => 'name' ) );
+			
 			$options = Hash::merge(
 				$options,
 				$this->enums(),
 				$this->Decisioncui66->enums(),
-				$this->Cui->enums(),
+				$this->Cui->options(),
 				$this->Cui->Partenairecui->enums(),
 				$datebutoir_select
 			);
@@ -503,25 +537,7 @@
 		 *
 		 * @return array
 		 */
-		protected function _getConditionsPositionsCuis() {			
-			// L'e-mail post décision à été envoyé (dateenvoi du dernier e-mail > datededécision)
-			$emailDecision = 'EXISTS(
-				SELECT emailcui_sq.id
-				FROM emailscuis AS emailcui_sq
-				INNER JOIN decisionscuis66 AS decisioncui66_sq ON ( decisioncui66_sq.id = (
-					SELECT decisioncui66_sq2.id FROM decisionscuis66 AS decisioncui66_sq2
-					WHERE decisioncui66_sq2.cui66_id = Cui66.id
-					ORDER BY decisioncui66_sq2.datedecision DESC
-					LIMIT 1
-				))
-				WHERE emailcui_sq.dateenvoi IS NOT NULL
-				AND decisioncui66_sq.datedecision IS NOT NULL
-				AND (emailcui_sq.dateenvoi::date > decisioncui66_sq.datedecision::date
-				OR emailcui_sq.dateenvoi > decisioncui66_sq.created)
-				AND emailcui_sq.cui_id = Cui66.cui_id
-				LIMIT 1
-			)'; // FIXME Bouton action notification à la place
-			
+		protected function _getConditionsPositionsCuis() {
 			// Le CUI possède une décision favorable
 			$decisionFavorable = 'EXISTS(
 				SELECT decisioncui66_sq3.id
@@ -710,7 +726,7 @@
 					)
 				),				
 				
-				// X. Relance le %s (Dossier non reçu) TODO SQL et date
+				// X. Relance le %s (Dossier non reçu)
 				'dossierrelance' => array(
 					array(
 						$emailRelance,
@@ -719,7 +735,7 @@
 					)
 				),
 				
-				// X. En attente de relance (Dossier non reçu) TODO SQL
+				// X. En attente de relance (Dossier non reçu)
 				'dossiernonrecu' => array(
 					array(
 						$emailInitial,
@@ -913,7 +929,7 @@
 		}
 
 		/**
-		 * FIXME: doc
+		 * Ajoute les données des modules liés au CUI pour l'impression
 		 * 
 		 * @param array $data
 		 * @return type
@@ -936,7 +952,6 @@
 			}
 
 			return $data;
-
 		}
 
 	}

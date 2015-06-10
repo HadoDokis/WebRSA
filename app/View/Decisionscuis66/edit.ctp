@@ -13,6 +13,12 @@
  * Formulaire Décision
 /***********************************************************************************/
 	
+	// Ajoute un motif au select si le motif stocké en base n'est plus actif
+	$id_motif = !empty( $this->request->data['Decisioncui66']['motif'] ) ? $this->request->data['Decisioncui66']['motif'] : null;
+	if ( $id_motif !== null && !isset( $options['Decisioncui66']['motif_actif'][$id_motif] ) ){
+		$options['Decisioncui66']['motif_actif'][$id_motif] = $options['Decisioncui66']['motif'][$id_motif];
+	}
+	
 	echo '<fieldset><legend>' . __d('propositionscuis66', 'Propositioncui66.formulaire') . '</legend>'
 		. $this->Default3->index(
 			$results,
@@ -37,7 +43,7 @@
 				'Decisioncui66.id' => array( 'type' => 'hidden' ),
 				'Decisioncui66.cui66_id' => array( 'type' => 'hidden' ),
 				'Decisioncui66.decision',
-				'Decisioncui66.motif' => array( 'empty' => true ),
+				'Decisioncui66.motif' => array( 'empty' => true, 'options' => $options['Decisioncui66']['motif_actif'] ),
 				'Decisioncui66.datedecision' => array( 'dateFormat' => 'DMY', 'timeFormat' => 24, 'minYear' => 2009, 'maxYear' => date('Y')+1 ),
 				'Decisioncui66.observation',
 			) ,

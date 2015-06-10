@@ -5,15 +5,15 @@
 
 	echo $this->Xhtml->tag(
 		'h1',
-		$this->pageTitle = __d( 'piecesmanquantescuis66', "Piecesmanquantescuis66::{$this->action}" )
+		$this->pageTitle = __d( 'typecontratcui66', "Typescontratscuis66::{$this->action}" )
 	);
 
     echo $this->Xform->create();
     echo $this->Default2->subform(
         array(
-            'Piecemanquantecui66.id' => array( 'type' => 'hidden' ),
-            'Piecemanquantecui66.name' => array( 'label' => __d( 'piecesmanquantescuis66', 'Piecemanquantecui66.name' )),
-            'Piecemanquantecui66.actif' => array( 'type' => 'checkbox' ),
+            'Typecontratcui66.id' => array( 'type' => 'hidden' ),
+            'Typecontratcui66.name' => array( 'type' => 'text' ),
+            'Typecontratcui66.actif' => array( 'type' => 'checkbox' ),
         )
     );
 

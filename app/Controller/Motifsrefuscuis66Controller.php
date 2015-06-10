@@ -94,6 +94,9 @@
 				);
 				$this->assert( !empty( $this->request->data ), 'error404' );
 			}
+			else{
+				$this->request->data['Motifrefuscui66']['actif'] = true;
+			}
 
 			$this->render( 'add_edit' );
 		}

@@ -52,6 +52,7 @@
 			
 			$optionRupture = $this->enums();
 			$optionRupture['Rupturecui66']['motif'] = ClassRegistry::init( 'motifrupturecui66' )->find( 'list' );
+			$optionRupture['Rupturecui66']['motif_actif'] = ClassRegistry::init( 'Motifrupturecui66' )->find( 'list', array( 'conditions' => array( 'actif' => true ) ) );
 
 			$options = Hash::merge(
 				$options,

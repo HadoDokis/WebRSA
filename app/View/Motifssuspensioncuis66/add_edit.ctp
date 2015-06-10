@@ -12,7 +12,8 @@
     echo $this->Default2->subform(
         array(
             'Motifsuspensioncui66.id' => array( 'type' => 'hidden' ),
-            'Motifsuspensioncui66.name' => array( 'type' => 'text')
+            'Motifsuspensioncui66.name' => array( 'type' => 'text' ),
+            'Motifsuspensioncui66.actif' => array( 'type' => 'checkbox' ),
         )
     );
 

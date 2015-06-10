@@ -52,6 +52,8 @@
 			
 			$optionSuspension = $this->enums();
 			$optionSuspension['Suspensioncui66']['motif'] = ClassRegistry::init( 'Motifsuspensioncui66' )->find( 'list' );
+			$optionSuspension['Suspensioncui66']['motif_actif'] = ClassRegistry::init( 'Motifsuspensioncui66' )->find( 'list', array( 'conditions' => array( 'actif' => true ) ) );
+			
 
 			$options = Hash::merge(
 				$options,

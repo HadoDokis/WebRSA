@@ -44,13 +44,19 @@
 	
 /***********************************************************************************
  * Secteur
-/***********************************************************************************/	
+/***********************************************************************************/
+	
+	// Ajoute un typecontrat au select si le typecontrat stocké en base n'est plus actif
+	$id_typecontrat = !empty( $this->request->data['Cui66']['typecontrat'] ) ? $this->request->data['Cui66']['typecontrat'] : null;
+	if ( $id_typecontrat !== null && !isset( $options['Cui66']['typecontrat_actif'][$id_typecontrat] ) ){
+		$options['Cui66']['typecontrat_actif'][$id_typecontrat] = $options['Cui66']['typecontrat'][$id_typecontrat];
+	}
 	
 	echo '<fieldset id="CuiSecteur"><legend>' . __d('cuis66', 'Cui.secteur') . '</legend>'
 		. $this->Default3->subform(
 			array(
 				'Cui.secteurmarchand' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.typecontrat' => array( 'empty' => true ),
+				'Cui66.typecontrat' => array( 'empty' => true, 'options' => $options['Cui66']['typecontrat_actif'] ),
 				'Cui66.codecdiae',
 				'Cui.numconventionindividuelle' => array( 'type' => 'text' ),
 				'Cui.numconventionobjectif' => array( 'type' => 'text' )				
@@ -274,7 +280,7 @@
 				'Cui.niveauformation' => array( 'empty' => true, 'type' => 'select' ),
 				'Cui.inscritpoleemploi' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.inscritpoleemploi' ) ),
 				'Cui.sansemploi' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.sansemploi' ) ),
-				'Cui.beneficiairede' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.beneficiairede' ) ),
+				'Cui.beneficiairede' => array( 'type' => 'select', 'multiple' => 'checkbox', 'legend' => __d( 'cuis66', 'Cui.beneficiairede' ) ),
 				'Cui.majorationrsa' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.majorationrsa' ) ),
 				'Cui.rsadepuis' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.rsadepuis' ) ),
 				'Cui.travailleurhandicape' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.travailleurhandicape' ) ),
@@ -593,31 +599,14 @@
 </script>
 <?php
 	// Ici on défini les champs à faire apparaitre que si certains autres portent une certaine valeur
-	$secteurmarchand = array('Cui66.typecontrat', 'Cui.numconventionindividuelle', 'Cui.numconventionobjectif');
 	$dateEligibiliteDossier = array('Cui66.dateeligibilite.day', 'Cui66.dateeligibilite.month', 'Cui66.dateeligibilite.year', 'Cui66.dossierrecu');
 	$dateReceptionDossier = array('Cui66.datereception.day', 'Cui66.datereception.month', 'Cui66.datereception.year', 'Cui66.dossiercomplet');
 	$dateDossierComplet = array('Cui66.datecomplet.day', 'Cui66.datecomplet.month', 'Cui66.datecomplet.year');
-
-	echo $this->Observer->disableFieldsOnValue(
-		'Cui.secteurmarchand',
-		$secteurmarchand,
-		array( '', null ),
-		true,
-		true
-	);
 	
 	echo $this->Observer->disableFieldsetOnValue(
 		'Cui.secteurmarchand',
 		'PartenairecuiAjourversement0Parent',
 		'1',
-		false,
-		true
-	);
-	
-	echo $this->Observer->disableFieldsOnValue(
-		'Cui66.typecontrat',
-		'Cui66.codecdiae',
-		'ACI',
 		false,
 		true
 	);

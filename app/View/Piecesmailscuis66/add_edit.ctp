@@ -14,10 +14,13 @@
 	echo $this->Default2->subform(
 		array(
 			'Piecemailcui66.id' => array( 'type' => 'hidden' ),
-			'Piecemailcui66.name' => array( 'required' => true )
+			'Piecemailcui66.name' => array( 'required' => true ),
+			'Piecemailcui66.actif' => array( 'type' => 'checkbox' )
 		)
 	);
 
+	echo '<br />';
+	
     // Ajout de pièces jointes
     echo "<fieldset><legend>".required( $this->Default2->label( 'Piecemailcui66.haspiecejointe' ) )."</legend>";
     echo $this->Form->input( 'Piecemailcui66.haspiecejointe', array( 'type' => 'radio', 'options' => $options['Piecemailcui66']['haspiecejointe'], 'legend' => false, 'fieldset' => false ) );
