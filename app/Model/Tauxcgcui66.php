@@ -38,10 +38,9 @@
 		);
 
 		public function options(){
-			$cui = ClassRegistry::init( 'Cui' )->enums();
-			$cui66 = ClassRegistry::init( 'Cui66' )->enums();
+			$optionsCui66 = ClassRegistry::init( 'Cui66' )->options();
 			
-			$options['Tauxcgcui66'] = array_merge( $cui['Cui'], $cui66['Cui66'] );
+			$options['Tauxcgcui66'] = array_merge( $optionsCui66['Cui'], $optionsCui66['Cui66'] );
 			
 			return $options;
 		}
