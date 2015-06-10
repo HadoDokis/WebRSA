@@ -15,7 +15,7 @@
 			'Tauxcgcui66.id' => array( 'type' => 'hidden' ),
 			'Tauxcgcui66.typeformulaire',
             'Tauxcgcui66.secteurmarchand',
-            'Tauxcgcui66.typecontrat',
+            'Tauxcgcui66.typecontrat' => array( 'options' => $options['Tauxcgcui66']['typecontrat_actif']),
 		),
 		array(
 			'options' => $options
