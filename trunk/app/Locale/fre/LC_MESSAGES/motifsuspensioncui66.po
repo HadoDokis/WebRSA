@@ -28,6 +28,9 @@ msgstr "Aucun motif de suspension enregistré"
 msgid "Motifsuspensioncui66.name"
 msgstr "Motif de la suspension"
 
+msgid "Motifsuspensioncui66.actif"
+msgstr "Actif"
+
 msgid "Motifsuspensioncui66::add"
 msgstr "Ajouter un motif de suspension"
 

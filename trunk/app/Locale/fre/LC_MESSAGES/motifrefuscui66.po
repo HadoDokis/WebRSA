@@ -22,8 +22,14 @@ msgstr "Ajout de Motifs de Décision de refus du CUI"
 msgid "Motifsrefuscuis66::edit"
 msgstr "Modification de Motifs de Décision de refus du CUI"
 
+msgid "Motifsrefuscuis66::delete"
+msgstr "Supprimer"
+
 msgid "Motifrefuscui66.name"
 msgstr "Intitulé"
+
+msgid "Motifrefuscui66.actif"
+msgstr "Actif"
 
 msgid "Motifsrefuscuis66::delete::confirm"
 msgstr "Voulez vous vraiment supprimer ce motif ?"

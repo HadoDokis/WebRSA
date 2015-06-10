@@ -17,22 +17,28 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-##############################################################################
+###############################################################################
 
-msgid "Piecemanquantecui66::index::empty"
+msgid "Typescontratscuis66::index"
+msgstr "Types de contrat lié au secteur du CUI"
+
+msgid "Typecontratcui66::index::empty"
 msgstr "Vide"
 
-msgid "Piecesmanquantescuis66::delete::confirm"
-msgstr "Supprimer cette pièce manquante ?"
-
-msgid "Piecesmanquantescuis66::delete"
-msgstr "Supprimer"
-
-msgid "Piecesmanquantescuis66::edit"
-msgstr "Modifier"
-
-msgid "Piecesmanquantescuis66::add"
+msgid "Typecontratcui66::add"
 msgstr "Ajouter"
 
-msgid "Piecemanquantecui66.actif"
+msgid "Typescontratscuis66::add"
+msgstr "Ajout d'un type de contrat"
+
+msgid "Typescontratscuis66::edit"
+msgstr "Modification d'un type de contrat"
+
+msgid "Typescontratscuis66::delete"
+msgstr "Supprimer"
+
+msgid "Typecontratcui66.name"
+msgstr "Intitulé"
+
+msgid "Typecontratcui66.actif"
 msgstr "Actif"

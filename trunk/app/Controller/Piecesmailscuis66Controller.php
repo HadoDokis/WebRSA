@@ -18,7 +18,7 @@
 	{
 		public $name = 'Piecesmailscuis66';
 		public $uses = array( 'Piecemailcui66', 'Option' );
-		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' , 'Fileuploader');
+		public $helpers = array( 'Xform', 'Default', 'Default2', 'Default3' => array('className' => 'Default.DefaultDefault'), 'Theme' , 'Fileuploader');
 		public $components = array( 'Default', 'Fileuploader' );
 
 		public $commeDroit = array(
@@ -92,21 +92,25 @@
 		*/
 
 		public function index() {
-//			$this->Piecemailcui66->Behaviors->attach( 'Occurences' );
-//  
-//            $querydata = $this->Piecemailcui66->qdOccurencesExists(
-//                array(
-//                    'fields' => $this->Piecemailcui66->fields(),
-//                    'order' => array( 'Piecemailcui66.name ASC' ),
-//                )
-//            );
-
-            
+            $occurenceQuery = array(
+				'fields' => 'Emailcui.id',
+				'joins' => array(
+					$this->Piecemailcui66->join( 'Emailcui', array( 'type' => 'INNER' ) )
+				),
+				'limit' => 1
+			);
+			// On Alias
+			$prepareSq = str_replace( 'Piecemailcui66', 'piecesmailscuis66', $this->Piecemailcui66->sq($occurenceQuery));
+			
+			// On remet la bonne condition
+			$occurenceSq = str_replace( '"piecesmailscuis66"."id"', '"Piecemailcui66"."id"', $prepareSq );
+			
             $querydata = array(
                 'fields' => array_merge(
                     $this->Piecemailcui66->fields(),
                     array(
-                        $this->Piecemailcui66->Fichiermodule->sqNbFichiersLies( $this->Piecemailcui66, 'nb_fichiers_lies' )
+                        $this->Piecemailcui66->Fichiermodule->sqNbFichiersLies( $this->Piecemailcui66, 'nb_fichiers_lies' ),
+						"(".$occurenceSq.") AS Piecemailcui66__occurence"
                     )
                 ),
                 'contain' => false,
@@ -150,13 +154,18 @@
             $fichiers = array();
 			if( !empty( $this->request->data ) ) {
                 $this->Piecemailcui66->begin();
+			
+				// Rend inactif si n'a pas de pièce jointe
+				if ( $this->request->data['Piecemailcui66']['haspiecejointe'] === '0' ){
+					$this->request->data['Piecemailcui66']['actif'] = 0;
+				}
                 
 				$this->Piecemailcui66->create( $this->request->data );
 				$success = $this->Piecemailcui66->save();
-                
+              
                 if( $success ){
-                // Sauvegarde des fichiers liés à une PDO
-					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
+					$path = $this->action === 'add' ? null : $this->Piecemailcui66->id;
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $path );
 					$saved = $this->Fileuploader->saveFichiers(
 						$dir,
 						!Set::classicExtract( $this->request->data, "Piecemailcui66.haspiecejointe" ),
@@ -174,12 +183,6 @@
 					$this->Piecemailcui66->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
-
-                
-//				$this->_setFlashResult( 'Save', $success );
-//				if( $success ) {
-//					$this->redirect( array( 'action' => 'index' ) );
-//				}
 			}
 			else if( $this->action == 'edit' ) {
 				$this->request->data = $this->Piecemailcui66->find(
@@ -213,6 +216,10 @@
 				);
 				$fichiersEnBase = Set::classicExtract( $fichiersEnBase, '{n}.Fichiermodule' );
 				$this->set( 'fichiersEnBase', $fichiersEnBase );
+			}
+			else{
+				// La case actif est activée par defaut
+				$this->request->data['Piecemailcui66']['actif'] = true;
 			}
 
             $this->set( 'fichiers', $fichiers );

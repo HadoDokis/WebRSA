@@ -35,29 +35,6 @@
 				)
 			)
 		);
-
-		/**
-		 * Associations "Has And Belongs To Many".
-		 * @var array
-		 */
-		public $hasAndBelongsToMany = array(
-//			'Cui' => array(
-//				'className' => 'Cui',
-//				'joinTable' => 'cuis_piecesmailscuis66',
-//				'foreignKey' => 'piecemailcui66_id',
-//				'associationForeignKey' => 'cui_id',
-//				'unique' => true,
-//				'conditions' => '',
-//				'fields' => '',
-//				'order' => '',
-//				'limit' => '',
-//				'offset' => '',
-//				'finderQuery' => '',
-//				'deleteQuery' => '',
-//				'insertQuery' => '',
-//				'with' => 'CuiPiecemailcui66'
-//			)
-		);
 		
 		/**
 		 * Associations "Has Many".
@@ -79,6 +56,14 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+			'Emailcui' => array(
+				'className' => 'Emailcui',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					"Piecemailcui66.id = ANY ( string_to_array( Emailcui.pj, '_' )::int[] )"
+				),
 			)
 		);
 		

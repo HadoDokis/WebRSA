@@ -589,9 +589,6 @@ msgstr "Décision sur le CUI"
 msgid "Decisionscuis.datedecision"
 msgstr "Date de la décision"
 
-msgid "Personne.rsasocle"
-msgstr "Cette personne ne possède pas de rSA Socle."
-
 ################################################################################
 # Fieldset du formulaire CUI
 ################################################################################

@@ -38,37 +38,37 @@
 			'Decisioncui66.motif' => array( 'type' => 'select' ),
 			'Decisioncui66.observation',
 			'/Decisionscuis66/edit/#Decisioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Decisionscuis66/edit'),
+				'title' => __d('decisionscuis66', '/Decisionscuis66/edit'),
 				'class' => 'edit',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['edit']
 			),
 			'/Decisionscuis66/impression/#Decisioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Decisionscuis66/impression'),
+				'title' => __d('decisionscuis66', '/Decisionscuis66/impression'),
 				'class' => 'impression',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['impression']
 			),
 			'/Decisionscuis66/impression_decisionelu/#Decisioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Decisionscuis66/impression_decisionelu'),
+				'title' => __d('decisionscuis66', '/Decisionscuis66/impression_decisionelu'),
 				'class' => 'impression',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['impression_decisionelu']
 			),
 			'/Decisionscuis66/impression_notifbenef/#Decisioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Decisionscuis66/impression_notifbenef'),
+				'title' => __d('decisionscuis66', '/Decisionscuis66/impression_notifbenef'),
 				'class' => 'impression',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['impression_notifbenef']
 			),
 			'/Decisionscuis66/impression_notifemployeur/#Decisioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Decisionscuis66/impression_notifemployeur'),
+				'title' => __d('decisionscuis66', '/Decisionscuis66/impression_notifemployeur'),
 				'class' => 'impression',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['impression_notifemployeur']
 			),
 			'/Decisionscuis66/impression_attestationcompetence/#Decisioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Decisionscuis66/impression_attestationcompetence'),
+				'title' => __d('decisionscuis66', '/Decisionscuis66/impression_attestationcompetence'),
 				'class' => 'impression',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['impression_attestationcompetence']
 			),
 			'/Decisionscuis66/delete/#Decisioncui66.id#/' => array(
-				'title' => __d('propositionscuis66', '/Decisionscuis66/delete'),
+				'title' => __d('decisionscuis66', '/Decisionscuis66/delete'),
 				'class' => 'edit',
 				'disabled' => '( in_array( \'#Cui66.etatdossiercui66#\', array( \'annule\' ) ) ) || ' . $perm['delete']
 			),

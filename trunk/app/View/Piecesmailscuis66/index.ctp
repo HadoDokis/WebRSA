@@ -5,20 +5,27 @@
     );
 ?>
 <?php
-
+	echo $this->Default3->actions(
+		array(
+			"/Piecesmailscuis66/add/0" => array(
+				'disabled' => !$this->Permissions->check( 'Piecesmailscuis66', 'add' ),
+			),
+		)
+	);
     
     echo $this->Default2->index(
         $piecesmailscuis66,
         array(
             'Piecemailcui66.name',
-            'Piecemailcui66.haspiecejointe' => array( 'type' => 'boolean')
+            'Piecemailcui66.haspiecejointe' => array( 'type' => 'boolean' ),
+            'Piecemailcui66.actif' => array( 'type' => 'boolean' ),
+            'Fichiermodule.nb_fichiers_lies' => array( 'type' => 'text', 'domain' => 'piecemailcui66', 'class' => 'center' ),
         ),
         array(
             'actions' => array(
                 'Piecesmailscuis66::edit',
-                'Piecesmailscuis66::delete' => array( 'disabled' => '\'#Piecemailcui66.occurences#\'!= "0"' )
+                'Piecesmailscuis66::delete' => array( 'disabled' => '\'#piecemailcui66.occurence#\'== true' )
             ),
-            'add' => 'Piecesmailscuis66::add'
         )
     );
     echo $this->Default->button(

@@ -224,7 +224,11 @@
 		 * @return boolean
 		 */
 		public function impression_notifbenef( $id ){
-			return $this->WebrsaModelesLiesCuis66->impression( $id, 'notifbenef' );
+			$etatdossiercui66 = $this->Decisioncui66->getDecision( $id );
+			
+			$modeleOdt = $etatdossiercui66 === 'accord' ? 'notifbenef_accord' : 'notifbenef_refus';
+					
+			return $this->WebrsaModelesLiesCuis66->impression( $id, $modeleOdt );
 		}
 		
 		/**
@@ -234,7 +238,11 @@
 		 * @return boolean
 		 */
 		public function impression_notifemployeur( $id ){
-			return $this->WebrsaModelesLiesCuis66->impression( $id, 'notifemployeur' );
+			$etatdossiercui66 = $this->Decisioncui66->getDecision( $id );
+			
+			$modeleOdt = $etatdossiercui66 === 'accord' ? 'notifemployeur_accord' : 'notifemployeur_refus';
+					
+			return $this->WebrsaModelesLiesCuis66->impression( $id, $modeleOdt );
 		}
 		
 		/**

@@ -474,7 +474,10 @@ CREATE TABLE cuis
 	niveauformation				VARCHAR(2),			-- Situation du salarié
 	inscritpoleemploi			VARCHAR(10),		-- Situation du salarié
 	sansemploi					VARCHAR(10),		-- Situation du salarié
-	beneficiairede				VARCHAR(10),		-- Situation du salarié
+	beneficiaire_ass			SMALLINT,
+	beneficiaire_aah			SMALLINT,
+	beneficiaire_ata			SMALLINT,
+	beneficiaire_rsa			SMALLINT,
 	majorationrsa				SMALLINT,
 	rsadepuis					VARCHAR(10),		-- Situation du salarié
 	travailleurhandicape		SMALLINT,
@@ -538,7 +541,6 @@ COMMENT ON COLUMN cuis.numannexefinanciere IS 'Employeur';
 COMMENT ON COLUMN cuis.niveauformation IS 'Situation du salarié';
 COMMENT ON COLUMN cuis.inscritpoleemploi IS 'Situation du salarié';
 COMMENT ON COLUMN cuis.sansemploi IS 'Situation du salarié';
-COMMENT ON COLUMN cuis.beneficiairede IS 'Situation du salarié';
 COMMENT ON COLUMN cuis.majorationrsa IS 'Situation du salarié';
 COMMENT ON COLUMN cuis.rsadepuis IS 'Situation du salarié';
 COMMENT ON COLUMN cuis.travailleurhandicape IS 'Situation du salarié';
@@ -587,7 +589,6 @@ COMMENT ON COLUMN cuis.adressautreorganisme IS 'Decision de prise en charge';
 COMMENT ON COLUMN cuis.created IS 'Dates';
 COMMENT ON COLUMN cuis.signaturele IS 'Dates';
 COMMENT ON COLUMN cuis.modified IS 'Modifié le...';
---COMMENT ON COLUMN cuis.nbpj IS 'Pieces Jointes';
 COMMENT ON COLUMN cuis.user_id IS 'Modifié par...';
 
 CREATE INDEX cui_personne_id_idx ON cuis(personne_id);
@@ -605,11 +606,14 @@ ALTER TABLE cuis ADD CONSTRAINT cuis_periodeprofessionnalisation_in_list_chk CHE
 ALTER TABLE cuis ADD CONSTRAINT cuis_validationacquis_in_list_chk CHECK ( cakephp_validate_in_list( validationacquis, ARRAY[0,1] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_periodeimmersion_in_list_chk CHECK ( cakephp_validate_in_list( periodeimmersion, ARRAY[0,1] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_exclusifcg_in_list_chk CHECK ( cakephp_validate_in_list( exclusifcg, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_beneficiaire_ass_in_list_chk CHECK ( cakephp_validate_in_list( beneficiaire_ass, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_beneficiaire_aah_in_list_chk CHECK ( cakephp_validate_in_list( beneficiaire_aah, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_beneficiaire_ata_in_list_chk CHECK ( cakephp_validate_in_list( beneficiaire_ata, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_beneficiaire_rsa_in_list_chk CHECK ( cakephp_validate_in_list( beneficiaire_rsa, ARRAY[0,1] ) );
 
 -- Enums VARCHAR(10)
 ALTER TABLE cuis ADD CONSTRAINT cuis_inscritpoleemploi_in_list_chk CHECK ( cakephp_validate_in_list( inscritpoleemploi, ARRAY['0_5','6_11','12_23','24_999'] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_sansemploi_in_list_chk CHECK ( cakephp_validate_in_list( sansemploi, ARRAY['0_5','6_11','12_23','24_999'] ) );
-ALTER TABLE cuis ADD CONSTRAINT cuis_beneficiairede_in_list_chk CHECK ( cakephp_validate_in_list( beneficiairede, ARRAY['ASS','AAH','ATA','RSA'] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_rsadepuis_in_list_chk CHECK ( cakephp_validate_in_list( rsadepuis, ARRAY['0_5','6_11','12_23','24_999'] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_typecontrat_in_list_chk CHECK ( cakephp_validate_in_list( typecontrat, ARRAY['CDI','CDD'] ) );
 ALTER TABLE cuis ADD CONSTRAINT cuis_formation_in_list_chk CHECK ( cakephp_validate_in_list( formation, ARRAY['interne','externe'] ) );
@@ -650,7 +654,7 @@ CREATE TABLE cuis66
 	id SERIAL NOT NULL PRIMARY KEY,
 	cui_id INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	typeformulaire VARCHAR(10) NOT NULL,-- CUI, CUI - Emploi avenir
-	typecontrat VARCHAR(8) NOT NULL,	-- ACI, Hors ACI, CIE, EAV
+	typecontrat VARCHAR(255) NOT NULL,	-- ACI, Hors ACI, CIE, EAV
 	codecdiae VARCHAR(100),				-- CDIAE
 	renouvellement SMALLINT,
 	dossierrecu SMALLINT,				-- etat dossier
@@ -714,7 +718,6 @@ CREATE INDEX cuis66_typecontrat_idx ON cuis66(typecontrat);
 CREATE INDEX cuis66_cui_id_idx ON cuis66(cui_id);
 
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_typeformulaire_in_list_chk CHECK ( cakephp_validate_in_list( typeformulaire, ARRAY['CUI','CUIAvenir'] ) );
-ALTER TABLE cuis66 ADD CONSTRAINT cuis66_typecontrat_in_list_chk CHECK ( cakephp_validate_in_list( typecontrat, ARRAY['ACI','Hors','CIE','EAV','CCDI'] ) );
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_zonecouverte_in_list_chk CHECK ( cakephp_validate_in_list( zonecouverte, ARRAY['ZUS','ZRR'] ) );
 ALTER TABLE cuis66 ADD CONSTRAINT cuis66_etatdossiercui66_in_list_chk CHECK ( cakephp_validate_in_list( etatdossiercui66, ARRAY['attentepiece','dossierrecu','dossiernonrecu','dossierrelance','dossiereligible','attentemail','formulairecomplet','attenteavis','attentedecision','attentenotification','encours','perime','rupturecontrat','contratsuspendu','decisionsanssuite','nonvalide','annule'] ) );
 
@@ -967,6 +970,42 @@ CREATE TABLE motifsrefuscuis66(
   modified		TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE motifsrefuscuis66 IS 'Liste des motifs de décision de refus de CUIs (CG66)';
+
+
+-------------------------------------------------------------------------------------
+-- Ajout d'une table de paramétrage pour les motifs de décision de refus de CUI
+-------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS typescontratscuis66 CASCADE;
+CREATE TABLE typescontratscuis66(
+  id			SERIAL NOT NULL PRIMARY KEY,
+  name			VARCHAR(250) NOT NULL,
+  actif			SMALLINT DEFAULT 1,
+  created		TIMESTAMP WITHOUT TIME ZONE,
+  modified		TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE typescontratscuis66 IS 'Liste des type de contrat CUI (CG66)';
+
+
+-------------------------------------------------------------------------------------
+-- Ajout de la case Actif sur les paramétrages liés au CUI
+-------------------------------------------------------------------------------------
+
+SELECT alter_table_drop_column_if_exists ('public', 'textsmailscuis66', 'actif');
+SELECT add_missing_table_field ('public', 'motifsrupturescuis66', 'actif', 'SMALLINT DEFAULT 1');
+SELECT add_missing_table_field ('public', 'motifssuspensioncuis66', 'actif', 'SMALLINT DEFAULT 1');
+SELECT add_missing_table_field ('public', 'motifsrefuscuis66', 'actif', 'SMALLINT DEFAULT 1');
+SELECT add_missing_table_field ('public', 'piecesmailscuis66', 'actif', 'SMALLINT DEFAULT 1');
+SELECT add_missing_table_field ('public', 'piecesmanquantescuis66', 'actif', 'SMALLINT DEFAULT 1');
+SELECT add_missing_table_field ('public', 'textsmailscuis66', 'actif', 'SMALLINT DEFAULT 1');
+
+ALTER TABLE motifsrupturescuis66 ADD CONSTRAINT motifsrupturescuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+ALTER TABLE motifssuspensioncuis66 ADD CONSTRAINT motifssuspensioncuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+ALTER TABLE motifsrefuscuis66 ADD CONSTRAINT motifsrefuscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+ALTER TABLE piecesmailscuis66 ADD CONSTRAINT piecesmailscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+ALTER TABLE piecesmanquantescuis66 ADD CONSTRAINT piecesmanquantescuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+ALTER TABLE textsmailscuis66 ADD CONSTRAINT textsmailscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+ALTER TABLE typescontratscuis66 ADD CONSTRAINT typescontratscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
 
 --------------------------------------------------------------------------------
 -- Ticket #6054: ajout du référent aux tableaux de suivi

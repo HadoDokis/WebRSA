@@ -28,6 +28,12 @@ msgstr "Aucune pièce présente"
 msgid "Piecemailcui66.name"
 msgstr "Intitulé de la pièce"
 
+msgid "Piecemailcui66.actif"
+msgstr "Actif"
+
+msgid "Fichiermodule.nb_fichiers_lies"
+msgstr "Fichier(s) lié(s)"
+
 msgid "Piecemailcui66::add"
 msgstr "Ajouter une pièce"
 

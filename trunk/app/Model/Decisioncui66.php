@@ -38,8 +38,10 @@
 		public $modelesOdt = array(
 			'default' => 'CUI/%s/impression.odt',
 			'decisionelu' => 'CUI/%s/decisionelu.odt',
-			'notifbenef' => 'CUI/%s/notifbenef.odt',
-			'notifemployeur' => 'CUI/%s/notifemployeur.odt',
+			'notifbenef_accord' => 'CUI/%s/notifbenef_accord.odt',
+			'notifbenef_refus' => 'CUI/%s/notifbenef_refus.odt',
+			'notifemployeur_accord' => 'CUI/%s/notifemployeur_accord.odt',
+			'notifemployeur_refus' => 'CUI/%s/notifemployeur_refus.odt',
 			'attestationcompetence' => 'CUI/%s/attestationcompetence.odt',
 		);
 		
@@ -112,6 +114,7 @@
 			
 			$optionRefus = $this->enums();
 			$optionRefus['Decisioncui66']['motif'] = ClassRegistry::init( 'motifrefuscui66' )->find( 'list' );
+			$optionRefus['Decisioncui66']['motif_actif'] = ClassRegistry::init( 'motifrefuscui66' )->find( 'list', array( 'conditions' => array( 'actif' => true ) ) );
 			$optionRefus['Propositioncui66']['motif'] = $optionRefus['Decisioncui66']['motif'];
 
 			$options = Hash::merge(
@@ -121,6 +124,26 @@
 			);
 
 			return $options;
+		}
+		
+		/**
+		 * Renvoi la decision prise
+		 * 
+		 * @param integer $id
+		 * @return integer $decision
+		 */
+		public function getDecision( $id ){
+			$query = array(
+				'fields' => 'decision',
+				'conditions' => array(
+					$this->alias . '.id' => $id
+				)
+			);
+			$result = $this->find( 'first', $query );
+			
+			$decision = $result[$this->alias]['decision'];
+			
+			return $decision;
 		}
 	}
 ?>

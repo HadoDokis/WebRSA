@@ -125,6 +125,17 @@
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
+		
+		/**
+		 * Valeur des checkbox du champ beneficiairede
+		 * @var array
+		 */
+		public $beneficiairede = array(
+			'ASS',
+			'AAH',
+			'ATA',
+			'RSA'
+		);
 
 		/**
 		 * Recherche des données CAF liées à l'allocataire dans le cadre du CUI.
@@ -239,6 +250,16 @@
 			);			
 			$isRsaSocle = isset($result['Dossier']['rsasocle']) && $result['Dossier']['rsasocle'] === true ? true : false;
 			return $isRsaSocle;
+		}
+		
+		public function options(){
+			$options = $this->enums();
+			
+			foreach( $this->beneficiairede as $key => $value ){
+				$options['Cui']['beneficiairede'][] = $value;
+			}
+			
+			return $options;
 		}
 	}
 ?>

@@ -13,6 +13,12 @@
  * Formulaire Suspension
 /***********************************************************************************/
 	
+	// Ajoute un motif au select si le motif stocké en base n'est plus actif
+	$id_motif = !empty( $this->request->data['Suspensioncui66']['motif'] ) ? $this->request->data['Suspensioncui66']['motif'] : null;
+	if ( $id_motif !== null && !isset( $options['Suspensioncui66']['motif_actif'][$id_motif] ) ){
+		$options['Suspensioncui66']['motif_actif'][$id_motif] = $options['Suspensioncui66']['motif'][$id_motif];
+	}
+	
 	echo '<fieldset><legend>' . __d('suspensionscuis66', 'Suspensioncui66.formulaire') . '</legend>'
 		. $this->Default3->subform(
 			array(
@@ -22,8 +28,7 @@
 				'Suspensioncui66.duree',
 				'Suspensioncui66.datedebut' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 				'Suspensioncui66.datefin' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
-				'Suspensioncui66.motif' => array( 'type' => 'select' ),
-				
+				'Suspensioncui66.motif' => array( 'type' => 'select', 'options' => $options['Suspensioncui66']['motif_actif'] ),
 			) ,
 			array( 'options' => $options )
 		)

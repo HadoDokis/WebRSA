@@ -8,6 +8,7 @@
 		$piecesmanquantescuis66,
 		array(
 			'Piecemanquantecui66.name' => array( 'label' => __d( 'piecesmanquantescuis66', 'Piecemanquantecui66.name' )),
+			'Piecemanquantecui66.actif' => array( 'type' => 'boolean' ),
 		),
 		array(
 			'cohorte' => false,

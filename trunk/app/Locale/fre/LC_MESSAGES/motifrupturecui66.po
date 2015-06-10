@@ -28,6 +28,9 @@ msgstr "Aucun motif de rupture enregistré"
 msgid "Motifrupturecui66.name"
 msgstr "Motif de la rupture"
 
+msgid "Motifrupturecui66.actif"
+msgstr "Actif"
+
 msgid "Motifrupturecui66::add"
 msgstr "Ajouter un motif de rupture"
 

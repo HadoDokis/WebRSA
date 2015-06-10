@@ -13,6 +13,32 @@
  * Formulaire E-mail
 /***********************************************************************************/
 	
+	// Ajoute une checkbox si la piece manquante stocké en base n'est plus active
+	$id_piecemanquante = isset( $this->request->data['Emailcui']['piecesmanquantes'] ) ? $this->request->data['Emailcui']['piecesmanquantes'] : null;
+	if ( $id_piecemanquante !== null ) {
+		foreach ( $id_piecemanquante as $id ){
+			if ( !isset( $options['Emailcui']['piecesmanquantes_actif'][$id] ) ){
+				$options['Emailcui']['piecesmanquantes_actif'][$id] = $options['Emailcui']['piecesmanquantes'][$id];
+			}
+		}
+	}
+	
+	// Ajoute une checkbox si le fichier lié stocké en base n'est plus actif
+	$id_piecemail = isset( $this->request->data['Emailcui']['pj'] ) ? $this->request->data['Emailcui']['pj'] : null;
+	if ( $id_piecemail !== null ) {
+		foreach ( $id_piecemail as $id ){
+			if ( !isset( $options['Emailcui']['pj_actif'][$id] ) ){
+				$options['Emailcui']['pj_actif'][$id] = $options['Emailcui']['pj'][$id];
+			}
+		}
+	}
+	
+	// Ajoute un textmailcui66_id au select si le textmailcui66_id stocké en base n'est plus actif
+	$id_textmailcui66_id = !empty( $this->request->data['Emailcui']['textmailcui66_id'] ) ? $this->request->data['Emailcui']['textmailcui66_id'] : null;
+	if ( $id_textmailcui66_id !== null && !isset( $options['Emailcui']['textmailcui66_id_actif'][$id_textmailcui66_id] ) ){
+		$options['Emailcui']['textmailcui66_id_actif'][$id_textmailcui66_id] = $options['Emailcui']['textmailcui66_id'][$id_textmailcui66_id];
+	}
+	
 	echo '<fieldset><legend id="Cui66Choixformulaire">' . __d('cuis66', 'Emailcui.entete_email') . '</legend>'
 		. $this->Default3->subform(
 			array(
@@ -28,14 +54,14 @@
 				'Emailcui.emailemployeur',
 				'Emailcui.insertiondate' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 				'Emailcui.commentaire',
-				'Emailcui.piecesmanquantes' => array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Piecemanquantecui66'] ),
-			) ,
+				'Emailcui.piecesmanquantes' => array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Emailcui']['piecesmanquantes_actif'] ),
+			),
 			array( 'options' => $options )
 		)
 		. '<fieldset><legend>' . __d( 'cuis66', 'Emailcui.chargermodel' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Emailcui.textmailcui66_id'
+				'Emailcui.textmailcui66_id' => array( 'options' => $options['Emailcui']['textmailcui66_id_actif'] )
 			),
 			array( 'options' => $options )
 		)
@@ -44,7 +70,7 @@
 			array(
 				'Emailcui.titre',
 				'Emailcui.message',
-				'Emailcui.pj' => array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Piecemailcui66'] ),
+				'Emailcui.pj' => array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Emailcui']['pj_actif'] ),
 			),
 			array( 'options' => $options )
 		) . '</fieldset>'

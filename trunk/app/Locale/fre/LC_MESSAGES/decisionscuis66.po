@@ -55,6 +55,9 @@ msgstr "Supprimer"
 msgid "/Decisionscuis66/filelink"
 msgstr "Fichiers liés"
 
+msgid "Decisionscuis66::filelink"
+msgstr "Fichiers liés à la décision du CUI"
+
 msgid "Fichiermodule.nombre"
 msgstr " "
 

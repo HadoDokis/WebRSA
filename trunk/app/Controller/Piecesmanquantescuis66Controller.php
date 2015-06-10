@@ -94,6 +94,9 @@
 				);
 				$this->assert( !empty( $this->request->data ), 'error404' );
 			}
+			else{
+				$this->request->data['Piecemanquantecui66']['actif'] = true;
+			}
 
 			$this->render( 'edit' );
 		}

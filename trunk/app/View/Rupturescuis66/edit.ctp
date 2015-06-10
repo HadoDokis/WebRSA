@@ -13,6 +13,12 @@
  * Formulaire Rupture
 /***********************************************************************************/
 	
+	// Ajoute un motif au select si le motif stocké en base n'est plus actif
+	$id_motif = !empty( $this->request->data['Rupturecui66']['motif'] ) ? $this->request->data['Rupturecui66']['motif'] : null;
+	if ( $id_motif !== null && !isset( $options['Rupturecui66']['motif_actif'][$id_motif] ) ){
+		$options['Rupturecui66']['motif_actif'][$id_motif] = $options['Rupturecui66']['motif'][$id_motif];
+	}
+	
 	echo '<fieldset><legend>' . __d('rupturescuis66', 'Rupturecui66.formulaire') . '</legend>'
 		. $this->Default3->subform(
 			array(
@@ -20,7 +26,7 @@
 				'Rupturecui66.cui66_id' => array( 'type' => 'hidden' ),
 				'Rupturecui66.observation',
 				'Rupturecui66.daterupture' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
-				'Rupturecui66.motif' => array( 'type' => 'select' ),
+				'Rupturecui66.motif' => array( 'type' => 'select', 'options' => $options['Rupturecui66']['motif_actif'] ),
 				'Rupturecui66.dateenregistrement' => array( 'view' => true, 'hidden' => true, 'type' => 'date' )
 			) ,
 			array( 'options' => $options )

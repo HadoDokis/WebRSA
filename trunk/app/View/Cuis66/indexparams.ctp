@@ -117,6 +117,19 @@
 					array( 'class' => 'even' )
 				);
 
+				echo $this->Xhtml->tableCells(
+					array(
+						h( 'Type de contrat lié au secteur (marchand/non marchand)' ),
+						$this->Xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'typescontratscuis66', 'action' => 'index' ),
+							$this->Permissions->check( 'typescontratscuis66', 'index' )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
+
 			?>
 		</tbody>
 	</table>

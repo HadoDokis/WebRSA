@@ -1,6 +1,6 @@
 <?php
 /**
- * Code source de la classe Motifssuspensioncuis66Controller.
+ * Code source de la classe Typescontratscuis66Controller.
  *
  * PHP 5.3
  *
@@ -10,20 +10,20 @@
     App::import( 'Behaviors', 'Occurences' );
 
 /**
- * La classe Motifssuspensioncuis66Controller ...
+ * La classe Typescontratscuis66Controller ...
  *
  * @package app.Controller
  */
-class Motifssuspensioncuis66Controller extends AppController
+class Typescontratscuis66Controller extends AppController
 {
-    public $name = 'Motifssuspensioncuis66';
-    public $uses = array( 'Motifsuspensioncui66', 'Option' );
+    public $name = 'Typescontratscuis66';
+    public $uses = array( 'Typecontratcui66', 'Option' );
     public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
     public $components = array( 'Default' );
 
     public $commeDroit = array(
-        'view' => 'Motifssuspensioncuis66:index',
-        'add' => 'Motifssuspensioncuis66:edit'
+        'view' => 'Typescontratscuis66:index',
+        'add' => 'Typescontratscuis66:edit'
     );
 
     /**
@@ -33,18 +33,18 @@ class Motifssuspensioncuis66Controller extends AppController
      */
 
     public function index() {
-        $this->Motifsuspensioncui66->Behaviors->attach( 'Occurences' );
+        $this->Typecontratcui66->Behaviors->attach( 'Occurences' );
   
-        $querydata = $this->Motifsuspensioncui66->qdOccurencesExists(
+        $querydata = $this->Typecontratcui66->qdOccurencesExists(
             array(
-                'fields' => $this->Motifsuspensioncui66->fields(),
-                'order' => array( 'Motifsuspensioncui66.name ASC' )
+                'fields' => $this->Typecontratcui66->fields(),
+                'order' => array( 'Typecontratcui66.name ASC' )
             )
         );
 
         $this->paginate = $querydata;
-        $motifssuspensioncuis66 = $this->paginate('Motifsuspensioncui66');
-        $this->set( compact('motifssuspensioncuis66'));
+        $typescontratscuis66 = $this->paginate('Typecontratcui66');
+        $this->set( compact('typescontratscuis66'));
 
     }
 
@@ -73,12 +73,12 @@ class Motifssuspensioncuis66Controller extends AppController
     protected function _add_edit( $id = null){
         // Retour à la liste en cas d'annulation
         if( isset( $this->request->data['Cancel'] ) ) {
-            $this->redirect( array( 'controller' => 'motifssuspensioncuis66', 'action' => 'index' ) );
+            $this->redirect( array( 'controller' => 'typescontratscuis66', 'action' => 'index' ) );
         }
 
         if( !empty( $this->request->data ) ) {
-            $this->Motifsuspensioncui66->create( $this->request->data );
-            $success = $this->Motifsuspensioncui66->save();
+            $this->Typecontratcui66->create( $this->request->data );
+            $success = $this->Typecontratcui66->save();
 
             $this->_setFlashResult( 'Save', $success );
             if( $success ) {
@@ -86,17 +86,17 @@ class Motifssuspensioncuis66Controller extends AppController
             }
         }
         else if( $this->action == 'edit' ) {
-            $this->request->data = $this->Motifsuspensioncui66->find(
+            $this->request->data = $this->Typecontratcui66->find(
                 'first',
                 array(
                     'contain' => false,
-                    'conditions' => array( 'Motifsuspensioncui66.id' => $id )
+                    'conditions' => array( 'Typecontratcui66.id' => $id )
                 )
             );
             $this->assert( !empty( $this->request->data ), 'error404' );
         }
 		else{
-			$this->request->data['Motifsuspensioncui66']['actif'] = true;
+			$this->request->data['Typecontratcui66']['actif'] = true;
 		}
 
         $this->render( 'add_edit' );

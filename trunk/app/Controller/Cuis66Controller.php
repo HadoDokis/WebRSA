@@ -163,8 +163,6 @@
 			
 			$messages = $this->Cui->Cui66->messages( $personne_id );
 			$addEnabled = $this->Cui->Cui66->addEnabled( $messages );
-			
-			$isRsaSocle = $this->Cui->isRsaSocle( $personne_id );
 
 			// Options
 			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
@@ -430,7 +428,7 @@
 			$result = $this->Cui->Cui66->find( 'first', array( 'fields' => 'cui_id', 'conditions' => array( 'Cui66.id' => $cui66_id ) ) );
 			$cui_id = $result['Cui66']['cui_id'];
 			$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
-			$this->redirect($this->referer());
+			$this->redirect( Router::url( $this->referer(), true ) );
 		}
 		
 		/**

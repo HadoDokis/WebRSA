@@ -8,6 +8,7 @@
 		$motifsrupturescuis66,
 		array(
 			'Motifrupturecui66.name',
+			'Motifrupturecui66.actif' => array( 'type' => 'boolean' ),
 		),
 		array(
 			'cohorte' => false,

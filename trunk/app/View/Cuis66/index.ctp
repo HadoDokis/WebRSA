@@ -7,11 +7,6 @@
 	echo $this->Default3->titleForLayout();
 
 	echo $this->element( 'ancien_dossier' );
-	
-	// On affiche une alerte si la personne n'est pas en rsa socle
-	if ( !$isRsaSocle ){
-		echo '<p class="error">' . __d( 'cuis', 'Personne.rsasocle' ) . '</p>';
-	}
 
 	echo $this->Default3->actions(
 		array(

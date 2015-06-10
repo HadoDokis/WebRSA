@@ -8,6 +8,7 @@
 		$motifsrefuscuis66,
 		array(
 			'Motifrefuscui66.name',
+			'Motifrefuscui66.actif' => array( 'type' => 'boolean' )
 		),
 		array(
 			'cohorte' => false,
