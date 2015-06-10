@@ -221,13 +221,15 @@
 								array(
 									$this->Xhtml->viewLink(
 										'Voir le dossier « '.$title.' »',
-										array( 'controller' => 'rendezvous', 'action' => 'index', $rdv['Rendezvous']['personne_id'] )
+										array( 'controller' => 'rendezvous', 'action' => 'index', $rdv['Rendezvous']['personne_id'] ),
+										$this->Permissions->check( 'rendezvous', 'index' ) && !Hash::get( $rdv, 'Rendezvous.horszone' )
 									),
 									array( 'class' => 'noprint' )
 								),
 								$this->Xhtml->printLink(
 									'Imprimer la notification',
-									array( 'controller' => 'rendezvous', 'action' => 'impression', $rdv['Rendezvous']['id'] )
+									array( 'controller' => 'rendezvous', 'action' => 'impression', $rdv['Rendezvous']['id'] ),
+									$this->Permissions->check( 'rendezvous', 'impression' ) && !Hash::get( $rdv, 'Rendezvous.horszone' )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),

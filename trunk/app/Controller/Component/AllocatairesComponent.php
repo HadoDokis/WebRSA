@@ -68,10 +68,12 @@
 		 * Ajout de conditions supplémentaires liées à l'utilisateur connecté.
 		 *
 		 * @param array $query
+		 * @param array $params
 		 * @return array
 		 */
-		public function addAllConditions( array $query ) {
-			$query = $this->Gestionzonesgeos->qdConditions( $query );
+		public function addAllConditions( array $query, array $params = array() ) {
+			$params += array( 'structurereferente_id' => false );
+			$query = $this->Gestionzonesgeos->completeQuery( $query, $params['structurereferente_id'] );
 			$query['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$query = $this->addQdFilters( $query );
 
@@ -86,13 +88,14 @@
 		 * @param integer $limit
 		 * @return array
 		 */
-		public function completeSearchQuery( array $query, $limit = true ) {
-			$query = $this->addAllConditions( $query );
+		public function completeSearchQuery( array $query, array $params = array() ) {
+			$params += array( 'limit' => true, 'structurereferente_id' => false );
+			$query = $this->addAllConditions( $query, $params );
 
 			// Champ supplémentaire pour un moteur de recherche simple
 			$query['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
 
-			if( $limit ) {
+			if( Hash::get( $params, 'limit' ) ) {
 				$query = Hash::merge(
 					array( 'limit' => 10 ),
 					$query

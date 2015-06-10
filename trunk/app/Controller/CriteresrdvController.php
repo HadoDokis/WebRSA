@@ -23,9 +23,9 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
-			'Workflowscers93',
-			'InsertionsAllocataires'
+			'Workflowscers93'
 		);
 
 		/**
@@ -73,27 +73,13 @@
 		 * @return void
 		 */
 		public function index() {
-			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
-			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
-			$conditionStructure = array();
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
-				if( !is_null( $structurereferente_id ) ) {
-					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
-				}
-			}
-
 			if( !empty( $this->request->data ) ) {
-				$querydata = $this->Critererdv->search(
-					(array)$this->Session->read( 'Auth.Zonegeographique' ),
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data,
-					$conditionStructure //FIXME
-				);
+				$querydata = $this->Critererdv->search( $this->request->data );
 
 				$querydata['limit'] = 10;
-				$querydata = $this->_qdAddFilters( $querydata );
+				$querydata = $this->Gestionzonesgeos->completeQuery( $querydata, 'Rendezvous.structurereferente_id' );
 				$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$querydata = $this->_qdAddFilters( $querydata );
 
 				$this->paginate = array( 'Rendezvous' => $querydata );
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
@@ -120,28 +106,12 @@
 		 * @return void
 		 */
 		public function exportcsv() {
+			$querydata = $this->Critererdv->search( Hash::expand( $this->request->params['named'], '__' ) );
 
-			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
-			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
-			$conditionStructure = array();
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
-				if( !is_null( $structurereferente_id ) ) {
-					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
-				}
-			}
-
-			$datas = Hash::expand( $this->request->params['named'], '__' );
-			$querydata = $this->Critererdv->search(
-				(array)$this->Session->read( 'Auth.Zonegeographique' ),
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				$datas,
-				$conditionStructure
-			);
-
-			unset( $querydata['limit'] ); //FIXME
-			$querydata = $this->_qdAddFilters( $querydata );
+			unset( $querydata['limit'] );
+			$querydata = $this->Gestionzonesgeos->completeQuery( $querydata, 'Rendezvous.structurereferente_id' );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$querydata = $this->_qdAddFilters( $querydata );
 
 			$rdvs = $this->Rendezvous->find( 'all', $querydata );
 

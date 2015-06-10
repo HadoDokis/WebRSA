@@ -476,7 +476,7 @@
 					'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Ficheprescription93"."actionfp93" ELSE "Actionfp93"."name" END ) AS "Actionfp93__name"',
 				);
 
-				$query = $this->Allocataires->completeSearchQuery( $query );
+				$query = $this->Allocataires->completeSearchQuery( $query, array( 'structurereferente_id' => 'Referent.structurereferente_id' ) );
 
 				// Optimisation: on attaque fichesprescriptions93 en premier lieu
 				if( Hash::get( $this->request->data, 'Search.Ficheprescription93.exists' ) ) {
@@ -706,7 +706,7 @@
 				'Ficheprescription93.date_bilan_final',
 			);
 
-			$query = $this->Allocataires->completeSearchQuery( $query, false );
+			$query = $this->Allocataires->completeSearchQuery( $query, array( 'limit' => false, 'structurereferente_id' => 'Referent.structurereferente_id' ) );
 
 			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
 

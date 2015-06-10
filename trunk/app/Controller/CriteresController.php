@@ -135,7 +135,7 @@
 					$reorientationEp
 				);
 
-				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
+				$paginate = $this->Gestionzonesgeos->completeQuery( $paginate, 'Orientstruct.structurereferente_id' );
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$paginate = $this->_qdAddFilters( $paginate );
 
@@ -170,7 +170,7 @@
 				$reorientationEp
 			);
 
-			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
+			$querydata = $this->Gestionzonesgeos->completeQuery( $querydata, 'Orientstruct.structurereferente_id' );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$querydata = $this->_qdAddFilters( $querydata );
 

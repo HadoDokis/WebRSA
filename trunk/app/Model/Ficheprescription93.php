@@ -499,6 +499,18 @@
 				}
 			}
 
+			// 7. Référent (et sa structure liée) ayant réalisé la fiche
+			$paths = array(
+				'Ficheprescription93.structurereferente_id' => 'Referent.structurereferente_id',
+				'Ficheprescription93.referent_id' => 'Ficheprescription93.referent_id'
+			);
+			foreach( $paths as $searchPath => $realPath ) {
+				$value = suffix( Hash::get( $search, $searchPath ) );
+				if( !empty( $value ) ) {
+					$query['conditions'][] = array( $realPath => $value );
+				}
+			}
+
 			return $query;
 		}
 

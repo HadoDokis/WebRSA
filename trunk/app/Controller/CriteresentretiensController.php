@@ -41,9 +41,6 @@
 		public function index() {
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			if( !empty( $this->request->data ) ) {
 
 				if( !empty( $this->request->data['Entretien']['referent_id'] )) {
@@ -51,15 +48,11 @@
 					$this->request->data['Entretien']['referent_id'] = $referentId;
 				}
 
-				$paginate = $this->Critereentretien->search(
-					$mesCodesInsee,
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data,
-					false
-				);
+				$paginate = $this->Critereentretien->search( $this->request->data );
 
-				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate = $this->Gestionzonesgeos->completeQuery( $paginate, 'Entretien.structurereferente_id' );
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$paginate = $this->_qdAddFilters( $paginate );
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
@@ -80,19 +73,12 @@
 		 * Export du tableau en CSV
 		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$querydata = $this->Critereentretien->search(
-				$mesCodesInsee,
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Hash::expand( $this->request->params['named'], '__' ),
-				false
-			);
+			$querydata = $this->Critereentretien->search( Hash::expand( $this->request->params['named'], '__' ) );
 
 			unset( $querydata['limit'] );
-			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata = $this->Gestionzonesgeos->completeQuery( $querydata, 'Entretien.structurereferente_id' );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$querydata = $this->_qdAddFilters( $querydata );
 
 			$entretiens = $this->Entretien->find( 'all', $querydata );
 

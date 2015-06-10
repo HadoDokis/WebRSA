@@ -26,20 +26,14 @@
 		*
 		*/
 
-		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresentretiens, $lockedDossiers  ) {
+		public function search( $criteresentretiens  ) {
 			/// Conditions de base
 			$conditions = array( );
 
 			/// Critères zones géographiques
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			$conditions = $this->conditionsAdresse( $conditions, $criteresentretiens, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criteresentretiens );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresentretiens );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresentretiens );
-
-			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-			}
 
 			/// Critères
 			$numeroapre = Set::extract( $criteresentretiens, 'Apre.numeroapre' );
@@ -68,9 +62,9 @@
 			if ( isset($criteresentretiens['Entretien']['referent_id']) && !empty($criteresentretiens['Entretien']['referent_id']) ) {
 				$conditions[] = array('Entretien.referent_id'=>$criteresentretiens['Entretien']['referent_id']);
 			}
-			
+
 			$conditions = $this->conditionsDates( $conditions, $criteresentretiens, 'Entretien.dateentretien' );
-			
+
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 

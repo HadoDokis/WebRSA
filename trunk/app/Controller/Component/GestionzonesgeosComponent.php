@@ -30,7 +30,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Session' );
+		public $components = array( 'Session', 'Workflowscers93' );
 
 		/**
 		 * Initialisation: sauvegarde du contrôleur dans un attribut.
@@ -156,14 +156,18 @@
 		 * Lorsque l'on utilise les cantons, la restriction se fera à partir de
 		 * ceux-ci.
 		 *
+		 * Si des conditions alternatives sont passées en paramètre, la restriction
+		 * se fera sur les conditions générées OU sur les conditions alternatives.
+		 *
 		 * @see Auth.User.filtre_zone_geo (dans la session)
 		 * @see Auth.Zonegeographique (dans la session)
 		 * @see CG.cantons (Configure)
 		 *
 		 * @param array $querydata
+		 * @param array $orConditions Les conditions alternatives
 		 * @return array
 		 */
-		public function qdConditions( array $querydata ) {
+		public function qdConditions( array $querydata, array $orConditions = array() ) {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
@@ -172,15 +176,74 @@
 			if( $filtre_zone_geo ) {
 				// Si on utilise la table des cantons plutôt que la table zonesgeographiques
 				if( Configure::read( 'CG.cantons' ) ) {
-					$querydata['conditions'][] = ClassRegistry::init( 'Canton' )->queryConditionsByZonesgeographiques( array_keys( $mesCodesInsee ) );
+					$conditions = ClassRegistry::init( 'Canton' )->queryConditionsByZonesgeographiques( array_keys( $mesCodesInsee ) );
 				}
 				else {
 					$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
-					$querydata['conditions'][] = '( Adresse.numcom IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) )';
+					$conditions = '( Adresse.numcom IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) )';
 				}
+
+				if( !empty( $orConditions ) ) {
+					$conditions = array(
+						'OR' => array(
+							$conditions,
+							$orConditions
+						)
+					);
+				}
+
+				$querydata['conditions'][] = $conditions;
 			}
 
 			return $querydata;
+		}
+
+		/**
+		 * Ajoute des conditions à un querydata suivant les restrictions concernant
+		 * les zones géographiques de l'utilisateur stockées dans la session.
+		 *
+		 * Lorsque le paramètre $champStructurereferente est fourni, que le département
+		 * configuré est le 93 et que l'utilisateur est lié à une structure référente,
+		 * alors les conditions ajoutés sont soit la restriction sur les zones géographiques,
+		 * soit la restriction sur le SR de l'utilisateur connecté et le champ passé en paramètre.
+		 *
+		 * Dans ce cas, un champ virtuel est ajouté au querydata (<Model>.horszone)
+		 * qui lorsqu'il est à vrai signifie que l'enregistrement n'est pas sur les
+		 * zones géographiques de l'utilisateur.
+		 *
+		 * @param array $query
+		 * @param string $champStructurereferente
+		 * @return array
+		 */
+		public function completeQuery( array $query, $champStructurereferente = null ) {
+			$orConditions = array();
+
+			if( !empty( $champStructurereferente ) && Configure::read( 'Cg.departement' ) == 93 ) {
+				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+				if( !empty( $structurereferente_id ) ) {
+					list( $modelName, $fieldName ) = model_field( $champStructurereferente );
+					$Model = ClassRegistry::init( $modelName );
+					$Dbo = $Model->getDataSource();
+					$conditions = (array)Hash::get( $this->qdConditions( array() ), 'conditions' );
+					if( empty( $conditions ) ) {
+						$conditions = array( '1 = 1' );
+					}
+					$conditions = $Dbo->conditions(
+						array(
+							'NOT' => $conditions,
+							array( $champStructurereferente => $structurereferente_id )
+						),
+						true,
+						false,
+						$Model
+					);
+
+					$query['fields']["{$modelName}.horszone"] = "( {$conditions} ) AS \"{$modelName}__horszone\"";
+					$orConditions = array( $champStructurereferente => $structurereferente_id );
+				}
+			}
+
+			return $this->qdConditions( $query, $orConditions );
 		}
 
 		/**

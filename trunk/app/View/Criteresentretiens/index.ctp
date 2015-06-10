@@ -167,7 +167,7 @@
                                 $this->Xhtml->viewLink(
                                     'Voir le contrat',
                                     array( 'controller' => 'entretiens', 'action' => 'index', $entretien['Personne']['id'] ),
-                                    $this->Permissions->check( 'entretiens', 'index' )
+                                    $this->Permissions->check( 'entretiens', 'index' ) && !Hash::get( $entretien, 'Entretien.horszone' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
