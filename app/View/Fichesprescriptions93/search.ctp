@@ -89,11 +89,11 @@
 				'Actionfp93.name',
 				'Dossier.locked' => array( 'type' => 'boolean' ),
 				"/Fichesprescriptions93/edit/#Ficheprescription93.id#" => array(
-					'disabled' => "( !empty( '#Referent.horszone#' ) || '#Ficheprescription93.id#' == '' || !'".$this->Permissions->check( 'Fichesprescriptions93', 'edit' )."' )",
+					'disabled' => "( '#Referent.horszone#' == true || '#Ficheprescription93.id#' == '' || !'".$this->Permissions->check( 'Fichesprescriptions93', 'edit' )."' )",
 					'class' => 'external'
 				),
 				"/Fichesprescriptions93/index/#Personne.id#" => array(
-					'disabled' => "( !empty( '#Referent.horszone#' ) || !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )",
+					'disabled' => "( '#Referent.horszone#' == true || !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )",
 					'class' => 'external'
 				),
 			),
