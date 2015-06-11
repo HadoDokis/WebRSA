@@ -154,6 +154,16 @@
 		 * @medium
 		 */
 		public function testTestSearchConditionsString() {
+			// 1. Sans réellement de condition supplémentaire
+			$result = $this->Allocataire->testSearchConditions( '1 = 1' );
+			unset( $result['sql'] );
+			$expected = array (
+				'success' => true,
+				'message' => null,
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Avec une condition devant retourner un message d'erreur
 			$result = $this->Allocataire->testSearchConditions( 'Foo' );
 			unset( $result['sql'] );
 			$expected = array (
@@ -162,6 +172,7 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
+			// 3. Avec une condition qui doit passer
 			$result = $this->Allocataire->testSearchConditions( 'Dossier.id = 6' );
 			unset( $result['sql'] );
 			$expected = array (

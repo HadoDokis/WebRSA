@@ -205,6 +205,8 @@
 		/**
 		 * Permet de test l'ajout de conditions supplémentaires à la requête de
 		 * base.
+		 * On part du principe que l'attribut forceVirtualFields du modèle Personne
+		 * (sur lequel on fait le find) est (passé) à true.
 		 *
 		 * @param string|array $conditions
 		 * @return array
@@ -214,6 +216,8 @@
 			$query['conditions'][] = $conditions;
 
 			$Personne = ClassRegistry::init( 'Personne' );
+			$Personne->forceVirtualFields = true;
+
 			try {
 				$Personne->find( 'first', $query );
 				$return = array(

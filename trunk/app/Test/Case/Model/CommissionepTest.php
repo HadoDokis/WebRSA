@@ -160,7 +160,8 @@
 				'Structurereferente' => 'LEFT',
 				'Dsp' => 'LEFT OUTER',
 				'DspRev' => 'LEFT OUTER',
-				'Radiationpe' => 'LEFT OUTER'
+				'Radiationpe' => 'LEFT OUTER',
+				'Dossiercaf' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

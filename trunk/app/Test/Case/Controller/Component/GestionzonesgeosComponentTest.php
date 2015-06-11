@@ -98,7 +98,7 @@
 			$result = $this->Controller->Gestionzonesgeos->completeQuery( $query, 'Contratinsertion.structurereferente_id' );
 			$expected = array(
 				'fields' => array(
-					'( NOT (( "Adresse"."numcom" IN ( \'93071\' ) )) AND "Contratinsertion"."structurereferente_id" = 69 ) AS "Contratinsertion__horszone"'
+					'Contratinsertion.horszone' => '( NOT (( "Adresse"."numcom" IN ( \'93071\' ) )) AND "Contratinsertion"."structurereferente_id" = 69 ) AS "Contratinsertion__horszone"'
 				),
 				'conditions' => array(
 					array(
@@ -129,7 +129,7 @@
 			$result = $this->Controller->Gestionzonesgeos->completeQuery( $query, 'Contratinsertion.structurereferente_id' );
 			$expected = array(
 				'fields' => array(
-					'( NOT (1 = 1) AND "Contratinsertion"."structurereferente_id" = 69 ) AS "Contratinsertion__horszone"'
+					'Contratinsertion.horszone' => '( NOT (1 = 1) AND "Contratinsertion"."structurereferente_id" = 69 ) AS "Contratinsertion__horszone"'
 				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
