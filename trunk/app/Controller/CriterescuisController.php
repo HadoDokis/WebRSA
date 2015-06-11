@@ -86,7 +86,7 @@
 			$modelCuiDpt = 'Cui' . $cgDepartement;
 			$options = array();
 			if( isset( $this->Cui->{$modelCuiDpt} ) ) {
-				$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->enums() );
+				$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->options() );
 				
 				// Liste de modeles potentiel pour un CG donné
 				$modelPotentiel = array(
@@ -99,7 +99,7 @@
 				
 				foreach ( $modelPotentiel as $modelName ){
 					if ( isset( $this->Cui->{$modelCuiDpt}->{$modelName} ) ){
-						$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->{$modelName}->enums() );
+						$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->{$modelName}->options() );
 					}
 				}
 			}
@@ -107,7 +107,7 @@
 			return Hash::merge(
 				$options,
 				$this->Allocataires->options(),
-				$this->Cui->enums(),
+				$this->Cui->options(),
 				$this->Cui->Emailcui->options()
 			);
 		}
