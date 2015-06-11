@@ -17,7 +17,7 @@
 	$id_piecemanquante = isset( $this->request->data['Emailcui']['piecesmanquantes'] ) ? $this->request->data['Emailcui']['piecesmanquantes'] : null;
 	if ( $id_piecemanquante !== null ) {
 		foreach ( $id_piecemanquante as $id ){
-			if ( !isset( $options['Emailcui']['piecesmanquantes_actif'][$id] ) ){
+			if ( $id !== '' && !isset( $options['Emailcui']['piecesmanquantes_actif'][$id] ) ){
 				$options['Emailcui']['piecesmanquantes_actif'][$id] = $options['Emailcui']['piecesmanquantes'][$id];
 			}
 		}
@@ -27,7 +27,7 @@
 	$id_piecemail = isset( $this->request->data['Emailcui']['pj'] ) ? $this->request->data['Emailcui']['pj'] : null;
 	if ( $id_piecemail !== null ) {
 		foreach ( $id_piecemail as $id ){
-			if ( !isset( $options['Emailcui']['pj_actif'][$id] ) ){
+			if ( $id !== '' && !isset( $options['Emailcui']['pj_actif'][$id] ) ){
 				$options['Emailcui']['pj_actif'][$id] = $options['Emailcui']['pj'][$id];
 			}
 		}

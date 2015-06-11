@@ -647,7 +647,7 @@
 					$piecesmanquantes = explode( '_', $data);
 					
 					foreach ($piecesmanquantes as $num_piece => $id_piece){
-						$piecesmanquantes[$num_piece] = isset($options['Piecemanquantecui66'][$id_piece]) ? $options['Piecemanquantecui66'][$id_piece] : '';
+						$piecesmanquantes[$num_piece] = isset($options['Emailcui']['piecesmanquantes'][$id_piece]) ? $options['Emailcui']['piecesmanquantes'][$id_piece] : '';
 					}
 					$text = str_replace( '#Emailcui.piecesmanquantes#', implode("\n", $piecesmanquantes), $text );
 				}
