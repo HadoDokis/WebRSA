@@ -371,7 +371,7 @@
 								</tr>
 							</tbody>
 						</table>';
-debug( self::_normalizeXhtml( $expected ) );
+
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
