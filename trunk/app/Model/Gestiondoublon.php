@@ -245,6 +245,111 @@
 
 			return $query;
 		}
+		
+		/**
+		 * Permet d'obtenir la liste des ids de deux foyers sous la forme :
+		 * array( 
+		 *		'foyerAGarder' => array( '20150', '20151' ),
+		 *		'foyerASupprimer' => array( '20225', '20226' ),
+		 * )
+		 * 
+		 * @param integer $foyerAGarderId
+		 * @param integer $foyerASupprimerId
+		 * @return array
+		 */
+		protected function _listPersonneIdPourFusion( $foyerAGarderId, $foyerASupprimerId ){
+			$Foyer = ClassRegistry::init( 'Foyer' );
+			
+			foreach ( array($foyerAGarderId, $foyerASupprimerId) as $key => $id ){
+				$key = $key === 0 ? 'personneAGarder' : 'personneASupprimer';
+				$query = array(
+					'fields' => array(
+						'Personne.id'
+					),
+					'contain' => false,
+					'joins' => array(
+						$Foyer->join( 'Personne', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'Foyer.id' => $id
+					)
+				);
+				$results = $Foyer->find( 'all', $query );
+
+				foreach ( $results as $value ){
+					$personne_idList[$key][] = $value['Personne']['id'];
+				}
+			}
+			
+			return $personne_idList;
+		}
+		
+		/**
+		 * Permet d'obtenir la liste des correspondances des personne_id entre un foyer à garder et celui à supprimer.
+		 * Renvoi un array de cette structure :
+		 * array(
+		 *		0 => array(
+		 *			'personneAGarder' => 25556,
+		 *			'personneASupprimer' => 27751
+		 *		)
+		 * )
+		 * 
+		 * @param integer $foyerAGarderId
+		 * @param integer $foyerASupprimerId
+		 * @return array
+		 */
+		protected function _correspondancesId( $foyerAGarderId, $foyerASupprimerId ){
+			$Foyer = ClassRegistry::init( 'Foyer' );
+			$personne_idList = $this->_listPersonneIdPourFusion( $foyerAGarderId, $foyerASupprimerId );
+			$correspondanceIds = array();
+
+			foreach( $personne_idList['personneAGarder'] as $personneAGarder_id ){
+				$aGarderQuery = array(
+					'fields' => array(
+						"SUBSTRING( TRIM( BOTH ' ' FROM \"Personne\".\"nir\" ) FROM 1 FOR 13 ) AS \"Personne__formatednir\"",
+						"UPPER(Personne.nom) AS \"Personne__uppernom\"",
+						"UPPER(Personne.prenom) AS \"Personne__upperprenom\"",
+						"Personne.dtnai"
+					),
+					'contain' => false,
+					'conditions' => array( 'Personne.id' => $personneAGarder_id )
+				);
+				$aGarder = $Foyer->Personne->find( 'first', $aGarderQuery );
+
+				foreach( $personne_idList['personneASupprimer'] as $personneASupprimer_id ){
+					$aSupprimerQuery = array(
+						'fields' => 'Personne.id',
+						'contain' => false,
+						'conditions' => array( 
+							'Personne.id' => $personneAGarder_id,
+							"Personne.dtnai" => "{$aGarder['Personne']['dtnai']}",
+							'OR' => array(
+								array(
+									"nir_correct13(Personne.nir)",
+									"nir_correct13('{$aGarder['Personne']['formatednir']}')",
+									"SUBSTRING( TRIM( BOTH ' ' FROM Personne.nir ) FROM 1 FOR 13 )" => "{$aGarder['Personne']['formatednir']}",
+								),
+								array(
+									"UPPER(Personne.nom)" => "{$aGarder['Personne']['uppernom']}",
+									"UPPER(Personne.prenom)" => "{$aGarder['Personne']['upperprenom']}",
+								)
+							)
+						)
+					);
+					$result = $Foyer->Personne->find( 'first', $aSupprimerQuery );
+
+					if ( !empty($result) ){
+						$correspondanceIds[] = array(
+							'personneAGarder' => $personneAGarder_id,
+							'personneASupprimer' => $personneASupprimer_id
+						);
+						break;
+					}
+				}
+			}
+			
+			return $correspondanceIds;
+		}
 
 		/**
 		 * Fusion de deux foyers et des enregistrements liés.
@@ -264,7 +369,18 @@
 
 			$success = true;
 			$Foyer->begin();
-
+			
+			// Spécial dossier pcg
+			if ( Configure::read( 'Cg.departement') == 66 && isset( $data['Dossierpcg66']['id'] ) && !empty( $data['Dossierpcg66']['id'] ) ){
+				$correspondanceIds = $this->_correspondancesId( $foyerAGarderId, $foyerASupprimerId );
+				
+				foreach( $correspondanceIds as $correspondance ){
+					$dataPersonnepcg66['Personnepcg66.personne_id'] = $correspondance['personneAGarder'];
+					$condition['Personnepcg66.personne_id'] = $correspondance['personneASupprimer'];
+					$Foyer->Personne->Personnepcg66->updateAll( $dataPersonnepcg66, $condition );
+				}
+			}
+			
 			foreach( $data as $modelName => $values ) {
 				if( !in_array( $modelName, array( 'Foyer', 'Save' ) ) ) {
 					$ids = Hash::extract( $results, "{n}.{$modelName}.{n}.id" );
@@ -285,7 +401,7 @@
 					}
 				}
 			}
-
+			
 			$dossier = $Foyer->find(
 				'first',
 				array(
