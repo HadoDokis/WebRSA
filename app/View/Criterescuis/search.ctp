@@ -94,7 +94,7 @@
 			. $this->Default3->subform(
 				array(
 					'Search.Cui.secteurmarchand' => array( 'empty' => true, 'label' => __d( 'cuis', 'Cui.secteurmarchand' ) ),
-					'Search.Cui66.typecontrat' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Cui66.typecontrat' ) ),	
+					'Search.Cui66.typecontrat' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Cui66.typecontrat' ), 'options' => $options['Cui66']['typecontrat_actif'] ),	
 				),
 				array( 'options' => array( 'Search' => $options ) )
 			) . '</fieldset>'
