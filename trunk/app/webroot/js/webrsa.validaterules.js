@@ -307,7 +307,6 @@ var Validation = {
 		value = value.replace(/ /g, '').replace(/\./g, '');
 		
 		var test = Array.isArray(value.match(/^(((0)[1-9](\s?\d{2}){4})|(1[0-9]{1,3})|(11[0-9]{4})|(3[0-9]{3}))$/));
-		console.log([value, test]);
 		return test;
 	},
 	

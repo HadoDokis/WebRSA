@@ -449,11 +449,11 @@
 	 * @returns {void}
 	 */
 	function setDureeHebdo( input ){
-		var dureeEnHeure = isNaN( parseInt( $F('heures' +  input.id ) ) ) ? 0 : parseInt( $F('heures' +  input.id ) );
-		var minutesRestante = isNaN( parseInt( $F('minutes' +  input.id ) ) ) ? 0 : parseInt( $F('minutes' +  input.id ) );
+		var dureeEnHeure = isNaN( parseInt( $F('heures' +  input.id ), 10 ) ) ? 0 : parseInt( $F('heures' +  input.id, 10 ) );
+		var minutesRestante = isNaN( parseInt( $F('minutes' +  input.id ), 10 ) ) ? 0 : parseInt( $F('minutes' +  input.id, 10 ) );
 		$( input.id ).value = Math.floor( dureeEnHeure * 60 + minutesRestante );
 		
-		var minutes = isNaN( parseInt( $F( input.id ) ) ) ? 0 : parseInt( $F( input.id ) );
+		var minutes = isNaN( parseInt( $F( input.id ), 10 ) ) ? 0 : parseInt( $F( input.id ), 10 );
 		dureeEnHeure = Math.floor( minutes / 60 );
 		minutesRestante = Math.floor( minutes - (dureeEnHeure * 60) );
 		$('heures' +  input.id ).value = dureeEnHeure === 0 ? '' : dureeEnHeure;
@@ -471,7 +471,7 @@
 	 */
 	$$('input.heures_minutes').each(function( input ){
 		input.insert({after: '<input type="text" id="heures' + input.id + '" class="miniInput" /> H <input type="text" id="minutes' + input.id + '" class="miniInput" />'});
-		var minutes = isNaN(parseInt($F(input.id))) ? 0 : parseInt($F(input.id));
+		var minutes = isNaN(parseInt($F(input.id)), 10) ? 0 : parseInt($F(input.id), 10);
 		var dureeEnHeure = Math.floor( minutes / 60 );
 		var minutesRestante = Math.floor( minutes - (dureeEnHeure * 60) );
 		$('heures' + input.id).value = dureeEnHeure === 0 ? '' : dureeEnHeure;
@@ -559,35 +559,34 @@
 	 */
 	function setDateCloture(){
 		'use strict';
-		var duree = parseInt( $F('Cui66DatebutoirSelect') ),
-			jour = parseInt( $F('CuiFaitleDay') ),
-			mois = parseInt( $F('CuiFaitleMonth') ),
-			annee = parseInt( $F('CuiFaitleYear') ),
+		var duree = parseInt( $F('Cui66DatebutoirSelect'), 10 ),
+			jour = parseInt( $F('CuiFaitleDay'), 10 ),
+			mois = parseInt( $F('CuiFaitleMonth'), 10 ),
+			annee = parseInt( $F('CuiFaitleYear'), 10 ),
 			dateButoir,
-			memJour,
-			memMois;
-			
+			dateTest;
+	
 		if ( isNaN(duree*2) ){
 			return false;
 		}
 		
-		dateButoir = new Date(annee, mois + duree, jour -1);
+		dateButoir = new Date(annee, mois + duree - 1, jour -1);
 		
 		$('Cui66DatebutoirDay').select('option').each(function(option){
 			option.selected = false;
-			if ( parseInt(option.value) === dateButoir.getDate() ){
+			if ( parseInt(option.value, 10) === dateButoir.getDate() ){
 				option.selected = true;
 			}
 		});
 		$('Cui66DatebutoirMonth').select('option').each(function(option){
 			option.selected = false;
-			if ( parseInt(option.value) === dateButoir.getMonth() ){
+			if ( parseInt(option.value, 10) === dateButoir.getMonth() + 1 ){
 				option.selected = true;
 			}
 		});
 		$('Cui66DatebutoirYear').select('option').each(function(option){
 			option.selected = false;
-			if ( parseInt(option.value) === dateButoir.getFullYear() ){
+			if ( parseInt(option.value, 10) === dateButoir.getFullYear() ){
 				option.selected = true;
 			}
 		});
