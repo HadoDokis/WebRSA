@@ -273,8 +273,10 @@
 				dependantSelect( '".$this->domId( "{$params['prefix']}PersonneReferent.referent_id" )."', '".$this->domId( "{$params['prefix']}PersonneReferent.structurereferente_id" )."' );
 			} );";
 
-			$content = $this->Xform->input( "{$params['prefix']}PersonneReferent.structurereferente_id", array( 'label' => __d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.structurereferente_id' ), 'empty' => true ) );
-			$content .= $this->Xform->input( "{$params['prefix']}PersonneReferent.referent_id", array( 'label' => __d( 'search_plugin', 'Referentparcours.nom_complet' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.referent_id' ), 'empty' => true ) );
+			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
+			$content = $this->Xform->input( "{$params['prefix']}PersonneReferent.structurereferente_id", array( 'label' => __d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.structurereferente_id' ), 'empty' => true ) );
+			$content .= $this->Xform->input( "{$params['prefix']}PersonneReferent.referent_id", array( 'label' => __d( $domain_search_plugin, 'Referentparcours.nom_complet' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.referent_id' ), 'empty' => true ) );
 			$content .= $this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) );
 
 			return $this->_fieldset( 'Search.Referentparcours', $content, $params );

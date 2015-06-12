@@ -54,6 +54,7 @@
 <?php if( isset( $radiespe ) ):?>
 <?php
 	if ( is_array( $radiespe ) && count( $radiespe ) > 0 ) {
+		$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 
 		echo $this->Default2->index(
 			$radiespe,
@@ -79,8 +80,8 @@
 				'domain' => 'nonrespectsanctionep93',
 				'labelcohorte' => 'Enregistrer',
 				'tooltip' => array(
-					'Structurereferenteparcours.lib_struc' => array( 'type' => 'text', 'domain' => 'search_plugin', 'model' => 'Structurereferente' ),
-					'Referentparcours.nom_complet' => array( 'type' => 'text', 'domain' => 'search_plugin', 'model' => 'Referent' )
+					'Structurereferenteparcours.lib_struc' => array( 'type' => 'text', 'domain' => $domain_search_plugin, 'model' => 'Structurereferente' ),
+					'Referentparcours.nom_complet' => array( 'type' => 'text', 'domain' => $domain_search_plugin, 'model' => 'Referent' )
 				)
 			)
 		);

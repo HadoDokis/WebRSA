@@ -69,15 +69,15 @@
 ?>
 <!-- Bloc 1  -->
 <fieldset>
-    <legend>Service référent désigné par le Département</legend>
+    <legend>Structure établissant le CER</legend>
     <table class="wide noborder cers93">
         <tr>
             <td class="noborder">
-                <?php echo $this->Xform->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.structurereferente_id' ), 'type' => 'select', 'options' => $options['Contratinsertion']['structurereferente_id'], /*'selected' => $struct_id,*/ 'empty' => true, 'required' => true ) );?>
+                <?php echo $this->Xform->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'cers93', 'Contratinsertion.structurereferente_id' ), 'type' => 'select', 'options' => $options['Contratinsertion']['structurereferente_id'], /*'selected' => $struct_id,*/ 'empty' => true, 'required' => true ) );?>
                 <?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => array( 'action' => 'ajaxstruct' ) ) ); ?>
             </td>
             <td class="noborder">
-                <?php echo $this->Xform->input( 'Contratinsertion.referent_id', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.referent_id' ), 'type' => 'select', 'options' => $options['Contratinsertion']['referent_id'], 'empty' => true, 'selected' => ( isset( $this->request->data['Contratinsertion']['structurereferente_id'] ) && isset( $this->request->data['Contratinsertion']['referent_id'] ) ) ? ( $this->request->data['Contratinsertion']['structurereferente_id'].'_'.suffix( $this->request->data['Contratinsertion']['referent_id'] ) ) : null ) );?>
+                <?php echo $this->Xform->input( 'Contratinsertion.referent_id', array( 'label' => __d( 'cers93', 'Contratinsertion.referent_id' ), 'type' => 'select', 'options' => $options['Contratinsertion']['referent_id'], 'empty' => true, 'selected' => ( isset( $this->request->data['Contratinsertion']['structurereferente_id'] ) && isset( $this->request->data['Contratinsertion']['referent_id'] ) ) ? ( $this->request->data['Contratinsertion']['structurereferente_id'].'_'.suffix( $this->request->data['Contratinsertion']['referent_id'] ) ) : null ) );?>
                 <?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => array( 'action' => 'ajaxref' ) ) ); ?>
             </td>
         </tr>
@@ -739,7 +739,7 @@
 
 
 	//Bloc 9 : Partie réservée au professionnel en charge du contrat
-	echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $this->request->data, 'Cer93.structureutilisateur' ) );
+	echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $this->request->data, 'Cer93.structureutilisateur' ), 'cers93' );
 	echo $this->Xform->fieldValue( 'Cer93.nomutilisateur', Set::classicExtract( $this->request->data, 'Cer93.nomutilisateur' ) );
 
 	echo $this->Xform->input( 'Cer93.pourlecomptede', array( 'domain' => 'cer93', 'type' => 'text' ) );

@@ -93,8 +93,10 @@
 	<?php if( empty( $cohorte ) ):?>
 		<p class="notice"><?php echo 'Aucun allocataire ne correspond à vos critères de recherche.';?>
 	<?php else: ?>
-		<?php /*echo $this->Form->create( 'Nonorientationproep', array() );*/
-		echo $this->Form->create();?>
+		<?php
+			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+			echo $this->Form->create();
+		?>
 		<?php echo $pagination;?>
 		<table id="searchResults" class="tooltips">
 			<thead>
@@ -127,11 +129,11 @@
 						$innerTable = '<table id="innerTablesearchResults'.$key.'" class="innerTable">
 							<tbody>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 									<td>'.Hash::get( $orientstruct, 'Structurereferenteparcours.lib_struc' ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $orientstruct, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 							</tbody>

@@ -24,6 +24,8 @@
 		<?php echo $pagination;?>
 		<?php echo $this->Form->create( 'Cohortepdo', array() );?>
 		<?php
+			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
 			echo '<div>';
 			echo $this->Form->input( 'Cohortepdo.numcom', array( 'type' => 'hidden', 'id' => 'CohortepdoNumcomptt2' ) );
 			echo $this->Form->input( 'Cohortepdo.matricule', array( 'type' => 'hidden', 'id' => 'CohortepdoMatricule2' ) );
@@ -76,11 +78,11 @@
 									<td>'.h( value( $etatdosrsa, Set::classicExtract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 									<td>'.Hash::get( $pdo, 'Structurereferenteparcours.lib_struc' ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $pdo, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 							</tbody>

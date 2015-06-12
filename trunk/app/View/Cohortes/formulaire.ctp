@@ -63,6 +63,8 @@
 		<p class="notice">Aucune demande dans la cohorte.</p>
 	<?php else:?>
 		<?php
+			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
 			$formatPagination = 'Nombre de pages: %s - Nombre de résultats: %s.';
 			if( isset( $this->request->data['Filtre']['paginationNombreTotal'] ) && !$this->request->data['Filtre']['paginationNombreTotal'] ) {
 				$page = Set::classicExtract( $this->request->params, "paging.Personne.page" );
@@ -148,11 +150,11 @@
 									<td>'.h( value( $etatdosrsa, $personne['Situationdossierrsa']['etatdosrsa'] ) ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 									<td>'.Hash::get( $personne, 'Structurereferenteparcours.lib_struc' ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $personne, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 							</tbody>

@@ -1,4 +1,6 @@
 <?php
+	$departement = Configure::read( 'Cg.departement' );
+
 	function thead( $pct = 10 ) {
 		return '<thead>
 				<tr>
@@ -11,7 +13,7 @@
 
 	function theadPastDossierDEM( $pctValue = 10, $pctAction = 8 ) {
 
-        if( Configure::read( 'Cg.departement' ) == 66 ) {
+        if( $departement == 66 ) {
             return '<thead>
                     <tr>
                         <th>&nbsp;</th>
@@ -33,7 +35,7 @@
 	}
 
 	function theadPastDossierCJT( $pctValue = 10, $pctAction = 8 ) {
-		if( Configure::read( 'Cg.departement' ) == 66 ) {
+		if( $departement == 66 ) {
             return '<thead>
                     <tr>
                         <th>&nbsp;</th>
@@ -99,7 +101,7 @@
 <?php $this->pageTitle = 'Dossier RSA '.$details['Dossier']['numdemrsa'];?>
 
 <div id="resumeDossier">
-	<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+	<?php if( $departement == 93 ):?>
 		<ul class="actionMenu">
 			<li><?php
 				echo $this->Xhtml->printLinkJs(
@@ -139,7 +141,7 @@
 								<th>Statut du demandeur</th>
 								<td><?php echo value( $statudemrsa, Set::extract( 'Dossier.statudemrsa', $details ) );?></td>
 							</tr>
-							<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+							<?php if( $departement == 58 ):?>
 								<tr class="even">
 									<th>Numéro allocataire</th>
 									<td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
@@ -155,7 +157,7 @@
                         ?>
                         <tbody>
                             <tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
-                                <th>Structure référente en cours</th>
+                                <th><?php echo $departement == 93 ? 'Structure de suivi' : 'Structure référente en cours';?></th>
                                 <?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
                                 <td><?php
                                     if( !empty( $details[$rolepers] ) ) {
@@ -171,7 +173,7 @@
                                 <?php endforeach;?>
                             </tr>
                             <tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
-                                <th>Référent en cours</th>
+                                <th><?php echo $departement == 93 ? 'Personne chargée du suivi' : 'Référent en cours';?></th>
                                 <?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
                                 <td><?php
                                     if( !empty( $details[$rolepers] ) ) {
@@ -197,21 +199,21 @@
 						echo thead( 10 );
 					?>
 						<tbody>
-							<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+							<?php if( $departement == 58 ):?>
 								<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 									<th><?php echo __d( 'personne', 'Personne.etat_dossier_orientation' ) ?></th>
 									<td><?php echo value( $options['Personne']['etat_dossier_orientation'], Hash::get( $details, 'DEM.Personne.etat_dossier_orientation' ) );?></td>
 									<td><?php echo value( $options['Personne']['etat_dossier_orientation'], Hash::get( $details, 'CJT.Personne.etat_dossier_orientation' ) );?></td>
 								</tr>
 							<?php endif;?>
-							<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+							<?php if( $departement == 93 ):?>
 							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 								<th><?php echo __d( 'orientstruct', 'Orientstruct.origine' ) ?></th>
 								<td><?php echo value( $options['Orientstruct']['origine'], Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.origine' ) );?></td>
 								<td><?php echo value( $options['Orientstruct']['origine'], Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.origine' ) );?></td>
 							</tr>
 							<?php endif;?>
-							<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+							<?php if( $departement == 66 ):?>
 								<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 									<th>Orientation en cours...</th>
 									<?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
@@ -245,7 +247,7 @@
 								<td><?php echo date_short( Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
 								<td><?php echo date_short( Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
 							</tr>
-							<?php if( Configure::read( 'Cg.departement' ) != 58 ):?>
+							<?php if( $departement != 58 ):?>
 								<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 									<th>Statut de l'orientation</th>
 									<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
@@ -315,13 +317,13 @@
 								<td><?php echo h( textPresenceDsp( @$details['DEM'] ) );?></td>
 								<td><?php echo h( textPresenceDsp( @$details['CJT'] ) );?></td>
 							</tr>
-							<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+							<?php if( $departement == 58 ):?>
 								<tr class="odd">
 									<th>Code activité</th>
 									<td><?php echo value( $act,  Set::extract( 'DEM.Activite.act', $details ) );?></td>
 									<td><?php echo value( $act,  Set::extract( 'CJT.Activite.act', $details ) );?></td>
 								</tr>
-								<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+								<?php if( $departement == 58 ):?>
 									<tr class="even">
 										<th colspan="3" class="center">Grossesse</th>
 
@@ -422,7 +424,7 @@
 					<h2>Informations CAF / MSA</h2>
 					<table >
 						<tbody>
-							<?php if( Configure::read( 'Cg.departement' ) != 58 ):?>
+							<?php if( $departement != 58 ):?>
 								<tr class="even">
 									<th><?php echo __d( 'dossier', 'Dossier.matricule.large' ); ?></th>
 									<td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
@@ -478,7 +480,7 @@
 							</tr>
 						</tbody>
 					</table>
-				</td><?php if( Configure::read( 'Cg.departement' ) == 66 ) { ?>
+				</td><?php if( $departement == 66 ) { ?>
 				<td>
 					<h2>Contrat Unique d'Insertion</h2>
 					<table>
@@ -549,7 +551,7 @@
 				</td>
 				<td>
 					<!-- Anciens dossiers dans lesquels la personne a toujours une prestation -->
-                    <?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
+                    <?php if( $departement != 66 ):?>
                         <h2>Historique des dossiers RSA</h2>
                     <?php else:?>
                         <h2>Autres demandes RSA</h2>
@@ -561,7 +563,7 @@
 							<?php
 								$nbdem = count( Set::extract( 'DEM.Dossiermultiple', $details ) );
                                 $colspan = "2";
-                                if( Configure::read( 'Cg.departement' ) == 66  ) {
+                                if( $departement == 66  ) {
                                     $colspan = "3";
                                 }
 								if( $nbdem == 0 ):
@@ -583,7 +585,7 @@
 											echo Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
 										?>
 									</td>
-                                    <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+                                    <?php if( $departement == 66 ):?>
                                     <td><?php
 											echo Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Foyer.nbdossierspcgs', $details );
 										?>
@@ -625,7 +627,7 @@
 										echo Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
 									?>
 								</td>
-                                <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+                                <?php if( $departement == 66 ):?>
                                     <td><?php
 											echo Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Foyer.nbdossierspcgs', $details );
 										?>
@@ -645,7 +647,7 @@
 					</table>
 					<?php if( Configure::read( 'AncienAllocataire.enabled' ) ): ?>
 						<!-- Anciens dossiers dans lesquels la personne n'a plus de prestation -->
-						<?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
+						<?php if( $departement != 66 ):?>
 							<h2>Historique des dossiers RSA sans prestation</h2>
 						<?php else:?>
 							<h2>Autres demandes RSA sans prestation</h2>
@@ -656,7 +658,7 @@
 								<?php
 									$nbdem = count( Set::extract( 'DEM.AncienDossier', $details ) );
 									$colspan = "2";
-									if( Configure::read( 'Cg.departement' ) == 66  ) {
+									if( $departement == 66  ) {
 										$colspan = "3";
 									}
 									if( $nbdem == 0 ):
@@ -678,7 +680,7 @@
 												echo Set::extract( 'DEM.AncienDossier.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'DEM.AncienDossier.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'DEM.AncienDossier.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
 											?>
 										</td>
-										<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+										<?php if( $departement == 66 ):?>
 										<td><?php
 												echo Set::extract( 'DEM.AncienDossier.'.$iteration.'.Foyer.nbdossierspcgs', $details );
 											?>
@@ -720,7 +722,7 @@
 											echo Set::extract( 'CJT.AncienDossier.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'CJT.AncienDossier.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'CJT.AncienDossier.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
 										?>
 									</td>
-									<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+									<?php if( $departement == 66 ):?>
 										<td><?php
 												echo Set::extract( 'CJT.AncienDossier.'.$iteration.'.Foyer.nbdossierspcgs', $details );
 											?>
@@ -745,7 +747,7 @@
 
 			<tr>
 				<td>
-					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+					<?php if( $departement == 93 ):?>
 					<h2>Dernière relance</h2>
 					<table >
 					<?php echo thead( 10 );?>
@@ -826,7 +828,7 @@
 							</tr>
 							<?php
 								$avisDecisionEP = 'Avis';
-								if( Configure::read( 'Cg.departement' ) == 93 ){
+								if( $departement == 93 ){
 									$avisDecisionEP = 'Décision';
 								}
 							?>
@@ -845,7 +847,7 @@
 						</tbody>
 					</table>
 					<?php
-						if( Configure::read( 'Cg.departement' ) == 58 ) {
+						if( $departement == 58 ) {
 							foreach( array( 'DEM', 'CJT' ) as $role ) {
 								$derniereep = Set::extract( $details, "{$role}.Dossierep.derniere" );
 								$modeledecision = 'Decision'.Inflector::singularize( @$derniereep['Dossierep']['themeep'] );

@@ -5,6 +5,8 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	$departement = Configure::read( 'Cg.departement' );
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -63,9 +65,9 @@
                 echo $this->Form->input( 'Critererdv.statutrdv_id', array( 'label' => false, 'type' => 'select' , 'multiple' => 'checkbox', 'options' => $statutrdv, 'empty' => false ) );
                 echo '</fieldset>';
             ?>
-			<?php echo $this->Form->input( 'Critererdv.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+			<?php echo $this->Form->input( 'Critererdv.structurereferente_id', array( 'label' => ( $departement == 93 ) ? 'Structure proposant le RDV' : __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 
-			<?php echo $this->Form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
+			<?php echo $this->Form->input( 'Critererdv.referent_id', array( 'label' => ( $departement == 93 ) ? 'Personne proposant le RDV' : __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
 
 			<!--  Ajout d'une permanence liée à une structurereferente  -->
 			<?php
@@ -139,6 +141,9 @@
 <?php if( isset( $rdvs ) ):?>
 
 	<h2 class="noprint">Résultats de la recherche</h2>
+	<?php
+		$domain_search_plugin = ( $departement == 93 ) ? 'search_plugin_93' : 'search_plugin';
+	?>
 
 	<?php if( is_array( $rdvs ) && count( $rdvs ) > 0  ):?>
 
@@ -148,8 +153,8 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
-					<th>Référent</th>
+					<th><?php echo $this->Xpaginator->sort( ( $departement == 93 ) ? 'Structure proposant le RDV' : 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
+					<th><?php echo ( $departement == 93 ) ? 'Personne proposant le RDV' : 'Référent';?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Objet du RDV', 'Rendezvous.typerdv_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
 					<th>Heure du RDV</th>
@@ -198,11 +203,11 @@
 								</tr>
 								'.$row.'
 								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 									<td>'.Hash::get( $rdv, 'Structurereferenteparcours.lib_struc' ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $rdv, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 							</tbody>

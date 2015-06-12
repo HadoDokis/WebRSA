@@ -67,3 +67,14 @@ msgstr "Valeurs par sous-thématique"
 
 msgid "Cer93Sujetcer93.autrevaleur"
 msgstr "Si autre valeur par sous-thématique, commentaire"
+
+# ------------------------------------------------------------------------------
+
+msgid "Contratinsertion.structurereferente_id"
+msgstr "Structure établissant le CER"
+
+msgid "Contratinsertion.referent_id"
+msgstr "Personne établissant le CER"
+
+msgid "Cer93.structureutilisateur"
+msgstr "Structure référente"

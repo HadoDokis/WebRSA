@@ -401,11 +401,18 @@
 				dependantSelect( '".$this->domId( "{$prefix}PersonneReferent.referent_id" )."', '".$this->domId( "{$prefix}PersonneReferent.structurereferente_id" )."' );
 			} );";
 
+			$domain = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
+			$labels = array(
+				'structurereferente_id' => __d( $domain, 'Structurereferenteparcours.lib_struc' ),
+				'referent_id' => __d( $domain, 'Referentparcours.nom_complet' )
+			);
+
 			return $this->Xhtml->tag(
 				'fieldset',
 				$this->Xhtml->tag( 'legend', 'Suivi du parcours' )
-				.$this->Xform->input( "{$prefix}PersonneReferent.structurereferente_id", array( 'label' => __d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ), 'type' => 'select', 'options' => $structuresreferentesparcours, 'empty' => true ) )
-				.$this->Xform->input( "{$prefix}PersonneReferent.referent_id", array( 'label' => __d( 'search_plugin', 'Referentparcours.nom_complet' ), 'type' => 'select', 'options' => $referentsparcours, 'empty' => true ) )
+				.$this->Xform->input( "{$prefix}PersonneReferent.structurereferente_id", array( 'label' => $labels['structurereferente_id'], 'type' => 'select', 'options' => $structuresreferentesparcours, 'empty' => true ) )
+				.$this->Xform->input( "{$prefix}PersonneReferent.referent_id", array( 'label' => $labels['referent_id'], 'type' => 'select', 'options' => $referentsparcours, 'empty' => true ) )
 			).$this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) );
 		}
 	}

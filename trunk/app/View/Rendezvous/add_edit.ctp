@@ -10,6 +10,8 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	$departement = Configure::read( 'Cg.departement' );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -63,8 +65,8 @@
 <div class="aere">
 	<fieldset>
 		<?php
-			echo $this->Form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_struct' ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
-			echo $this->Form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true/*, 'selected' => $struct_id.'_'.$referent_id */) );
+			echo $this->Form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( $departement == 93 ? 'Structure proposant le RDV' : __d( 'rendezvous', 'Rendezvous.lib_struct' ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
+			echo $this->Form->input( 'Rendezvous.referent_id', array( 'label' =>  ( $departement == 93 ? 'Personne proposant le RDV' : 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true/*, 'selected' => $struct_id.'_'.$referent_id */) );
 			///Ajax
 			echo $this->Ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => array( 'action' => 'ajaxreffonct' ) ) );
 
@@ -89,7 +91,7 @@
 			// Thématiques du RDV
 			if( isset( $thematiquesrdvs ) && !empty( $thematiquesrdvs ) ) {
 				foreach( $thematiquesrdvs as $typerdv_id => $thematiques ) {
-					if( Configure::read( 'Cg.departement' ) == 93 && $typerdv_id == Configure::read( 'Rendezvous.Typerdv.collectif_id' ) ) {
+					if( $departement == 93 && $typerdv_id == Configure::read( 'Rendezvous.Typerdv.collectif_id' ) ) {
 						$input = $this->Form->input(
 							'Thematiquerdv.Thematiquerdv',
 							array(

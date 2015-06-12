@@ -1,6 +1,6 @@
 <!-- Bloc 1  -->
 <fieldset>
-    <legend>Service référent désigné par le Département</legend>
+    <legend>Structure établissant le CER</legend>
     <table class="wide noborder cers93">
 
         <tr>
@@ -8,7 +8,7 @@
 				<table class="wide noborder">
 					<tr>
 						<td class="wide noborder"><strong>Type d'orientation</strong></td>
-						<td class="wide noborder"><strong>Nom de la structure</strong></td>
+						<td class="wide noborder"><strong>Structure référente</strong></td>
 						<td class="wide noborder"><strong>Adresse</strong></td>
 					</tr>
 					<tr>
@@ -342,7 +342,7 @@
 		}
 
 		//Bloc 9 : Partie réservée au professionnel en charge du contrat
-		echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.structureutilisateur' ) );
+		echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.structureutilisateur' ), 'cers93' );
 		echo $this->Xform->fieldValue( 'Cer93.nomutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.nomutilisateur' ) );
 
 		echo $this->Xform->fieldValue( 'Cer93.pourlecomptede', Set::classicExtract( $contratinsertion, 'Cer93.pourlecomptede' ) );

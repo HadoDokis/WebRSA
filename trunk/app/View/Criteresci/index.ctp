@@ -5,6 +5,8 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js', 'prototype.maskedinput.js' ) );
 	}
+
+	$departement = Configure::read( 'Cg.departement' );
 ?>
 <h1><?php
     echo $this->pageTitle;
@@ -13,7 +15,7 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
+		<?php if( $departement == 58 ): ?>
 			new MaskedInput( '#ContratinsertionDureeEngag', '9?9' );
 		<?php endif;?>
 
@@ -67,7 +69,7 @@
 				echo $this->Form->input( 'Contratinsertion.dernier', array( 'label' => 'Uniquement le dernier contrat d\'insertion pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueContratinsertionDernier ) );
 			?>
 			<?php echo $this->Form->input( 'Contratinsertion.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-			<?php if(Configure::read( 'Cg.departement' ) != 58 ){
+			<?php if($departement != 58 ){
 					echo $this->Form->input( 'Contratinsertion.forme_ci', array(  'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat', 'div' => false, ) );
 				}
 			?>
@@ -83,28 +85,28 @@
 				<?php echo $this->Form->input( 'Contratinsertion.created_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );?>
 			</fieldset>
 
-			<?php echo $this->Form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
-			<?php echo $this->Form->input( 'Contratinsertion.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
+			<?php echo $this->Form->input( 'Contratinsertion.structurereferente_id', array( 'label' => ( $departement == 93 ) ? 'Structure établissant le CER' : __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+			<?php echo $this->Form->input( 'Contratinsertion.referent_id', array( 'label' => ( $departement == 93 ) ? 'Personne établissant le CER' : __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
 			<?php
-				if( Configure::read( 'Cg.departement' ) == 93 ) {
+				if( $departement == 93 ) {
 					echo $this->Form->input( 'Cer93.positioncer', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93.positioncer' ), 'empty' => true ) );
 				}
 				else {
 					echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
 				}
 
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
+				if( $departement == 66 ) {
 					echo $this->Form->input( 'Contratinsertion.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) );
 				}
 
-				if( Configure::read( 'Cg.departement' ) == 58 ) {
+				if( $departement == 58 ) {
 					echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'text' ) );
 				}
 				else {
 					echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );
 				}
 
-				if( Configure::read( 'Cg.departement' ) == 93 ) {
+				if( $departement == 93 ) {
 					// 1. Partie "Expériences professionnelles significatives"
 					echo $this->Html->tag(
 						'fieldset',
@@ -206,7 +208,7 @@
 				echo $this->Form->input( 'Contratinsertion.echeanceproche', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  );
 			?>
 
-			<?php if( Configure::read( 'Cg.departement' ) == 66 ) {
+			<?php if( $departement == 66 ) {
 					$nbjours = Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' );
 					$nbjoursTranslate = str_replace('days','jours', $nbjours);
 
@@ -218,11 +220,11 @@
 	<fieldset>
 		<legend>Filtrer par dernière orientation</legend>
 		<?php
-			if( Configure::read( 'Cg.departement' ) == 58 ) {
+			if( $departement == 58 ) {
 				echo $this->Form->input( 'Personne.etat_dossier_orientation', array( 'label' => __d( 'personne', 'Personne.etat_dossier_orientation' ), 'type' => 'select', 'options' => (array)Hash::get( $options, 'Personne.etat_dossier_orientation' ), 'empty' => true ) );
 			}
 			echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
+			if( $departement == 66 ) {
 				echo $this->Form->input( 'TypeorientAExclure.id', array( 'label' => 'Type d\'orientation à exclure', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $typesorientsNiveau0 )  );
 			}
 		?>
@@ -239,6 +241,9 @@
 <?php if( isset( $contrats ) ):?>
 
 	<h2 class="noprint">Résultats de la recherche</h2>
+	<?php
+		$domain_search_plugin = ( $departement == 93 ) ? 'search_plugin_93' : 'search_plugin';
+	?>
 
 	<?php if( is_array( $contrats ) && count( $contrats ) > 0  ):?>
 
@@ -248,19 +253,19 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Référent lié', 'Referent.nom_complet' );?></th>
+					<th><?php echo $this->Xpaginator->sort( ( $departement == 93 ) ? 'Personne établissant le CER' : 'Référent lié', 'Referent.nom_complet' );?></th>
 					<th><?php echo $this->Xpaginator->sort( __d( 'dossier', 'Dossier.matricule' ), 'Dossier.matricule' );?></th>
-					<?php if( Configure::read( 'Cg.departement') == 93 ):?>
+					<?php if( $departement == 93 ):?>
 						<th><?php echo $this->Xpaginator->sort( 'Type d\'orientation', 'Typeorient.lib_type_orient' );?></th>
 					<?php endif;?>
 					<th><?php echo $this->Xpaginator->sort( 'Date de saisie du contrat', 'Contratinsertion.created' );?></th>
-					<?php if( Configure::read( 'Cg.departement') == 93 ):?>
+					<?php if( $departement == 93 ):?>
 						<th><?php echo $this->Xpaginator->sort( 'Durée du contrat', 'Contratinsertion.duree_engag' );?></th>
 					<?php endif;?>
 					<th><?php echo $this->Xpaginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$this->Xpaginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Forme du CER', 'Contratinsertion.forme_ci' );?></th>
-					<?php if( Configure::read( 'Cg.departement') != 93 ):?>
+					<?php if( $departement != 93 ):?>
                         <th><?php echo $this->Xpaginator->sort( 'Position du CER', 'Contratinsertion.positioncer' );?></th>
                     <?php endif;?>
 					<th><?php echo $this->Xpaginator->sort( 'Date de fin du contrat', 'Contratinsertion.df_ci' );?></th>
@@ -271,7 +276,7 @@
 			<tbody>
 				<?php
 					$controller = 'contratsinsertion';
-					if( Configure::read( 'Cg.departement' ) == 93 ) {
+					if( $departement == 93 ) {
 						$controller = 'cers93';
 					}
 					foreach( $contrats as $index => $contrat ):?>
@@ -292,7 +297,7 @@
 						}
 
 						$innerTableParCg = '';
-						if( Configure::read( 'Cg.departement' ) == 58 ) {
+						if( $departement == 58 ) {
 							$innerTableParCg .= '<tr>
 								<th>'.__d( 'personne', 'Personne.etat_dossier_orientation' ).'</th>
 								<td>'.h( value( (array)Hash::get( $options, 'Personne.etat_dossier_orientation' ), Hash::get( $contrat, 'Personne.etat_dossier_orientation' ) ) ).'</td>
@@ -326,18 +331,18 @@
 									<td>'.value( $etatdosrsa, Set::classicExtract( $contrat, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 									<td>'.Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $contrat, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 								'.$innerTableParCg.'
 							</tbody>
 						</table>';
 
-                        if( Configure::read( 'Cg.departement' ) != 93 ) {
+                        if( $departement != 93 ) {
                             echo $this->Xhtml->tableCells(
                                 array(
                                     h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
@@ -433,7 +438,7 @@
 <?php endif?>
 
 <?php
-	if( Configure::read( 'Cg.departement' ) == 93 ) {
+	if( $departement == 93 ) {
 		echo $this->Observer->dependantSelect(
 			array(
 				'Cer93Sujetcer93.sujetcer93_id' => 'Cer93Sujetcer93.soussujetcer93_id',

@@ -50,7 +50,7 @@
 
 	$fields = array(
 		'Orientstruct.typeorient_id' => array( 'empty' => true ),
-		'Orientstruct.structurereferente_id' => array( 'empty' => true, 'label' => 'Type de structure' ),
+		'Orientstruct.structurereferente_id' => array( 'empty' => true, 'label' => ( $departement == 93 ? 'Structure référente' : 'Type de structure' ) ),
 		'Orientstruct.referent_id' => array( 'empty' => true, 'required' => false, 'label' => 'Nom du référent' ),
 		'Calculdroitrsa.toppersdrodevorsa' => array( 'empty' => 'Non défini', 'required' => true, 'label' => 'Personne soumise à droits et devoirs ?' ),
 		'Orientstruct.statut_orient' => ( $departement == 976 ? array( 'empty' => true ) : array(  'label' =>  false, 'type' => 'hidden', 'value' => 'Orienté' ) ),

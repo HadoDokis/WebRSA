@@ -1,6 +1,8 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
+	$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
 	// En-têtes
 	$row = array(
 		'N° Dossier',
@@ -19,8 +21,8 @@
 		'Type d\'orientation',
 		'Identifiant Pôle Emploi',
 		__d( 'dossier', 'Dossier.matricule' ),
-		__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
-		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ),
+		__d( $domain_search_plugin, 'Referentparcours.nom_complet' ),
 		'Sexe',
 		'Conditions de logement',
 	);

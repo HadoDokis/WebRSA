@@ -1,6 +1,9 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
+	$departement = Configure::read( 'Cg.departement' );
+	$domain_search_plugin = ( $departement == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
 	$canton = '';
 	if( Configure::read('Cg.departement') == 66 ) {
 		$canton = 'Canton';
@@ -23,18 +26,18 @@
 		'Code postal',
 		'Commune',
 		'Type d\'orientation',
-		'Référent',
-		'Service référent',
+		( $departement == 93 ) ? 'Personne établissant le CER' : 'Référent',
+		( $departement == 93 ) ? 'Structure établissant le CER' : 'Service référent',
 		'Type de contrat',
 		'Date début contrat',
 		'Durée',
 		'Date fin contrat',
 		'Décision et date validation',
-		__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
-		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ),
+		__d( $domain_search_plugin, 'Referentparcours.nom_complet' ),
 	);
 
-	if( Configure::read( 'Cg.departement' ) == 58 ) {
+	if( $departement == 58 ) {
 		$row = array_merge(
 			$row,
 			array(
@@ -42,7 +45,7 @@
 			)
 		);
 	}
-	else if( Configure::read( 'Cg.departement' ) == 93 ) {
+	else if( $departement == 93 ) {
 		$row = array_merge(
 			$row,
 			array(
@@ -93,7 +96,7 @@
 		}
 		$duree = "{$duree} mois";
 
-		if( Configure::read( 'Cg.departement' ) == 93 ) {
+		if( $departement == 93 ) {
 			$decision = Hash::get( $options['Cer93']['positioncer'], Hash::get( $contrat, 'Cer93.positioncer' ) )
 				.( Hash::get( $contrat, 'Contratinsertion.decision_ci' ) == 'V' ? ' '.$this->Locale->date( 'Date::short', Hash::get( $contrat, 'Contratinsertion.datedecision' ) ) : '' );
 		}
@@ -120,7 +123,7 @@
 			@$contrat['Referent']['nom_complet'],
 			Hash::get( $contrat, 'Structurereferente.lib_struc' ),
 			(
-				( Configure::read( 'Cg.departement' ) == 93 )
+				( $departement == 93 )
 				? value( $forme_ci, Hash::get( $contrat, 'Contratinsertion.forme_ci' ) )
 				: Set::enum( Hash::get( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] )
 			),
@@ -132,14 +135,14 @@
 			Hash::get( $contrat, 'Referentparcours.nom_complet' ),
 		);
 
-		if( Configure::read( 'Cg.departement' ) == 66 ) {
+		if( $departement == 66 ) {
 			$row = array_merge(
 				$row,
 				array( Hash::get( $contrat, 'Canton.canton' ) )
 			);
 		}
 
-		if( Configure::read( 'Cg.departement' ) == 58 ) {
+		if( $departement == 58 ) {
 			$row = array_merge(
 				$row,
 				array(
@@ -147,7 +150,7 @@
 				)
 			);
 		}
-		else if( Configure::read( 'Cg.departement' ) == 93 ) {
+		else if( $departement == 93 ) {
 			$row = array_merge(
 				$row,
 				array(
