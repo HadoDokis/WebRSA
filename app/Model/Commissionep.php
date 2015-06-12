@@ -1250,6 +1250,9 @@
 					$query['joins'] = array_merge( $query['joins'], $queryRegressionorientationep58['joins'] );
 				}
 				else if( Configure::read( 'Cg.departement' ) == 93 && $fiche ) {
+					// Date de demande RSA actuelle
+					$query['fields'][] = "\"Dossier\".\"dtdemrsa\" AS \"Dossier__dtdemrsaactuelle\"";
+
 					// Nombre d'enfants -> TODO: factoriser avec ce qui se trouve au 58
 					$sqNbenfants = $this->Passagecommissionep->Dossierep->Personne->Foyer->vfNbEnfants();
 					$query['fields'][] = "( {$sqNbenfants} ) AS \"Foyer__nbenfants\"";
