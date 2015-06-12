@@ -114,10 +114,6 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'partenaire_id',
-			)
 		);
 		
 		public $hasMany = array(
