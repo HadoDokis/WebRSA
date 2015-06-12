@@ -1095,7 +1095,7 @@ ul.actions li.action span.historiser.disabled {
 
 /**/
 
-td.button a, td.action a, td.button span, td span.button, table.default2 td a.button, table.default2 td span.button {
+td.button a, td.action a, td.button span, td span.button, table.default2 td a.button, table.default2 td span.button, a.action_impression {
 	background-repeat: no-repeat;
 	background-position: left center;
 	padding-left: 20px;
@@ -1351,7 +1351,7 @@ td.button.accompagnement.disabled a, td.action a.accompagnement.disabled, td spa
     background-image: url( ../img/icons/report_disabled.png );
 }
 
-td.button.impression a, td.action a.impression, td span.button.impression, table.default2 td a.button.impression {
+td.button.impression a, td.action a.impression, td span.button.impression, table.default2 td a.button.impression, a.action_impression {
     background-image: url( ../img/icons/printer.png );
 }
 
