@@ -28,7 +28,8 @@
 					'typeentretien',
 					'haspiecejointe'
 				)
-			)
+			),
+			'Gedooo.Gedooo',
 		);
 
 		public $hasMany = array(
@@ -107,5 +108,96 @@
 				'rule' => 'date'
 			),
 		);
+		
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'default' => '%s/impression.odt',
+		);
+		
+		/**
+		 * Revoi la requete pour récuperer toutes les données pour l'affichage d'un Entretien
+		 * 
+		 * @param integer $entretien_id
+		 * @return array
+		 */
+		public function queryView( $entretien_id ){
+			$query = array(
+				'fields' => array_merge(
+					$this->fields()
+				),
+				'recursive' => -1,
+				'contain' => false,
+				'conditions' => array(),
+				'joins' => array()
+			);
+			
+			$query['conditions']['Entretien.id'] = $entretien_id;
+			
+			return $query;
+		}
+		
+		/**
+		 * Requète d'impression
+		 * 
+		 * @param type $entretien_id
+		 * @return type
+		 */
+		public function queryImpression( $entretien_id ){
+			$queryView = $this->queryView( $entretien_id );
+			$queryPersonne = $this->queryPersonne( 'Entretien.personne_id' );
+			
+			$query['fields'] = array_merge( $queryView['fields'], $queryPersonne['fields'] );
+			$query['joins'] = array_merge( $queryView['joins'], array( $this->join( 'Personne' ) ), $queryPersonne['joins'] );
+			$query['conditions'] = $queryView['conditions'];
+			
+			return $query;
+		}
+
+		/**
+		 * Permet d'obtenir les informations lié à un Allocataire d'un Entretien
+		 * 
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function queryPersonne( $personne_id ){
+			$query = ClassRegistry::init( 'Allocataire' )->searchQuery();
+
+			$query['fields'] = array_merge(
+				$query['fields'],
+				array(
+					'Titresejour.dftitsej',
+					'Departement.name',
+					'( '.$this->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nb_enfants"'
+				)
+			);
+
+			$query['joins'][] = $this->Personne->Foyer->Adressefoyer->Adresse->join( 'Departement', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Personne->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) );
+			
+			$query['conditions']['Personne.id'] = $personne_id;
+			
+			return $query;
+		}
+		
+		public function personneId( $entretien_id ){
+			$this->id = $entretien_id;
+			$result = $this->find( 'first', array( 'fields' => 'personne_id', 'contain' => false ) );
+			return $result['Entretien']['personne_id'];
+		}
+		
+		public function options(){
+			$options = $this->enums();
+
+			$options[$this->alias]['typerdv_id'] = $this->Typerdv->find( 'list' );
+			$options[$this->alias]['objetentretien_id'] = $this->Objetentretien->find( 'list' );
+			
+			$Structurereferente = ClassRegistry::init( 'Structurereferente' );
+			$options[$this->alias]['structurereferente_id'] = $Structurereferente->structuresreferentes( array( 'optgroup' => true ) );
+            
+			return $options;
+		}
 	}
 ?>
