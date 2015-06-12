@@ -142,19 +142,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'serviceinstructeur_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',
 				'foreignKey' => 'serviceinstructeur_id',

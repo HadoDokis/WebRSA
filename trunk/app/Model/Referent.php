@@ -118,19 +118,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'referent_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'ActioncandidatPersonne' => array(
 				'className' => 'ActioncandidatPersonne',
 				'foreignKey' => 'referent_id',
