@@ -656,7 +656,7 @@
 					$success = $this->save() && $success;
 				}
 
-				$themeData[] = array( 'Decisiondefautinsertionep66' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0] );
+				$themeData[] = isset($dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]) ? array( 'Decisiondefautinsertionep66' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0] ) : null;
 			}
 
 			// Mise à jour de la position du bilan de parcours
