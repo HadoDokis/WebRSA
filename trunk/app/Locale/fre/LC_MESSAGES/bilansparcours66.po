@@ -1,0 +1,73 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+
+msgid "fieldset_entretien"
+msgstr "Liste des entretiens"
+
+###############################################################################
+
+msgid "Structurereferente.lib_struc"
+msgstr "Structure référente"
+
+msgid "Referent.nom_complet"
+msgstr "Réalisé par"
+
+msgid "Entretien.dateentretien"
+msgstr "Date de l'entretien"
+
+msgid "Entretien.typeentretien"
+msgstr "Type d'entretien"
+
+msgid "Entretien.commentaireentretien"
+msgstr "Commentaire sur l'entretien"
+
+msgid "Entretien.dateprochainrdv"
+msgstr "Date du prochain rendez-vous"
+
+msgid "Entretien.heureprochainrdv"
+msgstr "Heure du prochain rendez-vous"
+
+msgid "Objetentretien.name"
+msgstr "Objet de l'entretien"
+
+msgid "Entretien.typerdv_id"
+msgstr "Type de l'entretien"
+
+msgid "Entretien.arevoirle"
+msgstr "A revoir le"
+
+msgid "Entretien.rendezvousprevu"
+msgstr "Rendez-vous prévu"
+
+msgid "Entretien.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "Entretien.dateentretien_checkbox"
+msgstr "Filtrer par date d'entretien"
+
+msgid "Entretien.dateentretien_from"
+msgstr "Du (inclus)"
+
+msgid "Entretien.dateentretien_to"
+msgstr "Au (inclus)"
+
+msgid "Actioncandidat.name"
+msgstr "Intitulé de l'action"

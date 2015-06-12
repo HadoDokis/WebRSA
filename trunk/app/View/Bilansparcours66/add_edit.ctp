@@ -33,6 +33,28 @@
 	<h1><?php echo $this->pageTitle;?></h1>
 
 	<?php
+		// Affichage des entretiens
+		echo '<fieldset><legend>' . __d( 'bilansparcours66', 'fieldset_entretien' ) . '</legend>'
+			. $this->Default3->index(
+				$entretiens,
+				array(
+					'Entretien.dateentretien',
+					'Entretien.arevoirle',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					'Entretien.typeentretien',
+					'Objetentretien.name',
+					'Actioncandidat.name',
+					'Entretien.commentaireentretien',
+				),
+				array(
+					'paginate' => false,
+					'options' => $options,
+				)
+			)
+			. '</fieldset>'
+		;
+	
 		if( $this->action == 'add' ) {
 			echo $this->Form->create( 'Bilanparcours66', array( 'type' => 'post',  'id' => 'Bilan' ) );
 		}

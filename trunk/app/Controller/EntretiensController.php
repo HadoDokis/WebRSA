@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus', 'InsertionsAllocataires' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus', 'InsertionsAllocataires', 'Gedooo.Gedooo' );
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
@@ -438,5 +438,76 @@
 			$this->Default->delete( $id );
 		}
 
+		/**
+		 * On lui donne l'id du CUI et le modèle de document et il renvoi le pdf
+		 * 
+		 * @param integer $entretien_id
+		 * @param string $modeleOdt
+		 * @return PDF
+		 */
+		protected function _getEntretienPdf( $entretien_id, $modeleOdt = null ){
+			$Model = $this->{$this->modelClass};
+			
+			$path = 
+				$modeleOdt === null || !isset($Model->modelesOdt[$modeleOdt]) 
+				? sprintf( $Model->modelesOdt['default'], $Model->alias )
+				: sprintf( $Model->modelesOdt[$modeleOdt], $Model->alias )
+			;
+			
+			$Model->forceVirtualFields = true;
+			
+			$queryImpressionEntretien = $Model->queryImpression( $entretien_id );
+
+			$queryImpressionEntretien['fields'] = array_merge( $queryImpressionEntretien['fields'], $Model->fields() );
+			$queryImpressionEntretien['conditions']["{$Model->alias}.{$Model->primaryKey}"] = $entretien_id;
+			$queryImpressionEntretien['contain'] = false;
+
+			$dataEntretien = $Model->find( 'first', $queryImpressionEntretien );
+			
+			$options = array_merge(
+				$Model->options()
+			);
+			
+			$options[$this->modelClass]['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
+			
+			$result = $Model->ged(
+				$dataEntretien,
+				$path,
+				false,
+				$options
+			);
+			
+			return $result;
+		}
+		
+		/**
+		 * Méthode générique d'impression d'un Entretien.
+		 * 
+		 * @param integer $entretien_id
+		 * @param string $modeleOdt
+		 */
+		protected function _impression( $entretien_id, $modeleOdt = null ){
+			$personne_id = $this->Entretien->personneId( $entretien_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$pdf = $this->_getEntretienPdf( $entretien_id, $modeleOdt );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'entretien_%d-%s.pdf', $entretien_id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le PDF.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
+		/**
+		 * Impression d'un CUI
+		 *
+		 * @param integer $entretien_id La clé primaire du CUI
+		 */
+		public function impression( $entretien_id ) {
+			$this->_impression($entretien_id);
+		}
 	}
 ?>

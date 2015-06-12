@@ -71,19 +71,6 @@
 		);
 
 		public $hasMany = array(
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'structurereferente_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'Bilanparcours66' => array(
 				'className' => 'Bilanparcours66',
 				'foreignKey' => 'structurereferente_id',
@@ -532,6 +519,130 @@
 			);
 
 			return $query;
+		}
+		
+		
+		/**
+		 * Retourne la clé de session pour une méthode et un querydata donnés.
+		 *
+		 * @param string $method
+		 * @param array $query
+		 * @return string
+		 */
+		public function sessionKey( $method, array $query ) {
+			$queryHash = sha1( serialize( $query ) );
+			$sessionKey = "Auth.{$this->name}.{$method}.{$queryHash}";
+			return $sessionKey;
+		}
+		
+		public function structuresreferentes( $options = array() ){
+			App::uses('SessionComponent', 'Controller/Component');
+			App::uses('ComponentCollection', 'Controller/Component');
+			$Session = new SessionComponent(new ComponentCollection());
+			
+			$options = Set::merge(
+				array(
+					'conditions' => array(),
+					'optgroup' => false,
+					'ids' => false,
+                    'list' => false
+				),
+				$options
+			);
+
+			$conditions = array(
+				'Typeorient.actif' => 'O',
+				'Structurereferente.actif' => 'O',
+			);
+
+			$conditions = Set::merge( $conditions, $options['conditions'] );
+
+			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
+				$zonesgeographiques_ids = array_keys( $Session->read( 'Auth.Zonegeographique' ) );
+
+				$sqStructurereferente = $this->StructurereferenteZonegeographique->sq(
+					array(
+						'alias' => 'structuresreferentes_zonesgeographiques',
+						'fields' => array( 'structuresreferentes_zonesgeographiques.structurereferente_id' ),
+						'conditions' => array(
+							'structuresreferentes_zonesgeographiques.zonegeographique_id' => $zonesgeographiques_ids
+						),
+						'contain' => false
+					)
+				);
+				$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
+			}
+			else if( ( Configure::read( 'Cg.departement' ) == 66 ) && $Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+				$structurereferente_id = $Session->read( 'Auth.User.structurereferente_id' );
+				$conditions['Structurereferente.id'] = $structurereferente_id;
+			}
+
+			$query = array(
+				'fields' => array_merge(
+					$this->Typeorient->fields(),
+					$this->fields()
+				),
+				'joins' => array(
+					$this->join( 'Typeorient', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => $conditions,
+				'contain' => false,
+				'order' => array(
+					'Typeorient.lib_type_orient ASC',
+					'Structurereferente.lib_struc ASC',
+				)
+			);
+
+			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
+			$results = $Session->read( $sessionKey );
+
+			if( $results === null ) {
+				$results = array();
+
+				$tmps = $this->find( 'all', $query );
+
+				if( !empty( $tmps ) ) {
+					foreach( $tmps as $tmp ) {
+						// Cas optgroup, structurereferente_id
+						if( !isset( $results['optgroup'][$tmp['Typeorient']['lib_type_orient']] ) ) {
+							$results['optgroup'][$tmp['Typeorient']['lib_type_orient']] = array();
+						}
+						$results['optgroup'][$tmp['Typeorient']['lib_type_orient']][$tmp['Structurereferente']['id']] = $tmp['Structurereferente']['lib_struc'];
+
+						// Cas seulement les ids
+						$results['ids'][] = $tmp['Structurereferente']['id'];
+
+						// Cas typeorient_id_structurereferente_id
+						$results['normal']["{$tmp['Structurereferente']['typeorient_id']}_{$tmp['Structurereferente']['id']}"] = $tmp['Structurereferente']['lib_struc'];
+
+                        // Cas du find list
+						$results['list'][$tmp['Structurereferente']['id']] = $tmp['Structurereferente']['lib_struc'];
+					}
+				}
+
+				$Session->write( $sessionKey, $results );
+			}
+
+			if( !empty( $results ) ) {
+				// Cas optgroup, structurereferente_id
+				if( $options['optgroup'] ) {
+					$results = $results['optgroup'];
+				}
+				// Cas où l'on ne veut que les ids des structures référentes
+				else if( $options['ids'] ) {
+					$results = $results['ids'];
+				}
+				// Cas où l'on veut les libellés des structures référentes
+				else if( $options['list'] ) {
+					$results = $results['list'];
+				}
+				// Cas typeorient_id_structurereferente_id
+				else {
+					$results = $results['normal'];
+				}
+			}
+			
+			return $results;
 		}
 	}
 ?>

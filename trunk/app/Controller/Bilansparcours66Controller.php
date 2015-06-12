@@ -15,7 +15,7 @@
 	 */
 	class Bilansparcours66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Fileuploader', 'Cake1xLegacy.Ajax' );
+		public $helpers = array( 'Default', 'Default2', 'Fileuploader', 'Cake1xLegacy.Ajax', 'Default3' => array('className' => 'Default.DefaultDefault') );
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Dossierep', 'Typeorient'  );
 
@@ -100,6 +100,9 @@
 
 				$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins <>' => 'C' ) ); // Liste des services instructeurs en lien avec un Service Social
 			}
+			
+			$Entretien = ClassRegistry::init( 'Entretien' );
+			$options = array_merge($options, $Entretien->options());
 
 			$this->set( compact( 'options' ) );
 		}
@@ -981,6 +984,38 @@
 			else {
 				$typeformulaire = $bilanparcours66['Bilanparcours66']['typeformulaire'];
 			}
+
+			$Entretien = ClassRegistry::init( 'Entretien' );
+			$entretiens = $Entretien->find(
+				'all',
+				array(
+					'fields' => array(
+						'Entretien.id',
+						'Entretien.personne_id',
+						'Entretien.dateentretien',
+						'Entretien.arevoirle',
+						'Entretien.typeentretien',
+						'Structurereferente.lib_struc',
+						$Entretien->Referent->sqVirtualField( 'nom_complet' ),
+						'Objetentretien.name',
+						'Actioncandidat.name',
+						'Entretien.commentaireentretien',
+					),
+					'contain' => array(
+						'Structurereferente',
+						'Referent',
+						'Objetentretien',
+						'Actioncandidat'
+					),
+					'conditions' => array(
+						'Entretien.personne_id' => $personne_id
+					),
+					'order' => array(
+						'Entretien.dateentretien DESC', 'Entretien.id DESC'
+					)
+				)
+			);
+			$this->set( compact( 'entretiens' ) );
 
 			/// Si le nombre de dossiers d'EP en cours est > 0,
 			/// alors on ne peut pas créer de bilan pour la thématique concernée par le dossier EP

@@ -4,6 +4,7 @@
 		$this->pageTitle = __d( 'entretien', "Entretiens::{$this->action}" )
 	);
 	echo $this->element( 'ancien_dossier' );
+	$departement = Configure::read( 'Cg.departement' );
 ?>
 <br />
 	<div id="tabbedWrapper" class="tabs">
@@ -39,7 +40,7 @@
 								<th>Type d'entretien</th>
 								<th>Objet de l'entretien</th>
 								<th>A revoir le</th>
-								<th class="action" colspan="5">Action</th>
+								<th class="action" colspan="<?php echo ( $departement == 66 ? 6 : 5 );?>">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -47,40 +48,65 @@
 							<?php
 								$nbFichiersLies = 0;
 								$nbFichiersLies = ( isset( $entretien['Fichiermodule'] ) ? count( $entretien['Fichiermodule'] ) : 0 );
+								
+								$cells = array(
+									h( date_short(  $entretien['Entretien']['dateentretien'] ) ),
+									h( $entretien['Structurereferente']['lib_struc'] ),
+									h( $entretien['Referent']['nom_complet'] ),
+									h( Set::enum( $entretien['Entretien']['typeentretien'], $options['Entretien']['typeentretien'] ) ),
+									h( $entretien['Objetentretien']['name'] ),
+									h( $this->Locale->date( 'Date::miniLettre', $entretien['Entretien']['arevoirle'] ) ),
+									$this->Xhtml->viewLink(
+										'Voir le contrat',
+										array( 'controller' => 'entretiens', 'action' => 'view', $entretien['Entretien']['id'] ),
+										$this->Permissions->checkDossier( 'entretiens', 'index', $dossierMenu )
+									),
+									$this->Xhtml->editLink(
+										'Editer l\'orientation',
+										array( 'controller' => 'entretiens', 'action' => 'edit', $entretien['Entretien']['id'] ),
+										$this->Permissions->checkDossier( 'entretiens', 'edit', $dossierMenu )
+									),
+								);
+								
+								$cells = $departement == 66 ?
+									array_merge(
+										$cells,
+										array(
+											$this->Default2->button(
+												'print',
+												array( 'controller' => 'entretiens', 'action' => 'impression',
+												$entretien['Entretien']['id'] ),
+												array(
+													'class' => 'action_impression',
+													'enabled' => ($this->Permissions->checkDossier( 'entretiens', 'impression', $dossierMenu ))
+												)
+											),
+										)	
+									) : $cells
+								;
+								
+								$cells = array_merge(
+									$cells,
+									array(
+										$this->Xhtml->deleteLink(
+											'Supprimer l\'entretien',
+											array( 'controller' => 'entretiens', 'action' => 'delete', $entretien['Entretien']['id'] ),
+											$this->Permissions->checkDossier( 'entretiens', 'delete', $dossierMenu )
+										),
+										$this->Xhtml->fileLink(
+											'Fichiers liés',
+											array( 'controller' => 'entretiens', 'action' => 'filelink', $entretien['Entretien']['id'] ),
+											$this->Permissions->checkDossier( 'entretiens', 'filelink', $dossierMenu )
+										),
+										h( '('.$nbFichiersLies.')' )
+									)
+								);
 
 								echo $this->Xhtml->tableCells(
-										array(
-											h( date_short(  $entretien['Entretien']['dateentretien'] ) ),
-											h( $entretien['Structurereferente']['lib_struc'] ),
-											h( $entretien['Referent']['nom_complet'] ),
-											h( Set::enum( $entretien['Entretien']['typeentretien'], $options['Entretien']['typeentretien'] ) ),
-											h( $entretien['Objetentretien']['name'] ),
-											h( $this->Locale->date( 'Date::miniLettre', $entretien['Entretien']['arevoirle'] ) ),
-											$this->Xhtml->viewLink(
-												'Voir le contrat',
-												array( 'controller' => 'entretiens', 'action' => 'view', $entretien['Entretien']['id'] ),
-												$this->Permissions->checkDossier( 'entretiens', 'index', $dossierMenu )
-											),
-											$this->Xhtml->editLink(
-												'Editer l\'orientation',
-												array( 'controller' => 'entretiens', 'action' => 'edit', $entretien['Entretien']['id'] ),
-												$this->Permissions->checkDossier( 'entretiens', 'edit', $dossierMenu )
-											),
-											$this->Xhtml->deleteLink(
-												'Supprimer l\'entretien',
-												array( 'controller' => 'entretiens', 'action' => 'delete', $entretien['Entretien']['id'] ),
-												$this->Permissions->checkDossier( 'entretiens', 'delete', $dossierMenu )
-											),
-											$this->Xhtml->fileLink(
-												'Fichiers liés',
-												array( 'controller' => 'entretiens', 'action' => 'filelink', $entretien['Entretien']['id'] ),
-												$this->Permissions->checkDossier( 'entretiens', 'filelink', $dossierMenu )
-											),
-											h( '('.$nbFichiersLies.')' )
-										),
-										array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-										array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
-									);
+									$cells,
+									array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+									array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+								);
 								?>
 							<?php endforeach;?>
 						</tbody>
