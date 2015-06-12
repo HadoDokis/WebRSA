@@ -33,7 +33,7 @@
 
 	echo $this->Form->input( 'Search.Orientstruct.typeorient_id', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $options['typesorients'] ) );
 
-	echo $this->Form->input( 'Search.NvOrientstruct.structurereferente_id', array( 'label' => 'Structure référente cible', 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'] ) );
+	echo $this->Form->input( 'Search.NvOrientstruct.structurereferente_id', array( 'label' => __d( 'criterestransfertspdvs93', 'NvStructurereferente.lib_struc' ), 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'] ) );
 
 	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
@@ -47,6 +47,8 @@
 			echo $this->Html->tag( 'p', 'Aucun résultat', array( 'class' => 'notice' ) );
 		}
 		else {
+			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
 			$pagination = $this->Xpaginator2->paginationBlock( 'Dossier', $this->passedArgs );
 			echo $pagination;
 
@@ -72,11 +74,11 @@
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 					<tbody>
 						<tr>
-							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 							<td>'.Hash::get( $result, 'Structurereferenteparcours.lib_struc' ).'</td>
 						</tr>
 						<tr>
-							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 							<td>'.Hash::get( $result, 'Referentparcours.nom_complet' ).'</td>
 						</tr>
 					</tbody>

@@ -5,6 +5,8 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	$departement = Configure::read( 'Cg.departement' );
 ?>
 <h1><?php echo $this->pageTitle; ?></h1>
 
@@ -67,7 +69,7 @@
 			echo $this->Form->input( 'Critere.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 			echo $this->Form->input( 'Critere.hasreferent', array( 'label' => 'Possède un référent ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 			echo $this->Form->input( 'Critere.isinscritpe', array( 'label' => 'Inscrit au Pôle Emploi ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
-			if( Configure::read( 'Cg.departement' ) == 58 ) {
+			if( $departement == 58 ) {
 				echo $this->Xform->input( 'Activite.act', array( 'label' => 'Code activité', 'type' => 'select', 'empty' => true, 'options' => $act ) );
 			}
 		?>
@@ -89,7 +91,7 @@
 				<?php echo $this->Form->input( 'Orientstruct.date_valid_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_valid_to ) );?>
 			</fieldset>
 
-	<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+	<?php if( $departement == 66 ):?>
 		<fieldset><legend>Orienté par</legend>
 			<script type="text/javascript">
 				document.observe("dom:loaded", function() {
@@ -111,14 +113,14 @@
 </script>
 
 		<?php
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
+			if( $departement == 93 ) {
 				echo $this->Form->input( 'Orientstruct.origine', array( 'label' => __d( 'orientstruct', 'Orientstruct.origine' ), 'type' => 'select', 'options' => $options['Orientstruct']['origine'], 'empty' => true ) );
 			}
 		?>
 
 		<?php echo $this->Form->input( 'Orientstruct.typeorient_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient' ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
 
-		<?php echo $this->Form->input( 'Orientstruct.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
+		<?php echo $this->Form->input( 'Orientstruct.structurereferente_id', array( 'label' => ( $departement == 93 ? 'Structure référente' : 'Nom de la structure' ), 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
 
 		<?php echo $this->Form->input( 'Orientstruct.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Orientstruct.serviceinstructeur_id', array( 'label' => __( 'lib_service' ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
@@ -139,6 +141,9 @@
 <?php if( isset( $orients ) ):?>
 
 	<h2 class="noprint">Résultats de la recherche</h2>
+	<?php
+		$domain_search_plugin = ( $departement == 93 ) ? 'search_plugin_93' : 'search_plugin';
+	?>
 
 	<?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
 
@@ -151,7 +156,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Commune', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
-					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+					<?php if( $departement == 93 ):?>
 						<th><?php echo $this->Xpaginator->sort( 'Préconisation d\'orientation', 'Orientstruct.propo_algo' );?></th>
 						<th><?php echo $this->Xpaginator->sort( __d( 'orientstruct', 'Orientstruct.origine' ), 'Orientstruct.origine' );?></th>
 					<?php endif;?>
@@ -171,7 +176,7 @@
 				<?php foreach( $orients as $index => $orient ):?>
 					<?php
 						$activite = '';
-						if( Configure::read( 'Cg.departement' ) == 58 ) {
+						if( $departement == 58 ) {
 							$activite = '<tr>
 								<th>Code activité</th>
 								<td>'.value( $act, Hash::get( $orient, 'Activite.act' ) ).'</td>
@@ -213,11 +218,11 @@
 									<td>'.Set::enum( $orient['Prestation']['rolepers'], $rolepers ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 									<td>'.Hash::get( $orient, 'Structurereferenteparcours.lib_struc' ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $orient, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 								'.$activite.'
@@ -235,7 +240,7 @@
 							h( date_short( $orient['Orientstruct']['date_valid'] ) )
 						);
 
-						if( Configure::read( 'Cg.departement' ) == 93 ) {
+						if( $departement == 93 ) {
 							$cells[] = h( Set::enum( $orient['Orientstruct']['propo_algo'], $typeorient ) );
 							$cells[] = h( Set::enum( $orient['Orientstruct']['origine'], $options['Orientstruct']['origine'] ) );
 						}

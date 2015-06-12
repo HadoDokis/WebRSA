@@ -1,4 +1,8 @@
-<?php $this->pageTitle = 'Rendez-vous de la personne'; ?>
+<?php
+	$this->pageTitle = 'Rendez-vous de la personne';
+
+	$departement = Configure::read( 'Cg.departement' );
+?>
 
 <h1>Rendez-vous</h1>
 <?php echo $this->element( 'ancien_dossier' );?>
@@ -34,8 +38,8 @@
 	<thead>
 		<tr>
 			<th>Nom de la personne</th>
-			<th>Type de structure</th>
-			<th>Nom du prescripteur</th>
+			<th><?php echo $departement == 93 ? 'Structure proposant le RDV' : 'Type de structure';?></th>
+			<th><?php echo $departement == 93 ? 'Personne proposant le RDV' : 'Nom du prescripteur';?></th>
 			<th>Permanence liée</th>
 			<th>Objet du RDV</th>
 			<th>Statut du RDV</th>

@@ -1,4 +1,8 @@
-<?php $this->pageTitle = 'Rendez-vous';?>
+<?php
+	$this->pageTitle = 'Rendez-vous';
+
+	$departement = Configure::read( 'Cg.departement' );
+?>
 
 <h1><?php echo 'Rendez-vous';?></h1>
 
@@ -6,11 +10,11 @@
 	<table>
 		<tbody>
 			<tr class="even">
-				<th><?php echo __d( 'structurereferente', 'Structurereferente.lib_struc' );?></th>
+				<th><?php echo $departement == 93 ? 'Structure proposant le RDV' : __d( 'structurereferente', 'Structurereferente.lib_struc' );?></th>
 				<td><?php echo Set::classicExtract( $rendezvous, 'Structurereferente.lib_struc' );?></td>
 			</tr>
 			<tr class="odd">
-				<th><?php echo __( 'Référent' );?></th>
+				<th><?php echo $departement == 93 ? 'Personne proposant le RDV' : __( 'Référent' );?></th>
 				<td><?php echo Set::classicExtract( $rendezvous, 'Referent.nom_complet' );?></td>
 			</tr>
 			<tr class="even">

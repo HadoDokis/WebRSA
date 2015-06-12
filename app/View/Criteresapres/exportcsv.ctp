@@ -12,8 +12,8 @@ if (Configure::read('Cg.departement') == 93) {
                 'Nature de l\'aide',
                 'Type de demande APRE',
                 'Activité du bénéficiaire',
-                __d('search_plugin', 'Structurereferenteparcours.lib_struc'),
-                __d('search_plugin', 'Referentparcours.nom_complet'),
+                __d('search_plugin_93', 'Structurereferenteparcours.lib_struc'),
+                __d('search_plugin_93', 'Referentparcours.nom_complet'),
             )
     );
 } else {

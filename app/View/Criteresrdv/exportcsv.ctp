@@ -1,6 +1,9 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
+	$departement = Configure::read( 'Cg.departement' );
+	$domain_search_plugin = ( $departement == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
 	$this->Csv->addRow(
 		array_merge(
 			array(
@@ -15,9 +18,9 @@
 				'Complément adresse 2',
 				'Code postal',
 				'Commune',
-				'Structure référente',
+				( $departement == 93 ) ? 'Structure proposant le RDV' : 'Structure référente',
 				'Adresse de la structure',
-				'Référent',
+				( $departement == 93 ) ? 'Personne proposant le RDV' : 'Référent',
 				'Objet du RDV',
 			),
 			( ( isset( $useThematiques ) && $useThematiques ) ? array( 'Thématiques du RDV' ) : array() ),
@@ -28,8 +31,8 @@
 				'Objectif du RDV',
 				'Commentaire suite RDV',
 				'Etat du droit',
-				__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
-				__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+				__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ),
+				__d( $domain_search_plugin, 'Referentparcours.nom_complet' ),
 			)
 		)
 	);

@@ -1,5 +1,6 @@
 <?php
-	$this->pageTitle = 'Référents liés à la personne';
+	$departement = Configure::read( 'Cg.departement' );
+	$this->pageTitle = $departement == 93 ? 'Personne chargée du suivi' : 'Référents liés à la personne';
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -23,12 +24,12 @@
 ?>
 
 	<fieldset>
-		<legend>Structures référentes</legend>
+		<legend><?php echo $departement == 93 ? 'Structure de suivi' : 'Structures référentes';?></legend>
 		<?php
 			echo $this->Xform->input( 'PersonneReferent.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
 
-			echo $this->Xform->input( 'PersonneReferent.structurereferente_id', array( 'label' => required( 'Structure référente' ), 'type' => 'select' , 'options' => $options['structuresreferentes'], 'empty' => true ) );
-			echo $this->Xform->input( 'PersonneReferent.referent_id', array( 'label' => required( 'Référents' ), 'type' => 'select' , 'options' => $options['referents'], 'empty' => true ) );
+			echo $this->Xform->input( 'PersonneReferent.structurereferente_id', array( 'label' => required( $departement == 93 ? 'Structure de suivi' : 'Structure référente' ), 'type' => 'select' , 'options' => $options['structuresreferentes'], 'empty' => true ) );
+			echo $this->Xform->input( 'PersonneReferent.referent_id', array( 'label' => required( $departement == 93 ? 'Personne chargée du suivi' : 'Référents' ), 'type' => 'select' , 'options' => $options['referents'], 'empty' => true ) );
 
 			echo $this->Xform->input( 'PersonneReferent.dddesignation', array( 'label' => required( 'Début de désignation' ), 'type' => 'date' , 'dateFormat' => 'DMY' ) );
 

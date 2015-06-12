@@ -35,4 +35,4 @@ msgid "VxStructurereferente.lib_struc"
 msgstr "Structure référente source"
 
 msgid "NvStructurereferente.lib_struc"
-msgstr "Structure référente cible"
+msgstr "Transféré vers"

@@ -1,6 +1,10 @@
-<?php  $this->pageTitle = 'Référents liés à la personne';?>
+<?php
+	$departement = Configure::read( 'Cg.departement' );
 
-<h1>Référents</h1>
+	$this->pageTitle = $departement == 93 ? 'Personne chargée du suivi' : 'Référents liés à la personne';
+?>
+
+<h1><?php echo $this->pageTitle;?></h1>
 <?php echo $this->element( 'ancien_dossier' );?>
 	<?php if( empty( $personnes_referents ) ):?>
 		<p class="notice">Cette personne ne possède pas encore de référents.</p>
@@ -35,11 +39,11 @@
 <table class="default2">
 	<thead>
 		<tr>
-			<th>Nom/Prénom Référent</th>
+			<th><?php echo $departement == 93 ? 'Personne chargée du suivi' : 'Nom/Prénom Référent'?></th>
 			<th>Fonction</th>
 			<th>N° Téléphone</th>
 			<th>Email</th>
-			<th>Structure référente</th>
+			<th><?php echo $departement == 93 ? 'Structure de suivi' : 'Structure référente'?></th>
 			<th>Date de désignation</th>
 			<th>Fin de désignation</th>
 			<th colspan="4" class="action">Actions</th>

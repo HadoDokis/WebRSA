@@ -138,7 +138,11 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 
     <h2 class="noprint">Résultats de la recherche</h2>
 
-    <?php echo $pagination;?>
+    <?php
+		$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+
+		echo $pagination;
+	?>
     <?php if( is_array( $apres ) && count( $apres ) > 0  ):?>
 
         <table id="searchResults" class="tooltips">
@@ -181,11 +185,11 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                                     <td>'.$apre['Personne']['nir'].'</td>
                                 </tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
 									<td>'.Hash::get( $apre, 'Structurereferenteparcours.lib_struc' ).'</td>
 								</tr>
 								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $apre, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
                             </tbody>

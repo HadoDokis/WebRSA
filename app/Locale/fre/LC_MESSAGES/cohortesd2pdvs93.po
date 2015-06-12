@@ -40,13 +40,13 @@ msgid "Search.Personne.prenom"
 msgstr "Prénom"
 
 msgid "Search.Questionnaired2pdv93"
-msgstr "Rechercher par suivi"
+msgstr "Recherche par D1/D2"
 
 msgid "Search.Questionnaired1pdv93.annee"
 msgstr "Année de suivi"
 
 msgid "Search.Rendezvous.structurereferente_id"
-msgstr "PDV effectuant le suivi"
+msgstr "Structure proposant le 1er RDV"
 
 msgid "Search.Questionnaired2pdv93.exists"
 msgstr "Possédant déjà un formulaire D2 pour l'année de suivi"

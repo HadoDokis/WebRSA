@@ -1626,8 +1626,12 @@
 				'Situationdossierrsa.etatdosrsa',
 				'Donnees.nivetu',
 				'Donnees.hispro',
-				'Structurereferenteparcours.lib_struc',
-				'Referentparcours.nom_complet',
+				'Structurereferenteparcours.lib_struc' => array(
+					'label' => __d( 'search_plugin_93', 'Structurereferenteparcours.lib_struc' )
+				),
+				'Referentparcours.nom_complet' => array(
+					'label' => __d( 'search_plugin_93', 'Referentparcours.nom_complet' )
+				),
 				'Deractromev3.familleromev3',
 				'Deractromev3.appellationromev3',
 				'Actrechromev3.familleromev3',
@@ -1665,8 +1669,12 @@
 			'Adresse.nomcom',
 			'Donnees.libsecactrech',
 			'Donnees.libemploirech',
-			'Structurereferenteparcours.lib_struc',
-			'Referentparcours.nom_complet',
+			'Structurereferenteparcours.lib_struc' => array(
+				'label' => __d( 'search_plugin_93', 'Structurereferenteparcours.lib_struc' )
+			),
+			'Referentparcours.nom_complet' => array(
+				'label' => __d( 'search_plugin_93', 'Referentparcours.nom_complet' )
+			),
 			'Donnees.difsoc',
 			'Donnees.nataccosocindi',
 			'Donnees.difdisp',

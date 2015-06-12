@@ -1,4 +1,6 @@
 <?php
+	$departement = Configure::read( 'Cg.departement' );
+
 	/*
 	* INFO: Parfois la variable a le nom personne_id, parfois personneId
 	* 	On met tout le monde d'accord (en camelcase)
@@ -58,7 +60,7 @@
 		</h2>
 
 <?php
-	if( Configure::read( 'Cg.departement' ) == 66 ) {
+	if( $departement == 66 ) {
         $isOa = false;
         $structureNonOAId = (array) Configure::read( 'Nonorganismeagree.Structurereferente.id' );
         $typestructureByIds = Hash::combine( $dossierMenu, 'Foyer.Personne.{n}.Orientstruct.structurereferente_id', 'Foyer.Personne.{n}.Structurereferente.typestructure' );
@@ -130,15 +132,15 @@
 			$ancienAllocataire = ( Configure::read( 'AncienAllocataire.enabled' ) && Hash::get( $personne, 'ancienallocataire' ) );
 
 			if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' || $ancienAllocataire ) {
-				if( Configure::read( 'Cg.departement' ) == '66' ) {
+				if( $departement == '66' ) {
                     $count = $personne['Memo']['nb_memos_lies'];
 					$subAllocataire["Mémos ({$count})"] = array( 'url' => array( 'controller' => 'memos', 'action' => 'index', $personne['id'] ) );
 				}
 
 				// Droit
 				$subAllocataire['Droit'] = array(
-					( Configure::read( 'Cg.departement' ) == 93 ? 'DSP' : 'DSP d\'origine' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] ) ),
-					( Configure::read( 'Cg.departement' ) == 66 ? 'DSPs mises à jour' : 'MAJ DSP' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] ) ),
+					( $departement == 93 ? 'DSP' : 'DSP d\'origine' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] ) ),
+					( $departement == 66 ? 'DSPs mises à jour' : 'MAJ DSP' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] ) ),
 				);
 
 				if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
@@ -157,15 +159,15 @@
 				// Accompagnement du parcours
 				$subAllocataire['Accompagnement du parcours'] = array(
 					'Chronologie parcours' => array( 'url' => '#' ),
-					'Référent du parcours' => array( 'url' => array( 'controller' => 'personnes_referents', 'action' => 'index', $personne['id'] ) ),
+					( $departement == 93 ? 'Personne chargée du suivi' : 'Référent du parcours' ) => array( 'url' => array( 'controller' => 'personnes_referents', 'action' => 'index', $personne['id'] ) ),
 					'Gestion RDV' => array( 'url' => array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] ) ),
 				);
 
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
+				if( $departement == 66 ) {
 					$subAllocataire['Accompagnement du parcours']['Bilan du parcours'] = array( 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne['id'] ) );
 				}
 
-				if( Configure::read( 'Cg.departement' ) == 93 ) {
+				if( $departement == 93 ) {
 					$subAllocataire['Accompagnement du parcours']['Questionnaires D1'] = array(
 						'url' => array( 'controller' => 'questionnairesd1pdvs93', 'action' => 'index', $personne['id'] )
 					);
@@ -176,14 +178,14 @@
 				}
 
 				$contratcontroller = 'contratsinsertion';
-				if( Configure::read( 'Cg.departement' ) == 93 ) {
+				if( $departement == 93 ) {
 					$contratcontroller = 'cers93';
 				}
 				$subAllocataire['Accompagnement du parcours']['Contrats'] = array(
 					'url' => '#',
 					'CER' => array( 'url' => array( 'controller' => $contratcontroller, 'action' => 'index', $personne['id'] ) ),
 				);
-				if ( Configure::read( 'Cg.departement' ) == 66 ){
+				if ( $departement == 66 ){
 					$subAllocataire['Accompagnement du parcours']['Contrats']['CUI'] = array( 'url' => array( 'controller' => 'cuis66', 'action' => 'index', $personne['id'] ) );
 				}
 				$subAllocataire['Accompagnement du parcours']['Actualisation suivi'] = array(
@@ -191,7 +193,7 @@
 					'Entretiens' => array( 'url' => array( 'controller' => 'entretiens', 'action' => 'index', $personne['id'] ) ),
 				);
 
-				if( Configure::read( 'Cg.departement' ) == 93 ) {
+				if( $departement == 93 ) {
 					$subAllocataire['Accompagnement du parcours']['Actualisation suivi']['Relances'] = array( 'url' => array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $personne['id'] ) );
 				}
 
@@ -203,11 +205,11 @@
 					'url' => '#',
 					'Fiche de candidature' => array(
 						'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] ),
-						'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
+						'disabled' => ( $departement != 66 )
 					),
 					'Fiche de prescription' => array(
 						'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'index', $personne['id'] ),
-						'disabled' => ( Configure::read( 'Cg.departement' ) != 93 )
+						'disabled' => ( $departement != 93 )
 					)
 				);
 
@@ -218,13 +220,13 @@
 					)
 				);
 
-				if( Configure::read( 'Cg.departement' ) != 66 ) {
+				if( $departement != 66 ) {
 					$subAllocataire['Accompagnement du parcours']['Mémos'] = array(
 						'url' => array( 'controller' => 'memos', 'action' => 'index', $personne['id'] ),
 					);
 				}
 
-				if( Configure::read( 'Cg.departement' ) == 93 ) {
+				if( $departement == 93 ) {
 					$subAllocataire['Accompagnement du parcours'][__d( 'historiqueemploi', 'Historiqueemplois::index' )] = array(
 						'url' => array( 'controller' => 'historiqueemplois', 'action' => 'index', $personne['id'] ),
 					);
@@ -259,7 +261,7 @@
 		);
 
 		// Dossier PCG (CG 66)
-		if( Configure::read( 'Cg.departement' ) == 66 ) {
+		if( $departement == 66 ) {
 			$items['PCGs'] = array(
 				'Dossier PCG' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossier['Foyer']['id'] ) ),
 				'Corbeille PCG' => array( 'url' => array( 'controller' => 'foyers', 'action' => 'corbeille', $dossier['Foyer']['id'] ) )
@@ -275,7 +277,7 @@
 		);
 
 		// Préconisation d'orientation
-		if( Configure::read( 'Cg.departement' ) != 58 ) {
+		if( $departement != 58 ) {
 			$itemsPreconisations = array();
 
 			if( !empty( $dossier['Foyer']['Personne'] ) ) {

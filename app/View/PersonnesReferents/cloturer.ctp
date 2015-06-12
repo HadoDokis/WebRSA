@@ -1,5 +1,6 @@
 <?php
-	$this->pageTitle = 'Clôture du référent';
+	$departement = Configure::read( 'Cg.departement' );
+	$this->pageTitle = $departement == 93 ? 'Clôture de la personne chargée du suivi' : 'Clôture du référent';
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -15,8 +16,8 @@
 				array(
 					'PersonneReferent.id' => array( 'type' => 'hidden' ),
 					'PersonneReferent.personne_id' => array( 'type' => 'hidden' ),
-					'PersonneReferent.structurereferente_id' => array( 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['structurereferente_id'] ),
-					'PersonneReferent.referent_id' => array( 'type' => 'select', 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['referent_id'] ),
+					'PersonneReferent.structurereferente_id' => array( 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['structurereferente_id'], 'label' => $departement == 93 ? 'Structure de suivi' : 'Structure référente' ),
+					'PersonneReferent.referent_id' => array( 'type' => 'select', 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['referent_id'], 'label' => $departement == 93 ? 'Personne chargée du suivi' : 'Référent' ),
 					'PersonneReferent.dddesignation' => array( 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['dddesignation'] )
 				),
 				array(
