@@ -89,7 +89,7 @@
 			// à intégrer à la fonction view pour ne pas avoir d'énormes variables
 			if( $this->action == 'view' ) {
 				$this->set( 'numcontrat', (array)Hash::get( $this->Dossier->Foyer->Personne->Contratinsertion->enums(), 'Contratinsertion' ) );
-				$this->set( 'enumcui', array_merge( 
+				$this->set( 'enumcui', array_merge(
 					$this->Dossier->Foyer->Personne->Cui->enums(),
 					$this->Dossier->Foyer->Personne->Cui->Cui66->enums(),
 					$this->Dossier->Foyer->Personne->Cui->Cui66->Decisioncui66->enums()
@@ -431,12 +431,13 @@
 							'Contratinsertion.dd_ci',
 							'Contratinsertion.df_ci',
 							'Contratinsertion.num_contrat',
+							'Contratinsertion.rg_ci',
 							'Contratinsertion.decision_ci',
 							'Contratinsertion.datevalidation_ci'
 						),
 						'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
 						'contain' => false,
-						'order' => array( 'Contratinsertion.date_saisi_ci DESC', 'Contratinsertion.rg_ci DESC', 'Contratinsertion.id DESC' )
+						'order' => array( 'Contratinsertion.dd_ci DESC', 'Contratinsertion.rg_ci DESC', 'Contratinsertion.id DESC' )
 					)
 				);
 				$personnesFoyer[$index]['Contratinsertion'] = ( !empty( $tContratinsertion ) ? $tContratinsertion['Contratinsertion'] : array() );
@@ -451,12 +452,12 @@
 								$this->Dossier->Foyer->Personne->Cui->Cui66->Decisioncui66->fields()
 							),
 							'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-							'joins' => array( 
+							'joins' => array(
 								$this->Dossier->Foyer->Personne->Cui->join( 'Cui66' ),
 								$this->Dossier->Foyer->Personne->Cui->Cui66->join( 'Decisioncui66' ),
 							),
 							'contain' => false,
-							'order' => array( 
+							'order' => array(
 								'Cui.faitle DESC',
 								'Cui.created DESC'
 							)

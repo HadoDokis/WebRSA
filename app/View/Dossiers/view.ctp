@@ -13,7 +13,7 @@
 
 	function theadPastDossierDEM( $pctValue = 10, $pctAction = 8 ) {
 
-        if( $departement == 66 ) {
+        if( Configure::read( 'Cg.departement' ) == 66 ) {
             return '<thead>
                     <tr>
                         <th>&nbsp;</th>
@@ -35,7 +35,7 @@
 	}
 
 	function theadPastDossierCJT( $pctValue = 10, $pctAction = 8 ) {
-		if( $departement == 66 ) {
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
             return '<thead>
                     <tr>
                         <th>&nbsp;</th>
@@ -382,11 +382,19 @@
 					<table>
 					<?php echo thead( 10 );?>
 						<tbody>
-							<tr class="even">
-								<th>Type de contrat</th>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] );?></td>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] );?></td>
-							</tr>
+							<?php if( $departement == 93 ):?>
+								<tr class="even">
+									<th>Rang du contrat</th>
+									<td><?php echo Set::classicExtract( $details, 'DEM.Contratinsertion.rg_ci' );?></td>
+									<td><?php echo Set::classicExtract( $details, 'CJT.Contratinsertion.rg_ci' );?></td>
+								</tr>
+							<?php else:?>
+								<tr class="even">
+									<th>Type de contrat</th>
+									<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] );?></td>
+									<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] );?></td>
+								</tr>
+							<?php endif;?>
 							<tr class="odd">
 								<th>Date de début</th>
 								<td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.dd_ci', $details) );?></td>
