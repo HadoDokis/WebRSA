@@ -595,6 +595,7 @@ pre {
 	font-size: 16px;
 	line-height: 20px;
 	clear: both;
+	padding-top: 35px;
 }
 .cake-error > a {
 	text-shadow: none;
