@@ -206,26 +206,27 @@
 			echo $this->Default2->subform(
 				array(
 					'Bilanparcours66.situationperso',
-					'Bilanparcours66.situationpro'
+					'Bilanparcours66.situationpro' => array( 'type' => 'hidden' )
 				),
 				array(
 					'options' => $options
 				)
 			);
 
+			/* INFO : situationpro, objinit, objatteint et objnew intégré dans situationperso
 			echo $this->Xhtml->tag(
 				'p',
 				'Bilan du parcours d\'insertion :',
 				array(
 					'style' => ' font-size: 12px; font-weight:bold;'
 				)
-			);
+			);*/
 
 			echo $this->Default2->subform(
 				array(
-					'Bilanparcours66.objinit',
-					'Bilanparcours66.objatteint',
-					'Bilanparcours66.objnew'
+					'Bilanparcours66.objinit' => array( 'type' => 'hidden' ),
+					'Bilanparcours66.objatteint' => array( 'type' => 'hidden' ),
+					'Bilanparcours66.objnew' => array( 'type' => 'hidden' )
 				),
 				array(
 					'options' => $options
