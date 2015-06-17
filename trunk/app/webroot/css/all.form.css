@@ -386,3 +386,7 @@ input[type=text],input[type=number],input[type=email],input[type=date],input[typ
 .Cui66AddEdit div.input.value.date{
 	margin: 0;
 }
+
+.bilansparcours66 #Bilanparcours66Situationperso{
+	height: 350px;
+}
