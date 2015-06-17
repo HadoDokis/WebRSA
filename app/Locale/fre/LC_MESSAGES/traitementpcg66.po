@@ -79,7 +79,7 @@ msgid "Traitementpcg66.datereception"
 msgstr "Date de réception"
 
 msgid "Traitementpcg66.datedepart"
-msgstr "Date de départ"
+msgstr "Date de départ (pour le calcul de l'échéance)"
 
 msgid "Traitementpcg66.dateecheance"
 msgstr "Date d'échéance"
