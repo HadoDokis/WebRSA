@@ -428,7 +428,7 @@ msgid "Bilanparcours66.bilanparcoursinsertion"
 msgstr "Bilan du parcours d'insertion:"
 
 msgid "Bilanparcours66.situationperso"
-msgstr "Situation personnelle et familiale (actualisation de la situation sociale)"
+msgstr "Reprendre la situation personnelle et familiale, la situation professionnelle et le bilan du parcours d'insertion"
 
 msgid "Bilanparcours66.situationpro"
 msgstr "Situation professionnelle (préciser les avancées réalisées)"
