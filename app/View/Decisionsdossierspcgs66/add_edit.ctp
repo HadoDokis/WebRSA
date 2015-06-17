@@ -380,7 +380,7 @@
         <?php
             echo $this->Default2->subform(
                 array(
-                    'Decisiondossierpcg66.orgtransmisdossierpcg66_id' => array( 'legend' =>  false, 'type' => 'radio', 'empty' => false, 'options' => $orgs )
+                    'Decisiondossierpcg66.orgtransmisdossierpcg66_id' => array( 'legend' =>  false, 'type' => 'radio', 'class' => 'uncheckable', 'empty' => false, 'options' => $orgs )
                 ),
                 array(
                     'options' => $options
