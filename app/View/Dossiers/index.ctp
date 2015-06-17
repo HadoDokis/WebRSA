@@ -116,6 +116,9 @@
 			else if( Configure::read( 'Cg.departement' ) != 93 ){
 				echo $this->Form->input( 'Orientstruct.exists', array( 'label' => 'Possède une orientation ? ', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 			}
+			if( Configure::read( 'Cg.departement' ) == 66 ){
+				echo $this->Form->input( 'Cui.exists', array( 'label' => 'Possède un CUI ? ', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
+			}
 
 			echo $this->Form->input( 'Personne.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 		?>

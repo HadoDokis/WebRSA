@@ -987,6 +987,13 @@
 	Configure::write( 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe', '3 months' );
 	
 	/**
+	 * Validation javascript - Options
+	 */
+	Configure::write( 'ValidationJS.enabled', true );
+	Configure::write( 'ValidationOnchange.enabled', true );
+	Configure::write( 'ValidationOnsubmit.enabled', true );
+	
+	/**
 	 * Valeurs par défaut des filtres pour le moteur de recherche par CUI.
 	 */
 	Configure::write(

@@ -143,7 +143,7 @@
 	echo '<fieldset id="CuiSituationsalarie"><legend>' . __d('cuis', 'Cui.situationsalarie') . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Search.Cui.niveauformation' => array( 'empty' => true, 'type' => 'select' ),
+				'Search.Cui.niveauformation' => array( 'empty' => true, 'type' => 'select', 'label' => __d( 'cuis', 'Cui.niveauformation' ) ),
 				'Search.Cui.inscritpoleemploi' => array( 'empty' => true, 'label' => __d( 'cuis', 'Cui.inscritpoleemploi' ) ),
 				'Search.Cui.sansemploi' => array( 'empty' => true, 'label' => __d( 'cuis', 'Cui.sansemploi' ) ),
 				'Search.Cui.beneficiairede' => array( 'empty' => true, 'label' => __d( 'cuis', 'Cui.beneficiairede' ) ),
