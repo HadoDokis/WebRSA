@@ -329,6 +329,16 @@
 				}
 			}
 
+			if( $this->Foyer->Personne->Behaviors->attached( 'LinkedRecords' ) === false ) {
+				$this->Foyer->Personne->Behaviors->attach( 'LinkedRecords' );
+			}
+
+			$hasCui = (string)Hash::get( $params, 'Cui.exists' );
+			if( in_array( $hasCui, array( '0', '1' ), true ) ) {
+				$exists = $this->Foyer->Personne->linkedRecordVirtualField( 'Cui' );
+				$conditions[] = $hasCui ? $exists : 'NOT ' . $exists;
+			}
+			
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				//Travailleur social chargé de l'évaluation
 				// Représente le "Nom du chargé de l'évaluation" lorsque l'on crée une orientation
