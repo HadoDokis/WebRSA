@@ -166,4 +166,5 @@
 		<?php endforeach;?>
 	} );
 </script>
+<?php echo $this->Observer->disableFormOnSubmit( 'Personne' );?>
 <?php endif;?>
