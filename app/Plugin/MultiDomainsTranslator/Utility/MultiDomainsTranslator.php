@@ -46,7 +46,7 @@
 				// Recherche par le model contenu dans $singular
 				$posPoint = strpos($singular, '.');
 				if( !isset( self::$_map[$singular] ) && $posPoint !== false && $posPoint < strlen($singular) ) {
-					list( $modelName ) = model_field( $singular );
+					list( $modelName ) = self::model_field( $singular );
 					$domain = Inflector::underscore( $modelName );
 					$params = self::_params();
 					self::_findTrad($singular, self::_existingDomains(array( $params['prefix'].$domain, $domain )), $args);
@@ -78,7 +78,7 @@
 				// Recherche par le model contenu dans $singular
 				$posPoint = strpos($singular, '.');
 				if( !isset( self::$_map[$memoryKey] ) && $posPoint !== false && $posPoint < strlen($singular) ) {
-					list( $modelName ) = model_field( $singular );
+					list( $modelName ) = self::model_field( $singular );
 					$domain = Inflector::underscore( $modelName );
 					$params = self::_params();
 					self::_findMultipleTrad($singular, $plural, $count, self::_existingDomains(array( $params['prefix'].$domain, $domain )), $args);
@@ -140,6 +140,20 @@
 			}
 			
 			return self::$_contexts;
+		}
+		
+		/**
+		 * Extrait le nom d'un modèle et d'un champ à partir d'un chemin.
+		 *
+		 * @param string $path ie. User.username, User.0.id
+		 * @return array( string $model, string $field ) ie. array( 'User', 'username' ), array( 'User', 'id' )
+		 */
+		public static function model_field( $path ) {
+			if( preg_match( "/(?<!\w)(\w+)(\.|\.[0-9]+\.)(\w+)$/", $path, $matches ) ) {
+				return array( $matches[1], $matches[3] );
+			}
+
+			return null;
 		}
 
 		/**

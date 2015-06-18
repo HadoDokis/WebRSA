@@ -116,7 +116,7 @@
 		/**
 		 * Test de la méthode MultiDomainsTranslator::translatePlural();
 		 */
-		public function testTranslatePlural(){
+		public function testTranslatePlural() {
 			MultiDomainsTranslator::reset();
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cd66', 'separator' => '_' ) );
 			
@@ -148,7 +148,7 @@
 		/**
 		 * Test de la méthode MultiDomainsTranslator::language();
 		 */
-		public function testLanguage(){
+		public function testLanguage() {
 			$_SESSION['Config']['language'] = 'eng';
 			$result = MultiDomainsTranslator::language();
 			$expected = 'eng';
@@ -163,7 +163,7 @@
 		/**
 		 * Test de la méthode MultiDomainsTranslator::reset();
 		 */
-		public function testReset(){
+		public function testReset() {
 			MultiDomainsTranslator::reset();
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cd66', 'separator' => '_' ) );
 			
@@ -187,7 +187,7 @@
 		/**
 		 * Test de la méthode MultiDomainsTranslator::urlDomains();
 		 */
-		public function testUrlDomains(){
+		public function testUrlDomains() {
 			MultiDomainsTranslator::reset();
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cd66', 'separator' => '_' ) );
 			
@@ -201,6 +201,23 @@
 			
 			$result = MultiDomainsTranslator::urlDomains();
 			$expected = array( 'cd93#foos#bar', 'foos#bar', 'cd93#foos', 'foos' );
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+		
+		/**
+		 * Test de la méthode MultiDomainsTranslator::model_field();
+		 */
+		public function testModel_field() {
+			$result = MultiDomainsTranslator::model_field( 'Testmodel.test' );
+			$expected = array( 'Testmodel', 'test' );
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			
+			$result = MultiDomainsTranslator::model_field( 'Testmodel.0.test' );
+			$expected = array( 'Testmodel', 'test' );
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			
+			$result = MultiDomainsTranslator::model_field( 'Testmodel' );
+			$expected = null;
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 	}
