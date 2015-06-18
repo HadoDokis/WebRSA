@@ -267,8 +267,5 @@
 		<?php endforeach;?>
 	} );
 </script>
-
-<script type="text/javascript">
-
-</script>
+<?php echo $this->Observer->disableFormOnSubmit( 'Personne' );?>
 <?php endif;?>

@@ -625,34 +625,28 @@
 					}
 
 					if( $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $datas, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-						$this->Contratinsertion->Cer93->Histochoixcer93->begin();
-
 						if( !empty( $datas ) ) {
+							$this->Contratinsertion->Cer93->Histochoixcer93->begin();
+							$success = true;
 
 							foreach( $datas as $key => $data ) {
-								$saved = $this->Contratinsertion->Cer93->Histochoixcer93->saveDecision( $data );
-
-								if( $saved ) {
-									$this->Contratinsertion->Cer93->Histochoixcer93->commit();
-									$this->Cohortes->release( $dossiers_ids );
-									$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
-									unset( $this->request->data['Histochoixcer93'] );
-								}
-								else {
-									$this->Contratinsertion->Cer93->Histochoixcer93->rollback();
-									$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-								}
+								$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveDecision( $data ) && $success;
 							}
-						}
-						else {
-							$this->Contratinsertion->Cer93->Histochoixcer93->rollback();
 
-							if( empty( $datas ) ) {
-								$this->Session->setFlash( 'Aucun élément à enregistrer', 'flash/notice' );
+							if( $success ) {
+								$this->Contratinsertion->Cer93->Histochoixcer93->commit();
+								$this->Cohortes->release( $dossiers_ids );
+								$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+								unset( $this->request->data['Histochoixcer93'] );
 							}
 							else {
+								$this->Contratinsertion->Cer93->Histochoixcer93->rollback();
 								$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 							}
+
+						}
+						else {
+							$this->Session->setFlash( 'Aucun élément à enregistrer', 'flash/notice' );
 						}
 					}
 					else {
