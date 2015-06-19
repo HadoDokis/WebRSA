@@ -101,6 +101,7 @@
 <?php $this->pageTitle = 'Dossier RSA '.$details['Dossier']['numdemrsa'];?>
 
 <div id="resumeDossier">
+	<div style="clear:all;overflow: none;height: 0;">&nbsp;</div>
 	<?php if( $departement == 93 ):?>
 		<ul class="actionMenu">
 			<li><?php
@@ -110,8 +111,6 @@
 				);
 			?></li>
 		</ul>
-		<?php else:?>
-			<h1>&nbsp;</h1>
 	<?php endif;?>
 
 	<table  id="ficheDossier">
