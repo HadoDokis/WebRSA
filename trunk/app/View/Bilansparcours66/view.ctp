@@ -67,11 +67,7 @@
 	<?php if( $bilanparcours66['Bilanparcours66']['bilanparcoursinsertion'] != '0' ) :?>
 		<fieldset><legend>Bilan du parcours d'insertion</legend>
 			<?php
-				echo $this->Xform->fieldValue( 'Bilanparcours66.situationperso', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.situationperso' ) );
-				echo $this->Xform->fieldValue( 'Bilanparcours66.situationpro', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.situationpro' ) );
-				echo $this->Xform->fieldValue( 'Bilanparcours66.objinit', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.objinit' ) );
-				echo $this->Xform->fieldValue( 'Bilanparcours66.objatteint', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.objatteint' ) );
-				echo $this->Xform->fieldValue( 'Bilanparcours66.objnew', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.objnew' ) );
+				echo '<div class="input value textarea"><span class="label">' . __d('bilanparcours66','Bilanparcours66.situationperso') . '</span><br /><span class="input">' . nl2br(Set::classicExtract( $bilanparcours66, 'Bilanparcours66.situationperso' )) . '</span></div>';
 			?>
 		</fieldset>
 	<?php endif;?>
