@@ -33,28 +33,6 @@
 	<h1><?php echo $this->pageTitle;?></h1>
 
 	<?php
-		// Affichage des entretiens
-		echo '<fieldset><legend>' . __d( 'bilansparcours66', 'fieldset_entretien' ) . '</legend>'
-			. $this->Default3->index(
-				$entretiens,
-				array(
-					'Entretien.dateentretien',
-					'Entretien.arevoirle',
-					'Structurereferente.lib_struc',
-					'Referent.nom_complet',
-					'Entretien.typeentretien',
-					'Objetentretien.name',
-					'Actioncandidat.name',
-					'Entretien.commentaireentretien',
-				),
-				array(
-					'paginate' => false,
-					'options' => $options,
-				)
-			)
-			. '</fieldset>'
-		;
-	
 		if( $this->action == 'add' ) {
 			echo $this->Form->create( 'Bilanparcours66', array( 'type' => 'post',  'id' => 'Bilan' ) );
 		}
@@ -202,6 +180,26 @@
 		);//bilanparcoursinsertion
 	?>
 	<fieldset id="BilanparcoursinsertionCheckbox" class="invisible">
+		<input type="button" id="cacheEntretien" value="<?php echo __d('bilansparcours66', 'Afficher/Cacher les entretiens');?>"/>
+		<?php
+			echo '<div class="scrollable" id="listeEntretiens">';
+			foreach($entretiens as $i => $entretien){
+				echo $this->Default3->view(
+					$entretien,
+					array(
+						'Entretien.dateentretien',
+						'Entretien.typeentretien',
+						'Entretien.commentaireentretien',
+					),
+					array(
+						'id' => 'TableEntretiens'.$i,
+						'th' => true,
+						'options' => $options,
+					)
+				);
+			}			
+			echo '</div>';
+		?>
 	<?php
 			echo $this->Default2->subform(
 				array(
@@ -1328,6 +1326,12 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
+		if ( $('listeEntretiens') ) {
+			$('listeEntretiens').hide();
+			$('cacheEntretien').observe('click', function(){
+				$('listeEntretiens').toggle()
+			});
+		}
 
         observeDisableFieldsetOnRadioValue(
 			'Bilan',
