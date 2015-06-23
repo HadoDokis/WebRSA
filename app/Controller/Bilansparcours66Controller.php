@@ -992,7 +992,7 @@
 				'first',
 				array(
 					'fields' => array(
-						'CONCAT ("Contratinsertion".structurereferente_id || \'_\' || "Contratinsertion".referent_id) AS "Contratinsertion__referent_id"',
+						'("Contratinsertion".structurereferente_id || \'_\' || "Contratinsertion".referent_id) AS "Contratinsertion__referent_id"',
 						'Contratinsertion.sitfam_ci',
 						'Contratinsertion.sitpro_ci',
 						'Contratinsertion.observ_benef',
