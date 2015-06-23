@@ -7,7 +7,7 @@ RELEASES_DIR="$WORK_DIR/releases"
 ChangeLog="ChangeLog.txt"
 ASNV="svn://svn.adullact.net/svnroot/webrsa"
 YUICOMPRESSOR="$HOME/bin/yuicompressor.jar"
-
+echo $APP_DIR
 # ------------------------------------------------------------------------------
 # INFO: rgadr sur un char -> sed -i "s/<RGADR>\([1-3]\)<\/RGADR>/<RGADR>0\1<\/RGADR>/" XXX
 # ------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ function __svnDirExists() {
 # ------------------------------------------------------------------------------
 
 function __clearDir() {
-	dir="$1"
+	local dir="$1"
 
 	if [ -d "$dir" ]
 	then
@@ -40,11 +40,11 @@ function __clearDir() {
 # ------------------------------------------------------------------------------
 
 function __clear() {
-	dir="$1"
+	local dir="$1"
+
 	__clearDir "$dir/tmp/cache/"
 	__clearDir "$dir/tmp/logs/"
 
-	dir="$1"
 	if [ -d "$dir/tmp/files/" ] ; then
 		rm -R "$dir/tmp/files/"
 	fi

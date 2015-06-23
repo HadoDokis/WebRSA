@@ -390,3 +390,19 @@ input[type=text],input[type=number],input[type=email],input[type=date],input[typ
 .bilansparcours66 #Bilanparcours66Situationperso{
 	height: 350px;
 }
+
+#listeEntretiens table th{
+	width: 22%;
+}
+
+#listeEntretiens{
+	height: 400px;
+	border: 1px solid #C0C0C0;
+}
+
+div.scrollable, fieldset.scrollable{
+	overflow: auto;
+	-moz-resize: vertical;
+	-webkit-resize: vertical;
+	resize: vertical;
+}
