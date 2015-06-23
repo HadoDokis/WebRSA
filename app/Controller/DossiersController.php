@@ -832,6 +832,10 @@
 			}
 
 			$this->set( 'optionsep', $optionsep );
+			
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$this->render('view66');
+			}
 		}
 
 		/**
