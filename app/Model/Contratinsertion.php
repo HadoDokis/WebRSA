@@ -2499,5 +2499,14 @@
 
 			return $options;
 		}
+		
+		public function options() {
+			$options = $this->enums();
+			
+			$options['Contratinsertion']['referent_id'] = $this->Referent->listOptions();
+			$options['Contratinsertion']['structurereferente_id'] = $this->Structurereferente->listOptions();
+			
+			return $options;
+		}
 	}
 ?>

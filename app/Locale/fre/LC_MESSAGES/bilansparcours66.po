@@ -71,3 +71,27 @@ msgstr "Au (inclus)"
 
 msgid "Actioncandidat.name"
 msgstr "Intitulé de l'action"
+
+msgid "Contratinsertion.referent_id"
+msgstr "Nom du référent chargé du suivi"
+
+msgid "Contratinsertion.sitfam_ci"
+msgstr "Situation personnelle et familiale"
+
+msgid "Contratinsertion.sitpro_ci"
+msgstr "Situation professionnelle"
+
+msgid "Contratinsertion.observ_benef"
+msgstr "Observation(s) éventuelle(s) du bénéficiaire du contrat"
+
+msgid "Contratinsertion.nature_projet"
+msgstr "Nature du projet "
+
+msgid "Contratinsertion.dd_ci"
+msgstr "Date de début de contrat"
+
+msgid "Contratinsertion.df_ci"
+msgstr "Date de fin de contrat"
+
+msgid "Contratinsertion.duree_engag"
+msgstr "Durée du contrat"

@@ -181,8 +181,9 @@
 	?>
 	<fieldset id="BilanparcoursinsertionCheckbox" class="invisible">
 		<input type="button" id="cacheEntretien" value="<?php echo __d('bilansparcours66', 'Afficher/Cacher les entretiens');?>"/>
+		<input type="button" id="cacheCER" value="<?php echo __d('bilansparcours66', 'Afficher/Cacher le dernier CER');?>"/>
 		<?php
-			echo '<div class="scrollable" id="listeEntretiens">';
+			echo '<div class="scrollable" id="listeEntretiens"><h3>' . __d('bilansparcours66', 'Entretiens') . '</h3>';
 			foreach($entretiens as $i => $entretien){
 				echo $this->Default3->view(
 					$entretien,
@@ -198,6 +199,26 @@
 					)
 				);
 			}			
+			echo '</div>';
+			
+			echo '<div class="scrollable" id="listeCERs"><h3>' . __d('bilansparcours66', 'Dernier CER') . '</h3>';
+			echo $this->Default3->view(
+				$contratsinsertion,
+				array(
+					'Contratinsertion.referent_id' => array( 'type' => 'select' ),
+					'Contratinsertion.sitfam_ci',
+					'Contratinsertion.sitpro_ci',
+					'Contratinsertion.observ_benef',
+					'Contratinsertion.nature_projet',
+					'Contratinsertion.duree_engag',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+				),
+				array(
+					'th' => true,
+					'options' => $options,
+				)
+			);			
 			echo '</div>';
 		?>
 	<?php
@@ -1328,8 +1349,12 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 	document.observe("dom:loaded", function() {
 		if ( $('listeEntretiens') ) {
 			$('listeEntretiens').hide();
+			$('listeCERs').hide();
 			$('cacheEntretien').observe('click', function(){
-				$('listeEntretiens').toggle()
+				$('listeEntretiens').toggle();
+			});
+			$('cacheCER').observe('click', function(){
+				$('listeCERs').toggle();
 			});
 		}
 
