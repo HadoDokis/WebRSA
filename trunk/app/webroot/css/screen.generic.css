@@ -1942,3 +1942,21 @@ body.contratsinsertion.add td.contratinsertion_duree_engag label, body.contratsi
 body.contratsinsertion.add td.contratinsertion_duree_engag div.select select, body.contratsinsertion.edit td.contratinsertion_duree_engag div.select select {
 	display: inline-block;
 }
+
+div.col-2{
+	width: 49%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+div.col-2.gauche{
+	padding-right: 1%;
+}
+
+div.col-2.droite{
+	padding-left: 1%;
+}
+
+#resumeDossier .col-2 table{
+	width: 100%;
+}
