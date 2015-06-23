@@ -136,6 +136,11 @@ class ContratsinsertionController extends AppController
                     $options, (array) Hash::get($this->Contratinsertion->Autreavissuspension->enums(), 'Autreavissuspension'), (array) Hash::get($this->Contratinsertion->Autreavisradiation->enums(), 'Autreavisradiation'), $options['Contratinsertion']
             );
         }
+		
+		if ( Configure::read( 'Cg.departement' ) == 66 ) {
+			$Entretien = ClassRegistry::init( 'Entretien' );
+			$options = array_merge($options, $Entretien->options());
+		}
 
         $this->set('options', $options);
     }
@@ -1348,6 +1353,11 @@ class ContratsinsertionController extends AppController
 //				$this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
             $this->set('ReferentNom', $referent['Referent']['nom'] . ' ' . $referent['Referent']['prenom']);
         }
+		
+		if ( Configure::read( 'Cg.departement' ) == 66 && isset($personne_id) ) {
+			$entretiens = $this->Contratinsertion->Personne->Entretien->find( 'all', $this->Contratinsertion->Personne->Entretien->queryEntretiens( $personne_id )	);
+			$this->set( compact( 'entretiens' ) );
+		}
 
         $this->_setOptions();
         $this->set(compact('structures', 'referents'));

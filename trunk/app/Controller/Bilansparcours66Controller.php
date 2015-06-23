@@ -102,8 +102,9 @@
 			}
 			
 			$Entretien = ClassRegistry::init( 'Entretien' );
-			$options = array_merge($options, $Entretien->options());
-
+			$Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
+			$options = array_merge($options, $Entretien->options(), $Contratinsertion->options());
+			
 			$this->set( compact( 'options' ) );
 		}
 
@@ -985,37 +986,28 @@
 				$typeformulaire = $bilanparcours66['Bilanparcours66']['typeformulaire'];
 			}
 
-			$Entretien = ClassRegistry::init( 'Entretien' );
-			$entretiens = $Entretien->find(
-				'all',
+			$entretiens = $this->Bilanparcours66->Personne->Entretien->find( 'all', $this->Bilanparcours66->Personne->Entretien->queryEntretiens( $personne_id ) );
+			
+			$contratsinsertion = $this->Bilanparcours66->Personne->Contratinsertion->find(
+				'first',
 				array(
 					'fields' => array(
-						'Entretien.id',
-						'Entretien.personne_id',
-						'Entretien.dateentretien',
-						'Entretien.arevoirle',
-						'Entretien.typeentretien',
-						'Structurereferente.lib_struc',
-						$Entretien->Referent->sqVirtualField( 'nom_complet' ),
-						'Objetentretien.name',
-						'Actioncandidat.name',
-						'Entretien.commentaireentretien',
+						'CONCAT ("Contratinsertion".structurereferente_id || \'_\' || "Contratinsertion".referent_id) AS "Contratinsertion__referent_id"',
+						'Contratinsertion.sitfam_ci',
+						'Contratinsertion.sitpro_ci',
+						'Contratinsertion.observ_benef',
+						'Contratinsertion.nature_projet',
+						'Contratinsertion.duree_engag',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
 					),
-					'contain' => array(
-						'Structurereferente',
-						'Referent',
-						'Objetentretien',
-						'Actioncandidat'
-					),
+					'contain' => false,
 					'conditions' => array(
-						'Entretien.personne_id' => $personne_id
-					),
-					'order' => array(
-						'Entretien.dateentretien DESC', 'Entretien.id DESC'
+						'Contratinsertion.personne_id' => $personne_id
 					)
 				)
 			);
-			$this->set( compact( 'entretiens' ) );
+			$this->set( compact( 'contratsinsertion', 'entretiens' ) );
 
 			/// Si le nombre de dossiers d'EP en cours est > 0,
 			/// alors on ne peut pas créer de bilan pour la thématique concernée par le dossier EP

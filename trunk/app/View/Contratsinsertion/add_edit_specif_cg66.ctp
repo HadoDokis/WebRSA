@@ -488,6 +488,14 @@ document.observe("dom:loaded", function() {
 		false,
 		true
 	);
+	
+	// Affichage des entretiens
+	if ( $('listeEntretiens') ) {
+		$('listeEntretiens').hide();
+		$('cacheEntretien').observe('click', function(){
+			$('listeEntretiens').toggle();
+		});
+	}
 } );
 </script>
 
@@ -530,7 +538,26 @@ Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( 
 	<strong>Lorsque le bénéficiaire ne respecte pas les conditions de ce contrat, l'organisme signataire le signale au Président du conseil Général.</strong>
 </p>
 </fieldset>
-
+<input type="button" id="cacheEntretien" value="<?php echo __d('bilansparcours66', 'Afficher/Cacher les entretiens');?>"/>
+<?php
+	echo '<div class="scrollable" id="listeEntretiens"><h3>' . __d('bilansparcours66', 'Entretiens') . '</h3>';
+	foreach($entretiens as $i => $entretien){
+		echo $this->Default3->view(
+			$entretien,
+			array(
+				'Entretien.dateentretien',
+				'Entretien.typeentretien',
+				'Entretien.commentaireentretien',
+			),
+			array(
+				'id' => 'TableEntretiens'.$i,
+				'th' => true,
+				'options' => $options,
+			)
+		);
+	}			
+	echo '</div>';
+?>
 <fieldset>
 <legend class="title" title="Exemples: logement, santé, disponibilité, autonomie, ...">Situation personnelle et familiale </legend>
 <?php echo $this->Form->input( 'Contratinsertion.sitfam_ci', array( 'label' => false, 'type' => 'textarea', 'rows' => 10 ) );?>

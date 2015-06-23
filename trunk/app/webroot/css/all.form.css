@@ -391,13 +391,17 @@ input[type=text],input[type=number],input[type=email],input[type=date],input[typ
 	height: 350px;
 }
 
-#listeEntretiens table th{
+#listeEntretiens table th, #listeCERs table th{
 	width: 22%;
 }
 
-#listeEntretiens{
+#listeEntretiens, #listeCERs{
 	height: 400px;
 	border: 1px solid #C0C0C0;
+}
+
+#listeEntretiens table, #listeCERs table{
+	width: 100%; 
 }
 
 div.scrollable, fieldset.scrollable{

@@ -188,6 +188,46 @@
 			return $result['Entretien']['personne_id'];
 		}
 		
+		/**
+		 * Renvoi la requete de base pour l'affichage des informations liés aux entretiens d'une personne
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function queryEntretiens( $personne_id = null ) {
+			$query = array(
+				'fields' => array(
+					'Entretien.id',
+					'Entretien.personne_id',
+					'Entretien.dateentretien',
+					'Entretien.arevoirle',
+					'Entretien.typeentretien',
+					'Structurereferente.lib_struc',
+					$this->Referent->sqVirtualField( 'nom_complet' ),
+					'Objetentretien.name',
+					'Actioncandidat.name',
+					'Entretien.commentaireentretien',
+				),
+				'contain' => array(
+					'Structurereferente',
+					'Referent',
+					'Objetentretien',
+					'Actioncandidat'
+				),
+				'conditions' => array(
+					'Entretien.personne_id' => $personne_id,
+					'Entretien.dateentretien > (NOW()::date - INTERVAL \'3 years\')'
+				),
+				'order' => array(
+					'Entretien.dateentretien DESC', 'Entretien.id DESC'
+				)
+			);
+			return $query;
+		}
+		
+		/**
+		 * Options pour les entretiens
+		 * @return array
+		 */
 		public function options(){
 			$options = $this->enums();
 

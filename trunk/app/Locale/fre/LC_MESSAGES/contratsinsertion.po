@@ -97,3 +97,14 @@ msgstr "Lieu de saisie"
 
 msgid "Personne.nom_complet"
 msgstr "Nom de l'allocataire"
+
+# ------------------------------------------------------------------------------
+
+msgid "Entretien.dateentretien"
+msgstr "Date de l'entretien"
+
+msgid "Entretien.typeentretien"
+msgstr "Type d'entretien"
+
+msgid "Entretien.commentaireentretien"
+msgstr "Commentaire sur l'entretien"
