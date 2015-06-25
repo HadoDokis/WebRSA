@@ -572,8 +572,24 @@ class Decisiondossierpcg66 extends AppModel {
         $options = Set::merge(
                         $this->enums(), $this->Dossierpcg66->enums()
         );
-//debug($data);
-//die();
+		
+		// La Personne sans section doit être le demandeur du RSA et non la personne concerné par le dossier PCG
+		$query = array(
+			'fields' => $this->Dossierpcg66->Foyer->Personne->fields(),
+			'joins' => array(
+				$this->join( 'Dossierpcg66' ),
+				$this->Dossierpcg66->join( 'Foyer' ),
+				$this->Dossierpcg66->Foyer->join( 'Personne' ),
+				$this->Dossierpcg66->Foyer->Personne->join( 'Prestation' ),
+			),
+			'conditions' => array(
+				'Decisiondossierpcg66.id' => $id,
+				'Prestation.rolepers' => 'DEM'
+			)
+		);
+		$personneDem = $this->find('first',$query);
+		$data['Personne'] = isset($personneDem['Personne']) ? $personneDem['Personne'] : $data['Personne'];
+		
         return $this->ged(
                         $data, $this->modeleOdt($data), false, $options
         );
