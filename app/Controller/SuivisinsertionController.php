@@ -126,7 +126,7 @@
 						'first', array(
 					'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
 					'recursive' => -1,
-					'order' => array( 'Cui.datecontrat DESC' )
+					'order' => array( 'Cui.signaturele DESC', 'Cui.id DESC' )
 						)
 				);
 				$personnesFoyer[$index]['Cui'] = ( isset( $tCui['Cui'] ) ? $tCui['Cui'] : array() );

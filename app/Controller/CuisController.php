@@ -380,7 +380,7 @@
 						$this->Cui->join( 'Partenaire' ),
                         $this->Cui->join( 'Decisioncui66', array( 'type' => 'LEFT OUTER' ) )
 					),
-                    'order' => array( 'Cui.datecontrat DESC', 'Cui.id DESC' )
+                    'order' => array( 'Cui.signaturele DESC', 'Cui.id DESC' )
 				)
 			);
 
