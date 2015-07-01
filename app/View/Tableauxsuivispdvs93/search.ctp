@@ -80,7 +80,7 @@
 		array(
 			'Search.annee' => array( 'empty' => ( $tableau == 'index' ? true : false ) ),
 			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
-			'Search.referent_id' => array( 'empty' => true, 'type' => 'select' ), // FIXME: si on fixe le référent ?
+			'Search.referent_id' => array( 'empty' => true, 'type' => ( $userIsCi ? 'hidden' : 'select' ) ),
 			'Search.user_id' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
 			'Search.tableau' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
 			'Search.typethematiquefp93_id' => $params_typethematiquefp93_id,
