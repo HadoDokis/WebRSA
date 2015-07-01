@@ -190,7 +190,7 @@
 			</fieldset>
 
 			<!-- Contratinsertion sur la date de fin du CER -->
-			<?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => 'Contratinsertionr par date de fin du contrat', 'type' => 'checkbox' ) );?>
+			<?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => 'Filtrer par date de fin du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de fin du contrat</legend>
 				<?php
