@@ -302,7 +302,7 @@
 			//Données Cui
 			$periodeimmersion['Cui']['datedebprisecharge'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Cui.datedebprisecharge' ) );
 			$periodeimmersion['Cui']['datefinprisecharge'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Cui.datefinprisecharge' ) );
-			$periodeimmersion['Cui']['datecontrat'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Cui.datecontrat' ) );
+			$periodeimmersion['Cui']['signaturele'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Cui.signaturele' ) );
 			//Données Personne
 			$periodeimmersion['Personne']['qual'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Personne.qual' ), $qual );
 			$periodeimmersion['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Personne.dtnai' ) );

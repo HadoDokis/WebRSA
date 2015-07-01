@@ -229,10 +229,10 @@
 				<td></td>
 
 				<!-- CUI -->
-				<td><?php echo date_short( Set::extract( 'DEM.Cui.datecontrat', $details ) );?></td>
-				<td colspan="2"><?php echo $this->Xhtml->boolean( !empty( $details['DEM']['Cui']['datecontrat'] ) );?></td>
+				<td><?php echo date_short( Set::extract( 'DEM.Cui.signaturele', $details ) );?></td>
+				<td colspan="2"><?php echo $this->Xhtml->boolean( !empty( $details['DEM']['Cui']['signaturele'] ) );?></td>
 				<td><?php
-					if( !empty( $details['DEM']['Cui']['datecontrat'] ) ){
+					if( !empty( $details['DEM']['Cui']['signaturele'] ) ){
 						echo $this->Xhtml->viewLink(
 							'Voir le contrat',
 							array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) ),
@@ -241,10 +241,10 @@
 					}
 				?></td>
 
-				<td><?php echo date_short( Set::extract( 'CJT.Cui.datecontrat', $details ) );?></td>
-				<td colspan="2" ><?php echo $this->Xhtml->boolean( !empty( $details['CJT']['Cui']['datecontrat'] ) );?></td>
+				<td><?php echo date_short( Set::extract( 'CJT.Cui.signaturele', $details ) );?></td>
+				<td colspan="2" ><?php echo $this->Xhtml->boolean( !empty( $details['CJT']['Cui']['signaturele'] ) );?></td>
 				<td><?php
-					if( !empty( $details['CJT']['Cui']['datecontrat'] ) ){
+					if( !empty( $details['CJT']['Cui']['signaturele'] ) ){
 						echo $this->Xhtml->viewLink(
 							'Voir le contrat',
 							array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) ),
