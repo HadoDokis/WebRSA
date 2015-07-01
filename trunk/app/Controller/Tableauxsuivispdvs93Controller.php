@@ -138,24 +138,87 @@
 			);
 
 			$userIsCg = empty( $user_structurereferente_id );
-			$this->set( compact( 'options', 'userIsCg' ) );
+			$userIsCi = $this->Session->read( 'Auth.User.type' ) === 'externe_ci';
+			$this->set( compact( 'options', 'userIsCg', 'userIsCi' ) );
 		}
 
 		/**
+		 * Retourne un array contenant les clés structurereferente_id et referent_id
+		 * pas à NULL  lorsque l'on doit ajouter des conditions aux requêtes
+		 * en fonction de l'utilisateur connecté (CPDV / secrétaire ou chargé
+		 * d'insertion).
+		 *
+		 * @return array
+		 */
+		protected function _getConditionsUtilisateur() {
+			$conditions = array(
+				'structurereferente_id' => null,
+				'referent_id' => null
+			);
+
+			// Si l'utilisateur connecté est limité à un PDV
+			$user_structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+			if( !empty( $user_structurereferente_id ) ) {
+				$conditions['structurereferente_id'] = $user_structurereferente_id;
+			}
+
+			// Si l'utilisateur connecté est un référent, on limite encore plus
+			$user_referent_id = null;
+			if( $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+				$user_referent_id = $this->Session->read( 'Auth.User.referent_id' );
+				if( !empty( $user_referent_id ) ) {
+					$conditions['referent_id'] = $user_referent_id;
+				}
+			}
+
+			return $conditions;
+		}
+
+		/**
+		 * Méthode utilitaire permettant d'ajouter des filtres automatiquement
+		 * concernant la structure référente (CPDV, secrétaire) ou le référent
+		 * connecté (chargé d'insertion).
+		 * De plus, les options seront envoyées à la vue, suivant le type
+		 * d'utilisateur connecté.
+		 *
 		 * @param array $search
 		 * @return array
 		 */
 		protected function _applyStructurereferente( array $search ) {
-			$user_structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
-			$this->_setOptions( $user_structurereferente_id );
+			$conditions = $this->_getConditionsUtilisateur();
 
 			if( !empty( $search ) ) {
-				if( !empty( $user_structurereferente_id ) ) {
-					$search = Hash::insert( $search, 'Search.structurereferente_id', $user_structurereferente_id );
+				if( !empty( $conditions['structurereferente_id'] ) ) {
+					$search = Hash::insert( $search, 'Search.structurereferente_id', $conditions['structurereferente_id'] );
+				}
+				if( !empty( $conditions['referent_id'] ) ) {
+					$search = Hash::insert( $search, 'Search.referent_id', $conditions['referent_id'] );
 				}
 			}
 
+			$this->_setOptions( $conditions['structurereferente_id'] );
+
 			return $search;
+		}
+
+		/**
+		 * Complète le querydata en s'assurant de bien limiter l'utilisateur à ce
+		 * à quoi il a droit.
+		 *
+		 * @param array $query
+		 * @param string $modelName
+		 * @return array
+		 */
+		protected function _completeQueryUtilisateur( array $query, $modelName ) {
+			$conditions = $this->_getConditionsUtilisateur();
+
+			foreach( array( 'structurereferente_id', 'referent_id' ) as $fieldName ) {
+				if( !empty( $conditions[$fieldName] ) ) {
+					$query['conditions']["{$modelName}.{$fieldName}"] = $conditions[$fieldName];
+				}
+			}
+
+			return $query;
 		}
 
 		/**
@@ -214,23 +277,24 @@
 				throw new NotFoundException();
 			}
 
-			$tableausuivipdv93 = $this->Tableausuivipdv93->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Tableausuivipdv93.id' => $id,
-						'Tableausuivipdv93.name' => $action,
-					),
-					'contain' => array(
-						'Pdv',
-						'Referent' => array(
-							'fields' => array(
-								$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' )
-							)
+			$query = array(
+				'conditions' => array(
+					'Tableausuivipdv93.id' => $id,
+					'Tableausuivipdv93.name' => $action,
+				),
+				'contain' => array(
+					'Pdv',
+					'Referent' => array(
+						'fields' => array(
+							$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' )
 						)
-					),
-				)
+					)
+				),
 			);
+
+			$query = $this->_completeQueryUtilisateur( $query, 'Tableausuivipdv93' );
+
+			$tableausuivipdv93 = $this->Tableausuivipdv93->find( 'first', $query );
 
 			if( empty( $tableausuivipdv93 ) ) {
 				throw new NotFoundException();
@@ -255,7 +319,6 @@
 				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b6( $id );
 			}
 
-			// TODO: prendre uniquement les champs dont on a besoin
 			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {
 				$query = ConfigurableQueryFields::getFieldsByKeys( "{$this->name}.{$action}.{$this->request->action}", $query );
 			}
@@ -322,23 +385,24 @@
 				throw new NotFoundException();
 			}
 
-			$tableausuivipdv93 = $this->Tableausuivipdv93->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Tableausuivipdv93.id' => $id,
-						'Tableausuivipdv93.name' => $action,
-					),
-					'contain' => array(
-						'Pdv',
-						'Referent' => array(
-							'fields' => array(
-								$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' )
-							)
+			$query = array(
+				'conditions' => array(
+					'Tableausuivipdv93.id' => $id,
+					'Tableausuivipdv93.name' => $action,
+				),
+				'contain' => array(
+					'Pdv',
+					'Referent' => array(
+						'fields' => array(
+							$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' )
 						)
-					),
-				)
+					)
+				),
 			);
+
+			$query = $this->_completeQueryUtilisateur( $query, 'Tableausuivipdv93' );
+
+			$tableausuivipdv93 = $this->Tableausuivipdv93->find( 'first', $query );
 
 			if( empty( $tableausuivipdv93 ) ) {
 				throw new NotFoundException();
@@ -471,20 +535,22 @@
 		/**
 		 * Accès à une version historisée d'un tableau.
 		 *
-		 * FIXME: vérifier les accès
 		 * TODO: enlever le lien historiser et ajouter les détails de la capture
 		 *
 		 * @param string $action
+		 *
+		 * @throws NotFoundException
 		 */
 		public function view( $id ) {
-			$tableausuivipdv93 = $this->Tableausuivipdv93->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Tableausuivipdv93.id' => $id
-					)
+			$query = array(
+				'conditions' => array(
+					'Tableausuivipdv93.id' => $id
 				)
 			);
+
+			$query = $this->_completeQueryUtilisateur( $query, 'Tableausuivipdv93' );
+
+			$tableausuivipdv93 = $this->Tableausuivipdv93->find( 'first', $query );
 
 			if( empty( $tableausuivipdv93 ) ) {
 				throw new NotFoundException();
@@ -531,10 +597,28 @@
 		}
 
 		/**
-		 *
 		 * @param integer $id
+		 *
+		 * @throws NotFoundException
 		 */
 		public function delete( $id ) {
+			$query = array(
+				'fields' => array(
+					'Tableausuivipdv93.id'
+				),
+				'conditions' => array(
+					'Tableausuivipdv93.id' => $id
+				)
+			);
+
+			$query = $this->_completeQueryUtilisateur( $query, 'Tableausuivipdv93' );
+
+			$record = $this->Tableausuivipdv93->find( 'first', $query );
+
+			if( empty( $record ) ) {
+				throw new NotFoundException();
+			}
+
 			$this->Tableausuivipdv93->begin();
 
 			if( $this->Tableausuivipdv93->delete( $id ) ) {
