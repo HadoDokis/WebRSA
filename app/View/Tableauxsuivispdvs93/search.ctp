@@ -6,7 +6,7 @@
 
 	if( $this->action == 'view' ) {
 		$name = $tableausuivipdv93['Tableausuivipdv93']['name'];
-		$tableausuivipdv93['Tableausuivipdv93']['name'] = strtoupper( preg_replace( '/^tableau/', '', $tableausuivipdv93['Tableausuivipdv93']['name'] ) );
+		$tableausuivipdv93['Tableausuivipdv93']['name'] = strtoupper( preg_replace( '/^tableau1{0,1}/', '', $tableausuivipdv93['Tableausuivipdv93']['name'] ) );
 		echo $this->Default3->titleForLayout( $tableausuivipdv93 );
 		$tableausuivipdv93['Tableausuivipdv93']['name'] = $name;
 	}
