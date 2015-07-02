@@ -155,10 +155,10 @@
 		public $tableaux = array(
 			'tableaud1' => 'D 1',
 			'tableaud2' => 'D 2',
-			'tableau1b3' => '1 B 3',
-			'tableau1b4' => '1 B 4',
-			'tableau1b5' => '1 B 5',
-			'tableau1b6' => '1 B 6',
+			'tableau1b3' => 'B 3',
+			'tableau1b4' => 'B 4',
+			'tableau1b5' => 'B 5',
+			'tableau1b6' => 'B 6',
 		);
 
 		/**
