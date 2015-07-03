@@ -4,7 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.Utility
+	 * @package ConfigurableQuery
+	 * @subpackage Utility
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -13,7 +14,8 @@
 	 * manipuler facilement la configuration des champs d'un querydata à partir
 	 * de valeurs écrites via Configure::write() et de querydatas existants.
 	 *
-	 * @package app.Utility
+	 * @package ConfigurableQuery
+	 * @subpackage Utility
 	 */
 	abstract class ConfigurableQueryFields
 	{
@@ -29,11 +31,20 @@
 		public static function getErrors( array $keys, array $query ) {
 			$given = array_keys( $query['fields'] );
 			$return = array();
+			$ignore = (array)Configure::read( 'ConfigurableQueryFields.ignore' );
 
 			foreach( $keys as $key ) {
 				$config = Configure::read( $key );
 				$fields = array_keys( Hash::normalize( (array)$config ) );
 				$missing = array_diff( $fields, $given );
+
+				// Si le champ est en fait une URL ou un champ à ignorer, alors pas d'erreur
+				foreach( $missing as $i => $tmp ) {
+					if( strpos( $tmp, '/' ) === 0 || in_array( $tmp, $ignore ) ) {
+						unset( $missing[$i] );
+					}
+				}
+				// FIXME: URL not missing ("/Dossiers/index") + custom (Dossier.locked)
 
 				$msgid = 'Les champs suivants sont demandés dans la configuration de %s mais pas disponibles: %s';
 				$message = ( empty( $missing ) ? null : sprintf( $msgid, $key, implode( ', ', $missing ) ) );

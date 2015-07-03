@@ -1,0 +1,18 @@
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd">
+	<!--
+		On s'assure de faire la couverture de code uniquement sur les fichiers
+		source du répertoire du plugin, moins le sous-répertoire Test.
+	-->
+	<filter>
+		<whitelist>
+			<directory>../../..</directory>
+			<exclude>
+				<file>../../../Config/bootstrap.php</file>
+				<file>../../../Lib/basics.php</file>
+				<directory>../../../Test</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+</phpunit>
