@@ -96,7 +96,7 @@
 				$apples,
 				array(
 					'Apple.id',
-					'Apple.color',
+					'Apple.color' ,
 					'Apple.unknown_field',
 					'Apple.created',
 				)
@@ -255,6 +255,84 @@
 			$result = $this->DefaultCsv->Csv->filename;
 			$expected = '/foo\.csv/';
 			$this->assertPattern( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DefaultCsvHelper::render() avec des valeurs null
+		 */
+		public function testRenderMultipleValues() {
+			$apples = array(
+				array(
+					'Apple' => array(
+						'id' => 1,
+						'code' => "-0401"
+					)
+				),
+				array(
+					'Apple' => array(
+						'id' => 2,
+						'code' => "-0402\n\r-0403"
+					)
+				)
+			);
+			$result = $this->DefaultCsv->render(
+				$apples,
+				array(
+					'Apple.id',
+					'Apple.code' => array(
+						'type' => 'list'
+					)
+				),
+				array(
+					'options' => array(
+						'Apple' => array(
+							'code' => array(
+								'0401' => 'Aucune difficulté',
+								'0402' => 'Santé',
+								'0403' => 'Reconnaissance de la qualité de travailleur handicapé',
+								'0404' => 'Lecture, écriture ou compréhension du français',
+								'0405' => 'Démarches et formalités administratives',
+								'0406' => 'Endettement',
+								'0407' => 'Autres'
+							)
+						)
+					)
+				)
+			);
+			$expected = 'Apple.id,Apple.code
+1,"Aucune difficulté"
+2,"Santé, Reconnaissance de la qualité de travailleur handicapé"
+';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DefaultCsvHelper::render() avec des conditions sur
+		 * les champs.
+		 */
+		public function testRenderConditions() {
+			$apples = $this->Apple->find( 'all', array( 'limit' => 2 ) );
+
+			$result = $this->DefaultCsv->render(
+				$apples,
+				array(
+					'Apple.id',
+					'Apple.created' => array(
+						'condition' => '( "#Apple.id#" % 2 == 0 )'
+					),
+					'Apple.modified' => array(
+						'condition' => '( "#Apple.id#" % 2 == 1 )'
+					),
+				),
+				array(
+					'headers' => false
+				)
+			);
+
+			$expected = '1,"01/12/2006 à 13:31:26"
+2,"22/11/2006 à 10:43:13"
+';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 	}
 ?>

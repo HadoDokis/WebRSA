@@ -135,6 +135,11 @@
 			$result = $this->DefaultForm->fieldValue( 'Apple.name', array( 'label' => 'Id', 'hidden' => true ) );
 			$expected = '<div class="input value"><input type="hidden" name="data[Apple][name]" value="Étagère" id="AppleName"/><span class="label">Id</span><span class="input">Étagère</span></div>';
 			$this->assertEqualsXhtml( $result, $expected );
+
+			// Date avec un format spécifique
+			$result = $this->DefaultForm->fieldValue( 'Apple.date', array( 'label' => 'Date', 'type' => 'date', 'format' => '%B %Y' ) );
+			$expected = '<div class="input value date"><span class="label">Date</span><span class="input">mars 2014</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 
 		/**

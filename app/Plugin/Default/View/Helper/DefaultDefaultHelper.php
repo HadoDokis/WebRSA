@@ -150,7 +150,9 @@
 			$paginate = ( isset( $params['paginate'] ) ? $params['paginate'] : true );
 
 			if( $paginate ) {
-				$pagination = $this->pagination( Hash::remove( $params, 'options' ) );
+				$paginateParams = $params;
+				unset( $paginateParams['options'], $paginateParams['header'] );
+				$pagination = $this->pagination( $paginateParams );
 			}
 			else {
 				$pagination = null;
@@ -175,7 +177,7 @@
 		public function pagination( array $params = array() ) {
 			$params = $params  + array( 'format' => __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) );
 			$pagination = $this->DefaultHtml->tag( 'p', $this->DefaultPaginator->counter( $params ), array( 'class' => 'counter' ) );
-			unset( $params['format'] );
+			unset( $params['format'], $params['key'], $params['innerTable'] );
 
 			$numbers = $this->DefaultPaginator->numbers( $params );
 			if( !empty( $numbers ) ) {
@@ -301,10 +303,10 @@
 
 			return $this->DefaultForm->inputs( $inputs );
 		}
-		
+
 		/**
 		 * Retourne un pseudo-formulaire de view.
-		 * 
+		 *
 		 * @param array $fields
 		 * @param array $params
 		 * @return string
@@ -320,7 +322,7 @@
 					$fields[$field]['view'] = $params['view'];
 				}
 			}
-			
+
 			return $this->subform($fields, $params);
 		}
 

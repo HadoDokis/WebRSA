@@ -45,6 +45,7 @@
 				'Apple' => array(
 					'id' => 6,
 					'color' => 'red',
+					'code' => "-0402\n\r-0404\n\r-0405"
 				)
 			);
 			$this->DefaultTableCell->set( $data );
@@ -98,6 +99,77 @@
 			$expected = array(
 				'6',
 				array( 'class' => 'data integer positive', ),
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec une liste
+			$options = array(
+				'0401' => 'Aucune difficulté',
+				'0402' => 'Santé',
+				'0403' => 'Reconnaissance de la qualité de travailleur handicapé',
+				'0404' => 'Lecture, écriture ou compréhension du français',
+				'0405' => 'Démarches et formalités administratives',
+				'0406' => 'Endettement',
+				'0407' => 'Autres'
+			);
+			$result = $this->DefaultTableCell->data( 'Apple.code', array( 'type' => 'list', 'options' => $options ) );
+			$expected = array(
+				'<ul><li>Santé</li><li>Lecture, écriture ou compréhension du français</li><li>Démarches et formalités administratives</li></ul>',
+				array(
+					'class' => 'data list text',
+				)
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec une liste vide
+			$data = array(
+				'Apple' => array(
+					'id' => 6,
+					'color' => 'red',
+					'code' => ''
+				)
+			);
+			$this->DefaultTableCell->set( $data );
+			$result = $this->DefaultTableCell->data( 'Apple.code', array( 'type' => 'list', 'options' => $options ) );
+			$expected = array(
+				'',
+				array(
+					'class' => 'data list text',
+				)
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec un datetime
+			$data = array(
+				'Apple' => array(
+					'id' => 6,
+					'created' => '2015-07-03 11:58:13'
+				)
+			);
+			$this->DefaultTableCell->set( $data );
+			$result = $this->DefaultTableCell->data( 'Apple.created' );
+			$expected = array(
+				'03/07/2015 à 11:58:13',
+				array(
+					'class' => 'data datetime ',
+				)
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec un datetime pour lequel on force le format
+			$data = array(
+				'Apple' => array(
+					'id' => 6,
+					'created' => '2015-07-03 11:58:13'
+				)
+			);
+			$this->DefaultTableCell->set( $data );
+			$result = $this->DefaultTableCell->data( 'Apple.created', array( 'format' => '%A %e %B %Y %H:%M' ) );
+			$expected = array(
+				'vendredi  3 juillet 2015 11:58',
+				array(
+					'class' => 'data datetime ',
+				)
 			);
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
