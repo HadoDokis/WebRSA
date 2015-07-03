@@ -8,7 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AbstractSearch', 'Model/Abstractclass' );
-	App::uses( 'ConfigurableQueryFields', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe Allocataire comporte des méthodes de base pour les recherches,
@@ -44,15 +44,20 @@
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
+		 * @todo à partir de Personne ou de Dossier, sachant que par défaut ça doit être Dossier
+		 *
 		 * @param array $types Les types de jointure alias => type
+		 * @param string $baseModelName Le modèle de base de la requête (Personne,
+		 *	Dossier ou un modèle lié à Personne)
 		 * @return array
 		 */
-		public function searchQuery( array $types = array() ) {
+		public function searchQuery( array $types = array(), $baseModelName = 'Personne' ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 
 			$types += array(
 				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
+				'Personne' => 'INNER',
 				'Prestation' => 'INNER',
 				'Adressefoyer' => 'INNER',
 				'Dossier' => 'INNER',
@@ -61,10 +66,30 @@
 				'Detaildroitrsa' => 'INNER',
 			);
 
-			$cacheKey = Inflector::underscore( $Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+			$cacheKey = Inflector::underscore( $Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) ).'_'.$baseModelName;
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
+				if( $baseModelName === 'Personne' ) {
+					$joins = array(
+						$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+						$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
+					);
+				}
+				else if( $baseModelName === 'Dossier' ) {
+					$joins = array(
+						$Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+						$Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
+					);
+				}
+				else {
+					$joins = array(
+						$Personne->{$baseModelName}->join( 'Personne', array( 'type' => $types['Personne'] ) ),
+						$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+						$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
+					);
+				}
+
 				$query = array(
 					'fields' => ConfigurableQueryFields::getModelsFields(
 						array(
@@ -79,34 +104,40 @@
 							$Personne->Foyer->Dossier->Detaildroitrsa
 						)
 					),
-					'joins' => array(
-						$Personne->join( 'Calculdroitrsa', array( 'type' => $types['Calculdroitrsa'] ) ),
-						$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
-						$Personne->join(
-							'Prestation',
-							array(
-								'type' => $types['Prestation'],
-								'conditions' => array(
-									'Prestation.rolepers' => array( 'DEM', 'CJT' )
+					'joins' => array_merge(
+						$joins,
+						array(
+							$Personne->join( 'Calculdroitrsa', array( 'type' => $types['Calculdroitrsa'] ) ),
+							$Personne->join(
+								'Prestation',
+								array(
+									'type' => $types['Prestation'],
+									'conditions' => $types['Prestation'] === 'INNER'
+										? array( 'Prestation.rolepers' => array( 'DEM', 'CJT' ) )
+										: array()
 								)
-							)
-						),
-						$Personne->Foyer->join(
-							'Adressefoyer',
-							array(
-								'type' => $types['Adressefoyer'],
-								'conditions' => array(
-									'Adressefoyer.id IN( '.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+							),
+							$Personne->Foyer->join(
+								'Adressefoyer',
+								array(
+									'type' => $types['Adressefoyer'],
+									'conditions' => array(
+										'Adressefoyer.id IN( '.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+									)
 								)
-							)
-						),
-						$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
-						$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => $types['Adresse'] ) ),
-						$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => $types['Situationdossierrsa'] ) ),
-						$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => $types['Detaildroitrsa'] ) ),
+							),
+							$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => $types['Adresse'] ) ),
+							$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => $types['Situationdossierrsa'] ) ),
+							$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => $types['Detaildroitrsa'] ) ),
+						)
 					),
 					'contain' => false,
-					'conditions' => array(),
+					'conditions' => $types['Prestation'] !== 'INNER'
+						? array( 'OR' => array(
+							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+							'Prestation.id IS NULL'
+						) )
+						: array()
 				);
 
 				$query = $Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );
