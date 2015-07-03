@@ -4,18 +4,30 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.Test.Case.Utility
+	 * @package ConfigurableQuery
+	 * @subpackage Test.Case.Utility
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'ConfigurableQueryFields', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe ConfigurableQueryFieldsTest ...
 	 *
-	 * @package app.Test.Case.Utility
+	 * @package ConfigurableQuery
+	 * @subpackage Test.Case.Utility
 	 */
 	class ConfigurableQueryFieldsTest extends CakeTestCase
 	{
+		/**
+		 * Fixtures utilisées pour les tests.
+		 *
+		 * @var array
+		 */
+		public $fixtures = array(
+			'plugin.ConfigurableQuery.ConfigurableQueryGroup',
+			'plugin.ConfigurableQuery.ConfigurableQueryUser'
+		);
+
 		/**
 		 * Test de la méthode ConfigurableQueryFields::getErrors() sans erreur.
 		 *
@@ -31,6 +43,37 @@
 					'success' => true,
 					'message' => null,
 					'value' => "array (\n  0 => 'Foo.bar',\n  1 => 'Foo.baz',\n)"
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode ConfigurableQueryFields::getErrors() sans erreur,
+		 * mais avec des URL (/Controller/action) et des champs à ignorer.
+		 *
+		 * @return void
+		 */
+		public function testGetErrorsNoErrorSpecial() {
+			Configure::write( 'ConfigurableQueryFields.ignore', array( 'Bar.baz' ) );
+
+			Configure::write(
+				'Foos.index',
+				array(
+					'Foo.bar',
+					'Foo.baz',
+					'Bar.baz',
+					'/Foos/view/#Foo.id#'
+				)
+			);
+			$query = array( 'fields' => Hash::normalize( array( 'Foo.bar', 'Foo.baz' ) ) );
+
+			$result = ConfigurableQueryFields::getErrors( array( 'Foos.index' ), $query );
+			$expected = array(
+				'Foos.index' => array(
+					'success' => true,
+					'message' => NULL,
+					'value' => "array (\n  0 => 'Foo.bar',\n  1 => 'Foo.baz',\n  2 => 'Bar.baz',\n  3 => '/Foos/view/#Foo.id#',\n)"
 				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -96,6 +139,33 @@
 			$result = file_get_contents( $fileName );
 			unlink( $fileName );
 			$expected = "\"Champ\",\"Intitulé\"\nFoo.bar,Foo.bar\nFoo.baz,Foo.baz\nBar.foo,Bar.foo\nBar.baz,Bar.baz\nBaz.bar,Baz.bar";
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode ConfigurableQueryFields::getModelsFields().
+		 *
+		 * @return void
+		 */
+		public function testGetModelsFields() {
+			$Models = array(
+				ClassRegistry::init( array( 'class' => 'ConfigurableQuery.ConfigurableQueryUser', 'alias' => 'User' ) ),
+				ClassRegistry::init( array( 'class' => 'ConfigurableQuery.ConfigurableQueryGroup', 'alias' => 'Group' ) )
+			);
+			$result = ConfigurableQueryFields::getModelsFields( $Models );
+			$expected = array(
+				'User.id' => 'User.id',
+				'User.group_id' => 'User.group_id',
+				'User.username' => 'User.username',
+				'User.password' => 'User.password',
+				'User.created' => 'User.created',
+				'User.modified' => 'User.modified',
+				'User.id_minus_1' => 'User.id_minus_1',
+				'Group.id' => 'Group.id',
+				'Group.name' => 'Group.name',
+				'Group.created' => 'Group.created',
+				'Group.modified' => 'Group.modified',
+			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
