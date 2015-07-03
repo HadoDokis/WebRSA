@@ -999,12 +999,19 @@ SELECT add_missing_table_field ('public', 'piecesmailscuis66', 'actif', 'SMALLIN
 SELECT add_missing_table_field ('public', 'piecesmanquantescuis66', 'actif', 'SMALLINT DEFAULT 1');
 SELECT add_missing_table_field ('public', 'textsmailscuis66', 'actif', 'SMALLINT DEFAULT 1');
 
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'motifsrupturescuis66', 'motifsrupturescuis66_actif_in_list_chk' );
 ALTER TABLE motifsrupturescuis66 ADD CONSTRAINT motifsrupturescuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'motifssuspensioncuis66', 'motifssuspensioncuis66_actif_in_list_chk' );
 ALTER TABLE motifssuspensioncuis66 ADD CONSTRAINT motifssuspensioncuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'motifsrefuscuis66', 'motifsrefuscuis66_actif_in_list_chk' );
 ALTER TABLE motifsrefuscuis66 ADD CONSTRAINT motifsrefuscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'piecesmailscuis66', 'piecesmailscuis66_actif_in_list_chk' );
 ALTER TABLE piecesmailscuis66 ADD CONSTRAINT piecesmailscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'piecesmanquantescuis66', 'piecesmanquantescuis66_actif_in_list_chk' );
 ALTER TABLE piecesmanquantescuis66 ADD CONSTRAINT piecesmanquantescuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'textsmailscuis66', 'textsmailscuis66_actif_in_list_chk' );
 ALTER TABLE textsmailscuis66 ADD CONSTRAINT textsmailscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'typescontratscuis66', 'typescontratscuis66_actif_in_list_chk' );
 ALTER TABLE typescontratscuis66 ADD CONSTRAINT typescontratscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
 
 --------------------------------------------------------------------------------
