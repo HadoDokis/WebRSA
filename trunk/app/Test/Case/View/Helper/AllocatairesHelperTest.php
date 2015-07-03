@@ -370,6 +370,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode Allocataires::blocReferentparcours();
 		 */
 		public function testBlocReferentparcours() {
+			Configure::write( 'Cg.departement', 58 );
 			$params = array(
 				'options' => array(
 					'PersonneReferent' => array(

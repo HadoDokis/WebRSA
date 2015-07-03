@@ -672,6 +672,10 @@
 				//'postgres' => '( "%s"."nom" || \' \' || "%s"."prenom" )'
 				'postgres' => '( COALESCE( "%s"."nom", \'\' ) || \' \' || COALESCE( "%s"."prenom", \'\' ) )'
 			),
+			'nom_complet_prenoms' => array(
+				'type' => 'string',
+				'postgres' => '( COALESCE( "%s"."qual", \'\' ) || \' \' || "%s"."nom" || \' \' || "%s"."prenom" || \' \' || COALESCE( "%s"."prenom2", \'\' ) || \' \' || COALESCE( "%s"."prenom3", \'\' ) )'
+			),
 			'age' => array(
 				'type' => 'integer',
 				'postgres' => '( EXTRACT ( YEAR FROM AGE( "%s"."dtnai" ) ) )'
@@ -1590,7 +1594,7 @@
 		 * @param array $search Les filtres envoyés par le moteur de recherche.
 		 * @return array
 		 */
-		public function completeQueryVfEtapeDossierOrientation58( array $query, array $search ) {
+		public function completeQueryVfEtapeDossierOrientation58( array $query, array $search = array() ) {
 			$field = 'Personne.etat_dossier_orientation';
 
 			$this->virtualFields['etat_dossier_orientation'] = $this->vfEtapeDossierOrientation58();

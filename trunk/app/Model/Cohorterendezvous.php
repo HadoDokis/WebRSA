@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'ConfigurableQueryFields', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe Cohorterendezvous ...
@@ -60,7 +60,7 @@
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery();
+				$query = $Allocataire->searchQuery( array(), 'Rendezvous' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
@@ -88,7 +88,6 @@
 				// 2. Ajout des jointures supplémentaires
 				array_unshift(
 					$query['joins'],
-					$Rendezvous->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Rendezvous->join( 'Typerdv', array( 'type' => 'LEFT OUTER' ) ),
 					$Rendezvous->join( 'Statutrdv', array( 'type' => 'LEFT OUTER' ) ),
 					$Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),

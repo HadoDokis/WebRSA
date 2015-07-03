@@ -8,7 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'Sanitize', 'Utility' );
-	App::uses( 'ConfigurableQueryFields', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe Tableausuivipdv93 ...
