@@ -135,7 +135,10 @@
 			array(
 				'Apple' => array(
 					'id' => 6,
-					'color' => 'red'
+					'color' => 'red',
+					'code' => "-0402\n\r-0404\n\r-0405",
+					'created' => '2015-07-03 11:58:13',
+					'modified' => '2015-07-03 14:07:37'
 				)
 			)
 		);
@@ -320,6 +323,7 @@
 			$expected = null;
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
+			// 1.
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params );
 			$expected = '<table id="TableApplesIndex" class="apples index">
 							<thead>
@@ -346,7 +350,7 @@
 						</table>';
 			$this->assertEqualsXhtml( $result, $expected );
 
-			// En ajoutant explicitement l'id de la table
+			// 2. En ajoutant explicitement l'id de la table
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params + array( 'id' => 'TableTestApplesIndex' ) );
 			$expected = '<table id="TableTestApplesIndex" class="apples index">
 							<thead>
@@ -372,6 +376,100 @@
 							</tbody>
 						</table>';
 
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 3. En ajoutant des classes aux colonnes
+			$fields = Hash::normalize( $this->fields );
+			$fields['Apple.id'] = array( 'class' => 'dossier_id' );
+			$result = $this->DefaultTable->index( $this->data, $fields, $params + array( 'id' => 'TableTestApplesIndex' ) );
+			$expected = '<table id="TableTestApplesIndex" class="apples index">
+							<thead>
+								<tr>
+									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
+									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="odd">
+									<td class="dossier_id data integer positive">6</td>
+									<td class="input string">
+										<div class="input text">
+											<label for="AppleColor">Color</label>
+											<input name="data[Apple][color]" maxlength="40" type="text" id="AppleColor"/>
+										</div>
+									</td>
+									<td class="action">
+										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 4. En ajoutant une ligne d'en-têtes
+			$fields = Hash::normalize( $this->fields );
+			$fields['Apple.id'] = array( 'class' => 'dossier_id' );
+			$header = array(
+				array( 'Apple' => array( 'colspan' => 2 ) ),
+				array( ' ' => array( 'class' => 'action' ) )
+			);
+			$result = $this->DefaultTable->index( $this->data, $fields, $params + array( 'id' => 'TableTestApplesIndex', 'header' => $header ) );
+			$expected = '<table id="TableTestApplesIndex" class="apples index">
+							<thead>
+								<tr>
+									<th colspan="2">Apple</th>
+									<th class="action"> </th>
+								</tr>
+								<tr>
+									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
+									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="odd">
+									<td class="dossier_id data integer positive">6</td>
+									<td class="input string">
+										<div class="input text">
+											<label for="AppleColor">Color</label>
+											<input name="data[Apple][color]" maxlength="40" type="text" id="AppleColor"/>
+										</div>
+									</td>
+									<td class="action">
+										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 5. En spécifiant ou non le format du datetime
+			$fields = array(
+				'Apple.id',
+				'Apple.created',
+				'Apple.modified' => array(
+					'format' => '%A %e %B %Y %H:%M'
+				)
+			);
+			$result = $this->DefaultTable->index( $this->data, $fields, $params );
+			$expected = '<table id="TableApplesIndex" class="apples index">
+				<thead>
+					<tr>
+						<th id="TableApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+						<th id="TableApplesIndexColumnAppleCreated"><a href="/index/page:1/sort:Apple.created/direction:asc">Apple.created</a></th>
+						<th id="TableApplesIndexColumnAppleModified"><a href="/index/page:1/sort:Apple.modified/direction:asc">Apple.modified</a></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="odd">
+						<td class="data integer positive">6</td><td class="data datetime ">03/07/2015 à 11:58:13</td>
+						<td class="data datetime ">vendredi 3 juillet 2015 14:07</td>
+					</tr>
+				</tbody>
+			</table>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
@@ -466,6 +564,136 @@
 								<td class="data string ">Foo</td>
 							</tr>
 						</tbody>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultTableHelper::tr()
+		 *
+		 * @return void
+		 */
+		public function testTr() {
+			// 1. Avec le type list
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+				'Apple.code' => array(
+					'type' => 'list'
+				)
+			);
+			$params = array(
+				'options' => array(
+					'Apple' => array(
+						'code' => array(
+							'0401' => 'Aucune difficulté',
+							'0402' => 'Santé',
+							'0403' => 'Reconnaissance de la qualité de travailleur handicapé',
+							'0404' => 'Lecture, écriture ou compréhension du français',
+							'0405' => 'Démarches et formalités administratives',
+							'0406' => 'Endettement',
+							'0407' => 'Autres'
+						)
+					)
+				)
+			);
+
+			$result = $this->DefaultTable->tr( 0, $this->data[0], Hash::normalize( $fields ), $params );
+			$expected = '<tr class="odd">
+				<td class="data integer positive">6</td>
+				<td class="data string ">red</td>
+				<td class="data list text">
+					<ul>
+						<li>Santé</li>
+						<li>Lecture, écriture ou compréhension du français</li>
+						<li>Démarches et formalités administratives</li>
+					</ul>
+				</td>
+			</tr>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 2. Avec condition vraie
+			$base = Router::url( '/' );
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+				'/Apples/view/#Apple.id#' => array(
+					'condition' => '( "#Apple.id#" % 2 == 0 )'
+				)
+			);
+
+			$result = $this->DefaultTable->tr( 0, $this->data[0], Hash::normalize( $fields ), $params );
+			$expected = '<tr class="odd">
+				<td class="data integer positive">6</td>
+				<td class="data string ">red</td>
+				<td class="action"><a href="'.$base.'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a></td>
+			</tr>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 3. Avec condition fausse
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+				'/Apples/view/#Apple.id#' => array(
+					'condition' => '( "#Apple.id#" % 2 == 1 )'
+				)
+			);
+
+			$result = $this->DefaultTable->tr( 0, $this->data[0], Hash::normalize( $fields ), $params );
+			$expected = '<tr class="odd">
+				<td class="data integer positive">6</td>
+				<td class="data string ">red</td>
+			</tr>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultTableHelper::tr()
+		 *
+		 * @return void
+		 */
+		public function testDetailsOptions() {
+			$fields = array(
+				'Apple.id',
+				'Apple.code' => array(
+					'type' => 'list'
+				)
+			);
+			$params = array(
+				'th' => true,
+				'options' => array(
+					'Apple' => array(
+						'code' => array(
+							'0401' => 'Aucune difficulté',
+							'0402' => 'Santé',
+							'0403' => 'Reconnaissance de la qualité de travailleur handicapé',
+							'0404' => 'Lecture, écriture ou compréhension du français',
+							'0405' => 'Démarches et formalités administratives',
+							'0406' => 'Endettement',
+							'0407' => 'Autres'
+						)
+					)
+				)
+			);
+
+			$result = $this->DefaultTable->details( $this->data[0], $fields, $params );
+			$expected = '<table id="TableApplesIndex" class="apples index">
+				<tbody>
+					<tr class="odd">
+						<th>Apple.id</th>
+						<td class="data integer positive">6</td>
+					</tr>
+					<tr class="even">
+						<th>Apple.code</th>
+						<td class="data list text">
+							<ul>
+								<li>Santé</li>
+								<li>Lecture, écriture ou compréhension du français</li>
+								<li>Démarches et formalités administratives</li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 	}

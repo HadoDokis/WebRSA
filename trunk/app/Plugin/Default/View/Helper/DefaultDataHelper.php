@@ -40,6 +40,18 @@
 		protected $_cacheConfig = 'default';
 
 		/**
+		 * Liste des formats par défaut (cf. strftime) pour les types date, time,
+		 * datetime.
+		 *
+		 * @var array
+		 */
+		protected $_formats = array(
+			'date' => '%d/%m/%Y',
+			'datetime' => '%d/%m/%Y à %H:%M:%S',
+			'time' => '%H:%M:%S'
+		);
+
+		/**
 		 * Retourne le com de la clé de cache qui sera utilisée par ce helper.
 		 *
 		 * @return string
@@ -117,6 +129,31 @@
 		}
 
 		/**
+		 * Permet de faire la traduction à partir des options pour une valeur ou
+		 * une liste de valeurs.
+		 *
+		 * @param string|array $value
+		 * @param array $params
+		 * @return string|array
+		 */
+		public function translateOptions( $value, array $params ) {
+			if( isset( $params['options'] ) ) {
+				if( !is_array( $value ) ) {
+					if( isset( $params['options'][$value] ) ) {
+						$value = $params['options'][$value];
+					}
+				}
+				else {
+					foreach( $value as $key => $val ) {
+						$value[$key] = $this->translateOptions( $val, $params );
+					}
+				}
+			}
+
+			return $value;
+		}
+
+		/**
 		 * Retourne une chaîne de caractère à partir de la valeur et de son type.
 		 *
 		 * Les types pris en compte actuellement sont:
@@ -129,7 +166,7 @@
 		 * @param string $type
 		 * @return string
 		 */
-		public function format( $value, $type ) {
+		public function format( $value, $type, $format = null ) {
 			$return = null;
 
 			if( $value === '' ) {
@@ -142,13 +179,16 @@
 						$return = ( empty( $value ) ? __( 'No' ) : __( 'Yes' ) );
 						break;
 					case 'date':
-						$return = strftime( '%d/%m/%Y', strtotime( $value ) );
-						break;
 					case 'datetime':
-						$return = strftime( '%d/%m/%Y à %H:%M:%S', strtotime( $value ) );
+					case 'time':
+						$format = $format === null ? $this->_formats[$type] : $format;
+						$return = strftime( $format, strtotime( $value ) );
 						break;
 					case 'integer':
 						$return = number_format( $value );
+						break;
+					case 'list':
+						$return = vfListeToArray( $value );
 						break;
 					case 'text':
 					default:
@@ -196,6 +236,9 @@
 						else if( $value < 0 ) {
 							$class = 'negative';
 						}
+						break;
+					case 'list':
+						$class = 'text';
 						break;
 //					case 'datetime':
 //					case 'text':

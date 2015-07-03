@@ -76,22 +76,33 @@
 		public function data( $path, array $htmlAttributes = array() ) {
 			$type = $this->_type( $path, $htmlAttributes );
 			unset( $htmlAttributes['type'] );
+
 			$value = Hash::get( $this->_data, $path );
+			// On prend les attributs avant la valeur, sinon on aura des bugs, par exemple avec boolean
+			$attributes = $this->DefaultData->attributes( $value, $type );
+			$value = $this->DefaultData->format( $value, $type, Hash::get( $htmlAttributes, 'format' ) );
 
 			if( isset( $htmlAttributes['options'] ) ) {
-				if( isset( $htmlAttributes['options'][$value] ) ) {
-					$value = $htmlAttributes['options'][$value];
-				}
-				unset( $htmlAttributes['options'] );
+				$value = $this->DefaultData->translateOptions( $value, $htmlAttributes );
 			}
 
-			unset( $htmlAttributes['label'] );
+			// Si la valeur est une liste de valeurs
+			if( is_array( $value ) ) {
+				if( !empty( $value ) ) {
+					$value = '<ul><li>'.implode( '</li><li>', $value ).'</li></ul>';
+				}
+				else {
+					$value = null;
+				}
+			}
+
+			unset( $htmlAttributes['label'], $htmlAttributes['options'], $htmlAttributes['format'] );
 
 			return array(
-				$this->DefaultData->format( $value, $type ),
-				Set::merge(
-					$this->DefaultData->attributes( $value, $type ),
-					$htmlAttributes
+				$value,
+				Hash::merge(
+					$attributes,
+					$this->addClass( $htmlAttributes, (string)Hash::get( $attributes, 'class' ) )
 				)
 			);
 		}
@@ -107,7 +118,7 @@
 		 * @return string
 		 */
 		public function action( $path, array $htmlAttributes = array() ) {
-			$htmlAttributes = Set::merge(
+			$htmlAttributes = Hash::merge(
 				array(
 					'domain' => Inflector::underscore( $this->request->params['controller'] ),
 					'title' => true

@@ -8,6 +8,7 @@
 	 * @subpackage View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'DefaultUtility', 'Default.Utility' );
 
 	/**
 	 * La classe DefaultTableHelper ...
@@ -75,7 +76,7 @@
 				return null;
 			}
 
-			$fields = Set::normalize( $fields );
+			$fields = Hash::normalize( $fields );
 			$theadTr = array();
 			$domain = Hash::get( $params, 'domain' );
 			$tableId = Hash::get( $params, 'id' );
@@ -109,7 +110,7 @@
 						$label = $this->DefaultPaginator->sort( $field, $label );
 					}
 
-					$theadTr[] = array( $label => array( 'id' => $for ) );
+					$theadTr[] = array( $label => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) ) );
 				}
 				$fields[$field] = $attributes + array( 'for' => $for );
 			}
@@ -119,7 +120,58 @@
 				$theadTr[] = array( __d( $domain, 'Actions' ) => array( 'colspan' => $countDiff, 'class' => 'actions', 'id' => "{$tableId}ColumnActions" ) );
 			}
 
-			return $this->DefaultHtml->tag( 'thead', $this->DefaultHtml->tableHeaders( $theadTr ) );
+			// Ligne d'en-têtes supplémentaires ?
+			$header = (array)Hash::get( $params, 'header' );
+			if( !empty( $header ) ) {
+				$header = $this->DefaultHtml->tableHeaders( $header );
+			}
+			else {
+				$header = '';
+			}
+
+			return $this->DefaultHtml->tag( 'thead', $header.$this->DefaultHtml->tableHeaders( $theadTr ) );
+		}
+
+		/**
+		 * Retourne l'élément tr du body d'une table pour un enregistrement donné.
+		 *
+		 * @param integer $index
+		 * @param array $data
+		 * @param array $fields
+		 * @param array $params
+		 * @return array
+		 */
+		public function tr( $index, array $data, array $fields, array $params = array() ) {
+			$this->DefaultTableCell->set( $data );
+			$tr = array();
+
+			foreach( $fields as $path => $attributes ) {
+				$path = str_replace( '[]', "[{$index}]", $path );
+
+				if( $this->_isDataField( $path ) ) {
+					list( $modelName, $fieldName ) = model_field( $path );
+					if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
+						$attributes['options'] = $params['options'][$modelName][$fieldName];
+					}
+				}
+
+				$condition = true;
+				if( isset( $attributes['condition'] ) ) {
+					$condition = $attributes['condition'];
+					unset( $attributes['condition'] );
+
+					if( is_string( $condition ) ) {
+						$condition = eval( 'return '.DefaultUtility::evaluate( $data, $condition ).';' );
+					}
+				}
+
+				if( $condition ) {
+					$tr[] = $this->DefaultTableCell->auto( $path, (array)$attributes );
+				}
+			}
+
+			$class = ( $index % 2 == 0 ) ? 'odd' : 'even';
+			return $this->DefaultHtml->tableCells( array( $tr ), array( 'class' => $class ), array( 'class' => $class ), false, true );
 		}
 
 		/**
@@ -135,30 +187,14 @@
 				return null;
 			}
 
-			$fields = Set::normalize( $fields );
+			$fields = Hash::normalize( $fields );
 			$trs = array();
 
 			foreach( $datas as $i => $data ) {
-				$this->DefaultTableCell->set( $data );
-				$tr = array();
-
-				foreach( $fields as $path => $attributes ) {
-					$path = str_replace( '[]', "[{$i}]", $path );
-
-					if( $this->_isDataField( $path ) ) {
-						list( $modelName, $fieldName ) = model_field( $path );
-						if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
-							$attributes['options'] = $params['options'][$modelName][$fieldName];
-						}
-					}
-
-					$tr[] = $this->DefaultTableCell->auto( $path, (array)$attributes );
-				}
-
-				$trs[] = $tr;
+				$trs[] = $this->tr( $i, $data, $fields, $params );
 			}
 
-			return $this->DefaultHtml->tag( 'tbody', $this->DefaultHtml->tableCells( $trs, array( 'class' => 'odd' ), array( 'class' => 'even' ), false, false ) );
+			return $this->DefaultHtml->tag( 'tbody', implode( '', $trs ) );
 		}
 
 		/**
@@ -220,7 +256,7 @@
 			}
 
 			$this->DefaultTableCell->set( $data );
-			$fields = Set::normalize( $fields );
+			$fields = Hash::normalize( $fields );
 			$trs = array();
 			$domain = Hash::get( $params, 'domain' );
 

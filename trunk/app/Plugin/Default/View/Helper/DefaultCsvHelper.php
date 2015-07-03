@@ -47,6 +47,30 @@
 		}
 
 		/**
+		 * Retourne la valeur d'une cellule.
+		 *
+		 * @return string
+		 */
+		protected function _getBodyCell( array $data, $path, array $types, array $params, array $cellParams ) {
+			$value = Hash::get( $data, $path );
+
+			$type = Hash::get( $cellParams, 'type' );
+			$type = $type === null ? $types[$path] : $type;
+
+			$value = $this->DefaultData->format( $value, $type, Hash::get( $cellParams, 'format' ) );
+			if( !in_array( $value, array( null, array() ), true ) && Hash::check( $params, "options.{$path}" ) ) {
+				// TODO: pas efficace dans les boucles!
+				$value = $this->DefaultData->translateOptions( $value, array( 'options' => Hash::get( $params, "options.{$path}" ) ) );
+			}
+
+			if( is_array( $value ) ) {
+				$value = implode( $value, ', ' );
+			}
+
+			return $value;
+		}
+
+		/**
 		 * Ajout d'un champ d'enregistrements, suivant le type de champs et la
 		 * traducton possible par les options des paramètres généraux ou plus
 		 * spécifiquement des attributs des champs.
@@ -57,16 +81,20 @@
 		protected function _addBodyRow( array $data, array $fields, array $types, array $params ) {
 			$row = array();
 
-			foreach( array_keys( $fields ) as $path ) {
-				$value = Hash::get( $data, $path );
+			foreach( $fields as $path => $innerParams ) {
+				$condition = true;
+				if( isset( $innerParams['condition'] ) ) {
+					$condition = $innerParams['condition'];
+					unset( $innerParams['condition'] );
 
-				$value = $this->DefaultData->format( $value, $types[$path] );
-
-				if( $value !== null && Hash::check( $params, "options.{$path}.{$value}" ) ) {
-					$value = Hash::get( $params, "options.{$path}.{$value}" );
+					if( is_string( $condition ) ) {
+						$condition = eval( 'return '.DefaultUtility::evaluate( $data, $condition ).';' );
+					}
 				}
 
-				$row[] = $value;
+				if( $condition ) {
+					$row[] = $this->_getBodyCell( $data, $path, $types, $params, (array)$innerParams );
+				}
 			}
 
 			$this->Csv->addRow( $row );

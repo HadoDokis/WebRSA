@@ -25,4 +25,28 @@
 			return null;
 		}
 	}
+
+	if( !function_exists( 'vfListeToArray') ) {
+		/**
+		 * Transforme un chaîne de caractères représentant une implosion de valeurs,
+		 * chacune d'entre elle étant préfixée par le caractère "-" et étant séparée
+		 * de la suivante par ""\n\r" en un tableau contenant chacune des valeurs non
+		 * préfixée.
+		 *
+		 * Par exemple, un champ virtuel construit avec AppModel::vfListe().
+		 *
+		 * Exemple:
+		 * <pre>vfListeToArray( '- CAF' ) </pre>
+		 * donne
+		 * <pre>array( 0 => 'CAF' )</pre>
+		 *
+		 * @param string $liste
+		 * @param string $separator
+		 * @return array
+		 */
+		function vfListeToArray( $liste, $separator = "\n\r-" ) {
+			$liste = trim( $liste, '-' );
+			return Hash::filter( explode( $separator, $liste ) );
+		}
+	}
 ?>

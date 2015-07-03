@@ -115,8 +115,52 @@
 			$expected = '01/06/2013';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
-			$result = $this->DefaultData->format( '2013-06-01 10:02:58', 'datetime' );
-			$expected = '01/06/2013 à 10:02:58';
+			// Liste de valeurs
+			$result = $this->DefaultData->format( "-0402\n\r-0404\n\r-0405", 'list' );
+			$expected = array( '0402', '0404', '0405' );
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Valeur vide / nulle
+			$result = $this->DefaultData->format( '', 'string' );
+			$expected = null;
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Datetime
+			$result = $this->DefaultData->format( '2013-06-01 11:05:55', 'datetime' );
+			$expected = '01/06/2013 à 11:05:55';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Time
+			$result = $this->DefaultData->format( '11:05:55', 'time' );
+			$expected = '11:05:55';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DefaultDataHelper::format() avec utilisation du
+		 * paramètre format.
+		 *
+		 * @return void
+		 */
+		public function testFormatParamFormat() {
+			// 1. Valeur nulle
+			$result = $this->DefaultData->format( null, 'date', '%B %Y' );
+			$expected = null;
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Date
+			$result = $this->DefaultData->format( '2013-06-01', 'date', '%B %Y' );
+			$expected = 'juin 2013';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Datetime
+			$result = $this->DefaultData->format( '2013-06-01 11:05:55', 'datetime', '%A %e %B %Y %H:%M' );
+			$expected = 'samedi  1 juin 2013 11:05';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Time
+			$result = $this->DefaultData->format( '11:05', 'time', '%H:%M' );
+			$expected = '11:05';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -149,6 +193,11 @@
 			$result = $this->DefaultData->attributes( false, 'boolean' );
 			$expected = array( 'class' => 'data boolean false' );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Liste de valeurs
+			$result = $this->DefaultData->attributes( "-0402\n\r-0404\n\r-0405", 'list' );
+			$expected = array( 'class' => 'data list text' );
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
@@ -178,6 +227,30 @@
 					'modified' => 'datetime',
 					'mytime' => 'time'
 				)
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DefaultDataHelper::translateOptions().
+		 */
+		public function testTranslateOptions() {
+			$params = array(
+				'options' => array(
+					'5' => 'MyOpt1',
+					'6' => 'MyOpt2'
+				)
+			);
+			// 1. Chaîne de caractères
+			$result = $this->DefaultData->translateOptions( '5', $params );
+			$expected = 'MyOpt1';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Array
+			$result = $this->DefaultData->translateOptions( array( '5', '6' ), $params );
+			$expected = array(
+				'MyOpt1',
+				'MyOpt2'
 			);
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}

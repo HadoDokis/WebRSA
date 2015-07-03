@@ -78,16 +78,16 @@
 		 *	- type(string): spécifie la classe du div
 		 *
 		 * @param string $fieldName
-		 * @param array $options
+		 * @param array $params
 		 * @return string
 		 */
-		public function fieldValue( $fieldName, array $options = array() ) {
+		public function fieldValue( $fieldName, array $params = array() ) {
 			// Label
-			if( isset( $options['label'] ) ) {
-				$label = $options['label'];
+			if( isset( $params['label'] ) ) {
+				$label = $params['label'];
 			}
 			else {
-				$label = $this->label( $fieldName, null, $options );
+				$label = $this->label( $fieldName, null, $params );
 				$label = preg_replace( '/^.*>([^<]*)<.*$/', '\1', $label );
 			}
 			$label = $this->Html->tag( 'span', $label, array( 'class' => 'label' ) );
@@ -95,16 +95,16 @@
 			// Valeur
 			$value = Hash::get( $this->request->data, $fieldName );
 
-			if( isset( $options['options'][$value] ) ) {
-				$value = $options['options'][$value];
+			if( isset( $params['options'][$value] ) ) {
+				$value = $params['options'][$value];
 			}
 
-			if( Hash::get( $options, 'nl2br' ) ) {
+			if( Hash::get( $params, 'nl2br' ) ) {
 				$value = nl2br( $value );
 			}
 
-			if( isset( $options['type'] ) && $options['type'] !== 'text' ) {
-				$value = $this->DefaultData->format( $value, $options['type'] );
+			if( isset( $params['type'] ) && $params['type'] !== 'text' ) {
+				$value = $this->DefaultData->format( $value, $params['type'], Hash::get( $params, 'format' ) );
 			}
 
 			// Permet d'avoir la fin de tag
@@ -115,7 +115,7 @@
 			$value = $this->Html->tag( 'span', $value, array( 'class' => 'input' ) );
 
 			// Ajout d'un champ caché ?
-			$hidden = Hash::get( $options, 'hidden' );
+			$hidden = Hash::get( $params, 'hidden' );
 			if( $hidden ) {
 				$hidden = $this->input( $fieldName, array( 'type' => 'hidden' ) );
 			}
@@ -124,13 +124,13 @@
 			}
 
 			// Options
-			$options = $this->addClass( $options, 'input value' );
-			if( isset( $options['type'] ) ) {
-				$options = $this->addClass( $options, $options['type'] );
+			$params = $this->addClass( $params, 'input value' );
+			if( isset( $params['type'] ) ) {
+				$params = $this->addClass( $params, $params['type'] );
 			}
-			unset( $options['options'], $options['label'], $options['hidden'], $options['nl2br'], $options['type'] );
+			unset( $params['options'], $params['label'], $params['hidden'], $params['nl2br'], $params['type'], $params['format'] );
 
-			return $this->Html->tag( 'div', $hidden.$label.$value, $options );
+			return $this->Html->tag( 'div', $hidden.$label.$value, $params );
 		}
 
 		/**
