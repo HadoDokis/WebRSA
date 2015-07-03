@@ -28,6 +28,7 @@
 			'app.Detailcalculdroitrsa',
 			'app.Detaildroitrsa',
 			'app.Dossier',
+			'app.Dsp',
 			'app.Foyer',
 			'app.Personne',
 			'app.PersonneReferent',
@@ -76,6 +77,65 @@
 		}
 
 		/**
+		 * Test de la méthode Allocataire::searchQuery().
+		 */
+		public function testSearchQuery() {
+			// 1. Jointures par défaut, à partir de Personne
+			$result = Hash::combine( $this->Allocataire->searchQuery(), 'joins.{n}.alias', 'joins.{n}.type' );
+			$expected = array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'INNER',
+				'Adressefoyer' => 'INNER',
+				'Dossier' => 'INNER',
+				'Adresse' => 'INNER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'INNER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Jointures par défaut, à partir de Dossier
+			$result = Hash::combine( $this->Allocataire->searchQuery( array(), 'Dossier' ), 'joins.{n}.alias', 'joins.{n}.type' );
+			$expected = array(
+				'Foyer' => 'INNER',
+				'Personne' => 'INNER',
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Prestation' => 'INNER',
+				'Adressefoyer' => 'INNER',
+				'Adresse' => 'INNER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'INNER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 3. Jointures par défaut, à partir d'un modèle lié à la personne
+			$result = Hash::combine( $this->Allocataire->searchQuery( array(), 'Dsp' ), 'joins.{n}.alias', 'joins.{n}.type' );
+			$expected = array(
+				'Personne' => 'INNER',
+				'Foyer' => 'INNER',
+				'Dossier' => 'INNER',
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Prestation' => 'INNER',
+				'Adressefoyer' => 'INNER',
+				'Adresse' => 'INNER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'INNER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+
+
+		/**
 		 * Test des joins de la méthode Allocataire::searchQuery().
 		 */
 		public function testSearchQueryJoins() {
@@ -119,6 +179,52 @@
 				'Structurereferenteparcours' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test des joins de la méthode Allocataire::searchQuery(), suivant le
+		 * type de jointure sur Prestation.
+		 */
+		public function testSearchQueryPrestationJoinType() {
+			// 1. INNER JOIN
+			$joins = array(
+				'Prestation' => 'INNER'
+			);
+			$result = $this->Allocataire->searchQuery( $joins );
+			$expected = array(
+				array(
+					'table' => '"prestations"',
+					'alias' => 'Prestation',
+					'type' => 'INNER',
+					'conditions' => '"Prestation"."personne_id" = "Personne"."id" AND "Prestation"."natprest" = \'RSA\' AND "Prestation"."rolepers" IN (\'DEM\', \'CJT\')'
+				)
+			);
+
+			$this->assertEqual( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), $expected, var_export( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), true ) );
+			$expected = array();
+			$this->assertEqual( $result['conditions'], $expected, var_export( $result['conditions'], true ) );
+
+			// 2. LEFT OUTER JOIN
+			$joins = array(
+				'Prestation' => 'LEFT OUTER'
+			);
+			$result = $this->Allocataire->searchQuery( $joins );
+			$expected = array(
+				array(
+					'table' => '"prestations"',
+					'alias' => 'Prestation',
+					'type' => 'LEFT OUTER',
+					'conditions' => '"Prestation"."personne_id" = "Personne"."id" AND "Prestation"."natprest" = \'RSA\''
+				)
+			);
+			$this->assertEqual( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), $expected, var_export( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), true ) );
+			$expected = array(
+				'OR' => array(
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					'Prestation.id IS NULL',
+				)
+			);
+			$this->assertEqual( $result['conditions'], $expected, var_export( $result['conditions'], true ) );
 		}
 
 		/**
