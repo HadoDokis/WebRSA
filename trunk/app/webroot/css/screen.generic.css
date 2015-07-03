@@ -1960,3 +1960,11 @@ div.col-2.droite{
 #resumeDossier .col-2 table{
 	width: 100%;
 }
+
+/* Page de résumé du dossier, taille des titres pour les départements autres que le 66 */
+body.cg58.dossiers.view #resumeDossier h1, body.cg58.dossiers.view #resumeDossier h2,
+body.cg93.dossiers.view #resumeDossier h1, body.cg93.dossiers.view #resumeDossier h2,
+body.cg976.dossiers.view #resumeDossier h1, body.cg976.dossiers.view #resumeDossier h2 {
+	font-size: 1.58em;
+	margin: 0;
+}

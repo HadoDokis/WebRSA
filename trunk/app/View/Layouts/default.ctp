@@ -127,8 +127,8 @@
 				.treemenu, .treemenu *, #pageMenu, #pageWrapper { zoom: 1; }
 			</style>
 		<![endif]-->
-	</head>
-	<body class="<?php echo Inflector::underscore( $this->name )." {$this->action}";?>">
+	</head><?php $departement = Configure::read( 'Cg.departement' );?>
+	<body class="<?php echo 'cg'.$departement.' '.Inflector::underscore( $this->name ).' '.$this->action;?>">
 <?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>
 	<div id="alertEndSession" style="display: none;">
 		<div id="popups" style="z-index: 1000;">
@@ -182,7 +182,7 @@
 				webrsa v. <?php echo app_version();?> 2009 - 2014 @ Adullact.
 				<?php
 					if( Configure::read( 'debug' ) > 0 ) {
-						echo '( CG '.Configure::read( 'Cg.departement' );
+						echo '( CG '.$departement;
 						echo ', BDD '.ClassRegistry::init( 'User' )->getDataSource()->config['database'];
 						echo ', '.$this->Html->link( 'requêtes SQL', '#', array( 'onclick' => '$( "sqldump" ).toggle();return false;', 'id' => 'SqlDumpToggler' ) );
 						echo " )\n";
