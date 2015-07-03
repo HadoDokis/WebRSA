@@ -230,7 +230,14 @@
 				'Dsps.index.header' => array(
 					array( 'rule' => 'isarray', 'allowEmpty' => true )
 				),
-				'Dsps.exportcsv' => 'isarray'
+				'Dsps.exportcsv' => 'isarray',
+				// Recherche par dossiers / allocataires
+				'Dossiers.index.fields' => 'isarray',
+				'Dossiers.index.innerTable' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true )
+				),
+				'Dossiers.exportcsv' => 'isarray',
+				'MultiDomainsTranslator.prefix' => 'string',
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
@@ -942,12 +949,19 @@
 		 * ...
 		 */
 		public function allCheckParametrage() {
-			$errors = array( );
+			$errors = array();
 
-			$modelNames = array( 'Dsp', 'Criterecui' );
+			$ignore = Configure::read( 'ConfigurableQueryFields.ignore' );
+			$ignore[] = 'Dossier.locked';
+			Configure::write( 'ConfigurableQueryFields.ignore', $ignore );
+
+			$modelNames = array( 'Dsp', 'Dossier' );
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$modelNames[] = 'Cohorterendezvous';
 				$modelNames[] = 'Tableausuivipdv93';
+			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$modelNames[] = 'Criterecui';
 			}
 
 			foreach( $modelNames as $modelName ) {

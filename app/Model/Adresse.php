@@ -21,7 +21,12 @@
 			'localite' => array(
 				'type'      => 'string',
 				'postgres'  => '( "%s"."codepos" || \' \' || "%s"."nomcom" )'
-			)
+			),
+			'complete' => array(
+				'type'      => 'string',
+				// TODO: nl2br -> vue
+				'postgres'  => 'COALESCE( "%s"."numvoie", \'\' ) || \' \' || COALESCE( "%s"."libtypevoie", \'\' ) || \' \' || COALESCE( "%s"."nomvoie", \'\' ) || E\'\n\' || COALESCE( "%s"."codepos", \'\' ) || \' \' || COALESCE( "%s"."nomcom", \'\' )'
+			),
 		);
 
 		public $validate = array(

@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'Sanitize', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe DossiersController ...
@@ -20,9 +21,19 @@
 
 		public $uses = array( 'Dossier', 'Option', 'Informationpe', 'Tableausuivipdv93' );
 
-		public $helpers = array( 'Csv' , 'Search', 'Default2', 'Gestionanomaliebdd' );
+		public $helpers = array(
+			'Csv' ,
+			'Search',
+			'Default2',
+			'Gestionanomaliebdd',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Allocataires'
+		);
 
 		public $components = array(
+			'Allocataires',
 			'DossiersMenus',
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
@@ -150,38 +161,77 @@
 		}
 
 		/**
+		 *
+		 * @return array
+		 */
+		protected function _options() {
+			$options = $this->Allocataires->options();
+			$exists = array( '1' => 'Oui', '0' => 'Non' );
+			$options['Personne']['has_contratinsertion'] = $exists;
+			$options['Personne']['has_cui'] = $exists;
+			$options['Personne']['has_dsp'] = $exists;
+			$options['Personne']['has_orientstruct'] = $exists;
+			$options['Personne']['trancheage'] = array(
+				'0_24' => '< 25',
+				'25_30' => '25 - 30',
+				'31_55' => '31 - 55',
+				'56_65' => '56 - 65',
+				'66_999' => '> 65',
+			);
+			$options['Prestation']['rolepers'] = $this->Option->rolepers();
+
+			$options['Dossier']['anciennete_dispositif'] = $this->Tableausuivipdv93->anciennetes_dispositif;
+			$options['Serviceinstructeur']['id'] = $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->listOptions();
+			$options['Dossier']['fonorg'] = array( 'CAF' => 'CAF', 'MSA' => 'MSA' ); // TODO: dans les options / les enums ?
+
+
+			$natlog = $this->Dossier->Foyer->Personne->Dsp->enum( 'natlog' );
+			asort( $natlog );
+			$options['Dsp']['natlog'] = $natlog;
+
+			$options['Prestation']['exists'] = array(
+				'0' => 'Sans prestation',
+				'1' => 'Demandeur ou Conjoint du RSA'
+			);
+
+			$options['Foyer']['sitfam'] = $this->Option->sitfam();
+
+			$departement = Configure::read( 'Cg.departement' );
+			if( $departement == 58 ) {
+				$options['Activite']['act'] = $this->Option->act();
+				$options['Personne']['etat_dossier_orientation'] = $this->Dossier->Foyer->Personne->enum( 'etat_dossier_orientation' );
+				$options['Propoorientationcov58']['referentorientant_id'] = $this->Dossier->Foyer->Personne->PersonneReferent->Referent->find( 'list', array( 'order' => array( 'Referent.nom' ) ) );
+			}
+
+			return $options;
+		}
+
+		/**
 		 * Moteur de recherche par dossier/allocataire
 		 *
 		 * @return void
 		 */
 		public function index() {
+			// TODO: à présent, on peut factoriser
 			if( !empty( $this->request->data ) ) {
-				$paginate = $this->Dossier->search( $this->request->data );
+				$query = $this->Dossier->search( (array)Hash::get( $this->request->data, 'Search' ) );
+				$query = $this->Allocataires->completeSearchQuery( $query );
 
-				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
-				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
-				$paginate = $this->_qdAddFilters( $paginate );
+				$key = "{$this->name}.{$this->request->params['action']}";
+				$query = ConfigurableQueryFields::getFieldsByKeys( array( "{$key}.fields", "{$key}.innerTable" ), $query );
 
-				$paginate['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
+				$this->Dossier->forceVirtualFields = true;
+				$results = $this->Allocataires->paginate( $query, 'Dossier' );
 
-				$this->paginate = $paginate;
-				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
-				$dossiers = $this->paginate( 'Dossier', array(), array(), $progressivePaginate );
-
-				$this->set( 'dossiers', $dossiers );
+				$this->set( compact( 'results' ) );
 			}
 			else {
 				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
-				$this->request->data = Set::merge( $this->request->data, $filtresdefaut );
+				$this->request->data = Hash::merge( $this->request->data, array( 'Search' => $filtresdefaut ) );
 			}
 
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
-
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
-
-			$this->_setOptions();
+			$options = $this->_options();
+			$this->set( compact( 'options' ) );
 		}
 
 		/**
@@ -832,7 +882,7 @@
 			}
 
 			$this->set( 'optionsep', $optionsep );
-			
+
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$this->render('view66');
 			}
@@ -894,7 +944,7 @@
 		 *
 		 * @return void
 		 */
-		public function exportcsv() {
+		/*public function exportcsv() {
 			$querydata = $this->Dossier->search( Hash::expand( $this->request->params['named'], '__' ) );
 
 			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
@@ -908,6 +958,30 @@
 			$this->layout = '';
 			$this->set( compact( 'headers', 'dossiers' ) );
 			$this->_setOptions();
+		}*/
+
+		public function exportcsv() {
+			// TODO: à présent, on peut factoriser
+			$search = Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' );
+
+			$query = $this->Dossier->search( $search );
+			$query = $this->Allocataires->completeSearchQuery( $query );
+
+			$key = "{$this->name}.{$this->request->params['action']}";
+			$query = ConfigurableQueryFields::getFieldsByKeys( $key, $query );
+
+			unset( $query['limit'] ); // FIXME: l'enlever de la query du modèle
+			$order = trim( Hash::get( $this->request->params, 'named.sort' ).' '.Hash::get( $this->request->params, 'named.direction' ) );
+			if( !empty( $order ) ) {
+				$query['order'] = $order;
+			}
+
+			$this->Dossier->forceVirtualFields = true;
+			$results = $this->Dossier->find( 'all', $query );
+
+			$this->layout = '';
+			$options = $this->_options();
+			$this->set( compact( 'results', 'options' ) );
 		}
 
 		/**

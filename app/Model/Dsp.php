@@ -1016,7 +1016,7 @@
 			$keys = array( 'Dsps.index.fields', 'Dsps.index.innerTable', 'Dsps.exportcsv' );
 			$query = $this->search( array() );
 
-			App::uses( 'ConfigurableQueryFields', 'Utility' );
+			App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 			$return = ConfigurableQueryFields::getErrors( $keys, $query );
 
 			return $return;
@@ -1274,6 +1274,15 @@
 				ModelCache::write( $cacheKey, $models );
 			}
 
+			$correspondances = array(
+				'Detaildifsoc' => 'difsoc',
+				'Detailaccosocindi' => 'nataccosocindi',
+				'Detaildifdisp' => 'difdisp'
+			);
+			foreach( $correspondances as $alias => $fieldName ) {
+				$return['Donnees'][$fieldName] =& $return[$alias][$fieldName];
+			}
+
 			return $return;
 		}
 
@@ -1294,7 +1303,7 @@
 			$success = $success && !empty( $query );
 
 			// Export des champs disponibles
-			App::uses( 'ConfigurableQueryFields', 'Utility' );
+			App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 			$fileName = TMP.DS.'logs'.DS.__CLASS__.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
 			ConfigurableQueryFields::exportQueryFields( $query, 'dsps', $fileName );
 

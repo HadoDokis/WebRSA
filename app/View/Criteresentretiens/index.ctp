@@ -23,17 +23,15 @@
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        dependantSelect( 'EntretienReferentId', 'EntretienStructurereferenteId' );
-    });
-</script>
 
-<?php echo $this->Xform->create( 'Critereentretien', array( 'type' => 'post', 'action' => $this->action,  'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Xform->create( 'Critereentretien', array( 'type' => 'post', 'action' => $this->action,  'id' => 'Search', 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php echo $this->Xform->input( 'Critereentretien.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 	<?php
 		echo $this->Search->blocAllocataire();
-		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
+		echo $this->Search->blocAdresse(
+			(array)Hash::get( $options, 'Adresse.numcom' ),
+			(array)Hash::get( $options, 'Canton.canton' )
+		);
 	?>
 	<fieldset>
 		<legend>Recherche par dossier</legend>
@@ -53,8 +51,8 @@
 			echo $this->Default2->subform(
 				array(
 					'Entretien.arevoirle' => array( 'label' => __d( 'entretien', 'Entretien.arevoirle' ), 'type' => 'date', 'dateFormat' => 'MY', 'empty' => true, 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
-					'Entretien.structurereferente_id' => array( 'label' => __d( 'entretien', 'Entretien.structurereferente_id' ), 'empty' => true, 'options' => $structs ),
-					'Entretien.referent_id' => array( 'label' => __d( 'entretien', 'Entretien.referent_id' ), 'empty' => true, 'options' => $referents  ),
+					'Entretien.structurereferente_id' => array( 'label' => __d( 'entretien', 'Entretien.structurereferente_id' ), 'empty' => true, 'options' => $options['PersonneReferent']['structurereferente_id'] ),
+					'Entretien.referent_id' => array( 'label' => __d( 'entretien', 'Entretien.referent_id' ), 'empty' => true, 'options' => $options['PersonneReferent']['referent_id']  ),
 					'Entretien.dateentretien' => array( 'type' => 'checkbox' )
 				),
 				array(
@@ -79,7 +77,10 @@
 	</fieldset>
 
 	<?php
-		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+		echo $this->Search->referentParcours(
+			$options['PersonneReferent']['structurereferente_id'],
+			$options['PersonneReferent']['referent_id']
+		);
 		echo $this->Search->paginationNombretotal();
 	?>
 
@@ -88,117 +89,37 @@
         <?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
 
-<?php echo $this->Xform->end();?>
+<?php
+	echo $this->Xform->end();
+	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+?>
 
 <script type="text/javascript">
-	document.observe("dom:loaded", function() {
+	document.observe( "dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'EntretienDateentretien', $( 'EntretienDateentretienFromDay' ).up( 'fieldset' ), false );
-	});
+		dependantSelect( 'EntretienReferentId', 'EntretienStructurereferenteId' );
+	} );
 </script>
-
-<?php if( isset( $entretiens ) ):?>
-    <?php if( empty( $entretiens ) ):?>
-        <?php $message = 'Aucun entretien n\'a été trouvé.';?>
-        <p class="notice"><?php echo $message;?></p>
-    <?php else:?>
+<?php if( isset( $results ) ): ?>
 	<?php
-		$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
+		echo $this->Default3->configuredindex(
+			$results,
+			array(
+				'options' => $options
+			)
+		);
 	?>
-<?php $pagination = $this->Xpaginator->paginationBlock( 'Entretien', $this->passedArgs ); ?>
-<?php echo $pagination;?>
-    <table id="searchResults" class="tooltips">
-        <thead>
-            <tr>
-                <th><?php echo $this->Xpaginator->sort( 'Date de l\'entretien', 'Entretien.dateentretien' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'Référent', 'Referent.nom' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'Type d\'entretien', 'Entretien.typeentretien' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'Objet de l\'entretien', 'Objetentretien.name' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'A revoir le', 'Entretien.arevoirle' );?></th>
-                <th class="action">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach( $entretiens as $index => $entretien ):?>
-            <?php
-                    $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
-                        <tbody>
-                            <tr>
-                                <th>Date naissance</th>
-                                <td>'.h( date_short( $entretien['Personne']['dtnai'] ) ).'</td>
-                            </tr>
-                            <tr>
-                                <th>' . __d( 'dossier', 'Dossier.matricule.large' ) . '</th>
-                                <td>'.h( $entretien['Dossier']['matricule'] ).'</td>
-                            </tr>
-                            <tr>
-                                <th>NIR</th>
-                                <td>'.h( $entretien['Personne']['nir'] ).'</td>
-                            </tr>
-                            <tr>
-                                <th>Code postal</th>
-                                <td>'.h( $entretien['Adresse']['codepos'] ).'</td>
-                            </tr>
-                            <tr>
-                                <th>Code INSEE</th>
-                                <td>'.h( $entretien['Adresse']['numcom'] ).'</td>
-                            </tr>
-							<tr>
-								<th>'.__d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ).'</th>
-								<td>'.Hash::get( $entretien, 'Structurereferenteparcours.lib_struc' ).'</td>
-							</tr>
-							<tr>
-								<th>'.__d( $domain_search_plugin, 'Referentparcours.nom_complet' ).'</th>
-								<td>'.Hash::get( $entretien, 'Referentparcours.nom_complet' ).'</td>
-							</tr>
-                        </tbody>
-                    </table>';
-                    $title = $entretien['Dossier']['numdemrsa'];
 
-                    echo $this->Xhtml->tableCells(
-                            array(
-                                h( date_short(  $entretien['Entretien']['dateentretien'] ) ),
-                                h( $entretien['Personne']['qual'].' '.$entretien['Personne']['nom'].' '.$entretien['Personne']['prenom'] ),
-                                h( $entretien['Adresse']['nomcom'] ),
-                                h( $entretien['Structurereferente']['lib_struc'] ),
-                                h( $entretien['Referent']['qual'].' '.$entretien['Referent']['nom'].' '.$entretien['Referent']['prenom'] ),
-                                h( Set::enum( $entretien['Entretien']['typeentretien'], $options['typeentretien'] ) ),
-                                h( $entretien['Objetentretien']['name'] ),
-                                h( $this->Locale->date( 'Date::miniLettre', $entretien['Entretien']['arevoirle'] ) ),
-                                $this->Xhtml->viewLink(
-                                    'Voir le contrat',
-                                    array( 'controller' => 'entretiens', 'action' => 'index', $entretien['Personne']['id'] ),
-                                    $this->Permissions->check( 'entretiens', 'index' ) && !Hash::get( $entretien, 'Entretien.horszone' )
-                                ),
-                                array( $innerTable, array( 'class' => 'innerTableCell' ) ),
-                            ),
-                            array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-                            array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
-                        );
-                ?>
-            <?php endforeach;?>
-        </tbody>
-    </table>
-    <ul class="actionMenu">
-            <li><?php
-                echo $this->Xhtml->printLinkJs(
-                    'Imprimer le tableau',
-                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
-                );
-            ?></li>
-            <li><?php
-                echo $this->Xhtml->exportLink(
-                    'Télécharger le tableau',
-                    array( 'controller' => 'criteresentretiens', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-					$this->Permissions->check( 'criteresentretiens', 'exportcsv' )
-                );
-            ?></li>
-        </ul>
-    <?php echo $pagination;?>
-
-<?php endif?>
-<?php endif?>
-
-<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>
+	<ul class="actionMenu">
+		<li><?php
+			echo $this->Xhtml->printLinkJs(
+				'Imprimer le tableau', array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+			);
+		?></li>
+		<li><?php
+			echo $this->Xhtml->exportLink(
+				'Télécharger le tableau', array( 'controller' => 'criteresentretiens', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ), $this->Permissions->check( 'criteresentretiens', 'exportcsv' )
+			);
+		?></li>
+	</ul>
+<?php endif;?>

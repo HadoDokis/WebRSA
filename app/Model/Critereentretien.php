@@ -8,9 +8,13 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'Sanitize', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
-	 * La classe Critereentretien ...
+	 * La classe Critereentretien fournit le moteur de recherche par entretiens,
+	 * au moyen du plugin ConfigurableQuery.
+	 *
+	 * @todo Interface (ConfigurableQuery)
 	 *
 	 * @package app.Model
 	 */
@@ -23,179 +27,142 @@
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
-		*
-		*/
-
-		public function search( $criteresentretiens  ) {
-			/// Conditions de base
-			$conditions = array( );
-
-			/// Critères zones géographiques
-			$conditions = $this->conditionsAdresse( $conditions, $criteresentretiens );
-			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresentretiens );
-			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresentretiens );
-
-			/// Critères
-			$numeroapre = Set::extract( $criteresentretiens, 'Apre.numeroapre' );
-			$referent = Set::extract( $criteresentretiens, 'Apre.referent_id' );
-			$structure = Set::extract( $criteresentretiens, 'Entretien.structurereferente_id' );
-			$referent = Set::extract( $criteresentretiens, 'Entretien.referent_id' );
-
-			// Référent lié à l'APRE
-			if( !empty( $arevoirle ) ) {
-				$conditions[] = 'Entretien.arevoirle = \''.Sanitize::clean( $arevoirle, array( 'encode' => false ) ).'\'';
-			}
-
-			if( isset( $criteresentretiens['Entretien']['arevoirle'] ) && !empty( $criteresentretiens['Entretien']['arevoirle'] ) ) {
-				if( valid_int( $criteresentretiens['Entretien']['arevoirle']['year'] ) ) {
-					$conditions[] = 'EXTRACT(YEAR FROM Entretien.arevoirle) = '.$criteresentretiens['Entretien']['arevoirle']['year'];
-				}
-				if( valid_int( $criteresentretiens['Entretien']['arevoirle']['month'] ) ) {
-					$conditions[] = 'EXTRACT(MONTH FROM Entretien.arevoirle) = '.$criteresentretiens['Entretien']['arevoirle']['month'];
-				}
-			}
-
-			if ( isset($criteresentretiens['Entretien']['structurereferente_id']) && !empty($criteresentretiens['Entretien']['structurereferente_id']) ) {
-				$conditions[] = array('Entretien.structurereferente_id'=>$criteresentretiens['Entretien']['structurereferente_id']);
-			}
-
-			if ( isset($criteresentretiens['Entretien']['referent_id']) && !empty($criteresentretiens['Entretien']['referent_id']) ) {
-				$conditions[] = array('Entretien.referent_id'=>$criteresentretiens['Entretien']['referent_id']);
-			}
-
-			$conditions = $this->conditionsDates( $conditions, $criteresentretiens, 'Entretien.dateentretien' );
-
-			/// Requête
-			$this->Dossier = ClassRegistry::init( 'Dossier' );
-
-			$joins = array(
-				array(
-					'table'      => 'personnes',
-					'alias'      => 'Personne',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Personne.id = Entretien.personne_id' ),
-				),
-				array(
-					'table'      => 'referents',
-					'alias'      => 'Referent',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Referent.id = Entretien.referent_id' ),
-				),
-				array(
-					'table'      => 'structuresreferentes',
-					'alias'      => 'Structurereferente',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Structurereferente.id = Entretien.structurereferente_id' ),
-				),
-				array(
-					'table'      => 'objetsentretien',
-					'alias'      => 'Objetentretien',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Objetentretien.id = Entretien.objetentretien_id' ),
-				),
-				array(
-					'table'      => 'prestations',
-					'alias'      => 'Prestation',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array(
-						'Personne.id = Prestation.personne_id',
-						'Prestation.natprest = \'RSA\'',
-						'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-					)
-				),
-				array(
-					'table'      => 'foyers',
-					'alias'      => 'Foyer',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-				),
-				array(
-					'table'      => 'dossiers',
-					'alias'      => 'Dossier',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-				),
-				array(
-					'table'      => 'adressesfoyers',
-					'alias'      => 'Adressefoyer',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array(
-						'Foyer.id = Adressefoyer.foyer_id',
-						'Adressefoyer.id IN (
-							'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-						)'
-					)
-				),
-				array(
-					'table'      => 'adresses',
-					'alias'      => 'Adresse',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-				),
-				array(
-					'table'      => 'situationsdossiersrsa',
-					'alias'      => 'Situationdossierrsa',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
-				)
+		 * Retourne le querydata de base, en fonction du département, à utiliser
+		 * dans le moteur de recherche.
+		 *
+		 * @param array $types Les types de jointure alias => type
+		 * @return array
+		 */
+		public function searchQuery( array $types = array() ) {
+			$types = array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'INNER',
+				'Adressefoyer' => 'LEFT OUTER',
+				'Dossier' => 'INNER',
+				'Adresse' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'LEFT OUTER'
+				// TODO: tous les types
 			);
 
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+			$query = Cache::read( $cacheKey );
 
-			$query = array(
-				'fields' => array(
-					'Entretien.personne_id',
-					'Entretien.arevoirle',
-					'Entretien.dateentretien',
-					'Entretien.structurereferente_id',
-					'Entretien.referent_id',
-					'Entretien.typeentretien',
-					'Entretien.objetentretien_id',
-					'Referent.qual',
-					'Referent.nom',
-					'Referent.prenom',
-					'Structurereferente.lib_struc',
-					'Objetentretien.name',
-					'Dossier.id',
-					'Dossier.numdemrsa',
-					'Dossier.dtdemrsa',
-					'Dossier.matricule',
-					'Personne.id',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Personne.nir',
-					'Personne.qual',
-					'Personne.nomcomnai',
-					'Adresse.numvoie',
-                    'Adresse.libtypevoie',
-                    'Adresse.nomvoie',
-                    'Adresse.complideadr',
-                    'Adresse.compladr',
-					'Adresse.codepos',
-                    'Adresse.nomcom',
-					'Adressefoyer.rgadr',
-					'Adresse.numcom'
-				),
-				'joins' => $joins,
-				'contain' => false,
-				'conditions' => $conditions
-			);
+			if( $query === false ) {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
+				$Entretien = ClassRegistry::init( 'Entretien' );
+				$query = $Allocataire->searchQuery( $types, 'Entretien' );
 
-			$query = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresentretiens );
+				// Ajout des spécificités du moteur de recherche
+				$departement = (int)Configure::read( 'Cg.departement' );
+
+				$query['fields'] = array_merge(
+					array(
+						'Dossier.id',
+						'Entretien.id',
+						'Personne.id',
+						'Entretien.personne_id'
+					),
+					$query['fields'],
+					ConfigurableQueryFields::getModelsFields(
+						array(
+							$Entretien,
+							$Entretien->Objetentretien,
+							$Entretien->Referent,
+							$Entretien->Structurereferente,
+							$Entretien->Typerdv
+						)
+					)
+				);
+
+				$query['joins'] = array_merge(
+					$query['joins'],
+					array(
+						$Entretien->join( 'Objetentretien', array( 'type' => 'INNER' ) ),
+						$Entretien->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$Entretien->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$Entretien->join( 'Typerdv', array( 'type' => 'LEFT OUTER' ) )
+					)
+				);
+
+				if( $departement === 66 ) {
+					$query['fields'] = array_merge(
+						$query['fields'],
+						ConfigurableQueryFields::getModelsFields(
+							array(
+								$Entretien->Actioncandidat
+							)
+						)
+					);
+
+					$query['joins'] = array_merge(
+						$query['joins'],
+						array(
+							$Entretien->join( 'Actioncandidat', array( 'type' => 'LEFT OUTER' ) )
+						)
+					);
+				}
+				Cache::write( $cacheKey, $query );
+			}
 
 			return $query;
-
-
 		}
+
+		/**
+		 * Complète les conditions du querydata avec le contenu des filtres de
+		 * recherche.
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		public function searchConditions( array $query, array $search ) {
+			$Allocataire = ClassRegistry::init( 'Allocataire' );
+			$query = $Allocataire->searchConditions( $query, $search );
+
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Entretien.dateentretien' );
+
+			foreach( array( 'Entretien.structurereferente_id', 'Entretien.referent_id' ) as $path ) {
+				$value = (string)suffix( Hash::get( $search, $path ) );
+				if( $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			$from = (array)Hash::get( $search, 'Entretien.arevoirle' ) + array( 'day' => '01' );
+			if( valid_date( $from ) ) {
+				$to = strtotime( '+1 month -1day', strtotime( "{$from['year']}-{$from['month']}-{$from['day']}" ) );
+				$to = date_sql_to_cakephp( strftime( "%Y-%m-%d", $to ) );
+				$entretien = array(
+					'Entretien' => array(
+						'arevoirle' => '1',
+						'arevoirle_from' => $from,
+						'arevoirle_to' => $to
+					)
+				);
+				$query['conditions'] = $this->conditionsDates( $query['conditions'], $entretien, 'Entretien.arevoirle' );
+			}
+
+			return $query;
+		}
+
+		/**
+		 * Retourne un querydata, en fonction du département, prenant en compte
+		 * les différents filtres du moteur de recherche.
+		 *
+		 * @todo ConfigureQueryKeys + cache ... ou plutôt dans la fonction factorisée du contrôleur
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		public function search( $search ) {
+			$query = $this->searchQuery();
+			$query = $this->searchConditions( $query, $search );
+
+			return $query;
+		}
+
+		// @todo: prechargement + Interface
 	}
 ?>

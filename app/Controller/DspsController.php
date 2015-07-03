@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe DspsController ...
@@ -27,7 +28,8 @@
 			'Csv',
 			'Romev3',
 			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
+//				'className' => 'Default.DefaultDefault'
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			)
 		);
 
@@ -821,16 +823,16 @@
 
 				$query['limit'] = 10;
 
-				App::uses( 'ConfigurableQueryFields', 'Utility' );
-				$query = ConfigurableQueryFields::getFieldsByKeys( array( 'Dsps.index.fields', 'Dsps.index.innerTable' ), $query );
+				$key = "{$this->name}.{$this->request->params['action']}";
+				$query = ConfigurableQueryFields::getFieldsByKeys( array( "{$key}.fields", "{$key}.innerTable" ), $query );
 
 				$this->Dsp->Personne->forceVirtualFields = true;
 				$this->paginate = $query;
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
-				$dsps = $this->paginate( $this->Dsp->Personne, array(), array(), $progressivePaginate );
+				$results = $this->paginate( $this->Dsp->Personne, array(), array(), $progressivePaginate );
 
 				$checkboxesVirtualFields = $this->Dsp->getCheckboxesVirtualFields();
-				$this->set( compact( 'dsps', 'checkboxesVirtualFields' ) );
+				$this->set( compact( 'results', 'checkboxesVirtualFields' ) );
 			}
 
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
@@ -858,8 +860,8 @@
 			$query = $this->_qdAddFilters( $query );
 			unset( $query['limit'] );
 
-			App::uses( 'ConfigurableQueryFields', 'Utility' );
-			$query = ConfigurableQueryFields::getFieldsByKeys( 'Dsps.exportcsv', $query );
+			$key = "{$this->name}.{$this->request->params['action']}";
+			$query = ConfigurableQueryFields::getFieldsByKeys( $key, $query );
 
 			$this->Dsp->Personne->forceVirtualFields = true;
 			$dsps = $this->Dsp->Personne->find( 'all', $query );

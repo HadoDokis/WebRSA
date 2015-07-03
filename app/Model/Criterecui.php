@@ -37,7 +37,7 @@
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery();
+				$query = $Allocataire->searchQuery( array(), 'Cui' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
@@ -58,7 +58,7 @@
 				);
 
 				// 2. Ajout des jointures supplémentaires
-				
+
 				// Joiture spéciale pour les emails
 				$emailQuery = array(
 					'alias' => 'emailscuis',
@@ -73,39 +73,38 @@
 					),
 					'limit' => 1
 				);
-				
-				
+
+
 				array_unshift(
 					$query['joins'],
-					$Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Cui->join( 'Partenairecui', array( 'type' => 'LEFT OUTER' ) ),
-					$Cui->join( 'Emailcui', 
-						array( 
+					$Cui->join( 'Emailcui',
+						array(
 							'type' => 'LEFT OUTER',
 							'conditions' => array(
 								"Emailcui.id IN ( ".$Cui->Emailcui->sq( $emailQuery )." )"
 							)
-						) 
+						)
 					),
 					$Cui->Partenairecui->join( 'Adressecui', array( 'type' => 'LEFT OUTER' ) )
 				);
-				
+
 				// Ajout des tables spécifiques
 				$cgDepartement = Configure::read( 'Cg.departement' );
 				$modelCuiDpt = 'Cui' . $cgDepartement;
 				if( isset( $Cui->{$modelCuiDpt} ) ) {
 					$foreignKey = strtolower($modelCuiDpt) . '_id';
-					
+
 					// Liste de modeles obligatoire pour un CG donné
 					$modelList = array(
 						$Cui->{$modelCuiDpt}
 					);
-					
+
 					array_push(
 						$query['joins'],
 						$Cui->join( $modelCuiDpt, array( 'type' => 'INNER' ) )
 					);
-					
+
 					// Liste de modeles potentiel pour un CG donné
 					$modelPotentiel = array(
 						'Accompagnementcui' . $cgDepartement,
@@ -141,7 +140,7 @@
 							);
 						}
 					}
-					
+
 					$query['fields'] = array_merge(
 						$query['fields'],
 						ConfigurableQueryFields::getModelsFields( $modelList )
@@ -154,7 +153,7 @@
 					'Personne.prenom' => 'ASC',
 					'Cui.id' => 'ASC'
 				);
-				
+
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
 					$Canton = ClassRegistry::init( 'Canton' );
@@ -180,7 +179,7 @@
 			$Cui = ClassRegistry::init( 'Cui' );
 
 			$query = $Allocataire->searchConditions( $query, $search );
-			
+
 			$paths = array(
 				'Cui.niveauformation',
 				'Cui.inscritpoleemploi',
@@ -190,8 +189,8 @@
 				'Cui.rsadepuis',
 				'Cui.travailleurhandicape',
 			);
-			
-			$pathsDate = array( 
+
+			$pathsDate = array(
 				'Cui.dateembauche',
 				'Cui.findecontrat',
 				'Cui.effetpriseencharge',
@@ -201,8 +200,8 @@
 			);
 
 			if ( Configure::read( 'Cg.departement' ) == 66 ){
-				$paths = array_merge( $paths, 
-					array( 
+				$paths = array_merge( $paths,
+					array(
 						'Cui66.typeformulaire',
 						'Cui.secteurmarchand',
 						'Cui66.typecontrat',
@@ -220,9 +219,9 @@
 						$query['conditions'][$path] = $value;
 					}
 				}
-				
-				$pathsDate = array_merge( $pathsDate, 
-					array( 
+
+				$pathsDate = array_merge( $pathsDate,
+					array(
 						'Cui66.dateeligibilite',
 						'Cui66.datereception',
 						'Cui66.datecomplet',
@@ -234,7 +233,7 @@
 					)
 				);
 			}
-			
+
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
 
 			return $query;

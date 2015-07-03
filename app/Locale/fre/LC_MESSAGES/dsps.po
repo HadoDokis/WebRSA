@@ -323,3 +323,15 @@ msgstr "Précisez qualifications ou certificats  professionnels"
 
 msgid "Donnees.nb_fichiers_lies"
 msgstr "Nbre. de fichiers liés"
+
+msgid "/Dsps/view"
+msgstr "Voir"
+
+msgid "/Dsps/view/#Personne.id#"
+msgstr "Voir le dossier « #Dossier.numdemrsa# »"
+
+msgid "/Dsps/view_revs"
+msgstr "Voir"
+
+msgid "/Dsps/view_revs/#DspRev.id#"
+msgstr "Voir le dossier « #Dossier.numdemrsa# »"
