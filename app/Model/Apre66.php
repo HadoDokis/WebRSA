@@ -515,5 +515,60 @@
 				$options
 			);
 		}
+		
+		/**
+		 * Utilise Correspondancepersonne pour trouver le montant total d'apre pris dans l'année.
+		 * @param integer $personne_id
+		 * @param boolean $anomalie
+		 * @return integer
+		 */
+		public function getMontantApreEnCours( $personne_id, $anomalie = null ){
+			$year = date( 'Y' );
+			$yearMax = $year + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1;
+			
+			$queryCorrespondances = array(
+				'fields' => 'Correspondancepersonne.personne2_id',
+				'conditions' => array( 
+					'Correspondancepersonne.personne1_id' => $personne_id,
+				),
+			);
+			
+			if ( $anomalie !== null ) {
+				$queryCorrespondances['conditions']['Correspondancepersonne.anomalie'] = $anomalie;
+			}
+			
+			$personne_idSearch = $this->Personne->Correspondancepersonne->find( 'all', $queryCorrespondances );
+			
+			$personne_idList = array();
+			foreach ($personne_idSearch as $value) {
+				$personne_idList[] = $value['Correspondancepersonne']['personne2_id'];
+			}
+			
+			$query = array(
+				'fields' => array(
+					'SUM(Aideapre66.montantaccorde) AS "Aideapre66__montantaccorde"',
+				),
+				'joins' => array(
+					$this->join( 'Aideapre66', array( 'type' => 'INNER' ) )
+				),
+				'contain' => false,
+				'conditions' => array(
+					"{$this->alias}.personne_id" => array_merge(
+						array($personne_id),
+						$personne_idList
+					),
+					"{$this->alias}.statutapre" => 'C',
+					"Aideapre66.decisionapre" => 'ACC',
+					"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
+					"{$this->alias}.etatdossierapre <>" => 'ANN',
+					'Aideapre66.montantaccorde IS NOT NULL'
+				),
+			);
+			$results = $this->find( 'all', $query );
+			
+			$montantaccorde = Hash::get($results, '0.Aideapre66.montantaccorde');
+			
+			return $montantaccorde;
+		}
 	}
 ?>

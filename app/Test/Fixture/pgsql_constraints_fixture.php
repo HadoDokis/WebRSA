@@ -125,7 +125,100 @@
 							);
 					END;
 				$$
-				LANGUAGE plpgsql IMMUTABLE;"
+				LANGUAGE plpgsql IMMUTABLE;",
+				
+				'CREATE OR REPLACE FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country text ) RETURNS boolean AS
+				$$
+					BEGIN
+						RETURN ( p_ssn IS NULL )
+							OR(
+				-- 				(
+				-- 					( p_country IS NULL OR p_country IN ( \'all\', \'can\', \'us\' ) )
+				-- 					AND p_ssn ~ E\'^(?:\\+?1)?[-. ]?\\(?[2-9][0-8][0-9]\\)?[-. ]?[2-9][0-9]{2}[-. ]?[0-9]{4}$\'
+				-- 				)
+				-- 				OR
+								(
+									( p_country = \'fr\' )
+									AND UPPER( p_ssn ) ~ E\'^(1|2|7|8)[0-9]{2}(0[1-9]|10|11|12|[2-9][0-9])((0[1-9]|[1-8][0-9]|9[0-5]|2A|2B)(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990)|(9[7-8][0-9])(0[1-9]|0[1-9]|[1-8][0-9]|90)|99(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990))(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[1-8][0-9]|9[0-7])$\'
+								)
+								OR
+								(
+									( p_regex IS NOT NULL )
+									AND p_ssn ~ p_regex
+								)
+							);
+					END;
+				$$ LANGUAGE plpgsql;',
+				
+				'CREATE OR REPLACE FUNCTION "public"."calcul_cle_nir" (text) RETURNS text AS
+				$body$
+					DECLARE
+						p_nir text;
+						cle text;
+						correction BIGINT;
+
+					BEGIN
+						correction:=0;
+						p_nir:=$1;
+
+						IF NOT nir_correct( p_nir ) THEN
+							RETURN NULL;
+						END IF;
+
+						IF p_nir ~ \'^.{6}(A|B)\' THEN
+							IF p_nir ~ \'^.{6}A\' THEN
+								correction:=1000000;
+							ELSE
+								correction:=2000000;
+							END IF;
+							p_nir:=regexp_replace( p_nir, \'(A|B)\', \'0\' );
+						END IF;
+
+						cle:=LPAD( CAST( 97 - ( ( CAST( p_nir AS BIGINT ) - correction ) % 97 ) AS VARCHAR(13)), 2, \'0\' );
+						RETURN cle;
+					END;
+				$body$
+				LANGUAGE \'plpgsql\' VOLATILE RETURNS NULL ON NULL INPUT SECURITY INVOKER;',
+				
+				'CREATE OR REPLACE FUNCTION "public"."nir_correct" (TEXT) RETURNS BOOLEAN AS
+				$body$
+					DECLARE
+						p_nir text;
+
+					BEGIN
+						p_nir:=$1;
+
+						RETURN (
+							CHAR_LENGTH( TRIM( BOTH \' \' FROM p_nir ) ) = 15
+							AND (
+								cakephp_validate_ssn( p_nir, null, \'fr\' )
+								AND calcul_cle_nir( SUBSTRING( p_nir FROM 1 FOR 13 ) ) = SUBSTRING( p_nir FROM 14 FOR 2 )
+							)
+						);
+					END;
+				$body$
+				LANGUAGE \'plpgsql\';',
+				
+				'CREATE OR REPLACE FUNCTION public.nir_correct13( TEXT ) RETURNS BOOLEAN AS
+				$body$
+					DECLARE
+						p_nir text;
+					BEGIN
+						p_nir:=$1;
+
+						IF p_nir IS NULL THEN
+							RETURN false;
+						END IF;
+
+						RETURN (
+							CHAR_LENGTH( TRIM( BOTH \' \' FROM p_nir ) ) >= 13
+							AND (
+								cakephp_validate_ssn( SUBSTRING( p_nir FROM 1 FOR 13 ) || calcul_cle_nir( SUBSTRING( p_nir FROM 1 FOR 13 ) ), null, \'fr\' )
+							)
+						);
+					END;
+				$body$
+				LANGUAGE \'plpgsql\' IMMUTABLE;',
 			);
 
 			foreach( $functions as $sql ) {

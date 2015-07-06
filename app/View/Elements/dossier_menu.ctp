@@ -239,7 +239,12 @@
 				);
 			}
 
-			$itemsAllocataires[implode( ' ', array( '(', $personne['Prestation']['rolepers'], ')', $personne['qual'], $personne['nom'], $personne['prenom'] ) )] = $subAllocataire;
+			// INFO: on ajoute des espaces à la clé pour éviter d'écraser avec les doublons
+			$key = implode( ' ', array( '(', $personne['Prestation']['rolepers'], ')', $personne['qual'], $personne['nom'], $personne['prenom'] ) );
+			while( isset( $itemsAllocataires[$key] ) ) {
+				$key .= ' ';
+			}
+			$itemsAllocataires[$key] = $subAllocataire;
 		}
 
 		$items = array(
