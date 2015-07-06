@@ -42,6 +42,9 @@
 		 * Préparation du test.
 		 */
 		public function setUp() {
+			Configure::write( 'Cg.departement', 93 );
+			Configure::write( 'CG.cantons', false );
+
 			parent::setUp();
 			$this->Allocataire = ClassRegistry::init( 'Allocataire' );
 		}
@@ -59,13 +62,13 @@
 		 */
 		public function testOptions() {
 			$result = array_keys( $this->Allocataire->options() );
-			$expected = array (
+			$expected = array(
+				'Dossier',
 				'Adresse',
 				'Adressefoyer',
 				'Calculdroitrsa',
 				'Detailcalculdroitrsa',
 				'Detaildroitrsa',
-				'Dossier',
 				'Foyer',
 				'Personne',
 				'Prestation',

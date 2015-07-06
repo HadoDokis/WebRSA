@@ -70,6 +70,9 @@
 		 * Préparation du test.
 		 */
 		public function setUp() {
+			Configure::write( 'Cg.departement', 93 );
+			Configure::write( 'CG.cantons', false );
+
 			parent::setUp();
 
 			$Request = new CakeRequest( 'criteresci/index', false );

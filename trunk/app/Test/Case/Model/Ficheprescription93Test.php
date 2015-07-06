@@ -72,6 +72,9 @@
 		 * Préparation du test.
 		 */
 		public function setUp() {
+			Configure::write( 'Cg.departement', 93 );
+			Configure::write( 'CG.cantons', false );
+
 			parent::setUp();
 
 			// On mock la méthode ged()
@@ -194,6 +197,12 @@
 			$result = hash_keys( $options );
 
 			$expected = array(
+				'Dossier.statudemrsa',
+				'Dossier.fonorgcedmut',
+				'Dossier.fonorgprenmut',
+				'Dossier.anciennete_dispositif',
+				'Dossier.numorg',
+				'Dossier.typeparte',
 				'Adresse.pays',
 				'Adresse.typeres',
 				'Adressefoyer.rgadr',
@@ -203,11 +212,6 @@
 				'Detaildroitrsa.oridemrsa',
 				'Detaildroitrsa.topfoydrodevorsa',
 				'Detaildroitrsa.topsansdomfixe',
-				'Dossier.fonorgcedmut',
-				'Dossier.fonorgprenmut',
-				'Dossier.numorg',
-				'Dossier.statudemrsa',
-				'Dossier.typeparte',
 				'Foyer.sitfam',
 				'Foyer.typeocclog',
 				'Personne.pieecpres',
@@ -256,6 +260,12 @@
 			$result = hash_keys( $options );
 
 			$expected = array(
+				'Dossier.statudemrsa',
+				'Dossier.fonorgcedmut',
+				'Dossier.fonorgprenmut',
+				'Dossier.anciennete_dispositif',
+				'Dossier.numorg',
+				'Dossier.typeparte',
 				'Adresse.pays',
 				'Adresse.typeres',
 				'Adressefoyer.rgadr',
@@ -265,11 +275,6 @@
 				'Detaildroitrsa.oridemrsa',
 				'Detaildroitrsa.topfoydrodevorsa',
 				'Detaildroitrsa.topsansdomfixe',
-				'Dossier.fonorgcedmut',
-				'Dossier.fonorgprenmut',
-				'Dossier.numorg',
-				'Dossier.statudemrsa',
-				'Dossier.typeparte',
 				'Foyer.sitfam',
 				'Foyer.typeocclog',
 				'Personne.pieecpres',

@@ -2210,6 +2210,28 @@
 		}
 
 		/**
+		 * Chargement des champs virtuels dynamiques du modèle.
+		 */
+		public function loadVirtualFields() {
+			$sql = $this->Personne->sq(
+				array(
+					'alias' => 'propriocer',
+					'fields' => array( 'propriocer.dtnai' ),
+					'contain' => false,
+					'conditions' => array( "propriocer.id = {$this->alias}.personne_id" ),
+					'limit' => 1
+				)
+			);
+
+			$this->virtualFields['num_contrat_66'] = '(
+				CASE
+					WHEN ( "'.$this->alias.'"."num_contrat" = \'REN\' AND EXTRACT( YEAR FROM AGE( "'.$this->alias.'"."dd_ci", ( '.$sql.' ) ) ) >= 55 AND "'.$this->alias.'"."datetacitereconduction" IS NOT NULL ) THEN \'REN_TACITE\'
+					ELSE "'.$this->alias.'"."num_contrat"::text
+				END
+			)';
+		}
+
+		/**
 		 * Surcharge du constructeur avec ajout du champ virtuel num_contrat_66
 		 * lorsqu'il s'agit d'un renouvellement et que l'allocataire avait plus
 		 * de 55 ans à la date de début du CER (CG 66).
@@ -2221,23 +2243,8 @@
 		public function __construct( $id = false, $table = null, $ds = null ) {
 			parent::__construct( $id, $table, $ds );
 
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$sql = $this->Personne->sq(
-					array(
-						'alias' => 'propriocer',
-						'fields' => array( 'propriocer.dtnai' ),
-						'contain' => false,
-						'conditions' => array( "propriocer.id = {$this->alias}.personne_id" ),
-						'limit' => 1
-					)
-				);
-
-				$this->virtualFields['num_contrat_66'] = '(
-					CASE
-						WHEN ( "'.$this->alias.'"."num_contrat" = \'REN\' AND EXTRACT( YEAR FROM AGE( "'.$this->alias.'"."dd_ci", ( '.$sql.' ) ) ) >= 55 AND "'.$this->alias.'"."datetacitereconduction" IS NOT NULL ) THEN \'REN_TACITE\'
-						ELSE "'.$this->alias.'"."num_contrat"::text
-					END
-				)';
+			if( Configure::read( 'Cg.departement' ) == 66 && !class_exists( 'PHPUnit_Framework_TestCase', false ) ) {
+				$this->loadVirtualFields();
 			}
 		}
 
@@ -2499,13 +2506,13 @@
 
 			return $options;
 		}
-		
+
 		public function options() {
 			$options = $this->enums();
-			
+
 			$options['Contratinsertion']['referent_id'] = $this->Referent->listOptions();
 			$options['Contratinsertion']['structurereferente_id'] = $this->Structurereferente->listOptions();
-			
+
 			return $options;
 		}
 	}
