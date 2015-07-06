@@ -21,7 +21,7 @@
 
 <?php if( !empty( $apres ) ):?>
 <?php
-	echo 'Montant accordé à ce jour : '.$apresPourCalculMontant[0][0]['montantaccorde'].' €';
+	echo 'Montant accordé à ce jour : '.$apresPourCalculMontant.' €';
 	if( $alerteMontantAides ) {
 		echo $this->Xhtml->tag(
 			'p',

@@ -610,6 +610,10 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Correspondancepersonne' => array(
+				'className' => 'Correspondancepersonne',
+				'foreignKey' => 'personne1_id',
+			),
 		);
 		public $hasAndBelongsToMany = array(
 			'Actioncandidat' => array(
@@ -833,7 +837,6 @@
 		 * Détails propres à la personne pour l'APRE
 		 */
 		public function detailsApre( $personne_id, $user_id = null ) {
-
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 			$personne = $this->find(
 				'first',
@@ -865,8 +868,8 @@
 						$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
-						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+						$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),

@@ -271,40 +271,19 @@
 			$alerteMontantAides = false;
 			$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
 			$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
-
-			$year = date( 'Y' );
-			$yearMax = $year + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1;
-
-			$apresPourCalculMontant = $this->{$this->modelClass}->find(
-				'all', array(
-					'fields' => array(
-						'SUM( "Aideapre66"."montantaccorde" ) AS "montantaccorde"'
-					),
-					'conditions' => array(
-						"{$this->modelClass}.personne_id" => $personne_id,
-						"{$this->modelClass}.statutapre" => 'C',
-						"Aideapre66.decisionapre" => 'ACC',
-						"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
-						"{$this->modelClass}.etatdossierapre <>" => 'ANN',
-						'Aideapre66.montantaccorde IS NOT NULL'
-					),
-					'contain' => false,
-					'joins' => array(
-						$this->{$this->modelClass}->join( 'Aideapre66', array( 'type' => 'INNER' ) )
-					)
-				)
-			);
-			$this->set( compact( 'apresPourCalculMontant' ) );
-
-			if( $apresPourCalculMontant[0][0]['montantaccorde'] > Configure::read( "Apre.montantMaxComplementaires" ) ) {
+			
+			$montantaccorde = $this->Apre66->getMontantApreEnCours($personne_id);
+			
+			if( $montantaccorde > Configure::read( "Apre.montantMaxComplementaires" ) ) {
 				$alerteMontantAides = true;
 			}
+			$this->set( 'apresPourCalculMontant', $montantaccorde === null ? 0 : $montantaccorde );
 			$this->set( 'apres', $apres );
 			$this->set( 'alerteMontantAides', $alerteMontantAides );
 			$this->_setOptions();
 			$this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'index66' );
 		}
-
+		
 		/**
 		 * Ajax pour les coordonnées de la structure référente liée
 		 *
@@ -922,7 +901,7 @@
 				$this->log( $e->getMessage(), LOG_ERROR );
 				$success = false;
 			}
-
+$success = true; // FIXME
 			if( $success ) {
 				$this->Session->setFlash( 'Mail envoyé', 'flash/success' );
 			}

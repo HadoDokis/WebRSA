@@ -119,9 +119,6 @@
 
 			// Conditions pour les jointures
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-			$conditions[] = 'Adressefoyer.id IN ( '
-				.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id')
-			.' )';
 
 			$query = array(
 				'fields' => array(
@@ -180,9 +177,17 @@
 					$Apre66->Aideapre66->join( 'Typeaideapre66', array( 'type' => 'INNER' ) ),
 					$Apre66->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$Apre66->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
-					$Apre66->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
-					$Apre66->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$Apre66->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$Apre66->Personne->Foyer->join(
+						'Adressefoyer',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Adressefoyer.id IN ( ' .ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id') .' )'
+							)
+						)
+					),
+					$Apre66->Personne->Foyer->join( 'Dossier', array( 'type' => 'LEFT OUTER' ) ),
+					$Apre66->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'contain' => false,
 				'conditions' => $conditions,

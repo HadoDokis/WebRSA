@@ -575,6 +575,27 @@
 		}
 
 		/**
+		 * By default, deleteAll() will automatically join any belongsTo
+		 * association for databases that support joins. To prevent this,
+		 * temporarily unbind the associations.
+		 * 
+	 	 * Deletes multiple model records based on a set of conditions.
+	 	 *
+		 * @param mixed $conditions Conditions to match
+		 * @param boolean $cascade Set to true to delete records that depend on this record
+		 * @param boolean $callbacks Run callbacks
+		 * @return boolean True on success, false on failure
+		 * @link http://book.cakephp.org/2.0/en/models/deleting-data.html#deleteall
+		 */
+		public function deleteAllUnBound( $conditions, $cascade = true, $callbacks = false ) {
+			$this->unbindModelAll();
+			$success = parent::deleteAll( $conditions, $cascade, $callbacks );
+			$this->resetAssociations();
+
+			return $success;
+		}
+
+		/**
 		 * Les éléments de la liste sont triés et préfixés par une chaîne de caractères.
          *
          * @todo prefix/suffix pour avoir correctement le tiret et les retours à la ligne
