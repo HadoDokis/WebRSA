@@ -104,6 +104,9 @@
 				}
 			}
 			
+			// INFO : Fait doublon avec $this->Allocataires->options() car se merge mal (clef numérique)
+			unset($options['Situationdossierrsa']);
+			
 			return Hash::merge(
 				$options,
 				$this->Allocataires->options(),
