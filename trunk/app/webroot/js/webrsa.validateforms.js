@@ -689,7 +689,7 @@ function checkAll( form ){
 	
 	// Pour chaque éditables... On vérifi la valeur...
 	$$('#' + form.id + ' input, #' + form.id + ' select,' + form.id + ' textarea').each( function( editable ){
-		if ( !validate( $( editable ), true ) ){
+		if ( !editable.disabled && !validate( $( editable ), true ) ){
 			if ( valid ){
 				$( editable ).scrollTo();
 				window.scrollTo(0, window.pageYOffset);				
