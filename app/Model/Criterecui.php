@@ -37,7 +37,17 @@
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( array(), 'Cui' );
+				$types = array(
+					'Calculdroitrsa' => 'LEFT OUTER',
+					'Foyer' => 'INNER',
+					'Prestation' => 'INNER',
+					'Adressefoyer' => 'LEFT OUTER',
+					'Dossier' => 'INNER',
+					'Adresse' => 'LEFT OUTER',
+					'Situationdossierrsa' => 'INNER',
+					'Detaildroitrsa' => 'LEFT OUTER',
+				);
+				$query = $Allocataire->searchQuery( $types, 'Cui' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
