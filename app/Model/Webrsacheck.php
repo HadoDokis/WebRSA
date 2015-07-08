@@ -279,6 +279,7 @@
 				'MultiDomainsTranslator.prefix' => 'string',
 			);
 
+			// TODO: utiliser la boucle et l'interface à la place de $searches
 			foreach( $this->searches as $search ) {
 				$return["{$search}.search.fields"] = 'isarray';
 				$return["{$search}.search.innerTable"] = 'isarray';

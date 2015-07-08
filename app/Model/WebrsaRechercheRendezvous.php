@@ -46,7 +46,7 @@
 		 * @return array
 		 */
 		public function searchQuery( array $types = array() ) {
-			$types = array(
+			$types += array(
 				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
 				'Prestation' => 'INNER',

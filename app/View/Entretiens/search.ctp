@@ -96,12 +96,18 @@
 	<ul class="actionMenu">
 		<li><?php
 			echo $this->Xhtml->printLinkJs(
-				'Imprimer le tableau', array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+				'Imprimer le tableau',
+				array(
+					'onclick' => 'printit(); return false;',
+					'class' => 'noprint'
+				)
 			);
 		?></li>
 		<li><?php
 			echo $this->Xhtml->exportLink(
-				'Télécharger le tableau', array( 'controller' => 'criteresentretiens', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ), $this->Permissions->check( 'criteresentretiens', 'exportcsv' )
+				'Télécharger le tableau',
+				array( 'controller' => 'entretiens', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
+				$this->Permissions->check( 'entretiens', 'exportcsv' )
 			);
 		?></li>
 	</ul>
