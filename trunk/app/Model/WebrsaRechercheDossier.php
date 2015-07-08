@@ -70,8 +70,14 @@
 
 				// Le CD 66 veut pouvoir trouver les allocataires et les personnes sans prestation
 				if( $departement === 66 ) {
+					$index = null;
+					foreach( $query['joins'] as $i => $join ) {
+						if( $join['alias'] === 'Prestation' ) {
+							$index = $i;
+						}
+					}
 					unset( $query['conditions']['Prestation.rolepers'] );
-					$query['joins'][4] = $Dossier->Foyer->Personne->join(
+					$query['joins'][$index] = $Dossier->Foyer->Personne->join(
 						'Prestation',
 						array(
 							'type' => 'LEFT OUTER',
