@@ -9,9 +9,9 @@
 	 * @var array
 	 */
 	Configure::write(
-		'Criteresentretiens',
+		'Entretiens',
 		array(
-			'index' => array(
+			'search' => array(
 				'fields' => array(
 					'Entretien.dateentretien',
 					'Personne.nom_complet',

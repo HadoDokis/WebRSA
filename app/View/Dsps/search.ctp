@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'Recherche par DSPs';
+	$this->pageTitle = 'Recherche par DSPs (nouveau)';
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );

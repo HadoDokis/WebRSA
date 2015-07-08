@@ -30,6 +30,19 @@
 		 */
 		public $useTable = false;
 
+		/**
+		 * Liste des controleurs implémentant les moteurs de recherches (v. 3)
+		 * il spossèdent donc une méthode search() et une méthode exportcsv().
+		 *
+		 * @var array
+		 */
+		public $searches = array(
+			'Dsps',
+			'Dossiers',
+			'Entretiens',
+			'Rendezvous'
+		);
+
 		/*public function getModels( $query ) {
 			$models = array();
 
@@ -171,7 +184,7 @@
 		 * @return array
 		 */
 		protected function _allConfigureKeysCommon() {
-			return array(
+			$return = array(
 				'ActioncandidatPersonne.suffixe' => 'string',
 				'Admin.unlockall' => 'boolean',
 				'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
@@ -256,20 +269,24 @@
 				'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray',
 				'WebrsaEmailConfig.testEnvironments' => 'isarray',
 				'Romev3.enabled' => 'boolean',
+				// Début @deprecated
 				'Dsps.index.fields' => 'isarray',
 				'Dsps.index.innerTable' => 'isarray',
 				'Dsps.index.header' => array(
 					array( 'rule' => 'isarray', 'allowEmpty' => true )
 				),
-				'Dsps.exportcsv' => 'isarray',
-				// Recherche par dossiers / allocataires
-				'Dossiers.index.fields' => 'isarray',
-				'Dossiers.index.innerTable' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true )
-				),
-				'Dossiers.exportcsv' => 'isarray',
+				// Fin @deprecated
 				'MultiDomainsTranslator.prefix' => 'string',
 			);
+
+			foreach( $this->searches as $search ) {
+				$return["{$search}.search.fields"] = 'isarray';
+				$return["{$search}.search.innerTable"] = 'isarray';
+				$return["{$search}.search.header"] = array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true )
+				);
+				$return["{$search}.exportcsv"] = 'isarray';
+			}
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
 			if( !empty( $tmp ) ) {
@@ -280,6 +297,8 @@
 					$return['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'integer';
 				}
 			}
+
+			return $return;
 		}
 
 		/**

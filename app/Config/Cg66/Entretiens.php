@@ -11,7 +11,7 @@
 	Configure::write(
 		'Entretiens',
 		array(
-			'index' => array(
+			'search' => array(
 				'fields' => array(
 					'Entretien.dateentretien',
 					'Personne.nom_complet',
