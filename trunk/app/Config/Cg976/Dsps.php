@@ -96,8 +96,7 @@
 					'Referentparcours.nom_complet'
 				)
 			),
-			// INFO: écrase celui du dessus
-			'exportcsv' => array(
+			'exportcsv1' => array(
 				'Dossier.numdemrsa', // N° Dossier
 				'Dossier.matricule', // N° CAF
 				'Situationdossierrsa.etatdosrsa', // Etat du droit

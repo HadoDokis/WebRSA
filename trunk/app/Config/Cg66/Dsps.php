@@ -21,7 +21,9 @@
 					'Canton.canton',
 					'Donnees.toppermicondub', // Permis de conduire Cat B
 					'Donnees.topmoyloco', // Moyen de transport Coll. Ou IndiV.
-					'Donnees.difdisp', // Obstacles à une recherche d'emploi
+					'Donnees.difdisp' => array( // Obstacles à une recherche d'emploi
+						'type' => 'list'
+					),
 					'Donnees.nivetu', // Niveau d'étude
 					'Donnees.nivdipmaxobt', // Diplomes le plus élevé
 					'Donnees.topengdemarechemploi', // Disponibilité à la recherche d'emploi
@@ -70,7 +72,9 @@
 				'Canton.canton',
 				'Donnees.toppermicondub', // Permis de conduire Cat B
 				'Donnees.topmoyloco', // Moyen de transport Coll. Ou IndiV.
-				'Donnees.difdisp', // Obstacles à une recherche d'emploi
+				'Donnees.difdisp' => array( // Obstacles à une recherche d'emploi
+					'type' => 'list'
+				),
 				'Donnees.nivetu', // Niveau d'étude
 				'Donnees.nivdipmaxobt', // Diplomes le plus élevé
 				'Donnees.topengdemarechemploi', // Disponibilité à la recherche d'emploi
@@ -131,8 +135,7 @@
 					'Referentparcours.nom_complet',// Nom du référent
 				)
 			),
-			// INFO: écrase celui du dessus
-			'exportcsv' => array(
+			'exportcsv1' => array(
 				'Dossier.matricule',
 				'Personne.nom',
 				'Personne.prenom',

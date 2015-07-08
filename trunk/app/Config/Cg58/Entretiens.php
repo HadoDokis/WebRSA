@@ -58,7 +58,4 @@
 			)
 		)
 	);
-
-	// FIXME: nettoyer, les autres CG
-	// FIXME: traductions dans entretiens_search à présent
 ?>

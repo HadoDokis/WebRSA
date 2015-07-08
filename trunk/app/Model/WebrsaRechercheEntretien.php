@@ -46,7 +46,7 @@
 		 * @return array
 		 */
 		public function searchQuery( array $types = array() ) {
-			$types = array(
+			$types += array(
 				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
 				'Prestation' => 'INNER',
@@ -54,8 +54,12 @@
 				'Dossier' => 'INNER',
 				'Adresse' => 'LEFT OUTER',
 				'Situationdossierrsa' => 'INNER',
-				'Detaildroitrsa' => 'LEFT OUTER'
+				'Detaildroitrsa' => 'LEFT OUTER',
 				// TODO: tous les types
+				'Objetentretien' => 'INNER',
+				'Referent' => 'INNER',
+				'Structurereferente' => 'INNER',
+				'Typerdv' => 'LEFT OUTER'
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );

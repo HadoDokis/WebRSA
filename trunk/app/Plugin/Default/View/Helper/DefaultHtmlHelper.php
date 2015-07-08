@@ -27,6 +27,8 @@
 		 * l'action dans le paramètre $options lorsque le paramètre $url est un
 		 * array.
 		 *
+		 * @todo: vérifier automatiquement les droits, paramétrer, etc...
+		 *
 		 * @param string $title The content to be wrapped by <a> tags.
 		 * @param string|array $url Cake-relative URL or array of URL parameters, or external URL (starts with http://)
 		 * @param array $options Array of HTML attributes.
