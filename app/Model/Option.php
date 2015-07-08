@@ -1865,6 +1865,8 @@
 		 *	- dossiers.statudemrsa
 		 *	- situationsallocataires.statudemrsa
 		 *
+		 * @deprecated
+		 *
 		 * @return array
 		 */
 		public function statudemrsa() {
@@ -2547,6 +2549,8 @@
 		/**
 		 * Enums pour le champ dossiers.fonorgcedmut
 		 *
+		 * @deprecated
+		 *
 		 * @return array
 		 */
 		public function fonorgcedmut() {
@@ -2559,6 +2563,8 @@
 
 		/**
 		 * Enums pour le champ dossiers.fonorgprenmut
+		 *
+		 * @deprecated
 		 *
 		 * @return array
 		 */

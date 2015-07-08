@@ -152,6 +152,21 @@
 						'dtnai' => '1950-05-07',
 						'rolepers' => 'CJT',
 					),
+					array (
+					  'qual' => 'MR',
+					  'nom' => 'FOO',
+					  'prenom' => 'BAR',
+					  'dtnai' => '1950-01-01',
+					  'rolepers' => NULL,
+					),
+
+					array (
+					  'qual' => 'MR',
+					  'nom' => 'FOO',
+					  'prenom' => 'BAZ',
+					  'dtnai' => '1952-01-01',
+					  'rolepers' => NULL,
+					)
 				),
 				'Diplomecer93' => array(
 					0 => array(
@@ -253,20 +268,34 @@
 					'natlog' => '0907',
 				),
 				'Compofoyercer93' => array(
-					0 => array(
+					array(
 						'qual' => 'MME',
 						'nom' => 'DURAND',
 						'prenom' => 'JEANNE',
 						'dtnai' => '1956-12-05',
 						'rolepers' => 'DEM',
 					),
-					1 => array(
+					array(
 						'qual' => 'MR',
 						'nom' => 'DURAND',
 						'prenom' => 'RAOUL',
 						'dtnai' => '1950-05-07',
 						'rolepers' => 'CJT',
 					),
+					array (
+						'qual' => 'MR',
+						'nom' => 'FOO',
+						'prenom' => 'BAR',
+						'dtnai' => '1950-01-01',
+						'rolepers' => NULL,
+					),
+					array (
+					  'qual' => 'MR',
+					  'nom' => 'FOO',
+					  'prenom' => 'BAZ',
+					  'dtnai' => '1952-01-01',
+					  'rolepers' => NULL,
+					)
 				),
 				'Diplomecer93' => array(
 					0 => array(
@@ -471,6 +500,20 @@
 						'dtnai' => '1950-05-07',
 						'rolepers' => 'CJT',
 					),
+					array(
+						'qual' => 'MR',
+						'nom' => 'FOO',
+						'prenom' => 'BAR',
+						'dtnai' => '1950-01-01',
+						'rolepers' => NULL,
+					),
+					array(
+						'qual' => 'MR',
+						'nom' => 'FOO',
+						'prenom' => 'BAZ',
+						'dtnai' => '1952-01-01',
+						'rolepers' => NULL,
+					)
 				),
 				'Diplomecer93' => array(),
 				'Expprocer93' => array(),

@@ -197,6 +197,7 @@
 			$result = hash_keys( $options );
 
 			$expected = array(
+				'Dossier.fonorg',
 				'Dossier.statudemrsa',
 				'Dossier.fonorgcedmut',
 				'Dossier.fonorgprenmut',
@@ -260,6 +261,7 @@
 			$result = hash_keys( $options );
 
 			$expected = array(
+				'Dossier.fonorg',
 				'Dossier.statudemrsa',
 				'Dossier.fonorgcedmut',
 				'Dossier.fonorgprenmut',

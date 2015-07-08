@@ -144,6 +144,39 @@
 		}
 
 		/**
+		 * Filtres sur le Serviceinstructeur: id
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
+		public function conditionsServiceinstructeur( Model $model, $conditions, $search ) {
+			$serviceinstructeur_id = (string)Hash::get( $search, 'Serviceinstructeur.id' );
+			if( $serviceinstructeur_id !== '' ) {
+				$Dossier = ClassRegistry::init( 'Dossier' );
+
+				$subQuery = array_words_replace(
+					array(
+						'alias' => 'Suiviinstruction',
+						'fields' => array( 'Suiviinstruction.dossier_id' ),
+						'contain' => false,
+						'joins' => array(
+							$Dossier->Suiviinstruction->join( 'Serviceinstructeur', array( 'type' => 'INNER' ) )
+						),
+						'conditions' => array(
+							'Serviceinstructeur.id' => $serviceinstructeur_id
+						)
+					),
+					array( 'Suiviinstruction' => 'suivisinstruction', 'Serviceinstructeur' => 'servicesinstructeurs' )
+				);
+				$conditions[] = '"Dossier"."id" IN ( '.$Dossier->Suiviinstruction->sq( $subQuery ).' )';
+			}
+
+			return $conditions;
+		}
+
+		/**
 		 * Filtres sur le Foyer: sitfam, ddsitfam
 		 *
 		 * @param Model $model
@@ -372,6 +405,7 @@
 		 */
 		public function conditionsPersonneFoyerDossier( Model $model, $conditions, $search ) {
 			$conditions = $this->conditionsDossier( $model, $conditions, $search );
+			$conditions = $this->conditionsServiceinstructeur( $model, $conditions, $search );
 			$conditions = $this->conditionsPersonne( $model, $conditions, $search );
 			$conditions = $this->conditionsFoyer( $model, $conditions, $search );
 			$conditions = $this->conditionsSituationdossierrsa( $model, $conditions, $search );

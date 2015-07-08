@@ -38,6 +38,7 @@
 			'app.PersonneReferent',
 			'app.Prestation',
 			'app.Referent',
+			'app.Serviceinstructeur',
 			'app.Sitecov58',
 			'app.Situationdossierrsa',
 			'app.Structurereferente',
@@ -117,7 +118,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 
 		/**
 		 * Test de la méthode AllocatairesHelper::blocDossier() avec des options
-		 * pour l'etatdosrsa et la natpf.
+		 * pour l'etatdosrsa et la natpf et les autres
 		 */
 		public function testBlocDossierOptions() {
 			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
@@ -128,6 +129,25 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 						'natpf' => array(
 							'RSD' => 'RSA Socle (Financement sur fonds Conseil général)',
 							'RSI' => 'RSA Socle majoré (Financement sur fonds Conseil général)',
+						)
+					),
+					'Dossier' => array(
+						'anciennete_dispositif' => array(
+							'0_0' => 'Moins de 1 an'
+						),
+						'fonorg' => array(
+							'CAF' => 'CAF',
+							'MSA' => 'MSA'
+						)
+					),
+					'Foyer' => array(
+						'sitfam' => array(
+							'ABA' => 'Disparu (jugement d\'absence)'
+						)
+					),
+					'Serviceinstructeur' => array(
+						'id' => array(
+							14 => 'Caisse d\'Allocations Familiales'
 						)
 					),
 					'Situationdossierrsa' => array(
@@ -172,7 +192,20 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDetailcalculdroitrsaNatpfChoice\', \'SearchDetailcalculdroitrsaNatpfFieldset\', false, false ); } );
 //]]>
-</script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div></fieldset>';
+</script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><div class="input select"><label for="SearchDossierAncienneteDispositif">Ancienneté dans le dispositif</label><select name="data[Search][Dossier][anciennete_dispositif]" id="SearchDossierAncienneteDispositif">
+<option value=""></option>
+<option value="0_0">Moins de 1 an</option>
+</select></div><div class="input select"><label for="SearchServiceinstructeurId">Nom du service instructeur</label><select name="data[Search][Serviceinstructeur][id]" id="SearchServiceinstructeurId">
+<option value=""></option>
+<option value="14">Caisse d&#039;Allocations Familiales</option>
+</select></div><div class="input select"><label for="SearchDossierFonorg">Organisme émetteur du dossier</label><select name="data[Search][Dossier][fonorg]" id="SearchDossierFonorg">
+<option value=""></option>
+<option value="CAF">CAF</option>
+<option value="MSA">MSA</option>
+</select></div><div class="input select"><label for="SearchFoyerSitfam">Filtrer par situation familiale</label><select name="data[Search][Foyer][sitfam]" id="SearchFoyerSitfam">
+<option value=""></option>
+<option value="ABA">Disparu (jugement d&#039;absence)</option>
+</select></div></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 

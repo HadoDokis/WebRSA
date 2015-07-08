@@ -12,8 +12,8 @@ msgstr ""
 # Moteur de recherche
 # ==============================================================================
 
-msgid "/Dossiers/index/:heading"
-msgstr "Recherche par dossier / allocataire"
+msgid "/Dossiers/search/:heading"
+msgstr "Recherche par dossier / allocataire (nouveau)"
 
 msgid "/Ajoutdossierscomplets/add"
 msgstr "Ajouter un dossier"
@@ -33,13 +33,13 @@ msgstr "Ajouter une préconisation d'orientation"
 msgid "/Dossierssimplifies/add/:title"
 msgstr "Ajouter une préconisation d'orientation"
 
-msgid "/Dossiers/index/:title"
+msgid "/Dossiers/search/:title"
 msgstr "Visibilité formulaire"
 
 msgid "/Dossiers/index"
 msgstr "Formulaire"
 
-msgid "/Dossiers/index/:title"
+msgid "/Dossiers/search/:title"
 msgstr "Visibilité formulaire"
 
 # ==============================================================================

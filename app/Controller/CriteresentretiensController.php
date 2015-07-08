@@ -11,82 +11,82 @@
 	/**
 	 * La classe CriteresentretiensController ...
 	 *
+	 * @deprecated, see Entretiens::search() et Entretiens::exportcsv()
+	 *
 	 * @package app.Controller
 	 */
 	class CriteresentretiensController extends AppController
 	{
 		public $name = 'Criteresentretiens';
 
-		public $uses = array( 'Critereentretien', 'Entretien' );
-
-		public $helpers = array(
-			'Csv',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-			'Search'
-		);
-
+		public $uses = array( 'Critereentretien', 'Entretien', 'Option' );
+		public $helpers = array( 'Csv', 'Default2', 'Search' );
 		public $components = array(
-			'Allocataires',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+			'Gestionzonesgeos',
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
+			'InsertionsAllocataires'
 		);
 
-		// FIXME: public/droits, etc///
-		public function options() {
-			$options = Hash::merge(
-				$this->Allocataires->options(),
-				$this->Entretien->enums()
-			);
-
-			return $options;
+		/**
+		 *
+		 */
+		public function _setOptions() {
+			$this->set( 'options', (array)Hash::get( $this->Entretien->enums(), 'Entretien' ) );
+// 			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
+			$this->set( 'structs', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referents', $this->Entretien->Referent->listOptions() );
 		}
 
 		/**
 		 *
 		 */
 		public function index() {
-			// TODO: à présent, on peut factoriser
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
+
 			if( !empty( $this->request->data ) ) {
-				// FIXME: ajouter le prefix Search dans la vue
-				//$query = $this->Critereentretien->search( (array)Hash::get( $this->request->data, 'Search' ) );
-				$query = $this->Critereentretien->search( $this->request->data );
-				$query = $this->Allocataires->completeSearchQuery( $query, array( 'structurereferente_id' => 'Entretien.structurereferente_id' ) );
 
-				$key = "{$this->name}.{$this->request->params['action']}";
-				$query = ConfigurableQueryFields::getFieldsByKeys( array( "{$key}.fields", "{$key}.innerTable" ), $query );
+				if( !empty( $this->request->data['Entretien']['referent_id'] )) {
+					$referentId = suffix( $this->request->data['Entretien']['referent_id'] );
+					$this->request->data['Entretien']['referent_id'] = $referentId;
+				}
 
-				$this->Entretien->forceVirtualFields = true;
-				$results = $this->Allocataires->paginate( $query, 'Entretien' );
+				$paginate = $this->Critereentretien->search( $this->request->data );
 
-				$this->set( compact( 'results' ) );
+				$paginate = $this->Gestionzonesgeos->completeQuery( $paginate, 'Entretien.structurereferente_id' );
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['limit'] = 10;
+
+				$this->paginate = $paginate;
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$entretiens = $this->paginate( 'Entretien', array(), array(), $progressivePaginate );
+
+				$this->set( 'entretiens', $entretiens );
 			}
-			else {
-				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
-				$this->request->data = Hash::merge( $this->request->data, array( 'Search' => $filtresdefaut ) );
-			}
 
-			$options = $this->options();
-			$this->set( compact( 'options' ) );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+			$this->_setOptions();
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**
 		 * Export du tableau en CSV
 		 */
 		public function exportcsv() {
-			$query = $this->Critereentretien->search( Hash::expand( $this->request->params['named'], '__' ) );
+			$querydata = $this->Critereentretien->search( Hash::expand( $this->request->params['named'], '__' ) );
 
-			unset( $query['limit'] );
-			$query = $this->Allocataires->completeSearchQuery( $query, array( 'structurereferente_id' => 'Entretien.structurereferente_id' ) );
+			unset( $querydata['limit'] );
+			$querydata = $this->Gestionzonesgeos->completeQuery( $querydata, 'Entretien.structurereferente_id' );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$querydata = $this->_qdAddFilters( $querydata );
 
-
-			$this->Entretien->forceVirtualFields = true;
-			$results = $this->Entretien->find( 'all', $query );
-
-			$options = $this->options();
+			$entretiens = $this->Entretien->find( 'all', $querydata );
 
 			$this->layout = '';
-			$this->set( compact( 'results', 'options' ) );
+			$this->set( compact( 'entretiens' ) );
+			$this->_setOptions();
 		}
 	}
 ?>

@@ -94,3 +94,49 @@ msgstr "N° organisme prenant"
 
 msgid "Dossier.dddepamut"
 msgstr "Date de début départ mutation"
+
+###############################################################################
+# Enums
+###############################################################################
+# fonorg
+msgid "ENUM::FONORG::CAF"
+msgstr "CAF"
+
+msgid "ENUM::FONORG::MSA"
+msgstr "MSA"
+
+# fonorgcedmut
+msgid "ENUM::FONORGCEDMUT::CAF"
+msgstr "Demande gérée par la CAF"
+
+msgid "ENUM::FONORGCEDMUT::MSA"
+msgstr "Demande gérée par la MSA"
+
+msgid "ENUM::FONORGCEDMUT::OPF"
+msgstr "Autres organismes débiteur de prestations familiales"
+
+# fonorgprenmut
+msgid "ENUM::FONORGPRENMUT::CAF"
+msgstr "Demande gérée par la CAF"
+
+msgid "ENUM::FONORGPRENMUT::MSA"
+msgstr "Demande gérée par la MSA"
+
+msgid "ENUM::FONORGPRENMUT::OPF"
+msgstr "Autres organismes débiteur de prestations familiales"
+
+# statudemrsa
+msgid "ENUM::STATUDEMRSA::N"
+msgstr "Non allocataire"
+
+msgid "ENUM::STATUDEMRSA::C"
+msgstr "Allocataire de la CAF"
+
+msgid "ENUM::STATUDEMRSA::A"
+msgstr "Allocataire d'une autre CAF"
+
+msgid "ENUM::STATUDEMRSA::M"
+msgstr "Allocataire de la MSA"
+
+msgid "ENUM::STATUDEMRSA::S"
+msgstr "Allocataire d'une autre MSA"

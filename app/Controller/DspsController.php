@@ -42,7 +42,7 @@
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'index' )
+				'actions' => array( 'index', 'search' )
 			),
 			'DossiersMenus'
 		);
@@ -807,8 +807,24 @@
 			$this->render( '_add_edit' );
 		}
 
+		public function search() {
+			$this->loadModel( 'Personne' );
+
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDsps' );
+			$Recherches->search( array( 'modelName' => 'Personne' ) );
+		}
+
+		public function exportcsv() {
+			$this->loadModel( 'Personne' );
+
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDsps' );
+			$Recherches->exportcsv( array( 'modelName' => 'Personne' ) );
+		}
+
 		/**
 		 * Moteur de recherche par DSPs.
+		 *
+		 * @deprecated
 		 */
 		public function index() {
 			$params = $this->request->data;
@@ -829,10 +845,10 @@
 				$this->Dsp->Personne->forceVirtualFields = true;
 				$this->paginate = $query;
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
-				$results = $this->paginate( $this->Dsp->Personne, array(), array(), $progressivePaginate );
+				$dsps = $this->paginate( $this->Dsp->Personne, array(), array(), $progressivePaginate );
 
 				$checkboxesVirtualFields = $this->Dsp->getCheckboxesVirtualFields();
-				$this->set( compact( 'results', 'checkboxesVirtualFields' ) );
+				$this->set( compact( 'dsps', 'checkboxesVirtualFields' ) );
 			}
 
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
@@ -849,8 +865,10 @@
 
 		/**
 		 * Export du tableau en CSV
+		 *
+		 * @deprecated
 		 */
-		public function exportcsv() {
+		public function exportcsv1() {
 			$query = $this->Dsp->search(
 				$this->_wildcardKeys( Hash::expand( $this->request->params['named'], '__' ), $this->wildcardKeys )
 			);

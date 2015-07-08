@@ -101,6 +101,7 @@
 		),
 		'Recherches' => array(
 			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
+			'Par dossier / allocataire (nouveau)' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'search' ) ),
 			'Par Orientation' => array( 'url' => array( 'controller' => 'criteres', 'action' => 'index' ) ),
 			'Par APREs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
@@ -108,19 +109,22 @@
 			),
 			'Par Contrats' => array(
 				'Par CER' => array( 'url' => array( 'controller' => 'criteresci', 'action' => 'index'  ) ),
-				'Par CUI' => array( 
+				'Par CUI' => array(
 					'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
 				),
 			),
 			'Par Entretiens' => array( 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
+			'Par Entretiens (nouveau)' => array( 'url' => array( 'controller' => 'entretiens', 'action' => 'search' ) ),
 			'Par Fiches de candidature' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'criteresfichescandidature', 'action' => 'index' )
 			),
 			'Par Indus' => array( 'url' => array( 'controller' => 'cohortesindus', 'action' => 'index' ) ),
 			'Par DSPs' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
+			'Par DSPs (nouveau)' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'search' ) ),
 			'Par Rendez-vous' => array( 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
+			'Par Rendez-vous (nouveau)' => array( 'url' => array( 'controller' => 'rendezvous', 'action' => 'search'  ) ),
 			'Par Dossiers PCGs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Dossiers PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) ),

@@ -19,9 +19,30 @@
 
 		public $uses = array( 'Entretien', 'Option' );
 
-		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array(
+			'Locale',
+			'Csv',
+			'Cake1xLegacy.Ajax',
+			'Xform',
+			'Default2',
+			'Fileuploader',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus', 'InsertionsAllocataires', 'Gedooo.Gedooo' );
+		public $components = array(
+			'Allocataires',
+			'Fileuploader',
+			'Jetons2',
+			'Default',
+			'DossiersMenus',
+			'InsertionsAllocataires',
+			'Gedooo.Gedooo',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
+		);
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
@@ -46,6 +67,8 @@
 			'fileview' => 'read',
 			'index' => 'read',
 			'view' => 'read',
+			'search' => 'read',
+			'exportcsv' => 'read'
 		);
 
 		public $aucunDroit = array( 'ajaxaction', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -207,6 +230,16 @@
 			$this->_setOptions();
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'entretien' ) );
 			$this->set( 'urlmenu', '/entretiens/index/'.$personne_id );
+		}
+
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiens' );
+			$Recherches->search();
+		}
+
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiens' );
+			$Recherches->exportcsv();
 		}
 
 		/**
@@ -440,22 +473,22 @@
 
 		/**
 		 * On lui donne l'id du CUI et le modèle de document et il renvoi le pdf
-		 * 
+		 *
 		 * @param integer $entretien_id
 		 * @param string $modeleOdt
 		 * @return PDF
 		 */
 		protected function _getEntretienPdf( $entretien_id, $modeleOdt = null ){
 			$Model = $this->{$this->modelClass};
-			
-			$path = 
-				$modeleOdt === null || !isset($Model->modelesOdt[$modeleOdt]) 
+
+			$path =
+				$modeleOdt === null || !isset($Model->modelesOdt[$modeleOdt])
 				? sprintf( $Model->modelesOdt['default'], $Model->alias )
 				: sprintf( $Model->modelesOdt[$modeleOdt], $Model->alias )
 			;
-			
+
 			$Model->forceVirtualFields = true;
-			
+
 			$queryImpressionEntretien = $Model->queryImpression( $entretien_id );
 
 			$queryImpressionEntretien['fields'] = array_merge( $queryImpressionEntretien['fields'], $Model->fields() );
@@ -463,26 +496,26 @@
 			$queryImpressionEntretien['contain'] = false;
 
 			$dataEntretien = $Model->find( 'first', $queryImpressionEntretien );
-			
+
 			$options = array_merge(
 				$Model->options()
 			);
-			
+
 			$options[$this->modelClass]['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
-			
+
 			$result = $Model->ged(
 				$dataEntretien,
 				$path,
 				false,
 				$options
 			);
-			
+
 			return $result;
 		}
-		
+
 		/**
 		 * Méthode générique d'impression d'un Entretien.
-		 * 
+		 *
 		 * @param integer $entretien_id
 		 * @param string $modeleOdt
 		 */
@@ -500,7 +533,7 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
 		 * Impression d'un CUI
 		 *

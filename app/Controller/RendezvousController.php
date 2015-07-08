@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Helper', 'Locale' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe RendezvousController ...
@@ -20,16 +21,49 @@
 
 		public $uses = array( 'Rendezvous', 'Option' );
 
-		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array(
+			'Locale',
+			'Csv',
+			'Cake1xLegacy.Ajax',
+			'Xform',
+			'Default2',
+			'Fileuploader',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Search.SearchForm',
+		);
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires', 'Workflowscers93' ); // FIXME Arnaud
+		public $components = array(
+			'Allocataires',
+			'Gedooo.Gedooo',
+			'Fileuploader',
+			'Jetons2',
+			'DossiersMenus',
+			'InsertionsAllocataires',
+			'Workflowscers93',
+			// 'Search.Filtresdefaut' => array( 'search' ), // FIXME
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'search' => array( 'filter' => 'Search' ),
+				)
+			),
+		);
 
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
 			'add' => 'Rendezvous:edit'
 		);
 
-		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array(
+			'ajaxreferent',
+			'ajaxreffonct',
+			'ajaxperm',
+			'ajaxfileupload',
+			'ajaxfiledelete',
+			'fileview',
+			'download'
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -50,7 +84,19 @@
 			'impression' => 'read',
 			'index' => 'read',
 			'view' => 'read',
+			'search' => 'read',
+			'exportcsv' => 'read'
 		);
+
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesRendezvous' );
+			$Recherches->search();
+		}
+
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesRendezvous' );
+			$Recherches->exportcsv();
+		}
 
 		/**
 		 *
@@ -220,7 +266,7 @@
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Rendezvous' );
-			
+
 			// Ajoute une alerte en cas EPL en cours
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$query = $this->Rendezvous->Personne->Dossierep->qdDossiersepsOuverts( $personne_id );
