@@ -59,15 +59,17 @@
 				'id' => null,
 				'fieldset' => true,
 				'url' => array( 'controller' => 'cataloguesromesv3', 'action' => 'ajax_appellation' ),
-				'required' => false
+				'required' => false,
+				'prefix' => null
 			);
 			$params = $this->addClass( $params, 'romev3' );
 
 			$return = '';
 
 			if( Configure::read( 'Romev3.enabled' ) ) {
-				$fieldsetPath = implode( '.', Hash::filter( array( $modelName ) ) );
-				$ajaxFieldPath = "{$modelName}.romev3";
+				$prefix = !empty( $params['prefix'] ) ? $params['prefix'].'.' : null;
+				$fieldsetPath = implode( '.', Hash::filter( array( $params['prefix'], $modelName ) ) );
+				$ajaxFieldPath = "{$prefix}{$modelName}.romev3";
 
 				if( $params['id'] === null ) {
 					$params['id'] = $this->domId( $fieldsetPath );
@@ -76,11 +78,11 @@
 				$return .= $this->Default3->subform(
 					array(
 						$ajaxFieldPath => array( 'type' => 'text', 'required' => false ),
-						"{$modelName}.id" => array( 'type' => 'hidden' ),
-						"{$modelName}.familleromev3_id" => array( "options" => $params['options'][$modelName]["familleromev3_id"], 'empty' => true, 'required' => $params['required'] ),
-						"{$modelName}.domaineromev3_id" => array( "options" => $params['options'][$modelName]["domaineromev3_id"], 'empty' => true, 'required' => $params['required'] ),
-						"{$modelName}.metierromev3_id" => array( "options" => $params['options'][$modelName]["metierromev3_id"], 'empty' => true, 'required' => $params['required'] ),
-						"{$modelName}.appellationromev3_id" => array( "options" => $params['options'][$modelName]["appellationromev3_id"], 'empty' => true, 'required' => $params['required'] )
+						"{$prefix}{$modelName}.id" => array( 'type' => 'hidden' ),
+						"{$prefix}{$modelName}.familleromev3_id" => array( "options" => $params['options'][$modelName]["familleromev3_id"], 'empty' => true, 'required' => $params['required'] ),
+						"{$prefix}{$modelName}.domaineromev3_id" => array( "options" => $params['options'][$modelName]["domaineromev3_id"], 'empty' => true, 'required' => $params['required'] ),
+						"{$prefix}{$modelName}.metierromev3_id" => array( "options" => $params['options'][$modelName]["metierromev3_id"], 'empty' => true, 'required' => $params['required'] ),
+						"{$prefix}{$modelName}.appellationromev3_id" => array( "options" => $params['options'][$modelName]["appellationromev3_id"], 'empty' => true, 'required' => $params['required'] )
 					),
 					array(
 						"options" => $params['options']
@@ -89,9 +91,9 @@
 
 				$return .= $this->Observer->dependantSelect(
 					array(
-						"{$modelName}.familleromev3_id" => "{$modelName}.domaineromev3_id",
-						"{$modelName}.domaineromev3_id" => "{$modelName}.metierromev3_id",
-						"{$modelName}.metierromev3_id" => "{$modelName}.appellationromev3_id",
+						"{$prefix}{$modelName}.familleromev3_id" => "{$prefix}{$modelName}.domaineromev3_id",
+						"{$prefix}{$modelName}.domaineromev3_id" => "{$prefix}{$modelName}.metierromev3_id",
+						"{$prefix}{$modelName}.metierromev3_id" => "{$prefix}{$modelName}.appellationromev3_id",
 					)
 				);
 
@@ -102,7 +104,8 @@
 					),
 					array(
 						'url' => $params['url'],
-						'onload' => false
+						'onload' => false,
+//						'prefix' => $params['prefix']
 					)
 				);
 

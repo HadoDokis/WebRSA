@@ -1970,16 +1970,16 @@ body.cg976.dossiers.view #resumeDossier h1, body.cg976.dossiers.view #resumeDoss
 }
 
 /* Recherche par dossier / allocataire */
-body.dossiers.index ul.actions li.action a.dossiers.index {
+body.search ul.actions li.action a.dossiers.index {
 	background-image: url("../img/icons/application_form_magnify.png");
 }
 
-body.index td.dossier_locked {
+body.search td.data.dossier_locked {
 	background-image: none;
 	font-size: 0;
 }
 
-body.index td.dossier_locked.data.boolean.true {
+body.search td.data.dossier_locked.boolean.true {
 	background-image: url("../img/icons/lock.png");
 }
 

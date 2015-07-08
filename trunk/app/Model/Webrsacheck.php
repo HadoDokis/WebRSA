@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'Folder', 'Utility' );
 	require_once( APPLIBS.'cmis.php' );
 
 	/**
@@ -79,6 +80,36 @@
 			sort( $models );
 			return $models;
 		}*/
+
+		/**
+		 * Fonction utilitaire permettant de charger l'ensemble des fichiers de
+		 * configuration se trouvant dans le répertoire du département connecté:
+		 * app/Config/CgXXX (où XXX représente le n° du département)
+		 *
+		 * @param integer $departement
+		 */
+		protected function _includeConfigFiles( $departement ) {
+			$path = APP.'Config'.DS.'Cg'.Configure::read( 'Cg.departement' );
+
+			$Dir = new Folder( $path );
+			foreach( $Dir->find( '.*\.php' ) as $file ) {
+				include_once $path.DS.$file;
+			}
+		}
+
+		/**
+		 * Surcharge du constructeur afin d'inclure les fichiers de configuration
+		 * se trouvant dans app/Config/CgXXX (où XXX représente le n° du département).
+		 *
+		 * @param integer|string|array $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			$this->_includeConfigFiles( Configure::read( 'Cg.departement' ) );
+		}
 
 		/**
 		 * Lecture des modèles de documents nécessaires pour chacune des
@@ -949,25 +980,34 @@
 		 * ...
 		 */
 		public function allCheckParametrage() {
+			$departement = (int)Configure::read( 'Cg.departement' );
 			$errors = array();
 
 			$ignore = Configure::read( 'ConfigurableQueryFields.ignore' );
 			$ignore[] = 'Dossier.locked';
 			Configure::write( 'ConfigurableQueryFields.ignore', $ignore );
 
-			$modelNames = array( 'Dsp', 'Dossier' );
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$modelNames[] = 'Cohorterendezvous';
-				$modelNames[] = 'Tableausuivipdv93';
+			$notMyModels = array();
+			if( $departement !== 93 ) {
+				$notMyModels[] = 'Cohorterendezvous';
+				$notMyModels[] = 'Tableausuivipdv93';
 			}
-			else if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$modelNames[] = 'Criterecui';
+			if( $departement !== 66 ) {
+				$notMyModels[] = 'Criterecui';
 			}
 
-			foreach( $modelNames as $modelName ) {
-				$Model = ClassRegistry::init( $modelName );
+			foreach( App::objects( 'model' ) as $modelName ) {
+				if( !in_array( $modelName, $notMyModels ) ) {
+					App::import( 'Model', $modelName );
+					$Model = ClassRegistry::init( $modelName );
 
-				$errors = Hash::merge( $errors, $Model->checkParametrage() );
+					if( $Model instanceof WebrsaRechercheInterface ) {
+						$errors = Hash::merge( $errors, $Model->checkParametrage() );
+					}
+					else if( method_exists( $Model,'checkParametrage' ) ) {
+						$errors = Hash::merge( $errors, $Model->checkParametrage() );
+					}
+				}
 			}
 
 			return $errors;

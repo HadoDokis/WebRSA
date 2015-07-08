@@ -20,39 +20,42 @@
 
 		public $actsAs = array(
 			'Conditionnable',
-			'Formattable'
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable'
 		);
 
 		public $validate = array(
 			'numdemrsa' => array(
-				array(
+				'isUnique' => array(
 					'rule' => 'isUnique',
 					'message' => 'Cette valeur est déjà utilisée'
 				),
-				array(
+				'alphaNumeric' => array(
 					'rule' => 'alphaNumeric',
 					'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
 				),
-				array(
+				'between' => array(
 					'rule' => array( 'between', 11, 11 ),
 					'message' => 'Le n° de demande est composé de 11 caractères'
 				),
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'dtdemrsa' => array(
-				array(
+				'date' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.',
 					'allowEmpty' => true
 				)
 			),
 			'matricule' => array(
-				'rule' => array( 'between', 15, 15 ),
-				'message' => 'Le n° est composé de 15 caractères minimum (ajouter des zéros à la fin)',
-				'allowEmpty' => true
+				'between' => array(
+					'rule' => array( 'between', 15, 15 ),
+					'message' => 'Le n° est composé de 15 caractères minimum (ajouter des zéros à la fin)',
+					'allowEmpty' => true
+				)
 			)
 		);
 
@@ -191,248 +194,6 @@
 			return parent::beforeSave( $options );
 		}
 
-		public function searchQuery() {
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
-			$query = Cache::read( $cacheKey );
-
-			if( $query === false ) {
-				$departement = (int)Configure::read( 'Cg.departement' );
-
-				// FIXME: on part du dossier et pas de la personne
-				$Allocataire = ClassRegistry::init( 'Allocataire' );
-				$types = array(
-					'Calculdroitrsa' => 'LEFT OUTER',
-					'Foyer' => 'INNER',
-					'Prestation' => $departement == 66 ? 'LEFT OUTER' : 'INNER',
-					'Personne' => 'LEFT OUTER',
-					'Adressefoyer' => 'LEFT OUTER',
-					'Dossier' => 'INNER',
-					'Adresse' => 'LEFT OUTER',
-					'Situationdossierrsa' => 'INNER',
-					'Detaildroitrsa' => 'LEFT OUTER'
-				);
-				$query = $Allocataire->searchQuery( $types, 'Dossier' );
-
-				// Le CD 66 veut pouvoir trouver les allocataires et les personnes sans prestation
-				if( $departement === 66 ) {
-					unset( $query['conditions']['Prestation.rolepers'] );
-					$query['joins'][4] = $this->Foyer->Personne->join(
-						'Prestation',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Prestation.rolepers' => array( 'DEM', 'CJT' )
-							)
-						)
-					);
-				}
-
-				$query['joins'] = array_values( $query['joins'] );
-
-				$query['order'] = array( 'Personne.nom ASC' );
-
-				// Ajout des spécificités du moteur de recherche
-				$query['fields'] = array_merge(
-					array( 0 => 'Dossier.id' ),
-					$query['fields'],
-					ConfigurableQueryFields::getModelsFields(
-						array(
-							$this->Foyer->Personne->Dsp,
-							$this->Foyer->Personne->DspRev,
-							$this->Foyer->Personne->Orientstruct,
-							$this->Foyer->Personne->Orientstruct->Structurereferente,
-							$this->Foyer->Personne->Orientstruct->Typeorient
-						)
-					)
-				);
-
-				$query['joins'] = array_merge(
-					$query['joins'],
-					array(
-						$this->Foyer->Personne->join(
-							'Dsp',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Dsp.id IN ( '.$this->Foyer->Personne->Dsp->sqDerniereDsp().' )'
-								)
-							)
-						),
-						$this->Foyer->Personne->join(
-							'DspRev',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'DspRev.id IN ( '.$this->Foyer->Personne->DspRev->sqDerniere().' )'
-								)
-							)
-						),
-						$this->Foyer->Personne->join(
-							'Orientstruct',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Orientstruct.statut_orient' => 'Orienté',
-									'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->sqDerniere().' )'
-								)
-							)
-						),
-						$this->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
-					)
-				);
-
-				// Début des jointures supplémentaires par département
-
-				// CD 58
-				if( $departement == 58 ) {
-					// Travailleur social chargé de l'évaluation: "Nom du chargé de
-					// l'évaluation" lorsque l'on crée une orientation
-					$query['fields'] = array_merge(
-						$query['fields'],
-						ConfigurableQueryFields::getModelsFields(
-							array(
-								$this->Foyer->Personne->Dossiercov58,
-								$this->Foyer->Personne->Dossiercov58->Propoorientationcov58,
-								$this->Foyer->Personne->Dossiercov58->Propoorientationcov58->Referentorientant,
-								$this->Foyer->Personne->Dossiercov58->Propoorientationcov58->Structureorientante
-							)
-						)
-					);
-					$query['joins'][] = $this->Foyer->Personne->join(
-						'Dossiercov58',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array( 'Dossiercov58.themecov58' => 'proposorientationscovs58' )
-						)
-					);
-					$query['joins'][] = $this->Foyer->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) );
-					$query['joins'][] = $this->Foyer->Personne->Dossiercov58->Propoorientationcov58->join( 'Referentorientant', array( 'type' => 'LEFT OUTER' ) );
-					$query['joins'][] = $this->Foyer->Personne->Dossiercov58->Propoorientationcov58->join( 'Structureorientante', array( 'type' => 'LEFT OUTER' ) );
-
-					// Dernière activité
-					$query['fields'] = array_merge(
-						$query['fields'],
-						ConfigurableQueryFields::getModelsFields(
-							array(
-								$this->Foyer->Personne->Activite
-							)
-						)
-					);
-
-					$query['joins'][] = $this->Foyer->Personne->join(
-						'Activite',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Activite.id IN ( '.$this->Foyer->Personne->Activite->sqDerniere().' )'
-							),
-						)
-					);
-
-					$query = $this->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query );
-				}
-
-				Cache::write( $cacheKey, $query );
-			}
-
-			return $query;
-		}
-
-		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$query = $Allocataire->searchConditions( $query, $search );
-
-			// Critères sur le dossier - service instructeur
-			$serviceinstructeur_id = (string)Hash::get( $search, 'Serviceinstructeur.id' );
-			if( $serviceinstructeur_id !== '' ) {
-				$subQuery = array_words_replace(
-					array(
-						'alias' => 'Suiviinstruction',
-						'fields' => array( 'Suiviinstruction.dossier_id' ),
-						'contain' => false,
-						'joins' => array(
-							$this->Suiviinstruction->join( 'Serviceinstructeur', array( 'type' => 'INNER' ) )
-						),
-						'conditions' => array(
-							'Serviceinstructeur.id' => $serviceinstructeur_id
-						)
-					),
-					array( 'Suiviinstruction' => 'suivisinstruction', 'Serviceinstructeur' => 'servicesinstructeurs' )
-				);
-				$query['conditions'][] = '"Dossier"."id" IN ( '.$this->Suiviinstruction->sq( $subQuery ).' )';
-			}
-
-			// Possède...
-			if( $this->Foyer->Personne->Behaviors->attached( 'LinkedRecords' ) === false ) {
-				$this->Foyer->Personne->Behaviors->attach( 'LinkedRecords' );
-			}
-			$linkedModelNames = array( 'Cui', 'Orientstruct', 'Contratinsertion', 'Dsp' );
-			foreach( $linkedModelNames as $linkedModelName ) {
-				$fieldName = 'has_'.Inflector::underscore( $linkedModelName );
-				$exists = (string)Hash::get( $search, "Personne.{$fieldName}" );
-				if( in_array( $exists, array( '0', '1' ), true ) ) {
-					$sql = $this->Foyer->Personne->linkedRecordVirtualField( $linkedModelName );
-					$query['conditions'][] = $exists ? $sql : 'NOT ' . $sql;
-				}
-			}
-
-			// Condition sur la nature du logement
-			$natlog = (string)Hash::get( $search, 'Dsp.natlog' );
-			if( $natlog !== '' ) {
-				$query['conditions'][] = array(
-					'OR' => array(
-						array(
-							// On cherche dans les Dsp si pas de Dsp mises à jour
-							'DspRev.id IS NULL',
-							'Dsp.natlog' => $natlog
-						),
-						'DspRev.natlog' => $natlog,
-					)
-				);
-			}
-
-			// Début des spécificités par département
-			$departement = Configure::read( 'Cg.departement' );
-
-			// La personne possède-t-elle un rôle ?
-			if( $departement === 66 ) {
-				$exists = (string)Hash::get( $search, 'Personne.has_prestation' );
-				if( $exists === '0' ) {
-					$query['conditions'][] = 'Prestation.rolepers IS NULL';
-				}
-				else if( $exists === '1' ) {
-					$query['conditions']['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-				}
-			}
-			else {
-				//$query['conditions'][]
-			}
-
-
-			// CD 58: travailleur social chargé de l'évaluation: "Nom du chargé de
-			// l'évaluation" lorsque l'on crée une orientation
-			if( $departement == 58 ) {
-				$referentorientant_id = (string)Hash::get( $search, 'Propoorientationcov58.referentorientant_id' );
-				if( $referentorientant_id !== '' ) {
-					$query['conditions']['Propoorientationcov58.referentorientant_id'] = $referentorientant_id;
-				}
-
-				$query = $this->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query, $search );
-			}
-
-			// CD 66: Personne ne possédant pas d'orientation et sans entrée Nonoriente66
-			if( $departement == 66 ) {
-				$exists = (string)Hash::get( $search, 'Personne.has_orientstruct' );
-				if( $exists === '0' ) {
-					$sql = $this->Foyer->Personne->linkedRecordVirtualField( 'Nonoriente66' );
-					$query['conditions'][] = 'NOT ' . $sql;
-				}
-			}
-
-			return $query;
-		}
-
 		/**
 		 * Retourne un querydata prenant en compte les différents filtres du moteur de recherche.
 		 *
@@ -447,56 +208,6 @@
 		 * @return array
 		 */
 		public function search( $params ) {
-			$query = $this->searchQuery();
-			$query = $this->searchConditions( $query, $params );
-
-			return $query;
-		}
-
-		public function prechargement() {
-			$success = parent::prechargement() !== false;
-
-			$query = $this->search( array() );
-			$success = !empty( $query ) && $success;
-
-			// Export des champs disponibles
-			$fileName = TMP.DS.'logs'.DS.__CLASS__.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
-			ConfigurableQueryFields::exportQueryFields( $query, Inflector::tableize( $this->name ), $fileName );
-
-			return $success;
-		}
-
-		/**
-		 * Vérification que les champs spécifiés dans le paramétrage par les clés
-		 * Cohortesrendezvous.cohorte.fields, Cohortesrendezvous.cohorte.innerTable
-		 * et Cohortesrendezvous.exportcsv dans le webrsa.inc existent bien dans
-		 * la requête de recherche renvoyée par la méthode cohorte().
-		 *
-		 * @return array
-		 */
-		public function checkParametrage() {
-			$keys = array( 'Dossiers.index.fields', 'Dossiers.index.innerTable', 'Dossiers.exportcsv' );
-			$query = $this->search( array() );
-
-			$return = ConfigurableQueryFields::getErrors( $keys, $query );
-
-			return $return;
-		}
-
-		/**
-		 * Retourne un querydata prenant en compte les différents filtres du moteur de recherche.
-		 *
-		 * INFO (pour le CG66): ATTENTION, depuis que la possibilité de créer des dossiers avec un numéro
-		 * temporaire existe, il est possible (via le bouton Ajouter) de créer des dossiers avec des allocataires
-		 * ne possédant ni date de naissance, ni NIR.
-		 * Du coup, lors de la recherche, si la case "Uniquement la dernière demande..." est cochée, les dossiers
-		 * temporaires, avec allocataire sans NIR ou sans date de naissance ne ressortiront pas lors de cette
-		 * recherche -> il faut donc décocher la case pour les voir apparaître
-		 *
-		 * @param array $params
-		 * @return array
-		 */
-		/*public function search( $params ) {
 			$conditions = array();
 
 			$typeJointure = 'INNER';
@@ -728,7 +439,7 @@
 			}
 
 			return $querydata;
-		}*/
+		}
 
 		/**
 		 * Renvoit un numéro de RSA temporaire (sous la form "TMP00000000", suivant le numéro de la
@@ -882,6 +593,25 @@
 			}
 
 			return $dossier;
+		}
+
+		/**
+		 * @return array
+		 */
+		public function enums() {
+			$return = parent::enums();
+
+			// FIXME: seulement pour le 93 ?
+			// @see Tableausuivipdv93
+			$return[$this->alias]['anciennete_dispositif'] = array(
+				'0_0' => 'Moins de 1 an',
+				'1_2' => 'De 1 an à moins de 3 ans',
+				'3_5' => 'De 3 ans à moins de 6 ans',
+				'6_8' => 'De 6 ans à moins de 9 ans',
+				'9_999' => 'Plus de 9 ans',
+			);
+
+			return $return;
 		}
 	}
 ?>

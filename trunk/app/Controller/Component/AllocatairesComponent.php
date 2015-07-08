@@ -131,7 +131,7 @@
 		/**
 		 * Retourne les options de base pour les formulaires de recherche liés
 		 * à un allocataire.
-		 *
+		 * @todo: params static/dynamic (ex find)
 		 * @return array
 		 */
 		public function options() {

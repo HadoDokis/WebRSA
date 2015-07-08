@@ -88,3 +88,43 @@ msgstr "Veuillez remplir un questionnaire D1 pour cet allocataire"
 
 msgid "Thematiquerdv.name"
 msgstr "Thématique(s) du rendez-vous"
+
+###############################################################################
+# Moteur de recherche par rendez-vous
+###############################################################################
+
+msgid "/Rendezvous/search/:heading"
+msgstr "Recherche par rendez-vous (nouveau)"
+
+msgid "Search.Rendezvous"
+msgstr "Recherche par rendez-vous"
+
+msgid "Search.Rendezvous.statutrdv_id"
+msgstr "Statut du RDV"
+
+msgid "Search.Rendezvous.structurereferente_id"
+msgstr "Structure référente"
+
+msgid "Search.Rendezvous.referent_id"
+msgstr "Nom du référent"
+
+msgid "Search.Rendezvous.permanence_id"
+msgstr "Permanence liée à la structure"
+
+msgid "Search.Rendezvous.typerdv_id"
+msgstr "Objet du rendez-vous"
+
+msgid "Search.Rendezvous.daterdv"
+msgstr "Date de rendez-vous"
+
+msgid "/Rendezvous/index"
+msgstr "Voir"
+
+msgid "/Rendezvous/index/#Rendezvous.personne_id#"
+msgstr "Voir le rendez-vous de #Personne.nom_complet#"
+
+msgid "/Rendezvous/impression"
+msgstr "Imprimer"
+
+msgid "/Rendezvous/impression/#Rendezvous.id#"
+msgstr "Imprimer le rendez-vous de #Personne.nom_complet#"

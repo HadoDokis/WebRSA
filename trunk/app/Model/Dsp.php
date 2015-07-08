@@ -568,6 +568,8 @@
 		 * Retourne un array de conditions permettant de s'assurer cibler à la fois
 		 * le modèle Dsp et le modèle DspRev.
 		 *
+		 * @deprecated
+		 *
 		 * @param array $condition
 		 * @param array $aliases
 		 * @return array
@@ -587,6 +589,8 @@
 		 * Retourne une condition permettant d'obtenir un champ dans un modèle
 		 * principal (si la Dsp existe) ou un modèle secondaire (si la DspRev
 		 * existe).
+		 *
+		 * @deprecated
 		 *
 		 * @param string $fieldName Nom du champ
 		 * @param string $modelNamePrimary Nom du modèle principal
@@ -644,6 +648,8 @@
 		/**
 		 *
 		 * @see Allocataire::searchQuery()
+		 *
+		 * @deprecated
 		 *
 		 * @return array
 		 */
@@ -892,6 +898,8 @@
 		/**
 		 * Complète les conditions du querydata avec le contenu des filtres de
 		 * recherche.
+		 *
+		 * @deprecated
 		 *
 		 * @param array $query
 		 * @param array $search

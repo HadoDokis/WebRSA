@@ -100,6 +100,18 @@ msgstr "Du (inclus)"
 msgid "Search.Dossier.dtdemrsa_to"
 msgstr "Au (inclus)"
 
+msgid "Search.Dossier.anciennete_dispositif"
+msgstr "Ancienneté dans le dispositif"
+
+msgid "Search.Serviceinstructeur.id"
+msgstr "Nom du service instructeur"
+
+msgid "Search.Dossier.fonorg"
+msgstr "Organisme émetteur du dossier"
+
+msgid "Search.Foyer.sitfam"
+msgstr "Filtrer par situation familiale"
+
 # ------------------------------------------------------------------------------
 
 msgid "Search.Adresse.nomvoie"

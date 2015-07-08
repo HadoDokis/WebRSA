@@ -23,6 +23,7 @@
 		 */
 		public $fixtures = array(
 			'app.Actionfp93',
+			'app.Adresseprestatairefp93',
 			'app.Categoriefp93',
 			'app.Filierefp93',
 			'app.Prestatairefp93',

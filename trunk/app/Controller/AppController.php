@@ -260,6 +260,12 @@
 				}
 			}
 
+			// Chargement du fichier de configuration lié au contrôleur, s'il existe
+			$path = APP.'Config'.DS.'Cg'.Configure::read( 'Cg.departement' ).DS.$this->name.'.php';
+			if( file_exists( $path ) ) {
+				include_once $path;
+			}
+
 			return $return;
 		}
 

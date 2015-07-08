@@ -170,6 +170,10 @@
 		 *	- Dossier.dtdemrsa
 		 *	- Situationdossierrsa.etatdosrsa
 		 *	- Dossier.dernier
+		 *	- Dossier.anciennete_dispositif
+		 *	- Serviceinstructeur.id
+		 *	- Dossier.fonorg
+		 *	- Foyer.sitfam
 		 *
 		 * @param array $params
 		 * @return string
@@ -191,6 +195,18 @@
 			}
 
 			$content .= $this->_input( "{$params['prefix']}Dossier.dernier", $params, array( 'type' => 'checkbox' ) );
+
+			$paths = array(
+				'Dossier.anciennete_dispositif',
+				'Serviceinstructeur.id',
+				'Dossier.fonorg',
+				'Foyer.sitfam'
+			);
+			foreach( $paths as $path ) {
+				if( Hash::check( $params, "options.{$path}" ) ) {
+					$content .= $this->_input( "{$params['prefix']}{$path}", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, "options.{$path}" ), 'empty' => true ) );
+				}
+			}
 
 			return $this->_fieldset( 'Search.Dossier', $content, $params );
 		}

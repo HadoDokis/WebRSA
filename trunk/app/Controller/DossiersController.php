@@ -8,7 +8,6 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'Sanitize', 'Utility' );
-	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe DossiersController ...
@@ -39,7 +38,7 @@
 			'InsertionsAllocataires',
 			'Jetons2',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'index' )
+				'actions' => array( 'index', 'search' )
 			),
 		);
 
@@ -70,7 +69,7 @@
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
 			$this->set( 'natfingro', $this->Option->natfingro() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
-			$this->set( 'statudemrsa', $this->Option->statudemrsa() );
+			$this->set( 'statudemrsa', $this->Dossier->enum( 'statudemrsa' ) );
 			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa(true) );
@@ -124,9 +123,9 @@
 			else if( $this->action == 'edit' ) {
 				$optionsDossier = array(
 					'Dossier' => array(
-						'statudemrsa' => $this->Option->statudemrsa(),
-						'fonorgcedmut' => $this->Option->fonorgcedmut(),
-						'fonorgprenmut' => $this->Option->fonorgprenmut()
+						'statudemrsa' => $this->Dossier->enum( 'statudemrsa' ),
+						'fonorgcedmut' => $this->Dossier->enum( 'fonorgcedmut' ),
+						'fonorgprenmut' => $this->Dossier->enum( 'fonorgprenmut' )
 					)
 				);
 				$this->set( 'optionsDossier', $optionsDossier );
@@ -161,77 +160,50 @@
 		}
 
 		/**
+		 * Moteur de recherche par dossier/allocataire
 		 *
-		 * @return array
+		 * @return void
 		 */
-		protected function _options() {
-			$options = $this->Allocataires->options();
-			$exists = array( '1' => 'Oui', '0' => 'Non' );
-			$options['Personne']['has_contratinsertion'] = $exists;
-			$options['Personne']['has_cui'] = $exists;
-			$options['Personne']['has_dsp'] = $exists;
-			$options['Personne']['has_orientstruct'] = $exists;
-			$options['Personne']['trancheage'] = array(
-				'0_24' => '< 25',
-				'25_30' => '25 - 30',
-				'31_55' => '31 - 55',
-				'56_65' => '56 - 65',
-				'66_999' => '> 65',
-			);
-			$options['Prestation']['rolepers'] = $this->Option->rolepers();
-
-			$options['Dossier']['anciennete_dispositif'] = $this->Tableausuivipdv93->anciennetes_dispositif;
-			$options['Serviceinstructeur']['id'] = $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->listOptions();
-			$options['Dossier']['fonorg'] = array( 'CAF' => 'CAF', 'MSA' => 'MSA' ); // TODO: dans les options / les enums ?
-
-
-			$natlog = $this->Dossier->Foyer->Personne->Dsp->enum( 'natlog' );
-			asort( $natlog );
-			$options['Dsp']['natlog'] = $natlog;
-
-			$options['Prestation']['exists'] = array(
-				'0' => 'Sans prestation',
-				'1' => 'Demandeur ou Conjoint du RSA'
-			);
-
-			$options['Foyer']['sitfam'] = $this->Option->sitfam();
-
-			$departement = Configure::read( 'Cg.departement' );
-			if( $departement == 58 ) {
-				$options['Activite']['act'] = $this->Option->act();
-				$options['Personne']['etat_dossier_orientation'] = $this->Dossier->Foyer->Personne->enum( 'etat_dossier_orientation' );
-				$options['Propoorientationcov58']['referentorientant_id'] = $this->Dossier->Foyer->Personne->PersonneReferent->Referent->find( 'list', array( 'order' => array( 'Referent.nom' ) ) );
-			}
-
-			return $options;
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiers' );
+			$Recherches->search();
 		}
 
 		/**
 		 * Moteur de recherche par dossier/allocataire
 		 *
+		 * @deprecated
+		 *
 		 * @return void
 		 */
 		public function index() {
-			// TODO: à présent, on peut factoriser
 			if( !empty( $this->request->data ) ) {
-				$query = $this->Dossier->search( (array)Hash::get( $this->request->data, 'Search' ) );
-				$query = $this->Allocataires->completeSearchQuery( $query );
+				$paginate = $this->Dossier->search( $this->request->data );
 
-				$key = "{$this->name}.{$this->request->params['action']}";
-				$query = ConfigurableQueryFields::getFieldsByKeys( array( "{$key}.fields", "{$key}.innerTable" ), $query );
+				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$paginate = $this->_qdAddFilters( $paginate );
 
-				$this->Dossier->forceVirtualFields = true;
-				$results = $this->Allocataires->paginate( $query, 'Dossier' );
+				$paginate['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
 
-				$this->set( compact( 'results' ) );
+				$this->paginate = $paginate;
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$dossiers = $this->paginate( 'Dossier', array(), array(), $progressivePaginate );
+
+				$this->set( 'dossiers', $dossiers );
 			}
 			else {
 				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
-				$this->request->data = Hash::merge( $this->request->data, array( 'Search' => $filtresdefaut ) );
+				$this->request->data = Set::merge( $this->request->data, $filtresdefaut );
 			}
 
-			$options = $this->_options();
-			$this->set( compact( 'options' ) );
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
+			$this->_setOptions();
 		}
 
 		/**
@@ -944,7 +916,7 @@
 		 *
 		 * @return void
 		 */
-		/*public function exportcsv() {
+		public function exportcsv1() {
 			$querydata = $this->Dossier->search( Hash::expand( $this->request->params['named'], '__' ) );
 
 			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
@@ -958,30 +930,11 @@
 			$this->layout = '';
 			$this->set( compact( 'headers', 'dossiers' ) );
 			$this->_setOptions();
-		}*/
+		}
 
 		public function exportcsv() {
-			// TODO: à présent, on peut factoriser
-			$search = Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' );
-
-			$query = $this->Dossier->search( $search );
-			$query = $this->Allocataires->completeSearchQuery( $query );
-
-			$key = "{$this->name}.{$this->request->params['action']}";
-			$query = ConfigurableQueryFields::getFieldsByKeys( $key, $query );
-
-			unset( $query['limit'] ); // FIXME: l'enlever de la query du modèle
-			$order = trim( Hash::get( $this->request->params, 'named.sort' ).' '.Hash::get( $this->request->params, 'named.direction' ) );
-			if( !empty( $order ) ) {
-				$query['order'] = $order;
-			}
-
-			$this->Dossier->forceVirtualFields = true;
-			$results = $this->Dossier->find( 'all', $query );
-
-			$this->layout = '';
-			$options = $this->_options();
-			$this->set( compact( 'results', 'options' ) );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiers' );
+			$Recherches->exportcsv();
 		}
 
 		/**

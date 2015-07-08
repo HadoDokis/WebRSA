@@ -13,6 +13,69 @@ msgstr ""
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
+# Dernière activité, moteur de recherche
+# ------------------------------------------------------------------------------
+msgid "Search.Deractromev3"
+msgstr "Dernière activité (ROME V3)"
+
+msgid "Search.Deractromev3.romev3"
+msgstr "Recherche rapide"
+
+msgid "Search.Deractromev3.familleromev3_id"
+msgstr "Code famille"
+
+msgid "Search.Deractromev3.domaineromev3_id"
+msgstr "Code domaine"
+
+msgid "Search.Deractromev3.metierromev3_id"
+msgstr "Code métier"
+
+msgid "Search.Deractromev3.appellationromev3_id"
+msgstr "Appellation métier"
+
+# ------------------------------------------------------------------------------
+# Dernière activité dominante, moteur de recherche
+# ------------------------------------------------------------------------------
+msgid "Search.Deractdomiromev3"
+msgstr "Dernière activité dominante (ROME V3)"
+
+msgid "Search.Deractdomiromev3.romev3"
+msgstr "Recherche rapide"
+
+msgid "Search.Deractdomiromev3.familleromev3_id"
+msgstr "Code famille"
+
+msgid "Search.Deractdomiromev3.domaineromev3_id"
+msgstr "Code domaine"
+
+msgid "Search.Deractdomiromev3.metierromev3_id"
+msgstr "Code métier"
+
+msgid "Search.Deractdomiromev3.appellationromev3_id"
+msgstr "Appellation métier"
+
+# ------------------------------------------------------------------------------
+# Emploi recherché, moteur de recherche
+# ------------------------------------------------------------------------------
+msgid "Search.Actrechromev3"
+msgstr "Emploi recherché (ROME V3)"
+
+msgid "Search.Actrechromev3.romev3"
+msgstr "Recherche rapide"
+
+msgid "Search.Actrechromev3.familleromev3_id"
+msgstr "Code famille"
+
+msgid "Search.Actrechromev3.domaineromev3_id"
+msgstr "Code domaine"
+
+msgid "Search.Actrechromev3.metierromev3_id"
+msgstr "Code métier"
+
+msgid "Search.Actrechromev3.appellationromev3_id"
+msgstr "Appellation métier"
+
+# ------------------------------------------------------------------------------
 # Dernière activité
 # ------------------------------------------------------------------------------
 msgid "Deractromev3"

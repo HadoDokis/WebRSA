@@ -88,6 +88,7 @@
 		 */
 		public $fixtures = array(
 			'app.Canton',
+			'app.Dossier',
 			'app.Foyer',
 			'app.Jeton',
 			'app.Orientstruct',
@@ -251,6 +252,30 @@
 						'nom_complet' => 'MR DURAND RAOUL',
 					),
 				),
+				array(
+					'Personne' => array(
+						'id' => 4,
+						'nom_complet' => 'MR FOO BAR',
+					),
+				),
+				array(
+					'Personne' => array(
+						'id' => 5,
+						'nom_complet' => 'MR FOO BAR',
+					),
+				),
+				array(
+					'Personne' => array(
+						'id' => 6,
+						'nom_complet' => 'MR FOO BAZ',
+					),
+				),
+				array(
+					'Personne' => array(
+						'id' => 7,
+						'nom_complet' => 'MR FOO BAZ',
+					)
+				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

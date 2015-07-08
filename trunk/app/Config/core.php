@@ -185,7 +185,7 @@
 		'Session',
 		array(
 			'defaults' => 'php',
-			'cookie' => 'WebRSA290Dev',
+			'cookie' => 'WebRSA300Dev',
 			'timeout' => $sessionDurationMinutes,
 			'cookieTimeout' => $sessionDurationMinutes,
 			'checkAgent' => false,

@@ -177,57 +177,59 @@
 		 */
 		public function options( array $params = array() ) {
 			$Option = ClassRegistry::init( 'Option' );
+			$Dossier = ClassRegistry::init( 'Dossier' );
 
-			$options = array(
-				'Adresse' => array(
-					'pays' => $Option->pays(),
-					'typeres' => $Option->typeres()
-				),
-				'Adressefoyer' => array(
-					'rgadr' => $Option->rgadr(),
-					'typeadr' => $Option->typeadr(),
-				),
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => $Option->toppersdrodevorsa(true),
-				),
-				'Detailcalculdroitrsa' => array(
-					'natpf' => $Option->natpf(),
-				),
-				'Detaildroitrsa' => array(
-					'oridemrsa' => $Option->oridemrsa(),
-					'topfoydrodevorsa' => $Option->topfoydrodevorsa(),
-					'topsansdomfixe' => $Option->topsansdomfixe(),
-				),
-				'Dossier' => array(
-					'fonorgcedmut' => $Option->fonorgcedmut(),
-					'fonorgprenmut' => $Option->fonorgprenmut(),
-					'numorg' => $Option->numorg(),
-					'statudemrsa' => $Option->statudemrsa(),
-					'typeparte' => $Option->typeparte(),
-				),
-				'Foyer' => array(
-					'sitfam' => $Option->sitfam(),
-					'typeocclog' => $Option->typeocclog(),
-				),
-				'Personne' => array(
-					'pieecpres' => $Option->pieecpres(),
-					'qual' => $Option->qual(),
-					'sexe' => $Option->sexe(),
-					'typedtnai' => $Option->typedtnai(),
-				),
-				'Prestation' => array(
-					'rolepers' => $Option->rolepers(),
-				),
-				'Referentparcours' => array(
-					'qual' => $Option->qual(),
-				),
-				'Structurereferenteparcours' => array(
-					'type_voie' => $Option->typevoie(),
-				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa' => $Option->etatdosrsa(),
-					'moticlorsa' => $Option->moticlorsa(),
-				),
+			$options = Hash::merge(
+				$Dossier->enums(), // FIXME: tout mettre dans Dossier, nettoyer
+				array(
+					'Adresse' => array(
+						'pays' => $Option->pays(),
+						'typeres' => $Option->typeres()
+					),
+					'Adressefoyer' => array(
+						'rgadr' => $Option->rgadr(),
+						'typeadr' => $Option->typeadr(),
+					),
+					'Calculdroitrsa' => array(
+						'toppersdrodevorsa' => $Option->toppersdrodevorsa(true),
+					),
+					'Detailcalculdroitrsa' => array(
+						'natpf' => $Option->natpf(),
+					),
+					'Detaildroitrsa' => array(
+						'oridemrsa' => $Option->oridemrsa(),
+						'topfoydrodevorsa' => $Option->topfoydrodevorsa(),
+						'topsansdomfixe' => $Option->topsansdomfixe(),
+					),
+					// FIXME: dans les enums du dossier
+					'Dossier' => array(
+						'numorg' => $Option->numorg(),
+						'typeparte' => $Option->typeparte(),
+					),
+					'Foyer' => array(
+						'sitfam' => $Option->sitfam(),
+						'typeocclog' => $Option->typeocclog(),
+					),
+					'Personne' => array(
+						'pieecpres' => $Option->pieecpres(),
+						'qual' => $Option->qual(),
+						'sexe' => $Option->sexe(),
+						'typedtnai' => $Option->typedtnai(),
+					),
+					'Prestation' => array(
+						'rolepers' => $Option->rolepers(),
+					),
+					'Referentparcours' => array(
+						'qual' => $Option->qual(),
+					),
+					'Structurereferenteparcours' => array(
+						'type_voie' => $Option->typevoie(),
+					),
+					'Situationdossierrsa' => array(
+						'etatdosrsa' => $Option->etatdosrsa(),
+						'moticlorsa' => $Option->moticlorsa(),
+					),
+				)
 			);
 
 			return $options;

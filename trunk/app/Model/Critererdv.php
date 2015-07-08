@@ -12,6 +12,8 @@
 	/**
 	 * La classe Critererdv s'occupe du moteur de recherche par rendez-vous (CG 58, 66 et 93).
 	 *
+	 * @deprecated see WebrsaRechercheRendezvous
+	 *
 	 * @package app.Model
 	 */
 	class Critererdv extends AppModel
