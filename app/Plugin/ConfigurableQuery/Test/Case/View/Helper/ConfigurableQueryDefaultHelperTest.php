@@ -124,6 +124,7 @@
 			Router::setRequestInfo( $request );
 
 			App::build( array( 'locales' => CakePlugin::path( 'ConfigurableQuery' ).'Test'.DS.'Locale'.DS ) );
+			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg66' ) );
 			Configure::write( 'Config.language', 'fre' );
 			$_SESSION['Config']['language'] = 'fre';
 
@@ -196,11 +197,14 @@
 					'fields' => array(
 						'User.username',
 						'User.created',
-						'Group.name'
+						'Group.name',
+						'/Users/view/#User.id#',
+						'/Users/edit/#User.id#'
 					),
 					'header' => array(
 						array( 'Utilisateur' => array( 'colspan' => 2 ) ),
-						array( 'Groupe' => null )
+						array( 'Groupe' => null ),
+						array( '' => array( 'colspan' => 2 ) ),
 					)
 				)
 			);
@@ -221,7 +225,7 @@
 			$result = $this->Default->configuredIndex( $records );
 
 			$base = Router::url( '/' );
-			$expected = '<div class="pagination">
+			/*$expected = '<div class="pagination">
 					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
 				</div>
 				<table id="TableUsersIndex" class="users index">
@@ -251,7 +255,47 @@
 					</tbody>
 				</table>
 				<div class="pagination"><p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
-			</div>';
+			</div>';*/
+			$expected = '<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>
+				<table id="TableUsersIndex" class="users index">
+					<thead>
+						<tr>
+							<th colspan="2">Utilisateur</th>
+							<th>Groupe</th>
+							<th colspan="2"></th>
+						</tr>
+						<tr>
+							<th id="TableUsersIndexColumnUserUsername">
+								<a href="'.$base.'users/index/page:1/sort:User.username/direction:asc">Identifiant</a>
+							</th>
+							<th id="TableUsersIndexColumnUserCreated">
+								<a href="'.$base.'users/index/page:1/sort:User.created/direction:asc">Créé le</a>
+							</th>
+							<th id="TableUsersIndexColumnGroupName">
+								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
+							</th>
+							<th colspan="2" class="actions" id="TableUsersIndexColumnActions">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="odd">
+							<td class="data string ">admin</td>
+							<td class="data datetime ">29/06/2015 à 00:28:35</td>
+							<td class="data string ">Admin</td>
+							<td class="action">
+								<a href="'.$base.'users/view" title="Voir l&#039;utilisateur « admin »" class="users view">Voir</a>
+							</td>
+							<td class="action">
+								<a href="'.$base.'users/edit" title="Modifier l&#039;utilisateur « admin »" class="users edit">Modifier</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
