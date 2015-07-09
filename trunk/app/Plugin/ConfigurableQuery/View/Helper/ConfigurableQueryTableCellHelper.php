@@ -38,5 +38,31 @@
 				'className' => 'ConfigurableQuery.ConfigurableQueryHtml'
 			)
 		);
+
+		/**
+		 * Surcharge de la méthode action() afin d'avoir la "multitraduction" des
+		 * clés title, msgid, confirm.
+		 *
+		 * @param string $path
+		 * @param array $htmlAttributes
+		 * @return string
+		 */
+		public function action( $path, array $htmlAttributes = array() ) {
+			if( isset( $htmlAttributes['label'] ) && !isset( $htmlAttributes['title'] ) ) {
+				$htmlAttributes['title'] = $htmlAttributes['label'];
+				unset( $htmlAttributes['label'] );
+			}
+
+			if( !isset( $htmlAttributes['msgid'] ) ) {
+				$url = DefaultUrl::toArray( $path );
+				$htmlAttributes['msgid'] = __m( DefaultUtility::msgid( $url ) );
+			}
+
+			if( isset( $htmlAttributes['confirm'] ) && $htmlAttributes['confirm'] === true ) {
+				$htmlAttributes['confirm'] = __m( $path );
+			}
+
+			return parent::action( $path, $htmlAttributes );
+		}
 	}
 ?>

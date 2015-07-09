@@ -24,3 +24,9 @@ msgstr "Id du groupe"
 
 msgid "Group.name"
 msgstr "Groupe"
+
+msgid "/Users/view"
+msgstr "Voir"
+
+msgid "/Users/view/#User.id#"
+msgstr "Voir l'utilisateur « #User.username# »"
