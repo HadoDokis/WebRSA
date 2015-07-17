@@ -166,3 +166,29 @@ msgstr "Nom du professionnel"
 
 msgid "Orientstruct.typenotification"
 msgstr "Type de notification"
+
+# ------------------------------------------------------------------------------
+
+msgid "/Orientsstructs/search/:heading"
+msgstr "Recherche par Orientation (nouveau)"
+
+msgid "/Orientsstructs/search"
+msgstr "Formulaire"
+
+msgid "/Orientsstructs/search/:title"
+msgstr "Formulaire"
+
+msgid "/Orientsstructs/search/:title"
+msgstr "Formulaire"
+
+msgid "/Orientsstructs/index"
+msgstr "Voir"
+
+msgid "/Orientsstructs/index/#Orientstruct.personne_id#"
+msgstr "Voir la liste des orientations de #Personne.nom_complet#"
+
+msgid "Structurereferenteparcours.lib_struc"
+msgstr "Structure de suivi"
+
+msgid "Referentparcours.nom_complet"
+msgstr "Personne chargée du suivi"

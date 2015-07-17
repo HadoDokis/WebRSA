@@ -34,7 +34,7 @@
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
-			'Jetons2'
+			'Jetons2',
 		);
 
 		/**
@@ -45,7 +45,7 @@
 		public $helpers = array(
 			'Allocataires',
 			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 			'Fileuploader'
 		);
@@ -663,6 +663,22 @@
 				$this->Session->setFlash( 'Impossible de générer la notification.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
+			$Recherches->search();
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
+			$Recherches->exportcsv();
 		}
 	}
 ?>

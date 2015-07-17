@@ -21,3 +21,15 @@ msgstr ""
 
 msgid "Calculdroitrsa.toppersdrodevorsa"
 msgstr "Personne soumise à droits et devoirs ?"
+
+msgid "ENUM::TOPPERSDRODEVORSA::0"
+msgstr "Non"
+
+msgid "ENUM::TOPPERSDRODEVORSA::1"
+msgstr "Oui"
+
+msgid "ENUM::toppersdrodevorsa::0"
+msgstr "Non"
+
+msgid "ENUM::toppersdrodevorsa::1"
+msgstr "Oui"
