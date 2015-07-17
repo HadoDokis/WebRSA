@@ -1004,6 +1004,10 @@
 					'contain' => false,
 					'conditions' => array(
 						'Contratinsertion.personne_id' => $personne_id
+					),
+					'order' => array(
+						'Contratinsertion.dd_ci' => 'DESC',
+						'Contratinsertion.id' => 'DESC',
 					)
 				)
 			);
