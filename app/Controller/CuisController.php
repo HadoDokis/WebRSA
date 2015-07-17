@@ -21,7 +21,18 @@
 
 		public $uses = array( 'Cui', 'Option', 'Departement' );
 
-		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Xform', 'Fileuploader', 'Cake1xLegacy.Ajax' );
+		public $helpers = array( 
+			'Default', 
+			'Default2', 
+			'Locale', 
+			'Csv', 
+			'Xform', 
+			'Fileuploader', 
+			'Cake1xLegacy.Ajax',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			)
+		);
 
 		public $components = array(
 			'Default',
@@ -46,6 +57,7 @@
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'impression' => 'read',
@@ -53,6 +65,7 @@
 			'indexparams' => 'read',
 			'valider' => 'update',
 			'view' => 'read',
+			'search' => 'read',
 			'synthesecui66' => 'read',
 		);
 
@@ -1152,6 +1165,22 @@
 				$this->Session->setFlash( 'Impossible de générer le document de synthèse du contrat unique d\'insertion.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesCuis' );
+			$Recherches->search();
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesCuis' );
+			$Recherches->exportcsv();
 		}
 	}
 ?>
