@@ -732,3 +732,9 @@ msgstr "Ruptures"
 
 msgid "/Cuis/notification"
 msgstr "Notification"
+
+msgid "/Cuis66/index"
+msgstr "Voir"
+
+msgid "/Cuis66/index/#Cui.personne_id#"
+msgstr "Voir les CUIs de #Personne.nom_complet#"

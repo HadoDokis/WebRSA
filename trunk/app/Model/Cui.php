@@ -54,6 +54,10 @@
 				'order' => null,
 				'counterCache' => null
 			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id'
+			)
         );
 
 		/**

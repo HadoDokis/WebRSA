@@ -103,6 +103,7 @@
 			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
 			'Par dossier / allocataire (nouveau)' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'search' ) ),
 			'Par Orientation' => array( 'url' => array( 'controller' => 'criteres', 'action' => 'index' ) ),
+			'Par Orientation (nouveau)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'search' ) ),
 			'Par APREs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
@@ -111,6 +112,10 @@
 				'Par CER' => array( 'url' => array( 'controller' => 'criteresci', 'action' => 'index'  ) ),
 				'Par CUI' => array(
 					'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
+				),
+				'Par CUI (nouveau)' => array(
+					'url' => array( 'controller' => 'cuis', 'action' => 'search'  ),
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
 				),
 			),
