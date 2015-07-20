@@ -75,7 +75,7 @@
 			);
 			
 			foreach ($modelPotentiel as $modelName){
-				$types[$modelName] = 'LEFT OUTER'; 
+				$types += array( $modelName => 'LEFT OUTER' ); 
 			}
 			
 			$Allocataire = ClassRegistry::init( 'Allocataire' );

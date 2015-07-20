@@ -20,9 +20,28 @@
 
 		public $uses = array( 'Apre', 'Histoaprecomplementaire', 'Dossier', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent', 'Foyer' );
 
-		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
+		public $helpers = array( 
+			'Locale', 
+			'Csv', 
+			'Cake1xLegacy.Ajax', 
+			'Xform', 
+			'Xhtml', 
+			'Fileuploader', 
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus','Gedooo.Gedooo' );
+		public $components = array( 
+			'Fileuploader', 
+			'Jetons2', 
+			'DossiersMenus',
+			'Gedooo.Gedooo',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
+		);
 
 		public $commeDroit = array(
 			'view' => 'Apres:index'
@@ -829,5 +848,48 @@
 			}
 		}
 
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
+			$cgDepartement = Configure::read( 'Cg.departement' );
+			$restore = false;
+			
+			if ( isset($this->request->data['Search']['Apre']) ) {
+				$aData =& $this->request->data['Search']['Apre'];
+			}
+			if ( isset($this->request->data['Search']['Aideapre'.$cgDepartement]) ) {
+				$bData =& $this->request->data['Search']['Aideapre'.$cgDepartement];
+			}
+			
+			// Décompose les valeurs mentionnés en integer_integer
+			if ( isset($aData['referent_id']) && strpos($aData['referent_id'], '_') ) {
+				list(,$secondPart) = explode('_', $aData['referent_id']);
+				$aData['referent_id'] = $secondPart;
+				$restore = true;
+			}
+			if ( isset($bData['typeaideapre'.$cgDepartement.'_id']) && strpos($bData['typeaideapre'.$cgDepartement.'_id'], '_') ) {
+				list(,$secondPart) = explode('_', $bData['typeaideapre'.$cgDepartement.'_id']);
+				$bData['typeaideapre'.$cgDepartement.'_id'] = $secondPart;
+				$restore = true;
+			}
+			
+			$Recherches->search();
+			
+			// Rempli les champs avec les bonnes valeurs
+			if ( $restore ) {
+				$aData['referent_id'] = $aData['referent_id'] ? $aData['structurereferente_id'] . '_' . $aData['referent_id'] : '';
+				$bData['typeaideapre'.$cgDepartement.'_id'] = $bData['typeaideapre'.$cgDepartement.'_id'] ? $bData['themeapre'.$cgDepartement.'_id'] . '_' . $bData['typeaideapre'.$cgDepartement.'_id'] : '';
+			}
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
+			$Recherches->exportcsv();
+		}
 	}
 ?>
