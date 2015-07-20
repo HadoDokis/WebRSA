@@ -50,7 +50,12 @@
 		public function options( array $params = array() ) {
 			$options = parent::options( $params );
 			
-			$options['Orientstruct']['typeorient_id'] = $this->Orientstruct->Typeorient->find('list');
+			$options['Orientstruct']['typeorient_id'] = $this->Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) );
+			$options['Orientstruct']['structureorientante_id'] = $this->Orientstruct->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
+			$options['Orientstruct']['referentorientant_id'] = $this->Orientstruct->Structurereferente->Referent->listOptions();
+			$options['Orientstruct']['structurereferente_id'] = $this->Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'conditions' => array( 'orientation' => 'O' ) ) );
+			$options['Orientstruct']['statut_orient'] = ClassRegistry::init('Option')->statut_orient();
+			// $options['Orientstruct']['serviceinstructeur_id'] = $this->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) ); // Inutile ???
 			
 			return $options;
 		}

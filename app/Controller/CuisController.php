@@ -31,7 +31,7 @@
 			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			)
+			),
 		);
 
 		public $components = array(
@@ -39,7 +39,10 @@
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'Jetons2',
-			'DossiersMenus'
+			'DossiersMenus',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
 		);
 
 

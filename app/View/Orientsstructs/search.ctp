@@ -1,4 +1,5 @@
 <?php
+	$departement = Configure::read( 'Cg.departement' );
 	$controller = $this->params->controller;
 	$action = $this->action;
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
@@ -54,9 +55,51 @@
 
 	echo $this->Allocataires->blocAllocataire($paramAllocataire);
 	
+	echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.search' ) . '</legend>'
+		. $this->Default3->subform(
+			array(
+				'Search.Orientstruct.derniere' => array( 'type' => 'checkbox' )
+			),
+			array( 'options' => array( 'Search' => $options ) )
+		) 
+		. $this->SearchForm->dateRange( 'Search.Orientstruct.date_valid', $paramDate )	
+	;
+	$departement = 66; // FIXME
+	if ($departement == 66) {
+		echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.orientepar' ) . '</legend>'
+			. $this->Default3->subform(
+				array(
+					'Search.Orientstruct.structureorientante_id' => array('empty' => true),
+					'Search.Orientstruct.referentorientant_id' => array('empty' => true),
+				),
+				array( 'options' => array( 'Search' => $options ) )
+			) 
+			. '</fieldset>'
+		;
+	}
+	$departement = 93; // FIXME
+	if ($departement == 93) {
+		echo $this->Default3->subform(
+			array(
+				'Search.Orientstruct.origine' => array('empty' => true),
+			),
+			array( 'options' => array( 'Search' => $options ) )
+		);
+	}
+	
+	echo $this->Default3->subform(
+			array(
+				'Search.Orientstruct.typeorient_id' => array('empty' => true),
+				'Search.Orientstruct.structurereferente_id' => array('empty' => true),
+				'Search.Orientstruct.statut_orient' => array('empty' => true),
+				// 'Search.Orientstruct.serviceinstructeur_id' => array('empty' => true), // Inutile ??
+			),
+			array( 'options' => array( 'Search' => $options ) )
+		) 
+		. '</fieldset>'
+	;
+	
 	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
-	
-	
 	
 	echo $this->Allocataires->blocPagination($paramAllocataire);
 
@@ -85,3 +128,10 @@
 			. '</li></ul>'
 		;
 	}
+?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect( 'SearchOrientstructReferentorientantId', 'SearchOrientstructStructureorientanteId' );
+		dependantSelect( 'SearchOrientstructStructurereferenteId', 'SearchOrientstructTypeorientId' );
+	});
+</script>

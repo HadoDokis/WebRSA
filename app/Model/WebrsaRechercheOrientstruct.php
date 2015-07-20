@@ -100,6 +100,7 @@
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array($Orientstruct->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ))
+					// array($Orientstruct->join( 'Serviceinstructeur', array( 'type' => $types['Serviceinstructeur'] ) )) // Inutile ???
 				);
 
 				// 3. Tri par défaut: date, heure, id
@@ -137,7 +138,7 @@
 			$query = $Allocataire->searchConditions( $query, $search );
 
 			$paths = array(
-				'Orientstruct.derniere',
+				'Orientstruct.origine',
 				'Orientstruct.structureorientante_id',
 				'Orientstruct.referentorientant_id',
 				'Orientstruct.typeorient_id',
@@ -151,6 +152,28 @@
 			$pathsDate = array(
 				'Orientstruct.date_valid',
 			);
+			
+			if ($search['Orientstruct']['derniere']) {
+				$query['conditions'][] = array(
+					"Orientstruct.id IN (SELECT
+						orientsstructs.id
+					FROM
+						orientsstructs
+						WHERE
+							orientsstructs.personne_id = Orientstruct.personne_id
+						ORDER BY
+							orientsstructs.date_valid DESC,
+							orientsstructs.id DESC
+						LIMIT 1)"
+				);
+			}
+			
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
 
