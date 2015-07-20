@@ -192,3 +192,36 @@ msgstr "Structure de suivi"
 
 msgid "Referentparcours.nom_complet"
 msgstr "Personne chargée du suivi"
+
+msgid "Orientstruct.search"
+msgstr "Recherche par orientation"
+
+msgid "Search.Orientstruct.derniere"
+msgstr "Uniquement la dernière orientation pour un même allocataire"
+
+msgid "Search.Orientstruct.date_valid"
+msgstr "Filtrer par date d'orientation"
+
+msgid "Orientstruct.orientepar"
+msgstr "Orienté par"
+
+msgid "Search.Orientstruct.structureorientante_id"
+msgstr "Structure"
+
+msgid "Search.Orientstruct.referentorientant_id"
+msgstr "Nom du professionnel"
+
+msgid "Search.Orientstruct.origine"
+msgstr "Origine de l'orientation"
+
+msgid "Search.Orientstruct.typeorient_id"
+msgstr "Type d'orientation"
+
+msgid "Search.Orientstruct.structurereferente_id"
+msgstr "Nom de la structure"
+
+msgid "Search.Orientstruct.statut_orient"
+msgstr "Statut de l'orientation"
+
+msgid "Search.Orientstruct.serviceinstructeur_id"
+msgstr "Nom du service instructeur"

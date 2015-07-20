@@ -251,12 +251,6 @@
 						'Decisioncui66.decision',
 					)
 				);
-				foreach( $paths as $path ) {
-					$value = Hash::get( $search, $path );
-					if( $value !== null && $value !== '' ) {
-						$query['conditions'][$path] = $value;
-					}
-				}
 
 				$pathsDate = array_merge( $pathsDate,
 					array(
@@ -270,6 +264,13 @@
 						'Historiquepositioncui66.created',
 					)
 				);
+			}
+			
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
 			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );

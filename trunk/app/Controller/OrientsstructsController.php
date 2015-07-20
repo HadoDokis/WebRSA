@@ -35,6 +35,9 @@
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
 			'Jetons2',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
 		);
 
 		/**
@@ -670,7 +673,31 @@
 		 */
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
+			$restore = false;
+			
+			if ( isset($this->request->data['Search']['Orientstruct']) ) {
+				$oData =& $this->request->data['Search']['Orientstruct'];
+			}
+			
+			// Décompose les valeurs mentionnés en integer_integer
+			if ( isset($oData['referentorientant_id']) && strpos($oData['referentorientant_id'], '_') ) {
+				list(,$secondPart) = explode('_', $oData['referentorientant_id']);
+				$oData['referentorientant_id'] = $secondPart;
+				$restore = true;
+			}
+			if ( isset($oData['structurereferente_id']) && strpos($oData['structurereferente_id'], '_') ) {
+				list(,$secondPart) = explode('_', $oData['structurereferente_id']);
+				$oData['structurereferente_id'] = $secondPart;
+				$restore = true;
+			}
+			
 			$Recherches->search();
+			
+			// Rempli les champs avec les bonnes valeurs
+			if ( $restore ) {
+				$oData['referentorientant_id'] = $oData['referentorientant_id'] ? $oData['structureorientante_id'] . '_' . $oData['referentorientant_id'] : '';
+				$oData['structurereferente_id'] = $oData['structurereferente_id'] ? $oData['typeorient_id'] . '_' . $oData['structurereferente_id'] : '';
+			}
 		}
 		
 		/**
