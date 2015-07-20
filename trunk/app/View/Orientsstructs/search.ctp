@@ -64,7 +64,7 @@
 		) 
 		. $this->SearchForm->dateRange( 'Search.Orientstruct.date_valid', $paramDate )	
 	;
-	$departement = 66; // FIXME
+	
 	if ($departement == 66) {
 		echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.orientepar' ) . '</legend>'
 			. $this->Default3->subform(
@@ -77,7 +77,7 @@
 			. '</fieldset>'
 		;
 	}
-	$departement = 93; // FIXME
+	
 	if ($departement == 93) {
 		echo $this->Default3->subform(
 			array(
