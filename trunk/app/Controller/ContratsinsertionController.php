@@ -26,13 +26,23 @@ class ContratsinsertionController extends AppController
 		'Cake1xLegacy.Ajax',
 		'Default2',
 		'Default3' => array(
-			'className' => 'Default.DefaultDefault'
+			'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 		),
 		'Fileuploader',
 		'Widget',
 	);
 
-    public $components = array('RequestHandler', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires');
+    public $components = array(
+		'RequestHandler', 
+		'Gedooo.Gedooo', 
+		'Fileuploader', 
+		'Jetons2', 
+		'DossiersMenus', 
+		'InsertionsAllocataires',
+		'Search.SearchPrg' => array(
+			'actions' => array( 'search' )
+		),
+	);
 
     public $commeDroit = array(
         'view' => 'Contratsinsertion:index',
@@ -1767,5 +1777,40 @@ class ContratsinsertionController extends AppController
         $this->redirect($this->referer());
     }
 
+	/**
+	 * Moteur de recherche
+	 */
+	public function search() {
+		$this->Contratinsertion->validate = array();
+		$this->Contratinsertion->Structurereferente->Orientstruct->validate = array();
+		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
+		$restore = false;
+
+		if ( isset($this->request->data['Search']['Contratinsertion']) ) {
+			$cData =& $this->request->data['Search']['Contratinsertion'];
+		}
+
+		// Décompose les valeurs mentionnés en integer_integer
+		if ( isset($cData['referent_id']) && strpos($cData['referent_id'], '_') ) {
+			list(,$secondPart) = explode('_', $cData['referent_id']);
+			$cData['referent_id'] = $secondPart;
+			$restore = true;
+		}
+
+		$Recherches->search();
+
+		// Rempli les champs avec les bonnes valeurs
+		if ( $restore ) {
+			$cData['referent_id'] = $cData['referent_id'] ? $cData['structurereferente_id'] . '_' . $cData['referent_id'] : '';
+		}
+	}
+
+	/**
+	 * Export du tableau de résultats de la recherche
+	 */
+	public function exportcsv() {
+		$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
+		$Recherches->exportcsv();
+	}
 }
 ?>

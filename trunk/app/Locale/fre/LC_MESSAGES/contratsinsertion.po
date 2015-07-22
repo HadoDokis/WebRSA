@@ -108,3 +108,9 @@ msgstr "Type d'entretien"
 
 msgid "Entretien.commentaireentretien"
 msgstr "Commentaire sur l'entretien"
+
+msgid "/Contratsinsertion/index"
+msgstr "Voir"
+
+msgid "/Contratsinsertion/index/#Contratinsertion.personne_id#"
+msgstr "Voir le CER de #Personne.nom_complet#"
