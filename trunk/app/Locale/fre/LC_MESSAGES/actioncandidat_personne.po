@@ -186,3 +186,9 @@ msgstr "Raison de l'annulation"
 
 msgid "ActioncandidatPersonne.formationregion"
 msgstr "Nom de la formation"
+
+msgid "ActioncandidatPersonne.nomprestataire"
+msgstr "Nom du prestataire"
+
+msgid "ActioncandidatPersonne.motifsortie_id"
+msgstr "Motif de sortie"

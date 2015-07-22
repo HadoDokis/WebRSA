@@ -20,8 +20,31 @@
 	{
 		public $name = 'ActionscandidatsPersonnes';
 		public $uses = array( 'ActioncandidatPersonne','Option' );
-		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
+		
+		public $helpers = array( 
+			'Default', 
+			'Locale', 
+			'Cake1xLegacy.Ajax', 
+			'Xform', 
+			'Default2', 
+			'Fileuploader',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
+		
+		public $components = array( 
+			'Default', 
+			'Gedooo.Gedooo', 
+			'Fileuploader', 
+			'Jetons2', 
+			'DossiersMenus', 
+			'InsertionsAllocataires' ,
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
+		);
+		
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 // 			'view' => 'ActionscandidatsPersonnes:index',
@@ -971,6 +994,43 @@
 			}
 
 			$this->redirect( $this->referer() );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+		   $Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnes' );
+		   $this->ActioncandidatPersonne->validate = array();
+		   $this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->validate = array();
+		   
+		   $restore = false;
+
+			if ( isset($this->request->data['Search']['ActioncandidatPersonne']) ) {
+				$aData =& $this->request->data['Search']['ActioncandidatPersonne'];
+			}
+
+			// Décompose les valeurs mentionnés en integer_integer
+			if ( isset($aData['actioncandidat_id']) && strpos($aData['actioncandidat_id'], '_') ) {
+				list(,$secondPart) = explode('_', $aData['actioncandidat_id']);
+				$aData['actioncandidat_id'] = $secondPart;
+				$restore = true;
+			}
+
+			$Recherches->search();
+
+			// Rempli les champs avec les bonnes valeurs
+			if ( $restore ) {
+				$aData['actioncandidat_id'] = $aData['actioncandidat_id'] ? $this->request->data['Search']['Contactpartenaire']['partenaire_id'] . '_' . $aData['actioncandidat_id'] : '';
+			}
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnes' );
+			$Recherches->exportcsv();
 		}
 	}
 ?>
