@@ -93,7 +93,8 @@
 					// Champs nécessaires au traitement de la search
 					array(
 						'Apre.id',
-						'Apre.personne_id'
+						'Apre.personne_id',
+						'Apre.datedemandeapre',
 					)
 				);
 				
@@ -129,9 +130,7 @@
 				
 				// 3. Tri par défaut: date, heure, id
 				$query['order'] = array(
-					'Personne.nom' => 'ASC',
-					'Personne.prenom' => 'ASC', // FIXME Pour gagner du temps j'ai commenté
-					'Apre.id' => 'ASC'
+					'Apre.datedemandeapre' => 'DESC'
 				);
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
