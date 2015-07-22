@@ -92,7 +92,8 @@
 					// Champs nécessaires au traitement de la search
 					array(
 						'Orientstruct.id',
-						'Orientstruct.personne_id'
+						'Orientstruct.personne_id',
+						'Orientstruct.date_propo',
 					)
 				);
 				
@@ -105,9 +106,7 @@
 
 				// 3. Tri par défaut: date, heure, id
 				$query['order'] = array(
-					'Personne.nom' => 'ASC',
-					'Personne.prenom' => 'ASC',
-					'Orientstruct.id' => 'ASC'
+					'Orientstruct.date_propo' => 'DESC'
 				);
 
 				// 4. Si on utilise les cantons, on ajoute une jointure

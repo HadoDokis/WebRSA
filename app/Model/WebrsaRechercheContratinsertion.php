@@ -88,8 +88,7 @@
 					array(
 						'Contratinsertion.id',
 						'Contratinsertion.personne_id',
-						'Personne.nom',
-						'Personne.prenom',
+						'Contratinsertion.dd_ci',
 					)
 				);
 				
@@ -106,9 +105,7 @@
 
 				// 3. Tri par défaut: date, heure, id
 				$query['order'] = array(
-//					'Personne.nom' => 'ASC',
-//					'Personne.prenom' => 'ASC',
-//					'Contratinsertion.id' => 'ASC'
+					'Contratinsertion.dd_ci' => 'ASC'
 				);
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
