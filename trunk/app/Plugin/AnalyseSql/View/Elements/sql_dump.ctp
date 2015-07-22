@@ -16,6 +16,7 @@
  * @since         CakePHP(tm) v 1.3
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+echo $this->Html->css( 'AnalyseSql.analysesql' );
 if (!class_exists('ConnectionManager') || Configure::read('debug') < 2) {
 	return false;
 }
@@ -64,7 +65,7 @@ if ($noLogs || isset($_forced_from_dbo_)):
 				$i['query'] .= " , params[ " . rtrim($bindParam, ', ') . " ]";
 			}
 			$input = '<input type="hidden" id="sqlvalue_' . ($k + 1) . '" value="' . preg_replace("/[\t\n ]+/", " ", h($i['query'])) . '">';
-			echo "<tr><td class=\"action\">" . ($k + 1) . "<a class=\"view\" href=\"#query" . ($k + 1) . "\" id=\"linkaction_" . ($k + 1) . "\">Analyse</a></td><td>" . h($i['query']) . $input . "<pre style=\"display:none;\" id=\"analyse_" . ($k + 1) . "\"></pre></td><td>{$i['error']}</td><td style = \"text-align: right\">{$i['affected']}</td><td style = \"text-align: right\">{$i['numRows']}</td><td style = \"text-align: right\">{$i['took']}</td></tr>\n";
+			echo "<tr><td class=\"action\">" . ($k + 1) . "<a class=\"view\" href=\"#query" . ($k + 1) . "\" id=\"linkaction_" . ($k + 1) . "\">Analyse</a></td><td class=\"show_sql_query\">" . h($i['query']) . $input . "<pre style=\"display:none;\" id=\"analyse_" . ($k + 1) . "\"></pre></td><td>{$i['error']}</td><td style = \"text-align: right\">{$i['affected']}</td><td style = \"text-align: right\">{$i['numRows']}</td><td style = \"text-align: right\">{$i['took']}</td></tr>\n";
 		endforeach;
 	?>
 	</tbody></table>
@@ -73,81 +74,29 @@ if ($noLogs || isset($_forced_from_dbo_)):
 else:
 	echo '<p>Encountered unexpected $logs cannot generate SQL log</p>';
 endif;
+
+echo $this->Html->script( 'AnalyseSql.analysesql' );
+
 ?>
 <script>
-	/**
-	 * Contient le contenu des parenthèses retiré du rapport
-	 * @type Array
-	 */
-	var brackets = [];
-	
-	/**
-	 * Transforme un SELECT [0] FROM ... en SELECT (contenu de bracket[0]) FROM ...
-	 * 
-	 * @param {HTML} span Le <span> contenant un texte de type [0]
-	 * @returns {void}
-	 */
-	function restoreBrackets( span ) {
-		var innerText = span.target.innerHTML;
-		if ( brackets[innerText.substr(1, innerText.length -2)] !== undefined ) {
-			span.target.innerHTML = '('+ brackets[innerText.substr(1, innerText.length -2)] +')';
-		}
-	}
-	
 	/**
 	 * Ajoute un évenement de clic au lien Analyse
 	 */
 	$$('table.cake-sql-log td.action a.view').each(function(link){
 		link.observe('click', function(){
-			var cutId = link.id.split('_'),
+			var image = '<?php echo $this->Html->image('/analyse_sql/img/ajax-loader_gray.gif');?>',
+				url = '<?php echo Router::url( array( 'plugin' => 'analyse_sql', 'controller' => 'analysesqls', 'action' => 'ajax_analyse' ) ); ?>',
+				failureMsg = '<?php echo addslashes(__d('analysesql', 'onFailure'));?>',
+				exceptionMsg = '<?php echo addslashes(__d('analysesql', 'onException'));?>',
+				cutId = link.id.split('_'),
 				sqlNumber = cutId[1],
+				pre = $('analyse_'+sqlNumber),
 				sql = $('sqlvalue_'+sqlNumber).value;
 				
-			/**
-			 * On affiche le bloc <pre> et on y colle une image de charchement
-			 */
-			$('analyse_'+sqlNumber).style.display = 'block';
-			$('analyse_'+sqlNumber).innerHTML = '<div class="center"><?php echo $this->Html->image('/img/ajax-loader_gray.gif');?></div>';
+			
 			link.remove();
 			
-			/**
-			 * On demande à AnalysesqlsController de produire un rapport sur le contenu de sql
-			 */
-			new Ajax.Request('<?php echo Router::url( array( 'plugin' => 'analyse_sql', 'controller' => 'analysesqls', 'action' => 'ajax_analyse' ) ); ?>/', {
-				asynchronous:true, 
-				evalScripts:true, 
-				parameters: {
-					'sql': sql.replace("\t", "")
-				}, 
-				requestHeaders: {Accept: 'application/json'},
-				/**
-				 * En cas de succès, en rempli la variable brackets et on insert le rapport dans la balise <pre>
-				 * On ajoute également un evenement au clic sur les span du rapport qui lance restoreBrackets()
-				 * 
-				 * @param {object} request
-				 * @param {json} json
-				 * @returns {void}
-				 */
-				onComplete:function(request, json) {
-					brackets = json.innerBrackets;
-					$('analyse_'+sqlNumber).innerHTML = json.text;
-					$('analyse_'+sqlNumber).select('span').each(function(span){
-						span.observe('click', restoreBrackets, span);
-					});
-				},
-				
-				/**
-				 * Affiche d'un message d'érreur en cas de problème
-				 * 
-				 * @returns {void}
-				 */
-				onFailure:function() {
-					$('analyse_'+sqlNumber).innerHTML = '<?php echo addslashes(__('onFailure'));?>';
-				},
-				onException:function() {
-					$('analyse_'+sqlNumber).innerHTML = '<?php echo addslashes(__('onException'));?>';
-				}
-			});
+			analyse( sql, pre, url, image, failureMsg, exceptionMsg );
 		});
 	});
 </script>
