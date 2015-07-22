@@ -108,8 +108,13 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
 			),
+			'Par APREs (nouveau)' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+				'url' => array( 'controller' => 'apres', 'action' => 'search' )
+			),
 			'Par Contrats' => array(
 				'Par CER' => array( 'url' => array( 'controller' => 'criteresci', 'action' => 'index'  ) ),
+				'Par CER (nouveau)' => array( 'url' => array( 'controller' => 'contratsinsertion', 'action' => 'search'  ) ),
 				'Par CUI' => array(
 					'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
@@ -124,6 +129,10 @@
 			'Par Fiches de candidature' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'criteresfichescandidature', 'action' => 'index' )
+			),
+			'Par Fiches de candidature (nouveau)' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+				'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'search' )
 			),
 			'Par Indus' => array( 'url' => array( 'controller' => 'cohortesindus', 'action' => 'index' ) ),
 			'Par DSPs' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
