@@ -1809,7 +1809,7 @@ class ContratsinsertionController extends AppController
 	 * Export du tableau de résultats de la recherche
 	 */
 	public function exportcsv() {
-		$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
+		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
 		$Recherches->exportcsv();
 	}
 }
