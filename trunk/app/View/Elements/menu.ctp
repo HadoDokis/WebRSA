@@ -135,6 +135,7 @@
 				'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'search' )
 			),
 			'Par Indus' => array( 'url' => array( 'controller' => 'cohortesindus', 'action' => 'index' ) ),
+			'Par Indus (nouveau)' => array( 'url' => array( 'controller' => 'indus', 'action' => 'search' ) ),
 			'Par DSPs' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 			'Par DSPs (nouveau)' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'search' ) ),
 			'Par Rendez-vous' => array( 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
