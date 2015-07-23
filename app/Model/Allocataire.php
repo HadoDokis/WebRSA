@@ -83,11 +83,7 @@
 					);
 				}
 				else {
-					$joins = array(
-						$Personne->{$baseModelName}->join( 'Personne', array( 'type' => $types['Personne'] ) ),
-						$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
-						$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
-					);
+					$joins = $this->_findBaseModelJoin($types, $baseModelName);
 				}
 
 				$query = array(
@@ -147,6 +143,28 @@
 			}
 
 			return $query;
+		}
+		
+		protected function _findBaseModelJoin($types, $baseModelName) {
+			$Personne = ClassRegistry::init( 'Personne' );
+			
+			if (isset($Personne->{$baseModelName})) {
+				$joins = array(
+					$Personne->{$baseModelName}->join( 'Personne', array( 'type' => $types['Personne'] ) ),
+					$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+					$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
+				);
+			}
+			elseif (isset($Personne->Foyer->Dossier->{$baseModelName})) {
+				$joins = array(
+					$Personne->Foyer->Dossier->{$baseModelName}->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
+					$Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+					$Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
+				);
+			}
+			
+				
+			return $joins;
 		}
 
 		/**

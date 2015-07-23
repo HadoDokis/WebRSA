@@ -21,7 +21,19 @@
 
 		public $commeDroit = array( 'view' => 'Indus:index' );
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		public $helpers = array(
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
+		
+		public $components = array( 
+			'Jetons2', 
+			'DossiersMenus',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -85,6 +97,23 @@
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'infofinanciere', $infofinanciere );
 			$this->set( 'urlmenu', '/indus/index/'.$dossier_id );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$this->Infofinanciere->validate = array();
+			$Recherches = $this->Components->load( 'WebrsaRecherchesInfofinancieres' );
+			$Recherches->search( array( 'modelName' => 'Dossier' ) );
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesInfofinancieres' );
+			$Recherches->exportcsv( array( 'modelName' => 'Dossier' ) );
 		}
 	}
 ?>
