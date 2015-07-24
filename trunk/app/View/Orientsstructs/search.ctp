@@ -16,14 +16,24 @@
 		'options' => $options,
 		'prefix' => 'Search',
 	);
+	$dateRule = array(
+		'date' => array(
+			'rule' => array('date'),
+			'message' => null,
+			'required' => null,
+			'allowEmpty' => true,
+			'on' => null
+		)
+	);
 	
 	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
 	
-	// @param 1 Validation javascript, verification seulement sur date, 
-	// @param 2 allowEmpty
-	// @param 3 Verifications additionnelles
-	// @param 4 ne regarde pas dans $this->request->data mais dans $this->request->data['Search']
-	echo $this->FormValidator->checkOnly( 'date', true, null, 'Search' )->generateJavascript();
+	$dates = array(
+		'Dossier' => array('dtdemrsa' => $dateRule),
+		'Personne' => array('dtnai' => $dateRule),
+		'Orientstruct' => array('date_valid' => $dateRule)
+	);
+	echo $this->FormValidator->generateJavascript($dates, false);
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -116,9 +126,7 @@
 				'options' => $options
 			)
 		);
-	}
-	
-	if( isset( $results ) ){
+		
 		echo '<ul class="actionMenu"><li>'
 			. $this->Xhtml->exportLink(
 				'Télécharger le tableau',

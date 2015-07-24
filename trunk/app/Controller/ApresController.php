@@ -882,6 +882,9 @@
 				$aData['referent_id'] = $aData['referent_id'] ? $aData['structurereferente_id'] . '_' . $aData['referent_id'] : '';
 				$bData['typeaideapre'.$cgDepartement.'_id'] = $bData['typeaideapre'.$cgDepartement.'_id'] ? $bData['themeapre'.$cgDepartement.'_id'] . '_' . $bData['typeaideapre'.$cgDepartement.'_id'] : '';
 			}
+			
+			$this->Apre->validate = array();
+			ClassRegistry::init('Aideapre66')->validate = array();
 		}
 		
 		/**

@@ -1,4 +1,5 @@
 <?php
+	$departement = Configure::read( 'Cg.departement' );
 	$controller = $this->params->controller;
 	$action = $this->action;
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
@@ -15,14 +16,43 @@
 		'options' => $options,
 		'prefix' => 'Search',
 	);
+	$dateRule = array(
+		'date' => array(
+			'rule' => array('date'),
+			'message' => null,
+			'required' => null,
+			'allowEmpty' => true,
+			'on' => null
+		)
+	);
 	
 	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
 	
-	// @param 1 Validation javascript, verification seulement sur date, 
-	// @param 2 allowEmpty
-	// @param 3 Verifications additionnelles
-	// @param 4 ne regarde pas dans $this->request->data mais dans $this->request->data['Search']
-	echo $this->FormValidator->checkOnly( 'date', true, null, 'Search' )->generateJavascript();
+	$dates = array(
+		'Dossier' => array('dtdemrsa' => $dateRule),
+		'Personne' => array('dtnai' => $dateRule),
+		'Historiquepositioncui66' => array('created' => $dateRule),
+		'Cui66' => array(
+			'dateeligibilite' => $dateRule,
+			'datereception' => $dateRule,
+			'dateenvoi' => $dateRule,
+		),
+		'Emailcui' => array(
+			'insertiondate' => $dateRule,
+			'created' => $dateRule,
+			'datecomplet' => $dateRule,
+		),
+		'Decisioncui66' => array('datedecision' => $dateRule),
+		'Cui' => array(
+			'dateembauche' => $dateRule,
+			'findecontrat' => $dateRule,
+			'effetpriseencharge' => $dateRule,
+			'finpriseencharge' => $dateRule,
+			'decisionpriseencharge' => $dateRule,
+			'faitle' => $dateRule,
+		),
+	);
+	echo $this->FormValidator->generateJavascript($dates, false);
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -57,7 +87,7 @@
 	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
 	
 	// Spécifique CG 66
-	if ( Configure::read( 'Cg.departement' ) == 66 ){
+	if ( $departement == 66 ){
 		foreach( $options['Cui66']['etatdossiercui66'] as $key => $value ){
 			$options['Cui66']['etatdossiercui66'][$key] = sprintf( $value, '(Date)' );
 		}
@@ -173,6 +203,8 @@
 
 	echo $this->Xform->end( 'Search' );
 
+	echo $this->Search->observeDisableFormOnSubmit( $formId );
+	
 	// 2. Formulaire de traitement des résultats de la recherche
 	if( isset( $results ) ) {
 		echo $this->Default3->configuredIndex(
@@ -182,11 +214,7 @@
 				'options' => $options
 			)
 		);
-	}
-
-	echo $this->Search->observeDisableFormOnSubmit( $formId );
-	
-	if( isset( $results ) ){
+		
 		echo '<ul class="actionMenu"><li>'
 			. $this->Xhtml->exportLink(
 				'Télécharger le tableau',

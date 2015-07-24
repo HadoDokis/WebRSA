@@ -1176,6 +1176,9 @@
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesCuis' );
 			$Recherches->search();
+			$this->Cui->validate = array();
+			$this->Cui->Cui66->validate = array();
+			$this->Cui->Cui66->Decisioncui66->validate = array();
 		}
 		
 		/**
