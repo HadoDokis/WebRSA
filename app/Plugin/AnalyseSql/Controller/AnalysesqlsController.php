@@ -51,7 +51,27 @@
 		 *
 		 * @var array
 		 */
-		public $crudMap = array();
+		public $crudMap = array('ajax_analyse' => 'read');
+		
+		/**
+		 * Ne pas vérifier les droits sur ajax_analyse()
+		 * 
+		 * @var array 
+		 */
+		public $aucunDroit = array('ajax_analyse');
+		
+		/**
+		 * On force le passage à l'AJAX car en cas de lag, renvoi une érreur 403.
+		 *
+		 * @param CakeRequest $request Request object for this controller. Can be null for testing,
+		 *  but expect that features that use the request parameters will not work.
+		 * @param CakeResponse $response Response object for this controller.
+		 * @codeCoverageIgnore
+		 */
+		public function __construct( $request = null, $response = null ) {
+			parent::__construct($request, $response);
+			$this->request->params['isAjax'] = true;
+		}
 		
 		/**
 		 * Lance l'analyse sur la valeur $this->request->data['sql'] et renvoi un json pour une utilisation en AJAX
