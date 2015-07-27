@@ -226,7 +226,7 @@
 
 			$matches['from'] = isset($matches['from']) ? 'FROM ' . $matches['from'] : (isset($matches['update']) ? 'UPDATE ' . $matches['update'] : '');
 			$matches['from'] = str_replace('INNER JOIN', '{{cutme}}INNER JOIN', $matches['from']);
-			$matches['from'] = preg_replace('/LEFT (?:OUTER )*JOIN|left (?:outer)$join/', '{{cutme}}LEFT JOIN', $matches['from']);
+			$matches['from'] = preg_replace('/(LEFT|RIGHT) (?:OUTER )*JOIN/', '{{cutme}}$1 JOIN', $matches['from']);
 			self::$_joins = explode('{{cutme}}', $matches['from']);
 			self::$_cuttedSql = $matches;
 			
@@ -313,7 +313,7 @@
 			$conditions = self::_extractConditions( $sql, $bracketsInnerText );
 			$text = self::_spanBrackets(
 				  self::_titleise('Brakets.free.title')
-				. preg_replace('/(FROM|INNER|LEFT|WHERE|LIMIT|AND|OR)/', "\n$1",  str_replace(',', ",\n", $sql))
+				. preg_replace('/(FROM|INNER|LEFT|RIGHT|WHERE|LIMIT|AND|OR)/', "\n$1",  str_replace(',', ",\n", $sql))
 				
 				. self::_titleise('Brakets.contain.title')
 				. var_export($bracketsInnerText, true)
