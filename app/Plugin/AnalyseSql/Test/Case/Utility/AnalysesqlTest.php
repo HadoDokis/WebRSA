@@ -30,7 +30,7 @@
 #################################################################################
 Requète sans parenthèses :
 #################################################################################
-SELECT EXIST<span title="&quot;SELECT id FROM tables2 INNER JOIN foo ON [7] LIMIT 1">[11]</span> AS "Table1__existtest",
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">SELECT EXIST<span title="&quot;SELECT id FROM tables2 INNER JOIN foo ON [7] LIMIT 1">[11]</span> AS "Table1__existtest",
  "Table1"."name" AS "Table1__name",
  "Table2"."foo",
  COUNT<span title="*">[1]</span> 
@@ -41,11 +41,11 @@ WHERE "Table2"."name" LIKE "foo%"
 AND "Table2"."name" LIKE "%bar" 
 AND <span title="[4] OR [5]">[9]</span> 
 ORDER BY "Table1"."id" DESC 
-LIMIT 5
+LIMIT 5</div>
 #################################################################################
 Contenu des parenthèses :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
   1 => \'*\',
   2 => \'"Table1"."table2_id" = "Table2"."id"\',
   3 => \'SELECT id FROM tables4 WHERE tables4.name = "tables3"."name" LIMIT 1\',
@@ -55,20 +55,20 @@ array (
   8 => \'<span title="SELECT id FROM tables4 WHERE tables4.name = &quot;tables3&quot;.&quot;name&quot; LIMIT 1">[3]</span> = "Table1"."name"\',
   9 => \'<span title="&quot;Table1&quot;.&quot;name&quot; = &#039;foobar&#039;">[4]</span> OR <span title="&quot;Table2&quot;.&quot;name&quot; = &#039;foobar&#039;">[5]</span>\',
   11 => \'"SELECT id FROM tables2 INNER JOIN foo ON <span title="foo.id = tables2.foo_id">[7]</span> LIMIT 1\',
-)
+)</div>
 #################################################################################
 Fields :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'Table1.existtest\',
   1 => \'Table1.name\',
   2 => \'Table2.foo\',
   3 => \'COUNT<span title="*">[1]</span>\',
-)
+)</div>
 #################################################################################
 Jointures :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
   array (
     \'table\' => \'"tables1"\',
@@ -90,15 +90,15 @@ array (
     \'type\' => \'LEFT\',
     \'conditions\' => \'<span title="SELECT id FROM tables4 WHERE tables4.name = &quot;tables3&quot;.&quot;name&quot; LIMIT 1">[3]</span> = "Table1"."name"\',
   ),
-)
+)</div>
 #################################################################################
 Conditions :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'"Table2"."name" LIKE "foo%"\',
   1 => \'"Table2"."name" LIKE "%bar"\',
   2 => \'(<span title="&quot;Table1&quot;.&quot;name&quot; = &#039;foobar&#039;">[4]</span> OR <span title="&quot;Table2&quot;.&quot;name&quot; = &#039;foobar&#039;">[5]</span>)\',
-)',
+)</div>',
   'innerBrackets' => 
   array (
     1 => '*',
@@ -111,6 +111,7 @@ array (
     9 => '<span title="&quot;Table1&quot;.&quot;name&quot; = &#039;foobar&#039;">[4]</span> OR <span title="&quot;Table2&quot;.&quot;name&quot; = &#039;foobar&#039;">[5]</span>',
     11 => '"SELECT id FROM tables2 INNER JOIN foo ON <span title="foo.id = tables2.foo_id">[7]</span> LIMIT 1',
   ),
+  'random' => $result['random']
 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 			
@@ -121,33 +122,34 @@ array (
 #################################################################################
 Requète sans parenthèses :
 #################################################################################
-SELECT myfunction<span title="&#039;foo&#039;">[0]</span>
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">SELECT myfunction<span title="&#039;foo&#039;">[0]</span></div>
 #################################################################################
 Contenu des parenthèses :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
   0 => \'\\\'foo\\\'\',
-)
+)</div>
 #################################################################################
 Fields :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'myfunction<span title="&#039;foo&#039;">[0]</span>\',
-)
+)</div>
 #################################################################################
 Jointures :
 #################################################################################
-array (
-)
+<input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
+)</div>
 #################################################################################
 Conditions :
 #################################################################################
-array (
-)',
+<input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
+)</div>',
   'innerBrackets' => 
   array (
     0 => '\'foo\'',
   ),
+  'random' => $result['random'],
 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 			
@@ -158,24 +160,24 @@ array (
 #################################################################################
 Requète sans parenthèses :
 #################################################################################
-UPDATE "public"."foos" AS "Foo" SET "Foo"."name" = MYFUNCTION<span title="&#039;Foo&#039;, &#039;Bar&#039;">[0]</span> 
-WHERE "Foo"."name" LIKE \'Foobar%\'
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">UPDATE "public"."foos" AS "Foo" SET "Foo"."name" = MYFUNCTION<span title="&#039;Foo&#039;, &#039;Bar&#039;">[0]</span> 
+WHERE "Foo"."name" LIKE \'Foobar%\'</div>
 #################################################################################
 Contenu des parenthèses :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
   0 => \'\\\'Foo\\\', \\\'Bar\\\'\',
-)
+)</div>
 #################################################################################
 Fields :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'Foo.name\',
-)
+)</div>
 #################################################################################
 Jointures :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
   array (
     \'table\' => \'"foos"\',
@@ -183,17 +185,18 @@ array (
     \'type\' => \'UPDATE\',
     \'conditions\' => \'\',
   ),
-)
+)</div>
 #################################################################################
 Conditions :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'"Foo"."name" LIKE \\\'Foobar%\\\'\',
-)',
+)</div>',
   'innerBrackets' => 
   array (
     0 => '\'Foo\', \'Bar\'',
   ),
+  'random' => $result['random'],
 );
 			
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -205,23 +208,23 @@ array (
 #################################################################################
 Requète sans parenthèses :
 #################################################################################
-UPDATE "public"."connections" SET "modified" = \'2015-07-17 10:40:23\' 
-WHERE "public"."connections"."id" = 244397
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">UPDATE "public"."connections" SET "modified" = \'2015-07-17 10:40:23\' 
+WHERE "public"."connections"."id" = 244397</div>
 #################################################################################
 Contenu des parenthèses :
 #################################################################################
-array (
-)
+<input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
+)</div>
 #################################################################################
 Fields :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'modified\',
-)
+)</div>
 #################################################################################
 Jointures :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
   array (
     \'table\' => \'"connections"\',
@@ -229,16 +232,17 @@ array (
     \'type\' => \'UPDATE\',
     \'conditions\' => \'\',
   ),
-)
+)</div>
 #################################################################################
 Conditions :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'"public"."connections"."id" = 244397\',
-)',
+)</div>',
   'innerBrackets' => 
   array (
   ),
+  'random' => $result['random'],
 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 			
@@ -249,23 +253,23 @@ array (
 #################################################################################
 Requète sans parenthèses :
 #################################################################################
-DELETE 
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">DELETE 
 FROM "foos" AS "Foo" 
-WHERE "Foo"."bar" IS NULL
+WHERE "Foo"."bar" IS NULL</div>
 #################################################################################
 Contenu des parenthèses :
 #################################################################################
-array (
-)
+<input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
+)</div>
 #################################################################################
 Fields :
 #################################################################################
-array (
-)
+<input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
+)</div>
 #################################################################################
 Jointures :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
   array (
     \'table\' => \'"foos"\',
@@ -273,16 +277,17 @@ array (
     \'type\' => \'FROM\',
     \'conditions\' => \'\',
   ),
-)
+)</div>
 #################################################################################
 Conditions :
 #################################################################################
-array (
+<input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'"Foo"."bar" IS NULL\',
-)',
+)</div>',
   'innerBrackets' => 
   array (
   ),
+  'random' => $result['random'],
 );
 			
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );

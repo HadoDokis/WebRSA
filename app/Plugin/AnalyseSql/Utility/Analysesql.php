@@ -282,8 +282,15 @@
 			}
 			
 			$conditions = preg_split('/AND|OR/', $matches['where']);
+			$unsetKeys = array();
 			
 			foreach($conditions as $key => $value) {
+				if (strpos($value, 'BETWEEN')) {
+					$value = $value . 'AND' . $conditions[$key+1];
+					$conditions[$key] = $value;
+					$unsetKeys[] = $key+1;
+				}
+				
 				$conditions[$key] = trim($value);
 				preg_match('/\[(?P<bracket>[\d]+)\]/', $conditions[$key], $matches, PREG_OFFSET_CAPTURE);
 				if (isset($matches['bracket'][0]) && isset($bracketsInnerText[$matches['bracket'][0]])) {
@@ -292,6 +299,10 @@
 					$next = substr($conditions[$key], $offset-1 + strlen($matches[0][0]));
 					$conditions[$key] = $prev . '('. $bracketsInnerText[$matches['bracket'][0]] . ')' . $next;
 				}
+			}
+			
+			foreach($unsetKeys as $value) {
+				unset($conditions[$value]);
 			}
 			
 			return $conditions;
@@ -311,21 +322,42 @@
 			$fields = self::_extractFields( $sql );
 			$joins = self::_extractJoins( $sql, $bracketsInnerText );
 			$conditions = self::_extractConditions( $sql, $bracketsInnerText );
+			$randId = rand(0,9999999999);
+			
+			$sql2ln = preg_replace('/(BETWEEN .*)\n/', '$1',
+				preg_replace('/(FROM|INNER|LEFT|RIGHT|WHERE|LIMIT|AND|OR)/', "\n$1",  str_replace(',', ",\n", $sql))
+			);
+			
 			$text = self::_spanBrackets(
 				  self::_titleise('Brakets.free.title')
-				. preg_replace('/(FROM|INNER|LEFT|RIGHT|WHERE|LIMIT|AND|OR)/', "\n$1",  str_replace(',', ",\n", $sql))
+				. '<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$randId.'\').toggle();" checked="true">'
+				. '<div id="noBraketsSqlReport'.$randId.'" style="display:block;">'
+				. $sql2ln
+				. '</div>'
 				
 				. self::_titleise('Brakets.contain.title')
+				. '<input type="checkbox" onchange="$(\'innerBraketsReport'.$randId.'\').toggle();">'
+				. '<div id="innerBraketsReport'.$randId.'" style="display:none;">'
 				. var_export($bracketsInnerText, true)
+				. '</div>'
 				
 				. self::_titleise('Fields.title')
+				. '<input type="checkbox" onchange="$(\'sqlFieldsReport'.$randId.'\').toggle();">'
+				. '<div id="sqlFieldsReport'.$randId.'" style="display:none;" class="restoreBrackets">'
 				. var_export($fields, true)
+				. '</div>'
 				
 				. self::_titleise('Joins.title')
+				. '<input type="checkbox" onchange="$(\'sqlJoinsReport'.$randId.'\').toggle();">'
+				. '<div id="sqlJoinsReport'.$randId.'" style="display:none;" class="restoreBrackets">'
 				. var_export($joins, true)
+				. '</div>'
 				
 				. self::_titleise('Conditions.title')
+				. '<input type="checkbox" onchange="$(\'sqlConditionsReport'.$randId.'\').toggle();">'
+				. '<div id="sqlConditionsReport'.$randId.'" style="display:none;" class="restoreBrackets">'
 				. var_export($conditions, true)
+				. '</div>'
 			, $bracketsInnerText);
 			
 			$innerBrackets = array();
@@ -335,7 +367,8 @@
 			
 			$json = array(
 				'text' => $text,
-				'innerBrackets' => $innerBrackets
+				'innerBrackets' => $innerBrackets,
+				'random' => $randId
 			);
 			
 			return $json;

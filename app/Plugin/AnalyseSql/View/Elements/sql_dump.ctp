@@ -65,7 +65,7 @@ if ($noLogs || isset($_forced_from_dbo_)):
 				$i['query'] .= " , params[ " . rtrim($bindParam, ', ') . " ]";
 			}
 			$input = '<input type="hidden" id="sqlvalue_' . ($k + 1) . '" value="' . preg_replace("/[\t\n ]+/", " ", h($i['query'])) . '">';
-			echo "<tr><td class=\"action\">" . ($k + 1) . "<a class=\"view\" href=\"#query" . ($k + 1) . "\" id=\"linkaction_" . ($k + 1) . "\">Analyse</a></td><td class=\"show_sql_query\">" . h($i['query']) . $input . "<pre style=\"display:none;\" id=\"analyse_" . ($k + 1) . "\"></pre></td><td>{$i['error']}</td><td style = \"text-align: right\">{$i['affected']}</td><td style = \"text-align: right\">{$i['numRows']}</td><td style = \"text-align: right\">{$i['took']}</td></tr>\n";
+			echo "<tr><td class=\"action\">" . ($k + 1) . "<a class=\"view\" href=\"#analyse_" . ($k + 1) . "\" id=\"linkaction_" . ($k + 1) . "\">Analyse</a></td><td class=\"show_sql_query\">" . h($i['query']) . $input . "<pre style=\"display:none;\" id=\"analyse_" . ($k + 1) . "\"></pre></td><td>{$i['error']}</td><td style = \"text-align: right\">{$i['affected']}</td><td style = \"text-align: right\">{$i['numRows']}</td><td style = \"text-align: right\">{$i['took']}</td></tr>\n";
 		endforeach;
 	?>
 	</tbody></table>
