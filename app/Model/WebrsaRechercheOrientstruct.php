@@ -139,13 +139,17 @@
 			$paths = array(
 				'Orientstruct.origine',
 				'Orientstruct.structureorientante_id',
-				'Orientstruct.referentorientant_id',
 				'Orientstruct.typeorient_id',
-				'Orientstruct.structurereferente_id',
 				'Orientstruct.statut_orient',
 				'Orientstruct.serviceinstructeur_id',
 				'PersonneReferent.structurereferente_id',
 				'PersonneReferent.referent_id',
+			);
+			
+			// Fils de dependantSelect
+			$pathsToExplode = array(
+				'Orientstruct.referentorientant_id',
+				'Orientstruct.structurereferente_id',
 			);
 
 			$pathsDate = array(
@@ -170,6 +174,14 @@
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+			
+			foreach( $pathsToExplode as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
+					list(,$value) = explode('_', $value);
 					$query['conditions'][$path] = $value;
 				}
 			}

@@ -156,15 +156,18 @@
 
 			$query = $Allocataire->searchConditions( $query, $search );
 			
+			/**
+			 * Conditions obligatoire
+			 */
 			$query['conditions'][] = array(
-				'OR' => array(
-					'IndusConstates.type_allocation IS NOT NULL',
-					'IndusTransferesCG.type_allocation IS NOT NULL',
-					'RemisesIndus.type_allocation IS NOT NULL',
+				'Prestation.rolepers' => 'DEM',
+				array(
+					'OR' => array(
+						'IndusConstates.type_allocation IS NOT NULL',
+						'IndusTransferesCG.type_allocation IS NOT NULL',
+						'RemisesIndus.type_allocation IS NOT NULL',
+					),
 				),
-				'Prestation.rolepers' => 'DEM'
-			);
-			$query['conditions'][] = array(
 				array(
 					'OR' => array(
 						'IndusConstates.moismoucompta IS NULL',
@@ -200,12 +203,23 @@
 				),
 			);
 
+			/**
+			 * Generateur de conditions
+			 */
 			$paths = array(
 				'Dossier.typeparte'
 			);
 
-			$pathsDate = array();
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
 			
+			/**
+			 * Conditions spéciales
+			 */
 			if ($search['Infofinanciere']['compare']) {
 				$query['conditions'][] = array(
 					'OR' => array(
@@ -234,15 +248,6 @@
 					)
 				);
 			}
-			
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( $value !== null && $value !== '' ) {
-					$query['conditions'][$path] = $value;
-				}
-			}
-
-			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
 
 			return $query;
 		}

@@ -159,15 +159,22 @@
 			$Apre = ClassRegistry::init( 'Apre' );
 
 			$query = $Allocataire->searchConditions( $query, $search );
-
+			
+			/**
+			 * Generateur de conditions
+			 */
 			$paths = array(
 				'Apre.structurereferente_id',
-				'Apre.referent_id',
 				'Apre.activitebeneficiaire',
 				'Aideapre66.themeapre66_id',
-				'Aideapre66.typeaideapre66_id',
 				'Apre.etatdossierapre',
 				'Apre.isdecision',
+			);
+			
+			// Fils de dependantSelect
+			$pathsToExplode = array(
+				'Apre.referent_id',
+				'Aideapre66.typeaideapre66_id',
 			);
 
 			$pathsDate = array(
@@ -177,6 +184,14 @@
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+			
+			foreach( $pathsToExplode as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
+					list(,$value) = explode('_', $value);
 					$query['conditions'][$path] = $value;
 				}
 			}

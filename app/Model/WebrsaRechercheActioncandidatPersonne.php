@@ -145,11 +145,18 @@
 
 			$query = $Allocataire->searchConditions( $query, $search );
 			
+			/**
+			 * Generateur de conditions
+			 */
 			$paths = array(
 				'Contactpartenaire.partenaire_id',
-				'ActioncandidatPersonne.actioncandidat_id',
 				'ActioncandidatPersonne.referent_id',
 				'ActioncandidatPersonne.positionfiche',
+			);
+			
+			// Fils de dependantSelect
+			$pathsToExplode = array(
+				'ActioncandidatPersonne.actioncandidat_id',
 			);
 
 			$pathsDate = array(
@@ -159,6 +166,14 @@
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+			
+			foreach( $pathsToExplode as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
+					list(,$value) = explode('_', $value);
 					$query['conditions'][$path] = $value;
 				}
 			}
