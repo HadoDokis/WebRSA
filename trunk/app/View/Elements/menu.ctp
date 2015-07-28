@@ -143,6 +143,7 @@
 			'Par Dossiers PCGs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Dossiers PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) ),
+				'Dossiers PCGs (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search'  ) ),
 				'Traitements PCGs' => array( 'url' => array( 'controller' => 'criterestraitementspcgs66', 'action' => 'index'  ) ),
 				'Gestionnaires PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'gestionnaire'  ) ),
 			),

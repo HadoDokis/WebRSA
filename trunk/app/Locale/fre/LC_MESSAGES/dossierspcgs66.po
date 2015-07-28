@@ -1,0 +1,122 @@
+# Traductions de dossierspcgs66.po
+# @license: Expression license is undefined on line 3, column 15 in Templates/CakePHP/CakePHP locale.po.
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Dossierspcgs66/search/:heading"
+msgstr "Recherche de dossiers PCGs (nouveau)"
+
+msgid "/Dossierspcgs66/search"
+msgstr "Formulaire"
+
+msgid "/Dossierspcgs66/search/:title"
+msgstr "Formulaire"
+
+msgid "/Dossierspcgs66/index"
+msgstr "Voir"
+
+msgid "/Dossierspcgs66/index/#Dossierpcg66.foyer_id#"
+msgstr "Voir les dossiers PCGs de #Personne.nom_complet#"
+
+msgid "/Dossierspcgs66/edit"
+msgstr "Modifier"
+
+msgid "/Dossierspcgs66/edit/#Dossierpcg66.id#"
+msgstr "Modifier le dossiers PCGs de #Personne.nom_complet#"
+
+msgid "Dossierpcg66.search"
+msgstr "Recherche par Dossier PCG"
+
+msgid "Search.Dossierpcg66.datereceptionpdo"
+msgstr "Date de réception de la PDO"
+
+msgid "Search.Dossierpcg66.originepdo_id"
+msgstr "Origine du dossier"
+
+msgid "Search.Dossierpcg66.typepdo_id"
+msgstr "Type de dossier"
+
+msgid "Search.Dossierpcg66.orgpayeur"
+msgstr "Organisme payeur"
+
+msgid "Search.Dossierpcg66.poledossierpcg66_id"
+msgstr "Pôle chargé du dossier"
+
+msgid "Search.Dossierpcg66.user_id"
+msgstr "Gestionnaire du dossier (technicien en charge du dossier)"
+
+msgid "Search.Dossierpcg66.dateaffectation"
+msgstr "Date d'affectation"
+
+msgid "Search.Dossierpcg66.etatdossierpcg"
+msgstr "État du dossier PCG"
+
+msgid "Search.Decisiondossierpcg66.org_id"
+msgstr "Organismes auxquels sont transmis les dossiers"
+
+msgid "Search.Traitementpcg66.situationpdo_id"
+msgstr "Motif concernant la personne"
+
+msgid "Search.Traitementpcg66.statutpdo_id"
+msgstr "Statut concernant la personne"
+
+msgid "Search.Decisiondossierpcg66.useravistechnique_id"
+msgstr "Agent ayant émis l'avis technique"
+
+msgid "Search.Decisiondossierpcg66.userproposition_id"
+msgstr "Agent ayant émis la validation"
+
+msgid "Search.Decisiondossierpcg66.decisionpdo_id"
+msgstr "Décision"
+
+msgid "Search.Decisiondossierpcg66.datevalidation"
+msgstr "Date de décision"
+
+msgid "Search.Decisiondossierpcg66.datetransmissionop"
+msgstr "Date de transmission à l'OP"
+
+msgid "Search.Decisiondossierpcg66.nbproposition"
+msgstr "Nombre de propositions de décision"
+
+msgid "Search.Categorieromev3"
+msgstr "Recherche par catégorie (ROME V3)"
+
+msgid "Search.Categorieromev3.romev3"
+msgstr "Recherche rapide"
+
+msgid "Search.Categorieromev3.familleromev3_id"
+msgstr "Code famille"
+
+msgid "Search.Categorieromev3.domaineromev3_id"
+msgstr "Code domaine"
+
+msgid "Search.Categorieromev3.metierromev3_id"
+msgstr "Code métier"
+
+msgid "Search.Categorieromev3.appellationromev3_id"
+msgstr "Appellation métier"
+
+msgid "User.nom_complet"
+msgstr "Gestionnaire"
+
+msgid "Dossierpcg66.nbpropositions"
+msgstr "Nb de propositions de décisions"
+
+msgid "Decisiondossierpcg66.org_id"
+msgstr "Dossier transmis à"
+
+msgid "Traitementpcg66.statutpdo_id"
+msgstr "Statuts de(s) la(es) personne(s)"
+
+msgid "Fichiermodule.nb_fichiers_lies"
+msgstr "Nb de fichiers dans la corbeille"
+
+msgid "Decisionpdo.libelle"
+msgstr "Décision prise"

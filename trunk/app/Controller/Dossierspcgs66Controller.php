@@ -15,11 +15,27 @@
 	 */
 	class Dossierspcgs66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
+		public $helpers = array( 
+			'Default', 
+			'Default2', 
+			'Cake1xLegacy.Ajax', 
+			'Fileuploader',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
 
 		public $uses = array( 'Dossierpcg66', 'Option', 'Typenotifpdo', 'Decisionpdo' );
 
-		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 
+			'Fileuploader', 
+			'Gedooo.Gedooo', 
+			'Jetons2', 
+			'DossiersMenus',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
+		);
 
 		public $commeDroit = array(
 			'add' => 'Dossierspcgs66:edit',
@@ -882,6 +898,23 @@
 				$this->request->data = $dossierpcg66;
 			}
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$this->Dossierpcg66->validate = array();
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
+			$Recherches->search();
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
+			$Recherches->exportcsv();
 		}
 	}
 ?>
