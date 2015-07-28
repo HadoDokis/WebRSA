@@ -1781,28 +1781,10 @@ class ContratsinsertionController extends AppController
 	 * Moteur de recherche
 	 */
 	public function search() {
+		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
+		$Recherches->search();
 		$this->Contratinsertion->validate = array();
 		$this->Contratinsertion->Structurereferente->Orientstruct->validate = array();
-		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
-		$restore = false;
-
-		if ( isset($this->request->data['Search']['Contratinsertion']) ) {
-			$cData =& $this->request->data['Search']['Contratinsertion'];
-		}
-
-		// Décompose les valeurs mentionnés en integer_integer
-		if ( isset($cData['referent_id']) && strpos($cData['referent_id'], '_') ) {
-			list(,$secondPart) = explode('_', $cData['referent_id']);
-			$cData['referent_id'] = $secondPart;
-			$restore = true;
-		}
-
-		$Recherches->search();
-
-		// Rempli les champs avec les bonnes valeurs
-		if ( $restore ) {
-			$cData['referent_id'] = $cData['referent_id'] ? $cData['structurereferente_id'] . '_' . $cData['referent_id'] : '';
-		}
 	}
 
 	/**

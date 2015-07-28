@@ -853,35 +853,7 @@
 		 */
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
-			$cgDepartement = Configure::read( 'Cg.departement' );
-			$restore = false;
-			
-			if ( isset($this->request->data['Search']['Apre']) ) {
-				$aData =& $this->request->data['Search']['Apre'];
-			}
-			if ( isset($this->request->data['Search']['Aideapre'.$cgDepartement]) ) {
-				$bData =& $this->request->data['Search']['Aideapre'.$cgDepartement];
-			}
-			
-			// Décompose les valeurs mentionnés en integer_integer
-			if ( isset($aData['referent_id']) && strpos($aData['referent_id'], '_') ) {
-				list(,$secondPart) = explode('_', $aData['referent_id']);
-				$aData['referent_id'] = $secondPart;
-				$restore = true;
-			}
-			if ( isset($bData['typeaideapre'.$cgDepartement.'_id']) && strpos($bData['typeaideapre'.$cgDepartement.'_id'], '_') ) {
-				list(,$secondPart) = explode('_', $bData['typeaideapre'.$cgDepartement.'_id']);
-				$bData['typeaideapre'.$cgDepartement.'_id'] = $secondPart;
-				$restore = true;
-			}
-			
 			$Recherches->search();
-			
-			// Rempli les champs avec les bonnes valeurs
-			if ( $restore ) {
-				$aData['referent_id'] = $aData['referent_id'] ? $aData['structurereferente_id'] . '_' . $aData['referent_id'] : '';
-				$bData['typeaideapre'.$cgDepartement.'_id'] = $bData['typeaideapre'.$cgDepartement.'_id'] ? $bData['themeapre'.$cgDepartement.'_id'] . '_' . $bData['typeaideapre'.$cgDepartement.'_id'] : '';
-			}
 			
 			$this->Apre->validate = array();
 			ClassRegistry::init('Aideapre66')->validate = array();

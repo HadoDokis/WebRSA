@@ -103,9 +103,9 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$this->Infofinanciere->validate = array();
 			$Recherches = $this->Components->load( 'WebrsaRecherchesInfofinancieres' );
 			$Recherches->search( array( 'modelName' => 'Dossier' ) );
+			$this->Infofinanciere->validate = array();
 		}
 
 		/**

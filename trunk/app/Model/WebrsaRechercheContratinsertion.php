@@ -135,6 +135,9 @@
 
 			$query = $Allocataire->searchConditions( $query, $search );
 			
+			/**
+			 * Conditions obligatoire
+			 */
 			$query['conditions'][] = array(
 				'OR' => array(
 					'Orientstruct.id IS NULL',
@@ -142,14 +145,21 @@
 				)
 			);
 
+			/**
+			 * Generateur de conditions
+			 */
 			$paths = array(
 				'Contratinsertion.forme_ci',
 				'Contratinsertion.structurereferente_id',
-				'Contratinsertion.referent_id',
 				'Contratinsertion.decision_ci',
 				'Contratinsertion.positioncer',
 				'Contratinsertion.duree_engag',
 				'Orientstruct.typeorient_id',
+			);
+			
+			// Fils de dependantSelect
+			$pathsToExplode = array(
+				'Contratinsertion.referent_id',
 			);
 
 			$pathsDate = array(
@@ -159,6 +169,26 @@
 				'Contratinsertion.df_ci',
 			);
 			
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+			
+			foreach( $pathsToExplode as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
+					list(,$value) = explode('_', $value);
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
+			
+			/**
+			 * Conditions spéciales
+			 */
 			if ($search['Contratinsertion']['dernier']) {
 				$query['conditions'][] = array(
 					"Contratinsertion.id IN (SELECT
@@ -216,15 +246,6 @@
 			if ($search['Contratinsertion']['istacitereconduction']) {
 				$query['conditions'][] = 'Contratinsertion.datetacitereconduction IS NULL';
 			}
-			
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( $value !== null && $value !== '' ) {
-					$query['conditions'][$path] = $value;
-				}
-			}
-
-			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
 
 			return $query;
 		}
