@@ -1,4 +1,4 @@
-/*global console, validationJS, document, validationRules, validationOnsubmit, traductions, Validation, validationOnchange, setTimeout, $, $$*/
+/*global document, $$, toString*/
 
 /**
  * Polyfill
@@ -65,6 +65,76 @@ function addParentId( dom, id ){
 	}
 	
 	dom.up().id = id === undefined ? dom.id + 'Parent' : id;
+	return true;
+}
+
+/*************************************************************************
+ * Organise en deux colonnes											 *
+ *************************************************************************/
+
+/**
+ * Organise, dans le cas d'un multiple checkbox, en X parties rangés par alpha 
+ * de haut en bas et de gauche à droite.
+ * Fonctionne également sur tout autre élément avec la même structure :
+ * <parent>
+ *		<label></label>
+ *		<div class="divideInto2Collumn">
+ *			<label></label>
+ *		</div>
+ * </parent>
+ * @param {HTML} dom
+ * @param {integer} nbCollumn
+ * @returns {Boolean}
+ */
+function divideIntoCollumn( dom, nbCollumn ){
+	'use strict';
+	var parent = dom.up(),
+		parentWidth = Element.getWidth(parent), // Pour le calcul de la taille des colonnes
+		childs = {}, // Stock les copies de DOM
+		childsNames = [], // Utilisé pour trier par alpha
+		i = 0,
+		divList = [];
+	
+	// Si deja traité, on retire l'element
+	if (parent.divided !== undefined) {
+		dom.remove();
+		return true;
+	}
+	
+	parent.divided = true;
+	
+	// Si un label seul est présent, il doit avoir une taille de 100% pour eviter le décalage des colonnes
+	dom.siblings().each(function( sibling ) {
+		if ( sibling.tagName.toUpperCase() === 'LABEL' ) {
+			sibling.style.width = '100%';
+		}
+	});
+	
+	// Stock les labels et copie les elements
+	parent.select('div').each(function( div ){
+		var name = div.select('label').first().innerHTML.replace(/[^A-Za-z]+/g, '');
+		childs[name.toUpperCase()] = Element.clone(div, true);
+		childsNames.push(name.toUpperCase());
+	});
+	
+	// Les labels sont trié
+	childsNames.sort();
+	
+	// On insert les colonnes
+	for (;i<nbCollumn;i++) {
+		divList[i] = new Element('div', {style: 'width:'+Math.floor(parentWidth/nbCollumn-1)+'px;display:inline-block;vertical-align:top;'});
+		parent.insert(divList[i]);
+	}
+	
+	// On rempli les colonnes dans le bon ordre
+	for (i=0;i<childsNames.length;i++) {
+		divList[Math.floor(i / Math.ceil(childsNames.length/nbCollumn))].insert(childs[childsNames[i]]);
+	}
+	
+	// On retire l'ancien element
+	dom.remove();
+	
+	return true;
 }
 
 /*************************************************************************
@@ -162,6 +232,7 @@ function sprintf() {
                         val = 0;
                     }
                     break;
+				default: break;
             }
             i++;
         }
@@ -199,4 +270,10 @@ document.observe( "dom:loaded", function(){
 	
 	// Ajoute un id au parent de l'élément ciblé
 	$$('.add-parent-id').each(function( dom ){ addParentId( dom ); });
+	
+	// Divise les elements portant la class divideInto2Collumn en deux colonnes
+	$$('.divideInto2Collumn').each(function( dom ){ divideIntoCollumn( dom, 2 ); });
+	
+	// Divise les elements portant la class divideInto3Collumn en trois colonnes
+	$$('.divideInto3Collumn').each(function( dom ){ divideIntoCollumn( dom, 3 ); });
 });

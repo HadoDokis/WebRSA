@@ -410,3 +410,7 @@ div.scrollable, fieldset.scrollable{
 	-webkit-resize: vertical;
 	resize: vertical;
 }
+
+div.divideInto2Collumn label, div.divideInto3Collumn label, div.input.divideInto2Collumn label, div.input.divideInto3Collumn label {
+	width: auto;
+}
