@@ -2,22 +2,43 @@
 	* Contient le contenu des parenthèses retiré du rapport
 	* @type Array
 	*/
-   var brackets = [];
+	var brackets = [];
 
-   /**
+	/**
 	* Transforme un SELECT [0] FROM ... en SELECT (contenu de bracket[0]) FROM ...
 	* 
-	* @param {HTML} span Le <span> contenant un texte de type [0]
-	* @returns {void}
+	* @param {HTML} span L'evenement contenant en target: le <span> contenant un texte de type [0]
+	* @returns {Boolean}
 	*/
-   function restoreBrackets( span ) {
-	   var innerText = span.target.innerHTML;
-	   if ( brackets[innerText.substr(1, innerText.length -2)] !== undefined ) {
-		   span.target.innerHTML = '('+ brackets[innerText.substr(1, innerText.length -2)] +')';
-	   }
-   }
-   
-   /**
+	function restoreBrackets( span ) {console.log(span.target.innerHTML);
+		var innerText = span.target.innerHTML !== undefined ? span.target.innerHTML : '';
+		if ( innerText.substr(0, 1) === '[' && brackets[innerText.substr(1, innerText.length -2)] !== undefined ) {
+			span.target.innerHTML = '('+ brackets[innerText.substr(1, innerText.length -2)] +')';
+			span.target.removeAttribute('style');
+			span.target.style.cursor = 'auto';
+			span.target.select('span').each(function(innerSpan){ innerSpan.style.color = 'red'; });
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Utilise restoreBrackets() de façon recursive
+	 * 
+	 * @param {HTML} span
+	 * @returns {Boolean}
+	 */
+	function restoreAllBrackets( span ) {
+		if (restoreBrackets({target: span})) {
+			span.select('span').each(function(subspan){
+				restoreAllBrackets(subspan);
+			});
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	* Envoi sql à url et affiche le resultat dans pre
 	* 
 	* @param {string} sql code SQL à traiter
@@ -28,7 +49,7 @@
 	* @param {string} exceptionMsg message en cas d'evenement onException
 	* @returns {void}
 	*/
-   function analyse( sql, pre, url, image, failureMsg, exceptionMsg ){
+	function analyse( sql, pre, url, image, failureMsg, exceptionMsg ){
 		/**
 		 * On affiche le bloc <pre> et on y colle une image de charchement
 		 */
@@ -57,7 +78,11 @@
 				brackets = json.innerBrackets;
 				pre.innerHTML = json.text;
 				pre.select('span').each(function(span){
+					span.style.color = 'red';
 					span.observe('click', restoreBrackets, span);
+				});
+				pre.select('div.restoreBrackets span').each(function(span){
+					restoreAllBrackets( span );
 				});
 			},
 
