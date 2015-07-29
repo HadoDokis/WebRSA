@@ -83,8 +83,11 @@
 
 	echo $this->Allocataires->blocAllocataire($paramAllocataire);
 	
-	echo '<fieldset><legend>' . __m( 'Dossierpcg66.search' ) . '</legend>'
-		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.datereceptionpdo', $paramDate )
+	echo '<fieldset><legend>' . __m( 'Dossierpcg66.search_gestionnaire' ) . '</legend>'
+		. multipleCheckbox( $this, 'Search.Dossierpcg66.poledossierpcg66_id', $options )
+		. multipleCheckbox( $this, 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
+		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
+		. multipleCheckbox( $this, 'Search.Decisiondossierpcg66.org_id', $options, 'divideInto2Collumn' )
 		. $this->Default3->subform(
 			array(
 				'Search.Dossierpcg66.originepdo_id' => array( 'empty' => true ),
@@ -92,32 +95,17 @@
 				'Search.Dossierpcg66.orgpayeur' => array( 'empty' => true ),
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
-		. multipleCheckbox( $this, 'Search.Dossierpcg66.poledossierpcg66_id', $options )
-		. multipleCheckbox( $this, 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
-		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
-		. multipleCheckbox( $this, 'Search.Dossierpcg66.etatdossierpcg', $options, 'divideInto2Collumn' )
-		. multipleCheckbox( $this, 'Search.Decisiondossierpcg66.org_id', $options, 'divideInto2Collumn' )
+		)
+		. multipleCheckbox( $this, 'Search.Decisiondossierpcg66.decisionpdo_id', $options, 'divideInto2Collumn' )
 		. multipleCheckbox( $this, 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
 		. multipleCheckbox( $this, 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
 		. $this->Default3->subform(
 			array(
-				'Search.Decisiondossierpcg66.useravistechnique_id' => array( 'empty' => true, 'options' => $options['Dossierpcg66']['user_id'] ),
-				'Search.Decisiondossierpcg66.userproposition_id' => array( 'empty' => true, 'options' => $options['Dossierpcg66']['user_id'] ),
+				'Search.Dossierpcg66.dossierechu' => array( 'type' => 'checkbox' )
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		)
-		. multipleCheckbox( $this, 'Search.Decisiondossierpcg66.decisionpdo_id', $options, 'divideInto2Collumn' )
-		. $this->SearchForm->dateRange( 'Search.Decisiondossierpcg66.datevalidation', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Decisiondossierpcg66.datetransmissionop', $paramDate )
-		. $this->Default3->subform(
-			array(
-				'Search.Decisiondossierpcg66.nbproposition',
-			),
-			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
+		)	
 		. '</fieldset>'
-		. $this->Romev3->fieldset( 'Categorieromev3', array( 'options' => $options, 'prefix' => 'Search' ) )
 	;
 	
 	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
@@ -141,8 +129,8 @@
 		echo '<ul class="actionMenu"><li>'
 			. $this->Xhtml->exportLink(
 				'Télécharger le tableau',
-				array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-				( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
+				array( 'action' => 'exportcsv_gestionnaire' ) + Hash::flatten( $this->request->data, '__' ),
+				( $this->Permissions->check( $this->request->params['controller'], 'exportcsv_gestionnaire' ) && count( $results ) > 0 )
 			)
 			. '</li></ul>'
 		;

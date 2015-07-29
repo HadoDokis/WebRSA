@@ -13,10 +13,19 @@ msgstr ""
 msgid "/Dossierspcgs66/search/:heading"
 msgstr "Recherche de dossiers PCGs (nouveau)"
 
+msgid "/Dossierspcgs66/search_gestionnaire/:heading"
+msgstr "Gestionnaire de dossiers PCG (nouveau)"
+
 msgid "/Dossierspcgs66/search"
 msgstr "Formulaire"
 
 msgid "/Dossierspcgs66/search/:title"
+msgstr "Formulaire"
+
+msgid "/Dossierspcgs66/search_gestionnaire"
+msgstr "Formulaire"
+
+msgid "/Dossierspcgs66/search_gestionnaire/:title"
 msgstr "Formulaire"
 
 msgid "/Dossierspcgs66/index"
@@ -120,3 +129,18 @@ msgstr "Nb de fichiers dans la corbeille"
 
 msgid "Decisionpdo.libelle"
 msgstr "Décision prise"
+
+msgid "Dossierpcg66.search_gestionnaire"
+msgstr "Informations par Gestionnaire"
+
+msgid "Search.Dossierpcg66.dossierechu"
+msgstr "Dossier échu"
+
+msgid "Personnepcg66.nbtraitements"
+msgstr "Nb traitements"
+
+msgid "Dossierpcg66.listetraitements"
+msgstr "Types de traitements"
+
+msgid "Dossier.locked"
+msgstr "Verrouillé"

@@ -97,6 +97,7 @@
 					'conditions' => array('Decisionpdo.isactif' => '1')
 				)
 			);
+			$options['Dossier']['locked'] = array( 1 => '<img src="/img/icons/lock.png" alt="" title="Dossier verrouillé">' );
 			
 			// FIXME N'aparait pas dans $this->Dossierpcg66->enums()
 			$query = array(

@@ -70,6 +70,52 @@
 				'Appellationromev3.name',
 				'Categoriemetierromev2.code',
 				'Categoriemetierromev2.name'
+			),
+			'search_gestionnaire' => array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Personne.nom_complet',
+					'Dossierpcg66.originepdo_id',
+					'Dossierpcg66.typepdo_id',
+					'Traitementpcg66.dateecheance',
+					'Dossierpcg66.user_id',
+					'Dossierpcg66.nbpropositions',
+					'Personnepcg66.nbtraitements',
+					'Dossierpcg66.listetraitements',
+					'Dossierpcg66.etatdossierpcg',
+					'Decisiondossierpcg66.decisionpdo_id',
+					'Traitementpcg66.situationpdo_id',
+					'Traitementpcg66.statutpdo_id',
+					'Fichiermodule.nb_fichiers_lies',
+					'Dossier.locked',
+					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
+					'/Dossierspcgs66/edit/#Dossierpcg66.id#' => array( 'class' => 'edit' ),
+				),
+				'innerTable' => array(
+					'Situationdossierrsa.etatdosrsa',
+					'Personne.nomcomnai',
+					'Personne.dtnai',
+					'Adresse.numcom',
+					'Personne.nir',
+					'Dossier.matricule',
+					'Structurereferenteparcours.lib_struc',
+					'Referentparcours.nom_complet'
+				)
+			),
+			'exportcsv_gestionnaire' => array(
+				'Dossier.numdemrsa',
+				'Personne.nom_complet',
+				'Dossierpcg66.originepdo_id',
+				'Dossierpcg66.typepdo_id',
+				'Dossierpcg66.datereceptionpdo',
+				'User.nom_complet',
+				'Dossierpcg66.nbpropositions',
+				'Personnepcg66.nbtraitements',
+				'Dossierpcg66.listetraitements',
+				'Dossierpcg66.etatdossierpcg',
+				'Fichiermodule.nb_fichiers_lies',
+				'Structurereferenteparcours.lib_struc',
+				'Referentparcours.nom_complet'
 			)
 		)
 	);

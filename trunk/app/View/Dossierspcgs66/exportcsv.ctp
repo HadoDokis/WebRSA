@@ -15,6 +15,9 @@
 		if (isset($result['Traitementpcg66']['statutpdo_id'])) {
 			$results[$key]['Traitementpcg66']['statutpdo_id'] = removeList( $result['Traitementpcg66']['statutpdo_id'] );
 		}
+		if (isset($result['Dossierpcg66']['listetraitements'])) {
+			$results[$key]['Dossierpcg66']['listetraitements'] = removeList( $result['Dossierpcg66']['listetraitements'] );
+		}
 	}
 
 	echo $this->Default3->configuredCsv(
