@@ -145,6 +145,7 @@
 				'Dossiers PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) ),
 				'Dossiers PCGs (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search'  ) ),
 				'Traitements PCGs' => array( 'url' => array( 'controller' => 'criterestraitementspcgs66', 'action' => 'index'  ) ),
+				'Traitements PCGs (nouveau)' => array( 'url' => array( 'controller' => 'traitementspcgs66', 'action' => 'search'  ) ),
 				'Gestionnaires PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'gestionnaire'  ) ),
 			),
 			'Par PDOs' => array(
