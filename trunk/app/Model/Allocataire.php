@@ -148,6 +148,7 @@
 		protected function _findBaseModelJoin($types, $baseModelName) {
 			$Personne = ClassRegistry::init( 'Personne' );
 			
+			// Modele lié à Personne
 			if (isset($Personne->{$baseModelName})) {
 				$joins = array(
 					$Personne->{$baseModelName}->join( 'Personne', array( 'type' => $types['Personne'] ) ),
@@ -155,10 +156,21 @@
 					$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
 				);
 			}
+			
+			// Modele lié à Dossier
 			elseif (isset($Personne->Foyer->Dossier->{$baseModelName})) {
 				$joins = array(
 					$Personne->Foyer->Dossier->{$baseModelName}->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
 					$Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+					$Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
+				);
+			}
+			
+			// Modele lié à Foyer
+			elseif (isset($Personne->Foyer->{$baseModelName})) {
+				$joins = array(
+					$Personne->Foyer->{$baseModelName}->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+					$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
 					$Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
 				);
 			}

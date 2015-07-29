@@ -18,8 +18,31 @@ class Traitementspcgs66Controller extends AppController {
 
     public $name = 'Traitementspcgs66';
     public $uses = array('Traitementpcg66', 'Option', 'Dossierpcg66');
-    public $helpers = array('Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader', 'Autrepiecetraitementpcg66');
-    public $components = array('Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus');
+	
+    public $helpers = array(
+		'Locale', 
+		'Csv', 
+		'Cake1xLegacy.Ajax', 
+		'Xform', 
+		'Default2', 
+		'Fileuploader', 
+		'Autrepiecetraitementpcg66',
+		'Default3' => array(
+			'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+		),
+	);
+	
+    public $components = array(
+		'Default', 
+		'Gedooo.Gedooo', 
+		'Fileuploader', 
+		'Jetons2', 
+		'DossiersMenus',
+		'Search.SearchPrg' => array(
+			'actions' => array( 'search' )
+		),
+	);
+	
     public $commeDroit = array(
         'view' => 'Traitementspcgs66:index',
         'add' => 'Traitementspcgs66:edit'
@@ -1088,6 +1111,22 @@ class Traitementspcgs66Controller extends AppController {
         $this->set(compact('traitementpcg66'));
     }
 
+	/**
+	 * Moteur de recherche
+	 */
+	public function search() {
+		$Recherches = $this->Components->load( 'WebrsaRecherchesTraitementspcgs66' );
+		$Recherches->search();
+		$this->Traitementpcg66->validate = array();
+	}
+
+	/**
+	 * Export du tableau de résultats de la recherche
+	 */
+	public function exportcsv() {
+		$Recherches = $this->Components->load( 'WebrsaRecherchesTraitementspcgs66' );
+		$Recherches->exportcsv();
+	}
 }
 
 ?>

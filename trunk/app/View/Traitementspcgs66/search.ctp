@@ -42,14 +42,6 @@
 	$dates = array(
 		'Dossier' => array('dtdemrsa' => $dateRule),
 		'Personne' => array('dtnai' => $dateRule),
-		'Dossierpcg66' => array(
-			'datereceptionpdo' => $dateRule,
-			'dateaffectation' => $dateRule,
-		),
-		'Decisiondossierpcg66' => array(
-			'datevalidation' => $dateRule,
-			'datetransmissionop' => $dateRule,
-		)
 	);
 	echo $this->FormValidator->generateJavascript($dates, false);
 
@@ -83,44 +75,32 @@
 
 	echo $this->Allocataires->blocAllocataire($paramAllocataire);
 	
-	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
-	
-	echo '<fieldset><legend>' . __m( 'Dossierpcg66.search' ) . '</legend>'
-		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.datereceptionpdo', $paramDate )
-		. $this->Default3->subform(
-			array(
-				'Search.Dossierpcg66.originepdo_id' => array( 'empty' => true ),
-				'Search.Dossierpcg66.typepdo_id' => array( 'empty' => true ),
-				'Search.Dossierpcg66.orgpayeur' => array( 'empty' => true ),
-			),
-			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
+	echo '<fieldset><legend>' . __m( 'Traitementpcg66.search' ) . '</legend>'
 		. multipleCheckbox( $this, 'Search.Dossierpcg66.poledossierpcg66_id', $options )
 		. multipleCheckbox( $this, 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
 		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
-		. multipleCheckbox( $this, 'Search.Dossierpcg66.etatdossierpcg', $options, 'divideInto2Collumn' )
-		. multipleCheckbox( $this, 'Search.Decisiondossierpcg66.org_id', $options, 'divideInto2Collumn' )
+		. $this->SearchForm->dateRange( 'Search.Traitementpcg66.dateecheance', $paramDate )
+		. $this->SearchForm->dateRange( 'Search.Traitementpcg66.daterevision', $paramDate )
+		. $this->SearchForm->dateRange( 'Search.Traitementpcg66.created', $paramDate )
 		. multipleCheckbox( $this, 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
 		. multipleCheckbox( $this, 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
 		. $this->Default3->subform(
 			array(
-				'Search.Decisiondossierpcg66.useravistechnique_id' => array( 'empty' => true, 'options' => $options['Dossierpcg66']['user_id'] ),
-				'Search.Decisiondossierpcg66.userproposition_id' => array( 'empty' => true, 'options' => $options['Dossierpcg66']['user_id'] ),
+				'Search.Traitementpcg66.descriptionpdo_id' => array( 'empty' => true ),
+				'Search.Traitementpcg66.typetraitement' => array( 'empty' => true ),
+				'Search.Traitementpcg66.clos' => array( 'empty' => true ),
+				'Search.Traitementpcg66.annule' => array( 'empty' => true ),
+				'Search.Traitementpcg66.regime' => array( 'empty' => true ),
+				'Search.Traitementpcg66.saisonnier' => array( 'empty' => true ),
+				'Search.Traitementpcg66.nrmrcs',
+				'Search.Fichiermodule.exists' => array( 'empty' => true ),
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
-		. multipleCheckbox( $this, 'Search.Decisiondossierpcg66.decisionpdo_id', $options, 'divideInto2Collumn' )
-		. $this->SearchForm->dateRange( 'Search.Decisiondossierpcg66.datevalidation', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Decisiondossierpcg66.datetransmissionop', $paramDate )
-		. $this->Default3->subform(
-			array(
-				'Search.Decisiondossierpcg66.nbproposition',
-			),
-			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
 		. '</fieldset>'
-		. $this->Romev3->fieldset( 'Categorieromev3', array( 'options' => $options, 'prefix' => 'Search' ) )
 	;
+	
+	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
 	
 	echo $this->Allocataires->blocPagination($paramAllocataire);
 
@@ -147,3 +127,5 @@
 			. '</li></ul>'
 		;
 	}
+	
+?>

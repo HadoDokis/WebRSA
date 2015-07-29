@@ -11,14 +11,18 @@
 	* @returns {Boolean}
 	*/
 	function restoreBrackets( span ) {console.log(span.target.innerHTML);
-		var innerText = span.target.innerHTML !== undefined ? span.target.innerHTML : '';
+		var innerText = span.target.innerHTML !== undefined ? span.target.innerHTML : '',
+			className;
+	
 		if ( innerText.substr(0, 1) === '[' && brackets[innerText.substr(1, innerText.length -2)] !== undefined ) {
 			span.target.innerHTML = '('+ brackets[innerText.substr(1, innerText.length -2)] +')';
 			span.target.removeAttribute('style');
-			span.target.style.cursor = 'auto';
-			span.target.select('span').each(function(innerSpan){ innerSpan.style.color = 'red'; });
+			span.target.style.cursor = 'auto';	
+			className = span.target.className === undefined || span.target.className === 'even' ? 'odd' : 'even';
+			span.target.select('span').each(function(innerSpan){ innerSpan.style.color = 'red'; innerSpan.className = className; });
 			return true;
 		}
+		
 		return false;
 	}
 	

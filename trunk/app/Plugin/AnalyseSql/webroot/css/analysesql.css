@@ -14,13 +14,13 @@
 
 #analysed_error_pdo pre span, .cake-sql-log td pre span {
 	color: #23527C;
-	cursor:  pointer;
+	cursor: pointer;
 }
 
-#analysed_error_pdo pre span span, .cake-sql-log td pre span span {
-	color: #235F7D;
+#analysed_error_pdo pre span.even, .cake-sql-log td pre span.even {
+	color: #8888AA;
 }
 
-#analysed_error_pdo pre span span span, .cake-sql-log td pre span span span {
-	color: #235F7D;
+#analysed_error_pdo pre span.odd, .cake-sql-log td pre span.odd {
+	color: #223F5D;
 }
