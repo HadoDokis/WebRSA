@@ -423,8 +423,6 @@
 		 * @param integer $id
 		 */
 		public function view( $id = null ) {
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Entretien->personneId( $id ) ) ) );
-
 			$qd_entretien = array(
 				'conditions' => array(
 					'Entretien.id' => $id
@@ -449,6 +447,7 @@
 			$entretien = $this->Entretien->find( 'first', $qd_entretien );
 
 			$personne_id = Set::classicExtract( $entretien, 'Entretien.personne_id' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Retour à l'entretien en cas de retour
 			if( isset( $this->request->data['Cancel'] ) ) {

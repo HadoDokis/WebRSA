@@ -183,8 +183,7 @@
 		}
 		
 		public function personneId( $entretien_id ){
-			$this->id = $entretien_id;
-			$result = $this->find( 'first', array( 'fields' => 'personne_id', 'contain' => false ) );
+			$result = $this->find( 'first', array( 'fields' => 'personne_id', 'contain' => false, 'conditions' => array( 'id' => $entretien_id ) ) );
 			return $result['Entretien']['personne_id'];
 		}
 		
