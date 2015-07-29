@@ -265,5 +265,27 @@
 			
 			return $options;
 		}
+		
+		/** 	 
+		 * Sous-requête permettant de récupérer le dernier CUI d'un allocataire. 	 
+		 * 	 
+		 * @param string $personneIdField Le champ où trouver l'id de la personne. 	 
+		 * @return string 	 
+		 */ 	 
+		public function sqDernierContrat( $personneIdField = 'Personne.id' ) {
+			return $this->sq( 	 
+				array( 	 
+					'fields' => array( 	 
+						'cuis.id' 	 
+					),
+					'alias' => 'cuis', 	 
+					'conditions' => array( 	 
+						"cuis.personne_id = {$personneIdField}" 	 
+					),
+					'order' => array( 'cuis.faitle DESC', 'cuis.created DESC' ), 	 
+					'limit' => 1 	 
+				) 	 
+			); 	 
+		}
 	}
 ?>
