@@ -42,6 +42,12 @@
 	$dates = array(
 		'Dossier' => array('dtdemrsa' => $dateRule),
 		'Personne' => array('dtnai' => $dateRule),
+		'Dossierpcg66' => array('dateaffectation' => $dateRule),
+		'Traitementpcg66' => array(
+			'dateecheance' => $dateRule,
+			'daterevision' => $dateRule,
+			'created' => $dateRule,
+		),
 	);
 	echo $this->FormValidator->generateJavascript($dates, false);
 
