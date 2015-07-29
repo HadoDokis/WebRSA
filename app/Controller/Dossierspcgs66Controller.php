@@ -33,7 +33,7 @@
 			'Jetons2', 
 			'DossiersMenus',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search' )
+				'actions' => array( 'search', 'search_gestionnaire' )
 			),
 		);
 
@@ -904,9 +904,9 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$this->Dossierpcg66->validate = array();
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
 			$Recherches->search();
+			$this->Dossierpcg66->validate = array();
 		}
 
 		/**
@@ -915,6 +915,24 @@
 		public function exportcsv() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
 			$Recherches->exportcsv();
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search_gestionnaire() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
+			$Recherches->search();
+			$this->Dossierpcg66->validate = array();
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_gestionnaire() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
+			$Recherches->exportcsv();
+			$this->render( 'exportcsv' );
 		}
 	}
 ?>
