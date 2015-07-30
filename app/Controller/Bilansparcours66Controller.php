@@ -15,11 +15,32 @@
 	 */
 	class Bilansparcours66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Fileuploader', 'Cake1xLegacy.Ajax', 'Default3' => array('className' => 'Default.DefaultDefault') );
+		public $helpers = array( 
+			'Default', 
+			'Default2', 
+			'Fileuploader', 
+			'Cake1xLegacy.Ajax', 
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
 
-		public $uses = array( 'Bilanparcours66', 'Option', 'Dossierep', 'Typeorient'  );
+		public $uses = array( 
+			'Bilanparcours66', 
+			'Option', 
+			'Dossierep', 
+			'Typeorient'
+		);
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 
+			'Gedooo.Gedooo', 
+			'Fileuploader', 
+			'Jetons2', 
+			'DossiersMenus',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			),
+		);
 
 		public $commeDroit = array(
 			'add' => 'Bilansparcours66:edit'
@@ -1154,6 +1175,23 @@
 //            $this->set( 'options',$this->Bilanparcours66->optionsView() );
 			$this->set( 'bilanparcours66', $this->Bilanparcours66->dataView( $bilanparcours66_id ) );
 			$this->set( 'urlmenu', "/bilansparcours66/index/{$personne_id}" );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66' );
+			$Recherches->search();
+			$this->Bilanparcours66->validate = array();
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66' );
+			$Recherches->exportcsv();
 		}
 	}
 ?>

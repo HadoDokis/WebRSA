@@ -35,7 +35,10 @@
 		public $keysRecherche = array(
 			'Dossierspcgs66.search.fields',
 			'Dossierspcgs66.search.innerTable',
-			'Dossierspcgs66.exportcsv'
+			'Dossierspcgs66.exportcsv',
+			'Dossierspcgs66.search_gestionnaire.fields',
+			'Dossierspcgs66.search_gestionnaire.innerTable',
+			'Dossierspcgs66.exportcsv_gestionnaire'
 		);
 
 		/**
@@ -141,11 +144,24 @@
 						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
 						. 'AS "Traitementpcg66__statutpdo_id"',
 						
+						'(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
+						. 'SELECT \'<li>\' || "Traitementpcg66"."typetraitement" || \'</li>\' AS "Traitementpcg66__typetraitement" '
+						. 'FROM "traitementspcgs66" AS "Traitementpcg66" '
+						. 'INNER JOIN "public"."personnespcgs66" AS "Personnepcg66" '
+						. 'ON ("Traitementpcg66"."personnepcg66_id" = "Personnepcg66"."id") '
+						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
+						. 'AS "Dossierpcg66__listetraitements"',
+						
 						'(SELECT COUNT("fichiermodule"."id") '
 						. 'FROM "fichiersmodules" AS "fichiermodule" '
 						. 'WHERE "fichiermodule"."modele" = \'Foyer\' '
 						. 'AND "fichiermodule"."fk_value" = "Foyer"."id") '
 						. 'AS "Fichiermodule__nb_fichiers_lies"',
+						
+						'(SELECT COUNT(*) '
+						. 'FROM traitementspcgs66 '
+						. 'WHERE traitementspcgs66.personnepcg66_id = "Personnepcg66"."id") '
+						. 'AS "Personnepcg66__nbtraitements"',
 					)
 				);
 				
@@ -326,12 +342,12 @@
 			/**
 			 * Conditions spéciales
 			 */
-			if ($search['Decisiondossierpcg66']['nbproposition']) {
+			if (isset($search['Decisiondossierpcg66']['nbproposition']) && $search['Decisiondossierpcg66']['nbproposition']) {
 				$query['conditions'][] = array(
 					'(SELECT COUNT(*) FROM decisionsdossierspcgs66 WHERE "decisionsdossierspcgs66"."dossierpcg66_id" = "Dossierpcg66"."id")' => $search['Decisiondossierpcg66']['nbproposition']
 				);
 			}
-			if ($search['Decisiondossierpcg66']['org_id']) {
+			if (isset($search['Decisiondossierpcg66']['org_id']) && $search['Decisiondossierpcg66']['org_id']) {
 				$query['conditions'][] = array(
 					'Decisiondossierpcg66.id IN ('
 					. 'SELECT "decsdospcgs66_orgsdospcgs66"."decisiondossierpcg66_id" AS decsdospcgs66_orgsdospcgs66__decisiondossierpcg66_id '
@@ -341,7 +357,7 @@
 					. 'WHERE "decsdospcgs66_orgsdospcgs66"."orgtransmisdossierpcg66_id" IN ('.implode(', ', $search['Decisiondossierpcg66']['org_id']).'))'
 				);
 			}
-			if ($search['Traitementpcg66']['situationpdo_id']) {
+			if (isset($search['Traitementpcg66']['situationpdo_id']) && $search['Traitementpcg66']['situationpdo_id']) {
 				$query['conditions'][] = array(
 					 'Personnepcg66.id IN ('
 					. 'SELECT "personnespcgs66_situationspdos"."personnepcg66_id" AS personnespcgs66_situationspdos__personnepcg66_id '
@@ -351,7 +367,7 @@
 					. 'WHERE "personnespcgs66_situationspdos"."situationpdo_id" IN ('.implode(', ', $search['Traitementpcg66']['situationpdo_id']).'))'
 				);
 			}
-			if ($search['Traitementpcg66']['statutpdo_id']) {
+			if (isset($search['Traitementpcg66']['statutpdo_id']) && $search['Traitementpcg66']['statutpdo_id']) {
 				$query['conditions'][] = array(
 					 '"Personnepcg66"."id" IN ('
 					. 'SELECT "personnespcgs66_statutspdos"."personnepcg66_id" AS personnespcgs66_statutspdos__personnepcg66_id '
@@ -360,6 +376,9 @@
 					. 'ON ("personnespcgs66_statutspdos"."statutpdo_id" = "statutspdos"."id") '
 					. 'WHERE "personnespcgs66_statutspdos"."statutpdo_id" IN ('.implode(', ', $search['Traitementpcg66']['statutpdo_id']).'))'
 				);
+			}
+			if (isset($search['Dossierpcg66']['dossierechu']) && $search['Dossierpcg66']['dossierechu']) {
+				$query['conditions'][] = 'Traitementpcg66.id IN ( ' . $Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
 			}
 
 			return $query;

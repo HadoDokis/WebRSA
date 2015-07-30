@@ -168,6 +168,10 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ),
 			),
+			'Par Bilans de parcours (nouveau)' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+				'url' => array( 'controller' => 'bilansparcours66', 'action' => 'search'  ),
+			),
 			'Pôle Emploi' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Non inscrits au Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits'  ) ),
