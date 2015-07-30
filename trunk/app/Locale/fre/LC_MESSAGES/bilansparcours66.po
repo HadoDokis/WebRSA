@@ -95,3 +95,54 @@ msgstr "Date de fin de contrat"
 
 msgid "Contratinsertion.duree_engag"
 msgstr "Durée du contrat"
+
+msgid "Bilanparcours66.examenauditionpe"
+msgstr "Raison d'examen du dossier (Pole Emploi)"
+
+msgid "Dossierep.themeep"
+msgstr "Saisine EP"
+
+msgid "/Bilansparcours66/search/:heading"
+msgstr "Recherche par Bilans de parcours (nouveau)"
+
+msgid "/Bilansparcours66/search"
+msgstr "Formulaire"
+
+msgid "/Bilansparcours66/search/:title"
+msgstr "Formulaire"
+
+msgid "/Bilansparcours66/index"
+msgstr "Voir"
+
+msgid "/Bilansparcours66/index/#Bilanparcours66.personne_id#"
+msgstr "Voir les bilans de parcours de #Personne.nom_complet#"
+
+msgid "Bilanparcours66.search"
+msgstr "Filtrer par Bilan de parcours"
+
+msgid "Search.Bilanparcours66.proposition"
+msgstr "Type de commission"
+
+msgid "Search.Bilanparcours66.choixparcours"
+msgstr "Choix du parcours"
+
+msgid "Search.Bilanparcours66.examenaudition"
+msgstr "Raison d'examen du dossier"
+
+msgid "Search.Bilanparcours66.maintienorientation"
+msgstr "Maitien de l'orientation ?"
+
+msgid "Search.Bilanparcours66.structurereferente_id"
+msgstr "Structure"
+
+msgid "Search.Bilanparcours66.referent_id"
+msgstr "Rédigé par"
+
+msgid "Search.Bilanparcours66.positionbilan"
+msgstr "Position du bilan"
+
+msgid "Search.Bilanparcours66.datebilan"
+msgstr "Filtrer par période"
+
+msgid "Search.Bilanparcours66.hasmanifestation"
+msgstr "L'allocataire s'est-il manifesté ? "
