@@ -729,6 +729,10 @@
 
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->request->data ) ) {
+				// Si le bilan est traité, on s'assure que l'information soit bien dans $this->request->data
+				if ( isset($bilanparcours66['Bilanparcours66']['positionbilan']) && $bilanparcours66['Bilanparcours66']['positionbilan'] === 'traite' ) {
+					$this->request->data['Bilanparcours66']['positionbilan'] = 'traite';
+				}
 
 				//On regarde si un CER est lié au bilan sans passage en EP
 				if( $this->action == 'edit' ) {

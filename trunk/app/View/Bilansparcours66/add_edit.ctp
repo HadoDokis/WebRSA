@@ -684,7 +684,7 @@
 				array(
 					'Bilanparcours66.observbenefrealisationbilan',
 					'Bilanparcours66.observbenefcompterendu',
-					'Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true ),
+					'Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') +1, 'minYear' => 2009, 'empty' => true, 'required' => true ),
 				),
 				array(
 					'options' => $options
@@ -1040,7 +1040,7 @@
 
                 echo $this->Default->subform(
                     array(
-                        'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true, 'div' => false )
+                        'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') +1, 'minYear' => 2009, 'empty' => true, 'required' => true, 'div' => false )
                     ),
                     array(
                         'options' => $options
