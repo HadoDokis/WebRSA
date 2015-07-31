@@ -26,6 +26,7 @@
 					/*'Dossier.numdemrsa' => array(
 						'condition' => false
 					),*/
+					'Canton.canton',
 					'/Rendezvous/index/#Rendezvous.personne_id#',
 					'/Rendezvous/impression/#Rendezvous.id#'
 				),
