@@ -159,7 +159,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
 					<th>Heure du RDV</th>
 					<th><?php echo $this->Xpaginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv_id' );?></th>
-
+					<?php if ( Configure::read('CG.cantons') ) { echo '<th>'.__d('canton', 'Canton.canton').'</th>'; } ?>
 					<th colspan="2" class="action noprint">Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
 				</tr>
@@ -212,32 +212,40 @@
 								</tr>
 							</tbody>
 						</table>';
-						echo $this->Xhtml->tableCells(
+						$cells = array(
+							h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
+							h( Set::extract( $rdv, 'Adresse.nomcom' ) ),
+							h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
+							h( Set::classicExtract( $rdv, 'Referent.qual' ).' '.Set::classicExtract( $rdv, 'Referent.nom' ).' '.Set::classicExtract( $rdv, 'Referent.prenom' ) ),
+							h( Set::enum( Set::extract( $rdv, 'Rendezvous.typerdv_id' ), $typerdv ) ),
+							h( $this->Locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
+							h( $this->Locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),
+							h( Set::enum( Set::extract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),
+						);
+						
+						if ( Configure::read('CG.cantons') ) {
+							$cells[] = h( Set::enum( Set::extract( $rdv, 'Canton.canton' ), $cantons ) );
+						}
+						
+						$actions = array(
 							array(
-								h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-								h( Set::extract( $rdv, 'Adresse.nomcom' ) ),
-								h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
-								h( Set::classicExtract( $rdv, 'Referent.qual' ).' '.Set::classicExtract( $rdv, 'Referent.nom' ).' '.Set::classicExtract( $rdv, 'Referent.prenom' ) ),
-								h( Set::enum( Set::extract( $rdv, 'Rendezvous.typerdv_id' ), $typerdv ) ),
-								h( $this->Locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
-								h( $this->Locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),
-								h( Set::enum( Set::extract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),
-
-								array(
-									$this->Xhtml->viewLink(
-										'Voir le dossier « '.$title.' »',
-										array( 'controller' => 'rendezvous', 'action' => 'index', $rdv['Rendezvous']['personne_id'] ),
-										$this->Permissions->check( 'rendezvous', 'index' ) && !Hash::get( $rdv, 'Rendezvous.horszone' )
-									),
-									array( 'class' => 'noprint' )
+								$this->Xhtml->viewLink(
+									'Voir le dossier « '.$title.' »',
+									array( 'controller' => 'rendezvous', 'action' => 'index', $rdv['Rendezvous']['personne_id'] ),
+									$this->Permissions->check( 'rendezvous', 'index' ) && !Hash::get( $rdv, 'Rendezvous.horszone' )
 								),
-								$this->Xhtml->printLink(
-									'Imprimer la notification',
-									array( 'controller' => 'rendezvous', 'action' => 'impression', $rdv['Rendezvous']['id'] ),
-									$this->Permissions->check( 'rendezvous', 'impression' ) && !Hash::get( $rdv, 'Rendezvous.horszone' )
-								),
-								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+								array( 'class' => 'noprint' )
 							),
+							$this->Xhtml->printLink(
+								'Imprimer la notification',
+								array( 'controller' => 'rendezvous', 'action' => 'impression', $rdv['Rendezvous']['id'] ),
+								$this->Permissions->check( 'rendezvous', 'impression' ) && !Hash::get( $rdv, 'Rendezvous.horszone' )
+							),
+							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+						);
+						
+						echo $this->Xhtml->tableCells(
+							array_merge($cells, $actions),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 						);

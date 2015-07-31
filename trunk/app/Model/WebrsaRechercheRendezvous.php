@@ -102,6 +102,12 @@
 				);
 
 				$query['order'] = array( '"Rendezvous"."daterdv" ASC' );
+				
+				if( Configure::read( 'CG.cantons' ) ) {
+					$Canton = ClassRegistry::init( 'Canton' );
+					$query['fields']['Canton.canton'] = 'Canton.canton';
+					$query['joins'][] = $Canton->joinAdresse();
+				}
 
 				Cache::write( $cacheKey, $query );
 			}
