@@ -185,17 +185,29 @@
 					// Tentative de validation
 					$validate = true;
 					if( in_array( $this->action, array( 'isemploi', 'notisemploi' ) ) ) {
-						$validate = $this->Personne->Nonoriente66->saveAll( $this->request->data['Nonoriente66'], array( 'validate' => 'only', 'atomic' => false ) ) && $validate;
+						foreach( $this->request->data['Nonoriente66'] as $key => $toValidate ) {
+							$this->Personne->Nonoriente66->set( $toValidate );
+							$validate = $this->Personne->Nonoriente66->validates() && $validate;
+						}
 					}
-					$validate = $this->Personne->Orientstruct->saveAll( $this->request->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) ) && $validate;
+
+					foreach( $this->request->data['Orientstruct'] as $key => $toValidate ) {
+						if ($toValidate['atraiter']) {
+							$this->Personne->Orientstruct->set( $toValidate );
+							$validate = $this->Personne->Orientstruct->validates() && $validate;
+						}
+						else {
+							unset($this->request->data['Orientstruct'][$key]);
+						}
+					}
 
 					// Tentative de sauvegarde si la validation s'est bien passée
 					if( $validate ) {
 						$success = true;
 						if( in_array( $this->action, array( 'isemploi', 'notisemploi' ) ) ) {
-							$success = $this->Personne->Nonoriente66->saveAll( $this->request->data['Nonoriente66'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+							$success = $this->Personne->Nonoriente66->saveAll( $this->request->data['Nonoriente66'], array( 'validate' => false, 'atomic' => false ) ) && $success;
 						}
-						$success = $this->Personne->Orientstruct->saveAll( $this->request->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+						$success = $this->Personne->Orientstruct->saveAll( $this->request->data['Orientstruct'], array( 'validate' => false, 'atomic' => false ) ) && $success;
 					}
 					else {
 						$success = false;
