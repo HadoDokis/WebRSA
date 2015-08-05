@@ -55,7 +55,7 @@
 				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'dd_ci' );
 			}
 
-			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
+			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id', false );
 			$sqDernierRdv = $Personne->Rendezvous->sqDernier( 'Personne.id' );
 
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
@@ -71,10 +71,7 @@
 					)
 				),
 				$sqDernierContratinsertion,
-				array(
-					"PersonneReferent.id IN ( {$sqDernierReferent} )",
-					'PersonneReferent.dfdesignation IS NULL'
-				),
+				"PersonneReferent.id IN ( {$sqDernierReferent} )",
 				array(
 					'OR' => array(
 						'Rendezvous.id IS NULL',
