@@ -180,6 +180,7 @@
 							'count',
 							array(
 								'conditions' => array(
+									'Dossierep.actif' => '1',
 									'Dossierep.personne_id' => $dossierep['Personne']['id'],
 									'Dossierep.themeep' => 'sanctionsrendezvouseps58',
 									'Passagecommissionep.etatdossierep' => 'traite',

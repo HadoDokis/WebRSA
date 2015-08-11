@@ -32,7 +32,7 @@
 		 *
 		 * @var type
 		 */
-		public $uses = array( 'Informationpe' );
+		public $uses = array( 'Informationpe', 'Nonrespectsanctionep93' );
 
 		/**
 		 *
@@ -589,6 +589,12 @@
 				$outfile = LOGS.$this->name."_rejets_{$this->args[0]}_".date( 'Ymd-His' ).'_'.str_replace( ' ', '_', $this->csv->name() ).'.log.csv';
 				file_put_contents( $outfile, $output );
 				$this->out[] = "<info>Le fichier de rejets se trouve dans {$outfile}</info>";
+			}
+
+			// Pour le CG 93, on doit vérifier si certains dossiers d'EP doivent être désactivés suite à inscription PE
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement === 93 ) {
+				$success = $this->Nonrespectsanctionep93->calculSortieProcedureRelanceParInscriptionPe() && $success;
 			}
 
 			// Fin du shell, résultats

@@ -33,11 +33,11 @@ class ContratsinsertionController extends AppController
 	);
 
     public $components = array(
-		'RequestHandler', 
-		'Gedooo.Gedooo', 
-		'Fileuploader', 
-		'Jetons2', 
-		'DossiersMenus', 
+		'RequestHandler',
+		'Gedooo.Gedooo',
+		'Fileuploader',
+		'Jetons2',
+		'DossiersMenus',
 		'InsertionsAllocataires',
 		'Search.SearchPrg' => array(
 			'actions' => array( 'search' )
@@ -146,7 +146,7 @@ class ContratsinsertionController extends AppController
                     $options, (array) Hash::get($this->Contratinsertion->Autreavissuspension->enums(), 'Autreavissuspension'), (array) Hash::get($this->Contratinsertion->Autreavisradiation->enums(), 'Autreavisradiation'), $options['Contratinsertion']
             );
         }
-		
+
 		if ( Configure::read( 'Cg.departement' ) == 66 ) {
 			$Entretien = ClassRegistry::init( 'Entretien' );
 			$options = array_merge($options, $Entretien->options());
@@ -426,6 +426,7 @@ class ContratsinsertionController extends AppController
                 'Contratinsertion.df_ci',
             ),
             'conditions' => array(
+                'Dossierep.actif' => '1',
                 'Dossierep.personne_id' => $personne_id,
                 'Dossierep.themeep' => Inflector::tableize($modele),
                 'Dossierep.id NOT IN ( ' . $this->Contratinsertion->{$modele}->Dossierep->Passagecommissionep->sq(
@@ -527,7 +528,7 @@ class ContratsinsertionController extends AppController
                 $conditionsTypeorient = array('Typeorient.parentid' => $typeOrientPrincipaleEmploiId);
 
                 $cuiEncours = $this->Contratinsertion->Personne->Cui->find(
-					'first', 
+					'first',
 					array(
 						'conditions' => array(
 							'Cui.personne_id' => $personne_id,
@@ -1363,7 +1364,7 @@ class ContratsinsertionController extends AppController
 //				$this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
             $this->set('ReferentNom', $referent['Referent']['nom'] . ' ' . $referent['Referent']['prenom']);
         }
-		
+
 		if ( Configure::read( 'Cg.departement' ) == 66 && isset($personne_id) ) {
 			$entretiens = $this->Contratinsertion->Personne->Entretien->find( 'all', $this->Contratinsertion->Personne->Entretien->queryEntretiens( $personne_id )	);
 			$this->set( compact( 'entretiens' ) );

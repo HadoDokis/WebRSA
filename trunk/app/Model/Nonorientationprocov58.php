@@ -357,6 +357,7 @@
 				$queryDossiersepsReorientationsEnCours = $this->Dossiercov58->Personne->Dossierep->getDossiersQuery();
 				$queryDossiersepsReorientationsEnCours['fields'] = array( 'Dossierep.id' );
 				$queryDossiersepsReorientationsEnCours['conditions'][] = array(
+					'Dossierep.actif' => '1',
 					'Dossierep.personne_id = Personne.id',
 					'Dossierep.themeep' => $this->Dossiercov58->Personne->Dossierep->getThematiquesReorientations(),
 					array(

@@ -146,24 +146,6 @@
 					$conditionsAdresses = array();
 				}
 
-
-				$conditionsTime = array();
-				if( Configure::read( 'Cg.departement' ) == 66 ){
-					$delaiAvantSelection = Configure::read( 'Dossierep.delaiavantselection' );
-					if( !empty( $delaiAvantSelection ) ) {
-						$conditionsTime = array(
-							'Dossierep.id IN (
-								SELECT
-									dossierseps.id
-								FROM
-									dossierseps
-									WHERE
-										date_trunc( \'day\', dossierseps.created ) <= ( DATE( NOW() ) - INTERVAL \''.$delaiAvantSelection.'\' )
-							)'
-						);
-					}
-				}
-
 				$queryData = array(
 					'fields' => array(
 						'Dossierep.id',
@@ -180,48 +162,15 @@
 						'Dossierep.themeep',
 					),
 					'joins' => array(
-						array(
-							'table'      => 'commissionseps',
-							'alias'      => 'Commissionep',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Commissionep.id = Passagecommissionep.commissionep_id'
-							)
-						),
-						array(
-							'table'      => 'eps',
-							'alias'      => 'Ep',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Commissionep.ep_id = Ep.id'
-							)
-						),
-						array(
-							'table'      => 'calculsdroitsrsa',
-							'alias'      => 'Calculdroitrsa',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Personne.id = Calculdroitrsa.personne_id',
-							)
-						),
-						array(
-							'table'      => 'situationsdossiersrsa',
-							'alias'      => 'Situationdossierrsa',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Situationdossierrsa.dossier_id = Dossier.id',
-							)
-						),
+						$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossierep->Passagecommissionep->Commissionep->join( 'Ep', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossierep->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossierep->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'conditions' => array(
 						(array)Configure::read( 'Dossierseps.conditionsSelection' ),
 						$conditionsAdresses,
 						$listeThemes,
-						$conditionsTime,
 						'Dossierep.id NOT IN ('.
 							$this->Dossierep->Passagecommissionep->sq(
 								array(
@@ -242,18 +191,6 @@
 									'conditions' => array(
 										'commissionseps.id <> ' => $commissionep_id,
 										'passagescommissionseps.etatdossierep <>' => 'reporte'
-									)
-								)
-							)
-						.' )',
-						///FIXME: à mettre plus tard dans le model de la thématique ?
-						'Dossierep.id NOT IN ('.
-							$this->Dossierep->Defautinsertionep66->sq(
-								array(
-									'fields' => array( 'defautsinsertionseps66.dossierep_id' ),
-									'alias' => 'defautsinsertionseps66',
-									'conditions' => array(
-										'defautsinsertionseps66.dateimpressionconvoc IS NULL'
 									)
 								)
 							)
@@ -283,13 +220,20 @@
 			$countDossiers = 0;
 			$originalPaginate = $this->paginate;
 			foreach( $themesChoose as $theme ) {
+				$qd = array();
 				$class = Inflector::classify( $theme );
-				$qdListeDossier = $this->Dossierep->{$class}->qdListeDossier( $commissionep_id );
+				$qdListeDossier = $this->Dossierep->{$class}->qdListeDossierChoose( $commissionep_id );
 
 				if ( isset( $qdListeDossier['fields'] ) ) {
 					$qd['fields'] = array_merge( $qdListeDossier['fields'], $queryData['fields'] );
 				}
-				$qd['conditions'] = array_merge( array( 'Dossierep.themeep' => Inflector::tableize( $class ) ), $queryData['conditions'] );
+
+				// TODO: une sorte de mergeConditions (plus propre) ?
+				$qd['conditions'] = array_merge(
+					array( 'Dossierep.themeep' => Inflector::tableize( $class ) ),
+					$queryData['conditions'],
+					$qdListeDossier['conditions']
+				);
 
 				$qd['joins'] = array_merge( $qdListeDossier['joins'], $queryData['joins'] );
 				$qd['contain'] = false;

@@ -45,6 +45,22 @@
 		protected $_modules = array( );
 
 		/**
+		 * Default fields that are used by the DBO
+		 * @see Model/Datasource/DboSource.php
+		 *
+		 * @var array
+		 */
+		public $queryDefaults = array(
+			'conditions' => array(),
+			'fields' => null,
+			'order' => null,
+			'limit' => null,
+			'joins' => array(),
+			'group' => null,
+			'offset' => null
+		);
+
+		/**
 		 * Surcharge du constructeur pour les champs virtuels.
 		 * Si un driver a été fourni, on utilise la sous-requête correspondante.
 		 *
@@ -578,7 +594,7 @@
 		 * By default, deleteAll() will automatically join any belongsTo
 		 * association for databases that support joins. To prevent this,
 		 * temporarily unbind the associations.
-		 * 
+		 *
 	 	 * Deletes multiple model records based on a set of conditions.
 	 	 *
 		 * @param mixed $conditions Conditions to match

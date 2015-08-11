@@ -632,6 +632,7 @@
 							),
 						),
 						'conditions' => array(
+							'Dossierep.actif' => '1',
 							'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
 						),
 						'order' => array(

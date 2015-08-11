@@ -787,6 +787,7 @@
 							'fields' => array( 'dossierseps1.personne_id' ),
 							'alias' => 'dossierseps1',
 							'conditions' => array(
+								'dossierseps1.actif' => '1',
 								'dossierseps1.personne_id = Personne.id',
 								'dossierseps1.themeep' => 'defautsinsertionseps66',
 								'dossierseps1.id IN ('.$this->Dossierep->Passagecommissionep->sq(
@@ -840,6 +841,7 @@
 							'fields' => array( 'dossierseps3.personne_id' ),
 							'alias' => 'dossierseps3',
 							'conditions' => array(
+								'dossierseps3.actif' => '1',
 								'dossierseps3.personne_id = Personne.id',
 								'dossierseps3.themeep' => 'defautsinsertionseps66',
 								'dossierseps3.id NOT IN ('.$this->Dossierep->Passagecommissionep->sq(

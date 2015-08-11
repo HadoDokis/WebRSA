@@ -42,6 +42,7 @@
 		protected function _setOptions( $modeleTheme = null, $modeleDecision = null ) {
 			$options = $this->Dossierep->Passagecommissionep->enums();
 			$options['Dossierep']['themeep'] = $this->Dossierep->themesCg();
+			$options['Dossierep']['actif'] = $this->Dossierep->enum( 'actif' );
 
 			if( !empty( $modeleTheme ) && in_array( 'Enumerable', $this->Dossierep->{$modeleTheme}->Behaviors->attached() ) ) {
 				$options = Set::merge(

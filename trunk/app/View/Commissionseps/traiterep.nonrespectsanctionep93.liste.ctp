@@ -11,6 +11,7 @@ echo '<table><thead>
 <th>Rang du passage en EP</th>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
+<th>Dossier actif</th>
 <th>Avis EP</th>
 <th>Observations</th>
 </tr>
@@ -40,7 +41,7 @@ echo '<table><thead>
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-
+				Set::enum( @$dossierep['Dossierep']['actif'], $options['Dossierep']['actif'] ),
 				array(
 					$this->Form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false, 'empty' => true ) ),
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionnonrespectsanctionep93'][$i]['decision'] ) ? 'error' : '' ) )

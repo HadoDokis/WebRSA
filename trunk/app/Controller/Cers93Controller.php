@@ -192,6 +192,7 @@
 			return array(
 				'fields' => $fields,
 				'conditions' => array(
+					'Dossierep.actif' => '1',
 					'Dossierep.personne_id' => $personne_id,
 					'Dossierep.themeep' => Inflector::tableize( $modele ),
 					'Dossierep.id NOT IN ( '.$this->Cer93->Contratinsertion->{$modele}->Dossierep->Passagecommissionep->sq(

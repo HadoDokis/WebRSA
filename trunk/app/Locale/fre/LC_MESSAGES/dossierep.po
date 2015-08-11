@@ -37,6 +37,9 @@ msgstr "Etape du dossier"
 msgid "Dossierep.themeep"
 msgstr "Thème du dossier"
 
+msgid "Dossierep.actif"
+msgstr "Dossier actif"
+
 msgid "Dossierseps::courrierInformation"
 msgstr "Imprimer le courrier d'information"
 
@@ -113,3 +116,10 @@ msgstr "En attente de décision CG"
 
 msgid "ENUM::ETAPEDOSSIEREP::traite"
 msgstr "Décision prise"
+
+#
+msgid "ENUM::ACTIF::0"
+msgstr "Non"
+
+msgid "ENUM::ACTIF::1"
+msgstr "Oui"

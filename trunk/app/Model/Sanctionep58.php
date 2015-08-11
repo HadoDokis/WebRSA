@@ -333,6 +333,7 @@
 						FROM dossierseps
 						WHERE
 							dossierseps.personne_id = Personne.id
+							AND dossierseps.actif = \'1\'
 							AND dossierseps.id <> Dossierep.id
 							AND dossierseps.id NOT IN ( '.
 								$this->Dossierep->Passagecommissionep->sq(
@@ -615,6 +616,7 @@
 							'count',
 							array(
 								'conditions' => array(
+									'Dossierep.actif' => '1',
 									'Dossierep.personne_id' => $dossierep['Personne']['id'],
 									'Dossierep.themeep' => 'sanctionseps58'
 								),

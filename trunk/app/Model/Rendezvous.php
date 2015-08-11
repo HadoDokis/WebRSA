@@ -428,6 +428,7 @@
 					'first',
 					array(
 						'conditions' => array(
+							'Dossierep.actif' => '1',
 							'Dossierep.personne_id' => $data['Rendezvous']['personne_id'],
 							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
 							'Dossierep.id NOT IN ( '.
@@ -498,6 +499,7 @@
 						'first',
 						array(
 							'conditions' => array(
+								'Dossierep.actif' => '1',
 								'Dossierep.personne_id' => $this->data['Rendezvous']['personne_id'],
 								'Dossierep.themeep' => 'sanctionsrendezvouseps58',
 								'Dossierep.id NOT IN ( '.

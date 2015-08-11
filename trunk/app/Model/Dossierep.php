@@ -24,14 +24,19 @@
 			'Autovalidate2',
 			'Conditionnable',
 			'DossierCommission',
-			'Enumerable' => array(
-				'fields' => array(
-					'etapedossierep',
-					'themeep',
-				)
-			),
+			'Enumerable',
 			'Formattable',
 			'ValidateTranslate',
+		);
+
+		public $validate = array(
+			'actif' => array(
+				'inList' => array(
+					'rule'      => array( 'inList', array( '0', '1' ) ),
+					'message'   => null,
+					'allowEmpty' => true
+				)
+			)
 		);
 
 		public $belongsTo = array(
@@ -520,6 +525,7 @@
 
 			return array(
 				'conditions' => array(
+					'Dossierep.actif' => '1',
 					'Dossierep.personne_id' => $personne_id,
 					'Dossierep.themeep' => $themes,
 					'Dossierep.id NOT IN ( '.$this->Passagecommissionep->sq(
@@ -935,6 +941,7 @@
 				);
 
 				$query['conditions'][] = array(
+					'Dossierep.actif' => '1',
 					'Dossierep.themeep' => $this->getThematiquesReorientations(),
 					array(
 						'OR' => array(

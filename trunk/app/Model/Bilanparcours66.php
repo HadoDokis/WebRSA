@@ -1478,6 +1478,7 @@
 				'count',
 				array(
 					'conditions' => array(
+						'Dossierep.actif' => '1',
 						'Dossierep.personne_id' => $personne_id,
 						'Dossierep.themeep' => $themeep,
 						'OR' => array(

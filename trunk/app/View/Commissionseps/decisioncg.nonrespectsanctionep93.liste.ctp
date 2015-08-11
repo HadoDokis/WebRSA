@@ -10,6 +10,7 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 <th>Rang du passage en EP</th>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
+<th>Dossier actif</th>
 <th>Avis EP</th>
 <th colspan="3">Décision CG</th>
 <th>Observations</th>
@@ -50,6 +51,7 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
+				Set::enum( @$dossierep['Dossierep']['actif'], $options['Dossierep']['actif'] ),
 
 				Set::enum( @$decisionep['decision'], $options['Decisionnonrespectsanctionep93']['decision'] ),
 

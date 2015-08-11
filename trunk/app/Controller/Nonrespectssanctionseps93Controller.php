@@ -69,6 +69,7 @@
 				}
 			}
 			else {
+				$conditions[]['Dossierep.actif'] = '1';
 				$conditions[][] = 'Dossierep.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
 					array(
 						'alias' => 'passagescommissionseps',

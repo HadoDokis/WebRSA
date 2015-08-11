@@ -373,6 +373,7 @@
 						'conditions' => array(
 							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
 							'Dossierep.personne_id' => $personne_id,
+							'Dossierep.actif' => '1',
 							'Dossierep.id NOT IN ( '.
 							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
 									array(
