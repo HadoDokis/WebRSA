@@ -134,6 +134,7 @@
 					'Passagecommissionep.etatdossierep'
 				),
 				'conditions' => array(
+					'Dossierep.actif' => '1',
 					'Dossierep.personne_id' => $personne_id,
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
 					'Dossierep.id NOT IN ( '.$this->Dossierep->Passagecommissionep->sq(

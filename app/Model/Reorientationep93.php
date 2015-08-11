@@ -148,6 +148,7 @@
 					'Passagecommissionep.etatdossierep'
 				),
 				'conditions' => array(
+					'Dossierep.actif' => '1',
 					'Dossierep.personne_id' => $personne_id,
 					'Dossierep.themeep' => 'reorientationseps93',
 					'Dossierep.id NOT IN ( '.$this->Orientstruct->Personne->Dossierep->Passagecommissionep->sq(

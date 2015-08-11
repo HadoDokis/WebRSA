@@ -76,6 +76,7 @@
 					array(
 						'conditions' => array(
 							$this->modelClass.'.contratinsertion_id' => $contratinsertion_id,
+							'Dossierep.actif' => '1',
 							'Dossierep.themeep' => Inflector::tableize( $this->modelClass ),
 							'Dossierep.id NOT IN ( '.$this->{$this->modelClass}->Dossierep->Passagecommissionep->sq(
 								array(

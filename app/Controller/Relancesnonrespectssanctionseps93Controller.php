@@ -381,7 +381,7 @@
 					if( $success ) {
 						$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->updateAllUnBound(
 							array(
-								'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'0\'',
+								'"Nonrespectsanctionep93"."sortieprocedure"' => null,
 								'"Nonrespectsanctionep93"."active"' => '\'0\'',
 								'"Nonrespectsanctionep93"."dossierep_id"' => $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->id,
 							),

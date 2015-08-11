@@ -17,7 +17,7 @@
 	echo $this->Xform->input( 'Nonrespectsanctionep93.propopdo_id', array( 'type' => 'hidden' ) );
 	echo $this->Xform->input( 'Nonrespectsanctionep93.historiqueetatpe_id', array( 'type' => 'hidden' ) );
 	echo $this->Xform->input( 'Nonrespectsanctionep93.rgpassage', array( 'type' => 'hidden' ) );
-	echo $this->Xform->input( 'Nonrespectsanctionep93.sortienvcontrat', array( 'type' => 'hidden' ) );
+	echo $this->Xform->input( 'Nonrespectsanctionep93.sortienvcontrat', array( 'type' => 'hidden', 'value' => '0' ) );
 	echo $this->Xform->input( 'Nonrespectsanctionep93.active', array( 'type' => 'hidden' ) );
 
 	// Relancenonrespectsanctionep93

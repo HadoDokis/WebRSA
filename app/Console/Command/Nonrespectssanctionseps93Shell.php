@@ -88,7 +88,7 @@
 								'contratinsertion_id' => $result['Nonrespectsanctionep93']['contratinsertion_id'],
 								'origine' => $result['Nonrespectsanctionep93']['origine'],
 								'rgpassage' => $result['Nonrespectsanctionep93']['rgpassage'] + 1,
-								'sortienvcontrat' => '0',
+								'sortieprocedure' => null,
 								'active' => '1',
 								'historiqueetatpe_id' => null,
 							)

@@ -372,5 +372,49 @@
 			return @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
 		}
 
+		/**
+		 * Retourne le querydata qui sera utilisé par la thématique pour la
+		 * sélection des dossiers à associer à une commission d'EP donnée.
+		 *
+		 * @param integer $commissionep_id
+		 * @return array
+		 */
+		public function qdListeDossierChoose( $commissionep_id = null ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$query = $this->qdListeDossier( $commissionep_id );
+			$query += $this->queryDefaults;
+
+			$query['conditions']['Dossierep.actif'] = '1';
+
+			if( $departement === 66 ) {
+				$query['conditions'][] = 'Dossierep.id NOT IN ('.
+					$this->Dossierep->Defautinsertionep66->sq(
+						array(
+							'fields' => array( 'defautsinsertionseps66.dossierep_id' ),
+							'alias' => 'defautsinsertionseps66',
+							'conditions' => array(
+								'defautsinsertionseps66.dateimpressionconvoc IS NULL'
+							)
+						)
+					)
+				.' )';
+
+				$delaiAvantSelection = Configure::read( 'Dossierep.delaiavantselection' );
+				if( !empty( $delaiAvantSelection ) ) {
+					$query['conditions'][] = array(
+						'Dossierep.id IN (
+							SELECT
+								dossierseps.id
+							FROM
+								dossierseps
+								WHERE
+									date_trunc( \'day\', dossierseps.created ) <= ( DATE( NOW() ) - INTERVAL \''.$delaiAvantSelection.'\' )
+						)'
+					);
+				}
+			}
+
+			return $query;
+		}
 	}
 ?>

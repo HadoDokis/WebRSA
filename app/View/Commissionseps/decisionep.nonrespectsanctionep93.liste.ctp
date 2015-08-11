@@ -10,6 +10,7 @@ echo '<table><thead>
 <th>Rang du passage en EP</th>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
+<th>Dossier actif</th>
 <th>Avis EP</th>
 <th>Observations</th>
 </tr>
@@ -37,6 +38,7 @@ echo '<table><thead>
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
+				Set::enum( @$dossierep['Dossierep']['actif'], $options['Dossierep']['actif'] ),
 
 				array( $options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )

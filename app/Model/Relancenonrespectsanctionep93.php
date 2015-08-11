@@ -221,6 +221,7 @@
 							'count',
 							array(
 								'conditions' => array(
+									'Dossierep.actif' => '1',
 									'Dossierep.personne_id' => $personne_id,
 									'Dossierep.themeep' => 'nonrespectssanctionseps93',
 								)
@@ -233,9 +234,9 @@
 								array(
 									'conditions' => array(
 										'Nonrespectsanctionep93.orientstruct_id' => $relance['orientstruct_id'],
-										'origine' => 'orientstruct',
-										'sortienvcontrat' => '0',
-										'active' => '0',
+										'Nonrespectsanctionep93.origine' => 'orientstruct',
+										'Nonrespectsanctionep93.sortieprocedure IS NULL',
+										'Nonrespectsanctionep93.active' => '0',
 									),
 									'contain' => false
 								)
@@ -264,9 +265,9 @@
 								array(
 									'conditions' => array(
 										'Nonrespectsanctionep93.contratinsertion_id' => $relance['contratinsertion_id'],
-										'origine' => 'contratinsertion',
-										'sortienvcontrat' => '0',
-										'active' => '0',
+										'Nonrespectsanctionep93.origine' => 'contratinsertion',
+										'Nonrespectsanctionep93.sortieprocedure IS NULL',
+										'Nonrespectsanctionep93.active' => '0',
 									),
 									'contain' => false
 								)
@@ -388,7 +389,7 @@
 								AND nonrespectssanctionseps93.{$foreignKey} = {$alias}.id
 								AND nonrespectssanctionseps93.rgpassage = '1'
 								AND nonrespectssanctionseps93.active = '1'
-								AND nonrespectssanctionseps93.sortienvcontrat = '0'
+								AND nonrespectssanctionseps93.sortieprocedure IS NULL
 					)"
 				)
 			);
@@ -1206,6 +1207,7 @@
 					'count',
 					array(
 						'conditions' => array(
+							'Dossierep.actif' => '1',
 							'Dossierep.personne_id' => $personne_id,
 							//'Dossierep.etapedossierep <>' => 'traite',
 							'Dossierep.id NOT IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
@@ -1238,6 +1240,7 @@
 						'count',
 						array(
 							'conditions' => array(
+								'Dossierep.actif' => '1',
 								'Dossierep.personne_id' => $personne_id,
 								//'Dossierep.etapedossierep' => 'traite',
 								'Dossierep.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
@@ -1777,7 +1780,7 @@
 					count( $nonrespectsanctionep93['Relancenonrespectsanctionep93'] ) == 1
 					&& is_null( $nonrespectsanctionep93['Nonrespectsanctionep93']['dossierep_id'] )
 					&& $nonrespectsanctionep93['Nonrespectsanctionep93']['rgpassage'] == '1'
-					&& $nonrespectsanctionep93['Nonrespectsanctionep93']['sortienvcontrat'] == '0'
+					&& $nonrespectsanctionep93['Nonrespectsanctionep93']['sortieprocedure'] == null
 					&& $nonrespectsanctionep93['Nonrespectsanctionep93']['active'] == '1'
 				);
 				if( !$internalStateStatus ) {
@@ -1808,7 +1811,7 @@
 			$formData['Nonrespectsanctionep93']['propopdo_id'] = null;
 			$formData['Nonrespectsanctionep93']['historiqueetatpe_id'] = null;
 			$formData['Nonrespectsanctionep93']['rgpassage'] = 1;
-			$formData['Nonrespectsanctionep93']['sortienvcontrat'] = '0';
+			$formData['Nonrespectsanctionep93']['sortieprocedure'] = null;
 			$formData['Nonrespectsanctionep93']['active'] = '1';
 
 			$data = Hash::merge( $nonrespectsanctionep93, $orientstruct, $contratinsertion );
@@ -1983,7 +1986,7 @@
 					'propopdo_id' => null,
 					'historiqueetatpe_id' => null,
 					'rgpassage' => 1,
-					'sortienvcontrat' => '0',
+					'sortieprocedure' => null,
 					'active' => '1',
 				),
 				'Relancenonrespectsanctionep93' => array(

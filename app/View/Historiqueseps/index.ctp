@@ -29,6 +29,7 @@
 					$this->Xpaginator2->sort( __d( 'passagecommissionep', 'Passagecommissionep.etatdossierep' ), 'Passagecommissionep.etatdossierep' ),
 					$this->Xpaginator2->sort( __d( 'dossierep', 'Dossierep.themeep' ), 'Dossierep.themeep' ),
 					$this->Xpaginator2->sort( __d( 'dossierep', 'Dossierep.created' ), 'Dossierep.created' ),
+					$this->Xpaginator2->sort( __d( 'dossierep', 'Dossierep.actif' ), 'Dossierep.actif' ),
 				)
 			)
 		);
@@ -48,6 +49,7 @@
 					$this->Type2->format( $passsage, 'Passagecommissionep.etatdossierep', array( 'options' => $options ) ),
 					$this->Type2->format( $passsage, 'Dossierep.themeep', array( 'options' => $options ) ),
 					$this->Type2->format( $passsage, 'Dossierep.created' ),
+					$this->Type2->format( $passsage, 'Dossierep.actif', array( 'options' => $options ) ), // FIXME "ENUM" Oui/Non, + dans les deux autres vues
 					$this->Xhtml->link( 'Passage', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $passsage['Passagecommissionep']['id'] ), array( 'class' => 'button view', 'enabled' => $this->Permissions->checkDossier( 'historiqueseps', 'view_passage', $dossierMenu ) ) ),
 					$this->Xhtml->link( 'Commission', array( 'controller' => 'commissionseps', 'action' => $actionDecisionsCommission, $passsage['Commissionep']['id'] ), array( 'class' => 'button view', 'enabled' => $this->Permissions->check( 'commissionseps', $actionDecisionsCommission ) ) ),
 				),

@@ -86,6 +86,7 @@
 							FROM dossierseps
 							WHERE
 								dossierseps.personne_id = Propopdo.personne_id
+								AND dossierseps.actif = \'1\'
 								AND dossierseps.themeep = \'nonrespectssanctionseps93\'
 								AND dossierseps.id NOT IN (
 									SELECT passagescommissionseps.dossierep_id
@@ -102,6 +103,7 @@
 							)
 							WHERE
 								dossierseps.personne_id = Propopdo.personne_id
+								AND dossierseps.actif = \'1\'
 								AND dossierseps.themeep = \'nonrespectssanctionseps93\'
 								AND passagescommissionseps.etatdossierep NOT IN ( \'traite\', \'annule\' )
 					)',
@@ -138,7 +140,7 @@
 							'Dossierep.themeep' => 'nonrespectssanctionseps93',
 							'Nonrespectsanctionep93.origine' => 'pdo',
 							'Nonrespectsanctionep93.propopdo_id' => $propopdo['Propopdo']['id'],
-							'Nonrespectsanctionep93.sortienvcontrat' => 0,
+							'Nonrespectsanctionep93.sortieprocedure IS NULL',
 							'Nonrespectsanctionep93.active' => 0
 						),
 						'joins' => array(

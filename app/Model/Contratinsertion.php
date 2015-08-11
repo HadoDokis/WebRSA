@@ -943,6 +943,7 @@
 									INNER JOIN dossierseps ON ( saisinesbilansparcourseps66.dossierep_id = dossierseps.id )
 								WHERE
 									saisinesbilansparcourseps66.bilanparcours66_id = bilansparcours66.id
+									AND dossierseps.actif = \'1\'
 									AND NOT EXISTS(
 										SELECT *
 											FROM passagescommissionseps

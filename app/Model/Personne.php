@@ -1526,6 +1526,7 @@
 						$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'conditions' => array(
+						'Dossierep.actif' => '1',
 						"Dossierep.personne_id = {$personneId}",
 						'Dossierep.themeep' => $this->Dossierep->getThematiquesReorientations(),
 						'Commissionep.etatcommissionep' => $Commissionep::$etatsEnCours

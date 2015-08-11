@@ -13,6 +13,8 @@ BEGIN;
 
 ALTER TABLE dossiers ADD CONSTRAINT dossiers_fonorg_in_list_chk CHECK ( cakephp_validate_in_list( fonorg, ARRAY[ 'CAF', 'MSA' ] ) );
 
+-- TODO: supprimer la colonne nonrespectssanctionseps93.sortienvcontrat (cf. patch 2.9.02)
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
