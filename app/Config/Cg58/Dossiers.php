@@ -36,6 +36,9 @@
 				'dtdemrsa_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
 				// Au (inclus)
 				'dtdemrsa_to' => date( 'Y-m-d', strtotime( 'now' ) ),
+			),
+			'Situationdossierrsa' => array(
+				'etatdosrsa' => array( 'Z', '0', '1', '2', '3', '4', '5', '6' )
 			)
 		)
 	);

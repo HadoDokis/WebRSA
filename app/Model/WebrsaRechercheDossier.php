@@ -164,7 +164,9 @@
 						'Dossiercov58',
 						array(
 							'type' => 'LEFT OUTER',
-							'conditions' => array( 'Dossiercov58.themecov58' => 'proposorientationscovs58' )
+							'conditions' => array(
+								'Dossiercov58.id IN ( '.$Dossier->Foyer->Personne->Dossiercov58->sqDernierPassagePersonne( 'Personne.id', array( 'Dossiercov58.themecov58' => 'proposorientationscovs58' ) ).' )'
+							)
 						)
 					);
 					$query['joins'][] = $Dossier->Foyer->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) );
