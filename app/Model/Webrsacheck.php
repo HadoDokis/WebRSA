@@ -1019,13 +1019,16 @@
 			foreach( App::objects( 'model' ) as $modelName ) {
 				if( !in_array( $modelName, $notMyModels ) ) {
 					App::import( 'Model', $modelName );
-					$Model = ClassRegistry::init( $modelName );
+					$Reflection = new ReflectionClass( $modelName );
+					if( $Reflection->isAbstract() === false ) {
+						$Model = ClassRegistry::init( $modelName );
 
-					if( $Model instanceof WebrsaRechercheInterface ) {
-						$errors = Hash::merge( $errors, $Model->checkParametrage() );
-					}
-					else if( method_exists( $Model,'checkParametrage' ) ) {
-						$errors = Hash::merge( $errors, $Model->checkParametrage() );
+						if( $Model instanceof WebrsaRechercheInterface ) {
+							$errors = Hash::merge( $errors, $Model->checkParametrage() );
+						}
+						else if( method_exists( $Model,'checkParametrage' ) ) {
+							$errors = Hash::merge( $errors, $Model->checkParametrage() );
+						}
 					}
 				}
 			}

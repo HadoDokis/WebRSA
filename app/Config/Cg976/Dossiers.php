@@ -1,7 +1,29 @@
 <?php
 	/**
+	 * Valeurs des filtres de recherche par défaut pour la "Recherche par dossier
+	 * / allocataire (nouveau)"
+	 *
+	 * @var array
+	 */
+	Configure::write(
+			'Filtresdefaut.Dossiers_search',
+		array(
+			'Dossier' => array(
+				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+				'dernier' => true,
+				// Case à cocher "Filtrer par date de demande RSA"
+				'dtdemrsa' => false,
+				// Du (inclus)
+				'dtdemrsa_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
+				// Au (inclus)
+				'dtdemrsa_to' => date( 'Y-m-d', strtotime( 'now' ) ),
+			)
+		)
+	);
+
+	/**
 	 * Les champs à faire apparaître dans les résultats de la recherche par
-	 * dossier / allocataire:
+	 * dossier / allocataire (nouveau):
 	 *	- lignes du tableau: Dossiers.search.fields
 	 *	- info-bulle du tableau: Dossiers.search.innerTable
 	 *	- export CSV: Dossiers.exportcsv

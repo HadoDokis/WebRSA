@@ -166,6 +166,8 @@
 		 * Test de la méthode Dsp::searchQuery().
 		 */
 		public function testSearchQuery() {
+			Configure::write( 'Romev3.enabled', true );
+
 			$result = $this->Dsp->searchQuery();
 			$result = Hash::combine( $result, 'joins.{n}.alias', 'joins.{n}.type' );
 

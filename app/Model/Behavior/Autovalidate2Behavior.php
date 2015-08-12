@@ -203,6 +203,13 @@
 									$domain = null;
 								}
 
+								// Transformation des paramètres array en chaînes de caractères
+								foreach( $ruleParams as $index => $ruleParam ) {
+									if( is_array( $ruleParam ) ) {
+										$ruleParams[$index] = implode( ', ', $ruleParam );
+									}
+								}
+
 								if( empty( $domain ) ) {
 									$sprintfParams = Set::merge( array( __( $model->validate[$field][$key]['message'] ) ), $ruleParams );
 								}

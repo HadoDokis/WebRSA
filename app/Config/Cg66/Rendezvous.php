@@ -1,5 +1,29 @@
 <?php
 	/**
+	 * Valeurs des filtres de recherche par défaut pour la "Recherche par rendez
+	 * -vous (nouveau)"
+	 *
+	 * @var array
+	 */
+	Configure::write(
+			'Filtresdefaut.Rendezvous_search',
+		array(
+			'Dossier' => array(
+				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+				'dernier' => true
+			),
+			'Rendezvous' => array(
+				// Case à cocher "Filtrer par date de RDV"
+				'daterdv' => false,
+				// Du (inclus)
+				'daterdv_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
+				// Au (inclus)
+				'daterdv_to' => date( 'Y-m-d', strtotime( 'now' ) ),
+			)
+		)
+	);
+
+	/**
 	 * Les champs à faire apparaître dans les résultats de la recherche par
 	 * rendez-vous:
 	 *	- lignes du tableau: Rendezvous.search.fields

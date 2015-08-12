@@ -69,7 +69,7 @@
 			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$result = $this->Allocataires->blocDossier( array() );
-			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><script type="text/javascript">
+			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><script type="text/javascript">
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false ); } );
 //]]>
@@ -85,7 +85,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 '.$options['To']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][year]" id="SearchDossierDtdemrsaToYear">
 '.$options['To']['years'].'
-</select></div></fieldset><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div></fieldset>';
+</select></div></fieldset></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -96,7 +96,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$result = $this->Allocataires->blocDossier( array( 'fieldset' => false ) );
-			$expected = '<div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><script type="text/javascript">
+			$expected = '<div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><script type="text/javascript">
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false ); } );
 //]]>
@@ -112,7 +112,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 '.$options['To']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][year]" id="SearchDossierDtdemrsaToYear">
 '.$options['To']['years'].'
-</select></div></fieldset><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div>';
+</select></div></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -160,7 +160,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			);
 
 			$result = $this->Allocataires->blocDossier( $params );
-			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><script type="text/javascript">
+			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><script type="text/javascript">
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false ); } );
 //]]>
@@ -192,7 +192,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDetailcalculdroitrsaNatpfChoice\', \'SearchDetailcalculdroitrsaNatpfFieldset\', false, false ); } );
 //]]>
-</script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><div class="input select"><label for="SearchDossierAncienneteDispositif">Ancienneté dans le dispositif</label><select name="data[Search][Dossier][anciennete_dispositif]" id="SearchDossierAncienneteDispositif">
+</script><div class="input select"><label for="SearchDossierAncienneteDispositif">Ancienneté dans le dispositif</label><select name="data[Search][Dossier][anciennete_dispositif]" id="SearchDossierAncienneteDispositif">
 <option value=""></option>
 <option value="0_0">Moins de 1 an</option>
 </select></div><div class="input select"><label for="SearchServiceinstructeurId">Nom du service instructeur</label><select name="data[Search][Serviceinstructeur][id]" id="SearchServiceinstructeurId">
@@ -239,7 +239,9 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 *
 		 * @todo: les traductions ne sont pas faites dans ce cas-là...
 		 */
-		/*public function testBlocDossierPrefix() {
+		public function testBlocDossierPrefix() {
+			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
+
 			$params = array(
 				'options' => array(
 					'Situationdossierrsa' => array(
@@ -253,16 +255,32 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			);
 
 			$result = $this->Allocataires->blocDossier( $params );
-			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="FilterDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Filter][Dossier][numdemrsa]" maxlength="11" type="text" id="FilterDossierNumdemrsa"/></div><div class="input text"><label for="FilterDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Filter][Dossier][matricule]" maxlength="15" type="text" id="FilterDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Filter][Situationdossierrsa][etatdosrsa_choice]" id="FilterSituationdossierrsaEtatdosrsaChoice_" value="0"/><input type="checkbox" name="data[Filter][Situationdossierrsa][etatdosrsa_choice]"  value="1" id="FilterSituationdossierrsaEtatdosrsaChoice"/><label for="FilterSituationdossierrsaEtatdosrsaChoice">Filtrer par état du dossier</label></div><fieldset id="FilterSituationdossierrsaEtatdosrsaFieldset"><legend>États du dossier</legend><div class="input select required"><input type="hidden" name="data[Filter][Situationdossierrsa][etatdosrsa]" value="" id="FilterSituationdossierrsaEtatdosrsa"/>
+			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="FilterDossierNumdemrsa">Filter.Dossier.numdemrsa</label><input name="data[Filter][Dossier][numdemrsa]" maxlength="11" type="text" id="FilterDossierNumdemrsa"/></div><div class="input text"><label for="FilterDossierMatricule">Filter.Dossier.matricule</label><input name="data[Filter][Dossier][matricule]" maxlength="15" type="text" id="FilterDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Filter][Dossier][dernier]" id="FilterDossierDernier_" value="0"/><input type="checkbox" name="data[Filter][Dossier][dernier]"  value="1" id="FilterDossierDernier"/><label for="FilterDossierDernier">Filter.Dossier.dernier</label></div><script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'FilterDossierDtdemrsa\', \'FilterDossierDtdemrsa_from_to\', false, false ); } );
+//]]>
+</script><div class="input checkbox"><input type="hidden" name="data[Filter][Dossier][dtdemrsa]" id="FilterDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Filter][Dossier][dtdemrsa]"  value="1" id="FilterDossierDtdemrsa"/><label for="FilterDossierDtdemrsa">Filtrer par filter.Dossier.dtdemrsa</label></div><fieldset id="FilterDossierDtdemrsa_from_to"><legend>Filter.Dossier.dtdemrsa</legend><div class="input date"><label for="FilterDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Filter][Dossier][dtdemrsa_from][day]" id="FilterDossierDtdemrsaFromDay">
+'.$options['From']['days'].'
+</select>-<select name="data[Filter][Dossier][dtdemrsa_from][month]" id="FilterDossierDtdemrsaFromMonth">
+'.$options['From']['months'].'
+</select>-<select name="data[Filter][Dossier][dtdemrsa_from][year]" id="FilterDossierDtdemrsaFromYear">
+'.$options['From']['years'].'
+</select></div><div class="input date"><label for="FilterDossierDtdemrsaToDay">Au (inclus)</label><select name="data[Filter][Dossier][dtdemrsa_to][day]" id="FilterDossierDtdemrsaToDay">
+'.$options['To']['days'].'
+</select>-<select name="data[Filter][Dossier][dtdemrsa_to][month]" id="FilterDossierDtdemrsaToMonth">
+'.$options['To']['months'].'
+</select>-<select name="data[Filter][Dossier][dtdemrsa_to][year]" id="FilterDossierDtdemrsaToYear">
+'.$options['To']['years'].'
+</select></div></fieldset><div class="input checkbox"><input type="hidden" name="data[Filter][Situationdossierrsa][etatdosrsa_choice]" id="FilterSituationdossierrsaEtatdosrsaChoice_" value="0"/><input type="checkbox" name="data[Filter][Situationdossierrsa][etatdosrsa_choice]"  value="1" id="FilterSituationdossierrsaEtatdosrsaChoice"/><label for="FilterSituationdossierrsaEtatdosrsaChoice">Filter.Situationdossierrsa.etatdosrsa_choice</label></div><fieldset id="FilterSituationdossierrsaEtatdosrsaFieldset"><legend>Filter.Situationdossierrsa.etatdosrsa</legend><div class="input select required"><input type="hidden" name="data[Filter][Situationdossierrsa][etatdosrsa]" value="" id="FilterSituationdossierrsaEtatdosrsa"/>
 
 <div class="checkbox"><input type="checkbox" name="data[Filter][Situationdossierrsa][etatdosrsa][]" value="Z" id="FilterSituationdossierrsaEtatdosrsaZ" /><label for="FilterSituationdossierrsaEtatdosrsaZ">Non défini</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'FilterSituationdossierrsaEtatdosrsaChoice\', $( \'FilterSituationdossierrsaEtatdosrsaFieldset\' ), false ); } );
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'FilterSituationdossierrsaEtatdosrsaChoice\', \'FilterSituationdossierrsaEtatdosrsaFieldset\', false, false ); } );
 //]]>
-</script><div class="input checkbox"><input type="hidden" name="data[Filter][Dossier][dernier]" id="FilterDossierDernier_" value="0"/><input type="checkbox" name="data[Filter][Dossier][dernier]"  value="1" id="FilterDossierDernier"/><label for="FilterDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div></fieldset>';
+</script></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
-		}*/
+		}
 
 		/**
 		 * Test de la méthode AllocatairesHelper::blocAdresse()

@@ -62,20 +62,23 @@
 		 */
 		public function testOptions() {
 			$result = array_keys( $this->Allocataire->options() );
+			sort( $result );
+
 			$expected = array(
-				'Dossier',
 				'Adresse',
 				'Adressefoyer',
 				'Calculdroitrsa',
 				'Detailcalculdroitrsa',
 				'Detaildroitrsa',
+				'Dossier',
 				'Foyer',
 				'Personne',
 				'Prestation',
 				'Referentparcours',
-				'Structurereferenteparcours',
 				'Situationdossierrsa',
+				'Structurereferenteparcours'
 			);
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 

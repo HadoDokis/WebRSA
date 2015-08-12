@@ -58,7 +58,7 @@
 				'Detaildroitrsa' => 'LEFT OUTER',
 				'PersonneReferent' => 'LEFT OUTER',
 				'Personne' => 'INNER',
-				
+
 				'Informationpe' => 'LEFT OUTER',
 				'Historiqueetatpe' => 'LEFT OUTER',
 				'Modecontact' => 'LEFT OUTER',
@@ -69,7 +69,7 @@
 				'Serviceinstructeur' => 'LEFT OUTER',
 				'Referentparcours' => 'LEFT OUTER',
 			);
-			
+
 			$Allocataire = ClassRegistry::init( 'Allocataire' );
 			$Orientstruct = ClassRegistry::init( 'Orientstruct' );
 
@@ -86,6 +86,7 @@
 						array(
 							$Orientstruct,
 							$Orientstruct->Personne->PersonneReferent,
+							$Orientstruct->Typeorient,
 							$Orientstruct->Typeorient->Structurereferente
 						)
 					),
@@ -96,11 +97,14 @@
 						'Orientstruct.date_propo',
 					)
 				);
-				
+
 				// 2. Jointure
 				$query['joins'] = array_merge(
 					$query['joins'],
-					array($Orientstruct->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ))
+					array(
+						$Orientstruct->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
+						$Orientstruct->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) )
+					)
 					// array($Orientstruct->join( 'Serviceinstructeur', array( 'type' => $types['Serviceinstructeur'] ) )) // Inutile ???
 				);
 
@@ -145,7 +149,7 @@
 				'PersonneReferent.structurereferente_id',
 				'PersonneReferent.referent_id',
 			);
-			
+
 			// Fils de dependantSelect
 			$pathsToExplode = array(
 				'Orientstruct.referentorientant_id',
@@ -155,7 +159,7 @@
 			$pathsDate = array(
 				'Orientstruct.date_valid',
 			);
-			
+
 			if ($search['Orientstruct']['derniere']) {
 				$query['conditions'][] = array(
 					"Orientstruct.id IN (SELECT
@@ -170,14 +174,14 @@
 						LIMIT 1)"
 				);
 			}
-			
+
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			foreach( $pathsToExplode as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {

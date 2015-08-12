@@ -1,5 +1,21 @@
 <?php
 	/**
+	 * Valeurs des filtres de recherche par défaut pour la "Recherche par DSPs
+	 * (nouveau)"
+	 *
+	 * @var array
+	 */
+	Configure::write(
+			'Filtresdefaut.Dsps_search',
+		array(
+			'Dossier' => array(
+				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+				'dernier' => true
+			)
+		)
+	);
+
+	/**
 	 * Liste des champs devant apparaître dans les résultats de la recherche par DSP:
 	 *	- Dsps.search.fields contient les champs de chaque ligne du tableau de résultats
 	 *	- Dsps.search.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats

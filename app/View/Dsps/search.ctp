@@ -109,6 +109,8 @@
 
 <?php
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		echo $this->Default3->configuredindex(
 			$results,
 			array(

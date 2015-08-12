@@ -475,7 +475,10 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+
 			Configure::write( 'Cg.departement', 66 );
+			Configure::write( 'Romev3.enabled', true );
+
 			$this->Criteredossierpcg66 = ClassRegistry::init( 'Criteredossierpcg66' );
 		}
 

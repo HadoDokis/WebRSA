@@ -41,6 +41,13 @@
 			'ValidateTranslate',
 		);
 
+		/**
+		 * Classes utilisées par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'WebrsaOrientstruct' );
+
 		public $belongsTo = array(
 			'Dossierep' => array(
 				'className' => 'Dossierep',
@@ -227,11 +234,10 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function ajoutPossible( $personne_id ) {
-			return $this->Orientstruct->ajoutPossible( $personne_id );
+			return $this->WebrsaOrientstruct->ajoutPossible( $personne_id );
 		}
 
 		/**
@@ -364,7 +370,7 @@
 					);
 
 					// Si l'allocataire est réorienté et qu'il avait un D1, il sort de l'accompagnement
-					$success = $this->Orientstruct->reorientationEpQuestionnaired2pdv93Auto( $dossierep, 'Decisionreorientationep93', $this->Orientstruct->id ) && $success;
+					$success = $this->WebrsaOrientstruct->reorientationEpQuestionnaired2pdv93Auto( $dossierep, 'Decisionreorientationep93', $this->Orientstruct->id ) && $success;
 				}
 			}
 

@@ -1012,17 +1012,14 @@
 			else {
 				$Option = ClassRegistry::init( 'Option' );
 
-				$options = Set::merge(
+				$options = Hash::merge(
+					$this->Personne->Foyer->enums(),
 					array(
 						'Personne' => array(
 							'qual' => $Option->qual(),
 						),
 						'Prestation' => array(
 							'rolepers' => $Option->rolepers(),
-						),
-						'Foyer' => array(
-							'sitfam' => $Option->sitfam(),
-							'typeocclog' => $Option->typeocclog(),
 						),
 						'Type' => array(
 							'voie' =>  $Option->typevoie(),

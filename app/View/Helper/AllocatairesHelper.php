@@ -167,9 +167,9 @@
 		 * Retourne une groupe de filtres par dossier contenant les champs:
 		 *	- Dossier.numdemrsa
 		 *	- Dossier.matricule
+		 *	- Dossier.dernier
 		 *	- Dossier.dtdemrsa
 		 *	- Situationdossierrsa.etatdosrsa
-		 *	- Dossier.dernier
 		 *	- Dossier.anciennete_dispositif
 		 *	- Serviceinstructeur.id
 		 *	- Dossier.fonorg
@@ -184,6 +184,7 @@
 
 			$content = $this->_input( "{$params['prefix']}Dossier.numdemrsa", $params );
 			$content .= $this->_input( "{$params['prefix']}Dossier.matricule", $params );
+			$content .= $this->_input( "{$params['prefix']}Dossier.dernier", $params, array( 'type' => 'checkbox' ) );
 			$content .= $this->_dateRange( "{$params['prefix']}Dossier.dtdemrsa", $params );
 
 			if( Hash::check( $params, 'options.Situationdossierrsa.etatdosrsa' ) ) {
@@ -193,8 +194,6 @@
 			if( Hash::check( $params, 'options.Detailcalculdroitrsa.natpf' ) ) {
 				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Detailcalculdroitrsa.natpf", $params, array( 'options' => (array)Hash::get( $params, 'options.Detailcalculdroitrsa.natpf' ) ) );
 			}
-
-			$content .= $this->_input( "{$params['prefix']}Dossier.dernier", $params, array( 'type' => 'checkbox' ) );
 
 			$paths = array(
 				'Dossier.anciennete_dispositif',

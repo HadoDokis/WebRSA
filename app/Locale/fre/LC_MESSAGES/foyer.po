@@ -52,6 +52,91 @@ msgstr "Accueil de la corbeille PCG"
 msgid "Foyer.haspiecejointe"
 msgstr "Ajout d'une pièce supplémentaire"
 
+###############################################################################
+# Enums
+###############################################################################
+
+# sitfam
+
+msgid "ENUM::SITFAM::ABA"
+msgstr "Disparu (jugement d\'absence)"
+
+msgid "ENUM::SITFAM::CEL"
+msgstr "Célibataire"
+
+msgid "ENUM::SITFAM::DIV"
+msgstr "Divorcé(e)"
+
+msgid "ENUM::SITFAM::ISO"
+msgstr "Isolement après vie maritale ou PACS"
+
+msgid "ENUM::SITFAM::MAR"
+msgstr "Mariage"
+
+msgid "ENUM::SITFAM::PAC"
+msgstr "PACS"
+
+msgid "ENUM::SITFAM::RPA"
+msgstr "Reprise vie commune sur PACS"
+
+msgid "ENUM::SITFAM::RVC"
+msgstr "Reprise vie maritale"
+
+msgid "ENUM::SITFAM::RVM"
+msgstr "Reprise mariage"
+
+msgid "ENUM::SITFAM::SEF"
+msgstr "Séparation de fait"
+
+msgid "ENUM::SITFAM::SEL"
+msgstr "Séparation légale"
+
+msgid "ENUM::SITFAM::VEU"
+msgstr "Veuvage"
+
+msgid "ENUM::SITFAM::VIM"
+msgstr "Vie maritale"
+
+# typeocclog
+
+msgid "ENUM::TYPEOCCLOG::ACC"
+msgstr "Proprietaire avec charges de remboursement"
+
+msgid "ENUM::TYPEOCCLOG::BAL"
+msgstr "Forfait logement a appliquer"
+
+msgid "ENUM::TYPEOCCLOG::HCG"
+msgstr "Hébergement collectif a titre gratuit"
+
+msgid "ENUM::TYPEOCCLOG::HCO"
+msgstr "Hébergement collectif a titre onereux"
+
+msgid "ENUM::TYPEOCCLOG::HGP"
+msgstr "Hébergement à titre gratuit par des particuliers"
+
+msgid "ENUM::TYPEOCCLOG::HOP"
+msgstr "Hébergement onereux par des particuliers"
+
+msgid "ENUM::TYPEOCCLOG::HOT"
+msgstr "Hotel"
+
+msgid "ENUM::TYPEOCCLOG::LOC"
+msgstr "Locataire ou sous locataire"
+
+msgid "ENUM::TYPEOCCLOG::OLI"
+msgstr "Occupation logement inconnue"
+
+msgid "ENUM::TYPEOCCLOG::PRO"
+msgstr "Proprietaire sans charges de remboursement"
+
+msgid "ENUM::TYPEOCCLOG::SRG"
+msgstr "Sans resid. stable avec forfait logement"
+
+msgid "ENUM::TYPEOCCLOG::SRO"
+msgstr "Sans resid. stable sans forfait logement"
+
+# haspiecejointe
+
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
 

@@ -1786,7 +1786,7 @@
 		 *	- bilansparcours66.sitfam
 		 *	- cers93.sitfam
 		 *	- contratsinsertion.sitfam
-		 *	- foyers.sitfam
+		 *	- foyers.sitfam @todo/@deprecated
 		 *	- situationsallocataires.sitfam
 		 *
 		 * @return array
@@ -1892,15 +1892,17 @@
 		/**
 		 * Enums pour le champ orientsstructs.statut_orient
 		 *
+		 * @deprecated
+		 *
 		 * @return array
 		 */
-		public function statut_orient() {
+		/*public function statut_orient() {
 			return array(
 				'Non orienté' => 'Non orienté',
 				'Orienté' => 'Orienté',
 				'En attente' => 'En attente'
 			);
-		}
+		}*/
 
 		public function statutrdv() {
 			return array(
@@ -1914,14 +1916,16 @@
 		/**
 		 * Enums pour le champ orientsstructs.statutrelance
 		 *
+		 * @deprecated
+		 *
 		 * @return array
 		 */
-		public function statutrelance() {
+		/*public function statutrelance() {
 			return array(
 				'R' => 'Relancé',
 				'E' => 'En attente'
 			);
-		}
+		}*/
 
 		/**
 		 * Enums pour le champ informationseti.topaccre
@@ -2159,7 +2163,7 @@
 		/**
 		 * Enums pour les champs
 		 *	- contratsinsertion.typeocclog
-		 *	- foyers.typeocclog
+		 *	- foyers.typeocclog @todo/@deprecated
 		 *
 		 * @return array
 		 */

@@ -4,12 +4,13 @@
 	$action = $this->action;
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
 	$availableDomains = MultiDomainsTranslator::urlDomains();
+	// FIXME: a-t'on encore besoin de $domain ? Corriger les autres recherches (titleForLayout et actions)
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
-	$paramDate = array( 
-		'domain' => $domain, 
-		'minYear_from' => '2009', 
-		'maxYear_from' => date( 'Y' ) + 1, 
-		'minYear_to' => '2009', 
+	$paramDate = array(
+		'domain' => $domain,
+		'minYear_from' => '2009',
+		'maxYear_from' => date( 'Y' ) + 1,
+		'minYear_to' => '2009',
 		'maxYear_to' => date( 'Y' ) + 4
 	);
 	$paramAllocataire = array(
@@ -25,9 +26,9 @@
 			'on' => null
 		)
 	);
-	
-	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
-	
+
+	echo $this->Default3->titleForLayout();
+
 	$dates = array(
 		'Dossier' => array('dtdemrsa' => $dateRule),
 		'Personne' => array('dtnai' => $dateRule),
@@ -44,17 +45,16 @@
 		array(
 			'/' . $controller . '/' . $action . '/#toggleform' => array(
 				'onclick' => '$(\'' . $formId . '\').toggle(); return false;',
-				'class' => $action . 'Form',
-				'domain' => $domain
+				'class' => $action . 'Form'
 			),
 		)
 	);
 
 	// 1. Moteur de recherche
-	echo $this->Xform->create( null, 
-		array( 
-			'id' => $formId, 
-			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
+	echo $this->Xform->create( null,
+		array(
+			'id' => $formId,
+			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ),
 			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
 		)
 	);
@@ -64,17 +64,17 @@
 	echo $this->Allocataires->blocAdresse($paramAllocataire);
 
 	echo $this->Allocataires->blocAllocataire($paramAllocataire);
-	
+
 	echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.search' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
 				'Search.Orientstruct.derniere' => array( 'type' => 'checkbox' )
 			),
 			array( 'options' => array( 'Search' => $options ) )
-		) 
-		. $this->SearchForm->dateRange( 'Search.Orientstruct.date_valid', $paramDate )	
+		)
+		. $this->SearchForm->dateRange( 'Search.Orientstruct.date_valid', $paramDate )
 	;
-	
+
 	if ($departement == 66) {
 		echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.orientepar' ) . '</legend>'
 			. $this->Default3->subform(
@@ -83,11 +83,11 @@
 					'Search.Orientstruct.referentorientant_id' => array('empty' => true),
 				),
 				array( 'options' => array( 'Search' => $options ) )
-			) 
+			)
 			. '</fieldset>'
 		;
 	}
-	
+
 	if ($departement == 93) {
 		echo $this->Default3->subform(
 			array(
@@ -96,7 +96,7 @@
 			array( 'options' => array( 'Search' => $options ) )
 		);
 	}
-	
+
 	echo $this->Default3->subform(
 			array(
 				'Search.Orientstruct.typeorient_id' => array('empty' => true),
@@ -105,20 +105,22 @@
 				// 'Search.Orientstruct.serviceinstructeur_id' => array('empty' => true), // Inutile ??
 			),
 			array( 'options' => array( 'Search' => $options ) )
-		) 
+		)
 		. '</fieldset>'
 	;
-	
+
 	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
-	
+
 	echo $this->Allocataires->blocPagination($paramAllocataire);
 
 	echo $this->Xform->end( 'Search' );
-	
+
 	echo $this->Search->observeDisableFormOnSubmit( $formId );
 
 	// 2. Formulaire de traitement des résultats de la recherche
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche', array( 'class' => 'noprint' ) );
+
 		echo $this->Default3->configuredIndex(
 			$results,
 			array(
@@ -126,7 +128,7 @@
 				'options' => $options
 			)
 		);
-		
+
 		echo '<ul class="actionMenu"><li>'
 			. $this->Xhtml->exportLink(
 				'Télécharger le tableau',
