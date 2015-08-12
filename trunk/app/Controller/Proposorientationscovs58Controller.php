@@ -38,6 +38,13 @@
 		);
 
 		/**
+		 * Modèles utilisés par le contrôleur.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Propoorientationcov58', 'WebrsaOrientstruct' );
+
+		/**
 		 *
 		 */
 		protected function _setOptions() {
@@ -122,7 +129,7 @@
 				$this->request->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax( $personne_id );
 
 				// Si c'est une régression, on envoie en COV
-				if ( $this->Propoorientationcov58->Structurereferente->Orientstruct->isRegression( $personne_id, $this->request->data['Propoorientationcov58']['typeorient_id'] ) ) {
+				if ( $this->WebrsaOrientstruct->isRegression( $personne_id, $this->request->data['Propoorientationcov58']['typeorient_id'] ) ) {
 					$query = array(
 						'fields' => array( 'Themecov58.id' ),
 						'contain' => false,

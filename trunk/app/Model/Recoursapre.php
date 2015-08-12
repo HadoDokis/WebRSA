@@ -270,17 +270,14 @@
 			$apre['Apre']['Natureaide'] = Set::enum( $apre['Apre']['Natureaide'], $Option->natureAidesApres() );
 			$apre['Apre']['Natureaide'] = "  - {$apre['Apre']['Natureaide']}\n";
 
-			$options = Set::merge(
+			$options = Hash::merge(
+				$Apre->Personne->Foyer->enums(),
 				array(
 					'Personne' => array(
 						'qual' => $Option->qual(),
 					),
 					'Prestation' => array(
 						'rolepers' => $Option->rolepers(),
-					),
-					'Foyer' => array(
-						'sitfam' => $Option->sitfam(),
-						'typeocclog' => $Option->typeocclog(),
 					),
 					'Structurereferente' => array(
 						'type_voie' =>  $Option->typevoie(),

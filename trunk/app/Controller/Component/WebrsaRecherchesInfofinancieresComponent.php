@@ -18,30 +18,32 @@
 	{
 		/**
 		 * Modele principal
-		 * @var Model 
+		 * @var Model
 		 */
-		public $Infofinanciere;
-		
+//		public $Infofinanciere;
+
 		/**
 		 * Controller executant le component
-		 * @var Controller 
+		 * @var Controller
 		 */
-		public $Controller;
-		
+//		public $Controller;
+
 		/**
 		 * Contructeur de class, assigne le controller et le modele principal
-		 * 
-		 * @param \ComponentCollection $collection
+		 *
+		 * @param ComponentCollection $collection
 		 * @param array $settings
 		 */
-		public function __construct(\ComponentCollection $collection, $settings = array()) {
+		public function __construct(ComponentCollection $collection, $settings = array()) {
 			parent::__construct($collection, $settings);
-			
-			$this->Infofinanciere = ClassRegistry::init( 'Infofinanciere' );
-			$this->Controller = $this->_Collection->getController();
+
+			// FIXME: n'est pas utilisé par après, voir les autres components et au-dessus
+//			$this->Infofinanciere = ClassRegistry::init( 'Infofinanciere' );
+			// FIXME: n'est pas utilisé par après, voir les autres components et au-dessus
+//			$this->Controller = $this->_Collection->getController();
 			$this->Option = ClassRegistry::init('Option');
 		}
-		
+
 		/**
 		 * Options pour le moteur de recherche
 		 *
@@ -50,11 +52,11 @@
 		 */
 		public function options( array $params = array() ) {
 			$options = parent::options( $params );
-			
+
 			$options['Infofinanciere']['natpfcre'] = $this->Option->natpfcre( 'autreannulation' );
 			$options['Dossier']['typeparte'] = $this->Option->typeparte();
 			$options['Infofinanciere']['compare'] = array('<' => '<','>' => '>','<=' => '<=','>=' => '>=');
-						
+
 			return $options;
 		}
 	}

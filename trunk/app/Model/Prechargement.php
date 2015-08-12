@@ -101,52 +101,58 @@
 		 * @return array
 		 */
 		public function preloadModel( $modelName ) {
-			$this->_dispatchEvent( 'preloadModel.begin', $modelName );
-
+			App::import( 'Model', $modelName );
 			$availableDbConfigs = array_keys( ConnectionManager::enumConnectionObjects() );
 
-			App::import( 'Model', $modelName );
-
-			$attributes = get_class_vars( $modelName );
+			$Reflection = new ReflectionClass( $modelName );
 
 			$return = array(
 				'name' => $modelName,
 				'type' => 'model',
-				'initialized' => (
-					in_array( $attributes['useDbConfig'], $availableDbConfigs )
-					&& ( strstr( $modelName, 'AppModel' ) === false )
-				),
+				'initialized' => ( $Reflection->isAbstract() === false ),
 				'prechargement' => null,
 				'foreignKeys' => null,
 			);
 
-			if( $return['initialized'] ) {
-				// Initialisation des behaviors
-				$this->_dispatchEvent( 'preloadModel.init', $modelName );
-				$Model = ClassRegistry::init( $modelName );
 
-				// Méthode préchargement
-				$this->_dispatchEvent( 'preloadModel.prechargement', $modelName );
-				$return['prechargement'] = $Model->prechargement();
+			if( $Reflection->isAbstract() === false ) {
+				$this->_dispatchEvent( 'preloadModel.begin', $modelName );
 
-				// Préchargement des clés étrangères de la table
-				if( $Model->useTable !== false ) {
-					$this->_dispatchEvent( 'preloadModel.postgresForeignKeys', $modelName );
+				$attributes = get_class_vars( $modelName );
 
-					try {
-						if( !$Model->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
-							$Model->Behaviors->attach( 'Postgres.PostgresTable' );
+				$return['initialized'] = (
+					in_array( $attributes['useDbConfig'], $availableDbConfigs )
+					&& ( strstr( $modelName, 'AppModel' ) === false )
+				);
+
+				if( $return['initialized'] ) {
+					// Initialisation des behaviors
+					$this->_dispatchEvent( 'preloadModel.init', $modelName );
+					$Model = ClassRegistry::init( $modelName );
+
+					// Méthode préchargement
+					$this->_dispatchEvent( 'preloadModel.prechargement', $modelName );
+					$return['prechargement'] = $Model->prechargement();
+
+					// Préchargement des clés étrangères de la table
+					if( $Model->useTable !== false ) {
+						$this->_dispatchEvent( 'preloadModel.postgresForeignKeys', $modelName );
+
+						try {
+							if( !$Model->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+								$Model->Behaviors->attach( 'Postgres.PostgresTable' );
+							}
+
+							$foreignKeys = $Model->getPostgresForeignKeys();
+							$return['foreignKeys'] = count( $foreignKeys );
+						} catch( Exception $Exception ) {
+							$return['foreignKeys'] = null;
 						}
-
-						$foreignKeys = $Model->getPostgresForeignKeys();
-						$return['foreignKeys'] = count( $foreignKeys );
-					} catch( Exception $Exception ) {
-						$return['foreignKeys'] = null;
 					}
 				}
-			}
 
-			$this->_dispatchEvent( 'preloadModel.end', $modelName );
+				$this->_dispatchEvent( 'preloadModel.end', $modelName );
+			}
 
 			return $return;
 		}

@@ -33,6 +33,13 @@
 		public $useTable = false;
 
 		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Personne' );
+
+		/**
 		 * Behaviors utilisés par le modèle.
 		 *
 		 * @var array
@@ -52,8 +59,6 @@
 		 * @return array
 		 */
 		public function searchQuery( array $types = array(), $baseModelName = 'Personne' ) {
-			$Personne = ClassRegistry::init( 'Personne' );
-
 			$types += array(
 				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
@@ -66,20 +71,20 @@
 				'Detaildroitrsa' => 'INNER',
 			);
 
-			$cacheKey = Inflector::underscore( $Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) ).'_'.$baseModelName;
+			$cacheKey = Inflector::underscore( $this->Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) ).'_'.$baseModelName;
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
 				if( $baseModelName === 'Personne' ) {
 					$joins = array(
-						$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
-						$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
+						$this->Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
 					);
 				}
 				else if( $baseModelName === 'Dossier' ) {
 					$joins = array(
-						$Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
-						$Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
+						$this->Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+						$this->Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
 					);
 				}
 				else {
@@ -89,22 +94,22 @@
 				$query = array(
 					'fields' => ConfigurableQueryFields::getModelsFields(
 						array(
-							$Personne,
-							$Personne->Calculdroitrsa,
-							$Personne->Foyer,
-							$Personne->Prestation,
-							$Personne->Foyer->Adressefoyer,
-							$Personne->Foyer->Adressefoyer->Adresse,
-							$Personne->Foyer->Dossier,
-							$Personne->Foyer->Dossier->Situationdossierrsa,
-							$Personne->Foyer->Dossier->Detaildroitrsa
+							$this->Personne,
+							$this->Personne->Calculdroitrsa,
+							$this->Personne->Foyer,
+							$this->Personne->Prestation,
+							$this->Personne->Foyer->Adressefoyer,
+							$this->Personne->Foyer->Adressefoyer->Adresse,
+							$this->Personne->Foyer->Dossier,
+							$this->Personne->Foyer->Dossier->Situationdossierrsa,
+							$this->Personne->Foyer->Dossier->Detaildroitrsa
 						)
 					),
 					'joins' => array_merge(
 						$joins,
 						array(
-							$Personne->join( 'Calculdroitrsa', array( 'type' => $types['Calculdroitrsa'] ) ),
-							$Personne->join(
+							$this->Personne->join( 'Calculdroitrsa', array( 'type' => $types['Calculdroitrsa'] ) ),
+							$this->Personne->join(
 								'Prestation',
 								array(
 									'type' => $types['Prestation'],
@@ -113,18 +118,18 @@
 										: array()
 								)
 							),
-							$Personne->Foyer->join(
+							$this->Personne->Foyer->join(
 								'Adressefoyer',
 								array(
 									'type' => $types['Adressefoyer'],
 									'conditions' => array(
-										'Adressefoyer.id IN( '.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+										'Adressefoyer.id IN( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
 									)
 								)
 							),
-							$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => $types['Adresse'] ) ),
-							$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => $types['Situationdossierrsa'] ) ),
-							$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => $types['Detaildroitrsa'] ) ),
+							$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => $types['Adresse'] ) ),
+							$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => $types['Situationdossierrsa'] ) ),
+							$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => $types['Detaildroitrsa'] ) ),
 						)
 					),
 					'contain' => false,
@@ -136,7 +141,7 @@
 						: array()
 				);
 
-				$query = $Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );
+				$query = $this->Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );
 
 				// Enregistrement dans le cache
 				Cache::write( $cacheKey, $query );
@@ -144,38 +149,36 @@
 
 			return $query;
 		}
-		
+
 		protected function _findBaseModelJoin($types, $baseModelName) {
-			$Personne = ClassRegistry::init( 'Personne' );
-			
 			// Modele lié à Personne
-			if (isset($Personne->{$baseModelName})) {
+			if (isset($this->Personne->{$baseModelName})) {
 				$joins = array(
-					$Personne->{$baseModelName}->join( 'Personne', array( 'type' => $types['Personne'] ) ),
-					$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
-					$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
+					$this->Personne->{$baseModelName}->join( 'Personne', array( 'type' => $types['Personne'] ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) )
 				);
 			}
-			
+
 			// Modele lié à Dossier
-			elseif (isset($Personne->Foyer->Dossier->{$baseModelName})) {
+			elseif (isset($this->Personne->Foyer->Dossier->{$baseModelName})) {
 				$joins = array(
-					$Personne->Foyer->Dossier->{$baseModelName}->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
-					$Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
-					$Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
+					$this->Personne->Foyer->Dossier->{$baseModelName}->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
+					$this->Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+					$this->Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
 				);
 			}
-			
+
 			// Modele lié à Foyer
-			elseif (isset($Personne->Foyer->{$baseModelName})) {
+			elseif (isset($this->Personne->Foyer->{$baseModelName})) {
 				$joins = array(
-					$Personne->Foyer->{$baseModelName}->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
-					$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
-					$Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
+					$this->Personne->Foyer->{$baseModelName}->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
+					$this->Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
 				);
 			}
-			
-				
+
+
 			return $joins;
 		}
 
@@ -192,8 +195,7 @@
 			$query['conditions'] = $this->conditionsPersonneFoyerDossier( $query['conditions'], $search );
 			$query['conditions'] = $this->conditionsDernierDossierAllocataire( $query['conditions'], $search );
 
-			$Personne = ClassRegistry::init( 'Personne' );
-			$query = $Personne->PersonneReferent->completeSearchConditionsReferentParcours( $query, $search );
+			$query = $this->Personne->PersonneReferent->completeSearchConditionsReferentParcours( $query, $search );
 
 			return $query;
 		}
@@ -207,10 +209,10 @@
 		 */
 		public function options( array $params = array() ) {
 			$Option = ClassRegistry::init( 'Option' );
-			$Dossier = ClassRegistry::init( 'Dossier' );
 
 			$options = Hash::merge(
-				$Dossier->enums(), // FIXME: tout mettre dans Dossier, nettoyer
+				$this->Personne->Foyer->Dossier->enums(),
+				$this->Personne->Foyer->enums(),
 				array(
 					'Adresse' => array(
 						'pays' => $Option->pays(),
@@ -235,10 +237,6 @@
 					'Dossier' => array(
 						'numorg' => $Option->numorg(),
 						'typeparte' => $Option->typeparte(),
-					),
-					'Foyer' => array(
-						'sitfam' => $Option->sitfam(),
-						'typeocclog' => $Option->typeocclog(),
 					),
 					'Personne' => array(
 						'pieecpres' => $Option->pieecpres(),
@@ -278,21 +276,20 @@
 			$query = $this->searchQuery();
 			$query['conditions'][] = $conditions;
 
-			$Personne = ClassRegistry::init( 'Personne' );
-			$Personne->forceVirtualFields = true;
+			$this->Personne->forceVirtualFields = true;
 
 			try {
-				$Personne->find( 'first', $query );
+				$this->Personne->find( 'first', $query );
 				$return = array(
 					'success' => true,
 					'message' => null,
-					'sql' => $Personne->sq( $query )
+					'sql' => $this->Personne->sq( $query )
 				);
 			} catch( PDOException $Exception ) {
 				$return = array(
 					'success' => false,
 					'message' => $Exception->getMessage(),
-					'sql' => $Personne->sq( $query )
+					'sql' => $this->Personne->sq( $query )
 				);
 			}
 

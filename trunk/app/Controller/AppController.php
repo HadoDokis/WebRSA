@@ -51,6 +51,21 @@
 		public $uses = array( 'User', 'Connection' );
 
 		/**
+		 * @fixme
+		 *
+		 * @var array
+		 */
+		public $commeDroit = array();
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array();
+
+		/**
 		 * Méthode temporaire permettant de continuer à utiliser AppController::cakeError() durant la
 		 * migration.
 		 *
@@ -213,6 +228,9 @@
 		public function beforeFilter() {
 			// Désactivation du cache du navigateur: (quand on revient en arrière dans l'historique de
 			// navigation, la page n'est pas cachée du côté du navigateur, donc il ré-exécute la demande)
+			// TODO, et vérifier que ça n'entraîne pas de bug avec une autre conf / en production:
+			// Désactivation uniquement sur les méthode faisant autre chose que de la lecture ?
+			//if( Hash::get( $this->crudMap, $this->request->action ) !== 'read' )
 			$this->disableCache();
 
 			//Paramétrage du composant Auth
@@ -221,6 +239,7 @@
 			$this->Auth->loginRedirect = array( 'controller' => 'dossiers', 'action' => 'index' );
 			$this->Auth->authorize = array( 'Actions' => array( 'actionPath' => 'controllers' ) );
 
+			// TODO: nettoyer / supprimer...
 			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
 			$return = parent::beforeFilter();
 
@@ -231,10 +250,11 @@
 				return $return;
 			}
 
-			$isLoginPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/login' );
-			$isLogoutPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/logout' );
-			$isForgottenpass = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/forgottenpass' );
-			$isAllo = ( strpos( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ), '/api/rest/allo/' ) === 0 );
+			$requestTail = substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) );
+			$isLoginPage = ( $requestTail == '/users/login' );
+			$isLogoutPage = ( $requestTail == '/users/logout' );
+			$isForgottenpass = ( $requestTail == '/users/forgottenpass' );
+			$isAllo = ( strpos( $requestTail, '/api/rest/allo/' ) === 0 );
 
 			// Utilise-t'on l'alerte de fin de session ?
 			$useAlerteFinSession = (

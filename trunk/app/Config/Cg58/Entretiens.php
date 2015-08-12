@@ -1,5 +1,21 @@
 <?php
 	/**
+	 * Valeurs des filtres de recherche par défaut pour la "Recherche par entretiens
+	 * (nouveau)"
+	 *
+	 * @var array
+	 */
+	Configure::write(
+			'Filtresdefaut.Entretiens_search',
+		array(
+			'Dossier' => array(
+				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+				'dernier' => true
+			)
+		)
+	);
+
+	/**
 	 * Les champs à faire apparaître dans les résultats de la recherche par
 	 * entretiens:
 	 *	- lignes du tableau: Criteresentretiens.index.fields

@@ -47,11 +47,16 @@
 
 			if( !isset( $attributes['title'] ) ) {
 				$attributes += array(
-					'domain' => Inflector::underscore( $this->request->params['controller'] ),
+//					'domain' => Inflector::underscore( $this->request->params['controller'] ),
 					'msgid' => DefaultUtility::msgid( $url ).'/:title'
 				);
 
-				$attributes['title'] = __d( $attributes['domain'], $attributes['msgid'] );
+				if( isset( $attributes['domain'] ) ) {
+					$attributes['title'] = __d( $attributes['domain'], $attributes['msgid'] );
+				}
+				else {
+					$attributes['title'] = __m( $attributes['msgid'] );
+				}
 			}
 			unset( $attributes['domain'], $attributes['msgid'] );
 
@@ -209,7 +214,7 @@
 
 		/**
 		 * Set le titre de la page dans le layout et retourne un tag h1 contenant
-		 * ce text. La traduction se fait dans le domaine du contrôleur.
+		 * ce text. La traduction se fait grâce au plugin MultiDomainsTranslator.
 		 *
 		 * @param array $data
 		 * @param array $params
@@ -217,11 +222,17 @@
 		 */
 		public function titleForLayout( array $data = array(), array $params = array() ) {
 			$tag = ( isset( $params['tag'] ) ? $params['tag'] : 'h1' );
-			$domain = ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) );
 			$msgid = ( isset( $params['msgid'] ) ? $params['msgid'] : '/'.Inflector::camelize( $this->request->params['controller'] ).'/'.$this->request->params['action'].'/:heading' );
-			unset( $params['tag'], $params['domain'], $params['msgid'] );
+			unset( $params['tag'], $params['msgid'] );
 
-			$title_for_layout = DefaultUtility::evaluate( $data, __d( $domain, $msgid ) );
+			if( isset( $params['domain'] ) ) {
+				$title_for_layout = DefaultUtility::evaluate( $data, __d( $params['domain'], $msgid ) );
+				unset( $params['domain'] );
+			}
+			else {
+				$title_for_layout = DefaultUtility::evaluate( $data, __m( $msgid ) );
+			}
+
 			$this->_View->set( compact( 'title_for_layout' ) );
 			return $this->DefaultHtml->tag( $tag, $title_for_layout, $params );
 		}

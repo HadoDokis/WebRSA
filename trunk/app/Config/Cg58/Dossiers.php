@@ -16,15 +16,26 @@
 	);
 
 	/**
-	 * Les conditions par défaut du moteur de recherche par dossiers /
-	 * allocataires.
+	 * Valeurs des filtres de recherche par défaut pour la "Recherche par dossier
+	 * / allocataire (nouveau)"
 	 *
 	 * @var array
 	 */
 	Configure::write(
-		'Filtresdefaut.Dossiers_search', array(
+			'Filtresdefaut.Dossiers_search',
+		array(
 			'Calculdroitrsa' => array(
 				'toppersdrodevorsa' => '1'
+			),
+			'Dossier' => array(
+				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+				'dernier' => true,
+				// Case à cocher "Filtrer par date de demande RSA"
+				'dtdemrsa' => false,
+				// Du (inclus)
+				'dtdemrsa_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
+				// Au (inclus)
+				'dtdemrsa_to' => date( 'Y-m-d', strtotime( 'now' ) ),
 			)
 		)
 	);

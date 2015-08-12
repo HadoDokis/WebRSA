@@ -51,7 +51,7 @@
 				$statut_orient = array( 'Orienté' => 'Orienté' );
 			}
 			else {
-				$statut_orient = $this->Option->statut_orient();
+				$statut_orient = $this->Orientstruct->enum( 'statut_orient' );
 			}
 			$this->set( 'statut_orient', $statut_orient );
 			$this->set( 'options', $this->Typeorient->listOptions() );
@@ -380,7 +380,7 @@
 
 				$this->Dossier->begin();
 				$this->Dossier->id = $dossier_id;
-				$savePersonne = $this->Personne->saveAll( $this->request->data, array( 'atomic' => false ) );				
+				$savePersonne = $this->Personne->saveAll( $this->request->data, array( 'atomic' => false ) );
 				$saveDossier = $this->Dossier->saveField( 'dtdemrsa', $this->request->data['Dossier']['dtdemrsa'], true );
 
 				if( $savePersonne && $saveDossier ) {

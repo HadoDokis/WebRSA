@@ -57,7 +57,7 @@
 			$this->set( 'sr', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'conditions' => array( 'orientation' => 'O' ) ) ) );
 			$this->set( 'typeorient', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ) );
 
-			$this->set( 'statuts', $this->Option->statut_orient() );
+			$this->set( 'statuts', $this->Orientstruct->enum( 'statut_orient' ) );
 			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'qual', $this->Option->qual() );

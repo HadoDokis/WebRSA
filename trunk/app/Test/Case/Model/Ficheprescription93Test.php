@@ -195,6 +195,7 @@
 			// 1. find et autre
 			$options = $this->Ficheprescription93->options( array( 'find' => true, 'autre' => true ) );
 			$result = hash_keys( $options );
+			sort( $result );
 
 			$expected = array(
 				'Dossier.fonorg',
@@ -213,6 +214,7 @@
 				'Detaildroitrsa.oridemrsa',
 				'Detaildroitrsa.topfoydrodevorsa',
 				'Detaildroitrsa.topsansdomfixe',
+				'Foyer.haspiecejointe',
 				'Foyer.sitfam',
 				'Foyer.typeocclog',
 				'Personne.pieecpres',
@@ -253,12 +255,14 @@
 				'Documentbeneffp93.Documentbeneffp93',
 				'Autre.Ficheprescription93',
 			);
+			sort( $expected );
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
 			// 2. allocataire et pdf
 			$options = $this->Ficheprescription93->options( array( 'allocataire' => true, 'pdf' => true ) );
 			$result = hash_keys( $options );
+			sort( $result );
 
 			$expected = array(
 				'Dossier.fonorg',
@@ -277,6 +281,7 @@
 				'Detaildroitrsa.oridemrsa',
 				'Detaildroitrsa.topfoydrodevorsa',
 				'Detaildroitrsa.topsansdomfixe',
+				'Foyer.haspiecejointe',
 				'Foyer.sitfam',
 				'Foyer.typeocclog',
 				'Personne.pieecpres',
@@ -312,6 +317,7 @@
 				'Referent.qual',
 				'Type.voie',
 			);
+			sort( $expected );
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

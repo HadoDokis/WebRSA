@@ -9,6 +9,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 # ==============================================================================
+# FIXME: si je renomme ce fichier, j'ai les titres corrects dans la recherche par orientation au 93!!
+# ==============================================================================
 
 msgid "Search.Orientstruct.structurereferente_id"
 msgstr "Structure référente"

@@ -16,13 +16,10 @@
 	class Foyer extends AppModel
 	{
 		public $name = 'Foyer';
-		
+
 		public $actsAs = array(
-			'Enumerable' => array(
-				'fields' => array(
-					'haspiecejointe'
-				)
-			)
+            'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable'
 		);
 
 		public $virtualFields = array(
@@ -104,14 +101,6 @@
 					END
 				)",
 			)
-		);
-
-		public $validate = array(
-			'dossier_id' => array(
-				'numeric' => array(
-					'rule' => array( 'numeric' ),
-				),
-			),
 		);
 
 		public $belongsTo = array(
@@ -479,11 +468,11 @@
 				}
 			}
 		}
-        
-        
+
+
         /**
          * Fonction retournant le nombre de dossiers PCGs existants pour un foyer donné
-         * 
+         *
          * @param type $foyerId
          * @return type
          */
@@ -500,7 +489,7 @@
 				)
 			);
         }
-		
+
 		/**
 		 * Permet de savoir s'il existe un CJT au sein du foyer.
 		 *
@@ -541,7 +530,7 @@
 				$result = $this->sq( $query );
 				Cache::write( $cacheKey, $result );
 			}
-			
+
 			return $result;
 		}
 	}

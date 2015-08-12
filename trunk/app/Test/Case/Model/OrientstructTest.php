@@ -46,10 +46,36 @@
 		public $Orientstruct = null;
 
 		/**
-		 * Préparation du test.
+		 * "Extraction simplifiée" des règles de validation.
+		 *
+		 * @todo: à mettre dans une classe parente, ou une fonction utilitaire...
+		 *
+		 * @param Model $Model
+		 * @return array
 		 */
-		public function setUp() {
-			parent::setUp();
+		public function extractValidateRules( Model $Model ) {
+			$result = array();
+
+			$result = array();
+			foreach( Hash::flatten( $Model->validate ) as $key => $value ) {
+				if( preg_match( '/^([^.]+).([^.]+).rule.0$/', $key, $matches ) ) {
+					$result["{$matches[1]}.{$matches[2]}"] = Hash::get( $this->Orientstruct->validate, "{$matches[1]}.{$matches[2]}.rule" );
+				}
+			}
+			ksort( $result );
+
+			return $result;
+		}
+
+		/**
+		 * Préparation avant test pour un département en particulier.
+		 *
+		 * @param integer $departement
+		 */
+		public function setUpDepartement( $departement ) {
+			unset( $this->Orientstruct );
+			ClassRegistry::flush();
+			Configure::write( 'Cg.departement', $departement );
 
 			// On mock la méthode ged()
 			$this->Orientstruct = $this->getMock(
@@ -57,6 +83,15 @@
 				array( 'ged' ),
 				array( array( 'ds' => 'test' ) )
 			);
+		}
+
+		/**
+		 * Préparation du test.
+		 */
+		public function setUp() {
+			parent::setUp();
+
+			$this->setUpDepartement( 93 );
 		}
 
 		/**
@@ -91,6 +126,7 @@
 					'origine' => null,
 					'rgorient' => null,
 					'date_valid' => null,
+					'haspiecejointe' => '0'
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -115,6 +151,7 @@
 					'rgorient' => null,
 					'date_valid' => null,
 					'origine' => null,
+					'haspiecejointe' => '0'
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -139,6 +176,7 @@
 					'rgorient' => null,
 					'date_valid' => null,
 					'origine' => null,
+					'haspiecejointe' => '0'
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -161,6 +199,7 @@
 					'personne_id' => 1,
 					'statut_orient' => 'Orienté',
 					'rgorient' => 1,
+					'haspiecejointe' => '0'
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -179,6 +218,8 @@
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
 					'haspiecejointe' => '0',
+					'origine' => 'manuelle',
+					'date_valid' => '2015-01-01'
 				)
 			);
 			$this->Orientstruct->create( $data );
@@ -196,6 +237,8 @@
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
 					'haspiecejointe' => '0',
+					'origine' => 'manuelle',
+					'date_valid' => '2015-01-01'
 				)
 			);
 			$this->Orientstruct->create( $data );
@@ -213,6 +256,8 @@
 					'structurereferente_id' => 1,
 					'haspiecejointe' => '0',
 					'rgorient' => 1,
+					'origine' => 'manuelle',
+					'date_valid' => '2015-01-01'
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -231,6 +276,8 @@
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
 					'haspiecejointe' => '0',
+					'origine' => 'manuelle',
+					'date_valid' => '2015-01-01'
 				)
 			);
 			$this->Orientstruct->create( $data );
@@ -245,6 +292,8 @@
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
 					'haspiecejointe' => '0',
+					'origine' => 'reorientation',
+					'date_valid' => '2015-02-01'
 				)
 			);
 			$this->Orientstruct->create( $data );
@@ -261,6 +310,8 @@
 					'structurereferente_id' => 1,
 					'haspiecejointe' => '0',
 					'rgorient' => 2,
+					'origine' => 'reorientation',
+					'date_valid' => '2015-02-01'
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -364,5 +415,229 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Vérification des règles de validation mises en place pour le
+		 * département 976 (constructeur, règles par défaut, ...).
+		 */
+		public function testOrientstructValidate976() {
+			$this->setUpDepartement( 976 );
+
+			$result = Hash::get( $this->Orientstruct->validate, 'typeorient_id.notEmptyIf' );
+			$expected = array(
+				'rule' => array(
+					'notEmptyIf',
+					'statut_orient',
+					true,
+					array(
+						'Orienté',
+						'En attente',
+						'',
+					),
+				),
+				'message' => 'Champ obligatoire'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = Hash::get( $this->Orientstruct->validate, 'structurereferente_id.notEmptyIf' );
+			$expected = array(
+				'rule' => array(
+					'notEmptyIf',
+					'statut_orient',
+					true,
+					array(
+						'Orienté',
+						'En attente',
+						'',
+					),
+				),
+				'message' => 'Champ obligatoire'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Vérification des règles de validation mises en place pour le
+		 * département 66 (constructeur, règles par défaut, ...).
+		 */
+		public function testOrientstructValidate66() {
+			$this->setUpDepartement( 66 );
+
+			$result = Hash::get( $this->Orientstruct->validate, 'structureorientante_id.notEmptyIf' );
+			$expected = array(
+				'rule' => array(
+					'notEmptyIf',
+					'statut_orient',
+					true,
+					array( 'Orienté' ),
+				),
+				'message' => 'Veuillez choisir une structure orientante'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = Hash::get( $this->Orientstruct->validate, 'referentorientant_id.notEmptyIf' );
+			$expected = array(
+				'rule' => array(
+					'notEmptyIf',
+					'statut_orient',
+					true,
+					array( 'Orienté' ),
+				),
+				'message' => 'Veuillez choisir un référent orientant'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Vérification des règles de validation mises en place pour le
+		 * département 58 (constructeur, règles par défaut, ...), où ce sont les
+		 * règles par défaut qui s'appliquent.
+		 */
+		public function testOrientstructValidate() {
+			$this->setUpDepartement( 58 );
+
+			$result = $this->extractValidateRules( $this->Orientstruct );
+			$expected = array(
+				'date_impression.date' => array(
+					'date'
+				),
+				'date_impression_relance.date' => array(
+					'date'
+				),
+				'date_propo.date' => array(
+					'date'
+				),
+				'date_valid.date' => array(
+					'date'
+				),
+				'date_valid.notEmptyIf' => array(
+					'notEmptyIf',
+					'statut_orient',
+					true,
+					array( 'Orienté' ),
+				),
+				'daterelance.date' => array(
+					'date'
+				),
+				'etatorient.inList' => array(
+					'inList',
+					array(
+						'proposition',
+						'decision'
+					)
+				),
+				'etatorient.maxLength' => array(
+					'maxLength',
+					11
+				),
+				'haspiecejointe.inList' => array(
+					'inList',
+					array( '0', '1' )
+				),
+				'haspiecejointe.maxLength' => array(
+					'maxLength',
+					1
+				),
+				'haspiecejointe.notEmpty' => array(
+					'notEmpty'
+				),
+				'id.integer' => array(
+					'integer'
+				),
+				'origine.inList' => array(
+					'inList',
+					array( 'manuelle', 'cohorte', 'reorientation', 'demenagement' )
+				),
+				'origine.maxLength' => array(
+					'maxLength',
+					13
+				),
+				'personne_id.integer' => array(
+					'integer'
+				),
+				'personne_id.notEmpty' => array(
+					'notEmpty'
+				),
+				'propo_algo.integer' => array(
+					'integer'
+				),
+				'referent_id.integer' => array(
+					'integer'
+				),
+				'referent_id.dependentForeignKeys' => array(
+					'dependentForeignKeys',
+					'Referent',
+					'Structurereferente'
+				),
+				'referentorientant_id.integer' => array(
+					'integer'
+				),
+				'rgorient.integer' => array(
+					'integer'
+				),
+				'statut_orient.inList' => array(
+					'inList',
+					array( 'Orienté', 'En attente', 'Non orienté' )
+				),
+				'statut_orient.maxLength' => array(
+					'maxLength',
+					15
+				),
+				'statut_orient.notEmpty' => array(
+					'notEmpty'
+				),
+				'statutrelance.inList' => array(
+					'inList',
+					array( 'E', 'R' )
+				),
+				'statutrelance.maxLength' => array(
+					'maxLength',
+					1
+				),
+				'structureorientante_id.integer' => array(
+					'integer'
+				),
+				'structurereferente_id.dependentForeignKeys' => array(
+					'dependentForeignKeys',
+					'Structurereferente',
+					'Typeorient'
+				),
+				'structurereferente_id.integer' => array(
+					'integer'
+				),
+				'structurereferente_id.notEmptyIf' => array(
+					'notEmptyIf',
+					'statut_orient',
+					true,
+					array( 'Orienté' )
+				),
+				'typenotification.inList' => array(
+					'inList',
+					array(
+						'normale',
+						'systematique',
+						'dejainscritpe'
+					)
+				),
+				'typenotification.maxLength' => array(
+					'maxLength',
+					15
+				),
+				'typeorient_id.integer' => array(
+					'integer'
+				),
+				'typeorient_id.notEmptyIf' => array(
+					'notEmptyIf',
+					'statut_orient',
+					true,
+					array( 'Orienté' )
+				),
+				'user_id.integer' => array(
+					'integer'
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
 	}
 ?>

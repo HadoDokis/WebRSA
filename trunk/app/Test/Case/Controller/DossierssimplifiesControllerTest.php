@@ -324,7 +324,6 @@
 				$data
 			);
 			$data['Dossier']['haspiecejointe'] = '0';
-			$data['Foyer']['haspiecejointe'] = '0';
 
 			$data['Personne'][0]['haspiecejointe'] = '0';
 			$data['Personne'][1]['haspiecejointe'] = '0';
@@ -429,9 +428,9 @@
 				'Foyer' => array(
 					'id' => 3,
 					'dossier_id' => 3,
-					'sitfam' => '',
+					'sitfam' => NULL,
 					'ddsitfam' => NULL,
-					'typeocclog' => '',
+					'typeocclog' => NULL,
 					'mtvallocterr' => NULL,
 					'mtvalloclog' => NULL,
 					'contefichliairsa' => '',
@@ -598,9 +597,9 @@
 				'Foyer' => array(
 					'id' => 3,
 					'dossier_id' => 3,
-					'sitfam' => '',
+					'sitfam' => NULL,
 					'ddsitfam' => NULL,
-					'typeocclog' => '',
+					'typeocclog' => NULL,
 					'mtvallocterr' => NULL,
 					'mtvalloclog' => NULL,
 					'contefichliairsa' => '',
@@ -766,9 +765,9 @@
 				'Foyer' => array(
 					'id' => 3,
 					'dossier_id' => 3,
-					'sitfam' => '',
+					'sitfam' => NULL,
 					'ddsitfam' => NULL,
-					'typeocclog' => '',
+					'typeocclog' => NULL,
 					'mtvallocterr' => NULL,
 					'mtvalloclog' => NULL,
 					'contefichliairsa' => '',

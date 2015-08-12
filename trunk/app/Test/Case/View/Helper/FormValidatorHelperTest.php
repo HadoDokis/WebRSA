@@ -9,10 +9,10 @@
 	App::uses( 'View', 'View' );
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'FormValidatorHelper', 'View/Helper' );
-	
+
 	/**
 	 * Surcharge de la classe pour pouvoir accéder aux méthodes protégées
-	 * 
+	 *
 	 * @package app.Test.Case.Utility
 	 */
 //	class DepartementTestMoi extends Departement
@@ -28,7 +28,7 @@
 	 * @package app.Test.Case.Utility
 	 */
 	class FormValidatorHelperTest extends CakeTestCase
-	{		
+	{
 		/**
 		 * Fixtures utilisés.
 		 *
@@ -39,7 +39,7 @@
 			'app.Personne',
 			'app.Prestation',
 		);
-		
+
 		/**
 		 * Préparation du test.
 		 */
@@ -111,12 +111,12 @@
 				'named' => array( 'foo' => 'bar' ),
 				'pass' => array( )
 			);
-			
+
 			Configure::write( 'ValidationJS.enabled', true );
 			Configure::write( 'ValidationOnchange.enabled', true );
 			Configure::write( 'ValidationOnsubmit.enabled', true );
 		}
-		
+
 		public function testGenerateValidationRules(){
 			$additionnal = array(
 				'model1' => array(
@@ -135,58 +135,58 @@
 					))
 				)
 			);
-			
+
 			$result = $this->FormValidator->generateValidationRules()->validationJson;
-			$expected = '{"Personne":{"qual":[{"rule":"notEmpty"}],"nom":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \\u00eatre compris entre 13 et 15 caract\\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"dossier_id":{"numeric":{"rule":["numeric"]}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]}}';
+			$expected = '{"Personne":{"qual":[{"rule":"notEmpty"}],"nom":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \u00eatre compris entre 13 et 15 caract\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"id":{"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"dossier_id":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"sitfam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ABA","CEL","DIV","ISO","MAR","PAC","RPA","RVC","RVM","SEF","SEL","VEU","VIM"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"ddsitfam":{"date":{"rule":["date"],"message":null,"required":null,"allowEmpty":true,"on":null}},"typeocclog":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ACC","BAL","HCG","HCO","HGP","HOP","HOT","LOC","OLI","PRO","SRG","SRO"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvallocterr":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvalloclog":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"contefichliairsa":[],"mtestrsa":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"raisoctieelectdom":{"maxLength":{"rule":["maxLength",32],"message":null,"required":null,"allowEmpty":true,"on":null}},"regagrifam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null}},"haspiecejointe":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"maxLength":{"rule":["maxLength",1],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["0","1"]],"message":null,"required":null,"allowEmpty":true,"on":null}}},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]}}';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-			
+
 			$result2 = $this->FormValidator->generateValidationRules(null, false)->validationJson;
 			$expected2 = 'undefined';
 			$this->assertEqual( $result2, $expected2, var_export( $result, true ) );
-			
+
 			$result3 = $this->FormValidator->generateValidationRules($additionnal)->validationJson;
-			$expected3 = '{"Personne":{"qual":[{"rule":"notEmpty"}],"nom":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \u00eatre compris entre 13 et 15 caract\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"dossier_id":{"numeric":{"rule":["numeric"]}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]},"model1":{"champ1":{"regle1":{"rule":"notEmpty","message":"custom"}},"champ2":{"regle2":{"rule":["notEmptyIf","field",true,[1,2,3]],"message":"custom"}}}}';
+			$expected3 = '{"Personne":{"qual":[{"rule":"notEmpty"}],"nom":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \u00eatre compris entre 13 et 15 caract\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"id":{"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"dossier_id":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"sitfam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ABA","CEL","DIV","ISO","MAR","PAC","RPA","RVC","RVM","SEF","SEL","VEU","VIM"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"ddsitfam":{"date":{"rule":["date"],"message":null,"required":null,"allowEmpty":true,"on":null}},"typeocclog":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ACC","BAL","HCG","HCO","HGP","HOP","HOT","LOC","OLI","PRO","SRG","SRO"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvallocterr":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvalloclog":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"contefichliairsa":[],"mtestrsa":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"raisoctieelectdom":{"maxLength":{"rule":["maxLength",32],"message":null,"required":null,"allowEmpty":true,"on":null}},"regagrifam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null}},"haspiecejointe":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"maxLength":{"rule":["maxLength",1],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["0","1"]],"message":null,"required":null,"allowEmpty":true,"on":null}}},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]},"model1":{"champ1":{"regle1":{"rule":"notEmpty","message":"custom"}},"champ2":{"regle2":{"rule":["notEmptyIf","field",true,[1,2,3]],"message":"custom"}}}}';
 			$this->assertEqual( $result3, $expected3, var_export( $result, true ) );
-			
+
 			$result4 = $this->FormValidator->generateValidationRules($additionnal, false)->validationJson;
 			$expected4 = '{"model1":{"champ1":{"regle1":{"rule":"notEmpty","message":"custom"}},"champ2":{"regle2":{"rule":["notEmptyIf","field",true,[1,2,3]],"message":"custom"}}}}';
 			$this->assertEqual( $result4, $expected4, var_export( $result, true ) );
 		}
-		
+
 		public function testGenerateTraductions(){
 			$result = $this->FormValidator->generateTraductions()->traductions;
 			$expected = 'undefined';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-			
+
 			$result2 = $this->FormValidator->generateValidationRules()->generateTraductions()->traductions;
-			$expected2 = '{"notEmpty":"Champ obligatoire","between":"","alphaNumeric":"","date":"Veuillez entrer une date valide","comparison":"Veuillez entrer une valeur %s %s","numeric":"Veuillez entrer une valeur num\u00e9rique","phoneFr":"Ce num\u00e9ro de t\u00e9l\u00e9phone n\'est pas valide","email":"Veuillez saisir une adresse de courrier \u00e9lectronique valide","inList":"Veuillez entrer une valeur parmi %s"}';
+			$expected2 = '{"notEmpty":"Champ obligatoire","between":"","alphaNumeric":"","date":"Veuillez entrer une date valide","comparison":"Veuillez entrer une valeur %s %s","numeric":"Veuillez entrer une valeur num\u00e9rique","phoneFr":"Ce num\u00e9ro de t\u00e9l\u00e9phone n\'est pas valide","email":"Veuillez saisir une adresse de courrier \u00e9lectronique valide","inList":"Veuillez entrer une valeur parmi %s","integer":"Veuillez entrer un nombre entier","maxLength":"Maximum %s caract\u00e8res"}';
 			$this->assertEqual( $result2, $expected2, var_export( $result, true ) );
 		}
-		
+
 		public function testRemoveValidations(){
 			$removeList1 = array('Personne' => 'nom');
 			$removeList2 = array('Personne', 'Foyer');
-			
+
 			$result = $this->FormValidator->generateValidationRules()->removeValidations( $removeList1 )->validationJson;
-			$expected = '{"Personne":{"qual":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \u00eatre compris entre 13 et 15 caract\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"dossier_id":{"numeric":{"rule":["numeric"]}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]}}';
+			$expected = '{"Personne":{"qual":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \u00eatre compris entre 13 et 15 caract\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"id":{"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"dossier_id":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"sitfam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ABA","CEL","DIV","ISO","MAR","PAC","RPA","RVC","RVM","SEF","SEL","VEU","VIM"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"ddsitfam":{"date":{"rule":["date"],"message":null,"required":null,"allowEmpty":true,"on":null}},"typeocclog":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ACC","BAL","HCG","HCO","HGP","HOP","HOT","LOC","OLI","PRO","SRG","SRO"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvallocterr":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvalloclog":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"contefichliairsa":[],"mtestrsa":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"raisoctieelectdom":{"maxLength":{"rule":["maxLength",32],"message":null,"required":null,"allowEmpty":true,"on":null}},"regagrifam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null}},"haspiecejointe":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"maxLength":{"rule":["maxLength",1],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["0","1"]],"message":null,"required":null,"allowEmpty":true,"on":null}}},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]}}';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-			
+
 			$result2 = $this->FormValidator->generateValidationRules()->removeValidations()->validationJson;
 			$expected2 = 'undefined';
 			$this->assertEqual( $result2, $expected2, var_export( $result, true ) );
-			
+
 			$result3 = $this->FormValidator->generateValidationRules()->removeValidations($removeList2)->validationJson;
 			$expected3 = '{"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]}}';
 			$this->assertEqual( $result3, $expected3, var_export( $result, true ) );
 		}
-		
+
 		public function testGenerateJavascript(){
 			$result = $this->FormValidator->generateJavascript();
 			$expected = '<script type="text/javascript">
 		<!--//--><![CDATA[//><!--
 			// Variables pour validation javascript
-			var validationRules = {"Personne":{"qual":[{"rule":"notEmpty"}],"nom":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \\u00eatre compris entre 13 et 15 caract\\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"dossier_id":{"numeric":{"rule":["numeric"]}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]}};
-			var traductions = {"notEmpty":"Champ obligatoire","between":"","alphaNumeric":"","date":"Veuillez entrer une date valide","comparison":"Veuillez entrer une valeur %s %s","numeric":"Veuillez entrer une valeur num\\u00e9rique","phoneFr":"Ce num\\u00e9ro de t\\u00e9l\\u00e9phone n\'est pas valide","email":"Veuillez saisir une adresse de courrier \\u00e9lectronique valide","inList":"Veuillez entrer une valeur parmi %s"};
+			var validationRules = {"Personne":{"qual":[{"rule":"notEmpty"}],"nom":[{"rule":"notEmpty"}],"prenom":[{"rule":"notEmpty"}],"nir":[{"rule":["between",13,15],"message":"Le NIR doit \\u00eatre compris entre 13 et 15 caract\\u00e8res","allowEmpty":true},{"rule":"alphaNumeric","message":"Veuillez entrer une valeur alpha-num\\u00e9rique.","allowEmpty":true}],"dtnai":[{"rule":"date","message":"Veuillez v\\u00e9rifier le format de la date."},{"rule":"notEmpty","message":"Champ obligatoire"}],"rgnai":[{"rule":["comparison",">",0],"message":"Veuillez entrer un nombre positif.","allowEmpty":true},{"rule":"numeric","message":"Veuillez entrer une valeur num\\u00e9rique.","allowEmpty":true}],"numfixe":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"numport":{"phoneFr":{"rule":["phoneFr"],"allowEmpty":true}},"email":{"email":{"rule":["email"],"allowEmpty":true}},"haspiecejointe":[{"rule":["inList",["0","1"]],"message":"Veuillez entrer une valeur parmi 0, 1","allowEmpty":true}]},"Foyer":{"id":{"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"dossier_id":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"integer":{"rule":["integer"],"message":null,"required":null,"allowEmpty":true,"on":null}},"sitfam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ABA","CEL","DIV","ISO","MAR","PAC","RPA","RVC","RVM","SEF","SEL","VEU","VIM"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"ddsitfam":{"date":{"rule":["date"],"message":null,"required":null,"allowEmpty":true,"on":null}},"typeocclog":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["ACC","BAL","HCG","HCO","HGP","HOP","HOT","LOC","OLI","PRO","SRG","SRO"]],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvallocterr":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"mtvalloclog":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"contefichliairsa":[],"mtestrsa":{"numeric":{"rule":["numeric"],"message":null,"required":null,"allowEmpty":true,"on":null}},"raisoctieelectdom":{"maxLength":{"rule":["maxLength",32],"message":null,"required":null,"allowEmpty":true,"on":null}},"regagrifam":{"maxLength":{"rule":["maxLength",3],"message":null,"required":null,"allowEmpty":true,"on":null}},"haspiecejointe":{"notEmpty":{"rule":["notEmpty"],"message":null,"required":null,"allowEmpty":false,"on":null},"maxLength":{"rule":["maxLength",1],"message":null,"required":null,"allowEmpty":true,"on":null},"inList":{"rule":["inList",["0","1"]],"message":null,"required":null,"allowEmpty":true,"on":null}}},"Prestation":{"rolepers":[{"rule":"notEmpty","message":"Champ obligatoire"}]}};
+			var traductions = {"notEmpty":"Champ obligatoire","between":"","alphaNumeric":"","date":"Veuillez entrer une date valide","comparison":"Veuillez entrer une valeur %s %s","numeric":"Veuillez entrer une valeur num\\u00e9rique","phoneFr":"Ce num\\u00e9ro de t\\u00e9l\\u00e9phone n\'est pas valide","email":"Veuillez saisir une adresse de courrier \\u00e9lectronique valide","inList":"Veuillez entrer une valeur parmi %s","integer":"Veuillez entrer un nombre entier","maxLength":"Maximum %s caract\\u00e8res"};
 			var validationJS = 1;
 			var validationOnchange = 1;
 			var validationOnsubmit = 1;

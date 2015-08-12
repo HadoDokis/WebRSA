@@ -730,5 +730,88 @@
 
 			return $return;
 		}
+
+		// ---------------------------------------------------------------------
+		// @todo
+		// Expérimental: permet l'utilisation de uses (lazy loading) et de loadModel
+		// dans les classes de modèles.
+		// Utile pour Option, les classes WebrsaRecherche, les classes de logique
+		// métier, les classes "de base" devant contenir de la logique métier.
+		//
+		// @see: http://josediazgonzalez.com/2010/10/05/using-loadmodel-in-the-model/
+		// @see http://blog.andolasoft.com/2013/06/why-implement-fat-model-and-skinny-controller-in-cakephp.html#
+		// @see http://mark-story.com/posts/view/reducing-requestaction-use-in-your-cakephp-sites-with-fat-models
+		// @see http://www.sanisoft.com/blog/2010/05/31/cakephp-fat-models-and-skinny-controllers/
+		// @see http://www.waytocode.com/2014/use-model-inside-another-model-without-association-in-cakephp/
+		// @see http://trevweb.me.uk/models-without-tables-in-cakephp/
+		// ---------------------------------------------------------------------
+
+		/**
+		 * Les classes qui seront utilisées.
+		 *
+		 * @see __isset(), loadModel()
+		 *
+		 * @var array
+		 */
+		public $uses = array();
+
+		/**
+		 * Lazy loads models using the loadModel() method if declared in $uses
+		 *
+		 * @param string $name
+		 * @return void
+		 */
+		public function __isset( $name ) {
+			if( is_array( $this->uses ) ) {
+				foreach( $this->uses as $modelClass ) {
+					list($plugin, $class) = pluginSplit( $modelClass, true );
+					if( $name === $class ) {
+						return $this->loadModel( $modelClass );
+					}
+				}
+			}
+
+			return parent::__isset( $name );
+		}
+
+		/**
+		 * Loads and instantiates models required by this controller.
+		 * If the model is non existent, it will throw a missing database table error, as Cake generates
+		 * dynamic models for the time being.
+		 *
+		 * @info Copié/Collé/adapté du contrôleur
+		 * @todo A factoriser dans WebrsaAbstractLogic
+		 * @info Mis en "cache mémoire"
+		 *
+		 * @param string $modelClass Name of model class to load
+		 * @param integer|string $id Initial ID the instanced model class should have
+		 * @return mixed true when single model found and instance created, false if already createderror returned if model not found.
+		 * @throws MissingModelException if the model class cannot be found.
+		 */
+		public function loadModel( $modelClass, $id = null ) {
+			list($plugin, $modelClass) = pluginSplit( $modelClass, true );
+
+			if( !isset( $this->{$modelClass} ) || $this->{$modelClass} === null ) {
+				$this->uses = ($this->uses) ? (array) $this->uses : array();
+				if( !in_array( $modelClass, $this->uses ) ) {
+					$this->uses[] = $modelClass;
+				}
+
+				$this->{$modelClass} = ClassRegistry::init(
+					array(
+						'class' => $plugin.$modelClass,
+						'alias' => $modelClass,
+						'id' => $id
+					)
+				);
+
+				if( !$this->{$modelClass} || get_class( $this->{$modelClass} ) === 'AppModel' ) {
+					throw new MissingModelException( $modelClass );
+				}
+				return true;
+			}
+
+			return false;
+		}
 	}
 ?>

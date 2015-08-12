@@ -58,7 +58,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Orientstruct' );
+		public $uses = array( 'Orientstruct', 'WebrsaOrientstruct' );
 
 		/**
 		 *
@@ -425,16 +425,16 @@
 			);
 
 			// Droits sur les actions
-			$ajoutPossible = $this->Orientstruct->ajoutPossible( $personne_id )
+			$ajoutPossible = $this->WebrsaOrientstruct->ajoutPossible( $personne_id )
 					&& empty( $reorientationseps )
 					&& empty( $reorientationscovs );
 
-			$en_procedure_relance = $this->Orientstruct->enProcedureRelance( $personne_id );
+			$en_procedure_relance = $this->WebrsaOrientstruct->enProcedureRelance( $personne_id );
 
 			$force_edit = ( $departement == 93 && $rgorient_max == 0 );
 
 			// Liste des orientations
-			$query = $this->Orientstruct->getIndexQuery( $personne_id );
+			$query = $this->WebrsaOrientstruct->getIndexQuery( $personne_id );
 			$orientsstructs = $this->Orientstruct->find( 'all', $query );
 			$orientsstructs = $this->_getCompletedIndexResults(
 				$orientsstructs,
@@ -460,7 +460,7 @@
 					'themeep' => $this->Orientstruct->Personne->Dossierep->enum( 'themeep' )
 				),
 				'Orientstruct' => array(
-					'statut_orient' => $Option->statut_orient()
+					'statut_orient' => $this->Orientstruct->enum( 'statut_orient' )
 				),
 				'Passagecommissionep' => array(
 					'etatdossierep' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enum( 'etatdossierep' )
@@ -521,12 +521,14 @@
 			$user_id = $this->Session->read( 'Auth.User.id' );
 			// -----------------------------------------------------------------
 			// Retour à l'index s'il n'est pas possible d'ajouter une orientation
-			if( $this->action === 'add' && !$this->Orientstruct->ajoutPossible( $personne_id ) ) {
+			if( $this->action === 'add' && !$this->WebrsaOrientstruct->ajoutPossible( $personne_id ) ) {
 				$this->Session->setFlash( 'Impossible d\'ajouter une orientation à cette personne.', 'flash/error' );
 				$this->redirect( $redirectUrl );
 			}
+
 			// -----------------------------------------------------------------
-			$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
+			//$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
+			$originalAddEditFormData = $this->WebrsaOrientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 
 			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
 			if( $this->action === 'edit' && !empty( $originalAddEditFormData['Orientstruct']['date_valid'] ) && $originalAddEditFormData['Orientstruct']['statut_orient'] == 'Orienté' && $originalAddEditFormData['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $originalAddEditFormData['Orientstruct']['personne_id'] ) ) {
@@ -546,7 +548,8 @@
 			// Tentative de sauvegarde
 			if( !empty( $this->request->data ) ) {
 				$this->Orientstruct->begin();
-				if( $this->Orientstruct->saveAddEditFormData( $this->request->data, $user_id ) ) {
+//				if( $this->Orientstruct->saveAddEditFormData( $this->request->data, $user_id ) ) {
+				if( $this->WebrsaOrientstruct->saveAddEditFormData( $this->request->data, $user_id ) ) {
 					$this->Orientstruct->commit();
 					$this->Jetons2->release( Hash::get( $dossierMenu, 'Dossier.id' ) );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -573,8 +576,9 @@
 					//'typeorient_id' => $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ),
 					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O', 'Structurereferente.actif' => 'O' ) ) ),
 					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
-					'statut_orient' => $Option->statut_orient(),
+					'statut_orient' => $this->Orientstruct->enum( 'statut_orient' ),
 					// Pour le 66
+					// -> FIXME ?
 					'structureorientante_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'list' => true, 'conditions' => array( 'Structurereferente.orientation' => 'O' ) ) ),
 					'referentorientant_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
 				)
@@ -657,7 +661,7 @@
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
-			$pdf = $this->Orientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->WebrsaOrientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Notification_Changement_Referent_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );

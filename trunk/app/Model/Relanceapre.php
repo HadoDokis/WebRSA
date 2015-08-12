@@ -209,7 +209,8 @@
 			else {
 				$Option = ClassRegistry::init( 'Option' );
 
-				$options = Set::merge(
+				$options = Hash::merge(
+					$this->Apre->Personne->Foyer->enums(),
 					array(
 						'Personne' => array(
 							'qual' => $Option->qual(),

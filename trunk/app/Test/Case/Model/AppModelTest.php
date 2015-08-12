@@ -1,4 +1,31 @@
 <?php
+	/**
+	 * Code source de la classe AppModelTest.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Test.Case.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'AppModel', 'Model' );
+
+	/**
+	 * ...
+	 *
+	 * @package app.Test.Case.Model
+	 */
+	class AppUses extends AppModel
+	{
+		public $useTable = false;
+
+		public $uses = array( 'Option', 'Entretien' );
+	}
+
+	/**
+	 * La classe AppModelTest réalise les tests unitaires de la classe AppModel.
+	 *
+	 * @package app.Test.Case.Model
+	 */
 	class AppModelTest extends CakeTestCase
 	{
 
@@ -177,6 +204,39 @@
 			$result = $this->Connection->getSqLinkedModelsDepartement( 'nombre' );
 			$expected = '( 1 = 0 ) AS "Connection__nombre"';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de l'attribut AppModel::uses
+		 */
+		public function testUses() {
+			$AppUses = ClassRegistry::init( 'AppUses' );
+
+			$this->assertTrue( isset( $AppUses->Option ) );
+			$this->assertTrue( isset( $AppUses->Entretien ) );
+			$this->assertFalse( isset( $AppUses->Rendezvous ) );
+		}
+
+		/**
+		 * Test de la méthode AppModel::loadModel()
+		 */
+		public function testLoadModel() {
+			$AppUses = ClassRegistry::init( 'AppUses' );
+
+			$this->assertTrue( $AppUses->loadModel( 'Rendezvous' ) );
+			$this->assertTrue( isset( $AppUses->Rendezvous ) );
+
+			$this->assertFalse( $AppUses->loadModel( 'Entretien' ) );
+			$this->assertTrue( isset( $AppUses->Entretien ) );
+		}
+
+		/**
+		 * Test de la méthode AppModel::loadModel() avec un modèle inexistant.
+		 * @expectedException MissingModelException
+		 */
+		public function testLoadModelInexistant() {
+			$AppUses = ClassRegistry::init( 'AppUses' );
+			$AppUses->loadModel( 'FooBarBaz' );
 		}
 	}
 ?>
