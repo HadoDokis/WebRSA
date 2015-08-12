@@ -936,3 +936,14 @@ form#magic_search>input[type=submit]{
 	width: 35px;
 	height: 25px;
 }
+
+/* Règles CSS permettant de surcharger les règles de bootstrap qui surchargent les règles utilisées précédemment */
+body a {
+	text-decoration: underline;
+}
+table thead a, table thead a:hover, table thead a:focus {
+	text-decoration: underline;
+}
+table thead a:hover, table thead a:focus {
+	color: white;
+}
