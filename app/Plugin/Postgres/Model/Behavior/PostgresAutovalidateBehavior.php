@@ -110,11 +110,17 @@
 
 			if( isset( $parameters['params'] ) ) {
 				if( preg_match( '/^ARRAY\[(.*)\]$/', $parameters['params'], $matches ) ) {
-					if( preg_match_all( '/([^, ]+)/', $matches[1], $values ) ) {
+					if( preg_match_all( '/ *([^,]+) */', $matches[1], $values ) ) {
+						foreach( $values[1] as $k => $v ) {
+							$values[1][$k] = preg_replace( '/^\'(.*)\'$/', '\1', $v );
+						}
 						$params = array( $values[1] );
 					}
 				}
 				else if( preg_match_all( '/([^, ]+),{0,1}/', $parameters['params'], $matches ) ) {
+					foreach( $matches[1] as $k => $v ) {
+						$matches[1][$k] = preg_replace( '/^\'(.*)\'$/', '\1', $v );
+					}
 					$params = $matches[1];
 				}
 			}
@@ -138,10 +144,12 @@
 		 */
 		protected function _addGuessedPostgresConstraint( Model $Model, array $rules, $code ) {
 			// INFO: IIF the check is "xx()" or "xx() AND xx()" etc.
+			// Transform (("position"))::
+			$code = preg_replace( '/\("([^\(\)"]+)"\)::/', '(\1)::', $code );
 			// Remove extra parenthesis
 			$code = preg_replace( '/^( *\(+ *)? *(.+) *(?(1) *\)+ *)$/', '\2', $code );
 			// Transform '.*'::text
-			$code = preg_replace( '/\'([^\']+)\'::[^,\)\]]+/', '\1', $code );
+			$code = preg_replace( '/\'([^\']+)\'::[^,\)\]]+/', '\'\1\'', $code );
 			// Transform (0)::numeric
 			$code = preg_replace( '/\(([^\(\)]+)\)::[^,\)\]]+/', '\1', $code );
 			// Transform ((-1))::double precision
