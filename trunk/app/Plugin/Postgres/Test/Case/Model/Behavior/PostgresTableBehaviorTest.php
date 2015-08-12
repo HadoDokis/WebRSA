@@ -100,6 +100,14 @@
 						'name' => 'postgres_users_popularity_inclusive_range_chk',
 						'clause' => 'cakephp_validate_inclusive_range((popularity)::double precision, (0)::double precision, (10)::double precision)'
 					)
+				),
+				array(
+					'Constraint' => array(
+						'schema' => 'public',
+						'table' => 'postgres_users',
+						'name' => 'postgres_users_position_in_list_chk',
+						'clause' => 'cakephp_validate_in_list(("position")::text, ARRAY[\'in line\'::text, \'out of line\'::text])',
+					)
 				)
 			);
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );

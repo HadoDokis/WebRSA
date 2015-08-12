@@ -47,6 +47,7 @@
 			'phone' => array( 'type' => 'string', 'length' => 10, 'null' => true ),
 			'popularity' => array( 'type' => 'integer', 'null' => false, 'default' => 5 ),
 			'active' => array( 'type' => 'integer', 'null' => false, 'default' => 0 ),
+			'position' => array( 'type' => 'string', 'length' => 11, 'null' => true ),
 			'created' => 'datetime',
 			'updated' => 'datetime',
 			'indexes' => array(
@@ -85,6 +86,8 @@
 			'postgres_users_active_in_list_chk' => "( cakephp_validate_in_list( active, ARRAY[0, 1] ) )",
 			'postgres_users_popularity_inclusive_range_chk' => "( cakephp_validate_inclusive_range( popularity, 0, 10 ) )",
 			'postgres_users_phone_phone_chk' => "( cakephp_validate_phone( phone, NULL, 'fr' ) )",
+			'postgres_users_position_in_list_chk' => "( cakephp_validate_in_list( position, ARRAY[ 'in line', 'out of line' ] ) )",
+//			'postgres_users_position_in_list_chk' => "( cakephp_validate_in_list( position, ARRAY[ 'Orienté', 'En attente', 'Non orienté' ] ) )",
 		);
 
 		/**

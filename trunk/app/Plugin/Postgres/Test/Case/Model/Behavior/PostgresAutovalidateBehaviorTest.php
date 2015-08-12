@@ -90,6 +90,18 @@
 				'on' => null
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// inList avec des espaces et un nom de colonne entre quotes
+			// CHECK (cakephp_validate_in_list("position"::text, ARRAY['in line'::text, 'out of line'::text]))
+			$result = Hash::get( $this->User->validate, 'position.inList' );
+			$expected = array(
+				'rule' => array( 'inList', array( 'in line', 'out of line' ) ),
+				'message' => null,
+				'required' => null,
+				'allowEmpty' => true,
+				'on' => null
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
 ?>
