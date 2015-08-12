@@ -597,5 +597,39 @@
 
 			return $enums;
 		}
+
+		/**
+		 * Retourne une sous-requête permettant d'obtenir l'id du dossier de COV de la personne
+		 * associé à la COV la plus récente.
+		 *
+		 * @param string $personneIdAlias Le champ désignant l'id de la personne
+		 * @param array $conditions Les conditions supplémentaires à prendre en compte
+		 * @return string
+		 */
+		public function sqDernierPassagePersonne( $personneIdAlias = 'Personne.id', array $conditions = array() ) {
+			$replacements = array(
+				'Dossiercov58' => 'dossierscovs58',
+				'Passagecov58' => 'passagescovs58',
+				'Cov58' => 'covs58'
+			);
+
+			$conditions = array_words_replace( $conditions, $replacements );
+			$conditions[] = "dossierscovs58.personne_id = {$personneIdAlias}";
+
+			return $this->sq(
+				array(
+					'fields' => array( 'dossierscovs58.id' ),
+					'alias' => 'dossierscovs58',
+					'joins' => array(
+						array_words_replace( $this->join( 'Passagecov58', array( 'type' => 'INNER' ) ), $replacements ),
+						array_words_replace( $this->Passagecov58->join( 'Cov58', array( 'type' => 'INNER' ) ), $replacements ),
+					),
+					'contain' => false,
+					'conditions' => $conditions,
+					'order' => array( 'covs58.datecommission DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>
