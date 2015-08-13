@@ -17,45 +17,42 @@
 	class WebrsaRecherchesOrientsstructsComponent extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modele principal
-		 * @var Model
-		 */
-		public $Orientstruct;
-
-		/**
-		 * Controller executant le component
-		 * @var Controller
-		 */
-		public $Controller;
-
-		/**
-		 * Contructeur de class, assigne le controller et le modele principal
-		 *
-		 * @param \ComponentCollection $collection
-		 * @param array $settings
-		 */
-		public function __construct(\ComponentCollection $collection, $settings = array()) {
-			parent::__construct($collection, $settings);
-
-			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
-			$this->Controller = $this->_Collection->getController();
-		}
-
-		/**
 		 * Options pour le moteur de recherche
 		 *
 		 * @param array $params
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
-			$options = parent::options( $params );
+			$Controller = $this->_Collection->getController();
+			$params = $this->params( $params );
+			$departement = (int)Configure::read( 'Cg.departement' );
 
-			$options['Orientstruct']['typeorient_id'] = $this->Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) );
-			$options['Orientstruct']['structureorientante_id'] = $this->Orientstruct->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
-			$options['Orientstruct']['referentorientant_id'] = $this->Orientstruct->Structurereferente->Referent->listOptions();
-			$options['Orientstruct']['structurereferente_id'] = $this->Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'conditions' => array( 'orientation' => 'O' ) ) );
-			$options['Orientstruct']['statut_orient'] = $this->Orientstruct->enum( 'statut_orient' );
-			// $options['Orientstruct']['serviceinstructeur_id'] = $this->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) ); // Inutile ???
+			$exists = array( '1' => 'Oui', '0' => 'Non' );
+
+			$options = Hash::merge(
+				parent::options( $params ),
+				array(
+					'Orientstruct' => array(
+						'typeorient_id' => $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ),
+						'structureorientante_id' => $Controller->Orientstruct->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
+						'referentorientant_id' => $Controller->Orientstruct->Structurereferente->Referent->listOptions(),
+						'structurereferente_id' => $Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'conditions' => array( 'orientation' => 'O' ) ) ),
+						'statut_orient' => $Controller->Orientstruct->enum( 'statut_orient' )
+					),
+					'Personne' => array(
+						'has_contratinsertion' => $exists,
+						'has_personne_referent' => $exists,
+						'is_inscritpe' => $exists,
+					),
+					'Serviceinstructeur' => array(
+						'id' => $Controller->Orientstruct->Personne->Foyer->Dossier->Suiviinstruction->Serviceinstructeur->listOptions()
+					)
+				)
+			);
+
+			if( $departement === 58 ) {
+				$options['Activite']['act'] = $Controller->Option->act();
+			}
 
 			return $options;
 		}

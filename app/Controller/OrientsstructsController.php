@@ -58,7 +58,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Orientstruct', 'WebrsaOrientstruct' );
+		public $uses = array( 'Orientstruct', 'WebrsaOrientstruct', 'Option' );
 
 		/**
 		 *
@@ -671,7 +671,7 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -679,7 +679,7 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
 			$Recherches->search();
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */

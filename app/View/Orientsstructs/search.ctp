@@ -65,6 +65,30 @@
 
 	echo $this->Allocataires->blocAllocataire($paramAllocataire);
 
+	echo $this->Html->tag(
+		'fieldset',
+		$this->Html->tag( 'legend', 'Recherche par parcours de l\'allocataire' )
+		.$this->Default3->subform(
+			array(
+				'Search.Historiqueetatpe.identifiantpe' => array( /*'maxlength' => 11*/ ),
+				'Search.Personne.has_contratinsertion' => array( 'empty' => true ),
+				'Search.Personne.has_personne_referent' => array( 'empty' => true ),
+				'Search.Personne.is_inscritpe' => array( 'empty' => true )
+			),
+			array( 'options' => array( 'Search' => $options ) )
+		)
+		.(
+			( $departement !== 58 )
+			? ''
+			: $this->Default3->subform(
+				array(
+					'Search.Activite.act' => array( 'empty' => true )
+				),
+				array( 'options' => array( 'Search' => $options ) )
+			)
+		)
+	);
+
 	echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.search' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
@@ -99,10 +123,9 @@
 
 	echo $this->Default3->subform(
 			array(
-				'Search.Orientstruct.typeorient_id' => array('empty' => true),
-				'Search.Orientstruct.structurereferente_id' => array('empty' => true),
-				'Search.Orientstruct.statut_orient' => array('empty' => true),
-				// 'Search.Orientstruct.serviceinstructeur_id' => array('empty' => true), // Inutile ??
+				'Search.Orientstruct.typeorient_id' => array('empty' => true, 'required' => false),
+				'Search.Orientstruct.structurereferente_id' => array('empty' => true, 'required' => false),
+				'Search.Orientstruct.statut_orient' => array('empty' => true, 'required' => false)
 			),
 			array( 'options' => array( 'Search' => $options ) )
 		)
@@ -129,14 +152,21 @@
 			)
 		);
 
-		echo '<ul class="actionMenu"><li>'
+		echo '<ul class="actionMenu">'
+			.'<li>'
+				.$this->Xhtml->printLinkJs(
+					'Imprimer le tableau',
+					array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+				)
+			.'</li>'
+			.'<li>'
 			. $this->Xhtml->exportLink(
 				'Télécharger le tableau',
 				array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 				( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
 			)
-			. '</li></ul>'
-		;
+			.'</li>'
+		.'</ul>';
 	}
 ?>
 <script type="text/javascript">

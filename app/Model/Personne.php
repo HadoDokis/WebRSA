@@ -1611,5 +1611,33 @@
 
 			return $query;
 		}
+
+		/**
+		 * Complète le querydata avec des conditions permettant de savoir s'il
+		 * existe (au moins) un enregistrement lié à un des modèles passés en
+		 * paramètre, suivant les filtres de recherche (<alias>.has_<modèle lié underscored>).
+		 *
+		 * @param array $linkedModelNames La liste des modèles contenant un éventuel
+		 *	querydata en valeur.
+		 * @param array $query Le querydata à compléter
+		 * @param array $search Les filtres venant du moteur de recherche.
+		 * @return array
+		 */
+		public function completeQueryHasLinkedRecord( array $linkedModelNames, array $query, array $search = array() ) {
+			if( $this->Behaviors->attached( 'LinkedRecords' ) === false ) {
+				$this->Behaviors->attach( 'LinkedRecords' );
+			}
+
+			foreach( Hash::normalize( $linkedModelNames ) as $linkedModelName => $qd ) {
+				$fieldName = 'has_'.Inflector::underscore( $linkedModelName );
+				$exists = (string)Hash::get( $search, "{$this->alias}.{$fieldName}" );
+				if( in_array( $exists, array( '0', '1' ), true ) ) {
+					$sql = $this->linkedRecordVirtualField( $linkedModelName, $qd );
+					$query['conditions'][] = $exists ? $sql : 'NOT ' . $sql;
+				}
+			}
+
+			return $query;
+		}
 	}
 ?>
