@@ -59,7 +59,7 @@
 					'Calculdroitrsa' => 'LEFT OUTER',
 					'Foyer' => 'INNER',
 					'Prestation' => $departement == 66 ? 'LEFT OUTER' : 'INNER',
-					'Personne' => 'LEFT OUTER',
+					'Personne' => 'INNER',
 					'Adressefoyer' => 'LEFT OUTER',
 					'Dossier' => 'INNER',
 					'Adresse' => 'LEFT OUTER',
@@ -67,28 +67,6 @@
 					'Detaildroitrsa' => 'LEFT OUTER'
 				);
 				$query = $Allocataire->searchQuery( $types, 'Dossier' );
-
-				// Le CD 66 veut pouvoir trouver les allocataires et les personnes sans prestation
-				if( $departement === 66 ) {
-					$index = null;
-					foreach( $query['joins'] as $i => $join ) {
-						if( $join['alias'] === 'Prestation' ) {
-							$index = $i;
-						}
-					}
-					unset( $query['conditions']['Prestation.rolepers'] );
-					$query['joins'][$index] = $Dossier->Foyer->Personne->join(
-						'Prestation',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Prestation.rolepers' => array( 'DEM', 'CJT' )
-							)
-						)
-					);
-				}
-
-				$query['joins'] = array_values( $query['joins'] );
 
 				$query['order'] = array( 'Personne.nom ASC' );
 
