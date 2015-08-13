@@ -56,11 +56,15 @@ ALTER TABLE orientsstructs ALTER COLUMN etatorient SET DEFAULT NULL;
 SELECT public.table_enumtypes_to_validate_in_list( 'public', 'foyers' );
 SELECT public.table_defaultvalues_enumtypes_to_varchar( 'public', 'foyers' );
 
+-- Certaines entrées avaient une chaîne de texte vide à la place de NULL
+-- FIXME: le signaler pour les jobs talend et vérifier à la sauvegarde dans l'application
+UPDATE foyers SET sitfam = NULL WHERE TRIM( BOTH ' ' FROM sitfam ) = '';
 SELECT alter_table_drop_constraint_if_exists( 'public', 'foyers', 'foyers_sitfam_in_list_chk' );
 ALTER TABLE foyers ADD CONSTRAINT foyers_sitfam_in_list_chk CHECK ( cakephp_validate_in_list( sitfam, ARRAY[ 'ABA', 'CEL', 'DIV', 'ISO', 'MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'SEF', 'SEL', 'VEU', 'VIM' ] ) );
 ALTER TABLE foyers ALTER COLUMN sitfam SET DEFAULT NULL;
 
 -- Certaines entrées avaient une chaîne de texte vide à la place de NULL
+-- FIXME: le signaler pour les jobs talend et vérifier à la sauvegarde dans l'application
 UPDATE foyers SET typeocclog = NULL WHERE TRIM( BOTH ' ' FROM typeocclog ) = '';
 SELECT alter_table_drop_constraint_if_exists( 'public', 'foyers', 'foyers_typeocclog_in_list_chk' );
 ALTER TABLE foyers ADD CONSTRAINT foyers_typeocclog_in_list_chk CHECK ( cakephp_validate_in_list( typeocclog, ARRAY[ 'ACC', 'BAL', 'HCG', 'HCO', 'HGP', 'HOP', 'HOT', 'LOC', 'OLI', 'PRO', 'SRG', 'SRO' ] ) );
