@@ -188,10 +188,10 @@ msgid "/Orientsstructs/index/#Orientstruct.personne_id#"
 msgstr "Voir la liste des orientations de #Personne.nom_complet#"
 
 msgid "Structurereferenteparcours.lib_struc"
-msgstr "Structure de suivi"
+msgstr "Structure du parcours"
 
 msgid "Referentparcours.nom_complet"
-msgstr "Personne chargée du suivi"
+msgstr "Référent du parcours"
 
 msgid "Orientstruct.search"
 msgstr "Recherche par orientation"
@@ -200,7 +200,7 @@ msgid "Search.Orientstruct.derniere"
 msgstr "Uniquement la dernière orientation pour un même allocataire"
 
 msgid "Search.Orientstruct.date_valid"
-msgstr "Filtrer par date d'orientation"
+msgstr "Date d'orientation"
 
 msgid "Orientstruct.orientepar"
 msgstr "Orienté par"
@@ -225,3 +225,18 @@ msgstr "Statut de l'orientation"
 
 msgid "Search.Orientstruct.serviceinstructeur_id"
 msgstr "Nom du service instructeur"
+
+msgid "Search.Historiqueetatpe.identifiantpe"
+msgstr "Identifiant Pôle Emploi"
+
+msgid "Search.Personne.has_contratinsertion"
+msgstr "Possède un CER ?"
+
+msgid "Search.Personne.has_personne_referent"
+msgstr "Possède un référent ?"
+
+msgid "Search.Personne.is_inscritpe"
+msgstr "Inscrit au Pôle Emploi ?"
+
+msgid "Search.Activite.act"
+msgstr "Code activité"

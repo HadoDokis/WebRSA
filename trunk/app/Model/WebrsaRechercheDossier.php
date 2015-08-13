@@ -39,6 +39,13 @@
 		);
 
 		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Allocataire', 'Dossier' );
+
+		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
 		 *
@@ -52,9 +59,6 @@
 			if( $query === false ) {
 				$departement = (int)Configure::read( 'Cg.departement' );
 
-				$Allocataire = ClassRegistry::init( 'Allocataire' );
-				$Dossier = ClassRegistry::init( 'Dossier' );
-
 				$types += array(
 					'Calculdroitrsa' => 'LEFT OUTER',
 					'Foyer' => 'INNER',
@@ -66,7 +70,7 @@
 					'Situationdossierrsa' => 'INNER',
 					'Detaildroitrsa' => 'LEFT OUTER'
 				);
-				$query = $Allocataire->searchQuery( $types, 'Dossier' );
+				$query = $this->Allocataire->searchQuery( $types, 'Dossier' );
 
 				$query['order'] = array( 'Personne.nom ASC' );
 
@@ -76,11 +80,11 @@
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Dossier->Foyer->Personne->Dsp,
-							$Dossier->Foyer->Personne->DspRev,
-							$Dossier->Foyer->Personne->Orientstruct,
-							$Dossier->Foyer->Personne->Orientstruct->Structurereferente,
-							$Dossier->Foyer->Personne->Orientstruct->Typeorient
+							$this->Dossier->Foyer->Personne->Dsp,
+							$this->Dossier->Foyer->Personne->DspRev,
+							$this->Dossier->Foyer->Personne->Orientstruct,
+							$this->Dossier->Foyer->Personne->Orientstruct->Structurereferente,
+							$this->Dossier->Foyer->Personne->Orientstruct->Typeorient
 						)
 					)
 				);
@@ -88,36 +92,36 @@
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$Dossier->Foyer->Personne->join(
+						$this->Dossier->Foyer->Personne->join(
 							'Dsp',
 							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
-									'Dsp.id IN ( '.$Dossier->Foyer->Personne->Dsp->sqDerniereDsp().' )'
+									'Dsp.id IN ( '.$this->Dossier->Foyer->Personne->Dsp->sqDerniereDsp().' )'
 								)
 							)
 						),
-						$Dossier->Foyer->Personne->join(
+						$this->Dossier->Foyer->Personne->join(
 							'DspRev',
 							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
-									'DspRev.id IN ( '.$Dossier->Foyer->Personne->DspRev->sqDerniere().' )'
+									'DspRev.id IN ( '.$this->Dossier->Foyer->Personne->DspRev->sqDerniere().' )'
 								)
 							)
 						),
-						$Dossier->Foyer->Personne->join(
+						$this->Dossier->Foyer->Personne->join(
 							'Orientstruct',
 							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
 									'Orientstruct.statut_orient' => 'Orienté',
-									'Orientstruct.id IN ( '.$Dossier->Foyer->Personne->Orientstruct->sqDerniere().' )'
+									'Orientstruct.id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sqDerniere().' )'
 								)
 							)
 						),
-						$Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					)
 				);
 
@@ -131,47 +135,47 @@
 						$query['fields'],
 						ConfigurableQueryFields::getModelsFields(
 							array(
-								$Dossier->Foyer->Personne->Dossiercov58,
-								$Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58,
-								$Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->Referentorientant,
-								$Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->Structureorientante
+								$this->Dossier->Foyer->Personne->Dossiercov58,
+								$this->Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58,
+								$this->Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->Referentorientant,
+								$this->Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->Structureorientante
 							)
 						)
 					);
-					$query['joins'][] = $Dossier->Foyer->Personne->join(
+					$query['joins'][] = $this->Dossier->Foyer->Personne->join(
 						'Dossiercov58',
 						array(
 							'type' => 'LEFT OUTER',
 							'conditions' => array(
-								'Dossiercov58.id IN ( '.$Dossier->Foyer->Personne->Dossiercov58->sqDernierPassagePersonne( 'Personne.id', array( 'Dossiercov58.themecov58' => 'proposorientationscovs58' ) ).' )'
+								'Dossiercov58.id IN ( '.$this->Dossier->Foyer->Personne->Dossiercov58->sqDernierPassagePersonne( 'Personne.id', array( 'Dossiercov58.themecov58' => 'proposorientationscovs58' ) ).' )'
 							)
 						)
 					);
-					$query['joins'][] = $Dossier->Foyer->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) );
-					$query['joins'][] = $Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->join( 'Referentorientant', array( 'type' => 'LEFT OUTER' ) );
-					$query['joins'][] = $Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->join( 'Structureorientante', array( 'type' => 'LEFT OUTER' ) );
+					$query['joins'][] = $this->Dossier->Foyer->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) );
+					$query['joins'][] = $this->Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->join( 'Referentorientant', array( 'type' => 'LEFT OUTER' ) );
+					$query['joins'][] = $this->Dossier->Foyer->Personne->Dossiercov58->Propoorientationcov58->join( 'Structureorientante', array( 'type' => 'LEFT OUTER' ) );
 
 					// Dernière activité
 					$query['fields'] = array_merge(
 						$query['fields'],
 						ConfigurableQueryFields::getModelsFields(
 							array(
-								$Dossier->Foyer->Personne->Activite
+								$this->Dossier->Foyer->Personne->Activite
 							)
 						)
 					);
 
-					$query['joins'][] = $Dossier->Foyer->Personne->join(
+					$query['joins'][] = $this->Dossier->Foyer->Personne->join(
 						'Activite',
 						array(
 							'type' => 'LEFT OUTER',
 							'conditions' => array(
-								'Activite.id IN ( '.$Dossier->Foyer->Personne->Activite->sqDerniere().' )'
+								'Activite.id IN ( '.$this->Dossier->Foyer->Personne->Activite->sqDerniere().' )'
 							),
 						)
 					);
 
-					$query = $Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query );
+					$query = $this->Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query );
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -189,24 +193,14 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Dossier = ClassRegistry::init( 'Dossier' );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 
-			$query = $Allocataire->searchConditions( $query, $search );
-
-			// Possède...
-			if( $Dossier->Foyer->Personne->Behaviors->attached( 'LinkedRecords' ) === false ) {
-				$Dossier->Foyer->Personne->Behaviors->attach( 'LinkedRecords' );
-			}
-			$linkedModelNames = array( 'Cui', 'Orientstruct', 'Contratinsertion', 'Dsp' );
-			foreach( $linkedModelNames as $linkedModelName ) {
-				$fieldName = 'has_'.Inflector::underscore( $linkedModelName );
-				$exists = (string)Hash::get( $search, "Personne.{$fieldName}" );
-				if( in_array( $exists, array( '0', '1' ), true ) ) {
-					$sql = $Dossier->Foyer->Personne->linkedRecordVirtualField( $linkedModelName );
-					$query['conditions'][] = $exists ? $sql : 'NOT ' . $sql;
-				}
-			}
+			// Possède (au moins) un CUI, une orientation, un CER ou une DSP
+			$query = $this->Dossier->Foyer->Personne->completeQueryHasLinkedRecord(
+				array( 'Cui', 'Orientstruct', 'Contratinsertion', 'Dsp' ),
+				$query,
+				$search
+			);
 
 			// Condition sur la nature du logement
 			$natlog = (string)Hash::get( $search, 'Dsp.natlog' );
@@ -249,14 +243,14 @@
 					$query['conditions']['Propoorientationcov58.referentorientant_id'] = $referentorientant_id;
 				}
 
-				$query = $Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query, $search );
+				$query = $this->Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query, $search );
 			}
 
 			// CD 66: Personne ne possédant pas d'orientation et sans entrée Nonoriente66
 			if( $departement == 66 ) {
 				$exists = (string)Hash::get( $search, 'Personne.has_orientstruct' );
 				if( $exists === '0' ) {
-					$sql = $Dossier->Foyer->Personne->linkedRecordVirtualField( 'Nonoriente66' );
+					$sql = $this->Dossier->Foyer->Personne->linkedRecordVirtualField( 'Nonoriente66' );
 					$query['conditions'][] = 'NOT ' . $sql;
 				}
 			}

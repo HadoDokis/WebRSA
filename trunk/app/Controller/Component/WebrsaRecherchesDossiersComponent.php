@@ -65,7 +65,7 @@
 			}
 
 			if( in_array( $Controller->action, array( 'index', 'search' ) ) ) {
-				$options['Serviceinstructeur']['id'] = $Controller->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->listOptions();
+				$options['Serviceinstructeur']['id'] = $Controller->Dossier->Suiviinstruction->Serviceinstructeur->listOptions();
 
 				if( $departement === 58 ) {
 					$options['Propoorientationcov58']['referentorientant_id'] = $Controller->Dossier->Foyer->Personne->PersonneReferent->Referent->find( 'list', array( 'order' => array( 'Referent.nom' ) ) );

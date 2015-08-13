@@ -39,6 +39,13 @@
 		);
 
 		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Allocataire', 'Orientstruct', 'Informationpe', 'Canton' );
+
+		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
 		 *
@@ -46,7 +53,7 @@
 		 * @return array
 		 */
 		public function searchQuery( array $types = array() ) {
-			$cgDepartement = Configure::read( 'Cg.departement' );
+			$departement = (int)Configure::read( 'Cg.departement' );
 			$types += array(
 				'Calculdroitrsa' => 'INNER',
 				'Foyer' => 'INNER',
@@ -70,24 +77,23 @@
 				'Referentparcours' => 'LEFT OUTER',
 			);
 
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Orientstruct = ClassRegistry::init( 'Orientstruct' );
-
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'Orientstruct' );
+				$query = $this->Allocataire->searchQuery( $types, 'Orientstruct' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Orientstruct,
-							$Orientstruct->Personne->PersonneReferent,
-							$Orientstruct->Typeorient,
-							$Orientstruct->Typeorient->Structurereferente
+							$this->Orientstruct,
+							$this->Orientstruct->Personne->PersonneReferent,
+							$this->Orientstruct->Typeorient,
+							$this->Orientstruct->Typeorient->Structurereferente,
+							$this->Informationpe,
+							$this->Informationpe->Historiqueetatpe
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -98,14 +104,24 @@
 					)
 				);
 
-				// 2. Jointure
+				// 2. Jointures
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$Orientstruct->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
-						$Orientstruct->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) )
+						$this->Orientstruct->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
+						$this->Orientstruct->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
+						$this->Informationpe->joinPersonneInformationpe(),
+						$this->Informationpe->Historiqueetatpe->joinInformationpeHistoriqueetatpe()
 					)
-					// array($Orientstruct->join( 'Serviceinstructeur', array( 'type' => $types['Serviceinstructeur'] ) )) // Inutile ???
+				);
+
+				// Permet d'obtenir la dernière entrée de la table informationspe
+				$sqDerniereInformationpe = $this->Informationpe->sqDerniere( 'Personne' );
+				$query['conditions'][] = array(
+					'OR' => array(
+						"Informationpe.id IS NULL",
+						"Informationpe.id IN ( {$sqDerniereInformationpe} )"
+					)
 				);
 
 				// 3. Tri par défaut: date, heure, id
@@ -115,9 +131,31 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
+				}
+
+				// 5. Pour le CG 58, ajout des champs et jointure sur Activite
+				if( $departement === 58 ) {
+					// Dernière activité
+					$query['fields'] = array_merge(
+						$query['fields'],
+						ConfigurableQueryFields::getModelsFields(
+							array(
+								$this->Orientstruct->Personne->Activite
+							)
+						)
+					);
+
+					$query['joins'][] = $this->Orientstruct->Personne->join(
+						'Activite',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Activite.id IN ( '.$this->Orientstruct->Personne->Activite->sqDerniere().' )'
+							),
+						)
+					);
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -135,10 +173,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Orientstruct = ClassRegistry::init( 'Orientstruct' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 
 			$paths = array(
 				'Orientstruct.origine',
@@ -191,6 +226,37 @@
 			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
+
+			// Possède un CER ou un référent (en cours)
+			$query = $this->Orientstruct->Personne->completeQueryHasLinkedRecord(
+				array(
+					'Contratinsertion',
+					'PersonneReferent' => array(
+						'conditions' => array(
+							'PersonneReferent.dfdesignation IS NULL'
+						)
+					)
+				),
+				$query,
+				$search
+			);
+
+			// Recherche par identifiant Pôle Emploi
+			$identifiantpe = Hash::get( $search, 'Historiqueetatpe.identifiantpe' );
+			if( !empty( $identifiantpe ) ) {
+				$query['conditions'][] = $this->Informationpe->Historiqueetatpe->conditionIdentifiantpe( $identifiantpe );
+			}
+
+			// Inscrit à PE ?
+			$is_inscritpe = Hash::get( $search, 'Personne.is_inscritpe' );
+			if( !in_array( $is_inscritpe, array( '', null ), true ) ) {
+				if( $is_inscritpe ) {
+					$query['conditions']['Historiqueetatpe.etat'] = 'inscription';
+				}
+				else {
+					$query['conditions']['Historiqueetatpe.etat <>'] = 'inscription';
+				}
+			}
 
 			return $query;
 		}

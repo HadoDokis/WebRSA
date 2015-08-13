@@ -304,5 +304,35 @@
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la méthode Personne::completeQueryHasLinkedRecord()
+		 */
+		public function testCompleteQueryHasLinkedRecord() {
+			$result = $this->Personne->completeQueryHasLinkedRecord(
+				array(
+					'Contratinsertion',
+					'PersonneReferent' => array(
+						'conditions' => array(
+							'PersonneReferent.dfdesignation IS NULL'
+						)
+					)
+				),
+				array(),
+				array(
+					'Personne' => array(
+						'has_contratinsertion' => '1',
+						'has_personne_referent' => '0'
+					)
+				)
+			);
+			$expected = array(
+				'conditions' => array(
+					'EXISTS( SELECT "contratsinsertion"."id" AS "contratsinsertion__id" FROM "contratsinsertion" AS "contratsinsertion"   WHERE "contratsinsertion"."personne_id" = "Personne"."id"    )',
+					'NOT EXISTS( SELECT "personnes_referents"."id" AS "personnes_referents__id" FROM "personnes_referents" AS "personnes_referents"   WHERE "personnes_referents"."dfdesignation" IS NULL AND "personnes_referents"."personne_id" = "Personne"."id"    )',
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>
