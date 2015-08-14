@@ -92,25 +92,7 @@
 				'options' => $options
 			)
 		);
+
+		echo $this->element( 'search_footer' );
 	}
 ?>
-<?php if( isset( $results ) ): ?>
-	<ul class="actionMenu">
-		<li><?php
-			echo $this->Xhtml->printLinkJs(
-				'Imprimer le tableau',
-				array(
-					'onclick' => 'printit(); return false;',
-					'class' => 'noprint'
-				)
-			);
-		?></li>
-		<li><?php
-			echo $this->Xhtml->exportLink(
-				'Télécharger le tableau',
-				array( 'controller' => 'dossiers', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-				$this->Permissions->check( 'dossiers', 'exportcsv' )
-			);
-		?></li>
-	</ul>
-<?php endif; ?>

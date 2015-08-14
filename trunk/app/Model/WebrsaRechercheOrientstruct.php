@@ -81,7 +81,7 @@
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $this->Allocataire->searchQuery( $types, 'Orientstruct' );
+				$query = $this->Allocataire->searchQuery( $types, 'Orientstruct', false );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
@@ -93,7 +93,8 @@
 							$this->Orientstruct->Typeorient,
 							$this->Orientstruct->Typeorient->Structurereferente,
 							$this->Informationpe,
-							$this->Informationpe->Historiqueetatpe
+							$this->Informationpe->Historiqueetatpe,
+							$this->Orientstruct->Personne->Foyer->Modecontact
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -110,8 +111,17 @@
 					array(
 						$this->Orientstruct->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
 						$this->Orientstruct->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
-						$this->Informationpe->joinPersonneInformationpe(),
-						$this->Informationpe->Historiqueetatpe->joinInformationpeHistoriqueetatpe()
+						$this->Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', $types['Informationpe'] ),
+						$this->Informationpe->Historiqueetatpe->joinInformationpeHistoriqueetatpe( true, 'Informationpe', 'Historiqueetatpe', $types['Historiqueetatpe'] ),
+						$this->Orientstruct->Personne->Foyer->join(
+							'Modecontact',
+							array(
+								'conditions' => array(
+									'Modecontact.id IN ( '.$this->Orientstruct->Personne->Foyer->Modecontact->sqDerniere( 'Foyer.id' ).' )'
+								),
+								'type' => $types['Modecontact']
+							)
+						)
 					)
 				);
 

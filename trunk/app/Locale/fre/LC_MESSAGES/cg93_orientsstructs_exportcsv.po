@@ -1,5 +1,5 @@
-# Traductions de cg93_orientsstructs_search.po
-# @license: Expression license is undefined on line 3, column 15 in Templates/CakePHP/CakePHP locale.po.
+# Traductions de cg93_orientsstructs_exportcsv.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 #
 msgid ""
 msgstr ""
@@ -9,11 +9,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 # ==============================================================================
-# FIXME: si je renomme ce fichier, j'ai les titres corrects dans la recherche par orientation au 93!!
-# ==============================================================================
-
-msgid "Search.Orientstruct.structurereferente_id"
-msgstr "Structure référente"
 
 msgid "Search.Orientstruct.date_valid"
 msgstr "Date d'orientation"

@@ -234,6 +234,87 @@
 		}
 
 		/**
+		 * Test des joins de la méthode Allocataire::searchQuery(), suivant le
+		 * type de jointure sur Prestation et la valeur de $forceBeneficiaire.
+		 */
+		public function testSearchQueryPrestationJoinTypeForceBeneficiaire() {
+			// 1. INNER JOIN, $forceBeneficiaire true (par défaut)
+			$joins = array(
+				'Prestation' => 'INNER'
+			);
+			$result = $this->Allocataire->searchQuery( $joins, 'Personne', true );
+			$expected = array(
+				array(
+					'table' => '"prestations"',
+					'alias' => 'Prestation',
+					'type' => 'INNER',
+					'conditions' => '"Prestation"."personne_id" = "Personne"."id" AND "Prestation"."natprest" = \'RSA\' AND "Prestation"."rolepers" IN (\'DEM\', \'CJT\')'
+				)
+			);
+
+			$this->assertEqual( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), $expected, var_export( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), true ) );
+			$expected = array();
+			$this->assertEqual( $result['conditions'], $expected, var_export( $result['conditions'], true ) );
+
+			// 2. INNER JOIN, $forceBeneficiaire false
+			$joins = array(
+				'Prestation' => 'INNER'
+			);
+			$result = $this->Allocataire->searchQuery( $joins, 'Personne', false );
+			$expected = array(
+				array(
+					'table' => '"prestations"',
+					'alias' => 'Prestation',
+					'type' => 'INNER',
+					'conditions' => '"Prestation"."personne_id" = "Personne"."id" AND "Prestation"."natprest" = \'RSA\''
+				)
+			);
+
+			$this->assertEqual( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), $expected, var_export( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), true ) );
+			$expected = array();
+			$this->assertEqual( $result['conditions'], $expected, var_export( $result['conditions'], true ) );
+
+			// 3. LEFT OUTER JOIN, $forceBeneficiaire true (par défaut)
+			$joins = array(
+				'Prestation' => 'LEFT OUTER'
+			);
+			$result = $this->Allocataire->searchQuery( $joins, 'Personne', true );
+			$expected = array(
+				array(
+					'table' => '"prestations"',
+					'alias' => 'Prestation',
+					'type' => 'LEFT OUTER',
+					'conditions' => '"Prestation"."personne_id" = "Personne"."id" AND "Prestation"."natprest" = \'RSA\''
+				)
+			);
+			$this->assertEqual( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), $expected, var_export( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), true ) );
+			$expected = array(
+				'OR' => array(
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					'Prestation.id IS NULL',
+				)
+			);
+			$this->assertEqual( $result['conditions'], $expected, var_export( $result['conditions'], true ) );
+
+			// 4. LEFT OUTER JOIN, $forceBeneficiaire false
+			$joins = array(
+				'Prestation' => 'LEFT OUTER'
+			);
+			$result = $this->Allocataire->searchQuery( $joins, 'Personne', false );
+			$expected = array(
+				array(
+					'table' => '"prestations"',
+					'alias' => 'Prestation',
+					'type' => 'LEFT OUTER',
+					'conditions' => '"Prestation"."personne_id" = "Personne"."id" AND "Prestation"."natprest" = \'RSA\''
+				)
+			);
+			$this->assertEqual( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), $expected, var_export( Hash::extract( $result, 'joins.{n}[alias=Prestation]' ), true ) );
+			$expected = array();
+			$this->assertEqual( $result['conditions'], $expected, var_export( $result['conditions'], true ) );
+		}
+
+		/**
 		 * Test de la méthode Allocataire::search().
 		 *
 		 * @medium

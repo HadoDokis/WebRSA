@@ -51,7 +51,11 @@
 			);
 
 			if( $departement === 58 ) {
+				$Controller->loadModel( 'Option' );
 				$options['Activite']['act'] = $Controller->Option->act();
+			}
+			else if( $departement === 93 ) {
+				$options['Orientstruct']['propo_algo'] = $options['Orientstruct']['typeorient_id'];
 			}
 
 			return $options;
