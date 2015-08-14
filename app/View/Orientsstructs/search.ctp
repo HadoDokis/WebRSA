@@ -103,8 +103,8 @@
 		echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.orientepar' ) . '</legend>'
 			. $this->Default3->subform(
 				array(
-					'Search.Orientstruct.structureorientante_id' => array('empty' => true),
-					'Search.Orientstruct.referentorientant_id' => array('empty' => true),
+					'Search.Orientstruct.structureorientante_id' => array('empty' => true, 'required' => false),
+					'Search.Orientstruct.referentorientant_id' => array('empty' => true, 'required' => false),
 				),
 				array( 'options' => array( 'Search' => $options ) )
 			)
