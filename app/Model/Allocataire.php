@@ -53,12 +53,19 @@
 		 *
 		 * @todo à partir de Personne ou de Dossier, sachant que par défaut ça doit être Dossier
 		 *
-		 * @param array $types Les types de jointure alias => type
+		 * @param array $types Les types de jointure alias => type. Concernant la
+		 *	clé Prestation (natprest RSA), en cas d'INNER (join), les conditions
+		 *	sur rolepers DEM ou CJT seront appliquées dans les conditions, sinon
+		 *  (LEFT OUTER) dans la jointure (voir aussi le paramètre $forceBeneficiaire).
 		 * @param string $baseModelName Le modèle de base de la requête (Personne,
 		 *	Dossier ou un modèle lié à Personne)
+		 * @param boolean $forceBeneficiaire Si vrai, alors le rôle de la personne
+		 *	sera limité à DEM ou CJT (voir aussi la clé Prestation dans le paramètre
+		 *	$types).
+		 *	@fixme tests unitaire
 		 * @return array
 		 */
-		public function searchQuery( array $types = array(), $baseModelName = 'Personne' ) {
+		public function searchQuery( array $types = array(), $baseModelName = 'Personne', $forceBeneficiaire = true ) {
 			$types += array(
 				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
@@ -113,7 +120,7 @@
 								'Prestation',
 								array(
 									'type' => $types['Prestation'],
-									'conditions' => $types['Prestation'] === 'INNER'
+									'conditions' => ( $types['Prestation'] === 'INNER' && $forceBeneficiaire )
 										? array( 'Prestation.rolepers' => array( 'DEM', 'CJT' ) )
 										: array()
 								)
@@ -133,7 +140,7 @@
 						)
 					),
 					'contain' => false,
-					'conditions' => $types['Prestation'] !== 'INNER'
+					'conditions' => ( $types['Prestation'] !== 'INNER' && $forceBeneficiaire )
 						? array( 'OR' => array(
 							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 							'Prestation.id IS NULL'

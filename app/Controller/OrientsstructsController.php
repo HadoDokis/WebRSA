@@ -58,7 +58,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Orientstruct', 'WebrsaOrientstruct', 'Option' );
+		public $uses = array( 'Orientstruct', 'WebrsaOrientstruct'/*, 'Option'*/ );
 
 		/**
 		 *

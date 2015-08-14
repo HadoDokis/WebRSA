@@ -1,5 +1,5 @@
 <?php
-	$departement = Configure::read( 'Cg.departement' );
+	$departement = (int)Configure::read( 'Cg.departement' );
 	$controller = $this->params->controller;
 	$action = $this->action;
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
@@ -99,7 +99,7 @@
 		. $this->SearchForm->dateRange( 'Search.Orientstruct.date_valid', $paramDate )
 	;
 
-	if ($departement == 66) {
+	if ($departement === 66) {
 		echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.orientepar' ) . '</legend>'
 			. $this->Default3->subform(
 				array(
@@ -112,7 +112,7 @@
 		;
 	}
 
-	if ($departement == 93) {
+	if ($departement === 93) {
 		echo $this->Default3->subform(
 			array(
 				'Search.Orientstruct.origine' => array('empty' => true),
@@ -152,26 +152,20 @@
 			)
 		);
 
-		echo '<ul class="actionMenu">'
-			.'<li>'
-				.$this->Xhtml->printLinkJs(
-					'Imprimer le tableau',
-					array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
-				)
-			.'</li>'
-			.'<li>'
-			. $this->Xhtml->exportLink(
-				'Télécharger le tableau',
-				array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-				( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
-			)
-			.'</li>'
-		.'</ul>';
+		echo $this->element( 'search_footer' );
 	}
+
+	if( $departement === 66 ) {
+		echo $this->Observer->dependantSelect(
+			array(
+				'Search.Orientstruct.structureorientante_id' => 'Search.Orientstruct.referentorientant_id'
+			)
+		);
+	}
+
+	echo $this->Observer->dependantSelect(
+		array(
+			'Search.Orientstruct.typeorient_id' => 'Search.Orientstruct.structurereferente_id'
+		)
+	);
 ?>
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		dependantSelect( 'SearchOrientstructReferentorientantId', 'SearchOrientstructStructureorientanteId' );
-		dependantSelect( 'SearchOrientstructStructurereferenteId', 'SearchOrientstructTypeorientId' );
-	});
-</script>
