@@ -2,17 +2,15 @@
 	Configure::write(
 		'Filtresdefaut.Contratsinsertion_search',
 		array(
-			'Search' => array(
-				'Pagination' => array(
-					'nombre_total' => 0
-				),
-				'Dossier' => array(
-					'dernier' => true
-				)
+			'Pagination' => array(
+				'nombre_total' => 0
+			),
+			'Dossier' => array(
+				'dernier' => true
 			)
 		)
 	);
-	
+
 	Configure::write(
 		'Contratsinsertion',
 		array(
@@ -32,7 +30,6 @@
 					'/Contratsinsertion/index/#Contratinsertion.personne_id#' => array( 'class' => 'view' ),
 				),
 				'innerTable' => array(
-					'Personne.nomcomnai',
 					'Personne.dtnai',
 					'Adresse.numcom',
 					'Personne.nir',
@@ -62,7 +59,10 @@
 				'Structurereferente.lib_struc',
 				'Contratinsertion.num_contrat',
 				'Contratinsertion.dd_ci' => array( 'type' => 'date' ),
+				'Contratinsertion.duree_engag',
 				'Contratinsertion.df_ci' => array( 'type' => 'date' ),
+				'Contratinsertion.decision_ci',
+				'Contratinsertion.datevalidation_ci' => array( 'type' => 'date' ),
 				'Structurereferenteparcours.lib_struc',
 				'Referentparcours.nom_complet',
 				'Canton.canton',

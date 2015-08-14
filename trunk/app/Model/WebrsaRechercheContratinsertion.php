@@ -86,7 +86,7 @@
 							$this->Contratinsertion->Referent,
 							$this->Contratinsertion->Personne->PersonneReferent,
 							$this->Contratinsertion->Structurereferente,
-							$this->Contratinsertion->Structurereferente->Typeorient
+							$this->Contratinsertion->Personne->Orientstruct->Typeorient
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -103,8 +103,8 @@
 					array(
 						$this->Contratinsertion->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
 						$this->Contratinsertion->join( 'Referent', array( 'type' => $types['Referent'] ) ),
-						$this->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
-						$this->Contratinsertion->Personne->join( 'Orientstruct', array( 'type' => $types['Orientstruct'] ) )
+						$this->Contratinsertion->Personne->join( 'Orientstruct', array( 'type' => $types['Orientstruct'] ) ),
+						$this->Contratinsertion->Personne->Orientstruct->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) )
 					)
 				);
 
@@ -269,6 +269,27 @@
 						)
 					);
 				}
+			}
+
+			// Doit-on exclure un type d'orientation ?
+			$value = Hash::get( $search, 'Orientstruct.not_typeorient_id' );
+			if( !empty( $value ) ) {
+				$query['conditions'][] = array(
+					'OR' => array(
+						array(
+							'Typeorient.parentid IS NULL',
+							'NOT' => array(
+								'Typeorient.id' => $value
+							)
+						),
+						array(
+							'Typeorient.parentid IS NOT NULL',
+							'NOT' => array(
+								'Typeorient.parentid' => $value
+							)
+						)
+					)
+				);
 			}
 
 			return $query;
