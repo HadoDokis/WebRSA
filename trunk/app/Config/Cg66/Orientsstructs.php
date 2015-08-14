@@ -9,13 +9,13 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
 		'Orientsstructs',
 		array(
 			'search' => array(
 				'fields' => array(
-					'Dossier.matricule',
+					'Dossier.numdemrsa',
 					'Personne.nom_complet',
 					'Adresse.nomcom',
 					'Dossier.dtdemrsa',
