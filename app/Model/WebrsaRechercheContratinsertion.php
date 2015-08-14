@@ -25,6 +25,13 @@
 		public $name = 'WebrsaRechercheContratinsertion';
 
 		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Allocataire', 'Contratinsertion', 'Canton', 'Option' );
+
+		/**
 		 * Liste des clés de configuration utilisées par le moteur de recherche,
 		 * pour vérification du paramétrage.
 		 *
@@ -63,25 +70,23 @@
 				'Orientstruct' => 'LEFT OUTER',
 				'Referent' => 'LEFT OUTER',
 			);
-			
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'Contratinsertion' );
+				$query = $this->Allocataire->searchQuery( $types, 'Contratinsertion', false );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Contratinsertion,
-							$Contratinsertion->Referent,
-							$Contratinsertion->Personne->PersonneReferent,
-							$Contratinsertion->Structurereferente
+							$this->Contratinsertion,
+							$this->Contratinsertion->Referent,
+							$this->Contratinsertion->Personne->PersonneReferent,
+							$this->Contratinsertion->Structurereferente,
+							$this->Contratinsertion->Structurereferente->Typeorient
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -91,15 +96,15 @@
 						'Contratinsertion.dd_ci',
 					)
 				);
-				
+
 				// 2. Jointure
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$Contratinsertion->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
-						$Contratinsertion->join( 'Referent', array( 'type' => $types['Referent'] ) ),
-						$Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
-						$Contratinsertion->Personne->join( 'Orientstruct', array( 'type' => $types['Orientstruct'] ) )
+						$this->Contratinsertion->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
+						$this->Contratinsertion->join( 'Referent', array( 'type' => $types['Referent'] ) ),
+						$this->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
+						$this->Contratinsertion->Personne->join( 'Orientstruct', array( 'type' => $types['Orientstruct'] ) )
 					)
 				);
 
@@ -110,9 +115,13 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
+				}
+
+				// 5. Ajout de l'étape du dossier d'orientation de l'allocataire pour le CG 58
+				if( Configure::read( 'Cg.departement' ) == 58 ) {
+					$query = $this->Contratinsertion->Personne->completeQueryVfEtapeDossierOrientation58( $query );
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -130,11 +139,9 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 
-			$query = $Allocataire->searchConditions( $query, $search );
-			
 			/**
 			 * Conditions obligatoire
 			 */
@@ -153,10 +160,10 @@
 				'Contratinsertion.structurereferente_id',
 				'Contratinsertion.decision_ci',
 				'Contratinsertion.positioncer',
-				'Contratinsertion.duree_engag',
 				'Orientstruct.typeorient_id',
+				'Personne.etat_dossier_orientation'
 			);
-			
+
 			// Fils de dependantSelect
 			$pathsToExplode = array(
 				'Contratinsertion.referent_id',
@@ -168,14 +175,14 @@
 				'Contratinsertion.dd_ci',
 				'Contratinsertion.df_ci',
 			);
-			
+
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			foreach( $pathsToExplode as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
@@ -185,7 +192,7 @@
 			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
-			
+
 			/**
 			 * Conditions spéciales
 			 */
@@ -245,6 +252,23 @@
 			}
 			if ($search['Contratinsertion']['istacitereconduction']) {
 				$query['conditions'][] = 'Contratinsertion.datetacitereconduction IS NULL';
+			}
+
+			// Filtre par durée du contrat, avec des subtilités pour les CG 58 et 93
+			$duree_engag = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', Hash::get( $search, 'Contratinsertion.duree_engag' ) );
+			if( !empty( $duree_engag ) ) {
+				if( $departement !== 93 ) {
+					$query['conditions']['Contratinsertion.duree_engag'] = $duree_engag;
+				}
+				else {
+					$durees_engags = $this->Option->duree_engag();
+					$query['conditions'][] = array(
+						'OR' => array(
+							'Contratinsertion.duree_engag' => $duree_engag,
+							'Cer93.duree' => str_replace( ' mois', '', $durees_engags[$duree_engag] ),
+						)
+					);
+				}
 			}
 
 			return $query;

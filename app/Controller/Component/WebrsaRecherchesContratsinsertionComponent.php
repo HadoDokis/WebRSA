@@ -17,32 +17,6 @@
 	class WebrsaRecherchesContratsinsertionComponent extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modele principal
-		 * @var Model 
-		 */
-		public $Contratinsertion;
-		
-		/**
-		 * Controller executant le component
-		 * @var Controller 
-		 */
-		public $Controller;
-		
-		/**
-		 * Contructeur de class, assigne le controller et le modele principal
-		 * 
-		 * @param \ComponentCollection $collection
-		 * @param array $settings
-		 */
-		public function __construct(\ComponentCollection $collection, $settings = array()) {
-			parent::__construct($collection, $settings);
-			
-			$this->Contratinsertion = ClassRegistry::init( 'Contratinsertion'.Configure::read( 'Contratinsertion.suffixe' ) );
-			$this->Controller = $this->_Collection->getController();
-			$this->Option = ClassRegistry::init('Option');
-		}
-		
-		/**
 		 * Options pour le moteur de recherche
 		 *
 		 * @param array $params
@@ -50,15 +24,31 @@
 		 */
 		public function options( array $params = array() ) {
 			$options = parent::options( $params );
-			$cgDepartement = Configure::read( 'Cg.departement' );
-			
-			$options['Contratinsertion']['structurereferente_id'] = $this->Contratinsertion->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
-			$options['Contratinsertion']['referent_id'] = $this->Contratinsertion->Structurereferente->Referent->listOptions();
-			$options['Contratinsertion']['decision_ci'] = $this->Option->decision_ci();
-			$options['Contratinsertion']['forme_ci'] = $this->Option->forme_ci();
-			$options['Contratinsertion']['duree_engag'] = $this->Option->duree_engag();
-			$options['Orientstruct']['typeorient_id'] = $this->Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O', 'Typeorient.parentid IS NOT NULL' ) ) );
-			
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			$Controller = $this->_Collection->getController();
+			$Controller->loadModel( 'Option' );
+
+			$options['Contratinsertion']['structurereferente_id'] = $Controller->Contratinsertion->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
+			$options['Contratinsertion']['referent_id'] = $Controller->Contratinsertion->Structurereferente->Referent->listOptions();
+			$options['Contratinsertion']['decision_ci'] = $Controller->Option->decision_ci();
+			$options['Contratinsertion']['forme_ci'] = $Controller->Option->forme_ci();
+			$options['Contratinsertion']['duree_engag'] = $Controller->Option->duree_engag();
+
+			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) );
+
+			$options['Personne']['trancheage'] = array(
+				'0_24' => '- 25 ans',
+				'25_34' => '25 - 34 ans',
+				'35_44' => '35 - 44 ans',
+				'45_54' => '45 - 54 ans',
+				'55_999' => '+ 55 ans'
+			);
+
+			if( $departement === 58 ) {
+				$options['Personne']['etat_dossier_orientation'] = $Controller->Contratinsertion->Personne->enum( 'etat_dossier_orientation' );
+			}
+
 			return $options;
 		}
 	}
