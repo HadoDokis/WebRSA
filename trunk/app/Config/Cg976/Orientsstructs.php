@@ -2,20 +2,18 @@
 	Configure::write(
 		'Filtresdefaut.Orientsstructs_search',
 		array(
-			'Search' => array(
-				'Dossier' => array(
-					// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-					'dernier' => true,
-					// Case à cocher "Filtrer par date de demande RSA"
-					'dtdemrsa' => false,
-					// Du (inclus)
-					'dtdemrsa_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
-					// Au (inclus)
-					'dtdemrsa_to' => date( 'Y-m-d', strtotime( 'now' ) ),
-				),
-				'Pagination' => array(
-					'nombre_total' => 0
-				),
+			'Dossier' => array(
+				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+				'dernier' => true,
+				// Case à cocher "Filtrer par date de demande RSA"
+				'dtdemrsa' => false,
+				// Du (inclus)
+				'dtdemrsa_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
+				// Au (inclus)
+				'dtdemrsa_to' => date( 'Y-m-d', strtotime( 'now' ) ),
+			),
+			'Pagination' => array(
+				'nombre_total' => 0
 			)
 		)
 	);
