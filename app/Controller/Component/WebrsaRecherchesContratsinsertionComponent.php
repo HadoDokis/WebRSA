@@ -48,6 +48,9 @@
 			if( $departement === 58 ) {
 				$options['Personne']['etat_dossier_orientation'] = $Controller->Contratinsertion->Personne->enum( 'etat_dossier_orientation' );
 			}
+			else if( $departement === 66 ) {
+				$options['Orientstruct']['not_typeorient_id'] = $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O', 'Typeorient.parentid IS NULL' ) ) );
+			}
 
 			return $options;
 		}

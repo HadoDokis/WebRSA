@@ -79,6 +79,9 @@ msgstr "Type d'orientation"
 msgid "Search.Personne.etat_dossier_orientation"
 msgstr "Étape du dossier d'orientation"
 
+msgid "Search.Orientstruct.not_typeorient_id"
+msgstr "Type d'orientation à exclure"
+
 # ==============================================================================
 
 msgid "Adresse.nomcom"

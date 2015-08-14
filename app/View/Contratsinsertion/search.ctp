@@ -143,6 +143,13 @@
 				),
 				array(
 					'Search.Orientstruct.typeorient_id' => array( 'type' => 'select', 'empty' => true ),
+				),
+				(
+					$departement === 66
+					? array(
+						'Search.Orientstruct.not_typeorient_id' => array( 'type' => 'select', 'multiple' => 'checkbox' ),
+					)
+					: array()
 				)
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
