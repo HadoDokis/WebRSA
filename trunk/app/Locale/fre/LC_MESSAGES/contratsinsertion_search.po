@@ -76,7 +76,10 @@ msgstr "Filtrer par dernière orientation"
 msgid "Search.Orientstruct.typeorient_id"
 msgstr "Type d'orientation"
 
+msgid "Search.Personne.etat_dossier_orientation"
+msgstr "Étape du dossier d'orientation"
 
+# ==============================================================================
 
 msgid "Adresse.nomcom"
 msgstr "Commune de l'allocataire"
