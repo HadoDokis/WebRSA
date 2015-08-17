@@ -258,6 +258,7 @@
 							AND date_trunc( \'day\', contratsinsertion.df_ci ) <= ( DATE( NOW() ) + INTERVAL \''.Configure::read( 'Criterecer.delaiavanteecheance' ).'\' )
  				)';
 			}
+
 			if( Hash::get( $search, 'Contratinsertion.istacitereconduction' ) ) {
 				$query['conditions'][] = 'Contratinsertion.datetacitereconduction IS NULL';
 			}
