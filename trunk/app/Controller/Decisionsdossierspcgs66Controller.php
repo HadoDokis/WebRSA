@@ -518,11 +518,13 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
+				// Lorsqu'on modifie l'enregistrement, on ne change pas l'utilisateur qui a fait la proposition
+				if( Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id' ) !== null ) {
+					unset($this->request->data['Decisiondossierpcg66']['userproposition_id']);
+				}
+				
 				$this->Decisiondossierpcg66->begin();
-
-
-//debug($dossierpcg66);
-//die();
+				
 				if( $this->Decisiondossierpcg66->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 					if( !empty( $this->request->data['Decisiondossierpcg66Decisionpersonnepcg66'][0]['decisionpersonnepcg66_id'] ) ) {
