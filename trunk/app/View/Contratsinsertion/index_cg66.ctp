@@ -217,6 +217,7 @@
 										'enabled' => (
 											( $this->Permissions->checkDossier( 'contratsinsertion', 'notification', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) != 'E' )
 										)
 									)
 								),
