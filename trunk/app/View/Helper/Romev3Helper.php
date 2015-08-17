@@ -60,7 +60,8 @@
 				'fieldset' => true,
 				'url' => array( 'controller' => 'cataloguesromesv3', 'action' => 'ajax_appellation' ),
 				'required' => false,
-				'prefix' => null
+				'prefix' => null,
+				'multi_domain_translator' => false
 			);
 			$params = $this->addClass( $params, 'romev3' );
 
@@ -77,12 +78,12 @@
 
 				$return .= $this->Default3->subform(
 					array(
-						$ajaxFieldPath => array( 'type' => 'text', 'required' => false ),
+						$ajaxFieldPath => array( 'type' => 'text', 'required' => false, 'label' => ( $params['multi_domain_translator'] ? __m( $ajaxFieldPath ) : null ) ),
 						"{$prefix}{$modelName}.id" => array( 'type' => 'hidden' ),
-						"{$prefix}{$modelName}.familleromev3_id" => array( "options" => $params['options'][$modelName]["familleromev3_id"], 'empty' => true, 'required' => $params['required'] ),
-						"{$prefix}{$modelName}.domaineromev3_id" => array( "options" => $params['options'][$modelName]["domaineromev3_id"], 'empty' => true, 'required' => $params['required'] ),
-						"{$prefix}{$modelName}.metierromev3_id" => array( "options" => $params['options'][$modelName]["metierromev3_id"], 'empty' => true, 'required' => $params['required'] ),
-						"{$prefix}{$modelName}.appellationromev3_id" => array( "options" => $params['options'][$modelName]["appellationromev3_id"], 'empty' => true, 'required' => $params['required'] )
+						"{$prefix}{$modelName}.familleromev3_id" => array( "options" => $params['options'][$modelName]["familleromev3_id"], 'empty' => true, 'required' => $params['required'], 'label' => ( $params['multi_domain_translator'] ? __m( "{$prefix}{$modelName}.familleromev3_id" ) : null ) ),
+						"{$prefix}{$modelName}.domaineromev3_id" => array( "options" => $params['options'][$modelName]["domaineromev3_id"], 'empty' => true, 'required' => $params['required'], 'label' => ( $params['multi_domain_translator'] ? __m( "{$prefix}{$modelName}.domaineromev3_id" ) : null ) ),
+						"{$prefix}{$modelName}.metierromev3_id" => array( "options" => $params['options'][$modelName]["metierromev3_id"], 'empty' => true, 'required' => $params['required'], 'label' => ( $params['multi_domain_translator'] ? __m( "{$prefix}{$modelName}.metierromev3_id" ) : null ) ),
+						"{$prefix}{$modelName}.appellationromev3_id" => array( "options" => $params['options'][$modelName]["appellationromev3_id"], 'empty' => true, 'required' => $params['required'], 'label' => ( $params['multi_domain_translator'] ? __m( "{$prefix}{$modelName}.appellationromev3_id" ) : null ) )
 					),
 					array(
 						"options" => $params['options']
@@ -104,15 +105,14 @@
 					),
 					array(
 						'url' => $params['url'],
-						'onload' => false,
-//						'prefix' => $params['prefix']
+						'onload' => false
 					)
 				);
 
 				if( Hash::get( $params, 'fieldset' ) ) {
 					$return = $this->Default3->DefaultHtml->tag(
 						'fieldset',
-						$this->Default3->DefaultHtml->tag( 'legend', __d( $params['domain'], $fieldsetPath ) )
+						$this->Default3->DefaultHtml->tag( 'legend', $params['multi_domain_translator'] ? __m( $fieldsetPath ) : __d( $params['domain'], $fieldsetPath ) )
 						.$return,
 						array(
 							'id' => $this->domId( "{$fieldsetPath}.Fieldset.id" ),
