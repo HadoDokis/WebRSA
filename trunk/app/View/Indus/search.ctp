@@ -95,13 +95,6 @@
 			)
 		);
 		
-		echo '<ul class="actionMenu"><li>'
-			. $this->Xhtml->exportLink(
-				'Télécharger le tableau',
-				array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-				( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
-			)
-			. '</li></ul>'
-		;
+		echo $this->element( 'search_footer' );
 	}
 ?>

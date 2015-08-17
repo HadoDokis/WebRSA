@@ -50,14 +50,15 @@
 			$types += array(
 				'Calculdroitrsa' => 'INNER',
 				'Foyer' => 'INNER',
-				'Prestation' => 'LEFT OUTER',
+				'Prestation' => 'INNER',
 				'Adressefoyer' => 'LEFT OUTER',
 				'Dossier' => 'INNER',
 				'Adresse' => 'LEFT OUTER',
-				'Situationdossierrsa' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'INNER',
 				'Detaildroitrsa' => 'LEFT OUTER',
 				'PersonneReferent' => 'LEFT OUTER',
 				'Personne' => 'INNER',
+				'Detailcalculdroitrsa' => 'LEFT OUTER',
 			);
 			
 			$Allocataire = ClassRegistry::init( 'Allocataire' );
@@ -121,9 +122,15 @@
 					)
 				);
 				
-				$query['joins'][] = $indusConstate;
-				$query['joins'][] = $transfertCg;
-				$query['joins'][] = $remiseCg;
+				$query['joins'] = array_merge(
+					$query['joins'],
+					array(
+						$indusConstate,
+						$transfertCg,
+						$remiseCg,
+						$Infofinanciere->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa']))
+					)
+				);
 
 				// 3. Tri par défaut: date, heure, id
 				$query['order'] = array(
@@ -170,39 +177,31 @@
 				),
 				array(
 					'OR' => array(
-						'IndusConstates.moismoucompta IS NULL',
-						'IndusConstates.moismoucompta = IndusTransferesCG.moismoucompta',
-						'IndusConstates.moismoucompta = RemisesIndus.moismoucompta',
 						array(
-							'IndusTransferesCG.moismoucompta IS NULL',
-							'RemisesIndus.moismoucompta IS NULL',
-						)
-					),
-				),
-				array(
-					'OR' => array(
-						'IndusTransferesCG.moismoucompta IS NULL',
-						'IndusTransferesCG.moismoucompta = IndusConstates.moismoucompta',
-						'IndusTransferesCG.moismoucompta = RemisesIndus.moismoucompta',
+							'OR' => array(
+								'IndusConstates.moismoucompta = IndusTransferesCG.moismoucompta',
+								'IndusConstates.moismoucompta IS NULL',
+								'IndusTransferesCG.moismoucompta IS NULL',
+							)
+						),
 						array(
-							'IndusConstates.moismoucompta IS NULL',
-							'RemisesIndus.moismoucompta IS NULL',
-						)
-					),
-				),
-				array(
-					'OR' => array(
-						'RemisesIndus.moismoucompta IS NULL',
-						'RemisesIndus.moismoucompta = IndusConstates.moismoucompta',
-						'RemisesIndus.moismoucompta = IndusTransferesCG.moismoucompta',
+							'OR' => array(
+								'IndusConstates.moismoucompta = RemisesIndus.moismoucompta',
+								'IndusConstates.moismoucompta IS NULL',
+								'RemisesIndus.moismoucompta IS NULL',
+							)
+						),
 						array(
-							'IndusConstates.moismoucompta IS NULL',
-							'IndusTransferesCG.moismoucompta IS NULL',
+							'OR' => array(
+								'IndusTransferesCG.moismoucompta = RemisesIndus.moismoucompta',
+								'IndusTransferesCG.moismoucompta IS NULL',
+								'RemisesIndus.moismoucompta IS NULL',
+							)
 						)
-					),
+					)
 				),
 			);
-
+			
 			/**
 			 * Generateur de conditions
 			 */
@@ -220,7 +219,7 @@
 			/**
 			 * Conditions spéciales
 			 */
-			if ($search['Infofinanciere']['compare']) {
+			if (in_array($search['Infofinanciere']['compare'], array('<', '>', '<=', '>='))) {
 				$query['conditions'][] = array(
 					'OR' => array(
 						"IndusConstates.mtmoucompta " . $search['Infofinanciere']['compare'] => $search['Infofinanciere']['mtmoucompta'],

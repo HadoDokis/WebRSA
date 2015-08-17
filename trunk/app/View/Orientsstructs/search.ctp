@@ -89,7 +89,7 @@
 		)
 	);
 
-	echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.search' ) . '</legend>'
+	echo '<fieldset><legend>' . __m( 'Orientstruct.search' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
 				'Search.Orientstruct.derniere' => array( 'type' => 'checkbox' )
@@ -100,7 +100,7 @@
 	;
 
 	if ($departement === 66) {
-		echo '<fieldset id="CuiSecteur"><legend>' . __m( 'Orientstruct.orientepar' ) . '</legend>'
+		echo '<fieldset><legend>' . __m( 'Orientstruct.orientepar' ) . '</legend>'
 			. $this->Default3->subform(
 				array(
 					'Search.Orientstruct.structureorientante_id' => array('empty' => true, 'required' => false),
