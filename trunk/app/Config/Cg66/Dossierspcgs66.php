@@ -2,10 +2,16 @@
 	Configure::write(
 		'Filtresdefaut.Dossierspcgs66_search',
 		array(
-			'Search' => array(
-				'Pagination' => array(
-					'nombre_total' => 0
-				),
+			'Dossier' => array(
+				'dernier' => true
+			)
+		)
+	);
+	Configure::write(
+		'Filtresdefaut.Dossierspcgs66_search_gestionnaire',
+		array(
+			'Dossier' => array(
+				'dernier' => true
 			)
 		)
 	);
