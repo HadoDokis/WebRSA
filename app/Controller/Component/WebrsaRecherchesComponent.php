@@ -113,6 +113,7 @@
 			$search = Hash::get( Hash::expand( $Controller->request->params['named'], '__' ), $params['searchKey'] );
 			$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, $search );
 			$query = $this->Allocataires->completeSearchQuery( $query );
+			unset( $query['limit'] );
 
 			$order = trim( Hash::get( $Controller->request->params, 'named.sort' ).' '.Hash::get( $Controller->request->params, 'named.direction' ) );
 			if( !empty( $order ) ) {

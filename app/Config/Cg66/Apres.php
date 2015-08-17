@@ -2,10 +2,11 @@
 	Configure::write(
 		'Filtresdefaut.Apres_search',
 		array(
-			'Search' => array(
-				'Pagination' => array(
-					'nombre_total' => 0
-				),
+			'Pagination' => array(
+				'nombre_total' => 0
+			),
+			'Dossier' => array(
+				'dernier' => true
 			)
 		)
 	);
@@ -31,7 +32,7 @@
 				'innerTable' => array(
 					'Dossier.matricule',
 					'Personne.dtnai',
-					'Adresse.nomcom',
+					'Adresse.numcom',
 					'Personne.nir',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
