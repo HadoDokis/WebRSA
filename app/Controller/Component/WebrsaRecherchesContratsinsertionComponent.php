@@ -35,7 +35,7 @@
 			$options['Contratinsertion']['forme_ci'] = $Controller->Option->forme_ci();
 			$options['Contratinsertion']['duree_engag'] = $Controller->Option->duree_engag();
 
-			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) );
+			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ), 'empty' => ( $departement !== 58 ) ) );
 
 			$options['Personne']['trancheage'] = array(
 				'0_24' => '- 25 ans',
@@ -50,6 +50,18 @@
 			}
 			else if( $departement === 66 ) {
 				$options['Orientstruct']['not_typeorient_id'] = $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O', 'Typeorient.parentid IS NULL' ) ) );
+			}
+			else if( $departement === 93 ) {
+				$Controller->loadModel( 'Catalogueromev3' );
+
+				$options = Hash::merge(
+					$options,
+					$Controller->Contratinsertion->Cer93->enums(),
+					$Controller->Contratinsertion->Cer93->options( array( 'autre' => true, 'find' => true ) ),
+					$Controller->Catalogueromev3->dependantSelects()
+				);
+				$options['Expprocer93']['metierexerce_id'] = $Controller->Contratinsertion->Cer93->Expprocer93->Metierexerce->find( 'list' );
+				$options['Expprocer93']['secteuracti_id'] = $Controller->Contratinsertion->Cer93->Expprocer93->Secteuracti->find( 'list' );
 			}
 
 			return $options;
