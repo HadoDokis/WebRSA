@@ -2,10 +2,11 @@
 	Configure::write(
 		'Filtresdefaut.Bilansparcours66_search',
 		array(
-			'Search' => array(
-				'Pagination' => array(
-					'nombre_total' => 0
-				),
+			'Pagination' => array(
+				'nombre_total' => 0
+			),
+			'Dossier' => array(
+				'dernier' => true
 			)
 		)
 	);
