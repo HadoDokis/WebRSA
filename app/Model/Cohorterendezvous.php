@@ -174,9 +174,11 @@
 		 * et Cohortesrendezvous.exportcsv dans le webrsa.inc existent bien dans
 		 * la requête de recherche renvoyée par la méthode cohorte().
 		 *
+		 * @param array $params Paramètres supplémentaires (clé 'query' possible)
 		 * @return array
+		 * @todo Utiliser AbstractWebrsaRecherche
 		 */
-		public function checkParametrage() {
+		public function checkParametrage( array $params = array() ) {
 			$keys = array( 'Cohortesrendezvous.cohorte.fields', 'Cohortesrendezvous.cohorte.innerTable', 'Cohortesrendezvous.exportcsv' );
 			$query = $this->cohorte( array() );
 

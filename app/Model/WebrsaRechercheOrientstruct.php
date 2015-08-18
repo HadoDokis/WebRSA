@@ -205,7 +205,7 @@
 				'Orientstruct.date_valid',
 			);
 
-			if ($search['Orientstruct']['derniere']) {
+			if( Hash::get( $search, 'Orientstruct.derniere' ) ) {
 				$query['conditions'][] = array(
 					"Orientstruct.id IN (SELECT
 						orientsstructs.id

@@ -204,7 +204,7 @@
 			/**
 			 * Conditions spéciales
 			 */
-			if ($search['Contratinsertion']['dernier']) {
+			if( Hash::get( $search, 'Contratinsertion.dernier' ) ) {
 				$query['conditions'][] = array(
 					"Contratinsertion.id IN (SELECT
 						contratsinsertion.id
@@ -218,7 +218,7 @@
 						LIMIT 1)"
 				);
 			}
-			if ($search['Contratinsertion']['periode_validite']) {
+			if( Hash::get( $search, 'Contratinsertion.periode_validite' ) ) {
 				$debutValidite = date_cakephp_to_sql($search['Contratinsertion']['periode_validite_from']);
 				$finValidite = date_cakephp_to_sql($search['Contratinsertion']['periode_validite_to']);
 				$query['conditions'][] = array(
@@ -393,13 +393,13 @@
 					$query = $this->Contratinsertion->Cer93->Expprocer93->Entreeromev3->getCompletedRomev3Joins( $query, 'LEFT OUTER', $aliases );
 
 					// Ajout des champs et des jointures INSEE
-					$query['fields'][] = "Metierexerce{$suffix}.name";
+					$query['fields']["Metierexerce{$suffix}.name"] = "Metierexerce{$suffix}.name";
 					$query['joins'][] = array_words_replace(
 						$this->Contratinsertion->Cer93->Expprocer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) ),
 						$aliases
 					);
 
-					$query['fields'][] = "Secteuracti{$suffix}.name";
+					$query['fields']["Secteuracti{$suffix}.name"] = "Secteuracti{$suffix}.name";
 					$query['joins'][] = array_words_replace(
 						$this->Contratinsertion->Cer93->Expprocer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) ),
 						$aliases
@@ -418,9 +418,9 @@
 				}
 
 				// 2.2 Codes INSEE -> TODO: aliaser Metiertrouve ?
-				$query['fields'][] = 'Metierexerce.name';
+				$query['fields']['Metierexerce.name'] = 'Metierexerce.name';
 				$query['joins'][] = $this->Contratinsertion->Cer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) );
-				$query['fields'][] = 'Secteuracti.name';
+				$query['fields']['Secteuracti.name'] = 'Secteuracti.name';
 				$query['joins'][] = $this->Contratinsertion->Cer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) );
 
 				foreach( array( 'metierexerce_id', 'secteuracti_id' ) as $fieldName ) {
@@ -443,17 +443,15 @@
 					$query['joins'][] = $this->Contratinsertion->Cer93->Cer93Sujetcer93->join( 'Soussujetcer93', array( 'type' => 'LEFT OUTER' ) );
 					$query['joins'][] = $this->Contratinsertion->Cer93->Cer93Sujetcer93->join( 'Valeurparsoussujetcer93', array( 'type' => 'LEFT OUTER' ) );
 
-					$query['fields'] = array_merge(
-						$query['fields'],
-						array(
-							'Cer93Sujetcer93.commentaireautre',
-							'Cer93Sujetcer93.autrevaleur',
-							'Cer93Sujetcer93.autresoussujet',
-							'Sujetcer93.name',
-							'Soussujetcer93.name',
-							'Valeurparsoussujetcer93.name',
-						)
+					$fields = array(
+						'Cer93Sujetcer93.commentaireautre',
+						'Cer93Sujetcer93.autrevaleur',
+						'Cer93Sujetcer93.autresoussujet',
+						'Sujetcer93.name',
+						'Soussujetcer93.name',
+						'Valeurparsoussujetcer93.name',
 					);
+					$query['fields'] = array_merge( $query['fields'], array_combine( $fields, $fields ) );
 
 					$conditions = array( 'cers93_sujetscers93.cer93_id = Cer93.id' );
 
@@ -489,6 +487,34 @@
 			}
 
 			return $query;
+		}
+
+		/**
+		 * Surcharge de la méthode checkParametrage() permettant d'ajouter certains
+		 * champs spéciaux aux champs disponibles.
+		 *
+		 * @param array $params Paramètres supplémentaires (clé 'query' possible)
+		 * @return array
+		 */
+		public function checkParametrage( array $params = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement === 93 ) {
+				$search = array(
+					'Expprocer93' => array(
+						'cer93_id' => 1
+					),
+					'Cer93Sujetcer93' => array(
+						'sujetcer93_id' => 1
+					)
+				);
+			}
+			else {
+				$search = array();
+			}
+
+			$query = $this->search( $search );
+
+			return parent::checkParametrage( compact( 'query' ) );
 		}
 	}
 ?>

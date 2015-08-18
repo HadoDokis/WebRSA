@@ -34,13 +34,52 @@
 		 * Liste des controleurs implémentant les moteurs de recherches (v. 3)
 		 * il spossèdent donc une méthode search() et une méthode exportcsv().
 		 *
+		 * Cette liste sera peuplée dynamiquement dans le constructeur.
+		 *
 		 * @var array
 		 */
-		public $searches = array(
-			'Dsps',
-			'Dossiers',
-			'Entretiens',
-			'Rendezvous'
+		public $searches = array();
+
+		/**
+		 * Liste des modèles n'appartenant pas à un département donné.
+		 *
+		 * @var array
+		 */
+		public $notMyModels = array(
+			58 => array(
+				'Cohorterendezvous',
+				'Criterecui',
+				'Tableausuivipdv93',
+				'WebrsaRechercheActioncandidatPersonne',
+				'WebrsaRechercheApre',
+				'WebrsaRechercheBilanparcours66',
+				'WebrsaRechercheCui',
+				'WebrsaRechercheDossierpcg66',
+				'WebrsaRechercheTraitementpcg66',
+			),
+			66 => array(
+				'Cohorterendezvous',
+				'Tableausuivipdv93',
+			),
+			93 => array(
+				'Criterecui',
+				'WebrsaRechercheActioncandidatPersonne',
+				'WebrsaRechercheBilanparcours66',
+				'WebrsaRechercheCui',
+				'WebrsaRechercheDossierpcg66',
+				'WebrsaRechercheTraitementpcg66',
+			),
+			976 => array(
+				'Cohorterendezvous',
+				'Criterecui',
+				'Tableausuivipdv93',
+				'WebrsaRechercheActioncandidatPersonne',
+				'WebrsaRechercheBilanparcours66',
+				'WebrsaRechercheApre',
+				'WebrsaRechercheCui',
+				'WebrsaRechercheDossierpcg66',
+				'WebrsaRechercheTraitementpcg66',
+			)
 		);
 
 		/*public function getModels( $query ) {
@@ -120,6 +159,14 @@
 		 */
 		public function __construct( $id = false, $table = null, $ds = null ) {
 			parent::__construct( $id, $table, $ds );
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			// Population dynamique de la liste des nouveaux moteurs de recherche
+			foreach( App::objects( 'model' ) as $modelName ) {
+				if( strpos( $modelName, 'WebrsaRecherche' ) === 0 && !in_array( $modelName, $this->notMyModels[$departement] ) ) {
+					$this->searches[] = Inflector::pluralize( preg_replace( '/^WebrsaRecherche/', '', $modelName ) );
+				}
+			}
 
 			$this->_includeConfigFiles( Configure::read( 'Cg.departement' ) );
 		}
@@ -1007,17 +1054,8 @@
 			$ignore[] = 'Dossier.locked';
 			Configure::write( 'ConfigurableQueryFields.ignore', $ignore );
 
-			$notMyModels = array();
-			if( $departement !== 93 ) {
-				$notMyModels[] = 'Cohorterendezvous';
-				$notMyModels[] = 'Tableausuivipdv93';
-			}
-			if( $departement !== 66 ) {
-				$notMyModels[] = 'Criterecui';
-			}
-
 			foreach( App::objects( 'model' ) as $modelName ) {
-				if( !in_array( $modelName, $notMyModels ) ) {
+				if( !in_array( $modelName, $this->notMyModels[$departement] ) ) {
 					App::import( 'Model', $modelName );
 					$Reflection = new ReflectionClass( $modelName );
 					if( $Reflection->isAbstract() === false ) {

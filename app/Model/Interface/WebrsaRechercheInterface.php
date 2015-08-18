@@ -61,8 +61,10 @@
 		 *
 		 * @see $keysRecherche
 		 *
+		 * @param array $params Paramètres supplémentaires (clé 'query' possible)
 		 * @return array
+		 * @todo Utiliser AbstractWebrsaRecherche
 		 */
-		public function checkParametrage();
+		public function checkParametrage( array $params = array() );
 	}
 ?>

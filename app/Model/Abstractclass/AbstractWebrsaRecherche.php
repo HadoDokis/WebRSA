@@ -81,18 +81,37 @@
 		 * XXXX.fields, XXXX.innerTable et XXXX.exportcsv dans le webrsa.inc existent
 		 * bien dans la requête de recherche renvoyée par la méthode searchQuery().
 		 *
+		 * La clé keys permet de spécifier les clés de configuration contenant
+		 * les champs à utiliser dans les moteurs de recherche; par défaut, les
+		 * valeurs contenues dans l'attribut $keysRecherche de la classe.
+		 *
+		 * Si la clé query est vide, alors la méthode search() de la classe sera
+		 * appelée avec un array vide en paramètre.
+		 *
+		 * Export possible des champs disponibles dans des fichiers .csv du
+		 * répertoire app/tmp/logs si exportcsv vaut true (par défaut).
+		 *
 		 * @see $keysRecherche
 		 *
+		 * @param array $params Paramètres supplémentaires: clés keys, query et
+		 *		exportcsv
 		 * @return array
 		 */
-		public function checkParametrage() {
-			$query = $this->search( array() );
+		public function checkParametrage( array $params = array() ) {
+			$params += array(
+				'keys' => $this->keysRecherche,
+				'query' => $this->search( array() ),
+				'exportcsv' => true
+			);
 
-			$return = ConfigurableQueryFields::getErrors( $this->keysRecherche, $query );
+			// Vérification de l'existence des champs paramétrés dans le querydata
+			$return = ConfigurableQueryFields::getErrors( $params['keys'], $params['query'] );
 
-			// TODO: export des champs disponibles
-//			$fileName = TMP.DS.'logs'.DS.__CLASS__.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
-//			ConfigurableQueryFields::exportQueryFields( $query, Inflector::tableize( $this->name ), $fileName );
+			// Export des champs disponibles
+			if( $params['exportcsv'] === true ) {
+				$fileName = TMP.DS.'logs'.DS.$this->name.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
+				ConfigurableQueryFields::exportQueryFields( $params['query'], Inflector::tableize( $this->name ), $fileName );
+			}
 
 			return $return;
 		}

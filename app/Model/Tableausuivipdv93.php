@@ -2167,9 +2167,11 @@
 		 * existent bien dans la requête d'export des corpus, où <tableau> peut
 		 * valoir tableau1b3, tableau1b4, tableau1b5 ou tableau1b6.
 		 *
+		 * @param array $params Paramètres supplémentaires (clé 'query' possible)
 		 * @return array
+		 * @todo Utiliser AbstractWebrsaRecherche
 		 */
-		public function checkParametrage() {
+		public function checkParametrage( array $params = array() ) {
 			$return = array();
 
 			foreach( array_keys( $this->tableaux ) as $tableau ) {
