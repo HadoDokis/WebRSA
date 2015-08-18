@@ -65,3 +65,6 @@ msgstr "Externe, secrétaire structure référente"
 
 msgid "ENUM::TYPE::externe_ci"
 msgstr "Externe, référent structure référente"
+
+msgid "User.nom_complet"
+msgstr "Gestionnaire"

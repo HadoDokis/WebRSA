@@ -5,17 +5,11 @@
 	Configure::write(
 		'Filtresdefaut.Cuis_search',
 		array(
-			'Search' => array(
-				'Pagination' => array(
-					'nombre_total' => 0
-				),
-				'Cui' => array(
-					'dateembauche_from' => array(
-						'year' => '2009',
-						'month' => '03',
-						'day' => '07',
-					)
-				)
+			'Pagination' => array(
+				'nombre_total' => 0
+			),
+			'Dossier' => array(
+				'dernier' => true
 			)
 		)
 	);

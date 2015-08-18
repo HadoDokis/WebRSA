@@ -49,11 +49,11 @@
 			$types += array(
 				'Calculdroitrsa' => 'INNER',
 				'Foyer' => 'INNER',
-				'Prestation' => 'LEFT OUTER',
+				'Prestation' => 'INNER',
 				'Adressefoyer' => 'LEFT OUTER',
 				'Dossier' => 'INNER',
 				'Adresse' => 'LEFT OUTER',
-				'Situationdossierrsa' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'INNER',
 				'Detaildroitrsa' => 'LEFT OUTER',
 				'PersonneReferent' => 'LEFT OUTER',
 				'Personne' => 'INNER',
@@ -63,6 +63,9 @@
 				'Personnepcg66' => 'INNER',
 				'Dossierpcg66' => 'INNER',
 				'Situationpdo' => 'LEFT OUTER',
+				'Detailcalculdroitrsa' => 'LEFT OUTER',
+				'User' => 'LEFT OUTER',
+				'Descriptionpdo' => 'LEFT OUTER',
 			);
 			
 			$Allocataire = ClassRegistry::init( 'Allocataire' );
@@ -84,6 +87,7 @@
 							$Personnepcg66->Traitementpcg66,
 							$Personnepcg66->Personne->PersonneReferent,
 							$Personnepcg66->Dossierpcg66,
+							$Personnepcg66->Dossierpcg66->User,
 							$Personnepcg66->Personnepcg66Situationpdo->Situationpdo
 						)
 					),
@@ -109,8 +113,11 @@
 					$query['joins'],
 					array(
 						$Personnepcg66->join('Dossierpcg66', array('type' => $types['Dossierpcg66'])),
-						$Personnepcg66->join('Personnepcg66Situationpdo', array('type' => $types['Situationpdo'])),
+						$Personnepcg66->Traitementpcg66->join('Personnepcg66Situationpdo', array('type' => $types['Situationpdo'])),
 						$Personnepcg66->Personnepcg66Situationpdo->join('Situationpdo', array('type' => $types['Situationpdo'])),
+						$Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa'])),
+						$Personnepcg66->Dossierpcg66->join('User', array('type' => $types['User'])),
+						$Personnepcg66->Traitementpcg66->join('Descriptionpdo', array('type' => $types['Descriptionpdo'])),
 					)
 				);
 				
@@ -144,6 +151,16 @@
 			$Traitementpcg66 = ClassRegistry::init( 'Traitementpcg66' );
 
 			$query = $Allocataire->searchConditions( $query, $search );
+			
+			/**
+			 * Conditions obligatoire
+			 */
+			$query['conditions'][] = array(
+				'OR' => array(
+					'Detailcalculdroitrsa.id IS NULL',
+					'Detailcalculdroitrsa.id IN (SELECT "detailscalculsdroitsrsa"."id" AS detailscalculsdroitsrsa__id FROM detailscalculsdroitsrsa AS detailscalculsdroitsrsa WHERE "detailscalculsdroitsrsa"."detaildroitrsa_id" = "Detaildroitrsa"."id" ORDER BY "detailscalculsdroitsrsa"."ddnatdro" DESC LIMIT 1)'
+				)
+			);
 			
 			/**
 			 * Generateur de conditions
