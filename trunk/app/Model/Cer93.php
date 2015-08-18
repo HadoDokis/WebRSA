@@ -1042,13 +1042,13 @@
 			$query['fields'] = array_merge(
 				$query['fields'],
 				array(
-					"Famille{$suffix}.code",
-					"Famille{$suffix}.name",
-					"( \"Famille{$suffix}\".\"code\" || \"Domaine{$suffix}\".\"code\" ) AS \"Domaine{$suffix}__code\"",
-					"Domaine{$suffix}.name",
-					"( \"Famille{$suffix}\".\"code\" || \"Domaine{$suffix}\".\"code\" || \"Metier{$suffix}\".\"code\" ) AS \"Metier{$suffix}__code\"",
-					"Metier{$suffix}.name",
-					"Appellation{$suffix}.name"
+					"Famille{$suffix}.code" => "Famille{$suffix}.code",
+					"Famille{$suffix}.name" => "Famille{$suffix}.name",
+					"Domaine{$suffix}.code" => "( \"Famille{$suffix}\".\"code\" || \"Domaine{$suffix}\".\"code\" ) AS \"Domaine{$suffix}__code\"",
+					"Domaine{$suffix}.name" => "Domaine{$suffix}.name",
+					"Metier{$suffix}.code" => "( \"Famille{$suffix}\".\"code\" || \"Domaine{$suffix}\".\"code\" || \"Metier{$suffix}\".\"code\" ) AS \"Metier{$suffix}__code\"",
+					"Metier{$suffix}.name" => "Metier{$suffix}.name",
+					"Appellation{$suffix}.name" => "Appellation{$suffix}.name"
 				)
 			);
 

@@ -60,7 +60,7 @@
 				'Personne' => 'INNER',
 				'Detailcalculdroitrsa' => 'LEFT OUTER',
 			);
-			
+
 			$Allocataire = ClassRegistry::init( 'Allocataire' );
 			$Infofinanciere = ClassRegistry::init( 'Infofinanciere' );
 
@@ -90,7 +90,7 @@
 						'COALESCE("IndusConstates"."moismoucompta","IndusTransferesCG"."moismoucompta","RemisesIndus"."moismoucompta") AS "Indu__moismoucompta"',
 					)
 				);
-				
+
 				// 2. Jointure
 				$indusConstate = array(
 					'table' => '"infosfinancieres"',
@@ -101,7 +101,7 @@
 						'IndusConstates.type_allocation' => 'IndusConstates'
 					)
 				);
-				
+
 				$transfertCg = array(
 					'table' => '"infosfinancieres"',
 					'alias' => 'IndusTransferesCG',
@@ -111,7 +111,7 @@
 						'IndusTransferesCG.type_allocation' => 'IndusTransferesCG'
 					)
 				);
-				
+
 				$remiseCg = array(
 					'table' => '"infosfinancieres"',
 					'alias' => 'RemisesIndus',
@@ -121,7 +121,7 @@
 						'RemisesIndus.type_allocation' => 'RemisesIndus'
 					)
 				);
-				
+
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
@@ -162,7 +162,7 @@
 			$Infofinanciere = ClassRegistry::init( 'Infofinanciere' );
 
 			$query = $Allocataire->searchConditions( $query, $search );
-			
+
 			/**
 			 * Conditions obligatoire
 			 */
@@ -201,7 +201,7 @@
 					)
 				),
 			);
-			
+
 			/**
 			 * Generateur de conditions
 			 */
@@ -215,11 +215,11 @@
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			/**
 			 * Conditions spéciales
 			 */
-			if (in_array($search['Infofinanciere']['compare'], array('<', '>', '<=', '>='))) {
+			if (in_array(Hash::get( $search, 'Infofinanciere.compare' ), array('<', '>', '<=', '>='))) {
 				$query['conditions'][] = array(
 					'OR' => array(
 						"IndusConstates.mtmoucompta " . $search['Infofinanciere']['compare'] => $search['Infofinanciere']['mtmoucompta'],
@@ -228,7 +228,7 @@
 					)
 				);
 			}
-			elseif ($search['Infofinanciere']['mtmoucompta']) {
+			elseif( Hash::get( $search, 'Infofinanciere.mtmoucompta' ) ) {
 				$query['conditions'][] = array(
 					'OR' => array(
 						"IndusConstates.mtmoucompta" => $search['Infofinanciere']['mtmoucompta'],
@@ -237,8 +237,8 @@
 					)
 				);
 			}
-			
-			if ($search['Infofinanciere']['natpfcre']) {
+
+			if( Hash::get( $search, 'Infofinanciere.natpfcre' ) ) {
 				$query['conditions'][] = array(
 					'OR' => array(
 						"IndusConstates.natpfcre" => $search['Infofinanciere']['natpfcre'],

@@ -275,13 +275,13 @@
 			);
 
 			$fields = array(
-				"Familleromev3.code",
-				"Familleromev3.name",
-				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" ) AS \"{$aliases['Domaineromev3']}__code\"",
-				"Domaineromev3.name",
-				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" || \"Metierromev3\".\"code\" ) AS \"{$aliases['Metierromev3']}__code\"",
-				"Metierromev3.name",
-				"Appellationromev3.name"
+				"Familleromev3.code" => "Familleromev3.code",
+				"Familleromev3.name" => "Familleromev3.name",
+				"{$aliases['Domaineromev3']}.code" => "( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" ) AS \"{$aliases['Domaineromev3']}__code\"",
+				"Domaineromev3.name" => "Domaineromev3.name",
+				"{$aliases['Metierromev3']}.code" => "( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" || \"Metierromev3\".\"code\" ) AS \"{$aliases['Metierromev3']}__code\"",
+				"Metierromev3.name" => "Metierromev3.name",
+				"Appellationromev3.name" => "Appellationromev3.name"
 			);
 
 			$joins = array(
