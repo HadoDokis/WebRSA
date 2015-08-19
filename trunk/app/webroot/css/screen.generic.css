@@ -1061,7 +1061,7 @@ ul.actionMenu span.disabled, span.button.disabled, span.link.disabled {
 	background-position: left center;
 }
 
-ul.actions li.add a, ul.actions li a.add {
+ul.actions li.add a, ul.actions li a.add, td.action a.add {
 	background-image: url( ../img/icons/add.png );
 }
 
@@ -1857,7 +1857,7 @@ body.fichesprescriptions93 div.ajax.select ul li, body.dsps div.ajax.select ul l
 	border-bottom: 1px solid silver;
 }
 
-body.search ul.actions li.action a.search, ul.actions li.action a.search_gestionnaire {
+body.search ul.actions li.action a.search, ul.actions li.action a.search_gestionnaire, a.display_formulaire {
 	background-image: url("../img/icons/application_form_magnify.png");
 }
 

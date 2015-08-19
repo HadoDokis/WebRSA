@@ -15,13 +15,38 @@
 	 */
 	class Defautsinsertionseps66Controller extends AppController
 	{
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'InsertionsAllocataires', 'Gedooo.Gedooo' );
-		public $helpers = array( 'Default2', 'Search' );
+		public $components = array( 
+			'Search.SearchPrg' => array( 
+				'actions' => array( 
+					'selectionnoninscrits', 
+					'selectionradies', 
+					'courriersinformations', 
+					'search_noninscrits', 
+					'search_radies' 
+				) 
+			), 
+			'Gestionzonesgeos', 
+			'InsertionsAllocataires', 
+			'Gedooo.Gedooo' ,
+			'Jetons2',
+		);
+		public $helpers = array( 
+			'Default2', 
+			'Search',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
+		
+		public $uses = array(
+			'Defautinsertionep66',
+			'WebrsaRechercheNoninscrit',
+			'Personne'
+		);
 
 		/**
-		*
+		* 'qdNonInscrits', 'noninscriptionpe'
 		*/
-
 		protected function _selectionPassageDefautinsertionep66( $qdName, $actionbp ) {
 			$this->set( 'etatdosrsa', ClassRegistry::init('Option')->etatdosrsa( ClassRegistry::init('Situationdossierrsa')->etatOuvert()) );
 
@@ -45,7 +70,13 @@
 				$queryData['limit'] = 10;
 				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 
-				$this->paginate = array( 'Personne' => $queryData );
+				if (isset($this->paginate)) {
+					$this->paginate['Personne'] += $queryData;
+				}
+				else{
+					$this->paginate = array( 'Personne' => $queryData );
+				}
+				
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
 				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne, array(), array(), $progressivePaginate );
 			}
@@ -150,6 +181,26 @@
 				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search_noninscrits() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
+			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNoninscrit', 'modelName' => 'Personne') );
+			$this->Personne->validate = array();
+			$this->render( 'search' );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search_radies() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
+			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheSelectionradie', 'modelName' => 'Personne') );
+			$this->Personne->validate = array();
+			$this->render( 'search' );
 		}
 	}
 ?>
