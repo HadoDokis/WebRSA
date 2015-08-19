@@ -803,7 +803,7 @@
 							)
 						)
 					).')',
-					// Ni celles qui ont un dossier d'EP ayant été traité en commission plus récemment que 2 mois
+					// Ni celles qui ont un dossier d'EP pour la thématique ayant été traité en commission plus récemment que 2 mois
 					'Personne.id NOT IN ('.$this->Dossierep->sq(
 						array(
 							'fields' => array( 'dossierseps2.personne_id' ),
@@ -868,10 +868,9 @@
 			}
 
 			/// Filtre zone géographique
-			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			$queryData['conditions'][] = $this->conditionsAdresse( $queryData['conditions'], $datas, $filtre_zone_geo, $mesCodesInsee );
-			$queryData['conditions'][] = $this->conditionsPersonneFoyerDossier( $queryData['conditions'], $datas );
-			$queryData['conditions'][] = $this->conditionsDernierDossierAllocataire( $queryData['conditions'], $datas );
+			$queryData['conditions'] = $this->conditionsAdresse( $queryData['conditions'], $datas, $filtre_zone_geo, $mesCodesInsee );
+			$queryData['conditions'] = $this->conditionsPersonneFoyerDossier( $queryData['conditions'], $datas );
+			$queryData['conditions'] = $this->conditionsDernierDossierAllocataire( $queryData['conditions'], $datas );
 
 			if( isset( $datas['Orientstruct']['date_valid'] ) && !empty( $datas['Orientstruct']['date_valid'] ) ) {
 				if( valid_int( $datas['Orientstruct']['date_valid']['year'] ) ) {

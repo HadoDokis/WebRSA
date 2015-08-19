@@ -175,7 +175,9 @@
 			'Pôle Emploi' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Non inscrits au Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits'  ) ),
+				'Non inscrits au Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'search_noninscrits'  ) ),
 				'Radiés de Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies'  ) ),
+				'Radiés de Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'search_radies'  ) ),
 			),
 			'Demande de maintien dans le social' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
