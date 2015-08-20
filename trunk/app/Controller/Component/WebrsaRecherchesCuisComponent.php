@@ -17,29 +17,13 @@
 	class WebrsaRecherchesCuisComponent extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modele principal
-		 * @var Model 
-		 */
-		public $Cui;
-		
-		/**
-		 * Controller executant le component
-		 * @var Controller 
-		 */
-		public $Controller;
-		
-		/**
-		 * Contructeur de class, assigne le controller et le modele principal
+		 * Modèles utilisé par le component
 		 * 
-		 * @param \ComponentCollection $collection
-		 * @param array $settings
+		 * @var array
 		 */
-		public function __construct(\ComponentCollection $collection, $settings = array()) {
-			parent::__construct($collection, $settings);
-			
-			$this->Cui = ClassRegistry::init( 'Cui' );
-			$this->Controller = $this->_Collection->getController();
-		}
+		public $uses = array(
+			'Cui'
+		);
 		
 		/**
 		 * Options pour le moteur de recherche
@@ -49,6 +33,7 @@
 		 */
 		public function options( array $params = array() ) {
 			$params = $this->params( $params );
+			$this->Cui = ClassRegistry::init( 'Cui' );
 
 			$options = $this->Cui->Emailcui->options();
 			

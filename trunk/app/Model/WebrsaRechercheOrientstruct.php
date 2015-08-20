@@ -33,9 +33,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Orientstructs.search.fields',
-			'Orientstructs.search.innerTable',
-			'Orientstructs.exportcsv'
+			'Orientsstructs.search.fields',
+			'Orientsstructs.search.innerTable',
+			'Orientsstructs.exportcsv'
 		);
 
 		/**
@@ -43,7 +43,12 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Allocataire', 'Orientstruct', 'Informationpe', 'Canton' );
+		public $uses = array( 
+			'Allocataire', 
+			'Orientstruct', 
+			'Informationpe', 
+			'Canton' 
+		);
 
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser

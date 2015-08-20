@@ -190,7 +190,7 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNoninscrit', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
-			$this->render( 'search' );
+			$this->view =  'search';
 		}
 		
 		/**
@@ -200,7 +200,7 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheSelectionradie', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
-			$this->render( 'search' );
+			$this->view =  'search';
 		}
 	}
 ?>

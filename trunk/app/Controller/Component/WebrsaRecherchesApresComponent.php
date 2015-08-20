@@ -18,15 +18,10 @@
 	{
 		/**
 		 * Modele principal
+		 * 
 		 * @var Model 
 		 */
 		public $Apre;
-		
-		/**
-		 * Controller executant le component
-		 * @var Controller 
-		 */
-		public $Controller;
 		
 		/**
 		 * Contructeur de class, assigne le controller et le modele principal
@@ -38,7 +33,6 @@
 			parent::__construct($collection, $settings);
 			
 			$this->Apre = ClassRegistry::init( 'Apre'.Configure::read( 'Apre.suffixe' ) );
-			$this->Controller = $this->_Collection->getController();
 		}
 		
 		/**

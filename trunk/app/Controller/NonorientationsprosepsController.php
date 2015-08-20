@@ -21,15 +21,28 @@
 			'Allocataires',
 			'Csv',
 			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
 			'Xpaginator',
 		);
 
-		public $uses = array( 'Nonorientationproep58', 'Nonorientationproep93', 'Nonorientationproep66' );
+		public $uses = array( 
+			'Nonorientationproep58', 
+			'Nonorientationproep93', 
+			'Nonorientationproep66', 
+			'Orientstruct' 
+		);
 
 		public $components = array(
 			'Allocataires',
 			'InsertionsAllocataires',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array( 
+				'actions' => array( 
+					'index',
+					'search'
+				) 
+			)
 		);
 
 		public function beforeFilter() {
@@ -139,5 +152,13 @@
 			$this->set( compact( 'orientsstructs' ) );
 
 		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsproseps' );
+			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
+		}		
 	}
 ?>

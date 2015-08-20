@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaRechercheInfofinanciere.
+	 * Code source de la classe WebrsaRechercheIndu.
 	 *
 	 * PHP 5.3
 	 *
@@ -11,18 +11,18 @@
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
-	 * La classe WebrsaRechercheInfofinanciere ...
+	 * La classe WebrsaRechercheIndu ...
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaRechercheInfofinanciere extends AbstractWebrsaRecherche
+	class WebrsaRechercheIndu extends AbstractWebrsaRecherche
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'WebrsaRechercheInfofinanciere';
+		public $name = 'WebrsaRechercheIndu';
 
 		/**
 		 * Liste des clés de configuration utilisées par le moteur de recherche,
@@ -33,9 +33,20 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Infofinancieres.search.fields',
-			'Infofinancieres.search.innerTable',
-			'Infofinancieres.exportcsv'
+			'Indus.search.fields',
+			'Indus.search.innerTable',
+			'Indus.exportcsv'
+		);
+		
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 
+			'Allocataire', 
+			'Infofinanciere', 
+			'Canton',
 		);
 
 		/**
@@ -61,22 +72,19 @@
 				'Detailcalculdroitrsa' => 'LEFT OUTER',
 			);
 
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Infofinanciere = ClassRegistry::init( 'Infofinanciere' );
-
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'Dossier' );
+				$query = $this->Allocataire->searchQuery( $types, 'Dossier' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Infofinanciere,
-							$Infofinanciere->Dossier->Foyer->Personne->PersonneReferent,
+							$this->Infofinanciere,
+							$this->Infofinanciere->Dossier->Foyer->Personne->PersonneReferent,
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -128,7 +136,7 @@
 						$indusConstate,
 						$transfertCg,
 						$remiseCg,
-						$Infofinanciere->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa']))
+						$this->Infofinanciere->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa']))
 					)
 				);
 
@@ -138,9 +146,8 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -158,10 +165,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Infofinanciere = ClassRegistry::init( 'Infofinanciere' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 
 			/**
 			 * Conditions obligatoire
@@ -219,31 +223,34 @@
 			/**
 			 * Conditions spéciales
 			 */
-			if (in_array(Hash::get( $search, 'Infofinanciere.compare' ), array('<', '>', '<=', '>='))) {
+			$mtmoucompta = Hash::get( $search, 'Infofinanciere.mtmoucompta' );
+			$compare = Hash::get( $search, 'Infofinanciere.compare' );
+			if ( in_array($compare, array('<', '>', '<=', '>=')) ) {
 				$query['conditions'][] = array(
 					'OR' => array(
-						"IndusConstates.mtmoucompta " . $search['Infofinanciere']['compare'] => $search['Infofinanciere']['mtmoucompta'],
-						"IndusTransferesCG.mtmoucompta " . $search['Infofinanciere']['compare'] => $search['Infofinanciere']['mtmoucompta'],
-						"RemisesIndus.mtmoucompta " . $search['Infofinanciere']['compare'] => $search['Infofinanciere']['mtmoucompta'],
+						"IndusConstates.mtmoucompta " . $compare => $mtmoucompta,
+						"IndusTransferesCG.mtmoucompta " . $compare => $mtmoucompta,
+						"RemisesIndus.mtmoucompta " . $compare => $mtmoucompta,
 					)
 				);
 			}
-			elseif( Hash::get( $search, 'Infofinanciere.mtmoucompta' ) ) {
+			elseif( $mtmoucompta ) {
 				$query['conditions'][] = array(
 					'OR' => array(
-						"IndusConstates.mtmoucompta" => $search['Infofinanciere']['mtmoucompta'],
-						"IndusTransferesCG.mtmoucompta" => $search['Infofinanciere']['mtmoucompta'],
-						"RemisesIndus.mtmoucompta" => $search['Infofinanciere']['mtmoucompta'],
+						"IndusConstates.mtmoucompta" => $mtmoucompta,
+						"IndusTransferesCG.mtmoucompta" => $mtmoucompta,
+						"RemisesIndus.mtmoucompta" => $mtmoucompta,
 					)
 				);
 			}
 
-			if( Hash::get( $search, 'Infofinanciere.natpfcre' ) ) {
+			$natpfcre = Hash::get( $search, 'Infofinanciere.natpfcre' );
+			if( $natpfcre ) {
 				$query['conditions'][] = array(
 					'OR' => array(
-						"IndusConstates.natpfcre" => $search['Infofinanciere']['natpfcre'],
-						"IndusTransferesCG.natpfcre" => $search['Infofinanciere']['natpfcre'],
-						"RemisesIndus.natpfcre" => $search['Infofinanciere']['natpfcre'],
+						"IndusConstates.natpfcre" => $natpfcre,
+						"IndusTransferesCG.natpfcre" => $natpfcre,
+						"RemisesIndus.natpfcre" => $natpfcre,
 					)
 				);
 			}

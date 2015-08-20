@@ -17,30 +17,13 @@
 	class WebrsaRecherchesActionscandidatsPersonnesComponent extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modele principal
-		 * @var Model 
-		 */
-		public $ActioncandidatPersonne;
-		
-		/**
-		 * Controller executant le component
-		 * @var Controller 
-		 */
-		public $Controller;
-		
-		/**
-		 * Contructeur de class, assigne le controller et le modele principal
+		 * Modèles utilisé par le component
 		 * 
-		 * @param \ComponentCollection $collection
-		 * @param array $settings
+		 * @var array
 		 */
-		public function __construct(\ComponentCollection $collection, $settings = array()) {
-			parent::__construct($collection, $settings);
-			
-			$this->ActioncandidatPersonne = ClassRegistry::init( 'ActioncandidatPersonne' );
-			$this->Controller = $this->_Collection->getController();
-			$this->Option = ClassRegistry::init('Option');
-		}
+		public $uses = array(
+			'ActioncandidatPersonne'
+		);
 		
 		/**
 		 * Options pour le moteur de recherche
@@ -50,7 +33,7 @@
 		 */
 		public function options( array $params = array() ) {
 			$options = parent::options( $params );
-			$cgDepartement = Configure::read( 'Cg.departement' );
+			$this->ActioncandidatPersonne = ClassRegistry::init( 'ActioncandidatPersonne' );
 			
 			$options['ActioncandidatPersonne']['referent_id'] = $this->ActioncandidatPersonne->Referent->find( 'list', array( 'recursive' => -1, 'order' => array( 'nom', 'prenom' ) ) );
 			$options['Contactpartenaire']['partenaire_id'] = $this->ActioncandidatPersonne->Actioncandidat->Partenaire->find( 'list', array( 'fields' => array( 'libstruc' ), 'order' => array( 'Partenaire.libstruc ASC' ) ) );

@@ -37,6 +37,17 @@
 			'ActionscandidatsPersonnes.search.innerTable',
 			'ActionscandidatsPersonnes.exportcsv'
 		);
+		
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 
+			'Allocataire', 
+			'ActioncandidatPersonne', 
+			'Canton',
+		);
 
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
@@ -65,26 +76,25 @@
 				'Actioncandidat' => 'INNER',
 				'Contactpartenaire' => 'INNER',
 				'Partenaire' => 'LEFT OUTER',
+				'Progfichecandidature66' => 'LEFT OUTER',
 			);
 			
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$ActioncandidatPersonne = ClassRegistry::init( 'ActioncandidatPersonne' );
-
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'ActioncandidatPersonne' );
+				$query = $this->Allocataire->searchQuery( $types, 'ActioncandidatPersonne' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$ActioncandidatPersonne,
-							$ActioncandidatPersonne->Referent,
-							$ActioncandidatPersonne->Actioncandidat,
-							$ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire,
+							$this->ActioncandidatPersonne,
+							$this->ActioncandidatPersonne->Referent,
+							$this->ActioncandidatPersonne->Actioncandidat,
+							$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire,
+							$this->ActioncandidatPersonne->Progfichecandidature66,
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -106,12 +116,16 @@
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$ActioncandidatPersonne->join( 'Referent', array( 'type' => $types['Referent'] ) ),
-						$ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => $types['Actioncandidat'] ) ),
-						$ActioncandidatPersonne->Actioncandidat->join( 'Contactpartenaire', array( 'type' => $types['Contactpartenaire'] ) ),
-						$ActioncandidatPersonne->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => $types['Partenaire'] ) ),
+						$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => $types['Referent'] ) ),
+						$this->ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => $types['Actioncandidat'] ) ),
+						$this->ActioncandidatPersonne->Actioncandidat->join( 'Contactpartenaire', array( 'type' => $types['Contactpartenaire'] ) ),
+						$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => $types['Partenaire'] ) ),
 					)
 				);
+				
+				if ( (int)Configure::read('Cg.departement') === 66 ) {
+					$query['joins'][] = $this->ActioncandidatPersonne->join( 'Progfichecandidature66', array( 'type' => $types['Progfichecandidature66'] ) );
+				}
 
 				// 3. Tri par défaut: date, heure, id
 				$query['order'] = array(
@@ -120,9 +134,8 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -140,10 +153,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$ActioncandidatPersonne = ClassRegistry::init( 'ActioncandidatPersonne' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 			
 			/**
 			 * Generateur de conditions

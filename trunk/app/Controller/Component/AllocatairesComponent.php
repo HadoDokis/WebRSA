@@ -116,7 +116,14 @@
 		public function paginate( array $query, $className = 'Personne' ) {
 			$Controller = $this->_Collection->getController();
 
-			$Controller->paginate = array( $className => $query );
+			// Permet de surcharger les clefs paginate dans le controller directement
+			if (isset($Controller->paginate)) {
+				$Controller->paginate[$className] += $query;
+			}
+			else{
+				$Controller->paginate = array( $className => $query );
+			}
+			
 
 			$results = $Controller->paginate(
 				$className,
