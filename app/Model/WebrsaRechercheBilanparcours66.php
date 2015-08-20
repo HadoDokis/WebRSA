@@ -37,6 +37,17 @@
 			'Contratsinsertion.search.innerTable',
 			'Contratsinsertion.exportcsv'
 		);
+		
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 
+			'Allocataire', 
+			'Bilanparcours66', 
+			'Canton',
+		);
 
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
@@ -64,26 +75,23 @@
 				'Referent' => 'INNER',
 				'Dossierep' => 'LEFT OUTER',
 			);
-			
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Bilanparcours66 = ClassRegistry::init( 'Bilanparcours66' );
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'Bilanparcours66' );
+				$query = $this->Allocataire->searchQuery( $types, 'Bilanparcours66' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Bilanparcours66,
-							$Bilanparcours66->Referent,
-							$Bilanparcours66->Personne->PersonneReferent,
-							$Bilanparcours66->Personne->Dossierep,
-							$Bilanparcours66->Structurereferente
+							$this->Bilanparcours66,
+							$this->Bilanparcours66->Referent,
+							$this->Bilanparcours66->Personne->PersonneReferent,
+							$this->Bilanparcours66->Personne->Dossierep,
+							$this->Bilanparcours66->Structurereferente
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -94,17 +102,17 @@
 				);
 				
 				// 2. Jointure
-				$joinDossierep = $Bilanparcours66->Personne->join( 'Dossierep', array( 'type' => $types['Dossierep'] ) );
+				$joinDossierep = $this->Bilanparcours66->Personne->join( 'Dossierep', array( 'type' => $types['Dossierep'] ) );
 				$joinDossierep['conditions'] = '("Defautinsertionep66"."dossierep_id" = "Dossierep"."id") OR ("Saisinebilanparcoursep66"."dossierep_id" = "Dossierep"."id")';
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$Bilanparcours66->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
-						$Bilanparcours66->join( 'Referent', array( 'type' => $types['Referent'] ) ),
-						$Bilanparcours66->Structurereferente->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
-						$Bilanparcours66->join( 'Orientstruct', array( 'type' => $types['Orientstruct'] ) ),
-						$Bilanparcours66->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
-						$Bilanparcours66->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
+						$this->Bilanparcours66->join( 'Referent', array( 'type' => $types['Referent'] ) ),
+						$this->Bilanparcours66->Structurereferente->join( 'Typeorient', array( 'type' => $types['Typeorient'] ) ),
+						$this->Bilanparcours66->join( 'Orientstruct', array( 'type' => $types['Orientstruct'] ) ),
+						$this->Bilanparcours66->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
 						$joinDossierep
 					)
 				);
@@ -115,9 +123,8 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -135,10 +142,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Bilanparcours66 = ClassRegistry::init( 'Bilanparcours66' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 			
 			/**
 			 * Generateur de conditions
@@ -181,12 +185,13 @@
 			/**
 			 * Conditions spéciales
 			 */
-			if (in_array($search['Bilanparcours66']['hasmanifestation'], array('0','1'))) {
+			$hasmanifestation = Hash::get($search, 'Bilanparcours66.hasmanifestation');
+			if (in_array($hasmanifestation, array('0','1'))) {
 				$query['conditions'][] = '('
 					. 'SELECT COUNT("manifestationsbilansparcours66"."id") '
 					. 'FROM manifestationsbilansparcours66 '
 					. 'WHERE "manifestationsbilansparcours66"."bilanparcours66_id" = "Bilanparcours66"."id"'
-					. ') '.($search['Bilanparcours66']['hasmanifestation'] === '0' ? '=' : '>').' 0'
+					. ') '.($hasmanifestation === '0' ? '=' : '>').' 0'
 				;
 			}
 

@@ -37,6 +37,17 @@
 			'Traitementspcgs66.search.innerTable',
 			'Traitementspcgs66.exportcsv'
 		);
+		
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 
+			'Allocataire', 
+			'Personnepcg66',
+			'Canton' 
+		);
 
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
@@ -68,27 +79,27 @@
 				'Descriptionpdo' => 'LEFT OUTER',
 			);
 			
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
+			$this->Allocataire = ClassRegistry::init( 'Allocataire' );
 			
-			$Personnepcg66 = ClassRegistry::init( 'Personnepcg66' );
+			$this->Personnepcg66 = ClassRegistry::init( 'Personnepcg66' );
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'Personnepcg66' );
+				$query = $this->Allocataire->searchQuery( $types, 'Personnepcg66' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Personnepcg66,
-							$Personnepcg66->Traitementpcg66,
-							$Personnepcg66->Personne->PersonneReferent,
-							$Personnepcg66->Dossierpcg66,
-							$Personnepcg66->Dossierpcg66->User,
-							$Personnepcg66->Personnepcg66Situationpdo->Situationpdo
+							$this->Personnepcg66,
+							$this->Personnepcg66->Traitementpcg66,
+							$this->Personnepcg66->Personne->PersonneReferent,
+							$this->Personnepcg66->Dossierpcg66,
+							$this->Personnepcg66->Dossierpcg66->User,
+							$this->Personnepcg66->Personnepcg66Situationpdo->Situationpdo
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -97,7 +108,7 @@
 						'Personnepcg66.personne_id',
 						'Dossierpcg66.id',
 						
-						'(SELECT COUNT("fichiermodule"."id") '
+						'Fichiermodule.nb_fichiers_lies' => '(SELECT COUNT("fichiermodule"."id") '
 						. 'FROM "fichiersmodules" AS "fichiermodule" '
 						. 'WHERE "fichiermodule"."modele" = \'Foyer\' '
 						. 'AND "fichiermodule"."fk_value" = "Foyer"."id") '
@@ -108,16 +119,16 @@
 				// 2. Jointure
 				$query['joins'] = array_merge(
 					array(
-						$Personnepcg66->Traitementpcg66->join('Personnepcg66', array('type' => $types['Personnepcg66']))
+						$this->Personnepcg66->Traitementpcg66->join('Personnepcg66', array('type' => $types['Personnepcg66']))
 					),
 					$query['joins'],
 					array(
-						$Personnepcg66->join('Dossierpcg66', array('type' => $types['Dossierpcg66'])),
-						$Personnepcg66->Traitementpcg66->join('Personnepcg66Situationpdo', array('type' => $types['Situationpdo'])),
-						$Personnepcg66->Personnepcg66Situationpdo->join('Situationpdo', array('type' => $types['Situationpdo'])),
-						$Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa'])),
-						$Personnepcg66->Dossierpcg66->join('User', array('type' => $types['User'])),
-						$Personnepcg66->Traitementpcg66->join('Descriptionpdo', array('type' => $types['Descriptionpdo'])),
+						$this->Personnepcg66->join('Dossierpcg66', array('type' => $types['Dossierpcg66'])),
+						$this->Personnepcg66->Traitementpcg66->join('Personnepcg66Situationpdo', array('type' => $types['Situationpdo'])),
+						$this->Personnepcg66->Personnepcg66Situationpdo->join('Situationpdo', array('type' => $types['Situationpdo'])),
+						$this->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa'])),
+						$this->Personnepcg66->Dossierpcg66->join('User', array('type' => $types['User'])),
+						$this->Personnepcg66->Traitementpcg66->join('Descriptionpdo', array('type' => $types['Descriptionpdo'])),
 					)
 				);
 				
@@ -127,9 +138,8 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -147,10 +157,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Traitementpcg66 = ClassRegistry::init( 'Traitementpcg66' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 			
 			/**
 			 * Conditions obligatoire
@@ -196,38 +203,38 @@
 			/**
 			 * Conditions spéciales
 			 */
-			if (isset($search['Fichiermodule']['exists']) && in_array($search['Fichiermodule']['exists'], array('0', '1')) ) {
-				$condition = '('
-						. 'SELECT count("fichiersmodules"."id") '
-						. 'FROM fichiersmodules '
-						. 'WHERE "fichiersmodules"."modele" = \'Foyer\' '
-						. 'AND "fichiersmodules"."fk_value" = "Foyer"."id")';
-				
-				switch ($search['Fichiermodule']['exists']) {
-					case '0': $condition = $condition . ' = 0'; break;
-					case '1': $condition = $condition . ' > 0'; break;
-				}
-				
-				$query['conditions'][] = $condition;
+			$exists = Hash::get($search, 'Fichiermodule.exists');
+			if ( in_array($exists, array('0', '1')) ) {
+				$query['conditions'][] = '('
+					. 'SELECT count("fichiersmodules"."id") '
+					. 'FROM fichiersmodules '
+					. 'WHERE "fichiersmodules"."modele" = \'Foyer\' '
+					. 'AND "fichiersmodules"."fk_value" = "Foyer"."id") '
+					. ($exists === '0' ? '=' : '>') . ' 0'
+				;
 			}
-			if ($search['Traitementpcg66']['situationpdo_id']) {
+			
+			$situationpdo_id = Hash::get($search, 'Traitementpcg66.situationpdo_id');
+			if ( $situationpdo_id ) {
 				$query['conditions'][] = array(
 					 'Personnepcg66.id IN ('
 					. 'SELECT "personnespcgs66_situationspdos"."personnepcg66_id" AS personnespcgs66_situationspdos__personnepcg66_id '
 					. 'FROM personnespcgs66_situationspdos AS personnespcgs66_situationspdos '
 					. 'INNER JOIN "public"."situationspdos" AS situationspdos '
 					. 'ON ("personnespcgs66_situationspdos"."situationpdo_id" = "situationspdos"."id") '
-					. 'WHERE "personnespcgs66_situationspdos"."situationpdo_id" IN ('.implode(', ', $search['Traitementpcg66']['situationpdo_id']).'))'
+					. 'WHERE "personnespcgs66_situationspdos"."situationpdo_id" IN ('.implode(', ', $situationpdo_id).'))'
 				);
 			}
-			if ($search['Traitementpcg66']['statutpdo_id']) {
+			
+			$statutpdo_id = Hash::get($search, 'Traitementpcg66.statutpdo_id');
+			if ( $statutpdo_id ) {
 				$query['conditions'][] = array(
 					 '"Personnepcg66"."id" IN ('
 					. 'SELECT "personnespcgs66_statutspdos"."personnepcg66_id" AS personnespcgs66_statutspdos__personnepcg66_id '
 					. 'FROM personnespcgs66_statutspdos AS personnespcgs66_statutspdos '
 					. 'INNER JOIN "public"."statutspdos" AS statutspdos '
 					. 'ON ("personnespcgs66_statutspdos"."statutpdo_id" = "statutspdos"."id") '
-					. 'WHERE "personnespcgs66_statutspdos"."statutpdo_id" IN ('.implode(', ', $search['Traitementpcg66']['statutpdo_id']).'))'
+					. 'WHERE "personnespcgs66_statutspdos"."statutpdo_id" IN ('.implode(', ', $statutpdo_id).'))'
 				);
 			}
 

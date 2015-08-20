@@ -183,6 +183,10 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index'  )
 			),
+			'Demande de maintien dans le social (nouveau)' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+				'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'search'  )
+			),
 			'Par allocataires sortants' => array(
 				'Intra-département' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),

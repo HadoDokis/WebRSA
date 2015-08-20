@@ -37,6 +37,16 @@
 			'Apres.search.innerTable',
 			'Apres.exportcsv'
 		);
+		
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 
+			'Allocataire',
+			'Canton',
+		);
 
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
@@ -68,8 +78,6 @@
 				'Themeapre' . $cgDepartement => 'LEFT OUTER',
 			);
 			
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			
 			$Apre = ClassRegistry::init( $modelApreDpt );
 			$Apre->alias = 'Apre';
 
@@ -77,7 +85,7 @@
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'Apre' );
+				$query = $this->Allocataire->searchQuery( $types, 'Apre' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
@@ -135,9 +143,8 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -155,10 +162,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Apre = ClassRegistry::init( 'Apre' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 			
 			/**
 			 * Generateur de conditions

@@ -37,6 +37,17 @@
 			'Cuis.search.innerTable',
 			'Cuis.exportcsv'
 		);
+		
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 
+			'Allocataire',
+			'Cui',
+			'Canton',
+		);
 
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
@@ -77,25 +88,22 @@
 			foreach ($modelPotentiel as $modelName){
 				$types += array( $modelName => 'LEFT OUTER' ); 
 			}
-			
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Cui = ClassRegistry::init( 'Cui' );
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$query = $Allocataire->searchQuery( $types, 'Cui' );
+				$query = $this->Allocataire->searchQuery( $types, 'Cui' );
 
 				// 1. Ajout des champs supplémentaires
 				$query['fields'] = array_merge(
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Cui,
-							$Cui->Emailcui,
-							$Cui->Partenairecui,
-							$Cui->Partenairecui->Adressecui,
+							$this->Cui,
+							$this->Cui->Emailcui,
+							$this->Cui->Partenairecui,
+							$this->Cui->Partenairecui->Adressecui,
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -125,35 +133,35 @@
 
 				array_unshift(
 					$query['joins'],
-					$Cui->join( 'Partenairecui', array( 'type' => $types['Partenairecui'] ) ),
-					$Cui->join( 'Emailcui',
+					$this->Cui->join( 'Partenairecui', array( 'type' => $types['Partenairecui'] ) ),
+					$this->Cui->join( 'Emailcui',
 						array(
 							'type' => $types['Emailcui'],
 							'conditions' => array(
-								"Emailcui.id IN ( ".$Cui->Emailcui->sq( $emailQuery )." )"
+								"Emailcui.id IN ( ".$this->Cui->Emailcui->sq( $emailQuery )." )"
 							)
 						)
 					),
-					$Cui->Partenairecui->join( 'Adressecui', array( 'type' => $types['Adressecui'] ) )
+					$this->Cui->Partenairecui->join( 'Adressecui', array( 'type' => $types['Adressecui'] ) )
 				);
 
 				// Ajout des tables spécifiques
 				
-				if( isset( $Cui->{$modelCuiDpt} ) ) {
+				if( isset( $this->Cui->{$modelCuiDpt} ) ) {
 					$foreignKey = strtolower($modelCuiDpt) . '_id';
 
 					// Liste de modeles obligatoire pour un CG donné
 					$modelList = array(
-						$Cui->{$modelCuiDpt}
+						$this->Cui->{$modelCuiDpt}
 					);
 
 					array_push(
 						$query['joins'],
-						$Cui->join( $modelCuiDpt, array( 'type' => $types[$modelCuiDpt] ) )
+						$this->Cui->join( $modelCuiDpt, array( 'type' => $types[$modelCuiDpt] ) )
 					);
 					
 					foreach ( $modelPotentiel as $modelName ){
-						if ( isset( $Cui->{$modelCuiDpt}->{$modelName} ) ){
+						if ( isset( $this->Cui->{$modelCuiDpt}->{$modelName} ) ){
 							$tableName = Inflector::tableize($modelName);
 							$subQuery = array(
 								'alias' => $tableName,
@@ -168,12 +176,12 @@
 								'limit' => 1
 							);
 
-							array_push($modelList, $Cui->{$modelCuiDpt}->{$modelName});
+							array_push($modelList, $this->Cui->{$modelCuiDpt}->{$modelName});
 							array_push(
 								$query['joins'],
-								$Cui->{$modelCuiDpt}->join( $modelName, array( 'type' => $types[$modelName],
+								$this->Cui->{$modelCuiDpt}->join( $modelName, array( 'type' => $types[$modelName],
 									'conditions' => array(
-										"{$modelName}.id IN ( ".$Cui->{$modelCuiDpt}->{$modelName}->sq( $subQuery )." )"
+										"{$modelName}.id IN ( ".$this->Cui->{$modelCuiDpt}->{$modelName}->sq( $subQuery )." )"
 									)) )
 							);
 						}
@@ -192,9 +200,8 @@
 
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -212,19 +219,16 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Cui = ClassRegistry::init( 'Cui' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 
 			$paths = array(
 				'Cui.niveauformation',
 				'Cui.inscritpoleemploi',
 				'Cui.sansemploi',
-				'Cui.beneficiairede',
 				'Cui.majorationrsa',
 				'Cui.rsadepuis',
 				'Cui.travailleurhandicape',
+				'Cui.typecontrat'
 			);
 
 			$pathsDate = array(
@@ -273,6 +277,18 @@
 			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
+			
+			$beneficiairede = (string)Hash::get( $search, 'Cui.beneficiairede' );
+			if ( $beneficiairede !== '' ) {
+				switch ($beneficiairede) {
+					case '0': $type = 'ass'; break;
+					case '1': $type = 'aah'; break;
+					case '2': $type = 'ata'; break;
+					default: $type = 'rsa'; break;
+				}
+				
+				$query['conditions']['beneficiaire_' . $type] = 1;
+			}
 
 			return $query;
 		}

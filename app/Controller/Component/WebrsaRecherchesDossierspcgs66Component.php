@@ -17,30 +17,14 @@
 	class WebrsaRecherchesDossierspcgs66Component extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modele principal
-		 * @var Model 
-		 */
-		public $Dossierpcg66;
-		
-		/**
-		 * Controller executant le component
-		 * @var Controller 
-		 */
-		public $Controller;
-		
-		/**
-		 * Contructeur de class, assigne le controller et le modele principal
+		 * Modèles utilisé par le component
 		 * 
-		 * @param \ComponentCollection $collection
-		 * @param array $settings
+		 * @var array
 		 */
-		public function __construct(\ComponentCollection $collection, $settings = array()) {
-			parent::__construct($collection, $settings);
-			
-			$this->Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
-			$this->Controller = $this->_Collection->getController();
-			$this->Option = ClassRegistry::init('Option');
-		}
+		public $uses = array(
+			'Catalogueromev3',
+			'Dossierpcg66',
+		);
 		
 		/**
 		 * Options pour le moteur de recherche
@@ -50,8 +34,10 @@
 		 */
 		public function options( array $params = array() ) {
 			$options = parent::options( $params );
+			$this->Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
+			$this->Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
 			
-			$catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' )->dependantSelects();
+			$catalogueromev3 = $this->Catalogueromev3->dependantSelects();
 			$options['Categorieromev3'] = $catalogueromev3['Catalogueromev3'];
 			$options['Dossierpcg66']['originepdo_id'] = $this->Dossierpcg66->Originepdo->find('list');
 			$options['Dossierpcg66']['typepdo_id'] = $this->Dossierpcg66->Typepdo->find('list');

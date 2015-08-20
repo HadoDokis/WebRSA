@@ -162,9 +162,12 @@
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			// Population dynamique de la liste des nouveaux moteurs de recherche
+			// TODO: factoriser avec ce qu'il y a en dessous, en utilisant les interfaces
 			foreach( App::objects( 'model' ) as $modelName ) {
 				if( strpos( $modelName, 'WebrsaRecherche' ) === 0 && !in_array( $modelName, $this->notMyModels[$departement] ) ) {
-					$this->searches[] = Inflector::pluralize( preg_replace( '/^WebrsaRecherche/', '', $modelName ) );
+					//$controllerName = Inflector::camelize( Inflector::tableize( preg_replace( '/^WebrsaRecherche/', '', $modelName ) ) );
+					//$this->searches[] = $controllerName;
+					$this->searches[] = $modelName;
 				}
 			}
 
@@ -326,14 +329,18 @@
 				'MultiDomainsTranslator.prefix' => 'string',
 			);
 
-			// TODO: utiliser la boucle et l'interface à la place de $searches
-			foreach( $this->searches as $search ) {
-				$return["{$search}.search.fields"] = 'isarray';
-				$return["{$search}.search.innerTable"] = 'isarray';
-				$return["{$search}.search.header"] = array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true )
-				);
-				$return["{$search}.exportcsv"] = 'isarray';
+			foreach( $this->searches as $searchModelName ) {
+				$SearchModel = ClassRegistry::init( $searchModelName );
+				foreach( $SearchModel->keysRecherche as $searchKey ) {
+					if(strpos($searchKey, '.header') === false ) {
+						$return[$searchKey] = 'isarray';
+					}
+					else {
+						$return[$searchKey] = array(
+							array( 'rule' => 'isarray', 'allowEmpty' => true )
+						);
+					}
+				}
 			}
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
