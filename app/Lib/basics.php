@@ -1244,4 +1244,18 @@
 
 		return $validationErrors;
 	}
+
+	/**
+	 * Retourne un booléen permettant de savoir si l'on est en train d'effectuer
+	 * des tests unitaires ou non, que l'on accède aux tests par l'URL ou la
+	 * console.
+	 *
+	 * @return boolean
+	 */
+	function unittesting() {
+		return (
+			( strpos( $_SERVER['PHP_SELF'], 'test.php' ) !== false ) // URL
+			|| ( isset( $_SERVER['SHELL'] ) && Hash::get( $_SERVER, 'argv.3' ) === 'test' ) // CLI
+		);
+	}
 ?>

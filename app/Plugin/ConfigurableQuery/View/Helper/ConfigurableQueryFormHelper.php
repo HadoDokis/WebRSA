@@ -30,5 +30,18 @@
 			),
 			'Html',
 		);
+
+		/**
+		 * Réalise la traduction d'un label en utilisant la fontion __m() du
+		 * plugin MultiDomainTranslator.
+		 *
+		 * @param string $fieldName
+		 * @param string $text
+		 * @param array $options
+		 * @return string
+		 */
+		public function label( $fieldName = null, $text = null, $options = array( ) ) {
+			return parent::label( $fieldName, $text === null ? $text : __m( $text ), $options );
+		}
 	}
 ?>

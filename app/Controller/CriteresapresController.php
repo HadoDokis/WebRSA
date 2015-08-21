@@ -66,6 +66,7 @@
 		/**
 		 * Moteur de recherche par APREs (tous critères confondus).
 		 *
+		 * @deprecated
 		 * @return void
 		 */
 		public function all() {
@@ -75,6 +76,7 @@
 		/**
 		 * Moteur de recherche par APREs éligibles.
 		 *
+		 * @deprecated
 		 * @return void
 		 */
 		public function eligible() {
@@ -130,7 +132,7 @@
 					);
 
 					$queryData['joins'] = array_merge( $queryData['joins'], $joins );
-	
+
 					///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
 					$attenteDecision = array(
 						'conditions' => array(
@@ -142,7 +144,7 @@
 						'count',
 						Set::merge( $queryData, $attenteDecision )
 					);
-						
+
 					///Nb d'APREs en attente de traitement(n'appartenant à aucun comité et n'ayant aucune décision de prise)
 					$attenteTraitement = array(
 						'conditions' => array(

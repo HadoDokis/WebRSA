@@ -22,7 +22,15 @@
 		 * @var array
 		 */
 		public $fixtures = array(
+			'app.Acccreaentr',
+			'app.Acqmatprof',
+			'app.Actprof',
+			'app.Amenaglogt',
 			'app.Apre',
+			'app.Formpermfimo',
+			'app.Formqualif',
+			'app.Locvehicinsert',
+			'app.Permisb',
 		);
 
 		/**
@@ -37,6 +45,8 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+
+			Configure::write( 'Cg.departement', 93 );
 			$this->Apre = ClassRegistry::init( 'Apre' );
 		}
 
@@ -54,6 +64,15 @@
 		public function testModeleOdt() {
 			$result = $this->Apre->modeleOdt( array() );
 			$expected = 'APRE/apre.odt';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test du champ virtuel natureaide
+		 */
+		public function testVirtualFieldNatureaide() {
+			$result = Hash::get( $this->Apre->virtualFields, 'natureaide' );
+			$expected = 'TRIM( BOTH \' \' FROM TRIM( TRAILING \',\' FROM ARRAY_TO_STRING( ARRAY( SELECT \'Formqualif\' FROM "formsqualifs" AS "formsqualifs"   WHERE "formsqualifs"."apre_id" = "Apre"."id"    UNION SELECT \'Formpermfimo\' FROM "formspermsfimo" AS "formspermsfimo"   WHERE "formspermsfimo"."apre_id" = "Apre"."id"    UNION SELECT \'Actprof\' FROM "actsprofs" AS "actsprofs"   WHERE "actsprofs"."apre_id" = "Apre"."id"    UNION SELECT \'Permisb\' FROM "permisb" AS "permisb"   WHERE "permisb"."apre_id" = "Apre"."id"    UNION SELECT \'Amenaglogt\' FROM "amenagslogts" AS "amenagslogts"   WHERE "amenagslogts"."apre_id" = "Apre"."id"    UNION SELECT \'Acccreaentr\' FROM "accscreaentr" AS "accscreaentr"   WHERE "accscreaentr"."apre_id" = "Apre"."id"    UNION SELECT \'Acqmatprof\' FROM "acqsmatsprofs" AS "acqsmatsprofs"   WHERE "acqsmatsprofs"."apre_id" = "Apre"."id"    UNION SELECT \'Locvehicinsert\' FROM "locsvehicinsert" AS "locsvehicinsert"   WHERE "locsvehicinsert"."apre_id" = "Apre"."id"    ), \',\' ) ) )';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}

@@ -55,13 +55,21 @@
 		);
 
 		/**
+		 * Doit-on exécuter les différentes requêtes de l'afterFind ?
+		 * true par défaut pour ne pas casser le passif.
+		 *
+		 * @var boolean
+		 */
+		public $deepAfterFind = true;
+
+		/**
 		*
 		*/
 
 		public function afterFind( $results, $primary = false ) {
 			$resultset = parent::afterFind( $results, $primary );
 
-			if( !empty( $resultset ) ) {
+			if( $this->deepAfterFind && !empty( $resultset ) ) {
 				foreach( $resultset as $i => $results ) {
 					if( isset( $results['Relanceapre'] ) ) {
 						$isArray = true;
@@ -270,6 +278,32 @@
 			else {
 				return null;
 			}
+		}
+
+		/**
+		 * Retourne une sous-requète permettant d'obtenir l'identifiant de la
+		 * dernière relance pour une apre donnée.
+		 *
+		 * @param string $apreId
+		 * @return string
+		 */
+		public function sqDerniere( $apreId = 'Apre.id' ) {
+			return $this->sq(
+				array(
+					'alias' => 'relancesapres',
+					'fields' => array(
+						'relancesapres.id'
+					),
+					'conditions' => array(
+						"relancesapres.apre_id = {$apreId}"
+					),
+					'order' => array(
+						'relancesapres.daterelance DESC',
+						'relancesapres.id DESC'
+					),
+					'limit' => 1
+				)
+			);
 		}
 	}
 ?>

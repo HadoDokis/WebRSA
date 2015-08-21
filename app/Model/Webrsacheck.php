@@ -52,14 +52,18 @@
 				'Tableausuivipdv93',
 				'WebrsaRechercheActioncandidatPersonne',
 				'WebrsaRechercheApre',
+				'WebrsaRechercheApreEligibilite',
 				'WebrsaRechercheBilanparcours66',
 				'WebrsaRechercheCui',
 				'WebrsaRechercheDossierpcg66',
+				'WebrsaRechercheNoninscrit',
+				'WebrsaRechercheSelectionradie',
 				'WebrsaRechercheTraitementpcg66',
 			),
 			66 => array(
 				'Cohorterendezvous',
 				'Tableausuivipdv93',
+				'WebrsaRechercheApreEligibilite'
 			),
 			93 => array(
 				'Criterecui',
@@ -67,6 +71,8 @@
 				'WebrsaRechercheBilanparcours66',
 				'WebrsaRechercheCui',
 				'WebrsaRechercheDossierpcg66',
+				'WebrsaRechercheNoninscrit',
+				'WebrsaRechercheSelectionradie',
 				'WebrsaRechercheTraitementpcg66',
 			),
 			976 => array(
@@ -74,10 +80,13 @@
 				'Criterecui',
 				'Tableausuivipdv93',
 				'WebrsaRechercheActioncandidatPersonne',
-				'WebrsaRechercheBilanparcours66',
 				'WebrsaRechercheApre',
+				'WebrsaRechercheApreEligibilite',
+				'WebrsaRechercheBilanparcours66',
 				'WebrsaRechercheCui',
 				'WebrsaRechercheDossierpcg66',
+				'WebrsaRechercheNoninscrit',
+				'WebrsaRechercheSelectionradie',
 				'WebrsaRechercheTraitementpcg66',
 			)
 		);
@@ -165,8 +174,6 @@
 			// TODO: factoriser avec ce qu'il y a en dessous, en utilisant les interfaces
 			foreach( App::objects( 'model' ) as $modelName ) {
 				if( strpos( $modelName, 'WebrsaRecherche' ) === 0 && !in_array( $modelName, $this->notMyModels[$departement] ) ) {
-					//$controllerName = Inflector::camelize( Inflector::tableize( preg_replace( '/^WebrsaRecherche/', '', $modelName ) ) );
-					//$this->searches[] = $controllerName;
 					$this->searches[] = $modelName;
 				}
 			}
