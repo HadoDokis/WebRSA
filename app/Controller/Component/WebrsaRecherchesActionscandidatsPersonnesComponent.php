@@ -17,15 +17,6 @@
 	class WebrsaRecherchesActionscandidatsPersonnesComponent extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modèles utilisé par le component
-		 * 
-		 * @var array
-		 */
-		public $uses = array(
-			'ActioncandidatPersonne'
-		);
-		
-		/**
 		 * Options pour le moteur de recherche
 		 *
 		 * @param array $params

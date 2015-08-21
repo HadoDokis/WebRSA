@@ -215,7 +215,7 @@
 			$attributes = array( 'class' => "data {$type}" );
 
 			if( $value === null ) {
-				$this->addClass( $attributes, 'null' );
+				$attributes = $this->addClass( $attributes, 'null' );
 			}
 			else {
 				$class = null;

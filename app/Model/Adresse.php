@@ -20,7 +20,7 @@
 		public $virtualFields = array(
 			'localite' => array(
 				'type'      => 'string',
-				'postgres'  => '( "%s"."codepos" || \' \' || "%s"."nomcom" )'
+				'postgres'  => '( COALESCE( "%s"."codepos", \'\' ) || \' \' || COALESCE( "%s"."nomcom", \'\' ) )'
 			),
 			'complete' => array(
 				'type'      => 'string',

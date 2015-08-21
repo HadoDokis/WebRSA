@@ -17,15 +17,6 @@
 	class WebrsaRecherchesCuisComponent extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modèles utilisé par le component
-		 * 
-		 * @var array
-		 */
-		public $uses = array(
-			'Cui'
-		);
-		
-		/**
 		 * Options pour le moteur de recherche
 		 *
 		 * @param array $params
