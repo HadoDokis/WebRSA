@@ -171,7 +171,7 @@
 		 */
 		public function testAttributes() {
 			$result = $this->DefaultData->attributes( null, 'foo' );
-			$expected = array( 'class' => 'data foo' );
+			$expected = array( 'class' => 'data foo null' );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->DefaultData->attributes( 0, 'integer' );

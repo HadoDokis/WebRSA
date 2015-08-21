@@ -57,6 +57,8 @@
 			$this->DefaultDefault->request = $Request;
 			$this->DefaultDefault->DefaultTable->request = $Request;
 			$this->DefaultDefault->DefaultPaginator->request = $Request;
+			
+			Router::setRequestInfo( $Request );
 		}
 
 		/**
@@ -144,17 +146,17 @@
 			$expected = '<div class="pagination">
 							<p class="counter">'.$expectedCounter.'</p>
 							<p class="numbers">
-								<span><a href="/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
+								<span><a href="/apples/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
 								<span class="prev">'.h( __( '< prev' ) ).'</span>
-								<span><a href="/index/page:1">1</a></span> | <span class="current">2</span> | <span><a href="/index/page:3">3</a></span> | <span><a href="/index/page:4">4</a></span> | <span><a href="/index/page:5">5</a></span> | <span><a href="/index/page:6">6</a></span> | <span><a href="/index/page:7">7</a></span>
-								<span class="next"><a href="/index/page:3" rel="next">'.h( __( 'next >' ) ).'</a></span>
-								<span><a href="/index/page:7" rel="last">'.h( __( 'last >>' ) ).'</a></span>
+								<span><a href="/apples/index/page:1">1</a></span> | <span class="current">2</span> | <span><a href="/apples/index/page:3">3</a></span> | <span><a href="/apples/index/page:4">4</a></span> | <span><a href="/apples/index/page:5">5</a></span> | <span><a href="/apples/index/page:6">6</a></span> | <span><a href="/apples/index/page:7">7</a></span>
+								<span class="next"><a href="/apples/index/page:3" rel="next">'.h( __( 'next >' ) ).'</a></span>
+								<span><a href="/apples/index/page:7" rel="last">'.h( __( 'last >>' ) ).'</a></span>
 							</p>
 						</div>
 						<table id="TableApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -166,11 +168,11 @@
 						<div class="pagination">
 							<p class="counter">'.$expectedCounter.'</p>
 							<p class="numbers">
-								<span><a href="/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
+								<span><a href="/apples/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
 								<span class="prev">'.h( __( '< prev' ) ).'</span>
-								<span><a href="/index/page:1">1</a></span> | <span class="current">2</span> | <span><a href="/index/page:3">3</a></span> | <span><a href="/index/page:4">4</a></span> | <span><a href="/index/page:5">5</a></span> | <span><a href="/index/page:6">6</a></span> | <span><a href="/index/page:7">7</a></span>
-								<span class="next"><a href="/index/page:3" rel="next">'.h( __( 'next >' ) ).'</a></span>
-								<span><a href="/index/page:7" rel="last">'.h( __( 'last >>' ) ).'</a></span>
+								<span><a href="/apples/index/page:1">1</a></span> | <span class="current">2</span> | <span><a href="/apples/index/page:3">3</a></span> | <span><a href="/apples/index/page:4">4</a></span> | <span><a href="/apples/index/page:5">5</a></span> | <span><a href="/apples/index/page:6">6</a></span> | <span><a href="/apples/index/page:7">7</a></span>
+								<span class="next"><a href="/apples/index/page:3" rel="next">'.h( __( 'next >' ) ).'</a></span>
+								<span><a href="/apples/index/page:7" rel="last">'.h( __( 'last >>' ) ).'</a></span>
 							</p>
 						</div>';
 			$this->assertEqualsXhtml( $result, $expected );
@@ -201,7 +203,7 @@
 							<thead>
 								<tr>
 									<th id="TableApplesIndexColumnAppleId">
-										<a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a>
+										<a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a>
 									</th>
 								</tr>
 							</thead>
@@ -224,16 +226,16 @@
 							<p class="numbers">
 								<span class="first">'.h( __( '<< first' ) ).'</span>
 								<span class="prev">'.h( __( '< prev' ) ).'</span>
-								<span class="current">1</span> | <span><a href="/index/page:2">2</a></span>
-								<span class="next"><a href="/index/page:2" rel="next">'.h( __( 'next >' ) ).'</a></span>
-								<span><a href="/index/page:2" rel="last">'.h( __( 'last >>' ) ).'</a></span>
+								<span class="current">1</span> | <span><a href="/apples/index/page:2">2</a></span>
+								<span class="next"><a href="/apples/index/page:2" rel="next">'.h( __( 'next >' ) ).'</a></span>
+								<span><a href="/apples/index/page:2" rel="last">'.h( __( 'last >>' ) ).'</a></span>
 							</p>
 						</div>
 						<table id="TableApplesIndex" class="apples index">
 							<thead>
 								<tr>
 									<th id="TableApplesIndexColumnAppleId">
-										<a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a>
+										<a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a>
 									</th>
 								</tr>
 							</thead>
@@ -248,9 +250,9 @@
 							<p class="numbers">
 								<span class="first">'.h( __( '<< first' ) ).'</span>
 								<span class="prev">'.h( __( '< prev' ) ).'</span>
-								<span class="current">1</span> | <span><a href="/index/page:2">2</a></span>
-								<span class="next"><a href="/index/page:2" rel="next">'.h( __( 'next >' ) ).'</a></span>
-								<span><a href="/index/page:2" rel="last">'.h( __( 'last >>' ) ).'</a></span>
+								<span class="current">1</span> | <span><a href="/apples/index/page:2">2</a></span>
+								<span class="next"><a href="/apples/index/page:2" rel="next">'.h( __( 'next >' ) ).'</a></span>
+								<span><a href="/apples/index/page:2" rel="last">'.h( __( 'last >>' ) ).'</a></span>
 							</p>
 						</div>';
 
@@ -262,9 +264,9 @@
 			$expected = '<div class="pagination">
 							<p class="counter">'.$expectedCounter.'</p>
 							<p class="numbers">
-								<span><a href="/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
-								<span class="prev"><a href="/index/page:1" rel="prev">'.h( __( '< prev' ) ).'</a></span>
-								<span><a href="/index/page:1">1</a></span> | <span class="current">2</span>
+								<span><a href="/apples/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
+								<span class="prev"><a href="/apples/index/page:1" rel="prev">'.h( __( '< prev' ) ).'</a></span>
+								<span><a href="/apples/index/page:1">1</a></span> | <span class="current">2</span>
 								<span class="next">'.h( __( 'next >' ) ).'</span>
 								<span class="last">'.h( __( 'last >>' ) ).'</span>
 							</p>
@@ -272,7 +274,7 @@
 						<table id="TableApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableApplesIndexColumnAppleId"><a href="/index/page:2/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:2/sort:Apple.id/direction:asc">Apple.id</a></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -284,9 +286,9 @@
 						<div class="pagination">
 							<p class="counter">'.$expectedCounter.'</p>
 							<p class="numbers">
-								<span><a href="/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
-								<span class="prev"><a href="/index/page:1" rel="prev">'.h( __( '< prev' ) ).'</a></span>
-								<span><a href="/index/page:1">1</a></span> | <span class="current">2</span>
+								<span><a href="/apples/index/page:1" rel="first">'.h( __( '<< first' ) ).'</a></span>
+								<span class="prev"><a href="/apples/index/page:1" rel="prev">'.h( __( '< prev' ) ).'</a></span>
+								<span><a href="/apples/index/page:1">1</a></span> | <span class="current">2</span>
 								<span class="next">'.h( __( 'next >' ) ).'</span>
 								<span class="last">'.h( __( 'last >>' ) ).'</span>
 							</p>
