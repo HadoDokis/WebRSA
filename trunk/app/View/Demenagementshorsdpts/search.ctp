@@ -1,79 +1,88 @@
 <?php
-	echo $this->Default3->titleForLayout();
+	$departement = Configure::read( 'Cg.departement' );
+	$controller = $this->params->controller;
+	$action = $this->action;
+	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
+	$availableDomains = MultiDomainsTranslator::urlDomains();
+	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
+	$paramDate = array( 
+		'domain' => $domain, 
+		'minYear_from' => '2009', 
+		'maxYear_from' => date( 'Y' ) + 1, 
+		'minYear_to' => '2009', 
+		'maxYear_to' => date( 'Y' ) + 4
+	);
+	$paramAllocataire = array(
+		'options' => $options,
+		'prefix' => 'Search',
+	);
+	$dateRule = array(
+		'date' => array(
+			'rule' => array('date'),
+			'message' => null,
+			'required' => null,
+			'allowEmpty' => true,
+			'on' => null
+		)
+	);
+	
+	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
+	
+	$dates = array(
+		'Dossier' => array('dtdemrsa' => $dateRule),
+		'Personne' => array('dtnai' => $dateRule),
+	);
+	echo $this->FormValidator->generateJavascript($dates, false);
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
 	}
 
 	echo $this->Default3->actions(
 		array(
-			'/Demenagementshorsdpts/search/#toggleform' => array(
-				'onclick' => '$(\'DemenagementshorsdptsSearchForm\').toggle(); return false;'
+			'/' . $controller . '/' . $action . '/#toggleform' => array(
+				'onclick' => '$(\'' . $formId . '\').toggle(); return false;',
+				'class' => $action . 'Form display_formulaire',
+				'domain' => $domain
 			),
 		)
 	);
 
-	echo $this->Xform->create( 'Search', array( 'id' => 'DemenagementshorsdptsSearchForm' ) );
+	// 1. Moteur de recherche
+	echo $this->Xform->create( null, 
+		array( 
+			'id' => $formId, 
+			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
+			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
+		)
+	);
 
-	echo $this->Allocataires->blocDossier( array( 'options' => $options ) );
-	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
-	echo $this->Allocataires->blocAllocataire( array( 'options' => $options ) );
+	echo $this->Allocataires->blocDossier($paramAllocataire);
 
-	// Début spécificités fiche de prescription
-	/*echo $this->Xform->input( 'Search.Ficheprescription93.exists', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
-	echo '<fieldset id="specificites_fichesprescriptions93"><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93' ).'</legend>';
-	echo '</fieldset>';*/
-	// Fin spécificités fiche de prescription
+	echo $this->Allocataires->blocAdresse($paramAllocataire);
 
-	echo $this->Allocataires->blocReferentparcours( array( 'options' => $options ) );
-	echo $this->Allocataires->blocPagination( array( 'options' => $options ) );
-	echo $this->Allocataires->blocScript( array( 'options' => $options ) );
+	echo $this->Allocataires->blocAllocataire($paramAllocataire);
+
+	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
+	
+	echo $this->Allocataires->blocPagination($paramAllocataire);
 
 	echo $this->Xform->end( 'Search' );
+	
+	echo $this->Search->observeDisableFormOnSubmit( $formId );
 
+	// 2. Formulaire de traitement des résultats de la recherche
 	if( isset( $results ) ) {
-		$this->Default3->DefaultPaginator->options(
-			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
-		);
-
-		App::uses( 'SearchProgressivePagination', 'Search.Utility' );
-
-		$index = $this->Default3->index(
+		echo $this->Default3->configuredIndex(
 			$results,
 			array(
-				'Dossier.matricule',
-				'Personne.nom_complet',
-				'Adressefoyer.dtemm',
-				'Adresse.localite',
-				'Adressefoyer2.dtemm' => array( 'type' => 'date' ),
-				'Adresse2.localite',
-				'Adressefoyer3.dtemm' => array( 'type' => 'date' ),
-				'Adresse3.localite',
-				'Dossier.locked' => array( 'type' => 'boolean' ),
-				'/Dossiers/view/#Dossier.id#',
-			),
-			array(
-				'options' => $options,
-				'format' => __( SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ) )
+				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ),
+				'options' => $options
 			)
 		);
-
-		echo str_replace(
-			'<thead>',
-			'<thead><tr><th colspan="2"></th><th colspan="2">Adresse de rang 01</th><th colspan="2">Adresse de rang 02</th><th colspan="2">Adresse de rang 03</th><th colspan="2"></th></tr>',
-			$index
-		);
+		
+		echo $this->element( 'search_footer', array( 'modelName' => 'Personne' ) );
 	}
+	
 ?>
-<?php if( isset( $results ) ):?>
-<ul class="actionMenu">
-	<li><?php
-		echo $this->Xhtml->exportLink(
-			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-			( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
-		);
-	?></li>
-</ul>
-<?php endif;?>

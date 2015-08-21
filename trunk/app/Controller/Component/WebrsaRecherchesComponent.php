@@ -75,6 +75,25 @@
 			return $query;
 		}
 
+		/**
+		 * Retourne le querydata complété par les conditions du moteur de recherche,
+		 * ainsi que des conditions liées à l'utilisateur connecté.
+		 * 
+		 * @param array $query
+		 * @param array $params
+		 * @return array
+		 */
+		public function getQueryConditions( array $query, array $params = array()  ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->params( $params );
+
+			$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, (array)Hash::get( $Controller->request->data, $params['searchKey'] ) );
+			$query = $this->Allocataires->completeSearchQuery( $query );
+			
+			return $query;
+			
+		}
+
 		public function search( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->params( $params );
@@ -85,8 +104,7 @@
 				$keys = array( "{$params['configurableQueryFieldsKey']}.fields", "{$params['configurableQueryFieldsKey']}.innerTable" );
 				$query = $this->getQuery( $keys, $params );
 
-				$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, (array)Hash::get( $Controller->request->data, $params['searchKey'] ) );
-				$query = $this->Allocataires->completeSearchQuery( $query );
+				$query = $this->getQueryConditions( $query, $params );
 
 				$Controller->{$params['modelName']}->forceVirtualFields = true;
 				$results = $this->Allocataires->paginate( $query, $params['modelName'] );

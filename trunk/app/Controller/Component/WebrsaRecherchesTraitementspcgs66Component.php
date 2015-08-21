@@ -17,15 +17,6 @@
 	class WebrsaRecherchesTraitementspcgs66Component extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modèles utilisé par le component
-		 * 
-		 * @var array
-		 */
-		public $uses = array(
-			'Traitementpcg66',
-		);
-		
-		/**
 		 * Options pour le moteur de recherche
 		 *
 		 * @param array $params

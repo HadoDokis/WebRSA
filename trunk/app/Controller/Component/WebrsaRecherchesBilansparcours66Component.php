@@ -17,15 +17,6 @@
 	class WebrsaRecherchesBilansparcours66Component extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modèles utilisé par le component
-		 * 
-		 * @var array
-		 */
-		public $uses = array(
-			'Bilanparcours66'
-		);
-		
-		/**
 		 * Options pour le moteur de recherche
 		 *
 		 * @param array $params

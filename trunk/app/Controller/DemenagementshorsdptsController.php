@@ -36,7 +36,8 @@
 			'Search.Filtresdefaut' => array( 'search' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
+					'search1' => array( 'filter' => 'Search' ),
+					'search'
 				)
 			),
 		);
@@ -49,7 +50,7 @@
 		public $helpers = array(
 			'Allocataires',
 			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 			'Search.SearchForm',
 		);
@@ -68,7 +69,9 @@
 		 * @var array
 		 */
 		public $crudMap = array(
+			'exportcsv1' => 'read',
 			'exportcsv' => 'read',
+			'search1' => 'read',
 			'search' => 'read',
 		);
 
@@ -131,7 +134,7 @@
 		/**
 		 * Moteur de recherche des fiches de prescription.
 		 */
-		public function search() {
+		public function search1() {
 			if( Hash::check( $this->request->data, 'Search' ) ) {
 				$query = $this->Demenagementhorsdpt->search( $this->request->data['Search'] );
 				$query = $this->_completeQuery( $query );
@@ -151,7 +154,7 @@
 		/**
 		 * Export CSV des résultats de la recherche.
 		 */
-		public function exportcsv() {
+		public function exportcsv1() {
 			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
 			$query = $this->Demenagementhorsdpt->search( $search );
 			$query = $this->_completeQuery( $query );
@@ -166,6 +169,22 @@
 
 			$this->set( compact( 'results', 'options' ) );
 			$this->layout = null;
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdpts' );
+			$Recherches->search( array('modelName' => 'Personne') );
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdpts' );
+			$Recherches->exportcsv( array('modelName' => 'Personne') );
 		}
 	}
 ?>

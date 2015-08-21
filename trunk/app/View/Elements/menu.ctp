@@ -193,6 +193,9 @@
 					'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
 				),
 				'Hors département' => array(
+					'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search1'  )
+				),
+				'Hors département (nouveau)' => array(
 					'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search'  )
 				),
 			),

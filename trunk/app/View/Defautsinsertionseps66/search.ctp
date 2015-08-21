@@ -94,10 +94,3 @@
 	}
 	
 ?>
-<script>
-	$$('.foyer_enerreur').each(function( td ){
-		if ( td.innerHTML === '' ) {
-			td.addClassName( 'empty' );
-		}
-	});
-</script>

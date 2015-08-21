@@ -1459,7 +1459,7 @@ td.foyer_enerreur {
 	background-image: url( ../img/icons/exclamation.png );
 }
 
-td.foyer_enerreur.empty {
+td.foyer_enerreur.empty, td.foyer_enerreur.null {
 	background-image: none;
 }
 
