@@ -90,12 +90,12 @@
 					// Champs nécessaires au traitement de la search
 					array(
 						'Dossier.id',
-						'IndusConstates.mtmoucompta',
-						'IndusTransferesCG.mtmoucompta',
-						'RemisesIndus.mtmoucompta',
-						'Personne.nom',
-						'Personne.prenom',
-						'COALESCE("IndusConstates"."moismoucompta","IndusTransferesCG"."moismoucompta","RemisesIndus"."moismoucompta") AS "Indu__moismoucompta"',
+						'IndusConstates.mtmoucompta' => 'IndusConstates.mtmoucompta',
+						'IndusTransferesCG.mtmoucompta' => 'IndusTransferesCG.mtmoucompta',
+						'RemisesIndus.mtmoucompta' => 'RemisesIndus.mtmoucompta',
+						'Personne.nom' => 'Personne.nom',
+						'Personne.prenom' => 'Personne.prenom',
+						'Indu.moismoucompta' => 'COALESCE("IndusConstates"."moismoucompta","IndusTransferesCG"."moismoucompta","RemisesIndus"."moismoucompta") AS "Indu__moismoucompta"',
 					)
 				);
 
