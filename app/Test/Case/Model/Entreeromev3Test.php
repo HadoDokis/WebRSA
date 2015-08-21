@@ -64,13 +64,13 @@
 			$result = $this->Entreeromev3->getCompletedRomev3Joins( $query );
 			$expected = array(
 				'fields' => array(
-					'Familleromev3.code',
-					'Familleromev3.name',
-					'( "Familleromev3"."code" || "Domaineromev3"."code" ) AS "Domaineromev3__code"',
-					'Domaineromev3.name',
-					'( "Familleromev3"."code" || "Domaineromev3"."code" || "Metierromev3"."code" ) AS "Metierromev3__code"',
-					'Metierromev3.name',
-					'Appellationromev3.name',
+					'Familleromev3.code' => 'Familleromev3.code',
+					'Familleromev3.name' => 'Familleromev3.name',
+					'Domaineromev3.code' => '( "Familleromev3"."code" || "Domaineromev3"."code" ) AS "Domaineromev3__code"',
+					'Domaineromev3.name' => 'Domaineromev3.name',
+					'Metierromev3.code' => '( "Familleromev3"."code" || "Domaineromev3"."code" || "Metierromev3"."code" ) AS "Metierromev3__code"',
+					'Metierromev3.name' => 'Metierromev3.name',
+					'Appellationromev3.name' => 'Appellationromev3.name',
 				),
 				'joins' => array(
 					array(
@@ -118,13 +118,13 @@
 			$result = $this->Entreeromev3->getCompletedRomev3Joins( $query, 'LEFT OUTER', $aliases );
 			$expected = array(
 				'fields' => array(
-					'Familleexppro.code',
-					'Familleexppro.name',
-					'( "Familleexppro"."code" || "Domaineexppro"."code" ) AS "Domaineexppro__code"',
-					'Domaineexppro.name',
-					'( "Familleexppro"."code" || "Domaineexppro"."code" || "Metierexppro"."code" ) AS "Metierexppro__code"',
-					'Metierexppro.name',
-					'Appellationexppro.name',
+					'Familleexppro.code' => 'Familleexppro.code',
+					'Familleexppro.name' => 'Familleexppro.name',
+					'Domaineexppro.code' => '( "Familleexppro"."code" || "Domaineexppro"."code" ) AS "Domaineexppro__code"',
+					'Domaineexppro.name' => 'Domaineexppro.name',
+					'Metierexppro.code' => '( "Familleexppro"."code" || "Domaineexppro"."code" || "Metierexppro"."code" ) AS "Metierexppro__code"',
+					'Metierexppro.name' => 'Metierexppro.name',
+					'Appellationexppro.name' => 'Appellationexppro.name',
 				),
 				'joins' => array(
 					array(

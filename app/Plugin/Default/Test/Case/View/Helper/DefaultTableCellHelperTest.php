@@ -45,8 +45,10 @@
 				'Apple' => array(
 					'id' => 6,
 					'color' => 'red',
-					'code' => "-0402\n\r-0404\n\r-0405"
-				)
+					'code' => "-0402\n\r-0404\n\r-0405",
+					'name' => ''
+				),
+				'Foo' => array( 'bar' => array() )
 			);
 			$this->DefaultTableCell->set( $data );
 		}
