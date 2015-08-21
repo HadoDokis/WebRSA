@@ -93,6 +93,31 @@
 			return $query;
 			
 		}
+		
+		/**
+		 * Ajoute des order by en fonction du paramétrage.
+		 * Dans le cas d'un exportcsv, on ne modifi pas l'ordre affiché dans le moteur de recherche.
+		 * 
+		 * @param array $query
+		 * @param array $params
+		 * @return array
+		 */
+		public function getQueryOrder( $query = array(), array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->params( $params );
+			list( $controllerName, $action ) = explode( '.', $params['configurableQueryFieldsKey'] );
+			
+			$prevAction = Hash::get($Controller->request->params, 'named.prevAction');
+			$action = $prevAction ? $prevAction : $action;
+			
+			$orderKey = Configure::read( "{$controllerName}.{$action}.order" );
+			
+			if ( !empty($orderKey) ) {
+				$query['order'][] = $orderKey;
+			}
+			
+			return $query;
+		}
 
 		public function search( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
@@ -105,6 +130,8 @@
 				$query = $this->getQuery( $keys, $params );
 
 				$query = $this->getQueryConditions( $query, $params );
+				
+				$query = $this->getQueryOrder( $query, $params );
 
 				$Controller->{$params['modelName']}->forceVirtualFields = true;
 				$results = $this->Allocataires->paginate( $query, $params['modelName'] );
@@ -136,6 +163,9 @@
 			$order = trim( Hash::get( $Controller->request->params, 'named.sort' ).' '.Hash::get( $Controller->request->params, 'named.direction' ) );
 			if( !empty( $order ) ) {
 				$query['order'] = $order;
+			}
+			else {
+				$query = $this->getQueryOrder($query, $params);
 			}
 
 			$Controller->{$params['modelName']}->forceVirtualFields = true;

@@ -41,7 +41,8 @@
 					'Dossier.matricule',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
+				),
+				'order' => array()
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',

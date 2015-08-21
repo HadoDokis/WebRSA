@@ -41,7 +41,8 @@
 					'Emailcui.dateenvoi' => array( 'type' => 'date' ), // Type datetime
 					'/Cuis66/index/#Cui.personne_id#' => array( 'class' => 'view' ),
 				),
-				'innerTable' => array()
+				'innerTable' => array(),
+				'order' => array( 'Personne.nom', 'Personne.prenom', 'Cui.id' )
 			),
 			'exportcsv' => array(
 				'Dossier.matricule',

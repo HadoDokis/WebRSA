@@ -29,7 +29,8 @@
 					'Adresse.nomcom',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
-				)
+				),
+				'order' => array( 'ActioncandidatPersonne.datesignature' )
 			),
 			'exportcsv' => array(
 				'ActioncandidatPersonne.datesignature',

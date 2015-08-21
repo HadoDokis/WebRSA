@@ -35,7 +35,8 @@
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
 					'Personne.etat_dossier_orientation',
-				)
+				),
+				'order' => array( 'Contratinsertion.df_ci' )
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',

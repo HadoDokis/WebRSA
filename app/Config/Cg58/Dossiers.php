@@ -77,7 +77,8 @@
 					'Referentparcours.nom_complet',
 					'Activite.act', // CG 58
 					'Personne.etat_dossier_orientation', // CG 58
-				)
+				),
+				'order' => array( 'Personne.nom' )
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',

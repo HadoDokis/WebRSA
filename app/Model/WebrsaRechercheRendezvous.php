@@ -100,8 +100,6 @@
 						$Rendezvous->join( 'Typerdv', array( 'type' => $types['Typerdv'] ) )
 					)
 				);
-
-				$query['order'] = array( '"Rendezvous"."daterdv" ASC' );
 				
 				if( Configure::read( 'CG.cantons' ) ) {
 					$Canton = ClassRegistry::init( 'Canton' );

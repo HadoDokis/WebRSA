@@ -70,7 +70,8 @@
 					'Personne.numfixe', // N° téléphone fixe
 					'Personne.numport', // N° téléphone portable
 					'Referentparcours.nom_complet',// Nom du référent
-				)
+				),
+				'order' => array()
 			),
 			'exportcsv' => array(
 				'Dossier.matricule',

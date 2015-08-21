@@ -56,7 +56,8 @@
 					'Prestation.rolepers',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
+				),
+				'order' => array( 'Personne.nom' )
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',

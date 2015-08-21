@@ -43,8 +43,8 @@
 					array( 'Adresse de rang 03' => array( 'colspan' => 2 ) ),
 					array( ' ' => array() ),
 					array( ' ' => array( 'class' => 'action noprint' ) ),
-//					array( ' ' => array( 'style' => 'display: none' ) ),
-				)
+				),
+				'order' => array()
 			),
 			'exportcsv' => array(
 				'Dossier.matricule',

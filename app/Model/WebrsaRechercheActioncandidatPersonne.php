@@ -126,13 +126,8 @@
 				if ( (int)Configure::read('Cg.departement') === 66 ) {
 					$query['joins'][] = $this->ActioncandidatPersonne->join( 'Progfichecandidature66', array( 'type' => $types['Progfichecandidature66'] ) );
 				}
-
-				// 3. Tri par défaut: date, heure, id
-				$query['order'] = array(
-					'ActioncandidatPersonne.datebilan' => 'DESC'
-				);
-
-				// 4. Si on utilise les cantons, on ajoute une jointure
+				
+				// 3. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
 					$query['fields']['Canton.canton'] = 'Canton.canton';
 					$query['joins'][] = $this->Canton->joinAdresse();

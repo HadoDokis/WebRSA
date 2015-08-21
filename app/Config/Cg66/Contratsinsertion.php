@@ -37,7 +37,8 @@
 					'Situationdossierrsa.etatdosrsa',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
+				),
+				'order' => array( 'Contratinsertion.df_ci' )
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',

@@ -117,12 +117,7 @@
 					)
 				);
 
-				// 3. Tri par défaut
-				$query['order'] = array(
-					'Contratinsertion.df_ci' => 'ASC'
-				);
-
-				// 4. Si on utilise les cantons, on ajoute une jointure
+				// 3. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
 					$query['fields']['Canton.canton'] = 'Canton.canton';
 					$query['joins'][] = $this->Canton->joinAdresse();
