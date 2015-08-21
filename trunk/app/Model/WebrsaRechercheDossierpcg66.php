@@ -210,12 +210,8 @@
 						$this->Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo', array('type' => $types['Decisionpdo'])),
 					)
 				);
-				
-				// 3. Tri par défaut: date, heure, id
-				$query['order'] = array(
-				);
 
-				// 4. Si on utilise les cantons, on ajoute une jointure
+				// 3. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
 					$query['fields']['Canton.canton'] = 'Canton.canton';
 					$query['joins'][] = $this->Canton->joinAdresse();

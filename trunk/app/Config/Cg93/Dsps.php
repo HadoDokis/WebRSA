@@ -97,7 +97,8 @@
 					array( 'Hors code ROME' => array( 'colspan' => 4 ) ),
 					array( ' ' => array( 'class' => 'action noprint' ) ),
 					array( ' ' => array( 'style' => 'display: none' ) ),
-				)
+				),
+				'order' => array()
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',

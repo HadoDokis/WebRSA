@@ -36,7 +36,8 @@
 					'Personne.nir',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
+				),
+				'order' => array()
 			),
 			'exportcsv' => array(
 				'Personne.nom_complet',

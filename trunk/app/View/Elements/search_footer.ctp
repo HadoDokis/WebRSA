@@ -20,6 +20,8 @@
 	$defaultUrl = array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv' );
 	$url = isset( $url ) ? $url : $defaultUrl;
 	$url += $defaultUrl;
+	
+	$comeFrom = array( 'prevAction' => $this->action );
 
 	if( $count > 65000 ) {
 		echo '<p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;">'.$this->Xhtml->image( 'icons/error.png' ).'<strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>';
@@ -35,7 +37,7 @@
 		.'<li>'
 		. $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'controller' => $url['controller'], 'action' => $url['action'] ) + Hash::flatten( $this->request->data, '__' ),
+			array( 'controller' => $url['controller'], 'action' => $url['action'] ) + Hash::flatten( $this->request->data + $comeFrom, '__' ),
 			( $this->Permissions->check( $url['controller'], $url['action'] ) && $count > 0 )
 		)
 		.'</li>'

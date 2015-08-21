@@ -34,7 +34,8 @@
 					'Adresse.nomcom',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
+				),
+				'order' => array( 'Bilanparcours.datebilan' )
 			),
 			'exportcsv' => array(
 				'Bilanparcours66.datebilan',

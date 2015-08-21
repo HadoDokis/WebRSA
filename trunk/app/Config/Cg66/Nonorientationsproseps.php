@@ -31,7 +31,8 @@
 				'innerTable' => array(
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
+				),
+				'order' => array( "(DATE_PART('day', NOW() - Contratinsertion.df_ci))" => 'DESC' )
 			),
 		)
 	);

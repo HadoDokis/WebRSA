@@ -43,7 +43,8 @@
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
 					'Activite.act'
-				)
+				),
+				'order' => array()
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',

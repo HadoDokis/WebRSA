@@ -72,8 +72,6 @@
 				);
 				$query = $this->Allocataire->searchQuery( $types, 'Dossier' );
 
-				$query['order'] = array( 'Personne.nom ASC' );
-
 				// Ajout des spécificités du moteur de recherche
 				$query['fields'] = array_merge(
 					array( 0 => 'Dossier.id' ),

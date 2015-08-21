@@ -38,7 +38,8 @@
 				'innerTable' => array(
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
+				),
+				'order' => array( 'Orientstruct.date_valid' )
 			),
 			'search_radies' => array(
 				'fields' => array (
@@ -53,8 +54,9 @@
 				'innerTable' => array(
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				)
-			),
+				),
+				'order' => array( 'Historiqueetatpe.date', 'Historiqueetatpe.id' )
+			), 
 		)
 	);
 ?>

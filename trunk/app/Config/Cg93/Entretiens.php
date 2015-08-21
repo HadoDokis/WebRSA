@@ -49,7 +49,8 @@
 					'Adresse.numcom',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
-				)
+				),
+				'order' => array()
 			),
 			'exportcsv' => array(
 				'Entretien.dateentretien',

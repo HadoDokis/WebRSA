@@ -193,11 +193,6 @@
 					);
 				}
 
-				// 3. Tri par défaut: date, heure, id
-				$query['order'] = array(
-					'Cui.faitle' => 'DESC'
-				);
-
 				// 4. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
 					$query['fields']['Canton.canton'] = 'Canton.canton';
