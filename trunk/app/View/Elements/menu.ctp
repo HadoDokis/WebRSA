@@ -208,7 +208,9 @@
 			'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 			'Liste des demandes d\'APRE' => array(
 				'Toutes les APREs' => array( 'url' => array( 'controller' => 'criteresapres', 'action' => 'all' ) ),
+				'Toutes les APREs (nouveau)' => array( 'url' => array( 'controller' => 'apres', 'action' => 'search' ) ),
 				'Eligibilité des APREs' => array( 'url' => array( 'controller' => 'criteresapres', 'action' => 'eligible' ) ),
+				'Eligibilité des APREs (nouveau)' => array( 'url' => array( 'controller' => 'apres', 'action' => 'search_eligibilite' ) ),
 				'Demande de recours' => array( 'url' => array( 'controller' => 'recoursapres', 'action' => 'demande' ) ),
 				'Visualisation des recours' => array( 'url' => array( 'controller' => 'recoursapres', 'action' => 'visualisation' ) ),
 			),

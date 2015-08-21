@@ -20,26 +20,27 @@
 
 		public $uses = array( 'Apre', 'Histoaprecomplementaire', 'Dossier', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent', 'Foyer' );
 
-		public $helpers = array( 
-			'Locale', 
-			'Csv', 
-			'Cake1xLegacy.Ajax', 
-			'Xform', 
-			'Xhtml', 
-			'Fileuploader', 
+		public $helpers = array(
+			'Locale',
+			'Csv',
+			'Cake1xLegacy.Ajax',
+			'Xform',
+			'Xhtml',
+			'Fileuploader',
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 		);
 
-		public $components = array( 
-			'Fileuploader', 
-			'Jetons2', 
+		public $components = array(
+			'Allocataires',
+			'Fileuploader',
+			'Jetons2',
 			'DossiersMenus',
 			'Gedooo.Gedooo',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search' )
+				'actions' => array( 'search', 'search_eligibilite' )
 			),
 		);
 
@@ -72,6 +73,10 @@
 			'index' => 'read',
 			'indexparams' => 'read',
 			'view' => 'read',
+			'search' => 'read',
+			'exportcsv' => 'read',
+			'search_eligibilite' => 'read',
+			'exportcsv_eligibilite' => 'read'
 		);
 
 		/**
@@ -849,22 +854,90 @@
 		}
 
 		/**
-		 * Moteur de recherche
+		 * Moteur de recherche par APRE / Toutes les APREs
 		 */
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
 			$Recherches->search();
-			
+
 			$this->Apre->validate = array();
 			ClassRegistry::init('Aideapre66')->validate = array();
+
+			// Pour le CG 93, on veut aussi le nombre (total) d'APRE et leur statut "en attente de ..."
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement === 93 && !empty( $this->request->params['named'] ) ) {
+				$this->loadModel( 'WebrsaRechercheApre' );
+
+				$query = $this->WebrsaRechercheApre->search( (array)Hash::get( $this->request->data, 'Search' ) );
+				$query = $this->Allocataires->completeSearchQuery( $query );
+
+				$joins = array(
+					$this->Apre->join( 'ApreComiteapre', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Apre->ApreComiteapre->join( 'Comiteapre', array( 'type' => 'LEFT OUTER' ) )
+				);
+
+				$fields = array(
+					'COUNT(*) AS "count"',
+					'( CASE
+						WHEN ApreComiteapre.apre_id IS NOT NULL AND ApreComiteapre.decisioncomite IS NULL THEN \'decision\'
+						WHEN ApreComiteapre.apre_id IS NULL THEN \'traitement\'
+						ELSE \'autre\'
+					END ) AS "statut"'
+				);
+
+				// Attention: on traite séparément pour ne pas aliaser ce qui se trouve dans la requête principale
+				$replacements = array( 'ApreComiteapre' => 'apres_comitesapres', 'Comiteapre' => 'comitesapres' );
+				$query['joins'] = array_merge(
+					$query['joins'],
+					array_words_replace( $joins, $replacements )
+				);
+				$query['fields'] = array_words_replace( $fields, $replacements );
+
+				$query['group'] = array( 'statut' );
+				$query['contain'] = false;
+				unset( $query['order'], $query['limit'] );
+
+				$this->set( 'count_apres_statut', Hash::combine( $this->Apre->find( 'all', $query ), '{n}.0.statut', '{n}.0.count' ) );
+			}
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
 			$Recherches->exportcsv();
+		}
+
+		/**
+		 * Moteur de recherche par "Etat des demandes d'APRE"
+		 */
+		public function search_eligibilite() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibilite' );
+			$Recherches->search(
+				array(
+					'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
+				)
+			);
+
+			$this->Apre->validate = array();
+			ClassRegistry::init('Aideapre66')->validate = array();
+
+			$this->view = 'search';
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche par "Etat des demandes d'APRE"
+		 */
+		public function exportcsv_eligibilite() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibilite' );
+			$Recherches->exportcsv(
+				array(
+					'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
+				)
+			);
+
+			$this->view = 'exportcsv';
 		}
 	}
 ?>

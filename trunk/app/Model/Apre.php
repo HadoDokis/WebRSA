@@ -342,6 +342,23 @@
 		);
 
 		/**
+		 * Surcharge du constructeur pour ajouter des champs virtuels.
+		 *
+		 * @param mixed $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			$departement = Configure::read( 'Cg.departement' );
+			// Seulement pour le CG 93, lorsque l'on n'est pas en train d'importer des fixtures
+			if( !( unittesting() && $this->useDbConfig === 'default' ) && $departement === 93 ) {
+				$this->virtualFields['natureaide'] = $this->vfListeAidesLiees93( null );
+			}
+		}
+
+		/**
 		*
 		*/
 
@@ -1041,6 +1058,47 @@
 			}
 
 			return $pdf;
+		}
+
+		/**
+		 * Retourne un champ virtuel contenant la liste des aides liées à une
+		 * APRE, séparées par la chaîne de caractères $glue.
+		 *
+		 * Si le nom du champ virtuel est vide, alors le champ non aliasé sera
+		 * retourné.
+		 *
+		 * @param string $fieldName Le nom du champ virtuel; le modèle sera l'alias
+		 *	du modèle (Apre) utilisé.
+		 * @param string $glue La chaîne de caratcères utilisée pour séparer les
+		 *	noms des aides.
+		 * @return string
+		 */
+		public function vfListeAidesLiees93( $fieldName = 'aidesliees', $glue = ',' ) {
+			$unions = array();
+
+			foreach( $this->aidesApre as $modelAide ) {
+				$join = $this->join( $modelAide );
+				$table = Inflector::tableize( $modelAide );
+				$sql = $this->{$modelAide}->sq(
+					array_words_replace(
+						array(
+							'fields' => array( 'COUNT(*)' ),
+							'alias' => $table,
+							'conditions' => $join['conditions']
+						),
+						array( $modelAide => $table )
+					)
+				);
+				$unions[] = str_replace( 'COUNT(*)', "'{$modelAide}'", $sql );
+			}
+
+			$sql = "TRIM( BOTH ' ' FROM TRIM( TRAILING '{$glue}' FROM ARRAY_TO_STRING( ARRAY( ".implode( ' UNION ', $unions )." ), '{$glue}' ) ) )";
+
+			if( !empty( $fieldName ) ) {
+				$sql = "{$sql} AS \"{$this->alias}__{$fieldName}\"";
+			}
+
+			return $sql;
 		}
 	}
 ?>

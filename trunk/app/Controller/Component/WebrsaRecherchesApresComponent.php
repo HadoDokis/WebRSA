@@ -17,24 +17,17 @@
 	class WebrsaRecherchesApresComponent extends WebrsaRecherchesComponent
 	{
 		/**
-		 * Modele principal
-		 * 
-		 * @var Model 
-		 */
-		public $Apre;
-		
-		/**
 		 * Contructeur de class, assigne le controller et le modele principal
-		 * 
+		 *
 		 * @param \ComponentCollection $collection
 		 * @param array $settings
 		 */
 		public function __construct(\ComponentCollection $collection, $settings = array()) {
 			parent::__construct($collection, $settings);
-			
+
 			$this->Apre = ClassRegistry::init( 'Apre'.Configure::read( 'Apre.suffixe' ) );
 		}
-		
+
 		/**
 		 * Options pour le moteur de recherche
 		 *
@@ -43,20 +36,31 @@
 		 */
 		public function options( array $params = array() ) {
 			$options = parent::options( $params );
-			$cgDepartement = Configure::read( 'Cg.departement' );
-			
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$Controller = $this->_Collection->getController();
+
 			$options['Apre']['structurereferente_id'] = $this->Apre->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
 			$options['Apre']['referent_id'] = $this->Apre->Structurereferente->Referent->listOptions();
-			
-			if ( isset($this->Apre->{'Aideapre'.$cgDepartement}->{'Themeapre'.$cgDepartement}) ) {
-				$enumsAideapre = $this->Apre->{'Aideapre'.$cgDepartement}->enums();
-				$options['Aideapre'.$cgDepartement] = $enumsAideapre['Aideapre'.$cgDepartement];
-				$options['Aideapre'.$cgDepartement]['themeapre'.$cgDepartement.'_id'] = $this->Apre->{'Aideapre'.$cgDepartement}->{'Themeapre'.$cgDepartement}->find('list');
+
+			if( $departement === 66 ) {
+				$options = Hash::merge(
+					$this->Apre->Aideapre66->enums(),
+					array(
+						'Aideapre66' => array(
+							'themeapre66_id' => $this->Apre->Aideapre66->Themeapre66->find('list'),
+							'typeaideapre66_id' => $this->Apre->Aideapre66->Typeaideapre66->listOptions()
+						)
+					)
+				);
 			}
-			if ( isset($this->Apre->{'Aideapre'.$cgDepartement}->{'Typeaideapre'.$cgDepartement}) ) {
-				$options['Aideapre'.$cgDepartement]['typeaideapre'.$cgDepartement.'_id'] = $this->Apre->{'Aideapre'.$cgDepartement}->{'Typeaideapre'.$cgDepartement}->listOptions();
+			else if( $departement === 93 ) {
+				$Controller->loadModel( 'Option' );
+				$options['Apre']['natureaide'] = $Controller->Option->natureAidesApres();
+
+				$Controller->loadModel( 'Tiersprestataireapre' );
+				$options['Tiersprestataireapre']['id'] = $Controller->Tiersprestataireapre->find( 'list' );
 			}
-			
+
 			return $options;
 		}
 	}

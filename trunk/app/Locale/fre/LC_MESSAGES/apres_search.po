@@ -11,7 +11,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Apres/search/:heading"
-msgstr "Recherche de demande APRE (Nouveau)"
+msgstr "Recherche de demande APRE (nouveau)"
 
 msgid "/Apres/search"
 msgstr "Formulaire"
@@ -19,29 +19,17 @@ msgstr "Formulaire"
 msgid "/Apres/search/:title"
 msgstr "Formulaire"
 
-msgid "Apre.search"
-msgstr "Recherche par demande APRE"
-
-msgid "Search.Apre.datedemandeapre"
-msgstr "Date de demande APRE"
-
 msgid "Search.Apre.structurereferente_id"
 msgstr "Structure référente"
 
 msgid "Search.Apre.referent_id"
 msgstr "Référent/prescripteur"
 
-msgid "Search.Apre.activitebeneficiaire"
-msgstr "Activité du bénéficiaire"
-
 msgid "Search.Aideapre66.themeapre66_id"
 msgstr "Thème de l'aide"
 
 msgid "Search.Aideapre66.typeaideapre66_id"
 msgstr "Type d'aide"
-
-msgid "Search.Apre.etatdossierapre"
-msgstr "Etat du dossier APRE"
 
 msgid "Search.Apre.isdecision"
 msgstr "Décision émise concernant le dossier APRE"

@@ -10,7 +10,6 @@ msgstr ""
 
 # ==============================================================================
 
-
 msgid "/Apres/index"
 msgstr "Voir"
 
@@ -22,3 +21,19 @@ msgstr "Voir les demandes d'APRE de #Personne.nom_complet#"
 
 msgid "/Apres66/index/#Apre.personne_id#"
 msgstr "Voir les demandes d'APRE de #Personne.nom_complet#"
+
+msgid "Apre.search"
+msgstr "Recherche par demande APRE"
+
+msgid "Search.Apre.eligibiliteapre"
+msgstr "Eligibilité de l'APRE"
+
+msgid "Search.Apre.etatdossierapre"
+msgstr "Etat du dossier APRE"
+
+msgid "Search.Apre.activitebeneficiaire"
+msgstr "Activité du bénéficiaire"
+
+# FIXME ?!?
+msgid "Search.Apre.datedemandeapre"
+msgstr "Date de demande APRE"
