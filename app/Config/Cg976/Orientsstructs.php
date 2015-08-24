@@ -19,7 +19,7 @@
 	);
 
 	Configure::write(
-		'Orientsstructs',
+		'ConfigurableQueryOrientsstructs',
 		array(
 			'search' => array(
 				'fields' => array(

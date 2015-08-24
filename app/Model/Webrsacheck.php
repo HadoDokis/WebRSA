@@ -86,6 +86,7 @@
 				'WebrsaRechercheCui',
 				'WebrsaRechercheDossierpcg66',
 				'WebrsaRechercheNoninscrit',
+				'WebrsaRechercheNonorientationproep',
 				'WebrsaRechercheSelectionradie',
 				'WebrsaRechercheTraitementpcg66',
 			)
