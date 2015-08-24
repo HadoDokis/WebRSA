@@ -10,7 +10,7 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
 		'Indus',
 		array(
@@ -21,7 +21,9 @@
 					'Dossier.typeparte',
 					'Situationdossierrsa.etatdosrsa',
 					'Indu.moismoucompta' => array( 'type' => 'date', 'format' => '%B %Y' ),
-					'IndusConstates.mtmoucompta',
+					'IndusConstates.mtmoucompta' => array(
+						'class' => 'number'
+					),
 					'IndusTransferesCG.mtmoucompta',
 					'RemisesIndus.mtmoucompta',
 					'/Indus/view/#Dossier.id#' => array( 'class' => 'view' ),

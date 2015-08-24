@@ -37,15 +37,15 @@
 			'Indus.search.innerTable',
 			'Indus.exportcsv'
 		);
-		
+
 		/**
 		 * Modèles utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
-			'Allocataire', 
-			'Infofinanciere', 
+		public $uses = array(
+			'Allocataire',
+			'Infofinanciere',
 			'Canton',
 		);
 
@@ -85,60 +85,43 @@
 						array(
 							$this->Infofinanciere,
 							$this->Infofinanciere->Dossier->Foyer->Personne->PersonneReferent,
+							$this->Infofinanciere->Dossier->Detaildroitrsa->Detailcalculdroitrsa
 						)
 					),
 					// Champs nécessaires au traitement de la search
 					array(
 						'Dossier.id',
-						'IndusConstates.mtmoucompta' => 'IndusConstates.mtmoucompta',
-						'IndusTransferesCG.mtmoucompta' => 'IndusTransferesCG.mtmoucompta',
-						'RemisesIndus.mtmoucompta' => 'RemisesIndus.mtmoucompta',
-						'Personne.nom' => 'Personne.nom',
-						'Personne.prenom' => 'Personne.prenom',
+						'Personne.nom',
+						'Personne.prenom',
 						'Indu.moismoucompta' => 'COALESCE("IndusConstates"."moismoucompta","IndusTransferesCG"."moismoucompta","RemisesIndus"."moismoucompta") AS "Indu__moismoucompta"',
+
 					)
 				);
 
-				// 2. Jointure
-				$indusConstate = array(
-					'table' => '"infosfinancieres"',
-					'alias' => 'IndusConstates',
-					'type' => 'LEFT OUTER',
-					'conditions' => array(
-						'IndusConstates.dossier_id = Dossier.id',
-						'IndusConstates.type_allocation' => 'IndusConstates'
-					)
-				);
+				$query['joins'][] = $this->Infofinanciere->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa']));
 
-				$transfertCg = array(
-					'table' => '"infosfinancieres"',
-					'alias' => 'IndusTransferesCG',
-					'type' => 'LEFT OUTER',
-					'conditions' => array(
-						'IndusTransferesCG.dossier_id = Dossier.id',
-						'IndusTransferesCG.type_allocation' => 'IndusTransferesCG'
-					)
-				);
+				// 2. Ajout des champs et des jointures sur les infosfinancieres, par type d'indu
+				$types_allocations = array( 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus' );
+				foreach( $types_allocations as $type_allocation ) {
+					// Ajout des champs pour ce modèle aliasé
+					$fields = ConfigurableQueryFields::getModelsFields( array( $this->Infofinanciere ) );
+					$query['fields'] = array_merge(
+						$query['fields'],
+						array_words_replace( $fields, array( 'Infofinanciere' => $type_allocation ) )
+					);
 
-				$remiseCg = array(
-					'table' => '"infosfinancieres"',
-					'alias' => 'RemisesIndus',
-					'type' => 'LEFT OUTER',
-					'conditions' => array(
-						'RemisesIndus.dossier_id = Dossier.id',
-						'RemisesIndus.type_allocation' => 'RemisesIndus'
-					)
-				);
-
-				$query['joins'] = array_merge(
-					$query['joins'],
-					array(
-						$indusConstate,
-						$transfertCg,
-						$remiseCg,
-						$this->Infofinanciere->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa']))
-					)
-				);
+					// Ajout des la jointure pour ce modèle aliasé
+					$join = $this->Infofinanciere->Dossier->join(
+						'Infofinanciere',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'IndusConstates.type_allocation' => $type_allocation
+							)
+						)
+					);
+					$query['joins'][] = array_words_replace( $join, array( 'Infofinanciere' => $type_allocation ) );
+				}
 
 				// 3. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {

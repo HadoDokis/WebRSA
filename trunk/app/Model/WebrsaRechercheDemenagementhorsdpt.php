@@ -9,6 +9,7 @@
 	 */
 	App::uses( 'AbstractWebrsaRecherche', 'Model/Abstractclass' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
+	App::uses( 'CakeSession', 'Model/Datasource' );
 
 	/**
 	 * La classe WebrsaRechercheDemenagementhorsdpt ...
@@ -43,13 +44,13 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
-			'Allocataire', 
-			'Personne', 
+		public $uses = array(
+			'Allocataire',
+			'Personne',
 			'Canton',
 			'Demenagementhorsdpt',
 		);
-		
+
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
@@ -59,7 +60,7 @@
 		 */
 		public function searchQuery( array $types = array() ) {
 			$cgDepartement = Configure::read( 'Cg.departement' );
-			
+
 			$types += array(
 				'Calculdroitrsa' => 'RIGHT',
 				'Foyer' => 'INNER',
@@ -101,15 +102,15 @@
 						'Dossier.id'
 					)
 				);
-				
+
 				// 2. Jointures
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						
+
 					)
 				);
-				
+
 				foreach( array( 2, 3 ) as $rgadr ) {
 					$replacements = array(
 						'Adressefoyer' => "Adressefoyer{$rgadr}",
@@ -154,7 +155,7 @@
 					$query['fields']['Canton.canton'] = 'Canton.canton';
 					$query['joins'][] = $this->Canton->joinAdresse();
 				}
-				
+
 				// 5. Ajout des champs virtuels des modèles aliasés
 				$Models = array( $this->Personne->Foyer->Adressefoyer, $this->Personne->Foyer->Adressefoyer->Adresse );
 				$rangs = array( 2, 3 );
@@ -167,7 +168,7 @@
 							$query['fields']["{$Model->alias}{$rang}.{$virtualFieldName}"] = "( {$virtualFieldExpression[0]} ) AS \"{$Model->alias}{$rang}__{$virtualFieldName}\"";
 						}
 					}
-				}		
+				}
 //debug( $query['fields'] );
 				Cache::write( $cacheKey, $query );
 			}
@@ -186,7 +187,7 @@
 		public function searchConditions( array $query, array $search ) {
 			$departement = Configure::read( 'Cg.departement' );
 			$query = $this->Allocataire->searchConditions( $query, $search );
-			
+
 			$conditions = array(
 				'Adresse.numcom NOT LIKE' => $departement.'%',
 				array(
@@ -196,11 +197,11 @@
 					)
 				)
 			);
-			
+
 			$query = $this->Demenagementhorsdpt->searchConditionsAdressesRang0203($query, $conditions);
-			
+
 			// Conditions sur les dates d'emménagement pour les externes
-			if( Configure::read( 'Cg.departement' ) == 93 && ( strpos( $this->Session->read( 'Auth.User.type' ), 'externe_' ) === 0 ) ) {
+			if( Configure::read( 'Cg.departement' ) == 93 && ( strpos( CakeSession::read( 'Auth.User.type' ), 'externe_' ) === 0 ) ) {
 				$query['conditions'][] = array(
 					'OR' => array(
 						// L'allocataire a quitté le CG en rang 01 et l'adresse de rang 2 ...
