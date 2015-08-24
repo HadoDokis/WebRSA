@@ -10,9 +10,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'ActionscandidatsPersonnes',
+		'ConfigurableQueryActionscandidatsPersonnes',
 		array(
 			'search' => array(
 				'fields' => array (

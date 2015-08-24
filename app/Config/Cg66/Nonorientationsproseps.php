@@ -10,9 +10,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'Nonorientationsproseps',
+		'ConfigurableQueryNonorientationsproseps',
 		array(
 			'search' => array(
 				'fields' => array (

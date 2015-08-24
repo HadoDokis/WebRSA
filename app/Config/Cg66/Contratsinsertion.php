@@ -12,7 +12,7 @@
 	);
 
 	Configure::write(
-		'Contratsinsertion',
+		'ConfigurableQueryContratsinsertion',
 		array(
 			'search' => array(
 				'fields' => array (

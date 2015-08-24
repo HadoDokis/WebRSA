@@ -15,9 +15,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'Dossierspcgs66',
+		'ConfigurableQueryDossierspcgs66',
 		array(
 			'search' => array(
 				'fields' => array (
