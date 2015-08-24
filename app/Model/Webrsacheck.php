@@ -57,6 +57,7 @@
 				'WebrsaRechercheCui',
 				'WebrsaRechercheDossierpcg66',
 				'WebrsaRechercheNoninscrit',
+				'WebrsaRechercheNonorientationproep',
 				'WebrsaRechercheSelectionradie',
 				'WebrsaRechercheTraitementpcg66',
 			),
@@ -72,6 +73,7 @@
 				'WebrsaRechercheCui',
 				'WebrsaRechercheDossierpcg66',
 				'WebrsaRechercheNoninscrit',
+				'WebrsaRechercheNonorientationproep', // INFO: au 93, c'est dans une cohorte
 				'WebrsaRechercheSelectionradie',
 				'WebrsaRechercheTraitementpcg66',
 			),
