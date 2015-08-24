@@ -18,14 +18,14 @@
 	/**
 	 * Les champs à faire apparaître dans les résultats de la recherche par
 	 * entretiens:
-	 *	- lignes du tableau: Entretiens.search.fields
-	 *	- info-bulle du tableau: Entretiens.search.innerTable
-	 *	- export CSV: Entretiens.exportcsv
+	 *	- lignes du tableau: ConfigurableQueryEntretiens.search.fields
+	 *	- info-bulle du tableau: ConfigurableQueryEntretiens.search.innerTable
+	 *	- export CSV: ConfigurableQueryEntretiens.exportcsv
 	 *
 	 * @var array
 	 */
 	Configure::write(
-		'Entretiens',
+		'ConfigurableQueryEntretiens',
 		array(
 			'search' => array(
 				'fields' => array(

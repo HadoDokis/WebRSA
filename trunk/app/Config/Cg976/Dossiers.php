@@ -24,14 +24,14 @@
 	/**
 	 * Les champs à faire apparaître dans les résultats de la recherche par
 	 * dossier / allocataire (nouveau):
-	 *	- lignes du tableau: Dossiers.search.fields
-	 *	- info-bulle du tableau: Dossiers.search.innerTable
-	 *	- export CSV: Dossiers.exportcsv
+	 *	- lignes du tableau: ConfigurableQueryDossiers.search.fields
+	 *	- info-bulle du tableau: ConfigurableQueryDossiers.search.innerTable
+	 *	- export CSV: ConfigurableQueryDossiers.exportcsv
 	 *
 	 * @var array
 	 */
 	Configure::write(
-		'Dossiers',
+		'ConfigurableQueryDossiers',
 		array(
 			'search' => array(
 				'fields' => array(
