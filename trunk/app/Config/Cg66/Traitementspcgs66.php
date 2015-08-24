@@ -10,9 +10,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'Traitementspcgs66',
+		'ConfigurableQueryTraitementspcgs66',
 		array(
 			'search' => array(
 				'fields' => array (

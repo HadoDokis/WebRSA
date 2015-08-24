@@ -10,9 +10,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'Bilansparcours66',
+		'ConfigurableQueryBilansparcours66',
 		array(
 			'search' => array(
 				'fields' => array (

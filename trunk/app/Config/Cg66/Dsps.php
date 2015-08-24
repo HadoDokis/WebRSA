@@ -25,7 +25,7 @@
 	 * le webrsa.inc" de la vérification de l'application.
 	 */
 	Configure::write(
-		'Dsps',
+		'ConfigurableQueryDsps',
 		array(
 			'search' => array(
 				'fields' => array(
@@ -106,17 +106,23 @@
 				'Donnees.libautrqualipro', // Qualification ou certificats professionnels
 				'Donnees.nb_fichiers_lies', // Nb Fichiers Liés des dsp
 			),
-			/**
-			 * Liste des champs devant apparaître dans les résultats de la recherche par DSP:
-			 *	- Dsps.index.fields contient les champs de chaque ligne du tableau de résultats
-			 *	- Dsps.index.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats
-			 *	- Dsps.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
-			 *
-			 * Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
-			 * le webrsa.inc" de la vérification de l'application.
-			 *
-			 * @deprecated
-			 */
+		)
+	);
+
+	/**
+	* Liste des champs devant apparaître dans les résultats de la recherche par DSP:
+	*	- Dsps.index.fields contient les champs de chaque ligne du tableau de résultats
+	*	- Dsps.index.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats
+	*	- Dsps.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
+	*
+	* Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
+	* le webrsa.inc" de la vérification de l'application.
+	*
+	* @deprecated
+	*/
+	Configure::write(
+		'Dsps',
+		array(
 			'index' => array(
 				'fields' => array(
 					'Dossier.matricule',

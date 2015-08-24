@@ -16,14 +16,14 @@
 
 	/**
 	 * Liste des champs devant apparaître dans les résultats de la recherche par CUI:
-	 *	- Cuis.search.fields contient les champs de chaque ligne du tableau de résultats
-	 *	- Cuis.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
+	 *	- ConfigurableQueryCuis.search.fields contient les champs de chaque ligne du tableau de résultats
+	 *	- ConfigurableQueryCuis.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
 	 *
 	 * Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
 	 * le webrsa.inc" de la vérification de l'application.
 	 */
 	Configure::write(
-		'Cuis',
+		'ConfigurableQueryCuis',
 		array(
 			'search' => array(
 				'fields' => array(

@@ -34,7 +34,7 @@
 	 */
 	// FIXME: champs export CSV
 	Configure::write(
-		'Rendezvous',
+		'ConfigurableQueryRendezvous',
 		array(
 			'search' => array(
 				'fields' => array(

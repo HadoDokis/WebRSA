@@ -10,9 +10,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'Indus',
+		'ConfigurableQueryIndus',
 		array(
 			'search' => array(
 				'fields' => array (

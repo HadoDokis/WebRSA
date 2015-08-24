@@ -25,7 +25,7 @@
 	 * @var array
 	 */
 	Configure::write(
-		'Entretiens',
+		'ConfigurableQueryEntretiens',
 		array(
 			'search' => array(
 				'fields' => array(

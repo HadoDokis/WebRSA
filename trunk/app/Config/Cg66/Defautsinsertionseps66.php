@@ -21,9 +21,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'Defautsinsertionseps66',
+		'ConfigurableQueryDefautsinsertionseps66',
 		array(
 			'search_noninscrits' => array(
 				'fields' => array (
@@ -56,7 +56,7 @@
 					'Referentparcours.nom_complet'
 				),
 				'order' => array( 'Historiqueetatpe.date', 'Historiqueetatpe.id' )
-			), 
+			),
 		)
 	);
 ?>
