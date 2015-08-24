@@ -26,15 +26,15 @@
 	/**
 	 * Les champs à faire apparaître dans les résultats de la recherche par
 	 * rendez-vous:
-	 *	- lignes du tableau: Rendezvous.search.fields
-	 *	- info-bulle du tableau: Rendezvous.search.innerTable
-	 *	- export CSV: Rendezvous.exportcsv
+	 *	- lignes du tableau: ConfigurableQueryRendezvous.search.fields
+	 *	- info-bulle du tableau: ConfigurableQueryRendezvous.search.innerTable
+	 *	- export CSV: ConfigurableQueryRendezvous.exportcsv
 	 *
 	 * @var array
 	 */
 	// FIXME: champs export CSV
 	Configure::write(
-		'Rendezvous',
+		'ConfigurableQueryRendezvous',
 		array(
 			'search' => array(
 				'fields' => array(

@@ -18,14 +18,14 @@
 	/**
 	 * Les champs à faire apparaître dans les résultats de la "Recherche par
 	 * orientation (nouveau)"
-	 *	- lignes du tableau: Orientsstructs.search.fields
-	 *	- info-bulle du tableau: Orientsstructs.search.innerTable
-	 *	- export CSV: Orientsstructs.exportcsv
+	 *	- lignes du tableau: ConfigurableQueryOrientsstructs.search.fields
+	 *	- info-bulle du tableau: ConfigurableQueryOrientsstructs.search.innerTable
+	 *	- export CSV: ConfigurableQueryOrientsstructs.exportcsv
 	 *
 	 * @var array
 	 */
 	Configure::write(
-		'Orientsstructs',
+		'ConfigurableQueryOrientsstructs',
 		array(
 			'search' => array(
 				'fields' => array(

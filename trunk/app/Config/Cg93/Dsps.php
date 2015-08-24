@@ -17,15 +17,15 @@
 
 	/**
 	 * Liste des champs devant apparaître dans les résultats de la recherche par DSP:
-	 *	- Dsps.search.fields contient les champs de chaque ligne du tableau de résultats
-	 *	- Dsps.search.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats
-	 *	- Dsps.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
+	 *	- ConfigurableQueryDsps.search.fields contient les champs de chaque ligne du tableau de résultats
+	 *	- ConfigurableQueryDsps.search.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats
+	 *	- ConfigurableQueryDsps.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
 	 *
 	 * Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
 	 * le webrsa.inc" de la vérification de l'application.
 	 */
 	Configure::write(
-		'Dsps',
+		'ConfigurableQueryDsps',
 		array(
 			'search' => array(
 				'fields' => array(
@@ -147,17 +147,23 @@
 				'Actrechromev3.metierromev3',
 				'Actrechromev3.appellationromev3'
 			),
-			/**
-			 * Liste des champs devant apparaître dans les résultats de la recherche par DSP:
-			 *	- Dsps.index.fields contient les champs de chaque ligne du tableau de résultats
-			 *	- Dsps.index.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats
-			 *	- Dsps.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
-			 *
-			 * Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
-			 * le webrsa.inc" de la vérification de l'application.
-			 *
-			 * @deprecated
-			 */
+		)
+	);
+
+	/**
+	 * Liste des champs devant apparaître dans les résultats de la recherche par DSP:
+	 *	- Dsps.index.fields contient les champs de chaque ligne du tableau de résultats
+	 *	- Dsps.index.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats
+	 *	- Dsps.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
+	 *
+	 * Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
+	 * le webrsa.inc" de la vérification de l'application.
+	 *
+	 * @deprecated
+	 */
+	Configure::write(
+		'Dsps',
+		array(
 			'index' => array(
 				'fields' => array(
 					// Nom de l'allocataire

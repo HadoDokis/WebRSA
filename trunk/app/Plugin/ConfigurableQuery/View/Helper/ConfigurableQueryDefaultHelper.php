@@ -46,7 +46,9 @@
 		);
 
 		public function configuredParams( array $params = array() ) {
+			// FIXME: prefix ConfigurableQuery, par défaut, possibilité de mettre à NULL
 			return $params + array(
+				'keyPrefix' => 'ConfigurableQuery',
 				'key' => Inflector::camelize( $this->request->params['controller'] ).".{$this->request->params['action']}"
 			);
 		}
@@ -70,7 +72,7 @@
 
 		public function configuredFields( array $params = array() ) {
 			$params = $this->configuredParams( $params );
-			$fields = $this->normalizeConfiguredFields( (array)Configure::read( $params['key'] ) );
+			$fields = $this->normalizeConfiguredFields( (array)Configure::read( "{$params['keyPrefix']}{$params['key']}" ) );
 
 			return $fields;
 		}
@@ -93,15 +95,15 @@
 			$params += array(
 				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) )
 			);
-			$fields = $this->configuredFields( array( 'key' => $params['key'].'.fields' ) );
+			$fields = $this->configuredFields( array( 'key' => $params['key'].'.fields', 'keyPrefix' => $params['keyPrefix'] ) );
 
-			$header = (array)Configure::read( $params['key'].'.header' );
+			$header = (array)Configure::read( "{$params['keyPrefix']}{$params['key']}".'.header' );
 			if( !empty( $header ) ) {
 				$params['header'] = $header;
 			}
 
 			// FIXME: normaliser
-			$innerTable = (array)Configure::read( $params['key'].'.innerTable' );
+			$innerTable = (array)Configure::read( "{$params['keyPrefix']}{$params['key']}".'.innerTable' );
 			if( !empty( $innerTable ) ) {
 				$params['innerTable'] = $this->normalizeConfiguredFields( $innerTable );
 			}
@@ -109,6 +111,8 @@
 			$this->DefaultPaginator->options(
 				array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
 			);
+
+			unset( $params['keyPrefix'] );
 
 			return $this->index(
 				$results,

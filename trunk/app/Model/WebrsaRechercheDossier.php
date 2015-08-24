@@ -33,9 +33,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Dossiers.search.fields',
-			'Dossiers.search.innerTable',
-			'Dossiers.exportcsv'
+			'ConfigurableQueryDossiers.search.fields',
+			'ConfigurableQueryDossiers.search.innerTable',
+			'ConfigurableQueryDossiers.exportcsv'
 		);
 
 		/**

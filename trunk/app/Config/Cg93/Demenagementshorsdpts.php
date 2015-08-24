@@ -14,9 +14,9 @@
 			)
 		)
 	);
-	
+
 	Configure::write(
-		'Demenagementshorsdpts',
+		'ConfigurableQueryDemenagementshorsdpts',
 		array(
 			'search' => array(
 				'fields' => array (

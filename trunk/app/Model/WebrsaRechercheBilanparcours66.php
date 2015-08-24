@@ -33,19 +33,20 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Contratsinsertion.search.fields',
-			'Contratsinsertion.search.innerTable',
-			'Contratsinsertion.exportcsv'
+			// FIXME: le bon modèle, maintenant ?
+			'ConfigurableQueryContratsinsertion.search.fields',
+			'ConfigurableQueryContratsinsertion.search.innerTable',
+			'ConfigurableQueryContratsinsertion.exportcsv'
 		);
-		
+
 		/**
 		 * Modèles utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
-			'Allocataire', 
-			'Bilanparcours66', 
+		public $uses = array(
+			'Allocataire',
+			'Bilanparcours66',
 			'Canton',
 		);
 
@@ -100,7 +101,7 @@
 						'Bilanparcours66.personne_id',
 					)
 				);
-				
+
 				// 2. Jointure
 				$joinDossierep = $this->Bilanparcours66->Personne->join( 'Dossierep', array( 'type' => $types['Dossierep'] ) );
 				$joinDossierep['conditions'] = '("Defautinsertionep66"."dossierep_id" = "Dossierep"."id") OR ("Saisinebilanparcoursep66"."dossierep_id" = "Dossierep"."id")';
@@ -139,7 +140,7 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
-			
+
 			/**
 			 * Generateur de conditions
 			 */
@@ -151,7 +152,7 @@
 				'Bilanparcours66.structurereferente_id',
 				'Bilanparcours66.positionbilan',
 			);
-			
+
 			// Fils de dependantSelect
 			$pathsToExplode = array(
 				'Bilanparcours66.referent_id',
@@ -160,14 +161,14 @@
 			$pathsDate = array(
 				'Bilanparcours66.datebilan'
 			);
-			
+
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			foreach( $pathsToExplode as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
@@ -177,7 +178,7 @@
 			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
-			
+
 			/**
 			 * Conditions spéciales
 			 */

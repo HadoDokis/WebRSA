@@ -51,7 +51,7 @@
 	 * @var array
 	 */
 	Configure::write(
-		'Apres',
+		'ConfigurableQueryApres',
 		array(
 			'search' => array(
 				'fields' => array(

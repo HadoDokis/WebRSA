@@ -9,7 +9,7 @@
 	 */
 	App::uses( 'AbstractWebrsaRecherche', 'Model/Abstractclass' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
-	
+
 	/**
 	 * La classe AbstractWebrsaRechercheDefautinsertionep66 ...
 	 *
@@ -23,14 +23,14 @@
 		 * @var string
 		 */
 		public $name = 'AbstractWebrsaRechercheDefautinsertionep66';
-		
+
 		/**
 		 * Modèles utilisés
 		 * @var array
 		 */
 		public $uses = array(
-			'Allocataire', 
-			'Personne', 
+			'Allocataire',
+			'Personne',
 			'Canton',
 			'Historiqueetatpe',
 			'Dossierep'
@@ -45,10 +45,10 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Defautsinsertionseps66.search_noninscrits.fields',
-			'Defautsinsertionseps66.search_noninscrits.innerTable',
-			'Defautsinsertionseps66.search_radies.fields',
-			'Defautsinsertionseps66.search_radies.innerTable',
+			'ConfigurableQueryDefautsinsertionseps66.search_noninscrits.fields',
+			'ConfigurableQueryDefautsinsertionseps66.search_noninscrits.innerTable',
+			'ConfigurableQueryDefautsinsertionseps66.search_radies.fields',
+			'ConfigurableQueryDefautsinsertionseps66.search_radies.innerTable',
 		);
 
 		/**
@@ -60,7 +60,7 @@
 		 */
 		public function searchQuery( array $types = array() ) {
 			$cgDepartement = Configure::read( 'Cg.departement' );
-			
+
 			$types += array(
 				'Calculdroitrsa' => 'RIGHT',
 				'Foyer' => 'INNER',
@@ -76,7 +76,7 @@
 				'Referent' => 'LEFT OUTER',
 				'Orientstruct' => 'LEFT OUTER',
 			);
-			
+
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
@@ -99,7 +99,7 @@
 						'Personne.id',
 					)
 				);
-				
+
 				// 2. Jointures
 				$query['joins'] = array_merge(
 					$query['joins'],
@@ -143,7 +143,7 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->getConditionEp( $this->Allocataire->searchConditions( $query, $search ) );
-			
+
 			/**
 			 * Conditions spéciales
 			 */
@@ -151,18 +151,18 @@
 			if ( $month ) {
 				$query['conditions']['EXTRACT(MONTH FROM Orientstruct.date_valid) = '] = $month;
 			}
-			
+
 			$year = Hash::get($search, 'Orientstruct.date_valid.year');
 			if ( $year ) {
 				$query['conditions']['EXTRACT(YEAR FROM Orientstruct.date_valid) = '] = $year;
 			}
-			
+
 			return $query;
 		}
-		
+
 		/**
 		 * Conditions de defaut d'insertion EP
-		 * 
+		 *
 		 * @param array $query
 		 * @return array
 		 */
@@ -244,7 +244,7 @@
 					)
 				).')',
 			);
-			
+
 			return $query;
 		}
 	}

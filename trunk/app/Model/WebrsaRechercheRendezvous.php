@@ -33,9 +33,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Rendezvous.search.fields',
-			'Rendezvous.search.innerTable',
-			'Rendezvous.exportcsv'
+			'ConfigurableQueryRendezvous.search.fields',
+			'ConfigurableQueryRendezvous.search.innerTable',
+			'ConfigurableQueryRendezvous.exportcsv'
 		);
 
 		/**

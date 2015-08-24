@@ -152,6 +152,7 @@
 		public function testConfiguredParams() {
 			$result = $this->Default->configuredParams();
 			$expected = array(
+				'keyPrefix' => 'ConfigurableQuery',
 				'key' => 'Users.index',
 			);
 			$this->assertEquals( $result, $expected );
@@ -162,6 +163,37 @@
 		 */
 		public function testConfiguredFields() {
 			Configure::write(
+				'ConfigurableQueryUsers.index.fields',
+				array(
+					'User.username',
+					'User.created',
+					'Group.name'
+				)
+			);
+			$result = $this->Default->configuredFields( array( 'key' => 'Users.index.fields', 'keyPrefix' => 'ConfigurableQuery' ) );
+			$expected = array(
+				'User.username' => array(
+					'type' => 'string',
+					'label' => 'Identifiant'
+				),
+				'User.created' => array(
+					'type' => 'datetime',
+					'label' => 'Créé le',
+				),
+				'Group.name' => array(
+					'type' => 'string',
+					'label' => 'Groupe'
+				)
+			);
+			$this->assertEquals( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode ConfigurableQueryDefaultHelper::configuredFields()
+		 * sans utiliser la clé keyPrefix.
+		 */
+		public function testConfiguredFieldsNoPrefix() {
+			Configure::write(
 				'Users.index.fields',
 				array(
 					'User.username',
@@ -169,7 +201,7 @@
 					'Group.name'
 				)
 			);
-			$result = $this->Default->configuredFields( array( 'key' => 'Users.index.fields' ) );
+			$result = $this->Default->configuredFields( array( 'key' => 'Users.index.fields', 'keyPrefix' => null ) );
 			$expected = array(
 				'User.username' => array(
 					'type' => 'string',
@@ -192,7 +224,7 @@
 		 */
 		public function testConfiguredIndex() {
 			Configure::write(
-				'Users.index',
+				'ConfigurableQueryUsers.index',
 				array(
 					'fields' => array(
 						'User.username',
@@ -225,37 +257,6 @@
 			$result = $this->Default->configuredIndex( $records );
 
 			$base = Router::url( '/' );
-			/*$expected = '<div class="pagination">
-					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
-				</div>
-				<table id="TableUsersIndex" class="users index">
-					<thead>
-						<tr>
-							<th colspan="2">Utilisateur</th>
-							<th>Groupe</th>
-						</tr>
-						<tr>
-							<th id="TableUsersIndexColumnUserUsername">
-								<a href="'.$base.'users/index/page:1/sort:User.username/direction:asc">Identifiant</a>
-							</th>
-							<th id="TableUsersIndexColumnUserCreated">
-								<a href="'.$base.'users/index/page:1/sort:User.created/direction:asc">Créé le</a>
-							</th>
-							<th id="TableUsersIndexColumnGroupName">
-								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="odd">
-							<td class="data string ">admin</td>
-							<td class="data datetime ">29/06/2015 à 00:28:35</td>
-							<td class="data string ">Admin</td>
-						</tr>
-					</tbody>
-				</table>
-				<div class="pagination"><p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
-			</div>';*/
 			$expected = '<div class="pagination">
 					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
 				</div>
@@ -305,7 +306,7 @@
 		 */
 		public function testConfiguredIndexInnerTable() {
 			Configure::write(
-				'Users.index',
+				'ConfigurableQueryUsers.index',
 				array(
 					'fields' => array(
 						'User.username',
@@ -409,7 +410,7 @@
 			$records = $this->Controller->User->find( 'all', $query );
 
 			Configure::write(
-				'Users.index',
+				'ConfigurableQueryUsers.index',
 				array(
 					'User.id',
 					'User.username',
