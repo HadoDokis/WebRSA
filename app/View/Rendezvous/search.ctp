@@ -35,18 +35,20 @@
 			echo $this->Form->input( 'Search.Rendezvous.typerdv_id', array( 'label' => __m( 'Search.Rendezvous.typerdv_id' ), 'type' => 'select', 'options' => $options['Rendezvous']['typerdv_id'], 'empty' => true ) );
 
 			// Thématiques du RDV
-			if( isset( $options['Rendezvous']['thematiquerdv_id'] ) && !empty( $options['Rendezvous']['thematiquerdv_id'] ) ) {
-				foreach( $options['Rendezvous']['thematiquerdv_id'] as $typerdv_id => $thematiques ) {
-					$input = $this->Xform->input(
-						'Search.Rendezvous.thematiquerdv_id',
-						array(
-							'type' => 'select',
-							'multiple' => 'checkbox',
-							'options' => $options['Rendezvous']['thematiquerdv_id'],
-							'label' => __m( 'Search.Rendezvous.thematiquerdv_id' )
-						)
-					);
-					echo $this->Xhtml->tag( 'fieldset', $input, array( 'id' => "CritererdvThematiquerdvId{$typerdv_id}", 'class' => 'invisible' ) );
+			if( Configure::read( 'Rendezvous.useThematique' ) ) {
+				if( isset( $options['Rendezvous']['thematiquerdv_id'] ) && !empty( $options['Rendezvous']['thematiquerdv_id'] ) ) {
+					foreach( $options['Rendezvous']['thematiquerdv_id'] as $typerdv_id => $thematiques ) {
+						$input = $this->Xform->input(
+							'Search.Rendezvous.thematiquerdv_id',
+							array(
+								'type' => 'select',
+								'multiple' => 'checkbox',
+								'options' => $thematiques,
+								'label' => __m( 'Search.Rendezvous.thematiquerdv_id' )
+							)
+						);
+						echo $this->Xhtml->tag( 'fieldset', $input, array( 'id' => "SearchRendezvousThematiquerdvId{$typerdv_id}", 'class' => 'invisible' ) );
+					}
 				}
 			}
 
@@ -82,38 +84,28 @@
 				'options' => $options
 			)
 		);
+
+		echo $this->element( 'search_footer' );
 	}
 ?>
-<?php if( isset( $results ) && !empty( $results ) ): ?>
-	<ul class="actionMenu">
-		<li><?php
-			echo $this->Xhtml->printLinkJs(
-				'Imprimer le tableau', array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
-			);
-		?></li>
-		<li><?php
-			echo $this->Xhtml->exportLink(
-				'Télécharger le tableau', array( 'controller' => 'criteresrdv', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ), $this->Permissions->check( 'criteresrdv', 'exportcsv' )
-			);
-		?></li>
-	</ul>
-<?php endif; ?>
 
 <script type="text/javascript">
 	// TODO
 	document.observe("dom:loaded", function() {
 		dependantSelect( 'SearchRendezvousReferentId', 'SearchRendezvousStructurereferenteId' );
 
-		<?php if( isset( $options['Rendezvous']['thematiquerdv_id'] ) && !empty( $options['Rendezvous']['thematiquerdv_id'] ) ):?>
-			<?php foreach( $options['Rendezvous']['thematiquerdv_id'] as $typerdv_id => $thematiques ):?>
-				observeDisableFieldsetOnValue(
-					'SearchRendezvousTyperdvId',
-					'SearchRendezvousThematiquerdvId<?php echo $typerdv_id;?>',
-					[ '<?php echo $typerdv_id;?>' ],
-					false,
-					true
-				);
-			<?php endforeach;?>
+		<?php if( Configure::read( 'Rendezvous.useThematique' ) ) :?>
+			<?php if( isset( $options['Rendezvous']['thematiquerdv_id'] ) && !empty( $options['Rendezvous']['thematiquerdv_id'] ) ):?>
+				<?php foreach( $options['Rendezvous']['thematiquerdv_id'] as $typerdv_id => $thematiques ):?>
+					observeDisableFieldsetOnValue(
+						'SearchRendezvousTyperdvId',
+						'SearchRendezvousThematiquerdvId<?php echo $typerdv_id;?>',
+						[ '<?php echo $typerdv_id;?>' ],
+						false,
+						true
+					);
+				<?php endforeach;?>
+			<?php endif;?>
 		<?php endif;?>
 	});
 </script>

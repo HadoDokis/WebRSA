@@ -39,6 +39,13 @@
 		);
 
 		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Allocataire', 'Rendezvous', 'Canton' );
+
+		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
 		 *
@@ -66,10 +73,7 @@
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				$Allocataire = ClassRegistry::init( 'Allocataire' );
-				$Rendezvous = ClassRegistry::init( 'Rendezvous' );
-
-				$query = $Allocataire->searchQuery( $types, 'Rendezvous' );
+				$query = $this->Allocataire->searchQuery( $types, 'Rendezvous' );
 
 				// Ajout des spécificités du moteur de recherche
 				$departement = (int)Configure::read( 'Cg.departement' );
@@ -82,11 +86,11 @@
 					$query['fields'],
 					ConfigurableQueryFields::getModelsFields(
 						array(
-							$Rendezvous,
-							$Rendezvous->Referent,
-							$Rendezvous->Statutrdv,
-							$Rendezvous->Structurereferente,
-							$Rendezvous->Typerdv
+							$this->Rendezvous,
+							$this->Rendezvous->Referent,
+							$this->Rendezvous->Statutrdv,
+							$this->Rendezvous->Structurereferente,
+							$this->Rendezvous->Typerdv
 						)
 					)
 				);
@@ -94,17 +98,21 @@
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$Rendezvous->join( 'Referent', array( 'type' => $types['Referent'] ) ),
-						$Rendezvous->join( 'Statutrdv', array( 'type' => $types['Statutrdv'] ) ),
-						$Rendezvous->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
-						$Rendezvous->join( 'Typerdv', array( 'type' => $types['Typerdv'] ) )
+						$this->Rendezvous->join( 'Referent', array( 'type' => $types['Referent'] ) ),
+						$this->Rendezvous->join( 'Statutrdv', array( 'type' => $types['Statutrdv'] ) ),
+						$this->Rendezvous->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
+						$this->Rendezvous->join( 'Typerdv', array( 'type' => $types['Typerdv'] ) )
 					)
 				);
-				
+
 				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
 					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->joinAdresse();
+				}
+
+				// Si on utilise les thématiques de RDV, ajout du champ virtuel
+				if( Configure::read('Rendezvous.useThematique' ) ) {
+					$query['fields']['Rendezvous.thematiques'] = '( '.$this->Rendezvous->vfListeThematiques( null ).' ) AS "Rendezvous__thematiques"';
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -123,10 +131,7 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			// FIXME: les critères ajoutés à la main dans le bloc dossier
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$Rendezvous = ClassRegistry::init( 'Rendezvous' );
-
-			$query = $Allocataire->searchConditions( $query, $search );
+			$query = $this->Allocataire->searchConditions( $query, $search );
 
 			$foreignKeys = array( 'structurereferente_id', 'referent_id', 'permanence_id', 'typerdv_id' );
 			foreach( $foreignKeys as $foreignKey ) {
@@ -145,7 +150,7 @@
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Rendezvous.daterdv' );
 
 			// Recherche par thématique de rendez-vous si nécessaire
-			$query['conditions'] = $Rendezvous->conditionsThematique( $query['conditions'], $search, 'Rendezvous.thematiquerdv_id' );
+			$query['conditions'] = $this->Rendezvous->conditionsThematique( $query['conditions'], $search, 'Rendezvous.thematiquerdv_id' );
 
 			return $query;
 		}

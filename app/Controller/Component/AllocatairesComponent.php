@@ -118,12 +118,17 @@
 
 			// Permet de surcharger les clefs paginate dans le controller directement
 			if (isset($Controller->paginate)) {
-				$Controller->paginate[$className] += $query;
+				if( isset( $Controller->paginate[$className] ) ) {
+					$Controller->paginate[$className] += $query;
+				}
+				else {
+					$Controller->paginate += $query;
+				}
 			}
 			else{
 				$Controller->paginate = array( $className => $query );
 			}
-			
+
 
 			$results = $Controller->paginate(
 				$className,
