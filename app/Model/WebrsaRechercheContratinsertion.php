@@ -40,9 +40,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Contratsinsertion.search.fields',
-			'Contratsinsertion.search.innerTable',
-			'Contratsinsertion.exportcsv'
+			'ConfigurableQueryContratsinsertion.search.fields',
+			'ConfigurableQueryContratsinsertion.search.innerTable',
+			'ConfigurableQueryContratsinsertion.exportcsv'
 		);
 
 		/**

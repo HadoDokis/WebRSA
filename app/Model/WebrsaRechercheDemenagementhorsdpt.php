@@ -34,9 +34,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Demenagementshorsdpts.search.fields',
-			'Demenagementshorsdpts.search.innerTable',
-			'Demenagementshorsdpts.exportcsv',
+			'ConfigurableQueryDemenagementshorsdpts.search.fields',
+			'ConfigurableQueryDemenagementshorsdpts.search.innerTable',
+			'ConfigurableQueryDemenagementshorsdpts.exportcsv',
 		);
 
 		/**

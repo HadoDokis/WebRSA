@@ -40,9 +40,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Apres.search.fields',
-			'Apres.search.innerTable',
-			'Apres.exportcsv'
+			'ConfigurableQueryApres.search.fields',
+			'ConfigurableQueryApres.search.innerTable',
+			'ConfigurableQueryApres.exportcsv'
 		);
 
 		/**

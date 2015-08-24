@@ -33,20 +33,20 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Traitementspcgs66.search.fields',
-			'Traitementspcgs66.search.innerTable',
-			'Traitementspcgs66.exportcsv'
+			'ConfigurableQueryTraitementspcgs66.search.fields',
+			'ConfigurableQueryTraitementspcgs66.search.innerTable',
+			'ConfigurableQueryTraitementspcgs66.exportcsv'
 		);
-		
+
 		/**
 		 * Modèles utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
-			'Allocataire', 
+		public $uses = array(
+			'Allocataire',
 			'Personnepcg66',
-			'Canton' 
+			'Canton'
 		);
 
 		/**
@@ -78,9 +78,9 @@
 				'User' => 'LEFT OUTER',
 				'Descriptionpdo' => 'LEFT OUTER',
 			);
-			
+
 			$this->Allocataire = ClassRegistry::init( 'Allocataire' );
-			
+
 			$this->Personnepcg66 = ClassRegistry::init( 'Personnepcg66' );
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -107,7 +107,7 @@
 						'Personnepcg66.id',
 						'Personnepcg66.personne_id',
 						'Dossierpcg66.id',
-						
+
 						'Fichiermodule.nb_fichiers_lies' => '(SELECT COUNT("fichiermodule"."id") '
 						. 'FROM "fichiersmodules" AS "fichiermodule" '
 						. 'WHERE "fichiermodule"."modele" = \'Foyer\' '
@@ -115,7 +115,7 @@
 						. 'AS "Fichiermodule__nb_fichiers_lies"',
 					)
 				);
-				
+
 				// 2. Jointure
 				$query['joins'] = array_merge(
 					array(
@@ -154,7 +154,7 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
-			
+
 			/**
 			 * Conditions obligatoire
 			 */
@@ -164,7 +164,7 @@
 					'Detailcalculdroitrsa.id IN (SELECT "detailscalculsdroitsrsa"."id" AS detailscalculsdroitsrsa__id FROM detailscalculsdroitsrsa AS detailscalculsdroitsrsa WHERE "detailscalculsdroitsrsa"."detaildroitrsa_id" = "Detaildroitrsa"."id" ORDER BY "detailscalculsdroitsrsa"."ddnatdro" DESC LIMIT 1)'
 				)
 			);
-			
+
 			/**
 			 * Generateur de conditions
 			 */
@@ -179,14 +179,14 @@
 				'Traitementpcg66.saisonnier',
 				'Traitementpcg66.nrmrcs',
 			);
-			
+
 			$pathsDate = array(
 				'Dossierpcg66.dateaffectation',
 				'Traitementpcg66.dateecheance',
 				'Traitementpcg66.daterevision',
 				'Traitementpcg66.created',
 			);
-			
+
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
@@ -195,7 +195,7 @@
 			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
-			
+
 			/**
 			 * Conditions spéciales
 			 */
@@ -209,7 +209,7 @@
 					. ($exists === '0' ? '=' : '>') . ' 0'
 				;
 			}
-			
+
 			$situationpdo_id = Hash::get($search, 'Traitementpcg66.situationpdo_id');
 			if ( $situationpdo_id ) {
 				$query['conditions'][] = array(
@@ -221,7 +221,7 @@
 					. 'WHERE "personnespcgs66_situationspdos"."situationpdo_id" IN ('.implode(', ', $situationpdo_id).'))'
 				);
 			}
-			
+
 			$statutpdo_id = Hash::get($search, 'Traitementpcg66.statutpdo_id');
 			if ( $statutpdo_id ) {
 				$query['conditions'][] = array(

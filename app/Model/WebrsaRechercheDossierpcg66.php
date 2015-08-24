@@ -33,12 +33,12 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Dossierspcgs66.search.fields',
-			'Dossierspcgs66.search.innerTable',
-			'Dossierspcgs66.exportcsv',
-			'Dossierspcgs66.search_gestionnaire.fields',
-			'Dossierspcgs66.search_gestionnaire.innerTable',
-			'Dossierspcgs66.exportcsv_gestionnaire'
+			'ConfigurableQueryDossierspcgs66.search.fields',
+			'ConfigurableQueryDossierspcgs66.search.innerTable',
+			'ConfigurableQueryDossierspcgs66.exportcsv',
+			'ConfigurableQueryDossierspcgs66.search_gestionnaire.fields',
+			'ConfigurableQueryDossierspcgs66.search_gestionnaire.innerTable',
+			'ConfigurableQueryDossierspcgs66.exportcsv_gestionnaire'
 		);
 
 		/**
@@ -46,12 +46,12 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
-			'Allocataire', 
-			'Dossierpcg66', 
+		public $uses = array(
+			'Allocataire',
+			'Dossierpcg66',
 			'Canton',
 		);
-		
+
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
@@ -61,7 +61,7 @@
 		 */
 		public function searchQuery( array $types = array() ) {
 			$cgDepartement = Configure::read( 'Cg.departement' );
-			
+
 			$types += array(
 				'Calculdroitrsa' => 'RIGHT',
 				'Foyer' => 'INNER',
@@ -120,7 +120,7 @@
 					array(
 						'Dossierpcg66.id',
 						'Dossierpcg66.foyer_id',
-						
+
 						'Decisiondossierpcg66.org_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Orgtransmisdossierpcg66"."name" || \'</li>\' AS "Orgtransmisdossierpcg66__name" '
 						. 'FROM "decisionsdossierspcgs66" AS "Decisiondossierpcg66" '
@@ -131,7 +131,7 @@
 						. 'WHERE "Decisiondossierpcg66"."dossierpcg66_id" = "Dossierpcg66"."id" '
 						. 'ORDER BY "Decisiondossierpcg66"."created" DESC), \'\') || \'</ul>\') '
 						. 'AS "Decisiondossierpcg66__org_id"',
-						
+
 						'Traitementpcg66.situationpdo_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Situationpdo"."libelle" || \'</li>\' AS "Situationpdo__libelle" '
 						. 'FROM "personnespcgs66" AS "Personnepcg66" '
@@ -141,7 +141,7 @@
 						. 'ON ("Personnepcg66Situationpdo"."situationpdo_id" = "Situationpdo"."id") '
 						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
 						. 'AS "Traitementpcg66__situationpdo_id"',
-						
+
 						'Traitementpcg66.statutpdo_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Statutpdo"."libelle" || \'</li>\' AS "Statutpdo__libelle" '
 						. 'FROM "personnespcgs66" AS "Personnepcg66" '
@@ -151,7 +151,7 @@
 						. 'ON ("Personnepcg66Statutpdo"."statutpdo_id" = "Statutpdo"."id") '
 						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
 						. 'AS "Traitementpcg66__statutpdo_id"',
-						
+
 						'Dossierpcg66.listetraitements' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Traitementpcg66"."typetraitement" || \'</li>\' AS "Traitementpcg66__typetraitement" '
 						. 'FROM "traitementspcgs66" AS "Traitementpcg66" '
@@ -159,20 +159,20 @@
 						. 'ON ("Traitementpcg66"."personnepcg66_id" = "Personnepcg66"."id") '
 						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
 						. 'AS "Dossierpcg66__listetraitements"',
-						
+
 						'Fichiermodule.nb_fichiers_lies' => '(SELECT COUNT("fichiermodule"."id") '
 						. 'FROM "fichiersmodules" AS "fichiermodule" '
 						. 'WHERE "fichiermodule"."modele" = \'Foyer\' '
 						. 'AND "fichiermodule"."fk_value" = "Foyer"."id") '
 						. 'AS "Fichiermodule__nb_fichiers_lies"',
-						
+
 						'Personnepcg66.nbtraitements' => '(SELECT COUNT(*) '
 						. 'FROM traitementspcgs66 '
 						. 'WHERE traitementspcgs66.personnepcg66_id = "Personnepcg66"."id") '
 						. 'AS "Personnepcg66__nbtraitements"',
 					)
 				);
-				
+
 				// 2. Jointures
 				$traitementSq = 'SELECT "traitementspcgs66"."id" AS traitementspcgs66__id FROM traitementspcgs66 AS traitementspcgs66 WHERE "traitementspcgs66"."personnepcg66_id" = "Personnepcg66"."id" ORDER BY "traitementspcgs66"."created" DESC LIMIT 1';
 				$conditionTraitement = array(
@@ -204,7 +204,7 @@
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3->Metierromev3->join('Appellationromev3', array('type' => $types['Appellationromev3'])),
 						$this->Dossierpcg66->Personnepcg66->join('Categoriemetierromev2', array('type' => $types['Categoriemetierromev2'])),
 						$this->Dossierpcg66->Personnepcg66->join('Traitementpcg66', array(
-							'type' => $types['Traitementpcg66'], 
+							'type' => $types['Traitementpcg66'],
 							'conditions' => $conditionTraitement
 						)),
 						$this->Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo', array('type' => $types['Decisionpdo'])),
@@ -233,7 +233,7 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
-			
+
 			// Conditions obligatoire
 			$query['conditions'][] = array(
 				'Prestation.rolepers' => 'DEM',
@@ -307,7 +307,7 @@
 				'Decisiondossierpcg66.decisionpdo_id',
 				'Categorieromev3.familleromev3_id',
 			);
-			
+
 			$pathsToExplode = array(
 				'Categorieromev3.domaineromev3_id',
 				'Categorieromev3.metierromev3_id',
@@ -320,14 +320,14 @@
 				'Decisiondossierpcg66.datevalidation',
 				'Decisiondossierpcg66.datetransmissionop'
 			);
-			
+
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			foreach( $pathsToExplode as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
@@ -335,9 +335,9 @@
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
-			
+
 			/**
 			 * Conditions spéciales
 			 */
@@ -349,7 +349,7 @@
 					. 'WHERE "decisionsdossierspcgs66"."dossierpcg66_id" = "Dossierpcg66"."id")' => $nbproposition
 				);
 			}
-			
+
 			$org_id = Hash::get($search, 'Decisiondossierpcg66.org_id');
 			if ( $org_id ) {
 				$query['conditions'][] = array(
@@ -361,7 +361,7 @@
 					. 'WHERE "decsdospcgs66_orgsdospcgs66"."orgtransmisdossierpcg66_id" IN ('.implode(', ', $org_id).'))'
 				);
 			}
-			
+
 			$situationpdo_id = Hash::get($search, 'Traitementpcg66.situationpdo_id');
 			if ( $situationpdo_id ) {
 				$query['conditions'][] = array(
@@ -373,7 +373,7 @@
 					. 'WHERE "personnespcgs66_situationspdos"."situationpdo_id" IN ('.implode(', ', $situationpdo_id).'))'
 				);
 			}
-			
+
 			$statutpdo_id = Hash::get($search, 'Traitementpcg66.statutpdo_id');
 			if ( $statutpdo_id ) {
 				$query['conditions'][] = array(
@@ -385,7 +385,7 @@
 					. 'WHERE "personnespcgs66_statutspdos"."statutpdo_id" IN ('.implode(', ', $statutpdo_id).'))'
 				);
 			}
-			
+
 			if ( Hash::get($search, 'Dossierpcg66.dossierechu') ) {
 				$query['conditions'][] = 'Traitementpcg66.id IN ( ' . $this->Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
 			}

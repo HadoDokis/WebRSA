@@ -33,22 +33,22 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Nonorientationsproseps.search.fields',
-			'Nonorientationsproseps.search.innerTable',
+			'ConfigurableQueryNonorientationsproseps.search.fields',
+			'ConfigurableQueryNonorientationsproseps.search.innerTable',
 		);
-		
+
 		/**
 		 * Modèles utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
-			'Allocataire', 
-			'Orientstruct', 
-			'Canton', 
-			'Nonorientationproep58', 
-			'Nonorientationproep93', 
-			'Nonorientationproep66', 
+		public $uses = array(
+			'Allocataire',
+			'Orientstruct',
+			'Canton',
+			'Nonorientationproep58',
+			'Nonorientationproep93',
+			'Nonorientationproep66',
 		);
 
 		/**
@@ -104,7 +104,7 @@
 						'Personne.nom_complet',
 					)
 				);
-				
+
 				// 2. Jointure
 				$query['joins'] = array_merge(
 					array(
@@ -140,17 +140,17 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
-			
+
 			$oldQuery = $this->{'Nonorientationproep'.Configure::read('Cg.departement')}->searchNonReoriente(
 				array(),
 				array(),
 				array( 'Filtre' => $search )
 			);
-			
+
 			foreach($oldQuery['conditions'] as $key => $condition) {
 				$query['conditions'][] = array( $key => $condition );
 			}
-			
+
 			return $query;
 		}
 	}

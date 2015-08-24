@@ -33,17 +33,17 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Cuis.search.fields',
-			'Cuis.search.innerTable',
-			'Cuis.exportcsv'
+			'ConfigurableQueryCuis.search.fields',
+			'ConfigurableQueryCuis.search.innerTable',
+			'ConfigurableQueryCuis.exportcsv'
 		);
-		
+
 		/**
 		 * Modèles utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
+		public $uses = array(
 			'Allocataire',
 			'Cui',
 			'Canton',
@@ -59,7 +59,7 @@
 		public function searchQuery( array $types = array() ) {
 			$cgDepartement = Configure::read( 'Cg.departement' );
 			$modelCuiDpt = 'Cui' . $cgDepartement;
-			
+
 			// Liste de modeles potentiel pour un CG donné
 			$modelPotentiel = array(
 				'Accompagnementcui' . $cgDepartement,
@@ -69,7 +69,7 @@
 				'Suspensioncui' . $cgDepartement,
 				'Historiquepositioncui' . $cgDepartement,
 			);
-				
+
 			$types += array(
 				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
@@ -84,9 +84,9 @@
 				'Adressecui' => 'LEFT OUTER',
 				$modelCuiDpt => 'INNER',
 			);
-			
+
 			foreach ($modelPotentiel as $modelName){
-				$types += array( $modelName => 'LEFT OUTER' ); 
+				$types += array( $modelName => 'LEFT OUTER' );
 			}
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -146,7 +146,7 @@
 				);
 
 				// Ajout des tables spécifiques
-				
+
 				if( isset( $this->Cui->{$modelCuiDpt} ) ) {
 					$foreignKey = strtolower($modelCuiDpt) . '_id';
 
@@ -159,7 +159,7 @@
 						$query['joins'],
 						$this->Cui->join( $modelCuiDpt, array( 'type' => $types[$modelCuiDpt] ) )
 					);
-					
+
 					foreach ( $modelPotentiel as $modelName ){
 						if ( isset( $this->Cui->{$modelCuiDpt}->{$modelName} ) ){
 							$tableName = Inflector::tableize($modelName);
@@ -263,7 +263,7 @@
 					)
 				);
 			}
-			
+
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
@@ -272,7 +272,7 @@
 			}
 
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
-			
+
 			$beneficiairede = (string)Hash::get( $search, 'Cui.beneficiairede' );
 			if ( $beneficiairede !== '' ) {
 				switch ($beneficiairede) {
@@ -281,7 +281,7 @@
 					case '2': $type = 'ata'; break;
 					default: $type = 'rsa'; break;
 				}
-				
+
 				$query['conditions']['beneficiaire_' . $type] = 1;
 			}
 

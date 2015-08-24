@@ -33,9 +33,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Orientsstructs.search.fields',
-			'Orientsstructs.search.innerTable',
-			'Orientsstructs.exportcsv'
+			'ConfigurableQueryOrientsstructs.search.fields',
+			'ConfigurableQueryOrientsstructs.search.innerTable',
+			'ConfigurableQueryOrientsstructs.exportcsv'
 		);
 
 		/**
@@ -43,11 +43,11 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 
-			'Allocataire', 
-			'Orientstruct', 
-			'Informationpe', 
-			'Canton' 
+		public $uses = array(
+			'Allocataire',
+			'Orientstruct',
+			'Informationpe',
+			'Canton'
 		);
 
 		/**

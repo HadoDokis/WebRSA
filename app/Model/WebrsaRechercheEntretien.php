@@ -33,9 +33,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Entretiens.search.fields',
-			'Entretiens.search.innerTable',
-			'Entretiens.exportcsv'
+			'ConfigurableQueryEntretiens.search.fields',
+			'ConfigurableQueryEntretiens.search.innerTable',
+			'ConfigurableQueryEntretiens.exportcsv'
 		);
 
 		/**

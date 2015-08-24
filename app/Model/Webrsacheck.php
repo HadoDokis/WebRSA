@@ -339,14 +339,19 @@
 			foreach( $this->searches as $searchModelName ) {
 				$SearchModel = ClassRegistry::init( $searchModelName );
 				foreach( $SearchModel->keysRecherche as $searchKey ) {
-					if(strpos($searchKey, '.header') === false ) {
-						$return[$searchKey] = 'isarray';
-					}
-					else {
-						$return[$searchKey] = array(
+					if(  strpos( $searchKey, '.innerTable' ) !== false ) {
+						$searchKeyPrefix = preg_replace( '/\.innerTable/', '', $searchKey );
+
+						$return["{$searchKeyPrefix}.header"] = array(
+							array( 'rule' => 'isarray', 'allowEmpty' => true )
+						);
+
+						$return["{$searchKeyPrefix}.order"] = array(
 							array( 'rule' => 'isarray', 'allowEmpty' => true )
 						);
 					}
+
+					$return[$searchKey] = 'isarray';
 				}
 			}
 

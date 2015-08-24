@@ -33,9 +33,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Indus.search.fields',
-			'Indus.search.innerTable',
-			'Indus.exportcsv'
+			'ConfigurableQueryIndus.search.fields',
+			'ConfigurableQueryIndus.search.innerTable',
+			'ConfigurableQueryIndus.exportcsv'
 		);
 
 		/**

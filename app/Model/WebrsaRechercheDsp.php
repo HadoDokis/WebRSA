@@ -31,9 +31,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Dsps.search.fields',
-			'Dsps.search.innerTable',
-			'Dsps.exportcsv'
+			'ConfigurableQueryDsps.search.fields',
+			'ConfigurableQueryDsps.search.innerTable',
+			'ConfigurableQueryDsps.exportcsv'
 		);
 
 		/**

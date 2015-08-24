@@ -32,9 +32,9 @@
 		 * @var array
 		 */
 		public $keysRecherche = array(
-			'Apres.search_eligibilite.fields',
-			'Apres.search_eligibilite.innerTable',
-			'Apres.exportcsv_eligibilite'
+			'ConfigurableQueryApres.search_eligibilite.fields',
+			'ConfigurableQueryApres.search_eligibilite.innerTable',
+			'ConfigurableQueryApres.exportcsv_eligibilite'
 		);
 
 		/**
