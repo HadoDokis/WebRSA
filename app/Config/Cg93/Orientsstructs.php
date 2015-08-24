@@ -73,7 +73,6 @@
 				'Adresse.compladr',
 				'Adresse.codepos',
 				'Adresse.nomcom',
-				'Canton.canton',
 				'Dossier.dtdemrsa',
 				'Situationdossierrsa.etatdosrsa',
 				'Structurereferenteparcours.lib_struc',
