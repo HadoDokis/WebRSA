@@ -1073,7 +1073,7 @@
 		 *	noms des aides.
 		 * @return string
 		 */
-		public function vfListeAidesLiees93( $fieldName = 'aidesliees', $glue = ',' ) {
+		public function vfListeAidesLiees93( $fieldName = 'aidesliees', $glue = '\\n\r-' ) {
 			$unions = array();
 
 			foreach( $this->aidesApre as $modelAide ) {

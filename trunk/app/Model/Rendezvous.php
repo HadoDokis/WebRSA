@@ -332,6 +332,23 @@
 		);
 
 		/**
+		 * Surcharge du constructeur pour ajouter des champs virtuels.
+		 *
+		 * @param mixed $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			// Seulement l'on utilise les thématiques, lorsque l'on n'est pas en
+			// train d'importer des fixtures
+			if( !( unittesting() && $this->useDbConfig === 'default' ) && Configure::read( 'Rendezvous.useThematique' ) ) {
+				$this->virtualFields['thematiques'] = $this->vfListeThematiques( null );
+			}
+		}
+
+		/**
 		 * Retourne un booléen selon si un dossier d'EP doit ou non
 		 * être créé pour la personne dont l'id est passé en paramètre
 		 *
@@ -1003,6 +1020,45 @@
 			}
 
 			return $conditions;
+		}
+
+		/**
+		 * Retourne un champ virtuel contenant la liste des theématiques liées à
+		 * une RDV, séparées par la chaîne de caractères $glue.
+		 *
+		 * Si le nom du champ virtuel est vide, alors le champ non aliasé sera
+		 * retourné.
+		 *
+		 * @see Configure Rendezvous.useThematique
+		 *
+		 * @param string $fieldName Le nom du champ virtuel; le modèle sera l'alias
+		 *	du modèle (Rendezvous) utilisé.
+		 * @param string $glue La chaîne de caratcères utilisée pour séparer les
+		 *	noms des aides.
+		 * @return string
+		 */
+		public function vfListeThematiques( $fieldName = 'thematiques', $glue = '\\n\r-' ) {
+			$query = array(
+				'fields' => array( 'Thematiquerdv.name' ),
+				'alias' => 'rendezvous_thematiquesrdvs',
+				'joins' => array(
+					$this->RendezvousThematiquerdv->join( 'Thematiquerdv', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'RendezvousThematiquerdv.rendezvous_id = Rendezvous.id'
+				),
+				'contain' => false
+			);
+			$replacements = array( 'RendezvousThematiquerdv' => 'rendezvous_thematiquesrdvs', 'Thematiquerdv' => 'thematiquesrdvs' );
+			$query = array_words_replace( $query, $replacements );
+
+			$sql = "TRIM( BOTH ' ' FROM TRIM( TRAILING '{$glue}' FROM ARRAY_TO_STRING( ARRAY( ".$this->RendezvousThematiquerdv->sq( $query )." ), '{$glue}' ) ) )";
+
+			if( !empty( $fieldName ) ) {
+				$sql = "{$sql} AS \"{$this->alias}__{$fieldName}\"";
+			}
+
+			return $sql;
 		}
 	}
 ?>

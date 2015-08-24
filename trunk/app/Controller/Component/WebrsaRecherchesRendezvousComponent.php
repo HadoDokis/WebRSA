@@ -25,6 +25,7 @@
 		 */
 		public function options( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
+			$Controller->loadModel( 'Option' );
 			$params = $this->params( $params );
 
 			$options = Hash::merge(
@@ -45,6 +46,9 @@
 							'0' => 'Sans prestation',
 							'1' => 'Demandeur ou Conjoint du RSA'
 						)
+					),
+					'Structurereferente' => array(
+						'type_voie' => $Controller->Option->typevoie()
 					)
 				)
 			);

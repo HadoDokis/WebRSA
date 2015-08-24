@@ -58,31 +58,45 @@
 					'Adresse.numcom',
 					'Personne.nir',
 					'Prestation.rolepers',
+					'Rendezvous.thematiques' => array(
+						'type' => 'list'
+					),
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
 				),
 				'order' => array( 'Rendezvous.daterdv' )
 			),
 			'exportcsv' => array(
-//				'Entretien.dateentretien',
-//				'Personne.nom_complet',
-//				'Dossier.matricule',
-//				'Adresse.numvoie',
-//				'Adresse.libtypevoie',
-//				'Adresse.nomvoie',
-//				'Adresse.complideadr',
-//				'Adresse.compladr',
-//				'Adresse.codepos',
-//				'Adresse.nomcom',
-//				'Structurereferente.lib_struc',
-//				'Referent.nom_complet',
-//				'Entretien.typeentretien',
-//				'Objetentretien.name',
-//				'Entretien.arevoirle' => array(
-//					'format' => '%B %Y'
-//				),
-//				'Referentparcours.nom_complet',
-//				'Structurereferenteparcours.lib_struc'
+				'Personne.qual',
+				'Personne.nom',
+				'Personne.prenom',
+				'Dossier.matricule',
+				'Adresse.numvoie',
+				'Adresse.libtypevoie',
+				'Adresse.nomvoie',
+				'Adresse.complideadr',
+				'Adresse.compladr',
+				'Adresse.codepos',
+				'Adresse.nomcom',
+				'Structurereferente.lib_struc',
+				'Structurereferente.num_voie',
+				'Structurereferente.type_voie',
+				'Structurereferente.nom_voie',
+				'Structurereferente.code_postal',
+				'Structurereferente.ville',
+				'Referent.nom_complet',
+				'Typerdv.libelle',
+				'Rendezvous.thematiques' => array(
+					'type' => 'list'
+				),
+				'Statutrdv.libelle',
+				'Rendezvous.daterdv',
+				'Rendezvous.heurerdv',
+				'Rendezvous.objetrdv',
+				'Rendezvous.commentairerdv',
+				'Situationdossierrsa.etatdosrsa',
+				'Structurereferenteparcours.lib_struc',
+				'Referentparcours.nom_complet',
 			)
 		)
 	);
