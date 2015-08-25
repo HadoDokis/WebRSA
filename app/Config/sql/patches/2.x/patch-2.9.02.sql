@@ -124,6 +124,22 @@ LANGUAGE plpgsql VOLATILE;
 SELECT public.regenerate_dossierseps_nonrespectssanctionseps93();
 DROP FUNCTION public.regenerate_dossierseps_nonrespectssanctionseps93();
 
+-------------------------------------------------------------------------------------
+-- 20150825 : Mademoiselle devient Madame
+-------------------------------------------------------------------------------------
+
+UPDATE membreseps SET qual = 'Mme.'::TYPE_QUAL WHERE qual = 'Mlle.'::TYPE_QUAL;
+SELECT public.alter_enumtype( 'TYPE_QUAL', ARRAY['M.', 'Mme.'] );
+
+UPDATE cers93 SET qual = 'MME' WHERE qual = 'MLE';
+UPDATE composfoyerscers93 SET qual = 'MME' WHERE qual = 'MLE';
+UPDATE contactspartenaires SET qual = 'MME' WHERE qual = 'MLE';
+UPDATE participantscomites SET qual = 'MME' WHERE qual = 'MLE';
+UPDATE personnes SET qual = 'MME' WHERE qual = 'MLE';
+UPDATE referents SET qual = 'MME' WHERE qual = 'MLE';
+UPDATE situationsallocataires SET qual = 'MME' WHERE qual = 'MLE';
+UPDATE suivisaidesapres SET qual = 'MME' WHERE qual = 'MLE';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
