@@ -519,7 +519,7 @@
 
 			if( !empty( $this->request->data ) ) {
 				// Lorsqu'on modifie l'enregistrement, on ne change pas l'utilisateur qui a fait la proposition
-				if( Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id' ) !== null ) {
+				if( $this->request->action !== 'add' && Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id' ) !== null ) {
 					unset($this->request->data['Decisiondossierpcg66']['userproposition_id']);
 				}
 				
