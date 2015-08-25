@@ -1582,7 +1582,6 @@
 		public function qual() {
 			return array(
 				'MME' => 'Madame',
-				'MLE' => 'Mademoiselle',
 				'MR' => 'Monsieur'
 			);
 		}
