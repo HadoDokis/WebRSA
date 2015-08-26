@@ -22,42 +22,49 @@
 		 * Test de la méthode Analysesql::Analyse()
 		 */
 		public function testAnalyse() {
-			$sql = 'SELECT EXIST("SELECT id FROM tables2 INNER JOIN foo ON ((foo.id = tables2.foo_id)) LIMIT 1) AS "Table1__existtest", "Table1"."name" AS "Table1__name", "Table2"."foo", COUNT(*) FROM "tables1" AS "Table1" INNER JOIN "tables2" AS "Table2" ON ("Table1"."table2_id" = "Table2"."id") LEFT OUTER JOIN "tables3" ON ((SELECT id FROM tables4 WHERE tables4.name = "tables3"."name" LIMIT 1) = "Table1"."name") WHERE "Table2"."name" LIKE "foo%" AND "Table2"."name" LIKE "%bar" AND (("Table1"."name" = \'foobar\') OR ("Table2"."name" = \'foobar\')) ORDER BY "Table1"."id" DESC LIMIT 5';
+			Analysesql::setDatasourceName( 'test' );
+			$Dbo = ClassRegistry::init('ConnectionManager')->getDataSource('test');
+			$s = $Dbo->startQuote;
+			$e = $Dbo->endQuote;
+			$hs = h($s);
+			$he = h($e);
+			
+			$sql = 'SELECT EXIST(SELECT id FROM tables2 INNER JOIN foo ON ((foo.id = tables2.foo_id)) LIMIT 1) AS '.$s.'Table1__existtest'.$e.', '.$s.'Table1'.$e.'.'.$s.'name'.$e.' AS '.$s.'Table1__name'.$e.', '.$s.'Table2'.$e.'.'.$s.'foo'.$e.', COUNT(*) FROM '.$s.'tables1'.$e.' AS '.$s.'Table1'.$e.' INNER JOIN '.$s.'tables2'.$e.' AS '.$s.'Table2'.$e.' ON ('.$s.'Table1'.$e.'.'.$s.'table2_id'.$e.' = '.$s.'Table2'.$e.'.'.$s.'id'.$e.') LEFT OUTER JOIN '.$s.'tables3'.$e.' ON ((SELECT id FROM tables4 WHERE tables4.name = '.$s.'tables3'.$e.'.'.$s.'name'.$e.' LIMIT 1) = '.$s.'Table1'.$e.'.'.$s.'name'.$e.') WHERE '.$s.'Table2'.$e.'.'.$s.'name'.$e.' LIKE \'foo%\' AND '.$s.'Table2'.$e.'.'.$s.'name'.$e.' LIKE \'%bar\' AND (('.$s.'Table1'.$e.'.'.$s.'name'.$e.' = \'foobar\') OR ('.$s.'Table2'.$e.'.'.$s.'name'.$e.' = \'foobar\')) ORDER BY '.$s.'Table1'.$e.'.'.$s.'id'.$e.' DESC LIMIT 5';
 			
 			$result = Analysesql::analyse($sql);
 			$expected = array (
   'text' => '
 #################################################################################
-Requète sans parenthèses :
+'.__d('analysesql', 'Brakets.free.title').'
 #################################################################################
-<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">SELECT EXIST<span title="&quot;SELECT id FROM tables2 INNER JOIN foo ON [7] LIMIT 1">[11]</span> AS "Table1__existtest",
- "Table1"."name" AS "Table1__name",
- "Table2"."foo",
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">SELECT EXIST<span title="SELECT id FROM tables2 INNER JOIN foo ON [7] LIMIT 1">[11]</span> AS '.$s.'Table1__existtest'.$e.',
+ '.$s.'Table1'.$e.'.'.$s.'name'.$e.' AS '.$s.'Table1__name'.$e.',
+ '.$s.'Table2'.$e.'.'.$s.'foo'.$e.',
  COUNT<span title="*">[1]</span> 
-FROM "tables1" AS "Table1" 
-INNER JOIN "tables2" AS "Table2" ON <span title="&quot;Table1&quot;.&quot;table2_id&quot; = &quot;Table2&quot;.&quot;id&quot;">[2]</span> 
-LEFT OUTER JOIN "tables3" ON <span title="[3] = &quot;Table1&quot;.&quot;name&quot;">[8]</span> 
-WHERE "Table2"."name" LIKE "foo%" 
-AND "Table2"."name" LIKE "%bar" 
+FROM '.$s.'tables1'.$e.' AS '.$s.'Table1'.$e.' 
+INNER JOIN '.$s.'tables2'.$e.' AS '.$s.'Table2'.$e.' ON <span title="'.$hs.'Table1'.$he.'.'.$hs.'table2_id'.$he.' = '.$hs.'Table2'.$he.'.'.$hs.'id'.$he.'">[2]</span> 
+LEFT OUTER JOIN '.$s.'tables3'.$e.' ON <span title="[3] = '.$hs.'Table1'.$he.'.'.$hs.'name'.$he.'">[8]</span> 
+WHERE '.$s.'Table2'.$e.'.'.$s.'name'.$e.' LIKE \'foo%\' 
+AND '.$s.'Table2'.$e.'.'.$s.'name'.$e.' LIKE \'%bar\' 
 AND <span title="[4] OR [5]">[9]</span> 
-ORDER BY "Table1"."id" DESC 
+ORDER BY '.$s.'Table1'.$e.'.'.$s.'id'.$e.' DESC 
 LIMIT 5</div>
 #################################################################################
-Contenu des parenthèses :
+'.__d('analysesql', 'Brakets.contain.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
   1 => \'*\',
-  2 => \'"Table1"."table2_id" = "Table2"."id"\',
-  3 => \'SELECT id FROM tables4 WHERE tables4.name = "tables3"."name" LIMIT 1\',
-  4 => \'"Table1"."name" = \\\'foobar\\\'\',
-  5 => \'"Table2"."name" = \\\'foobar\\\'\',
+  2 => \''.$s.'Table1'.$e.'.'.$s.'table2_id'.$e.' = '.$s.'Table2'.$e.'.'.$s.'id'.$e.'\',
+  3 => \'SELECT id FROM tables4 WHERE tables4.name = '.$s.'tables3'.$e.'.'.$s.'name'.$e.' LIMIT 1\',
+  4 => \''.$s.'Table1'.$e.'.'.$s.'name'.$e.' = \\\'foobar\\\'\',
+  5 => \''.$s.'Table2'.$e.'.'.$s.'name'.$e.' = \\\'foobar\\\'\',
   7 => \'foo.id = tables2.foo_id\',
-  8 => \'<span title="SELECT id FROM tables4 WHERE tables4.name = &quot;tables3&quot;.&quot;name&quot; LIMIT 1">[3]</span> = "Table1"."name"\',
-  9 => \'<span title="&quot;Table1&quot;.&quot;name&quot; = &#039;foobar&#039;">[4]</span> OR <span title="&quot;Table2&quot;.&quot;name&quot; = &#039;foobar&#039;">[5]</span>\',
-  11 => \'"SELECT id FROM tables2 INNER JOIN foo ON <span title="foo.id = tables2.foo_id">[7]</span> LIMIT 1\',
+  8 => \'<span title="SELECT id FROM tables4 WHERE tables4.name = '.$hs.'tables3'.$he.'.'.$hs.'name'.$he.' LIMIT 1">[3]</span> = '.$s.'Table1'.$e.'.'.$s.'name'.$e.'\',
+  9 => \'<span title="'.$hs.'Table1'.$he.'.'.$hs.'name'.$he.' = &#039;foobar&#039;">[4]</span> OR <span title="'.$hs.'Table2'.$he.'.'.$hs.'name'.$he.' = &#039;foobar&#039;">[5]</span>\',
+  11 => \'SELECT id FROM tables2 INNER JOIN foo ON <span title="foo.id = tables2.foo_id">[7]</span> LIMIT 1\',
 )</div>
 #################################################################################
-Fields :
+'.__d('analysesql', 'Fields.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'Table1.existtest\',
@@ -66,7 +73,7 @@ Fields :
   3 => \'COUNT<span title="*">[1]</span>\',
 )</div>
 #################################################################################
-Jointures :
+'.__d('analysesql', 'Joins.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
@@ -81,35 +88,35 @@ Jointures :
     \'table\' => \'"tables2"\',
     \'alias\' => \'Table2\',
     \'type\' => \'INNER\',
-    \'conditions\' => \'"Table1"."table2_id" = "Table2"."id"\',
+    \'conditions\' => \''.$s.'Table1'.$e.'.'.$s.'table2_id'.$e.' = '.$s.'Table2'.$e.'.'.$s.'id'.$e.'\',
   ),
   2 => 
   array (
     \'table\' => \'"tables3"\',
     \'alias\' => \'\',
     \'type\' => \'LEFT\',
-    \'conditions\' => \'<span title="SELECT id FROM tables4 WHERE tables4.name = &quot;tables3&quot;.&quot;name&quot; LIMIT 1">[3]</span> = "Table1"."name"\',
+    \'conditions\' => \'<span title="SELECT id FROM tables4 WHERE tables4.name = '.$hs.'tables3'.$he.'.'.$hs.'name'.$he.' LIMIT 1">[3]</span> = '.$s.'Table1'.$e.'.'.$s.'name'.$e.'\',
   ),
 )</div>
 #################################################################################
-Conditions :
+'.__d('analysesql', 'Conditions.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
-  0 => \'"Table2"."name" LIKE "foo%"\',
-  1 => \'"Table2"."name" LIKE "%bar"\',
-  2 => \'(<span title="&quot;Table1&quot;.&quot;name&quot; = &#039;foobar&#039;">[4]</span> OR <span title="&quot;Table2&quot;.&quot;name&quot; = &#039;foobar&#039;">[5]</span>)\',
+  0 => \''.$s.'Table2'.$e.'.'.$s.'name'.$e.' LIKE \\\'foo%\\\'\',
+  1 => \''.$s.'Table2'.$e.'.'.$s.'name'.$e.' LIKE \\\'%bar\\\'\',
+  2 => \'(<span title="'.$hs.'Table1'.$he.'.'.$hs.'name'.$he.' = &#039;foobar&#039;">[4]</span> OR <span title="'.$hs.'Table2'.$he.'.'.$hs.'name'.$he.' = &#039;foobar&#039;">[5]</span>)\',
 )</div>',
   'innerBrackets' => 
   array (
     1 => '*',
-    2 => '"Table1"."table2_id" = "Table2"."id"',
-    3 => 'SELECT id FROM tables4 WHERE tables4.name = "tables3"."name" LIMIT 1',
-    4 => '"Table1"."name" = \'foobar\'',
-    5 => '"Table2"."name" = \'foobar\'',
+    2 => ''.$s.'Table1'.$e.'.'.$s.'table2_id'.$e.' = '.$s.'Table2'.$e.'.'.$s.'id'.$e.'',
+    3 => 'SELECT id FROM tables4 WHERE tables4.name = '.$s.'tables3'.$e.'.'.$s.'name'.$e.' LIMIT 1',
+    4 => ''.$s.'Table1'.$e.'.'.$s.'name'.$e.' = \'foobar\'',
+    5 => ''.$s.'Table2'.$e.'.'.$s.'name'.$e.' = \'foobar\'',
     7 => 'foo.id = tables2.foo_id',
-    8 => '<span title="SELECT id FROM tables4 WHERE tables4.name = &quot;tables3&quot;.&quot;name&quot; LIMIT 1">[3]</span> = "Table1"."name"',
-    9 => '<span title="&quot;Table1&quot;.&quot;name&quot; = &#039;foobar&#039;">[4]</span> OR <span title="&quot;Table2&quot;.&quot;name&quot; = &#039;foobar&#039;">[5]</span>',
-    11 => '"SELECT id FROM tables2 INNER JOIN foo ON <span title="foo.id = tables2.foo_id">[7]</span> LIMIT 1',
+    8 => '<span title="SELECT id FROM tables4 WHERE tables4.name = '.$hs.'tables3'.$he.'.'.$hs.'name'.$he.' LIMIT 1">[3]</span> = '.$s.'Table1'.$e.'.'.$s.'name'.$e.'',
+    9 => '<span title="'.$hs.'Table1'.$he.'.'.$hs.'name'.$he.' = &#039;foobar&#039;">[4]</span> OR <span title="'.$hs.'Table2'.$he.'.'.$hs.'name'.$he.' = &#039;foobar&#039;">[5]</span>',
+    11 => 'SELECT id FROM tables2 INNER JOIN foo ON <span title="foo.id = tables2.foo_id">[7]</span> LIMIT 1',
   ),
   'random' => $result['random']
 );
@@ -120,28 +127,28 @@ Conditions :
 			$expected = array (
   'text' => '
 #################################################################################
-Requète sans parenthèses :
+'.__d('analysesql', 'Brakets.free.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">SELECT myfunction<span title="&#039;foo&#039;">[0]</span></div>
 #################################################################################
-Contenu des parenthèses :
+'.__d('analysesql', 'Brakets.contain.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
   0 => \'\\\'foo\\\'\',
 )</div>
 #################################################################################
-Fields :
+'.__d('analysesql', 'Fields.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'myfunction<span title="&#039;foo&#039;">[0]</span>\',
 )</div>
 #################################################################################
-Jointures :
+'.__d('analysesql', 'Joins.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
 )</div>
 #################################################################################
-Conditions :
+'.__d('analysesql', 'Conditions.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
 )</div>',
@@ -153,29 +160,29 @@ Conditions :
 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 			
-			$sql = 'UPDATE "public"."foos" AS "Foo" SET "Foo"."name" = MYFUNCTION(\'Foo\', \'Bar\') WHERE "Foo"."name" LIKE \'Foobar%\'';
+			$sql = 'UPDATE '.$s.'public'.$e.'.'.$s.'foos'.$e.' AS '.$s.'Foo'.$e.' SET '.$s.'Foo'.$e.'.'.$s.'name'.$e.' = MYFUNCTION(\'Foo\', \'Bar\') WHERE '.$s.'Foo'.$e.'.'.$s.'name'.$e.' LIKE \'Foobar%\'';
 			$result = Analysesql::analyse($sql);
 			$expected = array (
   'text' => '
 #################################################################################
-Requète sans parenthèses :
+'.__d('analysesql', 'Brakets.free.title').'
 #################################################################################
-<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">UPDATE "public"."foos" AS "Foo" SET "Foo"."name" = MYFUNCTION<span title="&#039;Foo&#039;, &#039;Bar&#039;">[0]</span> 
-WHERE "Foo"."name" LIKE \'Foobar%\'</div>
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">UPDATE '.$s.'public'.$e.'.'.$s.'foos'.$e.' AS '.$s.'Foo'.$e.' SET '.$s.'Foo'.$e.'.'.$s.'name'.$e.' = MYFUNCTION<span title="&#039;Foo&#039;, &#039;Bar&#039;">[0]</span> 
+WHERE '.$s.'Foo'.$e.'.'.$s.'name'.$e.' LIKE \'Foobar%\'</div>
 #################################################################################
-Contenu des parenthèses :
+'.__d('analysesql', 'Brakets.contain.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
   0 => \'\\\'Foo\\\', \\\'Bar\\\'\',
 )</div>
 #################################################################################
-Fields :
+'.__d('analysesql', 'Fields.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'Foo.name\',
 )</div>
 #################################################################################
-Jointures :
+'.__d('analysesql', 'Joins.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
@@ -187,10 +194,10 @@ Jointures :
   ),
 )</div>
 #################################################################################
-Conditions :
+'.__d('analysesql', 'Conditions.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
-  0 => \'"Foo"."name" LIKE \\\'Foobar%\\\'\',
+  0 => \''.$s.'Foo'.$e.'.'.$s.'name'.$e.' LIKE \\\'Foobar%\\\'\',
 )</div>',
   'innerBrackets' => 
   array (
@@ -201,28 +208,28 @@ Conditions :
 			
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 			
-			$sql = 'UPDATE "public"."connections" SET "modified" = \'2015-07-17 10:40:23\' WHERE "public"."connections"."id" = 244397';
+			$sql = 'UPDATE '.$s.'public'.$e.'.'.$s.'connections'.$e.' SET '.$s.'modified'.$e.' = \'2015-07-17 10:40:23\' WHERE '.$s.'public'.$e.'.'.$s.'connections'.$e.'.'.$s.'id'.$e.' = 244397';
 			$result = Analysesql::analyse($sql);
 			$expected = array (
   'text' => '
 #################################################################################
-Requète sans parenthèses :
+'.__d('analysesql', 'Brakets.free.title').'
 #################################################################################
-<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">UPDATE "public"."connections" SET "modified" = \'2015-07-17 10:40:23\' 
-WHERE "public"."connections"."id" = 244397</div>
+<input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">UPDATE '.$s.'public'.$e.'.'.$s.'connections'.$e.' SET '.$s.'modified'.$e.' = \'2015-07-17 10:40:23\' 
+WHERE '.$s.'public'.$e.'.'.$s.'connections'.$e.'.'.$s.'id'.$e.' = 244397</div>
 #################################################################################
-Contenu des parenthèses :
+'.__d('analysesql', 'Brakets.contain.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
 )</div>
 #################################################################################
-Fields :
+'.__d('analysesql', 'Fields.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => \'modified\',
 )</div>
 #################################################################################
-Jointures :
+'.__d('analysesql', 'Joins.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
@@ -234,10 +241,10 @@ Jointures :
   ),
 )</div>
 #################################################################################
-Conditions :
+'.__d('analysesql', 'Conditions.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
-  0 => \'"public"."connections"."id" = 244397\',
+  0 => \''.$s.'public'.$e.'.'.$s.'connections'.$e.'.'.$s.'id'.$e.' = 244397\',
 )</div>',
   'innerBrackets' => 
   array (
@@ -246,28 +253,28 @@ Conditions :
 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 			
-			$sql = 'DELETE FROM "foos" AS "Foo" WHERE "Foo"."bar" IS NULL';
+			$sql = 'DELETE FROM '.$s.'foos'.$e.' AS '.$s.'Foo'.$e.' WHERE '.$s.'Foo'.$e.'.'.$s.'bar'.$e.' IS NULL';
 			$result = Analysesql::analyse($sql);
 			$expected = array (
   'text' => '
 #################################################################################
-Requète sans parenthèses :
+'.__d('analysesql', 'Brakets.free.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'noBraketsSqlReport'.$result['random'].'\').toggle();" checked="true"><div id="noBraketsSqlReport'.$result['random'].'" style="display:block;">DELETE 
-FROM "foos" AS "Foo" 
-WHERE "Foo"."bar" IS NULL</div>
+FROM '.$s.'foos'.$e.' AS '.$s.'Foo'.$e.' 
+WHERE '.$s.'Foo'.$e.'.'.$s.'bar'.$e.' IS NULL</div>
 #################################################################################
-Contenu des parenthèses :
+'.__d('analysesql', 'Brakets.contain.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'innerBraketsReport'.$result['random'].'\').toggle();"><div id="innerBraketsReport'.$result['random'].'" style="display:none;">array (
 )</div>
 #################################################################################
-Fields :
+'.__d('analysesql', 'Fields.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlFieldsReport'.$result['random'].'\').toggle();"><div id="sqlFieldsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
 )</div>
 #################################################################################
-Jointures :
+'.__d('analysesql', 'Joins.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlJoinsReport'.$result['random'].'\').toggle();"><div id="sqlJoinsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
   0 => 
@@ -279,10 +286,10 @@ Jointures :
   ),
 )</div>
 #################################################################################
-Conditions :
+'.__d('analysesql', 'Conditions.title').'
 #################################################################################
 <input type="checkbox" onchange="$(\'sqlConditionsReport'.$result['random'].'\').toggle();"><div id="sqlConditionsReport'.$result['random'].'" style="display:none;" class="restoreBrackets">array (
-  0 => \'"Foo"."bar" IS NULL\',
+  0 => \''.$s.'Foo'.$e.'.'.$s.'bar'.$e.' IS NULL\',
 )</div>',
   'innerBrackets' => 
   array (
