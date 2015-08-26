@@ -12,6 +12,7 @@
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'DefaultTableCellHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
 
 	/**
 	 * La classe DefaultTableCellHelperTest ...
@@ -37,6 +38,8 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			CakeTestSession::start();
+
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->DefaultTableCell = new DefaultTableCellHelper( $this->View );
@@ -59,8 +62,27 @@
 		 * @return void
 		 */
 		public function tearDown() {
+			CakeTestSession::destroy();
 			parent::tearDown();
 			unset( $this->View, $this->DefaultTableCell );
+		}
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			CakeTestSession::setupBeforeClass();
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			CakeTestSession::teardownAfterClass();
 		}
 
 		/**
@@ -182,6 +204,8 @@
 		 * @return void
 		 */
 		public function testAction() {
+			$_SESSION['Auth']['Permissions']['Module:Apples'] = true;
+
 			$htmlAttributes = array();
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
@@ -212,6 +236,8 @@
 		 * @return void
 		 */
 		public function testActionConfirm() {
+			$_SESSION['Auth']['Permissions']['Module:Apples'] = true;
+
 			$htmlAttributes = array( 'confirm' => true );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(

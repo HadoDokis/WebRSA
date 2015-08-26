@@ -20,6 +20,51 @@
 	 */
 	class DefaultHtmlHelper extends HtmlHelper
 	{
+		/**
+		 * Helpers utilisés par ce helper.
+		 *
+		 * @var array
+		 */
+		public $helpers = array( 'Permissions' );
+
+		/**
+		 * Complète les options passées à la méthode link() lorsque l'$url est un
+		 * array: ...
+		 *
+		 * @param string|array $url Cake-relative URL or array of URL parameters, or external URL (starts with http://)
+		 * @param array $options Array of HTML attributes.
+
+		 * @return array
+		 */
+		protected function _linkOptions( $url = null, $options = array() ) {
+			if( is_array( $url ) ) {
+				$urlParams = $url + array(
+					'plugin' => $this->request->params['plugin'],
+					'controller' => $this->request->params['controller'],
+					'action' => $this->request->params['action']
+				);
+
+				$disabled = Hash::get( $options, 'disabled' );
+				$type = gettype( $disabled );
+
+				$permission = $this->Permissions->check( $urlParams['controller'], $urlParams['action'] );
+				if( $disabled === null ) {
+					$disabled = !$permission;
+				}
+				else if( $type === 'boolean' ) {
+					$disabled = ( $disabled || !$permission );
+				}
+				else {
+					// TODO; throw new Exception
+					debug( $type );
+					die( __FILE__.':'.__LINE__ );
+				}
+
+				$options['disabled'] = $disabled;
+			}
+
+			return $options;
+		}
 
 		/**
 		 * Surcharge de la méthode link de HtmlHelper afin d'ajouter des classes
@@ -29,6 +74,8 @@
 		 *
 		 * @todo: vérifier automatiquement les droits, paramétrer, etc...
 		 *
+		 * @see _linkOptions()
+		 *
 		 * @param string $title The content to be wrapped by <a> tags.
 		 * @param string|array $url Cake-relative URL or array of URL parameters, or external URL (starts with http://)
 		 * @param array $options Array of HTML attributes.
@@ -36,6 +83,8 @@
 		 * @return string An `<a />` element.
 		 */
 		public function link( $title, $url = null, $options = array( ), $confirmMessage = false ) {
+			$options = $this->_linkOptions( $url, $options );
+
 			if( is_array( $url ) ) {
 				$tmp = $url;
 
