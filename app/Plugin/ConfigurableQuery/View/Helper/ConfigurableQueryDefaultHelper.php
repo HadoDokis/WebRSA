@@ -46,7 +46,6 @@
 		);
 
 		public function configuredParams( array $params = array() ) {
-			// FIXME: prefix ConfigurableQuery, par défaut, possibilité de mettre à NULL
 			return $params + array(
 				'keyPrefix' => 'ConfigurableQuery',
 				'key' => Inflector::camelize( $this->request->params['controller'] ).".{$this->request->params['action']}"
@@ -59,11 +58,17 @@
 			foreach( $fields as $fieldName => $params ) {
 				$params = (array)$params;
 
-				if( !isset( $params['type'] ) && strstr( $fieldName, '/' ) === false ) {
-					$fields[$fieldName]['type'] = $this->DefaultTable->DefaultTableCell->DefaultData->type( $fieldName );
+				// Si c'est un champ caché, on ne l'utilisera pas dans la vue
+				if( isset( $params['hidden'] ) && $params['hidden'] ) {
+					unset( $fields[$fieldName] );
 				}
-				if( !isset( $params['label'] ) ) {
-					$fields[$fieldName]['label'] = __m( $fieldName );
+				else {
+					if( !isset( $params['type'] ) && strstr( $fieldName, '/' ) === false ) {
+						$fields[$fieldName]['type'] = $this->DefaultTable->DefaultTableCell->DefaultData->type( $fieldName );
+					}
+					if( !isset( $params['label'] ) ) {
+						$fields[$fieldName]['label'] = __m( $fieldName );
+					}
 				}
 			}
 
@@ -102,7 +107,6 @@
 				$params['header'] = $header;
 			}
 
-			// FIXME: normaliser
 			$innerTable = (array)Configure::read( "{$params['keyPrefix']}{$params['key']}".'.innerTable' );
 			if( !empty( $innerTable ) ) {
 				$params['innerTable'] = $this->normalizeConfiguredFields( $innerTable );

@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	require_once( dirname( __FILE__ ).DS.'..'.DS.'..'.DS.'bootstrap.php' );
+
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'PaginatorComponent', 'Controller/Component' );
 	App::uses( 'View', 'View' );
@@ -16,6 +17,7 @@
 	App::uses( 'ConfigurableQueryCsvHelper', 'ConfigurableQuery.View/Helper' );
 	App::uses( 'CsvHelper', 'View/Helper' );
 	App::uses( 'ConfigurableQueryAbstractTestCase', 'ConfigurableQuery.Test/Case' );
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
 
 	class CsvTestHelper extends CsvHelper
 	{
@@ -126,6 +128,8 @@
 			App::build( array( 'locales' => CakePlugin::path( 'ConfigurableQuery' ).'Test'.DS.'Locale'.DS ) );
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg66' ) );
 			Configure::write( 'Config.language', 'fre' );
+
+			CakeTestSession::start();
 			$_SESSION['Config']['language'] = 'fre';
 
 			$this->Controller = new Controller( $request );
@@ -142,8 +146,27 @@
 		 * Nettoyage postérieur au test.
 		 */
 		public function tearDown() {
+			CakeTestSession::destroy();
 			parent::tearDown();
 			unset( $this->Controller, $this->View, $this->Default );
+		}
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			CakeTestSession::setupBeforeClass();
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			CakeTestSession::teardownAfterClass();
 		}
 
 		/**
@@ -223,6 +246,8 @@
 		 * Test de la méthode ConfigurableQueryDefaultHelper::configuredIndex()
 		 */
 		public function testConfiguredIndex() {
+			$_SESSION['Auth']['Permissions']['Module:Users'] = true;
+
 			Configure::write(
 				'ConfigurableQueryUsers.index',
 				array(

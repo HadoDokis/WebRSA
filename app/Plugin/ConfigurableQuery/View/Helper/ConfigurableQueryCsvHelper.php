@@ -39,7 +39,13 @@
 		 * @param array $params Les paramètres généraux
 		 */
 		protected function _addHeaderRow( array $fields, array $params ) {
-			$this->Csv->addRow( Hash::extract( $fields, '{s}.label' ) );
+			$row = Hash::extract( $fields, '{s}.label' );
+
+			if( !empty( $row ) ) {
+				return $this->Csv->addRow( Hash::extract( $fields, '{s}.label' ) );
+			}
+
+			return parent::_addHeaderRow( $fields, $params );
 		}
 	}
 ?>
