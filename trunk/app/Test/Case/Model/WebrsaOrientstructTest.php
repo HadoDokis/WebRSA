@@ -109,7 +109,7 @@
 		 * lorsque l'on veut ajouter une d'orientation.
 		 */
 		public function testSaveAddFormData() {
-			$orientstruct = $this->WebrsaOrientstruct->getAddEditFormData( 1, null, 1 );
+			$orientstruct = $this->WebrsaOrientstruct->getAddEditFormData( 2, null, 1 );
 			$orientstruct['Orientstruct']['typeorient_id'] = 1;
 			$orientstruct['Orientstruct']['structurereferente_id'] = 1;
 			$orientstruct['Orientstruct']['statut_orient'] = 'Orienté';
@@ -122,7 +122,7 @@
 		 */
 		public function testGetEditFormData() {
 			// 1. Sauvegarde d'une orientation orientée
-			$orientstruct = $this->WebrsaOrientstruct->getAddEditFormData( 1, null, 1 );
+			$orientstruct = $this->WebrsaOrientstruct->getAddEditFormData( 2, null, 1 );
 			$orientstruct['Orientstruct']['typeorient_id'] = 1;
 			$orientstruct['Orientstruct']['structurereferente_id'] = 1;
 			$orientstruct['Orientstruct']['statut_orient'] = 'Orienté';
@@ -132,13 +132,13 @@
 			$result = $this->WebrsaOrientstruct->getAddEditFormData( 1, $this->WebrsaOrientstruct->Orientstruct->id, 1 );
 			$expected = array(
 				'Orientstruct' => array(
-					'id' => 1,
-					'personne_id' => 1,
+					'id' => 2,
+					'personne_id' => 2,
 					'typeorient_id' => 1,
 					'structurereferente_id' => '1_1',
 					'propo_algo' => NULL,
 					'valid_cg' => true,
-					'date_propo' => '2009-09-01',
+					'date_propo' => '2010-07-12',
 					'date_valid' => date( 'Y-m-d' ),
 					'statut_orient' => 'Orienté',
 					'date_impression' => NULL,

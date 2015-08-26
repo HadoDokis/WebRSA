@@ -34,10 +34,11 @@
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
 			'Jetons2', // FIXME: à cause de DossiersMenus
-			'Search.Filtresdefaut' => array( 'search' ),
+			'Search.Filtresdefaut' => array( 'search', 'search1' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'search' => array( 'filter' => 'Search' ),
+					'search1' => array( 'filter' => 'Search' ),
 				)
 			),
 		);
@@ -54,7 +55,7 @@
 			),
 			'Allocataires',
 			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 			'Search.SearchForm',
 		);
@@ -83,7 +84,9 @@
 			'index' => 'read',
 			'impression' => 'read',
 			'exportcsv' => 'read',
+			'exportcsv1' => 'read',
 			'search' => 'read',
+			'search1' => 'read',
 			'cancel' => 'update',
 		);
 
@@ -97,6 +100,9 @@
 			'ajax_action' => 'Fichesprescriptions93:index',
 			'ajax_prestataire' => 'Fichesprescriptions93:index',
 			'ajax_prestataire_horspdi' => 'Fichesprescriptions93:index',
+			'ajax_duree_pdi' => 'Fichesprescriptions93:index',
+			'search1' => 'Fichesprescriptions93:search',
+			'exportcsv1' => 'Fichesprescriptions93:exportcsv',
 		);
 
 		/**
@@ -458,8 +464,10 @@
 
 		/**
 		 * Moteur de recherche des fiches de prescription.
+		 *
+		 * @deprecated
 		 */
-		public function search() {
+		public function search1() {
 			if( Hash::check( $this->request->data, 'Search' ) ) {
 				$query = $this->Ficheprescription93->search( $this->request->data['Search'] );
 
@@ -487,13 +495,15 @@
 						}
 					}
 					$this->Ficheprescription93->forceVirtualFields = true;
-					$results = $this->Allocataires->paginate( $query, 'Ficheprescription93' );
+					$modelName = 'Ficheprescription93';
 				}
 				else {
-					$results = $this->Allocataires->paginate( $query );
+					$modelName = 'Personne';
 				}
 
-				$this->set( compact( 'results' ) );
+				$results = $this->Allocataires->paginate( $query, $modelName );
+
+				$this->set( compact( 'results', 'modelName' ) );
 			}
 
 			$options = Hash::merge(
@@ -501,6 +511,22 @@
 				$this->Ficheprescription93->options( array( 'allocataire' => false, 'find' => true, 'autre' => false ) )
 			);
 			$this->set( compact( 'options' ) );
+		}
+
+		/**
+		 * Moteur de recherche par fiche de prescription.
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93' );
+			$Recherches->search();
+		}
+
+		/**
+		 * Export CSV des résultats du moteur de recherche par fiche de prescription.
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93' );
+			$Recherches->exportcsv();
 		}
 
 		/**
@@ -651,8 +677,10 @@
 
 		/**
 		 * Export CSV des résultats de la recherche.
+		 *
+		 * @deprecated
 		 */
-		public function exportcsv() {
+		public function exportcsv1() {
 			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
 
 			$query = $this->Ficheprescription93->search( $search );

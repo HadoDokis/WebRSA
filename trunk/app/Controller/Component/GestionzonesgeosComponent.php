@@ -33,17 +33,6 @@
 		public $components = array( 'Session', 'Workflowscers93' );
 
 		/**
-		 * Initialisation: sauvegarde du contrôleur dans un attribut.
-		 *
-		 * @param Controller $controller
-		 * @param array $settings
-		 */
-		public function initialize( Controller $controller ) {
-			$settings = $this->settings;
-			$this->Controller = $controller;
-		}
-
-		/**
 		 * Retourne la liste des codes INSEE accessibles à l'utilisateur connecté, soit en faisant une requête
 		 * (suivant la configuration de Zonesegeographiques.CodesInsee) dont les résultats sont mis en cache
 		 * dans la session, soit en retournant la liste mise en cache.
@@ -51,18 +40,20 @@
 		 * @return array
 		 */
 		public function listeCodesInsee() {
+			$Controller = $this->_Collection->getController();
+
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !$this->Session->check( 'Cache.mesCodesInsee' ) ) {
 				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-					$listeCodesInseeLocalites = $this->Controller->User->Zonegeographique->listeCodesInseeLocalites(
+					$listeCodesInseeLocalites = $Controller->User->Zonegeographique->listeCodesInseeLocalites(
 						$mesCodesInsee,
 						$this->Session->read( 'Auth.User.filtre_zone_geo' )
 					);
 				}
 				else {
-					$listeCodesInseeLocalites = $this->Controller->User->Zonegeographique->listeCodesInseeLocalites(
+					$listeCodesInseeLocalites = $Controller->User->Zonegeographique->listeCodesInseeLocalites(
 						ClassRegistry::init( 'Adresse' )->listeCodesInsee(),
 						$this->Session->read( 'Auth.User.filtre_zone_geo' )
 					);
@@ -146,7 +137,8 @@
 		 * @return void
 		 */
 		public function setCantonsIfConfigured( $varname = 'cantons' ) {
-			$this->Controller->set( $varname, $this->listeCantons() );
+			$Controller = $this->_Collection->getController();
+			$Controller->set( $varname, $this->listeCantons() );
 		}
 
 		/**

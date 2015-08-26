@@ -50,6 +50,7 @@
 		 * @var array
 		 */
 		public $fixtures = array(
+			'app.Dossier',
 			'core.Apple'
 		);
 

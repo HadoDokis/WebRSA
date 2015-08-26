@@ -198,7 +198,7 @@
 					'typenotification' => 'normale',
 					'personne_id' => 1,
 					'statut_orient' => 'Orienté',
-					'rgorient' => 1,
+					'rgorient' => 2,
 					'haspiecejointe' => '0'
 				),
 			);
@@ -255,8 +255,8 @@
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
 					'haspiecejointe' => '0',
-					'rgorient' => 1,
-					'origine' => 'manuelle',
+					'rgorient' => 2,
+					'origine' => 'reorientation',
 					'date_valid' => '2015-01-01'
 				),
 			);
@@ -271,7 +271,7 @@
 			// 0. Enregistrement de la première orientation
 			$data = array(
 				'Orientstruct' => array(
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'Orienté',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -287,7 +287,7 @@
 			// 1. Ajout d'une nouvelle orientation à la personne
 			$data = array(
 				'Orientstruct' => array(
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'Orienté',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -304,7 +304,7 @@
 					'valid_cg' => false,
 					'statutrelance' => 'E',
 					'typenotification' => 'normale',
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'Orienté',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -325,7 +325,7 @@
 			// 0. Enregistrement de la première orientation
 			$data = array(
 				'Orientstruct' => array(
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'En attente',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -339,7 +339,7 @@
 			// 1. Enregistrement de la seconde orientation
 			$data = array(
 				'Orientstruct' => array(
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'En attente',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -356,7 +356,7 @@
 			$data = array(
 				'Orientstruct' => array(
 					'id' => $id,
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'Orienté',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -372,7 +372,7 @@
 					'valid_cg' => false,
 					'statutrelance' => 'E',
 					'typenotification' => 'normale',
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'Orienté',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -388,7 +388,7 @@
 			// 3. Ajout d'une troisième orientation à la personne
 			$data = array(
 				'Orientstruct' => array(
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'Orienté',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,
@@ -404,7 +404,7 @@
 					'valid_cg' => false,
 					'statutrelance' => 'E',
 					'typenotification' => 'normale',
-					'personne_id' => 1,
+					'personne_id' => 2,
 					'statut_orient' => 'Orienté',
 					'typeorient_id' => 1,
 					'structurereferente_id' => 1,

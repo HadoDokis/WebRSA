@@ -145,7 +145,7 @@
 		 */
 		public function structuresreferentes( $options = array( ) ) {
 			$Structurereferente = ClassRegistry::init( 'Structurereferente' );
-			
+
 			/**
 			 * Déplacé vers Structureferente
 			 */
@@ -285,7 +285,7 @@
 			$conditions = Set::merge( $conditions, $options['conditions'] );
 
 			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
-				$zonesgeographiques_ids = array_keys( $this->Session->read( 'Auth.Zonegeographique' ) );
+				$zonesgeographiques_ids = array_keys( (array)$this->Session->read( 'Auth.Zonegeographique' ) );
 
 				$sqStructurereferente = $Referent->Structurereferente->StructurereferenteZonegeographique->sq(
 					array(

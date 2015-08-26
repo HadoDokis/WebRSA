@@ -1074,6 +1074,9 @@
 
 			$ignore = Configure::read( 'ConfigurableQueryFields.ignore' );
 			$ignore[] = 'Dossier.locked';
+			if( (int)Configure::read( 'Cg.departement' ) === 93 ) {
+				$ignore[] = 'Referent.horszone';
+			}
 			Configure::write( 'ConfigurableQueryFields.ignore', $ignore );
 
 			foreach( App::objects( 'model' ) as $modelName ) {

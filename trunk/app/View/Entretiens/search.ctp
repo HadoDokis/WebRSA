@@ -91,6 +91,8 @@
 				'options' => $options
 			)
 		);
+
+		// FIXME: $this->element( 'search_footer' );
 	?>
 
 	<ul class="actionMenu">
