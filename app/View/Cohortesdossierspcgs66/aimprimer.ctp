@@ -114,6 +114,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                     <th>Alloctaire principal</th>
                     <th>Commune de l'allocataire</th>
                     <th><?php echo $this->Xpaginator->sort('Date de réception DO', 'Dossierpcg66.datereceptionpdo'); ?></th>
+					<th><?php echo $this->Xpaginator->sort('Date de validation de la proposition', 'Decisiondossierpcg66.datevalidation'); ?></th>
                     <th>Type de dossier</th>
                     <th><?php echo $this->Xpaginator->sort('Origine du dossier', 'Originepdo.libelle'); ?></th>
                     <th>Organisme payeur</th>
@@ -147,6 +148,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                 h($dossierpcg66aimprimer['Personne']['nom'] . ' ' . $dossierpcg66aimprimer['Personne']['prenom']),
                 h($dossierpcg66aimprimer['Adresse']['nomcom']),
                 h(date_short($dossierpcg66aimprimer['Dossierpcg66']['datereceptionpdo'])),
+				h(date_short($dossierpcg66aimprimer['Decisiondossierpcg66']['datevalidation'])),
                 h($dossierpcg66aimprimer['Typepdo']['libelle']),
                 h($dossierpcg66aimprimer['Originepdo']['libelle']),
                 h($dossierpcg66aimprimer['Dossierpcg66']['orgpayeur']),

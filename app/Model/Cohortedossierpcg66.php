@@ -248,11 +248,16 @@
 					'Adresse.numcom',
 					'Decisiondossierpcg66.id',
 					'Decisiondossierpcg66.datetransmissionop',
+					'Decisiondossierpcg66.datevalidation'
 				),
 				'joins' => $joins,
 				'contain' => false,
 				'conditions' => $conditions
 			);
+			
+			if( $statutAffectation === 'Affectationdossierpcg66::aimprimer' ) {
+				$query['order'] = array( 'Decisiondossierpcg66.datevalidation' );
+			}
 
 			$query = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresdossierspcgs66['Search'] );
 
