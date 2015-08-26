@@ -12,6 +12,7 @@
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'DefaultHtmlHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
 
 	/**
 	 * La classe DefaultHtmlHelperTest ...
@@ -36,6 +37,8 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			CakeTestSession::start();
+
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->DefaultHtml = new DefaultHtmlHelper( $this->View );
@@ -47,8 +50,27 @@
 		 * @return void
 		 */
 		public function tearDown() {
+			CakeTestSession::destroy();
 			parent::tearDown();
 			unset( $this->View, $this->DefaultHtml );
+		}
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			CakeTestSession::setupBeforeClass();
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			CakeTestSession::teardownAfterClass();
 		}
 
 		/**
@@ -57,6 +79,9 @@
 		 * @return void
 		 */
 		public function testLink() {
+			$_SESSION['Auth']['Permissions']['Module:Users'] = true;
+			$_SESSION['Auth']['Permissions']['Module:Apples'] = true;
+
 			$url = array(
 				'plugin' => 'default',
 				'controller' => 'users',

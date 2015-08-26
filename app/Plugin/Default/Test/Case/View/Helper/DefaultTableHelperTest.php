@@ -12,6 +12,7 @@
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'DefaultTableHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
 
 	/**
 	 * La classe DefaultTableHelperTest ...
@@ -162,6 +163,8 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			CakeTestSession::start();
+
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->DefaultTable = new DefaultTableHelper( $this->View );
@@ -175,6 +178,7 @@
 		 * @return void
 		 */
 		public function tearDown() {
+			CakeTestSession::destroy();
 			parent::tearDown();
 			unset(
 				/*$this->DefaultTable->DefaultTableCell,
@@ -183,6 +187,24 @@
 				$this->View,
 				$this->DefaultTable
 			);
+		}
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			CakeTestSession::setupBeforeClass();
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			CakeTestSession::teardownAfterClass();
 		}
 
 		/**
@@ -241,6 +263,7 @@
 		 * @return void
 		 */
 		public function testBody() {
+			$_SESSION['Auth']['Permissions']['Module:Apples'] = true;
 			$params = array();
 
 			$result = $this->DefaultTable->tbody( array(), $this->fields, $params );
@@ -317,6 +340,7 @@
 		 * @return void
 		 */
 		public function testIndex() {
+			$_SESSION['Auth']['Permissions']['Module:Apples'] = true;
 			$params = array();
 
 			$result = $this->DefaultTable->index( array(), $this->fields, $params );
@@ -573,6 +597,8 @@
 		 * @return void
 		 */
 		public function testTr() {
+			$_SESSION['Auth']['Permissions']['Module:Apples'] = true;
+
 			// 1. Avec le type list
 			$fields = array(
 				'Apple.id',
