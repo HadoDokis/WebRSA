@@ -49,7 +49,18 @@
 			'app.Questionnaired1pdv93',
 			'app.Questionnaired2pdv93',
 			'app.Rendezvous',
+			'app.RendezvousThematiquerdv',
+			'app.Thematiquerdv',
 			'app.User',
+			// Tabgles liées à la table apres
+			'app.Formqualif',
+			'app.Formpermfimo',
+			'app.Actprof',
+			'app.Permisb',
+			'app.Amenaglogt',
+			'app.Acccreaentr',
+			'app.Acqmatprof',
+			'app.Locvehicinsert',
 		);
 
 		/**

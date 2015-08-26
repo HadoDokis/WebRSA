@@ -201,6 +201,10 @@
 			),
 			'Par fiches de prescription' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+				'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search1'  )
+			),
+			'Par fiches de prescription (nouveau)' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search'  )
 			),
 		),

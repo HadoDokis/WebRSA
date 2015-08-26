@@ -50,6 +50,7 @@
 			'app.RendezvousThematiquerdv',
 			'app.Sanctionep58',
 			'app.Sanctionrendezvousep58',
+			'app.Thematiquerdv',
 		);
 
 		/**

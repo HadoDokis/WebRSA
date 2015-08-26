@@ -44,7 +44,11 @@
 
  		public $aucunDroit = array( 'unlock' );
 
-// 		public $commeDroit = array( 'view' => 'Dossiers:index' );
+		/**
+		 *
+		 * @var array
+		 */
+ 		public $commeDroit = array( 'search' => 'Dossiers:index' );
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des

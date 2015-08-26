@@ -520,8 +520,8 @@
 
 			return $query;
 		}
-		
-		
+
+
 		/**
 		 * Retourne la clé de session pour une méthode et un querydata donnés.
 		 *
@@ -534,12 +534,12 @@
 			$sessionKey = "Auth.{$this->name}.{$method}.{$queryHash}";
 			return $sessionKey;
 		}
-		
+
 		public function structuresreferentes( $options = array() ){
 			App::uses('SessionComponent', 'Controller/Component');
 			App::uses('ComponentCollection', 'Controller/Component');
 			$Session = new SessionComponent(new ComponentCollection());
-			
+
 			$options = Set::merge(
 				array(
 					'conditions' => array(),
@@ -558,7 +558,7 @@
 			$conditions = Set::merge( $conditions, $options['conditions'] );
 
 			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
-				$zonesgeographiques_ids = array_keys( $Session->read( 'Auth.Zonegeographique' ) );
+				$zonesgeographiques_ids = array_keys( (array)$Session->read( 'Auth.Zonegeographique' ) );
 
 				$sqStructurereferente = $this->StructurereferenteZonegeographique->sq(
 					array(
@@ -641,7 +641,7 @@
 					$results = $results['normal'];
 				}
 			}
-			
+
 			return $results;
 		}
 	}

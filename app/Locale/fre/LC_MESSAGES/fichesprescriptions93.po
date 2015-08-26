@@ -23,6 +23,17 @@ msgstr "Recherche par fiches de prescription"
 
 # ------------------------------------------------------------------------------
 
+msgid "/Fichesprescriptions93/search1"
+msgstr "Formulaire"
+
+msgid "/Fichesprescriptions93/search1/:title"
+msgstr "Visibilité formulaire"
+
+msgid "/Fichesprescriptions93/search1/:heading"
+msgstr "Recherche par fiches de prescription"
+
+# ------------------------------------------------------------------------------
+
 msgid "Search.Ficheprescription93"
 msgstr "Recherche par fiche de prescription"
 
@@ -129,6 +140,15 @@ msgstr "Intitulé"
 
 msgid "Dossier.locked"
 msgstr "Verrouillé"
+
+msgid "Actionfp93.numconvention"
+msgstr "N° de convention"
+
+msgid "Filierefp93.name"
+msgstr "Filière"
+
+msgid "Prestatairefp93.name"
+msgstr "Prestataire"
 
 msgid "/Fichesprescriptions93/index"
 msgstr "Voir"

@@ -32,6 +32,29 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'personne_id' => 1,
+				'typeorient_id' => 1,
+				'structurereferente_id' => 1,
+				'propo_algo' => null,
+				'valid_cg' => null,
+				'date_propo' => null,
+				'date_valid' => '2009-06-24',
+				'statut_orient' => 'Orienté',
+				'date_impression' => null,
+				'daterelance' => null,
+				'statutrelance' => null,
+				'date_impression_relance' => null,
+				'referent_id' => null,
+				'etatorient' => null,
+				'rgorient' => 1,
+				'structureorientante_id' => null,
+				'referentorientant_id' => null,
+				'user_id' => null,
+				'haspiecejointe' => '0',
+				'origine' => 'manuelle',
+				'typenotification' => null,
+			)
 		);
 
 	}

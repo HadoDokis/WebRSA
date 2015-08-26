@@ -8,14 +8,14 @@
 
 	echo $this->Default3->actions(
 		array(
-			'/Fichesprescriptions93/search/#toggleform' => array(
-				'onclick' => '$(\'Fichesprescriptions93SearchForm\').toggle(); return false;',
+			'/Fichesprescriptions93/search1/#toggleform' => array(
+				'onclick' => '$(\'Fichesprescriptions93Search1Form\').toggle(); return false;',
 				'class' => 'search'
 			),
 		)
 	);
 
-	echo $this->Xform->create( null, array( 'id' => 'Fichesprescriptions93SearchForm', 'class' => ( !empty( $this->request->params['named'] ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Xform->create( null, array( 'id' => 'Fichesprescriptions93Search1Form' ) );
 
 	echo $this->Allocataires->blocDossier( array( 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
@@ -74,16 +74,37 @@
 	echo $this->Xform->end( 'Search' );
 
 	if( isset( $results ) ) {
-		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+		$this->Default3->DefaultPaginator->options(
+			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
+		);
 
-		echo $this->Default3->configuredindex(
+		App::uses( 'SearchProgressivePagination', 'Search.Utility' );
+
+		echo $this->Default3->index(
 			$results,
 			array(
-				'options' => $options
+				'Dossier.matricule',
+				'Personne.nom_complet',
+				'Adresse.nomcom',
+				'Ficheprescription93.statut',
+				'Actionfp93.name',
+				'Dossier.locked' => array( 'type' => 'boolean' ),
+				"/Fichesprescriptions93/edit/#Ficheprescription93.id#" => array(
+					'disabled' => "( '#Referent.horszone#' == true || '#Ficheprescription93.id#' == '' || !'".$this->Permissions->check( 'Fichesprescriptions93', 'edit' )."' )",
+					'class' => 'external'
+				),
+				"/Fichesprescriptions93/index/#Personne.id#" => array(
+					'disabled' => "( '#Referent.horszone#' == true || !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )",
+					'class' => 'view external'
+				),
+			),
+			array(
+				'options' => $options,
+				'format' => __( SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ) )
 			)
 		);
 
-		echo $this->element( 'search_footer', array( 'modelName' => $modelName ) );
+		echo $this->element( 'search_footer', array( 'url' => array( 'action' => 'exportcsv1' ), 'modelName' => $modelName ) );
 	}
 
 	echo $this->Observer->disableFieldsetOnValue(
@@ -135,6 +156,6 @@
 			'onload' => !empty( $this->request->data )
 		)
 	);
-debug( $results );
+
 	echo $this->Observer->dependantSelect( array( 'Search.Ficheprescription93.structurereferente_id' => 'Search.Ficheprescription93.referent_id' ) );
 ?>

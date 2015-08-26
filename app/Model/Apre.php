@@ -353,6 +353,7 @@
 
 			$departement = Configure::read( 'Cg.departement' );
 			// Seulement pour le CG 93, lorsque l'on n'est pas en train d'importer des fixtures
+			// TODO: mise en cache ?
 			if( !( unittesting() && $this->useDbConfig === 'default' ) && $departement === 93 ) {
 				$this->virtualFields['natureaide'] = $this->vfListeAidesLiees93( null );
 			}

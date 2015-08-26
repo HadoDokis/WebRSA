@@ -32,6 +32,21 @@
 			'Allocataires'
 		);
 
+		/**
+		 * Retourne un array avec clés de paramètres suivantes complétées en
+		 * fonction du contrôleur:
+		 *	- modelName: le nom du modèle sur lequel se fera la pagination
+		 *	- modelRechercheName: le nom du modèle de moteur de recherche
+		 *	- searchKey: le préfixe des filtres renvoyés par le moteur de recherche
+		 *	- searchKeyPrefix: le préfixe des champs configurés
+		 *	- configurableQueryFieldsKey: les clés de configuration contenant les
+		 *    champs à sélectionner dans la base de données.
+		 *
+		 * @todo protected ?
+		 *
+		 * @param array $params
+		 * @return array
+		 */
 		public function params( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 
@@ -46,6 +61,13 @@
 			return $params;
 		}
 
+		/**
+		 * Retourne les options à envoyer dans la vue pour les champs du moteur
+		 * de recherche et les traductions de valeurs de certains champs.
+		 *
+		 * @param array $params
+		 * @return array
+		 */
 		public function options( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->params( $params );
@@ -56,6 +78,7 @@
 			);
 		}
 
+		// @todo protected ?
 		// TODO: tant qu'on est dans le cache, une méthode pour préparer les données (types, options statiques, libellés)
 		public function getQuery( $keys, array $params = array() ) {
 			$keys = (array)$keys;
@@ -80,6 +103,8 @@
 		 * Retourne le querydata complété par les conditions du moteur de recherche,
 		 * ainsi que des conditions liées à l'utilisateur connecté.
 		 *
+		 * @todo protected ?
+		 *
 		 * @param array $query
 		 * @param array $params
 		 * @return array
@@ -89,7 +114,7 @@
 			$params = $this->params( $params );
 
 			$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, (array)Hash::get( $Controller->request->data, $params['searchKey'] ) );
-			$query = $this->Allocataires->completeSearchQuery( $query );
+			$query = $this->Allocataires->completeSearchQuery( $query, $params );
 
 			return $query;
 
@@ -97,7 +122,11 @@
 
 		/**
 		 * Ajoute des order by en fonction du paramétrage.
-		 * Dans le cas d'un exportcsv, on ne modifi pas l'ordre affiché dans le moteur de recherche.
+		 * Dans le cas d'un exportcsv, on ne modifi pas l'ordre affiché dans le
+		 * moteur de recherche.
+		 *
+		 * @fixme: simplifier, test unitaire, permettre d'enlever le tri
+		 * @todo protected ?
 		 *
 		 * @param array $query
 		 * @param array $params
@@ -107,21 +136,44 @@
 			$Controller = $this->_Collection->getController();
 			$params = $this->params( $params );
 
-			$configurableQueryFieldsKey = str_replace( $params['searchKeyPrefix'], '', $params['configurableQueryFieldsKey'] );
-			list( $controllerName, $action ) = explode( '.', $configurableQueryFieldsKey );
+			$myPathParams = "{$params['searchKeyPrefix']}{$params['configurableQueryFieldsKey']}";
+			$myParams = (array)Configure::read( $myPathParams );
 
-			$prevAction = Hash::get($Controller->request->params, 'named.prevAction');
-			$action = $prevAction ? $prevAction : $action;
+			// 1. Si le tri est configuré pour mon action
+			if( Hash::check( $myParams, 'order' ) ) {
+				$query['order'] = Hash::get( $myParams, 'order' );
+			}
+			// 2. Si le tri dépend du paramètre prevAction éventuellement présent dans l'URL
+			else if( Hash::check( $Controller->request->params, 'named.prevAction') ) {
+				$action = Hash::get( $Controller->request->params, 'named.prevAction');
 
-			$orderKey = Configure::read( "{$controllerName}.{$action}.order" );
+				$myPathParams = "{$params['searchKeyPrefix']}{$Controller->name}.{$action}";
+				$myParams = (array)Configure::read( $myPathParams );
 
-			if ( !empty($orderKey) ) {
-				$query['order'][] = $orderKey;
+				if( Hash::check( $myParams, 'order' ) ) {
+					$query['order'] = Hash::get( $myParams, 'order' );
+				}
+			}
+			// 3 Si le tri est configuré dans la page ayant redirigé vers nous
+			else {
+				// INFO: on pourrait utiliser named.prevAction / celui-ci ne sert donc plus à rien
+				$referer = Router::parse( $Controller->request->referer( true ) );
+				if( is_array( $referer ) && !empty( $referer ) ) {
+					$myPathParams = $params['searchKeyPrefix'].Inflector::camelize($referer['controller']).'.'.$referer['action'];
+					$myParams = (array)Configure::read( $myPathParams );
+					if( Hash::check( $myParams, 'order' ) ) {
+						$query['order'][] = Hash::get( $myParams, 'order' );
+					}
+				}
 			}
 
 			return $query;
 		}
 
+		/**
+		 *
+		 * @param array $params
+		 */
 		public function search( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->params( $params );
@@ -153,6 +205,10 @@
 			$Controller->set( 'options', $this->options( $params ) );
 		}
 
+		/**
+		 *
+		 * @param array $params
+		 */
 		public function exportcsv( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->params( $params );

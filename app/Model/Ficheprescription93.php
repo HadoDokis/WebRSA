@@ -353,6 +353,8 @@
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
+		 * @deprecated
+		 *
 		 * @param array $types Les types de jointure alias => type
 		 * @return array
 		 */
@@ -413,6 +415,8 @@
 		/**
 		 * Complète les conditions du querydata avec le contenu des filtres de
 		 * recherche.
+		 *
+		 * @deprecated
 		 *
 		 * @param array $query
 		 * @param array $search
