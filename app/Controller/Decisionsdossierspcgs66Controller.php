@@ -715,18 +715,37 @@
 
 			if( $pdf ) {
 				$success = true;
+				
+				$query = array(
+					'fields' => array( 
+						'Dossierpcg66.id',
+						'Dossierpcg66.etatdossierpcg'
+					),
+					'conditions' => array(
+						'Decisiondossierpcg66.id' => $id
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Decisiondossierpcg66->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'INNER' ) )
+					)
+				);
+				$results = $this->Decisiondossierpcg66->Dossierpcg66->find( 'first', $query );
 
 				$this->Decisiondossierpcg66->begin();
-				$success = $this->Decisiondossierpcg66->updateDossierpcg66Dateimpression( $id );
+				
+				// Si l'etat du dossier est decisionvalid on le passe en atttransmiop avec une date d'impression
+				if ( Hash::get( $results, 'Dossierpcg66.etatdossierpcg' ) === 'decisionvalid' ) {
+					$results['Dossierpcg66']['dateimpression'] = date('Y-m-d');
+					$results['Dossierpcg66']['etatdossierpcg'] = 'atttransmisop';
+					$success = $this->Decisiondossierpcg66->Dossierpcg66->save($results['Dossierpcg66']);
+				}
+		
 				if( $success ) {
 					$this->Decisiondossierpcg66->commit();
+					$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision.pdf' );
 				}
 				else {
 					$this->Decisiondossierpcg66->rollback();
-				}
-
-				if( $success ) {
-					$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision.pdf' );
 				}
 			}
 
