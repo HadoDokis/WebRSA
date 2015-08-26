@@ -291,6 +291,7 @@ document.observe( "dom:loaded", function() {
 						'Decisionsdossierspcgs66::print' => array(
 							'label' => 'Imprimer',
 							'url' => array( 'controller' => 'decisionsdossierspcgs66', 'action'=>'decisionproposition' ),
+							'class' => 'ActionDecisionproposition',
 							'disabled' => (
 								'( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'print', $dossierMenu ).'" != "1" )
                                 || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )'
@@ -351,6 +352,8 @@ document.observe( "dom:loaded", function() {
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
+		var impression = $$('a.ActionDecisionproposition').first();
+		
 		[ $('Dossierpcg66TypepdoId'), $('Dossierpcg66UserId') ].each(function(field) {
 			if( field ) {
 				field.observe('change', function(element, value) {
@@ -360,6 +363,14 @@ document.observe( "dom:loaded", function() {
 		});
 
 		fieldUpdater();
+		
+		if (impression) {
+			impression.observe('click', function() {
+				var etatdossier = $('Etatpdo').select('strong').first();
+				etatdossier.innerHTML = 'Calcul de la position...';
+				setTimeout(fieldUpdater, 5000);
+			});
+		}
 	});
 
 	function fieldUpdater() {
