@@ -16,6 +16,13 @@
 	abstract class Analysesql
 	{
 		/**
+		 * Nom du datasource à utiliser
+		 * 
+		 * @var string 
+		 */
+		public static $datasourceName = 'default';
+		
+		/**
 		 * Echapement renseigné par DboSource
 		 * 
 		 * @var string 
@@ -190,7 +197,7 @@
 			if ( !empty(self::$_cuttedSql) ){
 				return self::$_cuttedSql;
 			}
-			$Dbo = ClassRegistry::init('ConnectionManager')->getDataSource('default');
+			$Dbo = ClassRegistry::init('ConnectionManager')->getDataSource(self::$datasourceName);
 			self::$startQuote = $Dbo->startQuote;
 			self::$endQuote = $Dbo->endQuote;
 			
@@ -375,11 +382,25 @@
 		}
 		
 		/**
+		 * Permet de choisir un nom de datasource
+		 * 
+		 * @param type $name
+		 * @return boolean
+		 */
+		public static function setDatasourceName( $name = 'default' ) {
+			self::$datasourceName = $name;			
+			return true;
+		}
+		
+		/**
 		 * Destruction du cache
+		 * 
+		 * @return boolean
 		 */
 		public static function reset() {
 			self::$_joins = array();
 			self::$_cuttedSql = array();
+			return true;
 		}
 	}
 ?>
