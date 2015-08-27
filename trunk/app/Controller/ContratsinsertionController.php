@@ -46,7 +46,9 @@ class ContratsinsertionController extends AppController
 
     public $commeDroit = array(
         'view' => 'Contratsinsertion:index',
-        'add' => 'Contratsinsertion:edit'
+        'add' => 'Contratsinsertion:edit',
+		'search' => 'Criteresci:index',
+		'exportcsv' => 'Criteresci:exportcsv'
     );
 
     public $aucunDroit = array('ajax', 'ajaxaction', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download');

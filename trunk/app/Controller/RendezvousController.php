@@ -52,7 +52,9 @@
 
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
-			'add' => 'Rendezvous:edit'
+			'add' => 'Rendezvous:edit',
+			'search' => 'Criteresrdv:index',
+			'exportcsv' => 'Criteresrdv:exportcsv',
 		);
 
 		public $aucunDroit = array(

@@ -46,7 +46,9 @@
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
-			'add' => 'Entretiens:edit'
+			'add' => 'Entretiens:edit',
+			'search' => 'Criteresentretiens:index',
+			'exportcsv' => 'Criteresentretiens:exportcsv'
 		);
 
 		/**

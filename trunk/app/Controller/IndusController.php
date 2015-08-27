@@ -19,16 +19,20 @@
 
 		public $uses = array( 'Infofinanciere', 'Indu', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
 
-		public $commeDroit = array( 'view' => 'Indus:index' );
+		public $commeDroit = array(
+			'search' => 'Cohortesindus:index',
+			'exportcsv' => 'Cohortesindus:exportcsv',
+			'view' => 'Indus:index'
+		);
 
 		public $helpers = array(
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 		);
-		
-		public $components = array( 
-			'Jetons2', 
+
+		public $components = array(
+			'Jetons2',
 			'DossiersMenus',
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
@@ -42,8 +46,10 @@
 		 * @var array
 		 */
 		public $crudMap = array(
+			'exportcsv' => 'read',
 			'index' => 'read',
 			'read' => 'read',
+			'search' => 'read'
 		);
 
 		/**
@@ -98,7 +104,7 @@
 			$this->set( 'infofinanciere', $infofinanciere );
 			$this->set( 'urlmenu', '/indus/index/'.$dossier_id );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */

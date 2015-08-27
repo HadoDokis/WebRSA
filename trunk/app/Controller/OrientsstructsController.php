@@ -69,6 +69,8 @@
 			'ajaxfiledelete' => 'Orientsstructs:filelink',
 			'download' => 'Orientsstructs:filelink',
 			'fileview' => 'Orientsstructs:filelink',
+			'search' => 'Criteres:index',
+			'exportcsv' => 'Criteres:exportcsv',
 		);
 
 		/**

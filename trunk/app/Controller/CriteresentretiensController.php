@@ -11,7 +11,7 @@
 	/**
 	 * La classe CriteresentretiensController ...
 	 *
-	 * @deprecated, see Entretiens::search() et Entretiens::exportcsv()
+	 * @deprecated see Entretiens::search() et Entretiens::exportcsv()
 	 *
 	 * @package app.Controller
 	 */
