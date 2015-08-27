@@ -12,6 +12,8 @@
 	/**
 	 * La classe CriteresciController ...
 	 *
+	 * @deprecated see Contratsinsertion::search() et Contratsinsertion::exportcsv()
+	 *
 	 * @package app.Controller
 	 */
 	class CriteresciController extends AppController

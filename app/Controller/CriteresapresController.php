@@ -11,6 +11,9 @@
 	/**
 	 * La classe CriteresapresController implémente un moteur de recherche par APREs (CG 66 et 93).
 	 *
+	 * @deprecated see Apres::search(), Apres::exportcsv(), Apres::search_eligible()
+	 * et Apres::exportcsv_eligible()
+	 *
 	 * @package app.Controller
 	 */
 	class CriteresapresController extends AppController
@@ -66,7 +69,6 @@
 		/**
 		 * Moteur de recherche par APREs (tous critères confondus).
 		 *
-		 * @deprecated
 		 * @return void
 		 */
 		public function all() {
@@ -76,7 +78,6 @@
 		/**
 		 * Moteur de recherche par APREs éligibles.
 		 *
-		 * @deprecated
 		 * @return void
 		 */
 		public function eligible() {

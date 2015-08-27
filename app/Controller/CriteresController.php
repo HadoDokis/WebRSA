@@ -12,6 +12,8 @@
 	/**
 	 * La classe CriteresController ...
 	 *
+	 * @deprecated see Orientsstructs::search() et Orientsstructs::exportcsv()
+	 *
 	 * @package app.Controller
 	 */
 	class CriteresController extends AppController

@@ -45,7 +45,11 @@
 		);
 
 		public $commeDroit = array(
-			'view' => 'Apres:index'
+			'view' => 'Apres:index',
+			'search' => 'Criteresapres:all',
+			'exportcsv' => 'Criteresapres:exportcsv',
+			'search_eligibilite' => 'Criteresapres:eligible',
+			'exportcsv_eligibilite' => 'Criteresapres:exportcsv'
 		);
 
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );

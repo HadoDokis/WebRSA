@@ -75,6 +75,11 @@
 			'search' => 'read',
 		);
 
+		public $commeDroit = array(
+			'search1' => 'Demenagementshorsdpts:search',
+			'exportcsv1' => 'Demenagementshorsdpts:exportcsv'
+		);
+
 		/**
 		 * Complète a query avec les champs et les restrictions liées à l'utilisateur.
 		 * Si l'utilisateur est un externe, des conditions sur les dates d'emménagement
@@ -133,6 +138,8 @@
 
 		/**
 		 * Moteur de recherche des fiches de prescription.
+		 *
+		 * @deprecated see search()
 		 */
 		public function search1() {
 			if( Hash::check( $this->request->data, 'Search' ) ) {
@@ -153,6 +160,8 @@
 
 		/**
 		 * Export CSV des résultats de la recherche.
+		 *
+		 * @deprecated see exportcsv()
 		 */
 		public function exportcsv1() {
 			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
@@ -170,7 +179,7 @@
 			$this->set( compact( 'results', 'options' ) );
 			$this->layout = null;
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -178,7 +187,7 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdpts' );
 			$Recherches->search( array('modelName' => 'Personne') );
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */

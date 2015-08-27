@@ -12,6 +12,8 @@
 	/**
 	 * La classe CohortesindusController implémente un moteur de rechrche par indus.
 	 *
+	 * @deprecated see IndusController::search() et IndusController::exportcsv()
+	 *
 	 * @package app.Controller
 	 */
 	class CohortesindusController extends AppController

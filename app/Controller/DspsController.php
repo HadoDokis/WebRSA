@@ -53,7 +53,9 @@
 		);
 
 		public $commeDroit = array(
-			'findPersonne' => 'Dsps:view'
+			'findPersonne' => 'Dsps:view',
+			'search' => 'Dsps:index',
+			'exportcsv1' => 'Dsps:exportcsv',
 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -71,12 +73,14 @@
 			'download' => 'read',
 			'edit' => 'update',
 			'exportcsv' => 'read',
+			'exportcsv1' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'findPersonne' => 'read',
 			'histo' => 'read',
 			'index' => 'read',
 			'revertTo' => 'update',
+			'search' => 'read',
 			'view' => 'read',
 			'view_diff' => 'read',
 			'view_revs' => 'read',
