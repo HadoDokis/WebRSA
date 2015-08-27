@@ -321,6 +321,10 @@
 				$queryData = $this->Passagecommissionep->Dossierep->{$model}->qdDossiersParListe( $commissionep_id, $niveauDecision );
 				$dossiers[$model]['liste'] = array();
 				if( !empty( $queryData ) ) {
+					$queryData['order'] = array(
+						'Personne.nom',
+						'Personne.prenom'
+					);
 					$dossiers[$model]['liste'] = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 				}
 			}
