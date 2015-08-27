@@ -33,6 +33,13 @@
 			'Gedooo.Gedooo'
 		);
 
+		/**
+		 * Autres modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Option' );
+
 		public $validate = array(
 			'typepdo_id' => array(
 				'rule' => 'notEmpty',
@@ -612,6 +619,30 @@
 				false,
 				$options
 			);
+		}
+
+		/**
+		 * Surcharge de la méthode enums() pour inclure les valeurs et traductions
+		 * se trouvant encore dansle modèle Option.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$result = parent::enums();
+
+			$result = Hash::merge(
+				$result,
+				array(
+					$this->alias => array(
+						'motifpdo' => $this->Option->motifpdo(),
+						'categoriegeneral' => $this->Option->sect_acti_emp(),
+						'categoriedetail' => $this->Option->emp_occupe(),
+						'orgpayeur' => array( 'CAF' => 'CAF', 'MSA' => 'MSA' )
+					)
+				)
+			);
+
+			return $result;
 		}
 	}
 ?>

@@ -188,6 +188,8 @@
 		/**
 		 * Traitement du formulaire de recherche concernant les PDOs .
 		 *
+		 * @deprecated see WebrsaRecherchePropopdo::searchQuery() et WebrsaRecherchePropopdo::searchConditions()
+		 *
 		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
 		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
 		 * @param array $criterespdos Critères du formulaire de recherche
