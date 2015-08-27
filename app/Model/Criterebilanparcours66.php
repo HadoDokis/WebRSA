@@ -12,6 +12,8 @@
 	 * Moteur de recherche pour les bilans de parcours du CG 66
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheBilanparcours66
 	 */
 	class Criterebilanparcours66 extends AppModel
 	{

@@ -39,7 +39,11 @@
 
 		public $commeDroit = array(
 			'add' => 'Dossierspcgs66:edit',
-			'view' => 'Dossierspcgs66:index'
+			'view' => 'Dossierspcgs66:index',
+			'search' => 'Criteresdossierspcgs66:dossier',
+			'search_gestionnaire' => 'Criteresdossierspcgs66:gestionnaire',
+			'exportcsv' => 'Criteresdossierspcgs66:exportcsv',
+			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo' );
@@ -58,8 +62,12 @@
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
+			'exportcsv_gestionnaire' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
+			'search' => 'read',
+			'search_gestionnaire' => 'read',
 			'view' => 'read',
 		);
 

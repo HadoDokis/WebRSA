@@ -48,7 +48,9 @@
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 // 			'view' => 'ActionscandidatsPersonnes:index',
-			'add' => 'ActionscandidatsPersonnes:edit'
+			'add' => 'ActionscandidatsPersonnes:edit',
+			'search' => 'Criteresfichescandidature:index',
+			'exportcsv' => 'Criteresfichescandidature:exportcsv',
 		);
 
 		/**
@@ -69,12 +71,14 @@
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
 			'indexparams' => 'read',
 			'maillink' => 'read',
 			'printFiche' => 'read',
+			'search' => 'read',
 			'view' => 'read',
 		);
 

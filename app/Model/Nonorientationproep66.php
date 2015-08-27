@@ -18,6 +18,8 @@
 	 * La classe Nonorientationproep66 ...
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheNonorientationproep
 	 */
 	class Nonorientationproep66 extends Nonorientationproep
 	{

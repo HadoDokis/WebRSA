@@ -44,6 +44,20 @@
 				) 
 			)
 		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'search' => 'read',
+		);
+		
+		public $commeDroit = array(
+			'search' => 'Nonorientationsproseps:index',
+		);
 
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
@@ -65,9 +79,9 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * @deprecated since version 3.0.0
+		 * @see self::search()
+		 */
 		public function index() {
 			$cohorte = array();
 			if ( !empty( $this->request->data ) ) {

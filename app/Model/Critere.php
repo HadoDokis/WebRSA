@@ -13,6 +13,8 @@
 	 * La classe Critere ...
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheOrientstruct
 	 */
 	class Critere extends AppModel
 	{

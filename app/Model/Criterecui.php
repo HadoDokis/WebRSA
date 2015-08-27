@@ -13,6 +13,8 @@
 	 * La classe Criterecui s'occupe du moteur de recherche des CUIs (CG 58, 66 et 93).
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheCui
 	 */
 	class Criterecui extends AppModel
 	{

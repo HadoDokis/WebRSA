@@ -14,6 +14,9 @@
 	 * de retrouver les allocataires ayant quitté le département.
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheDemenagementhorsdpt
+	 * @todo WebrsaRechercheDemenagementhorsdpt::searchConditions() Retirer le lien vers self::searchConditionsAdressesRang0203()
 	 */
 	class Demenagementhorsdpt extends AbstractSearch
 	{

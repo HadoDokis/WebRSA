@@ -13,6 +13,8 @@
 	 * La classe Critereapre s'occupe du moteur de recherche des APREs (CG 66 et 93).
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheApre
 	 */
 	class Critereapre extends AppModel
 	{

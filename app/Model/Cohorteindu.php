@@ -14,6 +14,8 @@
 	 * paramètres du moteur de recherche.
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheIndu
 	 */
 	class Cohorteindu extends AppModel
 	{

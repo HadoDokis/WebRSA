@@ -14,6 +14,7 @@
 	 * La classe CuisController permet de gérer les CUIs (CG 58, 66 et 93).
 	 *
 	 * @package app.Controller
+	 * @see Cuis66Controller (refonte)
 	 */
 	class CuisController extends AppController
 	{
@@ -76,13 +77,16 @@
 
 		public $commeDroit = array(
 			'add' => 'Cuis:edit',
-			'view' => 'Cuis:index'
+			'view' => 'Cuis:index',
+			'search' => 'Criterescuis:index',
+			'exportcsv' => 'Criterescuis:exportcsv',
 		);
 
 		/**
 		 * Envoi des options communes dans les vues.
 		 *
 		 * @return void
+		 * @deprecated since version 2.9.0
 		 */
 		protected function _setOptions() {
 			$options = array();
@@ -172,8 +176,8 @@
 		 * Ajax pour les partenaires fournissant les actions
 		 *
 		 * @param integer $secteurcui_id
+		 * @deprecated since version 2.9.0
 		 */
-
 		public function ajaxemployeur( $partenaire_id = null, $actioncandidat_id = null ) {
 			Configure::write( 'debug', 0 );
 
@@ -240,6 +244,7 @@
 		 * Paramétrages des CUIs.
 		 *
 		 * @return void
+		 * @deprecated since version 2.9.0
 		 */
 		public function indexparams() {
 			// Retour à la liste en cas d'annulation
@@ -253,6 +258,7 @@
 		 * http://doc.ubuntu-fr.org/modules_php
 		 * increase post_max_size and upload_max_filesize to 10M
 		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * @deprecated since version 2.9.0
 		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
@@ -264,6 +270,7 @@
 		 * increase post_max_size and upload_max_filesize to 10M
 		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
 		 * FIXME: traiter les valeurs de retour
+		 * @deprecated since version 2.9.0
 		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
@@ -271,6 +278,7 @@
 
 		/**
 		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * @deprecated since version 2.9.0
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
@@ -278,6 +286,7 @@
 
 		/**
 		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * @deprecated since version 2.9.0
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
@@ -286,6 +295,7 @@
 
 		/**
 		 * Fonction permettant d'accéder à la page pour lier les fichiers au CER
+		 * @deprecated since version 2.9.0
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -357,6 +367,7 @@
 		 * Liste des CUIs appartenant à un allocataire donné.
 		 *
 		 * @param integer $personne_id
+		 * @deprecated since version 2.9.0
 		 */
 		public function index( $personne_id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
@@ -439,6 +450,7 @@
 		 * Formulaire d'ajout d'un CUI pour un allocataire donné.
 		 *
 		 * @param integer $personne_id
+		 * @deprecated since version 2.9.0
 		 */
 		public function add( $personne_id ) {
 			$args = func_get_args();
@@ -449,6 +461,7 @@
 		 * Formulaire de modification d'un CUI donné.
 		 *
 		 * @param integer $id
+		 * @deprecated since version 2.9.0
 		 */
 		public function edit( $id ) {
 			$args = func_get_args();
@@ -460,6 +473,7 @@
 		 * Traitement du formulaire d'ajout ou de modification de CUI.
 		 *
 		 * @param inetger $id Correspond à l'id de la Personne en cas d'ajout, à l'id du Cui en cas de modification.
+		 * @deprecated since version 2.9.0
 		 */
 		protected function _add_edit( $id = null ) {
 
@@ -692,6 +706,7 @@
 		 * Formulaire de validation d'un CUI.
 		 *
 		 * @param integer $cui_id
+		 * @deprecated since version 2.9.0
 		 */
 		public function valider( $cui_id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $cui_id ) ) ) );
@@ -734,6 +749,7 @@
 		 *
 		 * @param integer $id L'id du CUI que l'on veut imprimer
 		 * @return void
+		 * @deprecated since version 2.9.0
 		 */
 		public function impression( $id ) {
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
@@ -753,6 +769,7 @@
 		 * Tentative de suppression d'un CUI.
 		 *
 		 * @param integer $id
+		 * @deprecated since version 2.9.0
 		 */
 		public function delete( $id ) {
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
@@ -764,6 +781,7 @@
 		 * Visualisation d'un CUI.
 		 *
 		 * @param integer $id
+		 * @deprecated since version 2.9.0
 		 */
 		public function view( $id ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
@@ -834,6 +852,7 @@
          * Annulation du CUI
          *
          * @param integer $id
+		 * @deprecated since version 2.9.0
          */
         public function cancel( $id ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
@@ -899,6 +918,7 @@
 		 * Permet d'envoyer un mail à l'employeur en lien avec le CUI
 		 *
 		 * @param integer $id
+		 * @deprecated since version 2.9.0
 		 */
 		public function maillink( $id = null ) {
 			$personne_id = $this->Cui->personneId( $id );
@@ -1155,6 +1175,7 @@
 		 *
 		 * @param integer $id L'id du CUI que l'on veut imprimer
 		 * @return void
+		 * @deprecated since version 2.9.0
 		 */
 		public function synthesecui66( $id ) {
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );

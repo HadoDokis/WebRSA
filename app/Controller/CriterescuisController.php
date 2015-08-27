@@ -12,6 +12,8 @@
 	/**
 	 * La classe CriterescuisController implémente un moteur de recherche par CUIs (CG 58, 66 et 93).
 	 *
+	 * @deprecated since version 3.0.0
+	 * @see Cuis::search() et Cuis::exportcsv()
 	 * @package app.Controller
 	 */
 	class CriterescuisController extends AppController

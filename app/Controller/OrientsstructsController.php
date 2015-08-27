@@ -91,6 +91,8 @@
 			'index' => 'read',
 			'impression' => 'read',
 			'impression_changement_referent' => 'read',
+			'search' => 'read',
+			'exportcsv' => 'read'
 		);
 
 		/**
