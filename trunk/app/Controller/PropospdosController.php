@@ -19,13 +19,31 @@
 
 		public $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Traitementpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
+		public $components = array(
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'Jetons2',
+			'DossiersMenus',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'search' )
+			)
+		);
 
-		public $helpers = array( 'Default', 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
+		public $helpers = array(
+			'Default',
+			'Default2',
+			'Cake1xLegacy.Ajax',
+			'Fileuploader',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			)
+		);
 
 		public $commeDroit = array(
 			'view' => 'Propospdos:index',
-			'add' => 'Propospdos:edit'
+			'add' => 'Propospdos:edit',
+			'search' => 'Criterespdos:index',
+			'exportcsv' => 'Criterespdos:exportcsv'
 		);
 
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -44,9 +62,11 @@
 			'ajaxstruct' => 'read',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
 			'printCourrier' => 'read',
+			'search' => 'read',
 			'view' => 'read',
 		);
 
@@ -482,6 +502,24 @@
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+
+		/**
+		 * Moteur de recherche par PDO
+		 */
+		public function search() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdos' );
+			$Recherches->search();
+			$this->Propopdo->validate = array();
+			$this->Propopdo->Decisionpropopdo->validate = array();
+		}
+
+		/**
+		 * Export CSV des résultats du moteur de recherche par PDO
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdos' );
+			$Recherches->exportcsv();
 		}
 
 	}

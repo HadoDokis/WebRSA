@@ -64,7 +64,8 @@
 			66 => array(
 				'Cohorterendezvous',
 				'Tableausuivipdv93',
-				'WebrsaRechercheApreEligibilite'
+				'WebrsaRechercheApreEligibilite',
+				'WebrsaRecherchePropopdo'
 			),
 			93 => array(
 				'Criterecui',

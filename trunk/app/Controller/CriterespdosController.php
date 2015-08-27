@@ -76,6 +76,8 @@
 		/**
 		 * Moteur de recherche par PDOs.
 		 *
+		 * @deprecated see Propospdos::search()
+		 *
 		 * @return void
 		 */
 		public function index( ) {
@@ -143,6 +145,8 @@
 
 		/**
 		 * Export du tableau en CSV.
+		 *
+		 * @deprecated see Propospdos::exportcsv()
 		 *
 		 * @return void
 		 */
