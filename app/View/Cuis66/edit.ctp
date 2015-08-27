@@ -323,7 +323,7 @@
 			array(
 				'Cui.nomtuteur',
 				'Cui.fonctiontuteur',
-				'Cui.organismedesuivi',
+				'Cui.organismedesuivi' => array( 'empty' => true ),
 				'Cui.nomreferent',
 				'Cui.actionaccompagnement' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.actionaccompagnement' ) ),
 			),

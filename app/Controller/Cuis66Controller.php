@@ -229,6 +229,34 @@
 			
 			// Options
 			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => true, 'autre' => true ) );
+			
+			// Récupération de la liste des actions avec une fiche de candidature (pour Cui.organismedesuivi)
+			$qd_user = array(
+				'conditions' => array(
+					'User.id' => $this->Session->read( 'Auth.User.id' )
+				),
+				'fields' => null,
+				'order' => null,
+				'contain' => array(
+					'Serviceinstructeur'
+				)
+			);
+			$user = $this->Cui->User->find( 'first', $qd_user );
+
+			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
+
+            // On affiche les actions inactives en édition mais pas en ajout,
+            // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
+            $isactive = 'O';
+            if( $this->action == 'edit' ){
+                $isactive = array( 'O', 'N' );
+            }
+			
+			$actions = array();
+			foreach(ClassRegistry::init('Actioncandidat')->listePourFicheCandidature( $codeinseeUser, $isactive, '1' ) as $action) {
+				$actions[$action] = $action;
+			}
+			$options['Cui']['organismedesuivi'] = $actions;
 
 			// Ajout de la liste des partenaires
 			$options['Cui']['partenaire_id'] = $this->Cui->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
