@@ -11,6 +11,8 @@
 	/**
 	 * Moteur de recherche de bilans de parcours (CG 66).
 	 *
+	 * @deprecated since version 3.0.0
+	 * @see Bilansparcours66::search() et Bilansparcours66::exportcsv()
 	 * @package app.Controller
 	 */
 	class Criteresbilansparcours66Controller extends AppController

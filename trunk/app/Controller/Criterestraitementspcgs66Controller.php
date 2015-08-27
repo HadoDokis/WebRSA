@@ -13,6 +13,8 @@ App::import('Sanitize');
 /**
  * La classe Criterestraitementspcgs66Controller ...
  *
+ * @deprecated since version 3.0.0 
+ * @see Traitementspcgs66::search() et Traitementspcgs66::exportcsv()
  * @package app.Controller
  */
 class Criterestraitementspcgs66Controller extends AppController {

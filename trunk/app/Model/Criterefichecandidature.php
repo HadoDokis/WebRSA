@@ -12,6 +12,8 @@
 	 * Moteur de recherche pour les fiche de candidature (actioncandidat_personne).
 	 *
 	 * @package app.Model
+	 * @deprecated since version 3.0.0
+	 * @see WebrsaRechercheActioncandidatPersonne
 	 */
 	class Criterefichecandidature extends AppModel
 	{

@@ -13,6 +13,8 @@
  * La classe Criteretraitementpcg66 ...
  *
  * @package app.Model
+ * @deprecated since version 3.0.0
+ * @see WebrsaRechercheTraitementpcg66
  */
 class Criteretraitementpcg66 extends AppModel {
 

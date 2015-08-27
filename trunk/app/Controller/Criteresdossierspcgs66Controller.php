@@ -13,6 +13,9 @@ App::uses('Sanitize', 'Utility');
 /**
  * La classe Criteresdossierspcgs66Controller ...
  *
+ * @deprecated since version 3.0.0
+ * @see Dossierspcgs66::search(), Dossierspcgs66::exportcsv(), Dossierspcgs66::search_gestionnaire() et Dossierspcgs66::exportcsv_gestionnaire()
+ * 
  * @package app.Controller
  */
 class Criteresdossierspcgs66Controller extends AppController {

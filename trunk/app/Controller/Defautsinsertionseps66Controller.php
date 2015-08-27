@@ -43,6 +43,22 @@
 			'WebrsaRechercheNoninscrit',
 			'Personne'
 		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'search_noninscrits' => 'read',
+			'search_radies' => 'read',
+		);
+		
+		public $commeDroit = array(
+			'search_noninscrits' => 'Defautsinsertionseps66:selectionnoninscrits',
+			'search_radies' => 'Defautsinsertionseps66:selectionradies',
+		);
 
 		/**
 		* 'qdNonInscrits', 'noninscriptionpe'
@@ -92,17 +108,17 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * @deprecated since version 3.0.0
+		 * @see self::search_noninscrits()
+		 */
 		public function selectionnoninscrits() {
 			$this->_selectionPassageDefautinsertionep66( 'qdNonInscrits', 'noninscriptionpe' );
 		}
 
 		/**
-		*
-		*/
-
+		 * @deprecated since version 3.0.0
+		 * @see self::search_radies()
+		 */
 		public function selectionradies() {
 			$this->_selectionPassageDefautinsertionep66( 'qdRadies', 'radiationpe' );
 		}

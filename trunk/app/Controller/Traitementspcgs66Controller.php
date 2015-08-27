@@ -45,7 +45,9 @@ class Traitementspcgs66Controller extends AppController {
 	
     public $commeDroit = array(
         'view' => 'Traitementspcgs66:index',
-        'add' => 'Traitementspcgs66:edit'
+        'add' => 'Traitementspcgs66:edit',
+        'search' => 'Criterestraitementspcgs66:index',
+        'exportcsv' => 'Criterestraitementspcgs66:exportcsv',
     );
     public $aucunDroit = array('ajaxpiece', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download');
 
@@ -67,11 +69,13 @@ class Traitementspcgs66Controller extends AppController {
         'deverseDO' => 'update',
         'download' => 'read',
         'edit' => 'update',
+        'exportcsv' => 'read',
         'fileview' => 'read',
         'index' => 'read',
         'printFicheCalcul' => 'read',
         'printModeleCourrier' => 'read',
         'reverseDO' => 'update',
+        'search' => 'read',
         'view' => 'read',
     );
 

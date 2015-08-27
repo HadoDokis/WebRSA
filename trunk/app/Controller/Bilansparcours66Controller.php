@@ -43,7 +43,9 @@
 		);
 
 		public $commeDroit = array(
-			'add' => 'Bilansparcours66:edit'
+			'add' => 'Bilansparcours66:edit',
+			'search' => 'Criterebilanparcours66:index',
+			'exportcsv' => 'Criterebilanparcours66:exportcsv',
 		);
 
 		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -62,10 +64,12 @@
 			'cancel' => 'update',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'impression' => 'read',
 			'index' => 'read',
+			'search' => 'read',
 			'view' => 'read',
 		);
 

@@ -11,6 +11,8 @@
 	/**
 	 * Moteur de recherche de fiches de candidatures.
 	 *
+	 * @deprecated since version 3.0.0
+	 * @see ActionscandidatsPersonnes::search() et ActionscandidatsPersonnes::exportcsv()
 	 * @package app.Controller
 	 */
 	class CriteresfichescandidatureController extends AppController
