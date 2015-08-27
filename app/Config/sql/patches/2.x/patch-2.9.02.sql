@@ -140,6 +140,12 @@ UPDATE referents SET qual = 'MME' WHERE qual = 'MLE';
 UPDATE situationsallocataires SET qual = 'MME' WHERE qual = 'MLE';
 UPDATE suivisaidesapres SET qual = 'MME' WHERE qual = 'MLE';
 
+-------------------------------------------------------------------------------------
+-- 20150827 : Nouveau champ CUI66
+-------------------------------------------------------------------------------------
+
+ALTER TABLE cuis66 ADD COLUMN montantrsa FLOAT;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

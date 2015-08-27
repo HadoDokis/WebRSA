@@ -35,6 +35,7 @@
 				'Cui66.encouple' => array( 'type' => 'hidden' ),
 				'Cui66.avecenfant' => array( 'type' => 'hidden' ),
 				'Cui66.etatdossiercui66' => array( 'type' => 'hidden' ),
+				'Cui66.montantrsa' => array( 'type' => 'hidden' ),
 				'Cui66.typeformulaire' => array( 'empty' => true ),
 				'Cui66.renouvellement',
 			),
@@ -267,7 +268,9 @@
 		. '<p class="notice">' . __d('cuis66', 'Cui66.defaultprestation') . '</p>'
 		. $this->Xform->fieldValue('Cuis66.nbenfants', $personne['Foyer']['nb_enfants'])
 		. '<div class="input text"><span class="label">' . __d('cuis66', 'Dossier.dtdemrsa') . '</span><span class="input">' . $personne['Dossier']['dtdemrsa'] . ' (' . $dtdemrsa->diff(new DateTime())->format('%y an(s) %m mois %d jours') . ')</span></div>'
-		. '<div class="input text"><span class="label">' . __d('cuis66', 'Dossier.date_entree_dispositif') . '</span><span class="input">' . $diffStr . '</span></div></fieldset>'
+		. '<div class="input text"><span class="label">' . __d('cuis66', 'Dossier.date_entree_dispositif') . '</span><span class="input">' . $diffStr . '</span></div>'
+		. $this->Default3->subform( array( 'Cui66.montantrsa' => array( 'view' => true ) ) )
+		. '</fieldset>'
 	;
 
 /***********************************************************************************

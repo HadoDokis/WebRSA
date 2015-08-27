@@ -147,6 +147,7 @@
 				$query = array(
 					'fields' => array(
 						'Titresejour.dftitsej',
+						'Detaildroitrsa.mttotdrorsa',
 						"( {$sqNbEnfants} ) AS \"Foyer__nb_enfants\"",
 						"( {$sqNbBeneficiaires} ) AS \"Foyer__nb_beneficiaires\"",
 						"( {$sqLastCodepartenaire} ) AS \"Partenairecui__codepartenaire\"",
@@ -162,7 +163,9 @@
 								'conditions' => "Titresejour.id IN ( {$sqDernierTitresejour} )"
 							)
 						),
-						$this->Cui->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
+						$this->Cui->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Cui->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Cui->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 					)
 				);
 				$record = $this->Cui->Personne->find( 'first', $query );
@@ -184,7 +187,8 @@
 						'demandeenregistree' => date_format(new DateTime(), 'Y-m-d'),
 						'datefinsejour' => Hash::get( $record, 'Titresejour.dftitsej' ),
 						'etatdossiercui66' => 'attentemail',
-						'notifie' => 0
+						'notifie' => 0,
+						'montantrsa' => Hash::get( $record, 'Detaildroitrsa.mttotdrorsa' )
 					),
 					'Partenairecui66' => array(
 						'nbcontratsaidescg' => '0',
