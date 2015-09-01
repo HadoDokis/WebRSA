@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaRecherchesOrientsstructsComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaRecherchesOrientsstructsComponent extends WebrsaRecherchesComponent
+	class WebrsaRecherchesOrientsstructsComponent extends WebrsaAbstractRecherchesComponent
 	{
 		/**
 		 * Options pour le moteur de recherche
@@ -24,7 +24,7 @@
 		 */
 		public function options( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
-			$params = $this->params( $params );
+			$params = $this->_params( $params );
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			$exists = array( '1' => 'Oui', '0' => 'Non' );

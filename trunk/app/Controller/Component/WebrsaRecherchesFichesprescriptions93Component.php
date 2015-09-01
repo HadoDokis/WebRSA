@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaRecherchesFichesprescriptions93Component ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaRecherchesFichesprescriptions93Component extends WebrsaRecherchesComponent
+	class WebrsaRecherchesFichesprescriptions93Component extends WebrsaAbstractRecherchesComponent
 	{
 		/**
 		 * Retourne la valeur de modelName sur lequel faire la pagination,
@@ -66,7 +66,7 @@
 		public function getQuery( $keys, array $params = array() ) {
 			$keys = (array)$keys;
 			$Controller = $this->_Collection->getController();
-			$params = $this->params( $params );
+			$params = $this->_params( $params );
 
 			$modelName = $this->_getModelName();
 			$Controller->set( compact( 'modelName' ) );
@@ -103,7 +103,7 @@
 		 */
 		public function options( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
-			$params = $this->params( $params );
+			$params = $this->_params( $params );
 
 			return Hash::merge(
 				parent::options( $params ),

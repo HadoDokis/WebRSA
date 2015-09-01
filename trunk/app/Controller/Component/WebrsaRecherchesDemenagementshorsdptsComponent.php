@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaRecherchesDemenagementshorsdptsComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaRecherchesDemenagementshorsdptsComponent extends WebrsaRecherchesComponent
+	class WebrsaRecherchesDemenagementshorsdptsComponent extends WebrsaAbstractRecherchesComponent
 	{
 		/**
 		 * Retourne le querydata complété par les conditions du moteur de recherche,
