@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaRecherchesCuisComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaRecherchesCuisComponent extends WebrsaRecherchesComponent
+	class WebrsaRecherchesCuisComponent extends WebrsaAbstractRecherchesComponent
 	{
 		/**
 		 * Options pour le moteur de recherche
@@ -23,7 +23,7 @@
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
-			$params = $this->params( $params );
+			$params = $this->_params( $params );
 			$this->Cui = ClassRegistry::init( 'Cui' );
 
 			$options = $this->Cui->Emailcui->options();

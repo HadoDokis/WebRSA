@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaRecherchesDossierspcgs66Component ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaRecherchesDossierspcgs66Component extends WebrsaRecherchesComponent
+	class WebrsaRecherchesDossierspcgs66Component extends WebrsaAbstractRecherchesComponent
 	{	
 		/**
 		 * Options pour le moteur de recherche
