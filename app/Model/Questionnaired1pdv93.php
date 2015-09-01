@@ -161,7 +161,7 @@
 					'rule' => array( 'notEmpty' )
 				),
 				'checkDateOnceAYear' => array(
-					'rule' => array( 'checkDateOnceAYear', 'personne_id' )
+					'rule' => array( 'checkDateOnceAYear', 'personne_id', 'rendezvous_id' )
 				),
 			),
 		);
@@ -172,7 +172,7 @@
 		 * @param array $check
 		 * @return boolean
 		 */
-		public function checkDateOnceAYear( $check, $group_column ) {
+		public function checkDateOnceAYear( $check, $group_column1, $group_column2 ) {
 			if( !is_array( $check ) ) {
 				return false;
 			}
@@ -185,10 +185,13 @@
 					// Pas encore de questionnaire D1 pour l'année en question
 					$querydata = array( 'contain' => false );
 
-					$personne_id = Hash::get( $this->data, "{$this->alias}.{$group_column}" );
+					$personne_id = Hash::get( $this->data, "{$this->alias}.{$group_column1}" );
+					$rendezvous_id = Hash::get( $this->data, "{$this->alias}.{$group_column2}" );
+
 					$querydata['conditions'] = array(
-						"{$this->alias}.{$group_column}" => $personne_id,
-						"{$this->alias}.{$key} BETWEEN '{$year}-01-01' AND '{$year}-12-31'"
+						"{$this->alias}.{$group_column1}" => $personne_id,
+						"{$this->alias}.{$key} BETWEEN '{$year}-01-01' AND '{$year}-12-31'",
+						"{$this->alias}.{$group_column2}" => $rendezvous_id
 					);
 
 					$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
@@ -533,8 +536,8 @@
 
 			$date_validation = $this->_dateValidation( $rendezvous );
 
-			$this->create( array( 'personne_id' => $personne_id ) );
-			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => $date_validation ), 'personne_id' );
+			$this->create( array( 'personne_id' => $personne_id, 'rendezvous_id' => $rendezvous ) );
+			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => $date_validation ), 'personne_id', 'rendezvous_id' );
 			if( $exists ) {
 				$messages['Questionnaired1pdv93.exists'] = 'notice';
 			}
