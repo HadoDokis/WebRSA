@@ -50,7 +50,16 @@
 		 * @var array
 		 */
 		public $hiddenFields = array();
-
+		
+		/**
+		 * Permet l'affichage d'érreur dans le cas où un Préfix est appliqué à un input
+		 * Si self::$entityErrorPrefix = 'Cohorte' alors :
+		 *	 Cohorte.0.Monmodel.field = Monmodel.0.field
+		 * 
+		 * @var string
+		 */
+		public $entityErrorPrefix = null;
+		
 		public function configuredParams( array $params = array() ) {
 			return $params + array(
 				'keyPrefix' => 'ConfigurableQuery',
@@ -134,6 +143,14 @@
 			return $this->DefaultCsv->render( $results, $fields, $params );
 		}
 
+		/**
+		 * TODO
+		 * 
+		 * @param array $results
+		 * @param array $params
+		 * @param array $insert
+		 * @return type
+		 */
 		public function configuredIndex( array $results, array $params = array(), array $insert = array() ) {
 			$params = $this->configuredParams( $params );
 			$params += array(
@@ -151,8 +168,14 @@
 				$params['innerTable'] = $this->normalizeConfiguredFields( $innerTable );
 			}
 
+			// Pour les liens de pagination, on enlève ce qui n'est pas de la recherche
+			$data = $this->request->data;
+			if( $this->entityErrorPrefix !== null ) {
+				unset($data[$this->entityErrorPrefix]);	
+			}
+
 			$this->DefaultPaginator->options(
-				array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
+				array( 'url' => Hash::flatten( (array)$data, '__' ) )
 			);
 
 			unset( $params['keyPrefix'] );
@@ -165,11 +188,34 @@
 			);
 		}
 		
-		public function configuredCohorte( array $results, array $params = array(), array $insert = array() ) {
+		/**
+		 * Génère un tableau de résultat de recherche avec formulaire de cohorte
+		 * 
+		 * $params Aura besoin de certaines clefs :
+		 * - extraHiddenFields : Permet de conserver les filtres de recherches en champs caché additionnel.
+		 * - cohorteFields : Ajoute au Fields configurés les valeurs renseigné ici.
+		 *	   ex: array('data[Cohorte][][Mymodel][myfield]' => array('type'=>'checkbox', 'label'=>''))
+		 * - entityErrorPrefix : Permet un affichage des érreurs sur les élements portant un préfix ex: 'Cohorte'.
+		 * 
+		 * Pour les autres params, voir $this->_params
+		 * 
+		 * @param array $results
+		 * @param array $params
+		 * @return string
+		 */
+		public function configuredCohorte( array $results, array $params = array() ) {
+			$extraHiddenFields = (array)Hash::get( $params, 'extraHiddenFields' );
+			$insert = (array)Hash::get( $params, 'cohorteFields' );
+			unset($params['extraHiddenFields'], $params['cohorteFields']);
+			$params['id'] = false;
+
+			$this->entityErrorPrefix = $this->DefaultTable->entityErrorPrefix = $this->DefaultForm->entityErrorPrefix = Hash::get( $params, 'entityErrorPrefix' );
+			unset($params['entityErrorPrefix']);
+			
 			$table = $this->configuredIndex($results, $params, $insert);
 			
 			// On ajoute les champs cachés à la fin
-			foreach ($this->hiddenFields as $key => $hiddenField) {
+			foreach ($this->hiddenFields as $key => $hiddenFields) {
 				for ($i=0; $i<count($results); $i++) {
 					$preformatedPath = preg_replace( '/^data\[(.*)\]$/', '\1', str_replace( '[]', "[{$i}]", $key ) );
 					$fullPath = str_replace( '][', '.', $preformatedPath );
@@ -179,16 +225,13 @@
 					
 					$path = str_replace( '][', '.', str_replace( "[{$i}]", '', $preformatedPath ) );
 					$model_field = model_field( $path );
-					$hiddenField += array(
-						'value' => Hash::get($results, $i.'.'.$model_field[0].'.'.$model_field[1]),
-					);
-					$input = $this->DefaultTable->DefaultTableCell->input($fullPath, $hiddenField);
+					$hiddenFields['value'] = Hash::get($results, $i.'.'.$model_field[0].'.'.$model_field[1]);
+					$input = $this->DefaultTable->DefaultTableCell->input($fullPath, $hiddenFields);
 					$table .= count($input) ? $input[0] : '';
 				}
 			}
 			
-			// On ajoute des champs cachés contenant les filtres de recherche pour les cohortes
-			foreach ( Hash::flatten( (array)$this->request->data, '.' ) as $path => $value ) {
+			foreach ( Hash::flatten( (array)$extraHiddenFields, '.' ) as $path => $value ) {
 				if ( strpos($path, '.') ) {
 					$input = $this->DefaultTable->DefaultTableCell->input( $path, array( 'type' => 'hidden', 'value' => $value ) );
 					$table .= count($input) ? $input[0] : '';
@@ -196,6 +239,28 @@
 			}
 			
 			return $table;
+		}
+
+		/**
+		 * Surcharge de pagination() pour retirer $this->request->data[$this->entityErrorPrefix] de la pagination
+		 * Evite les érreurs dù au trop grand nombre d'informations dans la barre d'adresse
+		 * 
+		 * @param array $params
+		 * @return type
+		 */
+		public function pagination(array $params = array()) {
+			if( $this->entityErrorPrefix !== null ) {
+				$cohorte = $this->request->data[$this->entityErrorPrefix];
+				unset($this->request->data[$this->entityErrorPrefix]);	
+			}
+
+			$result = parent::pagination($params);
+
+			if( $this->entityErrorPrefix !== null ) {
+				$this->request->data[$this->entityErrorPrefix] = $cohorte;
+			}
+
+			return $result;
 		}
 	}
 ?>

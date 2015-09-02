@@ -17,8 +17,6 @@
 	 */
 	abstract class WebrsaAbstractCohortesComponent extends WebrsaAbstractMoteursComponent
 	{
-		
-
 		/**
 		 * Components utilisés par ce component.
 		 *
@@ -29,42 +27,7 @@
 			'Cohortes',
 			'WebrsaRecherches'
 		);
-
-		/**
-		 * Retourne un array avec clés de paramètres suivantes complétées en
-		 * fonction du contrôleur:
-		 *	- modelName: le nom du modèle sur lequel se fera la pagination
-		 *	- modelRechercheName: le nom du modèle de moteur de recherche
-		 *	- searchKey: le préfixe des filtres renvoyés par le moteur de recherche
-		 *	- searchKeyPrefix: le préfixe des champs configurés
-		 *	- configurableQueryFieldsKey: les clés de configuration contenant les
-		 *    champs à sélectionner dans la base de données.
-		 * 
-		 *  - cohorteKey: le préfixe des inputs de la cohorte
-		 *  - dossierIdPath: chemin vers dossier_id revoyé en champs obligatoire ex: {n}.Foyer.dossier_id ou {n}.Dossier.id
-		 *  - modelSave: modèle utilisé par $this->saveCohorte() pour sauvegarder les données
-		 *
-		 * @param array $params
-		 * @return array
-		 */
-		public function _params( array $params = array() ) {
-			$Controller = $this->_Collection->getController();
-			
-			$params += array(
-				'modelRechercheName' => 'WebrsaCohorte'.$Controller->modelClass,
-			);
-
-			$params += parent::_params( $params );
-			
-			$params += array(
-				'cohorteKey' => 'Cohorte',
-				'dossierIdPath' => '{n}.Foyer.dossier_id',
-				'modelSave' => $params['modelName']
-			);
-
-			return $params;
-		}
-
+		
 		/**
 		 * Utilise WebrsaAbstractRecherchesComponent et ajoute le traitement du formulaire d'une cohorte
 		 * 
@@ -74,55 +37,67 @@
 		public function cohorte( array $paramsComponent = array(), array $paramsSave = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $paramsComponent );
-			$results = array();
 			$options = $this->options( $params );
 			$Controller->loadModel( $params['modelRechercheName'] );
 			
-			// On isole le contenu du formulaire de cohorte du formulaire de recherche
-			$cohorteRequestData = isset($Controller->request->data[$params['cohorteKey']]) 
-				? $Controller->request->data[$params['cohorteKey']] 
-				: array()
-			;
-			$cohorte = $cohorteRequestData;
+			// Suppression des jetons en cas de changement de page
+			$Controller->Cohortes->clean();
 			
-			// On s'occupe de lancer la recherche ou de préparer le remplissage des filtres
 			if( !empty( $Controller->request->data ) ) {
-				$query = $this->_getQuery( $params );
+				$prepareForm = true;
+				
+				// On retire la Cohorte en cas de changement de page
+				$sessionKey = 'Page Check: '.$Controller->name.'_'.$Controller->action;
+				$page = Hash::get( $Controller->request->data, 'page' );
+				if ( $Controller->Session->read( $sessionKey ) !== $page ) {
+					unset($Controller->request->data[$params['cohorteKey']]);
+					$Controller->Session->write( $sessionKey, ($page ? (int)$page : 1) );
+				}
+				
+				// Si un formulaire de cohorte est renvoyé, on le traite
+				if( isset( $Controller->request->data[$params['cohorteKey']] ) ) {
+					$dossiersIds = (array)Hash::extract(
+						$Controller->request->data[$params['cohorteKey']], $params['dossierIdPath']
+					);
+					$Controller->Cohortes->get($dossiersIds);
+					
+					$saved = $this->saveCohorte( $Controller->request->data[$params['cohorteKey']], $params, $paramsSave );
+				
+					if ( $saved ) {
+						$Controller->Cohortes->release($dossiersIds);
+					}
+					else{
+						$prepareForm = false;
+					}
+				}
 
+				// Recherche
+				$query = $this->_getQuery( $params );
 				$Controller->{$params['modelName']}->forceVirtualFields = true;
 				$results = $this->Allocataires->paginate( $query, $params['modelName'] );
-				
-				$Controller->request->data += $Controller->{$params['modelRechercheName']}->prepareFormDataCohorte( $results, $params );
-				
+//debug($results);
+
+				// On prérempli le formulaire de cohorte
+				if( $prepareForm ) {
+					$cohorteFormData = $Controller->{$params['modelRechercheName']}->prepareFormDataCohorte( $results, $params );
+					$Controller->request->data[$params['cohorteKey']] = $cohorteFormData;
+				}
+
 				// Jetons
-				ClassRegistry::init('Jeton')->deleteAll( array( 'Jeton.user_id' => $Controller->Session->read( 'Auth.User.id' ) ), false ); // FIXME Trouver un autre moyen ???
-				$this->Cohortes->Controller = $Controller;
-				$this->Cohortes->get(Hash::extract($results, $params['dossierIdPath']));
+				$dossiersIds = (array)Hash::extract($results, $params['dossierIdPath']);
+				$Controller->Cohortes->get($dossiersIds);
+
+				// On insert les élements du formulaire de cohorte dans le tableau de résultats
+				$cohorteFields = $this->_formatFieldsForInsert( $Controller->{$params['modelRechercheName']}->cohorteFields, $params );
 				
-				$Controller->set( compact('results') );
-			}
-			else {
-				$this->_prepareFilter($params);
-			}
-			
-			// Si un formulaire de cohorte est renvoyé, on tente la sauvegarde
-			if ( !empty($cohorte) ) {
-				$saved = $this->saveCohorte( $cohorte, $params, $paramsSave );
+				// On conserve les filtres de recherche en élements cachés dans le formulaire de cohorte
+				$filterData =& $Controller->request->data[$params['searchKey']];
+				$extraHiddenFields = array( $params['searchKey'] => $filterData );
 				
-				if ( $saved ) {
-					$this->Cohortes->Controller = $Controller;
-					$this->Cohortes->release(array_unique(Set::extract($results, $params['dossierIdPath'])));
-					$this->WebrsaRecherches->search($params);
-					unset($Controller->request->data[$params['cohorteKey']]);
-				}
-				else{
-					$Controller->request->data[$params['cohorteKey']] = $cohorte;
-				}
+				$Controller->set( compact('cohorteFields', 'results', 'extraHiddenFields') );
 			}
-			
-			$cohorteFields = $this->_formatFieldsForInsert( $Controller->{$params['modelRechercheName']}->cohorteFields, $params );
-			
-			$Controller->set( compact('cohorteFields', 'options') );
+
+			$Controller->set( compact('options') );
 		}
 		
 		/**
@@ -154,6 +129,52 @@
 			}
 			
 			return $saved;
+		}
+
+		/**
+		 * Retourne un array avec clés de paramètres suivantes complétées en
+		 * fonction du contrôleur:
+		 *	- modelName: le nom du modèle sur lequel se fera la pagination
+		 *	- modelRechercheName: le nom du modèle de moteur de recherche
+		 *	- searchKey: le préfixe des filtres renvoyés par le moteur de recherche
+		 *	- searchKeyPrefix: le préfixe des champs configurés
+		 *	- configurableQueryFieldsKey: les clés de configuration contenant les
+		 *    champs à sélectionner dans la base de données.
+		 * 
+		 *  - cohorteKey: le préfixe des inputs de la cohorte
+		 *  - dossierIdPath: chemin vers dossier_id revoyé en champs obligatoire ex: {n}.Foyer.dossier_id ou {n}.Dossier.id
+		 *  - modelSave: modèle utilisé par $this->saveCohorte() pour sauvegarder les données
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _params( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			
+			$params += array(
+				'modelRechercheName' => 'WebrsaCohorte'.$Controller->modelClass,
+			);
+
+			$params += parent::_params( $params );
+			
+			$params += array(
+				'cohorteKey' => 'Cohorte',
+				'dossierIdPath' => '{n}.Dossier.id',
+				'modelSave' => $params['modelName']
+			);
+
+			return $params;
+		}
+		
+		/**
+		 * Récupère la query complète pour la recherche en fonction des clefs du params
+		 * 
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _getQuery( array $params = array() ) {
+			// On ne veux pas les dossiers avec un jeton d'un autre utilisateur
+			return $this->_Collection->getController()->Cohortes->qdConditions( parent::_getQuery($params) );
 		}
 		
 		/**

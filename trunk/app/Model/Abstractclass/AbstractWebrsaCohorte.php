@@ -55,18 +55,27 @@
 		public $cohorteFields = array();
 		
 		/**
+		 * Valeurs par défaut pour le préremplissage des champs du formulaire de cohorte
+		 * ex: array( 
+		 *		'Mymodel' => array( 'Myfield' => 'MyValue' ) )
+		 * )
+		 * 
+		 * @var array
+		 */
+		public $defaultValues = array();
+		
+		/**
 		 * Préremplissage du formulaire en cohorte
 		 * 
-		 * @param type $data
+		 * @param type $results
 		 * @param type $params
 		 * @return array
 		 */
-		public function prepareFormDataCohorte( array $data, array $params = array() ) {
-			$results = array();
-			for ($i=0; $i<count($data); $i++) {
-				$results[$params['cohorteKey']][$i] = array(
-					// 'Mymodel' => array( 'Myfield' => 'MyValue' ) ),
-				);
+		public function prepareFormDataCohorte( array $results, array $params = array() ) {
+			$data = array();
+			for ($i=0; $i<count($results); $i++) {
+				$data[$i] = $results[$i];
+				$data[$i] += $this->defaultValues;
 			}
 			
 			return $data;
@@ -82,12 +91,26 @@
 		public function saveCohorte( array $data, array $params = array(), $user_id = null ) {
 			return true;
 		}
+		
+		/**
+		 * Retourne le querydata de base, en fonction du département, à utiliser
+		 * dans le moteur de recherche.
+		 *
+		 * @param array $types Les types de jointure alias => type
+		 * @return array
+		 */
+		public function searchQuery(array $types = array()) {
+			// Il est très important d'avoir un Dossier.id pour les cohortes (pour les jetons)
+			$query['fields'][] = 'Dossier.id';
+			$this->cohorteFields['Dossier.id'] = array( 'type' => 'hidden', 'hidden' => true );
+
+			return $query;
+		}
 
 		/**
 		 * Retourne un querydata, en fonction du département, prenant en compte
 		 * les différents filtres du moteur de recherche.
 		 *
-		 * @todo à utiliser de manière dissociée (avec préparation des fields dans le contrôleur, ou les passer en paramètre ?)
 		 * @param array $params
 		 * @return array
 		 */

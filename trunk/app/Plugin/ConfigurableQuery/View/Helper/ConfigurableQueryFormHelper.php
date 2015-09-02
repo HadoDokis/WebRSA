@@ -32,6 +32,15 @@
 		);
 
 		/**
+		 * Permet l'affichage d'érreur dans le cas où un Préfix est appliqué à un input
+		 * Si self::$entityErrorPrefix = 'Cohorte' alors :
+		 *	 Cohorte.0.Monmodel.field = Monmodel.0.field
+		 * 
+		 * @var string
+		 */
+		public $entityErrorPrefix = null;
+
+		/**
 		 * Réalise la traduction d'un label en utilisant la fontion __m() du
 		 * plugin MultiDomainTranslator.
 		 *
@@ -42,6 +51,22 @@
 		 */
 		public function label( $fieldName = null, $text = null, $options = array( ) ) {
 			return parent::label( $fieldName, $text === null ? $text : __m( $text ), $options );
+		}
+
+		/**
+		 * Surchage de FormHelper::error() pour permettre l'affichage des erreurs sur les champs préfixés
+		 * 
+		 * @param string $field
+		 * @param mixed $text
+		 * @param array $options
+		 * @return string
+		 */
+		public function error($field, $text = null, $options = array()) {
+			if( !empty($this->entityErrorPrefix) ) {
+				$field = preg_replace("/^{$this->entityErrorPrefix}\.([0-9]+)\.([^\.]+)\./", '\2.\1.', $field);
+			}
+			
+			return parent::error($field, $text, $options);
 		}
 	}
 ?>

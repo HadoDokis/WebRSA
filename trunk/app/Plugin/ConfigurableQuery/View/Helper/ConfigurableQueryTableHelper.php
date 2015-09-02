@@ -35,8 +35,33 @@
 			)
 		);
 
+		/**
+		 * Permet l'affichage d'érreur dans le cas où un Préfix est appliqué à un input
+		 * Si self::$entityErrorPrefix = 'Cohorte' alors :
+		 *	 Cohorte.0.Monmodel.field = Monmodel.0.field
+		 * 
+		 * @var string
+		 */
+		public $entityErrorPrefix = null;
+
+		/**
+		 * TODO
+		 * 
+		 * @param array $fields
+		 * @param array $params
+		 * @return type
+		 */
 		public function thead( array $fields, array $params ) {
+			if( $this->entityErrorPrefix !== null ) {
+				$cohorte = $this->request->data[$this->entityErrorPrefix];
+				unset($this->request->data[$this->entityErrorPrefix]);	
+			}
+
 			$return = parent::thead( $fields, $params );
+
+			if( $this->entityErrorPrefix !== null ) {
+				$this->request->data[$this->entityErrorPrefix] = $cohorte;
+			}
 
 			// Début FIXME------------------------------------------------------
 			$innerTable = Hash::get( $params, 'innerTable' );
