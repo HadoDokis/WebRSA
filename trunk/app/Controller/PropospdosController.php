@@ -25,7 +25,7 @@
 			'Jetons2',
 			'DossiersMenus',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search' )
+				'actions' => array( 'search', 'search_possibles' )
 			)
 		);
 
@@ -43,7 +43,9 @@
 			'view' => 'Propospdos:index',
 			'add' => 'Propospdos:edit',
 			'search' => 'Criterespdos:index',
-			'exportcsv' => 'Criterespdos:exportcsv'
+			'exportcsv' => 'Criterespdos:exportcsv',
+			'search_possibles' => 'Criterespdos:nouvelles',
+			'exportcsv_possibles' => 'Criterespdos:nouvelles'
 		);
 
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -63,10 +65,12 @@
 			'download' => 'read',
 			'edit' => 'update',
 			'exportcsv' => 'read',
+			'exportcsv_possibles' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
 			'printCourrier' => 'read',
 			'search' => 'read',
+			'search_possibles' => 'read',
 			'view' => 'read',
 		);
 
@@ -520,6 +524,32 @@
 		public function exportcsv() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdos' );
 			$Recherches->exportcsv();
+		}
+
+		/**
+		 * Moteur de recherche par nouvelles PDOs
+		 */
+		public function search_possibles() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosPossibles' );
+			$Recherches->search(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaRecherchePropopdoPossible'
+				)
+			);
+		}
+
+		/**
+		 * Export CSV des résultats du moteur de recherche par nouvelles PDO
+		 */
+		public function exportcsv_possibles() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosPossibles' );
+			$Recherches->exportcsv(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaRecherchePropopdoPossible'
+				)
+			);
 		}
 
 	}
