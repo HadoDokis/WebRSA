@@ -144,3 +144,27 @@ msgstr "Types de traitements"
 
 msgid "Dossier.locked"
 msgstr "Verrouillé"
+
+msgid "Dossierpcg66.cohorte_enattenteaffectation"
+msgstr "Filtrer par Dossier PCG"
+
+msgid "/Dossierspcgs66/cohorte_enattenteaffectation/:heading"
+msgstr "Dossiers PCGs en attente d'affectation"
+
+msgid "/Dossierspcgs66/cohorte_enattenteaffectation"
+msgstr "Formulaire"
+
+msgid "/Dossierspcgs66/cohorte_enattenteaffectation/:title"
+msgstr "Formulaire"
+
+msgid "data[Cohorte][][Dossierpcg66][atraiter]"
+msgstr "Sélection"
+
+msgid "data[Cohorte][][Dossierpcg66][poledossierpcg66_id]"
+msgstr "Pôle du gestionnaire"
+
+msgid "data[Cohorte][][Dossierpcg66][user_id]"
+msgstr "Gestionnaire"
+
+msgid "data[Cohorte][][Dossierpcg66][dateaffectation]"
+msgstr "Date d'affectation"
