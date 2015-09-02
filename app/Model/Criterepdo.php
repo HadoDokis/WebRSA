@@ -39,7 +39,7 @@
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $criterespdos, 'Situationdossierrsa.etatdosrsa' );
 			if( !isset( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) || empty( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) ) {
-				$criterespdos['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatAttente();
+				$conditions[]  = array( 'Situationdossierrsa.etatdosrsa' => $Situationdossierrsa->etatAttente() );
 			}
 
 			/// Filtre zone géographique
