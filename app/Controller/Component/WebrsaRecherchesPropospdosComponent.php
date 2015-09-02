@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaRecherchesPropospdosComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaRecherchesPropospdosComponent extends WebrsaRecherchesComponent
+	class WebrsaRecherchesPropospdosComponent extends WebrsaAbstractRecherchesComponent
 	{
 		/**
 		 * @todo: faire la distinction search(index)/exportcsv (notamment dans Allocataires)
@@ -25,7 +25,7 @@
 		 */
 		public function options( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
-			$params = $this->params( $params );
+			$params = $this->_params( $params );
 
 			$Controller->loadModel( 'Decisionpropopdo' ); // TODO: autres champs enum, cf. contrôleur, champs
 			$Controller->loadModel( 'Decisionpdo' ); // TODO: autres champs enum, cf. contrôleur, champs

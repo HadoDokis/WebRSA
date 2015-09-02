@@ -13,6 +13,9 @@ msgstr ""
 msgid "/Propospdos/search/:heading"
 msgstr "Recherche de PDOs (nouveau)"
 
+msgid "/Propospdos/search_possibles/:heading"
+msgstr "Liste des personnes pouvant bénéficier d'une PDO (nouveau)"
+
 # ==============================================================================
 
 msgid "Search.Propopdo"

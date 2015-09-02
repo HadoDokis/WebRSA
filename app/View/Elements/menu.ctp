@@ -152,6 +152,7 @@
 			'Par PDOs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) == 66 ),
 				'Nouvelles PDOs' => array( 'url' => array( 'controller' => 'criterespdos', 'action' => 'nouvelles'  ) ),
+				'Nouvelles PDOs (nouvelles)' => array( 'url' => array( 'controller' => 'propospdos', 'action' => 'search_possibles'  ) ),
 				'Liste des PDOs' => array( 'url' => array( 'controller' => 'criterespdos', 'action' => 'index'  ) ),
 				'Liste des PDOs (nouvelle)' => array( 'url' => array( 'controller' => 'propospdos', 'action' => 'search' ) ),
 			),
