@@ -44,6 +44,7 @@
 			'Dossiers PCGs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Dossiers en attente d\'affectation' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'enattenteaffectation' ) ),
+				'Dossiers en attente d\'affectation (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_enattenteaffectation' ) ),
 				'Dossiers affectés' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'affectes' ) ),
 				'Dossiers à imprimer' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'aimprimer' ) ),
 				'Dossiers à transmettre' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'atransmettre' ) ),

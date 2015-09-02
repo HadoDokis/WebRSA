@@ -28,12 +28,19 @@
 		public $uses = array( 'Dossierpcg66', 'Option', 'Typenotifpdo', 'Decisionpdo' );
 
 		public $components = array( 
+			'Cohortes', 
 			'Fileuploader', 
 			'Gedooo.Gedooo', 
 			'Jetons2', 
 			'DossiersMenus',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search', 'search_gestionnaire' )
+				'actions' => array( 
+					'search', 
+					'search_gestionnaire',
+					'cohorte_enattenteaffectation' => array(
+						'filter' => 'Search'
+					)
+				)
 			),
 		);
 
@@ -44,6 +51,7 @@
 			'search_gestionnaire' => 'Criteresdossierspcgs66:gestionnaire',
 			'exportcsv' => 'Criteresdossierspcgs66:exportcsv',
 			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
+			'cohorte_enattenteaffectation' => 'Cohortesdossierspcgs66:enattenteaffectation',
 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo' );
@@ -59,6 +67,7 @@
 			'ajaxetatpdo' => 'read',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
+			'cohorte_enattenteaffectation' => 'read',
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
@@ -941,6 +950,20 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
 			$Recherches->exportcsv();
 			$this->render( 'exportcsv' );
+		}
+
+		/**
+		 * @todo doc
+		 */
+		public function cohorte_enattenteaffectation() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
+			$this->Dossierpcg66->validate = array(
+				'poledossierpcg66_id' => array( 'notEmpty' => array( 'rule' => 'notEmpty' ) )
+			);
+			$this->Dossierpcg66->Typepdo->validate = array();
+			$this->Dossierpcg66->Originepdo->validate = array();
+			
+			$Recherches->cohorte();
 		}
 	}
 ?>

@@ -124,6 +124,24 @@
 				'Fichiermodule.nb_fichiers_lies',
 				'Structurereferenteparcours.lib_struc',
 				'Referentparcours.nom_complet'
+			),
+			'cohorte_enattenteaffectation' => array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Personne.nom_complet',
+					'Adresse.nomcom',
+					'Dossierpcg66.datereceptionpdo',
+					'Typepdo.libelle',
+					'Originepdo.libelle',
+					'Dossierpcg66.orgpayeur',
+					'Serviceinstructeur.lib_service',
+					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
+				),
+				'innerTable' => array(
+					'Structurereferenteparcours.lib_struc',
+					'Referentparcours.nom_complet'
+				),
+				'order' => array()
 			)
 		)
 	);
