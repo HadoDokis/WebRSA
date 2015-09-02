@@ -20,7 +20,7 @@
             array( 'alt' => '' )
         ).' Formulaire',
         '#',
-        array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'PropospdosSearchForm' ).toggle(); return false;" )
+        array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'PropospdosSearchPossiblesForm' ).toggle(); return false;" )
     ).'</li></ul>';
 ?>
 <?php
@@ -28,7 +28,7 @@
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
-	echo $this->Xform->create( null, array( 'type' => 'post', 'action' => $this->action, 'id' => 'PropospdosSearchForm', 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Xform->create( null, array( 'type' => 'post', 'action' => $this->action, 'id' => 'PropospdosSearchPossiblesForm', 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );
 	echo $this->Allocataires->blocAllocataire( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocDossier( array( 'prefix' => 'Search', 'options' => $options ) );
