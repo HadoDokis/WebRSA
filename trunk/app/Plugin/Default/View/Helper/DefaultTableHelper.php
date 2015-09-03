@@ -106,7 +106,8 @@
 						$label = __d( $domain, "{$modelName}.{$fieldName}" );
 					}
 
-					if( $sort ) {
+					$cellSort = Hash::get( $attributes, 'sort' );
+					if( ( $cellSort === null && $sort ) || ( $cellSort !== null && $cellSort ) ) {
 						$label = $this->DefaultPaginator->sort( $field, $label );
 					}
 
