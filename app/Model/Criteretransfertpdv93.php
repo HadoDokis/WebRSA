@@ -11,6 +11,9 @@
 	/**
 	 * Classe Criteretransfertpdv93.
 	 *
+	 * @deprecated since 3.0.0
+	 * @see WebrsaRechercheTransfertpdv93.php
+	 *
 	 * @package app.Model
 	 */
 	class Criteretransfertpdv93 extends AppModel

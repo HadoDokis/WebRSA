@@ -11,6 +11,10 @@
 	/**
 	 * La classe CriterespdosController implémente un moteur de recherche par PDOs (CG 58 et 93).
 	 *
+	 * @deprecated since version 3.0.0
+	 * @see PropospdosController::search(), PropospdosController::exportcsv(),
+	 * PropospdosController::search_possibles() et PropospdosController::exportcsv_possibles()
+	 *
 	 * @package app.Controller
 	 */
 	class CriterespdosController extends AppController

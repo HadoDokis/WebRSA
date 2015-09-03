@@ -12,6 +12,9 @@
 	/**
 	 * Classe Criterestransfertspdvs93Controller.
 	 *
+	 * @deprecated since 3.0.0
+	 * @see Transfertspdvs93::search() et Transfertspdvs93::exportcsv()
+	 *
 	 * @package app.Controller
 	 */
 	class Criterestransfertspdvs93Controller extends AppController
