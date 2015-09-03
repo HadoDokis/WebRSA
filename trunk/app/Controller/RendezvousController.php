@@ -90,11 +90,17 @@
 			'exportcsv' => 'read'
 		);
 
+		/**
+		 * Moteur de recherche par rendez-vous (nouveau).
+		 */
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesRendezvous' );
 			$Recherches->search();
 		}
 
+		/**
+		 * Export CSV des résultats de la recherche par rendez-vous (nouveau).
+		 */
 		public function exportcsv() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesRendezvous' );
 			$Recherches->exportcsv();

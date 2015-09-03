@@ -195,6 +195,10 @@
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 					'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
 				),
+				'Intra-département (nouveau)' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'transfertspdvs93', 'action' => 'search'  )
+				),
 				'Hors département' => array(
 					'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search1'  )
 				),
