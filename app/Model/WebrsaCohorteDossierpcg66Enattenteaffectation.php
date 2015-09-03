@@ -1,28 +1,28 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohorteDossierpcg66.
+	 * Code source de la classe WebrsaCohorteDossierpcg66Enattenteaffectation.
 	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'AbstractWebrsaCohorte', 'Model/Abstractclass' );
+	App::uses( 'AbstractWebrsaCohorteDossierpcg66', 'Model/Abstractclass' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
-	 * La classe WebrsaCohorteDossierpcg66 ...
+	 * La classe WebrsaCohorteDossierpcg66Enattenteaffectation ...
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaCohorteDossierpcg66 extends AbstractWebrsaCohorte
+	class WebrsaCohorteDossierpcg66Enattenteaffectation extends AbstractWebrsaCohorteDossierpcg66
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'WebrsaCohorteDossierpcg66';
+		public $name = 'WebrsaCohorteDossierpcg66Enattenteaffectation';
 
 		/**
 		 * Liste des clés de configuration utilisées par le moteur de recherche,
@@ -71,51 +71,6 @@
 		public $defaultValues = array();
 
 		/**
-		 * Retourne le querydata de base, en fonction du département, à utiliser
-		 * dans le moteur de recherche.
-		 *
-		 * @param array $types Les types de jointure alias => type
-		 * @return array
-		 */
-		public function searchQuery( array $types = array() ) {
-			$types += array(
-				'Typepdo' => 'INNER',
-				'Originepdo' => 'INNER',
-				'Serviceinstructeur' => 'LEFT OUTER',
-			);
-			
-			$query = $this->WebrsaRechercheDossierpcg66->searchQuery( $types );
-			
-			$query['fields'] = array_merge(
-				$query['fields'],
-				ConfigurableQueryFields::getModelsFields(
-					array(
-						$this->Dossierpcg66->Typepdo,
-						$this->Dossierpcg66->Originepdo,
-						$this->Dossierpcg66->Serviceinstructeur,
-					)
-				),
-				// Champs nécessaires au traitement de la cohorte
-				array(
-					'Dossier.id',
-					'Dossierpcg66.poledossierpcg66_id',
-					'Dossierpcg66.dateaffectation',
-				)
-			);
-			
-			$query['joins'] = array_merge(
-				$query['joins'],
-				array(
-					$this->Dossierpcg66->join( 'Typepdo', array( 'type' => $types['Typepdo'] ) ),
-					$this->Dossierpcg66->join( 'Originepdo', array( 'type' => $types['Originepdo'] ) ),
-					$this->Dossierpcg66->join( 'Serviceinstructeur', array( 'type' => $types['Serviceinstructeur'] ) ),
-				)
-			);
-			
-			return $query;
-		}
-
-		/**
 		 * Complète les conditions du querydata avec le contenu des filtres de
 		 * recherche.
 		 *
@@ -124,7 +79,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$query = $this->WebrsaRechercheDossierpcg66->searchConditions( $query, $search );
+			$query = parent::searchConditions( $query, $search );
 			
 			$query['conditions'][] = array(
 				'Dossierpcg66.etatdossierpcg' => 'attaffect',

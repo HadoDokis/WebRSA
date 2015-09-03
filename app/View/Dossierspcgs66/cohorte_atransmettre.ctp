@@ -26,6 +26,17 @@
 		)
 	);
 	
+	function multipleCheckbox( $View, $path, $options, $class = '' ) {
+		$name = model_field($path);
+		return $View->Xform->input($path, array(
+			'label' => __m($path), 
+			'type' => 'select', 
+			'multiple' => 'checkbox', 
+			'options' => $options[$name[0]][$name[1]],
+			'class' => $class
+		));
+	}
+	
 	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
 	
 	$dates = array(
@@ -76,6 +87,9 @@
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
+		. multipleCheckbox( $this, 'Search.Dossierpcg66.poledossierpcg66_id', $options )
+		. multipleCheckbox( $this, 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
+		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
 		. '</fieldset>'
 	;
 	
@@ -95,7 +109,7 @@
 				'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
 			)
 		);
-
+		
 		echo $this->Default3->configuredCohorte( $results, $configuredCohorteParams	);
 		
 		echo $this->Xform->end( 'Save' );
@@ -107,17 +121,20 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		for (var i=0; i<<?php echo count($results);?>; i++) {
-			dependantSelect( 'Cohorte'+i+'Dossierpcg66UserId', 'Cohorte'+i+'Dossierpcg66Poledossierpcg66Id' );
-
+			var list = [];
+			$$('input[name="data[Cohorte]['+i+'][Decdospcg66Orgdospcg66][orgtransmisdossierpcg66_id][]"]').each(
+				function(input) {
+					list.push(input.id);
+				}
+			);
+			
+			list.push('Cohorte'+i+'Decisiondossierpcg66DatetransmissionopDay');
+			list.push('Cohorte'+i+'Decisiondossierpcg66DatetransmissionopMonth');
+			list.push('Cohorte'+i+'Decisiondossierpcg66DatetransmissionopYear');
+			
 			observeDisableFieldsOnCheckbox(
-				'Cohorte'+i+'Dossierpcg66Atraiter',
-				[
-					'Cohorte'+i+'Dossierpcg66Poledossierpcg66Id',
-					'Cohorte'+i+'Dossierpcg66UserId',
-					'Cohorte'+i+'Dossierpcg66DateaffectationDay',
-					'Cohorte'+i+'Dossierpcg66DateaffectationMonth',
-					'Cohorte'+i+'Dossierpcg66DateaffectationYear'
-				],
+				'Cohorte'+i+'Dossierpcg66Istransmis',
+				list,
 				false
 			);
 		}

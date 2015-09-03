@@ -36,29 +36,47 @@
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
-			$User = ClassRegistry::init('User');
+			$Controller = $this->_Collection->getController();
+			$Dossierpcg66 = ClassRegistry::init('Dossierpcg66');
 			$options = $this->WebrsaRecherchesDossierspcgs66->options( $params );
 			$options += parent::options($params);
 			
-			$gestionnaires = $User->find(
-				'all', array(
-					'fields' => array(
-						'User.nom_complet',
-						'( "Poledossierpcg66"."id" || \'_\'|| "User"."id" ) AS "User__gestionnaire"',
-					),
-					'conditions' => array(
-						'User.isgestionnaire' => 'O'
-					),
-					'joins' => array(
-						$User->join('Poledossierpcg66', array('type' => 'INNER')),
-					),
-					'order' => array('User.nom ASC', 'User.prenom ASC'),
-					'contain' => false
-				)
-			);
-			$gestionnaires = Hash::combine($gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet');
+			switch( $Controller->action ) {
+				case 'cohorte_enattenteaffectation':
+					$gestionnaires = $Dossierpcg66->User->find(
+						'all', array(
+							'fields' => array(
+								'User.nom_complet',
+								'( "Poledossierpcg66"."id" || \'_\'|| "User"."id" ) AS "User__gestionnaire"',
+							),
+							'conditions' => array(
+								'User.isgestionnaire' => 'O'
+							),
+							'joins' => array(
+								$Dossierpcg66->User->join('Poledossierpcg66', array('type' => 'INNER')),
+							),
+							'order' => array('User.nom ASC', 'User.prenom ASC'),
+							'contain' => false
+						)
+					);
+					$options['Dossierpcg66']['user_id'] = Hash::combine($gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet');
+					break;
 			
-			$options['Dossierpcg66']['user_id'] = $gestionnaires;
+				case 'cohorte_atransmettre':
+					$options['Decdospcg66Orgdospcg66']['orgtransmisdossierpcg66_id'] = 
+						$Dossierpcg66->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+							'list', array(
+								'conditions' => array( 'Orgtransmisdossierpcg66.isactif' => '1' ),
+								'order' => array('Orgtransmisdossierpcg66.name ASC')
+							)
+						)
+					;
+					break;
+			}
+			
+			$options['Dossierpcg66']['originepdo_id'] = $Dossierpcg66->Originepdo->find('list');
+			$options['Dossierpcg66']['serviceinstructeur_id'] = $Dossierpcg66->Serviceinstructeur->listOptions();
+			$options['Dossierpcg66']['typepdo_id'] = $Dossierpcg66->Typepdo->find('list');
 			
 			return $options;
 		}

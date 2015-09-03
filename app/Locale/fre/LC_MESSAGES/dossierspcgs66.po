@@ -168,3 +168,33 @@ msgstr "Gestionnaire"
 
 msgid "data[Cohorte][][Dossierpcg66][dateaffectation]"
 msgstr "Date d'affectation"
+
+msgid "Search.Dossierpcg66.originepdo_id"
+msgstr "Origine du dossier"
+
+msgid "Search.Dossierpcg66.serviceinstructeur_id"
+msgstr "Service instructeur"
+
+msgid "Search.Dossierpcg66.typepdo_id"
+msgstr "Type de dossier"
+
+msgid "Dossierpcg66.cohorte_atransmettre"
+msgstr "Filtrer par Dossier PCG"
+
+msgid "/Dossierspcgs66/cohorte_atransmettre/:heading"
+msgstr "Dossiers PCGs à transmettre"
+
+msgid "/Dossierspcgs66/cohorte_atransmettre"
+msgstr "Formulaire"
+
+msgid "/Dossierspcgs66/cohorte_atransmettre/:title"
+msgstr "Formulaire"
+
+msgid "data[Cohorte][][Dossierpcg66][istransmis]"
+msgstr "Transmettre"
+
+msgid "data[Cohorte][][Decdospcg66Orgdospcg66][orgtransmisdossierpcg66_id]"
+msgstr "Organismes"
+
+msgid "data[Cohorte][][Decisiondossierpcg66][datetransmissionop]"
+msgstr "Date transmission"

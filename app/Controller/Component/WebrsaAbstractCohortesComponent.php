@@ -94,7 +94,17 @@
 				$filterData =& $Controller->request->data[$params['searchKey']];
 				$extraHiddenFields = array( $params['searchKey'] => $filterData );
 				
-				$Controller->set( compact('cohorteFields', 'results', 'extraHiddenFields') );
+				$configuredCohorteParams = array(
+					'format' => SearchProgressivePagination::format( 
+						!Hash::get( $Controller->request->data, 'Search.Pagination.nombre_total' ) 
+					),
+					'options' => $options,
+					'extraHiddenFields' => $extraHiddenFields,
+					'entityErrorPrefix' => 'Cohorte',
+					'cohorteFields' => $cohorteFields
+				);
+				
+				$Controller->set( compact('cohorteFields', 'results', 'extraHiddenFields', 'configuredCohorteParams') );
 			}
 
 			$Controller->set( compact('options') );
