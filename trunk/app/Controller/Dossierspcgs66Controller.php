@@ -39,6 +39,9 @@
 					'search_gestionnaire',
 					'cohorte_enattenteaffectation' => array(
 						'filter' => 'Search'
+					),
+					'cohorte_atransmettre' => array(
+						'filter' => 'Search'
 					)
 				)
 			),
@@ -953,7 +956,7 @@
 		}
 
 		/**
-		 * @todo doc
+		 * Cohorte
 		 */
 		public function cohorte_enattenteaffectation() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
@@ -963,7 +966,22 @@
 			$this->Dossierpcg66->Typepdo->validate = array();
 			$this->Dossierpcg66->Originepdo->validate = array();
 			
-			$Recherches->cohorte();
+			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation' ) );
+		}
+
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_atransmettre() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
+			$this->Dossierpcg66->validate = array();
+			$this->Dossierpcg66->Typepdo->validate = array();
+			$this->Dossierpcg66->Originepdo->validate = array();
+			$this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->validate = array(
+				'orgtransmisdossierpcg66_id' => array( 'notEmpty' => array( 'rule' => 'notEmpty' ) )
+			);
+			
+			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre' ) );
 		}
 	}
 ?>
