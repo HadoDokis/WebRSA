@@ -1,4 +1,36 @@
 <?php
+	/**
+	 * Valeurs des filtres de recherche par défaut pour la "Recherche par
+	 * allocataires sortants, hors département"
+	 *
+	 * @deprecated
+	 *
+	 * @var array
+	 */
+	Configure::write(
+		'Filtresdefaut.Demenagementshorsdpts_search1',
+		array(
+			'Search' => array(
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Pagination' => array(
+					'nombre_total' => false
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
+
+	/**
+	 * Valeurs des filtres de recherche par défaut pour la "Recherche par
+	 * allocataires sortants, hors département (nouveau)"
+	 *
+	 * @var array
+	 */
 	Configure::write(
 		'Filtresdefaut.Demenagementshorsdpts_search',
 		array(

@@ -8,13 +8,13 @@
 
 	echo $this->Default3->actions(
 		array(
-			'/Demenagementshorsdpts/search/#toggleform' => array(
-				'onclick' => '$(\'DemenagementshorsdptsSearchForm\').toggle(); return false;'
+			'/Demenagementshorsdpts/search1/#toggleform' => array(
+				'onclick' => '$(\'DemenagementshorsdptsSearch1Form\').toggle(); return false;'
 			),
 		)
 	);
 
-	echo $this->Xform->create( 'Search', array( 'id' => 'DemenagementshorsdptsSearchForm' ) );
+	echo $this->Xform->create( 'Search1', array( 'id' => 'DemenagementshorsdptsSearch1Form' ) );
 
 	echo $this->Allocataires->blocDossier( array( 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
@@ -71,8 +71,8 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-			( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
+			array( 'action' => 'exportcsv1' ) + Hash::flatten( $this->request->data, '__' ),
+			( $this->Permissions->check( $this->request->params['controller'], 'exportcsv1' ) && count( $results ) > 0 )
 		);
 	?></li>
 </ul>

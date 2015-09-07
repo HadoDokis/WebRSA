@@ -660,27 +660,6 @@
 	);
 
 	/**
-	 * Filtres par défaut de la recherche par allocataires ayant quitté le département
-	 */
-	Configure::write(
-		'Filtresdefaut.Demenagementshorsdpts_search',
-		array(
-			'Search' => array(
-				'Dossier' => array(
-					'dernier' => '1',
-				),
-				'Pagination' => array(
-					'nombre_total' => false
-				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa_choice' => '1',
-					'etatdosrsa' => array( '2', '3', '4' )
-				)
-			)
-		)
-	);
-
-	/**
 	 * Permet de parcourir les détails des allocataires n'ayant pas de prestation
 	 * RSA dans le menu du dossier.
 	 *
