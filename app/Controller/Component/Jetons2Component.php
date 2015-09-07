@@ -256,12 +256,10 @@
 						),
 						'conditions' => array(
 							'NOT' => array(
-								array(
-									'jetons.php_sid' => $this->Session->id(),
-									'jetons.user_id' => $this->Session->read( 'Auth.User.id' )
-								),
-								'NOT' => $this->_conditionsValid()
+								'jetons.php_sid' => $this->Session->id(),
+								'jetons.user_id' => $this->Session->read( 'Auth.User.id' )
 							),
+							$this->_conditionsValid(),
 							'jetons.dossier_id = Dossier.id'
 						),
 						'recursive' => -1

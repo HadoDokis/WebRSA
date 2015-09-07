@@ -250,7 +250,7 @@
 		 */
 		public function pagination(array $params = array()) {
 			if( $this->entityErrorPrefix !== null ) {
-				$cohorte = $this->request->data[$this->entityErrorPrefix];
+				$cohorte = Hash::get( $this->request->data, $this->entityErrorPrefix );
 				unset($this->request->data[$this->entityErrorPrefix]);	
 			}
 

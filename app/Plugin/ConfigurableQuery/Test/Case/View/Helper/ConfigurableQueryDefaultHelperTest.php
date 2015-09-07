@@ -271,6 +271,7 @@
 				'fields' => array(
 					'User.username',
 					'User.created',
+					'User.modified',
 					'Group.name'
 				),
 				'recursive' => -1,
@@ -322,6 +323,249 @@
 				<div class="pagination">
 					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
 				</div>';
+			$this->assertEqualsXhtml( $result, $expected );
+			
+			// On test l'insert de colonnes
+			$insert = array(
+				'User.modified' => array( 'label' => 'Modifié le' )
+			);
+			$result = $this->Default->configuredIndex( $records, array(), $insert );
+
+			$base = Router::url( '/' );
+			$expected = '<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>
+				<table id="TableUsersIndex" class="users index">
+					<thead>
+						<tr>
+							<th colspan="2">Utilisateur</th>
+							<th>Groupe</th>
+							<th colspan="2"></th>
+						</tr>
+						<tr>
+							<th id="TableUsersIndexColumnUserUsername">
+								<a href="'.$base.'users/index/page:1/sort:User.username/direction:asc">Identifiant</a>
+							</th>
+							<th id="TableUsersIndexColumnUserCreated">
+								<a href="'.$base.'users/index/page:1/sort:User.created/direction:asc">Créé le</a>
+							</th>
+							<th id="TableUsersIndexColumnGroupName">
+								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
+							</th>
+							<th id="TableUsersIndexColumnUserModified">
+								<a href="'.$base.'users/index/page:1/sort:User.modified/direction:asc">Modifié le</a>
+							</th>
+							<th colspan="2" class="actions" id="TableUsersIndexColumnActions">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="odd">
+							<td class="data string ">admin</td>
+							<td class="data datetime ">29/06/2015 à 00:28:35</td>
+							<td class="data string ">Admin</td>
+							<td class="data datetime ">29/06/2015 à 00:28:35</td>
+							<td class="action">
+								<a href="'.$base.'users/view" title="Voir l&#039;utilisateur « admin »" class="users view">Voir</a>
+							</td>
+							<td class="action">
+								<a href="'.$base.'users/edit" title="Modifier l&#039;utilisateur « admin »" class="users edit">Modifier</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode ConfigurableQueryDefaultHelper::configuredIndex()
+		 */
+		public function testConfiguredCohorte() {
+			$_SESSION['Auth']['Permissions']['Module:Users'] = true;
+
+			Configure::write(
+				'ConfigurableQueryUsers.index',
+				array(
+					'fields' => array(
+						'User.username',
+						'User.created',
+						'Group.name',
+						'/Users/view/#User.id#',
+						'/Users/edit/#User.id#'
+					),
+					'header' => array(
+						array( 'Utilisateur' => array( 'colspan' => 2 ) ),
+						array( 'Groupe' => null ),
+						array( '' => array( 'colspan' => 2 ) ),
+					)
+				)
+			);
+			
+			$this->Controller->User->Behaviors->attach( 'DatabaseTable' );
+			$query = array(
+				'fields' => array(
+					'User.username',
+					'User.created',
+					'User.modified',
+					'Group.name'
+				),
+				'recursive' => -1,
+				'joins' => array(
+					$this->Controller->User->join( 'Group', array( 'type' => 'INNER' ) )
+				)
+			);
+			$records = $this->Controller->User->find( 'all', $query );
+			$records[0] += array(
+				'Test' => array(
+					'hidden' => 'test'
+				)
+			);
+			
+			// Ces valeurs sont générés par WebrsaCohorteComponent et disponnible dans la vue dans $configuredCohorteParams
+			$params = array(
+				'extraHiddenFields' => array( 
+					'User.modified' => Hash::get($records, '0.User.modified')
+				),
+				'entityErrorPrefix' => 'Cohorte',
+				'cohorteFields' => array( 
+					'data[][Test][test]' => array(
+						'type' => 'select',
+						'label' => '',
+						'empty' => true,
+						'options' => array( '1', '2', '3' )
+					),
+					'data[][Test][hidden]' => array(
+						'type' => 'hidden',
+						'hidden' => true,
+					),
+					'TestErreur' => array(
+						'type' => 'hidden',
+						'hidden' => true,
+					),
+				)
+			);
+			
+			$result = $this->Default->configuredCohorte( $records, $params );
+
+			$base = Router::url( '/' );
+			$expected = '<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>
+				<table class="users index">
+					<thead>
+						<tr>
+							<th colspan="2">Utilisateur</th>
+							<th>Groupe</th>
+							<th colspan="2"></th>
+						</tr>
+						<tr>
+							<th id="ColumnUserUsername">
+								<a href="'.$base.'users/index/page:1/sort:User.username/direction:asc">Identifiant</a>
+							</th>
+							<th id="ColumnUserCreated">
+								<a href="'.$base.'users/index/page:1/sort:User.created/direction:asc">Créé le</a>
+							</th>
+							<th id="ColumnGroupName">
+								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
+							</th>
+							<th id="ColumnInputDataTestTest">Test cohorte</th>
+							<th colspan="2" class="actions" id="ColumnActions">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="odd">
+							<td class="data string ">admin</td>
+							<td class="data datetime ">29/06/2015 à 00:28:35</td>
+							<td class="data string ">Admin</td>
+							<td class="input select">
+								<div class="input select">
+									<label for="0TestTest"></label>
+									<select name="data[0][Test][test]" id="0TestTest">
+										<option value=""></option>
+										<option value="0">1</option>
+										<option value="1">2</option>
+										<option value="2">3</option>
+									</select>
+								</div>
+							</td>
+							<td class="action">
+								<a href="'.$base.'users/view" title="Voir l&#039;utilisateur « admin »" class="users view">Voir</a>
+							</td>
+							<td class="action">
+								<a href="'.$base.'users/edit" title="Modifier l&#039;utilisateur « admin »" class="users edit">Modifier</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>
+				<input type="hidden" name="data[0][Test][hidden]" hidden="1" value="test" id="0TestHidden"/>
+				<input type="hidden" name="data[User][modified]" value="2015-06-29 00:28:35" id="UserModified"/>'
+			;
+			
+			$this->assertEqualsXhtml( $result, $expected );
+			
+			Configure::write(
+				'ConfigurableQueryUsers.index',
+				array(
+					'fields' => array(
+						'User.username',
+						'User.created',
+						'Group.name',
+					),
+				)
+			);
+			
+			$result = $this->Default->configuredCohorte( $records, $params );
+
+			$base = Router::url( '/' );
+			$expected = '<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>
+				<table class="users index">
+					<thead>
+						<tr>
+							<th id="ColumnUserUsername">
+								<a href="'.$base.'users/index/page:1/sort:User.username/direction:asc">Identifiant</a>
+							</th>
+							<th id="ColumnUserCreated">
+								<a href="'.$base.'users/index/page:1/sort:User.created/direction:asc">Créé le</a>
+							</th>
+							<th id="ColumnGroupName">
+								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
+							</th>
+							<th id="ColumnInputDataTestTest">Test cohorte</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="odd">
+							<td class="data string ">admin</td>
+							<td class="data datetime ">29/06/2015 à 00:28:35</td>
+							<td class="data string ">Admin</td>
+							<td class="input select">
+								<div class="input select">
+									<label for="0TestTest"></label>
+									<select name="data[0][Test][test]" id="0TestTest">
+										<option value=""></option>
+										<option value="0">1</option>
+										<option value="1">2</option>
+										<option value="2">3</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination">
+					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
+				</div>
+				<input type="hidden" name="data[0][Test][hidden]" hidden="1" value="test" id="0TestHidden"/>
+				<input type="hidden" name="data[User][modified]" value="2015-06-29 00:28:35" id="UserModified"/>'
+			;
+			
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
