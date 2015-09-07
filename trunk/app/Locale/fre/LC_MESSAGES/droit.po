@@ -3045,10 +3045,16 @@ msgstr "Export CSV des résultats du moteur de recherche des allocataires sortan
 msgid "Module:Demenagementshorsdpts"
 msgstr "Recherche par allocataires sortants, hors département"
 
-msgid "Demenagementshorsdpts:search"
+msgid "Demenagementshorsdpts:search1"
 msgstr "Moteur de recherche par allocataires sortants, hors département"
 
+msgid "Demenagementshorsdpts:search"
+msgstr "Moteur de recherche par allocataires sortants, hors département (nouveau)"
+
 msgid "Demenagementshorsdpts:exportcsv"
+msgstr "Export CSV (nouveau)"
+
+msgid "Demenagementshorsdpts:exportcsv1"
 msgstr "Export CSV"
 
 ###############################################################################

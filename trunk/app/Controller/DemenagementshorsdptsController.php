@@ -33,7 +33,7 @@
 			'DossiersMenus',
 			'InsertionsAllocataires',
 			'Jetons2', // FIXME: à cause de DossiersMenus
-			'Search.Filtresdefaut' => array( 'search' ),
+			'Search.Filtresdefaut' => array( 'search', 'search1' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'search1' => array( 'filter' => 'Search' ),

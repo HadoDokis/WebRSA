@@ -1857,7 +1857,7 @@ body.fichesprescriptions93 div.ajax.select ul li, body.dsps div.ajax.select ul l
 	border-bottom: 1px solid silver;
 }
 
-body.search ul.actions li.action a.search, ul.actions li.action a.search_gestionnaire, a.display_formulaire {
+body.search ul.actions li.action a.search, body.search1 ul.actions li.action a.search1, ul.actions li.action a.search_gestionnaire, a.display_formulaire {
 	background-image: url("../img/icons/application_form_magnify.png");
 }
 
