@@ -30,3 +30,6 @@ msgstr "Voir"
 
 msgid "/Users/view/#User.id#"
 msgstr "Voir l'utilisateur « #User.username# »"
+
+msgid "data[][Test][test]"
+msgstr "Test cohorte"

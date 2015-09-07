@@ -53,7 +53,7 @@
 		 */
 		public function thead( array $fields, array $params ) {
 			if( $this->entityErrorPrefix !== null ) {
-				$cohorte = $this->request->data[$this->entityErrorPrefix];
+				$cohorte = Hash::get( $this->request->data, $this->entityErrorPrefix );
 				unset($this->request->data[$this->entityErrorPrefix]);	
 			}
 

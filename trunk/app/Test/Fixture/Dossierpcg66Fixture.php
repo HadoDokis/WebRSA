@@ -32,6 +32,18 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'foyer_id' => 1,
+				'poledossierpcg66_id' => 1,
+				'dateaffectation' => '2012-12-11',
+				'typepdo_id' => 1,
+				'datereceptionpdo' => '2012-12-11',
+				'originepdo_id' => 1,
+				'haspiecejointe' => 0,
+				'etatdossierpcg' => 'atttransmisop',
+				'dateimpression' => '2012-12-11',
+				'istransmis' => '0'
+			)
 		);
 
 	}

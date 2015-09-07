@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaRecherchesComponentTest.
+	 * Code source de la classe WebrsaAbstractRecherchesComponentTest.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,10 +10,14 @@
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'AppController', 'Controller' );
 	App::uses( 'Component', 'Controller' );
-	App::uses( 'WebrsaRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractMoteursComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 
-	class WebrsaRecherchesOrientsstructsComponent extends WebrsaRecherchesComponent
+	class WebrsaRecherchesOrientsstructsComponent extends WebrsaAbstractRecherchesComponent
 	{
+		public function params( array $params = array() ) {
+			return $this->_params($params);
+		}
 	}
 
 	/**
@@ -49,11 +53,11 @@
 	}
 
 	/**
-	 * La classe WebrsaRecherchesComponentTest ...
+	 * La classe WebrsaAbstractRecherchesComponentTest ...
 	 *
 	 * @package app.Test.Case.Controller.Component
 	 */
-	class WebrsaRecherchesComponentTest extends CakeTestCase
+	class WebrsaAbstractRecherchesComponentTest extends CakeTestCase
 	{
 		/**
 		 * Fixtures utilisés.
@@ -87,7 +91,7 @@
 		/**
 		 * Controller property
 		 *
-		 * @var WebrsaRecherchesComponent
+		 * @var WebrsaAbstractRecherchesComponent
 		 */
 		public $Controller;
 
@@ -154,7 +158,7 @@
 		}
 
 		/**
-		 * Test de la méthode WebrsaRecherchesComponent::params()
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::params()
 		 */
 		public function testParams() {
 			$this->setUpUrl( array( 'controller' => 'orientsstructs', 'action' => 'search' ) );
@@ -171,7 +175,7 @@
 		}
 
 		/**
-		 * Test de la méthode WebrsaRecherchesComponent::options()
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::options()
 		 */
 		public function testOptions() {
 			$this->setUpUrl( array( 'controller' => 'orientsstructs', 'action' => 'search' ) );
@@ -189,7 +193,7 @@
 
 
 		/**
-		 * Test de la méthode WebrsaRecherchesComponent::search() sans que le
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::search() sans que le
 		 * formulaire ait été envoyé.
 		 *
 		 * @todo: tester filtresdefault
@@ -203,7 +207,7 @@
 		}
 
 		/**
-		 * Test de la méthode WebrsaRecherchesComponent::search() après que le
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::search() après que le
 		 * formulaire ait été envoyé, sans aucune configuration.
 		 */
 		public function testSearchFormSentNoConfiguration() {
@@ -230,7 +234,7 @@
 		}
 
 		/**
-		 * Test de la méthode WebrsaRecherchesComponent::search() après que le
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::search() après que le
 		 * formulaire ait été envoyé, avec de la configuration.
 		 */
 		public function testSearchFormSentWithConfiguration() {
@@ -277,7 +281,7 @@
 		}
 
 		/**
-		 * Test de la méthode WebrsaRecherchesComponent::exportcsv()avec de la configuration.
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::exportcsv()avec de la configuration.
 		 */
 		public function testExportcsvWithConfiguration() {
 			$this->setUpUrl( array( 'controller' => 'orientsstructs', 'action' => 'exportcsv' ) );
