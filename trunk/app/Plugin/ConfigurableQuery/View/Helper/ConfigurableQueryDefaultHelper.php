@@ -42,7 +42,8 @@
 			),
 			'DefaultTable' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryTable'
-			)
+			),
+			'Form'
 		);
 		
 		/**
@@ -232,10 +233,11 @@
 			}
 			
 			foreach ( Hash::flatten( (array)$extraHiddenFields, '.' ) as $path => $value ) {
-				if ( strpos($path, '.') ) {
-					$input = $this->DefaultTable->DefaultTableCell->input( $path, array( 'type' => 'hidden', 'value' => $value ) );
-					$table .= count($input) ? $input[0] : '';
-				}
+				$input = strpos($path, '.') 
+					? $this->DefaultTable->DefaultTableCell->input( $path, array( 'type' => 'hidden', 'value' => $value ) ) 
+					: $this->Form->input( $path, array( 'type' => 'hidden', 'value' => $value ) )
+				;
+				$table .= is_array($input) ? $input[0] : $input;
 			}
 			
 			return $table;

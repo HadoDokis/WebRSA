@@ -45,14 +45,22 @@
 
 			if( !empty( $Controller->request->data ) || $this->_needsAutoSearch( $params ) ) {
 				$prepareForm = true;
+				
+				$Controller->request->params['named'] += array(
+					'page' => Hash::get($Controller->request->data, 'page' ),
+					'sort' => Hash::get($Controller->request->data, 'sort' ),
+					'direction' => Hash::get($Controller->request->data, 'direction' ),
+				);
 
 				// On retire la Cohorte en cas de changement de page
 				$sessionKey = 'Page Check: '.$Controller->name.'_'.$Controller->action;
-				$page = Hash::get( $Controller->request->data, 'page' );
-				if ( $Controller->Session->read( $sessionKey ) !== $page ) {
+				$page = (int)Hash::get( $Controller->request->data, 'page' );
+				
+				if ( (int)$Controller->Session->read( $sessionKey ) !== $page ) {
 					unset($Controller->request->data[$params['cohorteKey']]);
-					$Controller->Session->write( $sessionKey, ($page ? (int)$page : 1) );
+					$Controller->Session->write( $sessionKey, ($page ? $page : 1) );
 				}
+				$Controller->request->data['page'] = $page ? $page : 1;
 
 				// Si un formulaire de cohorte est renvoyé, on le traite
 				if( isset( $Controller->request->data[$params['cohorteKey']] ) ) {
@@ -95,7 +103,12 @@
 
 				// On conserve les filtres de recherche en élements cachés dans le formulaire de cohorte
 				$filterData =& $Controller->request->data[$params['searchKey']];
-				$extraHiddenFields = array( $params['searchKey'] => $filterData );
+				$extraHiddenFields = array( 
+					$params['searchKey'] => $filterData, 
+					'page' => Hash::get($Controller->request->data, 'page' ),
+					'sort' => Hash::get($Controller->request->data, 'sort' ),
+					'direction' => Hash::get($Controller->request->data, 'direction' ),
+				);
 
 				$configuredCohorteParams = array(
 					'format' => SearchProgressivePagination::format(
