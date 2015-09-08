@@ -3,7 +3,7 @@
 		'Filtresdefaut.Contratsinsertion_search',
 		array(
 			'Dossier' => array(
-				'dernier' => true
+				'dernier' => '1'
 			)
 		)
 	);

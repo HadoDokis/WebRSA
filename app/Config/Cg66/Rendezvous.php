@@ -10,15 +10,15 @@
 		array(
 			'Dossier' => array(
 				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-				'dernier' => true
+				'dernier' => '1'
 			),
 			'Rendezvous' => array(
 				// Case à cocher "Filtrer par date de RDV"
-				'daterdv' => false,
+				'daterdv' => '0',
 				// Du (inclus)
-				'daterdv_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
+				'daterdv_from' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '-1 week' ) ) ),
 				// Au (inclus)
-				'daterdv_to' => date( 'Y-m-d', strtotime( 'now' ) ),
+				'daterdv_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( 'now' ) ) ),
 			)
 		)
 	);

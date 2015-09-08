@@ -3,7 +3,7 @@
 		'Filtresdefaut.Dossierspcgs66_search',
 		array(
 			'Dossier' => array(
-				'dernier' => true
+				'dernier' => '1'
 			)
 		)
 	);
@@ -11,7 +11,7 @@
 		'Filtresdefaut.Dossierspcgs66_search_gestionnaire',
 		array(
 			'Dossier' => array(
-				'dernier' => true
+				'dernier' => '1'
 			)
 		)
 	);

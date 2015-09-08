@@ -166,7 +166,9 @@
 			'Par Dossiers EP' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
 				'Radiation de Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) ),
+				'Radiation de Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'cohorte_radiespe' ) ),
 				'Non inscription à Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) ),
+				'Non inscription à Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'cohorte_noninscritspe' ) ),
 			),
 			'Par Bilans de parcours' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),

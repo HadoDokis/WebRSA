@@ -145,6 +145,22 @@
 		/**
 		 * Préparation du test.
 		 */
+		public function setUp() {
+			Configure::write( 'Cg.departement', 66 );
+			parent::setUp();
+		}
+
+		/**
+		 * Nettoyage postérieur au test.
+		 */
+		public function tearDown() {
+			parent::tearDown();
+			unset( $this->Controller );
+		}
+
+		/**
+		 * Préparation du test.
+		 */
 		public function setUpUrl( array $url ) {
 			$Request = new CakeRequest( "{$url['controller']}/{$url['action']}", false );
 			$Request->addParams( $url );
@@ -170,6 +186,8 @@
 				'searchKey' => 'Search',
 				'searchKeyPrefix' => 'ConfigurableQuery',
 				'configurableQueryFieldsKey' => 'Orientsstructs.search',
+				'auto' => false,
+				'filtresdefautClass' => 'Search.Filtresdefaut'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

@@ -120,7 +120,7 @@
 							historiqueetatspe.id
 						FROM historiqueetatspe
 						WHERE historiqueetatspe.informationpe_id = {$aliasInformationpe}.id
-						ORDER BY historiqueetatspe.date DESC
+						ORDER BY historiqueetatspe.date DESC,  historiqueetatspe.id DESC
 						LIMIT 1
 				)";
 			}

@@ -36,7 +36,11 @@
 
 			$Controller->loadModel( $params['modelRechercheName'] );
 
-			if( !empty( $Controller->request->data ) ) {
+			if( !empty( $Controller->request->data ) || $this->_needsAutoSearch( $params ) ) {
+				if( $this->_needsAutoSearch( $params ) ) {
+					$this->_autoSearch( $params );
+				}
+
 				$query = $this->_getQuery( $params );
 
 				$Controller->{$params['modelName']}->forceVirtualFields = true;

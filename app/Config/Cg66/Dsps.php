@@ -10,7 +10,7 @@
 		array(
 			'Dossier' => array(
 				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-				'dernier' => true
+				'dernier' => '1'
 			)
 		)
 	);

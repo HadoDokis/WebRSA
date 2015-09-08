@@ -9,7 +9,7 @@
 				'nombre_total' => 0
 			),
 			'Dossier' => array(
-				'dernier' => true
+				'dernier' => '1'
 			)
 		)
 	);
