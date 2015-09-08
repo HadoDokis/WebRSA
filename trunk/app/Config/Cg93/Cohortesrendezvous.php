@@ -8,7 +8,7 @@
 		array(
 			'Search' => array(
 				'Dossier' => array(
-					'dernier' => 1
+					'dernier' => '1'
 				),
 				/*'Situationdossierrsa' => array(
 					'etatdosrsa_choice' => 1,
@@ -20,19 +20,11 @@
 				'Rendezvous' => array(
 					'statutrdv_id' => 2, // Statut "prévu"
 					'daterdv' => '1',
-					'daterdv_from' => array(
-						'year' => date( 'Y', strtotime( '+1 day' ) ),
-						'month' => date( 'm', strtotime( '+1 day' ) ),
-						'day' => date( 'd', strtotime( '+1 day' ) )
-					),
-					'daterdv_to' => array(
-						'year' => date( 'Y', strtotime( '+1 year' ) ),
-						'month' => date( 'm', strtotime( '+1 year' ) ),
-						'day' => date( 'd', strtotime( '+1 year' ) )
-					)
+					'daterdv_from' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '+1 day' ) ) ),
+					'daterdv_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '+1 year' ) ) ),
 				),
 				'Pagination' => array(
-					'nombre_total' => 0
+					'nombre_total' => '0'
 				)
 			)
 		)

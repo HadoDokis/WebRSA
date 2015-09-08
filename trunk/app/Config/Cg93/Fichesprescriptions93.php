@@ -15,7 +15,7 @@
 				'exists' => '1'
 			),
 			'Pagination' => array(
-				'nombre_total' => false
+				'nombre_total' => '0'
 			),
 			'Situationdossierrsa' => array(
 				'etatdosrsa_choice' => '1',
@@ -42,7 +42,7 @@
 					'exists' => '1'
 				),
 				'Pagination' => array(
-					'nombre_total' => false
+					'nombre_total' => '0'
 				),
 				'Situationdossierrsa' => array(
 					'etatdosrsa_choice' => '1',

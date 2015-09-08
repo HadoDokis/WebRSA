@@ -988,5 +988,67 @@
 
 			return $enums;
 		}
+
+		/**
+		 * Retourne des conditions permettant de s'assurer que le dossier d'EP
+		 * n'est pas encore attaché à une commission.
+		 *
+		 * @todo factoriser (appliquer ailleurs)
+		 *
+		 * @param string $dossierepId L'alias du champ Dossierep.id de la requête principale
+		 * @return array
+		 */
+		public function conditionsNonAttacheCommissionep( $dossierepId = 'Dossierep.id' ) {
+			$sqPassagecommissionep = $this->Passagecommissionep->sq(
+				array(
+					'alias' => 'passagescommissionseps',
+					'fields' => array( 'passagescommissionseps.dossierep_id' ),
+					'conditions' => array(
+						"passagescommissionseps.dossierep_id = {$dossierepId}"
+					),
+					'contain' => false
+				)
+			);
+
+			return array( "{$dossierepId} NOT IN ( {$sqPassagecommissionep} )" );
+		}
+
+		/**
+		 * Retourne des conditions permettant de s'assurer qu'un dossier d'EP
+		 * d'une pesonne donnée n'est pas en cours de passage en commission d'EP.
+		 *
+		 * @todo factoriser (appliquer ailleurs)
+		 *
+		 * @param string $personneId L'alias du champ Personne.id de la requête principale
+		 * @param string $dossierepId L'alias du champ Dossierep.id de la requête principale
+		 * @return array
+		 */
+		public function conditionsPersonneSansDossierEpEnCours( $personneId = 'Personne.id',  $dossierepId = 'Dossierep.id' ) {
+			return array(
+				"{$personneId} NOT IN (
+					SELECT
+							dossierseps.personne_id
+						FROM dossierseps
+						WHERE
+							dossierseps.personne_id = Personne.id
+							AND dossierseps.actif = '1'
+							AND dossierseps.id <> {$dossierepId}
+							AND dossierseps.id NOT IN ( ".
+								$this->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.dossierep_id = dossierseps.id',
+											'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+										)
+									)
+								)
+							." )
+				)"
+			);
+		}
 	}
 ?>

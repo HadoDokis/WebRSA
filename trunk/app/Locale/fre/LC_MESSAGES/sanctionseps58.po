@@ -21,3 +21,37 @@ msgstr "Formulaire"
 
 msgid "/Sanctionseps58/selectionradies/:title"
 msgstr "Visibilité du formulaire"
+
+# ------------------------------------------------------------------------------
+
+msgid "/Sanctionseps58/cohorte_radiespe/:heading"
+msgstr "Sélection des allocataires radiés de Pôle Emploi (nouveau)"
+
+msgid "/Sanctionseps58/cohorte_radiespe"
+msgstr "Formulaire"
+
+msgid "/Sanctionseps58/cohorte_radiespe/:title"
+msgstr "Visibilité formulaire"
+
+msgid "data[Cohorte][][Dossierep][chosen]"
+msgstr "Sélectionné ?"
+
+msgid "Historiqueetatpe.etat"
+msgstr "État"
+
+msgid "Historiqueetatpe.code"
+msgstr "Code"
+
+msgid "Historiqueetatpe.motif"
+msgstr "Motif"
+
+# ==============================================================================
+
+msgid "/Sanctionseps58/cohorte_noninscritspe/:heading"
+msgstr "Sélection des allocataires non inscrits à Pôle Emploi (nouveau)"
+
+msgid "/Sanctionseps58/cohorte_noninscritspe"
+msgstr "Formulaire"
+
+msgid "/Sanctionseps58/cohorte_noninscritspe/:title"
+msgstr "Visibilité formulaire"

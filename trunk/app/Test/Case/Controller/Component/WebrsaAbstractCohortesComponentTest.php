@@ -18,13 +18,13 @@
 	App::uses( 'AbstractWebrsaCohorteDossierpcg66', 'Model/Abstractclass' );
 	App::uses( 'WebrsaCohorteDossierpcg66Atransmettre', 'Model' );
 	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
-	
+
 	class PublicWebrsaCohortesDossierspcgs66Component extends WebrsaCohortesDossierspcgs66Component
 	{
 		/**
 		 * Appelle dynamiquement les fonctions protégés
 		 * $this->foo() appellera $this->_foo()
-		 * 
+		 *
 		 * @param string $name
 		 * @param array $arguments
 		 * @return mixed
@@ -71,14 +71,14 @@
 			'Cohortes',
 			'Session'
 		);
-		
+
 		/**
 		 * Les paramètres de redirection.
 		 *
 		 * @var array
 		 */
 		public $redirected = null;
-		
+
 		/**
 		 *
 		 * @param string|array $url A string or array-based URL pointing to another location within the app,
@@ -247,18 +247,19 @@
 			$this->Controller->Jetons2->initialize( $this->Controller );
 			$this->Controller->Cohortes->initialize( $this->Controller );
 			$this->Controller->PublicWebrsaCohortesDossierspcgs66->initialize( $this->Controller );
-			
+
 			$this->params = $this->Controller->PublicWebrsaCohortesDossierspcgs66->params( array(
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre'
 			) );
-			
+
 			CakeTestSession::write('Auth.User.id', 456);
-		}		
+		}
 
 		/**
 		 * Préparation du test.
 		 */
 		public function setUp() {
+			Configure::write( 'Cg.departement', 66 );
 			parent::setUp();
 			CakeTestSession::start();
 		}
@@ -307,6 +308,8 @@
 				'cohorteKey' => 'Cohorte',
 				'dossierIdPath' => '{n}.Dossier.id',
 				'modelSave' => 'Dossierpcg66',
+				'auto' => false,
+				'filtresdefautClass' => 'Search.Filtresdefaut'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -335,7 +338,7 @@
 			$this->setUpUrl( array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) );
 			$user_id = $this->Controller->Session->read( 'Auth.User.id' );
 			$php_sid = $this->Controller->Session->id();
-			
+
 			$result = $this->Controller->PublicWebrsaCohortesDossierspcgs66->getQuery( $this->params );
 			$expected = array(
 				'limit' => (int) 10,
@@ -589,7 +592,7 @@
 			);
 			$result['fields'][6] = preg_replace( '/"modified" >= \'[^\']+\'/', '"modified" >= \'XXX\'', $result['fields'][6] );
 			$result['conditions'][3] = preg_replace( '/"modified" >= \'[^\']+\'/', '"modified" >= \'XXX\'',	$result['conditions'][3] );
-			
+
 			$flatExpected = Hash::flatten($expected,'__');
 			foreach(Hash::flatten($result,'__') as $key => $value) {
 				if ($value !== $flatExpected[$key]) {
@@ -599,32 +602,32 @@
 					)));
 				}
 			}
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
-		
+
 		public function testFormatFieldsForInsert() {
 			$this->setUpUrl( array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) );
-			
+
 			$fields = array(
 				'Mymodel.field1' => array( 'type' => 'text' ),
 				'Mymodel.field2' => array( 'type' => 'checkbox' ),
 				'Mymodel2.field1' => array( 'type' => 'select', 'options' => array(1,2,3) ),
 			);
 			$result = $this->Controller->PublicWebrsaCohortesDossierspcgs66->formatFieldsForInsert( $fields, $this->params );
-			
+
 			$expected = array (
-				'data[Cohorte][][Mymodel][field1]' => 
+				'data[Cohorte][][Mymodel][field1]' =>
 					array (
 					  'type' => 'text',
 					  'options' => NULL,
 					),
-				'data[Cohorte][][Mymodel][field2]' => 
+				'data[Cohorte][][Mymodel][field2]' =>
 					array (
 					  'type' => 'checkbox',
 					  'options' => NULL,
 					),
-				'data[Cohorte][][Mymodel2][field1]' => 
+				'data[Cohorte][][Mymodel2][field1]' =>
 					array (
 					  'type' => 'select',
 					  'options' => array(1,2,3),
@@ -657,7 +660,7 @@
 			$this->Controller->request->data = array( 'Search' => array( 'Personne' => array( 'nom' => 'BUFFIN' ) ) );
 			$this->Controller->PublicWebrsaCohortesDossierspcgs66->cohorte( $this->params );
 			$this->assertTrue( isset( $this->Controller->viewVars['results'] ) );
-			
+
 			$expected = array (
 				array (
 					'Dossierpcg66' => array (
@@ -780,14 +783,14 @@
 			$result = (array)Hash::get( $this->Controller->viewVars, 'results' );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
-		
+
 		/**
 		 * On test l'enregistrement d'une cohorte, apres l'enregistrement, $result doit être vide
 		 */
 		public function testSaveCohorte() {
 			$this->setUpUrl( array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) );
 
-			$this->Controller->request->data = array( 
+			$this->Controller->request->data = array(
 				'Search' => array( 'Personne' => array( 'nom' => 'BUFFIN' ) ),
 				'Cohorte' => array(
 					(int) 0 => array(
@@ -813,7 +816,7 @@
 				)
 			);
 			$this->Controller->PublicWebrsaCohortesDossierspcgs66->cohorte( $this->params );
-			
+
 			$expected = array();
 			$result = (array)Hash::get( $this->Controller->viewVars, 'results' );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );

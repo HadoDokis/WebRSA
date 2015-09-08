@@ -4,13 +4,13 @@
 		array(
 			'Dossier' => array(
 				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-				'dernier' => true,
+				'dernier' => '1',
 				// Case à cocher "Filtrer par date de demande RSA"
-				'dtdemrsa' => false,
+				'dtdemrsa' => '0',
 				// Du (inclus)
-				'dtdemrsa_from' => date( 'Y-m-d', strtotime( '-1 week' ) ),
+				'dtdemrsa_from' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '-1 week' ) ) ),
 				// Au (inclus)
-				'dtdemrsa_to' => date( 'Y-m-d', strtotime( 'now' ) ),
+				'dtdemrsa_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( 'now' ) ) ),
 			),
 			'Pagination' => array(
 				'nombre_total' => 0

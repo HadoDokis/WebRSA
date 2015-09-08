@@ -18,7 +18,7 @@
 		 * @var array
 		 */
 		public $settings = array();
-		
+
 		/**
 		 * Retourne les options à envoyer dans la vue pour les champs du moteur
 		 * de recherche et les traductions de valeurs de certains champs.
@@ -35,10 +35,10 @@
 				$Controller->{$params['modelName']}->enums()
 			);
 		}
-		
+
 		/**
 		 * Permet de créer un fichier csv avec le contenu de la recherche
-		 * 
+		 *
 		 * @param array $params
 		 */
 		public function exportcsv( array $params = array() ) {
@@ -70,7 +70,7 @@
 
 			$Controller->layout = '';
 		}
-		
+
 		/**
 		 * Retourne un array avec clés de paramètres suivantes complétées en
 		 * fonction du contrôleur:
@@ -80,6 +80,9 @@
 		 *	- searchKeyPrefix: le préfixe des champs configurés
 		 *	- configurableQueryFieldsKey: les clés de configuration contenant les
 		 *    champs à sélectionner dans la base de données.
+		 *  - auto: la recherche doit-elle être lancée (avec les valeurs par défaut
+		 *    des filtres de recherche) automatiquement au premier accès à la page,
+		 *    lors de l'appel à une méthode search() ou cohorte().
 		 *
 		 * @param array $params
 		 * @return array
@@ -92,15 +95,17 @@
 				'modelRechercheName' => 'WebrsaRecherche'.$Controller->modelClass,
 				'searchKey' => 'Search',
 				'searchKeyPrefix' => 'ConfigurableQuery',
-				'configurableQueryFieldsKey' => "{$Controller->name}.{$Controller->request->params['action']}"
+				'configurableQueryFieldsKey' => "{$Controller->name}.{$Controller->request->params['action']}",
+				'auto' => false,
+				'filtresdefautClass' => 'Search.Filtresdefaut'
 			);
 
 			return $params;
 		}
-		
+
 		/**
 		 * Récupère la query de modelRechercheName->searchQuery et la met en cache
-		 * 
+		 *
 		 * @param mixed $keys
 		 * @param array $params
 		 * @return array
@@ -122,7 +127,7 @@
 
 			return $query;
 		}
-		
+
 		/**
 		 * Retourne le querydata complété par les conditions du moteur de recherche,
 		 * ainsi que des conditions liées à l'utilisateur connecté.
@@ -190,10 +195,10 @@
 
 			return $query;
 		}
-		
+
 		/**
 		 * Récupère la query complète pour la recherche en fonction des clefs du params
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -207,23 +212,80 @@
 			$query = $this->_getQueryConditions( $query, $params );
 
 			$query = $this->_getQueryOrder( $query, $params );
-			
+
 			return $query;
 		}
-		
+
 		/**
-		 * Prérempli les filtres du formulaire de recherche
-		 * 
+		 * Retourne le component (Search.)Filtresdefaut, au besoin en le
+		 * chargeant à la volée dans le contrôleur.
+		 *
+		 * @param array $params
+		 */
+		protected function _filtresdefaut( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			if( $Controller->Components->attached( 'Filtresdefaut' ) === false ) {
+				$Controller->Filtresdefaut = $Controller->Components->load( $params['filtresdefautClass'] );
+				$Controller->Filtresdefaut->initialize($Controller);
+			}
+
+			return $Controller->Filtresdefaut;
+		}
+
+		/**
+		 * Préremplit les filtres du formulaire de recherche
+		 *
 		 * @param array $params
 		 * @return array
 		 */
 		protected function _prepareFilter( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $params );
-			
-			$filtresdefaut = Configure::read( "Filtresdefaut.{$Controller->name}_{$Controller->action}" );
+
+			$filtresdefaut = Configure::read( $this->_filtresdefaut( $params )->configureKey() );
 			$Controller->request->data = Hash::merge( $Controller->request->data, array( $params['searchKey'] => $filtresdefaut ) );
-			
+
 			return $filtresdefaut;
+		}
+
+		/**
+		 * Doit-on forcer la recherche au premier accès à la page ?
+		 *
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected function _needsAutoSearch( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			return empty( $Controller->request->data ) && $params['auto'] === true;
+		}
+
+		/**
+		 * Lance automatiquement la recherche au premier accès à la page avec
+		 * le contenu des filtres par défaut.
+		 *
+		 * Complète la clé 'named' des params de la request pour que le formulaire
+		 * de filtres soit caché.
+		 *
+		 * @param array $params
+		 */
+		protected function _autoSearch( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			$this->_filtresdefaut( $params )->merge();
+
+			if( !empty( $params['searchKey'] ) ) {
+				$Controller->request->data = array(
+					$params['searchKey'] => $Controller->request->data
+				);
+			}
+
+			if( empty( $Controller->request->params['named'] ) ) {
+				$Controller->request->params['named'] = array( 'active' => true );
+			}
 		}
 	}

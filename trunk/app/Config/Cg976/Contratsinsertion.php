@@ -3,10 +3,10 @@
 		'Filtresdefaut.Contratsinsertion_search',
 		array(
 			'Dossier' => array(
-				'dernier' => true
+				'dernier' => '1'
 			),
 			'Pagination' => array(
-				'nombre_total' => true
+				'nombre_total' => '1'
 			)
 		)
 	);

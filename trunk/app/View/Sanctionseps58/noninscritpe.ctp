@@ -96,7 +96,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'sanctionseps58', 'action' => 'exportcsv', 'qdNonInscrits' ) + Hash::flatten( array( 'Search' => (array)Hash::get( $this->request->data, 'Search' ) ), '__' )
+					array( 'controller' => 'sanctionseps58', 'action' => 'exportcsv', 'qdNonInscrits' ) + Hash::flatten( array( 'Search' => (array)Hash::get( (array)$this->request->data, 'Search' ) ), '__' )
 				);
 			?></li>
 		</ul>

@@ -27,10 +27,10 @@
 			'Cohortes',
 			'WebrsaRecherches'
 		);
-		
+
 		/**
 		 * Utilise WebrsaAbstractRecherchesComponent et ajoute le traitement du formulaire d'une cohorte
-		 * 
+		 *
 		 * @param array $paramsComponent equivalent de $params de WebrsaRecherches::search( $params )
 		 * @param array $paramsSave Utilisé pour la fonction $this->saveCohorte()
 		 */
@@ -39,13 +39,13 @@
 			$params = $this->_params( $paramsComponent );
 			$options = $this->options( $params );
 			$Controller->loadModel( $params['modelRechercheName'] );
-			
+
 			// Suppression des jetons en cas de changement de page
 			$Controller->Cohortes->clean();
-			
-			if( !empty( $Controller->request->data ) ) {
+
+			if( !empty( $Controller->request->data ) || $this->_needsAutoSearch( $params ) ) {
 				$prepareForm = true;
-				
+
 				// On retire la Cohorte en cas de changement de page
 				$sessionKey = 'Page Check: '.$Controller->name.'_'.$Controller->action;
 				$page = Hash::get( $Controller->request->data, 'page' );
@@ -53,16 +53,16 @@
 					unset($Controller->request->data[$params['cohorteKey']]);
 					$Controller->Session->write( $sessionKey, ($page ? (int)$page : 1) );
 				}
-				
+
 				// Si un formulaire de cohorte est renvoyé, on le traite
 				if( isset( $Controller->request->data[$params['cohorteKey']] ) ) {
 					$dossiersIds = (array)Hash::extract(
 						$Controller->request->data[$params['cohorteKey']], $params['dossierIdPath']
 					);
 					$Controller->Cohortes->get($dossiersIds);
-					
+
 					$saved = $this->saveCohorte( $Controller->request->data[$params['cohorteKey']], $params, $paramsSave );
-				
+
 					if ( $saved ) {
 						$Controller->Cohortes->release($dossiersIds);
 					}
@@ -71,11 +71,14 @@
 					}
 				}
 
+				if( $this->_needsAutoSearch( $params ) ) {
+					$this->_autoSearch( $params );
+				}
+
 				// Recherche
 				$query = $this->_getQuery( $params );
 				$Controller->{$params['modelName']}->forceVirtualFields = true;
 				$results = $this->Allocataires->paginate( $query, $params['modelName'] );
-//debug($results);
 
 				// On prérempli le formulaire de cohorte
 				if( $prepareForm ) {
@@ -89,31 +92,31 @@
 
 				// On insert les élements du formulaire de cohorte dans le tableau de résultats
 				$cohorteFields = $this->_formatFieldsForInsert( $Controller->{$params['modelRechercheName']}->cohorteFields, $params );
-				
+
 				// On conserve les filtres de recherche en élements cachés dans le formulaire de cohorte
 				$filterData =& $Controller->request->data[$params['searchKey']];
 				$extraHiddenFields = array( $params['searchKey'] => $filterData );
-				
+
 				$configuredCohorteParams = array(
-					'format' => SearchProgressivePagination::format( 
-						!Hash::get( $Controller->request->data, 'Search.Pagination.nombre_total' ) 
+					'format' => SearchProgressivePagination::format(
+						!Hash::get( $Controller->request->data, 'Search.Pagination.nombre_total' )
 					),
 					'options' => $options,
 					'extraHiddenFields' => $extraHiddenFields,
 					'entityErrorPrefix' => 'Cohorte',
 					'cohorteFields' => $cohorteFields
 				);
-				
+
 				$Controller->set( compact('cohorteFields', 'results', 'extraHiddenFields', 'configuredCohorteParams') );
 			}
 
 			$Controller->set( compact('options') );
 		}
-		
+
 		/**
 		 * Sauvegarde des données de cohorte générique (à surcharger en cas de fonctionnement spécial)
 		 * En lien avec modelSave->saveCohorte()
-		 * 
+		 *
 		 * @param array $datas
 		 * @param array $paramsComponent
 		 * @param array $paramsSave Params à passer a la sauvegarde
@@ -123,12 +126,12 @@
 			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $paramsComponent );
 			$user_id = $Controller->Session->read( 'Auth.User.id' );
-			
+
 			$Controller->loadModel( $params['modelSave'] );
-			
+
 			$Controller->{$params['modelSave']}->begin();
 			$saved = (boolean)$Controller->{$params['modelRechercheName']}->saveCohorte( $datas, $paramsSave, $user_id );
-			
+
 			if ( $saved ) {
 				$Controller->{$params['modelSave']}->commit();
 				$Controller->Session->setFlash('Enregistrement effectué.', 'flash/success');
@@ -137,7 +140,7 @@
 				$Controller->{$params['modelName']}->rollback();
 				$Controller->Session->setFlash('Erreur lors de l\'enregistrement.', 'flash/error');
 			}
-			
+
 			return $saved;
 		}
 
@@ -150,7 +153,7 @@
 		 *	- searchKeyPrefix: le préfixe des champs configurés
 		 *	- configurableQueryFieldsKey: les clés de configuration contenant les
 		 *    champs à sélectionner dans la base de données.
-		 * 
+		 *
 		 *  - cohorteKey: le préfixe des inputs de la cohorte
 		 *  - dossierIdPath: chemin vers dossier_id revoyé en champs obligatoire ex: {n}.Foyer.dossier_id ou {n}.Dossier.id
 		 *  - modelSave: modèle utilisé par $this->saveCohorte() pour sauvegarder les données
@@ -160,13 +163,13 @@
 		 */
 		protected function _params( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
-			
+
 			$params += array(
 				'modelRechercheName' => 'WebrsaCohorte'.$Controller->modelClass,
 			);
 
 			$params += parent::_params( $params );
-			
+
 			$params += array(
 				'cohorteKey' => 'Cohorte',
 				'dossierIdPath' => '{n}.Dossier.id',
@@ -175,10 +178,10 @@
 
 			return $params;
 		}
-		
+
 		/**
 		 * Récupère la query complète pour la recherche en fonction des clefs du params
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -186,11 +189,11 @@
 			// On ne veux pas les dossiers avec un jeton d'un autre utilisateur
 			return $this->_Collection->getController()->Cohortes->qdConditions( parent::_getQuery($params) );
 		}
-		
+
 		/**
 		 * Transforme des champs de type < Model.field >, en < data[Cohorte][][Model][field] >
 		 * Destiné à être insérer avec ConfigurableQuery
-		 * 
+		 *
 		 * @param array $fields
 		 * @param array $paramsComponent
 		 * @return array
@@ -199,7 +202,7 @@
 			$params = $this->_params( $paramsComponent );
 			$formatedFields = array();
 			$options = $this->options($params);
-			
+
 			foreach ( Hash::normalize($fields) as $path => $value ) {
 				if ( strpos($path, '.') ) {
 					$model_field = model_field($path);
@@ -207,11 +210,11 @@
 					$value += array(
 						'options' => Hash::get($options, $path)
 					);
-					
+
 					$formatedFields[$formatedKey] = $value;
 				}
 			}
-			
+
 			return $formatedFields;
 		}
 	}

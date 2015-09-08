@@ -25,7 +25,7 @@
 			'Csv',
 			'Default2',
 			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 			'Search'
 		);
@@ -38,10 +38,18 @@
 		public $components = array(
 			'Allocataires',
 			'Jetons2',
+			'Cohortes',
 			'DossiersMenus',
-			'Search.Filtresdefaut' => array( 'selectionradies', 'selectionnoninscrits' ),
+			'Search.Filtresdefaut' => array(
+				'cohorte_radiespe',
+				'cohorte_noninscritspe',
+				'selectionradies',
+				'selectionnoninscrits'
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
+					'cohorte_radiespe' => array( 'filter' => 'Search' ),
+					'cohorte_noninscritspe' => array( 'filter' => 'Search' ),
 					'selectionradies' => array( 'filter' => 'Search' ),
 					'selectionnoninscrits' => array( 'filter' => 'Search' )
 				)
@@ -62,6 +70,10 @@
 		 * @var array
 		 */
 		public $crudMap = array(
+			'cohorte_radiespe' => 'create',
+			'exportcsv_radiespe' => 'read',
+			'cohorte_noninscritspe' => 'create',
+			'exportcsv_noninscritspe' => 'read',
 			'deleteNonrespectcer' => 'delete',
 			'exportcsv' => 'read',
 			'nonrespectcer' => 'create',
@@ -70,6 +82,18 @@
 		);
 
 		/**
+		 *
+		 * @var array
+		 */
+ 		public $commeDroit = array(
+			'cohorte_radiespe' => 'Sanctionseps58:selectionradies',
+			'exportcsv_radiespe' => 'Sanctionseps58:exportcsv',
+			'cohorte_noninscritspe' => 'Sanctionseps58:selectionnoninscrits',
+			'exportcsv_noninscritspe' => 'Sanctionseps58:exportcsv',
+		);
+
+		/**
+		 * @deprecated since 3.0.0
 		 *
 		 * @param string $qdName
 		 * @param string $origine
@@ -162,14 +186,14 @@
 		}
 
 		/**
-		 *
+		 * @deprecated since 3.0.0
 		 */
 		public function selectionnoninscrits() {
 			$this->_selectionPassageSanctionep58( 'qdNonInscrits', 'noninscritpe' );
 		}
 
 		/**
-		 *
+		 * @deprecated since 3.0.0
 		 */
 		public function selectionradies() {
 			$this->_selectionPassageSanctionep58( 'qdRadies', 'radiepe' );
@@ -269,6 +293,8 @@
 		/**
 		 * Export du tableau en CSV
 		 *
+		 * @deprecated since 3.0.0
+		 *
 		 * @param string $qdName
 		 */
 		public function exportcsv( $qdName ) {
@@ -294,6 +320,75 @@
 			$this->layout = null;
 
 			$this->set( compact( 'options', 'personnes', 'nameTableauCsv' ) );
+		}
+
+		/**
+		 * Cohorte de sélection des allocataires radiés de Pôle Emploi (nouveau).
+		 */
+		public function cohorte_radiespe() {
+			$this->loadModel('Personne');
+
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+
+			$Cohortes->cohorte(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
+					'auto' => true
+				)
+			);
+		}
+
+		/**
+		 * Export CSV desc résultats de la cohorte de sélection des allocataires
+		 * radiés de Pôle Emploi (nouveau).
+		 */
+		public function exportcsv_radiespe() {
+			$this->loadModel('Personne');
+
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+
+			$Cohortes->exportcsv(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe'
+				)
+			);
+		}
+
+		/**
+		 * Cohorte de sélection des allocataires non inscrits à Pôle Emploi
+		 * (nouveau).
+		 */
+		public function cohorte_noninscritspe() {
+			$this->loadModel('Personne');
+
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+
+			$Cohortes->cohorte(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
+					'auto' => true
+				)
+			);
+		}
+
+		/**
+		 * Export CSV desc résultats de la cohorte de sélection des allocataires
+		 * non inscrits à Pôle Emploi (nouveau).
+		 */
+		public function exportcsv_noninscritspe() {
+			$this->loadModel('Personne');
+
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+
+			$Cohortes->exportcsv(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe'
+				)
+			);
 		}
 	}
 ?>
