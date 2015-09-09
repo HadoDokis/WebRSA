@@ -1537,4 +1537,14 @@
 			'values' => array( 1 )
 		)
 	);
+	
+	/**
+	 * Ordre d'affichage des dossiers EP selon différentes actions
+	 * $queryData['order'] prendra la valeur de la config.
+	 * Le nom est dynamique, si une action est manquante ici, ajoutez la comme suit : 'Order.' . $this->action
+	 */
+	Configure::write( 'Order.choose', array( 'Personne.nom', 'Personne.prenom' ) );
+	Configure::write( 'Order.decisionep', array( 'Personne.nom', 'Personne.prenom' ) );
+	Configure::write( 'Order.printOrdresDuJour', array( 'Adresse.nomcom' ) );
+	Configure::write( 'Order.traiterep', array( 'Personne.nom', 'Personne.prenom' ) );
 ?>

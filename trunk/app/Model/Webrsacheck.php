@@ -284,6 +284,18 @@
 				'Optimisations.useTableDernierdossierallocataire' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true ),
 				),
+				'Order.choose' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true ),
+				),
+				'Order.decisionep' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true ),
+				),
+				'Order.printOrdresDuJour' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true ),
+				),
+				'Order.traiterep' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true ),
+				),
 				'Periode.modifiable.nbheure' => 'integer',
 				'Recherche.identifiantpecourt' => 'boolean',
 				'Recherche.qdFilters.Serviceinstructeur' => 'boolean',

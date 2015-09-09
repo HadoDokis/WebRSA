@@ -505,7 +505,7 @@
 				}
 			}
 
-			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision );
+			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision, $this->action );
 
 			if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Commissionep->prepareFormData( $commissionep_id, $dossiers, $niveauDecision );
@@ -1182,7 +1182,7 @@
 
 			$this->assert( !empty( $commissionep ), 'error404' );
 
-			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision );
+			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision, $this->action );
 
 			if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {
 
