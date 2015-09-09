@@ -423,6 +423,15 @@
 						<?php endif;?>
 					</td>
 				</tr>
+				<tr class="odd">
+					<th><?php echo __d('contratsinsertion', 'Contratinsertion.positioncer');?></th>
+					<td>
+						<?php echo Hash::get($details, 'DEM.Contratinsertion.positioncer') ? __d('contratinsertion', 'ENUM::POSITIONCER::'.Hash::get($details, 'DEM.Contratinsertion.positioncer')) : '';?>
+					</td>
+					<td>
+						<?php echo Hash::get($details, 'CJT.Contratinsertion.positioncer') ? __d('contratinsertion', 'ENUM::POSITIONCER::'.Hash::get($details, 'DEM.Contratinsertion.positioncer')) : '';?>
+					</td>
+				</tr>
 				<tr class="even">
 					<th>Date de décision</th>
 					<td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details) );?></td>
