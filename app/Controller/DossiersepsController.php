@@ -197,8 +197,9 @@
 						.' )',
 					),
 					'limit' => 50,
-					'order' => array( 'Dossierep.id ASC' )
 				);
+				$configuredOrder = Configure::read( 'Order.'.$this->action );
+				$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
 
 				$options = $this->Dossierep->enums();
 				$options['Dossierep']['commissionep_id'] = $this->Dossierep->Passagecommissionep->Commissionep->find(

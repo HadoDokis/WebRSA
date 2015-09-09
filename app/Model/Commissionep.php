@@ -309,11 +309,12 @@
 		* @param integer $commissionep_id L'id technique de la séance d'EP
 		* @param string $niveauDecision Le niveau de décision ('decisionep' ou 'decisioncg') pour
 		*	lequel il faut les dossiers à passer par liste.
+		* @param string $actionName Le nom de l'action du Controller qui appel cette fonction (pour clef de config)
 		* @return array
 		* @access public
 		*/
 
-		public function dossiersParListe( $commissionep_id, $niveauDecision ) {
+		public function dossiersParListe( $commissionep_id, $niveauDecision, $actionName = 'default' ) {
 			$dossiers = array();
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
@@ -321,10 +322,8 @@
 				$queryData = $this->Passagecommissionep->Dossierep->{$model}->qdDossiersParListe( $commissionep_id, $niveauDecision );
 				$dossiers[$model]['liste'] = array();
 				if( !empty( $queryData ) ) {
-					$queryData['order'] = array(
-						'Personne.nom',
-						'Personne.prenom'
-					);
+					$configuredOrder = Configure::read( 'Order.'.$actionName );
+					$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
 					$dossiers[$model]['liste'] = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 				}
 			}
@@ -1670,9 +1669,6 @@
 						'Dossierep.themeep',
 						'Adresse.nomcom'
 					),
-					'order' => array(
-						'Adresse.nomcom ASC'
-					)
 				);
 			}
 			else {
@@ -1725,9 +1721,10 @@
 							)
 						)
 					),
-					'order' => array( 'Structurereferente.lib_struc ASC', 'Personne.nom ASC' )
 				);
 			}
+			$configuredOrder = Configure::read( 'Order.printOrdresDuJour' );
+			$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 			$options = Set::merge( $options, $this->enums() );
