@@ -459,6 +459,7 @@
 							'Contratinsertion.num_contrat',
 							'Contratinsertion.rg_ci',
 							'Contratinsertion.decision_ci',
+							'Contratinsertion.positioncer',
 							'Contratinsertion.datevalidation_ci'
 						),
 						'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),

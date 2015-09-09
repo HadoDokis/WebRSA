@@ -69,6 +69,9 @@ msgstr "Durée du contrat"
 msgid "Contratinsertion.decision_ci"
 msgstr "Décision"
 
+msgid "Contratinsertion.positioncer"
+msgstr "Position du contrat
+
 msgid "Contratinsertion.datedecision"
 msgstr "Date décision"
 
