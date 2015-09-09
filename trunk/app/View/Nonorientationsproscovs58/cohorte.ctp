@@ -1,145 +1,83 @@
 <?php
-	echo $this->Default3->titleForLayout();
-
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	echo $this->Default3->titleForLayout();
 
 	echo $this->Default3->actions(
 		array(
-			'/Nonorientationsproscovs58/cohorte/#toggleform' => array(
-				'onclick' => '$(\'Nonorientationsproscovs58CohorteSearchForm\').toggle(); return false;'
-			),
-		)
-	);
-
-	// 1. Moteur de recherche
-	echo $this->Xform->create( null, array( 'id' => 'Nonorientationsproscovs58CohorteSearchForm', 'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ) ) );
-
-	echo $this->Html->tag(
-		'fieldset',
-		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Search.Contratinsertion.df_ci' ) )
-		.$this->Xform->input( 'Search.Contratinsertion.df_ci', array( 'type' => 'hidden', 'value' => true ) )
-		.$this->Xform->input( 'Search.Contratinsertion.df_ci_from', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
-		.$this->Xform->input( 'Search.Contratinsertion.df_ci_to', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
-	);
-
-	echo $this->Allocataires->blocReferentparcours(
-		array(
-			'options' => $options,
-			'prefix' => 'Search'
-		)
-	);
-
-	echo $this->Allocataires->blocDossier(
-		array(
-			'options' => $options,
-			'prefix' => 'Search',
-			'skip' => array(
-				'Search.Dossier.dernier',
-				'Search.Situationdossierrsa.etatdosrsa'
+			'/Sanctionseps58/cohorte_radiespe/#toggleform' => array(
+				'onclick' => '$(\'Nonorientationsproscovs58CohorteSearchForm\').toggle(); return false;',
+				'class' => 'search'
 			)
 		)
 	);
+?>
 
-	echo $this->Allocataires->blocAdresse(
-		array(
-			'options' => $options,
-			'prefix' => 'Search'
-		)
-	);
-
-	echo $this->Allocataires->blocAllocataire(
-		array(
-			'options' => $options,
-			'prefix' => 'Search',
-			'skip' => array(
-				'Search.Calculdroitrsa.toppersdrodevorsa',
-			)
-		)
-	);
-
-	echo $this->Allocataires->blocPagination(
-		array(
-			'options' => $options,
-			'prefix' => 'Search'
-		)
-	);
-
-	echo $this->Xform->end( 'Search' );
-
-	echo $this->Observer->disableFormOnSubmit( 'Nonorientationsproscovs58CohorteSearchForm' );
-
-	// 2. Formulaire de traitement des résultats de la recherche
-	if( isset( $results ) ) {
-		if( !empty( $results ) ) {
-			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'Nonorientationsproscovs58CohorteForm' ) );
-		}
-
-		$this->Default3->DefaultPaginator->options(
-			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
+<?php echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'action' => $this->request->action ), 'id' => 'Nonorientationsproscovs58CohorteSearchForm', 'class' => ( !empty( $this->request->params['named'] ) ? 'folded' : 'unfolded' ) ) );?>
+	<?php
+		echo $this->Html->tag(
+			'fieldset',
+			$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Search.Contratinsertion.df_ci' ) )
+			.$this->Xform->input( 'Search.Contratinsertion.df_ci', array( 'type' => 'hidden', 'value' => true ) )
+			.$this->Xform->input( 'Search.Contratinsertion.df_ci_from', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
+			.$this->Xform->input( 'Search.Contratinsertion.df_ci_to', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
 		);
 
-		echo $this->Default3->index(
-			$results,
+		echo $this->Allocataires->blocDossier(
 			array(
-				'Dossier.numdemrsa',
-				'Personne.nom_complet',
-				'Personne.dtnai',
-				'Adresse.codepos',
-				'Foyer.enerreur' => array( 'sort' => false ),
-				'Orientstruct.date_valid',
-				'Contratinsertion.nbjours',
-				'Typeorient.lib_type_orient',
-				'Structurereferente.lib_struc',
-				'Referent.nom_complet',
-				'data[Cohorte][Orientstruct][][id]' => array(
-					'type' => 'checkbox',
-					'label' => false,
-					'value' => '#Orientstruct.id#'
-				),
-				// INFO: début champs cachés (en css)!
-				'data[Cohorte][Orientstruct][][personne_id]' => array(
-					'type' => 'hidden',
-					'label' => false,
-					'value' => '#Personne.id#'
-				),
-				'data[Cohorte][Dossier][][id]' => array(
-					'type' => 'hidden',
-					'label' => false,
-					'value' => '#Dossier.id#'
-				),
-				// INFO: fin champs cachés (en css)!
-				'/Orientsstructs/index/#Personne.id#' => array(
-					'class' => 'view'
+				'prefix' => 'Search',
+				'options' => $options,
+				'skip' => array(
+					'Search.Dossier.dernier',
+					'Search.Situationdossierrsa.etatdosrsa'
 				)
-			),
-			array(
-				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) )
 			)
 		);
-		// TODO: infobulle
+		echo $this->Allocataires->blocAdresse( array( 'prefix' => 'Search', 'options' => $options ) );
+		echo $this->Allocataires->blocAllocataire(
+			array(
+				'prefix' => 'Search',
+				'options' => $options,
+				'skip' => array(
+					'Search.Calculdroitrsa.toppersdrodevorsa'
+				)
+			)
+		);
+		echo $this->Allocataires->blocReferentparcours( array( 'prefix' => 'Search', 'options' => $options ) );
+		echo $this->Allocataires->blocPagination( array( 'prefix' => 'Search', 'options' => $options ) );
+		echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options ) );
+	?>
+	<div class="submit noprint">
+		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+	</div>
+<?php
+	echo $this->Form->end();
+	echo $this->Observer->disableFormOnSubmit('Nonorientationsproscovs58CohorteSearchForm');
+?>
 
-		if( !empty( $results ) ) {
-			echo $this->Default3->DefaultForm->buttons( array( 'Save' ) );
-			echo $this->Default3->DefaultForm->end();
+<?php
+	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
 
-			echo $this->Observer->disableFormOnSubmit( 'Nonorientationsproscovs58CohorteForm' );
+		echo $this->Xform->create( null,
+			array(
+				'id' => 'Nonorientationsproscovs58CohorteCohorte',
+//				'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
+			)
+		);
 
-			echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( '#Nonorientationsproscovs58CohorteForm input[type=checkbox]' ); return false;" ) );
-			echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '#Nonorientationsproscovs58CohorteForm input[type=checkbox]' ); return false;" ) );
-		}
+		echo $this->Default3->configuredCohorte( $results, $configuredCohorteParams	);
+
+		echo $this->Xform->end( 'Save' );
+		echo $this->Observer->disableFormOnSubmit('Nonorientationsproscovs58CohorteCohorte');
+
+		echo $this->element( 'search_footer', array( 'modelName' => 'Orientstruct', 'url' => array( 'action' => 'exportcsv' ) ) );
+
+		echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'return toutCocher();' ) );
+		echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'return toutDecocher();' ) );
 	}
 ?>
-<?php if( isset( $results ) ):?>
-<ul class="actionMenu">
-	<li><?php
-		echo $this->Xhtml->exportLink(
-			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-			( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
-		);
-	?></li>
-</ul>
-<?php endif;?>
