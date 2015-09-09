@@ -161,7 +161,8 @@
 			'Par Dossiers COV' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
 				'url' => array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ),
-				__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte/:heading' ) => array( 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte' ) ),
+				__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte1/:heading' ) => array( 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte1' ) ),
+				__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte/:heading' ) => array( 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte' ) )
 			),
 			'Par Dossiers EP' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),

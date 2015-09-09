@@ -1916,8 +1916,8 @@ body.nonorientationsproscovs58 ul.actions li.action a.cohorte {
 }
 
 body.nonorientationsproscovs58 table td.hidden,
-body.nonorientationsproscovs58 table #TableNonorientationsproscovs58CohorteColumnInputDataCohorteOrientstructPersonneId,
-body.nonorientationsproscovs58 table #TableNonorientationsproscovs58CohorteColumnInputDataCohorteDossierId {
+body.nonorientationsproscovs58 table #TableNonorientationsproscovs58Cohorte1ColumnInputDataCohorteOrientstructPersonneId,
+body.nonorientationsproscovs58 table #TableNonorientationsproscovs58Cohorte1ColumnInputDataCohorteDossierId {
 	display: none;
 }
 

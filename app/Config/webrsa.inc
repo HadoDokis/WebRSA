@@ -14,7 +14,7 @@
 	 *	'unoconv_bin' => '/home/cbuffin/Bureau/1/usr/bin/unoconv',
 	 *	// Pour Cloudooo
 	 *	'cloudooo_host' => '192.168.2.35',
-	 *	'cloudooo_port' => '8011'
+	 *	'cloudooo_port' => '8012'
 	 * )
 	 */
 
@@ -42,8 +42,8 @@
 		'Gedooo',
 		array(
 			'method' => 'cloudooo',
-			'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
-			'cloudooo_host' => 'cloudooo.test.adullact.org',
+			'wsdl' => 'http://127.0.0.1:8080/ODFgedooo/OfficeService?wsdl',
+			'cloudooo_host' => '172.31.76.12',
 			'cloudooo_port' => '8011'
 		)
 	);
@@ -55,10 +55,12 @@
 	 */
 	Configure::write( 'FULL_BASE_URL', 'http://localhost/webrsa/trunk' );
 
-	Configure::write( 'Cg.departement', 93 );
-	Configure::write( 'Utilisateurs.multilogin', false );
+	Configure::write( 'Cg.departement', 58 );
+	Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg'.Configure::read( 'Cg.departement' ) ) );
+
+	Configure::write( 'Utilisateurs.multilogin', true );
 	Configure::write( 'with_parentid', false ); // true = cg66
-	Configure::write( 'nom_form_ci_cg', 'cg93' );
+	Configure::write( 'nom_form_ci_cg', 'cg58' );
 	Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
 	Configure::write( 'Zonesegeographiques.CodesInsee', true );
 	//Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
@@ -79,7 +81,7 @@
 	 * Voir AppController::_isAdminAction().
 	 * @default false
 	 */
-	Configure::write( 'Admin.unlockall', true );
+	Configure::write( 'Admin.unlockall', false );
 
 	/**
 	 * Montant maximal des apres complémentaires pour une personne au cours
@@ -94,7 +96,7 @@
 	 * des apres complémentaires pour une personne.
 	 * @default 1 (une année du 01/01 au 31/12)
 	 */
-	Configure::write( 'Apre.periodeMontantMaxComplementaires', 2 );
+	Configure::write( 'Apre.periodeMontantMaxComplementaires', 1 );
 
 	/**
 	 * Paramètre à renseigner pour l'utilisation du bon MVC
@@ -106,8 +108,8 @@
 	 * Paramètres à renseigner pour les APRE's forfaitaires
 	 * FIXME: doc
 	 */
-	Configure::write( 'Apre.forfaitaire.montantbase', 250 );
-	Configure::write( 'Apre.forfaitaire.montantenfant12', 60 );
+	Configure::write( 'Apre.forfaitaire.montantbase', 400 );
+	Configure::write( 'Apre.forfaitaire.montantenfant12', 100 );
 	Configure::write( 'Apre.forfaitaire.nbenfant12max', 4 );
 
 	/**
@@ -152,7 +154,7 @@
 	/**
 	 *   Paramètre à renseigner pour le CG58 pour le lien pointant sur leur application
 	 */
-	Configure::write( 'UI.menu.lienDemandeur', false );
+	Configure::write( 'UI.menu.lienDemandeur', 'http://intranet.cg58.fr/applications/xbase/xbase_list.php?DBNAME=xbase_rsa&APPCODE=ALLOCATAIRE&LIST=Fichier RSA&NAV=NO-L&DISPLAYSTYLE=DISPLAYSTD&nCurPage=0&FILTER=;;;;;%s;;;;' );
 
 
 	/**
@@ -223,29 +225,6 @@
 	Configure::write( 'Optimisations.progressivePaginate', true );
 
 	/**
-	 * Surcharge de la pagination progressive pour les cohorte d'orientations, demandes orientées
-	 */
-	Configure::write( 'Optimisations.Cohortes_orientees.progressivePaginate', false );
-
-	/**
-	 * Surcharge de la pagination progressive pour l'action nouveaux
-	 * du contrôleur Cohortesci.
-	 */
-	Configure::write( 'Optimisations.Cohortesci_nouveaux.progressivePaginate', false );
-
-	/**
-	 * Surcharge de la pagination progressive pour l'action avisdemande
-	 * du contrôleur Cohortespdos.
-	 */
-	Configure::write( 'Optimisations.Cohortespdos_avisdemande.progressivePaginate', false );
-
-	/**
-	 * Surcharge de la pagination progressive pour l'action cohorte
-	 * du contrôleur Relancesnonrespectssanctionseps93.
-	 */
-	Configure::write( 'Optimisations.Relancesnonrespectssanctionseps93_cohorte.progressivePaginate', false );
-
-	/**
 	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
 	 */
 	Configure::write( 'Traitementpdo.fichecalcul_coefannee1', 34 );
@@ -264,125 +243,31 @@
 	Configure::write( 'alerteFinSession', false );
 
 	/**
-	 * Nombre de jours entre la date de prise de décision concernant un dossier d'EP
-	 * pour le thème "non respect et sanctions du CG 93" et un nouveau passage en
-	 * EP pour ce même thème.
-	 */
-	Configure::write( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions', 60 );
-
-	/**
-	 * Nombre de jours entre la date d'édition de la notification d'orientation et
-	 * l'envoi de la première relance pour le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer1', 60 );
-
-	/**
-	 * Nombre de jours entre la date de première relance et
-	 * l'envoi de la seconde relance pour le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 30 );
-
-	/**
-	 * Nombre de jours entre la date de seconde relance et
-	 * l'envoi de la troisième relance pour le thème "non respect et sanctions du CG 93"
-	 */
-// 	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 30 );
-
-	/**
-	 * Nombre de jours entre la date de fin du contrat précédent et l'envoi de
-	 * la première relance pour le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.relanceCerCer1', 60 );
-
-	/**
-	 * Nombre de jours entre la date de première relance et de
-	 * la seconde relance pour le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 30 );
-
-	/**
-	 * Montant de la réduction d'allocation lors d'un premier passage en EP pour
-	 * le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.montantReduction', 100 );
-
-	/**
-	 * Durée du délai supplémentaire (en jours) lors d'un premier passage en EP
-	 * pour le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 31 );
-
-	/**
-	 * Durée du délai (intervalle) accordé pour pour la détection des DO 19
-	 * pour le thème "non respect et sanctions du CG 93" grâce au shell
-	 * automatisationseps
-	 *
-	 * Voir le document app/docs/Documentation administrateurs.odt, partie
-	 * "Intervalles PostgreSQL"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.intervalleCerDo19', '1 month' );
-
-	/**
 	 * Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
-	 * le thème "détection brsa en parcours social sans réorientation"
+	 * le thème "non orientation professionelle"
+	 *
+	 * @deprecated
 	 */
-	Configure::write( 'Nonorientationproep93.delaiCreationContrat', 60 );
-
-	/**
-	 * Durée du délai (en jours) accordé pour la régularisation de l'état à Pôle Emploi
-	 * pour le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.delaiRegularisation', 60 );
-
-	/**
-	 * Durée du délai (en jours) accordé après un passage en EP dont la décision a été
-	 * d'accorder un délai supplémentaire pour le thème "non respect et sanctions du CG 93"
-	 */
-	Configure::write( 'Nonrespectsanctionep93.decisionep.delai', 40 );
-
-	/**
-	 * Montant de la réduction d'allocation lors d'un premier passage en EP pour
-	 * le thème "non respect des termes du CER du CG 93"
-	 */
-	Configure::write( 'Signalementep93.montantReduction', 100 );
-
-	/**
-	 * Durée du sursis (en jours) lors d'un premier passage en EP pour
-	 * le thème "non respect des termes du CER du CG 93"
-	 */
-	Configure::write( 'Signalementep93.dureeSursis', 31 );
+	Configure::write( 'Nonorientationproep58.delaiCreationContrat', 60 );
 
 	/**
 	 * Durée de la tolérance (en nombre de jours) par-rapport à la date de fin
-	 * d'un CER que l'on voudrait passer en EP pour le thème "non respect des
-	 * termes du CER du CG 93"
+	 * d'un CER que l'on voudrait passer en EP pour le thème "sanctionep58" et
+	 * l'origine "nonrespectcer"
 	 */
-	Configure::write( 'Signalementep93.dureeTolerance', 365 );
-
-	/**
-	 * Durée du délai (en jours) accordé après un passage en EP dont la décision a été
-	 * d'accorder un délai supplémentaire pour le thème "Non respect du CER"
-	 */
-	Configure::write( 'Signalementep93.decisionep.delai', 40 );
-
-	/**
-	 * Nombre de jours entre deux passages successifs en EP pour une même personne
-	 * et une même thématique.
-	 * FIXME: à rendre plus générique (pour toutes les thématiques)
-	 */
-	Configure::write( 'Dossierep.nbJoursEntreDeuxPassages', 31 );
+	Configure::write( 'Sanctionep58.nonrespectcer.dureeTolerance', 365 );
 
 	/**
 	 * Configuration pour le dialogue avec un CMS (système de gestion de contenu)
 	 * comme Alfresco, servant à stocker les PDF
 	 */
 	Configure::write(
-			'Cmis', array(
-		'url' => 'http://xxxxxx/alfresco/service/api/cmis',
-		'username' => 'user',
-		'password' => 'pass',
-		'prefix' => '/Sites/Webrsa',
-			)
+		'Cmis', array(
+			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+			'username' => 'user',
+			'password' => 'pass',
+			'prefix' => '/Sites/Webrsa',
+		)
 	);
 
 	/**
@@ -395,14 +280,14 @@
 
 
 	/**
-	 *  Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
-	 *   - toppersdrodevorsa     --> par défaut '1' (personne soumise à droit et devoir)
-	 *   - situationetatdosrsa   --> par défaut array( 'Z', '2', '3', '4') (dossier dans un droit ouvert et versable)
+	 * Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
+	 *   - toppersdrodevorsa     --> par défaut 1 (personne soumise à droit et devoir)
+	 *   - situationetatdosrsa   --> par défaut array( 'Z', 2, 3, 4) (dossier dans un droit ouvert et versable)
 	 *
 	 * INFO: depuis le passage en CakePHP 2.x, il faut mettre les valeurs numériques entre apostrophes.
 	 */
 	Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', '1' ); // aucune distincton sur le soumis à droit et devoir array( 0,1 )
-	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', '2', '3', '4' ) );// on prend toutes les valeurs possibles de l'état du dossier RSA
+	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', '2', '3', '4', '5', '6' ) );
 
 	/**
 	 * Permet de spécifier si les recherches sur l'identifiant Pôle Emploi d'un
@@ -415,13 +300,18 @@
 
 
 	/**
+	 * Variable contenant un array avec les id des typesorients du grand social et de l'emploi
+	 */
+	Configure::write( 'Typeorient.emploi_id', 1 );
+
+	/**
 	 * Durée du délai (intervalle) entre la date de validation de l'orientation et la date
 	 * d'inscription au Pôle Emploi
 	 *
 	 * Voir le document app/docs/Documentation administrateurs.odt, partie
 	 * "Intervalles PostgreSQL"
 	 */
-	Configure::write( 'Selectionnoninscritspe.intervalleDetection', '2 months' );
+	Configure::write( 'Selectionnoninscritspe.intervalleDetection', '6 weeks' );
 
 	/**
 	 * Gestion des anomalies
@@ -429,11 +319,10 @@
 	Configure::write( 'Optimisations.Gestionsanomaliesbdds.progressivePaginate', false );
 	Configure::write( 'Situationdossierrsa.etatdosrsa.ouvert', array( 'Z', '2', '3', '4' ) );
 
-
 	/**
 	 * 	Délai pour la détection des CERs arrivant à échéance
 	 */
-	Configure::write( 'Criterecer.delaiavanteecheance', '1 month' );
+	Configure::write( 'Criterecer.delaiavanteecheance', '1 months' );
 
 
 	/**
@@ -446,134 +335,31 @@
 	 */
 	Configure::write( 'Dossierep.delaiavantselection', null );
 
-
 	/**
 	 * 	Valeurs prises par le champ natpf pour déterminer si le dossier est en RSA Socle
 	 */
 	Configure::write( 'Detailcalculdroitrsa.natpf.socle', array( 'RSD', 'RSI', 'RSU', 'RSJ' ) );
 
 	/**
-	 * Permet d'indiquer les valeurs par défaut des formulaires de recherche.
-	 * Pour l'instant, ne fonctionne qu'avec le contrôleur Cohortes: "Cohortes" -> "Orientation"
-	 * 	- Demandes non orientées
-	 * 	- Demandes en attente de validation d'orientation
-	 * 	- Demandes orientées
-	 * ATTENTION:
-	 * 	1°) le filtre Filtre.paginationNombreTotal:
-	 * 		a°) Est la valeur inverse de progressivePaginate (cf. supra; car avec la pagination progressive, pas de nombre total)
-	 * 		b°) SURCHARGE la valeur de (dans l'ordre):
-	 * 			- Optimisations.progressivePaginate
-	 * 			- Optimisations.Cohortes.progressivePaginate
-	 * 			- Optimisations.Cohortes_orientees.progressivePaginate
-	 * 	2°) Le nombre de clés (chaînes de caractères se trouvant entre points) ne doit pas excéder 3. Exemple:
-	 * 		- Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier', array( 'dernier' => false ) ); est pris en compte
-	 * 		- Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier.dernier', false ); n'est pas pris en compte
+	 * Les conditions sur la dernière entrée venant de Pôle Emploi, utilisées pour la recherche des radiés
+	 * de Pôle Emploi.
+	 * Si ce paramétrage n'est pas présent, cela équivaut à:
+	 * Configure::write( 'Selectionradies.conditions', array( 'Historiqueetatpe.etat' => 'radiation' ) );
+	 *
+	 * - radiation ou cessation
+	 * -  depuis au moins 70 jours
+	 * -  dont le code de radiation ou de cessation n'est pas:
+	 *	* de 11 à 34
+	 *	* 41, 43, 44, 45, 46, 48, 49
+	 *	* 72
 	 */
 	Configure::write(
-			'Filtresdefaut.Cohortes_nouvelles', array(
-		'Detailcalculdroitrsa' => array(
-			'natpf_choice' => true, // Case à cocher "Filtrer par nature de prestation (RSA Socle)"
-			'natpf' => array( 'RSD', 'RSI' ) // Cases à cocher "Nature de la prestation"
-		),
-		'Filtre' => array(
-			'oridemrsa' => array( 'DEM' ), // Cases à cocher "Code origine demande Rsa"
-			'paginationNombreTotal' => false // Case à cocher "Obtenir le nombre total de résultats (plus lent)"
-		),
-		'Dossier' => array( 'dernier' => true ), // Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-		'Situationdossierrsa' => array(
-			'etatdosrsa_choice' => true, // Case à cocher "Filtrer par état du dossier"
-			'etatdosrsa' => array( 2, 3, 4 ) // Cases à cocher "État du dossier RSA"
-		),
-			)
-	);
-
-	/**
-	 * Copie des valeurs par défaut des filtres des demandes à orienter pour les demandes en attente.
-	 */
-	Configure::write( 'Filtresdefaut.Cohortes_enattente', Configure::read( 'Filtresdefaut.Cohortes_nouvelles' ) );
-
-	/**
-	 * Copie des valeurs par défaut des filtres des demandes à orienter pour les demandes orientées,
-	 * surcharge de la case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-	 * pour des raisons de performances
-	 */
-	Configure::write( 'Filtresdefaut.Cohortes_orientees', Configure::read( 'Filtresdefaut.Cohortes_nouvelles' ) );
-	Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier', array( 'dernier' => false ) );
-
-	/**
-	 * Harry - CG93
-	 * Apre complementaire CG93
-	 * @default true
-	 */
-	Configure::write( 'Apre.complementaire.query', true );
-
-	/**
-	 * Url pointant sur le serveur qui nous intéresse pour lcontacter QUERY
-	 * %s récupère le nom de l'utilisateur connecté
-	 */
-	Configure::write( 'Apre.complementaire.queryUrl', 'http://rsa-psql-p02.cg93.fr/query/?nomuser=%s' );
-
-	/**
-	 * 	Mise en paramétrage de la liste des chargés d'insertion et secrétaire liés à une fiche de candidature
-	 * 	@default: id des group auxquels les personnes sont liées
-	 * 	Mise en place suite à la demande d'améliorations du 28/02/2012 ( #5630 )
-	 */
-	Configure::write( 'Chargeinsertion.Secretaire.group_id', array( 16, 7, 12 ) );
-
-	/**
-	 * Pagination progressive pour la cohorte d'affectation de référents.
-	 */
-	Configure::write( 'Optimisations.Cohortesreferents93_affecter.progressivePaginate', true );
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortesreferents93/affecter
-	 * (menu "CER" > "1. Affectation d'un référent" > "Référents à affecter") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortesreferents93_affecter',
+		'Selectionradies.conditions',
 		array(
-			'Search' => array(
-				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-				'Dossier' => array( 'dernier' => true ),
-				'Orientstruct' => array(
-					// Case à cocher "Filtrer par date d'orientation"
-					'date_valid' => false,
-					// Du (inclus)
-					'date_valid_from' => date( 'Y-m-d', strtotime( '-1 month' ) ),
-					// Au (inclus)
-					'date_valid_to' => date( 'Y-m-d', strtotime( '+1 day' ) ),
-				),
-				'Situationdossierrsa' => array(
-					// Case à cocher "Filtrer par état du dossier"
-					'etatdosrsa_choice' => true,
-					// Cases à cocher "État du dossier RSA"
-					'etatdosrsa' => array( 2, 3, 4 )
-				),
-			),
-		)
-	);
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortesreferents93/affectes
-	 * (menu "CER" > "1. Affectation d'un référent" > "Référents déjà affectés") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortesreferents93_affectes',
-		Set::merge(
-			Configure::read( 'Filtresdefaut.Cohortesreferents93_affecter' ),
-			array(
-				'Search' => array(
-					'PersonneReferent' => array(
-						'dddesignation' => false,
-						// Du (inclus)
-						'dddesignation_from' => date( 'Y-m-d', strtotime( '-1 month' ) ),
-						// Au (inclus)
-						'dddesignation_to' => date( 'Y-m-d', strtotime( '+1 day' ) ),
-					),
-					'Pagination' => array(
-						'nombre_total' => true
-					)
-				)
+			'Historiqueetatpe.date < ( DATE( NOW() ) - INTERVAL \'70 days\' )',
+			'Historiqueetatpe.etat' => array( 'radiation', 'cessation' ),
+			'NOT' => array(
+				'Historiqueetatpe.code' => array( '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '41', '43', '44', '45', '46', '48', '49', '72' )
 			)
 		)
 	);
@@ -588,133 +374,6 @@
 	 * @default null
 	 */
 	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/visualisation
-	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortescers93_visualisation',
-		array(
-			'Search' => array(
-				'Contratinsertion' => array(
-					'dernier' => true
-				),
-				'Dossier' => array(
-					'dernier' => true
-				)
-			)
-		)
-	);
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/saisie
-	 * (menu "CER" > "2. Saisie CER") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortescers93_saisie',
-		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
-	);
-
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/avalidercpdv
-	 * (menu "CER" > "3. Validation Responsable") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortescers93_avalidercpdv',
-		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
-	);
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/premierelecture
-	 * (menu "CER" > "4. Décison CG -> 4.1. Première lecture") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortescers93_premierelecture',
-		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
-	);
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/validationcadre
-	 * (menu "CER" "4. Décison CG -> 4.2. Validation cadre") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortescers93_validationcadre',
-		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
-	);
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/validationcs
-	 * (menu "CER" "4. Décison CG -> 4.1. Validation CS") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortescers93_validationcs',
-		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
-	);
-
-
-	/**
-	 * Lorsque apache est utilisé en mode CGI, les fonctions apache_get_version()
-	 * et apache_get_modules() ne sont pas disponibles. Du coup, on passe par
-	 * la fonction exec() pour interroger directement le binaire apache.
-	 *
-	 * Ce paramètre de configuration permet de spécifier le chemin complet vers
-	 * le binaire apache.
-	 *
-	 * @default /usr/sbin/apache2
-	 */
-	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortetransfertspdvs93/atransferer
-	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortestransfertspdvs93_atransferer',
-		array(
-			'Search' => array(
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => '1'
-				),
-				'Dossier' => array(
-					'dernier' => '1',
-				),
-				'Orientstruct' => array(
-					'typeorient_id' => 1
-				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa_choice' => '1',
-					'etatdosrsa' => array( '2', '3', '4' )
-				)
-			)
-		)
-	);
-
-	/**
-	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortetransfertspdvs93/transferes
-	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cohortestransfertspdvs93_transferes',
-		array(
-			'Search' => array(
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => '1'
-				),
-				'Dossier' => array(
-					'dernier' => '1',
-				),
-				'Orientstruct' => array(
-					'typeorient_id' => 1
-				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa_choice' => '1',
-					'etatdosrsa' => array( '2', '3', '4' )
-				)
-			)
-		)
-	);
 
 
 	/**
@@ -739,64 +398,6 @@
 		Configure::read( 'Filtresdefaut.Cohortespdos_avisdemande' )
 	);
 
-
-	/**
-	 * Variable contenant un array avec les id des typesorients du social, sociopro et de l'emploi
-	 */
-	Configure::write( 'Orientstruct.typeorientprincipale', array( 'Socioprofessionnelle' => array( 1 ), 'Social' => array( 2 ), 'Emploi' => array( 3 ) ) );
-
-	/**
-	 * Précise la durée de détection des CER qui passent dans l'état "En attente
-	 * de renouvellement" qui sera utilisée dans la partie "Workflow CER", à
-	 * l'étape "2. Saisie d'un CER" pour le CG 93.
-	 *
-	 * @value string
-	 * @default null
-	 */
-	Configure::write( 'Cohortescers93.saisie.periodeRenouvellement', '1 month' );
-
-	/**
-	 * Permet de débloquer la fonctionnalité "Enregistrement automatique d'un RDV"
-	 * lors de la saisie d'un CER.
-	 *
-	 * @var boolean
-	 * @default null (false)
-	 */
-	Configure::write( 'Contratinsertion.RdvAuto.active', true );
-
-	/**
-	 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
-	 * qui concerne la rédaction d'un CER (ex.: "Individuel").
-	 *
-	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
-	 *
-	 * @var integer
-	 * @default null
-	 */
-	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', 16 );
-
-	/**
-	 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
-	 * qui indique que l'allocataire était présent (ex.: "Présent").
-	 *
-	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
-	 *
-	 * @var integer
-	 * @default null
-	 */
-	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', 1 );
-
-	/**
-	 * L'id technique de l'enregistrement de la table thematiquesrdvs ("Thématique du RDV")
-	 * qui concerne la rédaction d'un CER (ex.: "Pour un Contrat d'Engagement Réciproque").
-	 *
-	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
-	 *
-	 * @var integer
-	 * @default null
-	 */
-	Configure::write( 'Contratinsertion.RdvAuto.thematiquerdv_id', 5 );
-
 	/**
 	 * Permet-on à l'utilisateur de se reconnecter alors que sa session n'est pas
 	 * clôturée ni expirée ?
@@ -805,6 +406,35 @@
 	 * @default null (false)
 	 */
 	Configure::write( 'Utilisateurs.reconnection', true );
+
+	/**
+	 * Lorsque apache est utilisé en mode CGI, les fonctions apache_get_version()
+	 * et apache_get_modules() ne sont pas disponibles. Du coup, on passe par
+	 * la fonction exec() pour interroger directement le binaire apache.
+	 *
+	 * Ce paramètre de configuration permet de spécifier le chemin complet vers
+	 * le binaire apache.
+	 *
+	 * @default /usr/sbin/apache2
+	 */
+	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
+
+	/**
+	 * Conditions supplémentaires utilisées lors de la sélection des dossiers pour
+	 * une commission d'EP (url: /dossierseps/choose/...).
+	 *
+	 * Au CG 58, il faut que les dossiers sélectionnables soient dans un droit
+	 * ouvert et que les allocataires soient soumis à droits et devoirs.
+	 *
+	 * @param array
+	 */
+	Configure::write(
+		'Dossierseps.conditionsSelection',
+		array(
+			'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4', '5', '6' ),
+			'Calculdroitrsa.toppersdrodevorsa' => '1',
+		)
+	);
 
 	/**
 	 * Configuration de la gestion des mots de passe aléatoires.
@@ -869,252 +499,364 @@
 	 */
     Configure::write( 'Cui.Numeroconvention', '066130000100' );
 
-	/**
-	 * Conditions de base pour le brouillon des statistiques ministérielles.
-	 * De base (en dur), on s'assure que l'allocataire soit soumis à droits et
-	 * devoirs. Par contre, on ne s'assure pas de l'état du dossier, hors les
-	 * allocataires soumis à droits et devoirs devraient normalement n'être que
-	 * dans des dossiers en états ouverts.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_base',
-	 * 	array(
-	 *		'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
+    /**
+	 * Configuration de l'utilisation des thématiques de RDV du module RDV
 	 */
-    Configure::write(
-		'Statistiqueministerielle.conditions_base',
+	Configure::write('Rendezvous.useThematique', false );
+
+	/**
+	 * Permet d'indiquer l'id technique (ou les ids techniques) des enregistrements
+	 * de la table structuresreferentes afin de limiter les résultats des
+	 * recherches "Sélection des allocataires radiés de Pôle Emploi" et "Sélection
+	 * des allocataires non inscrits à Pôle Emploi" aux allocataires actuellement
+	 * orientés Pôle Emploi.
+	 *
+	 * @param integer|array
+	 * @default null
+	 */
+	Configure::write( 'Sanctionseps58.selection.structurereferente_id', 2 );
+
+	/**
+	 * Permet d'obtenir le nombre de résultats pour la "Sélection des allocataires
+	 * radiés de Pôle Emploi" et la "Sélection des allocataires non inscrits à
+	 * Pôle Emploi".
+	 *
+	 * @param boolean
+	 */
+	Configure::write( 'Optimisations.Sanctionseps58.progressivePaginate', false );
+
+	/**
+	 * Etats du dossier RSA pris en compte pour trouver les dossiers à fusionner
+	 * dans la gestion des doublons complexes.
+	 *
+	 * Par défaut, on cherche à fusionner les dossiers créés dans l'application
+	 * avec les dossiers envoyer par les flux CAF.
+	 *
+	 * @param array
+	 * @default array( 'Z' )
+	 */
+	Configure::write( 'Gestiondoublon.Situationdossierrsa2.etatdosrsa', array( 'Z' ) );
+
+	/**
+	 * Filtres par défaut du moteur de recherche des doublons complexes.
+	 */
+	Configure::write(
+		'Filtresdefaut.Gestionsdoublons_index',
 		array(
-			'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
+			'Search' => array(
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => true,
+					'etatdosrsa' => array( '0', '1', '2', '3', '4', '5', '6' ),
+				)
+			)
 		)
 	);
 
 	/**
-	 * Conditions pour la partie "Indicateurs d'organismes" des statistiques
-	 * ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Structurereferente: structure référente de la dernière orientation
-	 *   - Typeorient: type d'orientation de la structure référente de la dernière orientation
-	 *   - Referent: référent du parcours
-	 *   - Structurereferentereferent: structure référente du référent du parcours
-	 *   - Typeorientreferent: type d'orientation de la structure référente du référent du parcours
-	 *
-	 * Lorsque aucune conditions n'est définie pour une catégorie d'organismes, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_indicateurs_organismes',
-	 * 	array(
-	 * 		// Pôle Emploi (PE)
-	 * 		'pole_emploi' => array(
-	 * 			'Structurereferentereferent.id' => 2
-	 * 		),
-	 * 		'oppp_autre_pole_emploi' => null,
-	 * 		'entreprise_travail_temporaire' => null,
-	 * 		'organisme_creation_developpement_entreprise' => null,
-	 * 		'iae' => null,
-	 * 		'autre_professionnel' => null,
-	 * 		'service_departement' => null,
-	 * 		'service_departement_professionnel' => null,
-	 * 		'service_departement_social' => null,
-	 * 		'caf_msa' => null,
-	 * 		'ccas_cias' => null,
-	 * 		'autres' => null,
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
+	 * Filtres par défaut des indicateurs de suivi
 	 */
 	Configure::write(
-		'Statistiqueministerielle.conditions_indicateurs_organismes',
+		'Filtresdefaut.Indicateurssuivis_search',
 		array(
-			// Pôle Emploi (PE)
-			'pole_emploi' => array(),
-			// Organisme public de placement professionnel autre que PE (maison de l'emploi, PLIE, mission locale, ...)
-			'oppp_autre_pole_emploi' => array(),
-			// Entreprise de travail temporaire, agence privée de placement
-			'entreprise_travail_temporaire' => array(),
-			// Organisme d'appui à la création et au développement d'entreprise
-			'organisme_creation_developpement_entreprise' => array(),
-			// Insertion par l'activité économique (IAE) (uniquement si le référent appartient à l'IAE)
-			'iae' => array(),
-			// Autre organisme de placement professionnel
-			'autre_professionnel' => array(),
-			// Service du département
-			'service_departement' => array(),
-			// Service du département, dont orientation à dominante professionnelle
-			'service_departement_professionnel' => array(),
-			// Service du département, dont orientation à dominante sociale
-			'service_departement_social' => array(),
-			// CAF, MSA
-			'caf_msa' => array(),
-			// CCAS, CIAS
-			'ccas_cias' => array(),
-			// Autres organismes d'insertion
-			'autres' => array(),
-		)
-	);
-
-	/**
-	 * Conditions pour la partie "Indicateurs de délais" des statistiques ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Contratinsertion: premier CER de l'allocataire
-	 *   - Structurereferenterecer: structure référente du premier CER de l'allocataire
-	 *   - Typeorientcer: type d'orientation de la structure référente du premier CER de l'allocataire
-	 *
-	 * Lorsque aucune conditions n'est définie pour une catégorie de délais, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_types_cers',
-	 * 	array(
-	 * 		// Permet d'indiquer que la structure gère les PPPAE
-	 * 		'ppae' => array(
-	 * 			'Typeorientcer.id' => 2
-	 * 		)
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-	Configure::write(
-		'Statistiqueministerielle.conditions_types_cers',
-		array(
-			'ppae' => array()
-		)
-	);
-
-	/**
-	 * Conditions pour la partie "Indicateurs de caractéristiques des contrats" des statistiques ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Contratinsertion: premier CER de l'allocataire
-	 *   - Structurereferenterecer: structure référente du premier CER de l'allocataire
-	 *   - Typeorientcer: type d'orientation de la structure référente du premier CER de l'allocataire
-	 *
-	 * Lorsque aucune conditions n'est définie pour une catégorie de contrats, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_caracteristiques_contrats',
-	 * 	array(
-	 *		// Conditions permettant de cibler des contrat d'insertion RMI
-	 * 		'contrat_rmi' => null,
-	 *		// Conditions permettant de cibler des contrat RSA expérimentaux
-	 * 		'cer_experimental' => null,
-	 *		// Conditions permettant de cibler des PPAE
-	 * 		'ppae' => null,
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-	Configure::write(
-		'Statistiqueministerielle.conditions_caracteristiques_contrats',
-		array(
-			'contrat_rmi' => null,
-			'cer_experimental' => null,
-			'ppae' => null,
-		)
-	);
-
-	/**
-	 * Conditions pour la partie "Indicateurs de motifs de réorientations" des statistiques ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Orientstruct: dernière orientation de l'allocataire
-	 *   - Typeorient: type d'orientation de la structure référente de la dernière orientation de l'allocataire
-	 *   - Orientstructpcd: orientation précédente de l'allocataire
-	 *   - Typeorientpcd: type d'orientation de la structure référente de l'orientation précédente de l'allocataire
-	 *
-	 * Lorsque aucune conditions n'est définie pour un type de réorientation, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation',
-	 * 	array(
-	 *		// Conditions permettant de cibler des réorientations suite à une orientation initiale inadaptée
-	 * 		'orientation_initiale_inadaptee' => null,
-	 *		// Conditions permettant de cibler des réorientations suite à un changement de situation de la personne
-	 * 		'changement_situation_allocataire' => null,
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-	Configure::write(
-		'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation',
-		array(
-			'orientation_initiale_inadaptee' => null,
-			'changement_situation_allocataire' => null,
-		)
-	);
-
-	/**
-	 * Configuration du module "Tableaux de suivi d'activité PDV".
-	 */
-	Configure::write(
-		'Tableausuivipdv93',
-		array(
-			// Tous tableaux: l'id du types de rendez-vous "Individuel" qui sera prise en compte
-			'typerdv_id' => array( 16 ),
-			// Tous tableaux: l'id ou les ids des statuts de rendez-vous ("honoré", "non honoré", "prévu") qui seront pris en compte
-			'statutrdv_id' => array( 1 ),
-			// Tableaux 1 B 4: les valeurs des numéros du code famille de l'éction d'insertion
-			'numcodefamille' => array(
-				'acteurs_sociaux' => array( 7 ),
-				'acteurs_sante' => array( 8 ),
-				'acteurs_culture' => array( 9 )
-			),
-			//
-			// Conditions à prendre en compte pour limiter la liste des structures référentes/PDVs
-			// Les modèles disponibles sont: Pdv (alias de Structurereferente) et Typeorient
-			'conditionsPdv' => array(
-				'OR' => array(
-					'Typeorient.id' => Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ),
-					'Typeorient.parentid' => Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ),
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
 				),
-				'Pdv.lib_struc LIKE' => '%Projet de Ville%'
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Pagination' => array(
+					'nombre_total' => true
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( 'Z', '2', '3', '4' )
+				)
+			)
+		)
+	);
+
+	/**
+	 * Filtres par défaut de la recherche par allocataires ayant quitté le département
+	 */
+	Configure::write(
+		'Filtresdefaut.Demenagementshorsdpts_search',
+		array(
+			'Search' => array(
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Pagination' => array(
+					'nombre_total' => false
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
+
+	/**
+	 * Permet de parcourir les détails des allocataires n'ayant pas de prestation
+	 * RSA dans le menu du dossier.
+	 *
+	 * Permet également d'obtenir la liste des dossiers dans lesquels l'allocataire
+	 * ne possède plus de prestation RSA mais pour lesquels il existe des enregistrements
+	 * dans les tables métier de chacun des modules impactés.
+	 *
+	 * Permet également de voir dans la page de résumé du dossier les autres dossiers
+	 * dans lesquels se trouve l'allocataire avec des enregistrements dans les
+	 * tables métiers et pas de prestation.
+	 *
+	 * Les tables concernées sont: actionscandidats_personnes, apres, bilansparcours66,
+	 * contratsinsertion, cuis, dsps, dsps_revs, entretiens, fichesprescriptions93,
+	 * memos, orientsstructs, personnes_referents, propospdos, questionnairesd1pdvs93,
+	 * questionnairesd2pdvs93, rendezvous.
+	 *
+	 * ATTENTION: impacte les performances de l'application.
+	 *
+	 * @var boolean
+	 * @default null
+	 */
+	Configure::write( 'AncienAllocataire.enabled', true );
+
+	/**
+	 * Intervalle entre la date de la commission pour une des thématiques de
+	 * sanctions des EP du CG 58 et la date prévisionnelle de radiation du RSA.
+	 *
+	 * Utilisé dans les écrans
+	 *	- « Eq. Pluri. » → « 5. Gestion des sanctions » → « Gestion des sanctions »
+	 *	- « Eq. Pluri. » → « 5. Gestion des sanctions » → « Visualisation des sanctions »
+	 *	- Menu du dossier RSA → sous-menu demandeur ou conjoint → « Accompagnement du parcours » → « Historique des EPs » → lien « Passage »
+	 *
+	 * @var string
+	 * @default null
+	 */
+	Configure::write( 'Decisionsanctionep58.datePrevisionnelleRadiation', '8 months' );
+
+	/**
+	 * Paramétrage du module "Statistiques ministérielles"
+	 *
+	 * @param array
+	 */
+	Configure::write(
+		'Statistiqueministerielle',
+		array(
+			/**
+			 * Conditions permettant de définit les allocataires dans le champ
+			 * des droits et devoirs.
+			 *
+			 * Ces conditions seront utilisées dans les différents tableaux.
+			 *
+			 * Modèles disponibles: Dossier, Detaildroitrsa, Foyer, Situationdossierrsa,
+			 * Adressefoyer, Personne, Adresse, Prestation, Calculdroitrsa.
+			 */
+			'conditions_droits_et_devoirs' => array(
+				'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' ),
+				'Calculdroitrsa.toppersdrodevorsa' => '1'
 			),
-			// Paramétrages spéciaux pour le tableau 1 B 6
-			'Tableau1b6' => array(
-				// Rendez-vous collectif
-				'typerdv_id' => array( 15 ),
-				// Statuts prévus et honorés
-				'statutrdv_id_prevu_honore' => array( 1, 2 ),
-				// Les codes thèmes des thématiques de RDV (id de thematiquesrdvs => code)
-				//	E: Emploi (TRE, découverte des métiers, .recherche demploi par internet,...)
-				//	F : Formation (présentations d'actions organisées par des organismes, sensibilisation aux outils informatiques, ...)
-				//	VS : Vie Sociale (soutien administratif, logement, famille, mobilité, ...)
-				//	LCV : Loisirs, Culture, et Vacances (relais cultures du coeur, séjours vacances, ....)
-				//	IRSA : Information dispositif RSA (dispositif RSA uniquement)
-				//	2AD : Autres Accès aux Droits (retraite, CMU, transport, ...)
-				//	S : Santé (prévention, ...)
-				//	3R : Resocialisation, redynamisation, revalorisation (image de soi, ...)
-				//	FM : Forum et manifestation : Piloté ou copiloté par le Projet de ville
-				'map_thematiques_themes' => array(
-					4 => 'E',
-					3 => 'FM',
+			/**
+			 * Catégories et conditions des différents types de parcours du CG.
+			 * Les catégories sont: professionnel, socioprofessionnel et social.
+			 *
+			 * Utilisé dans le tableau "1 - Orientation des personnes ... au sens du type de parcours..."
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient.
+			 */
+			'conditions_types_parcours' => array(
+				'professionnel' => array(
+					'Typeorient.id' => (array)Configure::read( 'Typeorient.emploi_id' )
+				),
+				'socioprofessionnel' => array(
+					'Typeorient.id IS NULL'
+				),
+				'social' => array(
+					'NOT' => array(
+						'Typeorient.id' => (array)Configure::read( 'Typeorient.emploi_id' )
+					)
+				),
+			),
+			/**
+			 * Catégories (intitulés) et conditions des différents types de référents
+			 * uniques (structures référentes) pour la tableau "2 - Organismes de
+			 * prise en charge des personnes ... dont le référent unique a été désigné"
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente.
+			 */
+			'conditions_indicateurs_organismes' => array(
+				'Pôle emploi (PE) (2)' => array(
+					'Structurereferente.id' => 2
+				),
+				'Organisme public de placement professionnel autre que PE (maison de l\'emploi, PLIE, mission locale,...) (2)' => array(
+					'Structurereferente.id' => array( 23, 24, 25, 28, 29, 30 )
+				),
+				'Entreprise de travail temporaire, agence privée de placement (2)' => array(),
+				'Organisme d\'appui à la création et au développement d\'entreprise (2)' => array(
+					'Structurereferente.id' =>  16
+				),
+				'Insertion par l\'activité économique (IAE) (uniquement si le référent appartient à l\'IAE) (2)' => array(),
+				'Autres organismes de placement professionnel (2)' => array(
+					'Typeorient.id' => 1,
+					'NOT' => array(
+						'Structurereferente.id' => array( 2, 23, 24, 25, 26, 16, 28, 29, 30  )
+					)
+				),
+				'Service du département ou de l\'agence départementale d\'insertion (ADI) (3)' => array(
+					'Structurereferente.id'=> array( 1, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15 )
+				),
+				'dont orientation professionnelle ou socioprofessionnelle' => array(),
+				'dont orientation sociale' => array(
+					'Structurereferente.id' => array( 1, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15 )
+				),
+				'Caf (2)' => array(
+					'Structurereferente.id' => array( 27 )
+				),
+				'Msa (2)' => array(
+					'Structurereferente.id' => array( 3, 26 )
+				),
+				'CCAS, CIAS (2)' => array(
+					'Structurereferente.id' => array( 6 )
+				),
+				'Associations d\'insertion (2)' => array(),
+				'Autres organismes d\'insertion (2)' => array(),
+			),
+			/**
+			 * Catégories et délais permettant de différencier les types de contrats.
+			 *
+			 * Lorsqu'un contrat est signé avec Pôle Emploi, il s'agit à priori
+			 * d'un PPAE, alors qu'un CER pro n'est pas signé avec Pôle Emploi.
+			 *
+			 * Voir aussi Statistiqueministerielle.conditions_types_parcours (les conditions sont ajoutées automatiquement):
+			 *	- un CER pro est signé lors d'un type de parcours professionnel
+			 *	- un CER social ou professionnel est signé lors d'un type de parcours social ou sociprofessionnel
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): Orientstruct, Typeorient,
+			 * Contratinsertion, Structurereferentecer, Typeorientcer.
+			 */
+			'conditions_types_cers' => array(
+				'ppae' => array(
+					'Contratinsertion.structurereferente_id' => array( 2 )
+				),
+				'cer_pro' => array(
+					'NOT' => array(
+						'Contratinsertion.structurereferente_id' => array( 2 )
+					)
+				),
+				'cer_pro_social' => array(),
+			),
+			/**
+			 * Catégories et conditions permettant de différencier les organismes
+			 * SPE et les organismes Hors SPE.
+			 *
+			 * Les catégories sont: SPE et HorsSPE.
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente, Orientstructpcd, Typeorientpcd,
+			 * Structurereferentepcd.
+			 *
+			 * Utilisé dans les tableaux:
+			 *	- "4 - Nombre et profil des personnes réorientées..."
+			 *	- "4a - Motifs des réorientations..."
+			 *	- "4b - Recours à l'article L262-31"
+			 */
+			'conditions_organismes' => array(
+				'SPE' => array(
+					'Structurereferente.id' => array(
+						// Pôle Emploi
+						2,
+						// Missions locales
+						23, 24, 25
+					)
+				),
+				'SPE_PoleEmploi' => array(
+					'Structurereferente.id' => array(
+						// Pôle Emploi
+						2
+					)
+				),
+				'HorsSPE' => array(
+					// Qui ne sont pas...
+					'NOT' => array(
+						'Structurereferente.id' => array(
+							// Pôle Emploi
+							2,
+							// Missions locales
+							23, 24, 25
+						)
+					)
+				)
+			),
+			/**
+			 * Catégories et conditions permettant de différencier les motifs de
+			 * réorientations. Une valeur NULL signifie que la donnée sera non
+			 * disponible (ND).
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente, Orientstructpcd, Typeorientpcd,
+			 * Structurereferentepcd.
+			 *
+			 * Utilisé dans le tableau "4a - Motifs des réorientations...".
+			 */
+			'conditions_indicateurs_motifs_reorientation' => array(
+				array(
+					'orientation_initiale_inadaptee' => null,
+					'changement_situation_allocataire' => null
+				)
+			)
+		)
+	);
+
+	/**
+	 * Permet de spécifier les noms de serveurs servant d'environnement de
+	 * production afin que les mails ne soient pas envoyés à leurs destinataires
+	 * "normaux", mais à l'expéditeur du mail.
+	 *
+	 * @see WebrsaEmailConfig::isTestEnvironment()
+	 *
+	 * @param array
+	 *
+	 * @default null
+	 */
+	Configure::write( 'WebrsaEmailConfig.testEnvironments', array( 'skoltest.cg58.fr' ) );
+
+	/**
+	 * Permet d'utiliser le module ROME V3:
+	 *	- pour tous les départements:
+	 *		* shell: ImportCsvCodesRomeV3Shell
+	 *		* menu: Administration > Paramétrages > Codes ROME V3 (en fonction des habilitations)
+	 *		* menu: Recherches > Par DSP
+	 *		* menu du dossier RSA: DEM ou CJT > Droit > DSP d'origine
+	 *		* menu du dossier RSA: DEM ou CJT > Droit > MAJ DSP
+	 */
+	Configure::write( 'Romev3.enabled', false );
+
+	/**
+	 * Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
+	 * les dossiers de COV "non orientation professionelle"
+	 */
+	Configure::write( 'Nonorientationprocov58.delaiCreationContrat', 60 );
+
+	/**
+	 * Valeurs par défaut des filtres pour le moteur de recherche "Recherches" >
+	 * "Par dossiers COV" > "Demande de maintien dans le social (nouveau)"
+	 */
+	Configure::write(
+		'Filtresdefaut.Nonorientationsproscovs58_cohorte',
+		array(
+			'Search' => array(
+				'Contratinsertion' => array(
+					'df_ci_from' => strtotime( '-1 week' ),
+					'df_ci_to' => strtotime( 'now' )
+				),
+				'Pagination' => array(
+					'nombre_total' => 0
 				)
 			)
 		)

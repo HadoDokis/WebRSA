@@ -304,6 +304,8 @@
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche
 		 * de la cohorte.
 		 *
+		 * @deprecated since 3.0.0
+		 *
 		 * @return array
 		 */
 		public function cohorteQuery() {
@@ -585,6 +587,8 @@
 		 * Complète les conditions du querydata avec le contenu des filtres de
 		 * recherche de la cohorte.
 		 *
+		 * @deprecated since 3.0.0
+		 *
 		 * @param array $query
 		 * @param array $search
 		 * @return array
@@ -607,6 +611,8 @@
 		 * Cohorte de recherches des bénéficiaires pour lesquels un dossier COV
 		 * peut être créé pour la thématique.
 		 *
+		 * @deprecated since 3.0.0
+		 *
 		 * @param array $search
 		 * @return array
 		 */
@@ -620,6 +626,8 @@
 		/**
 		 * Tentative de sauvegarde de nouveaux dossiers de COV pour la thématique
 		 * à partir de la cohorte.
+		 *
+		 * @deprecated since 3.0.0
 		 *
 		 * @param array $orientsstructs
 		 * @param integer $user_id

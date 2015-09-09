@@ -31,12 +31,16 @@
 		public $components = array(
 			'Allocataires',
 			'Cohortes',
-			'Search.Filtresdefaut' => array( 'cohorte' ),
+			'Search.Filtresdefaut' => array(
+				'cohorte',
+				'cohorte1'
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'cohorte' => array( 'filter' => 'Search' ),
+					'cohorte1' => array( 'filter' => 'Search' )
 				)
-			),
+			)
 		);
 
 		/**
@@ -47,9 +51,9 @@
 		public $helpers = array(
 			'Allocataires',
 			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
-			'Search.SearchForm',
+			'Search.SearchForm'
 		);
 
 		/**
@@ -66,14 +70,65 @@
 		 */
 		public $commeDroit = array(
 			'cohorte' => 'Nonorientationsproseps:index',
-			'exportcsv' => 'Nonorientationsproseps:exportcsv'
+			'exportcsv' => 'Nonorientationsproseps:exportcsv',
+			'cohorte1' => 'Nonorientationsproseps:index',
+			'exportcsv1' => 'Nonorientationsproseps:exportcsv',
 		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'cohorte' => 'create',
+			'exportcsv' => 'read',
+			'cohorte1' => 'create',
+			'exportcsv1' => 'read'
+		);
+
+		/**
+		 * Cohorte de sélection des "Demandes de maintien dans le social
+		 * (nouveau)".
+		 */
+		public function cohorte() {
+			$this->loadModel('Orientstruct');
+
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientationsproscovs58' );
+
+			$Cohortes->cohorte(
+				array(
+					'modelName' => 'Orientstruct',
+					'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58'
+				)
+			);
+		}
+
+		/**
+		 * Export CSV desc résultats de la "Demandes de maintien dans le social
+		 * (nouveau)".
+		 */
+		public function exportcsv() {
+			$this->loadModel('Orientstruct');
+
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientationsproscovs58' );
+
+			$Cohortes->exportcsv(
+				array(
+					'modelName' => 'Orientstruct',
+					'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58'
+				)
+			);
+		}
 
 		/**
 		 * Recherche des bénéficiaires pour lesquels il est possible de créer un
 		 * dossier de COV pour la thématique.
+		 *
+		 * @deprecated since 3.0.0
 		 */
-		public function cohorte() {
+		public function cohorte1() {
 			if( !empty( $this->request->data ) ) {
 				$cohorte = (array)Hash::get( $this->request->data, 'Cohorte' );
 
@@ -140,8 +195,10 @@
 
 		/**
 		 * Export du tableau de résultats de la cohorte en CSV.
+		 *
+		 * @deprecated since 3.0.0
 		 */
-		public function exportcsv() {
+		public function exportcsv1() {
 			$search = (array)Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' );
 
 			$query = $this->Nonorientationprocov58->cohorte( $search );
