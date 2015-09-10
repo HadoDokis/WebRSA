@@ -821,25 +821,6 @@
 	 * les dossiers de COV "non orientation professionelle"
 	 */
 	Configure::write( 'Nonorientationprocov58.delaiCreationContrat', 60 );
-
-	/**
-	 * Valeurs par défaut des filtres pour le moteur de recherche "Recherches" >
-	 * "Par dossiers COV" > "Demande de maintien dans le social (nouveau)"
-	 */
-	Configure::write(
-		'Filtresdefaut.Nonorientationsproscovs58_cohorte',
-		array(
-			'Search' => array(
-				'Contratinsertion' => array(
-					'df_ci_from' => strtotime( '-1 week' ),
-					'df_ci_to' => strtotime( 'now' )
-				),
-				'Pagination' => array(
-					'nombre_total' => 0
-				)
-			)
-		)
-	);
 	
 	/**
 	 * Ordre d'affichage des dossiers EP selon différentes actions
