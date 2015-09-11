@@ -30,14 +30,21 @@
 		 * @var array
 		 */
 		public $components = array(
+			'Cohortes',
 			'DossiersMenus',
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
 			'Jetons2',
-			'Search.SearchPrg' => array(
-				'actions' => array( 'search' )
+			'Search.Filtresdefaut' => array(
+				'cohorte_nouvelles',
+				'search'
 			),
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'search' => array( 'filter' => 'Search' )
+				)
+			)
 		);
 
 		/**
@@ -71,6 +78,7 @@
 			'fileview' => 'Orientsstructs:filelink',
 			'search' => 'Criteres:index',
 			'exportcsv' => 'Criteres:exportcsv',
+			'cohorte_nouvelles' => 'Cohortes:nouvelles',
 		);
 
 		/**
@@ -83,6 +91,7 @@
 			'add' => 'create',
 			'ajaxfileupload' => 'create',
 			'ajaxfiledelete' => 'delete',
+			'cohorte_nouvelles' => 'update',
 			'fileview' => 'read',
 			'delete' => 'delete',
 			'download' => 'read',
@@ -677,7 +686,7 @@
 		}
 
 		/**
-		 * Moteur de recherche
+		 * Moteur de recherche par orientation (nouveau).
 		 */
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
@@ -685,11 +694,29 @@
 		}
 
 		/**
-		 * Export du tableau de résultats de la recherche
+		 * Export du tableau de résultats de la recherche par orientation (nouveau).
 		 */
 		public function exportcsv() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
 			$Recherches->exportcsv();
+		}
+
+		/**
+		 * Cohorte des demandes non orientées (nouveau)
+		 */
+		public function cohorte_nouvelles() {
+			$Gedooo = $this->Components->load( 'Gedooo.Gedooo' );
+			$this->Gedooo->check( false, true );
+
+			$this->loadModel( 'Personne' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsNouvelles' );
+
+			$Cohortes->cohorte(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteOrientstructNouvelle'
+				)
+			);
 		}
 	}
 ?>
