@@ -218,6 +218,23 @@
 		}
 
 		/**
+		 * Filtres sur le Detaildroitrsa: oridemrsa
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
+		public function conditionsDetaildroitrsa( Model $model, $conditions, $search ) {
+			$oridemrsa = Set::extract( $search, 'Detaildroitrsa.oridemrsa' );
+			if( ( Hash::get( $search, 'Detaildroitrsa.oridemrsa_choice' ) !== '0' ) && isset( $search['Detaildroitrsa']['oridemrsa'] ) && !empty( $search['Detaildroitrsa']['oridemrsa'] ) ) {
+				$conditions[] = '( Detaildroitrsa.oridemrsa IN ( \''.implode( '\', \'', $oridemrsa ).'\' ) )';
+			}
+
+			return $conditions;
+		}
+
+		/**
 		 * Filtres sur la Personne:  nom, prenom, nomnai, nir, dtnai
 		 *
 		 * @param Model $model
@@ -395,8 +412,8 @@
 
 		/**
 		 * Combinaison des filtres conditionsDossier, conditionsPersonne, conditionsFoyer,
-		 * conditionsSituationdossierrsa, conditionsDetailcalculdroitrsa et
-		 * conditionsCalculdroitrsa.
+		 * conditionsSituationdossierrsa, conditionsDetaildroitrsa, conditionsDetailcalculdroitrsa
+		 * et conditionsCalculdroitrsa.
 		 *
 		 * @param Model $model
 		 * @param array $conditions
@@ -409,6 +426,7 @@
 			$conditions = $this->conditionsPersonne( $model, $conditions, $search );
 			$conditions = $this->conditionsFoyer( $model, $conditions, $search );
 			$conditions = $this->conditionsSituationdossierrsa( $model, $conditions, $search );
+			$conditions = $this->conditionsDetaildroitrsa( $model, $conditions, $search );
 			$conditions = $this->conditionsDetailcalculdroitrsa( $model, $conditions, $search );
 			$conditions = $this->conditionsCalculdroitrsa( $model, $conditions, $search );
 

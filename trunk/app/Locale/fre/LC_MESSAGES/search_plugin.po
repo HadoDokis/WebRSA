@@ -59,6 +59,14 @@ msgstr "États du dossier"
 
 # ------------------------------------------------------------------------------
 
+msgid "Search.Detaildroitrsa.oridemrsa_choice"
+msgstr "Filtrer par code origine demande RSA"
+
+msgid "Search.Detaildroitrsa.oridemrsa"
+msgstr "Code origine demande RSA"
+
+# ------------------------------------------------------------------------------
+
 msgid "Search.Detailcalculdroitrsa.natpf_choice"
 msgstr "Filtrer par nature de prestation"
 

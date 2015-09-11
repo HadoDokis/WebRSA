@@ -187,12 +187,15 @@
 			$content .= $this->_input( "{$params['prefix']}Dossier.dernier", $params, array( 'type' => 'checkbox' ) );
 			$content .= $this->_dateRange( "{$params['prefix']}Dossier.dtdemrsa", $params );
 
-			if( Hash::check( $params, 'options.Situationdossierrsa.etatdosrsa' ) ) {
-				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Situationdossierrsa.etatdosrsa", $params, array( 'options' => (array)Hash::get( $params, 'options.Situationdossierrsa.etatdosrsa' ) ) );
-			}
-
-			if( Hash::check( $params, 'options.Detailcalculdroitrsa.natpf' ) ) {
-				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Detailcalculdroitrsa.natpf", $params, array( 'options' => (array)Hash::get( $params, 'options.Detailcalculdroitrsa.natpf' ) ) );
+			$dcbPaths = array(
+				'Situationdossierrsa.etatdosrsa',
+				'Detailcalculdroitrsa.natpf',
+				'Detaildroitrsa.oridemrsa'
+			);
+			foreach( $dcbPaths as $dcbPath ) {
+				if( Hash::check( $params, "options.{$dcbPath}" ) ) {
+					$content .= $this->_dependantCheckboxes( "{$params['prefix']}{$dcbPath}", $params, array( 'options' => (array)Hash::get( $params, "options.{$dcbPath}" ) ) );
+				}
 			}
 
 			$paths = array(
