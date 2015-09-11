@@ -60,6 +60,7 @@
 			),
 			'Orientation' => array(
 				'Demandes non orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'nouvelles' ) ),
+				'Demandes non orientées (nouvelles)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_nouvelles' ) ),
 				'Demandes en attente de validation d\'orientation' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'enattente' ) ),
 				'Demandes orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'orientees' ) ),
 			),

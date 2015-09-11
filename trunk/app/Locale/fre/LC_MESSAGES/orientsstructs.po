@@ -240,3 +240,50 @@ msgstr "Inscrit au Pôle Emploi ?"
 
 msgid "Search.Activite.act"
 msgstr "Code activité"
+
+# ==============================================================================
+# Cohortes d'orientation
+# ==============================================================================
+
+msgid "/Orientsstructs/cohorte_nouvelles/:heading"
+msgstr "Demandes non orientées (nouveau)"
+
+msgid "/Orientsstructs/cohorte_nouvelles"
+msgstr "Formulaire"
+
+msgid "/Orientsstructs/cohorte_nouvelles/:title"
+msgstr "Visibilité formulaire"
+
+# ------------------------------------------------------------------------------
+
+msgid "Search.Orientstruct"
+msgstr "Recherche par orientation"
+
+msgid "Search.Orientstruct.propo_algo"
+msgstr "Type de préOrientation"
+
+# ------------------------------------------------------------------------------
+
+msgid "Personne.nom_complet_court"
+msgstr "Nom prenom"
+
+msgid "Personne.has_dsp"
+msgstr "Présence DSP"
+
+msgid "Dossier.statut"
+msgstr "Statut"
+
+msgid "/Dossiers/view"
+msgstr "Voir"
+
+msgid "data[Cohorte][][Orientstruct][typeorient_id]"
+msgstr "Orientation"
+
+msgid "data[Cohorte][][Orientstruct][structurereferente_id]"
+msgstr "Structure"
+
+msgid "data[Cohorte][][Orientstruct][statut_orient]"
+msgstr "Décision"
+
+msgid "/Dossiers/view/#Dossier.id#"
+msgstr "Accéder aux informations de #Personne.nom_complet_court#"
