@@ -9,6 +9,7 @@
 	 */
 	App::uses( 'Model', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
+	App::uses( 'ValidateAllowEmptyUtility', 'Utility' );
 
 	/**
 	 * La classe AppModel est la classe parente de toutes les classes de modèle
@@ -36,6 +37,13 @@
 		 * Permet de forcer l'utilisation des champs virtuels pour les modèles liés
 		 */
 		public $forceVirtualFields = false;
+		
+		/**
+		 * Liste des champs où la valeur du notEmpty/allowEmpty est configurable
+		 * 
+		 * @var array
+		 */
+		public $configuredAllowEmptyFields = array();
 
 		/**
 		 * Contient la liste des modules (au sens applicatif) auxquels ce modèle est lié.
@@ -81,6 +89,8 @@
 					$this->virtualFields[$name] = str_replace( '%s', $this->alias, $this->virtualFields[$name] );
 				}
 			}
+			
+			ValidateAllowEmptyUtility::initialize( $this );
 		}
 
 		/**

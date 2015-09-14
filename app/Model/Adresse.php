@@ -31,10 +31,7 @@
 
 		public $validate = array(
 			'libtypevoie' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
+				'notEmpty' => array( 'rule' => 'notEmpty', 'message' => 'Champ obligatoire' )
 			),
 			'nomvoie' => array(
 				array(
@@ -283,6 +280,15 @@
 			'ZONE',
 			'ZONE A URBANISER EN PRIORITE'
 		);
+		
+		/**
+		 * Liste des champs où la valeur du notEmpty/allowEmpty est configurable
+		 * 
+		 * @var array
+		 */
+		public $configuredAllowEmptyFields = array(
+			'libtypevoie'
+		);
 
 		/**
 		 * Surcharge du constructeur pour ajouter la règle de validation inList du
@@ -298,7 +304,7 @@
 			$this->validate['libtypevoie']['inList'] = array(
 				'rule'      => array( 'inList', $this->libtypevoie ),
 				'message'   => 'Veuillez choisir une valeur.',
-				'allowEmpty' => false
+				'allowEmpty' => !ValidateAllowEmptyUtility::isRequired('Adresse.libtypevoie')
 			);
 		}
 

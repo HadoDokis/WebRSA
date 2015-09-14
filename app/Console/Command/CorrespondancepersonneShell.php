@@ -103,8 +103,36 @@
 				array( 
 					'fields' => array(
 						'personne1_id', 
-						'personne2_id', 
+						'personne2_id',
+						'Foyer1.dossier_id',
+						'Foyer2.dossier_id',
 						'anomalie'
+					),
+					'joins' => array(
+						array(
+							'alias' => 'Personne1',
+							'table' => 'personnes',
+							'conditions' => 'Personne1.id = personne1_id',
+							'type' => 'INNER'
+						),
+						array(
+							'alias' => 'Personne2',
+							'table' => 'personnes',
+							'conditions' => 'Personne2.id = personne2_id',
+							'type' => 'INNER'
+						),
+						array(
+							'alias' => 'Foyer1',
+							'table' => 'foyers',
+							'conditions' => 'Foyer1.id = Personne1.foyer_id',
+							'type' => 'INNER'
+						),
+						array(
+							'alias' => 'Foyer2',
+							'table' => 'foyers',
+							'conditions' => 'Foyer2.id = Personne2.foyer_id',
+							'type' => 'INNER'
+						),
 					),
 					'conditions' => $conditions, 
 					'limit' => $limit 
@@ -112,7 +140,7 @@
 			);
 			
 			foreach( $finded as $value ) {
-				$this->out( var_export($value['Correspondancepersonne']) );
+				$this->out( var_export(Hash::flatten($value, '.')) );
 			}
 			
 			$this->out( sprintf( 'Soit %s enregistrements', count($finded) ) );

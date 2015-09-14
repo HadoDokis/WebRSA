@@ -1547,4 +1547,9 @@
 	Configure::write( 'Order.decisionep', array( 'Personne.nom', 'Personne.prenom' ) );
 	Configure::write( 'Order.printOrdresDuJour', array( 'Adresse.nomcom' ) );
 	Configure::write( 'Order.traiterep', array( 'Personne.nom', 'Personne.prenom' ) );
+	
+	/**
+	 * Validation parametrable pour l'allowEmpty
+	 */
+	Configure::write('ValidateAllowEmpty.Adresse.libtypevoie', false);
 ?>

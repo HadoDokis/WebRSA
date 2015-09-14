@@ -164,7 +164,8 @@
 	 */
 	CakePlugin::loadAll(
 		array(
-			'MultiDomainsTranslator' => array( 'bootstrap' => true )
+			'MultiDomainsTranslator' => array( 'bootstrap' => true ),
+			'AnalyseSql' => array( 'bootstrap' => true ),
 		)
 	);
 

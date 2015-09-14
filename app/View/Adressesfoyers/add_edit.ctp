@@ -36,7 +36,7 @@
 	echo '<div>'.$this->Form->input( 'Adressefoyer.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) ).'</div>';
 
 	echo $this->Form->input( 'Adresse.numvoie', array( 'label' =>   __d( 'adresse', 'Adresse.numvoie' ) ) );
-	echo $this->Form->input( 'Adresse.libtypevoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.libtypevoie' ) ), 'type' => 'select', 'options' => $options['Adresse']['libtypevoie'], 'empty' => true ) );
+	echo $this->Form->input( 'Adresse.libtypevoie', array( 'label' => ValidateAllowEmptyUtility::label( 'Adresse.libtypevoie', 'adresse' ), 'type' => 'select', 'options' => $options['Adresse']['libtypevoie'], 'empty' => true ) );
 	echo $this->Form->input( 'Adresse.nomvoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.nomvoie' ) ) ) );
 	echo $this->Form->input( 'Adresse.complideadr', array( 'label' =>  __d( 'adresse', 'Adresse.complideadr' ) ) );
 	echo $this->Form->input( 'Adresse.compladr', array( 'label' =>  __d( 'adresse', 'Adresse.compladr' ) ) );
