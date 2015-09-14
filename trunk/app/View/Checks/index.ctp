@@ -102,6 +102,10 @@
 						<h4 class="title">Champs spécifiés dans le webrsa.inc</h4>
 						<?php echo $this->Checks->table( $results['Webrsa']['configure_fields'] );?>
 					</div>
+					<div id="webrsa_configure_badKeys">
+						<h4 class="title">Clefs non valide webrsa.inc</h4>
+						<?php echo $this->Checks->table( $results['Webrsa']['configure_bad_keys'] );?>
+					</div>
 				</div>
 			</div>
 		</div>

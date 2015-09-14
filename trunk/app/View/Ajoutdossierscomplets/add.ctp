@@ -43,7 +43,7 @@
 			echo $this->Default2->subform(
 				array(
 					 'Adresse.numvoie',
-					 'Adresse.libtypevoie' => array( 'required' => true, 'type' => 'select', 'options' => $options['Adresse']['libtypevoie'], 'empty' => true ),
+					 'Adresse.libtypevoie' => array( 'required' => ValidateAllowEmptyUtility::isRequired('Adresse.libtypevoie'), 'type' => 'select', 'options' => $options['Adresse']['libtypevoie'], 'empty' => true ),
 					 'Adresse.nomvoie'  => array( 'required' => true ),
 					 'Adresse.complideadr',
 					 'Adresse.codepos' => array( 'required' => true),

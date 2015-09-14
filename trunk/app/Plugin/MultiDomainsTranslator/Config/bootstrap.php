@@ -16,6 +16,9 @@
 	 * @return string
 	 */
 	function __m( $singular, $args = null ) {
+		if (!is_array($args)) {
+			$args = array_slice(func_get_args(), 2);
+		}
 		return MultiDomainsTranslator::translate( $singular, $args );
 	}
 	
@@ -28,6 +31,9 @@
 	 * @return string
 	 */
 	function __mn( $singular, $plural, $count, $args = null ) {
+		if (!is_array($args)) {
+			$args = array_slice(func_get_args(), 4);
+		}
 		return MultiDomainsTranslator::translatePlural( $singular, $plural, $count, $args );
 	}
 ?>

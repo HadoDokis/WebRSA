@@ -10,7 +10,7 @@
 
 	<?php echo $this->Form->input( 'Adressefoyer.rgadr', array( 'type' => 'hidden', 'value' => '01' ) );?>
 	<?php echo $this->Form->input( 'Adresse.numvoie', array( 'label' =>   __d( 'adresse', 'Adresse.numvoie', true ) ) );?>
-	<?php echo $this->Form->input( 'Adresse.libtypevoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.libtypevoie', true ) ), 'type' => 'select', 'options' => $libtypevoie, 'empty' => true ) );?>
+	<?php echo $this->Form->input( 'Adresse.libtypevoie', array( 'label' => ValidateAllowEmptyUtility::label( 'Adresse.libtypevoie', 'adresse' ), 'type' => 'select', 'options' => $libtypevoie, 'empty' => true ) );?>
 	<?php echo $this->Form->input( 'Adresse.nomvoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.nomvoie', true ) ) ) );?>
 	<?php echo $this->Form->input( 'Adresse.complideadr', array( 'label' =>  __d( 'adresse', 'Adresse.complideadr', true ) ) );?>
 	<?php echo $this->Form->input( 'Adresse.compladr', array( 'label' =>  __d( 'adresse', 'Adresse.compladr', true ) ) );?>
