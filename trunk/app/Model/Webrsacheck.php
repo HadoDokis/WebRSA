@@ -145,6 +145,13 @@
 			sort( $models );
 			return $models;
 		}*/
+		
+		/**
+		 * Liste des clefs de type ValidateAllowEmpty
+		 * 
+		 * @var array
+		 */
+		protected $_validationAllowEmptyKeys = array();
 
 		/**
 		 * Fonction utilitaire permettant de charger l'ensemble des fichiers de
@@ -612,11 +619,26 @@
 			$method = '_allConfigureKeys'.Configure::read( 'Cg.departement' );
 
 			$configure = method_exists( $this, $method ) ? $this->{$method}() : array();
-			$configure = Hash::merge( $this->_allConfigureKeysCommon(), $configure );
+			$configure = Hash::merge( $this->_allConfigureKeysCommon(), $configure, $this->_allValidateAllowEmptyKeys() );
 
 			uksort( $configure, 'strnatcasecmp' );
 
 			return $configure;
+		}
+		
+		/**
+		 * Permet d'obtenir la liste des configs type ValidateAllowEmpty.Model.field
+		 * 
+		 * @return array
+		 */
+		protected function _allValidateAllowEmptyKeys() {
+			$results = array();
+			
+			foreach ( $this->_getValidationAllowEmptyKeys() as $key ) {
+				$results[$key] = array( array( 'rule' => 'boolean', 'allowEmpty' => true ) );
+			}
+			
+			return $results;
 		}
 
 		/**
@@ -1110,6 +1132,79 @@
 			}
 
 			return $errors;
+		}
+		
+		/**
+		 * Liste les clef de conf inutile
+		 * 
+		 * @return type
+		 */
+		public function allCheckBadKeys() {
+			$errors = array();
+			$badKeys = $this->_badValidateAllowEmptyKeys();
+			
+			$errors[ValidateAllowEmptyUtility::$confKey] = array(
+				'success' => empty( $badKeys ),
+				'value' => implode( ', ', $badKeys ),
+				'message' => empty( $badKeys )
+					? null
+					: 'Il n\'est actuellement pas possible de configurer la validation de ces champs'
+			);
+			
+			return $errors;
+		}
+		
+		/**
+		 * Récupère la liste des clefs potentielles de configuration allowEmpty d'un champ
+		 * 
+		 * @return array
+		 */
+		protected function _getValidationAllowEmptyKeys() {
+			if ( empty($this->_validationAllowEmptyKeys) ) {
+				$modelNames = App::objects('model');
+				$results = array();
+
+				foreach ( $modelNames as $modelName ) {
+					$Model = ClassRegistry::init( $modelName );
+
+					foreach ( $Model->configuredAllowEmptyFields as $fieldName ) {
+						$results[] = ValidateAllowEmptyUtility::configureKey( "{$Model->alias}.{$fieldName}" );
+					}
+				}
+
+				$this->_validationAllowEmptyKeys = $results;
+			}
+			
+			return $this->_validationAllowEmptyKeys;
+		}
+		
+		/**
+		 * Liste les clefs de ValidateAllowEmpty inutile
+		 * 
+		 * @return array
+		 */
+		protected function _badValidateAllowEmptyKeys() {
+			$results = array();
+			$list = $this->_getValidationAllowEmptyKeys();
+			
+			foreach ( ValidateAllowEmptyUtility::allConf() as $modelName => $params ) {
+				foreach ( array_keys($params) as $fieldName ) { 
+					$presence = false;
+					foreach ( $list as $key => $value ) {
+						if ( ValidateAllowEmptyUtility::configureKey( "{$modelName}.{$fieldName}" ) === $value ) {
+							$presence = true;
+							unset($list[$key]);
+							break;
+						}
+					}
+					
+					if ( $presence === false ) {
+						$results[] = "{$modelName}.{$fieldName}";
+					}
+				}
+			}
+			
+			return $results;
 		}
 	}
 ?>
