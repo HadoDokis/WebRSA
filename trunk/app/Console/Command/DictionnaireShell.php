@@ -61,6 +61,11 @@
 					'help' => 'le nom d\'une table pour limiter le dictionnaire à cette table uniquement',
 					'default' => null
 				),
+				'regexp' => array(
+					'short' => 'r',
+					'help' => 'une expression régulière pour limiter le dictionnaire à certaines tables',
+					'default' => null
+				),
 			);
 			$parser->addOptions( $options );
 			return $parser;
@@ -77,6 +82,9 @@
 			$this->out( '<info>Schéma</info> : <important>'.$this->params['schema'].'</important>' );
 			if( !empty( $this->params['table'] ) ) {
 				$this->out( '<info>Table</info> : <important>'.$this->params['table'].'</important>' );
+			}
+			if( !empty( $this->params['regexp'] ) ) {
+				$this->out( '<info>Regexp</info> : <important>'.$this->params['regexp'].'</important>' );
 			}
 		}
 
@@ -129,10 +137,15 @@
 			}
 
 			foreach( $schemas as $i => $schema ) {
-				$conditionsModule = null;
+				$conditions = null;
+
 				if( !empty( $this->params['module'] ) ) {
 					$regexp = $this->modules[$this->params['module']];
-					$conditionsModule = "AND ( information_schema.tables.table_name ~ '{$regexp}' )";
+					$conditions = "AND ( information_schema.tables.table_name ~ '{$regexp}' )";
+				}
+
+				if( !empty( $this->params['regexp'] ) ) {
+					$conditions = "AND ( information_schema.tables.table_name ~ '{$this->params['regexp']}' )";
 				}
 
 				$sql = "SELECT
@@ -140,7 +153,7 @@
 								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name LIMIT 1 ) AS \"Table__comment\"
 							FROM information_schema.tables
 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
-							{$conditionsModule}
+							{$conditions}
 							".( empty( $this->params['table'] ) ? "" : "AND ( information_schema.tables.table_name = '{$this->params['table']}' )\n" )."
 							ORDER BY table_name ASC".
 						( empty( $this->params['limit'] ) ? null : " LIMIT {$this->params['limit']}" ).";";
