@@ -176,7 +176,7 @@
 									'Orientstruct.typeorient_id IN (
 										SELECT t.id
 											FROM typesorients AS t
-											WHERE t.id = '.Configure::read( 'Typeorient.emploi_id' ).'
+											WHERE t.id IN ( '.implode( ',', (array)Configure::read( 'Typeorient.emploi_id' ) ).' )
 									)'
 								)
 							)
@@ -258,7 +258,7 @@
 								'Orientstruct.typeorient_id IN (
 									SELECT t.id
 										FROM typesorients AS t
-										WHERE t.id = '.Configure::read( 'Typeorient.emploi_id' ).'
+										WHERE t.id IN ( '.implode( ',', (array)Configure::read( 'Typeorient.emploi_id' ) ).' )
 								)'
 							)
 						)

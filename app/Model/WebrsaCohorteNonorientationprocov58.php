@@ -146,7 +146,7 @@
 				$ancienneTableEp = 'nonorientationsproseps58';
 
 				$delaiCreationContrat = Configure::read( "{$this->Nonorientationprocov58->alias}.delaiCreationContrat" );
-				$typesorientEmploiId = Configure::read( 'Typeorient.emploi_id' );
+				$typesorientEmploiIds = (array)Configure::read( 'Typeorient.emploi_id' );
 
 				// Sous-requête pour qu'il n'existe pas actuellement de dossier de COV pouvant déboucher sur une réorientation
 				$Cov58 = $this->Nonorientationprocov58->Dossiercov58->Passagecov58->Cov58;
@@ -316,10 +316,10 @@
 												osvt.personne_id = orientsstructs.personne_id
 												AND osvt.statut_orient = \'Orienté\'
 												AND osvt.date_valid > orientsstructs.date_valid
-												AND tosvt.id = '.$typesorientEmploiId.'
+												AND tosvt.id IN ( '.implode( ',', $typesorientEmploiIds ).' )
 									)
 								)
-								AND typesorients.id <> '.$typesorientEmploiId.'
+								AND typesorients.id NOT IN ( '.implode( ',', $typesorientEmploiIds ).' )
 								LIMIT 1
 						)',
 						// La personne ne doit pas être en cours de passage en COV pour cette thématique
