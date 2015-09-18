@@ -1761,11 +1761,11 @@ td.data.boolean {
 	padding-left: 20px;
 }
 
-td.data.boolean.true {
+td.data.boolean.true, td.action a.enabled.boolean.true {
 	background-image: url( ../img/icons/tick.png );
 }
 
-td.data.boolean.false {
+td.data.boolean.false, td.action a.enabled.boolean.false {
 	background-image: url( ../img/icons/cross.png );
 }
 
@@ -2013,4 +2013,16 @@ tr.even td div.largeColumn:hover {
 td div.largeColumn label {
 	width: 113px;
 	padding-left: 3px;
+}
+
+ul li a.refresh_page {
+	background-repeat: no-repeat;
+	padding-left: 25px;
+	text-decoration: none;
+	background-position: 5px center;
+	background-image: url("../img/icons/page_refresh.png");
+}
+
+tr td div.visited a {
+	color: #A95BBA;
 }

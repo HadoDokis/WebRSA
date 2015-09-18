@@ -40,7 +40,48 @@
 					$conditions[] = 'Dossierpcg66.etatdossierpcg = \'attinstr\' ';
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) {
-					$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \'decisionvalid\' ) ) AND ( Dossierpcg66.dateimpression IS NULL  )';
+					$this->Traitementpcg66 = ClassRegistry::init( 'Traitementpcg66' );
+					$sqTraitements = $this->Traitementpcg66->sq( 
+						array(
+							'alias' => '"traitementspcgs66"',
+							'fields' => 'traitementspcgs66.id',
+							'joins' => array_words_replace(
+								array(
+									$this->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
+									$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', 
+										array( 'type' => 'INNER' ) 
+									),
+									$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Decisiondossierpcg66', 
+										array( 'type' => 'LEFT' ) 
+									),
+								),
+								array(
+									'Traitementpcg66' => '"traitementspcgs66"',
+									'Personnepcg66' => '"personnespcgs66"',
+									'Decisiondossierpcg66' => '"decisionsdossierspcgs66"',
+									'Dossierpcg66' => '"dossierspcgs66"',
+								)
+							),
+							'contain' => false,
+							'conditions' => array(
+								'traitementspcgs66.imprimer' => 1,
+								'traitementspcgs66.etattraitementpcg' => 'imprimer',
+								'dossierspcgs66.id = Dossierpcg66.id',
+								'decisionsdossierspcgs66.id IS NULL'
+							),
+							'limit' => 1
+						)	
+					);
+					$conditions[] = array(
+						'OR' => array(
+							array(
+								'Decisiondossierpcg66.etatdossierpcg IS NULL',
+								'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
+								'Dossierpcg66.dateimpression IS NULL',
+							),
+							"EXISTS({$sqTraitements})"
+						)
+					);
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::attentetransmission' ) {
 					$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \'decisionvalid\' ) ) AND ( Decisiondossierpcg66.dossierpcg66_id IS NOT NULL ) AND ( Decisiondossierpcg66.validationproposition = \'O\') AND ( Dossierpcg66.etatdossierpcg NOT IN ( \'transmisop\' ) ) ';
@@ -211,6 +252,12 @@
 						.')'
 					)
 				),
+				$this->Dossier->Foyer->Personne->join( 'Prestation', 
+					array( 
+						'type' => 'INNER',
+						'conditions' => array( 'Prestation.rolepers' => 'DEM' )
+					)
+				)
 			);
 
 			$query = array(
@@ -256,7 +303,7 @@
 			);
 			
 			if( $statutAffectation === 'Affectationdossierpcg66::aimprimer' ) {
-				$query['order'] = array( 'Decisiondossierpcg66.datevalidation' );
+				$query['order'] = array( 'Foyer.id' );
 			}
 
 			$query = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresdossierspcgs66['Search'] );

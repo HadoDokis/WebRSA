@@ -198,3 +198,78 @@ msgstr "Organismes"
 
 msgid "data[Cohorte][][Decisiondossierpcg66][datetransmissionop]"
 msgstr "Date transmission"
+
+msgid "/Decisionsdossierspcgs66/add"
+msgstr "Ajouter"
+
+msgid "/Decisionsdossierspcgs66/add/:title"
+msgstr "Ajouter une proposition"
+
+msgid "Decisionpdo.libelle"
+msgstr "Proposition du technicien :"
+
+msgid "Decisiondossierpcg66.avistechnique"
+msgstr "Avis technique"
+
+msgid "Decisiondossierpcg66.dateavistechnique"
+msgstr "Date de l'avis technique"
+
+msgid "Decisiondossierpcg66.validationproposition"
+msgstr "Validation de la proposition"
+
+msgid "Decisiondossierpcg66.datevalidation"
+msgstr "Date de validation de la proposition"
+
+msgid "/Decisionsdossierspcgs66/view"
+msgstr "Voir"
+
+msgid "/Decisionsdossierspcgs66/edit"
+msgstr "Modifier"
+
+msgid "/Decisionsdossierspcgs66/avistechnique"
+msgstr "Contrôle"
+
+msgid "/Decisionsdossierspcgs66/validation"
+msgstr "Validation"
+
+msgid "/Dossierspcgs66/imprimer"
+msgstr "Imprimer"
+
+msgid "/Decisionsdossierspcgs66/transmettreop"
+msgstr "Transmettre OP"
+
+msgid "/Decisionsdossierspcgs66/cancel"
+msgstr "Annuler"
+
+msgid "/Decisionsdossierspcgs66/delete"
+msgstr "Supprimer"
+
+msgid "/Decisionsdossierspcgs66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Decisionsdossierspcgs66/view/#Decisiondossierpcg66.id#"
+msgstr "Vue de la proposition de décision"
+
+msgid "/Decisionsdossierspcgs66/edit/#Decisiondossierpcg66.id#"
+msgstr "Édition d'une décision"
+
+msgid "/Decisionsdossierspcgs66/avistechnique/#Decisiondossierpcg66.id#"
+msgstr "Édition d'une décision"
+
+msgid "/Decisionsdossierspcgs66/validation/#Decisiondossierpcg66.id#"
+msgstr "Validation de la proposition"
+
+msgid "/Dossierspcgs66/imprimer/#Decisiondossierpcg66.dossierpcg66_id#/#Decisiondossierpcg66.id#"
+msgstr "Imprimer la proposition"
+
+msgid "/Decisionsdossierspcgs66/transmettreop/#Decisiondossierpcg66.id#"
+msgstr "Transmission à l'organisme payeur (CAF / MSA)"
+
+msgid "/Decisionsdossierspcgs66/cancel/#Decisiondossierpcg66.id#"
+msgstr "Annulation de la proposition"
+
+msgid "/Decisionsdossierspcgs66/delete/#Decisiondossierpcg66.id#"
+msgstr "Supprimer la proposition"
+
+msgid "/Decisionsdossierspcgs66/filelink/#Decisiondossierpcg66.id#"
+msgstr "Liste des fichiers liés à la décision du dossier PCG"

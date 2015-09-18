@@ -397,7 +397,7 @@
 		 * @param type $confirmMessage
 		 * @return type
 		 */
-		public function printCohorteLink( $title, $url, $enabled = true, $confirmMessage = 'Etes-vous sûr de vouloir imprimer la cohorte ?' ) {
+		public function printCohorteLink( $title, $url, $enabled = true, $confirmMessage = 'Etes-vous sûr de vouloir imprimer la cohorte ?', $elementName ) {
 			$content = $this->image( 'icons/printer.png', array( 'alt' => '' ) ).' Imprimer la cohorte';
 
 			if( $enabled ) {
@@ -408,7 +408,7 @@
 					$View = new View( null, false );
 				}
 
-				return $View->element( 'popup' ).$this->link(
+				return $View->element( $elementName ).$this->link(
 					$content,
 					$url,
 					array(

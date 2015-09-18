@@ -1011,361 +1011,398 @@ class Dossierpcg66 extends AppModel {
 
 	/**************************************************************************************************************/
 		
-		/**
-		 * Retourne les positions et les conditions CakePHP/SQL dans l'ordre dans
-		 * lequel elles doivent être traitées pour récupérer la position actuelle.
-		 *
-		 * @return array
-		 */
-		protected function _getConditionsPositionsPcgs() {
-			$sqArevoir = 'EXISTS(
-				SELECT traitementspcgs66.id
-				FROM traitementspcgs66
-				INNER JOIN personnespcgs66 ON (personnespcgs66.id = traitementspcgs66.personnepcg66_id)
-				WHERE personnespcgs66.dossierpcg66_id = "Dossierpcg66"."id"
-				AND traitementspcgs66.typetraitement IS NOT NULL
-				AND traitementspcgs66.typetraitement = \'dossierarevoir\'
+	/**
+	 * Retourne les positions et les conditions CakePHP/SQL dans l'ordre dans
+	 * lequel elles doivent être traitées pour récupérer la position actuelle.
+	 *
+	 * @return array
+	 */
+	protected function _getConditionsPositionsPcgs() {
+		$sqArevoir = 'EXISTS(
+			SELECT traitementspcgs66.id
+			FROM traitementspcgs66
+			INNER JOIN personnespcgs66 ON (personnespcgs66.id = traitementspcgs66.personnepcg66_id)
+			WHERE personnespcgs66.dossierpcg66_id = "Dossierpcg66"."id"
+			AND traitementspcgs66.typetraitement IS NOT NULL
+			AND traitementspcgs66.typetraitement = \'dossierarevoir\'
+			LIMIT 1
+		)';
+
+		$sqAttinstrdocarrive = 'EXISTS(
+			SELECT traitementspcgs66.id
+			FROM traitementspcgs66
+			INNER JOIN personnespcgs66 ON (personnespcgs66.id = traitementspcgs66.personnepcg66_id)
+			WHERE personnespcgs66.dossierpcg66_id = "Dossierpcg66"."id"
+			AND traitementspcgs66.typetraitement IS NOT NULL
+			AND traitementspcgs66.typetraitement = \'documentarrive\'
+			AND NOT EXISTS(
+				SELECT traitementspcgs66_sq.id
+				FROM traitementspcgs66 AS traitementspcgs66_sq
+				WHERE personnespcgs66.id = traitementspcgs66_sq.personnepcg66_id
+				AND traitementspcgs66.descriptionpdo_id IS NOT NULL
+				AND traitementspcgs66.descriptionpdo_id IN (' . implode(', ', (array) Configure::read('Corbeillepcg.descriptionpdoId') ) . ')
+				AND traitementspcgs66_sq.created > traitementspcgs66.created
 				LIMIT 1
-			)';
-			
-			$sqAttinstrdocarrive = 'EXISTS(
-				SELECT traitementspcgs66.id
-				FROM traitementspcgs66
-				INNER JOIN personnespcgs66 ON (personnespcgs66.id = traitementspcgs66.personnepcg66_id)
-				WHERE personnespcgs66.dossierpcg66_id = "Dossierpcg66"."id"
+			)
+			ORDER BY traitementspcgs66.id DESC
+			LIMIT 1
+		)';
+
+		$sqAttinstrattpiece = 'EXISTS(
+			SELECT traitementspcgs66.id
+			FROM traitementspcgs66
+			INNER JOIN personnespcgs66 ON (personnespcgs66.id = traitementspcgs66.personnepcg66_id)
+			WHERE personnespcgs66.dossierpcg66_id = "Dossierpcg66"."id"
+			AND traitementspcgs66.descriptionpdo_id IN (' . implode(', ', (array) Configure::read('Corbeillepcg.descriptionpdoId') ) . ')
+			AND NOT EXISTS(
+				SELECT traitementspcgs66_sq.id
+				FROM traitementspcgs66 AS traitementspcgs66_sq
+				WHERE personnespcgs66.id = traitementspcgs66_sq.personnepcg66_id
 				AND traitementspcgs66.typetraitement IS NOT NULL
 				AND traitementspcgs66.typetraitement = \'documentarrive\'
-				AND NOT EXISTS(
-					SELECT traitementspcgs66_sq.id
-					FROM traitementspcgs66 AS traitementspcgs66_sq
-					WHERE personnespcgs66.id = traitementspcgs66_sq.personnepcg66_id
-					AND traitementspcgs66.descriptionpdo_id IS NOT NULL
-					AND traitementspcgs66.descriptionpdo_id IN (' . implode(', ', (array) Configure::read('Corbeillepcg.descriptionpdoId') ) . ')
-					AND traitementspcgs66_sq.created > traitementspcgs66.created
-					LIMIT 1
-				)
-				ORDER BY traitementspcgs66.id DESC
+				AND traitementspcgs66_sq.created > traitementspcgs66.created
 				LIMIT 1
-			)';
-			
-			$sqAttinstrattpiece = 'EXISTS(
-				SELECT traitementspcgs66.id
-				FROM traitementspcgs66
-				INNER JOIN personnespcgs66 ON (personnespcgs66.id = traitementspcgs66.personnepcg66_id)
-				WHERE personnespcgs66.dossierpcg66_id = "Dossierpcg66"."id"
-				AND traitementspcgs66.descriptionpdo_id IN (' . implode(', ', (array) Configure::read('Corbeillepcg.descriptionpdoId') ) . ')
-				AND NOT EXISTS(
-					SELECT traitementspcgs66_sq.id
-					FROM traitementspcgs66 AS traitementspcgs66_sq
-					WHERE personnespcgs66.id = traitementspcgs66_sq.personnepcg66_id
-					AND traitementspcgs66.typetraitement IS NOT NULL
-					AND traitementspcgs66.typetraitement = \'documentarrive\'
-					AND traitementspcgs66_sq.created > traitementspcgs66.created
-					LIMIT 1
+			)
+			ORDER BY traitementspcgs66.id DESC
+			LIMIT 1
+		)';
+
+		$return = array(
+			'annule' => array(
+				array(
+					$this->alias.'.etatdossierpcg' => 'annule',
 				)
-				ORDER BY traitementspcgs66.id DESC
-				LIMIT 1
-			)';
-			
-			$return = array(
-				'annule' => array(
-					array(
-						$this->alias.'.etatdossierpcg' => 'annule',
-					)
+			),
+			'attaffect' => array(
+				array(
+					$this->alias.'.user_id IS NULL',
+				)
+			),
+			'instrencours' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.instrencours IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.instrencours' => '1',
 				),
-				'attaffect' => array(
-					array(
-						$this->alias.'.user_id IS NULL',
-					)
-				),
-				'instrencours' => array(
-					array(
-						$this->alias.'.user_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.instrencours IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.instrencours' => '1',
+			),
+			'attavistech' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
+					'OR' => array(
+						$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
+						$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
 					),
+					$this->Decisiondossierpcg66->alias . '.avistechnique IS NULL',
 				),
-				'attavistech' => array(
+			),
+			'attval' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
+					'OR' => array(
+						$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
+						$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
+					),
+					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition IS NULL',
+
+				),
+			),
+			'transmisop' => array(
+				$this->Decisiondossierpcg66->alias . '.etatop IS NOT NULL',
+				$this->Decisiondossierpcg66->alias . '.etatop' => 'transmis',
+			),
+			'atttransmisop' => array(
+				$this->Decisiondossierpcg66->alias . '.etatop IS NOT NULL',
+				$this->Decisiondossierpcg66->alias . '.etatop' => 'atransmettre',
+			),
+			'decisionnonvalid' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
 					array(
-						$this->alias.'.user_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
 						'OR' => array(
 							$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
 							$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
 						),
-						$this->Decisiondossierpcg66->alias . '.avistechnique IS NULL',
 					),
-				),
-				'attval' => array(
+					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'N',
 					array(
-						$this->alias.'.user_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
 						'OR' => array(
-							$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
-							$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
-						),
-						$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition IS NULL',
-						
-					),
-				),
-				'transmisop' => array(
-					$this->Decisiondossierpcg66->alias . '.etatop IS NOT NULL',
-					$this->Decisiondossierpcg66->alias . '.etatop' => 'transmis',
-				),
-				'atttransmisop' => array(
-					$this->Decisiondossierpcg66->alias . '.etatop IS NOT NULL',
-					$this->Decisiondossierpcg66->alias . '.etatop' => 'atransmettre',
-				),
-				'decisionnonvalid' => array(
-					array(
-						$this->alias.'.user_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
-						array(
-							'OR' => array(
-								$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
-								$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
-							),
-						),
-						$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition' => 'N',
-						array(
-							'OR' => array(
-								$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '0',
-								array(
-									$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
-									$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '1',
-								)
+							$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '0',
+							array(
+								$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
+								$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '1',
 							)
 						)
-					),
-				),
-				'decisionnonvalidretouravis' => array(
-					array(
-						$this->alias.'.user_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
-						array(
-							'OR' => array(
-								$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
-								$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
-							),
-						),
-						$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition' => 'N',
-						$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
-						$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
-					),
-				),
-				'decisionvalidretouravis' => array(
-					array(
-						$this->alias.'.user_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
-						array(
-							'OR' => array(
-								$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
-								$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
-							),
-						),
-						$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
-						$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
-						$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
-					),
-				),
-				'decisionvalid' => array(
-					array(
-						$this->alias.'.user_id IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
-						array(
-							'OR' => array(
-								$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
-								$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
-							),
-						),
-						$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
-						$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
-						array(
-							'OR' => array(
-								array(
-									$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
-									$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '1',
-								),
-								array(
-									$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '0',
-									$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
-								),
-							),
-						),
-					),
-				),
-				'arevoir' => array(
-					$sqArevoir
-				),
-				'attinstrdocarrive' => array(
-					$sqAttinstrdocarrive
-				),
-				'attinstrattpiece' => array(
-					$sqAttinstrattpiece
-				),
-				'attinstr' => array(
-					array(
-						$this->alias.'.user_id IS NOT NULL',
 					)
 				),
-			);
-			
-			return $return;
-		}
-
-		/**
-		 * Retourne les conditions permettant de cibler les PCG qui devraient être
-		 * dans une certaine position.
-		 *
-		 * @param string $etatdossierpcg66
-		 * @return array
-		 */
-		public function getConditionsPositionpcg( $etatdossierpcg66 ) {
-			$conditions = array();
-
-			foreach( $this->_getConditionsPositionsPcgs() as $keyPosition => $conditionsPosition ) {
-				if ( $keyPosition === $etatdossierpcg66 ) {
-					$conditions[] = array( $conditionsPosition );
-					break;
-				}
-			}
-
-			return $conditions;
-		}
-
-		/**
-		 * Retourne une CASE (PostgreSQL) pemettant de connaître la position que
-		 * devrait avoir un PCG (au CG 66).
-		 *
-		 * @return string
-		 */
-		public function getCasePositionPcg() {
-			$return = '';
-			$Dbo = $this->getDataSource();
-
-			foreach( array_keys( $this->_getConditionsPositionsPcgs() ) as $etatdossierpcg66 ) {
-				$conditions = $this->getConditionsPositionpcg( $etatdossierpcg66 );
-				$conditions = $Dbo->conditions( $conditions, true, false, $this );
-				$return .= "WHEN {$conditions} \nTHEN '{$etatdossierpcg66}' \n";
-			}
-			
-			$sq = $Dbo->startQuote;
-			$eq = $Dbo->endQuote;
-			// Position par defaut : En attente d'envoi de l'e-mail pour l'employeur
-			$return = "( CASE {$return} ELSE {$sq}{$this->alias}{$eq}.etatdossierpcg END )";
-
-			return $return;
-		}
-
-		/**
-		 * Mise à jour des positions des PCG suivant des conditions données.
-		 *
-		 * @param array $conditions
-		 * @return boolean
-		 */
-		public function updatePositionsPcgsByConditions( array $conditions ) {
-			// On vérifi qu'au moins un cas existe selon les conditions
-			$query = array( 
-				'fields' => array( "{$this->alias}.{$this->primaryKey}", "{$this->alias}.etatdossierpcg" ), 
-				'conditions' => $conditions,
-			);
-			$datas = $this->find( 'first', $query );
-			
-			if ( empty( $datas ) ){
-				return true;
-			}
-
-			$Dbo = $this->getDataSource();
-			$DboDecisiondossierpcg66 = $this->Decisiondossierpcg66->getDataSource();
-			$DboPersonnepcg66 = $this->Personnepcg66->getDataSource();
-			$DboTraitementpcg66 = $this->Personnepcg66->Traitementpcg66->getDataSource();
-			
-			$tableName = $Dbo->fullTableName( $this, true, true );
-			$tableNameDecisiondossierpcg66 = $DboDecisiondossierpcg66->fullTableName( $this->Decisiondossierpcg66, true, true );
-			$tableNamePersonnepcg66 = $DboPersonnepcg66->fullTableName( $this->Personnepcg66, true, true );
-			$tableNameTraitementpcg66 = $DboTraitementpcg66->fullTableName( $this->Personnepcg66->Traitementpcg66, true, true );
-			
-			$case = $this->getCasePositionPcg();
-			
-			$sq = $Dbo->startQuote;
-			$eq = $Dbo->endQuote;
-			
-			$conditionsSql = $Dbo->conditions( $conditions, true, true, $this );
-			
-			$jointureConditionDecision = "
-				SELECT decisionsdossierspcgs66.id 
-				FROM decisionsdossierspcgs66 
-				WHERE decisionsdossierspcgs66.dossierpcg66_id = {$sq}{$this->alias}_sq{$eq}.{$sq}id{$eq}
-				ORDER BY decisionsdossierspcgs66.id DESC 
-				LIMIT 1
-			";
-			
-			$query = array(
-				'update' => "UPDATE {$tableName} AS {$sq}{$this->alias}{$eq}",
-				'set' => "SET {$sq}etatdossierpcg{$eq} = {$case}",
-				'from' => "FROM {$tableName} AS {$sq}{$this->alias}_sq{$eq}",
-				'join1' => "LEFT JOIN {$tableNameDecisiondossierpcg66} AS {$sq}{$this->Decisiondossierpcg66->alias}{$eq}",
-				'condition_join1' => "ON ({$sq}{$this->Decisiondossierpcg66->alias}{$eq}.{$sq}id{$eq} IN ({$jointureConditionDecision}))",
-				'condition' => "{$conditionsSql}",
-				'condition2' => "AND {$sq}{$this->alias}_sq{$eq}.{$sq}etatdossierpcg{$eq} != 'transmisop'",
-				'finalisation jointure from' => "AND {$sq}{$this->alias}_sq{$eq}.{$sq}id{$eq} = {$sq}{$this->alias}{$eq}.{$sq}id{$eq}",
-				'fin' => "RETURNING {$sq}{$this->alias}{$eq}.{$sq}etatdossierpcg{$eq};"
-			);
-			
-			$sql = implode( ' ', $query );
-			$result = $Dbo->query( $sql );
-			
-			return $result !== false;
-		}
-
-		/**
-		 * Mise à jour des positions des PCG qui devraient se trouver dans une
-		 * position donnée.
-		 *
-		 * @param integer $etatdossierpcg66
-		 * @return boolean
-		 */
-		public function updatePositionsPcgsByPosition( $etatdossierpcg66 ) {
-			$conditions = $this->getConditionsPositionpcg( $etatdossierpcg66 );
-
-			$query = array( 
-				'fields' => array( "{$this->alias}.{$this->primaryKey}" ), 
-				'conditions' => $conditions,
-			);
-			$sample = $this->find( 'first', $query );
-
-			return (
-				empty( $sample )
-				|| $this->updateAllUnBound(
-					array( "{$this->alias}.etatdossierpcg66" => "'{$etatdossierpcg66}'" ),
-					$conditions
+			),
+			'decisionnonvalidretouravis' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
+					array(
+						'OR' => array(
+							$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
+							$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
+						),
+					),
+					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'N',
+					$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
+					$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
+				),
+			),
+			'decisionvalidretouravis' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
+					array(
+						'OR' => array(
+							$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
+							$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
+						),
+					),
+					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
+					$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
+					$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
+				),
+			),
+			'decisionvalid' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
+					array(
+						'OR' => array(
+							$this->Decisiondossierpcg66->alias . '.instrencours IS NULL',
+							$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
+						),
+					),
+					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
+					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
+					array(
+						'OR' => array(
+							array(
+								$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
+								$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '1',
+							),
+							array(
+								$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '0',
+								$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
+							),
+						),
+					),
+				),
+			),
+			'arevoir' => array(
+				$sqArevoir
+			),
+			'attinstrdocarrive' => array(
+				$sqAttinstrdocarrive
+			),
+			'attinstrattpiece' => array(
+				$sqAttinstrattpiece
+			),
+			'attinstr' => array(
+				array(
+					$this->alias.'.user_id IS NOT NULL',
 				)
-			);
+			),
+		);
+
+		return $return;
+	}
+
+	/**
+	 * Retourne les conditions permettant de cibler les PCG qui devraient être
+	 * dans une certaine position.
+	 *
+	 * @param string $etatdossierpcg66
+	 * @return array
+	 */
+	public function getConditionsPositionpcg( $etatdossierpcg66 ) {
+		$conditions = array();
+
+		foreach( $this->_getConditionsPositionsPcgs() as $keyPosition => $conditionsPosition ) {
+			if ( $keyPosition === $etatdossierpcg66 ) {
+				$conditions[] = array( $conditionsPosition );
+				break;
+			}
 		}
 
-		/**
-		 * Permet de mettre à jour les positions des PCG d'un allocataire retrouvé
-		 * grâce à la clé primaire d'un PCG en particulier.
-		 *
-		 * @param integer $id La clé primaire d'un PCG.
-		 * @return boolean
-		 */
-		public function updatePositionsPcgsById( $id ) {
-			$return = $this->updatePositionsPcgsByConditions(
-				array( $this->alias . ".id" => $id )
-			);
+		return $conditions;
+	}
 
-			return $return;
+	/**
+	 * Retourne une CASE (PostgreSQL) pemettant de connaître la position que
+	 * devrait avoir un PCG (au CG 66).
+	 *
+	 * @return string
+	 */
+	public function getCasePositionPcg() {
+		$return = '';
+		$Dbo = $this->getDataSource();
+
+		foreach( array_keys( $this->_getConditionsPositionsPcgs() ) as $etatdossierpcg66 ) {
+			$conditions = $this->getConditionsPositionpcg( $etatdossierpcg66 );
+			$conditions = $Dbo->conditions( $conditions, true, false, $this );
+			$return .= "WHEN {$conditions} \nTHEN '{$etatdossierpcg66}' \n";
 		}
+
+		$sq = $Dbo->startQuote;
+		$eq = $Dbo->endQuote;
+		// Position par defaut : En attente d'envoi de l'e-mail pour l'employeur
+		$return = "( CASE {$return} ELSE {$sq}{$this->alias}{$eq}.etatdossierpcg END )";
+
+		return $return;
+	}
+
+	/**
+	 * Mise à jour des positions des PCG suivant des conditions données.
+	 *
+	 * @param array $conditions
+	 * @return boolean
+	 */
+	public function updatePositionsPcgsByConditions( array $conditions ) {
+		// On vérifi qu'au moins un cas existe selon les conditions
+		$query = array( 
+			'fields' => array( "{$this->alias}.{$this->primaryKey}", "{$this->alias}.etatdossierpcg" ), 
+			'conditions' => $conditions,
+		);
+		$datas = $this->find( 'first', $query );
+
+		if ( empty( $datas ) ){
+			return true;
+		}
+
+		$Dbo = $this->getDataSource();
+		$DboDecisiondossierpcg66 = $this->Decisiondossierpcg66->getDataSource();
+		$DboPersonnepcg66 = $this->Personnepcg66->getDataSource();
+		$DboTraitementpcg66 = $this->Personnepcg66->Traitementpcg66->getDataSource();
+
+		$tableName = $Dbo->fullTableName( $this, true, true );
+		$tableNameDecisiondossierpcg66 = $DboDecisiondossierpcg66->fullTableName( $this->Decisiondossierpcg66, true, true );
+		$tableNamePersonnepcg66 = $DboPersonnepcg66->fullTableName( $this->Personnepcg66, true, true );
+		$tableNameTraitementpcg66 = $DboTraitementpcg66->fullTableName( $this->Personnepcg66->Traitementpcg66, true, true );
+
+		$case = $this->getCasePositionPcg();
+
+		$sq = $Dbo->startQuote;
+		$eq = $Dbo->endQuote;
+
+		$conditionsSql = $Dbo->conditions( $conditions, true, true, $this );
+
+		$jointureConditionDecision = "
+			SELECT decisionsdossierspcgs66.id 
+			FROM decisionsdossierspcgs66 
+			WHERE decisionsdossierspcgs66.dossierpcg66_id = {$sq}{$this->alias}_sq{$eq}.{$sq}id{$eq}
+			ORDER BY decisionsdossierspcgs66.id DESC 
+			LIMIT 1
+		";
+
+		$query = array(
+			'update' => "UPDATE {$tableName} AS {$sq}{$this->alias}{$eq}",
+			'set' => "SET {$sq}etatdossierpcg{$eq} = {$case}",
+			'from' => "FROM {$tableName} AS {$sq}{$this->alias}_sq{$eq}",
+			'join1' => "LEFT JOIN {$tableNameDecisiondossierpcg66} AS {$sq}{$this->Decisiondossierpcg66->alias}{$eq}",
+			'condition_join1' => "ON ({$sq}{$this->Decisiondossierpcg66->alias}{$eq}.{$sq}id{$eq} IN ({$jointureConditionDecision}))",
+			'condition' => "{$conditionsSql}",
+			'condition2' => "AND {$sq}{$this->alias}_sq{$eq}.{$sq}etatdossierpcg{$eq} != 'transmisop'",
+			'finalisation jointure from' => "AND {$sq}{$this->alias}_sq{$eq}.{$sq}id{$eq} = {$sq}{$this->alias}{$eq}.{$sq}id{$eq}",
+			'fin' => "RETURNING {$sq}{$this->alias}{$eq}.{$sq}etatdossierpcg{$eq};"
+		);
+
+		$sql = implode( ' ', $query );
+		$result = $Dbo->query( $sql );
+
+		return $result !== false;
+	}
+
+	/**
+	 * Mise à jour des positions des PCG qui devraient se trouver dans une
+	 * position donnée.
+	 *
+	 * @param integer $etatdossierpcg66
+	 * @return boolean
+	 */
+	public function updatePositionsPcgsByPosition( $etatdossierpcg66 ) {
+		$conditions = $this->getConditionsPositionpcg( $etatdossierpcg66 );
+
+		$query = array( 
+			'fields' => array( "{$this->alias}.{$this->primaryKey}" ), 
+			'conditions' => $conditions,
+		);
+		$sample = $this->find( 'first', $query );
+
+		return (
+			empty( $sample )
+			|| $this->updateAllUnBound(
+				array( "{$this->alias}.etatdossierpcg66" => "'{$etatdossierpcg66}'" ),
+				$conditions
+			)
+		);
+	}
+
+	/**
+	 * Permet de mettre à jour les positions des PCG d'un allocataire retrouvé
+	 * grâce à la clé primaire d'un PCG en particulier.
+	 *
+	 * @param integer $id La clé primaire d'un PCG.
+	 * @return boolean
+	 */
+	public function updatePositionsPcgsById( $id ) {
+		$return = $this->updatePositionsPcgsByConditions(
+			array( $this->alias . ".id" => $id )
+		);
+
+		return $return;
+	}
+
+	/**
+	 * Renvoi la quete de base pour les impressions liés au dossier pcg (pour obtenir les informations nécéssaires
+	 * 
+	 * @param integer $dossierpcg66_id
+	 * @return array
+	 */
+	public function getImpressionBaseQuery( $dossierpcg66_id ) {
+		return array(
+			'fields' => array(
+				'Decisiondossierpcg66.id',
+				'Dossierpcg66.id',
+				'Dossierpcg66.etatdossierpcg',
+				'Personne.nom',
+				'Personne.prenom'
+			),
+			'joins' => array(
+				$this->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+				$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+				$this->Foyer->Personne->join( 'Prestation', 
+					array( 
+						'type' => 'INNER',
+						'conditions' => array( 'Prestation.rolepers' => 'DEM' )
+					)
+				)
+			),
+			'contain' => false,
+			'conditions' => array(
+				'Dossierpcg66.id' => $dossierpcg66_id,
+				'Decisiondossierpcg66.etatdossierpcg IS NULL', // Soit NULL soit 'annule'
+			),
+			'order' => array(
+				'Dossierpcg66.id' => 'DESC'
+			)
+		);
+	}
 }
 
 ?>

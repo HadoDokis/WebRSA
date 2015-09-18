@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses('ZipUtility', 'Utility');
 
 	/**
 	 * La classe Decisionsdossierspcgs66Controller permet de gérer les décisions
@@ -569,8 +570,42 @@
 					if( $saved ) {
 						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaDecisionFoyer( $this->Decisiondossierpcg66->id ) && $saved;
 					}
+					
+					/**
+					 * Si un traitement de type courrier a été crée le même jour, on le met dans la liste d'impression de la décision
+					 */
+					if ( $saved && Hash::get( $this->request->data, 'Decisiondossierpcg66.validationproposition' === 'O' ) ) {
+						$traitementsCourrierMemeJour = $this->Decisiondossierpcg66->find( 'all',
+							array(
+								'fields' => 'Traitementpcg66.id',
+								'contain' => false,
+								'joins' => array(
+									$this->Decisiondossierpcg66->join('Dossierpcg66', array('type' => 'INNER')),
+									$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
+									$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->join('Traitementpcg66', array('type' => 'INNER')),
+								),
+								'conditions' => array(
+									'Decisiondossierpcg66.id' => $this->Decisiondossierpcg66->id,
+									'(Traitementpcg66.created)::date = NOW()::date',
+									'Traitementpcg66.annule' => 'N',
+									'Traitementpcg66.typetraitement' => 'courrier',
+								)
+							)
+						);
 
+						if ( !empty($traitementsCourrierMemeJour) ) {
+							$traitements_ids = array();
+							foreach ( $traitementsCourrierMemeJour as $datas ) {
+								$traitements_ids[] = Hash::get($datas, 'Traitementpcg66.id');
+							}
 
+							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnbound(
+								array( 'imprimer' => 1 ),
+								array( 'id' => $traitements_ids )
+							);
+						}
+					}
+					
                     // Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier
                     // que celui auquel je suis lié
                     if( $saved && !empty( $this->request->data['Traitementpcg66']['Traitementpcg66'] ) ) {
@@ -705,6 +740,8 @@
 		 * Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
 		 *
 		 * @param integer $id
+		 * @deprecated since version 2.10
+		 * @see Dossierspcgs66::imprimer()
 		 */
 		public function decisionproposition( $id ) {
 			$this->assert( !empty( $id ), 'error404' );

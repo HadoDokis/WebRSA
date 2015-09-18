@@ -33,6 +33,11 @@
 	else{
 		$pagination = $this->Xpaginator2->paginationBlock( 'Traitementpcg66', Set::merge( $this->request->params['pass'], $this->request->params['named'] ) );
 
+		foreach ( $listeTraitements as $key => $value ) {
+			$listeTraitements[$key]['Traitementpcg66']['imprimer'] = (boolean)Hash::get($value, 'Traitementpcg66.imprimer');
+		}
+		unset($options['Traitementpcg66']['imprimer']);
+		
 		echo $this->Default2->index(
 			$listeTraitements,
 			array(
@@ -43,7 +48,9 @@
 				'Traitementpcg66.daterevision',
 				'Traitementpcg66.dateecheance',
 				'Traitementpcg66.typetraitement',
+				'Traitementpcg66.imprimer' => array( 'type' => 'boolean' ),
 				'Traitementpcg66.dateenvoicourrier',
+				'Traitementpcg66.etattraitementpcg',
 				'Traitementpcg66.created',
 			),
 			array(
@@ -54,6 +61,15 @@
 
 					'Traitementspcgs66::print' => array( 'label' => 'Fiche de calcul', 'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'printFicheCalcul' ), 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'revenu\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'printfichecalcul', $dossierMenu ).'\' != \'1\'' ),
 
+					'Traitementspcgs66::switch_imprimer' => array( 
+						'label' => __d('traitementpcg66', 'Traitementspcgs66::switch_imprimer'), 
+						'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'switch_imprimer' ), 
+						'class' => 'boolean number',
+						'disabled' => '\'#Traitementpcg66.dateenvoicourrier#\' !== \'\' '
+						. '|| \'#Traitementpcg66.typetraitement#\' != \'courrier\' '
+						. '|| \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'switch_imprimer', $dossierMenu ).'\' != \'1\'' 
+					),
+					
 					'Traitementspcgs66::printModeleCourrier' => array( 'label' => 'Imprimer courrier', 'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'printModeleCourrier' ), 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'courrier\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'printModeleCourrier', $dossierMenu ).'\' != \'1\'' ),
 						
 					'Traitementspcgs66::envoiCourrier' => array( 'label' => 'Envoi courrier', 'disabled' => 'trim(\'#Traitementpcg66.dateenvoicourrier#\') != \'\' || \'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'courrier\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'envoiCourrier', $dossierMenu ).'\' != \'1\''  ),
@@ -97,3 +113,16 @@
 
 
 ?>
+<script>
+	$('Traitementspcgs66Index').select('td.boolean.number').each(function(td) {
+		var addClassName = 'true', tdAction;
+		if ( td.hasClassName( 'true' ) ) {
+			addClassName = 'false';
+		}
+		
+		tdAction = td.up('tr').select('td.action>a.enabled.boolean.number');
+		if ( tdAction.length ) {
+			tdAction.first().addClassName(addClassName);
+		}
+	});
+</script>

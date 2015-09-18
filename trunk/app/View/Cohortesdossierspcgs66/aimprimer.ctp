@@ -114,7 +114,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                     <th>Alloctaire principal</th>
                     <th>Commune de l'allocataire</th>
                     <th><?php echo $this->Xpaginator->sort('Date de réception DO', 'Dossierpcg66.datereceptionpdo'); ?></th>
-					<th><?php echo $this->Xpaginator->sort('Date de validation de la proposition', 'Decisiondossierpcg66.datevalidation'); ?></th>
+                    <th><?php echo $this->Xpaginator->sort('Date de validation de la proposition', 'Decisiondossierpcg66.datevalidation'); ?></th>
                     <th>Type de dossier</th>
                     <th><?php echo $this->Xpaginator->sort('Origine du dossier', 'Originepdo.libelle'); ?></th>
                     <th>Organisme payeur</th>
@@ -122,13 +122,14 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                     <th>Pôle du gestionnaire</th>
                     <th>Gestionnaire</th>
                     <th>Date d'affectation</th>
-                    <th colspan="2" class="action">Action</th>
+                    <th colspan="3" class="action">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
-        <?php foreach ($cohortedossierpcg66 as $index => $dossierpcg66aimprimer): ?>
-            <?php
+        <?php 
+		$idList = array();
+		foreach ($cohortedossierpcg66 as $index => $dossierpcg66aimprimer): 
             $innerTable = '<table id="innerTablesearchResults' . $index . '" class="innerTable">
 					<tbody>
 						<tr>
@@ -148,7 +149,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                 h($dossierpcg66aimprimer['Personne']['nom'] . ' ' . $dossierpcg66aimprimer['Personne']['prenom']),
                 h($dossierpcg66aimprimer['Adresse']['nomcom']),
                 h(date_short($dossierpcg66aimprimer['Dossierpcg66']['datereceptionpdo'])),
-				h(date_short($dossierpcg66aimprimer['Decisiondossierpcg66']['datevalidation'])),
+                h(date_short($dossierpcg66aimprimer['Decisiondossierpcg66']['datevalidation'])),
                 h($dossierpcg66aimprimer['Typepdo']['libelle']),
                 h($dossierpcg66aimprimer['Originepdo']['libelle']),
                 h($dossierpcg66aimprimer['Dossierpcg66']['orgpayeur']),
@@ -159,14 +160,19 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                 $this->Xhtml->viewLink(
                         'Voir le dossier', array('controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66aimprimer['Dossierpcg66']['foyer_id']), $this->Permissions->check('dossierspcgs66', 'index')
                 ),
-                $this->Xhtml->printLink(
-                        'Imprimer le dossier', array('controller' => 'decisionsdossierspcgs66', 'action' => 'decisionproposition', $dossierpcg66aimprimer['Decisiondossierpcg66']['id'], 'save' => true), $this->Permissions->check('dossierspcgs66', 'print')
+				$this->Xhtml->editLink(
+                        'Modifier le dossier', array('controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66aimprimer['Dossierpcg66']['id']), $this->Permissions->check('dossierspcgs66', 'edit')
                 ),
+                '<div class="action_imprimer">'.$this->Xhtml->printLink(
+                        'Imprimer le dossier', array('controller' => 'dossierspcgs66', 'action' => 'imprimer', Hash::get( $dossierpcg66aimprimer, 'Dossierpcg66.id' )), $this->Permissions->check('dossierspcgs66', 'print')
+                ).'</div>',
                 array($innerTable, array('class' => 'innerTableCell noprint')),
                     ), array('class' => 'odd', 'id' => 'innerTableTrigger' . $index), array('class' => 'even', 'id' => 'innerTableTrigger' . $index)
             );
-            ?>
-                <?php endforeach; ?>
+			
+			$idList[] = Hash::get( $dossierpcg66aimprimer, 'Dossierpcg66.id' );
+			
+		endforeach; ?>
             </tbody>
         </table>
 
@@ -184,11 +190,20 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                 ?></li>
             <li><?php
         echo $this->Xhtml->printCohorteLink(
-                'Imprimer la cohorte', array('controller' => 'cohortesdossierspcgs66', 'action' => 'notificationsCohorte') + Hash::flatten($this->request->data, '__'), $this->Permissions->check('cohortesdossierspcgs66', 'notificationsCohorte')
+                'Imprimer la cohorte', array('controller' => 'cohortesdossierspcgs66', 'action' => 'imprimer_cohorte') + Hash::flatten($idList, '__'), $this->Permissions->check('cohortesdossierspcgs66', 'notificationsCohorte'), 'Voulez vous imprimer les '.count($cohortedossierpcg66).' dossiers PCGs ?', 'popup_Dossierpcg66'
         );
                 ?></li>
+			<li>
+				<a href="javascript:location.reload();" class="refresh_page" >Recharger la page</a>
+			</li>
         </ul>
-            <?php endif ?>
+            <?php endif; 
+         endif; ?>
 
-            <?php
-         endif?>
+<script>
+	$$('.action_imprimer').each(function(div){
+		Event.observe(div, 'click', function(){
+			div.addClassName( 'visited' );
+		});
+	});
+</script>

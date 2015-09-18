@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	 App::uses('ZipUtility', 'Utility');
 
 	/**
 	 * La classe Dossierspcgs66Controller ... (CG 66).
@@ -55,6 +56,7 @@
 			'exportcsv' => 'Criteresdossierspcgs66:exportcsv',
 			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
 			'cohorte_enattenteaffectation' => 'Cohortesdossierspcgs66:enattenteaffectation',
+			'imprimer' => 'Decisionsdossierspcgs66::decisionproposition',
 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo' );
@@ -77,6 +79,7 @@
 			'exportcsv' => 'read',
 			'exportcsv_gestionnaire' => 'read',
 			'fileview' => 'read',
+			'imprimer' => 'update',
 			'index' => 'read',
 			'search' => 'read',
 			'search_gestionnaire' => 'read',
@@ -982,6 +985,101 @@
 			);
 			
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre' ) );
+		}
+
+		/**
+		 * Créer et envoi à l'utilisateur un fichier zip comprenant les Décisions valide d'un Dossier PCG
+		 * et les traitements de type courrier à imprimer.
+		 * 
+		 * Remplace l'ancienne fonction : Decisionsdossierspcgs66::decisionproposition()
+		 * qui envoyait un unique PDF de la proposition
+		 * 
+		 * NOTE : Un traitement doit avoir la valeur imprimer = 1 pour être imprimé (dans tout les cas)
+		 * Un traitement ne sera imprimé que s'il est attaché à une proposition valide ou si il n'y a pas de proposition
+		 * Dans la cohorte, ne sera affiché que les dossiers PCG avec une proposition validée 
+		 * ou bien un traitement à imprimer sans proposition
+		 * 
+		 * Cas 1:	Dans le dossier pcg, la proposition est validée et un traitement est à imprimer.
+		 *			Il faut imprimer la proposition et le traitement.
+		 * 
+		 * Cas 2:	Dans le dossier pcg, la proposition n'est pas validée et un traitement est à imprimer.
+		 *			Il faut imprimer uniquement la proposition.
+		 * 
+		 * Cas 3:	Dans la cohorte, la proposition est validée et un traitement est à imprimer.
+		 *			Il faut imprimer la proposition et le traitement.
+		 * 
+		 * Cas 4:	Dans la cohorte, il n'y a aucune proposition mais il y a un traitement à imprimer.
+		 *			Il faut imprimer uniquement le traitement.
+		 * 
+		 * @param integer $id
+		 * @param integer $decision_id decisiondossierpcg66 Appelé "proposition de décision"
+		 */
+		public function imprimer( $id, $decision_id = null ) {
+			$this->assert( !empty( $id ), 'error404' );
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) );
+			
+			$query = $this->Dossierpcg66->getImpressionBaseQuery( $id );
+			
+			// Cas n° 1 et 2 : Dans dossier pcg, on précise $decision_id (pas dans la cohorte qui inclue les traitements sans proposition)
+			// Note : Logiquement, il ne peut y avoir une proposition non validé 
+			if ( $decision_id !== null ) {
+				$query['conditions'][] = array( 'Decisiondossierpcg66.id' => $decision_id );
+			}
+			
+			$results = $this->Dossierpcg66->find( 'first', $query );
+			$decisionsdossierspcgs66_id = Hash::get($results, 'Decisiondossierpcg66.id');
+
+			if ( !empty($results) ) {
+				$success = true;
+
+				$this->Dossierpcg66->Decisiondossierpcg66->begin();
+
+				// Si l'etat du dossier est decisionvalid on le passe en atttransmiop avec une date d'impression
+				if ( Hash::get( $results, 'Dossierpcg66.etatdossierpcg' ) === 'decisionvalid' ) {
+					$results['Dossierpcg66']['dateimpression'] = date('Y-m-d');
+					$results['Dossierpcg66']['etatdossierpcg'] = 'atttransmisop';
+					$success = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->save($results['Dossierpcg66']);
+				}
+				
+				$decisionPdf = $decisionsdossierspcgs66_id !== null 
+					? $this->Dossierpcg66->Decisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
+					: null
+				;
+				
+				$courriers = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->Personnepcg66
+					->Traitementpcg66->getPdfsByConditions( $id, $decisionsdossierspcgs66_id, $this->Session->read('Auth.User.id') )
+				;
+				
+				if( $success && ( $decisionPdf !== null || !empty($courriers) ) ) {
+					$this->Dossierpcg66->Decisiondossierpcg66->commit();
+
+					$prefix = 'Dossier_PCG';
+					$date = date('Y-m-d');
+					$Zip = new ZipUtility();
+					$allocatairePrincipal = Hash::get( $results, 'Personne.nom' ) . '_' . Hash::get( $results, 'Personne.prenom' );
+					
+					if ( $decisionPdf !== null ) {
+						$Zip->add($decisionPdf, "{$prefix}_{$id}_{$date}/Decision_{$allocatairePrincipal}.pdf");
+					}
+
+					foreach ( $courriers as $i => $courrier ) {
+						$nomPersonne = $courrier['nom'];
+						$pdf = $courrier['pdf'];
+						$numCourrier = $i+1;
+						$Zip->add($pdf, "{$prefix}_{$id}_{$date}/Courrier-{$numCourrier}_{$nomPersonne}.pdf");
+					}
+
+					$zipPath = $Zip->zip("{$prefix}_{$id}_{$date}.zip");
+					ZipUtility::sendZipToClient( $zipPath );
+				}
+				else {
+					$this->Dossierpcg66->Decisiondossierpcg66->rollback();
+				}
+				
+			}
+
+			$this->Session->setFlash( 'Impossible de générer le(s) fichier PDF', 'default', array( 'class' => 'error' ) );
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

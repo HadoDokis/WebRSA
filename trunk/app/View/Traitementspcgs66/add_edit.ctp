@@ -80,7 +80,8 @@
 			<?php
 				echo $this->Default->subform(
 					array(
-						'Traitementpcg66.typecourrierpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' =>$typescourrierspcgs66 )
+						'Traitementpcg66.typecourrierpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' =>$typescourrierspcgs66 ),
+						'Traitementpcg66.imprimer' => array( 'type' => 'hidden', 'value' => $imprimer )
 					)
 				);
 
