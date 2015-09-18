@@ -330,7 +330,9 @@ class Traitementspcgs66Controller extends AppController {
                 'Traitementpcg66.dtdebutperiode',
                 'Traitementpcg66.datefinperiode',
                 'Traitementpcg66.typetraitement',
+                'Traitementpcg66.imprimer',
                 'Traitementpcg66.dateenvoicourrier',
+				'Traitementpcg66.etattraitementpcg',
                 'Traitementpcg66.reversedo',
                 'Traitementpcg66.clos',
                 'Traitementpcg66.annule',
@@ -485,6 +487,26 @@ class Traitementspcgs66Controller extends AppController {
         if ($this->action == 'add') {
             $personnepcg66_id = $id;
             $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId($personnepcg66_id))));
+			
+			$imprimer = (int)!empty(
+				$this->Traitementpcg66->Personnepcg66->find( 'first',
+					array(
+						'fields' => 'Decisiondossierpcg66.id',
+						'contain' => false,
+						'joins' => array(
+							$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
+							$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'INNER' ) ),
+						),
+						'conditions' => array(
+							'Personnepcg66.id' => $personnepcg66_id,
+							'Decisiondossierpcg66.etatdossierpcg IS NULL',
+							'Decisiondossierpcg66.validationproposition' => 'O',
+							'(Decisiondossierpcg66.created)::date = NOW()::date'
+						)
+					)
+				)
+			);
+			
         } else if ($this->action == 'edit') {
             $traitementpcg66_id = $id;
             $traitementpcg66 = $this->Traitementpcg66->find(
@@ -498,9 +520,14 @@ class Traitementspcgs66Controller extends AppController {
                     )
             );
             $this->assert(!empty($traitementpcg66), 'invalidParameter');
+			
+			$imprimer = Hash::get( $traitementpcg66, 'Traitementpcg66.imprimer');
+			
             $personnepcg66_id = Set::classicExtract($traitementpcg66, 'Traitementpcg66.personnepcg66_id');
             $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId($personnepcg66_id))));
         }
+		
+		$this->set( compact('imprimer') );
 
         //Récupération des informations de la personne conernée par les traitements + du dossier
         $personnepcg66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find(
@@ -593,6 +620,11 @@ class Traitementspcgs66Controller extends AppController {
 
         if (!empty($this->request->data)) {
             $this->Traitementpcg66->begin();
+			
+			// Gestion de la position du traitement
+			if ($this->action == 'add' && Hash::get($this->request->data, 'Traitementpcg66.typetraitement') === 'courrier' ) {
+				$this->request->data['Traitementpcg66']['etattraitementpcg'] = $imprimer === 1 ? 'imprimer' : 'contrôler';
+			}
 
             $dataToSave = $this->request->data;
             // INFO: attention, on peut se le permettre car il n'y a pas de règle de validation sur le commentaire
@@ -995,10 +1027,18 @@ class Traitementspcgs66Controller extends AppController {
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
 
         $pdf = $this->Traitementpcg66->getPdfModeleCourrier($id, $this->Session->read('Auth.User.id'));
-
-        if ($pdf) {
+		
+		$this->Traitementpcg66->begin();
+		$success = $this->Traitementpcg66->updateAllUnbound( 
+			array( 'etattraitementpcg' => "'attente'" ),
+			array( 'id' => $id, "etattraitementpcg IN ('contrôler', 'imprimer')" )
+		);
+		
+        if ($pdf && $success) {
+			$this->Traitementpcg66->commit();
             $this->Gedooo->sendPdfContentToClient($pdf, 'ModeleCourrier.pdf');
         } else {
+			$this->Traitementpcg66->rollback();
             $this->Session->setFlash('Impossible de générer le modèle de courrier', 'default', array('class' => 'error'));
             $this->redirect($this->referer());
         }
@@ -1102,7 +1142,15 @@ class Traitementspcgs66Controller extends AppController {
 
         if (!empty($this->request->data)) {
             $this->Traitementpcg66->begin();
-            $success = $this->Traitementpcg66->saveField('dateenvoicourrier', $this->request->data['Traitementpcg66']['dateenvoicourrier']);
+			
+			$success = $this->Traitementpcg66->updateAllUnbound( 
+				array( 
+					'dateenvoicourrier' => "'".date_cakephp_to_sql($this->request->data['Traitementpcg66']['dateenvoicourrier'])."'",
+					'etattraitementpcg' => "'envoyé'"
+				),
+				array( 'id' => $id, )
+			);
+            
             if ($success) {
                 $this->Traitementpcg66->commit();
                 $this->Session->setFlash('La date d\'envoi du courrier a bien été enregistrée', 'flash/success');
@@ -1130,6 +1178,61 @@ class Traitementspcgs66Controller extends AppController {
 	public function exportcsv() {
 		$Recherches = $this->Components->load( 'WebrsaRecherchesTraitementspcgs66' );
 		$Recherches->exportcsv();
+	}
+
+	/**
+	 * Change la valeur de Traitementpcg66.imprimer par son contraire (0 ou 1)
+	 * 
+	 * @param type $traitement_id
+	 */
+	public function switch_imprimer( $traitement_id ) {
+		$this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($traitement_id)));
+		$this->Traitementpcg66->begin();
+		
+		$oldImprimer = $this->Traitementpcg66->find( 'first',
+			array(
+				'fields' => array(
+					'imprimer',
+					'etattraitementpcg'
+				),
+				'contain' => false,
+				'conditions' => array(
+					'id' => $traitement_id
+				),
+			)
+		);
+		
+		$imprimer = (int)!Hash::get( $oldImprimer, 'Traitementpcg66.imprimer' );
+		$ancienetatpcg = Hash::get( $oldImprimer, 'Traitementpcg66.etattraitementpcg' );
+		$etattraitementpcg = $imprimer === 1 && $ancienetatpcg === "contrôler" ? "'imprimer'"
+			: ($imprimer === 0 && $ancienetatpcg === "imprimer" ? "'contrôler'" : "'".$ancienetatpcg."'")
+		;
+		
+		// Pour éviter de passer dans beforeValidate() qui ajoute des champs à valeur NULL
+		$success = $this->Traitementpcg66->updateAllUnbound( 
+			array( 
+				'imprimer' => $imprimer,
+				'etattraitementpcg' => $etattraitementpcg
+			),
+			array( 'id' => $traitement_id, )
+		);
+
+		if ( $success ) {
+			$this->Traitementpcg66->commit();
+			
+			$message = !Hash::get( $oldImprimer, 'Traitementpcg66.imprimer' ) 
+				? 'Ce courrier est désormais prêt à être imprimé en cohorte.' 
+				: 'Ce courrier n\'est plus disponible en cohorte'
+			;
+			
+			$this->Session->setFlash($message, 'flash/success');
+		}
+		else {
+			$this->Traitementpcg66->rollback();
+			$this->Session->setFlash('Une erreur s\'est produire !', 'flash/error');
+		}
+		
+		$this->redirect($this->referer());
 	}
 }
 

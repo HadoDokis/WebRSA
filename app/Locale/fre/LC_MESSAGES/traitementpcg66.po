@@ -57,6 +57,9 @@ msgstr "Supprimer le traitement"
 msgid "Traitementspcgs66::edit"
 msgstr "Modification du traitement"
 
+msgid "Traitementspcgs66::switch_imprimer"
+msgstr "Inclure dans décision"
+
 msgid "Traitementspcgs66::printModeleCourrier"
 msgstr "Impression du courrier"
 
@@ -86,6 +89,12 @@ msgstr "Date d'échéance"
 
 msgid "Traitementpcg66.daterevision"
 msgstr "Date de révision"
+
+msgid "Traitementpcg66.imprimer"
+msgstr "Inclure dans décision"
+
+msgid "Traitementpcg66.etattraitementpcg"
+msgstr "Etat du traitement"
 
 msgid "Traitementpcg66.traitementtypepdo_id"
 msgstr "Type de traitement"
@@ -131,6 +140,18 @@ msgstr "Clos ?"
 
 msgid "Traitementpcg66.annule"
 msgstr "Annulé ?"
+
+msgid "ENUM::ETATTRAITEMENTPCG::contrôler"
+msgstr "A&nbsp;Contrôler"
+
+msgid "ENUM::ETATTRAITEMENTPCG::imprimer"
+msgstr "A&nbsp;Imprimer"
+
+msgid "ENUM::ETATTRAITEMENTPCG::attente"
+msgstr "En&nbsp;attente envoi&nbsp;courrier"
+
+msgid "ENUM::ETATTRAITEMENTPCG::envoyé"
+msgstr "Courrier&nbsp;envoyé"
 
 msgid "ENUM::HASCOURRIER::0"
 msgstr "Non"

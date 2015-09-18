@@ -24,6 +24,24 @@ CREATE TABLE correspondancespersonnes (
 );
 COMMENT ON TABLE correspondancespersonnes IS 'correspondancespersonnes';
 
+
+--------------------------------------------------------------------------------
+-- Nouveaux champs du dossierpcg66
+--------------------------------------------------------------------------------
+
+SELECT alter_table_drop_column_if_exists('public', 'traitementspcgs66', 'imprimer');
+SELECT alter_table_drop_column_if_exists('public', 'traitementspcgs66', 'etattraitementpcg');
+ALTER TABLE traitementspcgs66 ADD COLUMN imprimer SMALLINT DEFAULT 0;
+ALTER TABLE traitementspcgs66 ADD COLUMN etattraitementpcg VARCHAR(9);
+
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'traitementspcgs66', 'traitementspcgs66_imprimer_in_list_chk' );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'traitementspcgs66', 'traitementspcgs66_etattraitementpcg_in_list_chk' );
+ALTER TABLE traitementspcgs66 ADD CONSTRAINT traitementspcgs66_imprimer_in_list_chk CHECK ( cakephp_validate_in_list( imprimer, ARRAY[0,1] ) );
+ALTER TABLE traitementspcgs66 ADD CONSTRAINT traitementspcgs66_etattraitementpcg_in_list_chk CHECK ( cakephp_validate_in_list( etattraitementpcg, ARRAY['contrôler','imprimer','attente','envoyé'] ) );
+
+UPDATE traitementspcgs66 SET etattraitementpcg = 'envoyé' WHERE typetraitement = 'courrier' AND dateenvoicourrier IS NOT NULL;
+UPDATE traitementspcgs66 SET etattraitementpcg = 'contrôler' WHERE typetraitement = 'courrier' AND dateenvoicourrier IS NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

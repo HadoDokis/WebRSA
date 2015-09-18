@@ -999,5 +999,65 @@
 
 			return $return;
 		}
+		
+		/**
+		 * Obtien un array avec une liste de pdf des traitements de type courrier avec la mention à imprimer en fonction d'une décision.
+		 * La décision ne doit pas être une proposition refusée.
+		 * Fontionne également si il n'y a aucune propositions dans le dossier pcg
+		 * 
+		 * @param array $dossierpcg66_id
+		 * @param array $decisionsdossierspcgs66_id
+		 * @param type $user_id
+		 * @return array
+		 */
+		public function getPdfsByConditions( $dossierpcg66_id, $decisionsdossierspcgs66_id, $user_id ) {
+			$traitements_ids = $this->Personnepcg66->Dossierpcg66->find( 'all', 
+				array(
+					'fields' => array(
+						'Traitementpcg66.id',
+						'Traitementpcg66.etattraitementpcg',
+						'Personne.nom',
+						'Personne.prenom',
+					),
+					'joins' => array(
+						$this->Personnepcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT')),
+						$this->Personnepcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
+						$this->Personnepcg66->join('Traitementpcg66', array('type' => 'INNER')),
+						$this->Personnepcg66->join('Personne', array('type' => 'INNER')),
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Dossierpcg66.id' => $dossierpcg66_id,
+						'Traitementpcg66.imprimer' => '1',
+						'Traitementpcg66.annule' => 'N',
+						'OR' => array(
+							'Decisiondossierpcg66.id IS NULL',
+							array(
+								'Decisiondossierpcg66.id' => $decisionsdossierspcgs66_id,
+								'Decisiondossierpcg66.validationproposition' => 'O'
+							)
+						)
+					)
+				)
+			);
+			
+			$results = array();
+			foreach ( (array)$traitements_ids as $data ) {
+				$traitement_id = Hash::get($data, 'Traitementpcg66.id');
+				if ( Hash::get( $data, 'Traitementpcg66.etattraitementpcg' ) === 'imprimer' ) {
+					$this->updateAllUnBound(
+						array( 'etattraitementpcg' => "'attente'" ),
+						array( 'id' => $traitement_id )
+					);
+				}
+				
+				$results[] = array(
+					'nom' => Hash::get($data, 'Personne.nom') .'_'. Hash::get($data, 'Personne.prenom'),
+					'pdf' => $this->getPdfModeleCourrier($traitement_id, $user_id)
+				);
+			}
+			
+			return $results;
+		}
 	}
 ?>

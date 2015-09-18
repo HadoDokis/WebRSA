@@ -76,7 +76,7 @@
 			<fileset
 				dir="${dir.cakephp.app}"
 				includes="**/*.po"
-				excludes="**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
+				excludes="**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**,**/Plugin/**/Test/Locale/**" />
 		</apply>
 	</target>
 

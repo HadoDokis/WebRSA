@@ -8,6 +8,7 @@
  * @package app.Controller
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
+App::uses('ZipUtility', 'Utility');
 
 /**
  * La classe Cohortesdossierspcgs66Controller permet de traiter les dossiers PCGs en cohorte
@@ -413,6 +414,103 @@ class Cohortesdossierspcgs66Controller extends AppController {
         }
     }
 
+	/**
+	 * Créer un fichier zip avec la page entière d'impression en PDF
+	 * 
+	 * @todo Jetons
+	 */
+	public function imprimer_cohorte() {
+		$this->assert( !empty( $this->request->params['pass'] ), 'error404' );
+		$this->Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
+		$dossier_idList = array();
+		$datas = array();
+		$success = true;
+		
+		/**
+		 * On recherche tout les éléments dont on a besoin
+		 */
+		foreach( $this->request->params['pass'] as $key => $dossierpcg66_id ) {
+			$query = $this->Dossierpcg66->getImpressionBaseQuery( $dossierpcg66_id );
+			unset($query['order']); // Gain de temps vu qu'on a un id dans cette action
+			$datas[$key] = $this->Dossierpcg66->find( 'first', $query );
+			
+			$dossier_idList[] = Hash::get( $datas[$key], 'Foyer.dossier_id' );
+			
+			if ( empty($datas[$key]) ) {
+				$success = false;
+				break;
+			}
+		}
+		
+		if ( $success ) {
+//			$this->Cohortes->get( $dossier_idList );
+			
+			$prefix = 'Dossier_PCG';
+			$date = date('Y-m-d');
+			$datetime = date('His_Y-m-d');
+			$Zip = new ZipUtility();
+			
+			$this->Dossierpcg66->Decisiondossierpcg66->begin();
+			
+			foreach ( $datas as $key => $value ) {
+				// Si l'etat du dossier est decisionvalid on le passe en atttransmiop avec une date d'impression
+				if ( Hash::get( $value, 'Dossierpcg66.etatdossierpcg' ) === 'decisionvalid' ) {
+					$value['Dossierpcg66']['dateimpression'] = date('Y-m-d');
+					$value['Dossierpcg66']['etatdossierpcg'] = 'atttransmisop';
+					$success = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->save($value['Dossierpcg66']);
+				}
+				if ( !$success ) {
+					break;
+				}
+				
+				/**
+				 * On récupère les PDFs
+				 */
+				$decisionsdossierspcgs66_id = Hash::get($value, 'Decisiondossierpcg66.id');
+				$dossierpcg_id = Hash::get($value, 'Dossierpcg66.id');
+				
+				$decisionPdf = $decisionsdossierspcgs66_id !== null 
+					? $this->Dossierpcg66->Decisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
+					: null
+				;
+				
+				$courriers = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->Personnepcg66
+					->Traitementpcg66->getPdfsByConditions( $dossierpcg_id, $decisionsdossierspcgs66_id, $this->Session->read('Auth.User.id') )
+				;
+				
+				// Il faut au moins 1 PDF sinon il y a un problême
+				if ( $decisionPdf === null && empty($courriers) ) {
+					$success = false;
+					break;
+				}
+				
+				if ( $decisionPdf !== null ) {
+					$allocatairePrincipal = Hash::get( $value, 'Personne.nom' ) . '_' . Hash::get( $value, 'Personne.prenom' );
+					$Zip->add($decisionPdf, "{$prefix}_{$dossierpcg_id}_{$date}/Decision_{$allocatairePrincipal}.pdf");
+				}
+
+				foreach ( $courriers as $i => $courrier ) {
+					$nomPersonne = $courrier['nom'];
+					$pdf = $courrier['pdf'];
+					$numCourrier = $i+1;
+					$Zip->add($pdf, "{$prefix}_{$dossierpcg_id}_{$date}/Courrier-{$numCourrier}_{$nomPersonne}.pdf");
+				}
+			}
+			
+			if ( $success ) {
+				$this->Dossierpcg66->commit();
+//				$this->Cohortes->release( $dossier_idList );
+				$zipPath = $Zip->zip("{$prefix}_Cohorte_{$datetime}.zip");
+				ZipUtility::sendZipToClient( $zipPath );
+			}
+			else {
+				$this->Dossierpcg66->Decisiondossierpcg66->rollback();
+			}
+			
+			$this->Session->setFlash( 'Impossible de générer les fichiers PDF', 'default', array( 'class' => 'error' ) );
+			$this->redirect( $this->referer() );
+		}
+	}
 }
 
 ?>
