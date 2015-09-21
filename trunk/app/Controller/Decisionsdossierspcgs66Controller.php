@@ -585,7 +585,7 @@
 								),
 								'conditions' => array(
 									'Decisiondossierpcg66.id' => $this->Decisiondossierpcg66->id,
-									'(Traitementpcg66.created)::date = NOW()::date',
+									'(Traitementpcg66.created)::date = (Decisiondossierpcg66.created)::date',
 									'Traitementpcg66.annule' => 'N',
 									'Traitementpcg66.typetraitement' => 'courrier',
 								)
@@ -599,8 +599,8 @@
 							}
 
 							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnbound(
-								array( 'imprimer' => 1 ),
-								array( 'id' => $traitements_ids )
+								array( 'imprimer' => 1, 'etattraitementpcg' => "'imprimer'" ),
+								array( 'Traitementpcg66.id' => $traitements_ids, 'Traitementpcg66.etattraitementpcg' => 'contrôler' )
 							);
 						}
 					}
