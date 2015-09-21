@@ -488,24 +488,24 @@ class Traitementspcgs66Controller extends AppController {
             $personnepcg66_id = $id;
             $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId($personnepcg66_id))));
 			
-			$imprimer = (int)!empty(
-				$this->Traitementpcg66->Personnepcg66->find( 'first',
-					array(
-						'fields' => 'Decisiondossierpcg66.id',
-						'contain' => false,
-						'joins' => array(
-							$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
-							$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'INNER' ) ),
-						),
-						'conditions' => array(
-							'Personnepcg66.id' => $personnepcg66_id,
-							'Decisiondossierpcg66.etatdossierpcg IS NULL',
-							'Decisiondossierpcg66.validationproposition' => 'O',
-							'(Decisiondossierpcg66.created)::date = NOW()::date'
-						)
+			$traitementAImprimer = $this->Traitementpcg66->Personnepcg66->find( 'first',
+				array(
+					'fields' => 'Decisiondossierpcg66.id',
+					'contain' => false,
+					'joins' => array(
+						$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
+						$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'Personnepcg66.id' => $personnepcg66_id,
+						'Decisiondossierpcg66.etatdossierpcg IS NULL',
+						'Decisiondossierpcg66.validationproposition' => 'O',
+						'(Decisiondossierpcg66.created)::date = NOW()::date'
 					)
 				)
 			);
+			
+			$imprimer = (int)!empty( $traitementAImprimer );
 			
         } else if ($this->action == 'edit') {
             $traitementpcg66_id = $id;
