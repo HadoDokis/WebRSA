@@ -1165,10 +1165,14 @@
 				$results = array();
 
 				foreach ( $modelNames as $modelName ) {
-					$Model = ClassRegistry::init( $modelName );
+					App::import( 'Model', $modelName );
+					$Reflection = new ReflectionClass( $modelName );
+					if( $Reflection->isAbstract() === false ) {
+						$Model = ClassRegistry::init( $modelName );
 
-					foreach ( $Model->configuredAllowEmptyFields as $fieldName ) {
-						$results[] = ValidateAllowEmptyUtility::configureKey( "{$Model->alias}.{$fieldName}" );
+						foreach ( $Model->configuredAllowEmptyFields as $fieldName ) {
+							$results[] = ValidateAllowEmptyUtility::configureKey( "{$Model->alias}.{$fieldName}" );
+						}
 					}
 				}
 
