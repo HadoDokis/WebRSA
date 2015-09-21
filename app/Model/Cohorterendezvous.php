@@ -91,7 +91,7 @@
 					$Rendezvous->join( 'Typerdv', array( 'type' => 'LEFT OUTER' ) ),
 					$Rendezvous->join( 'Statutrdv', array( 'type' => 'LEFT OUTER' ) ),
 					$Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-					$Rendezvous->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$Rendezvous->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 					$Rendezvous->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					$Rendezvous->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
 				);
