@@ -1011,7 +1011,61 @@
 		 * @return array
 		 */
 		public function getPdfsByConditions( $dossierpcg66_id, $decisionsdossierspcgs66_id, $user_id ) {
-			$traitements_ids = $this->Personnepcg66->Dossierpcg66->find( 'all', 
+			
+			// Recherche des traitements lié à la décision dans les autres dossiers pcgs
+			$autreDossierspcgs_ids = $this->Personnepcg66->Dossierpcg66->find( 'all', 
+				array(
+					'fields' => array(
+						'Dossierpcg66_2.id'
+					),
+					'joins' => array(
+						array(
+							'table'      => '"dossierspcgs66"',
+							'alias'      => 'Dossierpcg66_2',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 
+								'Dossierpcg66_2.foyer_id = Dossierpcg66.foyer_id', 
+								'Dossierpcg66_2.poledossierpcg66_id = Dossierpcg66.poledossierpcg66_id'
+							)
+						),
+						array(
+							'table'      => '"decisionsdossierspcgs66"',
+							'alias'      => 'Decisiondossierpcg66_2',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Decisiondossierpcg66_2.dossierpcg66_id = Dossierpcg66_2.id' )
+						),
+						array(
+							'table'      => '"personnespcgs66"',
+							'alias'      => 'Personnepcg66_2',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personnepcg66_2.dossierpcg66_id = Dossierpcg66_2.id' )
+						),
+						array(
+							'table'      => '"traitementspcgs66"',
+							'alias'      => 'Traitementpcg66_2',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Traitementpcg66_2.personnepcg66_id = Personnepcg66_2.id' )
+						),
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Dossierpcg66.id' => $dossierpcg66_id,
+						'Decisiondossierpcg66_2.id IS NULL',
+						'Traitementpcg66_2.imprimer' => '1',
+						'Traitementpcg66_2.annule' => 'N',
+					)
+				)
+			);
+			
+			$dossierspcgs_ids = Hash::extract($autreDossierspcgs_ids, '{n}.Dossierpcg66_2.id');
+			$dossierspcgs_ids[] = (int)$dossierpcg66_id;
+			
+			// On cherche la liste des traitements à imprimer
+			$traitements_ids = $this->Personnepcg66->Dossierpcg66->find( 'all',
 				array(
 					'fields' => array(
 						'Traitementpcg66.id',
@@ -1027,7 +1081,7 @@
 					),
 					'contain' => false,
 					'conditions' => array(
-						'Dossierpcg66.id' => $dossierpcg66_id,
+						'Dossierpcg66.id' => $dossierspcgs_ids,
 						'Traitementpcg66.imprimer' => '1',
 						'Traitementpcg66.annule' => 'N',
 						'OR' => array(

@@ -7,7 +7,6 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('ZipUtility', 'Utility');
 
 	/**
 	 * La classe Decisionsdossierspcgs66Controller permet de gérer les décisions

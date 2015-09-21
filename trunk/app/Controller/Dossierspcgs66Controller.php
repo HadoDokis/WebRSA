@@ -1059,17 +1059,17 @@
 					$allocatairePrincipal = Hash::get( $results, 'Personne.nom' ) . '_' . Hash::get( $results, 'Personne.prenom' );
 					
 					if ( $decisionPdf !== null ) {
-						$Zip->add($decisionPdf, "{$prefix}_{$id}_{$date}/Decision_{$allocatairePrincipal}.pdf");
+						$Zip->add($decisionPdf, "{$date}_{$prefix}_{$id}_Decision_{$allocatairePrincipal}.pdf");
 					}
 
 					foreach ( $courriers as $i => $courrier ) {
 						$nomPersonne = $courrier['nom'];
 						$pdf = $courrier['pdf'];
 						$numCourrier = $i+1;
-						$Zip->add($pdf, "{$prefix}_{$id}_{$date}/Courrier-{$numCourrier}_{$nomPersonne}.pdf");
+						$Zip->add($pdf, "{$date}_{$prefix}_{$id}_Courrier-{$numCourrier}_{$nomPersonne}.pdf");
 					}
 
-					$zipPath = $Zip->zip("{$prefix}_{$id}_{$date}.zip");
+					$zipPath = $Zip->zip("{$date}_{$prefix}_{$id}.zip");
 					ZipUtility::sendZipToClient( $zipPath );
 				}
 				else {

@@ -40,47 +40,10 @@
 					$conditions[] = 'Dossierpcg66.etatdossierpcg = \'attinstr\' ';
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) {
-					$this->Traitementpcg66 = ClassRegistry::init( 'Traitementpcg66' );
-					$sqTraitements = $this->Traitementpcg66->sq( 
-						array(
-							'alias' => '"traitementspcgs66"',
-							'fields' => 'traitementspcgs66.id',
-							'joins' => array_words_replace(
-								array(
-									$this->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
-									$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', 
-										array( 'type' => 'INNER' ) 
-									),
-									$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Decisiondossierpcg66', 
-										array( 'type' => 'LEFT' ) 
-									),
-								),
-								array(
-									'Traitementpcg66' => '"traitementspcgs66"',
-									'Personnepcg66' => '"personnespcgs66"',
-									'Decisiondossierpcg66' => '"decisionsdossierspcgs66"',
-									'Dossierpcg66' => '"dossierspcgs66"',
-								)
-							),
-							'contain' => false,
-							'conditions' => array(
-								'traitementspcgs66.imprimer' => 1,
-								'traitementspcgs66.etattraitementpcg' => 'imprimer',
-								'dossierspcgs66.id = Dossierpcg66.id',
-								'decisionsdossierspcgs66.id IS NULL'
-							),
-							'limit' => 1
-						)	
-					);
 					$conditions[] = array(
-						'OR' => array(
-							array(
-								'Decisiondossierpcg66.etatdossierpcg IS NULL',
-								'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
-								'Dossierpcg66.dateimpression IS NULL',
-							),
-							"EXISTS({$sqTraitements})"
-						)
+							'Decisiondossierpcg66.etatdossierpcg IS NULL',
+							'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
+							'Dossierpcg66.dateimpression IS NULL',
 					);
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::attentetransmission' ) {

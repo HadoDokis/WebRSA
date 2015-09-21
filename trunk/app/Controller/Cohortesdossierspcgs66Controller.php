@@ -42,7 +42,8 @@ class Cohortesdossierspcgs66Controller extends AppController {
         'InsertionsAllocataires',
         'Cohortes' => array(
             'enattenteaffectation',
-            'atransmettre'
+            'atransmettre',
+            'aimprimer'
         )
     );
 
@@ -443,11 +444,11 @@ class Cohortesdossierspcgs66Controller extends AppController {
 		}
 		
 		if ( $success ) {
-//			$this->Cohortes->get( $dossier_idList );
+			$this->Cohortes->get( $dossier_idList );
 			
 			$prefix = 'Dossier_PCG';
 			$date = date('Y-m-d');
-			$datetime = date('His_Y-m-d');
+			$datetime = date('Y-m-d_His');
 			$Zip = new ZipUtility();
 			
 			$this->Dossierpcg66->Decisiondossierpcg66->begin();
@@ -486,21 +487,21 @@ class Cohortesdossierspcgs66Controller extends AppController {
 				
 				if ( $decisionPdf !== null ) {
 					$allocatairePrincipal = Hash::get( $value, 'Personne.nom' ) . '_' . Hash::get( $value, 'Personne.prenom' );
-					$Zip->add($decisionPdf, "{$prefix}_{$dossierpcg_id}_{$date}/Decision_{$allocatairePrincipal}.pdf");
+					$Zip->add($decisionPdf, "{$date}_{$prefix}_{$dossierpcg_id}_Decision_{$allocatairePrincipal}.pdf");
 				}
 
 				foreach ( $courriers as $i => $courrier ) {
 					$nomPersonne = $courrier['nom'];
 					$pdf = $courrier['pdf'];
 					$numCourrier = $i+1;
-					$Zip->add($pdf, "{$prefix}_{$dossierpcg_id}_{$date}/Courrier-{$numCourrier}_{$nomPersonne}.pdf");
+					$Zip->add($pdf, "{$date}_{$prefix}_{$dossierpcg_id}_Courrier-{$numCourrier}_{$nomPersonne}.pdf");
 				}
 			}
 			
 			if ( $success ) {
 				$this->Dossierpcg66->commit();
-//				$this->Cohortes->release( $dossier_idList );
-				$zipPath = $Zip->zip("{$prefix}_Cohorte_{$datetime}.zip");
+				$this->Cohortes->release( $dossier_idList );
+				$zipPath = $Zip->zip("{$datetime}_{$prefix}_Cohorte.zip");
 				ZipUtility::sendZipToClient( $zipPath );
 			}
 			else {
