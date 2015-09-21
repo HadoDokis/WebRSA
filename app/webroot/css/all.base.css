@@ -947,3 +947,7 @@ table thead a, table thead a:hover, table thead a:focus {
 table thead a:hover, table thead a:focus {
 	color: white;
 }
+
+/* Présentation un peu spéciale pour la page de flux CNAF */
+body.flux tr.error.missing td { background: #fcc; }
+body.flux h1, body.flux h2, body.flux h3 { margin: 0.5em 0; }

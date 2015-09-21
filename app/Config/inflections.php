@@ -48,7 +48,8 @@ $uninflectedPlural = array(
     'avisref',
     //Harry
     'rejet_historique',
-        //Fin harry
+	//Fin harry
+	'fluxcnaf',
 );
 
 /**

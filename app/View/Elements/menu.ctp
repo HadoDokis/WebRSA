@@ -385,6 +385,9 @@
 			'Visionneuse' => array(
 				'logs' => array( 'url' => array( 'controller' => 'visionneuses', 'action' => 'index' ) ),
 			),
+			'Flux CNAF' => array(
+				'url' => array( 'controller' => 'fluxcnaf', 'action' => 'index' )
+			),
 		),
 		'Déconnexion '.$this->Session->read( 'Auth.User.username' ) => array(
 			'url' => array( 'controller' => 'users', 'action' => 'logout' )
