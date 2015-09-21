@@ -1380,7 +1380,8 @@ class Dossierpcg66 extends AppModel {
 				'Dossierpcg66.id',
 				'Dossierpcg66.etatdossierpcg',
 				'Personne.nom',
-				'Personne.prenom'
+				'Personne.prenom',
+				'Foyer.dossier_id'
 			),
 			'joins' => array(
 				$this->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),

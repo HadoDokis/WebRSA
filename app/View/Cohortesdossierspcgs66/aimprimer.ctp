@@ -65,6 +65,10 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
 //                 echo $this->Search->etatDossierPCG66( $etatdossierpcg, 'Search' );
         echo $this->Search->multipleCheckboxChoice($options['Dossierpcg66']['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg');
 
+		// Préremplissage de la valeur PDA
+		if ( empty($this->request->params['named']) ) {
+			$this->request->data['Search']['Dossierpcg66']['poledossierpcg66_id'] = 2;
+		}
         echo $this->Xform->input( 'Search.Dossierpcg66.poledossierpcg66_id', array('label' => __d('dossierpcg66', 'Dossierpcg66.poledossierpcg66_id'), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $polesdossierspcgs66, 'empty' => false) );
         echo '<fieldset class="col2 noborder">';
         echo $this->Xform->input('Search.Dossierpcg66.user_id', array('label' => __d('dossierpcg66', 'Dossierpcg66.user_id'), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $gestionnaire, 'empty' => false));
