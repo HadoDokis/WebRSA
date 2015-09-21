@@ -66,6 +66,11 @@
 					'help' => 'une expression régulière pour limiter le dictionnaire à certaines tables',
 					'default' => null
 				),
+				'output' => array(
+					'short' => 'o',
+					'help' => 'Permet de spécifier le fichier de sortie',
+					'default' => LOGS.'dictionnaire.html'
+				),
 			);
 			$parser->addOptions( $options );
 			return $parser;
@@ -159,7 +164,7 @@
 						( empty( $this->params['limit'] ) ? null : " LIMIT {$this->params['limit']}" ).";";
 
 				$tables = $this->connection->query( $sql );
-				$schemas[$i]['Table'] = Set::classicExtract( $tables, '{n}.Table' );
+				$schemas[$i]['Table'] = Hash::extract( $tables, '{n}.Table' );
 
 				if( empty( $schemas[$i]['Table'] ) ) {
 					$this->_stop( 1 );
@@ -177,7 +182,11 @@
 									information_schema.columns.column_name AS \"Column__name\",
 									( CASE WHEN information_schema.columns.data_type = 'USER-DEFINED' THEN UPPER( information_schema.columns.udt_name ) ELSE UPPER( information_schema.columns.data_type ) END ) AS \"Column__type\",
 									information_schema.columns.character_maximum_length AS \"Column__length\",
+									information_schema.columns.numeric_precision AS \"Column__precision\",
+									information_schema.columns.	numeric_scale AS \"Column__scale\",
 									( CASE WHEN information_schema.constraint_column_usage.constraint_name LIKE '%_pkey' THEN 'PRIMARY KEY' ELSE ( ".$this->_sqForeignKeyDetails( $table['name'], 'information_schema.columns.column_name' )." ) END ) AS \"Column__key\",
+									information_schema.columns.column_default AS \"Column__default\",
+									information_schema.columns.is_nullable AS \"Column__is_nullable\",
 									( select col_description( ( select oid from pg_class where relname = '{$table['name']}' LIMIT 1 ), information_schema.columns.ordinal_position ) ) AS \"Column__comment\",
 									( CASE WHEN information_schema.columns.data_type = 'USER-DEFINED' THEN information_schema.columns.udt_name ELSE NULL END ) AS \"Column__options\"
 								FROM information_schema.columns
@@ -195,20 +204,15 @@
 									information_schema.columns.ordinal_position;";
 					$columns = $this->connection->query( $sql );
 
+					// Récupération des "enums"
+					$modelName = Inflector::classify($schemas[$i]['Table'][$j]['name']);
+					$Model = ClassRegistry::init($modelName);
+					$enums = (array)Hash::get($Model->enums(), $Model->alias);
 					foreach( $columns as $k => $column ) {
-						if( !empty( $column['Column']['options'] ) ) {
-							$sql = "SELECT enum_range(null::{$column['Column']['options']});";
-							$options = $this->connection->query( $sql );
-							$options = $options[0][0]['enum_range'];
-							$options = preg_replace( '/^\{(.*)\}$/', '\1', $options );
-							$columns[$k]['Column']['options'] = explode( ',', $options );
-						}
-						else {
-							$columns[$k]['Column']['options'] = array( );
-						}
+						$columns[$k]['Column']['options'] = (array)Hash::get($enums, $columns[$k]['Column']['name']);
 					}
 
-					$schemas[$i]['Table'][$j]['Column'] = Set::classicExtract( $columns, '{n}.Column' );
+					$schemas[$i]['Table'][$j]['Column'] = Hash::extract( $columns, '{n}.Column' );
 					if( empty( $schemas[$i]['Table'][$j]['Column'] ) ) {
 						$this->_stop( 1 );
 					}
@@ -278,11 +282,12 @@
 							<tr>
 								<th class="name">Nom du champ</th>
 								<th class="label">Libellé du champ</th>
-								<th class="comment">Commentaire</th>
 								<th class="type">Type de données</th>
-								<th class="size">Taille du champ</th>
+								<th class="default">Défaut</th>
+								<th class="is_nullable">NULL</th>
 								<th class="options">Liste de choix / valeur</th>
 								<th class="key">Origine / contrainte</th>
+								<th class="comment">Commentaire</th>
 							</tr>
 					</thead><tbody>';
 
@@ -297,15 +302,8 @@
 						// Format options
 						$options = $column['options'];
 						if( !empty( $options ) ) {
-							foreach( $options as $l => $option ) {
-								$type = strtoupper( preg_replace( '/^type_(.*)$/i', '\1', $column['type'] ) );
-								$labelkey = "ENUM::{$type}::{$option}";
-								$labeloption = __( $labelkey );
-								if( $labeloption == $labelkey ) {
-									$labelkey = "ENUM::".strtoupper( $column['name'] )."::{$option}";
-									$labeloption = __d( Inflector::singularize( $table['name'] ), $labelkey );
-								}
-								$options[$l] = "<li><strong>{$option}</strong> {$labeloption}</li>";
+							foreach( $options as $value => $labeloption ) {
+								$options[$value] = "<li><strong>{$value}</strong> {$labeloption}</li>";
 							}
 							$options = '<ul>'.implode( '', $options ).'</ul>';
 						}
@@ -313,15 +311,38 @@
 							$options = null;
 						}
 
+						// Type
+						if( $column['type'] === 'NUMERIC' ) {
+							if( $column['precision'] !== null && $column['scale'] !== null ) {
+								$column['type'] = "{$column['type']}({$column['precision']}, {$column['scale']})";
+							}
+							else if( $column['precision'] !== null ) {
+								$column['type'] = "{$column['type']}({$column['precision']})";
+							}
+						}
+						else if( $column['length'] !== null ) {
+							$column['type'] = "{$column['type']}({$column['length']})";
+						}
+						$column['type'] = str_replace( ' ', '&nbsp;', $column['type'] );
+
+						// Défaut
+						if( $column['default'] === null || strpos( $column['default'], 'NULL::' ) === 0 ) {
+							$column['default'] = 'NULL';
+						}
+						else {
+							$column['default'] = preg_replace( '/::[^:\)]+$/', '', $column['default'] );
+						}
+
 						// Format row
 						$html .= "<tr class=\"".( ( ( $i + 1 ) % 2 ) ? 'odd' : 'even' )."\">
 								<td>".h( $column['name'] )."</td>
 								<td>".h( $label )."</td>
-								<td>".h( $column['comment'] )."</td>
-								<td>".str_replace( ' ', '&nbsp;', h( $column['type'] ) )."</td>
-								<td>".h( $column['length'] )."</td>
+								<td>".$column['type']."</td>
+								<td>".h( $column['default'] )."</td>
+								<td>".h( $column['is_nullable'] === 'NO' ? 'NOT NULL' : '' )."</td>
 								<td>{$options}</td>
 								<td>".str_replace( ' ', '&nbsp;', h( $column['key'] ) )."</td>
+								<td>".h( $column['comment'] )."</td>
 							</tr>";
 					}
 
@@ -338,13 +359,11 @@
 		 */
 		public function main() {
 			$schemas = $this->_schemas();
-
-			$filename = LOGS.'dictionnaire.html';
-			file_put_contents( $filename, $this->_toHtml( $schemas ) );
+			file_put_contents( $this->params['output'], $this->_toHtml( $schemas ) );
 
 			$this->out();
 			$this->out();
-			$this->out( '<info>Fichier généré : </info><important>'.$filename.'</important>' );
+			$this->out( '<info>Fichier généré : </info><important>'.$this->params['output'].'</important>' );
 		}
 
 	}
