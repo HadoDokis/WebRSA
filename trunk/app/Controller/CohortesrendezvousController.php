@@ -34,6 +34,7 @@
 			'Cohortes'  => array(
 				'cohorte'
 			),
+			'InsertionsAllocataires',
 			'Search.Filtresdefaut' => array( 'cohorte' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
@@ -84,7 +85,7 @@
 			$query = ConfigurableQueryFields::getFieldsByKeys( $fieldsConfigureKeys, $query );
 
 			$query['limit'] = 10;
-			$query['conditions']['Rendezvous.structurereferente_id'] = $this->Workflowscers93->getUserStructurereferenteId();
+			$query['conditions'][] = array( 'Rendezvous.structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'ids' => true ) ) );
 
 			return $query;
 		}
