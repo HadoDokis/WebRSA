@@ -148,7 +148,7 @@
 								AND c.oid = i.indrelid
 								AND i.indexrelid = c2.oid
 								AND i.indisunique
-								AND regexp_replace( pg_catalog.pg_get_indexdef(i.indexrelid, 0, true), E'^.*\\((.*)\\)$', E'\\1', 'g') = \"From\".column_name
+								AND regexp_replace( pg_catalog.pg_get_indexdef(i.indexrelid, 0, true), E'^.*\\\\((.*)\\\\)$', E'\\\\1', 'g') = \"From\".column_name
 					) AS \"From__unique\",
 					\"To\".table_schema AS \"To__schema\",
 					\"To\".table_name AS \"To__table\",
@@ -172,7 +172,7 @@
 								AND c.oid = i.indrelid
 								AND i.indexrelid = c2.oid
 								AND i.indisunique
-								AND regexp_replace( pg_catalog.pg_get_indexdef(i.indexrelid, 0, true), E'^.*\\((.*)\\)$', E'\\1', 'g') = \"To\".column_name
+								AND regexp_replace( pg_catalog.pg_get_indexdef(i.indexrelid, 0, true), E'^.*\\\\((.*)\\\\)$', E'\\\\1', 'g') = \"To\".column_name
 					) AS \"To__unique\"
 				FROM information_schema.table_constraints tc
 					INNER JOIN information_schema.key_column_usage AS \"From\" ON (
