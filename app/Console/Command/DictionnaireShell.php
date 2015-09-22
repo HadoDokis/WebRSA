@@ -327,10 +327,17 @@
 
 						// Défaut
 						if( $column['default'] === null || strpos( $column['default'], 'NULL::' ) === 0 ) {
-							$column['default'] = 'NULL';
+							$default = 'NULL';
 						}
 						else {
-							$column['default'] = preg_replace( '/::[^:\)]+$/', '', $column['default'] );
+							$default = preg_replace( '/::[^:\)]+$/', '', $column['default'] );
+						}
+
+						if( strpos( $default, 'nextval(' ) === 0 ) {
+							$default = '<abbr title="'.h($default).'">'.h( 'nextval(...)' ).'</abbr>';
+						}
+						else {
+							$default = h( $default );
 						}
 
 						// Format row
@@ -338,7 +345,7 @@
 								<td>".h( $column['name'] )."</td>
 								<td>".h( $label )."</td>
 								<td>".$column['type']."</td>
-								<td>".h( $column['default'] )."</td>
+								<td>".$default."</td>
 								<td>".h( $column['is_nullable'] === 'NO' ? 'NOT NULL' : '' )."</td>
 								<td>{$options}</td>
 								<td>".str_replace( ' ', '&nbsp;', h( $column['key'] ) )."</td>
