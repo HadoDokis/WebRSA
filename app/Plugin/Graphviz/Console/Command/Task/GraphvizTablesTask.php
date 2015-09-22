@@ -66,7 +66,7 @@
 							character_maximum_length AS \"length\"
 						FROM information_schema.columns
 						WHERE
-							table_name = 'personnes'
+							table_name = '{$tableName}'
 							AND table_schema = 'public'
 						ORDER BY ordinal_position;";
 			foreach( $this->Dbo->query( $sql ) as $row ) {
