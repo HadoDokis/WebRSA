@@ -153,6 +153,12 @@ msgstr "Dénomination, raison sociale"
 msgid "Partenairecui.enseigne"
 msgstr "Enseigne"
 
+msgid "Partenairecui66.responsable"
+msgstr "Nom du responsable"
+
+msgid "Partenairecui66.telresponsable"
+msgstr "Numéro de téléphone du responsable"
+
 ###############################################################################
 # Adresse employeur
 ###############################################################################
@@ -232,6 +238,9 @@ msgstr "Numéro de fax"
 msgid "Adressecui.canton2"
 msgstr "Canton"
 
+msgid "Partenairecui66.conseillerdep"
+msgstr "Conseiller Départemental"
+
 ###############################################################################
 # Volet droit de l'employeur (CERFA)
 ###############################################################################
@@ -243,7 +252,7 @@ msgid "Partenairecui.siret"
 msgstr "N° SIRET"
 
 msgid "Partenairecui.naf"
-msgstr "Code NAF2"
+msgstr "Secteur d'activité (Code NAF2)"
 
 msgid "Partenairecui.statut"
 msgstr "Statut de l'employeur"
@@ -293,6 +302,9 @@ msgstr "Nombre de contrats aidés hors CG"
 
 msgid "Partenairecui66.nbcontratsaidescg"
 msgstr "Nombre de contrats aidés CG"
+
+msgid "Partenairecui66.subventioncg"
+msgstr "Subventionné par CG"
 
 ###############################################################################
 # Dossier Reçu/Éligible/complet
@@ -400,14 +412,17 @@ msgstr "Nationalité :"
 msgid "Referentparcours.nom_complet"
 msgstr "Référent en cours :"
 
+msgid "Personnecui.organismepayeur"
+msgstr "Organisme payeur"
+
+msgid "Personnecui.numallocataire"
+msgstr "N° CAF/MSA"
+
 msgid "Cui66.zonecouverte"
 msgstr "Zone couverte par l'adresse de l'allocataire"
 
 msgid "Cui66.datefinsejour"
 msgstr "Date de fin de titre de séjour"
-
-msgid "Cui66.defaultprestation"
-msgstr "Aucune prestation trouvée"
 
 msgid "Cuis66.nbenfants"
 msgstr "Nombre de personnes à charge"
@@ -421,7 +436,7 @@ msgstr "Date d'entrée dans le dispositif"
 msgid "Personne.rsasocle"
 msgstr "Cette personne ne possède pas de RSA Socle."
 
-msgid "Cui66.montantrsa"
+msgid "Personnecui66.montantrsa"
 msgstr "Montant du droit RSA à la date de début du CUI"
 
 ################################################################################
@@ -670,6 +685,9 @@ msgstr "Le salarié déclare-t-il être bénéficiaire de l’obligation d’emp
 
 msgid "Cui.typecontrat"
 msgstr "Type de contrat"
+
+msgid "Cui66.perennisation"
+msgstr "Perennisation"
 
 msgid "Cui.modulation"
 msgstr "Modulation"

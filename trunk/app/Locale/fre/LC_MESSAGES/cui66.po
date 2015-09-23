@@ -165,6 +165,16 @@ msgstr "2 mois"
 msgid "ENUM::DATEBUTOIR_SELECT::3"
 msgstr "3 mois"
 
+###############################################################################
+# Perennisation
+###############################################################################
+
+msgid "ENUM::PERENNISATION::0"
+msgstr "Non"
+
+msgid "ENUM::PERENNISATION::1"
+msgstr "Oui"
+
 ####################################### Traductions champs CUI #######################################
 
 msgid "Cui66.annulationform"
@@ -265,3 +275,6 @@ msgstr "Notifié"
 
 msgid "Cui66.renouvellement"
 msgstr "Renouvellement"
+
+msgid "Cui66.perennisation"
+msgstr "Perennisation"

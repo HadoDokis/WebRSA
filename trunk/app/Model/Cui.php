@@ -45,6 +45,10 @@
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
 			),
+			'Personnecui' => array(
+				'className' => 'Personnecui',
+				'foreignKey' => 'personnecui_id',
+			),
 			'Entreeromev3' => array(
 				'className' => 'Entreeromev3',
 				'foreignKey' => 'entreeromev3_id',

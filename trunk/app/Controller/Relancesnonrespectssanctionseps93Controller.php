@@ -61,7 +61,7 @@
 				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 					$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 					$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-					$listeCodesInseeLocalites = $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
+					$listeCodesInseeLocalites = ClassRegistry::init('Zonegeographique')->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 				}
 				else {
 					$listeCodesInseeLocalites = $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee();

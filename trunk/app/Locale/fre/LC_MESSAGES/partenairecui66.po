@@ -88,3 +88,15 @@ msgstr "Décision sur le CUI"
 
 msgid "Decisionscuis66.datedecision"
 msgstr "Date de la décision"
+
+msgid "Partenairecui66.responsable"
+msgstr "Nom du responsable"
+
+msgid "Partenairecui66.telresponsable"
+msgstr "Numéro de téléphone du responsable"
+
+msgid "Partenairecui66.subventioncg"
+msgstr "Subventionné par CG"
+
+msgid "Partenairecui66.conseillerdep"
+msgstr "Conseiller Départemental"

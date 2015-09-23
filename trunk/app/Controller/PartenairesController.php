@@ -50,7 +50,7 @@
 				),
 			);
 
-			$secteursactivites = $this->Partenaire->Contactpartenaire->Actioncandidat->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+			$secteursactivites = ClassRegistry::init('Libsecactderact66Secteur')->find(
 				'list',
 				array(
 					'contain' => false,

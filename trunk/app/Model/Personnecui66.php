@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Fichier source de la classe Personnecui.
+	 * Fichier source de la classe Personnecui66.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,20 +9,20 @@
 	 */
 
 	/**
-	 * La classe Personnecui est la classe contenant les allocataires du CUI.
+	 * La classe Personnecui66 est la classe contenant les allocataires du CUI.
 	 *
 	 * @package app.Model
 	 */
-	class Personnecui extends AppModel
+	class Personnecui66 extends AppModel
 	{
-		public $name = 'Personnecui';
+		public $name = 'Personnecui66';
 
 		public $recursive = -1;
 
 		public $hasOne = array(
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'personnecui_id',
+			'Cui66' => array(
+				'className' => 'Cui66',
+				'foreignKey' => 'personnecui66_id',
 				'dependent' => true,
 			)
 		);

@@ -44,20 +44,12 @@
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
 		 *
-		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false )
 		 * @return array
 		 */
-		public function options( array $params = array() ) {
-			$options = array();
-			
-			$optionRupture = $this->enums();
-			$optionRupture['Rupturecui66']['motif'] = ClassRegistry::init( 'motifrupturecui66' )->find( 'list' );
-			$optionRupture['Rupturecui66']['motif_actif'] = ClassRegistry::init( 'Motifrupturecui66' )->find( 'list', array( 'conditions' => array( 'actif' => true ) ) );
-
-			$options = Hash::merge(
-				$options,
-				$optionRupture
-			);
+		public function options() {			
+			$options = $this->enums();
+			$options['Rupturecui66']['motif'] = ClassRegistry::init( 'Motifrupturecui66' )->find( 'list' );
+			$options['Rupturecui66']['motif_actif'] = ClassRegistry::init( 'Motifrupturecui66' )->find( 'list', array( 'conditions' => array( 'actif' => true ) ) );
 			
 			return $options;
 		}
