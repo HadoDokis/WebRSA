@@ -42,6 +42,11 @@
 				'foreignKey' => 'partenaire_id',
 				'dependent' => true,
 			),
+			'Personnecui66' => array(
+				'className' => 'Personnecui66',
+				'foreignKey' => 'personnecui66_id',
+				'dependent' => true,
+			),
         );
 		
 		/**
@@ -144,13 +149,40 @@
 				$sqNbBeneficiaires = $this->Cui->Personne->Foyer->sqNombreBeneficiaires();
 				$sqLastCodepartenaire = $this->Cui->Partenaire->sqGetLastCodePartenaire();
 
-				$query = array(
+				$query = $this->Cui->Personne->PersonneReferent->completeSearchQueryReferentParcours( array(
 					'fields' => array(
 						'Titresejour.dftitsej',
-						'Detaildroitrsa.mttotdrorsa',
 						"( {$sqNbEnfants} ) AS \"Foyer__nb_enfants\"",
 						"( {$sqNbBeneficiaires} ) AS \"Foyer__nb_beneficiaires\"",
 						"( {$sqLastCodepartenaire} ) AS \"Partenairecui__codepartenaire\"",
+						
+						// Pour table personnescuis (pour impression uniquement)
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.nomnai',
+						'Personne.prenom2',
+						'Personne.prenom3',
+						'Personne.nomcomnai',
+						'Personne.dtnai',
+						'Personne.nir',
+						'Personne.nati',
+						'Dossier.matricule',
+						'Dossier.fonorg',
+							
+						// Pour table personnescuis66 (persistance des données affichés)
+						'Dossier.dtdemrsa',
+						'Adresse.numvoie',
+						'Adresse.libtypevoie',
+						'Adresse.nomvoie',
+						'Adresse.complideadr',
+						'Adresse.compladr',
+						'Adresse.lieudist',
+						'Adresse.codepos',
+						'Adresse.nomcom',
+						'Adresse.canton',
+						'Departement.name',
+						'Detaildroitrsa.mttotdrorsa',
 					),
 					'recursive' => -1,
 					'conditions' => array(
@@ -166,12 +198,28 @@
 						$this->Cui->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 						$this->Cui->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 						$this->Cui->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Cui->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Cui->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+						array(
+							'table' => 'departements',
+							'alias' => 'Departement',
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'SUBSTRING( Adresse.codepos FROM 1 FOR 2 ) = Departement.numdep'
+							)
+						)
 					)
-				);
+				));
 				$record = $this->Cui->Personne->find( 'first', $query );
 
 				$record['Partenairecui']['codepartenaire'] = str_pad( ($record['Partenairecui']['codepartenaire'] +1), 3, '0', STR_PAD_LEFT );
-
+				$adr =& $record['Adresse'];
+				$adr['complete'] = $adr['numvoie'] . ' ' . $adr['libtypevoie'] . ' ' . $adr['nomvoie'] . '<br>';
+				$adr['complete'] .= $adr['complideadr'] !== '' ? $adr['complideadr'] . '<br>' : '';
+				$adr['complete'] .= $adr['compladr'] !== '' ? $adr['compladr'] . '<br>' : '';
+				$adr['complete'] .= $adr['lieudist'] !== '' ? $adr['lieudist'] . '<br>' : '';
+				$adr['complete'] .= $adr['codepos'] . ' ' . $adr['nomcom'];
+				
 				/** 
 				 * INFO: si one ne met pas le modèle Adressecui dans le $this->request->data, il n'est
 				 * pas instancié dans la vue, donc pas d'astérisque ni validation javascript...
@@ -188,11 +236,33 @@
 						'datefinsejour' => Hash::get( $record, 'Titresejour.dftitsej' ),
 						'etatdossiercui66' => 'attentemail',
 						'notifie' => 0,
-						'montantrsa' => Hash::get( $record, 'Detaildroitrsa.mttotdrorsa' )
 					),
 					'Partenairecui66' => array(
 						'nbcontratsaidescg' => '0',
 						'codepartenaire' => $record['Partenairecui']['codepartenaire']
+					),
+					'Personnecui' => array(
+						'civilite' => Hash::get($record, 'Personne.qual'),
+						'nomusage' => Hash::get($record, 'Personne.nom'),
+						'prenom1' => Hash::get($record, 'Personne.prenom'),
+						'nomfamille' => Hash::get($record, 'Personne.nomnai'),
+						'prenom2' => Hash::get($record, 'Personne.prenom2'),
+						'prenom3' => Hash::get($record, 'Personne.prenom3'),
+						'villenaissance' => Hash::get($record, 'Personne.nomcomnai'),
+						'datenaissance' => Hash::get($record, 'Personne.dtnai'),
+						'nir' => Hash::get($record, 'Personne.nir'),
+						'numallocataire' => Hash::get($record, 'Dossier.matricule'),
+						'nationalite' => Hash::get($record, 'Personne.nati'),
+						'organismepayeur' => Hash::get($record, 'Dossier.fonorg'),
+					),
+					'Personnecui66' => array(
+						'adressecomplete' => Hash::get($record, 'Adresse.complete'),
+						'canton' => Hash::get($record, 'Adresse.canton'),
+						'departement' => Hash::get($record, 'Departement.name'),
+						'referent' => Hash::get($record, 'Referentparcours.nom_complet'),
+						'nbpersacharge' => Hash::get($record, 'Foyer.nb_enfants'),
+						'dtdemrsa' => Hash::get($record, 'Dossier.dtdemrsa'),
+						'montantrsa' => Hash::get( $record, 'Detaildroitrsa.mttotdrorsa' )
 					),
 					'Adressecui' => array()
 				);
@@ -237,6 +307,8 @@
 			$query = array(
 				'fields' => array_merge(
 					$this->fields(),
+					$this->Personnecui66->fields(),
+					$this->Cui->Personnecui->fields(),
 					$this->Cui->Partenairecui->fields(),
 					$this->Cui->Entreeromev3->fields(),
 					$this->Cui->Partenairecui->Adressecui->fields(),
@@ -247,6 +319,8 @@
 				'conditions' => array(),
 				'joins' => array(
 					$this->join( 'Cui', array( 'type' => 'INNER' ) ),
+					$this->join( 'Personnecui66' ),
+					$this->Cui->join( 'Personnecui' ),
 					$this->Cui->join( 'Partenairecui' ),
 					$this->Cui->join( 'Entreeromev3' ),
 					$this->Cui->Partenairecui->join( 'Partenairecui66' ),
@@ -298,17 +372,17 @@
 				'order' => 'historiquepositionscuis66.created DESC',
 				'limit' => 1
 			);
-			$sqDateChangementPosition = $this->Cui->Cui66->Historiquepositioncui66->sq( $sqDateChangementQuery );
+			$sqDateChangementPosition = $this->Historiquepositioncui66->sq( $sqDateChangementQuery );
 
 			$query = array(
 				'fields' => array_merge(
 					$this->Cui->fields(),
 					array('Cui.dureecontrat', 'Emailcui.dateenvoi', 'Historiquepositioncui66.created'),
-					$this->Cui->Cui66->fields(),
+					$this->fields(),
 					$this->Cui->Partenairecui->fields(),
-					$this->Cui->Cui66->Decisioncui66->fields(),
-					$this->Cui->Cui66->Suspensioncui66->fields(),
-					$this->Cui->Cui66->Rupturecui66->fields(),
+					$this->Decisioncui66->fields(),
+					$this->Suspensioncui66->fields(),
+					$this->Rupturecui66->fields(),
 					array(
 						$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nombre' ),
 					)
@@ -320,10 +394,10 @@
 					$this->Cui->join( 'Cui66', array( 'type' => 'INNER' ) ),
 					$this->Cui->join( 'Partenairecui' ),
 					$this->Cui->join( 'Emailcui', array( 'conditions' => "Emailcui.id IN ({$sqRelanceMail})" ) ),
-					$this->Cui->Cui66->join( 'Decisioncui66' ),
-					$this->Cui->Cui66->join( 'Suspensioncui66' ),
-					$this->Cui->Cui66->join( 'Rupturecui66' ),
-					$this->Cui->Cui66->join( 'Historiquepositioncui66', array( 'conditions' => "Historiquepositioncui66.id IN ({$sqDateChangementPosition})") ),
+					$this->join( 'Decisioncui66' ),
+					$this->join( 'Suspensioncui66' ),
+					$this->join( 'Rupturecui66' ),
+					$this->join( 'Historiquepositioncui66', array( 'conditions' => "Historiquepositioncui66.id IN ({$sqDateChangementPosition})") ),
 				),
 				'order' => array( 'Cui.created DESC' )
 			);
@@ -341,8 +415,24 @@
 			$queryView = $this->queryView( $cui_id );
 			$queryPersonne = $this->queryPersonne( 'Cui.personne_id' );
 			
-			$query['fields'] = array_merge( $queryView['fields'], $queryPersonne['fields'] );
-			$query['joins'] = array_merge( $queryView['joins'], array( $this->Cui->join( 'Personne' ) ), $queryPersonne['joins'] );
+			$query['fields'] = array_merge( 
+				$queryView['fields'], 
+				$queryPersonne['fields'],
+				$this->Cui->Entreeromev3->Familleromev3->fields(),
+				$this->Cui->Entreeromev3->Domaineromev3->fields(),
+				$this->Cui->Entreeromev3->Metierromev3->fields(),
+				$this->Cui->Entreeromev3->Appellationromev3->fields()
+			);
+			$query['joins'] = array_merge( 
+				$queryView['joins'], 
+				array( 
+					$this->Cui->join( 'Personne' ),
+					$this->Cui->Entreeromev3->join( 'Familleromev3' ),
+					$this->Cui->Entreeromev3->join( 'Domaineromev3' ),
+					$this->Cui->Entreeromev3->join( 'Metierromev3' ),
+					$this->Cui->Entreeromev3->join( 'Appellationromev3' ),
+				), 
+				$queryPersonne['joins'] );
 			$query['conditions'] = $queryView['conditions'];
 			
 			return $query;
@@ -468,16 +558,24 @@
 				}
 			}
 			
+			// Cui possède un Personnecui
+			$this->Cui->Personnecui->create($data);
+			$success = $success && $this->Cui->Personnecui->save();
+			$data['Cui']['personnecui_id'] = $this->Cui->Personnecui->id;
+			
 			// Cui66 possède un Cui
 			$this->Cui->create($data);
 			$success = $success && $this->Cui->save();
 			$data['Cui66']['cui_id'] = $this->Cui->id;
 			
+			// Cui66 possède un Personnecui66
+			$this->Personnecui66->create($data);
+			$success = $success && $this->Personnecui66->save();
+			$data['Cui66']['personnecui66_id'] = $this->Personnecui66->id;
+			
 			// On termine par le Cui66
 			$this->create($data);
 			$success = $success && $this->save();
-			
-
 			
 			return $success;
 		}
@@ -486,48 +584,43 @@
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
 		 *
-		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false )
 		 * @return array
 		 */
-		public function options( array $params = array() ) {
-			$options = array();
-			$params = $params + array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false );
-
-
-			if( Hash::get( $params, 'allocataire' ) ) {
-				$Allocataire = ClassRegistry::init( 'Allocataire' );
-
-				$options = $Allocataire->options();
-			}
-			
-			if( $params['find'] ) {
-				$options = Hash::merge(
-					$options,
-					$this->Cui->Entreeromev3->options()
-				);
-			}
-
-			$datebutoir_select = array(
-				'Cui66' => array(
-					'datebutoir_select' => array(
-						1 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::1' ),
-						2 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::2' ),
-						3 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::3' ),
-					)
-				)
-			);
-			
+		public function options() {
 			$Typecontratcui66 = ClassRegistry::init( 'Typecontratcui66' );
-			$options['Cui66']['typecontrat'] = $Typecontratcui66->find( 'list', array( 'order' => 'name' ) );
-			$options['Cui66']['typecontrat_actif'] = $Typecontratcui66->find( 'list', array( 'conditions' => array( 'actif' => true ), 'order' => 'name' ) );
 			
 			$options = Hash::merge(
-				$options,
+				array(
+					'Cui66' => array(
+						'datebutoir_select' => array(
+							1 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::1' ),
+							2 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::2' ),
+							3 => __d( 'cui66', 'ENUM::DATEBUTOIR_SELECT::3' ),
+						),
+						'typecontrat' => $Typecontratcui66->find( 'list', array( 'order' => 'name' ) ),
+						'typecontrat_actif' => $Typecontratcui66->find( 'list', 
+							array( 'conditions' => array( 'actif' => true ), 'order' => 'name' ) 
+						)
+					),
+					'Partenairecui' => array(
+						'naf' => $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+							'list',	array( 'contain' => false, 'order' => array( 'Libsecactderact66Secteur.code' ) )
+						),
+					),
+					'Partenairecui66' => array(
+						'subventioncg' => array(
+							'Non',
+							'Oui'
+						),
+					)
+				),
 				$this->enums(),
 				$this->Decisioncui66->enums(),
+				$this->Personnecui66->enums(),
 				$this->Cui->options(),
 				$this->Cui->Partenairecui->enums(),
-				$datebutoir_select
+				$this->Cui->Personnecui->enums(),
+				$this->Cui->Entreeromev3->options()
 			);
 
 			return $options;

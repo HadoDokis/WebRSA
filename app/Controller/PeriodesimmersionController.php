@@ -13,6 +13,7 @@
 	 * La classe PeriodesimmersionController ...
 	 *
 	 * @package app.Controller
+	 * @deprecated since version 2.9.0
 	 */
 	class PeriodesimmersionController extends AppController
 	{

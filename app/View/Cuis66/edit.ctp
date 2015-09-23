@@ -35,9 +35,29 @@
 				'Cui66.encouple' => array( 'type' => 'hidden' ),
 				'Cui66.avecenfant' => array( 'type' => 'hidden' ),
 				'Cui66.etatdossiercui66' => array( 'type' => 'hidden' ),
-				'Cui66.montantrsa' => array( 'type' => 'hidden' ),
 				'Cui66.typeformulaire' => array( 'empty' => true ),
 				'Cui66.renouvellement',
+				'Personnecui.id' => array( 'type' => 'hidden' ),
+				'Personnecui.civilite' => array( 'type' => 'hidden' ),
+				'Personnecui.nomusage' => array( 'type' => 'hidden' ),
+				'Personnecui.prenom1' => array( 'type' => 'hidden' ),
+				'Personnecui.nomfamille' => array( 'type' => 'hidden' ),
+				'Personnecui.prenom2' => array( 'type' => 'hidden' ),
+				'Personnecui.prenom3' => array( 'type' => 'hidden' ),
+				'Personnecui.villenaissance' => array( 'type' => 'hidden' ),
+				'Personnecui.datenaissance' => array( 'type' => 'hidden' ),
+				'Personnecui.nir' => array( 'type' => 'hidden' ),
+				'Personnecui.numallocataire' => array( 'type' => 'hidden' ),
+				'Personnecui.nationalite' => array( 'type' => 'hidden' ),
+				'Personnecui.organismepayeur' => array( 'type' => 'hidden' ),
+				'Personnecui66.id' => array( 'type' => 'hidden' ),
+				'Personnecui66.adressecomplete' => array( 'type' => 'hidden' ),
+				'Personnecui66.canton' => array( 'type' => 'hidden' ),
+				'Personnecui66.departement' => array( 'type' => 'hidden' ),
+				'Personnecui66.referent' => array( 'type' => 'hidden' ),
+				'Personnecui66.nbpersacharge' => array( 'type' => 'hidden' ),
+				'Personnecui66.dtdemrsa' => array( 'type' => 'hidden' ),
+				'Personnecui66.montantrsa' => array( 'type' => 'hidden' ),
 			),
 			array( 'options' => $options )
 		) . '</fieldset>'
@@ -59,8 +79,8 @@
 				'Cui.secteurmarchand' => array( 'empty' => true, 'type' => 'select' ),
 				'Cui66.typecontrat' => array( 'empty' => true, 'options' => $options['Cui66']['typecontrat_actif'] ),
 				'Cui66.codecdiae',
-				'Cui.numconventionindividuelle' => array( 'type' => 'text' ),
-				'Cui.numconventionobjectif' => array( 'type' => 'text' )				
+				'Cui.numconventionindividuelle',
+				'Cui.numconventionobjectif'				
 			),
 			array( 'options' => $options )
 		) . '</fieldset>'
@@ -82,7 +102,9 @@
 		. $this->Default3->subform(
 			array(
 				'Partenairecui.raisonsociale',
-				'Partenairecui.enseigne'
+				'Partenairecui.enseigne',
+				'Partenairecui66.responsable',
+				'Partenairecui66.telresponsable',
 			),
 			array( 'options' => $options )
 		) 
@@ -106,6 +128,7 @@
 				'Adressecui.email',
 				'Adressecui.numfax' => array( 'maxLength' => 14 ),
 				'Adressecui.canton' => array( 'empty' => true ),
+				'Partenairecui66.conseillerdep'
 			),
 			array( 'options' => $options )
 		)
@@ -136,9 +159,9 @@
 		. $this->Default3->subform(
 			array(
 				'Partenairecui.siret',
-				'Partenairecui.naf',
-				'Partenairecui.statut' => array( 'type' => 'text' ),
-				'Partenairecui.effectif' => array( 'type' => 'text' ),
+				'Partenairecui.naf' => array( 'empty' => true ),
+				'Partenairecui.statut' => array( 'empty' => true ),
+				'Partenairecui.effectif',
 				'Partenairecui.organismerecouvrement' => array( 'empty' => true ),
 				'Partenairecui.assurancechomage' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Partenairecui.assurancechomage' ) ),
 			),
@@ -160,6 +183,7 @@
 				'Partenairecui66.nblits',
 				'Partenairecui66.nbcontratsaideshorscg',
 				'Partenairecui66.nbcontratsaidescg',
+				'Partenairecui66.subventioncg' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Partenairecui66.subventioncg' ) ),
 			),
 			array( 'options' => $options )
 		)
@@ -201,34 +225,30 @@
  * LE SALARIÉ
 /***********************************************************************************/
 	// On prépare les informations
-	$dtnai = new DateTime( $personne['Personne']['dtnai'] );
+	$dtnai = new DateTime( Hash::get($this->request->data, 'Personnecui.datenaissance' ) );
 	$dtdemrsa = new DateTime( $personne['Dossier']['dtdemrsa'] );
 	$personne['Personne']['dtnai'] = date_format($dtnai, 'd/m/Y');
 	$personne['Dossier']['dtdemrsa'] = date_format($dtdemrsa, 'd/m/Y');
-	$personne['Adresse']['complete'] = $personne['Adresse']['numvoie'] . ' ' . $personne['Adresse']['libtypevoie'] . ' ' . $personne['Adresse']['nomvoie'] . '<br />';
-	$personne['Adresse']['complete'] .= $personne['Adresse']['complideadr'] !== null ? $personne['Adresse']['complideadr'] . '<br>' : '';
-	$personne['Adresse']['complete'] .= $personne['Adresse']['compladr'] !== null ? $personne['Adresse']['compladr'] . '<br />' : '';
-	$personne['Adresse']['complete'] .= $personne['Adresse']['lieudist'] !== null ? $personne['Adresse']['lieudist'] . '<br />' : '';
-	$personne['Adresse']['complete'] .= $personne['Adresse']['codepos'] . ' ' . $personne['Adresse']['nomcom'];
-	$diffMonth = floor((time() - strtotime(date_format($dtdemrsa, 'Y-m-d'))) / 60 / 60 / 24 / (365 / 12));
-	$diffMonth < 6 && $diffStr = 'moins de 6 mois';
-	$diffMonth >= 6 && $diffMonth < 11 && $diffStr = 'de 6 à 11 mois';
-	$diffMonth >= 11 && $diffMonth < 23 && $diffStr = 'de 12 à 23 mois';
-	$diffMonth >= 24 && $diffStr = '24 et plus';
+	switch ( $dif = floor((time() - strtotime(date_format($dtdemrsa, 'Y-m-d'))) / 60 / 60 / 24 / (365 / 12)) ) {
+		case $dif < 6: $diffStr = 'moins de 6 mois'; break;
+		case $dif <= 11: $diffStr = 'de 6 à 11 mois'; break;
+		case $dif <= 23: $diffStr = 'de 12 à 23 mois'; break;
+		default: $diffStr = '24 et plus'; break;
+	}
 	
 	$darkLabelGauche = array(
-		array( __d( 'cuis66', 'Personne.nom' ), $personne['Personne']['nom'] ),
-		array( __d( 'cuis66', 'Personne.dtnai' ), $personne['Personne']['dtnai'] ),
-		array( __d( 'cuis66', 'Personne.nomcomnai' ), $personne['Personne']['nomcomnai'] ),
-		array( __d( 'cuis66', 'Adresse.complete' ), $personne['Adresse']['complete'] ),
+		array( __d( 'cuis66', 'Personne.nom' ), Hash::get($this->request->data, 'Personnecui.nomusage' ) ),
+		array( __d( 'cuis66', 'Personne.dtnai' ), date_format($dtnai, 'd/m/Y') ),
+		array( __d( 'cuis66', 'Personne.nomcomnai' ), Hash::get($this->request->data, 'Personnecui.villenaissance' ) ),
+		array( __d( 'cuis66', 'Adresse.complete' ), Hash::get($this->request->data, 'Personnecui66.adressecomplete' ) ),
 	);
 	$darkLabelDroit = array(		
-		array( __d( 'cuis66', 'Personne.prenom' ), $personne['Personne']['prenom'] ),
-		array( __d( 'cuis66', 'Personne.nir' ), $personne['Personne']['nir'] ),
-		array( __d( 'cuis66', 'Departement.name' ), $personne['Departement']['name'] ),
-		array( __d( 'cuis66', 'Adresse.canton' ), $personne['Adresse']['canton'] ),	
-		array( __d( 'cuis66', 'Personne.nati' ), $personne['Personne']['nati'] ),
-		array( __d( 'cuis66', 'Referentparcours.nom_complet' ), $personne['Referentparcours']['nom_complet'] ),	
+		array( __d( 'cuis66', 'Personne.prenom' ), Hash::get($this->request->data, 'Personnecui.prenom1' ) ),
+		array( __d( 'cuis66', 'Personne.nir' ), Hash::get($this->request->data, 'Personnecui.nir' ) ),
+		array( __d( 'cuis66', 'Departement.name' ), Hash::get($this->request->data, 'Personnecui66.departement' ) ),
+		array( __d( 'cuis66', 'Adresse.canton' ), Hash::get($this->request->data, 'Personnecui66.canton' ) ),
+		array( __d( 'cuis66', 'Personne.nati' ), Hash::get($this->request->data, 'Personnecui.nationalite' ) ),
+		array( __d( 'cuis66', 'Referentparcours.nom_complet' ), Hash::get($this->request->data, 'Personnecui66.referent' ) ),
 	);
 	
 	// On affiche les informations
@@ -251,11 +271,11 @@
 			),
 			array( 'options' => $options )
 		)
-		. $this->Xform->fieldValue('Dossier.matricule', $personne['Dossier']['matricule'])
-		. $this->Xform->fieldValue('Dossier.fonorg', $personne['Dossier']['fonorg'])
+		. $this->Xform->fieldValue(__m('Personnecui.numallocataire'), Hash::get($this->request->data, 'Personnecui.numallocataire' ), false)
+		. $this->Xform->fieldValue(__m('Personnecui.organismepayeur'), Hash::get($this->request->data, 'Personnecui.organismepayeur' ), false)
 		. '<div class="input radio"><fieldset id="Cui66Coupleenfant"><legend>' . __d('cuis66', 'Cui66.coupleenfant') . '</legend>'
 	;
-
+	
 	echo '<input type="radio" name="data[Couple][enfants]" id="CoupleEnfants_1_0" value="1_0" /><label for="CoupleEnfants_1_0">'
 		. __d('cuis66', 'Couple.enfants_1_0') . '</label>'
 		. '<input type="radio" name="data[Couple][enfants]" id="CoupleEnfants_1_1" value="1_1" /><label for="CoupleEnfants_1_1">'
@@ -265,11 +285,10 @@
 		. '<input type="radio" name="data[Couple][enfants]" id="CoupleEnfants_0_1" value="0_1" /><label for="CoupleEnfants_0_1">'
 		. __d('cuis66', 'Couple.enfants_0_1') . '</label>'
 		. '</fieldset></div>'
-		. '<p class="notice">' . __d('cuis66', 'Cui66.defaultprestation') . '</p>'
-		. $this->Xform->fieldValue('Cuis66.nbenfants', $personne['Foyer']['nb_enfants'])
+		. $this->Default3->DefaultForm->input('Personnecui66.nbpersacharge', array( 'label' => __d('cuis66', 'Cuis66.nbenfants') ))
 		. '<div class="input text"><span class="label">' . __d('cuis66', 'Dossier.dtdemrsa') . '</span><span class="input">' . $personne['Dossier']['dtdemrsa'] . ' (' . $dtdemrsa->diff(new DateTime())->format('%y an(s) %m mois %d jours') . ')</span></div>'
 		. '<div class="input text"><span class="label">' . __d('cuis66', 'Dossier.date_entree_dispositif') . '</span><span class="input">' . $diffStr . '</span></div>'
-		. $this->Default3->subform( array( 'Cui66.montantrsa' => array( 'view' => true ) ) )
+		. $this->Default3->subform( array( 'Personnecui66.montantrsa' => array( 'view' => true ) ) )
 		. '</fieldset>'
 	;
 
@@ -302,6 +321,7 @@
 				'Cui.typecontrat' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.typecontrat' ) ),
 				'Cui.dateembauche' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui.findecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+				'Cui66.perennisation' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __m('Cui66.perennisation')  ),
 			),
 			array( 'options' => $options )
 		) 
@@ -383,7 +403,7 @@
 				'Cui.finpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui.decisionpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
 				'Cui.dureehebdoretenu' => array( 'class' => 'heures_minutes'),
-				'Cui.operationspeciale' => array( 'type' => 'text' ),
+				'Cui.operationspeciale',
 				'Cui.tauxfixeregion' => array( 'type' => 'text', 'class' => 'percent'),
 				'Cui.priseenchargeeffectif' => array( 'type' => 'text', 'class' => 'percent'),
 				'Cui.exclusifcg' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.exclusifcg' ) ),
@@ -675,6 +695,15 @@
 		'CuiAddEditForm',
 		'Cui.typecontrat',
 		array( 'CuiFindecontratDay', 'CuiFindecontratMonth', 'CuiFindecontratYear' ),
+		'CDD',
+		true,
+		true
+	);
+	
+	echo $this->Observer->disableFieldsetOnRadioValue(
+		'CuiAddEditForm',
+		'Cui.typecontrat',
+		'Cui66Perennisation0Parent',
 		'CDD',
 		true,
 		true

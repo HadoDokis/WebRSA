@@ -40,6 +40,47 @@ msgstr "Non"
 msgid "ENUM::AJOURVERSEMENT::1"
 msgstr "Oui"
 
+msgid "ENUM::STATUT::10"
+msgstr "Commune"
+
+msgid "ENUM::STATUT::11"
+msgstr "EPCI"
+
+msgid "ENUM::STATUT::21"
+msgstr "Département"
+
+msgid "ENUM::STATUT::22"
+msgstr "Région"
+
+msgid "ENUM::STATUT::50"
+msgstr "Association"
+
+msgid "ENUM::STATUT::60"
+msgstr "Autre personne morale chargée de la gestion d\'un service public (mutuelle, office public d\'HLM)"
+
+msgid "ENUM::STATUT::70"
+msgstr "Établissement Public d'Enseignement (lycée, collège)"
+
+msgid "ENUM::STATUT::71"
+msgstr "Établissement PA"
+
+msgid "ENUM::STATUT::72"
+msgstr "Établissement PH"
+
+msgid "ENUM::STATUT::73"
+msgstr "CCAS"
+
+msgid "ENUM::STATUT::80"
+msgstr "Établissement Sanitaire Public"
+
+msgid "ENUM::STATUT::90"
+msgstr "Autre établissement public"
+
+msgid "ENUM::STATUT::98"
+msgstr "Groupement d'employeurs"
+
+msgid "ENUM::STATUT::99"
+msgstr "Autre entreprise"
 
 ####################################### Traductions champs CUI #######################################
 
