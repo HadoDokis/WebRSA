@@ -13,6 +13,7 @@
 
 	if( $this->action == 'add' ) {
 		$title = $this->pageTitle = 'Ajout d\'un dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $personneDem, 'Personne.nom_complet');
+		$this->request->data['Dossierpcg66']['haspiecejointe'] = 0;
 	}
 	else {
 		if( !empty( $charge ) ) {

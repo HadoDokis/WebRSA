@@ -29,10 +29,10 @@ msgstr "Contrat Unique d'Insertion"
 ###############################################################################
 
 msgid "ENUM::TYPEFORMULAIRE::CUI"
-msgstr "CUI"
+msgstr "Contrat Unique d'Insertion (CUI)"
 
 msgid "ENUM::TYPEFORMULAIRE::CUIAvenir"
-msgstr "CUI Emploi d'Avenir"
+msgstr "Contrat Unique d'Insertion - Emploi d'Avenir (EAV)"
 
 ###############################################################################
 # Type de contrat
