@@ -573,19 +573,24 @@
 					/**
 					 * Si un traitement de type courrier a été crée le même jour, on le met dans la liste d'impression de la décision
 					 */
-					if ( $saved && Hash::get( $this->request->data, 'Decisiondossierpcg66.validationproposition' === 'O' ) ) {
-						$traitementsCourrierMemeJour = $this->Decisiondossierpcg66->find( 'all',
+					if ( $saved && Hash::get( $this->request->data, 'Decisiondossierpcg66.validationproposition' ) === 'O' ) {
+						$traitementsCourrierMemeJour = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->find( 'all',
 							array(
 								'fields' => 'Traitementpcg66.id',
 								'contain' => false,
 								'joins' => array(
-									$this->Decisiondossierpcg66->join('Dossierpcg66', array('type' => 'INNER')),
+									$this->Decisiondossierpcg66->Dossierpcg66->Foyer->join('Dossierpcg66', array('type' => 'INNER')),
+									$this->Decisiondossierpcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT')),
 									$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
 									$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->join('Traitementpcg66', array('type' => 'INNER')),
 								),
 								'conditions' => array(
-									'Decisiondossierpcg66.id' => $this->Decisiondossierpcg66->id,
-									'(Traitementpcg66.created)::date = (Decisiondossierpcg66.created)::date',
+									'Foyer.id' => Hash::get($decisiondossierpcg66, 'Dossierpcg66.foyer_id'),
+									'OR' => array(
+										'Decisiondossierpcg66.id IS NULL',
+										'Decisiondossierpcg66.id' => $this->Decisiondossierpcg66->id,
+									),
+									"(Traitementpcg66.created)::date = ('".Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.created')."')::date",
 									'Traitementpcg66.annule' => 'N',
 									'Traitementpcg66.typetraitement' => 'courrier',
 								)
