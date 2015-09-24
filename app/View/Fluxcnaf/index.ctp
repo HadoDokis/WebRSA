@@ -138,7 +138,7 @@
 </div>
 <script type="text/javascript">
 	// On tronque la longueur des titres à 40 caractères avant de faire les onglets.
-	$$( 'h2, h3' ).each( function( title ) { truncateWithEllipsis( title, 40 ); } );
+	$$( 'h2, h3' ).each( function( title ) { truncateWithEllipsis( title, 25 ); } );
 
 	// Création des onglets à partir des titres.
 	makeTabbed( 'tabbedWrapper', 2 );

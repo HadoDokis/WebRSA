@@ -109,6 +109,7 @@
 				'Referentparcours.nom_complet',
 				'Orientstruct.origine',
 				'Orientstruct.date_valid',
+				'Typeorient.lib_type_orient',
 				'Structurereferente.lib_struc',
 				'Orientstruct.statut_orient',
 				'Calculdroitrsa.toppersdrodevorsa',

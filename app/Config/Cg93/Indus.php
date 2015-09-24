@@ -21,11 +21,9 @@
 					'Dossier.typeparte',
 					'Situationdossierrsa.etatdosrsa',
 					'Indu.moismoucompta' => array( 'type' => 'date', 'format' => '%B %Y' ),
-					'IndusConstates.mtmoucompta' => array(
-						'class' => 'number'
-					),
-					'IndusTransferesCG.mtmoucompta',
-					'RemisesIndus.mtmoucompta',
+					'IndusConstates.mtmoucompta' => array( 'type' => 'float' ),
+					'IndusTransferesCG.mtmoucompta' => array( 'type' => 'float' ),
+					'RemisesIndus.mtmoucompta' => array( 'type' => 'float' ),
 					'/Indus/view/#Dossier.id#' => array( 'class' => 'view' ),
 				),
 				'innerTable' => array(
@@ -56,9 +54,9 @@
 				'Dossier.typeparte',
 				'Situationdossierrsa.etatdosrsa',
 				'Indu.moismoucompta' => array( 'type' => 'date', 'format' => '%B %Y' ),
-				'IndusConstates.mtmoucompta',
-				'IndusTransferesCG.mtmoucompta',
-				'RemisesIndus.mtmoucompta',
+				'IndusConstates.mtmoucompta' => array( 'type' => 'float' ),
+				'IndusTransferesCG.mtmoucompta' => array( 'type' => 'float' ),
+				'RemisesIndus.mtmoucompta' => array( 'type' => 'float' ),
 				'Structurereferenteparcours.lib_struc',
 				'Referentparcours.nom_complet',
 			)

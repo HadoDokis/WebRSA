@@ -295,7 +295,7 @@ function mkTooltipTables() {
 				$( tr ).addClassName( 'dynamic' );
 				var jPosition = 0;
 				$( tr ).getElementsBySelector( 'td' ).each( function( td ) {
-					if( !actionPositions.include( jPosition ) ) {
+					if( !actionPositions.include( jPosition ) && $(td).hasClassName('action') === false ) {
 						tips.push( new Tooltip( $( td ), 'innerTable' + $( table ).readAttribute( 'id' ) + iPosition ) );
 					}
 					jPosition++;

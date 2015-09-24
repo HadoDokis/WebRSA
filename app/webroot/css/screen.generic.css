@@ -2026,3 +2026,7 @@ ul li a.refresh_page {
 tr td div.visited a {
 	color: #A95BBA;
 }
+
+td.data.integer, td.data.float, td.data.numeric {
+	text-align: right;
+}

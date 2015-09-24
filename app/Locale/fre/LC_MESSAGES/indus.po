@@ -11,7 +11,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Indus/search/:heading"
-msgstr "Recherche par Indus"
+msgstr "Recherche par indus (nouveau)"
 
 msgid "/Indus/search"
 msgstr "Formulaire"

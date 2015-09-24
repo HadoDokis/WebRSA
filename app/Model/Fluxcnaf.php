@@ -566,8 +566,8 @@
 				),
 				'/InfoDemandeRSA/Personne/DonneesSocioProfessionnelles/NiveauEtude' => array(
 					'NIVETU',
-					'NIVDIPMAXOBT ',
-					'ANNOBTNIVDIPMAX ',
+					'NIVDIPMAXOBT',
+					'ANNOBTNIVDIPMAX',
 					'TOPQUALIPRO',
 					'LIBAUTRQUALIPRO',
 					'TOPCOMPEEXTRAPRO',
@@ -808,8 +808,8 @@
 				),
 				'/InfoDemandeRSA/IdentificationRSA/Personne/DonneesSocioProfessionnelles/NiveauEtude' => array(
 					'NIVETU',
-					'NIVDIPMAXOBT ',
-					'ANNOBTNIVDIPMAX ',
+					'NIVDIPMAXOBT',
+					'ANNOBTNIVDIPMAX',
 					'TOPQUALIPRO',
 					'LIBAUTRQUALIPRO',
 					'TOPCOMPEEXTRAPRO',
@@ -1349,7 +1349,7 @@
 				),
 				'/InfosFoyerRSA/Personne/ContratPCGPersonneRSA' => array(
 					'DDCONTRRSA',
-					'DFCONTRRSA ',
+					'DFCONTRRSA',
 					'TYPECONTRRSA',
 				),
 				'/InfosFoyerRSA/Personne/SanctionPCGPersonneRSA/DecisionSanctionPCGPersonneRSA' => array(
@@ -1455,7 +1455,7 @@
 					'MTRESSMENRSA',
 					'MTSANADMRSA',
 					'MTREDADMRSA',
-					'MTSANCGRSA ',
+					'MTSANCGRSA',
 					'MTCUMINTEGRSA',
 					'MTABANEURSA',
 					'MTBRUTRSA',
@@ -1467,7 +1467,7 @@
 					'DDNATDRO',
 					'DFNATDRO',
 					'DTINIRSASOCL',
-					'MTBRUTRSASOCL ',
+					'MTBRUTRSASOCL',
 				),
 				'/InfosFoyerRSA/DonneesAdministratives/PrestationRSA/DetailDroitRSA/DetailCalculDroitRSA/RSAActivite' => array(
 					'NATPF',
