@@ -1,4 +1,15 @@
 <?php
+	function multipleCheckbox( $View, $path, $options, $class = '' ) {
+		$name = model_field($path);
+		return $View->Xform->input($path, array(
+			'label' => __m($path), 
+			'type' => 'select', 
+			'multiple' => 'checkbox', 
+			'options' => $options[$name[0]][$name[1]],
+			'class' => $class
+		));
+	}
+
 	echo $this->Default3->titleForLayout();
 
 	// @param 1 Validation javascript, verification seulement sur date, 
@@ -73,11 +84,7 @@
 		}
 		
 		echo '<fieldset><legend id="Cui66Choixformulaire">' . __d('cuis66', 'Cui66.positions') . '</legend>'
-			. $this->Default3->subform(
-				array(
-					'Search.Cui66.etatdossiercui66' => array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Cui66']['etatdossiercui66'], 'label' => __d( 'cuis66', 'Cui66.etatdossiercui66' ) )
-				)
-			) 
+			. multipleCheckbox( $this, 'Search.Cui66.etatdossiercui66', $options, 'divideInto2Collumn' )
 			. $this->SearchForm->dateRange( 'Search.Historiquepositioncui66.created', $paramDate )	
 			. '</fieldset>'
 		;
@@ -100,7 +107,7 @@
 			) . '</fieldset>'
 		;
 		
-		echo '<fieldset id="Cui66Dossier"><legend>' . __d('cuis66', 'Cui66.dossier') . '</legend>'
+		echo '<fieldset><legend>' . __d('cuis66', 'Cui66.dossier') . '</legend>'
 			. $this->Default3->subform(
 				array(
 					'Search.Cui66.dossiereligible' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Cui66.dossiereligible' ) ),
@@ -115,7 +122,7 @@
 			. '</fieldset>'
 		;
 		
-		echo '<fieldset id="Cui66Dossier"><legend>' . __d('criterescuis', 'Cui66.email') . '</legend>'
+		echo '<fieldset><legend>' . __d('criterescuis', 'Cui66.email') . '</legend>'
 			. $this->Default3->subform(
 				array(
 					'Search.Emailcui.textmailcui66_id' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Emailcui.textmailcui66_id' ) ),
@@ -128,7 +135,7 @@
 			. '</fieldset>'
 		;
 		
-		echo '<fieldset id="Cui66Dossier"><legend>' . __d('criterescuis', 'Cui66.decision') . '</legend>'
+		echo '<fieldset><legend>' . __d('criterescuis', 'Cui66.decision') . '</legend>'
 			. $this->Default3->subform(
 				array(
 					'Search.Decisioncui66.decision' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Decisioncui66.decision' ) ),
@@ -159,12 +166,15 @@
 		. $this->Default3->subform(
 			array(
 				'Search.Cui.typecontrat' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Cui.typecontrat' ) ),
+				'Search.Cui.partenaire_id' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Cui.partenaire_id' ) ),
+				'Search.Adressecui.commune' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Adressecui.commune' ) ),
+				'Search.Adressecui.canton' => array( 'empty' => true, 'label' => __d( 'cuis66', 'Adressecui.canton' ) ),
 			),
 			array( 'options' => array( 'Search' => $options ) )
 		)
 		. $this->SearchForm->dateRange( 'Search.Cui.dateembauche', $paramDate )
 		. $this->SearchForm->dateRange( 'Search.Cui.findecontrat', $paramDate )
-		// FIXME . $this->Romev3->fieldset( 'Entreeromev3', array( 'options' => $options ) )
+		. $this->Romev3->fieldset( 'Entreeromev3', array( 'options' => $options, 'prefix' => 'Search' ) )
 		. '</fieldset>'
 	;
 	

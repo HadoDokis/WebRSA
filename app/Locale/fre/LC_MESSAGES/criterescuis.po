@@ -164,3 +164,24 @@ msgstr "Date de la décision"
 
 msgid "Search.Historiquepositioncui66.created"
 msgstr "Date du changement de position"
+
+msgid "Search.Cui66.etatdossiercui66"
+msgstr "Etat du dossier CUI"
+
+msgid "Search.Entreeromev3"
+msgstr "Code rome (v3)"
+
+msgid "Search.Entreeromev3.romev3"
+msgstr "Recherche rapide"
+
+msgid "Search.Entreeromev3.familleromev3_id"
+msgstr "Code famille"
+
+msgid "Search.Entreeromev3.domaineromev3_id"
+msgstr "Code domaine"
+
+msgid "Search.Entreeromev3.metierromev3_id"
+msgstr "Code métier"
+
+msgid "Search.Entreeromev3.appellationromev3_id"
+msgstr "Appellation métier"

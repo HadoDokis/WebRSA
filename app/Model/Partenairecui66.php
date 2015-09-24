@@ -70,6 +70,7 @@
 			'ville' => 'Adressecui.commune',
 			'libstruc' => 'Partenairecui.raisonsociale',
 			'nbcontratsaidescg' => 'Partenairecui66.nbcontratsaidescg',
+			'nomresponsable' => 'Partenairecui66.responsable',
 		);
 		
 		/**
@@ -87,7 +88,6 @@
 				'adressepresident' => null,
 				'directeur' => null,
 				'adressedirecteur' => null,
-				'nomresponsable' => null,
 			);
 			
 			// Conversion de champs
