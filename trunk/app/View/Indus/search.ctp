@@ -5,11 +5,11 @@
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
 	$availableDomains = MultiDomainsTranslator::urlDomains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
-	$paramDate = array( 
-		'domain' => $domain, 
-		'minYear_from' => '2009', 
-		'maxYear_from' => date( 'Y' ) + 1, 
-		'minYear_to' => '2009', 
+	$paramDate = array(
+		'domain' => $domain,
+		'minYear_from' => '2009',
+		'maxYear_from' => date( 'Y' ) + 1,
+		'minYear_to' => '2009',
 		'maxYear_to' => date( 'Y' ) + 4
 	);
 	$paramAllocataire = array(
@@ -25,9 +25,9 @@
 			'on' => null
 		)
 	);
-	
-	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
-	
+
+	echo $this->Default3->titleForLayout();
+
 	$dates = array(
 		'Dossier' => array('dtdemrsa' => $dateRule),
 		'Personne' => array('dtnai' => $dateRule),
@@ -50,10 +50,10 @@
 	);
 
 	// 1. Moteur de recherche
-	echo $this->Xform->create( null, 
-		array( 
-			'id' => $formId, 
-			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
+	echo $this->Xform->create( null,
+		array(
+			'id' => $formId,
+			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ),
 			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
 		)
 	);
@@ -63,7 +63,7 @@
 	echo $this->Allocataires->blocAdresse($paramAllocataire);
 
 	echo $this->Allocataires->blocAllocataire($paramAllocataire);
-	
+
 	echo '<fieldset><legend>' . __m( 'Infofinanciere.search' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
@@ -76,25 +76,27 @@
 		)
 		. '</fieldset>'
 	;
-	
+
 	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
-	
+
 	echo $this->Allocataires->blocPagination($paramAllocataire);
 
 	echo $this->Xform->end( 'Search' );
-	
+
 	echo $this->Search->observeDisableFormOnSubmit( $formId );
 
-	// 2. Formulaire de traitement des résultats de la recherche
+	// 2. Résultats de la recherche
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		echo $this->Default3->configuredIndex(
 			$results,
 			array(
-				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ),
+				'format' => $this->element( 'pagination_format', array( 'modelName' => 'Dossier' ) ),
 				'options' => $options
 			)
 		);
-		
-		echo $this->element( 'search_footer' );
+
+		echo $this->element( 'search_footer', array( 'modelName' => 'Dossier' ) );
 	}
 ?>

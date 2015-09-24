@@ -17,13 +17,9 @@
 	Configure::write(
 		'Filtresdefaut.Indus_search',
 		array(
-			// FIXME: faut-il inclure le prefix Search dans le component ?
-			// FIXME: corriger dans les autres fichiers de configuration ?
-//			'Search' => array(
-				'Dossier' => array(
-					'dernier' => '1'
-				),
-//			)
+			'Dossier' => array(
+				'dernier' => '1'
+			),
 		)
 	);
 
@@ -37,9 +33,9 @@
 					'Dossier.typeparte',
 					'Situationdossierrsa.etatdosrsa',
 					'Indu.moismoucompta' => array( 'type' => 'date', 'format' => '%B %Y' ),
-					'IndusConstates.mtmoucompta',
-					'IndusTransferesCG.mtmoucompta',
-					'RemisesIndus.mtmoucompta',
+					'IndusConstates.mtmoucompta' => array( 'type' => 'float' ),
+					'IndusTransferesCG.mtmoucompta' => array( 'type' => 'float' ),
+					'RemisesIndus.mtmoucompta' => array( 'type' => 'float' ),
 					'/Indus/view/#Dossier.id#' => array( 'class' => 'view' ),
 				),
 				'innerTable' => array(
@@ -69,9 +65,9 @@
 				'Dossier.typeparte',
 				'Situationdossierrsa.etatdosrsa',
 				'Indu.moismoucompta' => array( 'type' => 'date', 'format' => '%B %Y' ),
-				'IndusConstates.mtmoucompta',
-				'IndusTransferesCG.mtmoucompta',
-				'RemisesIndus.mtmoucompta',
+				'IndusConstates.mtmoucompta' => array( 'type' => 'float' ),
+				'IndusTransferesCG.mtmoucompta' => array( 'type' => 'float' ),
+				'RemisesIndus.mtmoucompta' => array( 'type' => 'float' ),
 				'Structurereferenteparcours.lib_struc',
 				'Referentparcours.nom_complet',
 			)

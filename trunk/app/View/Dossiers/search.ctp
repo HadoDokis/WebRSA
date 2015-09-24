@@ -89,6 +89,7 @@
 		echo $this->Default3->configuredindex(
 			$results,
 			array(
+				'format' => $this->element( 'pagination_format' ),
 				'options' => $options
 			)
 		);
