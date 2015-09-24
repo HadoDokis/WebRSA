@@ -90,7 +90,6 @@
 				
 				array_unshift(
 					$query['joins'],
-					$Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Cui->join( 'Partenairecui', array( 'type' => 'LEFT OUTER' ) ),
 					$Cui->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
 					$Cui->join( 'Emailcui', 
