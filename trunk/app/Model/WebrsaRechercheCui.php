@@ -82,6 +82,7 @@
 				'Emailcui' => 'LEFT OUTER',
 				'Partenairecui' => 'LEFT OUTER',
 				'Adressecui' => 'LEFT OUTER',
+				'Entreeromev3' => 'LEFT OUTER',
 				$modelCuiDpt => 'INNER',
 			);
 
@@ -133,6 +134,7 @@
 
 				array_unshift(
 					$query['joins'],
+					$this->Cui->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Cui->join( 'Partenairecui', array( 'type' => $types['Partenairecui'] ) ),
 					$this->Cui->join( 'Emailcui',
 						array(
@@ -223,7 +225,17 @@
 				'Cui.majorationrsa',
 				'Cui.rsadepuis',
 				'Cui.travailleurhandicape',
-				'Cui.typecontrat'
+				'Cui.typecontrat',
+				'Cui.partenaire_id',
+				'Adressecui.commune',
+				'Adressecui.canton',
+				'Entreeromev3.familleromev3_id',
+			);
+			
+			$pathsToExplode = array(
+				'Entreeromev3.domaineromev3_id',
+				'Entreeromev3.metierromev3_id',
+				'Entreeromev3.appellationromev3_id',
 			);
 
 			$pathsDate = array(
@@ -267,6 +279,14 @@
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+			
+			foreach( $pathsToExplode as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
+					list(,$value) = explode('_', $value);
 					$query['conditions'][$path] = $value;
 				}
 			}

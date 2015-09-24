@@ -1200,6 +1200,7 @@
 			$this->Cui->validate = array();
 			$this->Cui->Cui66->validate = array();
 			$this->Cui->Cui66->Decisioncui66->validate = array();
+			$this->Cui->Partenairecui->Adressecui->validate = array();
 		}
 		
 		/**

@@ -34,6 +34,7 @@
 		 */
 		public $components = array(
 			'Allocataires',
+			'Gestionzonesgeos',
 			'Search.Filtresdefaut' => array( 'search' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
@@ -80,6 +81,10 @@
 			
 			$options = $this->_getOptions();
 			$this->set( compact( 'options' ) );
+			$this->Cui->validate = array();
+			$this->Cui->Cui66->validate = array();
+			$this->Cui->Cui66->Decisioncui66->validate = array();
+			$this->Cui->Partenairecui->Adressecui->validate = array();
 		}
 		
 		protected function _getOptions() {
@@ -108,6 +113,16 @@
 			
 			// INFO : Fait doublon avec $this->Allocataires->options() car se merge mal (clef numérique)
 			unset($options['Situationdossierrsa']);
+			
+			$options['Adressecui']['canton'] = $this->Gestionzonesgeos->listeCantons();
+			
+			$communes = $this->Cui->Partenairecui->Adressecui->query('SELECT commune AS "Adressecui__commune" FROM adressescuis GROUP BY commune');
+			foreach ( $communes as $value ) {
+				$commune = Hash::get($value, 'Adressecui.commune');
+				$options['Adressecui']['commune'][$commune] = $commune;
+			}
+			
+			$options['Cui']['partenaire_id'] = $this->Cui->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
 			
 			return Hash::merge(
 				$options,

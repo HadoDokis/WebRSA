@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
+	App::uses( 'Gestionzonesgeos', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaRecherchesCuisComponent ...
@@ -16,6 +17,16 @@
 	 */
 	class WebrsaRecherchesCuisComponent extends WebrsaAbstractRecherchesComponent
 	{
+		/**
+		 * Components utilisés par ce component.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Allocataires',
+			'Gestionzonesgeos'
+		);
+		
 		/**
 		 * Options pour le moteur de recherche
 		 *
@@ -52,9 +63,18 @@
 			
 			unset( $options['Situationdossierrsa'], $options['Personne'], $options['Calculdroitrsa'], $options['Cui'] );
 			
-			$result = Hash::merge( $options, parent::options( $params ) );
+			$options['Adressecui']['canton'] = $this->Gestionzonesgeos->listeCantons();
 			
+			$communes = $this->Cui->Partenairecui->Adressecui->query('SELECT commune AS "Adressecui__commune" FROM adressescuis GROUP BY commune');
+			foreach ( $communes as $value ) {
+				$commune = Hash::get($value, 'Adressecui.commune');
+				$options['Adressecui']['commune'][$commune] = $commune;
+			}
+			
+			$result = Hash::merge( $options, parent::options( $params ) );
 			$result['Cui'] = $optionCui;
+			
+			$result['Cui']['partenaire_id'] = $this->Cui->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
 			
 			return $result;
 		}
