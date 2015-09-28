@@ -574,39 +574,58 @@
 					 * Si un traitement de type courrier a été crée le même jour, on le met dans la liste d'impression de la décision
 					 */
 					if ( $saved && Hash::get( $this->request->data, 'Decisiondossierpcg66.validationproposition' ) === 'O' ) {
-						$traitementsCourrierMemeJour = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->find( 'all',
+						$listeDecisions = $this->Decisiondossierpcg66->Dossierpcg66->find( 'all', 
 							array(
-								'fields' => 'Traitementpcg66.id',
-								'contain' => false,
+								'fields' => array(
+									'Decisiondossierpcg66.id',
+									'Dossierpcg66.foyer_id',
+									'Decisiondossierpcg66.created'
+								),
+								'contain' =>false,
 								'joins' => array(
-									$this->Decisiondossierpcg66->Dossierpcg66->Foyer->join('Dossierpcg66', array('type' => 'INNER')),
-									$this->Decisiondossierpcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT')),
-									$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
-									$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->join('Traitementpcg66', array('type' => 'INNER')),
+									$this->Decisiondossierpcg66->Dossierpcg66->join('Decisiondossierpcg66')
 								),
 								'conditions' => array(
-									'Foyer.id' => Hash::get($decisiondossierpcg66, 'Dossierpcg66.foyer_id'),
-									'OR' => array(
-										'Decisiondossierpcg66.id IS NULL',
-										'Decisiondossierpcg66.id' => $this->Decisiondossierpcg66->id,
-									),
-									"(Traitementpcg66.created)::date = ('".Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.created')."')::date",
-									'Traitementpcg66.annule' => 'N',
-									'Traitementpcg66.typetraitement' => 'courrier',
+									'Dossierpcg66.id' => Hash::get($decisiondossierpcg66, 'Dossierpcg66.id')
 								)
 							)
 						);
-
-						if ( !empty($traitementsCourrierMemeJour) ) {
-							$traitements_ids = array();
-							foreach ( $traitementsCourrierMemeJour as $datas ) {
-								$traitements_ids[] = Hash::get($datas, 'Traitementpcg66.id');
-							}
-
-							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnbound(
-								array( 'imprimer' => 1, 'etattraitementpcg' => "'imprimer'" ),
-								array( 'Traitementpcg66.id' => $traitements_ids, 'Traitementpcg66.etattraitementpcg' => 'contrôler' )
+						
+						foreach ( Hash::extract( $listeDecisions, '{n}.Decisiondossierpcg66.id' ) as $key => $idsDossierspcgs66 ) {
+							$traitementsCourrierMemeJour = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->find( 'all',
+								array(
+									'fields' => 'Traitementpcg66.id',
+									'contain' => false,
+									'joins' => array(
+										$this->Decisiondossierpcg66->Dossierpcg66->Foyer->join('Dossierpcg66', array('type' => 'INNER')),
+										$this->Decisiondossierpcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT')),
+										$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
+										$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->join('Traitementpcg66', array('type' => 'INNER')),
+									),
+									'conditions' => array(
+										'Foyer.id' => Hash::get($listeDecisions, $key.'.Dossierpcg66.foyer_id'),
+										'OR' => array(
+											'Decisiondossierpcg66.id IS NULL',
+											'Decisiondossierpcg66.id' => $idsDossierspcgs66,
+										),
+										"(Traitementpcg66.created)::date = ('".Hash::get($listeDecisions, $key.'.Decisiondossierpcg66.created')."')::date",
+										'Traitementpcg66.annule' => 'N',
+										'Traitementpcg66.typetraitement' => 'courrier',
+									)
+								)
 							);
+
+							if ( !empty($traitementsCourrierMemeJour) ) {
+								$traitements_ids = array();
+								foreach ( $traitementsCourrierMemeJour as $datas ) {
+									$traitements_ids[] = Hash::get($datas, 'Traitementpcg66.id');
+								}
+
+								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnbound(
+									array( 'imprimer' => 1, 'etattraitementpcg' => "'imprimer'" ),
+									array( 'Traitementpcg66.id' => $traitements_ids, 'Traitementpcg66.etattraitementpcg' => 'contrôler' )
+								);
+							}
 						}
 					}
 					
