@@ -98,6 +98,20 @@
 				}
 			}
 
+			// Filtre sur les adresses sans zone géographique associée
+			// FIXME: sauf pour le 66!
+			$sans_zonegeographique = Hash::get( $search, 'Adresse.sans_zonegeographique' );
+			if( $sans_zonegeographique ) {
+				$Zonegeographique = ClassRegistry::init( 'Zonegeographique' );
+				$query = array(
+					'fields' => array( 'Zonegeographique.codeinsee' ),
+					'contain' => false
+				);
+				$sql = $Zonegeographique->sq( $query );
+				$sqls = array_words_replace( array( $sql ), array( 'Zonegeographique' => 'zonesgeographiques' ) );
+				$conditions[] = "Adresse.numcom NOT IN ( {$sqls[0]} )";
+			}
+
 			return $conditions;
 		}
 
