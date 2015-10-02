@@ -40,6 +40,10 @@ p {
     top: 1em;
 }
 
+#pageCartouche table td {
+	vertical-align: middle;
+}
+
 /*---------------------------------------------------------------------------*/
 
 table {
@@ -2025,6 +2029,26 @@ ul li a.refresh_page {
 
 tr td div.visited a {
 	color: #A95BBA;
+}
+
+td.dossier_locked a {
+	background-repeat: no-repeat;
+	padding-left: 25px;
+	text-decoration: none;
+	background-position: 5px center;
+	background-image: url("../img/icons/lock.png");
+	display: inline-block;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right: 2px;
+}
+
+td.dossier_locked a:hover {
+	background-repeat: no-repeat;
+	padding-left: 25px;
+	text-decoration: none;
+	background-position: 5px center;
+	background-image: url("../img/icons/lock_open.png");
 }
 
 td.data.integer, td.data.float, td.data.numeric {

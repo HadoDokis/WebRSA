@@ -498,5 +498,51 @@
 		public function beforeRedirect( Controller $controller, $url, $status = null, $exit = true ) {
 			return array( 'url' => $url, 'status' => $status, 'exit' => $exit );
 		}
+		
+		/**
+		 * Permet d'obtenir le nombre de jetons qu'un utilisateur possède
+		 * Dans le cas d'un multilogin, on précise le php_sid
+		 * 
+		 * @return int
+		 */
+		public function count() {
+			if( Configure::read( 'Jetons2.disabled' ) ) {
+				return 0;
+			}
+			
+			$query = array(
+				'conditions' => array(
+					'user_id' => $this->Session->read( 'Auth.User.id' )
+				),
+				'contain' => false
+			);
+			
+			if( Configure::read( 'Utilisateurs.multilogin' ) ) {
+				$query['conditions']['php_sid'] = $this->Session->id();
+			}
+			
+			$result = $this->Jeton->find('count', $query);
+			
+			return $result;
+		}
+		
+		/**
+		 * Supprime tout les jetons d'un utilisateur
+		 * Dans le cas d'un multilogin, on précise le php_sid
+		 * 
+		 * @return boolean
+		 */
+		public function deleteJetons() {
+			if( Configure::read( 'Jetons2.disabled' ) ) {
+				return true;
+			}
+			$conditions = array('Jeton.user_id' => $this->Session->read( 'Auth.User.id' ));
+
+			if ( Configure::read( 'Utilisateurs.multilogin' ) ) {
+				$conditions['php_sid'] = $this->Session->id();
+			}
+			
+			return $this->Jeton->deleteAll($conditions);
+		}
 	}
 ?>
