@@ -33,6 +33,7 @@
 			'Dbdroits',
 			'Menu',
 			'Password',
+			'Jetons2',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
 		);
 
@@ -407,15 +408,7 @@
 		 * @param integer $session_id
 		 */
 		protected function _deleteDbEntries( $user_id, $session_id ) {
-			// TODO: dans Jetons2Component ou dans le modèle Jeton
-			if( !Configure::read( 'Jetons2.disabled' ) ) {
-				$this->User->Jeton->deleteAll(
-					array(
-						'Jeton.user_id' => $user_id,
-						'Jeton.php_sid' => $session_id
-					)
-				);
-			}
+			$this->Jetons2->deleteJetons();
 
 			// TODO: dans Jetonsfonctions2Component ou dans le modèle Jeton
 			if( !Configure::read( 'Jetonsfonctions2.disabled' ) ) {
