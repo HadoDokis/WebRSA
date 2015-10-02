@@ -1046,6 +1046,7 @@
 		 * @param integer $personne_id
 		 * @param array $data ATTENTION: le nom de modèle sera toujours Dsp
 		 * @return boolean
+		 * @throws RuntimeException
 		 */
 		public function updateDerniereDsp( $personne_id, array $data ) {
 			$fields = array_keys( (array)Hash::get( $data, 'Dsp' ) );
@@ -1175,6 +1176,31 @@
 				// Pour les DspRev, le champ haspiecejointe est obligatoire
 				if( $newModelName === 'DspRev' && !isset( $newRecord[$newModelName]['haspiecejointe'] ) ) {
 					$newRecord[$newModelName]['haspiecejointe'] = '0';
+				}
+
+				// Si on utilise les codes ROME v.3, il y aura de la copie de données à faire
+				foreach( $this->romev3LinkedModels as $linkedModelName ) {
+					$linkedFieldName = Inflector::underscore( $linkedModelName ).'_id';
+					$value = Hash::get( $newRecord, "{$newModelName}.{$linkedFieldName}" );
+
+					if( !empty( $value ) ) {
+						$query = array( 'conditions' => array( "{$linkedModelName}.id" => $value ), 'contain' => false );
+						$record = $this->{$linkedModelName}->find( 'first', $query );
+
+						if( empty($record) ) {
+							$msg = sprintf( 'Impossible de trouver l\'enregistrement de %s d\'id %d.', $linkedModelName, $value );
+							throw new RuntimeException( $msg );
+						}
+
+						foreach( array( 'id', 'created', 'modified' ) as $field ) {
+							unset( $record[$linkedModelName][$field] );
+						}
+
+						$this->{$linkedModelName}->create( $record );
+						$success = $this->{$linkedModelName}->save() && $success;
+
+						$newRecord[$newModelName][$linkedFieldName] = $this->{$linkedModelName}->id;
+					}
 				}
 
 				$success = $this->saveResultAsBool(
