@@ -33,7 +33,7 @@
                     <td> <?php echo $this->Session->read( 'Auth.User.prenom' ) ;?> </td>
                     <td> <?php echo $this->Session->read( 'Auth.Group.name' ) ;?> </td>
                     <td> <?php echo $this->Session->read( 'Auth.Serviceinstructeur.lib_service' ) ;?> </td>
-				<?php if( !Configure::read( 'Jetons2.disabled' ) ) {?>
+				<?php if( !Configure::read( 'Jetons2.disabled' ) && !Configure::read( 'Etatjetons.disabled' ) ) {?>
                     <td class="dossier_locked"><a href="#" id="jetons_count" onclick="jetonDelete()">Loading...</a></td>
 				<?php } ?>
                     <!--<td>
