@@ -357,6 +357,9 @@
 				),
 				// Fin @deprecated
 				'MultiDomainsTranslator.prefix' => 'string',
+				'Etatjetons.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 
 			foreach( $this->searches as $searchModelName ) {

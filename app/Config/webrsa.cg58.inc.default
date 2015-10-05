@@ -840,5 +840,5 @@
 	/**
 	 * Permet de désactiver le "cadenas" situé en haut à droite
 	 */
-	Configure::write( 'Etatjetons.disabled', false );
+	Configure::write( 'Etatjetons.enabled', false );
 ?>
