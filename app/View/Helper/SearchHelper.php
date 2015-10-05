@@ -177,7 +177,7 @@
 
 			$content = $this->Xform->input( "{$prefix}Personne.dtnai", array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
 			$content .= $this->Xform->input( "{$prefix}Personne.nom", array( 'label' => 'Nom' ) );
-			$content .= $this->Xform->input( "{$prefix}Personne.nomnai", array( 'label' => 'Nom de jeune fille' ) );
+			$content .= $this->Xform->input( "{$prefix}Personne.nomnai", array( 'label' => 'Nom de naissance' ) );
 			$content .= $this->Xform->input( "{$prefix}Personne.prenom", array( 'label' => 'Prénom' ) );
 			$content .= $this->Xform->input( "{$prefix}Personne.nir", array( 'label' => 'NIR', 'maxlength' => 15 ) );
 

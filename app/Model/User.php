@@ -539,7 +539,7 @@
 			/// Conditions de base
 			$conditions = array();
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
 			$filtersPersonne = array();
 			foreach( array( 'nom', 'prenom', 'username' ) as $criterePersonne ) {
 				if( isset( $criteresusers['User'][$criterePersonne] ) && !empty( $criteresusers['User'][$criterePersonne] ) ) {

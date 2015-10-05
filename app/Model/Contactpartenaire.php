@@ -91,7 +91,7 @@
 			/// Conditions de base
 			$conditions = array();
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
 			$filtersContactspartenaires = array();
 			foreach( array( 'nom', 'prenom' ) as $critereContactpartenaire ) {
 				if( isset( $criteres['Contactpartenaire'][$critereContactpartenaire] ) && !empty( $criteres['Contactpartenaire'][$critereContactpartenaire] ) ) {

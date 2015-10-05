@@ -136,7 +136,7 @@
                 <strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Cer93.qual'), $options['Personne']['qual'] ).' '.Set::classicExtract( $this->request->data, 'Cer93.nom' );?>
                 <br />
                 <?php if( $this->request->data['Personne']['sexe'] == 2 ):?>
-					<strong>Nom de jeune fille : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.nomnai' );?>
+					<strong>Nom de naissance : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.nomnai' );?>
 					<br />
                 <?php endif;?>
                 <strong>Prénom : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.prenom' );?>

@@ -75,7 +75,7 @@
                 <strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.qual'), $options['Personne']['qual'] ).' '.Set::classicExtract( $contratinsertion, 'Cer93.nom' );?>
                 <br />
                 <?php if( $contratinsertion['Cer93']['qual'] != 'MR' ):?>
-					<strong>Nom de jeune fille : </strong><?php echo Set::classicExtract( $contratinsertion, 'Cer93.nomnai' );?>
+					<strong>Nom de naissance : </strong><?php echo Set::classicExtract( $contratinsertion, 'Cer93.nomnai' );?>
 					<br />
                 <?php endif;?>
                 <strong>Prénom : </strong><?php echo Set::classicExtract( $contratinsertion, 'Cer93.prenom' );?>
