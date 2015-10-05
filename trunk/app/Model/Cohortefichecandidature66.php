@@ -68,7 +68,7 @@
 			$partenaire = Set::extract( $criteresfichescandidature, 'Partenaire.id' );
 
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
 			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
 				if( isset( $criteresfichescandidature['Personne'][$criterePersonne] ) && !empty( $criteresfichescandidature['Personne'][$criterePersonne] ) ) {
 					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresfichescandidature['Personne'][$criterePersonne] ).'\'';

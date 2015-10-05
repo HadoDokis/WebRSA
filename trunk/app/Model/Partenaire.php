@@ -138,7 +138,7 @@
 			/// Conditions de base
 			$conditions = array();
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
 			$filtersPartenaires = array();
 			foreach( array( 'libstruc', 'ville', 'codepartenaire' ) as $criterePartenaire ) {
 				if( isset( $criteres['Partenaire'][$criterePartenaire] ) && !empty( $criteres['Partenaire'][$criterePartenaire] ) ) {

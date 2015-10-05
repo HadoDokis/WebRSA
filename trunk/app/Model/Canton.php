@@ -323,7 +323,7 @@
 			/// Conditions de base
 			$conditions = array();
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
 			$filtersCantons = array();
 			foreach( array( 'canton', 'nomcom', 'codepos', 'numcom' ) as $critereCanton ) {
 				if( isset( $criteres['Canton'][$critereCanton] ) && !empty( $criteres['Canton'][$critereCanton] ) ) {

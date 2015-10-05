@@ -68,7 +68,7 @@
 			$themeapre66_id = Set::extract( $criteresapres, 'Search.Aideapre66.themeapre66_id' );
 			$typeaideapre66_id = Set::extract( $criteresapres, 'Search.Aideapre66.typeaideapre66_id' );
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
 			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
 				if( isset( $criteresapres['Search']['Personne'][$criterePersonne] ) && !empty( $criteresapres['Search']['Personne'][$criterePersonne] ) ) {
 					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresapres['Search']['Personne'][$criterePersonne] ).'\'';

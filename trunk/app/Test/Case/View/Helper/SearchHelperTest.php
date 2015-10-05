@@ -186,7 +186,7 @@
 <option value=""></option>
 '.implode( "\n", $years ).'
 </select></div><div class="input text required"><label for="PersonneNom">Nom</label>
-<input name="data[Personne][nom]" maxlength="50" type="text" id="PersonneNom"/></div><div class="input text"><label for="PersonneNomnai">Nom de jeune fille</label><input name="data[Personne][nomnai]" maxlength="50" type="text" id="PersonneNomnai"/></div><div class="input text required"><label for="PersonnePrenom">Prénom</label><input name="data[Personne][prenom]" maxlength="50" type="text" id="PersonnePrenom"/></div><div class="input text"><label for="PersonneNir">NIR</label><input name="data[Personne][nir]" maxlength="15" type="text" id="PersonneNir"/></div><div class="input select"><label for="PersonneTrancheage">Tranche d\'âge</label><select name="data[Personne][trancheage]" id="PersonneTrancheage">
+<input name="data[Personne][nom]" maxlength="50" type="text" id="PersonneNom"/></div><div class="input text"><label for="PersonneNomnai">Nom de naissance</label><input name="data[Personne][nomnai]" maxlength="50" type="text" id="PersonneNomnai"/></div><div class="input text required"><label for="PersonnePrenom">Prénom</label><input name="data[Personne][prenom]" maxlength="50" type="text" id="PersonnePrenom"/></div><div class="input text"><label for="PersonneNir">NIR</label><input name="data[Personne][nir]" maxlength="15" type="text" id="PersonneNir"/></div><div class="input select"><label for="PersonneTrancheage">Tranche d\'âge</label><select name="data[Personne][trancheage]" id="PersonneTrancheage">
 <option value=""></option>
 <option value="1">One</option> </select></div></fieldset>';
 			$result = $this->_normalizeHtml( $result );

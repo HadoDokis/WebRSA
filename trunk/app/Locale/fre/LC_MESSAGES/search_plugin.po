@@ -158,7 +158,7 @@ msgid "Search.Personne.nom"
 msgstr "Nom"
 
 msgid "Search.Personne.nomnai"
-msgstr "Nom de jeune fille"
+msgstr "Nom de naissance"
 
 msgid "Search.Personne.prenom"
 msgstr "Prénom"
@@ -222,7 +222,7 @@ msgid "Filtre.Personne.nom"
 msgstr "Nom"
 
 msgid "Filtre.Personne.nomnai"
-msgstr "Nom de jeune fille"
+msgstr "Nom de naissance"
 
 msgid "Filtre.Personne.prenom"
 msgstr "Prénom"
