@@ -52,7 +52,9 @@
 				$this->_prepareFilter($params);
 			}
 
-			$Controller->set( 'options', $this->options( $params ) );
+			$options = $this->options( $params );
+			$options = $this->_getFilteredOptions( $params, $options );
+			$Controller->set( compact( 'options' ) );
 		}
 	}
 ?>

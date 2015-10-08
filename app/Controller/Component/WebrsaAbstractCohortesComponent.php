@@ -47,10 +47,16 @@
 				$prepareForm = true;
 
 				$Controller->request->params['named'] += array(
-					'page' => Hash::get($Controller->request->data, 'page' ),
-					'sort' => Hash::get($Controller->request->data, 'sort' ),
-					'direction' => Hash::get($Controller->request->data, 'direction' ),
+					'page' => Hash::get($Controller->request->data, 'page' )
 				);
+
+				// INFO: on s'assure de ne pas ajouter de clés sort ou direction vides
+				foreach( array( 'sort', 'direction' ) as $key ) {
+					$value = (string)Hash::get($Controller->request->data, $key );
+					if( $value !== '' ) {
+						$Controller->request->params['named'][$key] = $value;
+					}
+				}
 
 				// On retire la Cohorte en cas de changement de page
 				$sessionKey = 'Page Check: '.$Controller->name.'_'.$Controller->action;
@@ -126,6 +132,7 @@
 				$this->_prepareFilter($params);
 			}
 
+			$options = $this->_getFilteredOptions( $params, $options );
 			$Controller->set( compact('options') );
 		}
 

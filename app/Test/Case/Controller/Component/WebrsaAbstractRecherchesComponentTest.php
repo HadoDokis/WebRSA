@@ -15,8 +15,28 @@
 
 	class WebrsaRecherchesOrientsstructsComponent extends WebrsaAbstractRecherchesComponent
 	{
+		public $query = null;
+
+		/**
+		 * Méthode publique permettant d'accéder à la méthode protégée.
+		 *
+		 * @param array $params
+		 * @return array
+		 */
 		public function params( array $params = array() ) {
 			return $this->_params($params);
+		}
+
+		/**
+		 * Surcharge pour récupérer le résultat dans l'attribut query.
+		 *
+		 * @param array $query
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _getQueryConditions( array $query, array $params = array()  ) {
+			$this->query = parent::_getQueryConditions( $query, $params );
+			return $this->query;
 		}
 	}
 
@@ -69,6 +89,7 @@
 			'app.Adressefoyer',
 			'app.Calculdroitrsa',
 			'app.Detaildroitrsa',
+			'app.Detailcalculdroitrsa',
 			'app.Dossier',
 			'app.Foyer',
 			'app.Historiqueetatpe',
@@ -299,6 +320,88 @@
 		}
 
 		/**
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::search() après que le
+		 * formulaire ait été envoyé, la configuration des clés 'accepted',
+		 * 'skip', 'restrict' et 'force'
+		 */
+		public function testSearchFormSentWithAdvancedConfiguration() {
+			Configure::write(
+				'ConfigurableQueryOrientsstructs',
+				array(
+					'search' => array(
+						'fields' => array(
+							'Personne.nom'
+						),
+						'innerTable' => array(
+							'Prestation.rolepers'
+						),
+						'order' => array(),
+						'accepted' => array(
+							'Detailcalculdroitrsa.natpf' => array( 'RSD', 'RSI' )
+						),
+						'skip' => array(
+							'Personne.nom'
+						),
+						'restrict' => array(
+							'Detailcalculdroitrsa.natpf_choice' => '1',
+							'Detailcalculdroitrsa.natpf' => array( 'RSD', 'RSI' )
+						),
+						'force' => array(
+							'Personne.prenom' => 'Bar'
+						)
+					)
+				)
+			);
+			$this->setUpUrl( array( 'controller' => 'orientsstructs', 'action' => 'search' ) );
+
+			$search = array(
+				'Search' => array(
+					'Personne' => array(
+						'nom' => 'Foo'
+					),
+					'Detailcalculdroitrsa' => array(
+						'natpf_choice' => '0'
+					)
+				)
+			);
+			$this->Controller->request->data = $search;
+			$this->Controller->WebrsaRecherchesOrientsstructs->search();
+			$this->assertTrue( isset( $this->Controller->viewVars['results'] ) );
+
+			// 1°) La configuration de 'accepted' a-t'elle été prise en compte ?
+			$result = (array)Hash::get( $this->Controller->viewVars, 'options.Detailcalculdroitrsa.natpf' );
+			$expected = array(
+				'RSD' => 'RSA Socle (Financement sur fonds Conseil général)',
+				'RSI' => 'RSA Socle majoré (Financement sur fonds Conseil général)'
+			);
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 2°) Les configurations de 'skip', 'restrict' et 'force' ont-elles été prises en compte ?
+			$result = $this->Controller->WebrsaRecherchesOrientsstructs->query['conditions'];
+			$expected = array(
+				array(
+					'OR' => array(
+						'Informationpe.id IS NULL',
+						'Informationpe.id IN ( SELECT "derniereinformationspe"."i__id" FROM ( SELECT "i"."id" AS "i__id", "h"."date" AS "h__date" FROM "informationspe" AS "i" INNER JOIN "public"."historiqueetatspe" AS "h" ON ("h"."informationpe_id" = "i"."id")  WHERE (((("i"."nir" IS NOT NULL)  AND  ("Personne"."nir" IS NOT NULL)  AND  (TRIM( BOTH \' \' FROM "i"."nir" ) <> \'\')  AND  (TRIM( BOTH \' \' FROM "Personne"."nir" ) <> \'\')  AND  (SUBSTRING( "i"."nir" FROM 1 FOR 13 ) = SUBSTRING( "Personne"."nir" FROM 1 FOR 13 ))  AND  ("i"."dtnai" = "Personne"."dtnai"))) OR ((("i"."nom" IS NOT NULL)  AND  ("Personne"."nom" IS NOT NULL)  AND  ("i"."prenom" IS NOT NULL)  AND  ("Personne"."prenom" IS NOT NULL)  AND  (TRIM( BOTH \' \' FROM "i"."nom" ) <> \'\')  AND  (TRIM( BOTH \' \' FROM "i"."prenom" ) <> \'\')  AND  (TRIM( BOTH \' \' FROM "Personne"."nom" ) <> \'\')  AND  (TRIM( BOTH \' \' FROM "Personne"."prenom" ) <> \'\')  AND  (TRIM( BOTH \' \' FROM "i"."nom" ) = "Personne"."nom")  AND  (TRIM( BOTH \' \' FROM "i"."prenom" ) = "Personne"."prenom")  AND  ("i"."dtnai" = "Personne"."dtnai")))) AND "h"."id" IN ( SELECT "dernierhistoriqueetatspe"."id" AS dernierhistoriqueetatspe__id FROM historiqueetatspe AS dernierhistoriqueetatspe   WHERE "dernierhistoriqueetatspe"."informationpe_id" = "i"."id"   ORDER BY "dernierhistoriqueetatspe"."date" DESC, "dernierhistoriqueetatspe"."id" DESC  LIMIT 1 )    ) AS "derniereinformationspe" ORDER BY "derniereinformationspe"."h__date" DESC LIMIT 1 )'
+					)
+				),
+				'UPPER(Personne.prenom) LIKE \'BAR\'',
+				'Detaildroitrsa.id IN (
+									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
+										FROM detailscalculsdroitsrsa
+											INNER JOIN detailsdroitsrsa ON (
+												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
+											)
+										WHERE
+											detailsdroitsrsa.dossier_id = Dossier.id
+											AND detailscalculsdroitsrsa.natpf IN ( \'RSD\', \'RSI\' )
+								)',
+				array()
+			);
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode WebrsaAbstractRecherchesComponent::exportcsv()avec de la configuration.
 		 */
 		public function testExportcsvWithConfiguration() {
@@ -341,6 +444,14 @@
 			);
 			$result = (array)Hash::get( $this->Controller->viewVars, 'results' );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode WebrsaAbstractRecherchesComponent::exportcsv(), avec
+		 * la configuration des clés 'accepted', 'skip', 'restrict' et 'force'.
+		 */
+		public function testExportcsvWithAdvancedConfiguration() {
+			// FIXME: il faudra une clé fields dans exportcsv...
 		}
 	}
 ?>

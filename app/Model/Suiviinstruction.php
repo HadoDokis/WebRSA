@@ -19,6 +19,13 @@
 
 		public $displayField = 'typeserins';
 
+		/**
+		 * Autres modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Option' );
+
 		public $belongsTo = array(
 			'Dossier' => array(
 				'className' => 'Dossier',
@@ -155,6 +162,19 @@
 			else {
 				return null;
 			}
+		}
+
+		/**
+		 * Retourne la liste des options possibles pour ce modèle.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$result = parent::enums();
+
+			$result[$this->alias]['typeserins'] = $this->Option->typeserins();
+
+			return $result;
 		}
 	}
 ?>

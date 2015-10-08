@@ -51,13 +51,10 @@
 		 * @var array
 		 */
 		public $cohorteFields = array(
-			// TODO
 			'Dossier.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
 			'Orientstruct.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
 			'Orientstruct.propo_algo' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-			// TODO: forcer dans la sauvegarde
 			'Orientstruct.origine' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-			//
 			'Adresse.numcom' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
 			'Orientstruct.personne_id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
 			'Orientstruct.typeorient_id' => array( 'type' => 'select', 'label' => '', 'empty' => true, 'required' => false ),
@@ -94,8 +91,7 @@
 				'Typeorient' => 'LEFT OUTER',
 				'Structurereferente' => 'LEFT OUTER',
 				'Detaildroitrsa' => 'INNER',
-				'Situationdossierrsa' => 'INNER',
-				// TODO: dernier CER ?
+				'Situationdossierrsa' => 'INNER'
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -122,8 +118,6 @@
 						'Orientstruct.personne_id',
 						'Orientstruct.propo_algo',
 						'Adresse.numcom',
-						// TODO: virtualField de Dossier
-						'Dossier.statut' => '( CASE WHEN dtdemrsa >= \'2009-06-01 00:00:00\' THEN \'Nouvelle demande\' ELSE \'Diminution des ressources\' END ) AS "Dossier__statut"',
 						'Personne.has_dsp' => '( "Dsp"."id" IS NOT NULL ) AS "Personne__has_dsp"',
 					)
 				);
@@ -177,13 +171,17 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			/*// On force certaines valeurs si besoin (elles ne figurent pas dans le formulaire)
-			$search['Calculdroitrsa']['toppersdrodevorsa'] = '1';
-			$search['Dossier']['dernier'] = '1';
-			$search['Situationdossierrsa']['etatdosrsa_choice'] = '1';
-			$search['Situationdossierrsa']['etatdosrsa'] = $this->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();*/
-
 			$query = $this->Allocataire->searchConditions( $query, $search );
+
+			$hasDsp = Hash::get( $search, 'Personne.has_dsp' );
+			if( in_array( $hasDsp, array( '0', '1' ) ) ) {
+				if( $hasDsp ) {
+					$query['conditions'][] = 'Dsp.id IS NOT NULL';
+				}
+				else {
+					$query['conditions'][] = 'Dsp.id IS NULL';
+				}
+			}
 
 			$propo_algo = Hash::get( $search, 'Orientstruct.propo_algo' );
 			if( !empty( $propo_algo ) ) {
@@ -203,7 +201,7 @@
 		}
 
 		/**
-		 * Préremplissage du formulaire en cohorte
+		 * Préremplissage des champs du formulaire de cohorte.
 		 *
 		 * @param type $results
 		 * @param type $params
@@ -221,7 +219,9 @@
 		}
 
 		/**
-		 * ...
+		 * Enregistrement du formulaire de cohorte: si on a choisi "A valider",
+		 * l'orientation sera effective, sinon, l'orientation sera transférée
+		 * dans la liste des "En attente de validation d'orientation".
 		 *
 		 * @param array $data
 		 * @param array $params
@@ -248,8 +248,109 @@
 				}
 			}
 
-			return $this->saveResultAsBool( $this->Personne->Orientstruct->saveAll( Hash::extract( $data, '{n}.Orientstruct' ), array( 'validate' => 'first', 'atomic' => true ) ) );
+			return $this->saveResultAsBool(
+				$this->Personne->Orientstruct->saveAll(
+					Hash::extract( $data, '{n}.Orientstruct' ),
+					array( 'validate' => 'first', 'atomic' => false )
+				)
+			);
 		}
 
+		/**
+		 * Retourne un array à deux niveaux de clés permettant de connaître une structure référente à partir
+		 * d'un type d'orientation et d'une zone géographique, afin de permettre de désigner automatiquement
+		 * une structure référente à un allocataire.
+		 *
+		 * Le résultat est mis en cache.
+		 *
+		 * @fixme: afterSave, afterDelete pour: structures, types d'orientation, zones géographiques
+		 *
+		 * @return array
+		 */
+		public function structuresAutomatiques() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				// FIXME: valeurs magiques
+				$intitule = null;
+				$departement = (int)Configure::read( 'Cg.departement' );
+
+				if( $departement === 66 ) {
+					$intitule = array( 'Emploi', 'Social', 'Préprofessionnelle' );
+				}
+				else if( $departement === 93 ) {
+					$intitule = array( 'Emploi', 'Social', 'Socioprofessionnelle' );
+				}
+				else if( $departement === 58 ) {
+					$intitule = array( 'Professionnelle', 'Sociale' );
+				}
+
+				$typesPermis = $this->Personne->Orientstruct->Typeorient->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Typeorient.lib_type_orient' => $intitule
+						),
+						'recursive' => -1
+					)
+				);
+				$typesPermis = array_keys( $typesPermis );
+
+				$structures = $this->Personne->Orientstruct->Structurereferente->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Structurereferente.typeorient_id' => $typesPermis
+						),
+						'contain' => array(
+							'Zonegeographique'
+						)
+					)
+				);
+
+
+				$results = array();
+				foreach( $structures as $structure ) {
+					if( !empty( $structure['Zonegeographique'] ) ) {
+						foreach( $structure['Zonegeographique'] as $zonegeographique ) {
+							$results[$structure['Structurereferente']['typeorient_id']][$zonegeographique['codeinsee']] = $structure['Structurereferente']['typeorient_id'].'_'.$structure['Structurereferente']['id'];
+						}
+					}
+				}
+
+				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Structurereferente', 'Typeorient', 'Zonegeographique' ) );
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Suppression et regénération du cache.
+		 *
+		 * @return boolean
+		 */
+		protected function _regenerateCache() {
+			// Suppression des éléments du cache.
+			$this->_clearModelCache();
+
+			// Regénération des éléments du cache.
+			$success = ( $this->structuresAutomatiques() !== false );
+
+			return $success;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$success = $this->_regenerateCache();
+			return $success;
+		}
 	}
 ?>

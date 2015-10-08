@@ -19,7 +19,7 @@
 			'pays' => array( 'inList' => array( 'rule' => array('inList', array('France', 'Autre'), 'allowEmpty' => true ) ) )
 		);
 	}
-	
+
 	/**
 	 * La classe DepartementUtilityTest réalise les tests unitaires de la classe utilitaire DepartementUtility.
 	 *
@@ -35,19 +35,19 @@
 		public $fixtures = array(
 			'app.Adresse',
 		);
-		
+
 		/**
 		 * expected des traductions, si une traduction change, la changer également ici
-		 * 
+		 *
 		 * @var array
 		 */
 		public $traductions = array(
 			'Adresse.libtypevoie' => 'Type de voie',
 			'Adresse.canton' => 'Code Canton',
-			'Adresse.nomvoie' => 'Nom de commune',
+			'Adresse.nomvoie' => 'Nom de voie',
 			'Adresse.pays' => 'Code Pays',
 		);
-		
+
 		/**
 		 * Préparation du test pour le CG 66
 		 */
@@ -59,7 +59,7 @@
 			Configure::write('ValidateAllowEmpty.Adresse.canton', false); // Base null -> notEmpty
 			Configure::write('ValidateAllowEmpty.Adresse.nomvoie', false); // Base notEmpty -> notEmpty
 			Configure::write('ValidateAllowEmpty.Adresse.pays', false); // Base allowEmpty -> notEmpty
-			
+
 			$this->Adresse = ClassRegistry::init( 'AdresseTest' );
 		}
 
@@ -79,13 +79,13 @@
 			$path = 'Adresse.libtypevoie';
 			$result = ValidateAllowEmptyUtility::configureKey( $path );
 			$expected = 'ValidateAllowEmpty.Adresse.libtypevoie';
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-			
+
 			$path = '0.Adresse.canton';
 			$result = ValidateAllowEmptyUtility::configureKey( $path );
 			$expected = 'ValidateAllowEmpty.Adresse.canton';
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -102,7 +102,7 @@
 					'pays' => false,
 				)
 			);
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -113,9 +113,9 @@
 			$result = $this->Adresse->validate;
 			ValidateAllowEmptyUtility::initialize( $this->Adresse );
 			$result['libtypevoie'] = array();
-			
+
 			$expected = $this->Adresse->validate;
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -130,7 +130,7 @@
 				array('ValidateAllowEmpty.Adresse.nomvoie' => array( 'rule' => 'isarray', 'allowEmpty' => true )),
 				array('ValidateAllowEmpty.Adresse.pays' => array( 'rule' => 'isarray', 'allowEmpty' => true )),
 			);
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -140,22 +140,22 @@
 		public function testlabel() {
 			$result = ValidateAllowEmptyUtility::label( 'Adresse.libtypevoie', 'adresse' );
 			$expected = $this->traductions['Adresse.libtypevoie'];
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-			
+
 			$result = ValidateAllowEmptyUtility::label( 'Adresse.canton', 'adresse' );
 			$expected = $this->traductions['Adresse.canton'] . ' ' . REQUIRED_MARK;
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-			
+
 			$result = ValidateAllowEmptyUtility::label( 'Adresse.nomvoie', 'adresse' );
 			$expected = $this->traductions['Adresse.nomvoie'] . ' ' . REQUIRED_MARK;
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-			
+
 			$result = ValidateAllowEmptyUtility::label( 'Adresse.pays', 'adresse' );
 			$expected = $this->traductions['Adresse.pays'] . ' ' . REQUIRED_MARK;
-			
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}

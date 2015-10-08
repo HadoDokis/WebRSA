@@ -39,7 +39,31 @@
 			'options' => array(),
 			'fieldset' => true,
 			'skip' => array(),
+			'configSkipPrefix' => 'ConfigurableQuery'
 		);
+
+		/**
+		 * Lecture des champs à ne pas afficher ("skip") à partir de la
+		 * configuration.
+		 *
+		 * Par exemple, pour l'URL "/orientsstructs/cohorte_nouvelles", la valeur
+		 * de "ConfigurableQueryOrientsstructs.cohorte_nouvelles.skip" sera lue.
+		 *
+		 * @see Valeurs de configSkipPrefix et de prefix.
+		 */
+		protected function _readSkipConfig() {
+			$configurePath = $this->default['configSkipPrefix'].Inflector::camelize($this->request->params['controller']).'.'.$this->request->params['action'];
+			$skip = (array)Configure::read( "{$configurePath}.skip" );
+			if( !empty( $skip ) ) {
+				if( !empty( $this->default['prefix'] ) ) {
+					foreach( $skip as $key => $value ) {
+						$skip[$key] = "{$this->default['prefix']}.{$value}";
+					}
+				}
+
+				$this->default['skip'] = array_merge( $this->default['skip'], $skip );
+			}
+		}
 
 		/**
 		 * Surcharge du constructeur avec possibilité de choisir les paramètres
@@ -51,6 +75,8 @@
 		public function __construct( View $View, $settings = array( ) ) {
 			parent::__construct( $View, $settings );
 			$this->default = $settings + $this->default;
+
+			$this->_readSkipConfig();
 		}
 
 		/**
@@ -82,7 +108,7 @@
 		 * @return string
 		 */
 		protected function _fieldset( $legend, $content, array $params = array() ) {
-			if( !$params['fieldset'] ) {
+			if( $params['fieldset'] == false || $content == '' ) {
 				return $content;
 			}
 			else {
