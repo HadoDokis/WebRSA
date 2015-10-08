@@ -259,8 +259,14 @@ msgstr "Visibilité formulaire"
 msgid "Search.Orientstruct"
 msgstr "Recherche par orientation"
 
+msgid "Search.Parcours"
+msgstr "Recherche par parcours"
+
 msgid "Search.Orientstruct.propo_algo"
 msgstr "Type de préOrientation"
+
+msgid "Search.Personne.has_dsp"
+msgstr "Possède une DSP ?"
 
 # ------------------------------------------------------------------------------
 

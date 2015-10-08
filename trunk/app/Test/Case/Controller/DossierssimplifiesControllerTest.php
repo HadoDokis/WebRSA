@@ -423,6 +423,7 @@
 					'detaildroitrsa_id' => NULL,
 					'avispcgdroitrsa_id' => NULL,
 					'organisme_id' => NULL,
+					'statut' => 'Nouvelle demande'
 				),
 				'Foyer' => array(
 					'id' => 3,
@@ -592,6 +593,7 @@
 					'detaildroitrsa_id' => NULL,
 					'avispcgdroitrsa_id' => NULL,
 					'organisme_id' => NULL,
+					'statut' => 'Nouvelle demande'
 				),
 				'Foyer' => array(
 					'id' => 3,
@@ -760,6 +762,7 @@
 					'detaildroitrsa_id' => NULL,
 					'avispcgdroitrsa_id' => NULL,
 					'organisme_id' => NULL,
+					'statut' => 'Nouvelle demande'
 				),
 				'Foyer' => array(
 					'id' => 3,

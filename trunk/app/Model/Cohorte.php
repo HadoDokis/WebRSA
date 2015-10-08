@@ -632,12 +632,13 @@
 		 *
 		 * Le résultat est mis en cache.
 		 *
-		 * @fixme: afterSave, afterDelete pour: structures, types d'orientation, zones géographiques
+		 * @deprecated since 3.0.00 use WebrsaCohorteOrientstructNouvelle::structuresAutomatiques()
 		 *
 		 * @return array
 		 */
 		public function structuresAutomatiques() {
-			$cacheKey = 'cohorte_structures_automatiques';
+			return ClassRegistry::init( 'WebrsaCohorteOrientstructNouvelle' )->structuresAutomatiques();
+			/*$cacheKey = 'cohorte_structures_automatiques';
 			$results = Cache::read( $cacheKey );
 
 			if( $results === false ) {
@@ -693,11 +694,13 @@
 				ModelCache::write( $cacheKey, array( 'Structurereferente', 'Typeorient', 'Zonegeographique' ) );
 			}
 
-			return $results;
+			return $results;*/
 		}
 
 		/**
 		 * Suppression et regénération du cache.
+		 *
+		 * @deprecated since 3.0.00
 		 *
 		 * @return boolean
 		 */
@@ -714,6 +717,8 @@
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.
 		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @deprecated since 3.0.00
 		 *
 		 * @return boolean true en cas de succès, false en cas d'erreur,
 		 * 	null pour les fonctions vides.

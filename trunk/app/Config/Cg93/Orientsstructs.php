@@ -84,7 +84,7 @@
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
 				),
-				'order' => array()
+				'order' => array(),
 			),
 			'exportcsv' => array(
 				'Dossier.numdemrsa',
@@ -160,7 +160,39 @@
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
 				),
-				//'order' => array()
+				//'order' => array(),
+				// -------------------------------------------------------------
+				// Nouveautés
+				// -------------------------------------------------------------
+				// Restreindre les valeurs qui apparaissent dans les filtres de recherche
+				'accepted' => array(
+					'Situationdossierrsa.etatdosrsa' => array( 'Z', 2, 3, 4 ),
+					'Detailcalculdroitrsa.natpf' => array( 'RSD', 'RSI', 'RSU', 'RSJ' )
+				),
+				// Ne pas afficher certains filtres de recherche
+				'skip' => array(
+					'Dossier.numdemrsa',
+					'Dossier.matricule',
+					'Dossier.anciennete_dispositif',
+					'Serviceinstructeur.id',
+					'Dossier.fonorg',
+					'Foyer.sitfam',
+					'Personne.dtnai',
+					'Personne.nomnai',
+					'Personne.nir',
+					'Personne.sexe',
+					'Personne.trancheage'
+				),
+				// -------------------------------------------------------------
+				// Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
+				'restrict' => array(
+					'Situationdossierrsa.etatdosrsa_choice' => '1',
+					'Situationdossierrsa.etatdosrsa' => array( 'Z', 2, 3, 4 ),
+					'Detailcalculdroitrsa.natpf_choice' => '1',
+					'Detailcalculdroitrsa.natpf' => array( 'RSD', 'RSI', 'RSU', 'RSJ' )
+				),
+				// Permet de forcer des valeurs ne se trouvant pas dans le filtre de rechcerche
+				'force' => array()
 			)
 		)
 	);

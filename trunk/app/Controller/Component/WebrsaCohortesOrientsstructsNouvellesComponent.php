@@ -47,6 +47,7 @@
 			$options = array_merge(
 				parent::options($params),
 				$Controller->Orientstruct->enums(),
+				$Controller->Orientstruct->Personne->Foyer->Dossier->Suiviinstruction->enums(),
 				array(
 					'Orientstruct' => array(
 						'propo_algo' => $propo_algo,
@@ -54,31 +55,20 @@
 						'structurereferente_id' => $Controller->Personne->Orientstruct->Structurereferente->list1Options(),
 						'statut_orient' => array( 'Orienté' => 'A valider', 'En attente' => 'En attente' )
 					),
-					'Suiviinstruction' => array(
-						'typeserins' => $Controller->Option->typeserins()
+					'Personne' => array(
+						'has_dsp' => array(
+							'1' => 'Oui',
+							'0' => 'Non'
+						)
 					)
 				)
 			);
 
-			// TODO: mettre dans une autre classe
-			$Controller->loadModel( 'Cohorte' );
-			$options['structuresAutomatiques'] = $Controller->Cohorte->structuresAutomatiques();
-
-			// Limitation de certaines options possibles
-			// TODO: factoriser dans le (modèle) Component, etc...
-			// TODO: voir la classe WebrsaCohorteNonorientationprocov58::searchConditions()
-			// où l'on ajoute des conditions et où l'on en restreint d'autres
-			$accepted = array(
-				'Detailcalculdroitrsa.natpf' => array( 'RSD', 'RSI', 'RSU', 'RSJ' ),
-				'Situationdossierrsa.etatdosrsa' => array( 'Z', 2, 3, 4 )
-			);
-			foreach( $accepted as $path => $acceptedValues ) {
-				foreach( (array)Hash::get( $options, $path ) as $value => $label ) {
-					if( in_array( $value, $acceptedValues ) === false ) {
-						$options = Hash::remove( $options, "{$path}.{$value}" );
-					}
-				}
+			if( !isset( $Controller->{$params['modelRechercheName']} ) ) {
+				$Controller->loadModel( $params['modelRechercheName'] );
 			}
+
+			$options['structuresAutomatiques'] = $Controller->{$params['modelRechercheName']}->structuresAutomatiques();
 
 			return $options;
 		}

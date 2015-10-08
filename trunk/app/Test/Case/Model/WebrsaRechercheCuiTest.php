@@ -28,6 +28,7 @@
 			'app.Dossier',
 			'app.Adresse',
 			'app.Calculdroitrsa',
+			'app.Entreeromev3',
 			'app.Prestation',
 			'app.Adressefoyer',
 			'app.Situationdossierrsa',
@@ -96,7 +97,8 @@
 				'Rupturecui66' => 'LEFT OUTER',
 				'Suspensioncui66' => 'LEFT OUTER',
 				'Historiquepositioncui66' => 'LEFT OUTER',
-				'Canton' => 'LEFT OUTER'
+				'Canton' => 'LEFT OUTER',
+				'Entreeromev3' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -125,7 +127,8 @@
 				'Rupturecui66' => 'LEFT OUTER',
 				'Suspensioncui66' => 'LEFT OUTER',
 				'Historiquepositioncui66' => 'LEFT OUTER',
-				'Canton' => 'LEFT OUTER'
+				'Canton' => 'LEFT OUTER',
+				'Entreeromev3' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -138,11 +141,11 @@
 		 * @medium
 		 */
 		public function testTestSearchConditionsArray() {
-			$result = $this->WebrsaRechercheCui->searchConditions( 
-				array( 
+			$result = $this->WebrsaRechercheCui->searchConditions(
+				array(
 					'conditions' => array(),
-				), 
-				array() 
+				),
+				array()
 			);
 			$expected = array( 'conditions' => array() );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );

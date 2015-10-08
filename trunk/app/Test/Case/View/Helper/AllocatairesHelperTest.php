@@ -46,12 +46,22 @@
 
 		/**
 		 * Préparation du test.
+		 *
+		 * @param array $url Un array représentant une URL à la mode Cake (par
+		 * défaut, équivaudra à /dossiers/search )
+		 * @param array $settings Les paramètres éventuels à passer à AllocataireHelper
 		 */
-		public function setUp() {
-			parent::setUp();
-			$controller = null;
-			$this->View = new View( $controller );
-			$this->Allocataires = new AllocatairesHelper( $this->View );
+		public function setUpUrl( array $url = array(), array $settings = array() ) {
+			Configure::delete( 'ValidateAllowEmpty' );
+			Configure::delete( '_ValidationConfiguredAllowEmptyFields' );
+
+			$url += array( 'controller' => 'dossiers', 'action' => 'search' );
+			$Request = new CakeRequest( "{$url['controller']}/{$url['action']}", false );
+			$Request->addParams( $url );
+
+			$this->Controller = new Controller( $Request );
+			$this->View = new View( $this->Controller );
+			$this->Allocataires = new AllocatairesHelper( $this->View, $settings );
 		}
 
 		/**
@@ -66,6 +76,7 @@
 		 * Test de la méthode AllocatairesHelper::blocDossier()
 		 */
 		public function testBlocDossier() {
+			$this->setUpUrl();
 			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$result = $this->Allocataires->blocDossier( array() );
@@ -93,6 +104,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode AllocatairesHelper::blocDossier() sans fieldset.
 		 */
 		public function testBlocDossierNoFieldset() {
+			$this->setUpUrl();
 			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$result = $this->Allocataires->blocDossier( array( 'fieldset' => false ) );
@@ -121,6 +133,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * pour l'etatdosrsa et la natpf et les autres
 		 */
 		public function testBlocDossierOptions() {
+			$this->setUpUrl();
 			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$params = array(
@@ -215,6 +228,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Detailcalculdroitrsa.natpf (car il n'est pas dans les options).
 		 */
 		public function testBlocDossierSkip() {
+			$this->setUpUrl();
 			$params = array(
 				'options' => array(
 					'Situationdossierrsa' => array(
@@ -240,6 +254,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * @todo: les traductions ne sont pas faites dans ce cas-là...
 		 */
 		public function testBlocDossierPrefix() {
+			$this->setUpUrl();
 			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$params = array(
@@ -286,6 +301,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode AllocatairesHelper::blocAdresse()
 		 */
 		public function testBlocAdresse() {
+			$this->setUpUrl();
 			Configure::write( 'CG.cantons', true );
 			Configure::write( 'Cg.departement', 58 );
 
@@ -334,6 +350,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode AllocatairesHelper::blocAllocataire()
 		 */
 		public function testBlocAllocataire() {
+			$this->setUpUrl();
 			$timestamp = strtotime( 'now' );
 
 			$thisYear = date( 'Y', $timestamp );
@@ -421,6 +438,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode Allocataires::blocReferentparcours();
 		 */
 		public function testBlocReferentparcours() {
+			$this->setUpUrl();
 			Configure::write( 'Cg.departement', 58 );
 			$params = array(
 				'options' => array(
@@ -462,6 +480,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode Allocataires::blocPagination();
 		 */
 		public function testBlocPagination() {
+			$this->setUpUrl();
 			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocPagination( array( 'fieldset' => false ) );
 
@@ -481,6 +500,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode Allocataires::blocPagination();
 		 */
 		public function testBlocScript() {
+			$this->setUpUrl();
 			$this->Allocataires->request->data = array( 'Search' => array() );
 			$this->Allocataires->request->params = array(
 				'plugin' => null,
@@ -498,6 +518,82 @@ document.observe( \'dom:loaded\', function() { $(\'UsersIndexForm\').hide(); } )
 </script><script type=\'text/javascript\'>document.observe( \'dom:loaded\', function() {
 					observeDisableFormOnSubmit( \'UsersIndexForm\' );
 				} );</script>';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test du bloc allocataire en ne laissant que deux champs dans la
+		 * configuration.
+		 */
+		public function testBlocAllocataireConfigureSkipSome() {
+			$skip = array(
+				'Personne.dtnai',
+				'Personne.nomnai',
+				'Personne.nir',
+				'Personne.sexe',
+				'Personne.trancheage',
+				'Calculdroitrsa.toppersdrodevorsa'
+			);
+			Configure::write( 'ConfigurableQueryDossiers.search.skip', $skip );
+			$this->setUpUrl();
+
+			$result = $this->Allocataires->blocAllocataire();
+			$expected = '<fieldset><legend>Recherche par allocataire</legend><div class="input text required"><label for="SearchPersonneNom">Nom</label><input name="data[Search][Personne][nom]" maxlength="50" type="text" id="SearchPersonneNom"/></div><div class="input text required"><label for="SearchPersonnePrenom">Prénom</label><input name="data[Search][Personne][prenom]" maxlength="50" type="text" id="SearchPersonnePrenom"/></div></fieldset>';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test du bloc allocataire en ne laissant aucun champs dans la
+		 * configuration.
+		 */
+		public function testBlocAllocataireConfigureSkipAll() {
+			$skip = array(
+				'Personne.nom',
+				'Personne.prenom',
+				'Personne.dtnai',
+				'Personne.nomnai',
+				'Personne.nir',
+				'Personne.sexe',
+				'Personne.trancheage',
+				'Calculdroitrsa.toppersdrodevorsa'
+			);
+			Configure::write( 'ConfigurableQueryDossiers.search.skip', $skip );
+			$this->setUpUrl();
+
+			$result = $this->Allocataires->blocAllocataire();
+			$expected = '';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test du bloc allocataire en ne laissant que trois champs dans la
+		 * configuration et en utilisant une configuration alternative pour
+		 * AllocatairesHelper.
+		 */
+		public function testBlocAllocataireConfigureSkipSomeSettings() {
+			$skip = array(
+				'Personne.dtnai',
+				'Personne.nomnai',
+				'Personne.sexe',
+				'Personne.trancheage',
+				'Calculdroitrsa.toppersdrodevorsa'
+			);
+			Configure::write( 'BarBazOrientsstructs.cohorte_nouvelle.skip', $skip );
+			$url = array(
+				'controller' => 'orientsstructs',
+				'action' => 'cohorte_nouvelle'
+			);
+			$settings = array(
+				'prefix' => 'Foo',
+				'configSkipPrefix' => 'BarBaz'
+			);
+			$this->setUpUrl( $url, $settings );
+
+			$result = $this->Allocataires->blocAllocataire();
+			$expected = '<fieldset><legend>Recherche par allocataire</legend><div class="input text required"><label for="FooPersonneNom">Foo.Personne.nom</label><input name="data[Foo][Personne][nom]" maxlength="50" type="text" id="FooPersonneNom"/></div><div class="input text required"><label for="FooPersonnePrenom">Foo.Personne.prenom</label><input name="data[Foo][Personne][prenom]" maxlength="50" type="text" id="FooPersonnePrenom"/></div><div class="input text"><label for="FooPersonneNir">Foo.Personne.nir</label><input name="data[Foo][Personne][nir]" maxlength="15" type="text" id="FooPersonneNir"/></div></fieldset>';
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}

@@ -36,6 +36,9 @@
 		public function setUp() {
 			parent::setUp();
 			Configure::write( 'CG.cantons', false );
+			Configure::delete( 'ValidateAllowEmpty' );
+			Configure::delete( '_ValidationConfiguredAllowEmptyFields' );
+
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->Search = new SearchHelper( $this->View );

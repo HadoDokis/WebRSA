@@ -24,6 +24,19 @@
 			'Validation2.Validation2Formattable'
 		);
 
+		/**
+		 * Champ virtuel "statut" qui permet de savoir si on vient d'une demande
+		 * de RSA ou de RMI.
+		 *
+		 * @var array
+		 */
+		public $virtualFields = array(
+			'statut' => array(
+				'type'      => 'string',
+				'postgres'  => '( CASE WHEN "%s"."dtdemrsa" >= \'2009-06-01 00:00:00\' THEN \'Nouvelle demande\' ELSE \'Diminution des ressources\' END )'
+			)
+		);
+
 		public $validate = array(
 			'numdemrsa' => array(
 				'isUnique' => array(

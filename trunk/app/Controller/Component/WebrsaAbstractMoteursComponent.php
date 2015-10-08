@@ -19,6 +19,20 @@
 		 */
 		public $settings = array();
 
+
+		/**
+		 * Retourne le chemin de base de la clé de configuration.
+		 *
+		 * @param array $params
+		 * @return string
+		 */
+		protected function _baseConfigureKey( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			return "{$params['searchKeyPrefix']}{$params['configurableQueryFieldsKey']}";
+		}
+
 		/**
 		 * Retourne les options à envoyer dans la vue pour les champs du moteur
 		 * de recherche et les traductions de valeurs de certains champs.
@@ -37,6 +51,31 @@
 		}
 
 		/**
+		 * Permet de filtrer les options envoyées à la vue au moyen de la clé
+		 * 'accepted' dans le fichier de configuration.
+		 *
+		 * @param array $params
+		 * @param array $options
+		 * @return array
+		 */
+		protected function _getFilteredOptions( array $params, array $options ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			$accepted = (array)Configure::read( $this->_baseConfigureKey( $params ).'.accepted' );
+
+			foreach( $accepted as $path => $acceptedValues ) {
+				foreach( (array)Hash::get( $options, $path ) as $value => $label ) {
+					if( in_array( $value, $acceptedValues ) === false ) {
+						$options = Hash::remove( $options, "{$path}.{$value}" );
+					}
+				}
+			}
+
+			return $options;
+		}
+
+		/**
 		 * Permet de créer un fichier csv avec le contenu de la recherche
 		 *
 		 * @param array $params
@@ -47,7 +86,7 @@
 
 			$Controller->loadModel( $params['modelRechercheName'] );
 
-			$query = $this->_getBaseQuery( "{$params['searchKeyPrefix']}{$params['configurableQueryFieldsKey']}", $params );
+			$query = $this->_getBaseQuery( $this->_baseConfigureKey( $params ), $params );
 
 			$search = Hash::get( Hash::expand( $Controller->request->params['named'], '__' ), $params['searchKey'] );
 			$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, $search );
@@ -65,9 +104,10 @@
 			$Controller->{$params['modelName']}->forceVirtualFields = true;
 			$results = $Controller->{$params['modelName']}->find( 'all', $query );
 
-			$Controller->set( compact( 'results' ) );
-			$Controller->set( 'options', $this->options( $params ) );
+			$options = $this->options( $params );
+			$options = $this->_getFilteredOptions( $params, $options );
 
+			$Controller->set( compact( 'results', 'options' ) );
 			$Controller->layout = '';
 		}
 
@@ -129,6 +169,56 @@
 		}
 
 		/**
+		 * Permet de surcharger, nettoyer, ... les valeurs des filtres renvoyées
+		 * par le moteur de recherche.
+		 *
+		 * Voir les clés 'skip', 'restrict' et 'force' dans le fichier de configuration.
+		 *
+		 * @param array $search
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _overrideFilterValues( array $search, array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			// 1°) Si certains champs sont skipped, on ne doit pas les retrouver dans les valeurs du filtre
+			$skip = (array)Configure::read( $this->_baseConfigureKey( $params ).'.skip' );
+			foreach( $skip as $path ) {
+				$search = Hash::remove( $search, $path );
+			}
+
+			// 2°) Restriction de valeurs
+			$restrict = (array)Configure::read( $this->_baseConfigureKey( $params ).'.restrict' );
+			foreach( $restrict as $path => $accepted ) {
+				$value = Hash::get( $search, $path );
+
+				if( $value === null || ( !is_array( $value ) && !in_array( $value, (array)$accepted ) ) ) {
+					$value = $accepted;
+				}
+				else if( is_array( $value ) ) {
+					$intersect = array_intersect( $value, (array)$accepted );
+					if( empty( $intersect ) ) {
+						$value = (array)$accepted;
+					}
+					else {
+						$value = $intersect;
+					}
+				}
+
+				$search = Hash::insert( $search, $path, $value );
+			}
+
+			// 3°) Forçage de valeurs
+			$force = (array)Configure::read( $this->_baseConfigureKey( $params ).'.force' );
+			foreach( $force as $path => $value ) {
+				$search = Hash::insert( $search, $path, $value );
+			}
+
+			return $search;
+		}
+
+		/**
 		 * Retourne le querydata complété par les conditions du moteur de recherche,
 		 * ainsi que des conditions liées à l'utilisateur connecté.
 		 *
@@ -140,7 +230,10 @@
 			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $params );
 
-			$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, (array)Hash::get( $Controller->request->data, $params['searchKey'] ) );
+			$search = empty( $params['searchKey'] ) ? (array)$Controller->request->data : (array)Hash::get( $Controller->request->data, $params['searchKey'] );
+			$search = $this->_overrideFilterValues( $search, $params );
+
+			$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, $search );
 			$query = $this->Allocataires->completeSearchQuery( $query, $params );
 
 			return $query;
@@ -149,7 +242,7 @@
 
 		/**
 		 * Ajoute des order by en fonction du paramétrage.
-		 * Dans le cas d'un exportcsv, on ne modifi pas l'ordre affiché dans le
+		 * Dans le cas d'un exportcsv, on ne modifie pas l'ordre affiché dans le
 		 * moteur de recherche.
 		 *
 		 * @fixme: simplifier, test unitaire, permettre d'enlever le tri
@@ -162,7 +255,7 @@
 			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $params );
 
-			$myPathParams = "{$params['searchKeyPrefix']}{$params['configurableQueryFieldsKey']}";
+			$myPathParams = $this->_baseConfigureKey( $params );
 			$myParams = (array)Configure::read( $myPathParams );
 
 			// 1. Si le tri est configuré pour mon action
