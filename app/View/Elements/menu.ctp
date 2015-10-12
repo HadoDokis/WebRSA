@@ -319,6 +319,10 @@
 			'5. Tableau de suivi' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'visualisation'  ) ),
 		),
 		'Tableaux de bord' => array(
+			'Editeur de requete' => array(
+				'disabled' => ( (boolean)Configure::read( 'Requestmanager.enabled' ) === false ),
+				'url' => array( 'controller' => 'requestsmanager', 'action' => 'index' ),
+			),
 			'Indicateurs mensuels' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Généralités' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ) ),

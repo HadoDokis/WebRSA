@@ -414,3 +414,53 @@ div.scrollable, fieldset.scrollable{
 div.divideInto2Collumn label, div.divideInto3Collumn label, div.input.divideInto2Collumn label, div.input.divideInto3Collumn label {
 	width: auto;
 }
+
+#FormRequestmaster div.input.checkbox {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	background-color: #FFFFFF;
+	position: relative;
+}
+
+#FormRequestmaster div.input.checkbox:hover {
+	background-color: #C0C0C0!important;
+}
+
+#FormRequestmaster div.input.checkbox input[type=checkbox] {
+	position: absolute;
+	top: 4px;
+}
+
+#FormRequestmaster div.input.checkbox label span {
+	margin-left: 14px;
+	display: inline-block;
+}
+
+#FormRequestmaster div.input.checkbox label {
+	width: 48%;
+	min-height: 25px;
+}
+
+#FormRequestmaster div.input.checkbox input[type=text], #FormRequestmaster div.input.checkbox select {
+	width: 48%;
+}
+
+#FormRequestmaster div.subinput {
+	position: relative;
+}
+
+#FormRequestmaster div.subinput input[type=text], #FormRequestmaster div.subinput select {
+	margin-left: 48%;
+}
+
+#FormRequestmaster div.subinput input[type=text] {
+	margin-top: 4px;
+}
+
+#FormRequestmaster div.success {
+    background: none repeat scroll 0% 0% #ECFFE8;
+    margin: 1em 0px;
+    border: 1px solid #158000;
+    padding: 0.5em;
+    color: #158000;
+}

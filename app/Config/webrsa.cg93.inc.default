@@ -1557,4 +1557,9 @@
 	 * Permet de désactiver le "cadenas" situé en haut à droite
 	 */
 	Configure::write( 'Etatjetons.enabled', false );
+	
+	/**
+	 * Permet de désactiver l'Editeur de requêtes
+	 */
+	Configure::write( 'Requestmanager.enabled', false );
 ?>

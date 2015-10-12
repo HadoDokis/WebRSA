@@ -85,6 +85,33 @@ ALTER TABLE cuis66 ADD CONSTRAINT cuis66_perennisation_in_list_chk CHECK ( cakep
 ALTER TABLE partenairescuis66 ADD CONSTRAINT partenairescuis66_subventioncg_in_list_chk CHECK ( cakephp_validate_in_list( subventioncg, ARRAY[0,1] ) );
 ALTER TABLE partenairescuis ADD CONSTRAINT partenairescuis_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY[10,11,21,22,50,60,70,71,72,73,80,90,98,99] ) );
 
+
+--------------------------------------------------------------------------------
+-- Requestmanager
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS requestgroups CASCADE;
+CREATE TABLE requestgroups (
+	id                          SERIAL NOT NULL PRIMARY KEY,
+	parent_id					INTEGER REFERENCES requestgroups(id) ON DELETE SET NULL,
+	name						VARCHAR(255),
+	actif						SMALLINT
+);
+ALTER TABLE requestgroups ADD CONSTRAINT requestgroups_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+
+
+DROP TABLE IF EXISTS requestsmanager CASCADE;
+CREATE TABLE requestsmanager (
+	id                          SERIAL NOT NULL PRIMARY KEY,
+	requestgroup_id				INTEGER REFERENCES requestgroups(id),
+	name						VARCHAR(255) NOT NULL UNIQUE,
+	model						VARCHAR(255) NOT NULL,
+	json						TEXT NOT NULL,
+	actif						SMALLINT
+);
+COMMENT ON TABLE requestsmanager IS 'Sauvegarde des requetes effectué par l editeur de requete';
+ALTER TABLE requestsmanager ADD CONSTRAINT requestsmanager_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -72,7 +72,7 @@
 			asynchronous:true, 
 			evalScripts:true, 
 			requestHeaders: {Accept: 'application/json'},
-			onComplete: function(request, json) {console.log(json);
+			onComplete: function(request, json) {
 				if ( isNaN(json) || json === null ) {
 					$('jetons_count').innerHTML = '?';
 				}

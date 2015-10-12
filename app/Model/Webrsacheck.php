@@ -360,6 +360,9 @@
 				'Etatjetons.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'Requestmanager.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 
 			foreach( $this->searches as $searchModelName ) {
