@@ -656,6 +656,11 @@
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
 
+			// INFO: si la structure ou le référent enregistrés ne se trouvent pas dans les options, on les ajoute
+			if( !empty( $this->request->data ) ) {
+				$options['Ficheprescription93'] = $this->InsertionsAllocataires->completeOptionsWithCurrentReferent( $options['Ficheprescription93'], $this->request->data['Ficheprescription93'] );
+			}
+
 			// On complète les options de l'adresse du prestataire PDI s'il y a lieu
 			if( $this->action === 'edit' ) {
 				$adresseprestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.adresseprestatairefp93_id' );

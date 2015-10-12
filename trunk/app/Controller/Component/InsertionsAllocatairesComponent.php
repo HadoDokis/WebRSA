@@ -353,5 +353,90 @@
 
 			return $results;
 		}
+
+		/**
+		 * Permet d'ajouter les entrées de la structure référente et du référent
+		 * de l'enregistrement à la liste des options pour ne pas perdre d'information
+		 * lors de la modification d'un enregistrement.
+		 *
+		 * Le liste des structures référentes est une liste à deux niveaux avec
+		 * en premier niveau le type d'orientation.
+		 *
+		 * La liste des référents est une liste à un niveau avec en clé
+		 * <structurereferente_id>_<referent_id>.
+		 *
+		 * @param array $options Les options qui seront envoyées à la vue
+		 * @param array $data L'enregistrement en cours de modification
+		 * @param array $params Les clés structurereferente_id et referent_id
+		 *	contiennent les chemins vers ces champs, dans les options et dans data.
+		 * @return array
+		 */
+		public function completeOptionsWithCurrentReferent( array $options, array $data, array $params = array() ) {
+			$params += array(
+				'structurereferente_id' => 'structurereferente_id',
+				'referent_id' => 'referent_id'
+			);
+
+			$structurereferente_id = Hash::get( $data, $params['structurereferente_id'] );
+			$referent_id = Hash::get( $data, $params['referent_id'] );
+
+			$structuresreferentes = (array)Hash::get( $options, $params['structurereferente_id'] );
+			$referents = (array)Hash::get( $options, $params['referent_id'] );
+
+			$available = array();
+			foreach( $structuresreferentes as $group ) {
+				$available = array_merge( $available, array_keys( $group ) );
+			}
+
+			if( in_array( $structurereferente_id, $available ) === false || in_array( $referent_id, $referents ) === false ) {
+				$Typeorient = ClassRegistry::init( 'Typeorient' );
+
+				$query = array(
+					'fields' => array(
+						'Typeorient.lib_type_orient',
+						'Structurereferente.id',
+						'Structurereferente.lib_struc',
+						'Referent.id',
+						'Referent.nom_complet',
+					),
+					'contain' => false,
+					'joins' => array(
+						$Typeorient->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$Typeorient->Structurereferente->join( 'Referent', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'Structurereferente.id' => $structurereferente_id,
+						'Referent.id' => suffix( $referent_id )
+					)
+				);
+
+				$forceVirtualFields = $Typeorient->forceVirtualFields;
+				$Typeorient->forceVirtualFields = true;
+				$result = $Typeorient->find( 'first', $query );
+				$Typeorient->forceVirtualFields = $forceVirtualFields;
+
+				if( !empty( $result ) ) {
+					$structuresreferentes = Hash::merge(
+						$structuresreferentes,
+						array(
+							$result['Typeorient']['lib_type_orient'] => array(
+								$result['Structurereferente']['id'] => $result['Structurereferente']['lib_struc']
+							)
+						)
+					);
+					$options = Hash::insert( $options, $params['structurereferente_id'], $structuresreferentes );
+
+					$referents = Hash::merge(
+						$referents,
+						array(
+							"{$result['Structurereferente']['id']}_{$result['Referent']['id']}" => $result['Referent']['nom_complet']
+						)
+					);
+					$options = Hash::insert( $options, $params['referent_id'], $referents );
+				}
+			}
+
+			return $options;
+		}
 	}
 ?>
