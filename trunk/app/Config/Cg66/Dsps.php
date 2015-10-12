@@ -55,11 +55,11 @@
 					'Donnees.nb_fichiers_lies', // Nb Fichiers Liés des dsp
 					'/Dsps/view_revs/#DspRev.id#' => array(
 						'class' => 'view',
-						'condition' => '!empty("#DspRev.id#")'
+						'condition' => 'trim("#DspRev.id#") !== ""'
 					),
 					'/Dsps/view/#Personne.id#' => array(
 						'class' => 'view',
-						'condition' => 'empty("#DspRev.id#")'
+						'condition' => 'trim("#DspRev.id#") === ""'
 					)
 				),
 				'innerTable' => array(

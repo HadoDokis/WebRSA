@@ -38,11 +38,11 @@
 					'Donnees.libemploirech',
 					'/Dsps/view_revs/#DspRev.id#' => array(
 						'class' => 'view',
-						'condition' => '!empty("#DspRev.id#")'
+						'condition' => 'trim("#DspRev.id#") !== ""'
 					),
 					'/Dsps/view/#Personne.id#' => array(
 						'class' => 'view',
-						'condition' => 'empty("#DspRev.id#")'
+						'condition' => 'trim("#DspRev.id#") === ""'
 					)
 				),
 				'innerTable' => array(
