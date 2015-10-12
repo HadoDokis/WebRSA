@@ -477,7 +477,9 @@ $irregularPlural = array(
 	'savesearch' => 'savesearchs',
 	'group_savesearch' => 'groups_savesearchs',
 	// Correspondance entre les personne_id
-	'correspondancepersonne' => 'correspondancespersonnes',
+	'correspondancepersonne' => 'correspondancespersonnes', // Correspondance entre les personne_id
+	'requestmanager' => 'requestsmanager',
+	'requestgroup' => 'requestgroups',
 );
 
 /**

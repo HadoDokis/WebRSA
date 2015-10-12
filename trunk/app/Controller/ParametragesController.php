@@ -59,6 +59,10 @@
 					: null
 				,
 				'DSPs' => array( 'controller' => 'gestionsdsps', 'action' => 'index' ),
+				'Editeur de requêtes' => ( Configure::read( 'Requestmanager.enabled' ) )
+					? array( 'controller' => 'requestsmanager', 'action' => 'indexparams' )
+					: null
+				,
 				'Équipes pluridisciplinaires' => array( 'controller' => 'gestionseps', 'action' => 'index' ),
 				'Fiches de prescription' => ( Configure::read( 'Cg.departement' ) == 93 )
 					? array( 'controller' => 'parametrages', 'action' => 'fichesprescriptions93' )
