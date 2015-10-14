@@ -83,7 +83,7 @@
 			
 			$query['conditions'][] = array(
 				'Dossierpcg66.etatdossierpcg' => 'attaffect',
-				'Dossierpcg66.user_id IS NULL'
+				'Dossierpcg66.poledossierpcg66_id IS NULL'
 			);
 			
 			return $query;
@@ -107,8 +107,14 @@
 				}
 			}
 			
-			$success = !empty($data) && $this->Dossierpcg66->saveAll( $data );
-			
+			$success = !empty($data) && $this->Dossierpcg66->saveAll( $data )
+				&& $this->Dossierpcg66->updatePositionsPcgsByConditions( 
+					array(
+						'Dossierpcg66.id' => Hash::extract($data, '{n}.Dossierpcg66.id')
+					)
+				)
+			;
+						
 			return $success;
 		}
 	}

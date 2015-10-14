@@ -34,7 +34,7 @@
 
 			if( !empty( $statutAffectation ) ) {
 				if( $statutAffectation == 'Affectationdossierpcg66::enattenteaffectation' ) {
-					$conditions[] = '( ( Dossierpcg66.etatdossierpcg = \'attaffect\' ) AND ( Dossierpcg66.user_id IS NULL ) )';
+					$conditions[] = '( ( Dossierpcg66.etatdossierpcg = \'attaffect\' ) AND ( Dossierpcg66.poledossierpcg66_id IS NULL ) )';
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::affectes' ) {
 					$conditions[] = 'Dossierpcg66.etatdossierpcg = \'attinstr\' ';
