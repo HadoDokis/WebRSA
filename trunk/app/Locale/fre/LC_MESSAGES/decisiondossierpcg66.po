@@ -130,7 +130,7 @@ msgstr "Réorientation du social vers le professionnel"
 ###############################################################################
 # Ajout pour la partie transmission à l'OP
 ###############################################################################
-msgid "Decisionsdossierspcgs66::transmettreop"
+msgid "Decisionsdossierspcgs66::transmitop"
 msgstr "Transmission à l'organisme payeur (CAF / MSA)"
 
 msgid "ENUM::ETATOP::atransmettre"

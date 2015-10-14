@@ -567,7 +567,7 @@
 
 
 					if( $saved ) {
-						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaDecisionFoyer( $this->Decisiondossierpcg66->id ) && $saved;
+						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
 					}
 					
 					/**
@@ -887,43 +887,7 @@
 
 			$success = $this->Decisiondossierpcg66->delete( $id );
 			if( $success ) {
-				$dernieredecision = $this->Decisiondossierpcg66->find(
-						'first', array(
-					'conditions' => array(
-						'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id
-					),
-					'contain' => array(
-						'Dossierpcg66'
-					),
-					'order' => array( 'Decisiondossierpcg66.modified DESC' )
-						)
-				);
-
-
-				$typepdo_id = Set::classicExtract( $dernieredecision, 'Dossierpcg66.typepdo_id' );
-				$user_id = Set::classicExtract( $dernieredecision, 'Dossierpcg66.user_id' );
-				$decisionpdoId = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.decisionpdo_id' );
-				$avistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.avistechnique' );
-				$validationavis = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.validationproposition' );
-				$retouravistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.retouravistechnique' );
-				$vuavistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.vuavistechnique' );
-				$instrencours = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.instrencours' );
-
-
-				$etatdossierpcg = 'attinstr';
-				// Quel est l'état actuel du dossier ?
-				if( empty( $dernieredecision ) ) {
-					$etatdossierpcg = 'attinstr';
-				}
-				else {
-					$etatdossierpcg = $this->Decisiondossierpcg66->Dossierpcg66->etatDossierPcg66(
-							$typepdo_id, $user_id, $decisionpdoId, $instrencours, $avistechnique, $validationavis, $retouravistechnique, $vuavistechnique, $etatdossierpcg
-					);
-				}
-
-				$success = $this->Decisiondossierpcg66->Dossierpcg66->updateAllUnBound(
-								array( 'Dossierpcg66.etatdossierpcg' => "'{$etatdossierpcg}'" ), array( '"Dossierpcg66"."id"' => $dossierpcg66_id )
-						) && $success;
+				$success = $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
 			}
 
 			$this->_setFlashResult( 'Delete', $success );
@@ -980,9 +944,9 @@
 				$this->Decisiondossierpcg66->begin();
 				$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 				if( $saved ) {
-
-					$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaTransmissionop( $id ) && $saved;
-
+					
+					$saved = $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
+					
                     if( $saved ) {
                         $saved = $this->Decisiondossierpcg66->Dossierpcg66->generateDossierPCG66Transmis( $dossierpcg66_id ) && $saved;
                     }

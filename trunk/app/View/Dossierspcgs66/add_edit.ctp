@@ -269,7 +269,7 @@ document.observe( "dom:loaded", function() {
 		$perm['imprimer'] = ( '( "'.$this->Permissions->checkDossier( 'dossierspcgs66', 'imprimer', $dossierMenu ).'" != "1" )
                                 || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
 		);
-		$perm['transmettreop'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'transmettreop', $dossierMenu ).'" != "1" )
+		$perm['transmitop'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'transmitop', $dossierMenu ).'" != "1" )
                                 || ( "#Decisiondossierpcg66.validationproposition#" == "N" )
                                 || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
 		);
@@ -313,7 +313,7 @@ document.observe( "dom:loaded", function() {
 						'disabled' => $perm['imprimer'],
 						'class' => 'print'
 					),
-					'/Decisionsdossierspcgs66/transmettreop/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['transmettreop']	),
+					'/Decisionsdossierspcgs66/transmitop/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['transmitop']	),
 					'/Decisionsdossierspcgs66/cancel/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['cancel']	),
 					'/Decisionsdossierspcgs66/delete/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['delete']	),
 					'/Decisionsdossierspcgs66/filelink/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['filelink']	),
