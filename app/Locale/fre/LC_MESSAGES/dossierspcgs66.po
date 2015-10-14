@@ -235,7 +235,7 @@ msgstr "Validation"
 msgid "/Dossierspcgs66/imprimer"
 msgstr "Imprimer"
 
-msgid "/Decisionsdossierspcgs66/transmettreop"
+msgid "/Decisionsdossierspcgs66/transmitop"
 msgstr "Transmettre OP"
 
 msgid "/Decisionsdossierspcgs66/cancel"
@@ -262,7 +262,7 @@ msgstr "Validation de la proposition"
 msgid "/Dossierspcgs66/imprimer/#Decisiondossierpcg66.dossierpcg66_id#/#Decisiondossierpcg66.id#"
 msgstr "Imprimer la proposition"
 
-msgid "/Decisionsdossierspcgs66/transmettreop/#Decisiondossierpcg66.id#"
+msgid "/Decisionsdossierspcgs66/transmitop/#Decisiondossierpcg66.id#"
 msgstr "Transmission à l'organisme payeur (CAF / MSA)"
 
 msgid "/Decisionsdossierspcgs66/cancel/#Decisiondossierpcg66.id#"
