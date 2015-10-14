@@ -76,7 +76,7 @@
 			}
 			else {
 				SearchProgressivePagination::disable( $Controller->name, $Controller->action );
-				return $this->_Collection->load( 'Paginator', $Controller->paginate );
+				return $this->_Collection->load( 'Search.BasicPaginator', $Controller->paginate );
 			}
 		}
 
