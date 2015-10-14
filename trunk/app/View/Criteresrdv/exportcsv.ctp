@@ -1,9 +1,9 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$departement = Configure::read( 'Cg.departement' );
-	$domain_search_plugin = ( $departement == 93 ) ? 'search_plugin_93' : 'search_plugin';
-
+	$departement = (int)Configure::read( 'Cg.departement' );
+	$domain_search_plugin = ( $departement === 93 ) ? 'search_plugin_93' : 'search_plugin';
+	
 	$this->Csv->addRow(
 		array_merge(
 			array(
@@ -18,9 +18,12 @@
 				'Complément adresse 2',
 				'Code postal',
 				'Commune',
-				( $departement == 93 ) ? 'Structure proposant le RDV' : 'Structure référente',
+			),
+			( $departement === 66 && Configure::read('CG.cantons') ) ? array('Canton') : array(),
+			array(
+				( $departement === 93 ) ? 'Structure proposant le RDV' : 'Structure référente',
 				'Adresse de la structure',
-				( $departement == 93 ) ? 'Personne proposant le RDV' : 'Référent',
+				( $departement === 93 ) ? 'Personne proposant le RDV' : 'Référent',
 				'Objet du RDV',
 			),
 			( ( isset( $useThematiques ) && $useThematiques ) ? array( 'Thématiques du RDV' ) : array() ),
@@ -53,6 +56,9 @@
 				Hash::get( $rdv, 'Adresse.compladr' ),
 				Hash::get( $rdv, 'Adresse.codepos' ),
 				Hash::get( $rdv, 'Adresse.nomcom' ),
+			),
+			( $departement === 66 && Configure::read('CG.cantons') ) ? array(Hash::get( $rdv, 'Canton.canton' )) : array(),
+			array(
 				Hash::get( $rdv, 'Structurereferente.lib_struc' ),
 				Hash::get( $rdv, 'Structurereferente.num_voie' ).' '.Set::enum( Hash::get( $rdv, 'Structurereferente.type_voie' ), $typevoie ).' '.Hash::get( $rdv, 'Structurereferente.nom_voie' ).' '.Hash::get( $rdv, 'Structurereferente.code_postal' ).' '.Hash::get( $rdv, 'Structurereferente.ville' ),
 				value( $qual, Hash::get( $rdv, 'Referent.qual' ) ).' '.Hash::get( $rdv, 'Referent.nom' ).' '.Hash::get( $rdv, 'Referent.prenom' ),
