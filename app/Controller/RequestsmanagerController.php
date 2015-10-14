@@ -167,7 +167,7 @@
 			$request['fields'] = array_merge((array)$request['fields'], (array)$addFieldset['fields']);
 			$request['conditions'] = array_merge((array)$request['conditions'], (array)$addFieldset['conditions']);
 			$request['order'] = array_merge((array)$request['order'], (array)$addFieldset['order']);
-
+			
 			return $request;
 		}
 		
@@ -180,32 +180,63 @@
 		 * @param array $data
 		 * @return type
 		 */
-		protected function _prepareAndExplode( $data ) {
-			// On sauvegarde le contenu des parenthèses
-			preg_match_all('/\(.*\)/', $data['fields'], $matches);
+		protected function _prepareAndExplode( $data ) {debug($data);
+			$data = array(
+				'fields' => isset($data['fields']) ? $this->_explode($data['fields']) : array(),
+				'conditions' => isset($data['conditions']) ? $this->_explode($data['conditions'], 'AND') : array(),
+				'order' => isset($data['order']) ? $this->_explode($data['order']) : array(),
+			);
 			
-			// On transforme en array à partir des virgules
-			$fields = explode(',', preg_replace('/\(.*\)/', '___replaced___', $data['fields']));
-			$i = 0;
-			
-			// On restitu le contenu des parenthèses et on trim
-			foreach ($fields as $key => $value) {
-				$newValue = isset($matches[$i][0]) ? trim(str_replace('___replaced___', $matches[$i][0], $value)) : $value;
+			$newOrder = array();
+			foreach ($data['order'] as $key => $value) {
+				if (!is_string($value)) {
+					continue;
+				}
 				
-				if ($newValue !== $value) {
-					$fields[$key] = $newValue;
-					$i++;
+				if ( $pos = strpos(strtoupper($value), 'DESC') ) {
+					$newOrder[trim(substr($value, 0, $pos))] = 'DESC';
+				}
+				elseif ( $pos = strpos(strtoupper($value), 'ASC') ) {
+					$newOrder[trim(substr($value, 0, $pos))] = 'ASC';
 				}
 				else {
-					$fields[$key] = trim($value);
-				}
-				
-				if ($fields[$key] === '') {
-					unset($fields[$key]);
+					$newOrder[$value] = 'ASC';
 				}
 			}
 			
-			$data['fields'] = $fields;
+			$data['order'] = $newOrder;
+		
+			return $data;
+		}
+		
+		/**
+		 * Réalise un explode en préservant le contenu des parenthèses
+		 * 
+		 * @param type $subdata
+		 * @param type $delimiter
+		 * @return type
+		 */
+		protected function _explode( $subdata, $delimiter = ',' ) {
+			if ( $subdata === '' ) {
+				return array();
+			}
+			
+			$oldValue = $subdata;
+			$regex = '/\(([^)]+)'.$delimiter.'([^)]+)\)/';
+			$replaceBy = '($1__replace_key__$2)';
+			$newValue = preg_replace($regex, $replaceBy, $subdata);
+			while ($newValue !== $oldValue) {
+				$oldValue = $newValue;
+				$newValue = preg_replace($regex, $replaceBy, $newValue);
+			}
+		
+			$fields = explode($delimiter, $newValue);
+		
+			$data = array();
+		
+			foreach($fields as $key => $value) {
+				$data[$key] = trim(str_replace('__replace_key__', $delimiter, $value));
+			}
 			
 			return $data;
 		}
@@ -219,7 +250,7 @@
 		 */
 		protected function _search( $Model, $query ) {
 			$this->paginate = $query;
-			
+
 			$results = $this->paginate(
 				$Model,
 				array(),

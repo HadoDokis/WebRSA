@@ -280,6 +280,10 @@
 				$('joins-'+oldindex+'-'+index).show();
 				
 				// On s'assure que les div portent le bon id (les premières portent from-from dans l'id, il faut renommer en from-Monmodel
+				$('error-'+oldindex+'-'+index).oldid = 'error-'+oldindex+'-'+index;
+				$('fields-'+oldindex+'-'+index).oldid = 'fields-'+oldindex+'-'+index;
+				$('joins-'+oldindex+'-'+index).oldid = 'joins-'+oldindex+'-'+index;
+				
 				$('error-'+oldindex+'-'+index).id = 'error-'+oldindex+'-'+modelName;
 				$('fields-'+oldindex+'-'+index).id = 'fields-'+oldindex+'-'+modelName;
 				$('joins-'+oldindex+'-'+index).id = 'joins-'+oldindex+'-'+modelName;
@@ -389,9 +393,13 @@
 		});
 	}
 	
-	$('RequestmanagerFrom').observe('change', function(event) {console.log('RequestmanagerForm:event:change');
-		$('fields-from-from').innerHTML = '';
-		$('joins-from-from').innerHTML = '';
+	$('RequestmanagerFrom').observe('change', function(event) {console.log('RequestmanagerForm:event:change');console.info(this.getValue());
+		$('RequestmanagerFrom').up('fieldset').select('div').each(function(div) {
+			if ( div.oldid !== undefined ) {
+				div.id = div.oldid;
+				div.innerHTML = '';
+			}
+		});
 		$('zoneJointure').innerHTML = '';
 		num = 0;
 		getModel( $F('RequestmanagerFrom'), 'from', 'from', $('RequestmanagerFrom') );
@@ -401,7 +409,7 @@
 	$('FormRequestmaster').observe('change', function(){console.log('FormRequestmaster:event:change');
 		$$('.disable-if-not-validated').each(function(submit){submit.setAttribute('disabled', true);});
 		$('div-verification').removeClassName('success').removeClassName('error_message').addClassName('notice');
-		$('msg-validation').innerHTML = 'La requête doit-être validé';
+		$('msg-validation').innerHTML = 'La requête doit-être validée';
 	});
 	
 	$('verificationButton').observe('click', function() {console.log('verificationButton:event:click');
