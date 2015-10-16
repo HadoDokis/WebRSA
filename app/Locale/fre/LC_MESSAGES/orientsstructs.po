@@ -178,9 +178,6 @@ msgstr "Formulaire"
 msgid "/Orientsstructs/search/:title"
 msgstr "Formulaire"
 
-msgid "/Orientsstructs/search/:title"
-msgstr "Formulaire"
-
 msgid "/Orientsstructs/index"
 msgstr "Voir"
 
