@@ -59,7 +59,7 @@ msgstr "Ajout d'une pièce supplémentaire"
 # sitfam
 
 msgid "ENUM::SITFAM::ABA"
-msgstr "Disparu (jugement d\'absence)"
+msgstr "Disparu (jugement d'absence)"
 
 msgid "ENUM::SITFAM::CEL"
 msgstr "Célibataire"

@@ -46,12 +46,6 @@ msgstr "Recherche par Dossier PCG"
 msgid "Search.Dossierpcg66.datereceptionpdo"
 msgstr "Date de réception de la PDO"
 
-msgid "Search.Dossierpcg66.originepdo_id"
-msgstr "Origine du dossier"
-
-msgid "Search.Dossierpcg66.typepdo_id"
-msgstr "Type de dossier"
-
 msgid "Search.Dossierpcg66.orgpayeur"
 msgstr "Organisme payeur"
 
@@ -126,9 +120,6 @@ msgstr "Statuts de(s) la(es) personne(s)"
 
 msgid "Fichiermodule.nb_fichiers_lies"
 msgstr "Nb de fichiers dans la corbeille"
-
-msgid "Decisionpdo.libelle"
-msgstr "Décision prise"
 
 msgid "Dossierpcg66.search_gestionnaire"
 msgstr "Informations par Gestionnaire"

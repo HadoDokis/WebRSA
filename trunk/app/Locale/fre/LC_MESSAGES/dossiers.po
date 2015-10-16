@@ -39,9 +39,6 @@ msgstr "Visibilité formulaire"
 msgid "/Dossiers/index"
 msgstr "Formulaire"
 
-msgid "/Dossiers/search/:title"
-msgstr "Visibilité formulaire"
-
 # ==============================================================================
 # Résultats du moteur de recherche
 # ==============================================================================

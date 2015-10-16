@@ -56,7 +56,7 @@ msgid "ENUM::STATUT::50"
 msgstr "Association"
 
 msgid "ENUM::STATUT::60"
-msgstr "Autre personne morale chargée de la gestion d\'un service public (mutuelle, office public d\'HLM)"
+msgstr "Autre personne morale chargée de la gestion d'un service public (mutuelle, office public d'HLM)"
 
 msgid "ENUM::STATUT::70"
 msgstr "Établissement Public d'Enseignement (lycée, collège)"

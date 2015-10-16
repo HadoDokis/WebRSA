@@ -10,9 +10,6 @@ msgstr ""
 
 # ==============================================================================
 
-msgid "Personnecui.numallocataire"
-msgstr "Si bénéficiaire RSA, n° allocataire:"
-
 msgid "Personnecui.civilite"
 msgstr "Civilité"
 
