@@ -57,7 +57,8 @@
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
-			'Fileuploader'
+			'Fileuploader',
+			'Search.SearchForm'
 		);
 
 		/**
@@ -686,18 +687,22 @@
 		}
 
 		/**
-		 * Moteur de recherche par orientation (nouveau).
+		 * Moteur de recherche par orientation
+		 *
+		 * @return void
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructsNew' );
 			$Recherches->search();
 		}
 
 		/**
-		 * Export du tableau de résultats de la recherche par orientation (nouveau).
+		 * Export CSV des résultats du moteur de recherche par orientation
+		 *
+		 * @return void
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructsNew' );
 			$Recherches->exportcsv();
 		}
 

@@ -814,14 +814,14 @@
 		public function search() {
 			$this->loadModel( 'Personne' );
 
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDsps' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDspsNew' );
 			$Recherches->search( array( 'modelName' => 'Personne' ) );
 		}
 
 		public function exportcsv() {
 			$this->loadModel( 'Personne' );
 
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDsps' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDspsNew' );
 			$Recherches->exportcsv( array( 'modelName' => 'Personne' ) );
 		}
 

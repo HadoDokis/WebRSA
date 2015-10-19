@@ -1,0 +1,602 @@
+<?php
+	/**
+	 * Code source de la classe WebrsaAbstractMoteursNewComponent.
+	 *
+	 * FIXME, voir les classes suivantes:
+	 *	- WebrsaRecherchesApresComponent (__construct pour le suffixe de l'APRE suivant le département)
+	 *	- WebrsaRecherchesDemenagementshorsdptsComponent (surcharge des conditions)
+	 *	- WebrsaRecherchesFichesprescriptions93Component (le modèle vient de _getModelName(), de l'existence ou non de la fiche)
+	 *	- WebrsaRecherchesTransfertspdvs93Component (surcharge des conditions)
+	 *
+	 * TODO
+	 *	- ajouter la sous-classe de recherches
+	 *	- ajouter la sous-classe de jetons
+	 *	- ajouter la sous-classe de vérifications
+	 *	- ajouter un paramétrage à ConfigurableQueryDefaultHelper (ancienne manière, nouvelle manière de nommer)
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller.Component
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
+
+	/**
+	 * La classe WebrsaAbstractMoteursNewComponent ...
+	 *
+	 * @package app.Controller.Component
+	 * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+	 */
+	abstract class WebrsaAbstractMoteursNewComponent extends Component
+	{
+		/**
+		 * Components utilisés par ce component.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Allocataires' );
+
+		/**
+		 * Retourne un array avec clés de paramètres suivantes complétées en
+		 * fonction du contrôleur:
+		 *	- modelName: le nom du modèle sur lequel se fera la pagination
+		 *	- modelRechercheName: le nom du modèle de moteur de recherche
+		 *	- searchKey: le préfixe des filtres renvoyés par le moteur de recherche
+		 *	- searchKeyPrefix: le préfixe des champs configurés
+		 *	- configurableQueryFieldsKey: les clés de configuration contenant les
+		 *    champs à sélectionner dans la base de données.
+		 *  - auto: la recherche doit-elle être lancée (avec les valeurs par défaut
+		 *    des filtres de recherche) automatiquement au premier accès à la page,
+		 *    lors de l'appel à une méthode search() ou cohorte(). Configurable
+		 *    avec Configure::write( 'ConfigurableQuery.<Controller>.<action>.query.auto' )
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _params( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+
+			$params += array(
+				'modelName' => $Controller->modelClass,
+				'modelRechercheName' => 'WebrsaRecherche'.$Controller->modelClass,
+				'searchKey' => 'Search',
+				'searchKeyPrefix' => 'ConfigurableQuery',
+				'configurableQueryFieldsKey' => Inflector::camelize( $Controller->request->params['controller'] ).".{$Controller->request->params['action']}",
+				'auto' => null,
+				'limit' => 10,
+				'keys' => null
+			);
+
+			$params['auto'] = Configure::read( $this->_configureKey( 'auto', $params ) ) === true;
+
+			return $params;
+		}
+
+		/**
+		 * Retourne la clé de configuration complète à partir de son suffixe.
+		 *
+		 * @param string $path Le suffixe
+		 * @param array $params
+		 * @return string
+		 */
+		protected function _configureKey( $path, array $params ) {
+			return "{$params['searchKeyPrefix']}.{$params['configurableQueryFieldsKey']}.{$path}";
+		}
+
+		/**
+		 * Doit-on lancer la recherche automatiquement lors du premier accès à la
+		 * page ?
+		 *
+		 * @param array $params
+		 * @return boolean
+		 */
+		/*protected function _needsAutoSearch( array $params ) {
+			$Controller = $this->_Collection->getController();
+			return empty( $Controller->request->data ) && $params['auto'] === true;
+		}*/
+
+		/**
+		 * Doit on lancer la recherche ?
+		 *
+		 * @param array $params
+		 * @return boolean
+		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+		 */
+		protected function _needsSearch( array $params ) {
+			$Controller = $this->_Collection->getController();
+			return !empty( $Controller->request->data ) /*|| $this->_needsAutoSearch( $params )*/;
+		}
+
+		/**
+		 * Retourne les valeurs par défaut du formulaire de recherche.
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _defaults( array $params ) {
+			$defaults = (array)Configure::read( $this->_configureKey( 'filters.defaults', $params ) );
+			return empty( $params['searchKey'] ) ? $defaults : array( $params['searchKey'] => $defaults );
+		}
+
+		/**
+		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
+		 * tables de la base de données.
+		 *
+		 * La mise en cache se fera dans ma méthode _options().
+		 *
+		 * @return array
+		 */
+		protected function _optionsEnums( array $params ) {
+			$Controller = $this->_Collection->getController();
+
+			return Hash::merge(
+				$this->Allocataires->optionsEnums( $params ),
+				$Controller->{$params['modelName']}->enums()
+			);
+		}
+
+		/**
+		 * Retourne les options stockées en session, liées à l'utilisateur connecté.
+		 *
+		 * @return array
+		 */
+		protected function _optionsSession( array $params ) {
+			return $this->Allocataires->optionsSession( $params );
+		}
+
+		/**
+		 * Retourne les options stockées liées à des enregistrements en base de
+		 * données, ne dépendant pas de l'utilisateur connecté.
+		 *
+		 * La mise en cache se fera dans ma méthode _options().
+		 *
+		 * @see _optionsRecordsModels(), _options()
+		 *
+		 * @return array
+		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+		 */
+		protected function _optionsRecords( array $params ) {
+			return $this->Allocataires->optionsRecords( $params );
+		}
+
+		/**
+		 * Retourne les noms des modèles dont des enregistrements seront mis en
+		 * cache après l'appel à la méthode _optionsRecords() afin que la clé de
+		 * cache générée par la méthode _options() se trouve associée dans
+		 * ModelCache.
+		 *
+		 * @see _optionsRecords(), _options()
+		 *
+		 * @return array
+		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+		 */
+		protected function _optionsRecordsModels( array $params ) {
+			return array( 'Serviceinstructeur' );
+		}
+
+		/**
+		 * Retourn le chemin vers la clé de cache, en fonction du contrôleur, des
+		 * paramètres et d'éventuels paramètres supplémentaires.
+		 *
+		 * @param array $params
+		 * @param array $extra
+		 * @return string
+		 */
+		protected function _cacheKey( array $params, array $extra = array() ) {
+			$Controller = $this->_Collection->getController();
+			return $Controller->{$params['modelName']}->useDbConfig.'_Controllers_'.Inflector::camelize( $Controller->request->params['controller'] ).'_'.$Controller->request->params['action'].'_'.$params['modelRechercheName'].( empty( $extra ) ? '' : '_'.implode( '_', $extra ) );
+		}
+
+		/**
+		 * Retourne les options à envoyer dans la vue. Effectue la mise en cache
+		 * des options de type enum et records (en ajoutant les noms des modèles
+		 * utilisés dans la classe ModelCache).
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		final protected function _options( array $params ) {
+			$cacheKey = $this->_cacheKey( $params, array( __FUNCTION__ ) );
+			$options = Cache::read( $cacheKey );
+
+			if( $options === false ) {
+				$options = Hash::merge(
+					$this->_optionsEnums( $params ),
+					$this->_optionsRecords( $params )
+				);
+
+				Cache::write( $cacheKey, $options );
+				$modelNames = array_unique( $this->_optionsRecordsModels( $params ) );
+				if( !empty( $modelNames ) ) {
+					ModelCache::write( $cacheKey, $modelNames );
+				}
+			}
+
+			$options = Hash::merge(
+				$options,
+				$this->_optionsSession($params )
+			);
+
+			return $this->_optionsAccepted( $options, $params );
+		}
+
+		/**
+		 * Permet de filtrer les options envoyées à la vue au moyen de la clé
+		 * 'filters.accepted' dans le fichier de configuration.
+		 *
+		 * @param array $params
+		 * @param array $options
+		 * @return array
+		 */
+		protected function _optionsAccepted( array $options, array $params ) {
+			$params = $this->_params( $params );
+
+			$accepted = (array)Configure::read( $this->_configureKey( 'filters.accepted', $params ) );
+
+			foreach( $accepted as $path => $acceptedValues ) {
+				foreach( array_keys( (array)Hash::get( $options, $path ) ) as $value ) {
+					if( in_array( $value, $acceptedValues ) === false ) {
+						$options = Hash::remove( $options, "{$path}.{$value}" );
+					}
+				}
+			}
+
+			return $options;
+		}
+
+		/**
+		 * Retourne les filtres du moteur de recherche éventuellement modifiés
+		 * suivant la valeur de lé clé query.restrict.
+		 *
+		 * Pour chacune des éléments de configuration qui possède Model.field en
+		 * clé, si la valeur est une chaîne de caractères, alors la valeur du
+		 * filtre sera forcée à cette valeur; si c'est un array alors la valeur
+		 * du filtre sera forcée à l'intersection de l'array configurée et de l'
+		 * array renvoyée par les filtres; si l'intersection est vide, la valeur
+		 * du filtre sera forcée à la valeur configurée.
+		 *
+		 * @fixme Problème avec Situationdossierrsa.etatdosrsa 0
+		 *
+		 * @param array $search Les filtres renvoyés par le moteur de recherche
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _filtersRestrictions( array $search, array $params ) {
+			// TODO: renommer en filters.restrict ?
+			$restrict = (array)Configure::read( $this->_configureKey( 'query.restrict', $params ) );
+
+			foreach( $restrict as $path => $accepted ) {
+				$value = Hash::get( $search, $path );
+
+				if( $value === null || ( !is_array( $value ) && !in_array( $value, (array)$accepted ) ) ) {
+					$value = $accepted;
+				}
+				else if( is_array( $value ) ) {
+					$intersect = array_intersect( $value, (array)$accepted );
+					if( empty( $intersect ) ) {
+						$value = (array)$accepted;
+					}
+					else {
+						$value = $intersect;
+					}
+				}
+
+				$search = Hash::insert( $search, $path, $value );
+			}
+
+			return $search;
+		}
+
+		/**
+		 * Retourne les valeurs des filtres envoyés par la moteur de recherche,
+		 * nettoyés et complétés au besoin, suivant la configuration.
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _filters( array $params ) {
+			$Controller = $this->_Collection->getController();
+
+			// FIXME
+			//$search = empty( $params['searchKey'] ) ? (array)$Controller->request->data : (array)Hash::get( $Controller->request->data, $params['searchKey'] );
+			$search = array();
+			if( $Controller->request->is( 'get' ) ) {
+				if( empty( $params['searchKey'] ) === false ) {
+					if( isset( $Controller->request->data[$params['searchKey']] ) ) {
+						$search = $Controller->request->data[$params['searchKey']];
+					}
+					else {
+						if( !empty( $Controller->request->params['named'] ) ) {
+							$search = (array)Hash::get( Hash::expand( $Controller->request->params['named'], '__' ), $params['searchKey'] );
+						}
+					}
+				}
+				else {
+					if( !empty( $Controller->request->data ) ) {
+						$search = $Controller->request->data;
+					}
+					else {
+						if( !empty( $Controller->request->params['named'] ) ) {
+							$search = (array)Hash::expand( $Controller->request->params['named'] );
+						}
+					}
+				}
+			}
+
+			// Nettoyage de certaines valeurs des filtres si besoin.
+			$skip = (array)Configure::read( $this->_configureKey( 'filters.skip', $params ) );
+			if( !empty( $skip ) ) {
+				foreach( $skip as $path ) {
+					$search = Hash::remove( $search, $path );
+				}
+			}
+
+			$search = $this->_filtersRestrictions( $search, $params );
+
+			// restrict semble suffisant, en tous cas pour le NIR, ça le fait
+			// Forçage de certaines valeurs des filtres si besoin.
+			/*$force = (array)Configure::read( $this->_configureKey( 'filters.force', $params ) );
+			if( !empty( $force ) ) {
+				$search = Hash::merge( $search, Hash::expand( $force ) );
+			}*/
+
+			return $search;
+		}
+
+		protected function _queryBase( $keys, array $params ) {
+			$Controller = $this->_Collection->getController();
+			$cacheKey = $this->_cacheKey( $params, array( __FUNCTION__ ) );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = $Controller->{$params['modelRechercheName']}->searchQuery();
+				$query = ConfigurableQueryFields::getFieldsByKeys( $keys, $query );
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			return $query;
+		}
+
+		protected function _queryLimit( array $query, array $params ) {
+			$query['limit'] = $params['limit'];
+			$limit = Configure::read( $this->_configureKey( 'limit', $params ) );
+			if( is_int( $limit) ) {
+				$query['limit'] = $limit;
+			}
+
+			if( in_array( $query['limit'], array( null, false ) ) ) {
+				unset( $query['limit'] );
+			}
+
+			return $query;
+		}
+
+
+		protected function _queryConditions( array $query, array $filters, array $params ) {
+			$Controller = $this->_Collection->getController();
+
+			// Conditions venant des filtres de recherche
+			$query = $Controller->{$params['modelRechercheName']}->searchConditions( $query, $filters );
+
+			// Conditions liées à l'utilisateur connecté
+			$query = $this->Allocataires->completeSearchQuery( $query, $params );
+
+			// Conditions supplémentaires depuis la configuration
+			$conditions = (array)Configure::read( $this->_configureKey( 'query.conditions', $params ) );
+			if( !empty( $conditions ) ) {
+				$query['conditions'][] = $conditions;
+			}
+
+			return $query;
+		}
+
+		protected function _queryOrder( array $query, array $params ) {
+			$Controller = $this->_Collection->getController();
+
+			// Si le tri est configuré pour mon action
+			// FIXME: n'a pas l'air de fonctionner...
+			$key = $this->_configureKey( 'query.order', $params);
+			$order = (array)Configure::read( $key );
+			if( !empty( $order ) ) {
+				$query['order'] = $order;
+			}
+
+			// INFO: propre à l'export CSV et aux pages en GET
+			$sort = Hash::get( $Controller->request->params, 'named.sort' );
+			$direction = Hash::get( $Controller->request->params, 'named.direction' );
+			if( !empty( $sort ) && !empty( $direction ) ) {
+				$query['order'] = "{$sort} {$direction}";
+			}
+
+			return $query;
+		}
+
+		protected function _query( array $filters, array $params ) {
+			// Clés de configuration des champs à ramener par la requête
+			$keys = array();
+			foreach( (array)$params['keys'] as $key ) {
+				$keys[] = $this->_configureKey( $key, $params );
+			}
+
+			$query = $this->_queryBase( $keys, $params );
+
+			$query = $this->_queryConditions( $query, $filters, $params );
+
+			$query = $this->_queryOrder( $query, $params );
+
+			$query = $this->_queryLimit( $query, $params );
+
+			return $query;
+		}
+
+		/**
+		 * Initialisation de la recherche: chargement du modèle de recherche dans
+		 * le contrôleur, modification de la configuration au moyen des ini_set.
+		 *
+		 * @param array $params
+		 */
+		protected function _initializeSearch( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+
+			// Chargement du modèle de recherche dans le contrôleur si nécessaire
+			if( !isset( $Controller->{$params['modelRechercheName']} ) ) {
+				$Controller->loadModel( $params['modelRechercheName'] );
+			}
+
+			$key = $this->_configureKey( 'ini_set', $params);
+			$ini_set = (array)Configure::read( $key );
+			foreach( $ini_set as $key => $value ) {
+				ini_set( $key, $value );
+			}
+		}
+
+		/**
+		 *
+		 * @param array $params
+		 */
+		final public function exportcsv( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$defaults = array( 'keys' => array( 'results.fields' ), 'limit' => false, 'view' => '/Elements/ConfigurableQuery/exportcsv' );
+			$params = $this->_params( $params + $defaults );
+
+			// Initialisation de la recherche
+			$this->_initializeSearch( $params );
+
+			// Récupération des valeurs du formulaire de recherche
+			$filters = $this->_filters( $params );
+
+			// Récupération du query
+			$query = $this->_query( $filters, $params );
+
+			// Exécution du query et assignation des résultats
+			$Controller->{$params['modelName']}->forceVirtualFields = true;
+			$results = $Controller->{$params['modelName']}->find( 'all', $query );
+
+			// Récupération des options
+			$options = $this->_options( $params );
+
+			// Assignation à la vue
+			$Controller->set( compact( 'results', 'options' ) );
+
+			// Propre à l'export CSV, fichier de vue pour le rendu, sans layout
+			$Controller->view = $params['view'];
+			$Controller->layout = null;
+		}
+
+		// ---------------------------------------------------------------------
+		// TODO: classe WebrsaMoteursCheckers (générique), search/exportcsv
+		// ---------------------------------------------------------------------
+
+		public function checkQuery( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			// Initialisation de la recherche
+			$this->_initializeSearch( $params );
+
+			// Récupération du query
+			$query = $this->_query( array(), $params );
+
+			// Exécution du query et assignation des résultats
+			$Controller->{$params['modelName']}->forceVirtualFields = true;
+			$query = $Controller->{$params['modelName']}->beforeFind( $query );
+			$sql = $Controller->{$params['modelName']}->sq( $query );
+
+			$Dbo = $Controller->{$params['modelName']}->getDataSource();
+			return $Dbo->checkPostgresSqlSyntax( $sql );
+		}
+
+		public function checkConfiguredFields( array $params = array() ) {
+			$Controller = $this->_Collection->getController();
+			$params = $this->_params( $params );
+
+			// Initialisation de la recherche
+			$this->_initializeSearch( $params );
+
+			// Récupération du query
+			$query = $this->_query( array(), $params );
+
+			$searchQuery = $Controller->{$params['modelRechercheName']}->searchQuery();
+			$searchQuery = $this->Allocataires->completeSearchQuery( $searchQuery, $params );
+			$available = array_keys( $searchQuery['fields'] );
+
+			$requested = array();
+			foreach( $params['keys'] as $path ) {
+				$configureKey = $this->_configureKey( $path, $params );
+				$requested = array_merge(
+					$requested,
+					array_keys( Hash::normalize( (array)Configure::read( $configureKey ) ) )
+				);
+			}
+			foreach( $requested as $key => $value ) {
+				if( strpos( $value, '/' ) !== false ) {
+					unset( $requested[$key] );
+				}
+			}
+			sort( $requested );
+
+			$missing = array_diff( $requested, $available );
+			$msg = 'Les champs suivants sont demandés mais ne sont pas dispponibles: %s';
+			$check = array(
+				'success' => empty( $missing ),
+				'message' => empty( $missing ) ? null : sprintf( $msg, implode( ', ', $missing ) ),
+				'value' => var_export( $requested, true )
+			);
+
+			return $check;
+		}
+
+		/**
+		 * Retourne la liste des clés de configuration possibles ainsi que des
+		 * règles de validation pour chacune d'entre elle, à utiliser dans la
+		 * partie "Vérification de l'application".
+		 *
+		 * Il faudra renseigner au minimum les clés suivantes dans les paramètres:
+		 *	- keys
+		 *	- configurableQueryFieldsKey (<Controller><.<action>)
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		public function configureKeys( array $params = array() ) {
+			$params = $this->_params( $params );
+
+			$keys = Hash::normalize( (array)$params['keys'] );
+			foreach( array_keys( $keys ) as $key ) {
+				if( $key === 'results.fields' ) {
+					$keys[$key] = array( array( 'rule' => 'isarray' ) );
+				}
+				else {
+					$keys[$key] = array( array( 'rule' => 'isarray', 'allowEmpty' => true ) );
+				}
+			}
+
+			$config = array_merge(
+				array(
+					'filters.defaults' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					'filters.accepted' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					'filters.skip' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					//'filters.force' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					'query.restrict' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					'query.conditions' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					'query.order' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					'limit' => array( array( 'rule' => 'integer', 'allowEmpty' => true ) ),
+					'auto' => array( array( 'rule' => 'boolean', 'allowEmpty' => true ) ),
+					'results.header' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+				),
+				$keys,
+				array(
+					'ini_set' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) )
+				)
+			);
+
+			$result = array();
+			foreach( $config as $key => $value ) {
+				$result[$this->_configureKey( $key, $params )] = $value;
+			}
+
+			return $result;
+		}
+	}
+?>

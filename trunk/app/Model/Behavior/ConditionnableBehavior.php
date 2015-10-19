@@ -294,6 +294,8 @@
 		/**
 		 * Filtres sur le Detailcalculdroitrsa:  natpf
 		 *
+		 * FIXME: remplacer , et - par _PLUS_ et _MINUS_
+		 *
 		 * @param Model $model
 		 * @param array $conditions
 		 * @param array $search

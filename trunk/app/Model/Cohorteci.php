@@ -12,6 +12,8 @@
 	/**
 	 * La classe Cohorteci fournit un traitement des filtres de recherche concernant les CER.
 	 *
+	 * @deprecated since 3.0.00 (? -> vérifier recherche / cohorte)
+	 *
 	 * @package app.Model
 	 */
 	class Cohorteci extends AppModel

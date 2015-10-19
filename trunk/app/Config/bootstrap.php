@@ -103,7 +103,11 @@
 	 * 		'persistent' => true, // [optional] set this to false for non-persistent connections
 	 * 	));
 	 */
-	Cache::config( 'default', array( 'engine' => 'File' ) );
+	Cache::config( 'default', array(
+		'engine' => 'File',
+		'mask' => 0777,
+		'duration' => ( Configure::read( 'debug' ) >= 1 ? '+10 seconds' : '+999 days' )
+	) );
 
 	/**
 	 * The settings below can be used to set additional paths to models, views and controllers.

@@ -235,12 +235,12 @@
 		}
 
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiens' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiensNew' );
 			$Recherches->search();
 		}
 
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiens' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiensNew' );
 			$Recherches->exportcsv();
 		}
 

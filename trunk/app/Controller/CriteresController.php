@@ -12,7 +12,8 @@
 	/**
 	 * La classe CriteresController ...
 	 *
-	 * @deprecated see Orientsstructs::search() et Orientsstructs::exportcsv()
+	 * @deprecated since 3.0.00
+	 * @see Orientsstructs::search() et Orientsstructs::exportcsv()
 	 *
 	 * @package app.Controller
 	 */
@@ -30,7 +31,6 @@
 		/**
 		*
 		*/
-
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '1024M');

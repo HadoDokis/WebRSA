@@ -20,6 +20,8 @@
 	{
 		public $name = 'Contratinsertion';
 
+		public $uses = array( 'Option' );
+
 		public $actsAs = array(
 			'Allocatairelie',
 			'Enumerable' => array(
@@ -2494,7 +2496,16 @@
 		 * @return array
 		 */
 		public function enums() {
-			$options = parent::enums();
+			$options = Hash::merge(
+				parent::enums(),
+				array(
+					$this->alias => array(
+						'decision_ci' => $this->Option->decision_ci(),
+						'forme_ci' => $this->Option->forme_ci(),
+						'duree_engag' => $this->Option->duree_engag()
+					)
+				)
+			);
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$options[$this->alias]['num_contrat_66'] = $options[$this->alias]['num_contrat'];

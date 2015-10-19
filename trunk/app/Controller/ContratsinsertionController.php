@@ -1786,7 +1786,9 @@ class ContratsinsertionController extends AppController
 	 * Moteur de recherche
 	 */
 	public function search() {
-		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
+		$this->helpers[] = 'Search.SearchForm';
+
+		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
 		$Recherches->search();
 		$this->Contratinsertion->validate = array();
 		$this->Contratinsertion->Structurereferente->Orientstruct->validate = array();
@@ -1796,7 +1798,7 @@ class ContratsinsertionController extends AppController
 	 * Export du tableau de résultats de la recherche
 	 */
 	public function exportcsv() {
-		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
+		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
 		$Recherches->exportcsv();
 	}
 }

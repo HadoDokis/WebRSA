@@ -153,6 +153,8 @@
 		 * Les action index et exportcsv peuvent être consommatrices, donc on augmeta la mémoire
 		 * maximale et le temps d'exécution maximal du script PHP.
 		 *
+		 * @deprecated since 3.0.00
+		 *
 		 * @return voir
 		 */
 		public function beforeFilter() {
@@ -164,19 +166,30 @@
 		}
 
 		/**
-		 * Moteur de recherche par dossier/allocataire
+		 * Moteur de recherche par dossier / allocataire
 		 *
 		 * @return void
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiers' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiersNew' );
 			$Recherches->search();
+		}
+
+		/**
+		 * Export du tableau de résultats du moteur de recherche par dossier /
+		 * allocataire au format CSV.
+		 *
+		 * @return void
+		 */
+		public function exportcsv() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiersNew' );
+			$Recherches->exportcsv();
 		}
 
 		/**
 		 * Moteur de recherche par dossier/allocataire
 		 *
-		 * @deprecated
+		 * @deprecated since 3.0.00
 		 *
 		 * @return void
 		 */
@@ -920,6 +933,8 @@
 		/**
 		 * Export du tableau de résultats de recherche au format CSV.
 		 *
+		 * @deprecated since 3.0.00
+		 *
 		 * @return void
 		 */
 		public function exportcsv1() {
@@ -936,11 +951,6 @@
 			$this->layout = '';
 			$this->set( compact( 'headers', 'dossiers' ) );
 			$this->_setOptions();
-		}
-
-		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiers' );
-			$Recherches->exportcsv();
 		}
 
 		/**

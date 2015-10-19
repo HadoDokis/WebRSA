@@ -106,6 +106,23 @@
 						<h4 class="title">Clefs non valide webrsa.inc</h4>
 						<?php echo $this->Checks->table( $results['Webrsa']['configure_bad_keys'] );?>
 					</div>
+					<div id="webrsa_configurable_query">
+						<h4 class="title">ConfigurableQuery</h4>
+						<?php
+							foreach( $results['Webrsa']['configurable_query'] as $key => $result ) {
+								echo "<h5>{$key}</h5>";
+								echo $this->Checks->table(
+									array_merge(
+										$result['config'],
+										array(
+											'fields' => $result['fields'],
+											'query' => $result['query']
+										)
+									)
+								);
+							}
+						?>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -186,7 +203,7 @@
 ?>
 <script type="text/javascript">
 	// On tronque la longueur des titres à 25 caractères avant de faire les onglets.
-	$$( 'h2, h3, h4, h5, h6' ).each( function( title ) { truncateWithEllipsis( title, 25 ); } );
+	$$( 'h2.title, h3.title, h4.title, h5.title, h6.title' ).each( function( title ) { truncateWithEllipsis( title, 25 ); } );
 
 	// Création des onglets à partir des titres.
 	makeTabbed( 'tabbedWrapper', 2 );
