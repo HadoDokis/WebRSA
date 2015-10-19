@@ -12,6 +12,8 @@
 	/**
 	 * La classe Criterepdo s'occupe du moteur de recherche des PDOs (CG 58, et 93).
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Model
 	 */
 	class Criterepdo extends AppModel

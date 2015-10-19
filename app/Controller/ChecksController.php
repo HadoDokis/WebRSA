@@ -23,7 +23,7 @@
 		/**
 		* @access public
 		*/
-		public $uses = array( 'Appchecks.Check', 'Webrsacheck' );
+		public $uses = array( 'Appchecks.Check', 'Webrsacheck', 'WebrsaRecherche' );
 
 		/**
 		* @access public
@@ -243,6 +243,11 @@
 		 * @access protected
 		 */
 		protected function _webrsa() {
+			$recherches = $this->WebrsaRecherche->checks();
+			foreach( $recherches as $key => $params ) {
+				$recherches[$key]['config'] = $this->Check->configure( $params['config'] );
+			}
+
 			return array(
 				'Webrsa' => array(
 					'informations' => array(
@@ -258,6 +263,7 @@
 					'configure_regexps' => $this->Webrsacheck->allConfigureRegexpsErrors(),
 					'configure_fields' => $this->Webrsacheck->allCheckParametrage(),
 					'configure_bad_keys' => $this->Webrsacheck->allCheckBadKeys(),
+					'configurable_query' => $recherches,
 				)
 			);
 		}

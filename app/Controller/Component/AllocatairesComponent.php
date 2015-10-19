@@ -93,7 +93,7 @@
 			$query = $this->addAllConditions( $query, $params );
 
 			// Champ supplémentaire pour un moteur de recherche simple
-			$query['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
+			$query['fields']['Dossier.locked'] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
 
 			if( Hash::get( $params, 'limit' ) ) {
 				$query = Hash::merge(
@@ -140,23 +140,66 @@
 			return $results;
 		}
 
+
+		/**
+		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
+		 * tables de la base de données.
+		 *
+		 * @return array
+		 */
+		public function optionsEnums() {
+			return ClassRegistry::init( 'Allocataire' )->options();
+		}
+
+		/**
+		 * Retourne les options stockées en session, liées à l'utilisateur connecté.
+		 *
+		 * @return array
+		 */
+		public function optionsSession() {
+			return array(
+				'Adresse' => array(
+					'numcom' => $this->Gestionzonesgeos->listeCodesInsee()
+				),
+				'Canton' => array(
+					'canton' => $this->Gestionzonesgeos->listeCantons()
+				),
+				'Sitecov58' => array(
+					'id' => $this->Gestionzonesgeos->listeSitescovs58()
+				),
+				'PersonneReferent' => array(
+					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ),
+					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true ) )
+				)
+			);
+		}
+
+		/**
+		 * Retourne les options stockées liées à des enregistrements en base de
+		 * données, ne dépendant pas de l'utilisateur connecté.
+		 *
+		 * @return array
+		 */
+		public function optionsRecords() {
+			return array(
+				'Serviceinstructeur' => array(
+					'id' => ClassRegistry::init( 'Serviceinstructeur' )->listOptions()
+				)
+			);
+		}
+
 		/**
 		 * Retourne les options de base pour les formulaires de recherche liés
 		 * à un allocataire.
-		 * @todo: params static/dynamic (ex find)
+		 *
 		 * @return array
 		 */
 		public function options() {
-			$options = ClassRegistry::init( 'Allocataire' )->options();
-
-			$options['Adresse']['numcom'] = $this->Gestionzonesgeos->listeCodesInsee();
-			$options['Canton']['canton'] = $this->Gestionzonesgeos->listeCantons();
-			$options['Sitecov58']['id'] = $this->Gestionzonesgeos->listeSitescovs58();
-
-			$options['PersonneReferent']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
-			$options['PersonneReferent']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
-
-			return $options;
+			return Hash::merge(
+				$this->optionsEnums(),
+				$this->optionsRecords(),
+				$this->optionsSession()
+			);
 		}
 	}
 ?>

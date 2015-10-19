@@ -11,7 +11,8 @@
 	/**
 	 * La classe CriteresrdvController implémente un moteur de recherche par rendez-vous (CG 58, 66 et 93).
 	 *
-	 * @deprecated see Rendezvous::search() et Rendezvous::exportcsv()
+	 * @deprecated since 3.0.00
+	 * @see Rendezvous::search() et Rendezvous::exportcsv()
 	 *
 	 * @package app.Controller
 	 */

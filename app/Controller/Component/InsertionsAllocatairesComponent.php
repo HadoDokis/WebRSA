@@ -119,7 +119,7 @@
 			}
 
 			if( Hash::get( $options, 'empty' ) ) {
-				$results = array( 0 => 'Non orienté' ) + $results;
+				$results = array( 0 => 'Non orienté' ) + (array)$results;
 			}
 
 			return $results;

@@ -12,6 +12,8 @@
 	/**
 	 * La classe WebrsaRecherchesDemenagementshorsdptsComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	class WebrsaRecherchesDemenagementshorsdptsComponent extends WebrsaAbstractRecherchesComponent
@@ -19,7 +21,7 @@
 		/**
 		 * Retourne le querydata complété par les conditions du moteur de recherche,
 		 * ainsi que des conditions liées à l'utilisateur connecté.
-		 * 
+		 *
 		 * @param array $query
 		 * @param array $params
 		 * @return array
@@ -28,7 +30,7 @@
 			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 			$query = parent::getQueryConditions($query, $params);
-			
+
 			// Conditions sur les dates d'emménagement pour les externes
 			if( $departement === 93 && ( strpos( $Controller->Session->read( 'Auth.User.type' ), 'externe_' ) === 0 ) ) {
 				$query['conditions'][] = array(
@@ -49,7 +51,7 @@
 
 			return $query;
 		}
-		
+
 		/**
 		 * Options pour le moteur de recherche
 		 *

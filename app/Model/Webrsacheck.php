@@ -31,14 +31,11 @@
 		public $useTable = false;
 
 		/**
-		 * Liste des controleurs implémentant les moteurs de recherches (v. 3)
-		 * il spossèdent donc une méthode search() et une méthode exportcsv().
-		 *
-		 * Cette liste sera peuplée dynamiquement dans le constructeur.
+		 * Modèles utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $searches = array();
+		public $uses = array();
 
 		/**
 		 * Liste des modèles n'appartenant pas à un département donné.
@@ -145,10 +142,10 @@
 			sort( $models );
 			return $models;
 		}*/
-		
+
 		/**
 		 * Liste des clefs de type ValidateAllowEmpty
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_validationAllowEmptyKeys = array();
@@ -180,14 +177,6 @@
 		public function __construct( $id = false, $table = null, $ds = null ) {
 			parent::__construct( $id, $table, $ds );
 			$departement = (int)Configure::read( 'Cg.departement' );
-
-			// Population dynamique de la liste des nouveaux moteurs de recherche
-			// TODO: factoriser avec ce qu'il y a en dessous, en utilisant les interfaces
-			foreach( App::objects( 'model' ) as $modelName ) {
-				if( strpos( $modelName, 'WebrsaRecherche' ) === 0 && !in_array( $modelName, $this->notMyModels[$departement] ) ) {
-					$this->searches[] = $modelName;
-				}
-			}
 
 			$this->_includeConfigFiles( Configure::read( 'Cg.departement' ) );
 		}
@@ -349,13 +338,6 @@
 				'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray',
 				'WebrsaEmailConfig.testEnvironments' => 'isarray',
 				'Romev3.enabled' => 'boolean',
-				// Début @deprecated
-				'Dsps.index.fields' => 'isarray',
-				'Dsps.index.innerTable' => 'isarray',
-				'Dsps.index.header' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true )
-				),
-				// Fin @deprecated
 				'MultiDomainsTranslator.prefix' => 'string',
 				'Etatjetons.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
@@ -364,25 +346,6 @@
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
 			);
-
-			foreach( $this->searches as $searchModelName ) {
-				$SearchModel = ClassRegistry::init( $searchModelName );
-				foreach( $SearchModel->keysRecherche as $searchKey ) {
-					if(  strpos( $searchKey, '.innerTable' ) !== false ) {
-						$searchKeyPrefix = preg_replace( '/\.innerTable/', '', $searchKey );
-
-						$return["{$searchKeyPrefix}.header"] = array(
-							array( 'rule' => 'isarray', 'allowEmpty' => true )
-						);
-
-						$return["{$searchKeyPrefix}.order"] = array(
-							array( 'rule' => 'isarray', 'allowEmpty' => true )
-						);
-					}
-
-					$return[$searchKey] = 'isarray';
-				}
-			}
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
 			if( !empty( $tmp ) ) {
@@ -631,19 +594,19 @@
 
 			return $configure;
 		}
-		
+
 		/**
 		 * Permet d'obtenir la liste des configs type ValidateAllowEmpty.Model.field
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _allValidateAllowEmptyKeys() {
 			$results = array();
-			
+
 			foreach ( $this->_getValidationAllowEmptyKeys() as $key ) {
 				$results[$key] = array( array( 'rule' => 'boolean', 'allowEmpty' => true ) );
 			}
-			
+
 			return $results;
 		}
 
@@ -1113,11 +1076,13 @@
 			$departement = (int)Configure::read( 'Cg.departement' );
 			$errors = array();
 
+			// @deprecated 3.0.00 (faire le tric moteurs de recherche / autres)
 			$ignore = Configure::read( 'ConfigurableQueryFields.ignore' );
 			$ignore[] = 'Dossier.locked';
 			if( (int)Configure::read( 'Cg.departement' ) === 93 ) {
 				$ignore[] = 'Referent.horszone';
 			}
+			// TODO
 			Configure::write( 'ConfigurableQueryFields.ignore', $ignore );
 
 			foreach( App::objects( 'model' ) as $modelName ) {
@@ -1139,16 +1104,16 @@
 
 			return $errors;
 		}
-		
+
 		/**
 		 * Liste les clef de conf inutile
-		 * 
+		 *
 		 * @return type
 		 */
 		public function allCheckBadKeys() {
 			$errors = array();
 			$badKeys = $this->_badValidateAllowEmptyKeys();
-			
+
 			$errors[ValidateAllowEmptyUtility::$confKey] = array(
 				'success' => empty( $badKeys ),
 				'value' => implode( ', ', $badKeys ),
@@ -1156,13 +1121,13 @@
 					? null
 					: 'Il n\'est actuellement pas possible de configurer la validation de ces champs'
 			);
-			
+
 			return $errors;
 		}
-		
+
 		/**
 		 * Récupère la liste des clefs potentielles de configuration allowEmpty d'un champ
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _getValidationAllowEmptyKeys() {
@@ -1184,21 +1149,21 @@
 
 				$this->_validationAllowEmptyKeys = $results;
 			}
-			
+
 			return $this->_validationAllowEmptyKeys;
 		}
-		
+
 		/**
 		 * Liste les clefs de ValidateAllowEmpty inutile
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _badValidateAllowEmptyKeys() {
 			$results = array();
 			$list = $this->_getValidationAllowEmptyKeys();
-			
+
 			foreach ( ValidateAllowEmptyUtility::allConf() as $modelName => $params ) {
-				foreach ( array_keys($params) as $fieldName ) { 
+				foreach ( array_keys($params) as $fieldName ) {
 					$presence = false;
 					foreach ( $list as $key => $value ) {
 						if ( ValidateAllowEmptyUtility::configureKey( "{$modelName}.{$fieldName}" ) === $value ) {
@@ -1207,13 +1172,13 @@
 							break;
 						}
 					}
-					
+
 					if ( $presence === false ) {
 						$results[] = "{$modelName}.{$fieldName}";
 					}
 				}
 			}
-			
+
 			return $results;
 		}
 	}

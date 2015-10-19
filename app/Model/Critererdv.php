@@ -12,7 +12,8 @@
 	/**
 	 * La classe Critererdv s'occupe du moteur de recherche par rendez-vous (CG 58, 66 et 93).
 	 *
-	 * @deprecated see WebrsaRechercheRendezvous
+	 * @deprecated since 3.0.00
+	 * @see WebrsaRechercheRendezvous
 	 *
 	 * @package app.Model
 	 */
@@ -222,7 +223,7 @@
 
 			// Référent du parcours
 			$querydata = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criteresrdv );
-			
+
 			if ( Configure::read( 'CG.cantons' ) ) {
 				$querydata['fields'][] = 'Canton.canton';
 				$querydata['joins'][] = ClassRegistry::init('Canton')->joinAdresse();

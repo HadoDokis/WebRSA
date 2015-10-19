@@ -1230,7 +1230,7 @@
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
-			$params = $params + array( 'find' => true, 'allocataire' => false, 'alias' => 'Dsp' );
+			$params = $params + array( 'find' => true, 'allocataire' => false, 'alias' => 'Dsp', 'enums' => true );
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $params ) );
 			$return = Cache::read( $cacheKey );
@@ -1239,8 +1239,11 @@
 				$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
 
 				$return = $this->enums();
-				foreach( array_keys( $this->getCheckboxes() ) as $modelDetail ) {
-					$return = Hash::merge( $return, $this->{$modelDetail}->enums() );
+
+				if( $params['enums'] ) {
+					foreach( array_keys( $this->getCheckboxes() ) as $modelDetail ) {
+						$return = Hash::merge( $return, $this->{$modelDetail}->enums() );
+					}
 				}
 
 				if( $params['allocataire'] ) {

@@ -1,10 +1,11 @@
+<?php $this->start( 'custom_search_filters' );?>
 <?php
 	$departement = (int)Configure::read( 'Cg.departement' );
 	$controller = $this->params->controller;
 	$action = $this->action;
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
 	$availableDomains = MultiDomainsTranslator::urlDomains();
-	// FIXME: a-t'on encore besoin de $domain ? Corriger les autres recherches (titleForLayout et actions)
+
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
 	$paramDate = array(
 		'domain' => $domain,
@@ -26,44 +27,6 @@
 			'on' => null
 		)
 	);
-
-	echo $this->Default3->titleForLayout();
-
-	$dates = array(
-		'Dossier' => array('dtdemrsa' => $dateRule),
-		'Personne' => array('dtnai' => $dateRule),
-		'Orientstruct' => array('date_valid' => $dateRule)
-	);
-	echo $this->FormValidator->generateJavascript($dates, false);
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
-	}
-
-	echo $this->Default3->actions(
-		array(
-			'/' . $controller . '/' . $action . '/#toggleform' => array(
-				'onclick' => '$(\'' . $formId . '\').toggle(); return false;',
-				'class' => $action . 'Form'
-			),
-		)
-	);
-
-	// 1. Moteur de recherche
-	echo $this->Xform->create( null,
-		array(
-			'id' => $formId,
-			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ),
-			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
-		)
-	);
-
-	echo $this->Allocataires->blocDossier($paramAllocataire);
-
-	echo $this->Allocataires->blocAdresse($paramAllocataire);
-
-	echo $this->Allocataires->blocAllocataire($paramAllocataire);
 
 	echo $this->Html->tag(
 		'fieldset',
@@ -131,30 +94,19 @@
 		)
 		. '</fieldset>'
 	;
+?>
+<?php $this->end();?>
 
-	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
-
-	echo $this->Allocataires->blocPagination($paramAllocataire);
-
-	echo $this->Xform->end( 'Search' );
-
-	echo $this->Search->observeDisableFormOnSubmit( $formId );
-
-	// 2. Formulaire de traitement des résultats de la recherche
-	if( isset( $results ) ) {
-		echo $this->Html->tag( 'h2', 'Résultats de la recherche', array( 'class' => 'noprint' ) );
-
-		echo $this->Default3->configuredIndex(
-			$results,
-			array(
-				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ),
-				'options' => $options
-			)
-		);
-
-		echo $this->element( 'search_footer' );
-	}
-
+<?php
+	echo $this->element(
+		'ConfigurableQuery/search',
+		array(
+			'custom' => $this->fetch( 'custom_search_filters' ),
+			'exportcsv' => array( 'action' => 'exportcsv' )
+		)
+	);
+?>
+<?php
 	if( $departement === 66 ) {
 		echo $this->Observer->dependantSelect(
 			array(

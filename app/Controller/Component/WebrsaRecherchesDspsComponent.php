@@ -12,6 +12,8 @@
 	/**
 	 * La classe WebrsaRecherchesDspsComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	class WebrsaRecherchesDspsComponent extends WebrsaAbstractRecherchesComponent

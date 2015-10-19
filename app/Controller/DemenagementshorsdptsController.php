@@ -85,6 +85,8 @@
 		 * Si l'utilisateur est un externe, des conditions sur les dates d'emménagement
 		 * seront également ajoutées.
 		 *
+		 * @deprecated since 3.0.00
+		 *
 		 * @param array $query
 		 * @return array
 		 */
@@ -139,7 +141,8 @@
 		/**
 		 * Moteur de recherche des fiches de prescription.
 		 *
-		 * @deprecated see search()
+		 * @deprecated since 3.0.00
+		 * @see search()
 		 */
 		public function search1() {
 			if( Hash::check( $this->request->data, 'Search' ) ) {
@@ -161,7 +164,8 @@
 		/**
 		 * Export CSV des résultats de la recherche.
 		 *
-		 * @deprecated see exportcsv()
+		 * @deprecated since 3.0.00
+		 * @see exportcsv()
 		 */
 		public function exportcsv1() {
 			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
@@ -184,7 +188,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdpts' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdptsNew' );
 			$Recherches->search( array('modelName' => 'Personne') );
 		}
 
@@ -192,7 +196,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdpts' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdptsNew' );
 			$Recherches->exportcsv( array('modelName' => 'Personne') );
 		}
 	}

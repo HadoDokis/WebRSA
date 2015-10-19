@@ -12,6 +12,8 @@
 	/**
 	 * La classe WebrsaRecherchesPropospdosPossiblesComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	class WebrsaRecherchesPropospdosPossiblesComponent extends WebrsaAbstractRecherchesComponent

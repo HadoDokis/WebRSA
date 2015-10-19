@@ -12,6 +12,8 @@
 	/**
 	 * La classe WebrsaRecherchesOrientsstructsComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	class WebrsaRecherchesOrientsstructsComponent extends WebrsaAbstractRecherchesComponent
