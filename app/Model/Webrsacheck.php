@@ -986,11 +986,15 @@
 				$check = array(
 					'success' => false,
 					'message' => sprintf(
-						"Problème avec les fonctions fuzzystrmatch (les fonctions suivantes sont manquantes: %s)<br/>Sous Ubuntu, il vous faut vérifier que le paquet postgresql-contrib-%s est bien installé. <br />Une fois fait, dans une console postgresql, en tant qu'administrateur, tapez: <code>\i /usr/share/postgresql/%s/contrib/fuzzystrmatch.sql</code>",
-						implode( ', ', $missing ),
-						$shortversion,
-						$shortversion
-					)
+							"Problème avec les fonctions fuzzystrmatch (les fonctions suivantes sont manquantes: %s)<br/>Sous Ubuntu, il vous faut vérifier que le paquet postgresql-contrib-%s est bien installé. <br />Une fois fait, dans une console postgresql, en tant qu'administrateur, tapez: ",
+							implode( ', ', $missing ),
+							$shortversion
+						) . '<code>' . (
+							(float)$shortversion < 9 
+							? sprintf('\i /usr/share/postgresql/%s/contrib/fuzzystrmatch.sql', $shortversion)
+							: 'CREATE EXTENSION fuzzystrmatch;'
+						)
+						. '</code>'
 				);
 			}
 
