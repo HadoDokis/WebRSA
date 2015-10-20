@@ -112,6 +112,13 @@ CREATE TABLE requestsmanager (
 COMMENT ON TABLE requestsmanager IS 'Sauvegarde des requetes effectué par l editeur de requete';
 ALTER TABLE requestsmanager ADD CONSTRAINT requestsmanager_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
 
+--------------------------------------------------------------------------------
+-- GESTION DOUBLONS COMPLEXES
+--------------------------------------------------------------------------------
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'prestations', 'prestations_personne_id_fkey' );
+ALTER TABLE prestations ADD CONSTRAINT prestations_personne_id_fkey FOREIGN KEY (personne_id) REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
