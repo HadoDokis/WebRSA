@@ -46,16 +46,13 @@
 			else {
 				// Récupération des valeurs par défaut des filtres
 				$defaults = $this->_defaults( $params );
+
 				// Assignation au formulaire
 				$Controller->request->data = $defaults;
 
-				// Si on doit automatiquement mancer la recherche, on met les filtres ar défaut dans l'URL
+				// Si on doit automatiquement lancer la recherche, on met les filtres ar défaut dans l'URL
 				if( $params['auto'] === true ) {
-					$url = $Controller->request->params;
-					$url['named'] = array();
-					$data = $Controller->request->data;
-					$data = empty( $data ) ? array( 'search' => true ) : $data;
-					return $Controller->redirect( $url + Hash::flatten( $data, '__' ) );
+					return $this->_auto( $defaults, $params );
 				}
 			}
 

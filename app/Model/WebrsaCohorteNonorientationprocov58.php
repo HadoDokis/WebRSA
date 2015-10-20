@@ -359,11 +359,8 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			// On force certaines valeurs si besoin (elles ne figurent pas dans le formulaire)
-			$search['Calculdroitrsa']['toppersdrodevorsa'] = '1';
-			$search['Dossier']['dernier'] = '1';
-			$search['Situationdossierrsa']['etatdosrsa_choice'] = '1';
-			$search['Situationdossierrsa']['etatdosrsa'] = $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
+			// On force pour quela plage de dates soit pris en compte (pas de case à cocher dans le formulaire)
+			$search['Contratinsertion']['df_ci'] = '1';
 
 			$query = $this->Allocataire->searchConditions( $query, $search );
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Contratinsertion.df_ci' );

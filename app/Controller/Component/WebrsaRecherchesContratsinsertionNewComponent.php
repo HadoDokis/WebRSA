@@ -44,7 +44,7 @@
 			);
 
 			if( $departement === 58 ) {
-				$options['Personne']['etat_dossier_orientation'] = $Controller->Dossier->Foyer->Personne->enum( 'etat_dossier_orientation' );
+				$options['Personne']['etat_dossier_orientation'] = $Controller->Contratinsertion->Personne->enum( 'etat_dossier_orientation' );
 			}
 			else if( $departement === 93 ) {
 				$options = Hash::merge(

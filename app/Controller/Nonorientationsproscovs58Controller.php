@@ -95,7 +95,7 @@
 		public function cohorte() {
 			$this->loadModel('Orientstruct');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientationsproscovs58' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientationsproscovs58New' );
 
 			$Cohortes->cohorte(
 				array(
@@ -112,7 +112,7 @@
 		public function exportcsv() {
 			$this->loadModel('Orientstruct');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientationsproscovs58' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientationsproscovs58New' );
 
 			$Cohortes->exportcsv(
 				array(

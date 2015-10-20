@@ -4,7 +4,6 @@
 	 *
 	 * FIXME, voir les classes suivantes:
 	 *	- WebrsaRecherchesApresComponent (__construct pour le suffixe de l'APRE suivant le département)
-	 *	- WebrsaRecherchesDemenagementshorsdptsComponent (surcharge des conditions)
 	 *	- WebrsaRecherchesFichesprescriptions93Component (le modèle vient de _getModelName(), de l'existence ou non de la fiche)
 	 *	- WebrsaRecherchesTransfertspdvs93Component (surcharge des conditions)
 	 *
@@ -82,18 +81,6 @@
 		protected function _configureKey( $path, array $params ) {
 			return "{$params['searchKeyPrefix']}.{$params['configurableQueryFieldsKey']}.{$path}";
 		}
-
-		/**
-		 * Doit-on lancer la recherche automatiquement lors du premier accès à la
-		 * page ?
-		 *
-		 * @param array $params
-		 * @return boolean
-		 */
-		/*protected function _needsAutoSearch( array $params ) {
-			$Controller = $this->_Collection->getController();
-			return empty( $Controller->request->data ) && $params['auto'] === true;
-		}*/
 
 		/**
 		 * Doit on lancer la recherche ?
@@ -482,6 +469,24 @@
 			// Propre à l'export CSV, fichier de vue pour le rendu, sans layout
 			$Controller->view = $params['view'];
 			$Controller->layout = null;
+		}
+
+		/**
+		 * Redirige la page en GET avec les valeurs par défaut du moteur de
+		 * recherche.
+		 *
+		 * @return array
+		 */
+		protected function _auto( array $defaults, array $params ) {
+			$Controller = $this->_Collection->getController();
+
+			$defaults = empty( $params['searchKey'] ) ? $defaults : (array)Hash::get( $defaults, $params['searchKey'] );
+			$defaults = empty( $defaults ) ? array( 'search' => true ) : $defaults;
+
+			$url = $Controller->request->params;
+			$url['named'] = array();
+
+			return $Controller->redirect( $url + Hash::flatten( empty( $params['searchKey'] ) ? $defaults : array( $params['searchKey'] => $defaults ), '__' ) );
 		}
 
 		// ---------------------------------------------------------------------

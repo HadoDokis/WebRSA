@@ -52,8 +52,8 @@
 		 * @see Valeurs de configSkipPrefix et de prefix.
 		 */
 		protected function _readSkipConfig() {
-			$configurePath = $this->default['configSkipPrefix'].Inflector::camelize($this->request->params['controller']).'.'.$this->request->params['action'];
-			$skip = (array)Configure::read( "{$configurePath}.skip" );
+			$configurePath = $this->default['configSkipPrefix'].'.'.Inflector::camelize($this->request->params['controller']).'.'.$this->request->params['action'];
+			$skip = (array)Configure::read( "{$configurePath}.filters.skip" );
 			if( !empty( $skip ) ) {
 				if( !empty( $this->default['prefix'] ) ) {
 					foreach( $skip as $key => $value ) {

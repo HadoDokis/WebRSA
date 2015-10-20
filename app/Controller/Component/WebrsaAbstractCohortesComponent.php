@@ -13,6 +13,8 @@
 	/**
 	 * La classe WebrsaAbtractCohortesComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	abstract class WebrsaAbstractCohortesComponent extends WebrsaAbstractMoteursComponent

@@ -43,7 +43,7 @@
 			);
 
 			if( $departement === 58 ) {
-				$options['Activite']['act'] = $Controller->Option->act();
+				$options['Activite']['act'] = $Controller->Orientstruct->Personne->Activite->enum( 'act' );
 			}
 
 			return $options;

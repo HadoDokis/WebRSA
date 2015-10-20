@@ -54,6 +54,18 @@
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Demenagementshorsdpts.search' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
+				'component' => 'WebrsaRecherchesDemenagementshorsdptsNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Demenagementshorsdpts.exportcsv' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
+				'component' => 'WebrsaRecherchesDemenagementshorsdptsNew',
+				'keys' => array( 'results.fields' )
+			),
 			'Dossiers.search' => array(
 				'modelName' => 'Dossier',
 				'component' => 'WebrsaRecherchesDossiersNew',
@@ -76,18 +88,6 @@
 				'component' => 'WebrsaRecherchesDspsNew',
 				'keys' => array( 'results.fields' )
 			),
-			'Demenagementshorsdpts.search' => array(
-				'modelName' => 'Personne',
-				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
-				'component' => 'WebrsaRecherchesDemenagementshorsdptsNew',
-				'keys' => array( 'results.fields', 'results.innerTable' )
-			),
-			'Demenagementshorsdpts.exportcsv' => array(
-				'modelName' => 'Personne',
-				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
-				'component' => 'WebrsaRecherchesDemenagementshorsdptsNew',
-				'keys' => array( 'results.fields' )
-			),
 			'Entretiens.search' => array(
 				'modelName' => 'Entretien',
 				'component' => 'WebrsaRecherchesEntretiensNew',
@@ -108,6 +108,18 @@
 				'modelName' => 'Dossier',
 				'component' => 'WebrsaRecherchesIndusNew',
 				'modelRechercheName' => 'WebrsaRechercheIndu',
+				'keys' => array( 'results.fields' )
+			),
+			'Nonorientationsproscovs58.cohorte' => array(
+				'modelName' => 'Orientstruct',
+				'component' => 'WebrsaCohortesNonorientationsproscovs58New',
+				'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Nonorientationsproscovs58.exportcsv' => array(
+				'modelName' => 'Orientstruct',
+				'component' => 'WebrsaCohortesNonorientationsproscovs58New',
+				'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58',
 				'keys' => array( 'results.fields' )
 			),
 			'Orientsstructs.search' => array(
@@ -150,6 +162,30 @@
 			'Rendezvous.exportcsv' => array(
 				'modelName' => 'Rendezvous',
 				'component' => 'WebrsaRecherchesRendezvousNew',
+				'keys' => array( 'results.fields' )
+			),
+			'Sanctionseps58.cohorte_radiespe' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
+				'component' => 'WebrsaCohortesSanctionseps58New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Sanctionseps58.exportcsv_radiespe' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
+				'component' => 'WebrsaCohortesSanctionseps58New',
+				'keys' => array( 'results.fields' )
+			),
+			'Sanctionseps58.cohorte_noninscritspe' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
+				'component' => 'WebrsaCohortesSanctionseps58New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Sanctionseps58.exportcsv_noninscritspe' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
+				'component' => 'WebrsaCohortesSanctionseps58New',
 				'keys' => array( 'results.fields' )
 			),
 		);
@@ -229,7 +265,7 @@
 			$Controller->action = $actionName;
 			$Controller->modelClass = $config['modelName'];
 			$Controller->uses = array( $Controller->modelClass, Inflector::classify( $controllerName), $config['modelName'], 'Jeton', 'User' );
-			$Controller->components = array( 'Session', 'Jetons2', 'InsertionsAllocataires', 'Gestionzonesgeos' );
+			$Controller->components = array( 'Session', 'Jetons2', 'InsertionsAllocataires', 'Gestionzonesgeos', 'Cohortes' );
 			$Controller->helpers = array(
 				'Default3' => array(
 					'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
@@ -237,7 +273,10 @@
 			);
 
 			$Controller->constructClasses();
+
+			// TODO: une boucle ?
 			$Controller->Jetons2->initialize( $Controller );
+			$Controller->Cohortes->initialize( $Controller );
 
 			$config += array( 'configurableQueryFieldsKey' => $key );
 			$Recherches = $Controller->Components->load( $config['component'] );
@@ -259,11 +298,24 @@
 			foreach( $this->searches as $key => $config ) {
 				$departement = Hash::get( $config, 'departement' );
 				if( $departement === null || in_array( $currentDepartement, (array)$departement ) ) {
+					// INFO: ajout d'une condition supplémentaire afin de ne pas avoir de résultats
+					Configure::write( "ConfigurableQuery.{$key}.query.conditions", '0 = 1' );
+					Configure::write( "ConfigurableQuery.{$key}.auto", false );
+
 					echo "\t{$key}\n";
 					$Recherches = $this->_component( $key, $config );
 
 					if( strpos( $key, '.search' ) !== false ) {
+						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
+						$Controller = $Recherches->_Collection->getController();
+						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );
 						$Recherches->search( $config );
+					}
+					else if( strpos( $key, '.cohorte' ) !== false ) {
+						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
+						$Controller = $Recherches->_Collection->getController();
+						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );
+						$Recherches->cohorte( $config, array() );
 					}
 					else {
 						$Recherches->exportcsv( $config );

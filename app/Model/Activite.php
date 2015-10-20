@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Activite.
 	 *
@@ -18,6 +18,13 @@
 		public $name = 'Activite';
 
 		protected $_modules = array( 'caf' );
+
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Option' );
 
 		public $validate = array(
 			'personne_id' => array(
@@ -58,6 +65,20 @@
 					'limit' => 1
 				)
 			);
+		}
+
+		/**
+		 * Surcharge de la méthode enums pour obtenir les valeurs possibles
+		 * du champ act.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$enums = parent::enums();
+
+			$enums[$this->alias]['act'] = $this->Option->act();
+
+			return $enums;
 		}
 	}
 ?>

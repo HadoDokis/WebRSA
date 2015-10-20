@@ -41,8 +41,6 @@
 			'Cohortes',
 			'DossiersMenus',
 			'Search.Filtresdefaut' => array(
-				'cohorte_radiespe',
-				'cohorte_noninscritspe',
 				'selectionradies',
 				'selectionnoninscrits'
 			),
@@ -328,13 +326,12 @@
 		public function cohorte_radiespe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
 
 			$Cohortes->cohorte(
 				array(
 					'modelName' => 'Personne',
-					'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
-					'auto' => true
+					'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe'
 				)
 			);
 		}
@@ -346,7 +343,7 @@
 		public function exportcsv_radiespe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
 
 			$Cohortes->exportcsv(
 				array(
@@ -363,7 +360,7 @@
 		public function cohorte_noninscritspe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
 
 			$Cohortes->cohorte(
 				array(
@@ -381,7 +378,7 @@
 		public function exportcsv_noninscritspe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
 
 			$Cohortes->exportcsv(
 				array(

@@ -41,7 +41,7 @@
 			// 5. Résultats de la recherche
 			'results' => array(
 				// 5.1 Ligne optionnelle supplémentaire d'en-tête du tableau de résultats
-				'headers' => array(),
+				'header' => array(),
 				// 5.2 Colonnes du tableau de résultats
 				'fields' => array (
 					'Dossier.numdemrsa',
@@ -67,10 +67,7 @@
 				)
 			),
 			// 6. Temps d'exécution, mémoire maximum, ...
-			'ini_set' => array(
-//				'max_execution_time' => 0,
-//				'memory_limit' => '1024M'
-			)
+			'ini_set' => array()
 		)
 	);
 
