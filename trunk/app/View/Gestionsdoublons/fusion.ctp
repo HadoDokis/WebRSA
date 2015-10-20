@@ -98,7 +98,7 @@ if( isset( $errors ) && !empty( $errors ) ): ?>
 										'controller' => Inflector::pluralize(Inflector::underscore($modelName)),
 										'action' => $action,
 										Hash::get($record, 'id')
-									)
+									), true
 								), array(
 									'class' => 'external',
 									'enabled' => $pieceJointe
