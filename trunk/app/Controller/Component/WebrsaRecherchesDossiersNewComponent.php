@@ -58,9 +58,7 @@
 			);
 
 			if( $departement === 58 ) {
-				// FIXME: à factoriser dans Activite
-				$options['Activite']['act'] = $Controller->Option->act();
-				// FIXME: à factoriser dans Personne
+				$options['Activite']['act'] = $Controller->Dossier->Foyer->Personne->Activite->enum( 'act' );
 				$options['Personne']['etat_dossier_orientation'] = $Controller->Dossier->Foyer->Personne->enum( 'etat_dossier_orientation' );
 			}
 

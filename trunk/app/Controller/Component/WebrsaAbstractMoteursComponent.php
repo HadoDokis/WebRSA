@@ -9,6 +9,8 @@
 	/**
 	 * Description of WebrsaAbstractMoteursComponent
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @author atma
 	 */
 	abstract class WebrsaAbstractMoteursComponent extends Component {

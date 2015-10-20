@@ -45,7 +45,7 @@
 			// 5. Résultats de la recherche
 			'results' => array(
 				// 5.1 Ligne optionnelle supplémentaire d'en-tête du tableau de résultats
-				'headers' => array(),
+				'header' => array(),
 				// 5.2 Colonnes du tableau de résultats
 				'fields' => array (
 					'Personne.nom_complet',

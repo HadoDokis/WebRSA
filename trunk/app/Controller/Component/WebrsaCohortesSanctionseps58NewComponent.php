@@ -1,40 +1,30 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohortesSanctionseps58Component.
+	 * Code source de la classe WebrsaCohortesSanctionseps58NewComponent.
 	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAbstractCohortesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractCohortesNewComponent', 'Controller/Component' );
 
 	/**
-	 * La classe WebrsaCohortesSanctionseps58Component ...
-	 *
-	 * @deprecated since 3.0.00
+	 * La classe WebrsaCohortesSanctionseps58NewComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesSanctionseps58Component extends WebrsaAbstractCohortesComponent
+	class WebrsaCohortesSanctionseps58NewComponent extends WebrsaAbstractCohortesNewComponent
 	{
 		/**
-		 * Components utilisés par ce component.
+		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
+		 * tables de la base de données.
 		 *
-		 * @var array
-		 */
-		public $components = array(
-			'Allocataires',
-			'Cohortes'
-		);
-
-		/**
-		 * Options pour le moteur de recherche
+		 * La mise en cache se fera dans ma méthode _options().
 		 *
-		 * @param array $params
 		 * @return array
 		 */
-		public function options( array $params = array() ) {
+		protected function _optionsEnums( array $params ) {
 			$Controller = $this->_Collection->getController();
 
 			if( isset( $Controller->Personne ) === false ) {
@@ -45,8 +35,8 @@
 				$Controller->loadModel( 'Informationpe' );
 			}
 
-			$options = array_merge(
-				parent::options($params),
+			return Hash::merge(
+				parent::_optionsEnums( $params ),
 				$Controller->Informationpe->enums(),
 				$Controller->Informationpe->Historiqueetatpe->enums(),
 				$Controller->Personne->Dossierep->enums(),
@@ -58,8 +48,6 @@
 				$Controller->Personne->Orientstruct->Structurereferente->enums(),
 				$Controller->Personne->Orientstruct->Typeorient->enums()
 			);
-
-			return $options;
 		}
 	}
 ?>

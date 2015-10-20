@@ -13,6 +13,8 @@
 	/**
 	 * La classe WebrsaAbstractRecherchesComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	abstract class WebrsaAbstractRecherchesComponent extends WebrsaAbstractMoteursComponent

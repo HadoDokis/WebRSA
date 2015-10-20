@@ -21,7 +21,6 @@
 ?>
 
 <?php $this->start( 'custom_search_filters' );?>
-
 <fieldset>
 	<legend>Recherche par parcours de l'allocataire</legend>
 	<?php
