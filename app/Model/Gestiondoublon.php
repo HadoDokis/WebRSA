@@ -35,11 +35,24 @@
 		public $actsAs = array(
 			'Conditionnable'
 		);
+		
+		/**
+		 * Si on ajoute un path en cmis, on stock le path pour éventuellement le supprimer en cas de mauvaise transaction
+		 * @var array
+		 */
+		protected $_cmisNewPath = array();
+		
+		/**
+		 * Si on modifie le path en cmis, on stock l'ancienne valeur pour les supprimer si la transaction s'est bien passé
+		 * @var type 
+		 */
+		protected $_cmisOldPath = array();
 
 		/**
 		 * Existe-t'il des fichiers modules liés aux enregistrements que nous
 		 * voulons fusionner ?
 		 *
+		 * @deprecated since version 2.10
 		 * @param array $donnees
 		 * @return array
 		 */
@@ -367,8 +380,9 @@
 			$foyerAGarderId = Hash::get( $data, 'Foyer.id' );
 			$foyerASupprimerId = ( ( $foyerAGarderId == $foyer1_id ) ? $foyer2_id : $foyer1_id );
 
-			$success = true;
 			$Foyer->begin();
+			
+			$success = $this->_deplacerFichiersLies( 'Foyer', $foyerAGarderId, $foyerASupprimerId );
 			
 			// Spécial dossier pcg
 			if ( Configure::read( 'Cg.departement') == 66 && isset( $data['Dossierpcg66']['id'] ) && !empty( $data['Dossierpcg66']['id'] ) ){
@@ -398,6 +412,15 @@
 						$success = $Foyer->{$modelName}->deleteAll(
 							array( "{$modelName}.id" => $idsASupprimer )
 						) && $success;
+						
+						if ( isset($Foyer->{$modelName}->Fichiermodule) ) {
+							$success = $Foyer->{$modelName}->Fichiermodule->deleteAllUnbound(
+								array(
+									'Fichiermodule.modele' => $modelName,
+									'Fichiermodule.fk_value' => $idsASupprimer
+								)
+							) && $success;
+						}
 					}
 				}
 			}
@@ -418,6 +441,79 @@
 			$success = $Foyer->Dossier->delete( $dossier['Dossier']['id'] ) && $success;
 
 			return $success;
+		}
+		
+		/**
+		 * On réaffecte les fichiers liés d'un idASupprimer vers un autre id
+		 * 
+		 * @param integer $id
+		 * @param integer $idASupprimer
+		 */
+		protected function _deplacerFichiersLies( $modelName, $idAGarder, $idASupprimer ) {
+			$Fichiermodule = ClassRegistry::init( 'Fichiermodule' );
+			$success = true;
+			$data = $Fichiermodule->find('all', 
+				array(
+					'fields' => 'Fichiermodule.id',
+					'conditions' => array(
+						'Fichiermodule.modele' => $modelName,
+						'Fichiermodule.fk_value' => $idASupprimer
+					)
+				)
+			);
+			
+			foreach ( (array)Hash::extract($data, '{n}.Fichiermodule.id') as $id ) {
+				$success = $success && $this->_changePath( $id, $idAGarder );
+			}
+			
+			return $success;
+		}
+		
+		/**
+		 * Changement du path d'un fichier suite à une modification du foreign_key
+		 *
+		 * @param integer $id
+		 * @param integer $fk_value
+		 */
+        protected function _changePath( $id, $fk_value ) {
+			$ModeleStockage = ClassRegistry::init( 'Fichiermodule' );
+            $item = $ModeleStockage->find( 'first', array( 'conditions' => array( "Fichiermodule.id" =>  $id) ) );
+			
+			if( empty( $item['Fichiermodule']['cmspath'] ) && empty( $item['Fichiermodule']['document'] ) ) {
+                $this->cakeError( 'error500' );
+            }
+
+			$data = array(
+				'id' => Hash::get($item, "Fichiermodule.id"),
+				'name' => Hash::get($item, "Fichiermodule.name"),
+				'fk_value' => $fk_value,
+				'document' => Hash::get($item, "Fichiermodule.document"),
+				'modele' => Hash::get($item, "Fichiermodule.modele"),
+				'cmspath' => null,
+				'mime' => Hash::get($item, "Fichiermodule.mime"),
+			);
+			
+            if( !empty( $item['Fichiermodule']['cmspath'] )  ) {
+				$cmisData = Cmis::read( $item['Fichiermodule']['cmspath'], true );
+                $data['document'] = $cmisData['content'];
+				$this->_cmisNewPath[] = "/{$data['modele']}/{$data['fk_value']}/{$data['name']}";
+				$this->_cmisOldPath[] = $item['Fichiermodule']['cmspath'];
+            }
+			
+			$ModeleStockage->create($data);
+			return $ModeleStockage->save();
+        }
+		
+		/**
+		 * Dans le cas d'un _changePath(), à la fin de la transaction, on supprime soit les nouveaux fichiers, soit les anciens
+		 * 
+		 * @param boolean $success
+		 */
+		public function cmisTransaction( $success ) {
+			$pathList = $success ? $this->_cmisOldPath : $this->_cmisNewPath;
+			foreach( $pathList as $path ) {
+				Cmis::delete($path, true);
+			}
 		}
 	}
 ?>

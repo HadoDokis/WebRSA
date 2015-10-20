@@ -465,7 +465,7 @@ p.error, div.error_message {
     padding: 0.5em;
 }
 
-p.notice {
+p.notice, div.notice {
     background: #e1ebf7;
     margin: 1em 0;
     border: 1px solid #1d2f54;

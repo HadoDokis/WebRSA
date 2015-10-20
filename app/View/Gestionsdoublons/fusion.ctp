@@ -1,27 +1,8 @@
 <?php
 	$this->pageTitle = __d( 'droit', 'Gestionsdoublons:fusion' );
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-?>
 
-<?php if( !empty( $fichiersModuleLies ) ): ?>
-	<div class="errorslist">
-		Impossible de procéder à la fusion des enregistrements liés aux foyers en doublons car des fichiers liés à ces enregistrements existent:
-		<ul>
-			<?php
-				foreach( $fichiersModuleLies as $fichier ) {
-					$controller = Inflector::tableize( $fichier['Fichiermodule']['modele'] );
-					echo "<li>".$this->Xhtml->link(
-						$fichier['Fichiermodule']['modele'],
-						array( 'controller' => $controller, 'action' => 'filelink', $fichier['Fichiermodule']['fk_value'] ),
-						array( 'class' => 'external' )
-					)."</li>";
-				}
-			?>
-		</ul>
-	</div>
-<?php endif;?>
-
-<?php if( isset( $errors ) && !empty( $errors ) ): ?>
+if( isset( $errors ) && !empty( $errors ) ): ?>
 	<div class="errorslist">
 		Impossible de procéder à la fusion des enregistrements:
 		<ul>
@@ -32,10 +13,10 @@
 			?>
 		</ul>
 	</div>
-<?php endif;?>
+<?php endif;
 
-<?php if( empty( $fichiersModuleLies ) ): ?>
-	<?php
+		$fichierLie = array();
+
 		echo $this->element( 'required_javascript' );
 
 		echo $this->Default3->DefaultForm->create();
@@ -85,6 +66,9 @@
 					echo '<th>Garder ?</th>';
 					foreach( array_keys( $records[0] ) as $field ) {
 						echo '<th>'.$field.'</th>';
+						if ( $field === 'haspiecejointe' ) {
+							echo '<th>Action</th>';
+						}
 					}
 					echo '</tr>';
 					echo '</thead>';
@@ -96,6 +80,30 @@
 						echo '<td><label><input type="checkbox" name="data['.$modelName.'][id][]" id="'.$modelName.'Id'.$record['id'].'" value="'.$record['id'].'" /> Garder</label></td>';
 						foreach( $record as $field => $value ) {
 							echo '<td>'.$value.'</td>';
+							if ( $field === 'haspiecejointe' ) {
+								$pieceJointe = (boolean)Hash::get($record, 'haspiecejointe');
+								
+								if ($pieceJointe) {
+									$fichierLie[$modelName] = $modelName;
+								}
+								
+								// Cas particuliers où le nom de l'action pour les fichiers liés n'est pas filelink...
+								switch ($modelName) {
+									case 'Dossierpcg66': $action = 'edit'; break;
+									default: $action = 'filelink';
+								}
+								
+								echo '<td>'.$this->Xhtml->link('Voir pièces jointe', Router::url(
+									array(
+										'controller' => Inflector::pluralize(Inflector::underscore($modelName)),
+										'action' => $action,
+										Hash::get($record, 'id')
+									)
+								), array(
+									'class' => 'external',
+									'enabled' => $pieceJointe
+								)).'</td>';
+							}
 						}
 						echo '</tr>';
 					}
@@ -103,6 +111,13 @@
 					echo '</table>';
 				}
 			}
+		}
+		
+		if ($fichierLie) {
+			echo '<div class="notice">Des fichiers liés existent pour le(s) modele(s) suivant : <ul><li>'
+				.implode('</li><li>', $fichierLie).'</li></ul>'
+				.'<br />Si les enregistrements ne sont pas sélectionné, ces fichiers seront détruit. Pensez à les télécharger si besoin</div>'
+			;
 		}
 
 		echo $this->Default3->DefaultForm->buttons( array( 'Save', 'Cancel' ) );
@@ -172,4 +187,3 @@
 			} );
 			// ]]>
 	</script>
-<?php endif; ?>

@@ -139,7 +139,7 @@
 				$contain[] = Inflector::classify( $foreignkey['From']['table'] );
 			}
 			$contain = array_unique( $contain );
-
+			
 			$modelNames = $contain;
 			$key = array_search( 'Dossier', $modelNames );
 			if( $key !== false ) {
@@ -158,19 +158,6 @@
 					'order' => array( 'Dossier.id' )
 				)
 			);
-
-			// Fichiers liés
-			$resultsFichiersLies = array(
-				'Foyer' => array(
-					array( 'id' => $foyer1_id ),
-					array( 'id' => $foyer2_id ),
-				)
-			);
-			foreach( $modelNames as $modelName ) {
-				$resultsFichiersLies[$modelName] = Hash::extract( $results, "{n}.{$modelName}.{n}" );
-			}
-			$fichiersModuleLies = $this->Gestiondoublon->fichiersModuleLies( $resultsFichiersLies, '/%s/id' );
-			$this->set( compact( 'fichiersModuleLies' ) );
 
 			if( !empty( $this->request->data ) ) {
 				if( isset( $this->request->data['Cancel'] ) ) {
@@ -200,12 +187,12 @@
 					$this->set( compact( 'errors' ) );
 
 					// Tentative d'enregistrement s'il y a lieu
-					if( empty( $errors ) ) {
-						$success = $this->Gestiondoublon->fusionComplexe( $foyer1_id, $foyer2_id, $results, $this->request->data );
-					}
-					else {
-						$success = false;
-					}
+					$success = empty( $errors ) 
+						? $this->Gestiondoublon->fusionComplexe( $foyer1_id, $foyer2_id, $results, $this->request->data )
+						: false
+					;
+					
+					$this->Gestiondoublon->cmisTransaction( $success );
 
 					if( $success ) {
 						$this->Foyer->commit();
