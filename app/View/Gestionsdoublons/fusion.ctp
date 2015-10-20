@@ -93,16 +93,17 @@ if( isset( $errors ) && !empty( $errors ) ): ?>
 									default: $action = 'filelink';
 								}
 								
-								echo '<td>'.$this->Xhtml->link('Voir pièces jointe', Router::url(
+								echo '<td>'.$this->Xhtml->link('Voir pièces jointe',
 									array(
 										'controller' => Inflector::pluralize(Inflector::underscore($modelName)),
 										'action' => $action,
 										Hash::get($record, 'id')
-									), true
-								), array(
-									'class' => 'external',
-									'enabled' => $pieceJointe
-								)).'</td>';
+									),
+									array(
+										'class' => 'external',
+										'enabled' => $pieceJointe
+									)
+								).'</td>';
 							}
 						}
 						echo '</tr>';
