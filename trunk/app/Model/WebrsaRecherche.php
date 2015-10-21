@@ -76,6 +76,30 @@
 				'component' => 'WebrsaRecherchesDossiersNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Dossierspcgs66.search' => array(
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
+				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv' => array(
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
+				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
+			),
+			'Dossierspcgs66.search_gestionnaire' => array(
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
+				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv_gestionnaire' => array(
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
+				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
+			),
 			'Dsps.search' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDsp',

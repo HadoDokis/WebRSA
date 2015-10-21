@@ -927,7 +927,8 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
+			$this->helpers[] = 'Search.SearchForm';
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
 			$Recherches->search();
 			$this->Dossierpcg66->validate = array();
 		}
@@ -936,15 +937,15 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
-			$Recherches->exportcsv();
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
+			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
 		}
 		
 		/**
 		 * Moteur de recherche
 		 */
 		public function search_gestionnaire() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
 			$Recherches->search();
 			$this->Dossierpcg66->validate = array();
 		}
@@ -953,9 +954,8 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_gestionnaire() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
-			$Recherches->exportcsv();
-			$this->render( 'exportcsv' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
+			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
 		}
 
 		/**
