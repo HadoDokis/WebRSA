@@ -384,9 +384,12 @@
 			// Si le tri est configuré pour mon action
 			// FIXME: n'a pas l'air de fonctionner...
 			$key = $this->_configureKey( 'query.order', $params);
-			$order = (array)Configure::read( $key );
+			$order = Configure::read( $key );
 			if( !empty( $order ) ) {
 				$query['order'] = $order;
+			}
+			else if( $order === array() ) {
+				unset( $query['order'] );
 			}
 
 			// INFO: propre à l'export CSV et aux pages en GET

@@ -51,7 +51,7 @@
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),
 				// 2.3 Tri par défaut
-				'order' => array( 'Personne.nom', 'Personne.prenom' )
+				'order' => array( 'Personne.nom' )
 			),
 			// 3. Nombre d'enregistrements par page
 			'limit' => 10,
