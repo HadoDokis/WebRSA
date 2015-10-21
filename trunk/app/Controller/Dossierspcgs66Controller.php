@@ -230,6 +230,7 @@
 		/**
 		 * Affichage de l'état du dossier PCG
 		 *
+		 * @deprecated since version 2.10
 		 * @param type $typepdo_id
 		 * @param type $user_id
 		 * @param type $decisionpdo_id
@@ -298,6 +299,55 @@
 			$this->Dossierpcg66->etatPcg66( $this->request->data );
 			$this->set( compact( 'etatdossierpcg' ) );
 			Configure::write( 'debug', 0 );
+			$this->render( 'ajaxetatpdo', 'ajax' );
+		}
+		
+		/**
+		 * Permet de recalculer l'etat d'un dossier pcg et d'obtenir la nouvelle valeur
+		 * 
+		 * @param type $id du Dossierpcg66
+		 */
+		public function ajax_getetatdossierpcg66( $id ) {
+			$this->Dossierpcg66->updatePositionsPcgsById($id);
+			
+			$sqOrgs = str_replace('Decisiondossierpcg66', 'decision', $this->Dossierpcg66->Decisiondossierpcg66->sq(
+				array(
+					'fields' => 'Orgtransmisdossierpcg66.name',
+					'joins' => array(
+						$this->Dossierpcg66->Decisiondossierpcg66->join('Decdospcg66Orgdospcg66'),
+						$this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->join('Orgtransmisdossierpcg66'),
+					),
+					'conditions' => array(
+						'Decisiondossierpcg66.dossierpcg66_id = Dossierpcg66.id',
+						'Decisiondossierpcg66.validationproposition' => 'O'
+					),
+				)
+			));
+			
+			$query = array(
+				'fields' => array(
+					'Dossierpcg66.etatdossierpcg',
+					'Decisiondossierpcg66.datetransmissionop',
+					"(ARRAY_TO_STRING(ARRAY({$sqOrgs}), ', ')) AS \"Notificationdecisiondossierpcg66__name\""
+				),
+				'conditions' => array(
+					'Dossierpcg66.id' => $id
+				),
+				'joins' => array(
+					$this->Dossierpcg66->join('Decisiondossierpcg66'),
+				),
+				'order' => array(
+					'Decisiondossierpcg66.id' => 'DESC'
+				),
+				'contain' => false
+			);
+			$result = $this->Dossierpcg66->find('first', $query);
+			
+			$etatdossierpcg = Hash::get($result, 'Dossierpcg66.etatdossierpcg');
+			$datetransmission = Hash::get($result, 'Decisiondossierpcg66.datetransmissionop');
+			$orgs = Hash::get($result, 'Notificationdecisiondossierpcg66.name' );
+			
+			$this->set( compact( 'etatdossierpcg', 'datetransmission', 'orgs' ) );
 			$this->render( 'ajaxetatpdo', 'ajax' );
 		}
 
@@ -594,6 +644,7 @@
 				$this->Dossierpcg66->begin();
 
 				$saved = $this->Dossierpcg66->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
+				
 				if( $saved ) {
 					// Sauvegarde des fichiers liés à une PDO
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
@@ -665,7 +716,8 @@
                     }
                 }
 
-//debug($this->request->data);
+				$saved = $saved && $this->Dossierpcg66->updatePositionsPcgsById( $this->Dossierpcg66->id );
+				
 				if( $saved ) {
 					$this->Dossierpcg66->commit();
 					$this->Jetons2->release( $dossier_id );

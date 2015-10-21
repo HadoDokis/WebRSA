@@ -58,8 +58,13 @@
 			}
 			// Cas modification
 			else{
-				$this->id = $id;
-				$result = $this->find();
+				$result = $this->find('first',
+					array(
+						'conditions' => array(
+							'id' => $id
+						)
+					)
+				);
 			}
 			
 			if ( empty($result) ){
