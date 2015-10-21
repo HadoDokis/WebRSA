@@ -1115,8 +1115,17 @@ class Dossierpcg66 extends AppModel {
 				$this->Decisiondossierpcg66->alias . '.etatop' => 'transmis',
 			),
 			'atttransmisop' => array(
-				$this->Decisiondossierpcg66->alias . '.etatop IS NOT NULL',
-				$this->Decisiondossierpcg66->alias . '.etatop' => 'atransmettre',
+				$this->alias.'.etatdossierpcg' => array( 'decisionvalid', 'atttransmisop' ),
+				$this->alias.'.dateimpression IS NOT NULL',
+				$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
+				$this->Decisiondossierpcg66->alias . '.datevalidation <= '.$this->alias.'.dateimpression',
+				'OR' => array(
+					array(
+						$this->Decisiondossierpcg66->alias . '.etatop IS NOT NULL',
+						$this->Decisiondossierpcg66->alias . '.etatop' => 'atransmettre',
+					),
+					$this->Decisiondossierpcg66->alias . '.etatop IS NULL'
+				)
 			),
 			'decisionnonvalid' => array(
 				array(

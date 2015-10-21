@@ -311,7 +311,7 @@ document.observe( "dom:loaded", function() {
 					'/Decisionsdossierspcgs66/validation/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['validation']	),
 					'/Dossierspcgs66/imprimer/#Decisiondossierpcg66.dossierpcg66_id#/#Decisiondossierpcg66.id#' => array( 
 						'disabled' => $perm['imprimer'],
-						'class' => 'print'
+						'class' => 'print ActionDecisionproposition'
 					),
 					'/Decisionsdossierspcgs66/transmitop/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['transmitop']	),
 					'/Decisionsdossierspcgs66/cancel/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['cancel']	),
@@ -340,7 +340,6 @@ document.observe( "dom:loaded", function() {
 </div>
 
 <?php echo $this->Xform->end();?>
-
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		var impression = $$('a.ActionDecisionproposition').first();
@@ -367,17 +366,11 @@ document.observe( "dom:loaded", function() {
 	function fieldUpdater() {
 		new Ajax.Updater(
 			'Etatpdo',
-			'<?php echo Router::url( array( "action" => "ajaxetatpdo" ) ); ?>',
+			'<?php echo Router::url( array( "action" => "ajax_getetatdossierpcg66", Hash::get($this->request->data, 'Dossierpcg66.id' ) ) ); ?>',
 			{
 				asynchronous:true,
 				evalScripts:true,
-				parameters:
-				{
-					'typepdo_id' : $F('Dossierpcg66TypepdoId'),
-					'user_id' : ( $('Dossierpcg66UserId') ? $F('Dossierpcg66UserId') : null ),
-                    'decisionpdo_id' : <?php echo ( isset( $this->request->data['Decisiondossierpcg66']['decisionpdo_id'] ) ? "\$F('Decisiondossierpcg66DecisionpdoId')" : '0' ); ?>,
-					'dossierpcg66_id' : <?php echo ( isset( $this->request->data['Dossierpcg66']['id'] ) ? "\$F('Dossierpcg66Id')" : '0' ); ?>
-				},
+				parameters:{},
 				requestHeaders:['X-Update', 'Etatpdo']
 			}
 		);
