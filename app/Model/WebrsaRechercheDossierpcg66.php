@@ -174,18 +174,23 @@
 				);
 
 				// 2. Jointures
-				$traitementSq = 'SELECT "traitementspcgs66"."id" AS traitementspcgs66__id FROM traitementspcgs66 AS traitementspcgs66 WHERE "traitementspcgs66"."personnepcg66_id" = "Personnepcg66"."id" ORDER BY "traitementspcgs66"."created" DESC LIMIT 1';
-				$conditionTraitement = array(
-					'OR' => array(
-						'Traitementpcg66.id' => null,
-						array(
-							'Traitementpcg66.id IN ('.$traitementSq.')',
+				$joinTraitementpcg66 = $this->Dossierpcg66->Personnepcg66->join('Traitementpcg66', array('type' => $types['Traitementpcg66']));
+				$sqJoinTraitement = str_replace('Traitementpcg66', 'traitement', $this->Dossierpcg66->Personnepcg66->Traitementpcg66->sq(
+					array(
+						'fields' => 'id',
+						'conditions' => array(
+							$joinTraitementpcg66['conditions'],
 							'Traitementpcg66.typetraitement' => 'documentarrive',
 							'Traitementpcg66.datereception IS NOT NULL',
-							'Dossierpcg66.etatdossierpcg' => 'attinstrdocarrive'
-						)
+							'Dossierpcg66.etatdossierpcg' => 'attinstrdocarrive',
+						),
+						'order' => array('Traitementpcg66.created' => 'DESC'),
+						'recursive' => -1,
+						'limit' => 1
 					)
-				);
+				));
+				$joinTraitementpcg66['conditions'] = 'Traitementpcg66.id IN ('.$sqJoinTraitement.')';
+				
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
@@ -193,20 +198,14 @@
 						$this->Dossierpcg66->join('Decisiondossierpcg66', array('type' => $types['Decisiondossierpcg66'])),
 						$this->Dossierpcg66->join('User', array('type' => $types['User'])),
 						$this->Dossierpcg66->join('Poledossierpcg66', array('type' => $types['Poledossierpcg66'])),
-						$this->Dossierpcg66->join('Personnepcg66', array(
-							'type' => $types['Personnepcg66'],
-							'conditions' => 'Personnepcg66.personne_id = Personne.id'
-						)),
+						$this->Dossierpcg66->join('Personnepcg66', array('type' => $types['Personnepcg66'])),
 						$this->Dossierpcg66->Personnepcg66->join('Categorieromev3', array('type' => $types['Categorieromev3'])),
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->join('Familleromev3', array('type' => $types['Familleromev3'])),
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->join('Domaineromev3', array('type' => $types['Domaineromev3'])),
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3->join('Metierromev3', array('type' => $types['Metierromev3'])),
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3->Metierromev3->join('Appellationromev3', array('type' => $types['Appellationromev3'])),
 						$this->Dossierpcg66->Personnepcg66->join('Categoriemetierromev2', array('type' => $types['Categoriemetierromev2'])),
-						$this->Dossierpcg66->Personnepcg66->join('Traitementpcg66', array(
-							'type' => $types['Traitementpcg66'],
-							'conditions' => $conditionTraitement
-						)),
+						$joinTraitementpcg66,
 						$this->Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo', array('type' => $types['Decisionpdo'])),
 					)
 				);

@@ -334,8 +334,23 @@ class Criteredossierpcg66 extends AppModel {
         if (isset($nbpropo) && $nbpropo != '') {
             $conditions[] = array($Dossierpcg66->sqVirtualField('nbpropositions', false) => $nbpropo);
         }
-
-		$sqDernierTraitementpcg66 = $Dossierpcg66->Personnepcg66->sqLatest( 'Traitementpcg66', 'created' );
+		
+		$joinTraitementpcg66 = $Dossierpcg66->Personnepcg66->join('Traitementpcg66');
+		$sqJoinTraitement = str_replace('Traitementpcg66', 'traitement', $Dossierpcg66->Personnepcg66->Traitementpcg66->sq(
+			array(
+				'fields' => 'id',
+				'conditions' => array(
+					$joinTraitementpcg66['conditions'],
+					'Traitementpcg66.typetraitement' => 'documentarrive',
+					'Traitementpcg66.datereception IS NOT NULL',
+					'Dossierpcg66.etatdossierpcg' => 'attinstrdocarrive',
+				),
+				'order' => array('Traitementpcg66.created' => 'DESC'),
+				'recursive' => -1,
+				'limit' => 1
+			)
+		));
+		$joinTraitementpcg66['conditions'] = 'Traitementpcg66.id IN ('.$sqJoinTraitement.')';
 
 		$querydata = array(
             'fields' => array(
@@ -392,25 +407,8 @@ class Criteredossierpcg66 extends AppModel {
                         )
                     )
                 ),
-                $Dossierpcg66->join('Personnepcg66', array(
-                    'type' => 'LEFT OUTER',
-                    'conditions' => array(
-                        'Personnepcg66.personne_id = Personne.id'
-                    )
-                        )
-                ),
-                $Dossierpcg66->Personnepcg66->join(
-					'Traitementpcg66',
-					array(
-						'type' => 'LEFT OUTER',
-						'conditions' => array(
-							$sqDernierTraitementpcg66,
-							'Traitementpcg66.typetraitement' => 'documentarrive',
-							'Traitementpcg66.datereception IS NOT NULL',
-							'Dossierpcg66.etatdossierpcg' => 'attinstrdocarrive',
-						)
-					)
-				),
+                $Dossierpcg66->join('Personnepcg66'),
+                $joinTraitementpcg66,
 				$Dossierpcg66->Foyer->join('Adressefoyer', array('type' => 'LEFT OUTER')),
                 $Dossierpcg66->Foyer->Adressefoyer->join('Adresse', array('type' => 'LEFT OUTER')),
                 $Dossierpcg66->Foyer->join('Dossier', array('type' => 'INNER')),
