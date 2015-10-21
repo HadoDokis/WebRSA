@@ -77,24 +77,28 @@
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.search' => array(
+				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
 				'component' => 'WebrsaRecherchesDossierspcgs66New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv' => array(
+				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
 				'component' => 'WebrsaRecherchesDossierspcgs66New',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.search_gestionnaire' => array(
+				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
 				'component' => 'WebrsaRecherchesDossierspcgs66New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv_gestionnaire' => array(
+				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
 				'component' => 'WebrsaRecherchesDossierspcgs66New',
@@ -135,12 +139,14 @@
 				'keys' => array( 'results.fields' )
 			),
 			'Nonorientationsproscovs58.cohorte' => array(
+				'departement' => 58,
 				'modelName' => 'Orientstruct',
 				'component' => 'WebrsaCohortesNonorientationsproscovs58New',
 				'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientationsproscovs58.exportcsv' => array(
+				'departement' => 58,
 				'modelName' => 'Orientstruct',
 				'component' => 'WebrsaCohortesNonorientationsproscovs58New',
 				'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58',
@@ -189,24 +195,28 @@
 				'keys' => array( 'results.fields' )
 			),
 			'Sanctionseps58.cohorte_radiespe' => array(
+				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
 				'component' => 'WebrsaCohortesSanctionseps58New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Sanctionseps58.exportcsv_radiespe' => array(
+				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
 				'component' => 'WebrsaCohortesSanctionseps58New',
 				'keys' => array( 'results.fields' )
 			),
 			'Sanctionseps58.cohorte_noninscritspe' => array(
+				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
 				'component' => 'WebrsaCohortesSanctionseps58New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Sanctionseps58.exportcsv_noninscritspe' => array(
+				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
 				'component' => 'WebrsaCohortesSanctionseps58New',
