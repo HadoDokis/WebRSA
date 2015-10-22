@@ -119,6 +119,15 @@ ALTER TABLE requestsmanager ADD CONSTRAINT requestsmanager_actif_in_list_chk CHE
 SELECT alter_table_drop_constraint_if_exists( 'public', 'prestations', 'prestations_personne_id_fkey' );
 ALTER TABLE prestations ADD CONSTRAINT prestations_personne_id_fkey FOREIGN KEY (personne_id) REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
+--------------------------------------------------------------------------------
+-- Traitement PCG 66
+--------------------------------------------------------------------------------
+
+SELECT alter_table_drop_column_if_exists( 'public', 'traitementspcgs66', 'affiche_couple' );
+ALTER TABLE traitementspcgs66 ADD COLUMN affiche_couple SMALLINT;
+ALTER TABLE traitementspcgs66 ADD CONSTRAINT traitementspcgs66_affiche_couple_in_list_chk CHECK ( cakephp_validate_in_list( affiche_couple, ARRAY[0,1] ) );
+UPDATE traitementspcgs66 SET affiche_couple = 0 WHERE typetraitement = 'courrier';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -764,6 +764,8 @@
 				'conditions' => $conditions,
 				'contain' => false
 			);
+			
+			$queryData = $this->joinCouple($queryData);
 
 			$data = $this->find( 'first', $queryData );
 
@@ -1112,6 +1114,55 @@
 			}
 			
 			return $results;
+		}
+		
+		/**
+		 * Effectue une jointure sur la personne en couple avec la Personne concernée par le traitement.
+		 * 
+		 * @param array $query
+		 * @return array
+		 */
+		public function joinCouple( $query ) {
+			$replacements = array( 'Personne' => 'Personne2', 'Prestation' => 'prestations' );
+
+			$query['fields'] = array_merge(
+				$query['fields'],
+				array_words_replace(
+					$this->Personnepcg66->Personne->Foyer->Personne->fields(),
+					$replacements
+				)
+			);
+			
+			$sq = $this->Personnepcg66->Personne->Prestation->sq(
+				array(
+					'fields' => array( 'prestations.personne_id' ),
+					'conditions' => array(
+						'Prestation.personne_id = Personne.id',
+						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					),
+					'contain' => false,
+				)
+			);
+
+			$join = array_words_replace(
+				$this->Personnepcg66->Personne->Foyer->join(
+					'Personne',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							"\"Personne\".\"id\" IN ( {$sq} )"
+						)
+					)
+				),
+				$replacements
+			);
+			$join['conditions'] = array(
+				$join['conditions'],
+				'Personne.id <> Personne2.id'
+			);
+			$query['joins'][] = $join;
+			
+			return $query;
 		}
 	}
 ?>
