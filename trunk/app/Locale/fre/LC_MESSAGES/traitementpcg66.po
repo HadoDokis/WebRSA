@@ -512,6 +512,9 @@ msgstr "Motifs concernant la personne"
 msgid "Traitementpcg66.typecourrierpcg66_id"
 msgstr "Type de courrier"
 
+msgid "Traitementpcg66.affiche_couple"
+msgstr "Afficher le couple dans l'impression ?"
+
 msgid "Traitementpcg66.serviceinstructeur_id"
 msgstr "Service à contacter (insertion)"
 
