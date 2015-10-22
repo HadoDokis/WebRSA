@@ -817,7 +817,7 @@
 		 */
 		public function moticlorsa() {
 			return array(
-				'PCG' => 'Cloture suite décision du Président du Conseil général',
+				'PCG' => 'Cloture suite décision '.__d('default'.Configure::read('Cg.departement'), 'du Président du Conseil Général'),
 				'ECH' => 'Cloture suite à échéance (4 mois sans droits) ',
 				'EFF' => 'Cloture suite à l\'annulation de la bascule RMI/API',
 				'MUT' => 'Cloture suite à mutation du dossier dans un autre organisme',

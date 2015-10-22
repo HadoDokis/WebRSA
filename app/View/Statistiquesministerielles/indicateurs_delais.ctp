@@ -8,7 +8,7 @@
 		<caption>Délais entre les différentes étapes de l'orientation au cours de l'année <?php echo $annee;?></caption>
 		<tbody>
 			<tr>
-				<th><strong>a. Délai moyen entre la date d'ouverture de droit, telle qu'enregistrée par les organismes chargés du service de l'allocation, et la décision d'orientation validée par le président du conseil général au cours de l'année (1)</strong></th>
+				<th><strong>a. Délai moyen entre la date d'ouverture de droit, telle qu'enregistrée par les organismes chargés du service de l'allocation, et la décision d'orientation validée par <?php echo __d('default'.Configure::read('Cg.departement'), 'le Président du Conseil Général');?> au cours de l'année (1)</strong></th>
 				<td><strong><?php echo $this->Locale->number( Hash::get( $results, 'Indicateurdelai.delai_moyen_orientation' ) );?></strong></td>
 			</tr>
 			<tr>
