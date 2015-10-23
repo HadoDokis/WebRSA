@@ -46,14 +46,14 @@
 		public $searches = array(
 			'Apres.search' => array(
 				'departement' => array( 66, 93 ),
-				'modelName' => 'Apre', // FIXME: suffixe pour le 66
+				'modelName' => 'Apre',
 				'modelRechercheName' => 'WebrsaRechercheApre',
 				'component' => 'WebrsaRecherchesApresNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Apres.exportcsv' => array(
 				'departement' => array( 66, 93 ),
-				'modelName' => 'Apre', // FIXME: suffixe pour le 66
+				'modelName' => 'Apre',
 				'modelRechercheName' => 'WebrsaRechercheApre',
 				'component' => 'WebrsaRecherchesApresNew',
 				'keys' => array( 'results.fields' )

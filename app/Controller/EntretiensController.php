@@ -235,6 +235,7 @@
 		}
 
 		public function search() {
+			$this->helpers[] = 'Search.SearchForm';
 			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiensNew' );
 			$Recherches->search();
 		}

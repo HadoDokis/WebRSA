@@ -92,7 +92,7 @@
 			'query' => Configure::read( 'ConfigurableQuery.Contratsinsertion.search.query' ),
 			// 3. Résultats de la recherche
 			'results' => array(
-					'fields' => array(
+				'fields' => array(
 					'Dossier.numdemrsa',
 					'Dossier.matricule',
 					'Situationdossierrsa.etatdosrsa',
