@@ -16,25 +16,18 @@
 	 */
 	class WebrsaRecherchesApresNewComponent extends WebrsaAbstractRecherchesNewComponent
 	{
-		/**
-		 * Contructeur de class, assigne le controller et le modele principal
-		 *
-		 * @param \ComponentCollection $collection
-		 * @param array $settings
-		 */
-		// FIXME: voir pour le 66
-		/*public function __construct(\ComponentCollection $collection, $settings = array()) {
+		public $Apre = null;
+
+		public function __construct(\ComponentCollection $collection, $settings = array()) {
 			parent::__construct($collection, $settings);
 
 			$this->Apre = ClassRegistry::init( 'Apre'.Configure::read( 'Apre.suffixe' ) );
-		}*/
+		}
 
 		protected function _optionsEnums( array $params ) {
-			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			$options = parent::_optionsEnums( $params );
-
 			if( $departement === 66 ) {
 				$options = Hash::merge(
 					$options,
@@ -51,16 +44,16 @@
 			$options = parent::_optionsRecords( $params );
 			$departement = (int)Configure::read( 'Cg.departement' );
 
-			$options['Apre']['structurereferente_id'] = $Controller->Apre->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
-			$options['Apre']['referent_id'] = $Controller->Apre->Structurereferente->Referent->listOptions();
+			$options['Apre']['structurereferente_id'] = $this->Apre->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
+			$options['Apre']['referent_id'] = $this->Apre->Structurereferente->Referent->listOptions();
 
 			if( $departement === 66 ) {
 				$options = Hash::merge(
 					$options,
 					array(
 						'Aideapre66' => array(
-							'themeapre66_id' => $Controller->Apre->Aideapre66->Themeapre66->find('list'),
-							'typeaideapre66_id' => $Controller->Apre->Aideapre66->Typeaideapre66->listOptions()
+							'themeapre66_id' => $this->Apre->Aideapre66->Themeapre66->find('list'),
+							'typeaideapre66_id' => $this->Apre->Aideapre66->Typeaideapre66->listOptions()
 						)
 					)
 				);
@@ -77,7 +70,6 @@
 		}
 
 		protected function _optionsRecordsModels( array $params ) {
-			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			$result = parent::_optionsRecordsModels( $params );
