@@ -125,6 +125,11 @@
 			$params = Hash::flatten( $params, '__' );
 			$params = Hash::merge( $Controller->request->params['named'], $params );
 			$params = $this->_urlencodeParams( $params );
+			// INFO: évite certaines URL trop longues, comme dans la recherche par fiches de prescription
+			$params = Hash::filter( $params );
+			if( empty( $params ) ) {
+				$params = array( 'prg' => true );
+			}
 
 			$redirect = array_merge( array( 'action' => $Controller->action ), $params );
 			$Controller->redirect( $redirect );
