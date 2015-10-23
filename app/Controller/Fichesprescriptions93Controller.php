@@ -465,7 +465,7 @@
 		/**
 		 * Moteur de recherche des fiches de prescription.
 		 *
-		 * @deprecated
+		 * @deprecated since 3.0.00
 		 */
 		public function search1() {
 			if( Hash::check( $this->request->data, 'Search' ) ) {
@@ -517,7 +517,7 @@
 		 * Moteur de recherche par fiche de prescription.
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93New' );
 			$Recherches->search();
 		}
 
@@ -525,7 +525,7 @@
 		 * Export CSV des résultats du moteur de recherche par fiche de prescription.
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93New' );
 			$Recherches->exportcsv();
 		}
 
@@ -683,7 +683,7 @@
 		/**
 		 * Export CSV des résultats de la recherche.
 		 *
-		 * @deprecated
+		 * @deprecated since 3.0.00
 		 */
 		public function exportcsv1() {
 			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );

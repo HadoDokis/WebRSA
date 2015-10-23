@@ -1,22 +1,20 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaRecherchesTransfertspdvs93Component.
+	 * Code source de la classe WebrsaRecherchesTransfertspdvs93NewComponent.
 	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesNewComponent', 'Controller/Component' );
 
 	/**
-	 * La classe WebrsaRecherchesTransfertspdvs93Component ...
-	 *
-	 * @deprecated since 3.0.00
+	 * La classe WebrsaRecherchesTransfertspdvs93NewComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaRecherchesTransfertspdvs93Component extends WebrsaAbstractRecherchesComponent
+	class WebrsaRecherchesTransfertspdvs93NewComponent extends WebrsaAbstractRecherchesNewComponent
 	{
 		/**
 		 * Surcharge pour permettre de limiter les résultats de la recherche à
@@ -25,11 +23,12 @@
 		 * connecté lorsque celui-ci est un externe (CG 93).
 		 *
 		 * @param array $query
+		 * @param array $filters
 		 * @param array $params
-		 * @return array
+		 * @return type
 		 */
-		protected function _getQueryConditions( array $query, array $params = array() ) {
-			$query = parent::_getQueryConditions( $query, $params );
+		protected function _queryConditions( array $query, array $filters, array $params ) {
+			$query = parent::_queryConditions( $query, $filters, $params );
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$Controller = $this->_Collection->getController();
@@ -44,17 +43,13 @@
 		}
 
 		/**
-		 * Retourne les options à envoyer dans la vue pour les champs du moteur
-		 * de recherche et les traductions de valeurs de certains champs.
+		 * Retourne les options stockées en session, liées à l'utilisateur connecté.
 		 *
-		 * @param array $params
 		 * @return array
 		 */
-		public function options( array $params = array() ) {
+		protected function _optionsSession( array $params ) {
 			$Controller = $this->_Collection->getController();
-			$options = parent::options( $params );
-
-			//TODO: options des nouveaux modèles liés et aliasés
+			$options = parent::_optionsSession( $params );
 
 			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsAllocataires->typesorients();
 			$options['Orientstruct']['structurereferente_id'] = $Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );

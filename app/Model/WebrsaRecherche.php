@@ -44,6 +44,34 @@
 		 * @var array
 		 */
 		public $searches = array(
+			'Apres.search' => array(
+				'departement' => array( 66, 93 ),
+				'modelName' => 'Apre', // FIXME: suffixe pour le 66
+				'modelRechercheName' => 'WebrsaRechercheApre',
+				'component' => 'WebrsaRecherchesApresNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Apres.exportcsv' => array(
+				'departement' => array( 66, 93 ),
+				'modelName' => 'Apre', // FIXME: suffixe pour le 66
+				'modelRechercheName' => 'WebrsaRechercheApre',
+				'component' => 'WebrsaRecherchesApresNew',
+				'keys' => array( 'results.fields' )
+			),
+			'Apres.search_eligibilite' => array(
+				'departement' => array( 93 ),
+				'modelName' => 'Apre',
+				'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
+				'component' => 'WebrsaRecherchesApresEligibiliteNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Apres.exportcsv_eligibilite' => array(
+				'departement' => array( 93 ),
+				'modelName' => 'Apre',
+				'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
+				'component' => 'WebrsaRecherchesApresEligibiliteNew',
+				'keys' => array( 'results.fields' )
+			),
 			'Contratsinsertion.search' => array(
 				'modelName' => 'Contratinsertion',
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
@@ -124,6 +152,18 @@
 			'Entretiens.exportcsv' => array(
 				'modelName' => 'Entretien',
 				'component' => 'WebrsaRecherchesEntretiensNew',
+				'keys' => array( 'results.fields' )
+			),
+			'Fichesprescriptions93.search' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheFicheprescription93',
+				'component' => 'WebrsaRecherchesFichesprescriptions93New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Fichesprescriptions93.exportcsv' => array(
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheFicheprescription93',
+				'component' => 'WebrsaRecherchesFichesprescriptions93New',
 				'keys' => array( 'results.fields' )
 			),
 			'Indus.search' => array(
@@ -220,6 +260,20 @@
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
 				'component' => 'WebrsaCohortesSanctionseps58New',
+				'keys' => array( 'results.fields' )
+			),
+			'Transfertspdvs93.search' => array(
+				'departement' => 93,
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaRechercheTransfertpdv93',
+				'component' => 'WebrsaRecherchesTransfertspdvs93New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Transfertspdvs93.exportcsv' => array(
+				'departement' => 93,
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaRechercheTransfertpdv93',
+				'component' => 'WebrsaRecherchesTransfertspdvs93New',
 				'keys' => array( 'results.fields' )
 			),
 		);

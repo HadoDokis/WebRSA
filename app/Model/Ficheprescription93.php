@@ -526,12 +526,12 @@
 		 *
 		 * @todo actif
 		 *
-		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false )
+		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false, 'enums' => true )
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
 			$options = array();
-			$params = $params + array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false );
+			$params = $params + array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false, 'enums' => true );
 
 			// Les options pdf nécessitent les options de l'allocataire
 			$params['allocataire'] = ( $params['allocataire'] || $params['pdf'] );
@@ -544,21 +544,23 @@
 				$options = $Allocataire->options();
 			}
 
-			$options = Hash::merge(
-				$options,
-				$this->enums(),
-				array( 'Ficheprescription93' => array( 'exists' => array( '0' => 'Non', '1' => 'Oui' ) ) ),
-				$this->Actionfp93->enums(),
-				$this->Filierefp93->enums(),
-				$this->Filierefp93->Categoriefp93->enums(),
-				$this->Filierefp93->Categoriefp93->Thematiquefp93->enums(),
-				$this->Instantanedonneesfp93->enums()
-			);
+			if( Hash::get( $params, 'enums' ) ) {
+				$options = Hash::merge(
+					$options,
+					$this->enums(),
+					array( 'Ficheprescription93' => array( 'exists' => array( '0' => 'Non', '1' => 'Oui' ) ) ),
+					$this->Actionfp93->enums(),
+					$this->Filierefp93->enums(),
+					$this->Filierefp93->Categoriefp93->enums(),
+					$this->Filierefp93->Categoriefp93->Thematiquefp93->enums(),
+					$this->Instantanedonneesfp93->enums()
+				);
+			}
 
 			if( Hash::get( $params, 'find' ) ) {
 				$options = Hash::merge(
 					$options,
-					array( 'Ficheprescription93' => array( 'typethematiquefp93_id' => $options['Thematiquefp93']['type'] ) ),
+					array( 'Ficheprescription93' => array( 'typethematiquefp93_id' => $this->Filierefp93->Categoriefp93->Thematiquefp93->enum( 'type' ) ) ),
 					array( 'Modtransmfp93' => array( 'Modtransmfp93' => $this->Modtransmfp93->find( 'list' ) ) ),
 					array( 'Documentbeneffp93' => array( 'Documentbeneffp93' => $this->Documentbeneffp93->find( 'list' ) ) )
 				);

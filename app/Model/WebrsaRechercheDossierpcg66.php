@@ -63,7 +63,7 @@
 			$cgDepartement = Configure::read( 'Cg.departement' );
 
 			$types += array(
-				'Calculdroitrsa' => 'RIGHT',
+				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
 				'Prestation' => 'LEFT OUTER',
 				'Adressefoyer' => 'LEFT OUTER',
@@ -190,7 +190,7 @@
 					)
 				));
 				$joinTraitementpcg66['conditions'] = 'Traitementpcg66.id IN ('.$sqJoinTraitement.')';
-				
+
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(

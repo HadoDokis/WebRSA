@@ -19,6 +19,13 @@
 
 		public $displayField = 'numeroapre';
 
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Option' );
+
 		public $aidesApre = array( 'Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' );
 
 		public $modelsFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
@@ -1100,6 +1107,17 @@
 			}
 
 			return $sql;
+		}
+
+		public function enums() {
+			$options = parent::enums();
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			if( $departement === 93 ) {
+				$options[$this->alias]['natureaide'] = $this->Option->natureAidesApres();
+			}
+
+			return $options;
 		}
 	}
 ?>
