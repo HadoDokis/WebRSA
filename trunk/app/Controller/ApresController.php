@@ -861,7 +861,8 @@
 		 * Moteur de recherche par APRE / Toutes les APREs
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
+			$this->helpers[] = 'Search.SearchForm';
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresNew' );
 			$Recherches->search();
 
 			$this->Apre->validate = array();
@@ -909,7 +910,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresNew' );
 			$Recherches->exportcsv();
 		}
 
@@ -917,7 +918,8 @@
 		 * Moteur de recherche par "Etat des demandes d'APRE"
 		 */
 		public function search_eligibilite() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibilite' );
+			$this->helpers[] = 'Search.SearchForm';
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibiliteNew' );
 			$Recherches->search(
 				array(
 					'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
@@ -934,14 +936,12 @@
 		 * Export du tableau de résultats de la recherche par "Etat des demandes d'APRE"
 		 */
 		public function exportcsv_eligibilite() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibilite' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibiliteNew' );
 			$Recherches->exportcsv(
 				array(
 					'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
 				)
 			);
-
-			$this->view = 'exportcsv';
 		}
 	}
 ?>

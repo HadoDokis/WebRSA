@@ -5,6 +5,8 @@
 	$searchFormId = isset( $searchFormId ) ? $searchFormId : Inflector::camelize( "{$this->request->params['controller']}_{$this->request->params['action']}_form" );
 	// $custom
 	$custom = isset( $custom ) ? $custom : '';
+	// $beforeResults
+	$beforeResults = isset( $beforeResults ) ? $beforeResults : ''; // TODO: faire de même dans les cohortes
 	// $url
 	// $exportcsv
 	$exportcsv = isset( $exportcsv ) ? $exportcsv : array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv' );
@@ -21,6 +23,8 @@
 	echo $this->Default3->titleForLayout();
 
 	$actions['/'.Inflector::camelize( $this->request->params['controller'] ).'/'.$this->request->params['action'].'/#toggleform'] =  array(
+		'title' => 'Visibilité formulaire', // TODO: nettoyer les fichiers de traduction
+		'text' => 'Formulaire', // TODO: nettoyer les fichiers de traduction
 		'class' => 'search',
 		'onclick' => "$( '{$searchFormId}' ).toggle(); return false;"
 	);
@@ -46,6 +50,8 @@
 
 	if( isset( $results ) ) {
 		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
+		echo $beforeResults;
 
 		echo $this->Default3->configuredindex(
 			$results,

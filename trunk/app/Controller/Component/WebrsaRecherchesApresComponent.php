@@ -12,6 +12,8 @@
 	/**
 	 * La classe WebrsaRecherchesApresComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	class WebrsaRecherchesApresComponent extends WebrsaAbstractRecherchesComponent

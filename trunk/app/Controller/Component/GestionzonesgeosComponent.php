@@ -212,8 +212,9 @@
 
 			if( !empty( $champStructurereferente ) && Configure::read( 'Cg.departement' ) == 93 ) {
 				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+				list( $modelName, $fieldName ) = model_field( $champStructurereferente );
+
 				if( !empty( $structurereferente_id ) ) {
-					list( $modelName, $fieldName ) = model_field( $champStructurereferente );
 					$Model = ClassRegistry::init( $modelName );
 					$Dbo = $Model->getDataSource();
 					$conditions = (array)Hash::get( $this->qdConditions( array() ), 'conditions' );
@@ -232,6 +233,9 @@
 
 					$query['fields']["{$modelName}.horszone"] = "( {$conditions} ) AS \"{$modelName}__horszone\"";
 					$orConditions = array( $champStructurereferente => $structurereferente_id );
+				}
+				else {
+					$query['fields']["{$modelName}.horszone"] = "( FALSE ) AS \"{$modelName}__horszone\"";
 				}
 			}
 

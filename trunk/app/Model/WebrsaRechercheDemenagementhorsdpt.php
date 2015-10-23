@@ -62,7 +62,7 @@
 			$cgDepartement = Configure::read( 'Cg.departement' );
 
 			$types += array(
-				'Calculdroitrsa' => 'RIGHT',
+				'Calculdroitrsa' => 'LEFT OUTER',
 				'Foyer' => 'INNER',
 				'Prestation' => 'LEFT OUTER',
 				'Adressefoyer' => 'LEFT OUTER',

@@ -17,6 +17,33 @@
 	class WebrsaRecherchesContratsinsertionNewComponent extends WebrsaAbstractRecherchesNewComponent
 	{
 		/**
+		 * Pour le CG 93, certaines jointures sont présentes uniquement lorsque
+		 * certains filtres sont activés.
+		 *
+		 * @param array $params
+		 * @param array $search
+		 * @return array
+		 */
+		public function checkConfiguredFields( array $params = array(), array $search = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement === 93 ) {
+				$search = array(
+					'Expprocer93' => array(
+						'cer93_id' => 1
+					),
+					'Cer93Sujetcer93' => array(
+						'sujetcer93_id' => 1
+					)
+				);
+			}
+			else {
+				$search = array();
+			}
+
+			return parent::checkConfiguredFields( $params, $search );
+		}
+
+		/**
 		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
 		 * tables de la base de données.
 		 *

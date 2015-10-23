@@ -488,6 +488,8 @@
 		 * Surcharge de la méthode checkParametrage() permettant d'ajouter certains
 		 * champs spéciaux aux champs disponibles.
 		 *
+		 * @deprecated since 3.0.00
+		 *
 		 * @param array $params Paramètres supplémentaires (clé 'query' possible)
 		 * @return array
 		 */

@@ -1,61 +1,54 @@
 <?php
 	/**
-	 * Filtres par défaut de la recherche par fiche de prescription.
+	 * Menu "Recherches" > "Par fiches de prescription (nouveau)"
 	 */
 	Configure::write(
-		'Filtresdefaut.Fichesprescriptions93_search',
+		'ConfigurableQuery.Fichesprescriptions93.search',
 		array(
-			'Calculdroitrsa' => array(
-				'toppersdrodevorsa' => '1'
-			),
-			'Dossier' => array(
-				'dernier' => '1',
-			),
-			'Ficheprescription93' => array(
-				'exists' => '1'
-			),
-			'Pagination' => array(
-				'nombre_total' => '0'
-			),
-			'Situationdossierrsa' => array(
-				'etatdosrsa_choice' => '1',
-				'etatdosrsa' => array( '2', '3', '4' )
-			)
-		)
-	);
-
-	/**
-	 * Filtres par défaut de la recherche par fiche de prescription.
-	 * @deprecated
-	 */
-	Configure::write(
-		'Filtresdefaut.Fichesprescriptions93_search1',
-		array(
-			'Search' => array(
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => '1'
+			// 1. Filtres de recherche
+			'filters' => array(
+				// 1.1 Valeurs par défaut des filtres de recherche
+				'defaults' => array(
+					'Calculdroitrsa' => array(
+						'toppersdrodevorsa' => '1'
+					),
+					'Dossier' => array(
+						'dernier' => '1',
+					),
+					'Ficheprescription93' => array(
+						'exists' => '1'
+					),
+					'Pagination' => array(
+						'nombre_total' => '0'
+					),
+					'Situationdossierrsa' => array(
+						'etatdosrsa_choice' => '1',
+						'etatdosrsa' => array( '2', '3', '4' )
+					)
 				),
-				'Dossier' => array(
-					'dernier' => '1',
-				),
-				'Ficheprescription93' => array(
-					'exists' => '1'
-				),
-				'Pagination' => array(
-					'nombre_total' => '0'
-				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa_choice' => '1',
-					'etatdosrsa' => array( '2', '3', '4' )
-				)
-			)
-		)
-	);
-
-	Configure::write(
-		'ConfigurableQueryFichesprescriptions93',
-		array(
-			'search' => array(
+				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
+				'accepted' => array(),
+				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
+				'skip' => array()
+			),
+			// 2. Recherche
+			'query' => array(
+				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
+				'restrict' => array(),
+				// 2.2 Conditions supplémentaires optionnelles
+				'conditions' => array(),
+				// 2.3 Tri par défaut
+				'order' => array()
+			),
+			// 3. Nombre d'enregistrements par page
+			'limit' => 10,
+			// 4. Lancer la recherche au premier accès à la page ?
+			'auto' => false,
+			// 5. Résultats de la recherche
+			'results' => array(
+				// 5.1 Ligne optionnelle supplémentaire d'en-tête du tableau de résultats
+				'header' => array(),
+				// 5.2 Colonnes du tableau de résultats
 				'fields' => array (
 					'Dossier.matricule',
 					'Personne.nom_complet',
@@ -80,6 +73,7 @@
 						'class' => 'view external'
 					),
 				),
+				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(
 					'Personne.dtnai',
 					'Dossier.numdemrsa',
@@ -89,55 +83,105 @@
 					'Prestation.rolepers',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
-				),
-				'order' => array()
+				)
 			),
-			'exportcsv' => array(
-				'Dossier.numdemrsa',
-				'Dossier.dtdemrsa',
-				'Dossier.matricule',
-				'Personne.nom_complet',
-				'Prestation.rolepers',
-				'Ficheprescription93.statut',
-				'Referent.nom_complet',
-				'Adresse.numvoie' => array( 'domain' => 'adresse' ),
-				'Adresse.libtypevoie' => array( 'domain' => 'adresse' ),
-				'Adresse.nomvoie' => array( 'domain' => 'adresse' ),
-				'Adresse.complideadr' => array( 'domain' => 'adresse' ),
-				'Adresse.compladr' => array( 'domain' => 'adresse' ),
-				'Adresse.lieudist' => array( 'domain' => 'adresse' ),
-				'Adresse.numcom' => array( 'domain' => 'adresse' ),
-				'Adresse.numcom' => array( 'domain' => 'adresse' ),
-				'Adresse.codepos' => array( 'domain' => 'adresse' ),
-				'Adresse.nomcom' => array( 'domain' => 'adresse' ),
-				'Ficheprescription93.rdvprestataire_date',
-				'Actionfp93.numconvention' => array( 'domain' => 'cataloguespdisfps93' ),
-				'Thematiquefp93.type' => array( 'domain' => 'cataloguespdisfps93' ),
-				'Thematiquefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
-				'Categoriefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
-				'Filierefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
-				'Prestatairefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
-				'Actionfp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
-				'Ficheprescription93.dd_action',
-				'Ficheprescription93.df_action',
-				'Ficheprescription93.date_signature',
-				'Ficheprescription93.date_transmission',
-				'Ficheprescription93.date_retour',
-				'Ficheprescription93.personne_recue',
-				'Ficheprescription93.motifnonreceptionfp93_id',
-				'Ficheprescription93.personne_nonrecue_autre',
-				'Ficheprescription93.personne_retenue',
-				'Ficheprescription93.motifnonretenuefp93_id',
-				'Ficheprescription93.personne_nonretenue_autre',
-				'Ficheprescription93.personne_souhaite_integrer',
-				'Ficheprescription93.motifnonsouhaitfp93_id',
-				'Ficheprescription93.personne_nonsouhaite_autre',
-				'Ficheprescription93.personne_a_integre',
-				'Ficheprescription93.personne_date_integration',
-				'Ficheprescription93.motifnonintegrationfp93_id',
-				'Ficheprescription93.personne_nonintegre_autre',
-				'Ficheprescription93.date_bilan_mi_parcours',
-				'Ficheprescription93.date_bilan_final',
+			// 6. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => array()
+		)
+	);
+
+	/**
+	 * Export CSV,  menu "Recherches" > "Par fiches de prescription (nouveau)"
+	 */
+	Configure::write(
+		'ConfigurableQuery.Fichesprescriptions93.exportcsv',
+		array(
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Fichesprescriptions93.search.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Fichesprescriptions93.search.query' ),
+			// 3. Résultats de la recherche
+			'results' => array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Personne.nom_complet',
+					'Prestation.rolepers',
+					'Ficheprescription93.statut',
+					'Referent.nom_complet',
+					'Adresse.numvoie' => array( 'domain' => 'adresse' ),
+					'Adresse.libtypevoie' => array( 'domain' => 'adresse' ),
+					'Adresse.nomvoie' => array( 'domain' => 'adresse' ),
+					'Adresse.complideadr' => array( 'domain' => 'adresse' ),
+					'Adresse.compladr' => array( 'domain' => 'adresse' ),
+					'Adresse.lieudist' => array( 'domain' => 'adresse' ),
+					'Adresse.numcom' => array( 'domain' => 'adresse' ),
+					'Adresse.numcom' => array( 'domain' => 'adresse' ),
+					'Adresse.codepos' => array( 'domain' => 'adresse' ),
+					'Adresse.nomcom' => array( 'domain' => 'adresse' ),
+					'Ficheprescription93.rdvprestataire_date',
+					'Actionfp93.numconvention' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Thematiquefp93.type' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Thematiquefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Categoriefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Filierefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Prestatairefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Actionfp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Ficheprescription93.dd_action',
+					'Ficheprescription93.df_action',
+					'Ficheprescription93.date_signature',
+					'Ficheprescription93.date_transmission',
+					'Ficheprescription93.date_retour',
+					'Ficheprescription93.personne_recue',
+					'Ficheprescription93.motifnonreceptionfp93_id',
+					'Ficheprescription93.personne_nonrecue_autre',
+					'Ficheprescription93.personne_retenue',
+					'Ficheprescription93.motifnonretenuefp93_id',
+					'Ficheprescription93.personne_nonretenue_autre',
+					'Ficheprescription93.personne_souhaite_integrer',
+					'Ficheprescription93.motifnonsouhaitfp93_id',
+					'Ficheprescription93.personne_nonsouhaite_autre',
+					'Ficheprescription93.personne_a_integre',
+					'Ficheprescription93.personne_date_integration',
+					'Ficheprescription93.motifnonintegrationfp93_id',
+					'Ficheprescription93.personne_nonintegre_autre',
+					'Ficheprescription93.date_bilan_mi_parcours',
+					'Ficheprescription93.date_bilan_final',
+				)
+			),
+			// 4. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Fichesprescriptions93.search.ini_set' ),
+		)
+	);
+
+	//--------------------------------------------------------------------------
+
+	/**
+	 * Filtres par défaut de la recherche par fiche de prescription.
+	 *
+	 * @deprecated since 3.0.00
+	 */
+	Configure::write(
+		'Filtresdefaut.Fichesprescriptions93_search1',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Ficheprescription93' => array(
+					'exists' => '1'
+				),
+				'Pagination' => array(
+					'nombre_total' => '0'
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
 			)
 		)
 	);

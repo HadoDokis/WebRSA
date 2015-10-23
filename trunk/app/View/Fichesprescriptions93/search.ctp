@@ -1,26 +1,5 @@
+<?php $this->start( 'custom_search_filters' );?>
 <?php
-	echo $this->Default3->titleForLayout();
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
-	}
-
-	echo $this->Default3->actions(
-		array(
-			'/Fichesprescriptions93/search/#toggleform' => array(
-				'onclick' => '$(\'Fichesprescriptions93SearchForm\').toggle(); return false;',
-				'class' => 'search'
-			),
-		)
-	);
-
-	echo $this->Xform->create( null, array( 'id' => 'Fichesprescriptions93SearchForm', 'class' => ( !empty( $this->request->params['named'] ) ? 'folded' : 'unfolded' ) ) );
-
-	echo $this->Allocataires->blocDossier( array( 'options' => $options ) );
-	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
-	echo $this->Allocataires->blocAllocataire( array( 'options' => $options ) );
-
 	// Début spécificités fiche de prescription
 	echo $this->Xform->input( 'Search.Ficheprescription93.exists', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
 	echo '<fieldset id="SpecificitesFichesprescriptions93"><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93' ).'</legend>';
@@ -65,26 +44,17 @@
 	echo $this->Xform->input( 'Search.Ficheprescription93.has_date_bilan_final', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
 
 	echo '</fieldset>';
-	// Fin spécificités fiche de prescription
+?>
+<?php $this->end();?>
 
-	echo $this->Allocataires->blocReferentparcours( array( 'options' => $options ) );
-	echo $this->Allocataires->blocPagination( array( 'options' => $options ) );
-	echo $this->Allocataires->blocScript( array( 'options' => $options ) );
-
-	echo $this->Xform->end( 'Search' );
-
-	if( isset( $results ) ) {
-		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
-
-		echo $this->Default3->configuredindex(
-			$results,
-			array(
-				'options' => $options
-			)
-		);
-
-		echo $this->element( 'search_footer', array( 'modelName' => $modelName ) );
-	}
+<?php
+	echo $this->element(
+		'ConfigurableQuery/search',
+		array(
+			'custom' => $this->fetch( 'custom_search_filters' ),
+			'exportcsv' => array( 'action' => 'exportcsv' )
+		)
+	);
 
 	echo $this->Observer->disableFieldsetOnValue(
 		'Search.Ficheprescription93.exists',
@@ -135,6 +105,6 @@
 			'onload' => !empty( $this->request->data )
 		)
 	);
-debug( $results );
+
 	echo $this->Observer->dependantSelect( array( 'Search.Ficheprescription93.structurereferente_id' => 'Search.Ficheprescription93.referent_id' ) );
 ?>

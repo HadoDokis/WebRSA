@@ -101,7 +101,9 @@
 					ConfigurableQueryFields::getModelsFields(
 						array(
 							$Dsp,
-							$Dsp->DspRev
+							$Dsp->DspRev,
+							$Dsp->Personne->Memo,
+							$Dsp->Personne->Foyer->Modecontact
 						)
 					)
 				);
@@ -178,7 +180,16 @@
 									'Modecontact.id IN ( '.$Dsp->Personne->Foyer->Modecontact->sqDerniere( 'Foyer.id', array( 'Modecontact.autorutitel' => 'A' ) ).' )',
 								)
 							)
-						)
+						),
+						$Dsp->Personne->join(
+							'Memo',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Memo.id IN ( '.$Dsp->Personne->Memo->sqDernier().' )'
+								)
+							)
+						),
 					)
 				);
 

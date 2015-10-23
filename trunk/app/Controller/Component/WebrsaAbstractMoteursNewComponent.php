@@ -171,7 +171,7 @@
 		 */
 		protected function _cacheKey( array $params, array $extra = array() ) {
 			$Controller = $this->_Collection->getController();
-			return $Controller->{$params['modelName']}->useDbConfig.'_Controllers_'.Inflector::camelize( $Controller->request->params['controller'] ).'_'.$Controller->request->params['action'].'_'.$params['modelRechercheName'].( empty( $extra ) ? '' : '_'.implode( '_', $extra ) );
+			return $Controller->{$params['modelName']}->useDbConfig.'_Controllers_'.Inflector::camelize( $Controller->request->params['controller'] ).'_'.$Controller->request->params['action'].'_'.$params['modelRechercheName'].'_'.$params['modelName'].( empty( $extra ) ? '' : '_'.implode( '_', $extra ) );
 		}
 
 		/**
@@ -515,7 +515,15 @@
 			return $Dbo->checkPostgresSqlSyntax( $sql );
 		}
 
-		public function checkConfiguredFields( array $params = array() ) {
+		/**
+		 * Vérification des champs demandés dans la configuration par-rapport
+		 * aux champs disponibles.
+		 *
+		 * @param array $params
+		 * @param array $search Filtres de recherche nécessaires pour certaines jointures
+		 * @return array
+		 */
+		public function checkConfiguredFields( array $params = array(), array $search = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $params );
 
@@ -523,10 +531,8 @@
 			$this->_initializeSearch( $params );
 
 			// Récupération du query
-			$query = $this->_query( array(), $params );
+			$searchQuery = $this->_query( $search, $params );
 
-			$searchQuery = $Controller->{$params['modelRechercheName']}->searchQuery();
-			$searchQuery = $this->Allocataires->completeSearchQuery( $searchQuery, $params );
 			$available = array_keys( $searchQuery['fields'] );
 
 			$requested = array();
@@ -545,7 +551,7 @@
 			sort( $requested );
 
 			$missing = array_diff( $requested, $available );
-			$msg = 'Les champs suivants sont demandés mais ne sont pas dispponibles: %s';
+			$msg = 'Les champs suivants sont demandés mais ne sont pas disponibles: %s';
 			$check = array(
 				'success' => empty( $missing ),
 				'message' => empty( $missing ) ? null : sprintf( $msg, implode( ', ', $missing ) ),
