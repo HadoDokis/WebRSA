@@ -306,6 +306,9 @@ msgstr "Nombre de contrats aidés CG"
 msgid "Partenairecui66.subventioncg"
 msgstr "Subventionné par CG"
 
+msgid "Partenairecui66.commentaire"
+msgstr "Commentaire"
+
 ###############################################################################
 # Dossier Reçu/Éligible/complet
 ###############################################################################
@@ -491,6 +494,9 @@ msgstr "Code métier"
 
 msgid "Entreeromev3.appellationromev3_id"
 msgstr "Appellation métier"
+
+msgid "Cui66.fonction"
+msgstr "Fonction occupée"
 
 ################################################################################
 # Les actions d'accompagnement et de formation prévues

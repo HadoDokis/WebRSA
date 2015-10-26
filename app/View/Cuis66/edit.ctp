@@ -184,6 +184,7 @@
 				'Partenairecui66.nbcontratsaideshorscg',
 				'Partenairecui66.nbcontratsaidescg',
 				'Partenairecui66.subventioncg' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Partenairecui66.subventioncg' ) ),
+				'Partenairecui66.commentaire' => array( 'type' => 'textarea' ),
 			),
 			array( 'options' => $options )
 		)
@@ -328,6 +329,7 @@
 		. $this->Romev3->fieldset( 'Entreeromev3', array( 'options' => $options ) )
 		. $this->Default3->subform(
 			array(
+				'Cui66.fonction',
 				'Cui.salairebrut' => array( 'type' => 'text', 'class' => 'euros' ),
 				'Cui.dureehebdo' => array( 'class' => 'heures_minutes' ),
 				'Cui.modulation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.modulation' ) ),
@@ -638,6 +640,15 @@
 		'PartenairecuiAdresseadministrative',
 		false,
 		false
+	);
+	
+	echo $this->Observer->disableFieldsOnRadioValue(
+		'CuiAddEditForm',
+		'Partenairecui66.subventioncg',
+		array('Partenairecui66Commentaire'),
+		array( '', null, '0' ),
+		false,
+		true
 	);
 	
 	echo $this->Observer->disableFieldsOnValue(
