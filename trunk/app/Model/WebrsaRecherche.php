@@ -155,12 +155,14 @@
 				'keys' => array( 'results.fields' )
 			),
 			'Fichesprescriptions93.search' => array(
+				'departement' => 93,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheFicheprescription93',
 				'component' => 'WebrsaRecherchesFichesprescriptions93New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Fichesprescriptions93.exportcsv' => array(
+				'departement' => 93,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheFicheprescription93',
 				'component' => 'WebrsaRecherchesFichesprescriptions93New',
