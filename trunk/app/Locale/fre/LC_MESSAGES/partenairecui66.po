@@ -100,3 +100,6 @@ msgstr "Subventionné par CG"
 
 msgid "Partenairecui66.conseillerdep"
 msgstr "Conseiller Départemental"
+
+msgid "Partenairecui66.commentaire"
+msgstr "Commentaire"

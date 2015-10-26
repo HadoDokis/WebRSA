@@ -62,19 +62,23 @@ CREATE TABLE personnescuis66 (
 COMMENT ON TABLE personnescuis66 IS 'Instantané des informations additionnelles affichés sur allocataire : Personnecui66';
 
 SELECT alter_table_drop_column_if_exists('public', 'cuis', 'personnecui_id');
+SELECT alter_table_drop_column_if_exists('public', 'cuis66', 'fonction');
 SELECT alter_table_drop_column_if_exists('public', 'cuis66', 'personnecui66_id');
 SELECT alter_table_drop_column_if_exists('public', 'cuis66', 'perennisation');
 SELECT alter_table_drop_column_if_exists('public', 'personnescuis', 'numallocataire');
 SELECT alter_table_drop_column_if_exists('public', 'personnescuis', 'adressecui_id');
+SELECT alter_table_drop_column_if_exists('public', 'partenairescuis66', 'commentaire');
 SELECT alter_table_drop_column_if_exists('public', 'partenairescuis66', 'responsable');
 SELECT alter_table_drop_column_if_exists('public', 'partenairescuis66', 'telresponsable');
 SELECT alter_table_drop_column_if_exists('public', 'partenairescuis66', 'subventioncg');
 SELECT alter_table_drop_column_if_exists('public', 'partenairescuis66', 'conseillerdep');
 SELECT alter_table_drop_column_if_exists('public', 'partenairescuis', 'statut');
 ALTER TABLE cuis ADD COLUMN personnecui_id INTEGER REFERENCES personnescuis(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE cuis66 ADD COLUMN fonction VARCHAR(255);
 ALTER TABLE cuis66 ADD COLUMN personnecui66_id INTEGER REFERENCES personnescuis66(id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE cuis66 ADD COLUMN perennisation SMALLINT;
 ALTER TABLE personnescuis ADD COLUMN numallocataire VARCHAR(255);
+ALTER TABLE partenairescuis66 ADD COLUMN commentaire TEXT;
 ALTER TABLE partenairescuis66 ADD COLUMN responsable VARCHAR(255);
 ALTER TABLE partenairescuis66 ADD COLUMN telresponsable VARCHAR(255);
 ALTER TABLE partenairescuis66 ADD COLUMN subventioncg SMALLINT;

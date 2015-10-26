@@ -278,3 +278,6 @@ msgstr "Renouvellement"
 
 msgid "Cui66.perennisation"
 msgstr "Perennisation"
+
+msgid "Cui66.fonction"
+msgstr "Fonction occupée"
