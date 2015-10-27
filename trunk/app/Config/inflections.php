@@ -480,6 +480,7 @@ $irregularPlural = array(
 	'correspondancepersonne' => 'correspondancespersonnes', // Correspondance entre les personne_id
 	'requestmanager' => 'requestsmanager',
 	'requestgroup' => 'requestgroups',
+	'adresse_canton' => 'adresses_cantons',
 );
 
 /**

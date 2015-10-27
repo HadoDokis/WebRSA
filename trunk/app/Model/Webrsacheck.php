@@ -345,6 +345,9 @@
 				'Requestmanager.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'Canton.useAdresseCanton' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('CG.cantons') )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
