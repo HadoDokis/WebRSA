@@ -47,6 +47,7 @@
             </tbody>
         </table>
     </div>
+<?php if( !Configure::read( 'Jetons2.disabled' ) && Configure::read( 'Etatjetons.enabled' ) ) {?>
 	<script>
 		function jetonDelete( user_id ) {
 			if ( $('jetons_count').innerHTML !== '0' 
@@ -85,4 +86,5 @@
 			}
 		});
 	</script>
+<?php }?>
 <?php endif;?>
