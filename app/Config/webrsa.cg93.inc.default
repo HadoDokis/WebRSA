@@ -1562,4 +1562,9 @@
 	 * Permet de désactiver l'Editeur de requêtes
 	 */
 	Configure::write( 'Requestmanager.enabled', false );
+	
+	/**
+	 * Utilisation de la table AdresseCanton pour utiliser les cantons calculé au préalable par Console (CRON)
+	 */
+	Configure::write( 'Canton.useAdresseCanton', (boolean)Configure::read( 'CG.cantons' ) );
 ?>

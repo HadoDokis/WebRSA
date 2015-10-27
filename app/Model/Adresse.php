@@ -86,6 +86,30 @@
 				'counterQuery' => ''
 			)
 		);
+		
+		/**
+		 * Associations "Has and belongs to many".
+		 *
+		 * @var array
+		 */
+		public $hasAndBelongsToMany = array(
+            'Canton' => array(
+				'className' => 'Canton',
+				'joinTable' => 'adresses_cantons',
+				'foreignKey' => 'adresse_id',
+				'associationForeignKey' => 'canton_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'AdresseCanton'
+			),
+		);
 
 		/**
 		 * Valeurs acceptées pour le champ libtypevoie.

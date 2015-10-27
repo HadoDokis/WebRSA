@@ -70,6 +70,20 @@ SELECT alter_table_drop_constraint_if_exists( 'public', 'foyers', 'foyers_typeoc
 ALTER TABLE foyers ADD CONSTRAINT foyers_typeocclog_in_list_chk CHECK ( cakephp_validate_in_list( typeocclog, ARRAY[ 'ACC', 'BAL', 'HCG', 'HCO', 'HGP', 'HOP', 'HOT', 'LOC', 'OLI', 'PRO', 'SRG', 'SRO' ] ) );
 ALTER TABLE foyers ALTER COLUMN typeocclog SET DEFAULT NULL;
 
+
+--------------------------------------------------------------------------------
+-- Canton
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS adresses_cantons;
+CREATE TABLE adresses_cantons (
+	id SERIAL NOT NULL PRIMARY KEY,
+	adresse_id INTEGER NOT NULL REFERENCES adresses(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	canton_id INTEGER NOT NULL REFERENCES cantons(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+ALTER TABLE adresses_cantons ADD CONSTRAINT adresses_cantons_unique_adresse_id_canton_id UNIQUE ( adresse_id, canton_id );
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
