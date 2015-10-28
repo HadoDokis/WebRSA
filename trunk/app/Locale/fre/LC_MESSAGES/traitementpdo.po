@@ -217,7 +217,7 @@ msgid "Traitementpdo.provisionsnonded"
 msgstr "Provisions non déductibles"
 
 msgid "Traitementpdo.moinsvaluescession"
-msgstr "Moins-values de cession"
+msgstr "Plus values de cession"
 
 msgid "Traitementpdo.autrecorrection"
 msgstr "Autre correction"
