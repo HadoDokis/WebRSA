@@ -1195,7 +1195,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesCuis' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesCuisNew' );
 			$Recherches->search();
 			$this->Cui->validate = array();
 			$this->Cui->Cui66->validate = array();
@@ -1207,7 +1207,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesCuis' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesCuisNew' );
 			$Recherches->exportcsv();
 		}
 	}

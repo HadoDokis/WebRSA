@@ -82,6 +82,16 @@
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Cuis.search' => array(
+				'modelName' => 'Cui',
+				'component' => 'WebrsaRecherchesCuisNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Cuis.exportcsv' => array(
+				'modelName' => 'Cui',
+				'component' => 'WebrsaRecherchesCuisNew',
+				'keys' => array( 'results.fields' )
+			),
 			'Demenagementshorsdpts.search' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
