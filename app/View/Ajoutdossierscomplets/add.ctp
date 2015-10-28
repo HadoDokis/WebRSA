@@ -37,7 +37,7 @@
 		echo '<fieldset><legend>Adresse de la personne</legend>';
 			echo $this->Default2->subform(
 				array(
-					'Adresse.presence' => array( 'label' => 'Adresse présente ?', 'type' => 'checkbox' )
+					'Adresse.presence' => array( 'label' => 'Adresse présente ?', 'type' => 'checkbox', 'checked' => true )
 				)
 			);
 			echo $this->Default2->subform(
