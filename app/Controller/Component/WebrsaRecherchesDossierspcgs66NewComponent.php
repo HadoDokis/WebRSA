@@ -129,26 +129,5 @@
 
 			return $result;
 		}
-		
-		/*public function options( array $params = array() ) {
-			$options = parent::options( $params );
-
-
-			// FIXME!
-			//$options['Dossier']['locked'] = array( 1 => '<img src="/img/icons/lock.png" alt="" title="Dossier verrouillé">' );
-			
-//			$query = array(
-//				'fields' => 'Dossierpcg66.etatdossierpcg',
-//				'group' => 'Dossierpcg66.etatdossierpcg'
-//			);
-//			foreach($Controller->Dossierpcg66->find( 'all', $query ) as $etatdossier) {
-//				$etat = $etatdossier['Dossierpcg66']['etatdossierpcg'];
-//				if ($etat !== null) {
-//					$options['Dossierpcg66']['etatdossierpcg'][$etat] = __d('dossierpcg66', 'ENUM::ETATDOSSIERPCG::'.$etat);
-//				}
-//			}
-			
-			return $options;
-		}*/
 	}
 ?>

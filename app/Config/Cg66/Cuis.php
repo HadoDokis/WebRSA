@@ -1,32 +1,43 @@
 <?php
-/**
-	 * Valeurs par défaut des filtres pour le moteur de recherche par CUI.
-	 */
-	Configure::write(
-		'Filtresdefaut.Cuis_search',
-		array(
-			'Pagination' => array(
-				'nombre_total' => 0
-			),
-			'Dossier' => array(
-				'dernier' => '1'
-			)
-		)
-	);
-
 	/**
-	 * Liste des champs devant apparaître dans les résultats de la recherche par CUI:
-	 *	- ConfigurableQueryCuis.search.fields contient les champs de chaque ligne du tableau de résultats
-	 *	- ConfigurableQueryCuis.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
-	 *
-	 * Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
-	 * le webrsa.inc" de la vérification de l'application.
+	 * Menu "Recherches" > "Par APREs"
 	 */
 	Configure::write(
-		'ConfigurableQueryCuis',
+		'ConfigurableQuery.Cuis.search',
 		array(
-			'search' => array(
-				'fields' => array(
+			// 1. Filtres de recherche
+			'filters' => array(
+				// 1.1 Valeurs par défaut des filtres de recherche
+				'defaults' => array(
+					'Dossier' => array(
+						// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+						'dernier' => '1'
+					)
+				),
+				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
+				'accepted' => array(),
+				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
+				'skip' => array()
+			),
+			// 2. Recherche
+			'query' => array(
+				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
+				'restrict' => array(),
+				// 2.2 Conditions supplémentaires optionnelles
+				'conditions' => array(),
+				// 2.3 Tri par défaut
+				'order' => array('Personne.nom', 'Personne.prenom', 'Cui.id')
+			),
+			// 3. Nombre d'enregistrements par page
+			'limit' => 10,
+			// 4. Lancer la recherche au premier accès à la page ?
+			'auto' => false,
+			// 5. Résultats de la recherche
+			'results' => array(
+				// 5.1 Ligne optionnelle supplémentaire d'en-tête du tableau de résultats
+				'header' => array(),
+				// 5.2 Colonnes du tableau de résultats
+				'fields' => array (
 					'Dossier.matricule',
 					'Personne.nom_complet',
 					'Adresse.nomcom',
@@ -41,23 +52,43 @@
 					'Emailcui.dateenvoi' => array( 'type' => 'date' ), // Type datetime
 					'/Cuis66/index/#Cui.personne_id#' => array( 'class' => 'view' ),
 				),
-				'innerTable' => array(),
-				'order' => array( 'Personne.nom', 'Personne.prenom', 'Cui.id' )
+				// 5.3 Infobulle optionnelle du tableau de résultats
+				'innerTable' => array()
 			),
-			'exportcsv' => array(
-				'Dossier.matricule',
-				'Personne.nom_complet',
-				'Adresse.nomcom',
-				'Cui66.etatdossiercui66',
-				'Historiquepositioncui66.created' => array( 'type' => 'date' ),
-				'Partenairecui.raisonsociale',
-				'Cui.effetpriseencharge',
-				'Cui.finpriseencharge',
-				'Decisioncui66.decision',
-				'Decisioncui66.datedecision' => array( 'type' => 'date' ),
-				'Emailcui.textmailcui66_id' => array( 'type' => 'varchar' ),
-				'Emailcui.dateenvoi' => array( 'type' => 'date' ),
-			)
+			// 6. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => array()
+		)
+	);
+
+	/**
+	 * Export CSV,  menu "Recherches" > "Par APREs"
+	 */
+	Configure::write(
+		'ConfigurableQuery.Cuis.exportcsv',
+		array(
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Cuis.search.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Cuis.search.query' ),
+			// 3. Résultats de la recherche
+			'results' => array(
+				'fields' => array(
+					'Dossier.matricule',
+					'Personne.nom_complet',
+					'Adresse.nomcom',
+					'Cui66.etatdossiercui66',
+					'Historiquepositioncui66.created' => array( 'type' => 'date' ),
+					'Partenairecui.raisonsociale',
+					'Cui.effetpriseencharge',
+					'Cui.finpriseencharge',
+					'Decisioncui66.decision',
+					'Decisioncui66.datedecision' => array( 'type' => 'date' ),
+					'Emailcui.textmailcui66_id' => array( 'type' => 'varchar' ),
+					'Emailcui.dateenvoi' => array( 'type' => 'date' ),
+				)
+			),
+			// 4. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Cuis.search.ini_set' ),
 		)
 	);
 ?>
