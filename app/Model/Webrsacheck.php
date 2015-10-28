@@ -348,6 +348,12 @@
 				'Canton.useAdresseCanton' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('CG.cantons') )
 				),
+				'Alerte.changement_adresse.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
+				'Alerte.changement_adresse.delai' => array(
+					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Canton.useAdresseCanton') )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

@@ -851,4 +851,11 @@
 	 * Utilisation de la table AdresseCanton pour utiliser les cantons calculé au préalable par Console (CRON)
 	 */
 	Configure::write( 'Canton.useAdresseCanton', (boolean)Configure::read( 'CG.cantons' ) );
+	
+	/**
+	 * Alerte pour le changement d'adresse
+	 * delai en nombre de mois
+	 */
+	Configure::write( 'Alerte.changement_adresse.enabled', false );
+	Configure::write( 'Alerte.changement_adresse.delai', 2 );
 ?>

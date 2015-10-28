@@ -159,7 +159,7 @@
 			?>
 			<div id="pageContent"><div id="incrustation_erreur"></div>
 				<?php
-					foreach ( array_keys($this->Session->read('Message')) as $key ) {
+					foreach ( array_keys((array)$this->Session->read('Message')) as $key ) {
 						if ($this->Session->check( 'Message.'.$key ) ) {
 							echo $this->Session->flash($key);
 						}

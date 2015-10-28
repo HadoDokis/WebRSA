@@ -357,7 +357,8 @@
 				'first',
 				array(
 					'fields' => array(
-						'Adressefoyer.id'
+						'Adressefoyer.id',
+						'Adressefoyer.dtemm',
 					),
 					'conditions' => array(
 						'Adressefoyer.foyer_id' => $details['Foyer']['id'],
@@ -377,6 +378,19 @@
 				)
 			);
 			$details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
+			
+			if ( Configure::read('Alerte.changement_adresse.enabled') ) {
+				$date = new DateTime(Hash::get($adresseFoyer, 'Adressefoyer.dtemm'));
+				$olddate = $date->format('d/m/Y');
+				$date->add(new DateInterval('P'.Configure::read('Alerte.changement_adresse.delai').'M'));
+				
+				if ( strtotime(date('Y-m-d')) <= strtotime($date->format('Y-m-d')) ) {
+					$this->Session->setFlash(
+						sprintf('Attention, changement d\'adresse depuis le %s.', $olddate), 
+						'flash/error', array(), 'notice'
+					);
+				}
+			}
 
 			// Personnes
 			$query = array(
