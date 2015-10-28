@@ -59,5 +59,69 @@
 				'counterCache' => null
 			),
 		);
+		
+		/**
+		 * Met à jour la table de liaison AdresseCanton selon les conditions indiqué
+		 * 
+		 * @param mixed $conditions
+		 * @param boolean $transaction vrai par defaut, effectue un begin et un commit dans ce cas
+		 * @return boolean
+		 */
+		public function updateByConditions( $conditions, $transaction = true ) {
+			$departement = Configure::read('Cg.departement');
+			
+			$query = array(
+				'fields' => array(
+					'Adresse.id',
+					'Canton.id',
+				),
+				'joins' => array(
+					$this->Canton->joinAdresse( 'AdresseCanton' )
+				),
+				'conditions' => $conditions,
+				'contain' => false
+			);
+			$results = $this->Adresse->find('all', $query);
+			
+			if ( $transaction ) {
+				$this->begin();
+			}
+			
+			$data = array();
+			$success = true;
+			foreach ( $results as $value ) {
+				$success = $this->deleteAllUnBound(
+					array(
+						'adresse_id' => Hash::get($value, 'Adresse.id')
+					), false
+				);
+				
+				if ( !$success ) {
+					break;
+				}
+				
+				if ( Hash::get($value, 'Canton.id') ) {
+					$data[] = array(
+						'adresse_id' => Hash::get($value, 'Adresse.id'),
+						'canton_id' => Hash::get($value, 'Canton.id'),
+					);
+				}
+			}
+			
+			if ( $success && !empty($data) ) {
+				$success = $this->saveMany($data);
+			}
+			
+			if ( $transaction ) {
+				if ( $success ) {
+					$this->commit();
+				}
+				else {
+					$this->rollback();
+				}
+			}
+			
+			return $success;
+		}
 	}
 ?>

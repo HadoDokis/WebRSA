@@ -1,4 +1,4 @@
-<?php
+	<?php
 	/**
 	 * Code source de la classe CantonsController.
 	 *
@@ -104,6 +104,7 @@
 				$this->Canton->create( $this->request->data );
 				if( $this->Canton->save() ) {
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->Session->setFlash( 'Attention, en cas de modifications sur les cantons, il peut être utile de lancer AdresseCantonShell en console pour recalculer les relations entre Adresses et Cantons', 'flash/notice', array(), 'notice' );
 					$this->redirect( array( 'action' => 'index' ) );
 				}
 			}

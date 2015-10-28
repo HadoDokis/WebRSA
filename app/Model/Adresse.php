@@ -372,5 +372,17 @@
 
 			return Hash::combine( $results, '{n}.Adresse.numcom', array( '%s %s', '{n}.Adresse.numcom', '{n}.Adresse.nomcom' ) );
 		}
+		
+		/**
+		 * En cas de sauvegarde sur Adresse, on doit recalculer le canton (si Canton activé)
+		 * @param boolean $created
+		 */
+		public function afterSave($created) {
+			parent::afterSave($created);
+			
+			if ( Configure::read( 'Canton.useAdresseCanton' ) ) {
+				$this->AdresseCanton->updateByConditions( array( 'Adresse.id' => $this->id ) );
+			}
+		}
 	}
 ?>

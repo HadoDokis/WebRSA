@@ -159,13 +159,10 @@
 			?>
 			<div id="pageContent"><div id="incrustation_erreur"></div>
 				<?php
-					/*if( Configure::read( 'debug' ) > 0 ) { echo $this->MagicSearch->generateSearchMenu(); }*/
-
-					if ($this->Session->check( 'Message.flash' ) ) {
-						echo $this->Session->flash();
-					}
-					if ($this->Session->check( 'Message.auth' ) ) {
-						echo $this->Session->flash( 'auth' );
+					foreach ( array_keys($this->Session->read('Message')) as $key ) {
+						if ($this->Session->check( 'Message.'.$key ) ) {
+							echo $this->Session->flash($key);
+						}
 					}
 
 					if( isset( $dossierMenu ) ) {

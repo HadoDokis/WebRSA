@@ -81,7 +81,7 @@ CREATE TABLE adresses_cantons (
 	adresse_id INTEGER NOT NULL REFERENCES adresses(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	canton_id INTEGER NOT NULL REFERENCES cantons(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-ALTER TABLE adresses_cantons ADD CONSTRAINT adresses_cantons_unique_adresse_id_canton_id UNIQUE ( adresse_id, canton_id );
+ALTER TABLE adresses_cantons ADD CONSTRAINT adresses_cantons_unique_adresse_id_canton_id UNIQUE ( adresse_id );
 
 
 -- *****************************************************************************
