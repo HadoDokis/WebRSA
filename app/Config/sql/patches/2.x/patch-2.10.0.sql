@@ -132,6 +132,13 @@ ALTER TABLE traitementspcgs66 ADD COLUMN affiche_couple SMALLINT;
 ALTER TABLE traitementspcgs66 ADD CONSTRAINT traitementspcgs66_affiche_couple_in_list_chk CHECK ( cakephp_validate_in_list( affiche_couple, ARRAY[0,1] ) );
 UPDATE traitementspcgs66 SET affiche_couple = 0 WHERE typetraitement = 'courrier';
 
+--------------------------------------------------------------------------------
+-- Bilanparcours66
+--------------------------------------------------------------------------------
+
+SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'motifreport' );
+ALTER TABLE bilansparcours66 ADD COLUMN motifreport TEXT;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
