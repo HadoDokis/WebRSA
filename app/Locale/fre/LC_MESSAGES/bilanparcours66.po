@@ -452,7 +452,7 @@ msgid "ENUM::POSITIONBILAN::attct"
 msgstr "En attente de décision du Coordonnateur Technique"
 
 msgid "ENUM::POSITIONBILAN::ajourne"
-msgstr "Ajourné"
+msgstr "Reporté"
 
 msgid "ENUM::POSITIONBILAN::annule"
 msgstr "Annulé"

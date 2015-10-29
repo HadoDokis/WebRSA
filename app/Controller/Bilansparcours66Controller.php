@@ -317,6 +317,7 @@
 						'Bilanparcours66.examenaudition',
 						'Bilanparcours66.examenauditionpe',
 						'Bilanparcours66.motifannulation',
+						'Bilanparcours66.motifreport',
 						'Bilanparcours66.choixparcours',
 						'Serviceinstructeur.lib_service',
 						'Structurereferente.lib_struc',

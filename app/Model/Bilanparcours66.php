@@ -459,11 +459,24 @@
 				}
 
 				if( !empty( $passagescommissionseps_ids_reporte ) ) {
-					$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids_reporte );
-					$success = $this->updateAllUnBound(
-						array( 'Bilanparcours66.positionbilan' => '\'ajourne\'' ),
-						array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
-					) && $success;
+					foreach ( $passagescommissionseps_ids_reporte as $id ) {
+						$bilanparcour66_id = implode((array)$this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $id ));
+						
+						foreach ( $datas as $data ) {
+							if ( Hash::get($data, $modeleDecisionName.'.passagecommissionep_id') === $id ) {
+								$dataBilanParcours = array(
+									'id' => $bilanparcour66_id,
+									'positionbilan' => 'ajourne',
+									'motifreport' => Hash::get($data, $modeleDecisionName.'.commentaire')
+								);
+								
+								$this->create($dataBilanParcours);
+								$success = $success && $this->save();
+								
+								break;
+							}
+						}
+					}
 				}
 
 				if( !empty( $passagescommissionseps_ids_autre ) ) {

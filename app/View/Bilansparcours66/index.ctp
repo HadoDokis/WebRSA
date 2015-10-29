@@ -44,6 +44,10 @@
 					$bilanparcours66['Decisiondefautinsertionep66']['commentaire']
 				;
 				
+				if ( Hash::get($bilanparcours66, 'Bilanparcours66.positionbilan') === 'traite' ) {
+					$commentaire = Hash::get($bilanparcours66, 'Bilanparcours66.motifreport');
+				}
+				
 				$decisionCg = $bilanparcours66['Avisdefautinsertionep66']['decision'] ? $bilanparcours66['Avisdefautinsertionep66']['decision'] : $bilanparcours66['Decisionsaisinebilanparcoursep66']['decision'];
 				
 				$commentaireAnnulation = ( 
@@ -56,7 +60,7 @@
 				
 				// On affiche le commentaire dans l'infobulle que si la positionbilan est à Annulé
 				$commentairePositionBilan = 
-					( in_array( $bilanparcours66['Bilanparcours66']['positionbilan'], array( 'annule', 'ajourne' ) ) && $decisionCg ) ?
+					( in_array( $bilanparcours66['Bilanparcours66']['positionbilan'], array( 'annule', 'ajourne', 'traite' ) ) && $decisionCg && !empty($commentaire) ) ?
 					'<tr>
 						<th>Commentaire&nbsp;' . (($bilanparcours66['Bilanparcours66']['positionbilan'] == 'annule') ? 'annulation' : 'report') . '&nbsp;EP</th>
 						<td>'.$commentaire.'</td>
