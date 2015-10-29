@@ -21,12 +21,11 @@
 
 		public $actsAs = array(
 			'Allocatairelie',
-			'Autovalidate2',
 			'Conditionnable',
 			'DossierCommission',
 			'Enumerable',
-			'Formattable',
-			'ValidateTranslate',
+			'Validation2.Validation2Autovalidate',
+			'Validation2.Validation2Formattable',
 		);
 
 		public $validate = array(
