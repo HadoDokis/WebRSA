@@ -436,8 +436,48 @@
 					'recursive' => -1
 				)
 			);
+			
+			$success = (( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ));
+			
+			if ( $success === false && (integer)Configure::read('Cg.departement') === 66 ) {
+				$joinBilan = $this->Personne->join('Bilanparcours66', array( 'type' => 'INNER' ));
+				$sqDernierBilan = $this->Personne->Bilanparcours66->sq(
+					array(
+						'alias' => 'bilansparcours',
+						'fields' => 'bilansparcours.id',
+						'conditions' => array(
+							'bilansparcours.personne_id = Personne.id'
+						),
+						'order' => array(
+							'bilansparcours.id' => 'DESC'
+						),
+						'limit' => 1
+					)
+				);
+				$joinBilan['conditions'] = array( "Bilanparcours66.id IN ({$sqDernierBilan})" );
+				
+				$query = array(
+					'fields' => array(
+						'Bilanparcours66.id' 
+					),
+					'joins' => array(
+						$this->Personne->join('Orientstruct'),
+						$joinBilan,
+						$this->Personne->Bilanparcours66->join('Manifestationbilanparcours66', array( 'type' => 'INNER' )),
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Personne.id' => $personne_id,
+						'Orientstruct.id IS NULL'
+					)
+				);
+				
+				if ( count((array)$this->Personne->find('first', $query)) > 0 ) {
+					$success = true;
+				}
+			}
 
-			return ( ( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ) );
+			return $success;
 		}
 
 		/**
