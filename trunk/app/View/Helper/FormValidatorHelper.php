@@ -54,12 +54,13 @@
 			
 			$script = '<script type="text/javascript">
 		<!--//--><![CDATA[//><!--
-			// Variables pour validation javascript
-			var validationRules = ' . $validationJson . ';
-			var traductions = ' . $this->generateTraductions()->traductions . ';
-			var validationJS = ' . $validationJS . ';
-			var validationOnchange = ' . $validationOnchange . ';
-			var validationOnsubmit = ' . $validationOnsubmit . ';
+			FormValidator.initializeVars({
+				validationRules: ' . $validationJson . ',
+				traductions: ' . $this->generateTraductions()->traductions . ',
+				validationJS: ' . $validationJS . ',
+				validationOnchange: ' . $validationOnchange . ',
+				validationOnsubmit: ' . $validationOnsubmit . '
+			});
 		//--><!]]>
 		</script>';
 			
