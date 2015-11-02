@@ -303,18 +303,19 @@
 		}
 
 		/**
-		* Retourne la liste des dossiers de la séance d'EP, groupés par thème,
-		* pour les dossiers qui doivent passer par liste.
-		*
-		* @param integer $commissionep_id L'id technique de la séance d'EP
-		* @param string $niveauDecision Le niveau de décision ('decisionep' ou 'decisioncg') pour
-		*	lequel il faut les dossiers à passer par liste.
-		* @param string $actionName Le nom de l'action du Controller qui appel cette fonction (pour clef de config)
-		* @return array
-		* @access public
-		*/
-
-		public function dossiersParListe( $commissionep_id, $niveauDecision, $actionName = 'default' ) {
+		 * Retourne la liste des dossiers de la séance d'EP, groupés par thème,
+		 * pour les dossiers qui doivent passer par liste.
+		 * 
+		 * @see Commissionep::querydataFragmentsErrors()
+		 *
+		 * @param integer $commissionep_id L'id technique de la séance d'EP
+		 * @param string $niveauDecision Le niveau de décision ('decisionep' ou 'decisioncg') pour
+		 * 	lequel il faut les dossiers à passer par liste.
+		 * @param string $actionName Le nom de l'action du Controller qui appel cette fonction (pour clef de config)
+		 * @return array
+		 * @access public
+		 */
+		public function dossiersParListe( $commissionep_id, $niveauDecision, $keyConf = 'default' ) {
 			$dossiers = array();
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
@@ -322,7 +323,7 @@
 				$queryData = $this->Passagecommissionep->Dossierep->{$model}->qdDossiersParListe( $commissionep_id, $niveauDecision );
 				$dossiers[$model]['liste'] = array();
 				if( !empty( $queryData ) ) {
-					$configuredOrder = Configure::read( 'Order.'.$actionName );
+					$configuredOrder = Configure::read( $keyConf );
 					$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
 					$dossiers[$model]['liste'] = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 				}
@@ -1604,127 +1605,7 @@
 
 			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
-			// FIXME: doc
-			if ( Configure::read( 'Cg.departement' ) == 93 || Configure::read( 'Cg.departement' ) == 58 ) {
-				$queryData = array(
-					'fields' => array(
-						'Dossierep.themeep',
-						'Adresse.nomcom',
-						'COUNT("Dossierep"."id") AS "nombre"',
-					),
-					'joins' => array(
-						array(
-							'table'      => 'passagescommissionseps',
-							'alias'      => 'Passagecommissionep',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
-						),
-						array(
-							'table'      => 'personnes',
-							'alias'      => 'Personne',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( "Dossierep.personne_id = Personne.id" ),
-						),
-						array(
-							'table'      => 'foyers',
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-						),
-						array(
-							'table'      => 'dossiers',
-							'alias'      => 'Dossier',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-						),
-						array(
-							'table'      => 'adressesfoyers',
-							'alias'      => 'Adressefoyer',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Foyer.id = Adressefoyer.foyer_id',
-								// FIXME: c'est un hack pour n'avoir qu'une seule adresse de rang 01 par foyer!
-								'Adressefoyer.id IN (
-									'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-								)'
-							)
-						),
-						array(
-							'table'      => 'adresses',
-							'alias'      => 'Adresse',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-						)
-					),
-					'conditions' => array(
-						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id']
-					),
-					'group' => array(
-						'Dossierep.themeep',
-						'Adresse.nomcom'
-					),
-				);
-			}
-			else {
-				// Jointure spéciale sur Dossierep suivant la thématique
-				$joinSaisinebilanparcoursep66 = $this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) );
-				$joinDefautinsertionep66 = $this->Passagecommissionep->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) );
-
-				$joinBilanparcours66 = $joinSaisinebilanparcoursep66;
-				$joinBilanparcours66['conditions'] = array(
-					'OR' => array(
-						$joinSaisinebilanparcoursep66['conditions'],
-						$joinDefautinsertionep66['conditions']
-					)
-				);
-
-				$queryData = array(
-					'fields' => array_merge(
-						$this->Passagecommissionep->fields(),
-						$this->Passagecommissionep->Dossierep->fields(),
-						$this->Passagecommissionep->Dossierep->Personne->fields(),
-						$this->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->fields(),
-						$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
-						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->fields(),
-						$this->Passagecommissionep->Dossierep->Defautinsertionep66->fields(),
-						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->fields(),
-						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Referent->fields(),
-						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields()/*,
-						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->Permanence->fields()*/
-					),
-					'joins' => array(
-						$this->Passagecommissionep->Dossierep->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Passagecommissionep->Dossierep->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
-						$joinBilanparcours66,
-						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Referent', array( 'type' => 'INNER' ) ),
-						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-// 						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'INNER' ) ),
-						$this->Passagecommissionep->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
-						$this->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-						$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
-					),
-					'conditions' => array(
-						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id'],
-						array(
-							'OR' => array(
-								'Adressefoyer.id IS NULL',
-								'Adressefoyer.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-							)
-						)
-					),
-				);
-			}
-			$configuredOrder = Configure::read( 'Order.printOrdresDuJour' );
-			$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
+			$queryData = $this->quertyPdfOrdredujour($convocation);
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 			$options = Set::merge( $options, $this->enums() );
@@ -1852,6 +1733,131 @@
 				true,
 				$options
 			);
+		}
+		
+		public function queryPdfOrdredujour ( $convocation ) {
+			if ( Configure::read( 'Cg.departement' ) == 93 || Configure::read( 'Cg.departement' ) == 58 ) {
+				$queryData = array(
+					'fields' => array(
+						'Dossierep.themeep',
+						'Adresse.nomcom',
+						'COUNT("Dossierep"."id") AS "nombre"',
+					),
+					'joins' => array(
+						array(
+							'table'      => 'passagescommissionseps',
+							'alias'      => 'Passagecommissionep',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
+						),
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+						),
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+						),
+						array(
+							'table'      => 'dossiers',
+							'alias'      => 'Dossier',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+						),
+						array(
+							'table'      => 'adressesfoyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Foyer.id = Adressefoyer.foyer_id',
+								// FIXME: c'est un hack pour n'avoir qu'une seule adresse de rang 01 par foyer!
+								'Adressefoyer.id IN (
+									'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+								)'
+							)
+						),
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+						)
+					),
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id']
+					),
+					'group' => array(
+						'Dossierep.themeep',
+						'Adresse.nomcom'
+					),
+				);
+			}
+			else {
+				// Jointure spéciale sur Dossierep suivant la thématique
+				$joinSaisinebilanparcoursep66 = $this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) );
+				$joinDefautinsertionep66 = $this->Passagecommissionep->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) );
+
+				$joinBilanparcours66 = $joinSaisinebilanparcoursep66;
+				$joinBilanparcours66['conditions'] = array(
+					'OR' => array(
+						$joinSaisinebilanparcoursep66['conditions'],
+						$joinDefautinsertionep66['conditions']
+					)
+				);
+
+				$queryData = array(
+					'fields' => array_merge(
+						$this->Passagecommissionep->fields(),
+						$this->Passagecommissionep->Dossierep->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Referent->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields()/*,
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->Permanence->fields()*/
+					),
+					'joins' => array(
+						$this->Passagecommissionep->Dossierep->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+						$joinBilanparcours66,
+						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+// 						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id'],
+						array(
+							'OR' => array(
+								'Adressefoyer.id IS NULL',
+								'Adressefoyer.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+							)
+						)
+					),
+				);
+			}
+			$configuredOrder = Configure::read( 'Commissionseps.printOrdresDuJour.order' );
+			$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
+			
+			return $queryData;
 		}
 
 
@@ -2223,6 +2229,62 @@
 			$success = !empty( $options ) && $success;
 
 			return $success;
+		}
+
+		/**
+		 * 
+		 * @see Commissionep::dossiersParListe()
+		 * 
+		 * @return array
+		 */
+		public function querydataFragmentsErrors() {
+			$checks = array();
+			$keys = array( 
+				'Commissionseps.decisionep.order',
+				'Commissionseps.decisioncg.order',
+				'Commissionseps.traiterep.order',
+			);
+			
+			$findFirst = $this->find('first', array('fields' => 'id'));
+			$commissionep_id = Hash::get($findFirst, $this->alias.'.id');
+			
+			foreach( $keys as $key ) {
+				foreach( $this->Ep->themes() as $theme ) {
+					$model = Inflector::classify( $theme );
+					$queryData = $this->Passagecommissionep->Dossierep->{$model}->qdDossiersParListe( $commissionep_id, 'ep' );
+
+					if( !empty( $queryData ) ) {
+						$configuredOrder = Configure::read( $key );
+						unset( $queryData['fields'] );
+						$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
+						$check = array(
+							'value' => var_export( $configuredOrder, true ),
+							'success' => null,
+							'message' => null
+						);
+						
+						try {
+							$this->Passagecommissionep->Dossierep->forceVirtualFields = false;
+							$this->Passagecommissionep->Dossierep->find( 'first', $queryData );
+							$check['success'] = true;
+						} catch( Exception $e ) {
+							$check['success'] = false; 
+							$check['message'] = $e->getMessage(); 
+						}
+
+						$checks["{$key} pour la thématique {$theme}"] = $check;
+					}
+				}
+			}
+			
+			$key = 'Commissionseps.printOrdresDuJour.order';
+			$sql = $this->Passagecommissionep->Dossierep->sq( $this->queryPdfOrdredujour(array('Commissionep' => array('id' => 0))) );
+			$check = $this->getDataSource()->checkPostgresSqlSyntax( $sql );
+			$check['value'] = var_export( Configure::read($key), true );
+			
+			$checks[$key] = $check;
+			
+			return $checks;
 		}
 	}
 ?>

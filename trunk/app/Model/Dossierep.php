@@ -1049,5 +1049,69 @@
 				)"
 			);
 		}
+		
+		/**
+		 * Donne la query de base pour les dossiers selectionnable (à compléter avec le controller)
+		 *  
+		 * @param array $query
+		 * @return array
+		 */
+		public function queryDossiersSelectionnables( array $query = array() ) {
+			$query = array_merge(
+				$query,
+				array(
+					'fields' => array(
+						'Dossierep.id',
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						$this->Personne->Foyer->sqVirtualField( 'enerreur', true ),
+						'Commissionep.dateseance',
+						'Passagecommissionep.id',
+						'Passagecommissionep.commissionep_id',
+						'Passagecommissionep.dossierep_id',
+						'Dossierep.created',
+						'Dossierep.themeep',
+					),
+					'joins' => array(
+						$this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Commissionep->join( 'Ep', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) )
+					),
+				)
+			);
+			
+			return $query;
+		}
+		
+		public function querydataFragmentsErrors() {
+			$checks = array();
+			
+			$key = 'Dossierseps.choose.order';
+			$order = Configure::read($key);
+
+			$base = $this->queryDossiersSelectionnables();
+
+			foreach( $this->Passagecommissionep->Commissionep->Ep->themes() as $theme ) {
+				$model = Inflector::classify( $theme );		
+				$query = $this->{$model}->qdListeDossierChoose( 0 );
+				
+				$query['joins'] = array_merge( $query['joins'], $base['joins'] );
+				$query['contain'] = false;
+				$query['order'] = $order;
+
+				$this->forceVirtualFields = true;
+				$sql = $this->sq( $query );
+
+				$check = $this->getDataSource()->checkPostgresSqlSyntax( $sql );
+				$check['value'] = var_export( $order, true );
+
+				$checks["{$key} pour la thématique {$theme}"] = $check;
+			}
+	
+			return $checks;
+		}
 	}
 ?>

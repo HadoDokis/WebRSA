@@ -1558,10 +1558,12 @@
 	 * $queryData['order'] prendra la valeur de la config.
 	 * Le nom est dynamique, si une action est manquante ici, ajoutez la comme suit : 'Order.' . $this->action
 	 */
-	Configure::write( 'Order.choose', array( 'Personne.nom', 'Personne.prenom' ) );
-	Configure::write( 'Order.decisionep', array( 'Personne.nom', 'Personne.prenom' ) );
-	Configure::write( 'Order.printOrdresDuJour', array( 'Adresse.nomcom' ) );
-	Configure::write( 'Order.traiterep', array( 'Personne.nom', 'Personne.prenom' ) );
+	$order = array( 'Personne.nom', 'Personne.prenom' );
+	Configure::write( 'Dossierseps.choose.order', $order );
+	Configure::write( 'Commissionseps.decisionep.order',  $order );
+	Configure::write( 'Commissionseps.decisioncg.order',  $order );
+	Configure::write( 'Commissionseps.printOrdresDuJour.order',  $order );
+	Configure::write( 'Commissionseps.traiterep.order', $order );
 
 	/**
 	 * Validation parametrable pour l'allowEmpty
