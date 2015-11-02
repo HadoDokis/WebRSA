@@ -480,6 +480,52 @@
 		}
 
 		/**
+		 * Convertit un nombre de secondes en un nombre de jours, heures, minutes
+		 * et secondes.
+		 *
+		 * @url http://stackoverflow.com/posts/19680778/revisions
+		 *
+		 * @param integer $seconds
+		 * @return string
+		 */
+		protected function _secondsToTime($seconds) {
+			$dtF = new DateTime("@0");
+			$dtT = new DateTime("@$seconds");
+			$msgid = '%a days, %h hours, %i minutes and %s seconds';
+			return $dtF->diff($dtT)->format( __( $msgid ) );
+		}
+
+		/**
+		 * Retourne les noms des caches utilisés ainsi que leur durée.
+		 *
+		 * @return array
+		 */
+		public function durations() {
+			$results = array();
+			$debug = Configure::read( 'debug' );
+			$min = 60 * 60 * 24;
+
+			foreach( Cache::configured() as $key ) {
+				$seconds = Hash::get( Cache::config( $key ), 'settings.duration' );
+				$message = $this->_secondsToTime( $seconds );
+				$success = $debug || ( $seconds >= $min );
+
+				if( $success === false ) {
+					$message .= sprintf( ' au lieu de %s (%d)', $this->_secondsToTime( $min ), $min );
+				}
+
+				$results[$key] = array(
+					'value' => $seconds,
+					'success' => $success,
+					'message' => $message
+				);
+			}
+
+			ksort($results);
+			return $results;
+		}
+
+		/**
 		 * Vérifie l'accès à un WebService.
 		 *
 		 * @param string $wsdl

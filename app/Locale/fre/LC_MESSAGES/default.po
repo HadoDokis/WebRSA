@@ -664,3 +664,8 @@ msgstr "Synthèse"
 
 msgid "Button::attestationcompetencecui66"
 msgstr "Attestation de compétence"
+
+################################################################################
+
+msgid "%a days, %h hours, %i minutes and %s seconds"
+msgstr "%a jours, %h heures, %i minutes et %s secondes"
