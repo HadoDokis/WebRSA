@@ -89,22 +89,25 @@
 
 			$options = parent::_optionsRecords( $params );
 			
-			if( !isset( $Controller->{$typeContrat} ) ) {
+			// On vérifi que les tables existent avant de charger les modeles
+			$modelList = Hash::normalize(App::objects( 'model' ));
+						
+			if( isset($modelList[$typeContrat]) && !isset( $Controller->{$typeContrat} ) ) {
 				$Controller->loadModel( $typeContrat );
 			}
 			
-			if( !isset( $Controller->{$libsec} ) ) {
+			if( isset($modelList[$libsec]) && !isset( $Controller->{$libsec} ) ) {
 				$Controller->loadModel( $libsec );
 			}
 			
-			if ( isset( $Controller->Cui->{$modelCuiDpt}) ) {
+			if ( isset($modelList[$modelCuiDpt]) && isset( $Controller->Cui->{$modelCuiDpt}) ) {
 				$options[$modelCuiDpt]['datebutoir_select'] = array(
 					1 => __d( $modelCuiDpt, 'ENUM::DATEBUTOIR_SELECT::1' ),
 					2 => __d( $modelCuiDpt, 'ENUM::DATEBUTOIR_SELECT::2' ),
 					3 => __d( $modelCuiDpt, 'ENUM::DATEBUTOIR_SELECT::3' ),
 				);
 				
-				if ( isset($Controller->{$typeContrat}) && is_object($Controller->{$typeContrat}) ) {
+				if ( isset($modelList[$typeContrat]) && isset($Controller->{$typeContrat}) ) {
 					$options[$modelCuiDpt]['typecontrat'] = $Controller->{$typeContrat}->find( 'list', 
 						array( 'order' => 'name' )
 					);
