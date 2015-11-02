@@ -196,7 +196,7 @@
 		'Cataloguepdifp93.urls',
 		array(
 			'Consultation du catalogue des actions (PDI)' => 'http://www.seine-saint-denis.fr/Catalogue-des-Actions-d-Insertion.html',
-			'Consultation du site du CARIF' => 'http://www.carif-idf.org/',
+			'Consultation du site Defi Metiers' => 'http://www.carif-idf.org/',
 			'Consultation INSER\'ECO93' => 'http://www.insereco93.com/',
 		)
 	);
