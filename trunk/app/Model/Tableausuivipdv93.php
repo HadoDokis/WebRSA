@@ -2141,6 +2141,16 @@
 			// Pour chacune des catégories du tableau 1B4 et 1B5, on vérifie que les conditions correspondent à du paramétrage
 			$Dbo = $this->getDataSource();
 
+			$Thematiquefp93 = $this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93->Thematiquefp93;
+			$base = array(
+				'fields' => array( 'Thematiquefp93.id' ),
+				'joins' => array(
+					$Thematiquefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+					$Thematiquefp93->Categoriefp93->join( 'Filierefp93', array( 'type' => 'INNER' ) )
+				),
+				'contain' => false
+			);
+
 			foreach( array( 'tableau1b4', 'tableau1b5' ) as $tableau ) {
 				$expected = (array)Configure::read( "Tableausuivi93.{$tableau}.categories" );
 				$found = $this->_tableau1b41b5Categories( $tableau, array() );
@@ -2149,9 +2159,14 @@
 					foreach( array_keys( $expected[$thematique] ) as $categorie ) {
 						if( !isset( $found[$thematique][$categorie] ) ) {
 							$conditions = $Dbo->conditions( $expected[$thematique][$categorie], true, false );
+
+							$query = $base;
+							$query['conditions'] = $conditions;
+							$sql = str_replace( '"Thematiquefp93"."id" AS "Thematiquefp93__id"', '*', $Thematiquefp93->sq( $query ) );
+
 							$return["Tableausuivi93.{$tableau}.categories.{$thematique}.{$categorie}"] = array(
 								'success' => false,
-								'message' => sprintf( 'Aucun paramétrage trouvé pour les conditions suivantes: %s', $conditions )
+								'message' => sprintf( 'Aucun paramétrage trouvé pour les conditions %s, à vérifier avec la requête suivante: %s', $conditions, $sql )
 							);
 						}
 					}
