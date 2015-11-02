@@ -53,7 +53,7 @@
 	 *
 	 * @default: null
 	 */
-	Configure::write( 'FULL_BASE_URL', 'http://localhost/webrsa/trunk' );
+	Configure::write( 'FULL_BASE_URL', 'http://rsa.cg93.fr' );
 
 	Configure::write( 'Cg.departement', 93 );
 	Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg'.Configure::read( 'Cg.departement' ) ) );
@@ -72,7 +72,7 @@
 	Configure::write( 'nom_form_apre_cg', 'cg93' );
 
 	// Limit pour le nombre de documents à éditer dans la cohorte par orientation
-	Configure::write( 'nb_limit_print', 2000 );
+	Configure::write( 'nb_limit_print', 5000 );
 
 
 	/**
@@ -288,7 +288,7 @@
 	 * Nombre de jours entre la date de seconde relance et
 	 * l'envoi de la troisième relance pour le thème "non respect et sanctions du CG 93"
 	 */
-// 	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 30 );
+ 	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 30 );
 
 	/**
 	 * Nombre de jours entre la date de fin du contrat précédent et l'envoi de
@@ -764,12 +764,18 @@
 	 * @var boolean
 	 * @default null (false)
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.active', true );
+	Configure::write( 'Contratinsertion.RdvAuto.active', false );
 
     /**
 	 * Configuration des types de RDV
 	 */
-	Configure::write( 'Rendezvous.Typerdv', array( 'collectif_id' => 14, 'individuel_id' => 15 ) );
+	Configure::write(
+		'Rendezvous.Typerdv',
+		array(
+			'collectif_id' => 14,
+			'individuel_id' => 15
+		)
+	);
 
 	/**
 	 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
@@ -780,7 +786,7 @@
 	 * @var integer
 	 * @default null
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', Configure::read( 'Rendezvous.Typerdv.individuel_id' ) );
+	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', null );
 
 	/**
 	 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
@@ -791,7 +797,7 @@
 	 * @var integer
 	 * @default null
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', 1 );
+	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', null );
 
 	/**
 	 * L'id technique de l'enregistrement de la table thematiquesrdvs ("Thématique du RDV")
@@ -926,6 +932,13 @@
 		)
 	);
 
+	/**
+	 * Guide - CG93
+	 * Guide utilisateur CG93
+	 * @default true
+	 */
+	Configure::write( 'guide', true );
+
     /**
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
 	 */
@@ -1034,7 +1047,7 @@
 	 * @var boolean
 	 * @default null
 	 */
-	Configure::write( 'AncienAllocataire.enabled', false );
+	Configure::write( 'AncienAllocataire.enabled', true );
 
 	/**
 	 * L'expression régulière qui permet de définir que le n° de convention d'une
@@ -1069,16 +1082,16 @@
 			),
 			'categories' => array(
 				// Catégories (colonne 1), Thématiques (colonne 2) et conditions à appliquer
-				'Acteur sociaux' => array(
+				'Acteurs sociaux' => array(
 					// Non défini
-					'Service Social de polyvalence' => array(
+					'Service Social' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name' => 'Service Social de polyvalence'
+						'Categoriefp93.name' => array('Service social','Prestation sociale')
 					),
 					// Non défini
 					'Service social spécialisé' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name' => 'Service social spécialisé'
+						'Categoriefp93.name' => 'Service social specialise'
 					),
 					// Non défini
 					'CCAS' => array(
@@ -1093,63 +1106,67 @@
 					// Non défini
 					'Autres (*)' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name' => 'Autres (*)'
+						'Categoriefp93.name LIKE' => 'Sans cat%gorie'
 					)
 				),
 				'Acteurs de la santé' => array(
 					// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 					'Accompagnement Santé' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Accompagnement santé'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name' => 'Accompagnement sante'
 					),
 					// Non défini
 					'Centre municipal de santé' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Centre municipal de santé'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name' => 'Centre municipal de sante'
 					),
 					// Non défini
 					'Centre médico-psychologique' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Centre médico-psychologique'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name' => 'Centre medico psychologique'
 					),
 					// Non défini
 					'Centre de bilan de santé' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Centre de bilan de santé'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name' => 'Centre de bilan de sante'
 					),
 					// Non défini
 					'Maison départementale des personnes handicapées' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Maison départementale des personnes handicapées'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name' => 'Maison departementale des personnes handicapees'
 					),
 					// Non défini
 					'Centre de protection maternelle et infantile' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
 						'Categoriefp93.name' => 'Centre de protection maternelle et infantile'
 					),
 					// Non défini
 					'Centres Départementaux de dépistage et de prévention sanitaire (CDDPS)' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Centres Départementaux de dépistage et de prévention sanitaire (CDDPS)'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name' => 'Centres Departementaux de depistage et de prevention sanitaire (CDDPS)'
 					),
 					// Non défini
 					'Médecine de ville' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Médecine de ville'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name' => 'Medecine de ville'
 					),
 					// Non défini
 					'Autres (*)' => array(
-						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name' => 'Autres (*)'
+						'Thematiquefp93.name' => 'Prescription vers les acteurs de la sante',
+						'Categoriefp93.name LIKE' => 'Sans cat%gorie'
 					),
 				),
 				'Culture loisirs vacances' => array(
 					// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 					'Projet loisirs vacances' => array(
 						'Thematiquefp93.name' => 'Prescription culture loisirs vacances',
-						'Categoriefp93.name' => 'Projet loisirs vacances'
-					)
-				),
+						'Categoriefp93.name' => 'Projet vacances'
+					),
+					'Projets locaux' => array(
+						'Thematiquefp93.name' => 'Prescription culture loisirs vacances',
+						'NOT' => array( 'Categoriefp93.name' => 'Projet vacances' )
+					),
+				)
 			)
 		)
 	);
@@ -1178,7 +1195,7 @@
 			),
 			'categories' => array(
 				// Catégories (colonne 1), Thématiques (colonne 2) et conditions à appliquer
-				'Socio - professionnelles' => array(
+				'Prescriptions Socio - professionnelles' => array(
 					'Redynamisation' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
@@ -1192,9 +1209,9 @@
 					'Pôle linguistique' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
-						'Categoriefp93.name' => 'Pole diagnostic linguistique'
+						'Categoriefp93.name' => 'Pole linguistique'
 					),
-					'Actions linguistiques (tous niveaux) hors pôle diagnostique' => array(
+					'Actions linguistiques (tous niveaux) hors pôle diagnostic' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => array(
@@ -1202,7 +1219,8 @@
 							'Francais Langue Etrangere',
 							'Linguistique a visee professionnelle',
 							'Linguistique B1',
-							'linguistique'
+							'Linguistique',
+							'Actions linguistiques tous niveaux hors pole diagnostic'
 						)
 					),
 					'Remise à niveau' => array(
@@ -1218,65 +1236,51 @@
 					'Autres (*)' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
-						'Categoriefp93.name' => 'Autres (*)'
+						'Categoriefp93.name' => 'Sans categorie'
 					),
 				),
-				'Professionnelles' => array(
-					'Formation pré-qualifiante PDI' => array(
+				'Prescriptions Professionnelles' => array(
+					'Formation pré-qualifiante' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.type' => 'pdi',
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => array(
-							'Formation pre qualifiante',
-							'formation pré-qualifiante'
-						)
+						'Categoriefp93.name' => 'Formation pre qualifiante'
 					),
-					'Formation qualifiante PDI' => array(
+					'Formation qualifiante' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.type' => 'pdi',
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'formation qualifiante'
+						'Categoriefp93.name' => 'Formation qualifiante'
 					),
 					'FDIF/APRE formation' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'FDIF/APRE'
+						'Categoriefp93.name' => 'FDIF APRE'
 					),
 					'SIAE' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'SIAE / Entreprise d insertion'
-					),
-					'Plateforme AFPA force' => array(
-						// Non défini
-						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'Plateforme AFPA force'
+						'Categoriefp93.name' => 'SIAE'
 					),
 					'Création d\'entreprise' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'Accompagnement à la création d\'activité
-'
+						'Categoriefp93.name' => 'Creation d entreprise'
 					),
 					'Formations de Droit Commun (Région, AFPA, etc…)' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'Formation de Droit Commun Région, AFPA, …'
+						'Categoriefp93.name' => 'Formation de droit commun Region AFPA'
 					),
 					'PLIE' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'Plie'
+						'Categoriefp93.name' => 'PLIE'
 					),
 					'Maison de l\'emploi ou service emploi autre que PE' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'maison de l’emploi ou SE autre que PE'
-					),
-					'C2DI' => array(
-						// Non défini
-						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'C2DI'
+						'Categoriefp93.name' => 'Maison de l emploi ou SE autre que PE'
 					),
 					'VAE' => array(
 						// Non défini
@@ -1288,24 +1292,35 @@
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name' => 'Action du CUCS'
 					),
+                                        'Accompagnement vers l emploi' => array(
+                                                // Non défini
+                                                'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
+                                                'Categoriefp93.name' => 'Accompagnement vers l emploi'
+                                        ),
 					'Autres (*)' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'Autres (*)'
+						'Categoriefp93.name' => 'Sans categorie'
 					),
 				),
-				'Pôle Emploi' => array(
+				'Prescriptions Pôle Emploi' => array(
 					'Prestations Pôle Emploi' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
-						'Thematiquefp93.name LIKE' => '%Pôle Emploi',
-						'Categoriefp93.name' => 'Prestation pôle emploi'
+						'Thematiquefp93.name LIKE' => '%pole emploi',
+						'Categoriefp93.name' => 'Prestation pole emploi'
 					),
-					'Inscription au  Pôle Emploi' => array(
+					'Inscription au Pôle Emploi' => array(
 						// Non défini
-						'Thematiquefp93.name LIKE' => '%Pôle Emploi',
-						'Categoriefp93.name' => 'Inscription au  Pôle Emploi'
+						'Thematiquefp93.name LIKE' => '%pole emploi',
+						'Categoriefp93.name' => 'Inscription au pole emploi'
 					),
 				),
+				'Autres' => array(
+					'Autres (*)' => array(
+						'Thematiquefp93.name LIKE' => 'Autres',
+						'Categoriefp93.name' => 'Sans categorie'
+					),
+				)
 			)
 		)
 	);
@@ -1504,7 +1519,7 @@
 	 *
 	 * @default null
 	 */
-	Configure::write( 'WebrsaEmailConfig.testEnvironments', array( 'rsa-web-q01', 'rsa-web-q02', 'rsa-web-q03', 'rsa-web-q04' ) );
+	Configure::write( 'WebrsaEmailConfig.testEnvironments', array( NULL ) );
 
 	/**
 	 * Permet d'utiliser le module ROME V3:
@@ -1537,7 +1552,7 @@
 			'values' => array( 1 )
 		)
 	);
-	
+
 	/**
 	 * Ordre d'affichage des dossiers EP selon différentes actions
 	 * $queryData['order'] prendra la valeur de la config.
@@ -1547,27 +1562,27 @@
 	Configure::write( 'Order.decisionep', array( 'Personne.nom', 'Personne.prenom' ) );
 	Configure::write( 'Order.printOrdresDuJour', array( 'Adresse.nomcom' ) );
 	Configure::write( 'Order.traiterep', array( 'Personne.nom', 'Personne.prenom' ) );
-	
+
 	/**
 	 * Validation parametrable pour l'allowEmpty
 	 */
 	Configure::write('ValidateAllowEmpty.Adresse.libtypevoie', false);
-		
+
 	/**
 	 * Permet de désactiver le "cadenas" situé en haut à droite
 	 */
 	Configure::write( 'Etatjetons.enabled', false );
-	
+
 	/**
 	 * Permet de désactiver l'Editeur de requêtes
 	 */
 	Configure::write( 'Requestmanager.enabled', false );
-	
+
 	/**
 	 * Utilisation de la table AdresseCanton pour utiliser les cantons calculé au préalable par Console (CRON)
 	 */
 	Configure::write( 'Canton.useAdresseCanton', (boolean)Configure::read( 'CG.cantons' ) );
-	
+
 	/**
 	 * Alerte pour le changement d'adresse
 	 * delai en nombre de mois
