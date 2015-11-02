@@ -16,7 +16,10 @@
 			</div>
 			<div id="cakephp">
 				<h3 class="title">CakePHP</h3>
+				<h4>Informations</h4>
 				<?php echo $this->Checks->table( $results['Cakephp']['informations'] );?>
+				<h4>Durées de cache</h4>
+				<?php echo $this->Checks->table( $results['Cakephp']['cache'] );?>
 			</div>
 			<div id="directories">
 				<h3 class="title">Installation</h3>

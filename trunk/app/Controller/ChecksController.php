@@ -206,7 +206,8 @@
 					'informations' => array(
 						'Version' => $this->Check->version( 'CakePHP', Configure::version(), '2.2.4' ),
 						'Timeout' => $this->Check->timeout()
-					)
+					),
+					'cache' => $this->Check->durations()
 				)
 			);
 		}
