@@ -20,7 +20,7 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js', 'cake.prototype.js' ) );
 	}
 
 	echo $this->Default3->titleForLayout();
@@ -66,3 +66,10 @@
 		echo $this->element( 'search_footer', array( 'modelName' => $modelName, 'url' => $exportcsv ) );
 	}
 ?>
+<script type="text/javascript">
+//<![CDATA[
+	Event.observe( window, 'load', function() {
+		Event.observe( '<?php echo $searchFormId;?>', 'submit', Cake.Search.onSubmit );
+	} );
+//]]>
+</script>
