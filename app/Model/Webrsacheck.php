@@ -940,7 +940,7 @@
 		 */
 		public function allQuerydataFragmentsErrors() {
 			$errors = array( );
-			$modelNames = array( 'Statistiqueministerielle' );
+			$modelNames = array( 'Statistiqueministerielle', 'Dossierep', 'Commissionep' );
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$modelNames[] = 'Tableausuivipdv93';

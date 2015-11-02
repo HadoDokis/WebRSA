@@ -147,26 +147,6 @@
 				}
 
 				$queryData = array(
-					'fields' => array(
-						'Dossierep.id',
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						$this->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur', true ),
-						'Commissionep.dateseance',
-						'Passagecommissionep.id',
-						'Passagecommissionep.commissionep_id',
-						'Passagecommissionep.dossierep_id',
-						'Dossierep.created',
-						'Dossierep.themeep',
-					),
-					'joins' => array(
-						$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Dossierep->Passagecommissionep->Commissionep->join( 'Ep', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Dossierep->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Dossierep->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) )
-					),
 					'conditions' => array(
 						(array)Configure::read( 'Dossierseps.conditionsSelection' ),
 						$conditionsAdresses,
@@ -198,8 +178,10 @@
 					),
 					'limit' => 50,
 				);
-				$configuredOrder = Configure::read( 'Order.'.$this->action );
+				$configuredOrder = Configure::read( $this->name.'.'.$this->action.'.order' );
 				$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
+				
+				$queryData = $this->Dossierep->queryDossiersSelectionnables( $queryData );
 
 				$options = $this->Dossierep->enums();
 				$options['Dossierep']['commissionep_id'] = $this->Dossierep->Passagecommissionep->Commissionep->find(
