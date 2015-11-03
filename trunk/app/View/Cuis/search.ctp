@@ -1,111 +1,28 @@
 <?php
-	$departement = Configure::read( 'Cg.departement' );
+	$departement = (integer)Configure::read( 'Cg.departement' );
 	$controller = $this->params->controller;
 	$action = $this->action;
-	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
 	$availableDomains = MultiDomainsTranslator::urlDomains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
 	$paramDate = array( 
-		'domain' => $domain, 
+		'domain' => null, 
 		'minYear_from' => '2009', 
 		'maxYear_from' => date( 'Y' ) + 1, 
 		'minYear_to' => '2009', 
 		'maxYear_to' => date( 'Y' ) + 4
 	);
-	$paramAllocataire = array(
-		'options' => $options,
-		'prefix' => 'Search',
-	);
-	$dateRule = array(
-		'date' => array(
-			'rule' => array('date'),
-			'message' => null,
-			'required' => null,
-			'allowEmpty' => true,
-			'on' => null
-		)
-	);
 	
-	function multipleCheckbox( $View, $path, $options, $class = '' ) {
-		$name = model_field($path);
-		return $View->Xform->input($path, array(
-			'label' => __m($path), 
-			'type' => 'select', 
-			'multiple' => 'checkbox', 
-			'options' => $options[$name[0]][$name[1]],
-			'class' => $class
-		));
-	}
-	
-	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
-	
-	$dates = array(
-		'Dossier' => array('dtdemrsa' => $dateRule),
-		'Personne' => array('dtnai' => $dateRule),
-		'Historiquepositioncui66' => array('created' => $dateRule),
-		'Cui66' => array(
-			'dateeligibilite' => $dateRule,
-			'datereception' => $dateRule,
-			'dateenvoi' => $dateRule,
-		),
-		'Emailcui' => array(
-			'insertiondate' => $dateRule,
-			'created' => $dateRule,
-			'datecomplet' => $dateRule,
-		),
-		'Decisioncui66' => array('datedecision' => $dateRule),
-		'Cui' => array(
-			'dateembauche' => $dateRule,
-			'findecontrat' => $dateRule,
-			'effetpriseencharge' => $dateRule,
-			'finpriseencharge' => $dateRule,
-			'decisionpriseencharge' => $dateRule,
-			'faitle' => $dateRule,
-		),
-	);
-	echo $this->FormValidator->generateJavascript($dates, false);
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
-	}
-
-	echo $this->Default3->actions(
-		array(
-			'/' . $controller . '/' . $action . '/#toggleform' => array(
-				'onclick' => '$(\'' . $formId . '\').toggle(); return false;',
-				'class' => $action . 'Form',
-				'domain' => $domain
-			),
-		)
-	);
-
-	// 1. Moteur de recherche
-	echo $this->Xform->create( null, 
-		array( 
-			'id' => $formId, 
-			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
-			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
-		)
-	);
-
-	echo $this->Allocataires->blocDossier($paramAllocataire);
-
-	echo $this->Allocataires->blocAdresse($paramAllocataire);
-
-	echo $this->Allocataires->blocAllocataire($paramAllocataire);
-	
-	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
+	$this->start( 'custom_search_filters' );
 	
 	// Spécifique CG 66
-	if ( $departement == 66 ){
+	if ( $departement === 66 ){
 		foreach( $options['Cui66']['etatdossiercui66'] as $key => $value ){
 			$options['Cui66']['etatdossiercui66'][$key] = sprintf( $value, '(Date)' );
 		}
 		
 		echo '<fieldset><legend id="Cui66Positions">' . __m( 'Cui66.positions' ) . '</legend>'
-			. multipleCheckbox( $this, 'Search.Cui66.etatdossiercui66', $options, 'divideInto2Collumn' )
-			. $this->SearchForm->dateRange( 'Search.Historiquepositioncui66.created', $paramDate )	
+			. $this->Xform->multipleCheckbox( 'Search.Cui66.etatdossiercui66', $options, 'divideInto2Collumn' )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Historiquepositioncui66.created', $paramDate )	
 			. '</fieldset>'
 		;
 		
@@ -136,9 +53,9 @@
 				),
 				array( 'options' => array( 'Search' => $options ) )
 			)
-			. $this->SearchForm->dateRange( 'Search.Cui66.dateeligibilite', $paramDate )
-			. $this->SearchForm->dateRange( 'Search.Cui66.datereception', $paramDate )
-			. $this->SearchForm->dateRange( 'Search.Cui66.datecomplet', $paramDate )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Cui66.dateeligibilite', $paramDate )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Cui66.datereception', $paramDate )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Cui66.datecomplet', $paramDate )
 			. '</fieldset>'
 		;
 		
@@ -149,9 +66,9 @@
 				),
 				array( 'options' => array( 'Search' => $options ) )
 			)
-			. $this->SearchForm->dateRange( 'Search.Emailcui.insertiondate', $paramDate )
-			. $this->SearchForm->dateRange( 'Search.Emailcui.created', $paramDate )
-			. $this->SearchForm->dateRange( 'Search.Emailcui.dateenvoi', $paramDate )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Emailcui.insertiondate', $paramDate )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Emailcui.created', $paramDate )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Emailcui.dateenvoi', $paramDate )
 			. '</fieldset>'
 		;
 		
@@ -162,7 +79,7 @@
 				),
 				array( 'options' => array( 'Search' => $options ) )
 			)
-			. $this->SearchForm->dateRange( 'Search.Decisioncui66.datedecision', $paramDate )
+			. $this->Allocataires->SearchForm->dateRange( 'Search.Decisioncui66.datedecision', $paramDate )
 			. '</fieldset>'
 		;
 	}
@@ -192,39 +109,30 @@
 			),
 			array( 'options' => array( 'Search' => $options ) )
 		)
-		. $this->SearchForm->dateRange( 'Search.Cui.dateembauche', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Cui.findecontrat', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Cui.dateembauche', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Cui.findecontrat', $paramDate )
 		. $this->Romev3->fieldset( 'Entreeromev3', array( 'options' => $options, 'prefix' => 'Search' ) )
 		. '</fieldset>'
 	;
 	
 	echo '<fieldset id="CuiPrise_en_charge"><legend>' . __m( 'Cui.prise_en_charge' ) . '</legend>'
-		. $this->SearchForm->dateRange( 'Search.Cui.effetpriseencharge', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Cui.finpriseencharge', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Cui.decisionpriseencharge', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Cui.effetpriseencharge', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Cui.finpriseencharge', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Cui.decisionpriseencharge', $paramDate )
 		. '</fieldset>'
 	;
 	
 	echo '<fieldset id="CuiPrise_en_charge"><legend>' . __m( 'Cui.date' ) . '</legend>'
-		. $this->SearchForm->dateRange( 'Search.Cui.faitle', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Cui.faitle', $paramDate )
 		. '</fieldset>'
 	;
 	
-	echo $this->Allocataires->blocPagination($paramAllocataire);
-
-	echo $this->Xform->end( 'Search' );
-
-	echo $this->Search->observeDisableFormOnSubmit( $formId );
+	$this->end();
 	
-	// 2. Formulaire de traitement des résultats de la recherche
-	if( isset( $results ) ) {
-		echo $this->Default3->configuredIndex(
-			$results,
-			array(
-				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ),
-				'options' => $options
-			)
-		);
-		
-		echo $this->element( 'search_footer' );
-	}
+	echo $this->element(
+		'ConfigurableQuery/search',
+		array(
+			'custom' => $this->fetch( 'custom_search_filters' ),
+			'exportcsv' => array( 'action' => 'exportcsv' )
+		)
+	);

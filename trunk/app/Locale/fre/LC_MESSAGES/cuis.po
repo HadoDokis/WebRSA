@@ -24,6 +24,9 @@ msgstr ""
 msgid "/Cuis/index/:heading"
 msgstr "Contrat Unique d'Insertion"
 
+msgid "/Cuis/search/:heading"
+msgstr "Recherche par Contrat Unique d'Insertion (Nouveau)"
+
 msgid "/Cuis/add"
 msgstr "Ajouter"
 
@@ -609,6 +612,30 @@ msgstr "Code métier"
 
 msgid "Search.Entreeromev3.appellationromev3_id"
 msgstr "Appellation métier"
+
+msgid "Search.Cui66.dateeligibilite"
+msgstr "Date d'éligibilité du dossier"
+
+msgid "Search.Cui66.datereception"
+msgstr "Date de réception du dossier"
+
+msgid "Search.Cui66.datecomplet"
+msgstr "Date du dossier complet"
+
+msgid "Search.Cui.dateembauche"
+msgstr "Date d'embauche prévu"
+
+msgid "Search.Cui.findecontrat"
+msgstr "Date prévue de fin de contrat (si CDD)"
+
+msgid "Search.Cui.effetpriseencharge"
+msgstr "Date d’effet de la prise en charge"
+
+msgid "Search.Cui.finpriseencharge"
+msgstr "Date de fin de la prise en charge"
+
+msgid "Search.Cui.decisionpriseencharge"
+msgstr "Date d’effet de la décision modificatrice"
 
 ################################################################################
 # Fieldset du formulaire CUI
