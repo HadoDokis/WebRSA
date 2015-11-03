@@ -91,6 +91,9 @@
 			
 			// On vérifi que les tables existent avant de charger les modeles
 			$modelList = Hash::normalize(App::objects( 'model' ));
+			foreach( array_keys($modelList) as $modelName ) {
+				$modelList[$modelName] = true;
+			}
 						
 			if( isset($modelList[$typeContrat]) && !isset( $Controller->{$typeContrat} ) ) {
 				$Controller->loadModel( $typeContrat );

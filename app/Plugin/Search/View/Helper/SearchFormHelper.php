@@ -150,7 +150,12 @@
 
 			$legend = Hash::get( $params, 'legend' );
 			if( $legend === null ) {
-				$legend = __d( $params['domain'], $path );
+				if( $params['domain'] !== null ) {
+					$legend = __d( $params['domain'], $path );
+				}
+				else {
+					$legend = __m( $path );
+				}
 			}
 
 			$input = $this->Form->input( $path, array( 'label' => 'Filtrer par '.lcfirst( $legend ), 'type' => 'checkbox' ) );
