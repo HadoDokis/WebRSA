@@ -376,19 +376,27 @@
 						)
 					)
 				)
-			);
-			$details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
+			);			
+			$details = Set::merge( $details, array( 'Adresse' => Hash::get($adresseFoyer, 'Adresse') ) );
 			
 			if ( Configure::read('Alerte.changement_adresse.enabled') ) {
-				$date = new DateTime(Hash::get($adresseFoyer, 'Adressefoyer.dtemm'));
-				$olddate = $date->format('d/m/Y');
-				$date->add(new DateInterval('P'.Configure::read('Alerte.changement_adresse.delai').'M'));
-				
-				if ( strtotime(date('Y-m-d')) <= strtotime($date->format('Y-m-d')) ) {
+				if ( empty($adresseFoyer) ) {
 					$this->Session->setFlash(
-						sprintf('Attention, changement d\'adresse depuis le %s.', $olddate), 
+						'Ce foyer ne possède actuellement aucune adresse.', 
 						'flash/error', array(), 'notice'
 					);
+				}
+				else {
+					$date = new DateTime(Hash::get($adresseFoyer, 'Adressefoyer.dtemm'));
+					$olddate = $date->format('d/m/Y');
+					$date->add(new DateInterval('P'.Configure::read('Alerte.changement_adresse.delai').'M'));
+
+					if ( strtotime(date('Y-m-d')) <= strtotime($date->format('Y-m-d')) ) {
+						$this->Session->setFlash(
+							sprintf('Attention, changement d\'adresse depuis le %s.', $olddate), 
+							'flash/error', array(), 'notice'
+						);
+					}
 				}
 			}
 
