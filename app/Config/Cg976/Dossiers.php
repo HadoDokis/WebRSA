@@ -23,7 +23,16 @@
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
-				'skip' => array()
+				'skip' => array(),
+				// 1.4 Filtres additionnels : La personne possède un(e)...
+				'has' => array(
+					'Contratinsertion' => array(
+						'Contratinsertion.decision_ci' => 'V'
+					),
+					'Orientstruct' => array(
+						'Orientstruct.statut_orient' => 'Orienté',
+					),
+				)
 			),
 			// 2. Recherche
 			'query' => array(

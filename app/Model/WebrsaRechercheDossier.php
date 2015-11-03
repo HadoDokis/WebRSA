@@ -193,13 +193,6 @@
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
 
-			// Possède (au moins) un CUI, une orientation, un CER ou une DSP
-			$query = $this->Dossier->Foyer->Personne->completeQueryHasLinkedRecord(
-				array( 'Cui', 'Orientstruct', 'Contratinsertion', 'Dsp' ),
-				$query,
-				$search
-			);
-
 			// Condition sur la nature du logement
 			$natlog = (string)Hash::get( $search, 'Dsp.natlog' );
 			if( $natlog !== '' ) {
@@ -228,10 +221,6 @@
 					$query['conditions']['Prestation.rolepers'] = array( 'DEM', 'CJT' );
 				}
 			}
-			else {
-				//$query['conditions'][]
-			}
-
 
 			// CD 58: travailleur social chargé de l'évaluation: "Nom du chargé de
 			// l'évaluation" lorsque l'on crée une orientation
@@ -248,6 +237,7 @@
 			if( $departement == 66 ) {
 				$exists = (string)Hash::get( $search, 'Personne.has_orientstruct' );
 				if( $exists === '0' ) {
+					$this->Dossier->Foyer->Personne->Behaviors->load('LinkedRecords');
 					$sql = $this->Dossier->Foyer->Personne->linkedRecordVirtualField( 'Nonoriente66' );
 					$query['conditions'][] = 'NOT ' . $sql;
 				}

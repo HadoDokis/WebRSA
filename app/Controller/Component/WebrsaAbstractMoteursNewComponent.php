@@ -375,6 +375,21 @@
 				$query['conditions'][] = $conditions;
 			}
 
+			$has = (array)Configure::read( $this->_configureKey( 'filters.has', $params ) );
+			
+			// On met systématiquement le contenu de has en conditions
+			foreach ($has as $key => $value) {
+				if (is_array($value)) {
+					$has[$key] = array( 'conditions' => $value );
+				}
+			}
+			
+			$query = ClassRegistry::init( 'Personne' )->completeQueryHasLinkedRecord(
+				$has,
+				$query,
+				$filters
+			);
+
 			return $query;
 		}
 
@@ -591,6 +606,7 @@
 					'filters.defaults' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
 					'filters.accepted' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
 					'filters.skip' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+					'filters.has' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
 					//'filters.force' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
 					'query.restrict' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
 					'query.conditions' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),

@@ -32,15 +32,7 @@
 			echo $this->Xform->input( 'Search.Activite.act', array( 'label' => 'Code activité', 'type' => 'select', 'empty' => true, 'options' => $options['Activite']['act'] ) );
 			echo $this->Form->input( 'Search.Propoorientationcov58.referentorientant_id', array( 'label' => 'Travailleur social chargé de l\'évaluation', 'type' => 'select', 'options' => $options['Propoorientationcov58']['referentorientant_id'], 'empty' => true ) );
 			echo $this->Form->input( 'Search.Personne.etat_dossier_orientation', array( 'label' => __d( 'personne', 'Personne.etat_dossier_orientation' ), 'type' => 'select', 'options' => $options['Personne']['etat_dossier_orientation'], 'empty' => true ) );
-			echo $this->Form->input( 'Search.Personne.has_dsp', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $options['Personne']['has_dsp'], 'empty' => true ) );
 		}
-		else if( $departement != 93 ) {
-			echo $this->Form->input( 'Search.Personne.has_orientstruct', array( 'label' => 'Possède une orientation ? ', 'type' => 'select', 'options' => $options['Personne']['has_orientstruct'], 'empty' => true ) );
-		}
-		if( $departement == 66 ) {
-			echo $this->Form->input( 'Search.Personne.has_cui', array( 'label' => 'Possède un CUI ? ', 'type' => 'select', 'options' => $options['Personne']['has_cui'], 'empty' => true ) );
-		}
-		echo $this->Form->input( 'Search.Personne.has_contratinsertion', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => $options['Personne']['has_contratinsertion'], 'empty' => true ) );
 	?>
 </fieldset>
 <?php $this->end();?>

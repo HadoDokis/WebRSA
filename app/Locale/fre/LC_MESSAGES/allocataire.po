@@ -21,3 +21,21 @@ msgstr ""
 
 msgid "Allocataire.nom_complet"
 msgstr "Allocataire"
+
+msgid "Search.Personne.have"
+msgstr "L'allocataire possède"
+
+msgid "Search.Personne.has_orientstruct"
+msgstr "Possède une orientation ?"
+
+msgid "Search.Personne.has_cui"
+msgstr "Possède un CUI ?"
+
+msgid "Search.Personne.has_personnepcg66"
+msgstr "Possède un dossier PCG ?"
+
+msgid "Search.Personne.has_contratinsertion"
+msgstr "Possède un CER ?"
+
+msgid "Search.Personne.has_dsp"
+msgstr "Possède une DSP ?"

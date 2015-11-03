@@ -300,6 +300,43 @@
 
 			return $this->_fieldset( 'Search.Personne', $content, $params );
 		}
+		
+		/**
+		 * Filtres de recherche configuré de type "possède un..."
+		 * 
+		 * @param array $params
+		 * @return string
+		 */
+		public function blocHave( array $params = array() ) {
+			$params = $params + $this->default;
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
+			$params['configPath'] = ( isset($params['configPath']) && !empty( $params['configPath'] ) 
+				? $params['configPath'] 
+				: 'ConfigurableQuery.'.Inflector::camelize($this->params['controller']).'.' ).Inflector::underscore($params['prefix']).'filters.has'
+			;
+
+			$configs = array_keys(Hash::normalize((array)Configure::read($params['configPath'])));
+			unset($params['configPath']);
+			if ( empty($configs) ) {
+				return '';
+			}
+			
+			$content = '';
+			foreach ($configs as $modelName) {
+				$inputName = "{$params['prefix']}Personne.has_".Inflector::underscore($modelName);
+				$option = Hash::get($params, "options.Personne.has_".Inflector::underscore($modelName)) ? Hash::get($params, "options.Personne.has_".Inflector::underscore($modelName)) : array('Non', 'Oui');
+				$content .= $this->_input( $inputName, $params, 
+					array( 
+						'label' => __d('allocataire', $inputName),
+						'type' => 'select', 
+						'empty' => true, 
+						'options' => $option
+					) 
+				);
+			}
+
+			return $this->_fieldset( __d('allocataire', 'Search.Personne.have'), $content, $params );
+		}
 
 		/**
 		 * Retourne une groupe de filtres par référent du parcours contenant les champs:
