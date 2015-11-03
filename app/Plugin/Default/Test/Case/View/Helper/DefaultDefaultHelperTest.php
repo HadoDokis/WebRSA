@@ -316,8 +316,14 @@
 		 * @return void
 		 */
 		public function testTitleForLayout() {
+			// Avec les msgid par défaut
 			$result = $this->DefaultDefault->titleForLayout( $this->datas );
 			$expected = '<h1>/Apples/index/:heading</h1>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Avec un msgid précisé
+			$result = $this->DefaultDefault->titleForLayout( $this->datas[0], array( 'msgid' => 'Id de la pomme: #Apple.id#' ) );
+			$expected = '<h1>Id de la pomme: 7</h1>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 

@@ -290,3 +290,6 @@ msgstr "Décision"
 
 msgid "/Dossiers/view/#Dossier.id#"
 msgstr "Accéder aux informations de #Personne.nom_complet_court#"
+
+msgid "/Orientsstructs/index/:heading"
+msgstr "Orientations de #qual# #nom# #prenom#"

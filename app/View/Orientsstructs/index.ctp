@@ -4,8 +4,7 @@
 
 	$departement = Configure::read( 'Cg.departement' );
 
-	$this->pageTitle = "Orientations de {$personne['qual']} {$personne['nom']} {$personne['prenom']}";
-	echo $this->Html->tag( 'h1', $this->pageTitle );
+	echo $this->Default3->titleForLayout( $personne );
 
 	echo $this->element( 'ancien_dossier' );
 
