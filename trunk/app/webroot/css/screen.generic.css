@@ -998,9 +998,12 @@ ul.ui-tabs-nav {
 }
 
 ul.ui-tabs-nav li {
-    padding: 0;
-    margin: 0;
-    display: inline;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+    line-height: 2.4;
+    position: relative;
+    top: 7px;
 }
 
 ul.ui-tabs-nav a {

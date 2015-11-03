@@ -23,7 +23,19 @@
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
-				'skip' => array()
+				'skip' => array(),
+				// 1.4 Filtres additionnels : La personne possède un(e)...
+				'has' => array(
+					'Cui',
+					'Orientstruct' => array(
+						'Orientstruct.statut_orient' => 'Orienté',
+						// Orientstruct possède des conditions supplémentaire dans le modèle WebrsaRechercheDossier pour le CD66
+					),
+					'Contratinsertion' => array(
+						'Contratinsertion.decision_ci' => 'V'
+					),
+					'Personnepcg66'
+				)
 			),
 			// 2. Recherche
 			'query' => array(

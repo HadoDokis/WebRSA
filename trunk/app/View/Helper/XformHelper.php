@@ -505,5 +505,24 @@
 
 			return $return;
 		}
+		
+		/**
+		 * Génère un fieldset de type multiple checkbox
+		 * 
+		 * @param string $path
+		 * @param array $options
+		 * @param string $class
+		 * @return string
+		 */
+		public function multipleCheckbox( $path, array $options = array(), $class = '' ) {
+			$name = model_field($path);
+			return $this->input($path, array(
+				'label' => __m($path),
+				'type' => 'select',
+				'multiple' => 'checkbox',
+				'options' => Hash::get($options, "{$name[0]}.{$name[1]}"),
+				'class' => $class
+			));
+		}
 	}
 ?>
