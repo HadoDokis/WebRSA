@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.Model
+	 * @package Fluxcnaf.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe Fluxcnaf ...
 	 *
-	 * @package app.Model
+	 * @package Fluxcnaf.Model
 	 */
 	class Fluxcnaf extends AppModel
 	{
@@ -1187,6 +1187,317 @@
 					'NBTOTDOSRSATRANSM',
 					'NBTOTDOSRSATRANSMANO',
 				)
+			),
+			// FIXME: prendre la version 0301
+			// cf. vrsd-refonte flux beneficaires 2015-10-14.xls
+			'Bénéficiaire VRSD0301' => array(
+				'/IdentificationFlux' => array(
+					'APPLIEME',
+					'NUMVERSIONAPPLIEME',
+					'VERSIONFLUX',
+					'TYPEFLUX',
+					'NATFLUX',
+					'DTCREAFLUX',
+					'HEUCREAFLUX',
+					'DTREF',
+					'TYPEPARTE',
+					'IDEPARTE',
+				),
+				'/InfosFoyerRSA/IdentificationRSA/Organisme' => array(
+					'FONORG',
+					'NUMORG',
+					'MATRICULE',
+				),
+				'/InfosFoyerRSA/IdentificationRSA/Partenaire' => array(
+					'TYPEPARTE',
+					'IDEPARTE',
+				),
+				'/InfosFoyerRSA/IdentificationRSA/DemandeRSA' => array(
+					'DTDEMRSA',
+					'NUMDEMRSA',
+					'ORIDEMRSA',
+					'DTORIDEMRSA',
+				),
+				'/InfosFoyerRSA/IdentificationRSA/OrganismeCedant' => array(
+					'FONORGCEDMUT',
+					'NUMORGCEDMUT',
+					'MATRICULEORGCEDMUT',
+					'DDARRMUT',
+				),
+				'/InfosFoyerRSA/IdentificationRSA/OrganismePrenant' => array(
+					'FONORGPRENMUT',
+					'NUMORGPRENMUT',
+					'DDDEPAMUT',
+				),
+				'/InfosFoyerRSA/Personne/Identification' => array(
+					'QUAL',
+					'NOM',
+					'NOMNAI',
+					'PRENOM',
+					'LISPRENOMS',
+					'LIEUNAI',
+					'LOCANAI',
+					'PAYSNAI',
+					'DTNAI',
+					'RGNAI',
+					'TYPEDTNAI',
+					'NIR',
+					'TOPVALIEC',
+					'SEXE',
+					'DTDC',
+				),
+				'/InfosFoyerRSA/Personne/DossierCafMsa' => array(
+					'TOPRESPDOS',
+					'DFRATDOS',
+				),
+				'/InfosFoyerRSA/Personne/FonctionPersonnePFA' => array(
+					'ROLEPERS',
+				),
+				'/InfosFoyerRSA/Personne/FonctionPersonneRSA' => array(
+					'ROLEPERS',
+					'TOPCHAPERS',
+				),
+				'/InfosFoyerRSA/Personne/Rattachement' => array(
+					'NIR',
+					'TYPEPAR',
+				),
+				'/InfosFoyerRSA/Personne/Ressources/GeneraliteRessourcesTrimestre' => array(
+					'TOPRESSNUL',
+				),
+				'/InfosFoyerRSA/Personne/Ressources/RessourcesMensuelles/GeneraliteRessourcesMensuelles' => array(
+					'MOISRESS',
+				),
+				'/InfosFoyerRSA/Personne/Ressources/RessourcesMensuelles/DetailRessourcesMensuelles' => array(
+					'NATRESS',
+					'MTNATRESSMEN',
+					'ABANEU',
+				),
+				'/InfosFoyerRSA/Personne/CaracteristiquesEmployabilite' => array(
+					'REG',
+					'STATUEMPL',
+					'TOPPERSMALHAN',
+					'DDSTATUEMPL',
+					'DFSTATUEMPL',
+				),
+				'/InfosFoyerRSA/Personne/Grossesse' => array(
+					'DDGRO',
+					'DTDECLGRO',
+				),
+				'/InfosFoyerRSA/Personne/MesureProtection/IdentificationMesureProtection' => array(
+					'FONORG',
+					'NUMORG',
+					'NUMPERSMESUPROT',
+					'TYPEPERSMESUPROT',
+				),
+				'/InfosFoyerRSA/Personne/MesureProtection/MesureProtectionCommun' => array(
+					'TYPEMESUPROT',
+				),
+				'/InfosFoyerRSA/Personne/AvisPCGPersonne/ConditionNonSalarie' => array(
+					'AVISEVARESSNONSAL',
+					'TOPCONDADMNONSAL',
+					'DTSOURESSNONSAL',
+					'DTEVARESSNONSAL',
+					'MTEVARESSNONSAL',
+					'COMMPROPRESSEVA',
+					'DDRESSNONSALEVA',
+					'DFRESSNONSALEVA',
+					'MTRESSNONSALEVA',
+					'RESSNONSALEVA',
+				),
+				'/InfosFoyerRSA/Personne/AvisPCGPersonne/ConditionExploitantAgricole' => array(
+					'MTBENAGRI',
+					'REGFISAGRI',
+					'DTBENAGRI',
+					'MTREVAGRI',
+					'TYPEXPAGRI',
+					'NATACTEXPAGRI',
+					'PARTEXPAGRI',
+				),
+				'/InfosFoyerRSA/Personne/AvisPCGPersonne/Derogation' => array(
+					'TYPEDERO',
+					'AVISDERO',
+					'DDAVISDERO',
+					'DFAVISDERO',
+				),
+				'/InfosFoyerRSA/Personne/AvisPCGPersonne/ExclueRSA' => array(
+					'EXCL',
+					'DDEXCL',
+					'DFEXCL',
+				),
+				'/InfosFoyerRSA/Personne/AvisPCGPersonne/Liberalite' => array(
+					'MTLIBERNONDECL',
+					'DTABSDECLLIBER',
+				),
+				'/InfosFoyerRSA/Personne/AvisPCGPersonne/CreanceAlimentaire' => array(
+					'ETATCREALIM',
+					'DDCREALIM',
+					'MTSANCREALIM',
+				),
+				'/InfosFoyerRSA/Personne/AvisCGSSDOMPersonne' => array(
+					'JUSACTDOM',
+					'RESUJUSACTDOM',
+				),
+				'/InfosFoyerRSA/Personne/ContratPCGPersonneRSA' => array(
+					'DDCONTRRSA',
+					'DFCONTRRSA',
+					'TYPECONTRRSA',
+				),
+				'/InfosFoyerRSA/Personne/CalculDroitRSAPersonne' => array(
+					'TOPPERSDRODEVORSA',
+					'TOPPERSENTDRODEVORSA',
+					'DDSOUDRODEV',
+					'DFSOUDRODEV',
+					'DTDERCALRSA',
+					'MTPERSRESSMENRSA',
+					'MTPERSABANEURSA',
+				),
+				'/InfosFoyerRSA/DonneesAdministratives/SituationFamille' => array(
+					'SITFAM',
+					'DDSITFAM',
+					'REGAGRIFAM',
+				),
+				'/InfosFoyerRSA/DonneesAdministratives/Adresse/TroncCommunAdresse' => array(
+					'RGADR',
+					'DTEMM',
+					'PAYS',
+					'TYPEADR',
+					'ETATADR',
+				),
+				'/InfosFoyerRSA/DonneesAdministratives/Adresse/AdresseDetailleeFrance' => array(
+					'COMPLIDEADR',
+					'COMPLADR',
+					'NUMVOIE',
+					'LIBTYPEVOIE',
+					'NOMVOIE',
+					'LIEUDIST',
+					'NUMCOM',
+					'CODEPOS',
+					'NOMCOM',
+				),
+				'/InfosFoyerRSA/DonneesAdministratives/Adresse/AdresseHorsFrance' => array(
+					'LIBLIG2ADR',
+					'LIBLIG3ADR',
+					'LIBLIG4ADR',
+					'LIBLIG5ADR',
+					'LIBLIG6ADR',
+					'LIBLIG7ADR',
+				),
+				'/InfosFoyerRSA/PrestationRSA/SituationDossierRSA/EtatDossierRSA' => array(
+					'ETATDOSRSA',
+					'TOPFORCDRO',
+				),
+				'/InfosFoyerRSA/PrestationRSA/SituationDossierRSA/DroitOuvert' => array(
+					'DTODRSA',
+					'MOTIODRSA',
+					'TOPMAINTDRORSA',
+					'TOPMTINFSEUIRSA',
+				),
+				'/InfosFoyerRSA/PrestationRSA/SituationDossierRSA/SuspensionDroit' => array(
+					'MOTISUSDRORSA',
+					'DDSUSDRORSA',
+				),
+				'/InfosFoyerRSA/PrestationRSA/SituationDossierRSA/RessourcesTropElevees' => array(
+					'MOTISUSVERSRSA',
+					'DDSUSVERSRSA',
+				),
+				'/InfosFoyerRSA/PrestationRSA/SituationDossierRSA/FinDroit' => array(
+					'MOTICLORSA',
+					'DTCLORSA',
+					'TOPANNUOD',
+				),
+				'/InfosFoyerRSA/PrestationRSA/SpecificiteDOM' => array(
+					'SURFAGRIDOM',
+					'DDSURFAGRIDOM',
+					'SURFAGRIDOMPLA',
+					'NBTOTAIDEFAMSURFDOM',
+					'NBTOTPERSMAJOSURFDOM',
+				),
+				'/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/TroncCommunDroitRSA' => array(
+					'TOPSANSDOMFIXE',
+					'DDRESS',
+					'DFRESS',
+					'MTRSAVERS',
+					'DTDERRSAVERS',
+				),
+				'/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/MontantsCalculDroitRSA' => array(
+					'DDELECAL',
+					'DFELECAL',
+					'NBENFAUTCHA',
+					'MTREVMINIGARARSA',
+					'MTPENTRSA',
+					'MTLOCALRSA',
+					'MTREVGARARSA',
+					'MTPFRSA',
+					'MTALRSA',
+					'MTRESSMENRSA',
+					'MTSANADMRSA',
+					'MTREDADMRSA',
+					'MTSANCGRSA ',
+					'MTCUMINTEGRSA',
+					'MTABANEURSA',
+					'MTBRUTRSA',
+					'MTTOTDRORSA',
+				),
+				'/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/DetailCalculDroitRSA/RSASocle' => array(
+					'NATPF',
+					'SOUSNATPF',
+					'DDNATDRO',
+					'DFNATDRO',
+					'DTINIRSASOCL',
+					'MTBRUTRSASOCL',
+				),
+				'/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/DetailCalculDroitRSA/RSAActivite' => array(
+					'NATPF',
+					'SOUSNATPF',
+					'DDNATDRO',
+					'DFNATDRO',
+					'DTINIRSAACT',
+					'MTBRUTRSAACT',
+				),
+				'/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/DetailCalculDroitRSA/RSASocle-1' => array(
+					'NATPF',
+					'SOUSNATPF',
+					'DDNATDRO',
+					'DFNATDRO',
+					'MTBRUTRSASOCL',
+				),
+				'/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/DetailCalculDroitRSA/RSAActivite-1' => array(
+					'NATPF',
+					'SOUSNATPF',
+					'DDNATDRO',
+					'DFNATDRO',
+					'MTBRUTRSAACT',
+				),
+				'/InfosFoyerRSA/PrestationRSA/AvisPCGDroitRSA/ConditionAdministrative' => array(
+					'AVISCONDADMRSA',
+					'MOTICONDADMRSA',
+					'COMM1CONDADMRSA',
+					'COMM2CONDADMRSA',
+					'DTEFFAVISCONDADMRSA',
+				),
+				'/InfosFoyerRSA/PrestationRSA/AvisPCGDroitRSA/PaiementTiers' => array(
+					'AVISDESTPAIRSA',
+					'DTAVISDESTPAIRSA',
+					'NOMTIE',
+					'TYPEPERSTIE',
+				),
+				'/InfosFoyerRSA/Evenement/SessionEvenement' => array(
+					'DTLIQ',
+					'HEULIQ',
+					'DDEFFLIQ',
+					'DFEFFLIQ',
+				),
+				'/InfosFoyerRSA/Evenement/ListeMotifsEvenement' => array(
+					'MOTITRANSFLUX',
+				),
+				'/InfosFoyerRSA/Anomalie' => array(
+					'LIBANO',
+				),
+				'/TransmissionFlux' => array(
+					'NBTOTDOSRSATRANSM',
+					'NBCARATRANSM',
+					'NBTOTDOSRSATRANSMANO',
+				),
 			),
 			// cf. 1-VRSD0101_Refonte_flux_BeneficiaireV1.1.xls
 			'Bénéficiaire VRSD0101' => array(

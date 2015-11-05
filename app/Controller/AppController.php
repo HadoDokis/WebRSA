@@ -217,7 +217,15 @@
 		 * @return void
 		 */
 		protected function _checkPermissions() {
-			if( !WebrsaPermissions::check( $this->name, $this->action ) ) {
+			$plugin = Inflector::camelize( $this->request->params['plugin'] );
+			$controller = empty( $plugin ) ? $this->name : "{$plugin}.{$this->name}";
+
+			// FIXME
+			if( $controller === 'Fluxcnaf.Fluxcnaf' ) {
+				return;
+			}
+
+			if( !WebrsaPermissions::check( $controller, $this->action ) ) {
 				throw new error403Exception( null );
 			}
 		}

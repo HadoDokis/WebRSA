@@ -1,7 +1,7 @@
 <?php
 	class FluxcnafController extends AppController
 	{
-		public $uses = array( 'Dossier', 'Fluxcnaf' );
+		public $uses = array( 'Dossier', 'Fluxcnaf.Fluxcnaf' );
 
 		public $aucunDroit = array( 'index' );
 
@@ -37,9 +37,43 @@
 			return $sql;
 		}
 
+		protected function _normalize( array $flux ) {
+			foreach( $flux as $path => $values ) {
+				sort( $values );
+				$flux[$path] = $values;
+			}
+
+			ksort( $flux );
+			return $flux;
+		}
+
+		protected function _diff( array $flux1, array $flux2 ) {
+			$result = array();
+
+			foreach( $flux1 as $path => $values ) {
+				if( !isset( $flux2[$path] ) ) {
+					$result[$path] = $values;
+				}
+				else {
+					$diff = array_diff( $values, $flux2[$path] );
+					if( !empty( $diff ) ) {
+						$result[$path] = $diff;
+					}
+				}
+			}
+
+			return $result;
+		}
+
 		public function index() {
 			$Conn = $this->Dossier->getDatasource();
-
+/*
+$vrsd0301 = $this->_normalize( $this->Fluxcnaf->flux['Bénéficiaire VRSD0301'] );
+$vrsd0101 = $this->_normalize( $this->Fluxcnaf->flux['Bénéficiaire VRSD0101'] );
+debug( $this->_diff( $vrsd0301, $vrsd0101 ) );
+debug( $this->_diff( $vrsd0101, $vrsd0301 ) );
+die();
+*/
 			$results = array();
 			$tables = array();
 			$missing = array();

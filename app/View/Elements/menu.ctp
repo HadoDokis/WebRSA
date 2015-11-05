@@ -390,7 +390,7 @@
 				'logs' => array( 'url' => array( 'controller' => 'visionneuses', 'action' => 'index' ) ),
 			),
 			'Flux CNAF' => array(
-				'url' => array( 'controller' => 'fluxcnaf', 'action' => 'index' )
+				'url' => array( 'plugin' => 'fluxcnaf', 'controller' => 'fluxcnaf', 'action' => 'index' )
 			),
 		),
 		'Déconnexion '.$this->Session->read( 'Auth.User.username' ) => array(
