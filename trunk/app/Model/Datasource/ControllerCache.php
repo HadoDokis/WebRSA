@@ -79,6 +79,7 @@
 					$commeDroit = array();
 					$crudMap = array();
 
+					// TODO: les contrôleurs des plugins ne sont pas pris en compte
 					$controllers = App::objects( 'controller');
 					if( !empty( $controllers ) ) {
 						foreach( $controllers as $controller ) {
