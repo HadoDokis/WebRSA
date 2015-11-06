@@ -264,3 +264,127 @@ msgstr "Supprimer la proposition"
 
 msgid "/Decisionsdossierspcgs66/filelink/#Decisiondossierpcg66.id#"
 msgstr "Liste des fichiers liés à la décision du dossier PCG"
+
+################################################################################
+# Nouveau Dossierpcg66
+################################################################################
+
+msgid "/Dossierspcgs66/index/:heading"
+msgstr "Dossiers PCGs concernant le Demandeur du RSA : #Personne.nom_complet#"
+
+msgid "/Dossierspcgs66/add"
+msgstr "Ajouter"
+
+msgid "Typepdo.libelle"
+msgstr "Type de PDO"
+
+msgid "Dossierpcg66.datereceptionpdo"
+msgstr "Date de réception de la PDO"
+
+msgid "Pole.user"
+msgstr "Gestionnaire du dossier"
+
+msgid "Dossierpcg66.etatdossierpcg_full"
+msgstr "Etat du dossier PDO"
+
+msgid "Personnepcg66.situationpdo_list_libelle"
+msgstr "Motifs de la personne"
+
+msgid "Personnepcg66.situationpdo_list_libelle_ulli"
+msgstr "Motifs de la personne"
+
+msgid "Dossierpcg66.bilan_de"
+msgstr "Présence d'un bilan de parcours ?"
+
+msgid "/Dossierspcgs66/view"
+msgstr "Voir"
+
+msgid "/dossierspcgs66/view/#Dossierpcg66.id#"
+msgstr "Voir le dossier"
+
+msgid "/dossierspcgs66/edit/#Dossierpcg66.id#"
+msgstr "Modifier le dossier"
+
+msgid "/Dossierspcgs66/cancel"
+msgstr "Annuler"
+
+msgid "/dossierspcgs66/cancel/#Dossierpcg66.id#"
+msgstr "Annuler"
+
+msgid "/Dossierspcgs66/delete"
+msgstr "Supprimer"
+
+msgid "/dossierspcgs66/delete/#Dossierpcg66.id#"
+msgstr "Supprimer le dossier"
+
+msgid "/Dossierspcgs66/add/:title"
+msgstr "Ajouter un dossier"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
