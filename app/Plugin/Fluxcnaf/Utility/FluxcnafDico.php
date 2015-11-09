@@ -23,7 +23,7 @@
 		 * @param string $file Le chemin vers le fichier <schema>Dico.xml
 		 * @return array
 		 */
-		public function enums( $file ) {
+		public static function enums( $file ) {
 			$xml = Xml::build( $file );
 
 			$enums = array();
@@ -64,7 +64,7 @@
 		 * @param array $list
 		 * @return array
 		 */
-		protected function _common( array $list ) {
+		protected static function _common( array $list ) {
 			$result = array();
 
 			foreach( $list as $name => $fields ) {
@@ -86,7 +86,7 @@
 		 * @param array $names Une liste nom du flux => chemin du fichier dico
 		 * @return array
 		 */
-		public function comparison( array $names ) {
+		public static function comparison( array $names ) {
 			$flux = $fields = Hash::normalize( array_keys( $names ) );
 			foreach( array_keys( $names ) as $name ) {
 				$flux[$name] = self::enums( $names[$name] );

@@ -13,11 +13,11 @@
 	/**
 	 * La classe FluxcnafSchemaShell ...
 	 *
-	 * sudo -u apache lib/Cake/Console/cake Fluxcnaf.FluxcnafSchema /tmp/vrsd0301.xsd,/tmp/vrsb0801.xsd
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafSchema /tmp/vrsd0301.xsd,/tmp/vrsb0801.xsd
 	 * FIXME: rien dans /tmp/vrsf0501.xsd ?
 	 *        -> les autres ont xsd:element/xsd:complexType/xsd:sequence/xsd:element
 	 *        -> vrsf0501 a xsd:complexType/xsd:sequence/xsd:element
-	 * sudo -u apache lib/Cake/Console/cake Fluxcnaf.FluxcnafSchema /tmp/vrsd0301.xsd,/tmp/virs0901.xsd,/tmp/vird0201.xsd,/tmp/vrsc0201.xsd
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafSchema /tmp/vrsd0301.xsd,/tmp/virs0901.xsd,/tmp/vird0201.xsd,/tmp/vrsc0201.xsd
 	 *
 	 * @see http://xemelios.org/user-guide/documents/rsa.html
 	 *
