@@ -481,6 +481,10 @@ $irregularPlural = array(
 	'requestmanager' => 'requestsmanager',
 	'requestgroup' => 'requestgroups',
 	'adresse_canton' => 'adresses_cantons',
+	// Tags
+	'categorietag' => 'categorietags',
+	'valeurtag' => 'valeurstags',
+	'tag' => 'tags'
 );
 
 /**

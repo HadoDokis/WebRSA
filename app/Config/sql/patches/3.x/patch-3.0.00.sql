@@ -84,6 +84,38 @@ CREATE TABLE adresses_cantons (
 ALTER TABLE adresses_cantons ADD CONSTRAINT adresses_cantons_unique_adresse_id_canton_id UNIQUE ( adresse_id );
 
 
+--------------------------------------------------------------------------------
+-- Marquage Tag
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS categorietags;
+CREATE TABLE categorietags (
+	id SERIAL			NOT NULL PRIMARY KEY,
+	name				VARCHAR(255) NOT NULL,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+
+DROP TABLE IF EXISTS valeurstags;
+CREATE TABLE valeurstags (
+	id SERIAL			NOT NULL PRIMARY KEY,
+	name				VARCHAR(255) NOT NULL,
+	categorietag_id		INTEGER DEFAULT NULL REFERENCES categorietags(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+
+DROP TABLE IF EXISTS tags;
+CREATE TABLE tags (
+	id SERIAL			NOT NULL PRIMARY KEY,
+	fk_value			INTEGER NOT NULL,
+	modele				VARCHAR(255) NOT NULL,
+	valeurtag_id		INTEGER DEFAULT NULL REFERENCES valeurstags(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire			TEXT,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
