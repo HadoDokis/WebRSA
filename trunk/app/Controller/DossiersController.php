@@ -386,6 +386,12 @@
 						'flash/error', array(), 'notice'
 					);
 				}
+				elseif ( !Hash::get($adresseFoyer, 'Adressefoyer.dtemm') ) {
+					$this->Session->setFlash(
+						'La date d\'emménagement pour la dernière adresse n\'est pas renseignée.',
+						'flash/notice', array(), 'notice'
+					);
+				}
 				else {
 					$date = new DateTime(Hash::get($adresseFoyer, 'Adressefoyer.dtemm'));
 					$olddate = $date->format('d/m/Y');
