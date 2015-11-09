@@ -493,6 +493,22 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Tag' => array(
+				'className' => 'Tag',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Tag.modele = \'Personne\'',
+					'Tag.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Personnepcg66' => array(
 				'className' => 'Personnepcg66',
 				'foreignKey' => 'personne_id',

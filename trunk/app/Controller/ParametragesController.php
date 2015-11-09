@@ -39,14 +39,16 @@
 		 * Premier niveau du paramétrage, suivant le département.
 		 */
 		public function index() {
+			$departement = (integer)Configure::read( 'Cg.departement' );
+			
 			$links = array(
-				'Actions d\'insertion' => ( Configure::read( 'Cg.departement' ) != 66 )
+				'Actions d\'insertion' => ( $departement !== 66 )
 					? array( 'controller' => 'actions', 'action' => 'index' )
 					: null
 				,
 				'APREs' => array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'indexparams' ),
 				'Cantons' => array( 'controller' => 'cantons', 'action' => 'index' ),
-				'CERs' => ( Configure::read( 'Cg.departement' ) == 93 )
+				'CERs' => ( $departement === 93 )
 					? array( 'controller' => 'cers93', 'action' => 'indexparams' )
 					: null
 				,
@@ -54,7 +56,7 @@
 					? array( 'controller' => 'parametrages', 'action' => 'cataloguesromesv3' )
 					: null
 				,
-				'CUIs' => ( Configure::read( 'Cg.departement' ) == 66 )
+				'CUIs' => ( $departement === 66 )
 					? array( 'controller' => 'cuis66', 'action' => 'indexparams' )
 					: null
 				,
@@ -64,19 +66,19 @@
 					: null
 				,
 				'Équipes pluridisciplinaires' => array( 'controller' => 'gestionseps', 'action' => 'index' ),
-				'Fiches de prescription' => ( Configure::read( 'Cg.departement' ) == 93 )
+				'Fiches de prescription' => ( $departement === 93 )
 					? array( 'controller' => 'parametrages', 'action' => 'fichesprescriptions93' )
 					: null
 				,
-				'Liste des sanctions' => ( Configure::read( 'Cg.departement' ) == 58 )
+				'Liste des sanctions' => ( $departement === 58 )
 					? array( 'controller' => 'listesanctionseps58', 'action' => 'index' )
 					: null
 				,
-				'Module FSE' => ( Configure::read( 'Cg.departement' ) == 93 )
+				'Module FSE' => ( $departement === 93 )
 					? array( 'controller' => 'parametrages', 'action' => 'modulefse93' )
 					: null
 				,
-				'Motifs de non validation de CER' => ( Configure::read( 'Cg.departement' ) == 66 )
+				'Motifs de non validation de CER' => ( $departement === 66 )
 					? array( 'controller' => 'motifscersnonvalids66', 'action' => 'index' )
 					: null
 				,
@@ -86,12 +88,16 @@
 				'Référents pour les structures' => array( 'controller' => 'referents', 'action' => 'index' ),
 				'Rendez-vous' => array( 'controller' => 'gestionsrdvs', 'action' => 'index' ),
 				'Services instructeurs' => array( 'controller' => 'servicesinstructeurs', 'action' => 'index' ),
-				'Sites d\'actions médico-sociale COVs' => ( Configure::read( 'Cg.departement' ) == 58 )
+				'Sites d\'actions médico-sociale COVs' => ( $departement === 58 )
 					? array( 'controller' => 'sitescovs58', 'action' => 'index' )
 					: null
 				,
 				'Structures référentes' => array( 'controller' => 'structuresreferentes', 'action' => 'index' ),
-				'Types d\'actions' => ( Configure::read( 'Cg.departement' ) != 66 )
+				'Tags' => ( $departement === 66 )
+					? array( 'controller' => 'tags', 'action' => 'indexparams' )
+					: null
+				,
+				'Types d\'actions' => ( $departement !== 66 )
 					? array( 'controller' => 'typesactions', 'action' => 'index' )
 					: null
 				,
