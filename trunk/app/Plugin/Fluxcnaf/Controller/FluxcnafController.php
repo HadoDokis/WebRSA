@@ -3,7 +3,7 @@
 	{
 		public $uses = array( 'Dossier', 'Fluxcnaf.Fluxcnaf' );
 
-		public $aucunDroit = array( 'index' );
+		public $aucunDroit = array( 'index', 'diffs' );
 
 		protected function _column($column) {
 			return strtolower( str_replace( '-', '', $column) );
@@ -65,15 +65,20 @@
 			return $result;
 		}
 
+		public function diffs() {
+			$vrsd0301 = $this->_normalize( $this->Fluxcnaf->flux['Bénéficiaire VRSD0301'] );
+			$vrsd0101 = $this->_normalize( $this->Fluxcnaf->flux['Bénéficiaire VRSD0101'] );
+
+			$results = array(
+				'vrsd0301_vrsd0101' => $this->_diff( $vrsd0301, $vrsd0101 ),
+				'vrsd0101_vrsd0301' => $this->_diff( $vrsd0101, $vrsd0301 )
+			);
+			$this->set( compact( 'results' ) );
+		}
+
 		public function index() {
 			$Conn = $this->Dossier->getDatasource();
-/*
-$vrsd0301 = $this->_normalize( $this->Fluxcnaf->flux['Bénéficiaire VRSD0301'] );
-$vrsd0101 = $this->_normalize( $this->Fluxcnaf->flux['Bénéficiaire VRSD0101'] );
-debug( $this->_diff( $vrsd0301, $vrsd0101 ) );
-debug( $this->_diff( $vrsd0101, $vrsd0301 ) );
-die();
-*/
+
 			$results = array();
 			$tables = array();
 			$missing = array();

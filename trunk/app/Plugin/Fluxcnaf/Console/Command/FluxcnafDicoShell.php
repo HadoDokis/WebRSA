@@ -13,11 +13,15 @@
 	/**
 	 * La classe FluxcnafDicoShell ...
 	 *
-	 * sudo -u apache lib/Cake/Console/cake Fluxcnaf.FluxcnafDico locale /tmp/vrsd0301DICO.xml
-	 * sudo -u apache lib/Cake/Console/cake Fluxcnaf.FluxcnafDico compare /tmp/vrsd0301DICO.xml,/tmp/vrsb0801DICO.xml
-	 * sudo -u apache lib/Cake/Console/cake Fluxcnaf.FluxcnafDico compare /tmp/vrsd0301DICO.xml,/tmp/virs0901DICO.xml,/tmp/vird0201DICO.xml,/tmp/vrsc0201DICO.xml
-	 * INFO: voir FIXME dans FluxcnafSchemaShell
-	 * sudo -u apache lib/Cake/Console/cake Fluxcnaf.FluxcnafDico compare /tmp/vrsd0301DICO.xml,/tmp/virs0901DICO.xml,/tmp/vird0201DICO.xml,/tmp/vrsc0201DICO.xml,/tmp/vrsf0501DICO.xml
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafDico locale /tmp/vrsd0301DICO.xml
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafDico locale /tmp/vrsd0301DICO.xml,/tmp/virs0901DICO.xml,/tmp/vird0201DICO.xml,/tmp/vrsc0201DICO.xml,/tmp/vrsf0501DICO.xml
+	 *
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafDico in_list /tmp/vrsd0301DICO.xml
+	 * INFO: il en manque un (/tmp/vrsf0501DICO.xml), mais il semblerait que l'on ne l'intègre pas
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafDico in_list /tmp/vrsd0301DICO.xml,/tmp/virs0901DICO.xml,/tmp/vird0201DICO.xml,/tmp/vrsc0201DICO.xml,/tmp/vrsf0501DICO.xml
+	 *
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafDico compare /tmp/vrsd0301DICO.xml,/tmp/vrsb0801DICO.xml
+	 * sudo -u www-data lib/Cake/Console/cake Fluxcnaf.FluxcnafDico compare /tmp/vrsd0301DICO.xml,/tmp/virs0901DICO.xml,/tmp/vird0201DICO.xml,/tmp/vrsc0201DICO.xml,/tmp/vrsf0501DICO.xml
 	 *
 	 * @see http://xemelios.org/user-guide/documents/rsa.html
 	 *
@@ -62,10 +66,13 @@
 		 */
 		public $commands = array(
 			'locale' => array(
-				'help' => "Génère un fichier de traductions à partir des enumérations d'un fichier <schema>Dico.xml"
+				'help' => "Génère un fichier de traductions à partir des enumérations de fichiers <schema>Dico.xml"
 			),
 			'compare' => array(
 				'help' => "Génère un fichier HTML de comparaison des valeurs finies de balises (champs) pour un ensemble de fichiers <schema>Dico.xml"
+			),
+			'in_list' => array(
+				'help' => "Génère un fichier PHP contenant les règles de validation inList à partir des enumérations de fichiers <schema>Dico.xml"
 			)
 		);
 
@@ -191,7 +198,7 @@ FOOBAR;
 				$block = "{$sep}\n# {$field}\n{$sep}\n\n";
 				foreach( $values as $msgid => $msgstr ) {
 					$msgid = str_replace( '"', '\\"', $msgid );
-					$msgstr = str_replace( '"', '\\"', $msgstr );
+					$msgstr = preg_replace( '/\s+/', ' ', str_replace( '"', '\\"', $msgstr ) );
 
 					$block .= "msgid \"ENUM::{$field}::{$msgid}\"\nmsgstr \"{$msgstr}\"\n\n";
 				}
@@ -211,23 +218,68 @@ FOOBAR;
 			return $po."\n\n".$content;
 		}
 
+		protected function _enumsToInList( array $enums ) {
+			$content = array();
+
+			foreach( $enums as $field => $values ) {
+				$field = strtolower( $field );
+				$values = "array( '".implode( "', '", array_keys( $values ) )."' )";
+				$content[] = "\t'{$field}' => array(\n\t\t'inList' => array(\n\t\t\t'rule' => array( 'inList', {$values} ),\n\t\t\t'message' => null,\n\t\t\t'allowEmpty' => true\n\t\t),\n\t)";
+			}
+
+			$content = implode( ",\n", $content );
+
+			return "<?php\n\$validate = array(\n".$content."\n);\n?>";
+		}
+
+		protected function _allEnums( array $files ) {
+			$enums = array();
+
+			foreach( $files as $file ) {
+				$tmp = FluxcnafDico::enums( $file );
+				foreach( $tmp as $field => $values ) {
+					if( isset( $enums[$field] ) === false ) {
+						$enums[$field] = $values;
+					}
+					else {
+						$enums[$field] = $enums[$field] + $values;
+					}
+				}
+			}
+
+			return $enums;
+		}
+
 		/**
 		 * Génère un fichier de traductions (.po) à partir des valeurs des
 		 * énumérations d'un fichier <schema>Dico.xml.
+		 *
+		 * TODO: permettre de spécifier plusieurs fichiers, voir in_list -> attention à l'ordre pour les traductions multiples
 		 */
 		public function locale() {
 			$files = $this->_files();
-			if( count($files) > 1 ) {
-				$msg = 'Cette commande n\'accepte qu\'un fichier à la fois';
-				throw new ConsoleException( $msg );
-			}
-			$name = key($files);
-			$file = current($files);
 
-			$enums = FluxcnafDico::enums( $file );
+			$enums = $this->_allEnums( $files );
 			$content = $this->_enumsToPo( $enums );
 
-			$out = $this->_out( LOGS.'locale_'.$name.'.po' );
+			$out = $this->_out( LOGS.'locale_'.implode( '_', array_keys( $files ) ).'.po' );
+			$success = $this->createFile( $out, $content );
+
+			$this->_stop( $success ? self::SUCCESS : self::ERROR );
+		}
+
+		/**
+		 * Génère un fichier PHP contenant les règles de validation inList à
+		 * partir des enumérations de fichiers <schema>Dico.xml
+		 */
+		public function in_list() {
+			$files = $this->_files();
+
+			$enums = $this->_allEnums( $files );
+
+			$content = $this->_enumsToInList( $enums );
+
+			$out = $this->_out( LOGS.'in_list_'.implode( '_', array_keys( $files ) ).'.php' );
 			$success = $this->createFile( $out, $content );
 
 			$this->_stop( $success ? self::SUCCESS : self::ERROR );

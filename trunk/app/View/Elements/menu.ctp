@@ -390,7 +390,14 @@
 				'logs' => array( 'url' => array( 'controller' => 'visionneuses', 'action' => 'index' ) ),
 			),
 			'Flux CNAF' => array(
-				'url' => array( 'plugin' => 'fluxcnaf', 'controller' => 'fluxcnaf', 'action' => 'index' )
+				'Résumé' => array(
+					'url' => array( 'plugin' => 'fluxcnaf', 'controller' => 'fluxcnaf', 'action' => 'index' ),
+					'title' => 'Comparaison des flux CNAF',
+				),
+				'VRSD0301, VRSD0101' => array(
+					'url' => array( 'plugin' => 'fluxcnaf', 'controller' => 'fluxcnaf', 'action' => 'diffs' ),
+					'title' => 'Comparaison entre les flux VRSD0301 et VRSD0101',
+				),
 			),
 		),
 		'Déconnexion '.$this->Session->read( 'Auth.User.username' ) => array(
