@@ -42,7 +42,10 @@ function uncheckable( radio ){
 			if ( radio.checked && radio.state ){
 				radio.state = false;
 				radio.checked = false;
-				radio.simulate('change');
+				
+				if (typeof radio.simulate === 'function') {
+					radio.simulate('change');
+				}
 			}
 			else if ( radio.checked ){
 				radio.state = true;
@@ -251,7 +254,10 @@ document.observe( "dom:loaded", function(){
 	$$('input[type="radio"].uncheckable').each(function( radio ){
 		// Ajoute un hidden vide si le bouton n'en possède pas
 		var parent = radio.up('fieldset');
-		var hidden = parent !== null ? parent.select('input[type="hidden"][name="' + radio.name + '"]').first() : undefined;
+		var hidden = parent !== undefined ? parent.select('input[type="hidden"][name="' + radio.name + '"]').first() : undefined;
+		if ( parent === undefined ){
+			parent = radio.up();
+		}
 		if ( hidden === undefined ){
 			parent.insert({top: '<input type="hidden" name="' + radio.name + '" value="" />'});
 		}

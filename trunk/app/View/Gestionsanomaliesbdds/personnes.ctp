@@ -158,13 +158,22 @@
 				foreach( $records as $i => $record ) {
 					$checked = '';
 					$inputType = ( $association == 'hasMany' ? 'checkbox' : 'radio' );
+					$classList = array();
+					$uncheckableRadioModelList = array(
+						'Dsp',
+						'Nonoriente66'
+					);
 
 					if( isset( $this->request->data[$modelName]['id'] ) && in_array( $record[$modelName]['id'], $this->request->data[$modelName]['id'] ) ) {
 						$checked = 'checked="checked"';
 					}
+					
+					if ( in_array($modelName, $uncheckableRadioModelList) ) {
+						$classList[] = 'uncheckable';
+					}
 
 					$cells = array(
-						"<label><input name=\"data[{$modelName}][id][]\" id=\"{$modelName}Id{$i}\" value=\"{$record[$modelName]['id']}\" type=\"{$inputType}\" {$checked} />Garder</label>",
+						"<label><input name=\"data[{$modelName}][id][]\" id=\"{$modelName}Id{$i}\" value=\"{$record[$modelName]['id']}\" type=\"{$inputType}\" {$checked} class=\"".implode(' ', $classList)."\" />Garder</label>",
 						h( $record[$modelName]['id'] ),
 						h( $record['Personne']['id'] ),
 					);
