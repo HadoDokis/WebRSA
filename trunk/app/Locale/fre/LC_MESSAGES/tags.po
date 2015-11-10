@@ -1,0 +1,53 @@
+# Traductions de tags.po
+# @license: Expression license is undefined on line 3, column 15 in Templates/CakePHP/CakePHP locale.po.
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Tags/index/:heading"
+msgstr "Tags #Info.tag#"
+
+msgid "/Tags/add"
+msgstr "Ajouter"
+
+msgid "/Tags/add/:title"
+msgstr "Ajouter"
+
+msgid "/Tags/add/:heading"
+msgstr "Ajout d'un tag"
+
+msgid "/Tags/edit/:heading"
+msgstr "Modification d'un tag"
+
+msgid "Tag.valeurtag_id"
+msgstr "Valeur du Tag"
+
+msgid "Tag.commentaire"
+msgstr "Commentaire"
+
+msgid "/Tags/edit"
+msgstr "Modifier"
+
+msgid "/Tags/delete"
+msgstr "Supprimer"
+
+msgid "/tags/edit/#Tag.id#"
+msgstr "Modifier"
+
+msgid "/tags/delete/#Tag.id#"
+msgstr "Supprimer"
+
+msgid "Categorietag.name"
+msgstr "Catégorie du tag"
+
+msgid "Valeurtag.name"
+msgstr "Nom du tag"
+
+msgid "Tag.created"
+msgstr "Taggé le"

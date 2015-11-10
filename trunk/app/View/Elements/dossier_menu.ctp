@@ -1,5 +1,5 @@
 <?php
-	$departement = Configure::read( 'Cg.departement' );
+	$departement = (integer)Configure::read( 'Cg.departement' );
 
 	/*
 	* INFO: Parfois la variable a le nom personne_id, parfois personneId
@@ -237,6 +237,14 @@
 					'url' => '#',
 					'Ressources' => array( 'url' => array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] ) ),
 				);
+				
+				// Informations personne
+				if( $departement === 66 ) {
+					$subAllocataire['Informations personne'] = array(
+						'url' => '#',
+						'Tags allocataire' => array( 'url' => array( 'controller' => 'tags', 'action' => 'index', 'Personne', $personne['id'] ) ),
+					);
+				}
 			}
 
 			// INFO: on ajoute des espaces à la clé pour éviter d'écraser avec les doublons
@@ -264,6 +272,13 @@
 				'Suivi instruction du dossier' => array( 'url' => array( 'controller' => 'suivisinstruction', 'action' => 'index', $dossier['Dossier']['id'] ) ),
 			)
 		);
+		
+		// Tags du foyer
+		if( $departement === 66 ) {
+			$items['Informations foyer'] += array(
+				'Tags du foyer' => array( 'url' => array( 'controller' => 'tags', 'action' => 'index', 'Foyer', $dossier['Foyer']['id'] ) ),
+			);
+		}
 
 		// Dossier PCG (CG 66)
 		if( $departement == 66 ) {

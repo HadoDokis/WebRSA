@@ -49,16 +49,77 @@
 				'order' => null,
 				'counterCache' => null
 			),
+			/**
+			 * INFO : Les modeles liés en fk_value doivent avoir la function dossierId()
+			 */
 			'Personne' => array(
 				'className' => 'Personne',
-				'foreignKey' => false,
+				'foreignKey' => 'fk_value',
 				'conditions' => array(
-					'Tag.modele = \'Personne\'',
-					'Tag.fk_value = {$__cakeID__$}'
+					'Tag.modele = \'Personne\''
+				),
+				'fields' => '',
+				'order' => ''
+			),
+			'Foyer' => array(
+				'className' => 'Foyer',
+				'foreignKey' => 'fk_value',
+				'conditions' => array(
+					'Tag.modele = \'Foyer\''
 				),
 				'fields' => '',
 				'order' => ''
 			),
 		);
+		
+		/**
+		 * Récupère les données d'un tag
+		 * 
+		 * @param integer $tag_id
+		 * @return array
+		 */
+		public function findTagById( $tag_id ) {
+			return $this->find('first', $this->queryTagByCondition(array('Tag.id' => $tag_id)));
+		}
+		
+		/**
+		 * Trouve tout les tags d'une personne
+		 * 
+		 * @param string $modele
+		 * @param integer $id
+		 * @return array
+		 */
+		public function findTagModel( $modele, $id ) {
+			$conditions = array(
+				'modele' => $modele,
+				'fk_value' => $id
+			);
+			
+			$query = $this->queryTagByCondition($conditions);
+			
+			return $this->find('all', $query);
+		}
+		
+		/**
+		 * Renvoi la query de base pour les tags
+		 * 
+		 * @param array $conditions
+		 * @return array
+		 */
+		public function queryTagByCondition( $conditions ) {
+			return array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Valeurtag->fields(),
+					$this->Valeurtag->Categorietag->fields()
+				),
+				'joins' => array(
+					$this->join('Valeurtag'),
+					$this->Valeurtag->join('Categorietag')
+				),
+				'contain' => false,
+				'conditions' => $conditions
+			);
+		}
 	}
 ?>

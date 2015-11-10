@@ -246,7 +246,22 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Tag' => array(
+				'className' => 'Tag',
+				'foreignKey' => 'fk_value',
+				'dependent' => false,
+				'conditions' => array(
+					'Tag.modele = \'Foyer\''
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		/**
