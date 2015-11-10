@@ -44,7 +44,7 @@
 				array(
 					 'Adresse.numvoie',
 					 'Adresse.libtypevoie' => array( 'required' => ValidateAllowEmptyUtility::isRequired('Adresse.libtypevoie'), 'type' => 'select', 'options' => $options['Adresse']['libtypevoie'], 'empty' => true ),
-					 'Adresse.nomvoie'  => array( 'required' => true ),
+					 'Adresse.nomvoie'  => array( 'required' => ValidateAllowEmptyUtility::isRequired('Adresse.nomvoie') ),
 					 'Adresse.complideadr',
 					 'Adresse.codepos' => array( 'required' => true),
 					 'Adresse.nomcom' => array( 'required' => true ),

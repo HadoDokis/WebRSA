@@ -974,6 +974,7 @@
 	 * Validation parametrable pour l'allowEmpty
 	 */
 	Configure::write('ValidateAllowEmpty.Adresse.libtypevoie', true);
+	Configure::write('ValidateAllowEmpty.Adresse.nomvoie', true);
 		
 	/**
 	 * Permet de désactiver le "cadenas" situé en haut à droite
