@@ -16,17 +16,46 @@
 	 */
 	class RequestgroupsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Requestgroups';
-		public $uses = array( 'Requestgroup' );
-		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
-		public $components = array( 'Default' );
 
 		/**
-		*   Ajout à la suite de l'utilisation des nouveaux helpers
-		*   - default.php
-		*   - theme.php
-		*/
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default'
+		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Xform', 
+			'Default', 
+			'Default2', 
+			'Theme'
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Requestgroup'
+		);
+
+		/**
+		 * Listing du contenu de la table
+		 */
 		public function index() {
 			$this->Requestgroup->Behaviors->attach( 'Occurences' );
   
@@ -44,18 +73,18 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Ajout d'une entrée
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, 'edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 * Modification d'une entrée
+		 * 
+		 * @param integer $id
+		 */
 		public function edit( $id = null ) {
             // Retour à la liste en cas d'annulation
             if( isset( $this->request->data['Cancel'] ) ) {
@@ -93,21 +122,28 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Suppression d'une entrée
+		 * 
+		 * @param integer $id
+		 */
 		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
 
 		/**
-		*
-		*/
-
+		 * Visualisation de la table
+		 * 
+		 * @param integer $id
+		 */
 		public function view( $id ) {
 			$this->Default->view( $id );
 		}
 		
+		/**
+		 * Options pour la vue
+		 * 
+		 * @return array
+		 */
 		protected function _options() {
 			$options['Requestgroup']['parent_id'] = $this->Requestgroup->find('list');
 			

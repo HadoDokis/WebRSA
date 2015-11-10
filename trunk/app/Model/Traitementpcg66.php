@@ -326,6 +326,21 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Dataimpression' => array(
+				'className' => 'Dataimpression',
+				'foreignKey' => 'fk_value',
+				'dependent' => false,
+				'conditions' => array(
+					'Dataimpression.modele = \'Traitementpcg66\'',
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Decisiontraitementpcg66' => array(
 				'className' => 'Decisiontraitementpcg66',
 				'foreignKey' => 'traitementpcg66_id',
@@ -690,6 +705,144 @@
 				array()
 			);
 		}
+		
+		/**
+		 * Données nécéssaire pour l'impression d'un courrier
+		 * 
+		 * @param integer $id
+		 * @param integer $user_id
+		 * @param boolean $get_saved_data On récupère les éventuelles données sauvegardé ?
+		 * @return array
+		 */
+		public function getDataForPdfCourrier( $id, $user_id, $get_saved_data = true ) {
+			$data = $get_saved_data ? 
+				$this->Dataimpression->find('first', 
+					array(
+						'fields' => 'Dataimpression.data',
+						'conditions' => array(
+							'Dataimpression.modele' => 'Traitementpcg66',
+							'Dataimpression.fk_value' => $id
+						),
+						'order' => array('Dataimpression.id' => 'DESC')
+					)
+				)
+				: null
+			;
+
+			if ( !empty($data) ) {
+				$json = Hash::get($data, 'Dataimpression.data');
+				$data = json_decode($json, true);
+			}
+			else {
+				$joins = array(
+					$this->join( 'Personnepcg66' ),
+					$this->Personnepcg66->join( 'Personnepcg66Situationpdo' ),
+					$this->Personnepcg66->join( 'Dossierpcg66' ),
+					$this->Personnepcg66->join( 'Personne' ),
+					$this->Personnepcg66->Personne->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personnepcg66->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personnepcg66->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personnepcg66->Dossierpcg66->join( 'Foyer' ),
+					$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Dossier' ),
+					$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Modeletraitementpcg66' ),
+					$this->Modeletraitementpcg66->join( 'Modeletypecourrierpcg66' ),
+					$this->join( 'Serviceinstructeur' )
+				);
+
+				$conditions = array(
+					'Traitementpcg66.id' => $id,
+					'OR' => array(
+						'Orientstruct.id IS NULL',
+						'Orientstruct.id IN ( '.$this->Personnepcg66->Personne->Orientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
+					),
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
+					)
+				);
+
+				$queryData = array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Modeletraitementpcg66->fields(),
+						$this->Modeletraitementpcg66->Modeletypecourrierpcg66->fields(),
+						$this->Personnepcg66->Personne->Bilanparcours66->fields(),
+						$this->Personnepcg66->Personne->Orientstruct->fields(),
+						$this->Personnepcg66->Personne->Orientstruct->Structurereferente->fields(),
+						$this->Personnepcg66->Personne->Bilanparcours66->fields(),
+						array(
+							'Adresse.numvoie',
+							'Adresse.libtypevoie',
+							'Adresse.nomvoie',
+							'Adresse.complideadr',
+							'Adresse.compladr',
+							'Adresse.lieudist',
+							'Adresse.numcom',
+							'Adresse.codepos',
+							'Adresse.nomcom',
+							'Adresse.pays',
+							'Dossier.numdemrsa',
+							'Dossier.dtdemrsa',
+							'Dossier.matricule',
+							'Personne.qual',
+							'Personne.nom',
+							'Personne.prenom',
+							'Dossierpcg66.user_id',
+							'Dossierpcg66.orgpayeur',
+							'Personne.dtnai',
+							'Personne.nir',
+						),
+						$this->Serviceinstructeur->fields()
+					),
+					'joins' => $joins,
+					'conditions' => $conditions,
+					'contain' => false
+				);
+
+				$queryData = $this->joinCouple($queryData);
+
+				$data = $this->find( 'first', $queryData );
+
+				$user = $this->User->find(
+					'first',
+					array(
+						'conditions' => array(
+							'User.id' => $user_id
+						),
+						'contain' => false
+					)
+				);
+				$data = Set::merge( $data, $user );
+
+				$gestionnaire['Dossierpcg66'] = $this->User->find(
+					'first',
+					array(
+						'fields' => array(
+							$this->User->sqVirtualField( 'nom_complet' )
+						),
+						'conditions' => array(
+							'User.id' => $data['Dossierpcg66']['user_id']
+						),
+						'contain' => false
+						)
+					);
+
+				$data = Set::merge( $data, $gestionnaire );
+
+				// Dates calculées sur les 3 mois suivants la date de début de prise en compte du courrier
+				$datedebutCourrier = $data['Modeletraitementpcg66']['montantdatedebut'];
+				if( !empty( $datedebutCourrier ) ) {
+					$datedebutCourrier = strtotime( $datedebutCourrier );
+					foreach( array( '0', '1', '2' ) as $i ) {
+						$data['Modeletraitementpcg66']["moisprisencompte$i"] = date("Y-m-d", strtotime("+". $i ." months", $datedebutCourrier));
+					}
+				}
+			}
+			
+			return $data;
+		}
 
 
 		/**
@@ -697,114 +850,9 @@
 		*/
 
 		public function getPdfModeleCourrier( $id, $user_id) {
-
-			$joins = array(
-				$this->join( 'Personnepcg66' ),
-				$this->Personnepcg66->join( 'Personnepcg66Situationpdo' ),
-				$this->Personnepcg66->join( 'Dossierpcg66' ),
-				$this->Personnepcg66->join( 'Personne' ),
-				$this->Personnepcg66->Personne->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Personnepcg66->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Personnepcg66->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Personnepcg66->Dossierpcg66->join( 'Foyer' ),
-				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Dossier' ),
-				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Modeletraitementpcg66' ),
-				$this->Modeletraitementpcg66->join( 'Modeletypecourrierpcg66' ),
-				$this->join( 'Serviceinstructeur' )
-			);
-
-			$conditions = array(
-				'Traitementpcg66.id' => $id,
-				'OR' => array(
-					'Orientstruct.id IS NULL',
-					'Orientstruct.id IN ( '.$this->Personnepcg66->Personne->Orientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
-				),
-				'OR' => array(
-					'Adressefoyer.id IS NULL',
-					'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
-				)
-			);
-
-			$queryData = array(
-				'fields' => array_merge(
-					$this->fields(),
-					$this->Modeletraitementpcg66->fields(),
-					$this->Modeletraitementpcg66->Modeletypecourrierpcg66->fields(),
-					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
-					$this->Personnepcg66->Personne->Orientstruct->fields(),
-					$this->Personnepcg66->Personne->Orientstruct->Structurereferente->fields(),
-					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
-					array(
-						'Adresse.numvoie',
-						'Adresse.libtypevoie',
-						'Adresse.nomvoie',
-						'Adresse.complideadr',
-						'Adresse.compladr',
-						'Adresse.lieudist',
-						'Adresse.numcom',
-						'Adresse.codepos',
-						'Adresse.nomcom',
-						'Adresse.pays',
-						'Dossier.numdemrsa',
-						'Dossier.dtdemrsa',
-						'Dossier.matricule',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Dossierpcg66.user_id',
-						'Dossierpcg66.orgpayeur',
-						'Personne.dtnai',
-						'Personne.nir',
-					),
-					$this->Serviceinstructeur->fields()
-				),
-				'joins' => $joins,
-				'conditions' => $conditions,
-				'contain' => false
-			);
+			$data = $this->getDataForPdfCourrier($id, $user_id);
 			
-			$queryData = $this->joinCouple($queryData);
-
-			$data = $this->find( 'first', $queryData );
-
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $user_id
-					),
-					'contain' => false
-				)
-			);
-			$data = Set::merge( $data, $user );
-
 			$modeleodtname = Set::classicExtract( $data, 'Modeletypecourrierpcg66.modeleodt' );
-
-			// Ajout Florent CG66
-			$gestionnaire['Dossierpcg66'] = $this->User->find(
-				'first',
-				array(
-					'fields' => array(
-                        $this->User->sqVirtualField( 'nom_complet' )
-                    ),
-					'conditions' => array(
-						'User.id' => $data['Dossierpcg66']['user_id']
-					),
-					'contain' => false
-					)
-				);
-
-			$data = Set::merge( $data, $gestionnaire );
-			// Fin Ajout Florent CG66
-
-			$options = array(
-				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
-				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
-			);
-			$options = Set::merge( $options, $this->enums() );
-
 			$modeletraitementpcg66_id = Set::classicExtract( $data, 'Modeletraitementpcg66.id' );
 			$piecesmanquantes = $this->Modeletraitementpcg66->find(
 				'all',
@@ -823,17 +871,11 @@
 				)
 			);
 
-			// Dates calculées sur les 3 mois suivants la date de début de prise en compte du courrier
-			$datedebutCourrier = $data['Modeletraitementpcg66']['montantdatedebut'];
-			if( !empty( $datedebutCourrier ) ) {
-				$datedebutCourrier = strtotime( $datedebutCourrier );
-				foreach( array( '0', '1', '2' ) as $i ) {
-					$data['Modeletraitementpcg66']["moisprisencompte$i"] = date("Y-m-d", strtotime("+". $i ." months", $datedebutCourrier));
-				}
-			}
-// debug($piecesmanquantes);
-// debug($data);
-// die();
+			$options = array(
+				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
+				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
+			);
+			$options = Set::merge( $options, $this->enums() );
 
 			return $this->ged(
 				array(

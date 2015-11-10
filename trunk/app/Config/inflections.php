@@ -484,7 +484,9 @@ $irregularPlural = array(
 	// Tags
 	'categorietag' => 'categorietags',
 	'valeurtag' => 'valeurstags',
-	'tag' => 'tags'
+	'tag' => 'tags',
+	// Conservation des données d'impression
+	'dataimpression' => 'dataimpressions',
 );
 
 /**

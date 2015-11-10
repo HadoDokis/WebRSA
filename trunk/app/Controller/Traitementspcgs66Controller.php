@@ -1028,12 +1028,27 @@ class Traitementspcgs66Controller extends AppController {
 
         $pdf = $this->Traitementpcg66->getPdfModeleCourrier($id, $this->Session->read('Auth.User.id'));
 		
-		$this->Traitementpcg66->begin();
-		$success = $this->Traitementpcg66->updateAllUnbound( 
-			array( 'etattraitementpcg' => "'attente'" ),
-			array( 'id' => $id, "etattraitementpcg IN ('contrôler', 'imprimer')" )
+		$query = array(
+			'fields' => array( 'Traitementpcg66.id', 'Traitementpcg66.etattraitementpcg' ),
+			'contain' => false,
+			'conditions' => array( 'Traitementpcg66.id' => $id )
 		);
+		$data = $this->Traitementpcg66->find( 'first', $query );
 		
+		$this->assert( !empty($data), 'error404' );
+
+		$this->Traitementpcg66->begin();
+
+		$success = true;
+		if( in_array( $data['Traitementpcg66']['id'], array( 'contrôler', 'imprimer' ) ) ) {
+			$data["Traitementpcg66"]['etattraitementpcg'] = 'attente';
+			$success = $this->Traitementpcg66->save($data['Traitementpcg66']);
+			$success = $this->Traitementpcg66->updateAllUnbound( 
+				array( 'etattraitementpcg' => "'attente'" ),
+				array( 'id' => $id )
+			);
+		}
+	
         if ($pdf && $success) {
 			$this->Traitementpcg66->commit();
             $this->Gedooo->sendPdfContentToClient($pdf, 'ModeleCourrier.pdf');
@@ -1150,6 +1165,14 @@ class Traitementspcgs66Controller extends AppController {
 				),
 				array( 'id' => $id, )
 			);
+			
+			$dataCourrier = $this->Traitementpcg66->getDataForPdfCourrier($id, $this->Session->read('Auth.User.id'), false);
+			$data = array(
+				'modele' => 'Traitementpcg66',
+				'fk_value' => $id,
+				'data' => json_encode($dataCourrier)
+			);
+			$success = $success && $this->Traitementpcg66->Dataimpression->save($data);
             
             if ($success) {
                 $this->Traitementpcg66->commit();
