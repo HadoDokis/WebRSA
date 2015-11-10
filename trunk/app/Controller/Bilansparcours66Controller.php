@@ -44,8 +44,8 @@
 
 		public $commeDroit = array(
 			'add' => 'Bilansparcours66:edit',
-			'search' => 'Criterebilanparcours66:index',
-			'exportcsv' => 'Criterebilanparcours66:exportcsv',
+			'search' => 'Criteresbilansparcours66:index',
+			'exportcsv' => 'Criteresbilansparcours66:exportcsv',
 		);
 
 		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -1190,7 +1190,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66New' );
 			$Recherches->search();
 			$this->Bilanparcours66->validate = array();
 		}
@@ -1199,7 +1199,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66New' );
 			$Recherches->exportcsv();
 		}
 	}

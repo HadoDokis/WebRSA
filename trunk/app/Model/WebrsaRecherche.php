@@ -72,6 +72,20 @@
 				'component' => 'WebrsaRecherchesApresEligibiliteNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Bilansparcours66.search' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Bilanparcours66',
+				'modelRechercheName' => 'WebrsaRechercheBilanparcours66',
+				'component' => 'WebrsaRecherchesBilansparcours66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Bilansparcours66.exportcsv' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Bilanparcours66',
+				'modelRechercheName' => 'WebrsaRechercheBilanparcours66',
+				'component' => 'WebrsaRecherchesBilansparcours66New',
+				'keys' => array( 'results.fields' )
+			),
 			'Contratsinsertion.search' => array(
 				'modelName' => 'Contratinsertion',
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
@@ -215,22 +229,26 @@
 				'keys' => array( 'results.fields' )
 			),
 			'Propospdos.search' => array(
+				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Propopdo',
 				'component' => 'WebrsaRecherchesPropospdosNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Propospdos.exportcsv' => array(
+				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Propopdo',
 				'component' => 'WebrsaRecherchesPropospdosNew',
 				'keys' => array( 'results.fields' )
 			),
 			'Propospdos.search_possibles' => array(
+				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRecherchePropopdoPossible',
 				'component' => 'WebrsaRecherchesPropospdosPossiblesNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Propospdos.exportcsv_possibles' => array(
+				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRecherchePropopdoPossible',
 				'component' => 'WebrsaRecherchesPropospdosPossiblesNew',
@@ -272,6 +290,20 @@
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
 				'component' => 'WebrsaCohortesSanctionseps58New',
+				'keys' => array( 'results.fields' )
+			),
+			'Traitementspcgs66.search' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Traitementpcg66',
+				'modelRechercheName' => 'WebrsaRechercheTraitementpcg66',
+				'component' => 'WebrsaRecherchesTraitementspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Traitementspcgs66.exportcsv' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Traitementpcg66',
+				'modelRechercheName' => 'WebrsaRechercheTraitementpcg66',
+				'component' => 'WebrsaRecherchesTraitementspcgs66New',
 				'keys' => array( 'results.fields' )
 			),
 			'Transfertspdvs93.search' => array(
