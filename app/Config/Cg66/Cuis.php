@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Menu "Recherches" > "Par APREs"
+	 * Menu "Recherches"
 	 */
 	Configure::write(
 		'ConfigurableQuery.Cuis.search',
@@ -63,7 +63,7 @@
 	);
 
 	/**
-	 * Export CSV,  menu "Recherches" > "Par APREs"
+	 * Export CSV,  menu "Recherches"
 	 */
 	Configure::write(
 		'ConfigurableQuery.Cuis.exportcsv',
