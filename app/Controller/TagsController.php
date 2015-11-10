@@ -26,14 +26,31 @@
 		 *
 		 * @var array
 		 */
-		public $components = array();
+		public $components = array(
+			'Cohortes', 
+			'Fileuploader', 
+			'Gedooo.Gedooo', 
+			'Jetons2', 
+			'DossiersMenus',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'cohorte' => array(
+						'filter' => 'Search'
+					)
+				)
+			),
+		);
 
 		/**
 		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
-		public $helpers = array();
+		public $helpers = array(
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
 
 		/**
 		 * Modèles utilisés.
@@ -43,77 +60,158 @@
 		public $uses = array(
 			'Tag'
 		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'cohorte' => 'update',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
+		);
 
 		/**
-		 * Pagination sur les <éléments> de la table.
+		 * Action d'ajout d'un tag à une personne
+		 * 
+		 * @param integer $id
 		 */
-		public function index() {
-			$this->paginate = array(
-				$this->modelClass => array(
-					'limit' => 10
-				)
+		public function add( $modele, $id ) {
+			// Initialisation
+			$this->_init_add_edit($modele, $id);
+			
+			// Sauvegarde du formulaire
+			if( !empty( $this->request->data ) ) {
+				$this->_save_add_edit($modele, $id);
+			}
+			
+			// Vue
+			$this->view = 'edit';
+		}
+		
+		/**
+		 * Action d'edition du tag d'une personne
+		 * 
+		 * @param type $tag_id
+		 */
+		public function edit( $tag_id ) {
+			// Initialisation
+			$result = $this->Tag->findTagById($tag_id);
+			$this->assert( !empty( $result ), 'invalidParameter' );
+			
+			$id = Hash::get($result, 'Tag.fk_value');
+			$modele = Hash::get($result, 'Tag.modele');
+			$this->_init_add_edit($modele, $id);
+			
+			$this->set(
+				compact(
+					'result'
+				) 
 			);
 
-			$varname = Inflector::tableize( $this->modelClass );
-			$this->set( $varname, $this->paginate() );
-		}
-
-		/**
-		 * Formulaire d'ajout d'un <élément>.
-		 */
-		public function add() {
-			$args = func_get_args();
-			call_user_func_array( array( $this, 'edit' ), $args );
-		}
-
-		/**
-		 * Formulaire de modification d'un <élément>.
-		 *
-		 * @throws NotFoundException
-		 */
-		public function edit( $id = null ) {
+			// Sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
-				$this->{$this->modelClass}->begin();
-				$this->{$this->modelClass}->create( $this->request->data );
-
-				if( $this->{$this->modelClass}->save() ) {
-					$this->{$this->modelClass}->commit();
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'action' => 'index' ) );
-				}
-				else {
-					$this->{$this->modelClass}->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-				}
+				$this->_save_add_edit($modele, $id);
 			}
-			else if( $this->action == 'edit' ) {
-				$this->request->data = $this->{$this->modelClass}->find(
-					'first',
-					array(
-						'conditions' => array(
-							"{$this->modelClass}.id" => $id
-						),
-						'contain' => false
-					)
-				);
-
-				if( empty( $this->request->data  ) ) {
-					throw new NotFoundException();
-				}
+			else {
+				$this->request->data = $result;
 			}
+		}
+		
+		/**
+		 * Initialisation du formulaire d'edition d'un tag
+		 * Jeton et redirection en cas de retour
+		 * 
+		 * @param string $modele
+		 * @param integer $id
+		 */
+		protected function _init_add_edit( $modele, $id ) {
+			// Validité de l'url
+			$this->assert( valid_int( $id ) && isset($this->Tag->{$modele}), 'invalidParameter' );
+			
+			// Gestion des jetons
+			$dossier_id = $this->Tag->{$modele}->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+			
+			// Redirection si Cancel
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $modele, $id ) );
+			}
+			
+			$urlmenu = implode('/', array( '', 'tags', 'index', $modele, $id ));
+			
+			// Variables pour la vue
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
+			$this->set( compact( 'personne_id', 'dossier_id', 'urlmenu' ) );
+			
+			$this->_setOptions();
+		}
+		
+		/**
+		 * Sauvegarde d'un formulaire add ou edit
+		 * 
+		 * @param integer $id
+		 */
+		protected function _save_add_edit( $modele, $id ) {
+			$this->Tag->begin();
 
-			$this->render( 'edit' );
+			$this->request->data['Tag']['fk_value'] = $id;
+			$this->request->data['Tag']['modele'] = $modele;
+			
+			if( $this->Tag->save( $this->request->data ) ) {
+				$this->Tag->commit();
+				$this->Jetons2->release( $this->viewVars['dossier_id'] );
+				$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+				$this->redirect( array(  'controller' => 'tags','action' => 'index', $modele, $id ) );
+			}
+			else {
+				$id && $this->set('fichiers', $this->Fileuploader->fichiers( $id ));
+				$this->Tag->rollback();
+				$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+			}
+		}
+		
+		/**
+		 * Liste des dossiers PCG d'un foyer
+		 * 
+		 * @param string $modele
+		 * @param integer $id
+		 */
+		public function index( $modele, $id ) {
+			$this->assert( valid_int( $id ) && isset($this->Tag->{$modele}), 'invalidParameter' );
+			
+			$dossier_id = $this->Tag->{$modele}->dossierId($id);
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
+			
+			$results = $this->Tag->findTagModel( $modele, $id );
+			
+			$infos = $this->Tag->{$modele}->find('first', array('conditions' => array("{$modele}.id" => $id)));
+			
+			// Incrustation de texte dans la traduction
+			switch ($modele) {
+				case 'Personne': $infos['Info']['tag'] = 'de '.Hash::get($infos, 'Personne.nom_complet'); break;
+				case 'Foyer': $infos['Info']['tag'] = 'du Foyer'; break;
+				default: $infos['Info']['tag'] = ''; break;
+			}
+			
+			$this->set( compact( 'results', 'dossier_id', 'id', 'modele', 'infos' ) );
+			$this->_setOptions();
 		}
 
 		/**
 		 * Suppression d'un <élément> et redirection vers l'index.
 		 *
-		 * @param integer $id
+		 * @param integer $tag_id
 		 */
-		public function delete( $id ) {
+		public function delete( $tag_id ) {
 			$this->{$this->modelClass}->begin();
 
-			if( $this->{$this->modelClass}->delete( $id ) ) {
+			if( $this->{$this->modelClass}->delete( $tag_id ) ) {
 				$this->{$this->modelClass}->commit();
 				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
 			}
@@ -122,12 +220,49 @@
 				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
 			}
 
-			$this->redirect( array( 'action' => 'index' ) );
+			$this->redirect( $this->referer() );
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesTags' );
+			$Recherches->cohorte();
 		}
 		
 		/**
 		 * Parametrages liés
 		 */
 		public function indexparams() {}
+		
+		/**
+		 * Options à renvoyer à la vue
+		 * 
+		 * @return array
+		 */
+		protected function _setOptions() {
+			$options = array();
+			
+			$results = $this->Tag->Valeurtag->find('all', array(
+				'fields' => array(
+					'Categorietag.name',
+					'Valeurtag.id',
+					'Valeurtag.name'
+				),
+				'joins' => array(
+					$this->Tag->Valeurtag->join('Categorietag')
+				),
+			));
+			
+			foreach ($results as $value) {
+				$categorie = Hash::get($value, 'Categorietag.name');
+				$valeur = Hash::get($value, 'Valeurtag.name');
+				$valeurtag_id = Hash::get($value, 'Valeurtag.id');
+				$options['Tag']['valeurtag_id'][$categorie][$valeurtag_id] = $valeur;
+			}
+			
+			$this->set( compact( 'options' ) );
+		}
 	}
 ?>

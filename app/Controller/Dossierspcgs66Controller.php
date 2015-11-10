@@ -372,8 +372,7 @@
 		
 		/**
 		 * Initialisation du formulaire d'edition d'un dossier pcg
-		 * Informations sur le demandeur, jeton, redirection en cas de retour, 
-		 * definition de la vue et de certaines variables
+		 * Informations sur le demandeur, jeton, redirection en cas de retour
 		 * 
 		 * @todo $gestionnairemodifiable est inutile, vérifier son utilité initiale, le retirer ?
 		 * @param integer $foyer_id
@@ -382,14 +381,15 @@
 			// Validité de l'url
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 			
-			// Redirection si Cancel
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'index', $foyer_id ) );
-			}
-			
 			//Gestion des jetons
 			$dossier_id = $this->Dossierpcg66->Foyer->dossierId( $foyer_id );
 			$this->Jetons2->get( $dossier_id );
+			
+			// Redirection si Cancel
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $foyer_id ) );
+			}
 			
 			// Récupération de données
 			$personneDem = $this->WebrsaDossierpcg66->findPersonneDem($foyer_id);

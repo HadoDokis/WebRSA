@@ -495,11 +495,10 @@
 			),
 			'Tag' => array(
 				'className' => 'Tag',
-				'foreignKey' => false,
+				'foreignKey' => 'fk_value',
 				'dependent' => false,
 				'conditions' => array(
-					'Tag.modele = \'Personne\'',
-					'Tag.fk_value = {$__cakeID__$}'
+					'Tag.modele = \'Personne\''
 				),
 				'fields' => '',
 				'order' => '',
