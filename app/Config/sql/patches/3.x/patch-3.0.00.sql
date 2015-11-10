@@ -116,6 +116,21 @@ CREATE TABLE tags (
     modified			TIMESTAMP WITHOUT TIME ZONE
 );
 
+
+--------------------------------------------------------------------------------
+-- Conservation des données d'impression
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS dataimpressions;
+CREATE TABLE dataimpressions (
+	id SERIAL			NOT NULL PRIMARY KEY,
+	fk_value			INTEGER NOT NULL,
+	modele				VARCHAR(255) NOT NULL,
+	data				TEXT,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
