@@ -93,14 +93,17 @@
 							'nir_correct13(p1.nir)',
 							'nir_correct13(p2.nir)',
 							'SUBSTRING( TRIM( BOTH \' \' FROM p1.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM p2.nir ) FROM 1 FOR 13 )',
-							'p1.dtnai = p2.dtnai'
 						),
 						array(
-							'difference(p1.nom, p2.nom) >=' => $differenceThreshold,
-							'difference(p1.prenom, p2.prenom ) >=' => $differenceThreshold,
-							'p1.dtnai = p2.dtnai'
+							'difference(UPPER(p1.nom), UPPER(p2.nom)) >=' => $differenceThreshold,
+							'OR' => array(
+								'difference(UPPER(p1.prenom), UPPER(p2.prenom) ) >=' => $differenceThreshold,
+								"UPPER(p1.prenom) LIKE UPPER(p2.prenom || ' ' || p2.prenom2 || '%')",
+								"UPPER(p2.prenom) LIKE UPPER(p1.prenom || ' ' || p1.prenom2 || '%')"
+							),
 						)
-					)
+					),
+					'p1.dtnai = p2.dtnai'
 				);
 			}
 
