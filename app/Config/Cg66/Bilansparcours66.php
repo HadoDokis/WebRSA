@@ -28,7 +28,7 @@
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),
 				// 2.3 Tri par défaut
-				'order' => array('Bilanparcours.datebilan')
+				'order' => array('Bilanparcours66.datebilan')
 			),
 			// 3. Nombre d'enregistrements par page
 			'limit' => 10,
