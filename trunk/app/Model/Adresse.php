@@ -311,7 +311,8 @@
 		 * @var array
 		 */
 		public $configuredAllowEmptyFields = array(
-			'libtypevoie'
+			'libtypevoie',
+			'nomvoie'
 		);
 
 		/**
