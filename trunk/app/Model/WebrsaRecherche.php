@@ -106,6 +106,20 @@
 				'component' => 'WebrsaRecherchesCuisNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Defautsinsertionseps66.search_noninscrits' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheNoninscrit',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Defautsinsertionseps66.search_noninscrits' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheSelectionradie',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
 			'Demenagementshorsdpts.search' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
