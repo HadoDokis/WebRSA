@@ -55,8 +55,8 @@
 			}
 			
 			$options = parent::_optionsRecords($params);
-			$options['Bilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
-			$options['Bilanparcours66']['referent_id'] = $this->Bilanparcours66->Structurereferente->Referent->listOptions();
+			$options['Bilanparcours66']['structurereferente_id'] = $Controller->Bilanparcours66->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
+			$options['Bilanparcours66']['referent_id'] = $Controller->Bilanparcours66->Structurereferente->Referent->listOptions();
 			
 			return $options;
 		}

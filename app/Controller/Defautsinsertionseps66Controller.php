@@ -203,7 +203,7 @@
 		 * Moteur de recherche
 		 */
 		public function search_noninscrits() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNoninscrit', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
 			$this->view =  'search';
@@ -213,7 +213,7 @@
 		 * Moteur de recherche
 		 */
 		public function search_radies() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheSelectionradie', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
 			$this->view =  'search';
