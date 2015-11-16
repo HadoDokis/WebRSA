@@ -10,5 +10,14 @@ msgstr ""
 
 # ==============================================================================
 
-msgid ""
-msgstr ""
+msgid "Tag.limite"
+msgstr "Date butoir"
+
+msgid "Tag.created"
+msgstr "Taggé le"
+
+msgid "Tag.valeurtag_id"
+msgstr "Valeur du Tag"
+
+msgid "Tag.commentaire"
+msgstr "Commentaire"

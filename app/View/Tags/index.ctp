@@ -19,6 +19,7 @@
 			'Categorietag.name',
 			'Valeurtag.name',
 			'Tag.commentaire',
+			'Tag.limite',
 			'Tag.created',
 			'/tags/edit/#Tag.id#' => array( 'disabled' => !$perm['edit'] ),
 			'/tags/delete/#Tag.id#' => array( 'disabled' => !$perm['delete'] ),

@@ -112,6 +112,7 @@ CREATE TABLE tags (
 	modele				VARCHAR(255) NOT NULL,
 	valeurtag_id		INTEGER DEFAULT NULL REFERENCES valeurstags(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	commentaire			TEXT,
+	limite				DATE,
 	created				TIMESTAMP WITHOUT TIME ZONE,
     modified			TIMESTAMP WITHOUT TIME ZONE
 );

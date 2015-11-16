@@ -12,12 +12,16 @@
  * Choix du formulaire
 /***********************************************************************************/
 	
+	$limite = new DateTime(Hash::get($this->request->data, 'Tag.limite'));
+	$minYear = date_format($limite, 'Y');
+	
 	echo '<fieldset>'
 		. $this->Default3->subform(
 			array(
 				'Tag.id' => array( 'type' => 'hidden' ),
 				'Tag.valeurtag_id',
 				'Tag.commentaire',
+				'Tag.limite' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => $minYear, 'maxYear' => date('Y')+4 ),
 			),
 			array(
 				'paginate' => false,
