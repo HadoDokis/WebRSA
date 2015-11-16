@@ -49,5 +49,8 @@ msgstr "Catégorie du tag"
 msgid "Valeurtag.name"
 msgstr "Nom du tag"
 
+msgid "Tag.limite"
+msgstr "Date butoir"
+
 msgid "Tag.created"
 msgstr "Taggé le"
