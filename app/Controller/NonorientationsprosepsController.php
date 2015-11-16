@@ -171,7 +171,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsproseps' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsprosepsNew' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
 		}		
 	}

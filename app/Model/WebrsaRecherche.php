@@ -232,6 +232,13 @@
 				'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58',
 				'keys' => array( 'results.fields' )
 			),
+			'Nonorientationsproseps.search' => array(
+				'departement' => 66,
+				'modelName' => 'Orientstruct',
+				'modelRechercheName' => 'WebrsaRechercheNonorientationproep',
+				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
 			'Orientsstructs.search' => array(
 				'modelName' => 'Orientstruct',
 				'component' => 'WebrsaRecherchesOrientsstructsNew',
