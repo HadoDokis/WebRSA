@@ -1,0 +1,359 @@
+<?php
+	/**
+	 * Code source de la classe WebrsaCohorteTag.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'AbstractWebrsaCohorte', 'Model/Abstractclass' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
+
+	/**
+	 * La classe WebrsaCohorteTag ...
+	 *
+	 * @package app.Model
+	 */
+	class WebrsaCohorteTag extends AbstractWebrsaCohorte
+	{
+		/**
+		 * Nom du modèle.
+		 *
+		 * @var string
+		 */
+		public $name = 'WebrsaCohorteTag';
+
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Allocataire',
+			'Canton',
+			'Tag'
+		);
+		
+		/**
+		 * Liste des champs de formulaire à inserer dans le tableau de résultats
+		 * 
+		 * @var array
+		 */
+		public $cohorteFields = array(
+			'Personne.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
+			'Foyer.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
+			'Tag.selection' => array( 'type' => 'checkbox', 'label' => '&nbsp;' ),
+			'Tag.modele' => array( 'type' => 'select', 'label' => '' ),
+			'Tag.valeurtag_id' => array( 'type' => 'select', 'label' => '' ),
+			'Tag.limite' => array( 'type' => 'date', 'label' => '', 'dateFormat' => 'DMY' ),
+			'Tag.commentaire' => array( 'type' => 'textarea', 'label' => '' ),
+		);
+		
+		/**
+		 * Valeurs par défaut pour le préremplissage des champs du formulaire de cohorte
+		 * array( 
+		 *		'Mymodel' => array( 'Myfield' => 'MyValue' ) )
+		 * )
+		 * 
+		 * @var array
+		 */
+		public $defaultValues = array();
+		
+		/**
+		 * Constructeur de class
+		 * 
+		 * @param integer|string|array $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			$this->cohorteFields['Tag.limite'] += array(
+				'minYear' => date('Y'), 
+				'maxYear' => date('Y')+4
+			);
+			
+			parent::__construct($id, $table, $ds);
+		}
+
+		/**
+		 * Complète les conditions du querydata avec le contenu des filtres de
+		 * recherche.
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		public function searchConditions( array $query, array $search ) {
+			if ( Hash::get($search, 'Requestmanager.name') ) {
+				$result = ClassRegistry::init('Requestmanager')->find('first', 
+					array( 
+						'fields' => 'Requestmanager.json',
+						'conditions' => array(
+							'Requestmanager.id' => Hash::get($search, 'Requestmanager.name') 
+						)
+					)
+				);
+				
+				$json = json_decode(Hash::get($result, 'Requestmanager.json'), true);
+				
+				return $json;
+			}
+			
+			$query = $this->Allocataire->searchConditions( $query, $search );
+			
+			/**
+			 * Generateur de conditions
+			 */
+			$paths = array(
+				'Prestation.rolepers'
+			);
+			
+			if( Configure::read( 'CG.cantons' ) ) {
+				$paths[] = 'Zonegeographique.id';
+			}
+
+			// Fils de dependantSelect
+			$pathsToExplode = array(
+			);
+
+			$pathsDate = array(
+			);
+
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			foreach( $pathsToExplode as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
+					list(,$value) = explode('_', $value);
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
+
+			/**
+			 * Conditions spéciales
+			 */
+			
+			/**
+			 * Ignore selon valeur tag
+			 */
+			if ( Hash::get($search, 'Tag.valeurtag_id') ) {
+				$sq = $this->Tag->sq(
+					array(
+						'fields' => 'Tag.id',
+						'conditions' => array(
+							'Tag.limite > NOW()',
+							'Tag.etat' => array( 'encours' ),
+							'Tag.valeurtag_id' => Hash::get($search, 'Tag.valeurtag_id'),
+							'OR' => array(
+								array(
+									'Tag.modele' => 'Personne',
+									'Tag.fk_value = Personne.id'
+								),
+								array(
+									'Tag.modele' => 'Foyer',
+									'Tag.fk_value = Foyer.id'
+								),
+							)
+						),
+						'limit' => 1
+					)
+				);
+				$query['conditions'][] = "NOT EXISTS({$sq})";
+			}
+			
+			/**
+			 * Couple/Isolé avec/sans enfant(s)
+			 */
+			$sqEnfants = $this->Tag->Foyer->vfNbEnfants();
+			$isolement = Configure::read('Tags.cohorte.Foyer.sitfam.isolement');
+			
+			$conditions = array();
+			foreach( (array)Hash::get($search, 'Foyer.composition') as $value ) {
+				switch ($value) {
+					case 'cpl_sans_enf': $conditions[] = array(
+							'NOT' => array( 'Foyer.sitfam' => $isolement ),
+							"({$sqEnfants})" => 0
+						);
+						break;
+					case 'cpl_avec_enf': $conditions[] = array(
+							'NOT' => array( 'Foyer.sitfam' => $isolement ),
+							"({$sqEnfants}) >" => 0
+						);
+						break;
+					case 'iso_sans_enf': $conditions[] = array(
+							'Foyer.sitfam' => $isolement,
+							"({$sqEnfants})" => 0
+						);
+						break;
+					case 'iso_avec_enf': $conditions[] = array(
+							'Foyer.sitfam' => $isolement,
+							"({$sqEnfants}) >" => 0
+						);
+						break;
+				}
+			}
+			$query['conditions'][]['OR'] = $conditions;
+			
+			/**
+			 * Nombre d'enfants
+			 */
+			if ( Hash::get($search, 'Foyer.nb_enfants') !== null ) {
+				$query['conditions']["({$sqEnfants})"] = Hash::get($search, 'Foyer.nb_enfants');
+			}
+			
+			/**
+			 * Conditions allocataire hebergé
+			 */
+			if ( Hash::get($search, 'Adresse.heberge') !== null ) {
+				$sq = $this->Tag->Personne->DspRev->sqHeberge();
+				$condition = array(
+					'OR' => array(
+						"Adresse.complideadr LIKE 'CHEZ%'",
+						"Adresse.complideadr LIKE 'CZ%'",
+						"Adresse.compladr LIKE 'CHEZ%'",
+						"Adresse.compladr LIKE 'CZ%'",
+						"Adresse.lieudist LIKE 'CHEZ%'",
+						"Adresse.lieudist LIKE 'CZ%'",
+						"EXISTS({$sq})"
+					)
+				);
+				if ( Hash::get($search, 'Adresse.heberge') === '0' ) {
+					$query['conditions'][]['NOT'] = $condition;
+				}
+				else {
+					$query['conditions'][] = $condition;
+				}
+			}
+			
+			return $query;
+		}
+
+		/**
+		 * Logique de sauvegarde de la cohorte
+		 * 
+		 * @param type $data
+		 * @param type $params
+		 * @return boolean
+		 */
+		public function saveCohorte( array $data, array $params = array(), $user_id = null ) {
+			foreach ( $data as $key => $value ) {
+				if ( $value['Tag']['selection'] === '0' ) {
+					unset($data[$key]);
+				}
+				else {
+					// On récupère la bonne foreign key
+					$data[$key]['Tag']['fk_value'] = $value[$value['Tag']['modele']]['id'];
+					
+					// On ne garde que l'essentiel
+					$data[$key] = array('Tag' => $data[$key]['Tag']);
+					unset($data[$key]['Tag']['selection']);
+				}
+			}
+			
+			$success = !empty($data) && $this->Tag->saveAll($data);
+			
+			return $success;
+		}
+		
+		/**
+		 * Retourne le querydata de base, en fonction du département, à utiliser
+		 * dans le moteur de recherche.
+		 *
+		 * @param array $types Les types de jointure alias => type
+		 * @return array
+		 */
+		public function searchQuery( array $types = array() ) {
+			$types += array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'LEFT OUTER',
+				'Adressefoyer' => 'LEFT OUTER',
+				'Dossier' => 'INNER',
+				'Adresse' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'LEFT OUTER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Personne' => 'LEFT OUTER',
+				'Structurereferente' => 'LEFT OUTER',
+				'Referent' => 'LEFT OUTER',
+				
+				'Tag' => 'LEFT OUTER',
+				'Valeurtag' => 'LEFT OUTER',
+				'Categorietag' => 'LEFT OUTER',
+			);
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = $this->Allocataire->searchQuery( $types, 'Dossier' );
+
+				// 1. Ajout des champs supplémentaires
+				$query['fields'] = array_merge(
+					$query['fields'],
+					ConfigurableQueryFields::getModelsFields(
+						array(
+							$this->Tag,
+							$this->Tag->Valeurtag,
+							$this->Tag->Valeurtag->Categorietag,
+						)
+					),
+					// Champs nécessaires au traitement de la search
+					array(
+						'Personne.id',
+						'Foyer.id',
+						'Dossier.id',
+					)
+				);
+
+				// 2. Jointures
+				$joinTag = array(
+					'alias' => 'Tag',
+					'table' => 'tags',
+					'type' => $types['Tag'],
+					'conditions' => array(
+						'OR' => array(
+							array(
+								'Tag.fk_value = Personne.id',
+								'Tag.modele' => 'Personne'
+							),
+							array(
+								'Tag.fk_value = Foyer.id',
+								'Tag.modele' => 'Foyer'
+							),
+						),
+						'Tag.limite > NOW()'
+					)
+				);
+				
+				$query['joins'] = array_merge(
+					$query['joins'],
+					array(
+						$joinTag,
+						$this->Tag->join('Valeurtag', array('type' => $types['Valeurtag'])),
+						$this->Tag->Valeurtag->join('Categorietag', array('type' => $types['Categorietag'])),
+					)
+				);
+
+				// 3. Si on utilise les cantons, on ajoute une jointure
+				if( Configure::read( 'CG.cantons' ) ) {
+					$query['fields']['Canton.canton'] = 'Canton.canton';
+					$query['joins'][] = $this->Canton->joinAdresse();
+					$query['joins'][] = $this->Canton->join('Zonegeographique', array('type' => 'LEFT OUTER'));
+				}
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			return $query;
+		}
+	}
+?>

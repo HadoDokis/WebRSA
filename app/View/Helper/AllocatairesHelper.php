@@ -312,7 +312,7 @@
 			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 			$params['configPath'] = ( isset($params['configPath']) && !empty( $params['configPath'] ) 
 				? $params['configPath'] 
-				: 'ConfigurableQuery.'.Inflector::camelize($this->params['controller']).'.' ).Inflector::underscore($params['prefix']).'filters.has'
+				: 'ConfigurableQuery.'.Inflector::camelize($this->params['controller']).'.' ).$this->params['action'].'.filters.has'
 			;
 
 			$configs = array_keys(Hash::normalize((array)Configure::read($params['configPath'])));

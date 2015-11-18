@@ -36,7 +36,10 @@
 				'actions' => array(
 					'cohorte' => array(
 						'filter' => 'Search'
-					)
+					),
+					'cohorte_heberge' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -96,7 +99,7 @@
 		/**
 		 * Action d'edition du tag d'une personne
 		 * 
-		 * @param type $tag_id
+		 * @param integer $tag_id
 		 */
 		public function edit( $tag_id ) {
 			// Initialisation
@@ -227,8 +230,17 @@
 		 * Cohorte
 		 */
 		public function cohorte() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesTags' );
-			$Recherches->cohorte();
+			$Recherches = $this->Components->load( 'WebrsaCohortesTagsNew' );
+			$Recherches->cohorte( array( 'modelName' => 'Dossier' ) );
+			$this->view = 'cohorte';
+		}
+		
+		/**
+		 * Action pour utilisation de configuration
+		 * @return $this->cohorte()
+		 */
+		public function cohorte_heberge() {
+			return $this->cohorte();
 		}
 		
 		/**
@@ -237,12 +249,39 @@
 		public function indexparams() {}
 		
 		/**
+		 * Annule un tag
+		 * 
+		 * @param integer $id
+		 */
+		public function cancel( $id ) {
+			$this->assert( valid_int( $id ), 'invalidParameter' );
+			
+			$data = array(
+				'id' => $id,
+				'etat' => 'annule'
+			);
+			
+			$this->{$this->modelClass}->begin();
+
+			if( $this->{$this->modelClass}->save($data) ) {
+				$this->{$this->modelClass}->commit();
+				$this->Session->setFlash( 'Annulation effectuée', 'flash/success' );
+			}
+			else {
+				$this->{$this->modelClass}->rollback();
+				$this->Session->setFlash( 'Erreur lors de l\'annulation', 'flash/error' );
+			}
+
+			$this->redirect( $this->referer() );
+		}
+		
+		/**
 		 * Options à renvoyer à la vue
 		 * 
 		 * @return array
 		 */
 		protected function _setOptions() {
-			$options = array();
+			$options = $this->Tag->enums();
 			
 			$results = $this->Tag->Valeurtag->find('all', array(
 				'fields' => array(
@@ -256,7 +295,7 @@
 			));
 			
 			foreach ($results as $value) {
-				$categorie = Hash::get($value, 'Categorietag.name');
+				$categorie = Hash::get($value, 'Categorietag.name') ? Hash::get($value, 'Categorietag.name') : 'Sans catégorie';
 				$valeur = Hash::get($value, 'Valeurtag.name');
 				$valeurtag_id = Hash::get($value, 'Valeurtag.id');
 				$options['Tag']['valeurtag_id'][$categorie][$valeurtag_id] = $valeur;

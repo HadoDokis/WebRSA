@@ -21,3 +21,21 @@ msgstr "Valeur du Tag"
 
 msgid "Tag.commentaire"
 msgstr "Commentaire"
+
+msgid "Tag.etat"
+msgstr "Etat du Tag"
+
+msgid "Tag.modele"
+msgstr "Taggé sur"
+
+msgid "ENUM::ETAT::traite"
+msgstr "Traité"
+
+msgid "ENUM::ETAT::annule"
+msgstr "Annulé"
+
+msgid "ENUM::ETAT::perime"
+msgstr "Périmé"
+
+msgid "ENUM::ETAT::encours"
+msgstr "En cours"

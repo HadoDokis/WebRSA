@@ -10,7 +10,7 @@
 	* @param {HTML} span L'evenement contenant en target: le <span> contenant un texte de type [0]
 	* @returns {Boolean}
 	*/
-	function restoreBrackets( span ) {console.log(span.target.innerHTML);
+	function restoreBrackets( span ) {
 		var innerText = span.target.innerHTML !== undefined ? span.target.innerHTML : '',
 			className;
 	

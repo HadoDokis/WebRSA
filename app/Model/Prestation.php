@@ -38,5 +38,22 @@
 				'order' => ''
 			)
 		);
+		
+		public $uses = array(
+			'Option'
+		);
+		
+		/**
+		 * Surcharge de la méthode enums pour obtenir les valeurs possibles
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$enums = parent::enums();
+
+			$enums[$this->alias]['rolepers'] = $this->Option->rolepers();
+
+			return $enums;
+		}
 	}
 ?>

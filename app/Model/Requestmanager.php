@@ -44,5 +44,31 @@
 				'foreignKey' => 'requestgroup_id',
 			)
 		);
+		
+		/**
+		 * Vérifie la présence d'un Modele dans un enregistrement de Requestmanager
+		 * 
+		 * @param array $result Résultat d'une query
+		 * @param string $modelName Nom du modele recherché
+		 * @return boolean Présent ou pas
+		 */
+		public function checkModelPresence( $result, $modelName ) {
+			if ( Hash::get($result, 'Requestmanager.model') === $modelName ) {
+				return true;
+			}
+			
+			$json = json_decode(Hash::get($result, 'Requestmanager.json'), true);
+			if ( !Hash::get($json, 'joins') ) {
+				return false;
+			}
+			
+			foreach( (array)Hash::get($json, 'joins') as $jointure ) {
+				if ( Hash::get($jointure, 'alias') === $modelName ) {
+					return true;
+				}
+			}
+			
+			return false;
+		}
 	}
 ?>

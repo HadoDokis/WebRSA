@@ -32,6 +32,12 @@
 		protected static $_map = array();
 		
 		/**
+		 * Domaines additionnels
+		 * @var array
+		 */
+		protected static $_domains = array();
+		
+		/**
 		 * Permet d'obtenir la traduction d'une phrase de façon automatique.
 		 * 
 		 * @param string $singular Mot/Phrase à traduire
@@ -155,6 +161,14 @@
 
 			return null;
 		}
+		
+		/**
+		 * Permet l'ajout manuel de domaines possible
+		 * @param mixed $domains Liste de domaines
+		 */
+		public static function add_domains( $domains ) {
+			self::$_domains += (array)$domains;
+		}
 
 		/**
 		 * Assigne à < self::$_map[$singular] > et renvoi la traduction selon une liste de domains.
@@ -205,7 +219,9 @@
 		protected static function _existingDomains( $urlDomains ) {
 			$existing = array();
 			
-			foreach( $urlDomains as $domain ){
+			$domains = $urlDomains + self::$_domains;
+			
+			foreach( $domains as $domain ){
 				$thisDomainExist = false;
 				foreach( App::path('locales') as $path ){
 					if ( is_file($path . self::language() . DS . 'LC_MESSAGES' . DS . $domain . '.po') ){
