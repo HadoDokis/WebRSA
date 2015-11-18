@@ -180,7 +180,7 @@
 		 * @param array $data
 		 * @return type
 		 */
-		protected function _prepareAndExplode( $data ) {debug($data);
+		protected function _prepareAndExplode( $data ) {
 			$data = array(
 				'fields' => isset($data['fields']) ? $this->_explode($data['fields']) : array(),
 				'conditions' => isset($data['conditions']) ? $this->_explode($data['conditions'], 'AND') : array(),
@@ -317,6 +317,8 @@
 				array_keys($Model->hasMany),
 				Hash::extract($Model->hasAndBelongsToMany, '{s}.with')
 			);
+			
+			sort($joins);
 			
 			$json = array(
 				'alias' => $Model->alias,

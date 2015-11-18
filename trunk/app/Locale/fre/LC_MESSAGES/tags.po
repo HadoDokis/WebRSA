@@ -34,11 +34,17 @@ msgstr "Commentaire"
 msgid "/Tags/edit"
 msgstr "Modifier"
 
+msgid "/Tags/cancel"
+msgstr "Annuler"
+
 msgid "/Tags/delete"
 msgstr "Supprimer"
 
 msgid "/tags/edit/#Tag.id#"
 msgstr "Modifier"
+
+msgid "/tags/cancel/#Tag.id#"
+msgstr "Annuler"
 
 msgid "/tags/delete/#Tag.id#"
 msgstr "Supprimer"
@@ -54,3 +60,96 @@ msgstr "Date butoir"
 
 msgid "Tag.created"
 msgstr "Taggé le"
+
+msgid "Tag.etat"
+msgstr "Etat du Tag"
+
+msgid "/Tags/cohorte/:heading"
+msgstr "Cohorte de Tag"
+
+msgid "/Tags/cohorte"
+msgstr "Formulaire"
+
+msgid "/Tags/cohorte/:title"
+msgstr "Formulaire"
+
+msgid "Personne.nom_complet_prenoms"
+msgstr "Nom complet"
+
+msgid "Adresse.complete"
+msgstr "Adresse"
+
+msgid "data[Cohorte][][Tag][selection]"
+msgstr "Selectionner"
+
+msgid "data[Cohorte][][Tag][modele]"
+msgstr "Tagger sur"
+
+msgid "data[Cohorte][][Tag][valeurtag_id]"
+msgstr "Valeur du tag"
+
+msgid "data[Cohorte][][Tag][limite]"
+msgstr "Date butoir"
+
+msgid "data[Cohorte][][Tag][commentaire]"
+msgstr "Commentaire"
+
+msgid "/Dossiers/view"
+msgstr "Voir dossier"
+
+msgid "/Dossiers/view/#Dossier.id#"
+msgstr "Voir dossier"
+
+msgid "Search.Tag.valeurtag_id"
+msgstr "Valeurs possibles de la cohorte"
+
+msgid "Search.Zonegeographique.id"
+msgstr "Zones géographiques"
+
+msgid "Tag.cohorte_fieldset"
+msgstr "Autres filtres"
+
+msgid "Search.Prestation.rolepers"
+msgstr "Rôle de la personne"
+
+msgid "Search.Foyer.composition"
+msgstr "Composition familiale"
+
+msgid "Search.Foyer.nb_enfants"
+msgstr "Nombre d'enfants à charge"
+
+msgid "Search.Adresse.heberge"
+msgstr "Le demandeur est hebergé"
+
+msgid "/Tags/cohorte_heberge/:heading"
+msgstr "Cohorte de Tag pour les allocataires hebergés"
+
+msgid "/Tags/cohorte_heberge"
+msgstr "Formulaire"
+
+msgid "/Tags/cohorte_heberge/:title"
+msgstr "Formulaire"
+
+msgid "Tag.preremplissage_fieldset"
+msgstr "Préremplissage de la cohorte"
+
+msgid "Cohorte.Tag.selection"
+msgstr "Selectionner"
+
+msgid "Cohorte.Tag.modele"
+msgstr "Tagger sur"
+
+msgid "Cohorte.Tag.valeurtag_id"
+msgstr "Valeur du tag"
+
+msgid "Cohorte.Tag.limite"
+msgstr "Date butoir"
+
+msgid "Cohorte.Tag.commentaire"
+msgstr "Commentaire"
+
+msgid "Cohorte.Tag.calcullimite"
+msgstr "Durée avant date butoir"
+
+msgid "Search.Requestmanager.name"
+msgstr "Conditions issue d'une requete (remplacera les autres conditions)"

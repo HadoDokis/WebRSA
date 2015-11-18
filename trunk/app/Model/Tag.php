@@ -32,7 +32,13 @@
 		 *
 		 * @var array
 		 */
-		public $actsAs = array();
+		public $actsAs = array(
+			'Allocatairelie',
+			'Formattable',
+			'Gedooo.Gedooo',
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable',
+		);
 
 		/**
 		 * Associations "Belongs to".

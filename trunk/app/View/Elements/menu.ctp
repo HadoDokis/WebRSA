@@ -75,6 +75,17 @@
 					'title' => 'PDOs validés',
 				),
 			),
+			'Tags' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+				'Tags' => array(
+					'url' => array( 'controller' => 'tags', 'action' => 'cohorte' ),
+				),
+				'Requêtes PDU' => array( 
+					'Allocataires hebergés' => array(
+						'url' => array( 'controller' => 'tags', 'action' => 'cohorte_heberge' ),
+					)
+				),
+			),
 			'EPs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'Relances (EP)' => array(

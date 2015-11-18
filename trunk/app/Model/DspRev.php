@@ -514,5 +514,76 @@
 
 			return $success;
 		}
+		
+		public function sqHeberge( $personne_id = 'Personne.id' ) {
+			$sq = $this->sq(
+				array(
+					'alias' => '"dspsrev2"',
+					'fields' => array(
+						'dspsrev1.id'
+					),
+					'conditions' => array(
+						'dspsrev2.personne_id = dspsrev1.personne_id',
+						'dspsrev2.id != dspsrev1.id',
+						'dspsrev2.created < dspsrev1.created',
+						'dspsrev2.natlog !=' => '0909',
+					),
+					'order' => array(
+						'dspsrev2.created' => 'DESC'
+					),
+					'limit' => 1
+				)
+			);
+			$query = array(
+				'alias' => '"dspsrev1"',
+				'fields' => array(
+					'dspsrev1.id'
+				),
+				'joins' => array(
+					array(
+						'alias' => '"pers"',
+						'table' => 'personnes',
+						'conditions' => array(
+							'pers.id = dspsrev1.personne_id'
+						),
+						'type' => 'INNER'
+					),
+					array(
+						'alias' => '"foy"',
+						'table' => 'foyers',
+						'conditions' => array(
+							'foy.id = pers.foyer_id'
+						),
+						'type' => 'INNER'
+					),
+					array(
+						'alias' => '"adrfoyer"',
+						'table' => 'adressesfoyers',
+						'conditions' => array(
+							'adrfoyer.foyer_id = foy.id',
+							'adrfoyer.rgadr' => '01',
+							'OR' => array(
+								'adrfoyer.dtemm IS NULL',
+								'adrfoyer.dtemm < dspsrev1.created'
+							)
+						),
+						'type' => 'INNER'
+					)
+				),
+				'conditions' => array(
+					'dspsrev1.personne_id = ' . $personne_id,
+					'dspsrev1.natlog' => '0909',
+					"EXISTS({$sq})"
+				),
+				'order' => array(
+					'dspsrev1.created' => 'ASC'
+				),
+				'limit' => 1
+			);
+					
+			$sq = preg_replace('/AS ([\w]+) /', 'AS "$1" ', $this->sq($query));
+			
+			return $sq;
+		}
 	}
 ?>

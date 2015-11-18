@@ -115,6 +115,10 @@
 		 */
 		protected function _optionsEnums( array $params ) {
 			$Controller = $this->_Collection->getController();
+			
+			if ( !isset($Controller->{$params['modelName']}) ) {
+				$Controller->loadModel($params['modelName']);
+			}
 
 			return Hash::merge(
 				$this->Allocataires->optionsEnums( $params ),
@@ -171,6 +175,11 @@
 		 */
 		protected function _cacheKey( array $params, array $extra = array() ) {
 			$Controller = $this->_Collection->getController();
+			
+			if ( !isset($Controller->{$params['modelName']}) ) {
+				$Controller->loadModel($params['modelName']);
+			}
+			
 			return $Controller->{$params['modelName']}->useDbConfig.'_Controllers_'.Inflector::camelize( $Controller->request->params['controller'] ).'_'.$Controller->request->params['action'].'_'.$params['modelRechercheName'].'_'.$params['modelName'].( empty( $extra ) ? '' : '_'.implode( '_', $extra ) );
 		}
 
@@ -211,8 +220,8 @@
 		 * Permet de filtrer les options envoyées à la vue au moyen de la clé
 		 * 'filters.accepted' dans le fichier de configuration.
 		 *
-		 * @param array $params
 		 * @param array $options
+		 * @param array $params
 		 * @return array
 		 */
 		protected function _optionsAccepted( array $options, array $params ) {
