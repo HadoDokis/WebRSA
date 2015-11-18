@@ -88,7 +88,7 @@ ALTER TABLE adresses_cantons ADD CONSTRAINT adresses_cantons_unique_adresse_id_c
 -- Marquage Tag
 --------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS categorietags;
+DROP TABLE IF EXISTS categorietags CASCADE;
 CREATE TABLE categorietags (
 	id SERIAL			NOT NULL PRIMARY KEY,
 	name				VARCHAR(255) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE categorietags (
     modified			TIMESTAMP WITHOUT TIME ZONE
 );
 
-DROP TABLE IF EXISTS valeurstags;
+DROP TABLE IF EXISTS valeurstags CASCADE;
 CREATE TABLE valeurstags (
 	id SERIAL			NOT NULL PRIMARY KEY,
 	name				VARCHAR(255) NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE valeurstags (
     modified			TIMESTAMP WITHOUT TIME ZONE
 );
 
-DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS tags CASCADE;
 CREATE TABLE tags (
 	id SERIAL			NOT NULL PRIMARY KEY,
 	fk_value			INTEGER NOT NULL,
