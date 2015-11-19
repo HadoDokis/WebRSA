@@ -836,17 +836,19 @@
 						$modelClass = ClassRegistry::init( $model );
 						$recursive = $modelClass->recursive;
 						$modelClass->recursive = -1;
-
+						$foreignKey = isset($modelClass->belongsTo['Personne']['foreignKey']) 
+							? $modelClass->belongsTo['Personne']['foreignKey'] : 'personne_id'
+						;
+						
 						$success = $modelClass->updateAllUnBound(
-							array( "{$model}.personne_id" => $data['Personne']['garder'] ),
-							array( "{$model}.id" => $data[$model]['id'] )
+							array( "{$model}.{$foreignKey}" => $data['Personne']['garder'] ),
+							array( "{$model}.id" => Hash::filter($data[$model]['id'] ) )
 						) && $success;
 
 						$modelClass->recursive = $recursive;
 					}
 				}
 			}
-
 
 			// Personnes à supprimer
 			$personnesASupprimer = array();
@@ -860,7 +862,7 @@
 				array( 'Personne.id' => $personnesASupprimer ),
 				false,
 				false // FIXME
-			) && $success;
+			) && ClassRegistry::init( "Correspondancepersonne" )->updateByPersonneId( $data['Personne']['garder'] ) && $success;
 
 			return $success;
 		}
@@ -1042,6 +1044,18 @@
 			$associations = $this->Gestionanomaliesbdd->associations( $this->Dossier->Foyer->Personne );
 			$methodes = $this->_methodes();
 			$this->set( compact( 'personnes', 'donnees', 'associations', 'methode', 'methodes', 'dependencies', 'foyer' ) );
+		}
+		
+		/**
+		 * On ne traite pas les entrées de Correspondance personne
+		 * 
+		 * @param type $modelName
+		 * @param type $personneAgarderId
+		 * @param type $itemsIds
+		 * @return type
+		 */
+		public function _personnesCorrespondancepersonneMerge( $modelName, $personneAgarderId, $itemsIds ) {
+			return true;
 		}
 	}
 ?>
