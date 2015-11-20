@@ -1233,6 +1233,10 @@
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => 'Action du CUCS'
 					),
+					'Actions locales' => array(
+						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
+						'Categoriefp93.name' => 'Actions locales'
+					),
 					'Autres (*)' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
@@ -1292,11 +1296,16 @@
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name' => 'Action du CUCS'
 					),
-                                        'Accompagnement vers l emploi' => array(
-                                                // Non défini
-                                                'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-                                                'Categoriefp93.name' => 'Accompagnement vers l emploi'
-                                        ),
+					'Accompagnement vers l emploi' => array(
+						// Non défini
+						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
+						'Categoriefp93.name' => 'Accompagnement vers l emploi'
+					),
+					'Actions locales' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
+						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
+						'Categoriefp93.name' => 'Actions locales'
+					),
 					'Autres (*)' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
@@ -1377,7 +1386,7 @@
 			 */
 			'conditions_indicateurs_organismes' => array(
 				'Pôle emploi (PE) (2)' => array(
-					'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%'
+					'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%'
 				),
 				'Organisme public de placement professionnel autre que PE (maison de l\'emploi, PLIE, mission locale,...) (2)' => array(
 					'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%',
@@ -1389,7 +1398,7 @@
 				'Service du département ou de l\'agence départementale d\'insertion (ADI) (3)' => array(
 					'NOT' => array(
 						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
@@ -1401,7 +1410,7 @@
 					'Typeorient.id' => array( 3, 1 ),
 					'NOT' => array(
 						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
@@ -1413,7 +1422,7 @@
 					'Typeorient.id' => array( 2 ),
 					'NOT' => array(
 						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
@@ -1449,11 +1458,11 @@
 			 */
 			'conditions_types_cers' => array(
 				'ppae' => array(
-					'Structurereferentecer.lib_struc ILIKE' => '%Pole Emploi%'
+					'Structurereferentecer.lib_struc ILIKE' => '%P%le Emploi%'
 				),
 				'cer_pro' => array(
 					'NOT' => array(
-						'Structurereferentecer.lib_struc ILIKE' => '%Pole Emploi%'
+						'Structurereferentecer.lib_struc ILIKE' => '%P%le Emploi%'
 					)
 				),
 				'cer_pro_social' => array(),
@@ -1479,7 +1488,7 @@
 					'Typeorient.id' => array( 3 )
 				),
 				'SPE_PoleEmploi' => array(
-					'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%'
+					'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%'
 				),
 				'HorsSPE' => array(
 					'NOT' => array(
