@@ -19,7 +19,8 @@
 				<tr class="<?php echo Inflector::slug( mb_strtolower( $indicateur ) );?>">
 					<th> - <?php echo h( $indicateur );?></th>
 					<td><?php
-						$value = Hash::get( $results, "Indicateurorganisme.{$indicateur}" );
+						// INFO: le nom de l'indicateur pouvant contenir des points, on n'utilisera pas Hash::get()
+						$value = isset( $results['Indicateurorganisme'][$indicateur] ) ? $results['Indicateurorganisme'][$indicateur] : null;
 						if( is_null( $value ) ) {
 							echo 'ND';
 						}
