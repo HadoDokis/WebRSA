@@ -381,6 +381,9 @@
 						'valeurtag_id' => array(
 							'2', // Valeur du tag pour la cohorte hebergé
 						)
+					),
+					'Prestation' => array(
+						'rolepers' => 'DEM', // Demandeur du RSA
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche

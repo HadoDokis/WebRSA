@@ -121,7 +121,7 @@
 			$results = array();
 			foreach( $fields as $field => $param ) {
 				if ( Hash::get($param, 'type') !== 'hidden' ) {
-					$param['label'] = ValidateAllowEmptyUtility::label($field);
+					$param['label'] = __m($field);
 				}
 				$results[$field] = $param;
 			}
