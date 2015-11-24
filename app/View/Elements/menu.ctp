@@ -80,12 +80,6 @@
 					'title' => 'PDOs validés',
 				),
 			),
-			'Tags' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'Tags' => array(
-					'url' => array( 'controller' => 'tags', 'action' => 'cohorte' ),
-				),
-			),
 			'EPs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'Relances (EP)' => array(

@@ -123,19 +123,20 @@
 			if ( Hash::get($search, 'Tag.valeurtag_id') ) {
 				$sq = $this->Tag->sq(
 					array(
-						'fields' => 'Tag.id',
+						'alias' => 'tags',
+						'fields' => 'tags.id',
 						'conditions' => array(
-							'Tag.limite > NOW()',
-							'Tag.etat' => array( 'encours' ),
-							'Tag.valeurtag_id' => Hash::get($search, 'Tag.valeurtag_id'),
+							'tags.limite > NOW()',
+							'tags.etat' => array( 'encours' ),
+							'tags.valeurtag_id' => Hash::get($search, 'Tag.valeurtag_id'),
 							'OR' => array(
 								array(
-									'Tag.modele' => 'Personne',
-									'Tag.fk_value = Personne.id'
+									'tags.modele' => 'Personne',
+									'tags.fk_value = Personne.id'
 								),
 								array(
-									'Tag.modele' => 'Foyer',
-									'Tag.fk_value = Foyer.id'
+									'tags.modele' => 'Foyer',
+									'tags.fk_value = Foyer.id'
 								),
 							)
 						),
@@ -293,25 +294,6 @@
 				);
 
 				// 2. Jointures
-				$joinTag = array(
-					'alias' => 'Tag',
-					'table' => 'tags',
-					'type' => $types['Tag'],
-					'conditions' => array(
-						'OR' => array(
-							array(
-								'Tag.fk_value = Personne.id',
-								'Tag.modele' => 'Personne'
-							),
-							array(
-								'Tag.fk_value = Foyer.id',
-								'Tag.modele' => 'Foyer'
-							),
-						),
-						'Tag.limite > NOW()'
-					)
-				);
-				
 				$joinDsp = $this->Tag->Personne->join('DspRev', array('type' => $types['DspRev']));
 				$sqDsp = $this->Tag->Personne->DspRev->sq(
 					array(
@@ -332,9 +314,6 @@
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$joinTag,
-						$this->Tag->join('Valeurtag', array('type' => $types['Valeurtag'])),
-						$this->Tag->Valeurtag->join('Categorietag', array('type' => $types['Categorietag'])),
 						$joinDsp
 					)
 				);

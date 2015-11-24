@@ -19,6 +19,7 @@
 	$cohorteFormId = isset( $cohorteFormId ) ? $cohorteFormId : Inflector::camelize( "{$this->request->params['controller']}_{$this->request->params['action']}_cohorte" );
 
 	// $tableClass
+	$configuredCohorteParams = isset($configuredCohorteParams) ? $configuredCohorteParams : array();
 	$tableClass = isset( $tableClass ) ? $tableClass : Hash::get($configuredCohorteParams, 'class');
 	$configuredCohorteParams['class'] = $tableClass;
 
