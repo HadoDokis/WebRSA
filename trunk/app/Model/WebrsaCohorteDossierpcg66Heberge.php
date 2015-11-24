@@ -100,12 +100,12 @@
 				$personnepcg66_id = $this->Dossierpcg66->Personnepcg66->id;
 				
 				foreach ((array)Hash::get($value, 'Situationpdo.Situationpdo') as $situationpdo_id) {
-					$success = $this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->save(
-						array(
-							'personnepcg66_id' => $personnepcg66_id,
-							'situationpdo_id' => $situationpdo_id
-						)
-					) && $success;
+					$dataPersonnepcg66Situationpdo = array(
+						'personnepcg66_id' => $personnepcg66_id,
+						'situationpdo_id' => $situationpdo_id
+					);
+					$this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->create($dataPersonnepcg66Situationpdo);
+					$success = $this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->save() && $success;
 					
 					if (Hash::get($dataTraitementpcg66, 'personnepcg66_situationpdo_id') === $situationpdo_id) {
 						$dataTraitementpcg66['personnepcg66_situationpdo_id'] = $this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->id;
@@ -113,15 +113,13 @@
 				}
 				
 				foreach ((array)Hash::get($value, 'Statutpdo.Statutpdo') as $statutpdo_id) {
-					$success = $this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->save(
-						array(
-							'personnepcg66_id' => $personnepcg66_id,
-							'statutpdo_id' => $statutpdo_id
-						)
-					) && $success;
+					$dataPersonnepcg66Statutpdo = array(
+						'personnepcg66_id' => $personnepcg66_id,
+						'statutpdo_id' => $statutpdo_id
+					);
+					$this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->create($dataPersonnepcg66Statutpdo);
+					$success = $this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->save() && $success;
 				}
-				
-				'Personnepcg66Situationpdo';
 				
 				$dataTraitementpcg66['personnepcg66_id'] = $personnepcg66_id;
 				$success = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->save($dataTraitementpcg66) && $success;
@@ -141,18 +139,19 @@
 					if (!$piecemodeletypecourrierpcg66_id) {
 						continue;
 					}
-					
-					$success = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->save(
-						array(
-							'piecemodeletypecourrierpcg66_id' => $piecemodeletypecourrierpcg66_id,
-							'modeletraitementpcg66_id' => $modeletraitementpcg66_id
-						)
-					) && $success;
+
+					$dataMtpcg66Pmtcpcg66 = array(
+						'piecemodeletypecourrierpcg66_id' => $piecemodeletypecourrierpcg66_id,
+						'modeletraitementpcg66_id' => $modeletraitementpcg66_id
+					);
+					$this->Dossierpcg66->Personnepcg66->Traitementpcg66->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->create( $dataMtpcg66Pmtcpcg66 );
+					$success = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->save() && $success;
 				}
 				
 				foreach ((array)Hash::get($value, 'Tag.valeurtag_id') as $valeurtag_id) {
 					$dataTag['valeurtag_id'] = $valeurtag_id;
-					$success = $this->Dossierpcg66->Foyer->Tag->save($dataTag) && $success;
+					$this->Dossierpcg66->Foyer->Tag->create($dataTag);
+					$success = $this->Dossierpcg66->Foyer->Tag->save() && $success;
 				}
 			}
 			
