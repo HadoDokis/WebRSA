@@ -138,6 +138,10 @@
 				$modeletraitementpcg66_id = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Modeletraitementpcg66->id;
 				
 				foreach (Hash::flatten((array)Hash::get($value, 'Piecemodeletypecourrierpcg66')) as $piecemodeletypecourrierpcg66_id) {
+					if (!$piecemodeletypecourrierpcg66_id) {
+						continue;
+					}
+					
 					$success = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->save(
 						array(
 							'piecemodeletypecourrierpcg66_id' => $piecemodeletypecourrierpcg66_id,
