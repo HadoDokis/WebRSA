@@ -111,11 +111,13 @@ CREATE TABLE tags (
 	fk_value			INTEGER NOT NULL,
 	modele				VARCHAR(255) NOT NULL,
 	valeurtag_id		INTEGER DEFAULT NULL REFERENCES valeurstags(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etat				VARCHAR(255) DEFAULT 'encours',
 	commentaire			TEXT,
 	limite				DATE,
 	created				TIMESTAMP WITHOUT TIME ZONE,
     modified			TIMESTAMP WITHOUT TIME ZONE
 );
+ALTER TABLE tags ADD CONSTRAINT tags_etat_in_list_chk CHECK ( cakephp_validate_in_list( etat, ARRAY[ 'traite', 'annule', 'perime', 'encours' ] ) );
 
 
 --------------------------------------------------------------------------------

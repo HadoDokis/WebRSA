@@ -344,4 +344,189 @@
 			'ini_set' => array()
 		)
 	);
+	
+	Configure::write(
+		'ConfigurableQuery.Dossierspcgs66.cohorte_heberge',
+		array(
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => array(
+				// 1.1 Valeurs par défaut des filtres de recherche
+				'defaults' => array(
+					'Dossier' => array(
+						// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+						'dernier' => '1'
+					),
+					'Situationdossierrsa' => array(
+						'etatdosrsa_choice' => '1',
+						'etatdosrsa' => array(
+							'2' // Droit ouvert et versable
+						)
+					),
+					'Calculdroitrsa' => array(
+						'toppersdrodevorsa' => array( 
+							'1' // Oui
+						)
+					),
+					'Detailcalculdroitrsa' => array(
+						'natpf_choice' => '1',
+						'natpf' => array(
+							'RSD', // RSA Socle (Financement sur fonds Conseil général)
+							'RSI', // RSA Socle majoré (Financement sur fonds Conseil général)
+						)
+					),
+					'Adresse' => array(
+						'heberge' => '1'
+					),
+					'Tag' => array(
+						'valeurtag_id' => array(
+							'2', // Valeur du tag pour la cohorte hebergé
+						)
+					)
+				),
+				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
+				'accepted' => array(),
+				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
+				'skip' => array(),
+				// 1.4 Filtres additionnels : La personne possède un(e)...
+				'has' => array(
+					'Cui',
+					'Orientstruct' => array(
+						'Orientstruct.statut_orient' => 'Orienté',
+						// Orientstruct possède des conditions supplémentaire dans le modèle WebrsaRechercheDossier pour le CD66
+					),
+					'Contratinsertion' => array(
+						'Contratinsertion.decision_ci' => 'V'
+					),
+					'Personnepcg66'
+				)
+			),
+			// 2. Recherche
+			'query' => array(
+				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
+				'restrict' => array(),
+				// 2.2 Conditions supplémentaires optionnelles
+				'conditions' => array(),
+				// 2.3 Tri par défaut
+				'order' => array()
+			),
+			// 3. Nombre d'enregistrements par page
+			'limit' => 1,
+			// 4. Lancer la recherche au premier accès à la page ?
+			'auto' => false,
+			// 5. Résultats de la recherche
+			'results' => array(
+				// 5.1 Ligne optionnelle supplémentaire d'en-tête du tableau de résultats
+				'header' => array(),
+				// 5.2 Colonnes du tableau de résultats
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Personne.nir',
+					'Situationdossierrsa.etatdosrsa',
+					'Personne.nom_complet_prenoms',
+					'Adresse.complete',
+					'Adresse.numvoie',
+					'Adresse.nomvoie',
+					'Adresse.complideadr',
+					'Adresse.compladr',
+					'Adresse.lieudist',
+					'Adresse.codepos',
+					'Adresse.pays',
+					'Canton.canton',
+					'Adresse.libtypevoie',
+					'Adresse.numcom',
+					'Adresse.nomcom',
+					'Adressefoyer.dtemm',
+					'DspRev.natlog',
+					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'external' ),
+				),
+				// 5.3 Infobulle optionnelle du tableau de résultats
+				'innerTable' => array(
+					'Dossier.matricule',
+					'Personne.dtnai',
+					'Adresse.numcom' => array(
+						'options' => array()
+					),
+					'Prestation.rolepers',
+					'Structurereferenteparcours.lib_struc',
+					'Referentparcours.nom_complet'
+				)
+			),
+			// 6. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => array(),
+			// 7. Affichage vertical des résultats
+			'view' => true,
+		)
+	);
+	
+	/**
+	 * Catégories des requetes obtenus par le request manager affiché par actions
+	 */
+	Configure::write('Dossierspcgs66.cohorte_heberge.allowed.Requestgroup.id',
+		array(
+			7, // Noter nom de catégorie - Cohorte de tag
+		)
+	);
+	
+	/**
+	 * Choix possible pour le préremplissage de la date butoir
+	 */
+	Configure::write('Dossierspcgs66.cohorte_heberge.range_date_butoir',
+		array(
+			'1' => '1 mois',
+			'1.5' => '1 mois et demi', // Supporte les nombres de type float
+			2 => '2 mois',
+			3 => '3 mois',
+			6 => '6 mois',
+			12 => '1 an',
+			24 => '2 ans',
+			36 => '3 ans',
+		)
+	);
+	
+	/**
+	 * Valeurs de Foyer.sitfam consideré comme une situation d'isolement
+	 * Clef en dur dans le modele, nécéssaire pour l'utilisation du filtre "Composition familiale"
+	 */
+	Configure::write('Tags.cohorte.Foyer.sitfam.isolement',
+		array(
+			'CEL', // Célibataire
+			'DIV', // Divorcé(e)
+			'ISO', // Isolement après vie maritale ou PACS
+			'SEF', // Séparation de fait
+			'SEL', // Séparation légale
+			'VEU', // Veuvage
+		)
+	);
+	
+	/**
+	 * Choisi une valeur spécifique et cache le champ
+	 */
+	Configure::write('Dossierspcgs66.cohorte_heberge.options.choose_and_hide',
+		array(
+			'Dossierpcg66.originepdo_id' => 21, // PDU - MMR Cible Imposition
+			'Dossierpcg66.poledossierpcg66_id' => 1, // PDU
+			'Traitementpcg66.typecourrierpcg66_id' => 9, // PDU - Cibles
+			'Traitementpcg66.descriptionpdo_id' => 1, // Courrier à l'allocataire
+			'Traitementpcg66.datereception' => null, // Date de reception
+		)
+	);
+	
+	/**
+	 * Retire toutes les valeurs ne correspondent pas dans les options
+	 */
+	Configure::write('Dossierspcgs66.cohorte_heberge.options.allowed',
+		array(
+			'Dossierpcg66.user_id' => array( // PDU's Users
+				405,
+				442,
+				534,
+				528
+			), 
+			'Traitementpcg66.typetraitement' => array(
+				'courrier',
+				'dossierarevoir'
+			)
+		)
+	);
 ?>

@@ -1,14 +1,11 @@
 <?php
 	/**
-	 * Catégorie des requetes obtenus par le request manager affiché par actions
+	 * Catégories des requetes obtenus par le request manager affiché par actions
 	 */
 	Configure::write('Tags.cohorte.allowed.Requestgroup.id',
 		array(
 			7, // Noter nom de catégorie - Cohorte de tag
 		)
-	);
-	Configure::write('Tags.cohorte_heberge.allowed.Requestgroup.id',
-		Configure::read('Tags.cohorte.allowed.Requestgroup.id')
 	);
 	
 	/**
@@ -16,7 +13,8 @@
 	 */
 	Configure::write('Tags.cohorte.range_date_butoir',
 		array(
-			1 => '1 mois',
+			'1' => '1 mois',
+			'1.5' => '1 mois et demi', // Supporte les nombres de type float
 			2 => '2 mois',
 			3 => '3 mois',
 			6 => '6 mois',
@@ -113,69 +111,5 @@
 			),
 			// 6. Temps d'exécution, mémoire maximum, ...
 			'ini_set' => array()
-		)
-	);
-	
-	Configure::write(
-		'ConfigurableQuery.Tags.cohorte_heberge',
-		array(
-			// 1. Filtres de recherche, on reprend la configuration de la recherche
-			'filters' => array(
-				// 1.1 Valeurs par défaut des filtres de recherche
-				'defaults' => array(
-					'Dossier' => array(
-						// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-						'dernier' => '1'
-					),
-					'Situationdossierrsa' => array(
-						'etatdosrsa_choice' => '1',
-						'etatdosrsa' => array(
-							'2' // Droit ouvert et versable
-						)
-					),
-					'Calculdroitrsa' => array(
-						'toppersdrodevorsa' => array( 
-							'1' // Oui
-						)
-					),
-					'Detailcalculdroitrsa' => array(
-						'natpf_choice' => '1',
-						'natpf' => array(
-							'RSD', // RSA Socle (Financement sur fonds Conseil général)
-							'RSI', // RSA Socle majoré (Financement sur fonds Conseil général)
-						)
-					),
-					'Adresse' => array(
-						'heberge' => '1'
-					),
-					'Tag' => array(
-						'valeurtag_id' => array(
-							'2', // Valeur du tag pour la cohorte hebergé
-						)
-					)
-				),
-				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
-				'accepted' => array(),
-				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
-				'skip' => array(),
-				// 1.4 Filtres additionnels : La personne possède un(e)...
-				'has' => array(
-					'Cui',
-					'Orientstruct' => array(
-						'Orientstruct.statut_orient' => 'Orienté',
-						// Orientstruct possède des conditions supplémentaire dans le modèle WebrsaRechercheDossier pour le CD66
-					),
-					'Contratinsertion' => array(
-						'Contratinsertion.decision_ci' => 'V'
-					),
-					'Personnepcg66'
-				)
-			),
-			// 2. Recherche, on reprend la configuration de la recherche
-			'query' => Configure::read( 'ConfigurableQuery.Tags.cohorte.query' ),
-			// 3. Résultats de la recherche
-			'results' => Configure::read( 'ConfigurableQuery.Tags.cohorte.results' ),
-			// 4. Temps d'exécution, mémoire maximum, ...
-			'ini_set' => Configure::read( 'ConfigurableQuery.Tags.cohorte.ini_set' ),
 		)
 	);

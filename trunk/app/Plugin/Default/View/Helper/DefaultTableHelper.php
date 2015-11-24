@@ -264,11 +264,14 @@
 			foreach( $fields as $path => $attributes ) {
 				$attributes = (array)$attributes;
 
-				// INFO: la mise en cache n'a pas de sens ici
-				list( $modelName, $fieldName ) = model_field( $path );
+				if (strpos($path, '/') === false) {					
+					// INFO: la mise en cache n'a pas de sens ici
+					list( $modelName, $fieldName ) = model_field( $path );
+				
 
-				if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
-					$attributes['options'] = $params['options'][$modelName][$fieldName];
+					if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
+						$attributes['options'] = $params['options'][$modelName][$fieldName];
+					}
 				}
 
 				if( isset( $attributes['domain'] ) && !empty( $attributes['domain'] ) ) {

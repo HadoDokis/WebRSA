@@ -151,6 +151,17 @@
 			if( Hash::get( $options, 'type' ) == 'hidden' ) {
 				unset( $options['options'] );
 			}
+			
+			// Prise en charge de l'option fieldset
+			if( Hash::get( $options, "fieldset") ) {
+				$legend = $options['label'];
+				$options['label'] = '';
+				return $this->Html->tag(
+					'fieldset',
+					$this->Html->tag( 'legend', $legend ).
+					parent::input( $fieldName, $options )
+				);
+			}
 
 			return parent::input( $fieldName, $options );
 		}

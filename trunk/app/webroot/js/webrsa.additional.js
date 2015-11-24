@@ -243,6 +243,54 @@ function sprintf() {
     });
 }
 
+/**
+ * Rempli un element de type date Cakephp en fonction de la valeur en mois d'un autre élément.
+ * 
+ * @param {string} id id de l'element qui défini la durée
+ * @param {string} target nom de la cible à la façon Cakephp
+ * @throws {error} La cible n'a pas été trouvée
+ * @returns {Boolean}
+ */
+function setDateCloture( id, target ){
+	'use strict';
+	var duree = parseFloat( $F(id), 10 ),
+		now = new Date(),
+		jour = now.getUTCDate(),
+		mois = now.getUTCMonth() +1,
+		annee = now.getUTCFullYear(),
+		dateButoir,
+		exploded = target.split('.'),
+		i = 0,
+		baseTargetName = 'data',
+		targetDay,
+		targetMonth,
+		targetYear
+	;
+
+	if ( isNaN(duree*2) || exploded.length < 2 ){
+		return false;
+	}
+	
+	for (; i<exploded.length; i++) {
+		baseTargetName += '['+exploded[i]+']';
+	}
+	
+	targetDay = $$('select[name="'+baseTargetName+'[day]"]').first();
+	targetMonth = $$('select[name="'+baseTargetName+'[month]"]').first();
+	targetYear = $$('select[name="'+baseTargetName+'[year]"]').first();
+	
+	if ( targetDay === undefined || targetMonth === undefined || targetYear === undefined ) {
+		throw 'select[name="'+baseTargetName+'"] + ([day] | [month] | [year]) Not Found!';
+	}
+	
+	// Si duree est à virgule, on ajoute 0.x fois 30 jours
+	dateButoir = new Date(annee, mois + Math.floor(duree) - 1, ((duree % 1)*30 + jour - 1).toFixed(1));
+
+	targetDay.setValue( dateButoir.getDate() );
+	targetMonth.setValue( dateButoir.getMonth() +1 );
+	targetYear.setValue( dateButoir.getFullYear() );
+}
+
 /*************************************************************************
  * Execution systématique												 *
  *************************************************************************/

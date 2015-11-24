@@ -2057,3 +2057,15 @@ td.dossier_locked a:hover {
 td.data.integer, td.data.float, td.data.numeric {
 	text-align: right;
 }
+
+table.results_table.full_size {
+	width: 100%;
+}
+
+table.results_table.horizontal_view tr:hover th{
+	border-bottom: 1px solid #444444;
+}
+
+table.results_table.full_size.horizontal_view th {
+	width: 33%;
+}

@@ -158,9 +158,14 @@
 		public function configuredIndex( array $results, array $params = array(), array $insert = array() ) {
 			$params = $this->configuredParams( $params );
 			$params += array(
-				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) )
+				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ),
+				'view' => false,
+				'th' => true
 			);
-			$fields = $this->configuredFields( array( 'key' => $params['key'].'.results.fields', 'keyPrefix' => $params['keyPrefix'] ), $insert );
+			$fields = $this->configuredFields( 
+				array( 'key' => $params['key'].'.results.fields', 'keyPrefix' => $params['keyPrefix'] ), 
+				(!$params['view'] ? $insert : array()) 
+			);
 
 			$header = (array)Configure::read( "{$params['keyPrefix']}.{$params['key']}".'.results.header' );
 			if( !empty( $header ) ) {
@@ -185,11 +190,47 @@
 			unset( $params['keyPrefix'] );
 
 			// On génère le tableau de résultat
-			return $this->index(
-				$results,
-				$fields,
-				$params
-			);
+			if ( !$params['view'] ) {
+				return $this->index(
+					$results,
+					$fields,
+					$params
+				);
+			}
+			
+			// Affichage vertical des résultats
+			if( empty( $results ) ) {
+				return $this->DefaultHtml->tag( 'p', 'Aucun enregistrement', array( 'class' => 'notice' ) );
+			}
+			
+			$return = $this->pagination();
+			foreach($results as $i => $result) {
+				$return .= $this->view(
+					$result,
+					$fields,
+					$params
+				).'<br/>';
+				
+				if ( !empty($insert) ) {
+					$return .= '<fieldset>';
+					$subformfields = array();
+					foreach ( $insert as $inputName => $value ) {
+						$preformatedPath = preg_replace( '/^data\[(.*)\]$/', '\1', str_replace( '[Cohorte][]', "[Cohorte][{$i}]", $inputName ) );
+						$fullPath = str_replace( '][', '.', $preformatedPath );
+						if ( strpos($fullPath, '.') === false ) {
+							continue;
+						}
+						
+						//$return .= count($input) ? $input[0] : '';
+						$subformfields[$fullPath] = $value;
+					}
+					$return .= $this->subform($subformfields, $params);
+					$return .= '</fieldset>';
+				}
+			}
+			$return .= $this->pagination();
+			
+			return $return;
 		}
 
 		/**

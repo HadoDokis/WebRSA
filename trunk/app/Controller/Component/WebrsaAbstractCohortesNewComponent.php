@@ -171,7 +171,8 @@
 					'options' => $options,
 					'extraHiddenFields' => $extraHiddenFields,
 					'entityErrorPrefix' => 'Cohorte',
-					'cohorteFields' => $cohorteFields
+					'cohorteFields' => $cohorteFields,
+					'view' => Configure::read($params['searchKeyPrefix'].'.'.$params['configurableQueryFieldsKey'].'.view')
 				);
 
 				$Controller->set( compact('cohorteFields', 'results', 'extraHiddenFields', 'configuredCohorteParams') );

@@ -134,13 +134,16 @@ class Traitementspcgs66Controller extends AppController {
         // La liste est : AFIJ, ADRH, MLJ (=Organisme agréé) + MSPs
         $this->set('services', $this->Traitementpcg66->Serviceinstructeur->listOptions(true));
     }
+	
+	public function ajaxpiece_cohorte( $i ) {
+		$this->request->data = $this->request->data['Cohorte'][$i];
+		return $this->ajaxpiece();
+	}
 
     /**
      * Ajax pour les pièces liées à un type de courrier
      */
     public function ajaxpiece() { // FIXME
-        Configure::write('debug', 0);
-
         $datas = array();
         foreach (array('Modeletraitementpcg66', 'Piecemodeletypecourrierpcg66') as $M) {
             if (isset($this->request->data[$M])) {

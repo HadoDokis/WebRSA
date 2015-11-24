@@ -49,6 +49,11 @@
 				'Dossiers à imprimer' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'aimprimer' ) ),
 				'Dossiers à transmettre' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'atransmettre' ) ),
 				'Dossiers à transmettre (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) ),
+				'Requêtes PDU' => array( 
+					'Allocataires hebergés' => array(
+						'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_heberge' ),
+					)
+				),
 			),
 			'Non orientation' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
@@ -79,11 +84,6 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Tags' => array(
 					'url' => array( 'controller' => 'tags', 'action' => 'cohorte' ),
-				),
-				'Requêtes PDU' => array( 
-					'Allocataires hebergés' => array(
-						'url' => array( 'controller' => 'tags', 'action' => 'cohorte_heberge' ),
-					)
 				),
 			),
 			'EPs' => array(
