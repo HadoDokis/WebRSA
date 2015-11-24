@@ -321,11 +321,11 @@ msgid "/Dossierspcgs66/add/:title"
 msgstr "Ajouter un dossier"
 
 ########################################################################
-## 	Cohorte hebergé
+## 	Cohorte hébergés
 ########################################################################
 
 msgid "/Dossierspcgs66/cohorte_heberge/:heading"
-msgstr "Cohorte de création de dossier PCG pour les allocataires hebergés"
+msgstr "Cohorte de création de dossier PCG pour les allocataires hébergés"
 
 msgid "/Dossierspcgs66/cohorte_heberge"
 msgstr "Formulaire"
@@ -563,3 +563,27 @@ msgstr "Commentaire"
 
 msgid "Tag.calcullimite"
 msgstr "Durée avant date butoir"
+
+msgid "Search.Tag.valeurtag_id"
+msgstr "Valeurs possibles de la cohorte"
+
+msgid "Search.Zonegeographique.id"
+msgstr "Zones géographiques"
+
+msgid "Tag.cohorte_fieldset"
+msgstr "Autres filtres"
+
+msgid "Search.Prestation.rolepers"
+msgstr "Rôle de la personne"
+
+msgid "Search.Foyer.composition"
+msgstr "Composition familiale"
+
+msgid "Search.Foyer.nb_enfants"
+msgstr "Nombre d'enfants à charge"
+
+msgid "Search.Adresse.heberge"
+msgstr "Le demandeur est hebergé"
+
+msgid "Search.Requestmanager.name"
+msgstr "Conditions issue d'une requête (remplacera les autres conditions)"
