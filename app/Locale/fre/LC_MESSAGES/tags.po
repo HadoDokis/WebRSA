@@ -119,7 +119,7 @@ msgid "Search.Foyer.nb_enfants"
 msgstr "Nombre d'enfants à charge"
 
 msgid "Search.Adresse.heberge"
-msgstr "Le demandeur est hebergé"
+msgstr "Le demandeur est hébergés"
 
 msgid "Tag.preremplissage_fieldset"
 msgstr "Préremplissage de la cohorte"
@@ -143,7 +143,7 @@ msgid "Cohorte.Tag.calcullimite"
 msgstr "Durée avant date butoir"
 
 msgid "Search.Requestmanager.name"
-msgstr "Conditions issue d'une requete (remplacera les autres conditions)"
+msgstr "Conditions issue d'une requête (remplacera les autres conditions)"
 
 msgid "Dossier.numdemrsa"
 msgstr "N° demande RSA"
