@@ -121,15 +121,6 @@ msgstr "Nombre d'enfants à charge"
 msgid "Search.Adresse.heberge"
 msgstr "Le demandeur est hebergé"
 
-msgid "/Tags/cohorte_heberge/:heading"
-msgstr "Cohorte de Tag pour les allocataires hebergés"
-
-msgid "/Tags/cohorte_heberge"
-msgstr "Formulaire"
-
-msgid "/Tags/cohorte_heberge/:title"
-msgstr "Formulaire"
-
 msgid "Tag.preremplissage_fieldset"
 msgstr "Préremplissage de la cohorte"
 
@@ -153,3 +144,21 @@ msgstr "Durée avant date butoir"
 
 msgid "Search.Requestmanager.name"
 msgstr "Conditions issue d'une requete (remplacera les autres conditions)"
+
+msgid "Dossier.numdemrsa"
+msgstr "N° demande RSA"
+
+msgid "Dossier.dtdemrsa"
+msgstr "Date de demande RSA"
+
+msgid "Personne.nir"
+msgstr "NIR"
+
+msgid "Situationdossierrsa.etatdosrsa"
+msgstr "Etat du dossier"
+
+msgid "Personne.nir"
+msgstr "NIR"
+
+msgid "Personne.nom_complet_prenoms"
+msgstr "Nom complet"

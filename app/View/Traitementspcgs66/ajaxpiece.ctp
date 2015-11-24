@@ -40,7 +40,7 @@
 									echo $this->Xform->input( "Modeletraitementpcg66.montantsaisi", array(
 										'label' =>  "Montant calculé",
 										'type' => 'text',
-										'value' => $this->request->data['Modeletraitementpcg66']['montantsaisi']
+										'value' => Hash::get($this->request->data, 'Modeletraitementpcg66.montantsaisi')
 										)
 									);
 								}
@@ -50,14 +50,14 @@
 										'label' =>  "Du",
 										'type' => 'date',
 										'dateFormat' => 'DMY',
-										'value' => $this->request->data['Modeletraitementpcg66']['montantdatedebut']
+										'value' => Hash::get($this->request->data, 'Modeletraitementpcg66.montantdatedebut')
 										)
 									);
 									echo $this->Xform->input( "Modeletraitementpcg66.montantdatefin", array(
 										'label' =>  "Au",
 										'type' => 'date',
 										'dateFormat' => 'DMY',
-										'value' => $this->request->data['Modeletraitementpcg66']['montantdatefin']
+										'value' => Hash::get($this->request->data, 'Modeletraitementpcg66.montantdatefin')
 										)
 									);
 								}
@@ -68,7 +68,6 @@
 							echo '</div>';
 						}
 						echo '</div>';
-                        debug($modeletypecourrierpcg66);
 					?>
 				</td>
 			</tr>
@@ -78,21 +77,22 @@
 	<?php 
 		echo '<p class="notice">Aucune pièce liée à ce type de courrier<p>';
 	?>
-<?php endif;?>
+<?php endif;
+	
+	if( isset($modeletypecourrierpcg66) && $this->request->params['action'] === 'ajaxpiece' ) :
+?>
 <script type="text/javascript">
 	//<![CDATA[
-	<?php
-        if( isset($modeletypecourrierpcg66) ) :?>
-            <?php foreach( array_keys( $modeletypecourrierpcg66 ) as $id ) :?>
-                observeDisableFieldsetOnRadioValue(
-                    'traitementpcg66form',
-                    'data[Modeletraitementpcg66][modeletypecourrierpcg66_id]',
-                    $( 'detailsmodelelie<?php echo $id;?>' ),
-                    '<?php echo $id;?>',
-                    false,
-                    true
-                );
-            <?php endforeach;?>
-        <?php endif;?>
+	<?php foreach( array_keys( $modeletypecourrierpcg66 ) as $id ) :?>
+		observeDisableFieldsetOnRadioValue(
+			'traitementpcg66form',
+			'data[Modeletraitementpcg66][modeletypecourrierpcg66_id]',
+			$( 'detailsmodelelie<?php echo $id;?>' ),
+			'<?php echo $id;?>',
+			false,
+			true
+		);
+	<?php endforeach;?>
 	//]]>
 </script>
+<?php endif;?>

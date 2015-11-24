@@ -320,71 +320,246 @@ msgstr "Supprimer le dossier"
 msgid "/Dossierspcgs66/add/:title"
 msgstr "Ajouter un dossier"
 
-msgid ""
-msgstr ""
+########################################################################
+## 	Cohorte hebergé
+########################################################################
 
-msgid ""
-msgstr ""
+msgid "/Dossierspcgs66/cohorte_heberge/:heading"
+msgstr "Cohorte de création de dossier PCG pour les allocataires hebergés"
 
-msgid ""
-msgstr ""
+msgid "/Dossierspcgs66/cohorte_heberge"
+msgstr "Formulaire"
 
-msgid ""
-msgstr ""
+msgid "/Dossierspcgs66/cohorte_heberge/:title"
+msgstr "Formulaire"
 
-msgid ""
-msgstr ""
+msgid "Adresse.numvoie"
+msgstr "Numéro de voie"
 
-msgid ""
-msgstr ""
+msgid "Adresse.libtypevoie"
+msgstr "Type de voie"
 
-msgid ""
-msgstr ""
+msgid "Adresse.nomvoie"
+msgstr "Nom de voie"
 
-msgid ""
-msgstr ""
+msgid "Adresse.codepos"
+msgstr "Code postal"
 
-msgid ""
-msgstr ""
+msgid "Adresse.nomcom"
+msgstr "Nom de commune"
 
-msgid ""
-msgstr ""
+msgid "Adresse.localite"
+msgstr "Commune de résidence"
+#--
+msgid "Adresse.complideadr"
+msgstr "Complément identification adresse"
 
-msgid ""
-msgstr ""
+msgid "Adresse.compladr"
+msgstr "Complément d'adresse"
 
-msgid ""
-msgstr ""
+msgid "Adresse.lieudist"
+msgstr "Lieu de distribution"
 
-msgid ""
-msgstr ""
+msgid "Adresse.numcom"
+msgstr "Numéro de commune sens INSEE"
 
-msgid ""
-msgstr ""
+msgid "Adresse.pays"
+msgstr "Code Pays"
 
-msgid ""
-msgstr ""
+msgid "Adresse.canton"
+msgstr "Code Canton"
 
-msgid ""
-msgstr ""
+msgid "Canton.canton"
+msgstr "Canton"
 
-msgid ""
-msgstr ""
+msgid "DspRev.natlog"
+msgstr "Nature du logement dans la dernière mise à jour DSP"
 
-msgid ""
-msgstr ""
+msgid "/Dossiers/view/#Dossier.id#"
+msgstr "Voir Dossier"
 
-msgid ""
-msgstr ""
+msgid "/Dossiers/view"
+msgstr "Voir Dossier"
 
-msgid ""
-msgstr ""
+msgid "Dossier.numdemrsa"
+msgstr "N° demande RSA"
 
-msgid ""
-msgstr ""
+msgid "Dossier.dtdemrsa"
+msgstr "Date de demande RSA"
 
-msgid ""
-msgstr ""
+msgid "Personne.nir"
+msgstr "NIR"
 
-msgid ""
-msgstr ""
+msgid "Personne.nom_complet_prenoms"
+msgstr "Nom complet"
+
+msgid "Situationdossierrsa.etatdosrsa"
+msgstr "Etat du dossier"
+
+msgid "Adresse.complete"
+msgstr "Adresse complète"
+
+msgid "Adressefoyer.dtemm"
+msgstr "Date emménagement"
+
+msgid "Dossierpcg66.typepdo_id"
+msgstr "Type de dossier"
+
+msgid "Dossierpcg66.originepdo_id"
+msgstr "Origine du dossier"
+
+msgid "Dossierpcg66.etatdossierpdo"
+msgstr "Etat du dossier"
+
+msgid "Dossierpcg66.user_id"
+msgstr "Gestionnaire du dossier (technicien en charge du dossier)"
+
+msgid "Dossierpcg66.datereceptionpdo"
+msgstr "Date de réception du dossier"
+
+msgid "Dossierpcg66.etatdossierpcg"
+msgstr "Etat du dossier"
+
+msgid "Dossierpcg66.categoriegeneral"
+msgstr "Métiers ( général )"
+
+msgid "Dossierpcg66.categoriedetail"
+msgstr "Métiers ( détaillé )"
+
+msgid "Dossierpcg66.serviceinstructeur_id"
+msgstr "Service instructeur"
+
+msgid "Dossierpcg66.orgpayeur"
+msgstr "Organisme payeur"
+
+msgid "Dossierpcg66.haspiecejointe"
+msgstr "Pièce jointe"
+
+msgid "Situationpdo.Situationpdo"
+msgstr "Motif de la personne"
+
+msgid "Statutpdo.Statutpdo"
+msgstr "Statut de la personne"
+
+msgid "Traitementpcg66.descriptionpdo_id"
+msgstr "Description du traitement"
+
+msgid "Traitementpcg66.datereception"
+msgstr "Date de réception"
+
+msgid "Traitementpcg66.datedepart"
+msgstr "Date de départ (pour le calcul de l'échéance)"
+
+msgid "Traitementpcg66.dateecheance"
+msgstr "Date d'échéance"
+
+msgid "Traitementpcg66.daterevision"
+msgstr "Date de révision"
+
+msgid "Traitementpcg66.imprimer"
+msgstr "Inclure dans décision"
+
+msgid "Traitementpcg66.etattraitementpcg"
+msgstr "Etat du traitement"
+
+msgid "Traitementpcg66.traitementtypepdo_id"
+msgstr "Type de traitement"
+
+msgid "Traitementpcg66.typetraitement"
+msgstr "Type de traitement"
+
+msgid "Traitementpcg66.personne_id"
+msgstr "Personne concernée"
+
+msgid "Traitementpcg66.dossierarevoir"
+msgstr "Motif(s)"
+
+msgid "Traitementpcg66.hascourrier"
+msgstr "Courriers"
+
+msgid "Traitementpcg66.hasrevenu"
+msgstr "Revenu"
+
+msgid "Traitementpcg66.hasficheanalyse"
+msgstr "Fiche d'analyse"
+
+msgid "Traitementpcg66.haspiecejointe"
+msgstr "Pièce jointe"
+
+msgid "Traitementpcg66.eplaudition"
+msgstr "EPL Audition"
+
+msgid "Traitementpcg66.compofoyerpcg66_id"
+msgstr "Composition du foyer"
+
+msgid "Traitementpcg66.recidive"
+msgstr "Récidive ?"
+
+msgid "Traitementpcg66.propodecision"
+msgstr "Proposition de décision"
+
+msgid "Traitementpcg66.commentairepropodecision"
+msgstr "Commentaire"
+
+msgid "Traitementpcg66.clos"
+msgstr "Clos ?"
+
+msgid "Traitementpcg66.annule"
+msgstr "Annulé ?"
+
+msgid "Traitementpcg66.personnepcg66_situationpdo_id"
+msgstr "Motifs concernant la personne"
+
+msgid "Traitementpcg66.typecourrierpcg66_id"
+msgstr "Type de courrier"
+
+msgid "Traitementpcg66.affiche_couple"
+msgstr "Afficher le couple dans l'impression ?"
+
+msgid "Traitementpcg66.serviceinstructeur_id"
+msgstr "Service à contacter (insertion)"
+
+msgid "Traitementpcg66.ficheanalyse"
+msgstr "Fiche d'analyse"
+
+msgid "Dossierpcg66.commentairepiecejointe"
+msgstr "Commentaire"
+
+msgid "Dossierpcg66.motifannulation"
+msgstr "Motif d'annulation"
+
+msgid "Dossierpcg66.poledossierpcg66_id"
+msgstr "Pôle chargé du dossier"
+
+msgid "Dossierpcg66.dateaffectation"
+msgstr "Date d'affectation"
+
+msgid "Traitementpcg66.dureeecheance"
+msgstr "Délai avant échéance"
+
+msgid "Traitementpcg66.dureefinprisecompte"
+msgstr "Délai avant échéance"
+
+msgid "Categorietag.name"
+msgstr "Catégorie du tag"
+
+msgid "Valeurtag.name"
+msgstr "Nom du tag"
+
+msgid "Tag.limite"
+msgstr "Date butoir"
+
+msgid "Tag.created"
+msgstr "Taggé le"
+
+msgid "Tag.etat"
+msgstr "Etat du Tag"
+
+msgid "Tag.valeurtag_id"
+msgstr "Valeur du Tag"
+
+msgid "Tag.commentaire"
+msgstr "Commentaire"
+
+msgid "Tag.calcullimite"
+msgstr "Durée avant date butoir"

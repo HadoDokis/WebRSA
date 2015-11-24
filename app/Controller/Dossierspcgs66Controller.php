@@ -43,6 +43,9 @@
 					),
 					'cohorte_atransmettre' => array(
 						'filter' => 'Search'
+					),
+					'cohorte_heberge' => array(
+						'filter' => 'Search'
 					)
 				)
 			),
@@ -366,8 +369,6 @@
 			// Modification du request data uniquement à la fin
 			$this->set( 'personnedecisionmodifiable', $this->_isDecisionModifiable( $foyer_id, $etatdossierpcg ) );
 			$this->request->data['Dossierpcg66']['user_id'] = $dossierpcg66['Dossierpcg66']['poledossierpcg66_id'].'_'.$dossierpcg66['Dossierpcg66']['user_id'];
-			
-			$this->view = 'add_edit';
 		}
 		
 		/**
@@ -406,6 +407,10 @@
 		 */
 		protected function _save_add_edit() {
 			$this->Dossierpcg66->begin();
+			
+			if ( !Hash::get($this->request->data, 'Dossierpcg66.etatdossierpcg') ) {
+				$this->request->data['Dossierpcg66']['etatdossierpcg'] = 'attaffect';
+			}
 
 			$saved = $this->Dossierpcg66->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
 			$etatdossierpcg = Hash::get($this->viewVars, 'dossierpcg66.Dossierpcg66.etatdossierpcg');
@@ -1006,6 +1011,18 @@
 			);
 			
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre' ) );
+		}
+				
+		/**
+		 * Cohorte type cas par cas
+		 */
+		public function cohorte_heberge() {
+			$this->loadModel('WebrsaCohorteDossierpcg66Heberge');
+			$Logic = $this->Components->load( 'WebrsaDossierpcg66' );
+			$this->WebrsaCohorteDossierpcg66Heberge->cohorteFields = $Logic->formulaireCohorte_heberge();
+			
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
+			$Recherches->cohorte( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge' ) );
 		}
 
 		/**

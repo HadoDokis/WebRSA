@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohortesTagsNewComponent.
+	 * Code source de la classe WebrsaCohortesDossierspcgs66NewComponent.
 	 *
 	 * @package app.Controller.Component
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Component.php.
@@ -8,11 +8,11 @@
 	App::uses( 'WebrsaAbstractCohortesNewComponent', 'Controller/Component' );
 
 	/**
-	 * La classe WebrsaCohortesTagsNewComponent ...
+	 * La classe WebrsaCohortesDossierspcgs66NewComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesTagsNewComponent extends WebrsaAbstractCohortesNewComponent
+	class WebrsaCohortesDossierspcgs66NewComponent extends WebrsaAbstractCohortesNewComponent
 	{
 		/**
 		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
@@ -24,19 +24,20 @@
 		 */
 		protected function _optionsEnums( array $params ) {
 			$Controller = $this->_Collection->getController();
+			$Controller->loadModel('Tag');
 			$Controller->loadModel('WebrsaOptionTag');
 			
 			$options = $Controller->WebrsaOptionTag->optionsEnums( parent::_optionsEnums( $params ) );
 			
-			if ( (integer)Configure::read('Cg.departement') === 66 ) {
-				$options['Dossierpcg66']['orgpayeur'] = array('CAF'=>'CAF', 'MSA'=>'MSA');
-				$options['Dossierpcg66']['haspiecejointe'] = array(0 => 'Non', 1 => 'Oui');
-				
-				$options = array_merge(
-					$options,
-					$Controller->Tag->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
-				);
-			}
+			$options['Dossierpcg66']['orgpayeur'] = array('CAF'=>'CAF', 'MSA'=>'MSA');
+			$options['Dossierpcg66']['haspiecejointe'] = array(0 => 'Non', 1 => 'Oui');
+
+			$options = array_merge(
+				$options,
+				$Controller->Tag->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
+			);
+			
+			$options['Cohorte'] = $options;
 			
 			return $options;
 		}
@@ -53,65 +54,64 @@
 			
 			$options = $Controller->WebrsaOptionTag->optionsRecords( parent::_optionsRecords( $params ) );
 			
-			// Dossier PCG
-			if ( (integer)Configure::read('Cg.departement') === 66 ) {
-				if( !isset( $Controller->Dossierpcg66 ) ) {
-					$Controller->loadModel( 'Dossierpcg66' );
-				}
-				$options['Dossierpcg66']['typepdo_id'] = $Controller->Dossierpcg66->Typepdo->find( 'list' );
-				$options['Dossierpcg66']['originepdo_id'] = $Controller->Dossierpcg66->Originepdo->find( 'list' );
-				$options['Dossierpcg66']['serviceinstructeur_id'] = $Controller->Dossierpcg66->Serviceinstructeur->listOptions();
-				$options['Traitementpcg66']['serviceinstructeur_id'] = $options['Dossierpcg66']['serviceinstructeur_id'];
-
-				 $gestionnaires = $Controller->Dossierpcg66->User->find(
-					'all',
-					array(
-						'fields' => array(
-							'User.nom_complet',
-							'( "User"."id" ) AS "User__gestionnaire"',
-						),
-						'conditions' => array(
-							'User.isgestionnaire' => 'O'
-						),
-						'joins' => array(
-							$Controller->Dossierpcg66->User->join( 'Poledossierpcg66', array( 'type' => 'INNER' ) ),
-						),
-						'order' => array( 'User.nom ASC', 'User.prenom ASC' ),
-						'contain' => false
-					)
-				);
-				$options['Dossierpcg66']['user_id'] = Hash::combine( $gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet' );
-
-				$options['Dossierpcg66']['poledossierpcg66_id'] = $Controller->Dossierpcg66->User->Poledossierpcg66->find(
-					'list',
-					array(
-						'fields' => array(
-							'Poledossierpcg66.id',
-							'Poledossierpcg66.name'
-						),
-						'conditions' => array( 'Poledossierpcg66.isactif' => '1' ),
-						'order' => array( 'Poledossierpcg66.name ASC' )
-					)
-				);
-				
-				$options['Situationpdo']['Situationpdo'] = $Controller->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => 'Situationpdo.libelle ASC', 'conditions' => array( 'Situationpdo.isactif' => '1' ) ) );
-				$options['Traitementpcg66']['personnepcg66_situationpdo_id'] = $options['Situationpdo']['Situationpdo'];
-				
-				$options['Statutpdo']['Statutpdo'] = $Controller->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => 'Statutpdo.libelle ASC', 'conditions' => array( 'Statutpdo.isactif' => '1' ) ) );
-				
-				$options['Traitementpcg66']['typecourrierpcg66_id'] = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->Typecourrierpcg66->find(
-					'list', array(
-						'fields' => array(
-							'Typecourrierpcg66.name'
-						),
-						'conditions' => array(
-							'Typecourrierpcg66.isactif' => '1'
-						)
-					)
-				);
-				
-				$options['Traitementpcg66']['descriptionpdo_id'] = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->Descriptionpdo->find('list');
+			if( !isset( $Controller->Dossierpcg66 ) ) {
+				$Controller->loadModel( 'Dossierpcg66' );
 			}
+			$options['Dossierpcg66']['typepdo_id'] = $Controller->Dossierpcg66->Typepdo->find( 'list' );
+			$options['Dossierpcg66']['originepdo_id'] = $Controller->Dossierpcg66->Originepdo->find( 'list' );
+			$options['Dossierpcg66']['serviceinstructeur_id'] = $Controller->Dossierpcg66->Serviceinstructeur->listOptions();
+			$options['Traitementpcg66']['serviceinstructeur_id'] = $options['Dossierpcg66']['serviceinstructeur_id'];
+
+			 $gestionnaires = $Controller->Dossierpcg66->User->find(
+				'all',
+				array(
+					'fields' => array(
+						'User.nom_complet',
+						'( "User"."id" ) AS "User__gestionnaire"',
+					),
+					'conditions' => array(
+						'User.isgestionnaire' => 'O'
+					),
+					'joins' => array(
+						$Controller->Dossierpcg66->User->join( 'Poledossierpcg66', array( 'type' => 'INNER' ) ),
+					),
+					'order' => array( 'User.nom ASC', 'User.prenom ASC' ),
+					'contain' => false
+				)
+			);
+			$options['Dossierpcg66']['user_id'] = Hash::combine( $gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet' );
+
+			$options['Dossierpcg66']['poledossierpcg66_id'] = $Controller->Dossierpcg66->User->Poledossierpcg66->find(
+				'list',
+				array(
+					'fields' => array(
+						'Poledossierpcg66.id',
+						'Poledossierpcg66.name'
+					),
+					'conditions' => array( 'Poledossierpcg66.isactif' => '1' ),
+					'order' => array( 'Poledossierpcg66.name ASC' )
+				)
+			);
+
+			$options['Situationpdo']['Situationpdo'] = $Controller->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => 'Situationpdo.libelle ASC', 'conditions' => array( 'Situationpdo.isactif' => '1' ) ) );
+			$options['Traitementpcg66']['personnepcg66_situationpdo_id'] = $options['Situationpdo']['Situationpdo'];
+
+			$options['Statutpdo']['Statutpdo'] = $Controller->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => 'Statutpdo.libelle ASC', 'conditions' => array( 'Statutpdo.isactif' => '1' ) ) );
+
+			$options['Traitementpcg66']['typecourrierpcg66_id'] = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->Typecourrierpcg66->find(
+				'list', array(
+					'fields' => array(
+						'Typecourrierpcg66.name'
+					),
+					'conditions' => array(
+						'Typecourrierpcg66.isactif' => '1'
+					)
+				)
+			);
+
+			$options['Traitementpcg66']['descriptionpdo_id'] = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->Descriptionpdo->find('list');
+			
+			$options['Cohorte'] = $options;
 			
 			return $options;
 		}

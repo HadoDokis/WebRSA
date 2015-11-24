@@ -40,15 +40,7 @@
 		 * 
 		 * @var array
 		 */
-		public $cohorteFields = array(
-			'Personne.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-			'Foyer.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-			'Tag.selection' => array( 'type' => 'checkbox', 'label' => '&nbsp;' ),
-			'Tag.modele' => array( 'type' => 'select', 'label' => '' ),
-			'Tag.valeurtag_id' => array( 'type' => 'select', 'label' => '' ),
-			'Tag.limite' => array( 'type' => 'date', 'label' => '', 'dateFormat' => 'DMY' ),
-			'Tag.commentaire' => array( 'type' => 'textarea', 'label' => '' ),
-		);
+		public $cohorteFields = array();
 		
 		/**
 		 * Valeurs par défaut pour le préremplissage des champs du formulaire de cohorte
@@ -60,22 +52,6 @@
 		 */
 		public $defaultValues = array();
 		
-		/**
-		 * Constructeur de class
-		 * 
-		 * @param integer|string|array $id Set this ID for this model on startup, can also be an array of options, see above.
-		 * @param string $table Name of database table to use.
-		 * @param string $ds DataSource connection name.
-		 */
-		public function __construct( $id = false, $table = null, $ds = null ) {
-			$this->cohorteFields['Tag.limite'] += array(
-				'minYear' => date('Y'), 
-				'maxYear' => date('Y')+4
-			);
-			
-			parent::__construct($id, $table, $ds);
-		}
-
 		/**
 		 * Complète les conditions du querydata avec le contenu des filtres de
 		 * recherche.
@@ -284,6 +260,7 @@
 				'Personne' => 'LEFT OUTER',
 				'Structurereferente' => 'LEFT OUTER',
 				'Referent' => 'LEFT OUTER',
+				'DspRev' => 'LEFT OUTER',
 				
 				'Tag' => 'LEFT OUTER',
 				'Valeurtag' => 'LEFT OUTER',
@@ -304,6 +281,7 @@
 							$this->Tag,
 							$this->Tag->Valeurtag,
 							$this->Tag->Valeurtag->Categorietag,
+							$this->Tag->Personne->DspRev,
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -334,12 +312,30 @@
 					)
 				);
 				
+				$joinDsp = $this->Tag->Personne->join('DspRev', array('type' => $types['DspRev']));
+				$sqDsp = $this->Tag->Personne->DspRev->sq(
+					array(
+						'alias' => 'dsps_revs',
+						'table' => 'dsps_revs',
+						'fields' => 'dsps_revs.id',
+						'conditions' => array(
+							'dsps_revs.personne_id = Personne.id'
+						),
+						'order' => array(
+							'dsps_revs.created' => 'DESC'
+						),
+						'limit' => 1
+					)
+				);
+				$joinDsp['conditions'] = "DspRev.id IN ($sqDsp)";
+				
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
 						$joinTag,
 						$this->Tag->join('Valeurtag', array('type' => $types['Valeurtag'])),
 						$this->Tag->Valeurtag->join('Categorietag', array('type' => $types['Categorietag'])),
+						$joinDsp
 					)
 				);
 

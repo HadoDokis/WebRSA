@@ -819,11 +819,11 @@ function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condit
 				fieldset.show();
 			}
 
-			$( fieldset ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
+			$$( '#'+fieldset.id+' div.input, #'+fieldset.id+' radio' ).each( function( elmt ) {
 				elmt.removeClassName( 'disabled' );
 			} );
 
-			$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+			$$( '#'+fieldset.id+' input, #'+fieldset.id+' select, #'+fieldset.id+' button, #'+fieldset.id+' textarea' ).each( function( elmt ) {
 				// INFO: elmt.enable() ne fonctionne pas avec des button
 				try{
 					elmt.enable();
@@ -837,12 +837,12 @@ function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condit
 			if( toggleVisibility ) {
 				fieldset.hide();
 			}
-
-			$( fieldset ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
+			
+			$$( '#'+fieldset.id+' div.input, #'+fieldset.id+' radio' ).each( function( elmt ) {
 				elmt.addClassName( 'disabled' );
 			} );
-
-			$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+			
+			$$( '#'+fieldset.id+' input, #'+fieldset.id+' select, #'+fieldset.id+' button, #'+fieldset.id+' textarea' ).each( function( elmt ) {
 				// INFO: elmt.disable() ne fonctionne pas avec des button
 				try{
 					elmt.disable();

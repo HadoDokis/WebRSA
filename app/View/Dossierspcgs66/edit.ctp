@@ -72,7 +72,7 @@
 <fieldset id="filecontainer-piece" class="noborder invisible">
 	<?php
 		echo $this->Fileuploader->create(
-			$fichiers,
+			isset($fichiers) ? $fichiers : array(),
 			array( 'action' => 'ajaxfileupload' )
 		);
 
