@@ -638,6 +638,32 @@
 				<?php endif;?>
 			</tbody>
 		</table>
+		
+		<h2>APREs Accordées par années</h2>
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Demandeur</th>
+					<th>Conjoin</th>
+				</tr>
+			</thead>
+		<?php
+			$class = 'odd';
+			foreach ($montantApres as $annee => $value) {
+				// On s'assure de la présence du DEM et du CJT
+				$value['DEM'] = isset($value['DEM']) ? $value['DEM'] : 0;
+				$value['CJT'] = isset($value['CJT']) ? $value['CJT'] : 0;
+				
+				echo "<tr class=\"{$class}\"><th>{$annee}</th>";
+				$class = $class === 'odd' ? 'even' : 'odd';
+				foreach($value as $role => $montant) {
+					echo "<td>{$montant}</td>";
+				}
+				echo '</tr>';
+			}
+		?>
+		</table>
 	</div>
 	
 	<h2>Dernier passage en EP</h2>

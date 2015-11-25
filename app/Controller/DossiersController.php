@@ -888,8 +888,30 @@
 				}
 
 				$details[$role] = $personnesFoyer[$index];
+				
+				
+				// Calcul des Apre par années
+				if( (integer)Configure::read( 'Cg.departement' ) === 66 ) {
+					$Apre66 = ClassRegistry::init('Apre66');
+					$montantApres = array();
+					$begin = false;
+					
+					for ($i=2009; $i<=date('Y'); $i++) {
+						$dateDebut = $i.'-01-01';
+						$dateFin = $i.'-12-31';
+						$montant = (integer)$Apre66->getMontantAprePeriode($dateDebut, $dateFin, $personnesFoyer[$index]['Personne']['id']);
+						
+						if ( $montant > 0 || $begin ) {
+							$begin = true;
+							$montantApres[$i][$role] = $montant;
+						}
+					}
+					
+					if (empty($montantApres)) {
+						$montantApres[date('Y')][$role] = 0;
+					}
+				}
 			}
-
 			$this->set( 'details', $details );
 
 			$this->_setOptions();
@@ -903,6 +925,7 @@
 			$this->set( 'optionsep', $optionsep );
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$this->set( 'montantApres', $montantApres );
 				$this->render('view66');
 			}
 		}

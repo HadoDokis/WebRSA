@@ -523,9 +523,21 @@
 		 * @return integer
 		 */
 		public function getMontantApreEnCours( $personne_id, $anomalie = null ){
-			$year = date( 'Y' );
-			$yearMax = $year + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1;
+			$dateDebut = date( 'Y' ).'-01-01';
+			$dateFin = (date( 'Y' ) + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1).'-12-31';
 			
+			return $this->getMontantAprePeriode($dateDebut, $dateFin, $personne_id, $anomalie);
+		}
+		
+		/**
+		 * Utilise Correspondancepersonne pour trouver le montant total d'apre pour une période donnée.
+		 * @param string $dateDebut au format SQL
+		 * @param string $dateFin au format SQL
+		 * @param integer $personne_id
+		 * @param boolean $anomalie
+		 * @return integer
+		 */
+		public function getMontantAprePeriode( $dateDebut, $dateFin, $personne_id, $anomalie = null ){
 			$queryCorrespondances = array(
 				'fields' => 'Correspondancepersonne.personne2_id',
 				'conditions' => array( 
@@ -559,7 +571,7 @@
 					),
 					"{$this->alias}.statutapre" => 'C',
 					"Aideapre66.decisionapre" => 'ACC',
-					"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
+					"Aideapre66.datemontantpropose BETWEEN '{$dateDebut}' AND '{$dateFin}'",
 					"{$this->alias}.etatdossierapre <>" => 'ANN',
 					'Aideapre66.montantaccorde IS NOT NULL'
 				),
