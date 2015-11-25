@@ -221,6 +221,8 @@
 			echo $this->Form->button( 'Tout Activer', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'Activer', true );" ) );
 			echo $this->Form->button( 'Tout Désactiver', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'Desactiver', true );" ) );
 		}
+
+		echo $this->Observer->disableFormOnSubmit( 'PersonneReferent' );
 	}
 ?>
 <?php if( isset( $personnes_referents ) && !empty( $personnes_referents ) ):?>
