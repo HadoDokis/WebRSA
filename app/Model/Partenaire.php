@@ -37,16 +37,6 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'numvoie' => array(
-				array(
-					'rule' => array('notEmpty'),
-				),
-			),
-			'typevoie' => array(
-				array(
-					'rule' => array('notEmpty'),
-				),
-			),
 			'nomvoie' => array(
 				array(
 					'rule' => array('notEmpty'),
