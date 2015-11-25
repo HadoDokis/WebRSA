@@ -862,7 +862,9 @@
 				array( 'Personne.id' => $personnesASupprimer ),
 				false,
 				false // FIXME
-			) && ClassRegistry::init( "Correspondancepersonne" )->updateByPersonneId( $data['Personne']['garder'] ) && $success;
+			) && $success;
+			
+			ClassRegistry::init( "Correspondancepersonne" )->updateByPersonneId( $data['Personne']['garder'] );
 
 			return $success;
 		}
@@ -1007,10 +1009,7 @@
 				$donnees = $this->_assocData( $this->Dossier->Foyer->Personne, $assocConditions, $personnes_id );
 				$donnees = Hash::filter( (array)$donnees );
 
-				$fichiersModuleLies = array_merge(
-					$this->_fichiersModuleLies( $donnees ),
-					$this->_fichiersModuleLies( array( 'Personne' => array( 'Personne' => array( 'id' => $personnes_id ) ) ) )
-				);
+				$fichiersModuleLies = $this->_fichiersModuleLies( array( 'Personne' => array( 'Personne' => array( 'id' => $personnes_id ) ) ) );
 				$this->set( 'fichiersModuleLies', $fichiersModuleLies );
 
 			}
