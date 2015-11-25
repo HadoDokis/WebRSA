@@ -139,6 +139,15 @@ UPDATE traitementspcgs66 SET affiche_couple = 0 WHERE typetraitement = 'courrier
 SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'motifreport' );
 ALTER TABLE bilansparcours66 ADD COLUMN motifreport TEXT;
 
+--------------------------------------------------------------------------------
+-- numvoie et typevoie ne doivent pas être obligatoire
+--------------------------------------------------------------------------------
+
+ALTER TABLE partenaires ALTER COLUMN numvoie DROP NOT NULL;
+ALTER TABLE partenaires ALTER COLUMN typevoie DROP NOT NULL;
+ALTER TABLE adressescuis ALTER COLUMN numvoie DROP NOT NULL;
+ALTER TABLE adressescuis ALTER COLUMN typevoie DROP NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
