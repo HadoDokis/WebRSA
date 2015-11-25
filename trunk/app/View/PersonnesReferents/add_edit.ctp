@@ -16,7 +16,7 @@
 
 	<h1><?php echo $this->pageTitle;?></h1>
 <?php
-	echo $this->Xform->create( 'PersonneReferent', array( 'type' => 'post' ) );
+	echo $this->Xform->create( 'PersonneReferent', array( 'type' => 'post', 'id' => 'PersonneReferentForm' ) );
 
 	if( $this->action == 'edit' ) {
 		echo '<div>'.$this->Xform->input( 'PersonneReferent.id', array( 'type' => 'hidden' ) ).'</div>';
@@ -40,4 +40,7 @@
 		<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
 		<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
 	</div>
-<?php echo $this->Xform->end();?>
+<?php
+	echo $this->Xform->end();
+	echo $this->Observer->disableFormOnSubmit( 'PersonneReferentForm' );
+?>
