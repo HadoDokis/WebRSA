@@ -59,6 +59,7 @@
                 $actionscandidatspersonne,
                 array(
                     'Progfichecandidature66.name' => array( 'label' => 'Nom du (des) programme(s)'),
+                    'Valprogfichecandidature66.name' => array( 'label' => 'Valeur du programme'),
                     'ActioncandidatPersonne.formationregion',
                     'ActioncandidatPersonne.nomprestataire' => array( 'label' => 'Nom du prestataire')
                 ),

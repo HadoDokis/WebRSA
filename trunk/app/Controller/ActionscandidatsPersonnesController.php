@@ -98,7 +98,7 @@
 			}
 			$field = Inflector::singularize( Inflector::tableize( 'Actioncandidat' ) ).'_id';
 			$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{'Actioncandidat'}->find( 'list', array( 'recursive' => -1, 'order' => 'name' ) ) );
-
+			
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
@@ -548,6 +548,11 @@
 				$this->assert( !empty( $actioncandidat_personne ), 'invalidParameter' );
 
 				$personne_id = $actioncandidat_personne['ActioncandidatPersonne']['personne_id'];
+				
+				$valsprog =& $actioncandidat_personne['ActioncandidatPersonne']['valprogfichecandidature66_id'];
+				if ( !empty($valsprog) ) {
+					$valsprog = $actioncandidat_personne['ActioncandidatPersonne']['progfichecandidature66_id'].'_'.$valsprog;
+				}
 
 				$referentId = null;
 				$this->set( compact('referentId' ) );
@@ -644,7 +649,7 @@
                     if( !in_array( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'], $actionsTypeRegionIds ) ){
                         $this->request->data['ActioncandidatPersonne']['poursuitesuivicg'] = '0';
                     }
-
+					
                     // Si aucune case n'est cochée pour les RDVs, on n'enregistre aucune info
                     if( empty( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] ) ) {
                         unset( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] );
@@ -658,6 +663,10 @@
                         unset( $this->request->data['ActioncandidatPersonne']['naturemobile'] );
                         unset( $this->request->data['ActioncandidatPersonne']['typemobile'] );
                     }
+					
+					// Valeurs pour progfichecandidature66
+					$valsprog =& $this->request->data['ActioncandidatPersonne']['valprogfichecandidature66_id'];
+					$valsprog = suffix($valsprog);
                 }
 
 
@@ -741,6 +750,7 @@
                 $options['Prestation'] = array( 'rolepers' => $this->Option->rolepers() );
                 $options['Suiviinstruction'] = array( 'typeserins' => $this->Option->typeserins() );
 				$options = Hash::merge( $options, $this->{$this->modelClass}->Personne->Contratinsertion->Cer93->enums() );
+				$options[$this->modelClass]['valprogfichecandidature66_id'] = ClassRegistry::init('Valprogfichecandidature66')->dependantSelectOptions();
 
 				Cache::write( $cacheKey, $options );
 			}
@@ -877,6 +887,7 @@
 						$this->ActioncandidatPersonne->Referent->fields(),
 						$this->ActioncandidatPersonne->fields(),
 						$this->ActioncandidatPersonne->Progfichecandidature66->fields(),
+						$this->ActioncandidatPersonne->Progfichecandidature66->Valprogfichecandidature66->fields(),
 						array(
 							$this->ActioncandidatPersonne->Fichiermodule->sqNbFichiersLies( $this->ActioncandidatPersonne, 'nb_fichiers_lies', 'ActioncandidatPersonne' )
 						)
@@ -889,7 +900,8 @@
 						$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => 'INNER' ) ),
 						$this->ActioncandidatPersonne->join( 'Motifsortie', array( 'type' => 'LEFT OUTER' ) ),
 						$this->ActioncandidatPersonne->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->ActioncandidatPersonne->join( 'Progfichecandidature66', array( 'type' => 'LEFT OUTER' ) )
+						$this->ActioncandidatPersonne->join( 'Progfichecandidature66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->ActioncandidatPersonne->Progfichecandidature66->join( 'Valprogfichecandidature66', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'contain' => false
 				)

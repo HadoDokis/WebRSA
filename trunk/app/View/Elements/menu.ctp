@@ -268,6 +268,9 @@
                 'Création des programmes région' => array(
 					'url' => array( 'controller' => 'progsfichescandidatures66', 'action' => 'index' )
 				),
+                'Création des valeurs programmes région' => array(
+					'url' => array( 'controller' => 'valsprogsfichescandidatures66', 'action' => 'index' )
+				),
 				'Motifs de sortie' => array(
 					'url' => array( 'controller' => 'motifssortie', 'action' => 'index' )
 				)

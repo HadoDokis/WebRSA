@@ -487,6 +487,8 @@ $irregularPlural = array(
 	'tag' => 'tags',
 	// Conservation des données d'impression
 	'dataimpression' => 'dataimpressions',
+	// Paramêtrage des valeurs pour les programmes région
+	'valprogfichecandidature66' => 'valsprogsfichescandidatures66'
 );
 
 /**
