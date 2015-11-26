@@ -608,6 +608,8 @@
 				$filesNames = array_merge( $filesNames, $Piecemailcui66->getFichiersLiesById( $fileId ) );
 			}
 			
+			$filesNames = $this->_transformOdtIntoPdf($filesNames, $cui_id);
+			
 			$Email = new CakeEmail( $this->configEmail );
 			if ( !empty($data['emailredacteur']) ){
 				$Email->replyTo( $data['emailredacteur'] );
@@ -812,6 +814,58 @@
 		 */
 		public function indexparams(){
 			
+		}
+		
+		/**
+		 * Transforme les fichiers ODT en document PDF (avec remplissage des champs)
+		 * 
+		 * @param array $paths Liste des chemins vers les fichiers
+		 * @param integer $cui_id
+		 * @return array retourne la liste de fichiers avec retrait des ODT et ajout des PDF
+		 */
+		protected function _transformOdtIntoPdf( $paths, $cui_id ) {
+			$newPaths = array();
+			foreach ($paths as $path) {
+				// Si l'extension du fichier n'est pas odt on l'ajoute à la nouvelle liste et on passe au prochain
+				if ( strpos($path, '.odt') !== strlen($path)-4 ) {
+					$newPaths[] = $path;
+					continue;
+				}
+				
+				// On sépare le chemin du nom de fichier
+				$dirPath = explode(DS, $path);
+				$odtName = $dirPath[count($dirPath)-1];
+				unset($dirPath[count($dirPath)-1]); // Retrait du nom de fichier
+				$dirPath = implode(DS, $dirPath);
+				$fileName = substr($odtName, 0, strlen($odtName) -4); // Nom du fichier sans extension
+				$pdfPath = $dirPath.DS.$fileName.'.pdf';
+				
+				// On récupère les données pour le remplissage du ODT
+				$query = $this->Cui->Cui66->queryImpression( $cui_id );
+				$this->Cui->Cui66->forceVirtualFields = true;
+				$data = $this->Cui->Cui66->find( 'first', $query );
+				$options = $this->Cui->Cui66->options();
+				$data = $this->Cui->Cui66->completeDataImpression( $data );
+				$pdf = $this->Cui->ged(
+					$data,
+					$path,
+					true,
+					$options
+				);
+				
+				// On créer un nouveau fichier à coté du fichier ODT
+				if (is_file($pdfPath) ) {
+					unlink($pdfPath); // Supprime le fichier pdf du même nom si il existe
+				}
+				$File = fopen($pdfPath, 'w');
+				fwrite($File, $pdf);
+				fclose($File);
+				
+				// On ajoute finalement le fichier à la liste
+				$newPaths[] = $pdfPath;
+			}
+			
+			return $pdfPath;
 		}
 	}
 ?>
