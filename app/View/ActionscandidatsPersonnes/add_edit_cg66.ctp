@@ -37,6 +37,7 @@
             array(
 //                'Progfichecandidature66.Progfichecandidature66' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 ),
                 'ActioncandidatPersonne.progfichecandidature66_id' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'radio', 'empty' => false, 'options' => $progsfichescandidatures66 ),
+				'ActioncandidatPersonne.valprogfichecandidature66_id',
                 'ActioncandidatPersonne.formationregion',
                 'ActioncandidatPersonne.nomprestataire'
             ),
@@ -524,9 +525,44 @@
 
 		<?php endif;?>
 
-
-
-
+		/**
+		 * Retourne l'id du nom du programme Région
+		 * @returns {string}
+		 */
+		function getProgrammeValue() {
+			var value = null;
+			$$('#formationregion input[name="data[ActioncandidatPersonne][progfichecandidature66_id]"]').each(function(element){
+				if (element.getValue() !== null && element.getValue() !== '') {
+					value = element.getValue();
+					throw $break;
+				}
+			});
+			
+			return value;
+		}
+		
+		/**
+		 * Cache les options dans Valeur de l'action région qui ne correspondent pas au programme choisi
+		 * @param {string} idProgramme
+		 */
+		function hideValeurProgramme( idProgramme ) {
+			$('ActioncandidatPersonneValprogfichecandidature66Id').select('option').each(function(option){
+				if (option.value === '' || option.value.indexOf(idProgramme+'_') === 0) {
+					option.show();
+				}
+				else {
+					option.hide();
+				}
+			});
+		}
+		
+		hideValeurProgramme( getProgrammeValue() );
+		$$('#formationregion input[name="data[ActioncandidatPersonne][progfichecandidature66_id]"]').each(function(element){
+			element.observe('change', function(){
+				$('ActioncandidatPersonneValprogfichecandidature66Id').setValue('');
+				hideValeurProgramme( getProgrammeValue() );
+			});
+		});
 	} );
 </script>
 <!--/************************************************************************/ -->

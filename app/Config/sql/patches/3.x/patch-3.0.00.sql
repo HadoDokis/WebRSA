@@ -134,6 +134,25 @@ CREATE TABLE dataimpressions (
     modified			TIMESTAMP WITHOUT TIME ZONE
 );
 
+--------------------------------------------------------------------------------
+-- Actions région - Catégories et valeurs
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS valsprogsfichescandidatures66;
+CREATE TABLE valsprogsfichescandidatures66 (
+	id SERIAL					NOT NULL PRIMARY KEY,
+	name						VARCHAR(255) NOT NULL,
+	progfichecandidature66_id	INTEGER NOT NULL REFERENCES progsfichescandidatures66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	actif						SMALLINT,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE valsprogsfichescandidatures66 ADD CONSTRAINT valsprogsfichescandidatures66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
+
+SELECT alter_table_drop_column_if_exists( 'public', 'actionscandidats_personnes', 'valprogfichecandidature66_id' );
+
+ALTER TABLE actionscandidats_personnes ADD COLUMN valprogfichecandidature66_id INTEGER REFERENCES valsprogsfichescandidatures66(id) ON DELETE SET NULL ON UPDATE CASCADE;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

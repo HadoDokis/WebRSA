@@ -57,7 +57,20 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Valprogfichecandidature66' => array(
+				'className' => 'Valprogfichecandidature66',
+				'foreignKey' => 'progfichecandidature66_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
         
         /**

@@ -105,3 +105,6 @@ msgstr "Nom du prestataire"
 
 msgid "ActioncandidatPersonne.formationregion"
 msgstr "Nom de la formation"
+
+msgid "ActioncandidatPersonne.valprogfichecandidature66_id"
+msgstr "Valeur de l'action région"
