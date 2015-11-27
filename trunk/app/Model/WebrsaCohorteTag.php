@@ -127,7 +127,7 @@
 						'fields' => 'tags.id',
 						'conditions' => array(
 							'tags.limite > NOW()',
-							'tags.etat' => array( 'encours' ),
+							'tags.etat' => array( 'encours', 'traite' ),
 							'tags.valeurtag_id' => Hash::get($search, 'Tag.valeurtag_id'),
 							'OR' => array(
 								array(

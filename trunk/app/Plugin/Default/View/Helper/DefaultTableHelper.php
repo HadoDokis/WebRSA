@@ -90,7 +90,7 @@
 				else if( $this->_isInputField( $field ) ) {
 					$for = "{$tableId}ColumnInput".Inflector::camelize( preg_replace( '/(\[|\])+/', '_', $field ) );
 					$theadTr[] = array(
-						__d( $domain, $field ) => array( 'id' => $for )
+						__d( $domain, $field ) => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) )
 					);
 				}
 				else if( $this->_isDataField( $field ) ) {

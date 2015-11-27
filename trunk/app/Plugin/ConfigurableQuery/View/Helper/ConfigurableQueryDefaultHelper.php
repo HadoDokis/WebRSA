@@ -83,6 +83,9 @@
 					if( !isset( $params['type'] ) && strstr( $fieldName, '/' ) === false ) {
 						$fields[$fieldName]['type'] = $this->DefaultTable->DefaultTableCell->DefaultData->type( $fieldName );
 					}
+					else if( isset( $params['type'] ) && strpos( $fieldName, 'data[' ) === 0 ) {
+						$fields[$fieldName] = $this->addClass( $fields[$fieldName], 'input' );
+					}
 					if( !isset( $params['label'] ) ) {
 						$fields[$fieldName]['label'] = __m( $fieldName );
 					}
@@ -270,8 +273,11 @@
 
 					$path = str_replace( '][', '.', str_replace( "[{$i}]", '', $preformatedPath ) );
 					$model_field = model_field( $path );
-					$hiddenFields['value'] = Hash::get($results, $i.'.'.$model_field[0].'.'.$model_field[1]);
-					$input = $this->DefaultTable->DefaultTableCell->input($fullPath, $hiddenFields);
+					
+					$field = $hiddenFields;
+					$field += array('value' => Hash::get($results, $i.'.'.$model_field[0].'.'.$model_field[1]));
+					
+					$input = $this->DefaultTable->DefaultTableCell->input($fullPath, $field);
 					$table .= count($input) ? $input[0] : '';
 				}
 			}

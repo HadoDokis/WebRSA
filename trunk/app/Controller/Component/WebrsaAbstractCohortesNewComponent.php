@@ -79,12 +79,13 @@
 			// On retire la Cohorte en cas de changement de page
 			$sessionKey = 'Page Check: '.$Controller->name.'_'.$Controller->action;
 			$page = (int)Hash::get( $Controller->request->data, 'page' );
-
+			$page = $page === 0 ? 1 : $page;
+			
 			if ( (int)$Controller->Session->read( $sessionKey ) !== $page ) {
 				unset($Controller->request->data[$params['cohorteKey']]);
-				$Controller->Session->write( $sessionKey, ($page ? $page : 1) );
+				$Controller->Session->write( $sessionKey, $page );
 			}
-			$Controller->request->data['page'] = $page ? $page : 1;
+			$Controller->request->data['page'] = $page;
 
 			// Si un formulaire de cohorte est renvoyé, on le traite
 			if( isset( $Controller->request->data[$params['cohorteKey']] ) ) {
