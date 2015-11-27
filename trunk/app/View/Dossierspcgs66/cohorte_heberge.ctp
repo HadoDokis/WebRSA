@@ -58,4 +58,16 @@
 				setDateCloture('Cohorte<?php echo $i?>Traitementpcg66Dureeecheance', 'Cohorte.<?php echo $i?>.Traitementpcg66.dateecheance');
 			});
 		</script>
-	<?php }
+	<?php 
+		echo $this->Observer->disableFieldsOnValue(
+			"Cohorte.{$i}.Traitementpcg66.dureeecheance",
+			array(
+				"Cohorte.{$i}.Traitementpcg66.dateecheance.day", 
+				"Cohorte.{$i}.Traitementpcg66.dateecheance.month", 
+				"Cohorte.{$i}.Traitementpcg66.dateecheance.year"
+			),
+			'0',
+			true,
+			false
+		);
+	}
