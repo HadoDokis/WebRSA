@@ -438,7 +438,8 @@
 				);
 
 				$result = $this->find( 'first', $query );
-				return empty( Hash::get( $result, "{$this->alias}.{$this->primaryKey}" ) );
+				$found = Hash::get( $result, "{$this->alias}.{$this->primaryKey}" );
+				return empty( $found );
 			}
 
 			return true;
