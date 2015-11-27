@@ -461,7 +461,7 @@
 				if( !empty( $passagescommissionseps_ids_reporte ) ) {
 					foreach ( $passagescommissionseps_ids_reporte as $id ) {
 						$bilanparcour66_id = implode((array)$this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $id ));
-						
+
 						foreach ( $datas as $data ) {
 							if ( Hash::get($data, $modeleDecisionName.'.passagecommissionep_id') === $id ) {
 								$dataBilanParcours = array(
@@ -469,10 +469,10 @@
 									'positionbilan' => 'ajourne',
 									'motifreport' => Hash::get($data, $modeleDecisionName.'.commentaire')
 								);
-								
+
 								$this->create($dataBilanParcours);
 								$success = $success && $this->save();
-								
+
 								break;
 							}
 						}
@@ -666,6 +666,15 @@
                             );
                             $this->Orientstruct->create( $orientstruct );
                             $success = $this->Orientstruct->save() && $success;
+
+							// Clôture du référent du parcours actuel
+							$this->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
+								array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
+								array(
+									'"PersonneReferent"."personne_id"' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'"PersonneReferent"."dfdesignation" IS NULL'
+								)
+							);
                         }
                         else if( $data['Bilanparcours66']['changementrefsansep'] == 'N' ) {
 							// FIXME: si c'est un ajout seulement / à la création du CER seulement ?

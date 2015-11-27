@@ -208,6 +208,15 @@
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 						);
 
+						// Fin de désignation du référent de la personne
+						$this->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
+							array( 'PersonneReferent.dfdesignation' => "'".$date_valid."'" ),
+							array(
+								'"PersonneReferent"."personne_id"' => $dossierep['Dossierep']['personne_id'],
+								'"PersonneReferent"."dfdesignation" IS NULL'
+							)
+						);
+
 						// Si l'allocataire est réorienté et qu'il avait un D1, il sort de l'accompagnement
 						$dossierep['Decisionnonorientationproep93'] = $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep93'][0];
 						$success = $this->WebrsaOrientstruct->reorientationEpQuestionnaired2pdv93Auto( $dossierep, 'Decisionnonorientationproep93', $this->Orientstruct->id ) && $success;

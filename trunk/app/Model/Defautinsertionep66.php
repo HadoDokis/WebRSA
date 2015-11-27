@@ -649,6 +649,31 @@
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 						);
+
+						// Clôture du référent du parcours actuel
+						$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
+							array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
+							array(
+								'"PersonneReferent"."personne_id"' => $dossierep['Dossierep']['personne_id'],
+								'"PersonneReferent"."dfdesignation" IS NULL'
+							)
+						);
+
+						// Création du nouveau référent du parcours s'il a été désigné
+						if( !empty( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) ) {
+							$referent = array(
+								'PersonneReferent' => array(
+									'personne_id' => $dossierep['Dossierep']['personne_id'],
+									'referent_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'],
+									'dddesignation' => date( 'Y-m-d' ),
+									'structurereferente_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
+									'user_id' => $user_id
+								)
+							);
+
+							$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->create( $referent );
+							$success = $this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->save() && $success;
+						}
 					}
 
 					//	Ancien emplacement de la génération du dossierpcg66
