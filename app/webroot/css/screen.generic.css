@@ -505,6 +505,10 @@ table.tooltips tbody tr.hover td {
     cursor: help;
 }
 
+.dynamic td.input, .dynamic td.action {
+    cursor: default;
+}
+
 table.tooltips tbody tr.hover td.tooltip_table {
     position: absolute;
     display: block;

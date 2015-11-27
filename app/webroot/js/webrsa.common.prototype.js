@@ -265,6 +265,7 @@ function mkTooltipTables() {
 	var tips = new Array();
 	$$( 'table.tooltips' ).each( function( table ) {
 		var actionPositions = new Array(),
+			inputPositions = new Array(),
 			realPosition = 0,
 			headRows = $( table ).getElementsBySelector( 'thead tr' ),
 			loop = 0;
@@ -278,6 +279,11 @@ function mkTooltipTables() {
 					if( $( th ).hasClassName( 'action' ) ) {
 						for( var k = 0 ; k < colspan ; k++ ) {
 							actionPositions.push( realPosition + k );
+						}
+					}
+					else if( $( th ).hasClassName( 'input' ) ) {
+						for( var k = 0 ; k < colspan ; k++ ) {
+							inputPositions.push( realPosition + k );
 						}
 					}
 					realPosition = ( parseInt( realPosition ) + parseInt( colspan ) );
@@ -295,7 +301,10 @@ function mkTooltipTables() {
 				$( tr ).addClassName( 'dynamic' );
 				var jPosition = 0;
 				$( tr ).getElementsBySelector( 'td' ).each( function( td ) {
-					if( !actionPositions.include( jPosition ) && $(td).hasClassName('action') === false ) {
+					if(
+						( !actionPositions.include( jPosition ) && $(td).hasClassName('action') === false )
+						&& ( !inputPositions.include( jPosition ) && $(td).hasClassName('input') === false )
+					) {
 						tips.push( new Tooltip( $( td ), 'innerTable' + $( table ).readAttribute( 'id' ) + iPosition ) );
 					}
 					jPosition++;

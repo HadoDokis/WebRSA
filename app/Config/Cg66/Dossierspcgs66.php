@@ -413,7 +413,7 @@
 				'order' => array()
 			),
 			// 3. Nombre d'enregistrements par page
-			'limit' => 1,
+			'limit' => 10,
 			// 4. Lancer la recherche au premier accès à la page ?
 			'auto' => false,
 			// 5. Résultats de la recherche
@@ -458,7 +458,7 @@
 			// 6. Temps d'exécution, mémoire maximum, ...
 			'ini_set' => array(),
 			// 7. Affichage vertical des résultats
-			'view' => true,
+			'view' => false,
 		)
 	);
 	
@@ -507,11 +507,30 @@
 	 */
 	Configure::write('Dossierspcgs66.cohorte_heberge.options.choose_and_hide',
 		array(
+			'Dossierpcg66.typepdo_id' => 16, // Position mission PDU-MMR
+			'Dossierpcg66.datereceptionpdo' => date('Y-m-d'), // Date de réception du dossier
+			'Dossierpcg66.serviceinstructeur_id' => null, // Service instructeur
+			'Dossierpcg66.commentairepiecejointe' => null, // Commentaire
+			'Dossierpcg66.dateaffectation' => date('Y-m-d'), // Date d'affectation
+			'Situationpdo.Situationpdo' => 34, // Cible hébergé
 			'Dossierpcg66.originepdo_id' => 21, // PDU - MMR Cible Imposition
 			'Dossierpcg66.poledossierpcg66_id' => 1, // PDU
 			'Traitementpcg66.typecourrierpcg66_id' => 9, // PDU - Cibles
 			'Traitementpcg66.descriptionpdo_id' => 1, // Courrier à l'allocataire
 			'Traitementpcg66.datereception' => null, // Date de reception
+			'Modeletraitementpcg66.modeletypecourrierpcg66_id' => 82, // Cible hébergé
+			'Modeletraitementpcg66.montantdatedebut' => date('Y-m-d'),
+			'Modeletraitementpcg66.montantdatefin' => date_format(date_add(new DateTime(), date_interval_create_from_date_string('+3 months')), 'Y-m-d'),
+			'Piecemodeletypecourrierpcg66.0_Piecemodeletypecourrierpcg66' => 131, // Attestation ci-jointe dûment complétée
+			'Piecemodeletypecourrierpcg66.1_Piecemodeletypecourrierpcg66' => 132, // Attestation d'hébergement dûment remplie (en pièce jointe)
+			'Piecemodeletypecourrierpcg66.2_Piecemodeletypecourrierpcg66' => 129, // Avis d'imposition sur les revenus de l'année précédente...
+			'Piecemodeletypecourrierpcg66.3_Piecemodeletypecourrierpcg66' => 133, // Justificatifs de résidence de moins de 3 mois...
+			'Piecemodeletypecourrierpcg66.4_Piecemodeletypecourrierpcg66' => 128, // Pièce d'identité et passeport en intégralité et en cours...
+			'Piecemodeletypecourrierpcg66.5_Piecemodeletypecourrierpcg66' => 130, // Relevés bancaires des 3 derniers mois
+			'Traitementpcg66.serviceinstructeur_id' => null, // Service à contacter (insertion)
+			'Traitementpcg66.personnepcg66_situationpdo_id' => 34, // Motifs concernant la personne
+			'Traitementpcg66.datedepart' => date('Y-m-d'), // Date de départ (pour le calcul de l'échéance)
+			'Tag.valeurtag_id' => 2, // Valeur du tag
 		)
 	);
 	
