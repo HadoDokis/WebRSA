@@ -31,8 +31,15 @@
 
 		public $validate = array(
 			'referent_id' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				),
+				array(
+					'rule' => 'checkReferentUnique',
+					'message' => 'Le bénéficiaire possède déjà un référent unique, merci de le clôturer avant d\'en ajouter un nouveau',
+					'allowEmpty' => true,
+				)
 			),
 			'dddesignation' => array(
 				array(
@@ -400,6 +407,41 @@
 			);
 
 			return $this->find( 'first', $query );
+		}
+
+		/**
+		 * Règle de validation: vérifie à l'ajout, si pour une personne donnée
+		 * il existe déjà un référent du parcours actif (sans date de fin de
+		 * désignation).
+		 *
+		 * @param string|array $check Les données à enregistrer
+		 * @return boolean true s'il n'existe pas encore de référent actif
+		 */
+		public function checkReferentUnique( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
+			$personne_id = Hash::get( $this->data, "{$this->alias}.personne_id" );
+			$dfdesignation = Hash::get( $this->data, "{$this->alias}.dfdesignation" );
+
+			if( empty( $id ) && !empty( $personne_id ) && empty( $dfdesignation ) ) {
+				$query = array(
+					'fields' => array( "{$this->alias}.{$this->primaryKey}" ),
+					'recursive' => -1,
+					'contain' => false,
+					'conditions' => array(
+						"{$this->alias}.personne_id" => $personne_id,
+						"{$this->alias}.dfdesignation IS NULL"
+					)
+				);
+
+				$result = $this->find( 'first', $query );
+				return empty( Hash::get( $result, "{$this->alias}.{$this->primaryKey}" ) );
+			}
+
+			return true;
 		}
 	}
 ?>

@@ -84,6 +84,14 @@
 							else {
 								$sprintfParams = Set::merge( array( __d( $domain, $model->validate[$field][$key]['message'] ) ), $ruleParams );
 							}
+
+							// Si on a des array en parmètres, on transforme en chaîne de caractères
+							foreach( $sprintfParams as $kspp => $spp ) {
+								if( is_array( $spp ) ) {
+									$sprintfParams[$kspp] = implode( ', ', $spp );
+								}
+							}
+
 							$model->validate[$field][$key]['message'] = call_user_func_array( 'sprintf', $sprintfParams );
 						}
 					}
