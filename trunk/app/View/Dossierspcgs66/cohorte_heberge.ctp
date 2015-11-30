@@ -9,10 +9,20 @@
 		'minYear_to' => '2009', 
 		'maxYear_to' => date( 'Y' ) + 4
 	);
+	$notEmptyRule['notEmpty'] = array(
+		'rule' => 'notEmpty',
+		'message' => 'Champ obligatoire'
+	);
+	$validationCohorte = array(
+		'Statutpdo' => array('Statutpdo' => $notEmptyRule),
+		'Tag' => array(
+			'etat' => $notEmptyRule,
+			'calcullimite' => $notEmptyRule,
+		),
+	);
+	echo $this->FormValidator->generateJavascript($validationCohorte, false);
 	
 	$this->start( 'custom_search_filters' );
-	
-	echo $this->Xform->multipleCheckbox( 'Search.Tag.valeurtag_id', $options['filter'] );
 	
 	if( Configure::read( 'CG.cantons' ) ) {
 		echo $this->Xform->multipleCheckbox( 'Search.Zonegeographique.id', $options, 'divideInto2Collumn' );
@@ -24,8 +34,7 @@
 	echo '<fieldset><legend>' . __m( 'Tag.cohorte_fieldset' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Search.Foyer.nb_enfants',
-				'Search.Adresse.heberge' => array( 'empty' => true ),
+				'Search.Foyer.nb_enfants' => array( 'empty' => true ),
 				'Search.Requestmanager.name' => array( 'empty' => true ),
 			),
 			array(
@@ -59,6 +68,28 @@
 			});
 		</script>
 	<?php 
+		echo $this->Observer->disableFieldsOnValue(
+			"Cohorte.{$i}.Dossierpcg66.selection",
+			array(
+				"Cohorte.{$i}.Dossierpcg66.orgpayeur",
+				"Cohorte.{$i}.Statutpdo.Statutpdo",
+				"Cohorte.{$i}.Traitementpcg66.typetraitement",
+				"Cohorte.{$i}.Traitementpcg66.affiche_couple",
+				"Cohorte.{$i}.Modeletraitementpcg66.commentaire",
+				"Cohorte.{$i}.Traitementpcg66.dureeecheance",
+				"Cohorte.{$i}.Traitementpcg66.imprimer",
+				"Cohorte.{$i}.Tag.etat",
+				"Cohorte.{$i}.Tag.calcullimite",
+				"Cohorte.{$i}.Tag.limite.day",
+				"Cohorte.{$i}.Tag.limite.month",
+				"Cohorte.{$i}.Tag.limite.year",
+				"Cohorte.{$i}.Tag.commentaire",
+			),
+			'1',
+			false,
+			false
+		);
+			
 		echo $this->Observer->disableFieldsOnValue(
 			"Cohorte.{$i}.Traitementpcg66.dureeecheance",
 			array(

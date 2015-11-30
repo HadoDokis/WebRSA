@@ -127,5 +127,32 @@
 				'conditions' => $conditions
 			);
 		}
+		
+		/**
+		 * Met à jour l'etat du tag
+		 * 
+		 * @param type $conditions
+		 */
+		public function updateEtatTagByConditions( array $conditions = array() ) {
+			// Conditions tags périmés
+			$conditionsPerime = $conditions;
+			$conditionsPerime[] = array(
+				'Tag.limite IS NOT NULL',
+				'Tag.limite < NOW()',
+			);
+			$fieldsPerime = array('Tag.etat' => "'perime'");
+			$success = $this->updateAllUnBound($fieldsPerime, $conditionsPerime);
+			
+			return $success;
+		}
+		
+		/** 
+		 * Calcule l'etat du Tag après chaques modifications
+		 * 
+		 * @param boolean $created
+		 */
+		public function afterSave( $created ) {
+			$this->updateEtatTagByConditions( array( 'Tag.id' => $this->id ) );
+		}
 	}
 ?>
