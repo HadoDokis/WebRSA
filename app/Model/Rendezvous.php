@@ -42,13 +42,21 @@
 				),
 				'checkThematiqueAnnuelleParStructurereferente' => array(
 					'rule' => 'checkThematiqueAnnuelleParStructurereferente',
-				),
+				)
 			),
 			'typerdv_id' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
+				'checkThematiquesObligatoires' => array(
+					'rule' => 'checkThematiquesObligatoires',
+					'message' => 'Veuillez choisir au moins une thématique de rendez-vous'
+				),
+				'checkThematiqueAnnuelleParQuestionnaireD1' => array(
+					'rule' => 'checkThematiqueAnnuelleParQuestionnaireD1',
+					'message' => 'Ce rendez-vous est déjà lié à un questionnaire D1, il est obligatoire de sélectionner la thématique associée'
+				)
 			),
 			'daterdv' => array(
 				'notEmpty' => array(
@@ -71,6 +79,12 @@
 					'rule' => 'integer',
 					'message' => 'Veuillez entrer un nombre entier',
 				),
+			),
+			'statutrdv_id' => array(
+				'checkThematiqueAnnuelleParStatutRdvId' => array(
+					'rule' => 'checkThematiqueAnnuelleParStatutRdvId',
+					'message' => 'Ce rendez-vous est déjà lié à un questionnaire D1, il est obligatoire de sélectionner un statut de RDV adéquat'
+				)
 			),
 		);
 
@@ -175,6 +189,122 @@
 			return true;
 		}
 
+		/**
+		 * Vérifie, si on utilise les thématiques de RDV, qu'au moins une
+		 * thématique a été sélectionnée.
+		 *
+		 * @see Rendezvous.useThematique
+		 *
+		 * @param mixed $check
+		 * @return boolean
+		 */
+		public function checkThematiquesObligatoires( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			if( !Configure::read( 'Rendezvous.useThematique' ) ) {
+				return true;
+			}
+
+			if( Hash::check( $this->data, 'Thematiquerdv.Thematiquerdv' ) ) {
+				$thematiquesIds = (array)Hash::get( $this->data, 'Thematiquerdv.Thematiquerdv' );
+				$thematiquesIds = Hash::filter( $thematiquesIds );
+
+				return !empty( $thematiquesIds );
+			}
+
+			return true;
+		}
+
+		/**
+		 * Vérification lors de la modification d'un RDV: si les thématiques
+		 * annuelles par structure référente sont utilisées et qu'aucune d'entre
+		 * elles n'est sélectionnée dans le formulaire du RDV, il faut qu'il
+		 * n'existe pas de questionnaire D1 pour cet enregistrement.
+		 *
+		 * @see Rendezvous.useThematique
+		 * @see Rendezvous.thematiqueAnnuelleParStructurereferente
+		 *
+		 * @param mixed $check
+		 * @return boolean
+		 */
+		public function checkThematiqueAnnuelleParQuestionnaireD1( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
+			$thematiquesAnnuellesIds = (array)Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
+			if( !Configure::read( 'Rendezvous.useThematique' ) || empty( $id ) || empty( $thematiquesAnnuellesIds ) ) {
+				return true;
+			}
+
+			$thematiquesSelectionneesIds = (array)Hash::get( $this->data, 'Thematiquerdv.Thematiquerdv' );
+			$intersect = array_intersect( $thematiquesSelectionneesIds, $thematiquesAnnuellesIds );
+
+			if( empty( $intersect ) ) {
+				$query = array(
+					'fields' => array(
+						"{$this->Questionnaired1pdv93->alias}.{$this->Questionnaired1pdv93->primaryKey}"
+					),
+					'contain' => false,
+					'conditions' => array(
+						"{$this->Questionnaired1pdv93->alias}.rendezvous_id" => $id
+					)
+				);
+
+				$found = $this->Questionnaired1pdv93->find( 'first', $query );
+				return empty( $found );
+			}
+
+			return true;
+		}
+
+		/**
+		 * Vérification lors de la modification d'un RDV: si le statut
+		 * du RDV ne figure pas dans les statuts acceptés pour la création d'un
+		 * questionnaire D1, alors il faut qu'il n'existe pas de questionnaire D1
+		 * pour cet enregistrement.
+		 *
+		 * @see Rendezvous.useThematique
+		 * @see Rendezvous.checkThematiqueAnnuelleParStructurereferente.statutrdv_id
+		 *
+		 * @param mixed $check
+		 * @return boolean
+		 */
+		public function checkThematiqueAnnuelleParStatutRdvId( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
+			$statutsrdvsAcceptesId = (array)Configure::read( 'Rendezvous.checkThematiqueAnnuelleParStructurereferente.statutrdv_id' );
+			if( !Configure::read( 'Rendezvous.useThematique' ) || empty( $id ) || empty( $statutsrdvsAcceptesId ) ) {
+				return true;
+			}
+
+			$statutrdv_id = (array)Hash::get( $this->data, "{$this->alias}.statutrdv_id" );
+			$intersect = array_intersect( $statutrdv_id, $statutsrdvsAcceptesId );
+
+			if( empty( $intersect ) ) {
+				$query = array(
+					'fields' => array(
+						"{$this->Questionnaired1pdv93->alias}.{$this->Questionnaired1pdv93->primaryKey}"
+					),
+					'contain' => false,
+					'conditions' => array(
+						"{$this->Questionnaired1pdv93->alias}.rendezvous_id" => $id
+					)
+				);
+
+				$found = $this->Questionnaired1pdv93->find( 'first', $query );
+				return empty( $found );
+			}
+
+			return true;
+		}
+
 		public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',
@@ -223,6 +353,19 @@
 		public $hasOne = array(
 			'Propoorientsocialecov58' => array(
 				'className' => 'Propoorientsocialecov58',
+				'foreignKey' => 'rendezvous_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Questionnaired1pdv93' => array(
+				'className' => 'Questionnaired1pdv93',
 				'foreignKey' => 'rendezvous_id',
 				'dependent' => true,
 				'conditions' => '',
