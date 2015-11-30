@@ -67,6 +67,15 @@
 				1 => 'Oui',
 			);
 			
+			$options['Foyer']['nb_enfants'] = array(
+				'0',
+				'>= 1',
+				'>= 2',
+				'>= 3',
+				'>= 4',
+				'>= 5',
+			);
+			
 			$options = array_merge(
 				$options,
 				$this->Tag->Personne->Prestation->enums(),

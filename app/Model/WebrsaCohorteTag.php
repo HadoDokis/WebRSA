@@ -126,7 +126,10 @@
 						'alias' => 'tags',
 						'fields' => 'tags.id',
 						'conditions' => array(
-							'tags.limite > NOW()',
+							array('OR' => array(
+								'tags.limite IS NULL',
+								'tags.limite > NOW()',
+							)),
 							'tags.etat' => array( 'encours', 'traite' ),
 							'tags.valeurtag_id' => Hash::get($search, 'Tag.valeurtag_id'),
 							'OR' => array(
@@ -183,7 +186,8 @@
 			 * Nombre d'enfants
 			 */
 			if ( Hash::get($search, 'Foyer.nb_enfants') !== null ) {
-				$query['conditions']["({$sqEnfants})"] = Hash::get($search, 'Foyer.nb_enfants');
+				$operateur = Hash::get($search, 'Foyer.nb_enfants') === '0' ? '=' : '>=';
+				$query['conditions']["({$sqEnfants}) {$operateur}"] = Hash::get($search, 'Foyer.nb_enfants');
 			}
 			
 			/**

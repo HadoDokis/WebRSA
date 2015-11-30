@@ -50,7 +50,7 @@ var FormValidator = {
 	 */
 	getRealName: function( name ) {
 	   'use strict';
-	   var crochets = /^[^\[]*(\[[^\]]*\]){2}\[([^\]]*)\](.*)$/g,
+	   var crochets = /^[^\[]*(\[[^\]]*\]){2,3}\[([^\]]*)\](.*)$/g,
 		   result = crochets.exec( name ),
 		   i,
 		   dateList = ['day', 'month', 'year'],

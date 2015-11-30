@@ -356,40 +356,20 @@
 						// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
 						'dernier' => '1'
 					),
-					'Situationdossierrsa' => array(
-						'etatdosrsa_choice' => '1',
-						'etatdosrsa' => array(
-							'2' // Droit ouvert et versable
-						)
-					),
-					'Calculdroitrsa' => array(
-						'toppersdrodevorsa' => array( 
-							'1' // Oui
-						)
-					),
-					'Detailcalculdroitrsa' => array(
-						'natpf_choice' => '1',
-						'natpf' => array(
-							'RSD', // RSA Socle (Financement sur fonds Conseil général)
-							'RSI', // RSA Socle majoré (Financement sur fonds Conseil général)
-						)
-					),
 					'Adresse' => array(
 						'heberge' => '1'
 					),
-					'Tag' => array(
-						'valeurtag_id' => array(
-							'2', // Valeur du tag pour la cohorte hebergé
-						)
-					),
-					'Prestation' => array(
-						'rolepers' => 'DEM', // Demandeur du RSA
-					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
-				'skip' => array(),
+				'skip' => array(
+					'Situationdossierrsa.etatdosrsa_choice',
+					'Situationdossierrsa.etatdosrsa',
+					'Detailcalculdroitrsa.natpf_choice' => '1',
+					'Detailcalculdroitrsa.natpf',
+					'Calculdroitrsa.toppersdrodevorsa'
+				),
 				// 1.4 Filtres additionnels : La personne possède un(e)...
 				'has' => array(
 					'Cui',
@@ -406,7 +386,19 @@
 			// 2. Recherche
 			'query' => array(
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
-				'restrict' => array(),
+				'restrict' => array(
+					'Tag.valeurtag_id' => '2', // Valeur du tag pour la cohorte hebergé
+					'Prestation.rolepers' => 'DEM', // Demandeur du RSA
+					'Adresse.heberge' => '1', // Conditions pour trouver les allocataires hébergé
+					'Situationdossierrsa.etatdosrsa_choice' => '1',
+					'Situationdossierrsa.etatdosrsa' => array('2'), // Droit ouvert et versable
+					'Detailcalculdroitrsa.natpf_choice' => '1',
+					'Detailcalculdroitrsa.natpf' => array(
+						'RSD', // RSA Socle (Financement sur fonds Conseil général)
+						'RSI', // RSA Socle majoré (Financement sur fonds Conseil général)
+					),
+					'Calculdroitrsa.toppersdrodevorsa' => '1', // Personne soumise à droits et devoirs ? > Oui
+				),
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),
 				// 2.3 Tri par défaut
