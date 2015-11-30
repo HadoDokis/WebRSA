@@ -9,7 +9,11 @@
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
-	$this->request->data['Contratinsertion']['referent_id'] = $this->request->data['Contratinsertion']['structurereferente_id'].'_'.suffix( $this->request->data['Contratinsertion']['referent_id'] );
+	$structurereferente_id = suffix( Hash::get( $this->request->data, 'Contratinsertion.structurereferente_id' ) );
+	$referent_id = suffix( Hash::get( $this->request->data, 'Contratinsertion.referent_id' ) );
+	if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
+		$this->request->data['Contratinsertion']['referent_id'] = "{$structurereferente_id}_{$referent_id}";
+	}
 
 	echo $this->Default3->form(
 		array(
