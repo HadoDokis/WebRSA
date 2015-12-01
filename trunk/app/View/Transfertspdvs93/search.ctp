@@ -13,7 +13,7 @@
 	echo $this->element(
 		'ConfigurableQuery/search',
 		array(
-			'custom' => $this->fetch( 'custom_search_filters' ),
+			'customSearch' => $this->fetch( 'custom_search_filters' ),
 			'modelName' => 'Dossier'
 		)
 	);

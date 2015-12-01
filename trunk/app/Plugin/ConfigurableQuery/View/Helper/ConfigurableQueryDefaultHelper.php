@@ -165,9 +165,9 @@
 				'view' => false,
 				'th' => true
 			);
-			$fields = $this->configuredFields( 
-				array( 'key' => $params['key'].'.results.fields', 'keyPrefix' => $params['keyPrefix'] ), 
-				(!$params['view'] ? $insert : array()) 
+			$fields = $this->configuredFields(
+				array( 'key' => $params['key'].'.results.fields', 'keyPrefix' => $params['keyPrefix'] ),
+				(!$params['view'] ? $insert : array())
 			);
 
 			$header = (array)Configure::read( "{$params['keyPrefix']}.{$params['key']}".'.results.header' );
@@ -200,12 +200,12 @@
 					$params
 				);
 			}
-			
+
 			// Affichage vertical des résultats
 			if( empty( $results ) ) {
 				return $this->DefaultHtml->tag( 'p', 'Aucun enregistrement', array( 'class' => 'notice' ) );
 			}
-			
+
 			$return = $this->pagination();
 			foreach($results as $i => $result) {
 				$return .= $this->view(
@@ -213,7 +213,7 @@
 					$fields,
 					$params
 				).'<br/>';
-				
+
 				if ( !empty($insert) ) {
 					$return .= '<fieldset>';
 					$subformfields = array();
@@ -223,7 +223,7 @@
 						if ( strpos($fullPath, '.') === false ) {
 							continue;
 						}
-						
+
 						//$return .= count($input) ? $input[0] : '';
 						$subformfields[$fullPath] = $value;
 					}
@@ -232,7 +232,7 @@
 				}
 			}
 			$return .= $this->pagination();
-			
+
 			return $return;
 		}
 
@@ -273,10 +273,10 @@
 
 					$path = str_replace( '][', '.', str_replace( "[{$i}]", '', $preformatedPath ) );
 					$model_field = model_field( $path );
-					
+
 					$field = $hiddenFields;
 					$field += array('value' => Hash::get($results, $i.'.'.$model_field[0].'.'.$model_field[1]));
-					
+
 					$input = $this->DefaultTable->DefaultTableCell->input($fullPath, $field);
 					$table .= count($input) ? $input[0] : '';
 				}

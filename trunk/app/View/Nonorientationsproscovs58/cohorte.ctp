@@ -15,7 +15,7 @@
 		'ConfigurableQuery/cohorte',
 		array(
 			'modelName' => 'Orientstruct',
-			'custom_beginning' => $this->fetch( 'custom_search_filters' ),
+			'beforeSearch' => $this->fetch( 'custom_search_filters' ),
 			'exportcsv' => array( 'action' => 'exportcsv' )
 		)
 	);

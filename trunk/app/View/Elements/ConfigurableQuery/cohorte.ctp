@@ -3,10 +3,13 @@
 	$actions = isset( $actions ) ? (array)$actions : array();
 	// $searchFormId
 	$searchFormId = isset( $searchFormId ) ? $searchFormId : Inflector::camelize( "{$this->request->params['controller']}_{$this->request->params['action']}_form" );
-	// $custom
-	$custom = isset( $custom ) ? $custom : '';
-	// $custom_beginning
-	$custom_beginning = isset( $custom_beginning ) ? $custom_beginning : '';
+	// -------------------------------------------------------------------------
+	$beforeSearch = isset( $beforeSearch ) ? $beforeSearch : '';
+	$customSearch = isset( $customSearch ) ? $customSearch : '';
+	$afterSearch = isset( $afterSearch ) ? $afterSearch : '';
+	$beforeResults = isset( $beforeResults ) ? $beforeResults : '';
+	$afterResults = isset( $afterResults ) ? $afterResults : '';
+	// -------------------------------------------------------------------------
 	// $url
 	// $exportcsv
 	$exportcsv = isset( $exportcsv ) ? $exportcsv : array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv' );
@@ -23,6 +26,11 @@
 	$tableClass = isset( $tableClass ) ? $tableClass : Hash::get($configuredCohorteParams, 'class');
 	$configuredCohorteParams['class'] = $tableClass;
 
+	// $paginate
+	if( isset( $paginate ) ) {
+		$configuredCohorteParams['paginate'] = $paginate;
+	}
+
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js', 'cake.prototype.js' ) );
@@ -38,15 +46,16 @@
 
 	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->action ), 'id' => $searchFormId, 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );
 
-	echo $custom_beginning;
+	echo $beforeSearch;
 	echo $this->Allocataires->blocDossier( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocAllocataire( array( 'prefix' => 'Search', 'options' => $options ) );
-	echo $custom;
+	echo $customSearch;
 	echo $this->Allocataires->blocHave( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocReferentparcours( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocPagination( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options ) );
+	echo $afterSearch;
 ?>
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -59,6 +68,8 @@
 	if( isset( $results ) ) {
 		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
 
+		echo $beforeResults;
+
 		echo $this->Xform->create( null, array( 'id' => $cohorteFormId ) );
 
 		echo $this->Default3->configuredCohorte(
@@ -69,7 +80,11 @@
 		echo $this->Xform->end( 'Save' );
 		echo $this->Observer->disableFormOnSubmit( $cohorteFormId );
 
-		echo $this->element( 'search_footer', array( 'modelName' => $modelName, 'url' => $exportcsv ) );
+		echo $afterResults;
+
+		if( $exportcsv !== false ) {
+			echo $this->element( 'search_footer', array( 'modelName' => $modelName, 'url' => $exportcsv ) );
+		}
 	}
 ?>
 <script type="text/javascript">

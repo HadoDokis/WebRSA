@@ -2,25 +2,25 @@
 	$controller = $this->params->controller;
 	$availableDomains = MultiDomainsTranslator::urlDomains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
-	$paramDate = array( 
-		'domain' => null, 
-		'minYear_from' => '2009', 
-		'maxYear_from' => date( 'Y' ) + 1, 
-		'minYear_to' => '2009', 
+	$paramDate = array(
+		'domain' => null,
+		'minYear_from' => '2009',
+		'maxYear_from' => date( 'Y' ) + 1,
+		'minYear_to' => '2009',
 		'maxYear_to' => date( 'Y' ) + 4
 	);
-	
+
 	$this->start( 'custom_search_filters' );
-	
+
 	echo $this->Xform->multipleCheckbox( 'Search.Tag.valeurtag_id', $options['filter'] );
-	
+
 	if( Configure::read( 'CG.cantons' ) ) {
 		echo $this->Xform->multipleCheckbox( 'Search.Zonegeographique.id', $options, 'divideInto2Collumn' );
 	}
-	
+
 	echo $this->Xform->multipleCheckbox( 'Search.Prestation.rolepers', $options, 'divideInto2Collumn' );
 	echo $this->Xform->multipleCheckbox( 'Search.Foyer.composition', $options, 'divideInto2Collumn' );
-	
+
 	echo '<fieldset><legend>' . __m( 'Tag.cohorte_fieldset' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
@@ -34,9 +34,9 @@
 		)
 		. '</fieldset>'
 	;
-	
+
 	$this->end();
-	
+
 	echo '<fieldset id="CohorteTagPreremplissage" style="display: '.(isset( $results ) ? 'block' : 'none').';"><legend>' . __m( 'Tag.preremplissage_fieldset' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
@@ -54,7 +54,7 @@
 		. '<div class="center"><input type="button" id="preremplissage_cohorte_button" value="Préremplir"/></div>'
 		. '</fieldset>'
 	;
-	
+
 ?>
 <script type="text/javascript">
 	<!--//--><![CDATA[//><!--
@@ -62,7 +62,7 @@
 		$('CohorteTagPreremplissage').select('input[type="checkbox"], select, textarea').each(function(editable){
 			var matches = editable.name.match(/^data\[Cohorte\]\[([\w]+)\]\[([\w]+)\](?:\[([\w]+)\]){0,1}$/),
 				regex;
-			
+
 			// Cas date
 			if ( matches.length === 4 && matches[3] !== undefined ) {
 				 regex = new RegExp('^data\\[Cohorte\\]\\[[\\d]+\\]\\['+matches[1]+'\\]\\['+matches[2]+'\\]\\['+matches[3]+'\\]$');
@@ -70,7 +70,7 @@
 			else {
 				 regex = new RegExp('^data\\[Cohorte\\]\\[[\\d]+\\]\\['+matches[1]+'\\]\\['+matches[2]+'\\]$');
 			}
-			
+
 			$$('form input[type="checkbox"], select, textarea').each(function(editable_cohorte){
 				if ( regex.test(editable_cohorte.name) ) {
 					editable_cohorte.setValue(editable.getValue());
@@ -78,8 +78,8 @@
 			});
 		});
 	});
-	
-	
+
+
 	/**
 	 * Gestion de la date de cloture automatique en fonction du délai avant cloture automatique
 	 * @see View/Cuis66/edit.ctp
@@ -92,13 +92,13 @@
 			mois = now.getUTCMonth() +1,
 			annee = now.getUTCFullYear(),
 			dateButoir;
-	
+
 		if ( isNaN(duree*2) ){
 			return false;
 		}
-		
+
 		dateButoir = new Date(annee, mois + duree - 1, jour -1);
-		
+
 		$('CohorteTagLimiteDay').select('option').each(function(option){
 			option.selected = false;
 			if ( parseInt(option.value, 10) === dateButoir.getDate() ){
@@ -122,10 +122,10 @@
 	//--><!]]>
 </script>
 <?php
-	
+
 	echo $this->element(
 		'ConfigurableQuery/cohorte',
 		array(
-			'custom' => $this->fetch( 'custom_search_filters' ),
+			'customSearch' => $this->fetch( 'custom_search_filters' ),
 		)
 	);

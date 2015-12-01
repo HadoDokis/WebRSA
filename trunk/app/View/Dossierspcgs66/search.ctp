@@ -5,11 +5,11 @@ $departement = Configure::read( 'Cg.departement' );
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
 	$availableDomains = MultiDomainsTranslator::urlDomains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
-	$paramDate = array( 
-		'domain' => $domain, 
-		'minYear_from' => '2009', 
-		'maxYear_from' => date( 'Y' ) + 1, 
-		'minYear_to' => '2009', 
+	$paramDate = array(
+		'domain' => $domain,
+		'minYear_from' => '2009',
+		'maxYear_from' => date( 'Y' ) + 1,
+		'minYear_to' => '2009',
 		'maxYear_to' => date( 'Y' ) + 4
 	);
 	$paramAllocataire = array(
@@ -30,9 +30,9 @@ $departement = Configure::read( 'Cg.departement' );
 	function multipleCheckbox( $View, $path, $options, $class = '' ) {
 		$name = model_field($path);
 		return $View->Xform->input($path, array(
-			'label' => __m($path), 
-			'type' => 'select', 
-			'multiple' => 'checkbox', 
+			'label' => __m($path),
+			'type' => 'select',
+			'multiple' => 'checkbox',
 			'options' => $options[$name[0]][$name[1]],
 			'class' => $class
 		));
@@ -49,7 +49,7 @@ $departement = Configure::read( 'Cg.departement' );
 				'Search.Dossierpcg66.orgpayeur' => array( 'empty' => true ),
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
+		)
 		. multipleCheckbox( $this, 'Search.Dossierpcg66.poledossierpcg66_id', $options )
 		. multipleCheckbox( $this, 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
 		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
@@ -72,7 +72,7 @@ $departement = Configure::read( 'Cg.departement' );
 				'Search.Decisiondossierpcg66.nbproposition',
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
+		)
 		. '</fieldset>'
 		. $this->Romev3->fieldset( 'Categorieromev3', array( 'options' => $options, 'prefix' => 'Search' ) )
 	;
@@ -83,7 +83,7 @@ $departement = Configure::read( 'Cg.departement' );
 	echo $this->element(
 		'ConfigurableQuery/search',
 		array(
-			'custom' => $this->fetch( 'custom_search_filters' )
+			'customSearch' => $this->fetch( 'custom_search_filters' )
 		)
 	);
 ?>
@@ -94,11 +94,11 @@ $departement = Configure::read( 'Cg.departement' );
 	$formId = ucfirst($controller) . ucfirst($action) . 'Form';
 	$availableDomains = MultiDomainsTranslator::urlDomains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
-	$paramDate = array( 
-		'domain' => $domain, 
-		'minYear_from' => '2009', 
-		'maxYear_from' => date( 'Y' ) + 1, 
-		'minYear_to' => '2009', 
+	$paramDate = array(
+		'domain' => $domain,
+		'minYear_from' => '2009',
+		'maxYear_from' => date( 'Y' ) + 1,
+		'minYear_to' => '2009',
 		'maxYear_to' => date( 'Y' ) + 4
 	);
 	$paramAllocataire = array(
@@ -119,16 +119,16 @@ $departement = Configure::read( 'Cg.departement' );
 	function multipleCheckbox( $View, $path, $options, $class = '' ) {
 		$name = model_field($path);
 		return $View->Xform->input($path, array(
-			'label' => __m($path), 
-			'type' => 'select', 
-			'multiple' => 'checkbox', 
+			'label' => __m($path),
+			'type' => 'select',
+			'multiple' => 'checkbox',
 			'options' => $options[$name[0]][$name[1]],
 			'class' => $class
 		));
 	}
-	
+
 	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
-	
+
 	$dates = array(
 		'Dossier' => array('dtdemrsa' => $dateRule),
 		'Personne' => array('dtnai' => $dateRule),
@@ -159,10 +159,10 @@ $departement = Configure::read( 'Cg.departement' );
 	);
 
 	// 1. Moteur de recherche
-	echo $this->Xform->create( null, 
-		array( 
-			'id' => $formId, 
-			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
+	echo $this->Xform->create( null,
+		array(
+			'id' => $formId,
+			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ),
 			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
 		)
 	);
@@ -172,7 +172,7 @@ $departement = Configure::read( 'Cg.departement' );
 	echo $this->Allocataires->blocAdresse($paramAllocataire);
 
 	echo $this->Allocataires->blocAllocataire($paramAllocataire);
-	
+
 	echo '<fieldset><legend>' . __m( 'Dossierpcg66.search' ) . '</legend>'
 		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.datereceptionpdo', $paramDate )
 		. $this->Default3->subform(
@@ -182,7 +182,7 @@ $departement = Configure::read( 'Cg.departement' );
 				'Search.Dossierpcg66.orgpayeur' => array( 'empty' => true ),
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
+		)
 		. multipleCheckbox( $this, 'Search.Dossierpcg66.poledossierpcg66_id', $options )
 		. multipleCheckbox( $this, 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
 		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
@@ -205,17 +205,17 @@ $departement = Configure::read( 'Cg.departement' );
 				'Search.Decisiondossierpcg66.nbproposition',
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		) 
+		)
 		. '</fieldset>'
 		. $this->Romev3->fieldset( 'Categorieromev3', array( 'options' => $options, 'prefix' => 'Search' ) )
 	;
-	
+
 	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
-	
+
 	echo $this->Allocataires->blocPagination($paramAllocataire);
 
 	echo $this->Xform->end( 'Search' );
-	
+
 	echo $this->Search->observeDisableFormOnSubmit( $formId );
 
 	// 2. Formulaire de traitement des résultats de la recherche
@@ -227,7 +227,7 @@ $departement = Configure::read( 'Cg.departement' );
 				'options' => $options
 			)
 		);
-		
+
 		echo $this->element( 'search_footer' );
 	}*/
 ?>
