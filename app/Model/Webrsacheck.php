@@ -354,6 +354,9 @@
 				'Alerte.changement_adresse.delai' => array(
 					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Canton.useAdresseCanton') )
 				),
+				'MultiDomainsTranslator.prefix' => array(
+					array( 'rule' => 'string', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
