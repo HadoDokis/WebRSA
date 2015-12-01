@@ -126,8 +126,11 @@
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+			
+			$personne_id = $this->Manifestationbilanparcours66->personneId( $id );
 
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Manifestationbilanparcours66->personneId( $id ) ) ) );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			$this->set( 'urlmenu', '/bilansparcours66/index/'.$personne_id );
 
 			$fichiers = array();
 			$manifestationbilanparcours66 = $this->Manifestationbilanparcours66->find(
