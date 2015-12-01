@@ -714,7 +714,7 @@
 			$this->Gedooo->check( false, true );
 
 			$this->loadModel( 'Personne' );
-			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsNouvelles' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsNouvellesNew' );
 
 			$Cohortes->cohorte(
 				array(

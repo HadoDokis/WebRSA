@@ -12,6 +12,8 @@
 	/**
 	 * La classe WebrsaCohortesOrientsstructsNouvellesComponent ...
 	 *
+	 * @deprecated since 3.0.00
+	 *
 	 * @package app.Controller.Component
 	 */
 	class WebrsaCohortesOrientsstructsNouvellesComponent extends WebrsaAbstractCohortesComponent

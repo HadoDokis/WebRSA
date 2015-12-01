@@ -239,6 +239,13 @@
 				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
+			'Orientsstructs.cohorte_nouvelles' => array(
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteOrientstructNouvelle',
+				'component' => 'WebrsaCohortesOrientsstructsNouvellesNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
 			'Orientsstructs.search' => array(
 				'modelName' => 'Orientstruct',
 				'component' => 'WebrsaRecherchesOrientsstructsNew',

@@ -20,7 +20,7 @@
 	$defaultUrl = array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv' );
 	$url = isset( $url ) ? $url : $defaultUrl;
 	$url += $defaultUrl;
-	
+
 	$comeFrom = array( 'prevAction' => $this->action );
 
 	if( $count > 65000 ) {
