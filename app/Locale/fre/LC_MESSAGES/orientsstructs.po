@@ -199,6 +199,12 @@ msgstr "Uniquement la dernière orientation pour un même allocataire"
 msgid "Search.Orientstruct.date_valid"
 msgstr "Date d'orientation"
 
+msgid "Search.Orientstruct.date_impression"
+msgstr "Date d'impression"
+
+msgid "Search.Orientstruct.impression"
+msgstr "Filtrer par impression"
+
 msgid "Orientstruct.orientepar"
 msgstr "Orienté par"
 
@@ -245,11 +251,11 @@ msgstr "Code activité"
 msgid "/Orientsstructs/cohorte_nouvelles/:heading"
 msgstr "Demandes non orientées (nouveau)"
 
-msgid "/Orientsstructs/cohorte_nouvelles"
-msgstr "Formulaire"
+msgid "/Orientsstructs/cohorte_enattente/:heading"
+msgstr "Demandes en attente de validation d'orientation (nouveau)"
 
-msgid "/Orientsstructs/cohorte_nouvelles/:title"
-msgstr "Visibilité formulaire"
+msgid "/Orientsstructs/cohorte_orientees/:heading"
+msgstr "Demandes orientées (nouveau)"
 
 # ------------------------------------------------------------------------------
 

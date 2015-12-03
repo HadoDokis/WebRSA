@@ -44,6 +44,8 @@
 	echo $this->Default3->titleForLayout();
 
 	$actions['/'.Inflector::camelize( $this->request->params['controller'] ).'/'.$this->request->params['action'].'/#toggleform'] =  array(
+		'title' => 'Visibilité formulaire', // TODO: nettoyer les fichiers de traduction
+		'text' => 'Formulaire', // TODO: nettoyer les fichiers de traduction
 		'class' => 'search',
 		'onclick' => "$( '{$searchFormId}' ).toggle(); return false;"
 	);

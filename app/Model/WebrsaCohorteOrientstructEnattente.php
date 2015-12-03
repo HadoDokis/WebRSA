@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohorteOrientstructNouvelle.
+	 * Code source de la classe WebrsaCohorteOrientstructEnattente.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,11 +10,11 @@
 	App::uses( 'WebrsaAbstractCohorteOrientstruct', 'Model' );
 
 	/**
-	 * La classe WebrsaCohorteOrientstructNouvelle ...
+	 * La classe WebrsaCohorteOrientstructEnattente ...
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaCohorteOrientstructNouvelle extends WebrsaAbstractCohorteOrientstruct
+	class WebrsaCohorteOrientstructEnattente extends WebrsaAbstractCohorteOrientstruct
 	{
 		/**
 		 * Nom du modèle.
@@ -43,6 +43,6 @@
 		 *
 		 * @var string
 		 */
-		public $statut_orient = 'Non orienté';
+		public $statut_orient = 'En attente';
 	}
 ?>

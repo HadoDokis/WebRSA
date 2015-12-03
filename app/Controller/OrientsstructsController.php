@@ -36,13 +36,18 @@
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
 			'Jetons2',
-			'Search.Filtresdefaut' => array(
+			/*'Search.Filtresdefaut' => array(
 				'cohorte_nouvelles',
+				'cohorte_enattente',
+				'cohorte_orientees',
 				'search'
-			),
+			),*/
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'search' => array( 'filter' => 'Search' )
+					'search' => array( 'filter' => 'Search' ),
+					'cohorte_nouvelles' => array( 'filter' => 'Search' ),
+					'cohorte_enattente' => array( 'filter' => 'Search' ),
+					'cohorte_orientees' => array( 'filter' => 'Search' )
 				)
 			)
 		);
@@ -80,6 +85,9 @@
 			'search' => 'Criteres:index',
 			'exportcsv' => 'Criteres:exportcsv',
 			'cohorte_nouvelles' => 'Cohortes:nouvelles',
+			'cohorte_enattente' => 'Cohortes:enattente',
+			'cohorte_orientees' => 'Cohortes:orientees',
+			'cohorte_impressions' => 'Cohortes:cohortegedooo',
 		);
 
 		/**
@@ -93,6 +101,9 @@
 			'ajaxfileupload' => 'create',
 			'ajaxfiledelete' => 'delete',
 			'cohorte_nouvelles' => 'update',
+			'cohorte_enattente' => 'update',
+			'cohorte_orientees' => 'read',
+			'cohorte_impressions' => 'update',
 			'fileview' => 'read',
 			'delete' => 'delete',
 			'download' => 'read',
@@ -720,6 +731,56 @@
 				array(
 					'modelName' => 'Personne',
 					'modelRechercheName' => 'WebrsaCohorteOrientstructNouvelle'
+				)
+			);
+
+			$this->view = 'cohorte_traitement';
+		}
+
+		/**
+		 * Cohorte des demandes en attente de validation d'orientation (nouveau)
+		 */
+		public function cohorte_enattente() {
+			$Gedooo = $this->Components->load( 'Gedooo.Gedooo' );
+			$this->Gedooo->check( false, true );
+
+			$this->loadModel( 'Personne' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsEnattenteNew' );
+
+			$Cohortes->cohorte(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteOrientstructEnattente'
+				)
+			);
+
+			$this->view = 'cohorte_traitement';
+		}
+
+		/**
+		 * Cohorte des personnes orientées (nouveau)
+		 */
+		public function cohorte_orientees() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsImpressions' );
+
+			$Cohortes->search(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteOrientstructOrientees'
+				)
+			);
+		}
+
+		/**
+		 * Cohorte des personnes orientées (nouveau)
+		 */
+		public function cohorte_impressions() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsImpressions' );
+
+			$Cohortes->impressions(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohorteOrientstructOrientees'
 				)
 			);
 		}

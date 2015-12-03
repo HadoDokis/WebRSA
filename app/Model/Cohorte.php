@@ -12,6 +12,9 @@
 	/**
 	 * La classe Cohorte s'occupe du moteur de recherche des cohortes d'orientation et de la préorientation (CG 93).
 	 *
+	 * @deprecated since 3.0.00
+	 * ATTENTION à la méthode preOrientation
+	 *
 	 * @package app.Model
 	 */
 	class Cohorte extends AppModel
