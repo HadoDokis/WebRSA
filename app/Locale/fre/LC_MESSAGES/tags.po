@@ -156,9 +156,3 @@ msgstr "NIR"
 
 msgid "Situationdossierrsa.etatdosrsa"
 msgstr "Etat du dossier"
-
-msgid "Personne.nir"
-msgstr "NIR"
-
-msgid "Personne.nom_complet_prenoms"
-msgstr "Nom complet"

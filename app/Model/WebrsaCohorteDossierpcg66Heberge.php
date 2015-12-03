@@ -40,7 +40,67 @@
 		 * 
 		 * @var array
 		 */
-		public $cohorteFields = array();
+		public $cohorteFields = array(
+			'Personne.id' => array( 'type' => 'hidden' ),
+			'Foyer.id' => array( 'type' => 'hidden' ),
+
+			// Selection
+			'Dossierpcg66.selection' => array( 'type' => 'checkbox' ),
+			'Dossierpcg66.create',
+
+			// Dossierpcg
+			'Dossierpcg66.typepdo_id',
+			'Dossierpcg66.datereceptionpdo' => array( 'type' => 'date' ),
+			'Dossierpcg66.originepdo_id' => array( 'empty' => true ),
+			'Dossierpcg66.orgpayeur',
+			'Dossierpcg66.serviceinstructeur_id' => array( 'empty' => true ),
+			'Dossierpcg66.haspiecejointe' => array( 'type' => 'hidden', 'value' => '0' ),
+			'Dossierpcg66.commentairepiecejointe' => array( 'empty' => true, 'type' => 'textarea' ),
+			'Dossierpcg66.poledossierpcg66_id' => array( 'empty' => true ),
+			'Dossierpcg66.user_id' => array( 'type' => 'hidden' ),
+			'Dossierpcg66.dateaffectation' => array( 
+				'type' => 'date'
+			),
+
+			// Personnepcg
+			'Situationpdo.Situationpdo',
+			'Statutpdo.Statutpdo' => array( 'empty' => true ),
+
+			// Traitement
+			'Traitementpcg66.typetraitement' => array( 'value' => 'courrier' ),
+			'Traitementpcg66.typecourrierpcg66_id' => array( 'empty' => true ),
+			'Traitementpcg66.affiche_couple' => array( 'type' => 'checkbox' ),
+
+			// Partie AJAX
+			'Modeletraitementpcg66.modeletypecourrierpcg66_id' => array( 'type' => 'hidden' ),
+			'Piecemodeletypecourrierpcg66.0_Piecemodeletypecourrierpcg66' => array( 'type' => 'hidden' ),
+			'Piecemodeletypecourrierpcg66.1_Piecemodeletypecourrierpcg66' => array( 'type' => 'hidden' ),
+			'Piecemodeletypecourrierpcg66.2_Piecemodeletypecourrierpcg66' => array( 'type' => 'hidden' ),
+			'Piecemodeletypecourrierpcg66.3_Piecemodeletypecourrierpcg66' => array( 'type' => 'hidden' ),
+			'Piecemodeletypecourrierpcg66.4_Piecemodeletypecourrierpcg66' => array( 'type' => 'hidden' ),
+			'Piecemodeletypecourrierpcg66.5_Piecemodeletypecourrierpcg66' => array( 'type' => 'hidden' ),
+			'Modeletraitementpcg66.montantdatedebut' => array( 'type' => 'hidden' ),
+			'Modeletraitementpcg66.montantdatefin' => array( 'type' => 'hidden' ),
+			'Modeletraitementpcg66.commentaire' => array( 'type' => 'textarea' ),
+
+			'Traitementpcg66.haspiecejointe' => array( 'type' => 'hidden', 'value' => '0' ),
+			'Traitementpcg66.serviceinstructeur_id' => array( 'empty' => true ),
+			'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'empty' => true ),
+			'Traitementpcg66.descriptionpdo_id' => array( 'empty' => true ),
+			'Traitementpcg66.datedepart' => array( 'type' => 'date'	),
+			'Traitementpcg66.datereception' => array( 'type' => 'date' ),
+			'Traitementpcg66.dureeecheance',
+			'Traitementpcg66.dateecheance' => array( 'type' => 'date' ),
+			'Traitementpcg66.imprimer' => array( 'type' => 'checkbox' ),
+
+			// Tag
+			'Tag.modele' => array( 'type' => 'hidden', 'value' => 'Foyer' ),
+			'Tag.valeurtag_id',
+			'Tag.etat' => array( 'options' => array( 'encours' => 'Non traité', 'traite' => 'Traité' ), 'value' => 'encours' ),
+			'Tag.calcullimite' => array( 'empty' => true ),
+			'Tag.limite' => array( 'type' => 'date' ),
+			'Tag.commentaire' => array( 'type' => 'textarea' ),
+		);
 		
 		/**
 		 * Valeurs par défaut pour le préremplissage des champs du formulaire de cohorte
@@ -95,6 +155,15 @@
 				$dataPersonnepcg66['personne_id'] = Hash::get($value, 'Personne.id');
 				$dataPersonnepcg66['user_id'] = $user_id;
 				$dataTag['fk_value'] = Hash::get($value, 'Foyer.id');
+				
+				// Sauvegarde Tag
+				$this->Dossierpcg66->Foyer->Tag->create($dataTag);
+				$success = $this->Dossierpcg66->Foyer->Tag->save() && $success;
+				
+				// Si Dossierpcg66.create est à Non, on s'arrete ici (pas de création du dossier PCG)
+				if ( !Hash::get($value, 'Dossierpcg66.create') ) {
+					continue;
+				}
 				
 				// Sauvegarde Dossierpcg66
 				$this->Dossierpcg66->create($dataDossierpcg66);
@@ -157,10 +226,6 @@
 						$success = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->save() && $success;
 					}
 				}
-				
-				// Sauvegarde Tag
-				$this->Dossierpcg66->Foyer->Tag->create($dataTag);
-				$success = $this->Dossierpcg66->Foyer->Tag->save() && $success;
 				
 				// Mise à jour etat du Dossier PCG
 				$this->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);

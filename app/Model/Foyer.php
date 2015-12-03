@@ -22,6 +22,30 @@
 			'Validation2.Validation2Formattable'
 		);
 
+		/**
+		 * Valeurs de Foyer.sitfam consideré comme une situation de vie de couple.
+		 *
+		 * @var array
+		 */
+		public $sitfam_en_couple = array(
+			// TODO: libellés
+			'MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM'
+		);
+
+		/**
+		 * Valeurs de Foyer.sitfam consideré comme une situation d'isolement.
+		 *
+		 * @var array
+		 */
+		public $sitfam_isole = array(
+			'CEL', // Célibataire
+			'DIV', // Divorcé(e)
+			'ISO', // Isolement après vie maritale ou PACS
+			'SEF', // Séparation de fait
+			'SEL', // Séparation légale
+			'VEU', // Veuvage
+		);
+
 		public $virtualFields = array(
 			'enerreur' => array(
 				'type' => 'string',

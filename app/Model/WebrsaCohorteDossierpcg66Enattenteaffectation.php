@@ -53,11 +53,11 @@
 		 * @var array
 		 */
 		public $cohorteFields = array(
-			'Dossierpcg66.atraiter' => array( 'type' => 'checkbox', 'label' => '' ),
-			'Dossierpcg66.poledossierpcg66_id' => array( 'type' => 'select', 'label' => '', 'empty' => true ),
-			'Dossierpcg66.user_id' => array( 'type' => 'select', 'label' => '', 'empty' => true ),
-			'Dossierpcg66.dateaffectation' => array( 'type' => 'date', 'label' => '', 'format' => 'DMY' ),
-			'Dossierpcg66.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
+			'Dossierpcg66.atraiter' => array( 'type' => 'checkbox' ),
+			'Dossierpcg66.poledossierpcg66_id' => array( 'empty' => true ),
+			'Dossierpcg66.user_id' => array( 'empty' => true ),
+			'Dossierpcg66.dateaffectation' => array( 'type' => 'date' ),
+			'Dossierpcg66.id' => array( 'type' => 'hidden' ),
 		);
 		
 		/**

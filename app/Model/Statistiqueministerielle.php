@@ -39,6 +39,13 @@
 		);
 
 		/**
+		 * Autres modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Foyer' );
+
+		/**
 		 * Les différentes tranches qui sont utilisées dans les tableaux
 		 * "Indicateurs d'orientations" et "Indicateurs de réorientations".
 		 *
@@ -232,8 +239,8 @@
 			$parts = array(
 				'femme' => '"Personne"."sexe" = \'2\'',
 				'homme' => '"Personne"."sexe" = \'1\'',
-				'en_couple' => '"Foyer"."sitfam" IN (\'MAR\', \'PAC\', \'RPA\', \'RVC\', \'RVM\', \'VIM\')',
-				'seul' => '"Foyer"."sitfam" IN (\'CEL\', \'DIV\', \'ISO\', \'SEF\', \'SEL\', \'VEU\')',
+				'en_couple' => '"Foyer"."sitfam" IN ('.'\''.implode( '\', \'', $this->Foyer->sitfam_en_couple ).'\''.')',
+				'seul' => '"Foyer"."sitfam" IN ('.'\''.implode( '\', \'', $this->Foyer->sitfam_isole ).'\''.')',
 				'avec_enfant' => 'EXISTS ( SELECT enfants.id FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = \'RSA\' ) WHERE enfants.foyer_id= "Foyer"."id" AND prestations.rolepers = \'ENF\' )',
 				'rsa_majore' => 'EXISTS(
 					SELECT * FROM detailsdroitsrsa

@@ -13,9 +13,12 @@
 	 *	  contrôleur courant) et action (par défaut exportcsv) de l'action
 	 *    permettant de réaliser l'export CSV des résultats de la recherche. Les
 	 *    valeurs des filtres du moteur de recherche seront ajoutés à l'URL.
+	 *	- searchKey TODO Ludo
 	 */
 	$modelName = isset( $modelName ) ? $modelName : Inflector::classify( $this->request->params['controller'] );
 	$count = (int)Hash::get( $this->request->params, "paging.{$modelName}.count" );
+	
+	$searchKey = isset( $searchKey ) ? $searchKey : 'Search';
 
 	$defaultUrl = array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv' );
 	$url = isset( $url ) ? $url : $defaultUrl;
@@ -27,6 +30,8 @@
 		echo '<p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;">'.$this->Xhtml->image( 'icons/error.png' ).'<strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>';
 	}
 
+	$searchData[$searchKey] = (array)Hash::get( $this->request->data, $searchKey );
+	
 	echo '<ul class="actionMenu">'
 		.'<li>'
 			.$this->Xhtml->printLinkJs(
@@ -37,7 +42,7 @@
 		.'<li>'
 		. $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'controller' => $url['controller'], 'action' => $url['action'] ) + Hash::flatten( $this->request->data + $comeFrom, '__' ),
+			array( 'controller' => $url['controller'], 'action' => $url['action'] ) + Hash::flatten( $searchData + $comeFrom, '__' ),
 			( $this->Permissions->check( $url['controller'], $url['action'] ) && $count > 0 )
 		)
 		.'</li>'

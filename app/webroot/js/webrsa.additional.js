@@ -289,6 +289,8 @@ function setDateCloture( id, target ){
 	targetDay.setValue( dateButoir.getDate() );
 	targetMonth.setValue( dateButoir.getMonth() +1 );
 	targetYear.setValue( dateButoir.getFullYear() );
+	
+	targetYear.simulate('change');
 }
 
 /*************************************************************************

@@ -10,9 +10,14 @@
 	$beforeResults = isset( $beforeResults ) ? $beforeResults : '';
 	$afterResults = isset( $afterResults ) ? $afterResults : '';
 	// -------------------------------------------------------------------------
+	$searchKey = isset( $searchKey ) ? $searchKey : 'Search';
 	// $url
 	// $exportcsv
-	$exportcsv = isset( $exportcsv ) ? $exportcsv : array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv' );
+	$exportcsv = isset( $exportcsv ) ? $exportcsv : array( 'action' => 'exportcsv' );
+	if( is_array( $exportcsv ) ) {
+		$exportcsv += array( 'controller' => $this->request->params['controller'] );
+	}
+
 	// $css
 	// $scripts
 	// $modelName
@@ -83,7 +88,7 @@
 		echo $afterResults;
 
 		if( $exportcsv !== false ) {
-			echo $this->element( 'search_footer', array( 'modelName' => $modelName, 'url' => $exportcsv ) );
+			echo $this->element( 'search_footer', array( 'modelName' => $modelName, 'url' => $exportcsv, 'searchKey' => $searchKey ) );
 		}
 	}
 ?>

@@ -153,7 +153,7 @@
 			 * Couple/Isolé avec/sans enfant(s)
 			 */
 			$sqEnfants = $this->Tag->Foyer->vfNbEnfants();
-			$isolement = Configure::read('Tags.cohorte.Foyer.sitfam.isolement');
+			$isolement = $this->Tag->Foyer->sitfam_isole;
 			
 			$conditions = array();
 			foreach( (array)Hash::get($search, 'Foyer.composition') as $value ) {

@@ -53,12 +53,14 @@
 		 * @var array
 		 */
 		public $cohorteFields = array(
-			'Dossierpcg66.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-			'Dossierpcg66.istransmis' => array( 'type' => 'checkbox', 'label' => '&nbsp;' ),
-			'Decdospcg66Orgdospcg66.decisiondossierpcg66_id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-			'Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id' => array( 'type' => 'select', 'multiple' => 'checkbox', 'label' => '', 'class' => 'largeColumn' ),
-			'Decisiondossierpcg66.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-			'Decisiondossierpcg66.datetransmissionop' => array( 'type' => 'date', 'label' => '' ),
+			'Dossierpcg66.id' => array( 'type' => 'hidden' ),
+			'Dossierpcg66.etatdossierpcg' => array( 'type' => 'hidden', 'value' => 'transmisop' ),
+			'Dossierpcg66.istransmis' => array( 'type' => 'checkbox' ),
+			'Decdospcg66Orgdospcg66.decisiondossierpcg66_id' => array( 'type' => 'hidden' ),
+			'Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id' => array( 'multiple' => 'checkbox', 'class' => 'largeColumn' ),
+			'Decisiondossierpcg66.id' => array( 'type' => 'hidden' ),
+			'Decisiondossierpcg66.etatop' => array( 'type' => 'hidden', 'value' => 'transmis' ),
+			'Decisiondossierpcg66.datetransmissionop' => array( 'type' => 'date' ),
 		);
 		
 		/**
@@ -161,21 +163,31 @@
 			$success = !empty($data);
 			if ( $success ) {
 				foreach( $data as $key => $value ) {
-					$success = $this->Dossierpcg66->saveAll(array($key => $value['Dossierpcg66'])) && $success;
-					$success = $this->Dossierpcg66->Decisiondossierpcg66->saveAll(array($key => $value['Decisiondossierpcg66'])) && $success;
+					// On sauvegarde Dossierpcg66
+					$this->Dossierpcg66->create($value['Dossierpcg66']);
+					$success = $this->Dossierpcg66->save() && $success;
 					
-					$orgs = Hash::get($value, 'Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id');
+					// On sauvegarde Decisiondossierpcg66
+					$this->Dossierpcg66->Decisiondossierpcg66->create($value['Decisiondossierpcg66']);
+					$success = $this->Dossierpcg66->Decisiondossierpcg66->save() && $success;
+					
+					// On sauvegarde Decdospcg66Orgdospcg66 (table de liaison entre les organismes et la décision)
+					$orgs = (array)Hash::get($value, 'Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id');
 					$datasDec = array();
-					foreach ( $orgs !== '' ? (array)$orgs : array() as $orgKey => $orgtransmisdossierpcg66_id ) {
-						$datasDec[$key] = array(
+					foreach ( $orgs as $orgKey => $orgtransmisdossierpcg66_id ) {
+						$datasDec[$orgKey] = array(
 							'orgtransmisdossierpcg66_id' => $orgtransmisdossierpcg66_id,
 							'decisiondossierpcg66_id' => $value['Decdospcg66Orgdospcg66']['decisiondossierpcg66_id']
 						);
+						
+						// On supprime les anciennes entrées si il y en a (dans le cas d'un "en attente transmission à ...")
+						$deleteConditions = array( 'decisiondossierpcg66_id' => $value['Decdospcg66Orgdospcg66']['decisiondossierpcg66_id'] );
 						$success = $this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66
-							->deleteAllUnbound( $datasDec[$key], false ) && $success
+							->deleteAllUnbound( $deleteConditions, false ) && $success
 						;
 					}
 					
+					// Provoquera une erreur sur le formulaire pour ne pas avoir sélectionné d'organismes
 					if ( empty($datasDec) ) {
 						$datasDec[$key] = array(
 							'orgtransmisdossierpcg66_id' => null,

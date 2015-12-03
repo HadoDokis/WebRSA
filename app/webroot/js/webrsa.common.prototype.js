@@ -434,8 +434,7 @@ function observeDisableFieldsOnValue( selectId, fieldsIds, value, condition, tog
 
 	disableFieldsOnValue( selectId, fieldsIds, value, condition, toggleVisibility );
 
-	var select = $( selectId );
-	$( select ).observe( 'change', function( event ) {
+	$( selectId ).observe( 'change', function( event ) {
 		disableFieldsOnValue( selectId, fieldsIds, value, condition, toggleVisibility );
 	} );
 }

@@ -160,15 +160,6 @@
 					'Categorietag',
 					'Zonegeographique',
 					'Requestmanager',
-					'Dossierpcg66',
-					'Serviceinstructeur',
-					'Originepdo',
-					'Typepdo',
-					'User',
-					'Poledossierpcg66',
-					'Situationpdo',
-					'Statutpdo',
-					'Typecourrierpcg66',
 				)
 			);
 		}

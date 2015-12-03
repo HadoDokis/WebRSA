@@ -25,20 +25,6 @@
 	);
 	
 	/**
-	 * Valeurs de Foyer.sitfam consideré comme une situation d'isolement
-	 */
-	Configure::write('Tags.cohorte.Foyer.sitfam.isolement',
-		array(
-			'CEL', // Célibataire
-			'DIV', // Divorcé(e)
-			'ISO', // Isolement après vie maritale ou PACS
-			'SEF', // Séparation de fait
-			'SEL', // Séparation légale
-			'VEU', // Veuvage
-		)
-	);
-	
-	/**
 	 * Menu "Recherches"
 	 */
 	Configure::write(

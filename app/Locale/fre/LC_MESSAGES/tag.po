@@ -38,4 +38,4 @@ msgid "ENUM::ETAT::perime"
 msgstr "Périmé"
 
 msgid "ENUM::ETAT::encours"
-msgstr "En cours"
+msgstr "Non traité"
