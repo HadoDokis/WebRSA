@@ -19,6 +19,7 @@ var FormValidator = {
 		rules: [],
 		values: {},
 		editableList: {},
+		errorElements: 'div.input.date, div.input.text, div.input.textarea, div.input.radio, div.input.select',
 		
 		// Lié au debug, mettre impérativement à false en production !
 		debugMode: false,
@@ -49,26 +50,23 @@ var FormValidator = {
 	 * @returns {String}
 	 */
 	getRealName: function( name ) {
-	   'use strict';
-	   var crochets = /^[^\[]*(\[[^\]]*\]){2,3}\[([^\]]*)\](.*)$/g,
-		   result = crochets.exec( name ),
-		   i,
-		   dateList = ['day', 'month', 'year'],
-		   after;
+		'use strict';
+		var regex = /^.+?\[([^\]]+)\]\[([^\]]+)\](\[day\]|\[month\]|\[year\]|\[\]){0,1}$/,
+			results = regex.exec( name ),
+			returnName
+		;
+		
+		if ( results === null || results.length !== 4 ) {
+			return '';
+		}
+		
+		returnName = 'data['+results[1]+']['+results[2]+']';
+		
+		if ( results[3] !== undefined ) {
+			returnName += results[3];
+		}
 
-	   if ( result !== null && result.length > 2 && result[2] !== undefined ){
-		   for ( i=0; i<dateList.length; i++ ){
-			   if ( result[2] === dateList[i] ){
-				   return name;
-			   }
-		   }
-
-		   after = result.length > 3 ? result[3] : '';
-
-		   name = 'data' + result[1] + '[' + result[2] + ']' + after;
-	   }
-
-	   return name;
+		return returnName;
    },
    
 	/**
@@ -305,6 +303,10 @@ var FormValidator = {
 		'use strict';
 		var thisDate = {day: '', month: '', year: ''},
 			thirdParam, i;
+	
+		if ( !listedEditable || listedEditable.length !== 3 ) {
+			return false;
+		}
 
 		for ( i=0; i<3; i++ ){
 			// On récupère day, month ou year et on l'affecte a la variable thisDate
@@ -326,6 +328,43 @@ var FormValidator = {
 	},
 	
 	/**
+	 * Permet d'obtenir les 3 éléments date contenu dans editableList en fonction du name d'origine
+	 * 
+	 * @param {string} name
+	 * @param {string} formatedName
+	 * @returns {Array|FormValidator.getDateElementsByName.results|Boolean}
+	 */
+	getDateElementsByName: function ( name, formatedName ) {
+		'use strict';
+		var list = FormValidator.globalVars.editableList[formatedName],
+			results = [],
+			regex = /^(.+)\[(?:day|month|year)\]$/g,
+			baseName = regex.exec( name ),
+			i = 0
+		;
+		
+		if ( baseName === null || baseName.length !== 2 ) {
+			return false;
+		}
+		
+		for (; i<list.length; i++) {
+			switch (list[i].editable.name) {
+				case baseName[1]+'[day]':
+				case baseName[1]+'[month]':
+				case baseName[1]+'[year]':
+					results.push(list[i]);
+					break;
+			}
+			
+			if ( results.length === 3 ) {
+				return results;
+			}
+		}
+		
+		return false;
+	},
+	
+	/**
 	 * Permet de gérer les elements dates (tordu) de cakephp (les 3 selects)
 	 * On lui donne un nom de champ (peut importe si c'est data[Model][field][day] ou data[Model][field][year]...)
 	 * Il renvoi la date au format 01-01-2015
@@ -340,11 +379,11 @@ var FormValidator = {
 		formatedName = FormValidator.getModelName( name ) + '.' + FormValidator.getFieldName( name );
 
 		// Il doit y avoir 3 Model.field stocké ( day, month et year )
-		if ( FormValidator.globalVars.editableList[formatedName] === undefined || FormValidator.globalVars.editableList[formatedName].length !== 3 || formatedName === 'null.null' ){
+		if ( FormValidator.globalVars.editableList[formatedName] === undefined || FormValidator.globalVars.editableList[formatedName].length % 3 !== 0 || formatedName === 'null.null' ){
 			return false;
 		}
 
-		thisDate = FormValidator.extractDate( FormValidator.globalVars.editableList[formatedName] );
+		thisDate = FormValidator.extractDate( FormValidator.getDateElementsByName(name, formatedName) );
 
 		if ( !thisDate ){
 			return false;
@@ -390,15 +429,14 @@ var FormValidator = {
 	 */
 	getRadioValue: function ( targets ){
 		'use strict';
-		var i, valeur;
+		var i, valeur = '';
 		for ( i=0; i<targets.length; i++ ){
 			if ( targets[i].checked === true ){
-				valeur = String( targets[i].value );
-				return valeur;
+				valeur += valeur.length ? ','+String( targets[i].value ) : String( targets[i].value );
 			}
 		}
 
-		return '';
+		return valeur;
 	},
 	
 	/**
@@ -435,7 +473,7 @@ var FormValidator = {
 
 		// Cas Date
 		thisDate = FormValidator.getDate( FormValidator.globalVars.rules[editable.index].name );
-		cas = thisDate ? 'date' : (	(editable.sectedIndex !== undefined || targets.length === 1) ? 'normal' : 'radio');
+		cas = thisDate ? 'date' : (	(targets.length === 1) ? 'normal' : 'radio');
 
 		switch ( cas ){
 			case 'date': valeur = thisDate; break;
@@ -463,7 +501,7 @@ var FormValidator = {
 		}
 
 		// On remonte vers la div maman pour chercher une erreur à l'interieur
-		parentDiv = editable.up('div');
+		parentDiv = editable.up(FormValidator.globalVars.errorElements);
 		parentDiv.removeClassName('error');
 
 		errorDiv = parentDiv.select('div.error-message');
@@ -519,7 +557,7 @@ var FormValidator = {
 			message = message === undefined || message === null ? 'Champ obligatoire' : FormValidator.insertMessageVar( editable, message );
 
 			// On attribu la class error à la div maman de l'editable
-			parentDiv = editable.up('div');
+			parentDiv = editable.up(FormValidator.globalVars.errorElements);
 			parentDiv.addClassName('error');
 
 			// On verifi si un message d'erreur existe deja

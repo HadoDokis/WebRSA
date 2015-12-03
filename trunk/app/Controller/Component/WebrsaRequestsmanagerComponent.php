@@ -13,7 +13,6 @@
 	 */
 	class WebrsaRequestsmanagerComponent extends Component
 	{
-		
 		/**
 		 * Permet de filtrer les options envoyées à la vue au moyen de la clé
 		 * 'filters.accepted' dans le fichier de configuration.
@@ -34,22 +33,6 @@
 						if ( empty($options['Tag']['valeurtag_id'][$title]) ) {
 							unset($options['Tag']['valeurtag_id'][$title]);
 						}
-					}
-				}
-			}
-			
-			foreach( $options['Requestgroup']['name'] as $key => $value ) {
-				if ( !in_array($key, Configure::read($Controller->name.'.'.$Controller->action.'.allowed.Requestgroup.id')) ) {
-					unset($options['Requestmanager']['name'][$value]);
-				}
-			}
-			
-			// options autorisé pour un champ
-			foreach ((array)Configure::read($Controller->name.'.'.$Controller->action.'.options.allowed') as $key => $accepted) {
-				foreach (array_keys((array)Hash::get($options, $key)) as $id) {
-					if (!in_array($id, (array)$accepted)) {
-						$model_field = model_field($key);
-						unset($options[$model_field[0]][$model_field[1]][$id]);
 					}
 				}
 			}

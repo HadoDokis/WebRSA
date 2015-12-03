@@ -151,12 +151,6 @@ msgstr "Formulaire"
 msgid "data[Cohorte][][Dossierpcg66][atraiter]"
 msgstr "Sélection"
 
-msgid "data[Cohorte][][Dossierpcg66][poledossierpcg66_id]"
-msgstr "Pôle du gestionnaire"
-
-msgid "data[Cohorte][][Dossierpcg66][user_id]"
-msgstr "Gestionnaire"
-
 msgid "data[Cohorte][][Dossierpcg66][dateaffectation]"
 msgstr "Date d'affectation"
 
@@ -516,9 +510,6 @@ msgstr "Motif d'annulation"
 msgid "data[Cohorte][][Dossierpcg66][poledossierpcg66_id]"
 msgstr "Pôle chargé du dossier"
 
-msgid "data[Cohorte][][Dossierpcg66][dateaffectation]"
-msgstr "Date d'affectation"
-
 msgid "data[Cohorte][][Traitementpcg66][dureeecheance]"
 msgstr "Délai avant échéance"
 
@@ -557,6 +548,9 @@ msgstr "Commentaire Traitement"
 
 msgid "data[Cohorte][][Dossierpcg66][selection]"
 msgstr "Sélectionner"
+
+msgid "data[Cohorte][][Dossierpcg66][create]"
+msgstr "Création d'un dossier PCG"
 
 msgid "/Dossierspcgs66/cohorte_heberge/:heading"
 msgstr "Cohorte de création de dossier PCG pour les allocataires hébergés"
@@ -647,9 +641,6 @@ msgstr "Etat du dossier"
 
 msgid "Dossierpcg66.user_id"
 msgstr "Gestionnaire du dossier (technicien en charge du dossier)"
-
-msgid "Dossierpcg66.datereceptionpdo"
-msgstr "Date de réception du dossier"
 
 msgid "Dossierpcg66.etatdossierpcg"
 msgstr "Etat du dossier"

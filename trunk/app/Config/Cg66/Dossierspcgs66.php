@@ -361,7 +361,12 @@
 					),
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
-				'accepted' => array(),
+				'accepted' => array(
+					'Requestmanager.name' => array( 'Cohorte de tag' ), // Noter nom de catégorie - Cohorte de tag
+					// FIXME
+					'Dossier.anciennete_dispositif' => array('0_0'),
+					'Serviceinstructeur.id' => array(17, 12),
+				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array(
 					'Situationdossierrsa.etatdosrsa_choice',
@@ -447,6 +452,53 @@
 					'Referentparcours.nom_complet'
 				)
 			),
+			// Configuration du formulaire de cohorte
+			'cohorte' => array(
+				// Remplacement des options dans la cohorte
+				'options' => array(
+					'Tag.calcullimite' => array(
+						'1' => '1 mois',
+						'1.5' => '1 mois et demi', // Supporte les nombres de type float
+						2 => '2 mois',
+						3 => '3 mois',
+						6 => '6 mois',
+						12 => '1 an',
+						24 => '2 ans',
+						36 => '3 ans',
+					),
+					'Traitementpcg66.typetraitement' => array(
+						'courrier' => 'Courrier',
+						'dossierarevoir' => 'Dossier à revoir',
+					)
+				),
+				// Valeurs à remplir dans les champs de la cohorte avant de les cacher
+				'values' => array(
+					'Dossierpcg66.typepdo_id' => 16, // Position mission PDU-MMR
+					'Dossierpcg66.datereceptionpdo' => date('Y-m-d'), // Date de réception du dossier
+					'Dossierpcg66.serviceinstructeur_id' => null, // Service instructeur
+					'Dossierpcg66.commentairepiecejointe' => null, // Commentaire
+					'Dossierpcg66.dateaffectation' => date('Y-m-d'), // Date d'affectation
+					'Situationpdo.Situationpdo' => 34, // Cible hébergé
+					'Dossierpcg66.originepdo_id' => 21, // PDU - MMR Cible Imposition
+					'Dossierpcg66.poledossierpcg66_id' => 1, // PDU
+					'Traitementpcg66.typecourrierpcg66_id' => 9, // PDU - Cibles
+					'Traitementpcg66.descriptionpdo_id' => 1, // Courrier à l'allocataire
+					'Traitementpcg66.datereception' => null, // Date de reception
+					'Modeletraitementpcg66.modeletypecourrierpcg66_id' => 82, // Cible hébergé
+					'Modeletraitementpcg66.montantdatedebut' => date('Y-m-d'),
+					'Modeletraitementpcg66.montantdatefin' => date_format(date_add(new DateTime(), date_interval_create_from_date_string('+3 months')), 'Y-m-d'),
+					'Piecemodeletypecourrierpcg66.0_Piecemodeletypecourrierpcg66' => 131, // Attestation ci-jointe dûment complétée
+					'Piecemodeletypecourrierpcg66.1_Piecemodeletypecourrierpcg66' => 132, // Attestation d'hébergement dûment remplie (en pièce jointe)
+					'Piecemodeletypecourrierpcg66.2_Piecemodeletypecourrierpcg66' => 129, // Avis d'imposition sur les revenus de l'année précédente...
+					'Piecemodeletypecourrierpcg66.3_Piecemodeletypecourrierpcg66' => 133, // Justificatifs de résidence de moins de 3 mois...
+					'Piecemodeletypecourrierpcg66.4_Piecemodeletypecourrierpcg66' => 128, // Pièce d'identité et passeport en intégralité et en cours...
+					'Piecemodeletypecourrierpcg66.5_Piecemodeletypecourrierpcg66' => 130, // Relevés bancaires des 3 derniers mois
+					'Traitementpcg66.serviceinstructeur_id' => null, // Service à contacter (insertion)
+					'Traitementpcg66.personnepcg66_situationpdo_id' => 34, // Motifs concernant la personne
+					'Traitementpcg66.datedepart' => date('Y-m-d'), // Date de départ (pour le calcul de l'échéance)
+					'Tag.valeurtag_id' => 2, // Valeur du tag
+				)
+			),
 			// 6. Temps d'exécution, mémoire maximum, ...
 			'ini_set' => array(),
 			// 7. Affichage vertical des résultats
@@ -455,92 +507,19 @@
 	);
 	
 	/**
-	 * Catégories des requetes obtenus par le request manager affiché par actions
+	 * Export CSV
 	 */
-	Configure::write('Dossierspcgs66.cohorte_heberge.allowed.Requestgroup.id',
+	Configure::write(
+		'ConfigurableQuery.Dossierspcgs66.exportcsv_heberge',
 		array(
-			7, // Noter nom de catégorie - Cohorte de tag
-		)
-	);
-	
-	/**
-	 * Choix possible pour le préremplissage de la date butoir
-	 */
-	Configure::write('Dossierspcgs66.cohorte_heberge.range_date_butoir',
-		array(
-			'1' => '1 mois',
-			'1.5' => '1 mois et demi', // Supporte les nombres de type float
-			2 => '2 mois',
-			3 => '3 mois',
-			6 => '6 mois',
-			12 => '1 an',
-			24 => '2 ans',
-			36 => '3 ans',
-		)
-	);
-	
-	/**
-	 * Valeurs de Foyer.sitfam consideré comme une situation d'isolement
-	 * Clef en dur dans le modele, nécéssaire pour l'utilisation du filtre "Composition familiale"
-	 */
-	Configure::write('Tags.cohorte.Foyer.sitfam.isolement',
-		array(
-			'CEL', // Célibataire
-			'DIV', // Divorcé(e)
-			'ISO', // Isolement après vie maritale ou PACS
-			'SEF', // Séparation de fait
-			'SEL', // Séparation légale
-			'VEU', // Veuvage
-		)
-	);
-	
-	/**
-	 * Choisi une valeur spécifique et cache le champ
-	 */
-	Configure::write('Dossierspcgs66.cohorte_heberge.options.choose_and_hide',
-		array(
-			'Dossierpcg66.typepdo_id' => 16, // Position mission PDU-MMR
-			'Dossierpcg66.datereceptionpdo' => date('Y-m-d'), // Date de réception du dossier
-			'Dossierpcg66.serviceinstructeur_id' => null, // Service instructeur
-			'Dossierpcg66.commentairepiecejointe' => null, // Commentaire
-			'Dossierpcg66.dateaffectation' => date('Y-m-d'), // Date d'affectation
-			'Situationpdo.Situationpdo' => 34, // Cible hébergé
-			'Dossierpcg66.originepdo_id' => 21, // PDU - MMR Cible Imposition
-			'Dossierpcg66.poledossierpcg66_id' => 1, // PDU
-			'Traitementpcg66.typecourrierpcg66_id' => 9, // PDU - Cibles
-			'Traitementpcg66.descriptionpdo_id' => 1, // Courrier à l'allocataire
-			'Traitementpcg66.datereception' => null, // Date de reception
-			'Modeletraitementpcg66.modeletypecourrierpcg66_id' => 82, // Cible hébergé
-			'Modeletraitementpcg66.montantdatedebut' => date('Y-m-d'),
-			'Modeletraitementpcg66.montantdatefin' => date_format(date_add(new DateTime(), date_interval_create_from_date_string('+3 months')), 'Y-m-d'),
-			'Piecemodeletypecourrierpcg66.0_Piecemodeletypecourrierpcg66' => 131, // Attestation ci-jointe dûment complétée
-			'Piecemodeletypecourrierpcg66.1_Piecemodeletypecourrierpcg66' => 132, // Attestation d'hébergement dûment remplie (en pièce jointe)
-			'Piecemodeletypecourrierpcg66.2_Piecemodeletypecourrierpcg66' => 129, // Avis d'imposition sur les revenus de l'année précédente...
-			'Piecemodeletypecourrierpcg66.3_Piecemodeletypecourrierpcg66' => 133, // Justificatifs de résidence de moins de 3 mois...
-			'Piecemodeletypecourrierpcg66.4_Piecemodeletypecourrierpcg66' => 128, // Pièce d'identité et passeport en intégralité et en cours...
-			'Piecemodeletypecourrierpcg66.5_Piecemodeletypecourrierpcg66' => 130, // Relevés bancaires des 3 derniers mois
-			'Traitementpcg66.serviceinstructeur_id' => null, // Service à contacter (insertion)
-			'Traitementpcg66.personnepcg66_situationpdo_id' => 34, // Motifs concernant la personne
-			'Traitementpcg66.datedepart' => date('Y-m-d'), // Date de départ (pour le calcul de l'échéance)
-			'Tag.valeurtag_id' => 2, // Valeur du tag
-		)
-	);
-	
-	/**
-	 * Retire toutes les valeurs ne correspondent pas dans les options
-	 */
-	Configure::write('Dossierspcgs66.cohorte_heberge.options.allowed',
-		array(
-			'Dossierpcg66.user_id' => array( // PDU's Users
-				405,
-				442,
-				534,
-				528
-			), 
-			'Traitementpcg66.typetraitement' => array(
-				'courrier',
-				'dossierarevoir'
-			)
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.query' ),
+			// 3. Résultats de la recherche
+			'results' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.query' ),
+			// 4. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.ini_set' ),
 		)
 	);
 ?>

@@ -988,7 +988,7 @@
 		 * Cohorte
 		 */
 		public function cohorte_enattenteaffectation() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
 			$this->Dossierpcg66->validate = array(
 				'poledossierpcg66_id' => array( 'notEmpty' => array( 'rule' => 'notEmpty' ) )
 			);
@@ -997,12 +997,20 @@
 			
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation' ) );
 		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_enattenteaffectation() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
+			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
+		}
 
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_atransmettre() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
 			$this->Dossierpcg66->validate = array();
 			$this->Dossierpcg66->Typepdo->validate = array();
 			$this->Dossierpcg66->Originepdo->validate = array();
@@ -1012,17 +1020,29 @@
 			
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre' ) );
 		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_atransmettre() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
+			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
+		}
 				
 		/**
-		 * Cohorte type cas par cas
+		 * Cohorte
 		 */
 		public function cohorte_heberge() {
-			$this->loadModel('WebrsaCohorteDossierpcg66Heberge');
-			$Logic = $this->Components->load( 'WebrsaDossierpcg66' );
-			$this->WebrsaCohorteDossierpcg66Heberge->cohorteFields = $Logic->formulaireCohorte_heberge();
-			
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
 			$Recherches->cohorte( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge' ) );
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_heberge() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
+			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge', 'view' => 'exportcsv' ) );
 		}
 
 		/**

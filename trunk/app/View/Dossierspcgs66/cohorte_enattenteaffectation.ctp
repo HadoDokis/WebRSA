@@ -12,61 +12,29 @@
 		'minYear_to' => '2009', 
 		'maxYear_to' => date( 'Y' ) + 4
 	);
-	$paramAllocataire = array(
-		'options' => $options,
-		'prefix' => 'Search',
+	$notEmptyRule['notEmpty'] = array(
+		'rule' => 'notEmpty',
+		'message' => 'Champ obligatoire'
 	);
-	$dateRule = array(
-		'date' => array(
-			'rule' => array('date'),
-			'message' => null,
-			'required' => null,
-			'allowEmpty' => true,
-			'on' => null
-		)
+	$dateRule['date'] = array(
+		'rule' => array('date'),
+		'message' => null,
+		'required' => null,
+		'allowEmpty' => true,
+		'on' => null
 	);
+	$validationCohorte = array(
+		'Dossierpcg66' => array(
+			'poledossierpcg66_id' => $notEmptyRule,
+			'dateaffectation' => $dateRule
+		),
+	);
+	echo $this->FormValidator->generateJavascript($validationCohorte, false);
 	
-	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
-	
-	$dates = array(
-		'Dossier' => array('dtdemrsa' => $dateRule),
-		'Personne' => array('dtnai' => $dateRule),
-		'Dossierpcg66' => array('datereceptionpdo' => $dateRule)
-	);
-	echo $this->FormValidator->generateJavascript($dates, false);
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
-	}
-
-	echo $this->Default3->actions(
-		array(
-			'/' . $controller . '/' . $action . '/#toggleform' => array(
-				'onclick' => '$(\'' . $formId . '\').toggle(); return false;',
-				'class' => $action . 'Form display_formulaire',
-				'domain' => $domain
-			),
-		)
-	);
-
-	// 1. Moteur de recherche
-	echo $this->Xform->create( null, 
-		array( 
-			'id' => $formId, 
-			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
-			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
-		)
-	);
-
-	echo $this->Allocataires->blocDossier($paramAllocataire);
-
-	echo $this->Allocataires->blocAdresse($paramAllocataire);
-
-	echo $this->Allocataires->blocAllocataire($paramAllocataire);
+	$this->start( 'custom_search_filters' );
 	
 	echo '<fieldset><legend>' . __m( 'Dossierpcg66.'.$action ) . '</legend>'
-		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.datereceptionpdo', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.datereceptionpdo', $paramDate )
 		. $this->Default3->subform(
 			array(
 				'Search.Dossierpcg66.originepdo_id' => array( 'empty' => true ),
@@ -79,30 +47,21 @@
 		. '</fieldset>'
 	;
 	
-	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
+	$this->end();
+
+	$explAction = explode('_', $action);
+	$exportcsvActionName = isset($explAction[1]) ? 'exportcsv_'.$explAction[1] : 'exportcsv';
 	
-	echo $this->Allocataires->blocPagination($paramAllocataire);
+	echo $this->element(
+		'ConfigurableQuery/cohorte',
+		array(
+			'customSearch' => $this->fetch( 'custom_search_filters' ),
+			'exportcsv' => array( 'action' => $exportcsvActionName ),
+			'modelName' => 'Dossierpcg66'
+		)
+	);
 
-	echo $this->Xform->end( 'Search' );
-	
-	echo $this->Search->observeDisableFormOnSubmit( $formId );
-
-	// 2. Formulaire de traitement des résultats de la recherche
-	if( isset( $results ) ) {
-		echo $this->Xform->create( null, 
-			array( 
-				'id' => 'Cohorte'.$formId, 
-				'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
-			)
-		);
-
-		echo $this->Default3->configuredCohorte( $results, $configuredCohorteParams	);
-		
-		echo $this->Xform->end( 'Save' );
-	}
-	else{
-		$results = array();
-	}
+	$results = isset($results) ? $results : array();
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
