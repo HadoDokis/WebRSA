@@ -49,7 +49,7 @@
 				'Dossiers à imprimer' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'aimprimer' ) ),
 				'Dossiers à transmettre' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'atransmettre' ) ),
 				'Dossiers à transmettre (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) ),
-				'Requêtes PDU' => array( 
+				'Requêtes PDU' => array(
 					'Allocataires hebergés' => array(
 						'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_heberge' ),
 					)
@@ -67,7 +67,9 @@
 				'Demandes non orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'nouvelles' ) ),
 				'Demandes non orientées (nouvelles)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_nouvelles' ) ),
 				'Demandes en attente de validation d\'orientation' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'enattente' ) ),
+				'Demandes en attente de validation d\'orientation (nouvelles)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_enattente' ) ),
 				'Demandes orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'orientees' ) ),
+				'Demandes orientées (nouvelles)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_orientees' ) ),
 			),
 			'PDOs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),

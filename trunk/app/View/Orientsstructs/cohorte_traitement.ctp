@@ -20,11 +20,14 @@
 		);
 	}
 
+	// id du formulaire de cohorte
+	$cohorteFormId = Inflector::camelize( "{$this->request->params['controller']}_{$this->request->params['action']}_cohorte" );
+
 	// Boutons "Tout cocher"
 	$buttons = null;
 	if( isset( $results ) ) {
-		$buttons = $this->Form->button( 'Tout valider', array( 'onclick' => "return toutChoisir( $( 'OrientsstructsCohorteNouvellesCohorte' ).getInputs( 'radio' ), 'Orienté', true );" ) );
-		$buttons .= $this->Form->button( 'Tout mettre en attente', array( 'onclick' => "return toutChoisir( $( 'OrientsstructsCohorteNouvellesCohorte' ).getInputs( 'radio' ), 'En attente', true );" ) );
+		$buttons = $this->Form->button( 'Tout valider', array( 'onclick' => "return toutChoisir( $( '{$cohorteFormId}' ).getInputs( 'radio' ), 'Orienté', true );" ) );
+		$buttons .= $this->Form->button( 'Tout mettre en attente', array( 'onclick' => "return toutChoisir( $( '{$cohorteFormId}' ).getInputs( 'radio' ), 'En attente', true );" ) );
 	}
 ?>
 

@@ -115,7 +115,7 @@
 		 */
 		protected function _optionsEnums( array $params ) {
 			$Controller = $this->_Collection->getController();
-			
+
 			if ( !isset($Controller->{$params['modelName']}) ) {
 				$Controller->loadModel($params['modelName']);
 			}
@@ -175,11 +175,11 @@
 		 */
 		protected function _cacheKey( array $params, array $extra = array() ) {
 			$Controller = $this->_Collection->getController();
-			
+
 			if ( !isset($Controller->{$params['modelName']}) ) {
 				$Controller->loadModel($params['modelName']);
 			}
-			
+
 			return $Controller->{$params['modelName']}->useDbConfig.'_Controllers_'.Inflector::camelize( $Controller->request->params['controller'] ).'_'.$Controller->request->params['action'].'_'.$params['modelRechercheName'].'_'.$params['modelName'].( empty( $extra ) ? '' : '_'.implode( '_', $extra ) );
 		}
 
@@ -293,8 +293,6 @@
 		protected function _filters( array $params ) {
 			$Controller = $this->_Collection->getController();
 
-			// FIXME
-			//$search = empty( $params['searchKey'] ) ? (array)$Controller->request->data : (array)Hash::get( $Controller->request->data, $params['searchKey'] );
 			$search = array();
 			if( $Controller->request->is( 'get' ) ) {
 				if( empty( $params['searchKey'] ) === false ) {
@@ -385,14 +383,14 @@
 			}
 
 			$has = (array)Configure::read( $this->_configureKey( 'filters.has', $params ) );
-			
+
 			// On met systématiquement le contenu de has en conditions
 			foreach ($has as $key => $value) {
 				if (is_array($value)) {
 					$has[$key] = array( 'conditions' => $value );
 				}
 			}
-			
+
 			$query = ClassRegistry::init( 'Personne' )->completeQueryHasLinkedRecord(
 				$has,
 				$query,

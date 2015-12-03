@@ -80,7 +80,7 @@
 			$sessionKey = 'Page Check: '.$Controller->name.'_'.$Controller->action;
 			$page = (int)Hash::get( $Controller->request->data, 'page' );
 			$page = $page === 0 ? 1 : $page;
-			
+
 			if ( (int)$Controller->Session->read( $sessionKey ) !== $page ) {
 				unset($Controller->request->data[$params['cohorteKey']]);
 				$Controller->Session->write( $sessionKey, $page );

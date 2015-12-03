@@ -246,6 +246,21 @@
 				'component' => 'WebrsaCohortesOrientsstructsNouvellesNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
+			'Orientsstructs.cohorte_enattente' => array(
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteOrientstructEnattente',
+				'component' => 'WebrsaCohortesOrientsstructsEnattenteNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Orientsstructs.cohorte_orientees' => array(
+				'type' => 'search',
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteOrientstructOrientees',
+				'component' => 'WebrsaCohortesOrientsstructsImpressions',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
 			'Orientsstructs.search' => array(
 				'modelName' => 'Orientstruct',
 				'component' => 'WebrsaRecherchesOrientsstructsNew',
@@ -457,6 +472,8 @@
 
 			foreach( $this->searches as $key => $config ) {
 				$departement = Hash::get( $config, 'departement' );
+				$type = Hash::get( $config, 'type' );
+
 				if( $departement === null || in_array( $currentDepartement, (array)$departement ) ) {
 					// INFO: ajout d'une condition supplémentaire afin de ne pas avoir de résultats
 					Configure::write( "ConfigurableQuery.{$key}.query.conditions", '0 = 1' );
@@ -465,13 +482,13 @@
 					echo "\t{$key}\n";
 					$Recherches = $this->_component( $key, $config );
 
-					if( strpos( $key, '.search' ) !== false ) {
+					if( strpos( $key, '.search' ) !== false || $type === 'search' ) {
 						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
 						$Controller = $Recherches->_Collection->getController();
 						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );
 						$Recherches->search( $config );
 					}
-					else if( strpos( $key, '.cohorte' ) !== false ) {
+					else if( strpos( $key, '.cohorte' ) !== false || $type === 'cohorte' ) {
 						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
 						$Controller = $Recherches->_Collection->getController();
 						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );

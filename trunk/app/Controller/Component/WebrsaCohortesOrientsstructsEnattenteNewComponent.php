@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohortesOrientsstructsNouvellesNewComponent.
+	 * Code source de la classe WebrsaCohortesOrientsstructsEnattenteNewComponent.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,11 +10,11 @@
 	App::uses( 'WebrsaAbstractCohortesOrientsstructsNewComponent', 'Controller/Component' );
 
 	/**
-	 * La classe WebrsaCohortesOrientsstructsNouvellesNewComponent ...
+	 * La classe WebrsaCohortesOrientsstructsEnattenteNewComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesOrientsstructsNouvellesNewComponent extends WebrsaAbstractCohortesOrientsstructsNewComponent
+	class WebrsaCohortesOrientsstructsEnattenteNewComponent extends WebrsaAbstractCohortesOrientsstructsNewComponent
 	{
 	}
 ?>
