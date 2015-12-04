@@ -280,18 +280,6 @@
 				'Optimisations.useTableDernierdossierallocataire' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true ),
 				),
-				'Order.choose' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true ),
-				),
-				'Order.decisionep' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true ),
-				),
-				'Order.printOrdresDuJour' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true ),
-				),
-				'Order.traiterep' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true ),
-				),
 				'Periode.modifiable.nbheure' => 'integer',
 				'Recherche.identifiantpecourt' => 'boolean',
 				'Recherche.qdFilters.Serviceinstructeur' => 'boolean',
@@ -369,6 +357,28 @@
 				}
 			}
 
+			// Pour tous les départements sauf le 976
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement !== 976 ) {
+				$return = array_merge(
+					$return,
+					array(
+						'Dossierseps.choose.order' => array(
+							array( 'rule' => 'isarray', 'allowEmpty' => true ),
+						),
+						'Commissionseps.decisionep.order' => array(
+							array( 'rule' => 'isarray', 'allowEmpty' => true ),
+						),
+						'Commissionseps.decisioncg.order' => array(
+							array( 'rule' => 'isarray', 'allowEmpty' => true ),
+						),
+						'Commissionseps.traiterep.order' => array(
+							array( 'rule' => 'isarray', 'allowEmpty' => true ),
+						),
+					)
+				);
+			}
+
 			return $return;
 		}
 
@@ -436,7 +446,10 @@
                 'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray',
                 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe' => 'string',
 				'Criterescuis.search.fields' => 'isarray',
-				'Criterescuis.exportcsv' => 'isarray'
+				'Criterescuis.exportcsv' => 'isarray',
+				'Commissionseps.printOrdresDuJour.order' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true ),
+				),
 			);
 		}
 
@@ -1002,7 +1015,7 @@
 							implode( ', ', $missing ),
 							$shortversion
 						) . '<code>' . (
-							(float)$shortversion < 9 
+							(float)$shortversion < 9
 							? sprintf('\i /usr/share/postgresql/%s/contrib/fuzzystrmatch.sql', $shortversion)
 							: 'CREATE EXTENSION fuzzystrmatch;'
 						)
