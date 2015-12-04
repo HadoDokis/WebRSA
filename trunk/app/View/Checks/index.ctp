@@ -1,3 +1,4 @@
+<?php $extratabs = array();?>
 <h1><?php echo $this->pageTitle = 'Vérification de l\'application'; ?></h1>
 <br />
 <div id="tabbedWrapper" class="tabs">
@@ -111,20 +112,48 @@
 					</div>
 					<div id="webrsa_configurable_query">
 						<h4 class="title">ConfigurableQuery</h4>
-						<?php
-							foreach( $results['Webrsa']['configurable_query'] as $key => $result ) {
-								echo "<h5>{$key}</h5>";
-								echo $this->Checks->table(
-									array_merge(
-										$result['config'],
-										array(
-											'fields' => $result['fields'],
-											'query' => $result['query']
-										)
-									)
-								);
-							}
-						?>
+						<div id="tabbedWrapperWebrsaConfigurableQuery" class="tabs">
+							<?php
+								$foos = array();
+								foreach( $results['Webrsa']['configurable_query'] as $key => $result ) {
+									list( $controller, $action ) = explode( '.', $key );
+									if( !isset( $foos[$controller] ) ) {
+										$foos[$controller] = array();
+									}
+									$foos[$controller][$action] = $result;
+								}
+
+								foreach( $foos as $controller => $params ) {
+									$id = 'webrsa_configurable_query_'.Inflector::underscore( $controller );
+									echo "<div id=\"{$id}\">\n";
+									echo "<h5 class=\"title\">{$controller}</h5>\n";
+
+									$id = "tabbedWrapperWebrsaConfigurableQuery{$controller}";
+									echo "<div id=\"{$id}\" class=\"tabs\">\n";
+									$extratabs[$id] = 6;
+
+									foreach( $params as $action => $result ) {
+										$id = 'webrsa_configurable_query_'.Inflector::underscore( $controller ).'_'.Inflector::underscore( $action );
+										echo "<div id=\"{$id}\">\n";
+										echo "<h6 class=\"title\">{$controller}.{$action}</h6>\n";
+										echo $this->Checks->table(
+											array_merge(
+												$result['config'],
+												array(
+													'fields' => $result['fields'],
+													'query' => $result['query']
+												)
+											)
+										);
+										echo "</div>";
+									}
+
+									echo "</div>\n";
+
+									echo "</div>\n";
+								}
+							?>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -212,6 +241,12 @@
 	makeTabbed( 'tabbedWrapper', 2 );
 	makeTabbed( 'tabbedWrapperSoftware', 3 );
 	makeTabbed( 'tabbedWrapperWebrsa', 4 );
+	makeTabbed( 'tabbedWrapperWebrsaConfigurableQuery', 5 );
+
+	<?php foreach( $extratabs as $id => $level ):?>
+		<?php echo "makeTabbed( '{$id}', {$level} );\n";?>
+	<?php endforeach;?>
+
 	makeErrorTabs();
 </script>
 <?php
