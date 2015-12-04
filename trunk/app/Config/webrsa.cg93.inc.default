@@ -1566,7 +1566,6 @@
 	Configure::write( 'Dossierseps.choose.order', $order );
 	Configure::write( 'Commissionseps.decisionep.order',  $order );
 	Configure::write( 'Commissionseps.decisioncg.order',  $order );
-	Configure::write( 'Commissionseps.printOrdresDuJour.order',  $order );
 	Configure::write( 'Commissionseps.traiterep.order', $order );
 
 	/**

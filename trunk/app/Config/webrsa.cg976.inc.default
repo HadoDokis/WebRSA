@@ -407,39 +407,27 @@
 	 *		* menu du dossier RSA: DEM ou CJT > Droit > MAJ DSP
 	 */
 	Configure::write( 'Romev3.enabled', false );
-	
-	/**
-	 * Ordre d'affichage des dossiers EP selon différentes actions
-	 * $queryData['order'] prendra la valeur de la config.
-	 * Le nom est dynamique, si une action est manquante ici, ajoutez la comme suit : 'Order.' . $this->action
-	 */
-	$order = array( 'Personne.nom', 'Personne.prenom' );
-	Configure::write( 'Dossierseps.choose.order', $order );
-	Configure::write( 'Commissionseps.decisionep.order',  $order );
-	Configure::write( 'Commissionseps.decisioncg.order',  $order );
-	Configure::write( 'Commissionseps.printOrdresDuJour.order',  $order );
-	Configure::write( 'Commissionseps.traiterep.order', $order );
-	
+
 	/**
 	 * Validation parametrable pour l'allowEmpty
 	 */
 	Configure::write('ValidateAllowEmpty.Adresse.libtypevoie', false);
-		
+
 	/**
 	 * Permet de désactiver le "cadenas" situé en haut à droite
 	 */
 	Configure::write( 'Etatjetons.enabled', false );
-	
+
 	/**
 	 * Permet de désactiver l'Editeur de requêtes
 	 */
 	Configure::write( 'Requestmanager.enabled', false );
-	
+
 	/**
 	 * Utilisation de la table AdresseCanton pour utiliser les cantons calculé au préalable par Console (CRON)
 	 */
 	Configure::write( 'Canton.useAdresseCanton', (boolean)Configure::read( 'CG.cantons' ) );
-	
+
 	/**
 	 * Alerte pour le changement d'adresse
 	 * delai en nombre de mois

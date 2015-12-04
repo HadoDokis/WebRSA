@@ -305,7 +305,7 @@
 		/**
 		 * Retourne la liste des dossiers de la séance d'EP, groupés par thème,
 		 * pour les dossiers qui doivent passer par liste.
-		 * 
+		 *
 		 * @see Commissionep::querydataFragmentsErrors()
 		 *
 		 * @param integer $commissionep_id L'id technique de la séance d'EP
@@ -1605,7 +1605,7 @@
 
 			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
-			$queryData = $this->quertyPdfOrdredujour($convocation);
+			$queryData = $this->queryPdfOrdredujour($convocation);
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 			$options = Set::merge( $options, $this->enums() );
@@ -1734,7 +1734,7 @@
 				$options
 			);
 		}
-		
+
 		public function queryPdfOrdredujour ( $convocation ) {
 			if ( Configure::read( 'Cg.departement' ) == 93 || Configure::read( 'Cg.departement' ) == 58 ) {
 				$queryData = array(
@@ -1853,10 +1853,11 @@
 						)
 					),
 				);
+
+				$order = Configure::read( 'Commissionseps.printOrdresDuJour.order' );
+				$queryData['order'] = $order ? $order : array( 'Personne.nom', 'Personne.prenom' );
 			}
-			$configuredOrder = Configure::read( 'Commissionseps.printOrdresDuJour.order' );
-			$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
-			
+
 			return $queryData;
 		}
 
@@ -2232,22 +2233,22 @@
 		}
 
 		/**
-		 * 
+		 *
 		 * @see Commissionep::dossiersParListe()
-		 * 
+		 *
 		 * @return array
 		 */
 		public function querydataFragmentsErrors() {
 			$checks = array();
-			$keys = array( 
+			$keys = array(
 				'Commissionseps.decisionep.order',
 				'Commissionseps.decisioncg.order',
 				'Commissionseps.traiterep.order',
 			);
-			
+
 			$findFirst = $this->find('first', array('fields' => 'id'));
 			$commissionep_id = Hash::get($findFirst, $this->alias.'.id');
-			
+
 			foreach( $keys as $key ) {
 				foreach( $this->Ep->themes() as $theme ) {
 					$model = Inflector::classify( $theme );
@@ -2262,28 +2263,31 @@
 							'success' => null,
 							'message' => null
 						);
-						
+
 						try {
 							$this->Passagecommissionep->Dossierep->forceVirtualFields = false;
 							$this->Passagecommissionep->Dossierep->find( 'first', $queryData );
 							$check['success'] = true;
 						} catch( Exception $e ) {
-							$check['success'] = false; 
-							$check['message'] = $e->getMessage(); 
+							$check['success'] = false;
+							$check['message'] = $e->getMessage();
 						}
 
 						$checks["{$key} pour la thématique {$theme}"] = $check;
 					}
 				}
 			}
-			
-			$key = 'Commissionseps.printOrdresDuJour.order';
-			$sql = $this->Passagecommissionep->Dossierep->sq( $this->queryPdfOrdredujour(array('Commissionep' => array('id' => 0))) );
-			$check = $this->getDataSource()->checkPostgresSqlSyntax( $sql );
-			$check['value'] = var_export( Configure::read($key), true );
-			
-			$checks[$key] = $check;
-			
+
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement === 66 ) {
+				$key = 'Commissionseps.printOrdresDuJour.order';
+				$sql = $this->Passagecommissionep->Dossierep->sq( $this->queryPdfOrdredujour(array('Commissionep' => array('id' => 0))) );
+				$check = $this->getDataSource()->checkPostgresSqlSyntax( $sql );
+				$check['value'] = var_export( Configure::read($key), true );
+
+				$checks[$key] = $check;
+			}
+
 			return $checks;
 		}
 	}
