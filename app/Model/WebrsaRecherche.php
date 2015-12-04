@@ -97,11 +97,13 @@
 				'keys' => array( 'results.fields' )
 			),
 			'Cuis.search' => array(
+				'departement' => 66,
 				'modelName' => 'Cui',
 				'component' => 'WebrsaRecherchesCuisNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Cuis.exportcsv' => array(
+				'departement' => 66,
 				'modelName' => 'Cui',
 				'component' => 'WebrsaRecherchesCuisNew',
 				'keys' => array( 'results.fields' )

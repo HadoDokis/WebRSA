@@ -63,7 +63,7 @@
 			$Controller = $this->_Collection->getController();
 
 			if( $success !== false && $content !== false ) {
-				$fileName = sprintf( '%s-%s-%s', $Controller->request->params['controller'], $Controller->request->params['action'], date( "Ymd-H\hi" ) );
+				$fileName = sprintf( '%s-%s-%s.pdf', $Controller->request->params['controller'], $Controller->request->params['action'], date( "Ymd-H\hi" ) );
 				$this->Gedooo->sendPdfContentToClient( $content, $fileName );
 				die();
 			}
