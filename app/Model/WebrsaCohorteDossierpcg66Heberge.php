@@ -85,7 +85,6 @@
 
 			'Traitementpcg66.haspiecejointe' => array( 'type' => 'hidden', 'value' => '0' ),
 			'Traitementpcg66.serviceinstructeur_id' => array( 'empty' => true ),
-			'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'empty' => true ),
 			'Traitementpcg66.descriptionpdo_id' => array( 'empty' => true ),
 			'Traitementpcg66.datedepart' => array( 'type' => 'date'	),
 			'Traitementpcg66.datereception' => array( 'type' => 'date' ),

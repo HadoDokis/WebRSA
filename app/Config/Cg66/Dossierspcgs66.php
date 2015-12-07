@@ -494,7 +494,6 @@
 					'Piecemodeletypecourrierpcg66.4_Piecemodeletypecourrierpcg66' => 128, // Pièce d'identité et passeport en intégralité et en cours...
 					'Piecemodeletypecourrierpcg66.5_Piecemodeletypecourrierpcg66' => 130, // Relevés bancaires des 3 derniers mois
 					'Traitementpcg66.serviceinstructeur_id' => null, // Service à contacter (insertion)
-					'Traitementpcg66.personnepcg66_situationpdo_id' => 34, // Motifs concernant la personne
 					'Traitementpcg66.datedepart' => date('Y-m-d'), // Date de départ (pour le calcul de l'échéance)
 					'Tag.valeurtag_id' => 2, // Valeur du tag
 				)

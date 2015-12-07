@@ -823,5 +823,39 @@
 
 			return false;
 		}
+		
+		/**
+		 * Verifi l'existance d'un champ dans la table
+		 * 
+		 * @param string $fieldName
+		 * @return boolean
+		 */
+		public function fieldExists( $fieldName ) {
+			$Dbo = $this->getDataSource();
+			$sql = "SELECT EXISTS( SELECT * FROM information_schema.columns "
+				. "WHERE table_name = '".$this->useTable."' "
+				. "AND column_name ='".$fieldName."'"
+				. ");"
+			;
+			
+			return Hash::get($Dbo->query($sql), '0.0.exists');
+		}
+		
+		/**
+		 * Envoi les informations d'un champ de la table
+		 * 
+		 * @param string $fieldName
+		 * @return array
+		 */
+		public function fieldInfo( $fieldName ) {
+			$Dbo = $this->getDataSource();
+			$sql = "SELECT * FROM information_schema.columns "
+				. "WHERE table_name = '".$this->useTable."' "
+				. "AND column_name ='".$fieldName."'"
+				. ";"
+			;
+			
+			return Hash::get($Dbo->query($sql), '0.0');
+		}
 	}
 ?>
