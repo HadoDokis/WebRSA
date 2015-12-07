@@ -450,6 +450,12 @@
 				'Commissionseps.printOrdresDuJour.order' => array(
 					array( 'rule' => 'isarray', 'allowEmpty' => true ),
 				),
+				'Dossierspcgs66.imprimer.Impression.RectoVerso' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
+				'Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 		}
 
