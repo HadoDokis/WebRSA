@@ -155,7 +155,7 @@
 
 				// On insert les élements du formulaire de cohorte dans le tableau de résultats
 				$cohorteFields = $this->_formatFieldsForInsert($this->_getCohorteFields( $params ), $params);
-				
+
 				// On conserve les filtres de recherche en élements cachés dans le formulaire de cohorte
 				$filterData =& $Controller->request->data[$params['searchKey']];
 				$extraHiddenFields = array(
@@ -254,17 +254,17 @@
 
 			return $formatedFields;
 		}
-		
+
 		/**
 		 * Permet de récupérer les cohorteFields du modele de recherche et de lui appliquer les valeurs par défaut
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
 		protected function _getCohorteFields( array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $params );
-			
+
 			// Applique des valeurs par defaut aux champs cohorteFields
 			$fields = array();
 			foreach (Hash::normalize($Controller->{$params['modelRechercheName']}->cohorteFields) as $fieldName => $paramsField) {
@@ -272,23 +272,24 @@
 				$paramsField += array(
 					'type' => 'select',
 					'label' => false,
+					'required' => false
 				);
-				
+
 				switch ($paramsField['type']) {
-					case 'hidden': 
+					case 'hidden':
 						$paramsField += array( 'hidden' => true ); break;
 					case 'date':
-						$paramsField += array( 
-							'dateFormat' => 'DMY', 
-							'minYear' => date('Y')-1, 
-							'maxYear' => date('Y')+1  
-						); 
+						$paramsField += array(
+							'dateFormat' => 'DMY',
+							'minYear' => date('Y')-1,
+							'maxYear' => date('Y')+1
+						);
 						break;
 				}
-				
+
 				$fields[$fieldName] = $paramsField;
 			}
-			
+
 			// Applique la configuration : donne une valeur à un champ et le cache
 			$keyConf = implode('.', array($params['searchKeyPrefix'], $Controller->name, $Controller->action, 'cohorte', 'values'));
 			foreach ((array)Configure::read($keyConf) as $fieldName => $value) {
@@ -296,7 +297,7 @@
 				$fields[$fieldName]['type'] = 'hidden';
 				$fields[$fieldName]['hidden'] = true;
 			}
-			
+
 			return $fields;
 		}
 	}

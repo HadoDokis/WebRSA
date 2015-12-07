@@ -31,9 +31,17 @@
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 					'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveaux' )
 				),
+				'Contrats à valider (nouveau)' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_nouveaux' )
+				),
 				'Contrats validés' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 					'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
+				),
+				'Contrats validés (nouveau)' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_valides' )
 				),
 			),
 			'Fiches de candidature' => array(

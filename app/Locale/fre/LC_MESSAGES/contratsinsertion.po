@@ -117,3 +117,47 @@ msgstr "Voir"
 
 msgid "/Contratsinsertion/index/#Contratinsertion.personne_id#"
 msgstr "Voir le CER de #Personne.nom_complet#"
+
+# ------------------------------------------------------------------------------
+
+msgid "/Contratsinsertion/cohorte_nouveaux/:heading"
+msgstr "Contrats à valider (nouveau)"
+
+msgid "/Contratsinsertion/cohorte_valides/:heading"
+msgstr "Contrats validés (nouveau)"
+
+msgid "Search.Contratinsertion.decision_ci"
+msgstr "Statut du contrat"
+
+msgid "Search.Contratinsertion.datevalidation_ci"
+msgstr "Date de validation"
+
+msgid "Search.Contratinsertion.created"
+msgstr "Date de saisie du contrat"
+
+msgid "Search.Contratinsertion.structurereferente_id"
+msgstr "Structure référente"
+
+msgid "Search.Contratinsertion.referent_id"
+msgstr "Nom du référent"
+
+msgid "Search.Contratinsertion.forme_ci"
+msgstr "Forme du contrat"
+
+msgid "/Cers93/view"
+msgstr "Voir"
+
+msgid "/Cers93/view/#Contratinsertion.id#"
+msgstr "Voir le CER de #Personne.nom_complet_court#"
+
+msgid "Personne.nom_complet_court"
+msgstr "Nom de l'allocataire"
+
+msgid "data[Cohorte][][Contratinsertion][decision_ci]"
+msgstr "Décision"
+
+msgid "data[Cohorte][][Contratinsertion][datevalidation_ci]"
+msgstr "Date validation"
+
+msgid "data[Cohorte][][Contratinsertion][observ_ci]"
+msgstr "Observations"

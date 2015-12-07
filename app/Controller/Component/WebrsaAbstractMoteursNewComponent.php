@@ -239,7 +239,7 @@
 
 			return $options;
 		}
-		
+
 		/**
 		 * Retourne les filtres du moteur de recherche éventuellement modifiés
 		 * suivant la valeur de lé clé query.restrict.

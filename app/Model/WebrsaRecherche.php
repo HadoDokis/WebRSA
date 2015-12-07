@@ -86,6 +86,28 @@
 				'component' => 'WebrsaRecherchesBilansparcours66New',
 				'keys' => array( 'results.fields' )
 			),
+			'Contratsinsertion.cohorte_nouveaux' => array(
+				'departement' => array( 93 ),
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionNouveau',
+				'component' => 'WebrsaCohortesContratsinsertionNouveaux',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Contratsinsertion.cohorte_valides' => array(
+				'type' => 'search',
+				'departement' => array( 93 ),
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionValide',
+				'component' => 'WebrsaCohortesContratsinsertionValides',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Contratsinsertion.exportcsv_valides' => array(
+				'departement' => array( 93 ),
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionValide',
+				'component' => 'WebrsaCohortesContratsinsertionValides',
+				'keys' => array( 'results.fields' )
+			),
 			'Contratsinsertion.search' => array(
 				'modelName' => 'Contratinsertion',
 				'component' => 'WebrsaRecherchesContratsinsertionNew',

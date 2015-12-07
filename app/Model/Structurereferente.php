@@ -620,6 +620,10 @@
 					}
 				}
 
+				// Pour les listes simples, tri par valeur en gardant l'association avec la clé
+				asort( $results['normal'] );
+				asort( $results['list'] );
+
 				$Session->write( $sessionKey, $results );
 			}
 
