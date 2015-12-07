@@ -997,4 +997,11 @@
 	 */
 	Configure::write( 'Alerte.changement_adresse.enabled', true );
 	Configure::write( 'Alerte.changement_adresse.delai', 2 );
+	
+	/**
+	 * Réglages d'imprimante
+	 */
+	$imprimanteRectoVerso = true;
+	Configure::write( 'Dossierspcgs66.imprimer.Impression.RectoVerso', $imprimanteRectoVerso );
+	Configure::write( 'Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso', $imprimanteRectoVerso );
 ?>
