@@ -33,6 +33,7 @@ class ContratsinsertionController extends AppController
 	);
 
     public $components = array(
+		'Cohortes',
 		'RequestHandler',
 		'Gedooo.Gedooo',
 		'Fileuploader',
@@ -40,7 +41,11 @@ class ContratsinsertionController extends AppController
 		'DossiersMenus',
 		'InsertionsAllocataires',
 		'Search.SearchPrg' => array(
-			'actions' => array( 'search' )
+			'actions' => array(
+				'search',
+				'cohorte_nouveaux' => array( 'filter' => 'Search' ),
+				'cohorte_valides' => array( 'filter' => 'Search' ),
+			),
 		),
 	);
 
@@ -48,7 +53,10 @@ class ContratsinsertionController extends AppController
         'view' => 'Contratsinsertion:index',
         'add' => 'Contratsinsertion:edit',
 		'search' => 'Criteresci:index',
-		'exportcsv' => 'Criteresci:exportcsv'
+		'exportcsv' => 'Criteresci:exportcsv',
+		'cohorte_nouveaux' => 'Cohortesci:nouveaux',
+		'cohorte_valides' => 'Cohortesci:valides',
+		'exportcsv_valides' => 'Cohortesci:valides',
     );
 
     public $aucunDroit = array('ajax', 'ajaxaction', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download');
@@ -67,10 +75,13 @@ class ContratsinsertionController extends AppController
         'ajaxref' => 'update',
         'ajaxstruct' => 'update',
         'cancel' => 'update',
+        'cohorte_nouveaux' => 'update',
+        'cohorte_valides' => 'read',
         'delete' => 'delete',
         'download' => 'read',
         'edit' => 'update',
         'exportcsv' => 'read',
+        'exportcsv_valides' => 'read',
         'ficheliaisoncer' => 'read',
         'filelink' => 'read',
         'fileview' => 'read',
@@ -1800,6 +1811,46 @@ class ContratsinsertionController extends AppController
 	public function exportcsv() {
 		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
 		$Recherches->exportcsv();
+	}
+
+	/**
+	 * Cohorte de validation de CER
+	 */
+	public function cohorte_nouveaux() {
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNouveaux' );
+
+		$Cohortes->cohorte(
+			array(
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionNouveau'
+			)
+		);
+	}
+
+	/**
+	 * Cohorte de CER validés
+	 */
+	public function cohorte_valides() {
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionValides' );
+		$Cohortes->search(
+			array(
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionValide'
+			)
+		);
+	}
+
+	/**
+	 * Cohorte de CER validés
+	 */
+	public function exportcsv_valides() {
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionValides' );
+		$Cohortes->exportcsv(
+			array(
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionValide'
+			)
+		);
 	}
 }
 ?>

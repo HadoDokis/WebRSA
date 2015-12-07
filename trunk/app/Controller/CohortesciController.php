@@ -102,6 +102,8 @@
 		/**
 		 * Liste des CER (CG 93) non validés.
 		 *
+		 * @deprecated since 3.0.00
+		 *
 		 * @return void
 		 */
 		public function nouveaux() {
@@ -110,6 +112,8 @@
 
 		/**
 		 * Liste des CER (CG 93) validés.
+		 *
+		 * @deprecated since 3.0.00
 		 *
 		 * @return void
 		 */
