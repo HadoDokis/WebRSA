@@ -136,15 +136,19 @@
 										$id = 'webrsa_configurable_query_'.Inflector::underscore( $controller ).'_'.Inflector::underscore( $action );
 										echo "<div id=\"{$id}\">\n";
 										echo "<h6 class=\"title\">{$controller}.{$action}</h6>\n";
-										echo $this->Checks->table(
-											array_merge(
-												$result['config'],
-												array(
-													'fields' => $result['fields'],
-													'query' => $result['query']
-												)
+										$checks = array_merge(
+											$result['config'],
+											array(
+												'fields' => $result['fields'],
+												'query' => $result['query']
 											)
 										);
+										foreach( array( 'cohorte_options', 'cohorte_values' ) as $key ) {
+											if( isset( $result[$key] ) ) {
+												$checks[$key] = $result[$key];
+											}
+										}
+										echo $this->Checks->table( $checks );
 										echo "</div>";
 									}
 

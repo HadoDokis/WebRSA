@@ -300,5 +300,191 @@
 
 			return $fields;
 		}
+		
+		/**
+		 * Retourne la liste des clés de configuration possibles ainsi que des
+		 * règles de validation pour chacune d'entre elle, à utiliser dans la
+		 * partie "Vérification de l'application".
+		 *
+		 * Il faudra renseigner au minimum les clés suivantes dans les paramètres:
+		 *	- keys
+		 *	- configurableQueryFieldsKey (<Controller><.<action>)
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		public function configureKeys( array $params = array() ) {
+			$params = $this->_params( $params );
+
+			$config = array(
+				'cohorte.options' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+				'cohorte.values' => array( array( 'rule' => 'isarray', 'allowEmpty' => true ) ),
+				'view' => array( array( 'rule' => 'boolean', 'allowEmpty' => true ) )
+			);
+
+			$result = parent::configureKeys($params);
+			foreach( $config as $key => $value ) {
+				$result[$this->_configureKey( $key, $params )] = $value;
+			}
+
+			return $result;
+		}
+		
+		/**
+		 * Vérification de la configuration des champs options de cohorte
+		 * 
+		 * @return array
+		 */
+		public function checkOptionsCohorte( $params = array() ) {
+			$params = $this->_params( $params );
+			
+			$result[$this->_configureKey('cohorte.options', $params)] = array( array( 'rule' => 'isarray', 'allowEmpty' => true ) );
+
+			return $result;
+		}
+		
+		/**
+		 * 
+		 * @param array $params
+		 * @return array
+		 */
+		public function checkHiddenCohorteValues( $params = array() ) {
+			$params = $this->_params( $params );
+			$success = true;
+			$message = array();
+			
+			foreach ((array)Configure::read($this->_configureKey('cohorte.values', $params)) as $path => $value) {
+				$model_field = model_field($path, false);
+				
+				// Syntaxe correcte
+				if ( $model_field === null ) {
+					$success = false;
+					$message[] = "La table et le champ de <b>{$path}</b> n'ont pas été trouvé. Utilisez la syntaxe suivante : Modele.champ.";
+					continue;
+				}
+				
+				// $path est de type hasAndBelongsToMany : ex: Monmodel.0_Monmodel
+				$hasAndBelongsToMany = preg_match('/^([\w]+)\.(?:[\d]+.){0,1}([\w]+)$/', $path, $matches) && $matches[1] === $matches[2];
+				$Model = ClassRegistry::init($model_field[0]);
+				$this->_rebuildValidation($Model);
+
+				$field = $hasAndBelongsToMany ? $Model->primaryKey : $model_field[1];
+				
+				// Table et champ existent
+				if ( !$hasAndBelongsToMany && $Model->fieldExists($model_field[1]) === false ) {
+					$success = false;
+					$message[] = "L'existance de <b>{$model_field[1]}</b> dans le modele <b>{$model_field[0]}</b> n'a pas été trouvé.";
+					continue;
+				}
+				
+				// Existance de la valeur dans un hasAndBelongsToMany
+				$conditions = array(
+					'conditions' => array($Model->primaryKey => $value),
+					'contain' => false
+				);
+				if ($hasAndBelongsToMany && (!is_numeric($value) || !$Model->find('first', $conditions))) {
+					$success = false;
+					$message[] = "La valeur <b>{$value}</b> pour <b>{$path}</b> ne se trouve pas dans <b>{$Model->alias}.{$Model->primaryKey}</b>.";
+					continue;
+				}
+				
+				// Test de clef étrangère
+				if ($value !== null) {
+					// On regarde si la clef est une clef étrangère
+					$test = $this->_isValidIfIsForeignKey( $Model, $path, $value );
+					
+					if (!$test['success']) {
+						$message[] = $test['message'];
+						continue;
+					}
+				}
+				
+				// Test d'enregistrement
+				if ( $field !== $Model->primaryKey ) {
+					$Model->begin();
+					$data = $Model->find('first', array( 'recursive' => -1, 'contain' => false ));
+					
+					// Si on a pas un enregistrement sain, inutile de continuer (n'arrive que sur des tables vide).
+					if (empty($data)) {
+						continue;
+					}
+					
+					$data[$Model->alias][$field] = $value;
+
+					if (!$Model->save($data)) {
+						$errors = implode(', ', (array)Hash::get($Model->validationErrors, $field));
+						$success = false;
+						$message[] = "La tentative d'insérer la valeur <b>{$value}</b> dans <b>{$path}</b> a échoué : {$errors}";
+					}
+
+					$Model->rollback();					
+				}
+			}
+			
+			return array(
+				'success' => $success,
+				'message' => $success ? "Aucune erreur n'a été trouvée." : 'Des erreurs ont été trouvées!',
+				'value' => implode("<br/>", $message),
+			);
+		}
+		
+		/**
+		 * Permet de reconstruire la validation uniquement avec les rêgles de la base de donnée
+		 * 
+		 * @param Model $Model
+		 * @return \WebrsaAbstractCohortesNewComponent
+		 */
+		protected function _rebuildValidation( Model $Model ) {
+			$behaviors = array(
+				'Validation.ExtraValidationRules' =>  null,
+				'Validation2.Validation2Formattable' => null,
+			);
+			$autovalidate = false;
+			foreach ( Hash::normalize( (array)$Model->actsAs ) as $behavior => $config ) {
+				if ( preg_match( '/(autovalidate|validate|formattable|enumerable)/i', $behavior, $matches ) ) {
+					$behaviors[$behavior] = $config;
+					$Model->Behaviors->detach( $behavior );
+
+					if ( strtolower( $matches[1] ) === 'autovalidate' ) {
+						$autovalidate = true;
+					}
+				}
+			}
+			$Model->validate = array();
+
+			foreach ( $behaviors as $behavior => $config ) {
+				$Model->Behaviors->attach( $behavior, $config );
+			}
+			if ( $autovalidate === false ) {
+				$Model->Behaviors->attach( 'Validation2.Validation2Autovalidate' );
+			}
+			
+			return $this;
+		}
+		
+		protected function _isValidIfIsForeignKey( Model $Model, $path, $value ) {
+			$result = array('success' => true);
+			list(,$field) = explode('.', $path);
+			
+			foreach ((array)$Model->belongsTo as $modelName => $paramsBelongsTo) {
+				$conditions = array(
+					'conditions' => array($Model->$modelName->primaryKey => $value),
+					'contain' => false
+				);
+
+				// Si la clef est une clef étrangère mais que la valeur n'est pas valide ou qu'il ne pointe pas sur un enregistrement...
+				if (Hash::get($paramsBelongsTo, 'foreignKey') === $field) { 
+					if (!is_numeric($value) || !$Model->$modelName->find('first', $conditions)) {
+						$result = array(
+							'success' => false,
+							'message' => "La valeur <b>{$value}</b> pour <b>{$path}</b> ne se trouve pas dans <b>{$Model->$modelName->alias}.{$Model->$modelName->primaryKey}</b>."
+						);
+					}
+					break;
+				}
+			}
+			
+			return $result;
+		}
 	}
 ?>

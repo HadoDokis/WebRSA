@@ -194,6 +194,13 @@
 				'component' => 'WebrsaRecherchesDossierspcgs66New',
 				'keys' => array( 'results.fields' )
 			),
+			'Dossierspcgs66.cohorte_heberge' => array(
+				'departement' => 66,
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
 			'Dsps.search' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDsp',
@@ -405,7 +412,7 @@
 
 				$currentDepartement = (int)Configure::read( 'Cg.departement' );
 
-				foreach( $this->searches as $key => $config ) {
+					foreach( $this->searches as $key => $config ) {
 					$departement = Hash::get( $config, 'departement' );
 					if( $departement === null || in_array( $currentDepartement, (array)$departement ) ) {
 						$Recherches = $this->_component( $key, $config );
@@ -413,6 +420,11 @@
 						$this->_cache[$key]['config'] = $Recherches->configureKeys( $config );
 						$this->_cache[$key]['fields'] = $Recherches->checkConfiguredFields( $config );
 						$this->_cache[$key]['query'] = $Recherches->checkQuery( $config );
+						
+						$type = Hash::get($config, 'type');
+						if( ($type === null && strpos( $key, '.cohorte' ) !== false) || $type === 'cohorte' ) {
+							$this->_cache[$key]['cohorte_values'] = $Recherches->checkHiddenCohorteValues( $config );
+						}
 					}
 				}
 			}
@@ -506,13 +518,13 @@
 					echo "\t{$key}\n";
 					$Recherches = $this->_component( $key, $config );
 
-					if( strpos( $key, '.search' ) !== false || $type === 'search' ) {
+					if( ($type === null && strpos( $key, '.search' ) !== false) || $type === 'search' ) {
 						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
 						$Controller = $Recherches->_Collection->getController();
 						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );
 						$Recherches->search( $config );
 					}
-					else if( strpos( $key, '.cohorte' ) !== false || $type === 'cohorte' ) {
+					else if( ($type === null && strpos( $key, '.cohorte' ) !== false) || $type === 'cohorte' ) {
 						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
 						$Controller = $Recherches->_Collection->getController();
 						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );
