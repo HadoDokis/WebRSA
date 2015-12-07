@@ -55,7 +55,7 @@
 				),
 				'checkThematiqueAnnuelleParQuestionnaireD1' => array(
 					'rule' => 'checkThematiqueAnnuelleParQuestionnaireD1',
-					'message' => 'Ce rendez-vous est déjà lié à un questionnaire D1, il est obligatoire de sélectionner la thématique associée'
+					'message' => 'Ce 1er RDV de l\'année est déjà lié à un D1, vous ne pouvez pas le décocher sauf en supprimant le D1'
 				)
 			),
 			'daterdv' => array(
@@ -83,7 +83,7 @@
 			'statutrdv_id' => array(
 				'checkThematiqueAnnuelleParStatutRdvId' => array(
 					'rule' => 'checkThematiqueAnnuelleParStatutRdvId',
-					'message' => 'Ce rendez-vous est déjà lié à un questionnaire D1, il est obligatoire de sélectionner un statut de RDV adéquat'
+					'message' => 'Si le RDV n\'a pas eu lieu (statut: excusé ou non honoré), il faut supprimer le D1'
 				)
 			),
 		);
