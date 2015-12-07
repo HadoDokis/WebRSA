@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	 App::uses('ZipUtility', 'Utility');
+	 App::uses('WebrsaPdfUtility', 'Utility');
 
 	/**
 	 * La classe Dossierspcgs66Controller ... (CG 66).
@@ -1103,7 +1104,7 @@
 					? $this->Dossierpcg66->Decisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
 					: null
 				;
-				
+
 				$courriers = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->Personnepcg66
 					->Traitementpcg66->getPdfsByConditions( $id, $decisionsdossierspcgs66_id, $this->Session->read('Auth.User.id') )
 				;
@@ -1113,22 +1114,27 @@
 
 					$prefix = 'Dossier_PCG';
 					$date = date('Y-m-d');
-					$Zip = new ZipUtility();
 					$allocatairePrincipal = Hash::get( $results, 'Personne.nom' ) . '_' . Hash::get( $results, 'Personne.prenom' );
+					$fileName = "{$date}_{$prefix}_{$id}_Courrier_{$allocatairePrincipal}.pdf";
+					$PdfUtility = new WebrsaPdfUtility();
+					$pdfList = array();
 					
 					if ( $decisionPdf !== null ) {
-						$Zip->add($decisionPdf, "{$date}_{$prefix}_{$id}_Decision_{$allocatairePrincipal}.pdf");
+						$pdfList[] = $decisionPdf;
+						$fileName = "{$date}_{$prefix}_{$id}_Decision_{$allocatairePrincipal}.pdf";
 					}
-
+					
 					foreach ( $courriers as $i => $courrier ) {
-						$nomPersonne = $courrier['nom'];
 						$pdf = $courrier['pdf'];
-						$numCourrier = $i+1;
-						$Zip->add($pdf, "{$date}_{$prefix}_{$id}_Courrier-{$numCourrier}_{$nomPersonne}.pdf");
+						$pdfList[] = $pdf;
 					}
 
-					$zipPath = $Zip->zip("{$date}_{$prefix}_{$id}.zip");
-					ZipUtility::sendZipToClient( $zipPath );
+					if ( Configure::read('Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso') ) {
+						$pdfList = $PdfUtility->preparePdfListForRectoVerso( $pdfList );
+					}
+					
+					$concatPdf = $this->Gedooo->concatPdfs($pdfList, 'Dossierpcg66');
+					$this->Gedooo->sendPdfContentToClient($concatPdf, $fileName);
 				}
 				else {
 					$this->Dossierpcg66->Decisiondossierpcg66->rollback();

@@ -447,13 +447,15 @@ class Cohortesdossierspcgs66Controller extends AppController {
 			$this->Cohortes->get( $dossier_idList );
 			
 			$prefix = 'Dossier_PCG';
-			$date = date('Y-m-d');
 			$datetime = date('Y-m-d_His');
-			$Zip = new ZipUtility();
+			$PdfUtility = new WebrsaPdfUtility();
+			$pdfList = array();
 			
 			$this->Dossierpcg66->Decisiondossierpcg66->begin();
 			
 			foreach ( $datas as $key => $value ) {
+				$pdfs = array();
+				
 				// Si l'etat du dossier est decisionvalid on le passe en atttransmiop avec une date d'impression
 				if ( Hash::get( $value, 'Dossierpcg66.etatdossierpcg' ) === 'decisionvalid' ) {
 					$value['Dossierpcg66']['dateimpression'] = date('Y-m-d');
@@ -486,23 +488,30 @@ class Cohortesdossierspcgs66Controller extends AppController {
 				}
 				
 				if ( $decisionPdf !== null ) {
-					$allocatairePrincipal = Hash::get( $value, 'Personne.nom' ) . '_' . Hash::get( $value, 'Personne.prenom' );
-					$Zip->add($decisionPdf, "{$date}_{$prefix}_{$dossierpcg_id}_Decision_{$allocatairePrincipal}.pdf");
+					$pdfs[] = $decisionPdf;
 				}
 
 				foreach ( $courriers as $i => $courrier ) {
-					$nomPersonne = $courrier['nom'];
-					$pdf = $courrier['pdf'];
-					$numCourrier = $i+1;
-					$Zip->add($pdf, "{$date}_{$prefix}_{$dossierpcg_id}_Courrier-{$numCourrier}_{$nomPersonne}.pdf");
+					$pdfs[] = $courrier['pdf'];
 				}
+				
+				if ( Configure::read('Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso') ) {
+					$pdfs = $PdfUtility->preparePdfListForRectoVerso($pdfs);
+				}
+				
+				$pdfList[] = $this->Gedooo->concatPdfs($pdfs, 'Dossierpcg66');
 			}
-			
+
 			if ( $success ) {
 				$this->Dossierpcg66->commit();
 				$this->Cohortes->release( $dossier_idList );
-				$zipPath = $Zip->zip("{$datetime}_{$prefix}_Cohorte.zip");
-				ZipUtility::sendZipToClient( $zipPath );
+				
+				if ( Configure::read('Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso') ) {
+					$pdfList = $PdfUtility->preparePdfListForRectoVerso( $pdfList, WebrsaPdfUtility::ADD_BLANK_PAGES_BETWEEN_PDFS );
+				}
+				
+				$concatPdf = $this->Gedooo->concatPdfs($pdfList, 'Dossierpcg66');
+				$this->Gedooo->sendPdfContentToClient($concatPdf, "{$datetime}_{$prefix}_Cohorte_impression.pdf");
 			}
 			else {
 				$this->Dossierpcg66->Decisiondossierpcg66->rollback();

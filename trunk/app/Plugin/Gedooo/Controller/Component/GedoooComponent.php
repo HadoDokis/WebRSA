@@ -78,8 +78,10 @@
 			  umask($old); */
 			$this->makeTmpDir( $pdfTmpDir );
 
+			$places = (int)( count( $pdfs ) / 10 ) + 1;
 			foreach( $pdfs as $i => $pdf ) {
-				file_put_contents( "{$pdfTmpDir}/{$i}.pdf", $pdf );
+				$fileName = str_pad( $i, $places, '0', STR_PAD_LEFT );
+				file_put_contents( "{$pdfTmpDir}/{$fileName}.pdf", $pdf );
 			}
 
 			exec( "pdftk {$pdfTmpDir}/*.pdf cat output {$pdfTmpDir}/all.pdf" ); // FIXME: nom de fichier cohorte-orientation-20100423-12h00.pdf
