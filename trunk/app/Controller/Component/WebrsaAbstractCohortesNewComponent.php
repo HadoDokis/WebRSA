@@ -51,6 +51,15 @@
 			return $params;
 		}
 
+		/**
+		 * Surcharge de queryConditions ajoutant des conditions à un querydata afin d'exclure du jeu de résultats
+		 * les dossiers lockés par d'autres utilisateurs.
+		 * 
+		 * @param array $query
+		 * @param array $filters
+		 * @param array $params
+		 * @return array
+		 */
 		protected function _queryConditions( array $query, array $filters, array $params ) {
 			$Controller = $this->_Collection->getController();
 
@@ -60,6 +69,14 @@
 			return $query;
 		}
 
+		/**
+		 * Ajoute des valeurs dans request->params, dans request->data et dans la session pour
+		 * prendre en compte le changement de pages et le changement d'ordre d'affichage des résultats
+		 * 
+		 * @param array $params
+		 * @param array $paramsSave paramètres à envoyer à saveCohorte()
+		 * @return boolean
+		 */
 		protected function _traitementCohorte( array $params, array $paramsSave ) {
 			$Controller = $this->_Collection->getController();
 			$success = null;
@@ -344,6 +361,7 @@
 		}
 		
 		/**
+		 * Pour vérification de l'application : vérifi que la configuration dans cohorte.values est correcte
 		 * 
 		 * @param array $params
 		 * @return array
@@ -462,6 +480,15 @@
 			return $this;
 		}
 		
+		/**
+		 * Vérifi si le champ ciblé est une foreign key, et si c'est le cas, que la valeur soit bien numérique
+		 * et existe bien dans la table concerné
+		 * 
+		 * @param Model $Model Modele sur lequel il faut vérifier qu'il possède une foreign key correspondant à path
+		 * @param type $path Model.field
+		 * @param type $value valeur de la foreign key
+		 * @return array array( 'success' => boolean, 'message' => string )
+		 */
 		protected function _isValidIfIsForeignKey( Model $Model, $path, $value ) {
 			$result = array('success' => true);
 			list(,$field) = explode('.', $path);
