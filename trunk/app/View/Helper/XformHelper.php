@@ -524,5 +524,18 @@
 				'class' => $class
 			));
 		}
+		
+		/**
+		 * Renvoi une div d'afficahge d'erreur
+		 * 
+		 * @param mixed $errors Liste des erreurs
+		 * @return string
+		 */
+		public function errorDiv( $errors ) {
+			$result = "<div class='error-message'>";
+			$result .= count((array)$errors) > 1 ? '<ul><li>'.implode('</li><li>', $errors).'</li></ul>' : implode('', (array)$errors);
+			
+			return $result.'</div>';
+		}
 	}
 ?>

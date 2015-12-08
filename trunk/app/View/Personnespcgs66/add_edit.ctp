@@ -46,7 +46,7 @@
 					<legend><?php echo required( $this->Default2->label( 'Situationpdo.Situationpdo', array( 'domain' => 'personnepcg66' ) ) );?></legend>
 					<?php
 						if( $validationErrorPersonnepcg66SituationpdoSituationpdo ) {
-							echo "<div class='error-message'>".$this->validationErrors['Personnepcg66']['Situationpdo.Situationpdo']."</div>";
+							echo $this->Xform->errorDiv($this->validationErrors['Personnepcg66']['Situationpdo.Situationpdo']);
 						}
 						echo $this->Xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => required( 'Motif de la décision' ), 'multiple' => 'checkbox' , 'options' => $situationlist, 'fieldset' => false ) );
 					?>
@@ -60,7 +60,7 @@
 					<legend><?php echo required( $this->Default2->label( 'Statutpdo.Statutpdo', array( 'domain' => 'personnepcg66' ) ) );?></legend>
 					<?php
 						if ( isset( $this->validationErrors['Personnepcg66']['Statutpdo.Statutpdo'] ) && !empty( $this->validationErrors['Personnepcg66']['Statutpdo.Statutpdo'] ) ) {
-							echo "<div class='error-message'>".$this->validationErrors['Personnepcg66']['Statutpdo.Statutpdo']."</div>";
+							echo $this->Xform->errorDiv($this->validationErrors['Personnepcg66']['Statutpdo.Statutpdo']);
 						}
 						echo $this->Xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => required( 'Statut de la personne' ), 'multiple' => 'checkbox' , 'options' => $statutlist, 'fieldset' => false  ) );
 					?>

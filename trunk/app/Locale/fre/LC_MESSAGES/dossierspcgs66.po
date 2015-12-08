@@ -486,7 +486,7 @@ msgstr "Clos ?"
 msgid "data[Cohorte][][Traitementpcg66][annule]"
 msgstr "Annulé ?"
 
-msgid "data[Cohorte][][Traitementpcg66][personnepcg66_situationpdo_id]"
+msgid "data[Cohorte][][Traitementpcg66][situationpdo_id]"
 msgstr "Motifs concernant la personne"
 
 msgid "data[Cohorte][][Traitementpcg66][typecourrierpcg66_id]"
@@ -732,7 +732,7 @@ msgstr "Clos ?"
 msgid "Traitementpcg66.annule"
 msgstr "Annulé ?"
 
-msgid "Traitementpcg66.personnepcg66_situationpdo_id"
+msgid "Traitementpcg66.situationpdo_id"
 msgstr "Motifs concernant la personne"
 
 msgid "Traitementpcg66.typecourrierpcg66_id"

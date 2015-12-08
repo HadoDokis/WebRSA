@@ -22,6 +22,9 @@
 		public $validate = array(
 			'libelle' => array(
 				array( 'rule' => 'notEmpty' )
+			),
+			'Situationpdo' => array(
+				array( 'rule' => 'notEmpty' )
 			)
 		);
 

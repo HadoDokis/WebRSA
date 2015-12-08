@@ -43,19 +43,6 @@
 		);
 
 		public $hasMany = array(
-			'Traitementpcg66' => array(
-				'className' => 'Traitementpcg66',
-				'foreignKey' => 'personnepcg66_situationpdo_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'Decisionpersonnepcg66' => array(
 				'className' => 'Decisionpersonnepcg66',
 				'foreignKey' => 'personnepcg66_situationpdo_id',

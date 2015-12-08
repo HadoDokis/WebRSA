@@ -102,30 +102,6 @@ class Criteretraitementpcg66 extends AppModel {
         if (!empty($poledossierpcg66_id)) {
             $conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \'' . implode('\', \'', $poledossierpcg66_id) . '\' )';
         }
-        // Motif concernant la perosnne du dossier
-        if (!empty($motifpersonnepcg66_id)) {
-            $conditions[] = 'Traitementpcg66.personnepcg66_situationpdo_id IN ( ' .
-                    ClassRegistry::init('Personnepcg66Situationpdo')->sq(
-                            array(
-                                'alias' => 'personnespcgs66_situationspdos',
-                                'fields' => array('personnespcgs66_situationspdos.id'),
-                                'contain' => false,
-                                'conditions' => array(
-                                    'personnespcgs66_situationspdos.situationpdo_id' => $motifpersonnepcg66_id
-                                ),
-                                'joins' => array(
-                                    array(
-                                        'table' => 'situationspdos',
-                                        'alias' => 'situationspdos',
-                                        'type' => 'INNER',
-                                        'foreignKey' => false,
-                                        'conditions' => array('personnespcgs66_situationspdos.situationpdo_id = situationspdos.id'),
-                                    )
-                                )
-                            )
-                    )
-                    . ' )';
-        }
 
         // Statut de la personne
         if (!empty($statutpersonnepcg66_id)) {
@@ -199,8 +175,7 @@ class Criteretraitementpcg66 extends AppModel {
             'fields' => array_merge(
                 $Traitementpcg66->fields(),
                 $Traitementpcg66->Personnepcg66->fields(),
-                $Traitementpcg66->Personnepcg66Situationpdo->fields(),
-                $Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->fields(),
+                $Traitementpcg66->Situationpdo->fields(),
                 $Traitementpcg66->Personnepcg66->Dossierpcg66->fields(),
                 $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->fields(),
                 $Traitementpcg66->Descriptionpdo->fields(),
@@ -217,8 +192,7 @@ class Criteretraitementpcg66 extends AppModel {
             'recursive' => -1,
             'joins' => array(
                 $Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
-                $Traitementpcg66->join('Personnepcg66Situationpdo', array('type' => 'LEFT OUTER')),
-                $Traitementpcg66->Personnepcg66Situationpdo->join('Situationpdo', array('type' => 'LEFT OUTER')),
+                $Traitementpcg66->join('Situationpdo', array('type' => 'LEFT OUTER')),
                 $Traitementpcg66->Personnepcg66->join('Dossierpcg66', array('type' => 'INNER')),
                 $Traitementpcg66->Personnepcg66->join('Personne', array('type' => 'INNER')),
                 $Traitementpcg66->Personnepcg66->Dossierpcg66->join('Foyer', array('type' => 'INNER')),

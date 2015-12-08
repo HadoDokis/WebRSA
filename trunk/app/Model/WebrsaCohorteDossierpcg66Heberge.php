@@ -153,6 +153,7 @@
 				$dataDossierpcg66['etatdossierpcg'] = 'attinstr';
 				$dataPersonnepcg66['personne_id'] = Hash::get($value, 'Personne.id');
 				$dataPersonnepcg66['user_id'] = $user_id;
+				$dataTraitementpcg66['situationpdo_id'] = Hash::get($value, 'Situationpdo.Situationpdo');
 				$dataTag['fk_value'] = Hash::get($value, 'Foyer.id');
 				
 				// Sauvegarde Tag
@@ -190,7 +191,6 @@
 				);
 				$this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->create($dataPersonnepcg66Statutpdo);
 				$success = $this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->save() && $success;
-				$dataTraitementpcg66['personnepcg66_situationpdo_id'] = $this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->id;
 				
 				// Sauvegarde Traitementpcg66
 				if ( Hash::get($value, 'Traitementpcg66.typetraitement') === 'dossierarevoir' ) {

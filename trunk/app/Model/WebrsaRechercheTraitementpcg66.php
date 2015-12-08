@@ -99,7 +99,7 @@
 							$this->Personnepcg66->Personne->PersonneReferent,
 							$this->Personnepcg66->Dossierpcg66,
 							$this->Personnepcg66->Dossierpcg66->User,
-							$this->Personnepcg66->Personnepcg66Situationpdo->Situationpdo
+							$this->Personnepcg66->Traitementpcg66->Situationpdo
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -124,8 +124,7 @@
 					$query['joins'],
 					array(
 						$this->Personnepcg66->join('Dossierpcg66', array('type' => $types['Dossierpcg66'])),
-						$this->Personnepcg66->Traitementpcg66->join('Personnepcg66Situationpdo', array('type' => $types['Situationpdo'])),
-						$this->Personnepcg66->Personnepcg66Situationpdo->join('Situationpdo', array('type' => $types['Situationpdo'])),
+						$this->Personnepcg66->Traitementpcg66->join('Situationpdo', array('type' => $types['Situationpdo'])),
 						$this->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa'])),
 						$this->Personnepcg66->Dossierpcg66->join('User', array('type' => $types['User'])),
 						$this->Personnepcg66->Traitementpcg66->join('Descriptionpdo', array('type' => $types['Descriptionpdo'])),
