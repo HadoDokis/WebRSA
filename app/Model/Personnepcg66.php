@@ -100,32 +100,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-/*			'Personnepcg66Situationpdo' => array(
-				'className' => 'Personnepcg66Situationpdo',
-				'foreignKey' => 'personnepcg66_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),*/// INFO: à éventuellement décommenter si besoin pour faire appel à certains modèles plus aisément mais normalement inutile
-			/*'Personnepcg66Statutpdo' => array(
-				'className' => 'Personnepcg66Statutpdo',
-				'foreignKey' => 'personnepcg66_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),*/
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -163,7 +137,14 @@
 			)
 		);
 
+		/**
+		 * 
+		 * @param type $decisionpersonnepcg66_id
+		 * @return type
+		 * @deprecated since version 3.0
+		 */
 		public function updateEtatDossierPcg66( $decisionpersonnepcg66_id ) {
+			throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
 			$decisionpersonnepcg66 = $this->Personnepcg66Situationpdo->Decisionpersonnepcg66->find(
 				'first',
 				array(
@@ -267,8 +248,7 @@
 							$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'User', array( 'type' => 'INNER' ) ),
 							$this->join( 'Personne', array( 'type' => 'INNER' ) ),
 							$this->Traitementpcg66->join( 'Descriptionpdo', array( 'type' => 'INNER' ) ),
-							$this->Traitementpcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Traitementpcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+							$this->Traitementpcg66->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
 						),
 						'contain' => false
 					)

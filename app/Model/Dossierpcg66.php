@@ -199,40 +199,13 @@ class Dossierpcg66 extends AppModel {
     }
 
     /**
-     * Calcul de l'état du dossierpcg66 lors de sa sauvegarde
-     */
-    public function beforeSave($options = array()) {
-        $return = parent::beforeSave($options);
-
-        if (isset($this->data['Dossierpcg66']['originepdo_id'])) {
-            $typepdo_id = Set::extract($this->data, 'Dossierpcg66.typepdo_id');
-            $user_id = Set::extract($this->data, 'Dossierpcg66.user_id');
-            $decisionpdoId = Set::extract($this->data, 'Decisiondossierpcg66.decisionpdo_id');
-            $etatdossierpcg = Set::extract($this->data, 'Dossierpcg66.etatdossierpcg');
-            $retouravistechnique = Set::extract($this->data, 'Decisiondossierpcg66.retouravistechnique');
-            $vuavistechnique = Set::extract($this->data, 'Decisiondossierpcg66.vuavistechnique');
-            $instrencours = Set::extract($this->data, 'Decisiondossierpcg66.instrencours');
-            $decisionpdo_id = null;
-            $avistechnique = null;
-            $validationavis = null;
-
-			// @deprecated
-			// @link updatePositionsPcgsById
-            $this->data['Dossierpcg66']['etatdossierpcg'] = $this->etatDossierPcg66($typepdo_id, $user_id, $decisionpdoId, $instrencours, $avistechnique, $validationavis, $retouravistechnique, $vuavistechnique, /* $iscomplet, */ $etatdossierpcg);
-// 				debug($this->data);
-// 				die();
-        }
-
-        return $return;
-    }
-
-    /**
      * Function qui retourne l'état du dossierpcg66 dont les différents champs nécessaires à son calcul sont passés en paramètres
 	 * 
 	 * @deprecated
 	 * @link updatePositionsPcgsById()
      * */
     public function etatDossierPcg66($typepdo_id = null, $user_id = null, $decisionpdoId = null, $instrencours = null, $avistechnique = null, $validationavis = null, $retouravistechnique = null, $vuavistechnique = null, /* $iscomplet = null, */ $etatdossierpcg = null) {
+		throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
         $etat = '';
 
         if (!empty($typepdo_id) && empty($user_id)) {
@@ -299,6 +272,7 @@ class Dossierpcg66 extends AppModel {
 	 * @link updatePositionsPcgsById()
      * */
     public function updateEtatViaDecisionTraitement($dossierpcg66_id) {
+		throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
         $dossierpcg66 = $this->find(
                 'first', array(
             'conditions' => array(
@@ -371,6 +345,7 @@ class Dossierpcg66 extends AppModel {
 	 * @link updatePositionsPcgsById()
      * */
     public function updateEtatViaDecisionPersonnepcg($dossierpcg66_id) {
+		throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
         $dossierpcg66 = $this->find(
                 'first', array(
             'conditions' => array(
@@ -434,6 +409,7 @@ class Dossierpcg66 extends AppModel {
 	 * @return type
 	 */
     public function updateEtatViaPersonne($dossierpcg66_id) {
+		throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
 
         if ($this->existePropoParMotif($dossierpcg66_id)) {
             $etat = 'attavistech';
@@ -487,6 +463,7 @@ class Dossierpcg66 extends AppModel {
 	 * @return type
 	 */
     public function updateEtatViaDecisionFoyer($decisiondossierpcg66_id) {
+		throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
         $decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
                 'first', array(
             'conditions' => array(
@@ -510,9 +487,10 @@ class Dossierpcg66 extends AppModel {
     }
 
     /**
-     *
+     * @deprecated since version 3.0
      */
     public function updateEtatViaTransmissionop($decisiondossierpcg66_id) {
+		throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
         $decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
                 'first', array(
             'conditions' => array(
@@ -553,6 +531,7 @@ class Dossierpcg66 extends AppModel {
     public function afterSave($created) {
         $return = parent::afterSave($created);
 
+		$this->updatePositionsPcgsById($this->id);
         $return = $this->_updateDecisionCerParticulier($created) && $return;
 
         return $return;
@@ -710,8 +689,7 @@ class Dossierpcg66 extends AppModel {
                     $this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->join('User', array('type' => 'INNER')),
                     $this->Personnepcg66->join('Personne', array('type' => 'INNER')),
                     $this->Personnepcg66->Traitementpcg66->join('Descriptionpdo', array('type' => 'INNER')),
-                    $this->Personnepcg66->Traitementpcg66->join('Personnepcg66Situationpdo', array('type' => 'LEFT OUTER')),
-                    $this->Personnepcg66->Traitementpcg66->Personnepcg66Situationpdo->join('Situationpdo', array('type' => 'LEFT OUTER'))
+                    $this->Personnepcg66->Traitementpcg66->join('Situationpdo', array('type' => 'LEFT OUTER'))
                 ),
                 'contain' => false
                     )
@@ -732,7 +710,6 @@ class Dossierpcg66 extends AppModel {
      * @throws NotFoundException
      */
     public function prepareFormDataAddEdit($foyer_id, $dossierpcg66_id) {
-
         if (!empty($dossierpcg66_id)) {
             $querydataDossierpcg66Actuel['conditions'] = array(
                 'Dossierpcg66.id' => $dossierpcg66_id
@@ -768,7 +745,6 @@ class Dossierpcg66 extends AppModel {
             $data['Dossierpcg66']['user_id'] = $dossierpcg66Pcd['Dossierpcg66']['user_id'];
         }
 
-//    debug( $data );
         return $data;
     }
 
@@ -780,6 +756,7 @@ class Dossierpcg66 extends AppModel {
 	 * @link updatePositionsPcgsById()
      * */
     public function updateEtatDossierViaTraitement($traitementpcg66_id) {
+		throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
         $traitementpcg66 = $this->Personnepcg66->Traitementpcg66->find(
             'first',
             array(
@@ -1328,7 +1305,7 @@ class Dossierpcg66 extends AppModel {
 			'join1' => "LEFT JOIN {$tableNameDecisiondossierpcg66} AS {$sq}{$this->Decisiondossierpcg66->alias}{$eq}",
 			'condition_join1' => "ON ({$sq}{$this->Decisiondossierpcg66->alias}{$eq}.{$sq}id{$eq} IN ({$jointureConditionDecision}))",
 			'condition' => "{$conditionsSql}",
-			'condition2' => "AND {$sq}{$this->alias}_sq{$eq}.{$sq}etatdossierpcg{$eq} != 'transmisop'",
+			'condition2' => "AND ({$sq}{$this->alias}_sq{$eq}.{$sq}etatdossierpcg{$eq} IS NULL OR {$sq}{$this->alias}_sq{$eq}.{$sq}etatdossierpcg{$eq} != 'transmisop')",
 			'finalisation jointure from' => "AND {$sq}{$this->alias}_sq{$eq}.{$sq}id{$eq} = {$sq}{$this->alias}{$eq}.{$sq}id{$eq}",
 			'fin' => "RETURNING {$sq}{$this->alias}{$eq}.{$sq}etatdossierpcg{$eq};"
 		);

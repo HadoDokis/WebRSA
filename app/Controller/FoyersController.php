@@ -324,8 +324,7 @@
 							$this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
 							$this->Foyer->Dossierpcg66->Personnepcg66->join( 'Personne', array( 'type' => 'INNER' ) ),
 							$this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Descriptionpdo', array( 'type' => 'INNER' ) ),
-							$this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+							$this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
 						),
 						'contain' => false
 					)

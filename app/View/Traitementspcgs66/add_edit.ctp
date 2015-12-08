@@ -791,7 +791,7 @@
 		// Liste des motifs concernant la personne
 		echo $this->Default->subform(
 			array(
-				'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true, 'required' => true )
+				'Traitementpcg66.situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true, 'required' => true )
 			),
 			array(
 				'options' => $options
@@ -876,7 +876,7 @@
 
 			echo $this->Default2->thead(
 				array(
-					'Traitementpcg66.personnepcg66_situationpdo_id',
+					'Traitementpcg66.situationpdo_id',
 					'Traitementpcg66.descriptionpdo_id' => array( 'type'=>'string' ),
 					'Traitementpcg66.datereception',
 					'Traitementpcg66.datedepart',
@@ -891,7 +891,7 @@
 					'tr',
 					$this->Xhtml->tag(
 						'td',
-						Set::enum( Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.personnepcg66_situationpdo_id' ), $listeMotifs )
+						Set::enum( Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.situationpdo_id' ), $listeMotifs )
 					).
 					$this->Xhtml->tag(
 						'td',

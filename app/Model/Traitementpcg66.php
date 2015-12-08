@@ -60,7 +60,7 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'personnepcg66_situationpdo_id' => array(
+			'situationpdo_id' => array(
 				array(
 					'rule' => array( 'notEmptyIf', 'typetraitement', false, array( 'revenu' ) ),
 					'message' => 'Champ obligatoire'
@@ -286,9 +286,9 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Personnepcg66Situationpdo' => array(
-				'className' => 'Personnepcg66Situationpdo',
-				'foreignKey' => 'personnepcg66_situationpdo_id',
+			'Situationpdo' => array(
+				'className' => 'Situationpdo',
+				'foreignKey' => 'situationpdo_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -408,7 +408,7 @@
 		/**
 		 * FIXME: faire une étape de validation
 		 */
-		public function sauvegardeTraitement($data) {
+		public function sauvegardeTraitement($data) {debug($data);
 			$passageEpd = false;
 
 			$dossierep = 0;
@@ -556,7 +556,7 @@
             $corbeillepcgDescriptionId = Configure::read( 'Corbeillepcg.descriptionpdoId' ); // Traiteement de description courrier à l'allocataire
             if( $success ) {
 				if( ( $data['Traitementpcg66']['typetraitement'] == 'documentarrive' ) || in_array( $data['Traitementpcg66']['descriptionpdo_id'], $corbeillepcgDescriptionId ) ) {
-                    $success = $this->Personnepcg66->Dossierpcg66->updateEtatDossierViaTraitement( $this->id ) && $success;
+					$success = $this->Personnepcg66->Dossierpcg66->updatePositionsPcgsById( $this->dossierpcg66Id($this->id) ) && $success;
 				}
             }
 
@@ -564,7 +564,7 @@
             /**/
             if( $success ) {
 				if( ( $data['Traitementpcg66']['typetraitement'] == 'dossierarevoir' ) ) {
-                    $success = $this->Personnepcg66->Dossierpcg66->updateEtatDossierViaTraitement( $this->id ) && $success;
+                    $success = $this->Personnepcg66->Dossierpcg66->updatePositionsPcgsById( $this->dossierpcg66Id($this->id) ) && $success;
 				}
             }
 
@@ -952,6 +952,34 @@
 
 			if( !empty( $result ) ) {
 				return $result['Personnepcg66']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function dossierpcg66Id( $id ) {
+			$querydata = array(
+				'fields' => array( "Personnepcg66.dossierpcg66_id" ),
+				'joins' => array(
+					$this->join( 'Personnepcg66', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Personnepcg66']['dossierpcg66_id'];
 			}
 			else {
 				return null;

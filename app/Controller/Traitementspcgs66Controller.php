@@ -86,7 +86,7 @@ class Traitementspcgs66Controller extends AppController {
         $options = $this->Traitementpcg66->enums();
 
         $options[$this->modelClass]['descriptionpdo_id'] = $this->Traitementpcg66->Descriptionpdo->find('list');
-        $options[$this->modelClass]['situationpdo_id'] = $this->Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->find('list');
+        $options[$this->modelClass]['situationpdo_id'] = $this->Traitementpcg66->Situationpdo->find('list');
 // 			$options[$this->modelClass]['traitementtypepdo_id'] = $this->Traitementpcg66->Traitementtypepdo->find( 'list' );
         $options[$this->modelClass]['listeDescription'] = $this->Traitementpcg66->Descriptionpdo->find('all', array('contain' => false));
         $options[$this->modelClass]['compofoyerpcg66_id'] = $this->Traitementpcg66->Compofoyerpcg66->find('list');
@@ -293,10 +293,10 @@ class Traitementspcgs66Controller extends AppController {
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
 
         // Récupération du nom de l'allocataire
-        $personne = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find(
+        $personne = $this->Traitementpcg66->Personnepcg66->Personne->find(
                 'first', array(
             'fields' => array(
-                $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->sqVirtualField('nom_complet')
+                $this->Traitementpcg66->Personnepcg66->Personne->sqVirtualField('nom_complet')
             ),
             'conditions' => array(
                 'Personne.id' => $personne_id
@@ -344,8 +344,7 @@ class Traitementspcgs66Controller extends AppController {
             ),
             'joins' => array(
                 $this->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
-                $this->Traitementpcg66->join('Personnepcg66Situationpdo', array('type' => 'LEFT OUTER')),
-                $this->Traitementpcg66->Personnepcg66Situationpdo->join('Situationpdo', array('type' => 'LEFT OUTER'))
+                $this->Traitementpcg66->join('Situationpdo', array('type' => 'LEFT OUTER'))
             ),
             'contain' => false,
             'order' => array(
@@ -370,7 +369,7 @@ class Traitementspcgs66Controller extends AppController {
             $this->set(compact('listeTraitements'));
 
             //Liste des liens entre un dossier et un allocataire
-            $personnespcgs66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find(
+            $personnespcgs66 = $this->Traitementpcg66->Personnepcg66->find(
                     'all', array(
                 'fields' => array('id', 'dossierpcg66_id'),
                 'conditions' => array(
@@ -403,13 +402,13 @@ class Traitementspcgs66Controller extends AppController {
                     'order' => null,
                     'recursive' => -1
                 );
-                $personnepcg66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find('first', $qd_personnepcg66);
+                $personnepcg66 = $this->Traitementpcg66->Personnepcg66->find('first', $qd_personnepcg66);
 
                 $this->set('personnepcg66', $personnepcg66);
             }
         }
 
-        $personnespcgs66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find(
+        $personnespcgs66 = $this->Traitementpcg66->Personnepcg66->find(
                 'all', array(
             'fields' => array(
                 'Personnepcg66.dossierpcg66_id'
@@ -427,7 +426,7 @@ class Traitementspcgs66Controller extends AppController {
         }
 
         if (!empty($listDossierspcgs66)) {
-            $dossierspcgs66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->find(
+            $dossierspcgs66 = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->find(
                     'all', array(
                 'fields' => array('Dossierpcg66.id', 'Dossierpcg66.datereceptionpdo', 'Dossierpcg66.user_id', 'Typepdo.libelle'),
                 'conditions' => array(
@@ -489,7 +488,7 @@ class Traitementspcgs66Controller extends AppController {
         // Récupération des id afférents
         if ($this->action == 'add') {
             $personnepcg66_id = $id;
-            $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId($personnepcg66_id))));
+            $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66->personneId($personnepcg66_id))));
 			
 			$traitementAImprimer = $this->Traitementpcg66->Personnepcg66->find( 'first',
 				array(
@@ -527,13 +526,13 @@ class Traitementspcgs66Controller extends AppController {
 			$imprimer = Hash::get( $traitementpcg66, 'Traitementpcg66.imprimer');
 			
             $personnepcg66_id = Set::classicExtract($traitementpcg66, 'Traitementpcg66.personnepcg66_id');
-            $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId($personnepcg66_id))));
+            $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66->personneId($personnepcg66_id))));
         }
 		
 		$this->set( compact('imprimer') );
 
         //Récupération des informations de la personne conernée par les traitements + du dossier
-        $personnepcg66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find(
+        $personnepcg66 = $this->Traitementpcg66->Personnepcg66->find(
                 'first', array(
             'conditions' => array(
                 'Personnepcg66.id' => $personnepcg66_id
@@ -546,19 +545,19 @@ class Traitementspcgs66Controller extends AppController {
         );
         $this->set('personnepcg66', $personnepcg66);
 
-// 			debug($personnepcg66);
-        $listeMotifs = $this->Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->find(
-                'list', array(
-            'fields' => array('Personnepcg66Situationpdo.id', 'Situationpdo.libelle'),
-            'joins' => array(
-                $this->Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->join('Personnepcg66Situationpdo')
-            ),
-            'conditions' => array(
-                'Personnepcg66Situationpdo.personnepcg66_id' => $personnepcg66_id
-            ),
-                )
+
+        $listeMotifs = $this->Traitementpcg66->Personnepcg66->Personnepcg66Situationpdo->Situationpdo->find(
+			'list', array(
+				'fields' => array('Situationpdo.id', 'Situationpdo.libelle'),
+				'joins' => array(
+					$this->Traitementpcg66->Personnepcg66->Personnepcg66Situationpdo->Situationpdo->join('Personnepcg66Situationpdo')
+				),
+				'conditions' => array(
+					'Personnepcg66Situationpdo.personnepcg66_id' => $personnepcg66_id
+				),
+			)
         );
-// debug( $listeMotifs );
+ 
         $this->set(compact('listeMotifs'));
 
         // On récupère l'utilisateur connecté et qui exécute l'action
@@ -569,7 +568,7 @@ class Traitementspcgs66Controller extends AppController {
         $dossierpcg66_id = Set::classicExtract($personnepcg66, 'Personnepcg66.dossierpcg66_id');
         $personne_id = Set::classicExtract($personnepcg66, 'Personnepcg66.personne_id');
 
-        $dossierpcg66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->find(
+        $dossierpcg66 = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->find(
                 'first', array(
             'conditions' => array(
                 'Dossierpcg66.id' => $dossierpcg66_id
@@ -579,9 +578,9 @@ class Traitementspcgs66Controller extends AppController {
         );
         $this->set(compact('dossierpcg66'));
         $foyer_id = Set::classicExtract($dossierpcg66, 'Dossierpcg66.foyer_id');
-        $dossier_id = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->Foyer->dossierId($foyer_id);
+        $dossier_id = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->dossierId($foyer_id);
 
-        $dossier = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->Foyer->Dossier->find(
+        $dossier = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->find(
                 'first', array(
             'fields' => array(
                 'dtdemrsa'
@@ -600,19 +599,19 @@ class Traitementspcgs66Controller extends AppController {
                 'Personne.id' => $personne_id
             ),
             'fields' => array(
-                $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->sqVirtualField('nom_complet')
+                $this->Traitementpcg66->Personnepcg66->Personne->sqVirtualField('nom_complet')
             ),
             'order' => null,
             'recursive' => -1
         );
-        $personne = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find('first', $qd_personne);
+        $personne = $this->Traitementpcg66->Personnepcg66->Personne->find('first', $qd_personne);
 
         $nompersonne = Set::classicExtract($personne, 'Personne.nom_complet');
 
         $this->set(compact('nompersonne'));
 
         //Gestion des jetons
-        $dossier_id = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->Foyer->dossierId($foyer_id);
+        $dossier_id = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->dossierId($foyer_id);
         $this->Jetons2->get($dossier_id);
 
         // Retour à la liste en cas d'annulation
@@ -778,7 +777,7 @@ class Traitementspcgs66Controller extends AppController {
 
         $personnepcg66_id = Set::classicExtract($traitementpcg66, 'Traitementpcg66.personnepcg66_id');
 
-        $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId($personnepcg66_id))));
+        $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66->personneId($personnepcg66_id))));
 
         $dossierpcg66_id = Set::classicExtract($traitementpcg66, 'Personnepcg66.dossierpcg66_id');
         $personne_id = Set::classicExtract($traitementpcg66, 'Personnepcg66.personne_id');
@@ -819,7 +818,7 @@ class Traitementspcgs66Controller extends AppController {
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $traitementpcg66['Personnepcg66']['personne_id'])));
 
         //Gestion des jetons
-        $dossier_id = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->Foyer->dossierId($traitementpcg66['Dossierpcg66']['foyer_id']);
+        $dossier_id = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->dossierId($traitementpcg66['Dossierpcg66']['foyer_id']);
         $this->Jetons2->get($dossier_id);
 
         // Retour à la liste en cas d'annulation

@@ -506,7 +506,7 @@ msgstr "Dossier à revoir"
 msgid "ENUM::TYPETRAITEMENT::documentarrive"
 msgstr "Documents arrivés"
 
-msgid "Traitementpcg66.personnepcg66_situationpdo_id"
+msgid "Traitementpcg66.situationpdo_id"
 msgstr "Motifs concernant la personne"
 
 msgid "Traitementpcg66.typecourrierpcg66_id"

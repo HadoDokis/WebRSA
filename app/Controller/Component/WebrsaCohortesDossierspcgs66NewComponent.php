@@ -107,7 +107,7 @@
 			);
 
 			$options['Situationpdo']['Situationpdo'] = $Controller->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => 'Situationpdo.libelle ASC', 'conditions' => array( 'Situationpdo.isactif' => '1' ) ) );
-			$options['Traitementpcg66']['personnepcg66_situationpdo_id'] = $options['Situationpdo']['Situationpdo'];
+			$options['Traitementpcg66']['situationpdo_id'] = $options['Situationpdo']['Situationpdo'];
 
 			$options['Statutpdo']['Statutpdo'] = $Controller->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => 'Statutpdo.libelle ASC', 'conditions' => array( 'Statutpdo.isactif' => '1' ) ) );
 

@@ -374,16 +374,8 @@
 
 				$this->Personnepcg66->create( $personnepcg66 );
 				$success = $this->Personnepcg66->save() && $success;
-
-				if( empty( $this->request->data['Situationpdo']['Situationpdo'] ) ) {
-					$success = false;
-					$this->Personnepcg66->invalidate( 'Situationpdo.Situationpdo', 'Il est obligatoire de saisir au moins un motif de décision pour la personne.' );
-				}
-				if( empty( $this->request->data['Statutpdo']['Statutpdo'] ) ) {
-					$success = false;
-					$this->Personnepcg66->invalidate( 'Statutpdo.Statutpdo', 'Il est obligatoire de saisir au moins un statut pour la personne.' );
-				}
-
+				
+				$success = $this->_checkValidation() && $success;
 
 				if( $success ) {
 					foreach( array( 'situationspdos', 'statutspdos' ) as $tableliee ) {
@@ -569,5 +561,51 @@
 			$this->Default->delete( $id );
 		}
 
+		protected function _checkValidation() {
+			$success = true;
+			
+			if( empty( $this->request->data['Situationpdo']['Situationpdo'] ) ) {
+				$success = false;
+				$this->Personnepcg66->invalidate( 'Situationpdo.Situationpdo', 'Il est obligatoire de saisir au moins un motif de décision pour la personne.' );
+			}
+			
+			if( empty( $this->request->data['Statutpdo']['Statutpdo'] ) ) {
+				$success = false;
+				$this->Personnepcg66->invalidate( 'Statutpdo.Statutpdo', 'Il est obligatoire de saisir au moins un statut pour la personne.' );
+			}
+			
+			if (Hash::get($this->request->data, 'Personnepcg66.id')) {
+				$query = array(
+					'fields' => array(
+						'Traitementpcg66.situationpdo_id',
+						'Situationpdo.libelle',
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Personnepcg66->Traitementpcg66->join('Situationpdo', array( 'type' => 'INNER' ))
+					),
+					'conditions' => array(
+						'Traitementpcg66.personnepcg66_id' => Hash::get($this->request->data, 'Personnepcg66.id')
+					)
+				);
+				$results = (array)$this->Personnepcg66->Traitementpcg66->find('all', $query);
+				$errors = array();
+				
+				foreach ($results as $value) {
+					$situationpdo_id = Hash::get($value, 'Traitementpcg66.situationpdo_id');
+					$libelle = Hash::get($value, 'Situationpdo.libelle');
+					if (!in_array($situationpdo_id, (array)Hash::get($this->request->data, 'Situationpdo.Situationpdo'))) {
+						$success = false;
+						$errors[] = "Un traitement existe portant un motif non choisi ({$libelle}).";
+					}
+				}
+				
+				foreach (array_unique($errors) as $error) {
+					$this->Personnepcg66->invalidate('Situationpdo.Situationpdo', $error);
+				}
+			}
+			
+			return $success;
+		}
 	}
 ?>

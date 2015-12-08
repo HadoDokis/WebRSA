@@ -431,7 +431,7 @@
 				$saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $decisiondefautinsertionep66_id );
 			}
 
-			if( $saved && $this->_saveFichiers($id) && $this->Dossierpcg66->updatePositionsPcgsById( $id ) ) {
+			if( $saved && $this->_saveFichiers($id) ) {
 				$this->Dossierpcg66->commit();
 				$this->Jetons2->release( $this->viewVars['dossier_id'] );
 				$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -735,8 +735,6 @@
                         }
                     }
                 }
-
-				$saved = $saved && $this->Dossierpcg66->updatePositionsPcgsById( $this->Dossierpcg66->id );
 				
 				if( $saved ) {
 					$this->Dossierpcg66->commit();
