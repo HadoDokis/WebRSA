@@ -286,6 +286,37 @@
 	);
 	
 	/**
+	 * Export CSV
+	 */
+	Configure::write(
+		'ConfigurableQuery.Dossierspcgs66.exportcsv_enattenteaffectation',
+		array(
+			'limit' => 2,
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_enattenteaffectation.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_enattenteaffectation.query' ),
+			// 3. Résultats de la recherche
+			'results' => array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Personne.nom_complet',
+					'Adresse.nomcom',
+					'Dossierpcg66.datereceptionpdo',
+					'Typepdo.libelle',
+					'Originepdo.libelle',
+					'Dossierpcg66.orgpayeur',
+					'Serviceinstructeur.lib_service',
+					'Structurereferenteparcours.lib_struc',
+					'Referentparcours.nom_complet'
+				),
+			),
+			// 4. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_enattenteaffectation.ini_set' ),
+		)
+	);
+	
+	/**
 	 * Menu Dossiers PCGs en attente d'affectation
 	 */
 	Configure::write(
@@ -342,6 +373,37 @@
 			),
 			// 6. Temps d'exécution, mémoire maximum, ...
 			'ini_set' => array()
+		)
+	);
+	
+	/**
+	 * Export CSV
+	 */
+	Configure::write(
+		'ConfigurableQuery.Dossierspcgs66.exportcsv_atransmettre',
+		array(
+			'limit' => 2,
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_atransmettre.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_atransmettre.query' ),
+			// 3. Résultats de la recherche
+			'results' => array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Personne.nom_complet',
+					'Adresse.nomcom',
+					'Dossierpcg66.datereceptionpdo',
+					'Typepdo.libelle',
+					'Originepdo.libelle',
+					'Dossierpcg66.orgpayeur',
+					'Serviceinstructeur.lib_service',
+					'Structurereferenteparcours.lib_struc',
+					'Referentparcours.nom_complet'
+				),
+			),
+			// 4. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_atransmettre.ini_set' ),
 		)
 	);
 	
@@ -511,12 +573,43 @@
 	Configure::write(
 		'ConfigurableQuery.Dossierspcgs66.exportcsv_heberge',
 		array(
+			'limit' => 2,
 			// 1. Filtres de recherche, on reprend la configuration de la recherche
 			'filters' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.filters' ),
 			// 2. Recherche, on reprend la configuration de la recherche
 			'query' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.query' ),
 			// 3. Résultats de la recherche
-			'results' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.query' ),
+			'results' => array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Personne.nir',
+					'Situationdossierrsa.etatdosrsa',
+					'Personne.nom_complet_prenoms',
+					'Adresse.complete',
+					'Adresse.numvoie',
+					'Adresse.nomvoie',
+					'Adresse.complideadr',
+					'Adresse.compladr',
+					'Adresse.lieudist',
+					'Adresse.codepos',
+					'Adresse.pays',
+					'Canton.canton',
+					'Adresse.libtypevoie',
+					'Adresse.numcom',
+					'Adresse.nomcom',
+					'Adressefoyer.dtemm',
+					'DspRev.natlog',
+					'Dossier.matricule',
+					'Personne.dtnai',
+					'Adresse.numcom' => array(
+						'options' => array()
+					),
+					'Prestation.rolepers',
+					'Structurereferenteparcours.lib_struc',
+					'Referentparcours.nom_complet'
+				),
+			),
 			// 4. Temps d'exécution, mémoire maximum, ...
 			'ini_set' => Configure::read( 'ConfigurableQuery.Dossierspcgs66.cohorte_heberge.ini_set' ),
 		)

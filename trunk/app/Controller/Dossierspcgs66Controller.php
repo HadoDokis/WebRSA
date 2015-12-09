@@ -1002,7 +1002,7 @@
 		 */
 		public function exportcsv_enattenteaffectation() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
-			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
+			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation' ) );
 		}
 
 		/**
@@ -1025,7 +1025,7 @@
 		 */
 		public function exportcsv_atransmettre() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
-			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
+			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre' ) );
 		}
 				
 		/**
@@ -1041,7 +1041,7 @@
 		 */
 		public function exportcsv_heberge() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
-			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge', 'view' => 'exportcsv' ) );
+			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge' ) );
 		}
 
 		/**
