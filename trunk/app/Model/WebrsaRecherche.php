@@ -194,12 +194,47 @@
 				'component' => 'WebrsaRecherchesDossierspcgs66New',
 				'keys' => array( 'results.fields' )
 			),
+			'Dossierspcgs66.cohorte_atransmettre' => array(
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv_atransmettre' => array(
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
+			),
+			'Dossierspcgs66.cohorte_enattenteaffectation' => array(
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv_enattenteaffectation' => array(
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
+			),
 			'Dossierspcgs66.cohorte_heberge' => array(
 				'departement' => 66,
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge',
 				'component' => 'WebrsaCohortesDossierspcgs66New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv_heberge' => array(
+				'departement' => 66,
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
 			),
 			'Dsps.search' => array(
 				'modelName' => 'Personne',
