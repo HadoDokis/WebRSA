@@ -1,8 +1,7 @@
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
---SET client_min_messages = warning;
-SET client_min_messages = notice; -- FIXME
+SET client_min_messages = warning;
 SET escape_string_warning = off;
 SET search_path = public, pg_catalog;
 SET default_tablespace = '';
@@ -139,6 +138,8 @@ CREATE TABLE dataimpressions (
 -- Actions région - Catégories et valeurs
 --------------------------------------------------------------------------------
 
+SELECT alter_table_drop_column_if_exists( 'public', 'actionscandidats_personnes', 'valprogfichecandidature66_id' );
+
 DROP TABLE IF EXISTS valsprogsfichescandidatures66;
 CREATE TABLE valsprogsfichescandidatures66 (
 	id SERIAL					NOT NULL PRIMARY KEY,
@@ -149,8 +150,6 @@ CREATE TABLE valsprogsfichescandidatures66 (
 	modified					TIMESTAMP WITHOUT TIME ZONE
 );
 ALTER TABLE valsprogsfichescandidatures66 ADD CONSTRAINT valsprogsfichescandidatures66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0,1] ) );
-
-SELECT alter_table_drop_column_if_exists( 'public', 'actionscandidats_personnes', 'valprogfichecandidature66_id' );
 
 ALTER TABLE actionscandidats_personnes ADD COLUMN valprogfichecandidature66_id INTEGER REFERENCES valsprogsfichescandidatures66(id) ON DELETE SET NULL ON UPDATE CASCADE;
 
