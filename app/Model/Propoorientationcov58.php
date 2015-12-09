@@ -678,6 +678,7 @@
 						$this->Dossiercov58->Propoorientationcov58->Structurereferente->fields(),
 						$this->Dossiercov58->Propoorientationcov58->Covtypeorient->fields(),
 						$this->Dossiercov58->Propoorientationcov58->Covstructurereferente->fields(),
+						$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->fields(),
 						$this->Dossiercov58->Propoorientationcov58->User->fields(),
 						$this->Dossiercov58->Propoorientationcov58->User->Serviceinstructeur->fields(),
 						$this->Dossiercov58->Passagecov58->Cov58->fields(),
@@ -699,6 +700,7 @@
 						$this->Dossiercov58->Personne->Foyer->join( 'Dossier' ),
 						$this->Dossiercov58->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Dossiercov58->Personne->Foyer->Adressefoyer->join( 'Adresse' ),
+						$this->Dossiercov58->Propoorientationcov58->join( 'Nvorientstruct', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Dossiercov58->Propoorientationcov58->join( 'Typeorient' ),
 						$this->Dossiercov58->Propoorientationcov58->join( 'Structurereferente' ),
 						$this->Dossiercov58->Propoorientationcov58->join( 'Covtypeorient', array( 'type' => 'LEFT OUTER' ) ),
@@ -718,44 +720,14 @@
 			);
 			$options = Set::merge( $options, $this->Dossiercov58->enums() );
 
-			///FIXME: ajouter règles pour choisir le bon fichier
-
 			$fileName = '';
-// 			if ( $dossiercov58_data['Propoorientationcov58']['decisioncov'] == 'accepte' ) {
-// 				if( strcmp( 'Emploi', $dossiercov58_data['Covtypeorient']['lib_type_orient'] ) != -1 ) {
-// 					if ( $dossiercov58_data['Propoorientationcov58']['rgorient'] == 0 ) {
-// 						$fileName = 'decisionorientationpro.odt';
-// 					}
-// 					else {
-// 						$fileName = 'decisionreorientationpro.odt';
-// 					}
-// 				}
-// 				else {
-// 					if ( $dossiercov58_data['Propoorientationcov58']['rgorient'] == 0 ) {
-// 						$fileName = 'decisionorientationsoc.odt';
-// 					}
-// 					else {
-// 						$fileName = 'decisionreorientationsoc.odt';
-// 					}
-// 				}
-// 			}
-// 			else {
-// 				if ( $dossiercov58_data['Propoorientationcov58']['rgorient'] == 0 ) {
-// 					return false;
-// 				}
-// 				else {
-// 					$fileName = 'decisionrefusreorientation.odt';
-// 				}
-// 			}
-// debug($data);
 
 			$typeorientEmploiId = Configure::read( 'Typeorient.emploi_id' );
-			$rgOrientMax = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $data['Personne']['id'] );
+			$reorientation = ( $data['Nvorientstruct']['rgorient'] == 1 || $data['Propoorientationcov58']['rgorient'] == 0 ) === false;
 
 			if ( $data['Decisionpropoorientationcov58']['decisioncov'] == 'valide' ) {
-// 			in_array( $data['Decisionpropoorientationcov58']['decisioncov'], array( 'valide', 'refuse' ) )
 				if( $typeorientEmploiId == $data['Decisionpropoorientationcov58']['typeorient_id'] ) {
-					if ( $rgOrientMax == 0 ) {
+					if ( $reorientation === false ) {
 						$fileName = 'decisionorientationpro.odt';
 					}
 					else {
@@ -763,7 +735,7 @@
 					}
 				}
 				else {
-					if ( $rgOrientMax == 0 ) {
+					if ( $reorientation === false ) {
 						$fileName = 'decisionorientationsoc.odt';
 					}
 					else {
@@ -773,16 +745,8 @@
 
 			}
 			else {
-// 				if ( $data['Propoorientationcov58']['rgorient'] == 0 ) {
-// // 					return false;
-// 					$fileName='';
-// 				}
-// 				else {
-					$fileName = 'decisionrefusreorientation.odt';
-// 				}
+				$fileName = 'decisionrefusreorientation.odt';
 			}
-// debug($fileName);
-// die();
 
 			return $this->ged(
 				$data,

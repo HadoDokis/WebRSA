@@ -241,31 +241,17 @@
 		 * @return array
 		 */
 		protected function _allConfigureKeysCommon() {
-			$return = array(
-				'ActioncandidatPersonne.suffixe' => 'string',
+			$result = array(
 				'Admin.unlockall' => 'boolean',
 				'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
 				'AjoutOrientationPossible.toppersdrodevorsa' => 'string',
 				'AncienAllocataire.enabled' => 'boolean',
-				'Apre.forfaitaire.montantbase' => 'numeric',
-				'Apre.forfaitaire.montantenfant12' => 'numeric',
-				'Apre.forfaitaire.nbenfant12max' => 'integer',
-				'Apre.montantMaxComplementaires' => 'numeric',
-				'Apre.periodeMontantMaxComplementaires' => 'integer',
-				'Apre.pourcentage.montantversement' => 'numeric',
-				'Apre.suffixe' =>  array(
-					array( 'rule' => 'inList', array( 66, '66' ), 'allowEmpty' =>true ),
-				),
 				'CG.cantons' => 'boolean',
 				'Cg.departement' => array(
 					array( 'rule' => 'inList', array( 58, 66, 93, 976 ) ),
 				),
 				'Cohorte.dossierTmpPdfs' => 'string',
 				'Criterecer.delaiavanteecheance' => 'string',
-				'Cui.taux.financementexclusif' => 'numeric',
-				'Cui.taux.fixe' => 'numeric',
-				'Cui.taux.prisencharge' => 'numeric',
-                'Cui.Numeroconvention' => 'string',
 				'Detailcalculdroitrsa.natpf.socle' => 'isarray',
 				'Dossierep.delaiavantselection' => array(
 					array( 'rule' => 'string', 'allowEmpty' => true ),
@@ -350,18 +336,18 @@
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
 			if( !empty( $tmp ) ) {
 				if( is_array( $tmp ) ) {
-					$return['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'isarray';
+					$result['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'isarray';
 				}
 				else {
-					$return['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'integer';
+					$result['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'integer';
 				}
 			}
 
 			// Pour tous les départements sauf le 976
 			$departement = (int)Configure::read( 'Cg.departement' );
 			if( $departement !== 976 ) {
-				$return = array_merge(
-					$return,
+				$result = array_merge(
+					$result,
 					array(
 						'Dossierseps.choose.order' => array(
 							array( 'rule' => 'isarray', 'allowEmpty' => true ),
@@ -379,7 +365,26 @@
 				);
 			}
 
-			return $return;
+			// L'APRE n'est utilisée que par deux départements
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( in_array( $departement, array( 66, 93 ) ) ) {
+				$result = array_merge(
+					$result,
+					array(
+						'Apre.forfaitaire.montantbase' => 'numeric',
+						'Apre.forfaitaire.montantenfant12' => 'numeric',
+						'Apre.forfaitaire.nbenfant12max' => 'integer',
+						'Apre.montantMaxComplementaires' => 'numeric',
+						'Apre.periodeMontantMaxComplementaires' => 'integer',
+						'Apre.pourcentage.montantversement' => 'numeric',
+						'Apre.suffixe' =>  array(
+							array( 'rule' => 'inList', array( 66, '66' ), 'allowEmpty' =>true ),
+						),
+					)
+				);
+			}
+
+			return $result;
 		}
 
 		/**
@@ -414,6 +419,7 @@
 		 */
 		protected function _allConfigureKeys66() {
 			return array(
+				'ActioncandidatPersonne.suffixe' => 'string',
 				'AjoutOrientationPossible.toppersdrodevorsa' => 'isarray',
 				'Fraisdeplacement66.forfaithebergt' => 'numeric',
 				'Fraisdeplacement66.forfaitrepas' => 'numeric',
@@ -447,6 +453,10 @@
                 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe' => 'string',
 				'Criterescuis.search.fields' => 'isarray',
 				'Criterescuis.exportcsv' => 'isarray',
+				'Cui.taux.financementexclusif' => 'numeric',
+				'Cui.taux.fixe' => 'numeric',
+				'Cui.taux.prisencharge' => 'numeric',
+                'Cui.Numeroconvention' => 'string',
 				'Commissionseps.printOrdresDuJour.order' => array(
 					array( 'rule' => 'isarray', 'allowEmpty' => true ),
 				),

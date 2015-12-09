@@ -118,7 +118,6 @@
 		public $modelesOdt = array(
 			'%s/pv.odt',
 			'%s/convocationep_participant.odt',
-			'%s/decisionep.odt',
 			'%s/convocationep_beneficiaire.odt',
 		);
 
@@ -1861,12 +1860,12 @@
 			return $queryData;
 		}
 
-
-
 		/**
-		*
-		*/
-
+		 * @deprecated
+		 *
+		 * @param integer $commissionep_id
+		 * @return string
+		 */
 		public function getPdfDecision( $commissionep_id ) {
 
 			$commissionep_data = $this->find(
