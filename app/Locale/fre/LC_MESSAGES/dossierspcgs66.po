@@ -812,3 +812,9 @@ msgstr "Le demandeur est hebergé"
 
 msgid "Search.Requestmanager.name"
 msgstr "Conditions issue d'une requête (remplacera les autres conditions)"
+
+msgid "/Dossierspcgs66/search_affectes/:heading"
+msgstr "Dossiers PCGs affectés"
+
+msgid "Dossierpcg66.search_affectes"
+msgstr "Recherche par Dossier PCG"

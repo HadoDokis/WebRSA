@@ -39,6 +39,7 @@
 				'actions' => array( 
 					'search', 
 					'search_gestionnaire',
+					'search_affectes',
 					'cohorte_enattenteaffectation' => array(
 						'filter' => 'Search'
 					),
@@ -981,6 +982,23 @@
 		public function exportcsv_gestionnaire() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
 			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function search_affectes() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
+			$Recherches->search();
+			$this->Dossierpcg66->validate = array();
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_affectes() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
+			$Recherches->exportcsv();
 		}
 
 		/**

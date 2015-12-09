@@ -28,28 +28,20 @@
 
 	$this->start( 'custom_search_filters' );
 	
-	echo '<fieldset><legend>' . __m( 'Dossierpcg66.search_gestionnaire' ) . '</legend>'
-		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.poledossierpcg66_id', $options )
-		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
-		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
-		. $this->Xform->multipleCheckbox( 'Search.Decisiondossierpcg66.org_id', $options, 'divideInto2Collumn' )
+	echo '<fieldset><legend>' . __m( 'Dossierpcg66.'.$action ) . '</legend>'
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.datereceptionpdo', $paramDate )
 		. $this->Default3->subform(
 			array(
 				'Search.Dossierpcg66.originepdo_id' => array( 'empty' => true ),
+				'Search.Dossierpcg66.serviceinstructeur_id' => array( 'empty' => true ),
 				'Search.Dossierpcg66.typepdo_id' => array( 'empty' => true ),
 				'Search.Dossierpcg66.orgpayeur' => array( 'empty' => true ),
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
-		. $this->Xform->multipleCheckbox( 'Search.Decisiondossierpcg66.decisionpdo_id', $options, 'divideInto2Collumn' )
-		. $this->Xform->multipleCheckbox( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
-		. $this->Xform->multipleCheckbox( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
-		. $this->Default3->subform(
-			array(
-				'Search.Dossierpcg66.dossierechu' => array( 'type' => 'checkbox' )
-			),
-			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
-		)	
+		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.poledossierpcg66_id', $options )
+		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
 		. '</fieldset>'
 	;
 

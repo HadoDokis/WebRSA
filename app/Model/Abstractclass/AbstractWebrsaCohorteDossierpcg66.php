@@ -49,33 +49,6 @@
 			);
 			
 			$query = $this->WebrsaRechercheDossierpcg66->searchQuery( $types );
-			
-			$query['fields'] = array_merge(
-				$query['fields'],
-				ConfigurableQueryFields::getModelsFields(
-					array(
-						$this->Dossierpcg66->Typepdo,
-						$this->Dossierpcg66->Originepdo,
-						$this->Dossierpcg66->Serviceinstructeur,
-					)
-				),
-				// Champs nécessaires au traitement de la cohorte
-				array(
-					'Dossier.id',
-					'Dossierpcg66.poledossierpcg66_id',
-					'Dossierpcg66.dateaffectation',
-				)
-			);
-			
-			$query['joins'] = array_merge(
-				$query['joins'],
-				array(
-					$this->Dossierpcg66->join( 'Typepdo', array( 'type' => $types['Typepdo'] ) ),
-					$this->Dossierpcg66->join( 'Originepdo', array( 'type' => $types['Originepdo'] ) ),
-					$this->Dossierpcg66->join( 'Serviceinstructeur', array( 'type' => $types['Serviceinstructeur'] ) ),
-				)
-			);
-			
 			return $query;
 		}
 
@@ -89,21 +62,6 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->WebrsaRechercheDossierpcg66->searchConditions( $query, $search );
-			
-			/**
-			 * Generateur de conditions
-			 */
-			$paths = array(
-				'Dossierpcg66.serviceinstructeur_id',
-			);
-
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( $value !== null && $value !== '' ) {
-					$query['conditions'][$path] = $value;
-				}
-			}
-			
 			return $query;
 		}
 	}

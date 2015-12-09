@@ -88,6 +88,9 @@
 				'Metierromev3' => 'LEFT OUTER',
 				'Appellationromev3' => 'LEFT OUTER',
 				'Categoriemetierromev2' => 'LEFT OUTER',
+				'Serviceinstructeur' => 'LEFT OUTER',
+				'Originepdo' => 'LEFT OUTER',
+				'Typepdo' => 'LEFT OUTER',
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -106,6 +109,9 @@
 							$this->Dossierpcg66->User,
 							$this->Dossierpcg66->Poledossierpcg66,
 							$this->Dossierpcg66->Decisiondossierpcg66,
+							$this->Dossierpcg66->Serviceinstructeur,
+							$this->Dossierpcg66->Originepdo,
+							$this->Dossierpcg66->Typepdo,
 							$this->Dossierpcg66->Personnepcg66->Traitementpcg66,
 							$this->Dossierpcg66->Decisiondossierpcg66->Decisionpersonnepcg66->Decisionpdo,
 							$this->Dossierpcg66->Personnepcg66->Categorieromev3,
@@ -132,7 +138,7 @@
 						. 'ORDER BY "Decisiondossierpcg66"."created" DESC), \'\') || \'</ul>\') '
 						. 'AS "Decisiondossierpcg66__org_id"',
 
-						'Traitementpcg66.situationpdo_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
+						'Situationpdo.libelle' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Situationpdo"."libelle" || \'</li>\' AS "Situationpdo__libelle" '
 						. 'FROM "personnespcgs66" AS "Personnepcg66" '
 						. 'LEFT OUTER JOIN "public"."personnespcgs66_situationspdos" AS "Personnepcg66Situationpdo" '
@@ -140,7 +146,7 @@
 						. 'LEFT OUTER JOIN "public"."situationspdos" AS "Situationpdo" '
 						. 'ON ("Personnepcg66Situationpdo"."situationpdo_id" = "Situationpdo"."id") '
 						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
-						. 'AS "Traitementpcg66__situationpdo_id"',
+						. 'AS "Situationpdo__libelle"',
 
 						'Traitementpcg66.statutpdo_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Statutpdo"."libelle" || \'</li>\' AS "Statutpdo__libelle" '
@@ -199,6 +205,9 @@
 						$this->Dossierpcg66->join('User', array('type' => $types['User'])),
 						$this->Dossierpcg66->join('Poledossierpcg66', array('type' => $types['Poledossierpcg66'])),
 						$this->Dossierpcg66->join('Personnepcg66', array('type' => $types['Personnepcg66'])),
+						$this->Dossierpcg66->join('Serviceinstructeur', array('type' => $types['Serviceinstructeur'])),
+						$this->Dossierpcg66->join('Originepdo', array('type' => $types['Originepdo'])),
+						$this->Dossierpcg66->join('Typepdo', array('type' => $types['Typepdo'])),
 						$this->Dossierpcg66->Personnepcg66->join('Categorieromev3', array('type' => $types['Categorieromev3'])),
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->join('Familleromev3', array('type' => $types['Familleromev3'])),
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->join('Domaineromev3', array('type' => $types['Domaineromev3'])),
@@ -305,6 +314,7 @@
 				'Decisiondossierpcg66.userproposition_id',
 				'Decisiondossierpcg66.decisionpdo_id',
 				'Categorieromev3.familleromev3_id',
+				'Dossierpcg66.serviceinstructeur_id',
 			);
 
 			$pathsToExplode = array(
