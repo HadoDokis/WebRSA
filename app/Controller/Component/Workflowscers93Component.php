@@ -16,13 +16,6 @@
 	class Workflowscers93Component extends Component
 	{
 		/**
-		 * Contrôleur utilisant ce component.
-		 *
-		 * @var Controller
-		 */
-		public $Controller = null;
-
-		/**
 		 * Paramètres de ce component
 		 *
 		 * @var array
@@ -43,18 +36,6 @@
 		protected $_assertErrorTemplate = 'L\'utilisateur doit etre %s pour pouvoir accéder à cette fonctionnalité.';
 
 		/**
-		 * Initialisation du component.
-		 *
-		 * @param Controller $controller Controller with components to initialize
-		 * @return void
-		 * @link http://book.cakephp.org/2.0/en/controllers/components.html#Component::initialize
-		 */
-		public function initialize( Controller $controller ) {
-			parent::initialize( $controller );
-			$this->Controller = $controller;
-		}
-
-		/**
 		 * Permet de récupérer la structure référente à laquelle est attaché
 		 * l'utilisateur connecté.
 		 *
@@ -64,6 +45,8 @@
 		 * @throws Error403Exception
 		 */
 		public function getUserStructurereferenteId( $required = true ) {
+			$Controller = $this->_Collection->getController();
+
 			// Si l'utilisateur est directement lié à une structure référente
 			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 
@@ -71,8 +54,8 @@
 			if( empty( $structurereferente_id ) ) {
 				$referent_id = $this->Session->read( 'Auth.User.referent_id' );
 				if( !empty( $referent_id ) ) {
-					$this->Controller->User->Referent->id = $referent_id;
-					$structurereferente_id = $this->Controller->User->Referent->field( 'structurereferente_id' );
+					$Controller->User->Referent->id = $referent_id;
+					$structurereferente_id = $Controller->User->Referent->field( 'structurereferente_id' );
 				}
 			}
 

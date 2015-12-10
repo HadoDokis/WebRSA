@@ -34,6 +34,9 @@
 	 * );
 	 * </pre>
 	 *
+	 * @deprecated
+	 * @see Search.Filtresdefaut
+	 *
 	 * @package app.Controller.Component
 	 */
 	class FiltresdefautComponent extends Component
