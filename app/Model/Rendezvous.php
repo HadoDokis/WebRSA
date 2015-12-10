@@ -55,7 +55,7 @@
 				),
 				'checkThematiqueAnnuelleParQuestionnaireD1' => array(
 					'rule' => 'checkThematiqueAnnuelleParQuestionnaireD1',
-					'message' => 'Ce 1er RDV de l\'année est déjà lié à un D1, vous ne pouvez pas le décocher sauf en supprimant le D1'
+					'message' => 'Ce RDV est déjà lié à un D1. Vous ne pouvez pas décocher "Premier RDV de l\'année", sauf en supprimant le D1'
 				)
 			),
 			'daterdv' => array(
