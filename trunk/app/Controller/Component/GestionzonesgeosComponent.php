@@ -19,13 +19,6 @@
 	class GestionzonesgeosComponent extends Component
 	{
 		/**
-		 * Controller using this component.
-		 *
-		 * @var Controller
-		 */
-		public $Controller = null;
-
-		/**
 		 * On a besoin d'un esession.
 		 *
 		 * @var array

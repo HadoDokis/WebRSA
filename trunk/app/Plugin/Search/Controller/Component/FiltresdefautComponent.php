@@ -48,29 +48,11 @@
 		public $name = 'Filtresdefaut';
 
 		/**
-		 * Le contrôleur auquel le component est attaché.
-		 *
-		 * @var Controller
-		 */
-		public $Controller = null;
-
-		/**
 		 * Paramètres du component.
 		 *
 		 * @var array
 		 */
 		public $settings = array( );
-
-		/**
-		 * Initialisation.
-		 *
-		 * @param Controller $controller Controller with components to initialize
-		 * @return void
-		 */
-		public function initialize( Controller $controller ) {
-			$this->settings = (array)$this->settings;
-			$this->Controller = $controller;
-		}
 
 		/**
 		 * Le contrôleur est-il dans un état qui demande une fusion avec les
@@ -79,8 +61,10 @@
 		 * @return boolean
 		 */
 		public function needsMerge() {
-			return in_array( $this->Controller->action, $this->settings )
-					&& empty( $this->Controller->request->data );
+			$Controller = $this->_Collection->getController();
+
+			return in_array( $Controller->action, (array)$this->settings )
+					&& empty( $Controller->request->data );
 		}
 
 		/**
@@ -90,7 +74,9 @@
 		 * @return string
 		 */
 		public function configureKey() {
-			return "{$this->name}.{$this->Controller->name}_{$this->Controller->action}";
+			$Controller = $this->_Collection->getController();
+
+			return "{$this->name}.{$Controller->name}_{$Controller->action}";
 		}
 
 		/**
@@ -107,16 +93,18 @@
 
 		/**
 		 * Fusion des données post de la requête au contrôleur et de la configuration
-		 * stockée dans "{$this->name}.{$this->Controller->name}_{$this->Controller->action}".
+		 * stockée dans "{$this->name}.{$Controller->name}_{$Controller->action}".
 		 *
 		 * Les données du contrôleur écraseront les données de la configuration.
 		 *
 		 * @return void
 		 */
 		public function merge() {
+			$Controller = $this->_Collection->getController();
+
 			$filtresdefaut = $this->values();
 			if( !empty( $filtresdefaut ) ) {
-				$this->Controller->request->data = Set::merge( $filtresdefaut, $this->Controller->request->data );
+				$Controller->request->data = Hash::merge( $filtresdefaut, $Controller->request->data );
 			}
 		}
 
@@ -128,7 +116,7 @@
 		 * @return void
 		 */
 		public function beforeRender( Controller $controller ) {
-			$this->Controller = $controller;
+			parent::beforeRender( $controller );
 
 			if( $this->needsMerge() ) {
 				$this->merge();
