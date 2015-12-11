@@ -1386,7 +1386,7 @@
 			 */
 			'conditions_indicateurs_organismes' => array(
 				'Pôle emploi (PE) (2)' => array(
-					'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%'
+					'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%'
 				),
 				'Organisme public de placement professionnel autre que PE (maison de l\'emploi, PLIE, mission locale,...) (2)' => array(),
 				'Entreprise de travail temporaire, agence privée de placement (2)' => array(),
@@ -1396,7 +1396,7 @@
 				'Service du département ou de l\'agence départementale d\'insertion (ADI) (3)' => array(
 					'NOT' => array(
 						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
@@ -1407,7 +1407,7 @@
 					'Typeorient.id' => array( 3, 1 ),
 					'NOT' => array(
 						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
@@ -1418,7 +1418,7 @@
 					'Typeorient.id' => array( 2 ),
 					'NOT' => array(
 						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => '%P%le Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
 							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
