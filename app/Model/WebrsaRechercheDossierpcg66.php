@@ -201,7 +201,12 @@
 					$query['joins'],
 					array(
 						$this->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa'])),
-						$this->Dossierpcg66->join('Decisiondossierpcg66', array('type' => $types['Decisiondossierpcg66'])),
+						$this->Dossierpcg66->join('Decisiondossierpcg66', 
+							array(
+								'type' => $types['Decisiondossierpcg66'],
+								'conditions' => array('Decisiondossierpcg66.validationproposition' => 'O')
+							)
+						),
 						$this->Dossierpcg66->join('User', array('type' => $types['User'])),
 						$this->Dossierpcg66->join('Poledossierpcg66', array('type' => $types['Poledossierpcg66'])),
 						$this->Dossierpcg66->join('Personnepcg66', array('type' => $types['Personnepcg66'])),
@@ -397,6 +402,38 @@
 
 			if ( Hash::get($search, 'Dossierpcg66.dossierechu') ) {
 				$query['conditions'][] = 'Traitementpcg66.id IN ( ' . $this->Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
+			}
+
+			if ( Hash::get($search, 'Traitementpcg66.courriersansmodele') !== null ) {
+				$operateur = Hash::get($search, 'Traitementpcg66.courriersansmodele') ? 'IN' : 'NOT IN';
+				
+				$querySq = array(
+					'alias' => 'traitementspcgs66_sq',
+					'fields' => 'traitementspcgs66_sq.personnepcg66_id',
+					'joins' => array(
+						array(
+							'alias' => 'Modeletraitementpcg66',
+							'table' => 'modelestraitementspcgs66',
+							'conditions' => 'Modeletraitementpcg66.traitementpcg66_id = traitementspcgs66_sq.id',
+							'type' => 'LEFT'
+						)
+					),
+					'contain' => false,
+					'conditions' => array(
+						'traitementspcgs66_sq.typetraitement' => 'courrier',
+						'Modeletraitementpcg66.id IS NULL',
+						'traitementspcgs66_sq.personnepcg66_id = Personnepcg66.id'
+					)
+				);
+
+				$sq = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->sq($querySq);
+
+				$sq = str_replace('"traitementspcgs66_sq', '"t', $sq);
+				$sq = str_replace('"Modeletraitementpcg66"', '"m"', $sq);
+				$sq = str_replace('traitementspcgs66_sq', '"t"', $sq);
+				$sq = str_replace('Modeletraitementpcg66', '"m"', $sq);
+	
+				$query['conditions'][] = "Personnepcg66.id {$operateur} ( {$sq} )";			
 			}
 
 			return $query;

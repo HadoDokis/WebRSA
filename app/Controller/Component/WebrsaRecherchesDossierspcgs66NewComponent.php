@@ -21,14 +21,12 @@
 		 * @return array
 		 */
 		protected function _optionsEnums( array $params = array() ) {
-			$Controller = $this->_Collection->getController();
+			$options = parent::_optionsEnums( $params );
 
-			$options = Hash::merge(
-				parent::_optionsEnums( $params ),
-				// FIXME N'aparait pas dans
-				$Controller->Dossierpcg66->enums()
+			$options['Traitementpcg66']['courriersansmodele'] = array(
+				0 => 'Non',
+				1 => 'Oui'
 			);
-
 
 			return $options;
 		}

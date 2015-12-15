@@ -40,6 +40,7 @@
 					'search', 
 					'search_gestionnaire',
 					'search_affectes',
+					'cohorte_imprimer',
 					'cohorte_enattenteaffectation' => array(
 						'filter' => 'Search'
 					),
@@ -1061,6 +1062,36 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
 			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge' ) );
 		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_imprimer() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66Impressions' );
+			$Recherches->search( array( 'modelName' => 'Dossierpcg66', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Imprimer' ) );
+		}
+		
+		/**
+		 * Impression de la cohorte
+		 */
+		public function cohorte_imprimer_impressions() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesDossierspcgs66Impressions' );
+			$Cohortes->impressions( 
+				array( 
+					'modelName' => 'Dossierpcg66', 
+					'modelRechercheName' => 'WebrsaCohorteDossierpcg66Imprimer',
+					'configurableQueryFieldsKey' => 'Dossierspcgs66.cohorte_imprimer'
+				) 
+			);
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_imprimer() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66New' );
+			$Recherches->exportcsv( array( 'modelName' => 'Dossierpcg66', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Imprimer' ) );
+		}
 
 		/**
 		 * Créer et envoi à l'utilisateur un fichier zip comprenant les Décisions valide d'un Dossier PCG
@@ -1121,11 +1152,20 @@
 					: null
 				;
 
-				$courriers = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->Personnepcg66
-					->Traitementpcg66->getPdfsByConditions( $id, $decisionsdossierspcgs66_id, $this->Session->read('Auth.User.id') )
-				;
+				$courriers = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->getPdfsByDossierpcg66Id( $id, $this->Session->read('Auth.User.id'), false );
+				$queryCourrier = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->getPdfsQuery($id);
+				
+				$traitementspcgs66_ids = Hash::extract($this->Dossierpcg66->Foyer->find('all', $queryCourrier), '{n}.Traitementpcg66.id');
+				
+				if ($success && !empty($traitementspcgs66_ids)) {
+					$success = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnbound(
+						array( 'etattraitementpcg' => "'attente'" ),
+						array( 'id' => $traitementspcgs66_ids )
+					);
+				}
 				
 				if( $success && ( $decisionPdf !== null || !empty($courriers) ) ) {
+					
 					$this->Dossierpcg66->Decisiondossierpcg66->commit();
 
 					$prefix = 'Dossier_PCG';
@@ -1141,7 +1181,7 @@
 					}
 					
 					foreach ( $courriers as $i => $courrier ) {
-						$pdf = $courrier['pdf'];
+						$pdf = $courrier;
 						$pdfList[] = $pdf;
 					}
 
