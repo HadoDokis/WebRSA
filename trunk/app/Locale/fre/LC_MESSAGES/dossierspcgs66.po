@@ -818,3 +818,12 @@ msgstr "Dossiers PCGs affectés"
 
 msgid "Dossierpcg66.search_affectes"
 msgstr "Recherche par Dossier PCG"
+
+msgid "Dossierpcg66.cohorte_imprimer"
+msgstr "Recherche par Dossier PCG"
+
+msgid "/Dossierspcgs66/cohorte_imprimer/:heading"
+msgstr "Dossiers PCGs à imprimer"
+
+msgid "Search.Traitementpcg66.courriersansmodele"
+msgstr "Possède un traitement de type courrier sans modèle"

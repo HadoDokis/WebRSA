@@ -59,6 +59,11 @@
 				throw new Exception('Blank PDF not found at: '.$this->blankPdfPath);
 			}
 			
+			if (!file_exists($this->basePath)) {
+				mkdir($this->basePath, 0777, true);
+				chmod($this->basePath, 0777);
+			}
+			
 			$File = fopen($this->blankPdfPath, "r");
 			$this->binBlankPdf = fread($File, filesize($this->blankPdfPath));
 			fclose($File);

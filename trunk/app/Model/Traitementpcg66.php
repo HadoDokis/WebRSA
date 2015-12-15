@@ -1073,6 +1073,97 @@
 		}
 		
 		/**
+		 * Retourne la query qui permet de trouver les fichiers PDFs d'un ou plusieurs Dossiers PCGs 
+		 * avec les traitements de type courrier.
+		 * 
+		 * Lancez le find sur Foyer
+		 * 
+		 * Rêgles particulières :
+		 * - On ne ratache pas un PDF si il vien d'un "Dossier PCG / Décision / Traitement" annulé.
+		 * - On ne peux récupérer le PDF d'une décision que si elle est validé et rataché au dossier PCG.
+		 * - Les Traitements à imprimer du dossier PCG sont inclu.
+		 * - Les Traitements à imprimer des autres dossiers PCGs d'un même foyer sont inclu si :
+		 *		- le dossier PCG ne comporte pas de décision 
+		 *		- le dossier PCG à été émis par le même pôle (PDA / PDU).
+		 * 
+		 * @param mixed $dossierpcg66_id
+		 * @param mixed $conditionTraitementpcg	permet de spécifier un état en particulier 
+		 *										(etattraitementpcg => imprimer par défaut),
+		 * @return array
+		 */
+		public function getPdfsQuery( $dossierpcg66_id, $conditionTraitementpcg = array('Traitementpcg66.etattraitementpcg' => 'imprimer') ) {
+			return array(
+				'fields' => array(
+					'Traitementpcg66.id'
+				),
+				'joins' => array(
+					array_words_replace(
+						$this->Personnepcg66->Dossierpcg66->Foyer->join('Dossierpcg66',
+							array(
+								'conditions' => array('Dossierpcg66.id' => $dossierpcg66_id),
+								'type' => 'INNER',
+							)
+						),
+						array('Dossierpcg66' => 'Dossierpcg66_maitre')
+					),
+					$this->Personnepcg66->Dossierpcg66->Foyer->join('Dossierpcg66', array('type' => 'INNER')),
+					$this->Personnepcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
+					$this->Personnepcg66->join('Traitementpcg66', array('type' => 'LEFT')),
+					$this->Personnepcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT')),
+				),
+				'contain' => false,
+				'conditions' => array(
+					'NOT' => array(
+						'Dossierpcg66.etatdossierpcg' => 'annule',
+					),
+					'Dossierpcg66.poledossierpcg66_id = Dossierpcg66_maitre.poledossierpcg66_id',
+					array(
+						'OR' => array(
+							'Decisiondossierpcg66.id IS NULL',
+							array(
+								'Decisiondossierpcg66.validationproposition' => 'O',
+								'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id,
+							)
+						)
+					),
+					array(
+						'OR' => array(
+							'Traitementpcg66.id IS NULL',
+							array(
+								$conditionTraitementpcg,
+								'Traitementpcg66.imprimer' => '1',
+								'Traitementpcg66.annule' => 'N',
+							)
+						)
+					),
+				)
+			);
+		}
+		
+		/**
+		 * Permet d'obtenir tout les PDFs lié à un dossier PCG (Décision et Traitements)
+		 * 
+		 * @param integer $dossierpcg66_id
+		 * @param integer $user_id
+		 * @param mixed $conditionTraitementpcg	permet de spécifier un état en particulier 
+		 *										(etattraitementpcg => imprimer par défaut),
+		 * @return array
+		 */
+		public function getPdfsByDossierpcg66Id( $dossierpcg66_id, $user_id, $conditionTraitementpcg = array('Traitementpcg66.etattraitementpcg' => 'imprimer') ) {
+			$query = $this->getPdfsQuery($dossierpcg66_id, $conditionTraitementpcg);
+			
+			$results = array();
+			foreach ((array)$this->Personnepcg66->Dossierpcg66->Foyer->find('all', $query) as $result) {
+				$traitement_id = Hash::get($result, 'Traitementpcg66.id');
+				if ($traitement_id) {
+					$results[] = $this->getPdfModeleCourrier($traitement_id, $user_id);
+				}
+			}
+			
+			return $results;
+		}
+		
+		/**
 		 * Obtien un array avec une liste de pdf des traitements de type courrier avec la mention à imprimer en fonction d'une décision.
 		 * La décision ne doit pas être une proposition refusée.
 		 * Fontionne également si il n'y a aucune propositions dans le dossier pcg
@@ -1081,6 +1172,8 @@
 		 * @param array $decisionsdossierspcgs66_id
 		 * @param type $user_id
 		 * @return array
+		 * @deprecated since version 3.0
+		 * @see $this->getPdfsByDossierpcg66Id()
 		 */
 		public function getPdfsByConditions( $dossierpcg66_id, $decisionsdossierspcgs66_id, $user_id ) {
 			

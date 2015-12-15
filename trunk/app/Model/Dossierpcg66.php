@@ -1357,9 +1357,9 @@ class Dossierpcg66 extends AppModel {
 	}
 
 	/**
-	 * Renvoi la quete de base pour les impressions liés au dossier pcg (pour obtenir les informations nécéssaires
+	 * Renvoi la quete de base pour les impressions liés au dossier pcg (pour obtenir les informations nécéssaires)
 	 * 
-	 * @param integer $dossierpcg66_id
+	 * @param mixed $dossierpcg66_id
 	 * @return array
 	 */
 	public function getImpressionBaseQuery( $dossierpcg66_id ) {
