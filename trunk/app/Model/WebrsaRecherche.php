@@ -363,6 +363,28 @@
 				'component' => 'WebrsaRecherchesPropospdosPossiblesNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Propospdos.cohorte_nouvelles' => array(
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohortePropopdoNouvelle',
+				'component' => 'WebrsaCohortesPropospdosNouvelles',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Propospdos.cohorte_validees' => array(
+				'type' => 'search',
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohortePropopdoValidee',
+				'component' => 'WebrsaCohortesPropospdosValidees',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Propospdos.exportcsv_validees' => array(
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohortePropopdoValidee',
+				'component' => 'WebrsaCohortesPropospdosValidees',
+				'keys' => array( 'results.fields' )
+			),
 			'Rendezvous.search' => array(
 				'modelName' => 'Rendezvous',
 				'component' => 'WebrsaRecherchesRendezvousNew',
@@ -455,7 +477,7 @@
 						$this->_cache[$key]['config'] = $Recherches->configureKeys( $config );
 						$this->_cache[$key]['fields'] = $Recherches->checkConfiguredFields( $config );
 						$this->_cache[$key]['query'] = $Recherches->checkQuery( $config );
-						
+
 						$type = Hash::get($config, 'type');
 						if( ($type === null && strpos( $key, '.cohorte' ) !== false) || $type === 'cohorte' ) {
 							$this->_cache[$key]['cohorte_values'] = $Recherches->checkHiddenCohorteValues( $config );

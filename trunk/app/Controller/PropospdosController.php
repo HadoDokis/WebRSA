@@ -23,9 +23,10 @@
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'Jetons2',
+			'Cohortes',
 			'DossiersMenus',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search', 'search_possibles' )
+				'actions' => array( 'search', 'search_possibles', 'cohorte_nouvelles', 'cohorte_validees' )
 			)
 		);
 
@@ -45,7 +46,10 @@
 			'search' => 'Criterespdos:index',
 			'exportcsv' => 'Criterespdos:exportcsv',
 			'search_possibles' => 'Criterespdos:nouvelles',
-			'exportcsv_possibles' => 'Criterespdos:nouvelles'
+			'exportcsv_possibles' => 'Criterespdos:nouvelles',
+			'cohorte_nouvelles' => 'Cohortespdos:avisdemande',
+			'cohorte_validees' => 'Cohortespdos:valide',
+			'exportcsv_validees' => 'Cohortespdos:exportcsv',
 		);
 
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -62,6 +66,9 @@
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
 			'ajaxstruct' => 'read',
+			'cohorte_nouvelles' => 'update',
+			'cohorte_validees' => 'read',
+			'exportcsv_validees' => 'read',
 			'download' => 'read',
 			'edit' => 'update',
 			'exportcsv' => 'read',
@@ -553,5 +560,43 @@
 			);
 		}
 
+		/**
+		 * Cohorte de nouvelles demandes de PDOs (nouvelle)
+		 */
+		public function cohorte_nouvelles() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesPropospdosNouvelles' );
+			$Cohortes->cohorte(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohortePropopdoNouvelle'
+				)
+			);
+		}
+
+		/**
+		 * Cohorte de liste de PDOs (nouvelle)
+		 */
+		public function cohorte_validees() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesPropospdosValidees' );
+			$Cohortes->search(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohortePropopdoValidee'
+				)
+			);
+		}
+
+		/**
+		 * Export CSV de la cohorte de liste de PDOs (nouvelle)
+		 */
+		public function exportcsv_validees() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesPropospdosValidees' );
+			$Cohortes->exportcsv(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohortePropopdoValidee'
+				)
+			);
+		}
 	}
 ?>

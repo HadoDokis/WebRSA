@@ -11,6 +11,8 @@
 	/**
 	 * La classe Cohortepdo s'occupe du moteur de recherche des cohortes de PDOs (CG 93).
 	 *
+	 * @deprectaed since 3.0.00
+	 *
 	 * @package app.Model
 	 */
 	class Cohortepdo extends AppModel

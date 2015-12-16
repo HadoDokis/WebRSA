@@ -16,6 +16,12 @@ msgstr "Recherche de PDOs (nouveau)"
 msgid "/Propospdos/search_possibles/:heading"
 msgstr "Liste des personnes pouvant bénéficier d'une PDO (nouveau)"
 
+msgid "/Propospdos/cohorte_nouvelles/:heading"
+msgstr "Nouvelles demandes PDOs (nouveau)"
+
+msgid "/Propospdos/cohorte_validees/:heading"
+msgstr "Liste PDOs (nouveau)"
+
 # ==============================================================================
 
 msgid "Search.Propopdo"
@@ -33,14 +39,37 @@ msgstr "Origine de la PDO"
 msgid "Search.Propopdo.etatdossierpdo"
 msgstr "Etat du dossier"
 
-msgid "Search.Decisionpropopdo.decisionpdo_id"
-msgstr "Type de proposition"
-
 msgid "Search.Propopdo.user_id"
 msgstr "Gestionnaire du dossier (instructeur en charge du dossier)"
 
 msgid "Search.Propopdo.motifpdo"
 msgstr "Motif de la PDO"
+
+msgid "Search.Propopdo.datedecisionpdo"
+msgstr "Date de décision de la PDO"
+
+msgid "Search.Propopdo.typepdo_id"
+msgstr "Type de dossier"
+
+msgid "Search.Decisionpropopdo.decisionpdo_id"
+msgstr "Décision du Conseil Général"
+
+# ==============================================================================
+
+msgid "Personne.nom_complet_court"
+msgstr "Nom de l'allocataire"
+
+msgid "Adresse.nomcom"
+msgstr "Adresse"
+
+msgid "data[Cohorte][][Propopdo][user_id]"
+msgstr "Gestionnaire"
+
+msgid "data[Cohorte][][Propopdo][commentairepdo]"
+msgstr "Commentaires"
+
+msgid "Propopdo.commentairepdo"
+msgstr "Commentaire"
 
 # ==============================================================================
 
