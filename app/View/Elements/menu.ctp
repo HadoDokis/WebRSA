@@ -87,8 +87,16 @@
 					'url' => array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ),
 					'title' => 'Avis CG demandé',
 				),
+				'Nouvelles demandes (nouveau)' => array(
+					'url' => array( 'controller' => 'propospdos', 'action' => 'cohorte_nouvelles' ),
+					'title' => 'Avis CG demandé',
+				),
 				'Liste PDOs' => array(
 					'url' => array( 'controller' => 'cohortespdos', 'action' => 'valide' ),
+					'title' => 'PDOs validés',
+				),
+				'Liste PDOs (nouveau)' => array(
+					'url' => array( 'controller' => 'propospdos', 'action' => 'cohorte_validees' ),
 					'title' => 'PDOs validés',
 				),
 			),

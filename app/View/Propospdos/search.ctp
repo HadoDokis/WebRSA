@@ -19,7 +19,7 @@
 			array(
 				'Search.Propopdo.originepdo_id' => array( 'empty' => true ),
 				'Search.Propopdo.etatdossierpdo' => array( 'empty' => true ),
-				'Search.Decisionpropopdo.decisionpdo_id' => array( 'empty' => true ),
+				'Search.Decisionpropopdo.decisionpdo_id' => array( 'empty' => true, 'label' => __d( 'propospdos_search', 'Search.Decisionpropopdo.decisionpdo_id' ) ),
 				'Search.Propopdo.user_id' => array( 'empty' => true ),
 				'Search.Propopdo.motifpdo' => array( 'empty' => true )
 			),
