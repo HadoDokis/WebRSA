@@ -23,29 +23,21 @@
 		'allowEmpty' => true,
 		'on' => null
 	);
-	$validationCohorte = array(
-		'Decisiondossierpcg66' => array( 'datetransmissionop' => $dateRule ),
-		'Decdospcg66Orgdospcg66' => array( 'orgtransmisdossierpcg66_id' => $notEmptyRule )
-	);
+	$validationCohorte = array();
 	echo $this->FormValidator->generateJavascript($validationCohorte, false);
 
 	$this->start( 'custom_search_filters' );
 
-	echo '<fieldset><legend>' . __m( 'Dossierpcg66.'.$action ) . '</legend>'
-		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.datereceptionpdo', $paramDate )
+	echo '<fieldset><legend>' . __m( 'Apres66.'.$action ) . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Search.Dossierpcg66.originepdo_id' => array( 'empty' => true ),
-				'Search.Dossierpcg66.serviceinstructeur_id' => array( 'empty' => true ),
-				'Search.Dossierpcg66.typepdo_id' => array( 'empty' => true ),
-				'Search.Dossierpcg66.orgpayeur' => array( 'empty' => true ),
-				'Search.Traitementpcg66.courriersansmodele',
+				'Search.Aideapre66.themeapre66_id' => array( 'empty' => true ),
+				'Search.Aideapre66.typeaideapre66_id' => array( 'empty' => true ),
+				'Search.Apre66.numeroapre',
+				'Search.Apre66.referent_id' => array( 'empty' => true ),
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
-		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.poledossierpcg66_id', $options )
-		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
-		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
 		. '</fieldset>'
 	;
 
@@ -60,7 +52,7 @@
 	$searchData['Search'] = (array)Hash::get( $this->request->data, 'Search' );
 	$buttons = '';
 	
-	$count = (int)Hash::get( $this->request->params, "paging.Dossierpcg66.count" );
+	$count = (int)Hash::get( $this->request->params, "paging.Apre66.count" );
 	if( $count > 65000 ) {
 		$button .= '<p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;">'.$this->Xhtml->image( 'icons/error.png' ).'<strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>';
 	}
@@ -87,7 +79,7 @@
 					Hash::flatten( $this->request->data, '__' )
 				)
 				, ( $this->Permissions->check( $controller, $action.'_impressions' ) && $count > 0 )
-				, 'Voulez vous imprimer les '.($count-1).' dossiers PCGs ?'
+				, 'Voulez vous imprimer les '.($count-1).' notifications APREs ?'
 				, 'popup_impression_cohorte'
 			).'</li><li>
 				<a href="javascript:location.reload();" class="refresh_page" >Recharger la page</a>

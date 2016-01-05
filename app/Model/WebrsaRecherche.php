@@ -75,15 +75,31 @@
 			'Apres66.cohorte_validation' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
-				'modelRechercheName' => 'WebrsaCohorteApre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Validation',
 				'component' => 'WebrsaCohortesApres66New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Apres66.exportcsv_validation' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
-				'modelRechercheName' => 'WebrsaCohorteApre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Validation',
 				'component' => 'WebrsaCohortesApres66New',
+				'keys' => array( 'results.fields' )
+			),
+			'Apres66.cohorte_imprimer' => array(
+				'type' => 'search',
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Imprimer',
+				'component' => 'WebrsaCohortesApres66Impressions',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Apres66.exportcsv_imprimer' => array(
+				'type' => 'search',
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Imprimer',
+				'component' => 'WebrsaCohortesApres66Impressions',
 				'keys' => array( 'results.fields' )
 			),
 			'Bilansparcours66.search' => array(
@@ -248,6 +264,22 @@
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge',
 				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
+			),
+			'Dossierspcgs66.cohorte_imprimer' => array(
+				'type' => 'search',
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Imprimer',
+				'component' => 'WebrsaCohortesDossierspcgs66Impressions',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv_imprimer' => array(
+				'type' => 'search',
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Imprimer',
+				'component' => 'WebrsaCohortesDossierspcgs66Impressions',
 				'keys' => array( 'results.fields' )
 			),
 			'Dsps.search' => array(
