@@ -334,6 +334,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Apre66' => array(
+				'className' => 'Apre66',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Memo' => array(
 				'className' => 'Memo',
 				'foreignKey' => 'personne_id',

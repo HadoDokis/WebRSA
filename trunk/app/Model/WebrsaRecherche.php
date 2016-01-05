@@ -72,6 +72,20 @@
 				'component' => 'WebrsaRecherchesApresEligibiliteNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Apres66.cohorte_validation' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66',
+				'component' => 'WebrsaCohortesApres66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Apres66.exportcsv_validation' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66',
+				'component' => 'WebrsaCohortesApres66New',
+				'keys' => array( 'results.fields' )
+			),
 			'Bilansparcours66.search' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Bilanparcours66',
@@ -472,6 +486,7 @@
 					foreach( $this->searches as $key => $config ) {
 					$departement = Hash::get( $config, 'departement' );
 					if( $departement === null || in_array( $currentDepartement, (array)$departement ) ) {
+						ClassRegistry::flush();//FIXME: vérifier
 						$Recherches = $this->_component( $key, $config );
 
 						$this->_cache[$key]['config'] = $Recherches->configureKeys( $config );
@@ -573,6 +588,7 @@
 					Configure::write( "ConfigurableQuery.{$key}.auto", false );
 
 					echo "\t{$key}\n";
+					ClassRegistry::flush();
 					$Recherches = $this->_component( $key, $config );
 
 					if( ($type === null && strpos( $key, '.search' ) !== false) || $type === 'search' ) {

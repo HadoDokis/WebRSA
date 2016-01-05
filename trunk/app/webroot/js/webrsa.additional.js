@@ -203,7 +203,7 @@ function fieldId( modelField ){
 	var i, result = '', x, exploded = modelField.split(/[\._]/);
 	for(i=0; i<exploded.length; i++){
 		x = exploded[i];
-		result += x.charAt(0).toUpperCase() + x.substring(1).toLowerCase();
+		result += x.charAt(0).toUpperCase() + x.substring(1);
 	}
 	return result;
 }
@@ -291,6 +291,186 @@ function setDateCloture( id, target ){
 	targetYear.setValue( dateButoir.getFullYear() );
 	
 	targetYear.simulate('change');
+}
+
+/**
+ * Permet de récupérer un élément sans tenir compte du standard utilisé
+ * 
+ * @param {string|object} 'MonElement' ou 'Mon.element' ou $('MonElement)
+ * @return {DOM}
+ */
+function getElementByString(string) {
+	'use strict';
+	if (string === null) {
+		throw "La valeur de l'element est NULL, vous avez probablement tenté de selectionner un element qui n'existe pas";
+	}
+	
+	if (typeof(string) === 'object') {
+		// Est déja un élement Prototype
+		if (string.tagName !== undefined) {
+			return string;
+		}
+		else {
+			throw "getElementByString() do not accept object";
+		}
+	}
+	
+	// Format cakephp
+	if (string.match(/[\w]+\.[\w]+(\.[\w]+)*/)) {
+		return $(fieldId(string));
+	}
+	
+	// Sinon ce doit être déja un id
+	return $(string);
+}
+
+/**
+ * Cache un ou plusieurs élements en fonction d'une ou plusieurs valeurs d'autres elements
+ * 
+ * Dans values les clefs obligatoire sont : 
+ *		- element: 'MonElement' ou 'Mon.element' ou $('MonElement)
+ *		- value: Valeur de l'element pour activer/desactiver le disabled
+ *		- operateur || operator: Par defaut defini à "=", accepte : true, =, ==, ===, false, !, !=, !==, <, >, <=, >=
+ *		
+ * @param {array|string} elements Liste des elements (DOM ou string) sur lesquels appliquer le disable ex: [ $(monElementId), $(monElementId2) ]
+ * @param {array|object} values Liste des valeurs à avoir pour appliquer le disable ex: [ {element: $(monElement), value: '1', operator: '!='}, ... ]
+ * @param {boolean} hide Si mis à TRUE, cache l'element plutôt que de le griser
+ * @param {boolean} oneValueIsValid Si mis à TRUE, une valeur juste parmis la liste suffit à désactiver les elements
+ */
+function observeDisableElementsOnValues(elements, values, hide, oneValueIsValid) {
+	'use strict';
+	var i;
+	
+	elements = elements.constructor !== Array ? [elements] : elements;
+	values = values.constructor !== Array ? [values] : values;
+	hide = hide === undefined ? false : hide;
+	oneValueIsValid = oneValueIsValid === undefined ? false : oneValueIsValid;
+	
+	disableElementsOnValues(elements, values, hide, oneValueIsValid);
+	
+	for (i=0; i<values.length; i++) {
+		// On s'assure que les clefs sont présente
+		if (values[i].element === undefined || values[i].value === undefined) {
+			throw "Values must have element and value keys";
+		}
+		
+		getElementByString(values[i].element).observe('change', function() {
+			disableElementsOnValues(elements, values, hide, oneValueIsValid);
+		});
+	}
+}
+
+/**
+ * Cache un ou plusieurs élements en fonction d'une ou plusieurs valeurs d'autres elements
+ * 
+ * Dans values les clefs obligatoire sont : 
+ *		- element: 'MonElement' ou 'Mon.element' ou $('MonElement)
+ *		- value: Valeur de l'element pour activer/desactiver le disabled
+ *		- operateur || operator: Par defaut defini à "=", accepte : true, =, ==, ===, false, !, !=, !==, <, >, <=, >=
+ * 
+ * @param {array|string} elements Liste des elements (DOM ou string) sur lesquels appliquer le disable ex: [ $(monElementId), $(monElementId2) ]
+ * @param {array|object} values Liste des valeurs à avoir pour appliquer le disable ex: [ {element: $(monElement), value: '1', operator: '!='}, ... ]
+ * @param {boolean} hide Si mis à TRUE, cache l'element plutôt que de le griser
+ * @param {boolean} oneValueIsValid Si mis à TRUE, une valeur juste parmis la liste suffit à désactiver les elements
+ */
+function disableElementsOnValues(elements, values, hide, oneValueIsValid) {
+	'use strict';
+	var i,
+		element,
+		condition = true,
+		newCondition
+	;
+	
+	// On commence par formater les variable de façon pour qu'on puisse les traiter pour une seul type
+	elements = elements.constructor !== Array ? [elements] : elements;
+	values = values.constructor !== Array ? [values] : values;
+	hide = hide === undefined ? false : hide;
+	oneValueIsValid = oneValueIsValid === undefined ? false : oneValueIsValid;
+	
+	// On vérifi les valeurs
+	for (i=0; i<values.length; i++) {
+		// On s'assure que les clefs sont présente
+		if (values[i].element === undefined || values[i].value === undefined) {
+			throw "Values must have element and value keys";
+		}
+		// On s'assure que l'element existe
+		if (getElementByString(values[i].element) === null) {
+			throw "Element "+values[i].element+" is not found!";
+		}
+		
+		// Alias pour operator
+		if (values[i].operateur !== undefined) {
+			values[i].operator = values[i].operateur;
+		}
+		
+		switch (values[i].operator === undefined ? '=' : values[i].operator) {
+			case true:
+			case '=':
+			case '==':
+			case '===':
+				newCondition = getElementByString(values[i].element).getValue() === values[i].value;
+				break;
+			case false:
+			case '!':
+			case '!=':
+			case '!==':
+				newCondition = getElementByString(values[i].element).getValue() !== values[i].value;
+				break;
+			case '<':
+				newCondition = getElementByString(values[i].element).getValue() < values[i].value;
+				break;
+			case '>':
+				newCondition = getElementByString(values[i].element).getValue() > values[i].value;
+				break;
+			case '<=':
+				newCondition = getElementByString(values[i].element).getValue() <= values[i].value;
+				break;
+			case '>=':
+				newCondition = getElementByString(values[i].element).getValue() >= values[i].value;
+				break;
+			default:
+				throw "values[i].operator must be in (true, =, ==, ===, false, !, !=, !==, <, >, <=, >=)";
+		}
+		
+		condition = oneValueIsValid && i > 0 ? condition || newCondition : condition && newCondition;
+	}
+	
+	// On applique le disable sur les elements
+	for (i=0; i<elements.length; i++) {
+		element = getElementByString(elements[i]);
+		
+		// On s'assure que l'element existe
+		if (element === null) {
+			throw "Element "+elements[i]+" is not found!";
+		}
+		
+		if (condition) {
+			element.disable();
+			if( element.up( 'div.input' ) ) {
+				element.up( 'div.input' ).addClassName( 'disabled' );
+			}
+			else if( element.up( 'div.checkbox' ) ) {
+				element.up( 'div.checkbox' ).addClassName( 'disabled' );
+			}
+			
+			if (hide) {
+				element.hide();
+			}
+		}
+		else {
+			element.enable();
+			if( element.up( 'div.input' ) ) {
+				element.up( 'div.input' ).removeClassName( 'disabled' );
+			}
+			else if( element.up( 'div.checkbox' ) ) {
+				element.up( 'div.checkbox' ).removeClassName( 'disabled' );
+			}
+			
+			if (hide) {
+				element.show();
+			}
+		}
+	}
 }
 
 /*************************************************************************

@@ -184,6 +184,11 @@
 					$this->Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
 				);
 			}
+			
+			else {
+				debug("Aucuns liens depuis Personne/Foyer/Dossier vers {$baseModelName} !");
+				throw new Exception("Aucuns liens depuis Personne/Foyer/Dossier vers {$baseModelName} !", 500);
+			}
 
 
 			return $joins;

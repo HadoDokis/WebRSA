@@ -18,6 +18,14 @@ describe("Validation", function() {
 		expect(Validation.alphaNumeric('')).toEqual( false );
 	});
 	
+	it("Doit être numérique", function() {
+		expect(Validation.numeric('frferrf')).toEqual( false );
+		expect(Validation.numeric('12234')).toEqual( true );
+		expect(Validation.numeric('122.34')).toEqual( true );
+		expect(Validation.numeric('122,34')).toEqual( true );
+		expect(Validation.numeric('12,2,34')).toEqual( false );
+	});
+	
 	it("Ne doit pas être vide", function() {
 		expect(Validation.notEmpty('abcdefg')).toEqual( true );
 		expect(Validation.notEmpty('   fasdf   ')).toEqual( true );

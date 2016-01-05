@@ -36,6 +36,21 @@ var Validation = {
 	},
 	
 	/**
+	 * Vérifi qu'une chaine soit alphaNumérique (accents et charactères étranger autorisé)
+	 * @param {String} value
+	 * @returns {Boolean}
+	 * @function Validation.alphaNumeric
+	 */
+	numeric: function( value ) {
+		'use strict';
+		if ( value === undefined || value === null ){
+			return false;
+		}
+		var test = value.match( /^[0-9]+([.,][0-9]+){0,1}$/ ) !== null;
+		return test;
+	},
+	
+	/**
 	 * Vérifi qu'une chaine n'est pas vide (exclu retour à la ligne, tabulation et espaces)
 	 * @param {String|Number} value
 	 * @returns {Boolean}
