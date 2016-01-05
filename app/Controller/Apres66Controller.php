@@ -21,9 +21,35 @@
 
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
 
-		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
+		public $helpers = array( 
+			'Default', 
+			'Locale', 
+			'Cake1xLegacy.Ajax', 
+			'Xform', 
+			'Xhtml', 
+			'Fileuploader', 
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
 
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
+		public $components = array( 
+			'Default', 
+			'Gedooo.Gedooo', 
+			'Fileuploader', 
+			'Jetons2', 
+			'DossiersMenus', 
+			'InsertionsAllocataires',
+			'Cohortes',
+			'Search.SearchPrg' => array(
+				'actions' => array( 
+					'cohorte_validation' => array(
+						'filter' => 'Search'
+					),
+				)
+			),
+		);
 
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
@@ -989,6 +1015,24 @@ $success = true; // FIXME
 
             $this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'cancel' );
 		}
-
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_validation() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches->cohorte();
+			
+			$this->Aideapre66->validate = array();
+			$this->Apre66->validate = array();
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_validation() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches->exportcsv();
+		}
 	}
 ?>

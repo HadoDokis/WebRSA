@@ -126,6 +126,7 @@
 					array(
 						'Dossierpcg66.id',
 						'Dossierpcg66.foyer_id',
+						'Decisiondossierpcg66.id',
 
 						'Decisiondossierpcg66.org_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Orgtransmisdossierpcg66"."name" || \'</li>\' AS "Orgtransmisdossierpcg66__name" '

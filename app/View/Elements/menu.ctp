@@ -8,6 +8,7 @@
 			'APRE' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'À valider' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'apresavalider' ) ),
+				'À valider (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_validation' ) ),
 				'À notifier' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ) ),
 				'Notifiées' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notifiees' ) ),
 				'Transfert cellule' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),

@@ -192,6 +192,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Referentapre' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 		public $hasMany = array(
