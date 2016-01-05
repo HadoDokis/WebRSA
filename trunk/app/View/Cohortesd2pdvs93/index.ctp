@@ -84,7 +84,7 @@
 					'Structurereferente.lib_struc',
 					'Questionnaired2pdv93.created' => array( 'type' => 'date' ),
 					// 'Dossier.locked' => array( 'type' => 'boolean', 'sort' => false ),
-					'/Cohortesd2pdvs93/ajaxadd/#Personne.id#' => array( 'onclick' => 'ajax#Personne.id#();return false;', 'class' => 'ajax' ),
+					'/Cohortesd2pdvs93/ajaxadd/#Personne.id#' => array( 'onclick' => 'try { ajaxAddEdit("#Personne.id#", "#Questionnaired2pdv93.id#"); } catch(err) { console.log(err); } return false;', 'class' => 'ajax' ),
 					'/Questionnairesd2pdvs93/index/#Personne.id#' => array( 'class' => 'external' ),
 				),
 				array(
@@ -108,27 +108,31 @@
 		?>
 		<script type="text/javascript">
 		//<![CDATA[
-			var cohorteUrl = '<?php echo $this->request->here;?>';
-		<?php
-			foreach( $results as $result ) {
-				if( empty( $result['Questionnaired2pdv93']['id'] ) ) {
-					$url = array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'add', $result['Personne']['id'] );
-				}
-				else {
-					$url = array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'edit', $result['Questionnaired2pdv93']['id'] );
-				}
+			var cohorteUrl = '<?php echo $this->request->here;?>',
+				ajaxAddEdit = function(personneId, questionnaired2pdv93Id) {
+					var add = "<?php echo $this->Ajax->remoteFunction(
+							array(
+								'url' => array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'add', '#personneId#' ),
+								'update' => 'popup-content1',
+								'evalScripts' => true
+							)
+						);?>",
+						edit = "<?php echo $this->Ajax->remoteFunction(
+							array(
+								'url' => array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'add', '#questionnaired2pdv93Id#' ),
+								'update' => 'popup-content1',
+								'evalScripts' => true
+							)
+						);?>";
 
-				$remoteFunction = $this->Ajax->remoteFunction(
-					array(
-						'url' => $url,
-						'update' => 'popup-content1',
-						'evalScripts' => true
-					)
-				);
+					if(questionnaired2pdv93Id === '') {
+						eval(add.replace('%23personneId%23', personneId));
+					} else {
+						eval(edit.replace('%23questionnaired2pdv93Id%23', questionnaired2pdv93Id));
+					}
 
-				echo "function ajax{$result['Personne']['id']}() { {$remoteFunction}; $( 'Questionnaired2pdv93ModalForm' ).show(); }\n";
-			}
-		?>
+					$( 'Questionnaired2pdv93ModalForm' ).show();
+				};
 		//]]>
 		</script>
 	<?php endif; ?>
