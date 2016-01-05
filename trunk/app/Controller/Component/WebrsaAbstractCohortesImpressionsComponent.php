@@ -42,8 +42,8 @@
 		}
 
 		/**
-		 * Retourne un array de PDF, sous la clé <FIXME> à partir du query, ou
-		 * le nombre de documents n'ayant pas pu être imprimés.
+		 * Retourne un array de PDF, sous la clé $params['documentPath'] (par défaut : Pdf.document) 
+		 * à partir du query, ou le nombre de documents n'ayant pas pu être imprimés.
 		 *
 		 * @param array $query
 		 * @param array $params
@@ -78,7 +78,7 @@
 		 * à jour d'une date d'impression).
 		 * Cette fonction doit retourner vrai pour que l'envoi se fasse.
 		 *
-		 * @param array $results
+		 * @param array $results - Contenu du retour de la fonction _pdfs()
 		 * @param array $params
 		 * @return boolean
 		 */
@@ -134,9 +134,9 @@
 			$query = $this->_query( $filters, $params );
 
 			$results = $this->_pdfs( $query, $params );
-
+			
 			$content = $this->_concat( $results, $params );
-
+			
 			$success = ( $content !== false ) && $this->_postProcess( $results, $params );
 
 			$this->_send( $success, $content, $params );

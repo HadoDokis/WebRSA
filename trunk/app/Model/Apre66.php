@@ -252,7 +252,7 @@
 		 * @param integer $apre_id
 		 * @return string
 		 */
-		public function getNotificationAprePdf( $apre_id ) {
+		public function getNotificationAprePdf( $apre_id, $update = true ) {
 			$apre = $this->find(
 				'first',
 				array(
@@ -315,16 +315,18 @@
 			);
 
 			// On sauvagarde la date de notification si ce n'est pas déjà fait.
-			$recursive = $this->recursive;
-			$this->recursive = -1;
-			$this->updateAllUnBound(
-				array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ),
-				array(
-					'"Apre66"."id"' => $apre_id,
-					'"Apre66"."datenotifapre" IS NULL'
-				)
-			);
-			$this->recursive = $recursive;
+			if ($update) {
+				$recursive = $this->recursive;
+				$this->recursive = -1;
+				$this->updateAllUnBound(
+					array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ),
+					array(
+						'"Apre66"."id"' => $apre_id,
+						'"Apre66"."datenotifapre" IS NULL'
+					)
+				);
+				$this->recursive = $recursive;
+			}
 
 			// Construction du champ virtuel Structurereferente.adresse
 			$apre['Structurereferente']['adresse'] = implode(
@@ -352,7 +354,7 @@
 // 		public function autorisationPlafondAideapre66( $aideapre66_id, $personne_id ){
 //
 // 		}
-
+		
 		/**
 		 * Retourne le chemin vers le modèle odt utilisé pour l'APRE 66
 		 *

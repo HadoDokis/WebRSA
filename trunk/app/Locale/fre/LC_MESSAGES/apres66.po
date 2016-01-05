@@ -51,3 +51,15 @@ msgstr "Motif du rejet"
 
 msgid "data[Cohorte][][Aideapre66][datemontantaccorde]"
 msgstr "Date de la décision"
+
+msgid "/Apres66/cohorte_imprimer/:heading"
+msgstr "APREs à notifier"
+
+msgid "Apres66.cohorte_imprimer"
+msgstr "Rechercher par APRE"
+
+msgid "/Apres66/notifications"
+msgstr "Notifications"
+
+msgid "/Apres66/notifications/#Apre66.id#"
+msgstr "Notifier la décision"

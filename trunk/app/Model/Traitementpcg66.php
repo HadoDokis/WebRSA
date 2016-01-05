@@ -408,7 +408,7 @@
 		/**
 		 * FIXME: faire une étape de validation
 		 */
-		public function sauvegardeTraitement($data) {debug($data);
+		public function sauvegardeTraitement($data) {
 			$passageEpd = false;
 
 			$dossierep = 0;
