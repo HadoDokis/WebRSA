@@ -96,6 +96,11 @@
 						'Aideapre66.montantpropose',
 						'Aideapre66.datemontantpropose',
 						'Aideapre66.typeaideapre66_id',
+						'Apre66.nb_fichiers_lies' => '(SELECT COUNT(*) '
+							. 'FROM fichiersmodules AS f '
+							. 'WHERE f.fk_value = "Apre66"."id" '
+							. 'AND f.modele = \'Apre66\''
+							. ') AS "Apre66__nb_fichiers_lies"'
 					)
 				);
 

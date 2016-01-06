@@ -69,3 +69,24 @@ msgstr "APREs notifiées"
 
 msgid "Apres66.cohorte_notifiees"
 msgstr "Rechercher par APRE"
+
+msgid "/Apres66/cohorte_transfert/:heading"
+msgstr "APREs à transférer à la cellule"
+
+msgid "Apres66.cohorte_transfert"
+msgstr "Rechercher par APRE"
+
+msgid "Apre66.nb_fichiers_lies"
+msgstr "Nombre de fichiers liés"
+
+msgid "/Apres66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Apres66/filelink/#Apre66.id#"
+msgstr "Fichiers liés (#Apre66.nb_fichiers_lies#)"
+
+msgid "data[Cohorte][][Apre66][id]"
+msgstr "Rafraîchir les fichiers liés"
+
+msgid "data[Cohorte][][Apre66][istransfere]"
+msgstr "Transférer cellule"

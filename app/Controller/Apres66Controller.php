@@ -53,6 +53,9 @@
 					'cohorte_notifiees' => array(
 						'filter' => 'Search'
 					),
+					'cohorte_transfert' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -62,7 +65,7 @@
 			'add' => 'Apres66:edit'
 		);
 
-		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajax_nb_fichiers_lies' );
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -1105,6 +1108,49 @@ $success = true; // FIXME
 		public function exportcsv_notifiees() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_transfert() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Transfert' ) );
+			
+			$this->Aideapre66->validate = array();
+			$this->Apre66->validate = array();
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_transfert() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Transfert' ) );
+		}
+		
+		/**
+		 * Permet d'obtenir à partir d'un Apre66.id le nombre de fichiers liés
+		 */
+		public function ajax_get_nb_fichiers_lies() {
+			$apre66_id = $this->request->data['Apre66_id'];
+			$result = $this->Apre66->find(
+				'first',
+				array(
+					'fields' => '(SELECT COUNT(*) '
+						. 'FROM fichiersmodules AS f '
+						. 'WHERE f.fk_value = "Apre66"."id" '
+						. 'AND f.modele = \'Apre66\''
+						. ') AS "Apre66__nb_fichiers_lies"',
+					'conditions' => array(
+						'Apre66.id' => $apre66_id
+					)
+				)
+			);
+			
+			$this->set( 'json', Hash::get($result, 'Apre66.nb_fichiers_lies') );
+			$this->layout = 'ajax';
+			$this->render( '/Elements/json' );
 		}
 	}
 ?>

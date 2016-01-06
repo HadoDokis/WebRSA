@@ -54,6 +54,7 @@
 			$options = parent::_optionsRecords( $params );
 			$options['Aideapre66']['themeapre66_id'] = $Controller->Apre66->Aideapre66->Themeapre66->find( 'list' );
 			$options['Aideapre66']['typeaideapre66_id'] = $Controller->Apre66->Aideapre66->Typeaideapre66->listOptions();
+			$options['Apre66']['referent_id'] = $Controller->Apre66->Referent->find( 'list' );
 			
 			return $options;
 		}
@@ -96,7 +97,7 @@
 			$Controller = $this->_Collection->getController();
 			$params = parent::_params( $params );
 			
-			if ( isset($Controller->request->data[$params['cohorteKey']]) ) {
+			if ( $Controller->action === 'cohorte_validation' && isset($Controller->request->data[$params['cohorteKey']]) ) {
 				foreach ($Controller->request->data[$params['cohorteKey']] as $key => $value) {
 					if ( !isset($value['Aideapre66']['montantaccorde']) ) {
 						$Controller->request->data[$params['cohorteKey']][$key]['Aideapre66']['montantaccorde'] = $value['Aideapre66']['montantpropose'];
