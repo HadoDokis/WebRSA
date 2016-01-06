@@ -102,6 +102,22 @@
 				'component' => 'WebrsaCohortesApres66Impressions',
 				'keys' => array( 'results.fields' )
 			),
+			'Apres66.cohorte_notifiees' => array(
+				'type' => 'search',
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Imprimer',
+				'component' => 'WebrsaCohortesApres66Impressions',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Apres66.exportcsv_notifiees' => array(
+				'type' => 'search',
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Imprimer',
+				'component' => 'WebrsaCohortesApres66Impressions',
+				'keys' => array( 'results.fields' )
+			),
 			'Bilansparcours66.search' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Bilanparcours66',

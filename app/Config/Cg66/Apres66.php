@@ -203,4 +203,57 @@
 			'ini_set' => Configure::read( 'ConfigurableQuery.Apres66.cohorte_imprimer.ini_set' ),
 		)
 	);
+	
+	/**
+	 * Cohorte
+	 */
+	Configure::write(
+		'ConfigurableQuery.Apres66.cohorte_notifiees',
+		array(
+			// 1. Filtres de recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Apres66.cohorte_imprimer.filters' ),
+			// 2. Recherche
+			'query' => array(
+				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
+				'restrict' => array(
+					'Apre66.etatdossierapre' => 'VAL',
+				),
+				// 2.2 Conditions supplémentaires optionnelles
+				'conditions' => array(
+					'Apre66.datenotifapre IS NOT NULL',
+					'Typeaideapre66.isincohorte' => 'O'
+				),
+				// 2.3 Tri par défaut
+				'order' => array(
+					'Personne.nom',
+					'Personne.prenom'
+				)
+			),
+			// 3. Nombre d'enregistrements par page
+			'limit' => 10,
+			// 4. Lancer la recherche au premier accès à la page ?
+			'auto' => false,
+			// 5. Résultats de la recherche
+			'results' => Configure::read( 'ConfigurableQuery.Apres66.cohorte_imprimer.results' ),
+			// 6. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Apres66.cohorte_imprimer.ini_set' ),
+		)
+	);
+
+	/**
+	 * Export CSV
+	 */
+	Configure::write(
+		'ConfigurableQuery.Apres66.exportcsv_notifiees',
+		array(
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Apres66.exportcsv_imprimer.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Apres66.exportcsv_imprimer.query' ),
+			// 3. Résultats de la recherche
+			'results' => Configure::read( 'ConfigurableQuery.Apres66.exportcsv_imprimer.results' ),
+			// 4. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Apres66.exportcsv_imprimer.ini_set' ),
+		)
+	);
 ?>

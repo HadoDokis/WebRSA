@@ -50,6 +50,9 @@
 					'cohorte_imprimer' => array(
 						'filter' => 'Search'
 					),
+					'cohorte_notifiees' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -1066,6 +1069,40 @@ $success = true; // FIXME
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_imprimer() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
+			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_notifiees() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
+			$Recherches->search( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
+			
+			$this->Aideapre66->validate = array();
+			$this->Apre66->validate = array();
+			
+			$this->view = 'cohorte_imprimer';
+		}
+		
+		/**
+		 * Impression de la cohorte
+		 */
+		public function cohorte_notifiees_impressions() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
+			$Cohortes->impressions( 
+				array(
+					'modelRechercheName' => 'WebrsaCohorteApre66Imprimer',
+					'configurableQueryFieldsKey' => 'Apres66.cohorte_notifiees'
+				) 
+			);
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_notifiees() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
 		}
