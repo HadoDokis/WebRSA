@@ -101,6 +101,11 @@
 	);
 ?>
 <script>
+	dependantSelect(
+		'SearchAideapre66Typeaideapre66Id',
+		'SearchAideapre66Themeapre66Id'
+	);
+	
 	$$('td.action>a.imprimer').each(function(div){
 		Event.observe(div, 'click', function(){
 			div.addClassName( 'visited' );

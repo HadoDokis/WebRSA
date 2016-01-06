@@ -23,12 +23,7 @@
 		'allowEmpty' => true,
 		'on' => null
 	);
-	$validationCohorte = array(
-		'Aideapre66' => array(
-			'montantaccorde' => array('numeric' => array('rule' => array('numeric'), 'allowEmpty' => false)),
-			'datemontantaccorde' => $dateRule
-		),
-	);
+	$validationCohorte = array();
 	echo $this->FormValidator->generateJavascript($validationCohorte, false);
 
 	$this->start( 'custom_search_filters' );
@@ -64,37 +59,10 @@
 	
 	foreach ($results as $i => $result) {
 	?>
-		<script type="text/javascript">
+		<script type="text/javascript">	
 			observeDisableElementsOnValues(
-				[
-					'Cohorte<?php echo $i;?>Aideapre66Decisionapre',
-					'Cohorte<?php echo $i;?>Aideapre66DatemontantaccordeDay',
-					'Cohorte<?php echo $i;?>Aideapre66DatemontantaccordeMonth',
-					'Cohorte<?php echo $i;?>Aideapre66DatemontantaccordeYear'
-				],
-				[
-					{element: 'Cohorte<?php echo $i;?>Apre66Selection', value: '1', operateur: '!='}
-				]
-			);
-	
-			observeDisableElementsOnValues(
-				'Cohorte<?php echo $i;?>Aideapre66Montantaccorde', 
-				[
-					{element: 'Cohorte<?php echo $i;?>Apre66Selection', value: '1', operateur: '!='},
-					{element: 'Cohorte<?php echo $i;?>Aideapre66Decisionapre', value: 'REF', operateur: '=='}
-				],
-				false, // Hide
-				true   // Une condition rempli suffit à désactiver l'element
-			);
-	
-			observeDisableElementsOnValues(
-				'Cohorte<?php echo $i;?>Aideapre66Motifrejetequipe', 
-				[
-					{element: 'Cohorte<?php echo $i;?>Apre66Selection', value: '1', operateur: '!='},
-					{element: 'Cohorte<?php echo $i;?>Aideapre66Decisionapre', value: 'ACC', operateur: '=='}
-				],
-				false, // Hide
-				true   // Une condition rempli suffit à désactiver l'element
+				'Cohorte<?php echo $i;?>Apre66Istransfere',
+				{element: 'Cohorte<?php echo $i;?>Apre66NbFichiersLies', value: '0'}
 			);
 		</script>
 	<?php
@@ -105,4 +73,30 @@
                 'SearchAideapre66Typeaideapre66Id',
                 'SearchAideapre66Themeapre66Id'
             );
+	
+			$$('input[type="button"].refresh').each(function(button){
+				button.observe('click', function() {
+					var input = this.up('div').select('input[type="text"]').first();
+					console.log(input.getValue());
+					
+					var td = this.up('tr').select('td.ajax_refresh').first();
+					td.innerHTML = '?';
+					
+					new Ajax.Request('<?php echo Router::url( array( 'action' => 'ajax_get_nb_fichiers_lies' ) ); ?>/', {
+						asynchronous:true, 
+						evalScripts:true, 
+						parameters: {
+							'Apre66.id': input.getValue(),
+						}, 
+						requestHeaders: {Accept: 'application/json'},
+						onComplete:function(request, json) {
+							var nbFichiersLiesInput = $(input.id.substr(0, input.id.indexOf('Id')) + 'NbFichiersLies');
+							td.innerHTML = json;
+							
+							nbFichiersLiesInput.setValue(json);
+							nbFichiersLiesInput.simulate('change');
+						}
+					});
+				});
+			});
 		</script>

@@ -118,6 +118,20 @@
 				'component' => 'WebrsaCohortesApres66Impressions',
 				'keys' => array( 'results.fields' )
 			),
+			'Apres66.cohorte_transfert' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Transfert',
+				'component' => 'WebrsaCohortesApres66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Apres66.exportcsv_transfert' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Apre66',
+				'modelRechercheName' => 'WebrsaCohorteApre66Transfert',
+				'component' => 'WebrsaCohortesApres66New',
+				'keys' => array( 'results.fields' )
+			),
 			'Bilansparcours66.search' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Bilanparcours66',
