@@ -12,6 +12,7 @@
 				'À notifier' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ) ),
 				'À notifier (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_imprimer' ) ),
 				'Notifiées' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notifiees' ) ),
+				'Notifiées (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_notifiees' ) ),
 				'Transfert cellule' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),
 				'Traitement cellule' => array( 'url' =>  array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ) ),
 			),

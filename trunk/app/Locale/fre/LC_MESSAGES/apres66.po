@@ -63,3 +63,9 @@ msgstr "Notifications"
 
 msgid "/Apres66/notifications/#Apre66.id#"
 msgstr "Notifier la décision"
+
+msgid "/Apres66/cohorte_notifiees/:heading"
+msgstr "APREs notifiées"
+
+msgid "Apres66.cohorte_notifiees"
+msgstr "Rechercher par APRE"
