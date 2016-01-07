@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohorteApre66Transfert.
+	 * Code source de la classe WebrsaCohorteApre66Traitement.
 	 *
 	 * PHP 5.3
 	 *
@@ -11,18 +11,18 @@
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
-	 * La classe WebrsaCohorteApre66Transfert ...
+	 * La classe WebrsaCohorteApre66Traitement ...
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaCohorteApre66Transfert extends AbstractWebrsaCohorteApre66
+	class WebrsaCohorteApre66Traitement extends AbstractWebrsaCohorteApre66
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'WebrsaCohorteApre66Transfert';
+		public $name = 'WebrsaCohorteApre66Traitement';
 		
 		/**
 		 * Liste des champs de formulaire à inserer dans le tableau de résultats
@@ -32,9 +32,8 @@
 		public $cohorteFields = array(
 			'Aideapre66.id' => array( 'type' => 'hidden' ),
 			'Apre66.personne_id' => array( 'type' => 'hidden' ),
-			'Apre66.nb_fichiers_lies' => array( 'type' => 'hidden' ),
-			'Apre66.id' => array( 'type' => 'text', 'style' => 'display: none;', 'before' => '<input type="button" value="Rafraîchir" class="refresh"/>' ),
-			'Apre66.istransfere' => array( 'type' => 'checkbox' ),
+			'Apre66.id' => array( 'type' => 'hidden' ),
+			'Apre66.istraite' => array( 'type' => 'checkbox' ),
 		);
 		
 		/**
@@ -46,14 +45,9 @@
 		 */
 		public function saveCohorte( array $data, array $params = array(), $user_id = null ) {
 			foreach ( $data as $key => $value ) {
-				$data[$key]['Apre66']['etatdossierapre'] = 'TRA';
-				
 				// Si non selectionné, on retire tout
-				if ( $value['Apre66']['istransfere'] === '0' ) {
+				if ( $value['Apre66']['istraite'] === '0' ) {
 					unset($data[$key]);
-				}
-				else {
-					unset($data[$key]['Apre66']['nb_fichiers_lies']);
 				}
 			}
 			

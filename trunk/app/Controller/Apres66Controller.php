@@ -56,6 +56,9 @@
 					'cohorte_transfert' => array(
 						'filter' => 'Search'
 					),
+					'cohorte_traitement' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -1127,6 +1130,25 @@ $success = true; // FIXME
 		public function exportcsv_transfert() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Transfert' ) );
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_traitement() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Traitement' ) );
+			
+			$this->Aideapre66->validate = array();
+			$this->Apre66->validate = array();
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_traitement() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Traitement' ) );
 		}
 		
 		/**
