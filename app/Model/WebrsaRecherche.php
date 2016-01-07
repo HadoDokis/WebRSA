@@ -44,6 +44,34 @@
 		 * @var array
 		 */
 		public $searches = array(
+			'ActionscandidatsPersonnes.search' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'ActioncandidatPersonne',
+				'modelRechercheName' => 'WebrsaRechercheActioncandidatPersonne',
+				'component' => 'WebrsaRecherchesActionscandidatsPersonnesNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'ActionscandidatsPersonnes.exportcsv' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'ActioncandidatPersonne',
+				'modelRechercheName' => 'WebrsaRechercheActioncandidatPersonne',
+				'component' => 'WebrsaRecherchesActionscandidatsPersonnesNew',
+				'keys' => array( 'results.fields' )
+			),
+			'ActionscandidatsPersonnes.cohorte_enattente' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'ActioncandidatPersonne',
+				'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEnattente',
+				'component' => 'WebrsaCohortesActionscandidatsPersonnes',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'ActionscandidatsPersonnes.exportcsv_enattente' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'ActioncandidatPersonne',
+				'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEnattente',
+				'component' => 'WebrsaCohortesActionscandidatsPersonnes',
+				'keys' => array( 'results.fields' )
+			),
 			'Apres.search' => array(
 				'departement' => array( 66, 93 ),
 				'modelName' => 'Apre',

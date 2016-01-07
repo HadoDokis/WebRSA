@@ -26,22 +26,31 @@
 			'Locale', 
 			'Cake1xLegacy.Ajax', 
 			'Xform', 
-			'Default2', 
-			'Fileuploader',
+			'Xhtml', 
+			'Fileuploader', 
+			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 		);
 		
-		public $components = array( 
+		public $components = array(
 			'Default', 
 			'Gedooo.Gedooo', 
 			'Fileuploader', 
 			'Jetons2', 
 			'DossiersMenus', 
-			'InsertionsAllocataires' ,
+			'InsertionsAllocataires',
+			'Cohortes',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search' )
+				'actions' => array( 
+					'search' => array(
+						'filter' => 'Search'
+					),
+					'cohorte_enattente' => array(
+						'filter' => 'Search'
+					),
+				)
 			),
 		);
 		
@@ -1028,6 +1037,25 @@
 		public function exportcsv() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnesNew' );
 			$Recherches->exportcsv();
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function cohorte_enattente() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
+			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEnattente' ) );
+			
+			$this->ActioncandidatPersonne->validate = array();
+			$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->validate = array();
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_enattente() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
+			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEnattente' ) );
 		}
 	}
 ?>

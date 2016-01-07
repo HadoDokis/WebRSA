@@ -42,3 +42,24 @@ msgstr "Nom du prestataire"
 
 msgid "ActioncandidatPersonne.motifsortie_id"
 msgstr "Motif de sortie"
+
+msgid "/ActionscandidatsPersonnes/cohorte_enattente/:heading"
+msgstr "Fiches de candidature en attente"
+
+msgid "ActionscandidatsPersonnes.cohorte_enattente"
+msgstr "Rechercher par Fiche de candidature"
+
+msgid "Search.Partenaire.codepartenaire"
+msgstr "Code partenaire"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][selection]"
+msgstr "Sélection"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][bilanvenu]"
+msgstr "Venu(e) ?"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][bilanretenu]"
+msgstr "Retenu(e) ?"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][infocomplementaire]"
+msgstr "Informations complémentaires"
