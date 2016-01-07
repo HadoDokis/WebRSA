@@ -90,3 +90,12 @@ msgstr "Rafraîchir les fichiers liés"
 
 msgid "data[Cohorte][][Apre66][istransfere]"
 msgstr "Transférer cellule"
+
+msgid "/Apres66/cohorte_traitement/:heading"
+msgstr "APREs à traiter par la cellule"
+
+msgid "Apres66.cohorte_traitement"
+msgstr "Rechercher par APRE"
+
+msgid "data[Cohorte][][Apre66][istraite]"
+msgstr "Traité"

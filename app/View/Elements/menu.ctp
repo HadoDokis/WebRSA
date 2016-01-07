@@ -16,6 +16,7 @@
 				'Transfert cellule' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),
 				'Transfert cellule (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_transfert' ) ),
 				'Traitement cellule' => array( 'url' =>  array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ) ),
+				'Traitement cellule (nouveau)' => array( 'url' =>  array( 'controller' => 'apres66', 'action' => 'cohorte_traitement' ) ),
 			),
 			'CER' => array(
 				'disabled' => ( !in_array( Configure::read( 'Cg.departement' ), array( 66, 93 ) ) ),
