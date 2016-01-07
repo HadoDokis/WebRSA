@@ -90,7 +90,9 @@
 				else if( $this->_isInputField( $field ) ) {
 					$for = "{$tableId}ColumnInput".Inflector::camelize( preg_replace( '/(\[|\])+/', '_', $field ) );
 					$theadTr[] = array(
-						__d( $domain, $field ) => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) )
+						//__d( $domain, $field ) => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) )
+						// NOTE : si cette ligne pose problème, il faudra corriger sur actionscandidats_personnes/cohorte_enattente
+						__m($field) => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) )
 					);
 				}
 				else if( $this->_isDataField( $field ) ) {

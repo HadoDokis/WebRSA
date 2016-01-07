@@ -25,20 +25,6 @@
 		public $name = 'WebrsaRechercheActioncandidatPersonne';
 
 		/**
-		 * Liste des clés de configuration utilisées par le moteur de recherche,
-		 * pour vérification du paramétrage.
-		 *
-		 * @see checkParametrage()
-		 *
-		 * @var array
-		 */
-		public $keysRecherche = array(
-			'ConfigurableQueryActionscandidatsPersonnes.search.fields',
-			'ConfigurableQueryActionscandidatsPersonnes.search.innerTable',
-			'ConfigurableQueryActionscandidatsPersonnes.exportcsv'
-		);
-
-		/**
 		 * Modèles utilisés par ce modèle.
 		 *
 		 * @var array
@@ -47,6 +33,7 @@
 			'Allocataire',
 			'ActioncandidatPersonne',
 			'Canton',
+			'WebrsaCohorteActioncandidatPersonneEnattente',
 		);
 
 		/**
@@ -79,64 +66,7 @@
 				'Progfichecandidature66' => 'LEFT OUTER',
 			);
 
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
-			$query = Cache::read( $cacheKey );
-
-			if( $query === false ) {
-				$query = $this->Allocataire->searchQuery( $types, 'ActioncandidatPersonne' );
-
-				// 1. Ajout des champs supplémentaires
-				$query['fields'] = array_merge(
-					$query['fields'],
-					ConfigurableQueryFields::getModelsFields(
-						array(
-							$this->ActioncandidatPersonne,
-							$this->ActioncandidatPersonne->Referent,
-							$this->ActioncandidatPersonne->Actioncandidat,
-							$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire,
-							$this->ActioncandidatPersonne->Progfichecandidature66,
-						)
-					),
-					// Champs nécessaires au traitement de la search
-					array(
-						'ActioncandidatPersonne.id',
-						'ActioncandidatPersonne.personne_id',
-						'ActioncandidatPersonne.datebilan'
-					)
-				);
-
-				$joinActionPartenaire = array(
-					'table' => '"partenaires"',
-					'alias' => 'Partenaire',
-					'type' => 'LEFT OUTER',
-					'conditions' => '"Partenaire"."actioncandidat_id" = {$__cakeID__$} AND "Partenaire"."partenaire_id" = .id'
-				);
-
-				// 2. Jointure
-				$query['joins'] = array_merge(
-					$query['joins'],
-					array(
-						$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => $types['Referent'] ) ),
-						$this->ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => $types['Actioncandidat'] ) ),
-						$this->ActioncandidatPersonne->Actioncandidat->join( 'Contactpartenaire', array( 'type' => $types['Contactpartenaire'] ) ),
-						$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => $types['Partenaire'] ) ),
-					)
-				);
-
-				if ( (int)Configure::read('Cg.departement') === 66 ) {
-					$query['joins'][] = $this->ActioncandidatPersonne->join( 'Progfichecandidature66', array( 'type' => $types['Progfichecandidature66'] ) );
-				}
-
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
-
-				Cache::write( $cacheKey, $query );
-			}
-
-			return $query;
+			return $this->WebrsaCohorteActioncandidatPersonneEnattente->searchQuery($types);
 		}
 
 		/**
@@ -148,44 +78,7 @@
 		 * @return array
 		 */
 		public function searchConditions( array $query, array $search ) {
-			$query = $this->Allocataire->searchConditions( $query, $search );
-
-			/**
-			 * Generateur de conditions
-			 */
-			$paths = array(
-				'Contactpartenaire.partenaire_id',
-				'ActioncandidatPersonne.referent_id',
-				'ActioncandidatPersonne.positionfiche',
-			);
-
-			// Fils de dependantSelect
-			$pathsToExplode = array(
-				'ActioncandidatPersonne.actioncandidat_id',
-			);
-
-			$pathsDate = array(
-				'ActioncandidatPersonne.datesignature',
-			);
-
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( $value !== null && $value !== '' ) {
-					$query['conditions'][$path] = $value;
-				}
-			}
-
-			foreach( $pathsToExplode as $path ) {
-				$value = Hash::get( $search, $path );
-				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
-					list(,$value) = explode('_', $value);
-					$query['conditions'][$path] = $value;
-				}
-			}
-
-			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
-
-			return $query;
+			return $this->WebrsaCohorteActioncandidatPersonneEnattente->searchConditions($query, $search);
 		}
 	}
 ?>

@@ -332,6 +332,10 @@ function getElementByString(string) {
  *		- value: Valeur de l'element pour activer/desactiver le disabled
  *		- operateur || operator: Par defaut defini à "=", accepte : true, =, ==, ===, false, !, !=, !==, <, >, <=, >=
  *		
+ *	Note :
+ *		- Un input checkbox à une valeur soit de null, soit de '1'
+ *		- Un input radio à une valeur soit de null, soit du value de l'element
+ *		
  * @param {array|string} elements Liste des elements (DOM ou string) sur lesquels appliquer le disable ex: [ $(monElementId), $(monElementId2) ]
  * @param {array|object} values Liste des valeurs à avoir pour appliquer le disable ex: [ {element: $(monElement), value: '1', operator: '!='}, ... ]
  * @param {boolean} hide Si mis à TRUE, cache l'element plutôt que de le griser
@@ -367,6 +371,10 @@ function observeDisableElementsOnValues(elements, values, hide, oneValueIsValid)
  *		- element: 'MonElement' ou 'Mon.element' ou $('MonElement)
  *		- value: Valeur de l'element pour activer/desactiver le disabled
  *		- operateur || operator: Par defaut defini à "=", accepte : true, =, ==, ===, false, !, !=, !==, <, >, <=, >=
+ *		
+ * Note :
+ *		- Un input checkbox à une valeur soit de null, soit de '1'
+ *		- Un input radio à une valeur soit de null, soit du value de l'element
  * 
  * @param {array|string} elements Liste des elements (DOM ou string) sur lesquels appliquer le disable ex: [ $(monElementId), $(monElementId2) ]
  * @param {array|object} values Liste des valeurs à avoir pour appliquer le disable ex: [ {element: $(monElement), value: '1', operator: '!='}, ... ]
