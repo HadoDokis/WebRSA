@@ -45,6 +45,8 @@ class ContratsinsertionController extends AppController
 				'search',
 				'cohorte_nouveaux' => array( 'filter' => 'Search' ),
 				'cohorte_valides' => array( 'filter' => 'Search' ),
+				'cohorte_cersimpleavalider' => array( 'filter' => 'Search' ),
+				'cohorte_cerparticulieravalider' => array( 'filter' => 'Search' ),
 			),
 		),
 	);
@@ -1851,6 +1853,39 @@ class ContratsinsertionController extends AppController
 				'modelRechercheName' => 'WebrsaCohorteContratinsertionValide'
 			)
 		);
+	}
+
+	/**
+	 * Cohorte de CER validés
+	 */
+	public function cohorte_cersimpleavalider() {
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
+	}
+
+	/**
+	 * Cohorte de CER validés
+	 */
+	public function exportcsv_cersimpleavalider() {
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
+	}
+
+	/**
+	 * Cohorte de CER validés
+	 */
+	public function cohorte_cerparticulieravalider() {
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
+		$this->view = 'cohorte_cersimpleavalider';
+	}
+
+	/**
+	 * Cohorte de CER validés
+	 */
+	public function exportcsv_cerparticulieravalider() {
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
 	}
 }
 ?>

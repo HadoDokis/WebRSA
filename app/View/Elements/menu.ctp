@@ -24,9 +24,17 @@
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 					'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxsimple' )
 				),
+				'Contrats Simples à valider (nouveau)' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_cersimpleavalider' )
+				),
 				'Contrats Particuliers à valider' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 					'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxparticulier' )
+				),
+				'Contrats Particuliers à valider (nouveau)' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_cerparticulieravalider' )
 				),
 				'Décisions prises' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),

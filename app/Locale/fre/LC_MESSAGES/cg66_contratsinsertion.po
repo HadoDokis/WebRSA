@@ -1,0 +1,47 @@
+# Traductions de cg66_contratsinsertion.po
+# @license: Expression license is undefined on line 3, column 15 in Templates/CakePHP/CakePHP locale.po.
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Contratsinsertion/cohorte_cersimpleavalider/:heading"
+msgstr "Contrats Simples à valider"
+
+msgid "Contratsinsertion.cohorte_cersimpleavalider"
+msgstr "Rechercher par CER"
+
+msgid "data[Cohorte][][Contratinsertion][selection]"
+msgstr "Sélectionner"
+
+msgid "data[Cohorte][][Contratinsertion][datedecision]"
+msgstr "Date de décision"
+
+msgid "/Contratsinsertion/cohorte_cerparticulieravalider/:heading"
+msgstr "Contrats Particuliers à valider"
+
+msgid "Contratsinsertion.cohorte_cerparticulieravalider"
+msgstr "Rechercher par CER"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
