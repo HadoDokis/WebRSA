@@ -234,6 +234,34 @@
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Contratsinsertion.cohorte_cersimpleavalider' => array(
+				'departement' => 66,
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
+				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Contratsinsertion.exportcsv_cersimpleavalider' => array(
+				'departement' => 66,
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
+				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'keys' => array( 'results.fields' )
+			),
+			'Contratsinsertion.cohorte_cerparticulieravalider' => array(
+				'departement' => 66,
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
+				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Contratsinsertion.exportcsv_cerparticulieravalider' => array(
+				'departement' => 66,
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
+				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'keys' => array( 'results.fields' )
+			),
 			'Cuis.search' => array(
 				'departement' => 66,
 				'modelName' => 'Cui',
