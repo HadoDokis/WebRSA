@@ -87,7 +87,12 @@
 					array(
 						'ActioncandidatPersonne.id',
 						'ActioncandidatPersonne.personne_id',
-						'ActioncandidatPersonne.datebilan'
+						'ActioncandidatPersonne.datebilan',
+						'( ARRAY_TO_STRING( ARRAY( '
+							. 'SELECT a_m.motifsortie_id '
+							. 'FROM actionscandidats_motifssortie AS a_m '
+							. 'WHERE a_m.actioncandidat_id = "Actioncandidat"."id" '
+						. '), \'_\') ) AS "ActioncandidatPersonne__motifsortie"'
 					)
 				);
 

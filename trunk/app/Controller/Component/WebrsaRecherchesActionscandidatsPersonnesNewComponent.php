@@ -41,6 +41,7 @@
 			$options['ActioncandidatPersonne']['referent_id'] = $Controller->ActioncandidatPersonne->Referent->find( 'list', array( 'recursive' => -1, 'order' => array( 'nom', 'prenom' ) ) );
 			$options['Contactpartenaire']['partenaire_id'] = $Controller->ActioncandidatPersonne->Actioncandidat->Partenaire->find( 'list', array( 'fields' => array( 'libstruc' ), 'order' => array( 'Partenaire.libstruc ASC' ) ) );
 			$options['ActioncandidatPersonne']['actioncandidat_id'] = $Controller->ActioncandidatPersonne->Actioncandidat->listActionParPartenaire();
+			$options['ActioncandidatPersonne']['motifsortie_id'] = $Controller->ActioncandidatPersonne->Motifsortie->find( 'list', array( 'order' => array( 'Motifsortie.name ASC') ) );
 
 			return $options;
 		}
@@ -62,6 +63,7 @@
 					'Referent',
 					'Partenaire',
 					'Actioncandidat',
+					'Motifsortie',
 				)
 			);
 

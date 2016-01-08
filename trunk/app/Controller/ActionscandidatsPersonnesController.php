@@ -50,6 +50,9 @@
 					'cohorte_enattente' => array(
 						'filter' => 'Search'
 					),
+					'cohorte_encours' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -1056,6 +1059,25 @@
 		public function exportcsv_enattente() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEnattente' ) );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function cohorte_encours() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
+			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEncours' ) );
+			
+			$this->ActioncandidatPersonne->validate = array();
+			$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->validate = array();
+		}
+
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_encours() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
+			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEncours' ) );
 		}
 	}
 ?>
