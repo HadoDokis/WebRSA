@@ -54,6 +54,7 @@
 				'Fiches en attente' => array( 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ) ),
 				'Fiches en attente (nouveau)' => array( 'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'cohorte_enattente' ) ),
 				'Fiches en cours' => array( 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ) ),
+				'Fiches en cours (nouveau)' => array( 'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'cohorte_encours' ) ),
 			),
 			'Dossiers PCGs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),

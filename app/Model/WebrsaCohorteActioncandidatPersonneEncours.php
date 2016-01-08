@@ -15,14 +15,14 @@
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaCohorteActioncandidatPersonneEnattente extends AbstractWebrsaCohorteActioncandidatPersonne
+	class WebrsaCohorteActioncandidatPersonneEncours extends AbstractWebrsaCohorteActioncandidatPersonne
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'WebrsaCohorteActioncandidatPersonneEnattente';
+		public $name = 'WebrsaCohorteActioncandidatPersonneEncours';
 		
 		/**
 		 * Liste des champs de formulaire à inserer dans le tableau de résultats
@@ -31,10 +31,10 @@
 		 */
 		public $cohorteFields = array(
 			'ActioncandidatPersonne.id' => array( 'type' => 'hidden' ),
-			'ActioncandidatPersonne.selection' => array( 'type' => 'checkbox' ),
-			'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'legend' => false ),
-			'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'legend' => false ),
-			'ActioncandidatPersonne.infocomplementaire' => array( 'type' => 'textarea' ),
+			'ActioncandidatPersonne.motifsortie' => array( 'type' => 'hidden' ),
+			'ActioncandidatPersonne.issortie' => array( 'type' => 'checkbox' ),
+			'ActioncandidatPersonne.motifsortie_id' => array( 'empty' => true ),
+			'ActioncandidatPersonne.sortiele' => array( 'type' => 'date' ),
 		);
 		
 		/**
@@ -47,7 +47,7 @@
 		public function saveCohorte( array $data, array $params = array(), $user_id = null ) {
 			foreach ( $data as $key => $value ) {
 				// Si non selectionné, on retire tout
-				if ( $value['ActioncandidatPersonne']['selection'] === '0' ) {
+				if ( $value['ActioncandidatPersonne']['issortie'] === '0' ) {
 					unset($data[$key]);
 				}
 			}

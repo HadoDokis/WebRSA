@@ -63,3 +63,18 @@ msgstr "Retenu(e) ?"
 
 msgid "data[Cohorte][][ActioncandidatPersonne][infocomplementaire]"
 msgstr "Informations complémentaires"
+
+msgid "/ActionscandidatsPersonnes/cohorte_encours/:heading"
+msgstr "Fiches de candidature en cours"
+
+msgid "ActionscandidatsPersonnes.cohorte_encours"
+msgstr "Rechercher par Fiche de candidature"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][issortie]"
+msgstr "Sortie"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][motifsortie_id]"
+msgstr "Motif de sortie"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][sortiele]"
+msgstr "Date de sortie"
