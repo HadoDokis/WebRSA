@@ -161,3 +161,27 @@ msgstr "Date validation"
 
 msgid "data[Cohorte][][Contratinsertion][observ_ci]"
 msgstr "Observations"
+
+msgid "/Contratsinsertion/search_valides/:heading"
+msgstr "Décisions prises"
+
+msgid "/Contratsinsertion/ficheliaisoncer"
+msgstr "Fiche de liaison"
+
+msgid "/Contratsinsertion/notifbenef"
+msgstr "Notification bénéficiaire"
+
+msgid "/Contratsinsertion/notificationsop"
+msgstr "Notification OP"
+
+msgid "/Contratsinsertion/ficheliaisoncer/#Contratinsertion.id#"
+msgstr "Fiche de liaison"
+
+msgid "/Contratsinsertion/notifbenef/#Contratinsertion.id#"
+msgstr "Notification bénéficiaire"
+
+msgid "/Contratsinsertion/notificationsop/#Contratinsertion.id#"
+msgstr "Décisions prises"
+
+msgid "/Contratsinsertion/impression/#Contratinsertion.id#"
+msgstr "Impression"

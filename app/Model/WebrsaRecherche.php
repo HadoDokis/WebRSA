@@ -234,6 +234,20 @@
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
 				'keys' => array( 'results.fields' )
 			),
+			'Contratsinsertion.search_valides' => array(
+				'departement' => 66,
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaRechercheContratinsertionValides',
+				'component' => 'WebrsaRecherchesContratsinsertionNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Contratsinsertion.exportcsv_search_valides' => array(
+				'departement' => 66,
+				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaRechercheContratinsertionValides',
+				'component' => 'WebrsaRecherchesContratsinsertionNew',
+				'keys' => array( 'results.fields' )
+			),
 			'Contratsinsertion.cohorte_cersimpleavalider' => array(
 				'departement' => 66,
 				'modelName' => 'Contratinsertion',

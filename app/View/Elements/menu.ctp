@@ -40,6 +40,10 @@
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 					'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
 				),
+				'Décisions prises (nouveau)' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'search_valides' )
+				),
 				'Contrats à valider' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 					'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveaux' )

@@ -28,20 +28,5 @@ msgstr "Contrats Particuliers à valider"
 msgid "Contratsinsertion.cohorte_cerparticulieravalider"
 msgstr "Rechercher par CER"
 
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
+msgid "Contratsinsertion.search_valides"
+msgstr "Rechercher par CER"
