@@ -19,6 +19,37 @@ document.observe( "dom:loaded", function(){
 		});
 	});
 	
+	describe("evalCompare()", function() {
+		it("Les egalités renvoi true, les autres false", function() {
+			expect(evalCompare('1', true, '1')).toEqual(true);
+			expect(evalCompare('une chaine', '=', 'une chaine')).toEqual(true);
+			expect(evalCompare(123, '===', 123)).toEqual(true);
+			expect(evalCompare(123, '===', 321)).toEqual(false);
+		});
+		it("Les chiffres inferieurs...", function() {
+			expect(evalCompare('1', '<', '2')).toEqual(true);
+			expect(evalCompare('-2', '<', '-1')).toEqual(true);
+			expect(evalCompare(-5.26, '<', 12.89)).toEqual(true);
+			expect(evalCompare(-5.26, '<', -12.89)).toEqual(false);
+			expect(evalCompare(123, '<=', 123)).toEqual(true);
+			expect(evalCompare(123, '<', 123)).toEqual(false);
+		});
+		it("Les chiffres supérieurs...", function() {
+			expect(evalCompare('1', '>', '2')).toEqual(false);
+			expect(evalCompare('-2', '>', '-1')).toEqual(false);
+			expect(evalCompare(-5.26, '>', 12.89)).toEqual(false);
+			expect(evalCompare(-5.26, '>', -12.89)).toEqual(true);
+			expect(evalCompare(123, '>=', 123)).toEqual(true);
+			expect(evalCompare(123, '>', 123)).toEqual(false);
+		});
+		it("Les différents", function() {
+			expect(evalCompare('1', false, '1')).toEqual(false);
+			expect(evalCompare('une chaine', '!', 'une chaine')).toEqual(false);
+			expect(evalCompare(123, '!==', 123)).toEqual(false);
+			expect(evalCompare(123, '!==', 321)).toEqual(true);
+		});
+	});
+	
 	describe("disableElementsOnValues()", function() {
 		it("Désactive un element avec une seule condition", function() {
 			disableElementsOnValues(
@@ -90,7 +121,9 @@ document.observe( "dom:loaded", function(){
 				[
 					{element: 'SearchModel1Champ3TEST1', value: null}, // Condition vrai
 					{element: 'Model1Champ4', value: 'on', operator: '!='} // Condition fausse
-				]
+				],
+				false, // hide - Inutile dans ce test
+				false // Prend en compte toutes les conditions pour désactiver
 			);
 			expect($('Model1Champ1Day').readAttribute('disabled') !== null).toEqual( false );
 			
@@ -116,7 +149,9 @@ document.observe( "dom:loaded", function(){
 				[
 					{element: 'SearchModel1Champ3TEST1', value: null}, // Condition vrai
 					{element: 'Model1Champ4', value: 'on', operator: '!='} // Condition fausse
-				]
+				],
+				false, // hide - Inutile dans ce test
+				false // Prend en compte toutes les conditions pour désactiver
 			);
 			expect($('Model1Champ1Day').readAttribute('disabled') !== null).toEqual( false );
 			

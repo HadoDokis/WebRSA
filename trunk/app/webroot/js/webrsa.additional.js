@@ -325,6 +325,75 @@ function getElementByString(string) {
 }
 
 /**
+ * Désactive un element avec ou sans fonction element.disable()
+ * 
+ * @param {DOM} element à désactiver
+ */
+function disable( element ) {
+	if (typeof element.disable === 'function') {
+		element.disable();
+	} else {
+		element.style.pointerEvents = 'none';
+	}
+}
+
+/**
+ * Active un element avec ou sans fonction element.enable()
+ * 
+ * @param {DOM} element à désactiver
+ */
+function enable( element ) {
+	if (typeof element.enable === 'function') {
+		element.enable();
+	} else {
+		element.style.pointerEvents = 'auto';
+	}
+}
+
+/**
+ * Permet sans utiliser eval de comparer la valeur de deux champs en fonction d'un operateur
+ * 
+ * @param {DOM} value1
+ * @param {DOM} value2
+ * @param {string} operator accepte : true, =, ==, ===, false, !, !=, !==, <, >, <=, >=
+ * @returns {Boolean}
+ */
+function evalCompare( value1, operator, value2 ) {
+	var result, value1, value2;
+	
+	switch (operator === undefined ? '=' : operator) {
+		case true:
+		case '=':
+		case '==':
+		case '===':
+			result = value1 === value2;
+			break;
+		case false:
+		case '!':
+		case '!=':
+		case '!==':
+			result = value1 !== value2;
+			break;
+		case '<':
+			result = parseFloat(value1, 10) < parseFloat(value2, 10);
+			break;
+		case '>':
+			result = parseFloat(value1, 10) > parseFloat(value2, 10);
+			break;
+		case '<=':
+			result = parseFloat(value1, 10) <= parseFloat(value2, 10);
+			break;
+		case '>=':
+			result = parseFloat(value1, 10) >= parseFloat(value2, 10);
+			break;
+		default:
+			throw "operator must be in (true, =, ==, ===, false, !, !=, !==, <, >, <=, >=)";
+	}
+	
+	return result;
+}
+
+/**
  * Cache un ou plusieurs élements en fonction d'une ou plusieurs valeurs d'autres elements
  * 
  * Dans values les clefs obligatoire sont : 
@@ -340,17 +409,18 @@ function getElementByString(string) {
  * @param {array|object} values Liste des valeurs à avoir pour appliquer le disable ex: [ {element: $(monElement), value: '1', operator: '!='}, ... ]
  * @param {boolean} hide Si mis à TRUE, cache l'element plutôt que de le griser
  * @param {boolean} oneValueIsValid Si mis à TRUE, une valeur juste parmis la liste suffit à désactiver les elements
+ * @param {boolean} debug Fait un console.log des valeurs des elements contenu dans values
  */
-function observeDisableElementsOnValues(elements, values, hide, oneValueIsValid) {
+function observeDisableElementsOnValues(elements, values, hide, oneValueIsValid, debug) {
 	'use strict';
 	var i;
 	
 	elements = elements.constructor !== Array ? [elements] : elements;
 	values = values.constructor !== Array ? [values] : values;
 	hide = hide === undefined ? false : hide;
-	oneValueIsValid = oneValueIsValid === undefined ? false : oneValueIsValid;
+	oneValueIsValid = oneValueIsValid === undefined ? true : oneValueIsValid;
 	
-	disableElementsOnValues(elements, values, hide, oneValueIsValid);
+	disableElementsOnValues(elements, values, hide, oneValueIsValid, debug);
 	
 	for (i=0; i<values.length; i++) {
 		// On s'assure que les clefs sont présente
@@ -359,7 +429,7 @@ function observeDisableElementsOnValues(elements, values, hide, oneValueIsValid)
 		}
 		
 		getElementByString(values[i].element).observe('change', function() {
-			disableElementsOnValues(elements, values, hide, oneValueIsValid);
+			disableElementsOnValues(elements, values, hide, oneValueIsValid, debug);
 		});
 	}
 }
@@ -380,20 +450,27 @@ function observeDisableElementsOnValues(elements, values, hide, oneValueIsValid)
  * @param {array|object} values Liste des valeurs à avoir pour appliquer le disable ex: [ {element: $(monElement), value: '1', operator: '!='}, ... ]
  * @param {boolean} hide Si mis à TRUE, cache l'element plutôt que de le griser
  * @param {boolean} oneValueIsValid Si mis à TRUE, une valeur juste parmis la liste suffit à désactiver les elements
+ * @param {boolean} debug Fait un console.log des valeurs des elements contenu dans values
  */
-function disableElementsOnValues(elements, values, hide, oneValueIsValid) {
+function disableElementsOnValues(elements, values, hide, oneValueIsValid, debug) {
 	'use strict';
 	var i,
+		j,
 		element,
 		condition = true,
-		newCondition
+		newCondition,
+		valueElement,
+		valueName,
+		validParents = ['div.input', 'div.checkbox', 'td.action'],
+		haveAValidParent
 	;
 	
-	// On commence par formater les variable de façon pour qu'on puisse les traiter pour une seul type
+	// On commence par formater les variable de façon pour qu'on puisse les traiter pour une seul type (array et boolean)
 	elements = elements.constructor !== Array ? [elements] : elements;
 	values = values.constructor !== Array ? [values] : values;
 	hide = hide === undefined ? false : hide;
-	oneValueIsValid = oneValueIsValid === undefined ? false : oneValueIsValid;
+	
+	oneValueIsValid = oneValueIsValid === undefined ? true : oneValueIsValid;
 	
 	// On vérifi les valeurs
 	for (i=0; i<values.length; i++) {
@@ -401,9 +478,16 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid) {
 		if (values[i].element === undefined || values[i].value === undefined) {
 			throw "Values must have element and value keys";
 		}
+		
+		valueElement = getElementByString(values[i].element);
+		valueName = valueElement.id !== null 
+			? valueElement.id 
+			: (typeof values[i].element === 'string' ? values[i].element : '<object id=null>')
+		;
+		
 		// On s'assure que l'element existe
-		if (getElementByString(values[i].element) === null) {
-			throw "Element "+values[i].element+" is not found!";
+		if (valueElement === null) {
+			throw "Element "+valueName+" is not found!";
 		}
 		
 		// Alias pour operator
@@ -411,36 +495,15 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid) {
 			values[i].operator = values[i].operateur;
 		}
 		
-		switch (values[i].operator === undefined ? '=' : values[i].operator) {
-			case true:
-			case '=':
-			case '==':
-			case '===':
-				newCondition = getElementByString(values[i].element).getValue() === values[i].value;
-				break;
-			case false:
-			case '!':
-			case '!=':
-			case '!==':
-				newCondition = getElementByString(values[i].element).getValue() !== values[i].value;
-				break;
-			case '<':
-				newCondition = getElementByString(values[i].element).getValue() < values[i].value;
-				break;
-			case '>':
-				newCondition = getElementByString(values[i].element).getValue() > values[i].value;
-				break;
-			case '<=':
-				newCondition = getElementByString(values[i].element).getValue() <= values[i].value;
-				break;
-			case '>=':
-				newCondition = getElementByString(values[i].element).getValue() >= values[i].value;
-				break;
-			default:
-				throw "values[i].operator must be in (true, =, ==, ===, false, !, !=, !==, <, >, <=, >=)";
-		}
-		
+		values[i].operator = values[i].operator === undefined ? '=' : values[i].operator;
+		newCondition = evalCompare(valueElement.getValue(), values[i].operator, values[i].value);
 		condition = oneValueIsValid && i > 0 ? condition || newCondition : condition && newCondition;
+		
+		// Pratique pour comprendre pourquoi un element s'active ou se désactive
+		if (debug) {
+			console.log("----------DEBUG: disableElementsOnValues()----------");
+			console.log("Element: '"+valueName+"' tagetValue: '"+values[i].operator+" "+values[i].value+"' value: '"+valueElement.getValue()+"' condition: "+(condition ? 'true' : 'false'));
+		}
 	}
 	
 	// On applique le disable sur les elements
@@ -452,31 +515,33 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid) {
 			throw "Element "+elements[i]+" is not found!";
 		}
 		
-		if (condition) {
-			element.disable();
-			if( element.up( 'div.input' ) ) {
-				element.up( 'div.input' ).addClassName( 'disabled' );
-			}
-			else if( element.up( 'div.checkbox' ) ) {
-				element.up( 'div.checkbox' ).addClassName( 'disabled' );
-			}
-			
-			if (hide) {
-				element.hide();
+		// Si condition === true alors on desactive/cache l'element
+		for (j=0; j<validParents.length; j++) {
+			// Les conditions sont rempli, donc on desactive/cache l'element
+			if (condition && element.up(validParents[j])) {
+				haveAValidParent = true;
+				disable(element);
+				element.up( validParents[j] ).addClassName( 'disabled' );
+				if (hide) {
+					element.hide();
+				}
+				break;
+				
+			// Les conditions ne sont pas rempli, on active/montre l'element
+			} else if (element.up(validParents[j])){
+				haveAValidParent = true;
+				enable(element);
+				element.up( validParents[j] ).removeClassName( 'disabled' );
+				if (hide) {
+					element.show();
+				}
+				break;
 			}
 		}
-		else {
-			element.enable();
-			if( element.up( 'div.input' ) ) {
-				element.up( 'div.input' ).removeClassName( 'disabled' );
-			}
-			else if( element.up( 'div.checkbox' ) ) {
-				element.up( 'div.checkbox' ).removeClassName( 'disabled' );
-			}
-			
-			if (hide) {
-				element.show();
-			}
+		
+		// On s'assure qu'un parent a bien été trouvé
+		if (!haveAValidParent) {
+			throw "L"+(condition ? "'" : 'a dés')+"activation de l'element n'a pas pu être effectué car l'element choisi ne fait pas parti de la liste des cas pris en charge.";
 		}
 	}
 }

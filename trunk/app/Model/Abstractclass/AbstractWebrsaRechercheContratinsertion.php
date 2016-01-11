@@ -1,28 +1,28 @@
 <?php
 	/**
-	 * Code source de la classe AbstractWebrsaCohorteContratinsertion.
+	 * Code source de la classe AbstractWebrsaRechercheContratinsertion.
 	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'AbstractWebrsaCohorte', 'Model/Abstractclass' );
+	App::uses( 'AbstractWebrsaRecherche', 'Model/Abstractclass' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
-	 * La classe AbstractWebrsaCohorteContratinsertion ...
+	 * La classe AbstractWebrsaRechercheContratinsertion ...
 	 *
 	 * @package app.Model
 	 */
-	class AbstractWebrsaCohorteContratinsertion extends AbstractWebrsaCohorte
+	class AbstractWebrsaRechercheContratinsertion extends AbstractWebrsaRecherche
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'AbstractWebrsaCohorteContratinsertion';
+		public $name = 'AbstractWebrsaRechercheContratinsertion';
 
 		/**
 		 * Modèles utilisés par ce modèle.

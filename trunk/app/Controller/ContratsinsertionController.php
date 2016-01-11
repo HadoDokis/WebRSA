@@ -47,6 +47,7 @@ class ContratsinsertionController extends AppController
 				'cohorte_valides' => array( 'filter' => 'Search' ),
 				'cohorte_cersimpleavalider' => array( 'filter' => 'Search' ),
 				'cohorte_cerparticulieravalider' => array( 'filter' => 'Search' ),
+				'search_valides' => array( 'filter' => 'Search' ),
 			),
 		),
 	);
@@ -1856,7 +1857,7 @@ class ContratsinsertionController extends AppController
 	}
 
 	/**
-	 * Cohorte de CER validés
+	 * Cohorte
 	 */
 	public function cohorte_cersimpleavalider() {
 		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
@@ -1864,7 +1865,7 @@ class ContratsinsertionController extends AppController
 	}
 
 	/**
-	 * Cohorte de CER validés
+	 * Export CSV
 	 */
 	public function exportcsv_cersimpleavalider() {
 		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
@@ -1872,7 +1873,7 @@ class ContratsinsertionController extends AppController
 	}
 
 	/**
-	 * Cohorte de CER validés
+	 * Cohorte
 	 */
 	public function cohorte_cerparticulieravalider() {
 		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
@@ -1881,11 +1882,28 @@ class ContratsinsertionController extends AppController
 	}
 
 	/**
-	 * Cohorte de CER validés
+	 * Export CSV
 	 */
 	public function exportcsv_cerparticulieravalider() {
 		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
 		$Cohortes->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
+	}
+
+	/**
+	 * Cohorte
+	 */
+	public function search_valides() {
+		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
+		$Recherche->search( array( 'modelRechercheName' => 'WebrsaRechercheContratinsertionValides' ) );
+		$this->Contratinsertion->validate = array();
+	}
+
+	/**
+	 * Export CSV
+	 */
+	public function exportcsv_search_valides() {
+		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
+		$Recherche->exportcsv( array( 'modelRechercheName' => 'WebrsaRechercheContratinsertionValides' ) );
 	}
 }
 ?>
