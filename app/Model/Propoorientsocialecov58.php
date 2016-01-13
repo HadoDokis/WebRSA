@@ -419,6 +419,12 @@
 		 * @return string
 		 */
 		public function getPdfDecision( $passagecov58_id ) {
+			$replacements = array(
+				'Typeorient' => 'Nvtypeorient',
+				'Structurereferente' => 'Nvstructurereferente',
+				'Referent' => 'Nvreferent'
+			);
+
 			$data = $this->Dossiercov58->Passagecov58->find(
 				'first',
 				array(
@@ -427,6 +433,19 @@
 						$this->Dossiercov58->Passagecov58->Dossiercov58->fields(),
 						$this->Dossiercov58->Passagecov58->Decisionpropoorientsocialecov58->fields(),
 						$this->Dossiercov58->Propoorientsocialecov58->fields(),
+						$this->Dossiercov58->Propoorientsocialecov58->Nvorientstruct->fields(),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientsocialecov58->Nvorientstruct->Typeorient->fields(),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientsocialecov58->Nvorientstruct->Structurereferente->fields(),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientsocialecov58->Nvorientstruct->Referent->fields(),
+							$replacements
+						),
 						$this->Dossiercov58->Personne->fields(),
 						$this->Dossiercov58->Personne->Foyer->fields(),
 						$this->Dossiercov58->Personne->Foyer->Dossier->fields(),
@@ -448,6 +467,19 @@
 						$this->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
 						$this->Dossiercov58->Passagecov58->join( 'Decisionpropoorientsocialecov58' ),
 						$this->Dossiercov58->join( 'Propoorientsocialecov58' ),
+						$this->Dossiercov58->Propoorientsocialecov58->join( 'Nvorientstruct', array( 'type' => 'LEFT OUTER' ) ),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientsocialecov58->Nvorientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientsocialecov58->Nvorientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientsocialecov58->Nvorientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						),
 						$this->Dossiercov58->join( 'Personne' ),
 						$this->Dossiercov58->Personne->join( 'Foyer' ),
 						$this->Dossiercov58->Personne->Foyer->join( 'Dossier' ),

@@ -661,6 +661,12 @@
 		}
 
 		public function getPdfDecision( $passagecov58_id ) {
+			$replacements = array(
+				'Typeorient' => 'Nvtypeorient',
+				'Structurereferente' => 'Nvstructurereferente',
+				'Referent' => 'Nvreferent'
+			);
+
 			$data = $this->Dossiercov58->Passagecov58->find(
 				'first',
 				array(
@@ -679,6 +685,18 @@
 						$this->Dossiercov58->Propoorientationcov58->Covtypeorient->fields(),
 						$this->Dossiercov58->Propoorientationcov58->Covstructurereferente->fields(),
 						$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->fields(),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->Typeorient->fields(),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->Structurereferente->fields(),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->Referent->fields(),
+							$replacements
+						),
 						$this->Dossiercov58->Propoorientationcov58->User->fields(),
 						$this->Dossiercov58->Propoorientationcov58->User->Serviceinstructeur->fields(),
 						$this->Dossiercov58->Passagecov58->Cov58->fields(),
@@ -701,6 +719,18 @@
 						$this->Dossiercov58->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Dossiercov58->Personne->Foyer->Adressefoyer->join( 'Adresse' ),
 						$this->Dossiercov58->Propoorientationcov58->join( 'Nvorientstruct', array( 'type' => 'LEFT OUTER' ) ),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						),
+						array_words_replace(
+							$this->Dossiercov58->Propoorientationcov58->Nvorientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+							$replacements
+						),
 						$this->Dossiercov58->Propoorientationcov58->join( 'Typeorient' ),
 						$this->Dossiercov58->Propoorientationcov58->join( 'Structurereferente' ),
 						$this->Dossiercov58->Propoorientationcov58->join( 'Covtypeorient', array( 'type' => 'LEFT OUTER' ) ),
