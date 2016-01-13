@@ -87,6 +87,7 @@
 			'Non orientation' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'Inscrits PE' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ) ),
+				'Inscrits PE (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_isemploi' ) ),
 				'Non inscrits PE' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploiaimprimer' ) ),
 				'Gestion des réponses' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploi' ) ),
 				'Notifications à envoyer' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notifaenvoyer' ) ),

@@ -22,13 +22,36 @@
 			'Option'
 		);
 
-		public $helpers = array( 'Fileuploader' );
+		public $helpers = array(
+			'Default', 
+			'Locale', 
+			'Cake1xLegacy.Ajax', 
+			'Xform', 
+			'Xhtml', 
+			'Fileuploader', 
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		public $components = array(
-			'Fileuploader',
-			'Jetons2'
+			'Default', 
+			'Gedooo.Gedooo', 
+			'Fileuploader', 
+			'Jetons2', 
+			'DossiersMenus', 
+			'InsertionsAllocataires',
+			'Cohortes',
+			'Search.SearchPrg' => array(
+				'actions' => array( 
+					'cohorte_isemploi' => array(
+						'filter' => 'Search'
+					),
+				)
+			),
 		);
 
 		public function _setOptions() {
@@ -145,6 +168,22 @@
 
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'nonoriente66' ) );
 			$this->_setOptions();
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_isemploi() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte->cohorte( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi' ) );
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_isemploi() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi' ) );
 		}
 	}
 ?>
