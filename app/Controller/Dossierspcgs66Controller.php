@@ -65,7 +65,7 @@
 			'imprimer' => 'Decisionsdossierspcgs66::decisionproposition',
 		);
 
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo' );
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo', 'ajax_getetatdossierpcg66' );
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
