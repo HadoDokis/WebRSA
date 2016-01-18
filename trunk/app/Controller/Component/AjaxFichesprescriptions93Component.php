@@ -203,6 +203,10 @@
 						)
 					);
 
+					if( $typethematiquefp93_id === 'pdi' && $action === 'add' ) {
+						$query['conditions']['Actionfp93.actif'] = '1';
+					}
+
 					$query['conditions'][] = $Prestatairefp93->getDependantListCondition(
 						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
 						$conditionsActionfp93
