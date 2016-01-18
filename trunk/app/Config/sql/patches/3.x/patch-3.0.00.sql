@@ -22,9 +22,11 @@ ALTER TABLE dossiers ADD CONSTRAINT dossiers_fonorg_in_list_chk CHECK ( cakephp_
 --------------------------------------------------------------------------------
 ALTER TABLE orientsstructs DROP CONSTRAINT orientsstructs_origine_check;
 
--- FIXME: suppression du schéma administration (CASCADE) dans la BDD
--- cg93_20150608_v300 car il existe une règle prenant origine en compte dans la
--- vue allocatairestransferes, ce qui empêche la transformation.
+-- INFO: suppression de la vue administration.allocatairestransferes qui empêche
+-- de transformer le type type_origineorientstruct utilisé dans orientsstructs.origine
+-- @see app/Config/sql/patches/3.x/patch-3.0.00-datas-cg93.sql pour la re-création de la vue
+DROP VIEW IF EXISTS administration.allocatairestransferes;
+
 SELECT public.table_enumtypes_to_validate_in_list( 'public', 'orientsstructs' );
 SELECT public.table_defaultvalues_enumtypes_to_varchar( 'public', 'orientsstructs' );
 
