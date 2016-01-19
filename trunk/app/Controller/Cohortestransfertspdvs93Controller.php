@@ -70,6 +70,8 @@
 		/**
 		 * Recherche et traitement des allocataires à transférer.
 		 *
+		 * @deprecated since 3.0.0
+		 *
 		 * @return void
 		 */
 		public function atransferer() {

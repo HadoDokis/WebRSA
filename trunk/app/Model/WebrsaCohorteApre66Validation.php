@@ -23,10 +23,10 @@
 		 * @var string
 		 */
 		public $name = 'WebrsaCohorteApre66Validation';
-		
+
 		/**
 		 * Liste des champs de formulaire à inserer dans le tableau de résultats
-		 * 
+		 *
 		 * @var array
 		 */
 		public $cohorteFields = array(
@@ -44,23 +44,24 @@
 
 		/**
 		 * Préremplissage du formulaire en cohorte
-		 * 
-		 * @param type $results
-		 * @param type $params
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @param array $options
 		 * @return array
 		 */
-		public function prepareFormDataCohorte( array $results, array $params = array() ) {
+		public function prepareFormDataCohorte( array $results, array $params = array(), array &$options = array() ) {
 			$data = parent::prepareFormDataCohorte($results, $params);
 			for ($i=0; $i<count($results); $i++) {
 				$data[$i]['Aideapre66']['montantaccorde'] = $data[$i]['Aideapre66']['montantpropose'];
 			}
-			
+
 			return $data;
 		}
-		
+
 		/**
 		 * Logique de sauvegarde de la cohorte
-		 * 
+		 *
 		 * @param type $data
 		 * @param type $params
 		 * @return boolean
@@ -71,20 +72,20 @@
 				if ( $value['Apre66']['selection'] === '0' ) {
 					unset($data[$key]);
 				}
-				
+
 				// Si rejet, on retire le montant accordé
 				elseif ( Hash::get($value, 'Aideapre66.decisionapre') === 'REF' ) {
 					unset($data[$key]['Aideapre66']['montantaccorde']);
 				}
-				
+
 				// Si accord, on retire le commentaire de rejet
 				else {
 					unset($data[$key]['Aideapre66']['motifrejetequipe']);
 				}
 			}
-			
+
 			$success = !empty($data) && $this->Apre66->Aideapre66->saveAll( $data );
-			
+
 			return $success;
 		}
 	}

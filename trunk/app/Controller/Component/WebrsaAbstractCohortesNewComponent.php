@@ -54,7 +54,7 @@
 		/**
 		 * Surcharge de queryConditions ajoutant des conditions à un querydata afin d'exclure du jeu de résultats
 		 * les dossiers lockés par d'autres utilisateurs.
-		 * 
+		 *
 		 * @param array $query
 		 * @param array $filters
 		 * @param array $params
@@ -72,7 +72,7 @@
 		/**
 		 * Ajoute des valeurs dans request->params, dans request->data et dans la session pour
 		 * prendre en compte le changement de pages et le changement d'ordre d'affichage des résultats
-		 * 
+		 *
 		 * @param array $params
 		 * @param array $paramsSave paramètres à envoyer à saveCohorte()
 		 * @return boolean
@@ -162,7 +162,7 @@
 				// TODO: début factoriser
 				// On pré-remplit le formulaire de cohorte
 				if( $success !== false ) {
-					$data = $Controller->{$params['modelRechercheName']}->prepareFormDataCohorte( $results, $params );
+					$data = $Controller->{$params['modelRechercheName']}->prepareFormDataCohorte( $results, $params, $options );
 					$Controller->request->data[$params['cohorteKey']] = $data;
 				}
 
@@ -317,7 +317,7 @@
 
 			return $fields;
 		}
-		
+
 		/**
 		 * Retourne la liste des clés de configuration possibles ainsi que des
 		 * règles de validation pour chacune d'entre elle, à utiliser dans la
@@ -346,23 +346,23 @@
 
 			return $result;
 		}
-		
+
 		/**
 		 * Vérification de la configuration des champs options de cohorte
-		 * 
+		 *
 		 * @return array
 		 */
 		public function checkOptionsCohorte( $params = array() ) {
 			$params = $this->_params( $params );
-			
+
 			$result[$this->_configureKey('cohorte.options', $params)] = array( array( 'rule' => 'isarray', 'allowEmpty' => true ) );
 
 			return $result;
 		}
-		
+
 		/**
 		 * Pour vérification de l'application : vérifi que la configuration dans cohorte.values est correcte
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -370,31 +370,31 @@
 			$params = $this->_params( $params );
 			$success = true;
 			$message = array();
-			
+
 			foreach ((array)Configure::read($this->_configureKey('cohorte.values', $params)) as $path => $value) {
 				$model_field = model_field($path, false);
-				
+
 				// Syntaxe correcte
 				if ( $model_field === null ) {
 					$success = false;
 					$message[] = "La table et le champ de <b>{$path}</b> n'ont pas été trouvé. Utilisez la syntaxe suivante : Modele.champ.";
 					continue;
 				}
-				
+
 				// $path est de type hasAndBelongsToMany : ex: Monmodel.0_Monmodel
 				$hasAndBelongsToMany = preg_match('/^([\w]+)\.(?:[\d]+.){0,1}([\w]+)$/', $path, $matches) && $matches[1] === $matches[2];
 				$Model = ClassRegistry::init($model_field[0]);
 				$this->_rebuildValidation($Model);
 
 				$field = $hasAndBelongsToMany ? $Model->primaryKey : $model_field[1];
-				
+
 				// Table et champ existent
 				if ( !$hasAndBelongsToMany && $Model->fieldExists($model_field[1]) === false ) {
 					$success = false;
 					$message[] = "L'existance de <b>{$model_field[1]}</b> dans le modele <b>{$model_field[0]}</b> n'a pas été trouvé.";
 					continue;
 				}
-				
+
 				// Existance de la valeur dans un hasAndBelongsToMany
 				$conditions = array(
 					'conditions' => array($Model->primaryKey => $value),
@@ -405,28 +405,28 @@
 					$message[] = "La valeur <b>{$value}</b> pour <b>{$path}</b> ne se trouve pas dans <b>{$Model->alias}.{$Model->primaryKey}</b>.";
 					continue;
 				}
-				
+
 				// Test de clef étrangère
 				if ($value !== null) {
 					// On regarde si la clef est une clef étrangère
 					$test = $this->_isValidIfIsForeignKey( $Model, $path, $value );
-					
+
 					if (!$test['success']) {
 						$message[] = $test['message'];
 						continue;
 					}
 				}
-				
+
 				// Test d'enregistrement
 				if ( $field !== $Model->primaryKey ) {
 					$Model->begin();
 					$data = $Model->find('first', array( 'recursive' => -1, 'contain' => false ));
-					
+
 					// Si on a pas un enregistrement sain, inutile de continuer (n'arrive que sur des tables vide).
 					if (empty($data)) {
 						continue;
 					}
-					
+
 					$data[$Model->alias][$field] = $value;
 
 					if (!$Model->save($data)) {
@@ -435,20 +435,20 @@
 						$message[] = "La tentative d'insérer la valeur <b>{$value}</b> dans <b>{$path}</b> a échoué : {$errors}";
 					}
 
-					$Model->rollback();					
+					$Model->rollback();
 				}
 			}
-			
+
 			return array(
 				'success' => $success,
 				'message' => $success ? "Aucune erreur n'a été trouvée." : 'Des erreurs ont été trouvées!',
 				'value' => implode("<br/>", $message),
 			);
 		}
-		
+
 		/**
 		 * Permet de reconstruire la validation uniquement avec les rêgles de la base de donnée
-		 * 
+		 *
 		 * @param Model $Model
 		 * @return \WebrsaAbstractCohortesNewComponent
 		 */
@@ -476,14 +476,14 @@
 			if ( $autovalidate === false ) {
 				$Model->Behaviors->attach( 'Validation2.Validation2Autovalidate' );
 			}
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * Vérifi si le champ ciblé est une foreign key, et si c'est le cas, que la valeur soit bien numérique
 		 * et existe bien dans la table concerné
-		 * 
+		 *
 		 * @param Model $Model Modele sur lequel il faut vérifier qu'il possède une foreign key correspondant à path
 		 * @param type $path Model.field
 		 * @param type $value valeur de la foreign key
@@ -492,7 +492,7 @@
 		protected function _isValidIfIsForeignKey( Model $Model, $path, $value ) {
 			$result = array('success' => true);
 			list(,$field) = explode('.', $path);
-			
+
 			foreach ((array)$Model->belongsTo as $modelName => $paramsBelongsTo) {
 				$conditions = array(
 					'conditions' => array($Model->$modelName->primaryKey => $value),
@@ -500,7 +500,7 @@
 				);
 
 				// Si la clef est une clef étrangère mais que la valeur n'est pas valide ou qu'il ne pointe pas sur un enregistrement...
-				if (Hash::get($paramsBelongsTo, 'foreignKey') === $field) { 
+				if (Hash::get($paramsBelongsTo, 'foreignKey') === $field) {
 					if (!is_numeric($value) || !$Model->$modelName->find('first', $conditions)) {
 						$result = array(
 							'success' => false,
@@ -510,7 +510,7 @@
 					break;
 				}
 			}
-			
+
 			return $result;
 		}
 	}

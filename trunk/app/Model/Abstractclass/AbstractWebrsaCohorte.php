@@ -46,44 +46,45 @@
 		 * @var array
 		 */
 		public $keysRecherche = array();
-		
+
 		/**
 		 * Liste des champs de formulaire à inserer dans le tableau de résultats
-		 * 
+		 *
 		 * @var array
 		 */
 		public $cohorteFields = array();
-		
+
 		/**
 		 * Valeurs par défaut pour le préremplissage des champs du formulaire de cohorte
-		 * ex: array( 
+		 * ex: array(
 		 *		'Mymodel' => array( 'Myfield' => 'MyValue' ) )
 		 * )
-		 * 
+		 *
 		 * @var array
 		 */
 		public $defaultValues = array();
-		
+
 		/**
 		 * Préremplissage du formulaire en cohorte
-		 * 
-		 * @param type $results
-		 * @param type $params
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @param array $options
 		 * @return array
 		 */
-		public function prepareFormDataCohorte( array $results, array $params = array() ) {
+		public function prepareFormDataCohorte( array $results, array $params = array(), array &$options = array() ) {
 			$data = array();
 			for ($i=0; $i<count($results); $i++) {
 				$data[$i] = $results[$i];
 				$data[$i] += $this->defaultValues;
 			}
-			
+
 			return $data;
 		}
 
 		/**
 		 * Logique de sauvegarde de la cohorte
-		 * 
+		 *
 		 * @param type $data
 		 * @param type $params
 		 * @return boolean
@@ -91,7 +92,7 @@
 		public function saveCohorte( array $data, array $params = array(), $user_id = null ) {
 			return true;
 		}
-		
+
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
