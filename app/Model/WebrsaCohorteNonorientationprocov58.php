@@ -371,11 +371,12 @@
 		/**
 		 * Préremplissage du formulaire en cohorte
 		 *
-		 * @param type $results
-		 * @param type $params
+		 * @param array $results
+		 * @param array $params
+		 * @param array $options
 		 * @return array
 		 */
-		public function prepareFormDataCohorte( array $results, array $params = array() ) {
+		public function prepareFormDataCohorte( array $results, array $params = array(), array &$options = array() ) {
 			$data = array();
 			return $data;
 		}

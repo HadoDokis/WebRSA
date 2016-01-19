@@ -46,4 +46,6 @@
 			'exportcsv' => array( 'action' => 'exportcsv' )
 		)
 	);
+
+	debug($results);
 ?>

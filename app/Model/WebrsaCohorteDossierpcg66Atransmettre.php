@@ -46,10 +46,10 @@
 			'WebrsaRechercheDossierpcg66',
 			'Dossierpcg66'
 		);
-		
+
 		/**
 		 * Liste des champs de formulaire à inserer dans le tableau de résultats
-		 * 
+		 *
 		 * @var array
 		 */
 		public $cohorteFields = array(
@@ -62,13 +62,13 @@
 			'Decisiondossierpcg66.etatop' => array( 'type' => 'hidden', 'value' => 'transmis' ),
 			'Decisiondossierpcg66.datetransmissionop' => array( 'type' => 'date' ),
 		);
-		
+
 		/**
 		 * Valeurs par défaut pour le préremplissage des champs du formulaire de cohorte
-		 * array( 
+		 * array(
 		 *		'Mymodel' => array( 'Myfield' => 'MyValue' ) )
 		 * )
-		 * 
+		 *
 		 * @var array
 		 */
 		public $defaultValues = array();
@@ -82,20 +82,21 @@
 		 */
 		public function searchQuery( array $types = array() ) {
 			$query = parent::searchQuery($types);
-			
+
 			$query['fields'][] = 'Decisiondossierpcg66.id';
-			
+
 			return $query;
 		}
-		
+
 		/**
 		 * Préremplissage du formulaire en cohorte
-		 * 
-		 * @param type $results
-		 * @param type $params
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @param array $options
 		 * @return array
 		 */
-		public function prepareFormDataCohorte( array $results, array $params = array() ) {
+		public function prepareFormDataCohorte( array $results, array $params = array(), array &$options = array() ) {
 			$data = array();
 			$orgTransmissisonBaseQuery = array(
 				'fields' => array(
@@ -103,26 +104,26 @@
 				),
 				'contain' => false
 			);
-			
+
 			for ($i=0; $i<count($results); $i++) {
 				$data[$i] = $results[$i];
-				
+
 				$condition['conditions'] = array(
 					'Decdospcg66Orgdospcg66.decisiondossierpcg66_id' => $results[$i]['Decisiondossierpcg66']['id']
 				);
-				
+
 				$data[$i]['Decdospcg66Orgdospcg66']['orgtransmisdossierpcg66_id'] = Hash::extract(
-					$this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->find( 
+					$this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->find(
 						'all', $orgTransmissisonBaseQuery + $condition
 					),
 					'{n}.Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id'
 				);
-				
+
 				$data[$i]['Decdospcg66Orgdospcg66']['decisiondossierpcg66_id'] = $results[$i]['Decisiondossierpcg66']['id'];
-				
+
 				$data[$i] += $this->defaultValues;
 			}
-			
+
 			return $data;
 		}
 
@@ -136,19 +137,19 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->WebrsaRechercheDossierpcg66->searchConditions( $query, $search );
-			
+
 			$query['conditions'][] = array(
 				'Dossierpcg66.etatdossierpcg' => 'atttransmisop',
 				'Dossierpcg66.dateimpression IS NOT NULL',
 				'Dossierpcg66.istransmis' => '0',
 			);
-			
+
 			return $query;
 		}
 
 		/**
 		 * Logique de sauvegarde de la cohorte
-		 * 
+		 *
 		 * @param type $data
 		 * @param type $params
 		 * @return boolean
@@ -159,18 +160,18 @@
 					unset($data[$key]);
 				}
 			}
-			
+
 			$success = !empty($data);
 			if ( $success ) {
 				foreach( $data as $key => $value ) {
 					// On sauvegarde Dossierpcg66
 					$this->Dossierpcg66->create($value['Dossierpcg66']);
 					$success = $this->Dossierpcg66->save() && $success;
-					
+
 					// On sauvegarde Decisiondossierpcg66
 					$this->Dossierpcg66->Decisiondossierpcg66->create($value['Decisiondossierpcg66']);
 					$success = $this->Dossierpcg66->Decisiondossierpcg66->save() && $success;
-					
+
 					// On sauvegarde Decdospcg66Orgdospcg66 (table de liaison entre les organismes et la décision)
 					$orgs = (array)Hash::get($value, 'Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id');
 					$datasDec = array();
@@ -179,14 +180,14 @@
 							'orgtransmisdossierpcg66_id' => $orgtransmisdossierpcg66_id,
 							'decisiondossierpcg66_id' => $value['Decdospcg66Orgdospcg66']['decisiondossierpcg66_id']
 						);
-						
+
 						// On supprime les anciennes entrées si il y en a (dans le cas d'un "en attente transmission à ...")
 						$deleteConditions = array( 'decisiondossierpcg66_id' => $value['Decdospcg66Orgdospcg66']['decisiondossierpcg66_id'] );
 						$success = $this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66
 							->deleteAllUnbound( $deleteConditions, false ) && $success
 						;
 					}
-					
+
 					// Provoquera une erreur sur le formulaire pour ne pas avoir sélectionné d'organismes
 					if ( empty($datasDec) ) {
 						$datasDec[$key] = array(
@@ -194,11 +195,11 @@
 							'decisiondossierpcg66_id' => $value['Decdospcg66Orgdospcg66']['decisiondossierpcg66_id']
 						);
 					}
-					
+
 					$success = $this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->saveAll($datasDec) && $success;
 				}
 			}
-			
+
 			return $success;
 		}
 	}

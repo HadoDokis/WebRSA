@@ -11,6 +11,8 @@
 	/**
 	 * Classe Cohortetransfertpdv93.
 	 *
+	 * @deprecated since 3.0.0
+	 *
 	 * @package app.Model
 	 */
 	class Cohortetransfertpdv93 extends AppModel
@@ -26,6 +28,15 @@
 
 		public $actsAs = array(
 			'Conditionnable'
+		);
+
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'WebrsaCohorteTransfertpdv93Atransferer'
 		);
 
 		/**
@@ -202,124 +213,20 @@
 		 *  - ajouter un filtre que dans le dépt/que hors dépt
 		 *
 		 * @return array
+		 * @deprecated since 3.0.00
 		 */
 		public function structuresParZonesGeographiques() {
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
-			$results = Cache::read( $cacheKey );
-
-			if( $results === false ) {
-				$Typeorient = ClassRegistry::init( 'Typeorient' );
-
-				$results = $Typeorient->find(
-					'all',
-					array(
-						'fields' => array(
-							'Typeorient.id',
-							'Typeorient.lib_type_orient',
-							'Structurereferente.id',
-							'Structurereferente.lib_struc',
-							'Zonegeographique.codeinsee'
-						),
-						'conditions' => array(
-							'Typeorient.actif' => 'O',
-							'Structurereferente.actif' => 'O',
-						),
-						'joins' => array(
-							$Typeorient->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-							$Typeorient->Structurereferente->join( 'StructurereferenteZonegeographique', array( 'type' => 'INNER' ) ),
-							$Typeorient->Structurereferente->StructurereferenteZonegeographique->join( 'Zonegeographique', array( 'type' => 'INNER' ) )
-						),
-						'contain' => false,
-						'order' => array(
-							'Zonegeographique.codeinsee ASC',
-							'Typeorient.lib_type_orient ASC',
-							'Structurereferente.lib_struc ASC',
-						)
-					)
-				);
-
-				$tmp = array();
-				if( !empty( $results ) ) {
-					foreach( $results as $result ) {
-						if( !isset( $tmp[$result['Typeorient']['id']] ) ) {
-							$tmp[$result['Typeorient']['id']] = array();
-						}
-
-						$tmp[$result['Typeorient']['id']]["{$result['Zonegeographique']['codeinsee']}_{$result['Structurereferente']['id']}"] = $result['Structurereferente']['lib_struc'];
-					}
-				}
-				$results = $tmp;
-
-				Cache::write( $cacheKey, $results );
-				ModelCache::write( $cacheKey, array( 'Typeorient', 'Structurereferente', 'Zonegeographique' ) );
-			}
-
-			return $results;
+			return $this->WebrsaCohorteTransfertpdv93Atransferer->structuresParZonesGeographiques();
 		}
 
 		/**
 		 * Liste des structures référentes groupées par code INSEE.
 		 *
 		 * @return array
+		 * @deprecated since 3.0.00
 		 */
 		public function structuresParZonesGeographiquesPourTransfertPdv() {
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
-			$results = Cache::read( $cacheKey );
-
-			if( $results === false ) {
-				$structuresParZonesGeographiques = $this->structuresParZonesGeographiques();
-
-				// Comptage
-				$foos = array();
-				foreach( $structuresParZonesGeographiques as $typeorient_id => $datas ) {
-					foreach( $datas as $key => $label ) {
-						list( $codeinsee, $structurereferente_id ) = explode( '_', $key );
-
-						if( !isset( $foos[$codeinsee][$typeorient_id] ) ) {
-							$foos[$codeinsee][$typeorient_id] = 0;
-						}
-						$foos[$codeinsee][$typeorient_id]++;
-					}
-				}
-
-				// Nouvelle liste d'options
-				// Configure::write( 'Orientstruct.typeorientprincipale', array( 'Socioprofessionnelle' => array( 1 ), 'Social' => array( 2 ), 'Emploi' => array( 3 ) ) );
-				$typesorients = Configure::read( 'Orientstruct.typeorientprincipale' );
-				$pdvsCodeInsee = array();
-				foreach( $foos as $codeinsee => $datas ) {
-
-					$hasSociopro = false;
-					foreach( $typesorients['Socioprofessionnelle'] as $typeorient_sociopro_id ) {
-						if( isset( $datas[$typeorient_sociopro_id] ) && !empty( $datas[$typeorient_sociopro_id] ) ) {
-							$hasSociopro = true;
-						}
-					}
-
-					$pdvsCodeInsee[$codeinsee] = $hasSociopro;
-				}
-
-				$results = array();
-				foreach( $pdvsCodeInsee as $codeinsee => $hasPdv ) {
-					$results[$codeinsee] = $structuresParZonesGeographiques;
-
-					// Si mon code INSEE n'a pas de sociopro, alors les options auront tous les sociopro + tous les emploi
-					if( !$hasPdv ) {
-						foreach( $typesorients['Socioprofessionnelle'] as $typeorient_sociopro_id ) {
-							foreach( $typesorients['Emploi'] as $typeorient_emploi_id ) {
-								$results[$codeinsee][$typeorient_sociopro_id] = array_merge(
-									$results[$codeinsee][$typeorient_sociopro_id],
-									$results[$codeinsee][$typeorient_emploi_id]
-								);
-							}
-						}
-					}
-				}
-
-				Cache::write( $cacheKey, $results );
-				ModelCache::write( $cacheKey, array( 'Typeorient', 'Structurereferente', 'Zonegeographique' ) );
-			}
-
-			return $results;
+			return $this->WebrsaCohorteTransfertpdv93Atransferer->structuresParZonesGeographiquesPourTransfertPdv();
 		}
 
 		/**

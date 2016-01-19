@@ -32,11 +32,12 @@
 //			'Allocataires',
 //			'DossiersMenus',
 //			'Gedooo.Gedooo',
+			'Cohortes',
 			'InsertionsAllocataires',
 			'Jetons2',
 			'Search.Filtresdefaut' => array( 'search' ),
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search' )
+				'actions' => array( 'search', 'cohorte_atransferer' )
 			),
 		);
 
@@ -66,7 +67,8 @@
 		 */
 		public $commeDroit = array(
 			'search' => 'Criterestransfertspdvs93:index',
-			'exportcsv' => 'Criterestransfertspdvs93:exportcsv'
+			'exportcsv' => 'Criterestransfertspdvs93:exportcsv',
+			'cohorte_atransferer' => 'Cohortestransfertspdvs93:atransferer',
 		);
 
 		/**
@@ -77,7 +79,8 @@
 		 */
 		public $crudMap = array(
 			'search' => 'read',
-			'exportcsv' => 'read'
+			'exportcsv' => 'read',
+			'cohorte_atransferer' => 'create',
 		);
 
 
@@ -103,6 +106,19 @@
 				array(
 					'modelName' => 'Dossier',
 					'modelRechercheName' => 'WebrsaRechercheTransfertpdv93',
+				)
+			);
+		}
+
+		/**
+		 * Cohorte de transferts PDV, allocataires à transférer
+		 */
+		public function cohorte_atransferer() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesTransfertspdvs93Atransferer' );
+			$Recherches->cohorte(
+				array(
+					'modelName' => 'Dossier',
+					'modelRechercheName' => 'WebrsaCohorteTransfertpdv93Atransferer',
 				)
 			);
 		}

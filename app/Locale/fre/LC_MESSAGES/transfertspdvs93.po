@@ -59,3 +59,20 @@ msgstr "Voir"
 
 msgid "/Dossiers/view/#Dossier.id#"
 msgstr "Voir le transfert PDV de #Personne.nom_complet#"
+
+# ------------------------------------------------------------------------------
+
+msgid "/Transfertspdvs93/cohorte_atransferer/:heading"
+msgstr "Transferts PDV - Allocataires à transférer"
+
+msgid "Search.Orientstruct.date_valid"
+msgstr "Date d'orientation"
+
+msgid "data[Cohorte][][Transfertpdv93][action]"
+msgstr "Action"
+
+msgid "data[Cohorte][][Transfertpdv93][structurereferente_dst_id]"
+msgstr "Structure référente cible"
+
+msgid "/Cers93/index"
+msgstr "Voir"

@@ -132,6 +132,7 @@
 			'Transferts PDV' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'Allocataires à transférer' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
+				'Allocataires à transférer (nouveau)' => array( 'url' => array( 'controller' => 'transfertspdvs93', 'action' => 'cohorte_atransferer' ) ),
 				'Allocataires transférés' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
 			),
             'Clôture référents' => array(

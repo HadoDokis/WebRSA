@@ -611,6 +611,13 @@
 				'component' => 'WebrsaRecherchesTraitementspcgs66New',
 				'keys' => array( 'results.fields' )
 			),
+			'Transfertspdvs93.cohorte_atransferer' => array(
+				'departement' => 93,
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaCohorteTransfertpdv93Atransferer',
+				'component' => 'WebrsaCohortesTransfertspdvs93Atransferer',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
 			'Transfertspdvs93.search' => array(
 				'departement' => 93,
 				'modelName' => 'Dossier',
