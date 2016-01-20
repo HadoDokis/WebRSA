@@ -429,7 +429,7 @@
 						<?php echo Hash::get($details, 'DEM.Contratinsertion.positioncer') ? __d('contratinsertion', 'ENUM::POSITIONCER::'.Hash::get($details, 'DEM.Contratinsertion.positioncer')) : '';?>
 					</td>
 					<td>
-						<?php echo Hash::get($details, 'CJT.Contratinsertion.positioncer') ? __d('contratinsertion', 'ENUM::POSITIONCER::'.Hash::get($details, 'DEM.Contratinsertion.positioncer')) : '';?>
+						<?php echo Hash::get($details, 'CJT.Contratinsertion.positioncer') ? __d('contratinsertion', 'ENUM::POSITIONCER::'.Hash::get($details, 'CJT.Contratinsertion.positioncer')) : '';?>
 					</td>
 				</tr>
 				<tr class="even">
