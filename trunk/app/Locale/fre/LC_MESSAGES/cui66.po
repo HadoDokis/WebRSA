@@ -119,6 +119,9 @@ msgstr "En attente de décision"
 msgid "ENUM::ETATDOSSIERCUI66::attentenotification"
 msgstr "En attente de notification"
 
+msgid "ENUM::ETATDOSSIERCUI66::notifie"
+msgstr "Notifié"
+
 msgid "ENUM::ETATDOSSIERCUI66::encours"
 msgstr "En cours"
 

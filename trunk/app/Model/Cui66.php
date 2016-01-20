@@ -796,6 +796,16 @@
 				'encours' => array(
 					array(
 						$this->alias.'.notifie' => 1,
+						$decisionFavorable,
+						'Cui.dateembauche IS NOT NULL',
+						'Cui.dateembauche <= NOW()::DATE'
+					)
+				),
+				
+				// Notifié
+				'notifie' => array(
+					array(
+						$this->alias.'.notifie' => 1,
 						$decisionFavorable
 					)
 				),
