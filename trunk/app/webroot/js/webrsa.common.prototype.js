@@ -1145,6 +1145,10 @@ function changeColspanViewInfosEps( idColumnToChangeColspan, decision, colspanMa
 */
 
 function changeColspanFormAnnuleReporteEps( idColumnToChangeColspan, colspanMax, decision, idsNonRaisonpassage ) {
+	if ( $(idColumnToChangeColspan) === null ) {
+		throw idColumnToChangeColspan + " element not found!";
+	}
+	
 	if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
 		$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 		idsNonRaisonpassage.each( function ( id ) {
