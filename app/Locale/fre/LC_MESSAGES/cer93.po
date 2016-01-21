@@ -254,3 +254,6 @@ msgstr "Date d'impression du CER"
 
 msgid "Cer93.date_annulation"
 msgstr "Date d'annulation du CER"
+
+msgid "Contratinsertion.datedecision"
+msgstr "Date de décision du CER"

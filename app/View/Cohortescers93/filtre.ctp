@@ -38,6 +38,7 @@
 			echo '<div id="SearchCer93PositioncerImpression">';
 			echo $this->Form->input( 'Search.Cer93.positioncer', array( 'type' => 'select', 'label' => 'Statut du CER', 'options' => (array)Hash::get( $options, 'Search.Cer93.positioncer' ) ) );
 			echo $this->Form->input( 'Search.Cer93.limit', array( 'type' => 'select', 'label' => 'Nombre de résultats par page', 'options' => (array)Hash::get( $options, 'Search.Cer93.limit' ) ) );
+			echo $this->Search->date( 'Search.Contratinsertion.datedecision' );
 			echo $this->Form->input( 'Search.Cer93.hasdateimpression', array( 'label' => 'Filtrer par impression', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Search.Cer93.hasdateimpression' ), 'empty' => true ) );
 			echo $this->Search->date( 'Search.Cer93.dateimpressiondecision' );
 			echo '</div>';
