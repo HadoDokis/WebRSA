@@ -2035,7 +2035,7 @@ ul li a.refresh_page {
 	background-image: url("../img/icons/page_refresh.png");
 }
 
-tr td div.visited a {
+tr td div.visited a, td.action a.visited {
 	color: #A95BBA;
 }
 

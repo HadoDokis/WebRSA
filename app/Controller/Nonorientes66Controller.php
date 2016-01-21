@@ -50,6 +50,9 @@
 					'cohorte_isemploi' => array(
 						'filter' => 'Search'
 					),
+					'cohorte_imprimeremploi' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -184,6 +187,58 @@
 		public function exportcsv_isemploi() {
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
 			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi' ) );
+		}
+		
+		/**
+		 * Lance l'impression d'un questionnaire dans le cadre d'un Allocataire non inscrits au Pôle Emploi
+		 * 
+		 * @param integer $personne_id
+		 */
+		public function imprimeremploi( $personne_id ) {
+			$pdf = $this->Nonoriente66->getDefaultPdf($personne_id, $this->Session->read( 'Auth.User.id' ));
+			$success = $this->Nonoriente66->saveImpression($personne_id, $this->Session->read( 'Auth.User.id' ));
+
+			if( !empty( $pdf ) && $success ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'nonorientation-%d-%s.pdf', $personne_id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_imprimeremploi() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte->search( 
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' ) 
+			);
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_imprimeremploi() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte->exportcsv( 
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' ) 
+			);
+		}
+		
+		/**
+		 * Impression de la cohorte
+		 */
+		public function cohorte_imprimeremploi_impressions() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohortes->impressions( 
+				array( 
+					'modelName' => 'Personne', 
+					'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi',
+					'configurableQueryFieldsKey' => 'Dossierspcgs66.cohorte_imprimeremploi'
+				) 
+			);
 		}
 	}
 ?>
