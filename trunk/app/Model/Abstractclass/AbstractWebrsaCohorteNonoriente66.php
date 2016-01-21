@@ -102,7 +102,8 @@
 						'Orientstruct.date_valid',
 						'Personne.id',
 						'Dossier.id',
-						'Foyer.enerreur' => $this->Nonoriente66->Personne->Foyer->sqVirtualField( 'enerreur', true )
+						'Foyer.enerreur' => $this->Nonoriente66->Personne->Foyer->sqVirtualField( 'enerreur', true ),
+						'Foyer.nbenfants' => '( '.$this->Nonoriente66->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
 					)
 				);
 				

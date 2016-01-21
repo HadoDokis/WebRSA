@@ -479,6 +479,22 @@
 				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
+			'Nonorientes66.cohorte_imprimeremploi' => array(
+				'departement' => 66,
+				'type' => 'search',
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi',
+				'component' => 'WebrsaCohortesNonorientes66ImpressionsNew',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Nonorientes66.exportcsv_imprimeremploi' => array(
+				'departement' => 66,
+				'type' => 'search',
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi',
+				'component' => 'WebrsaCohortesNonorientes66ImpressionsNew',
+				'keys' => array( 'results.fields' )
+			),
 			'Orientsstructs.cohorte_nouvelles' => array(
 				'departement' => 93,
 				'modelName' => 'Personne',

@@ -53,6 +53,7 @@
 	$buttons = '';
 	
 	$count = (int)Hash::get( $this->request->params, "paging.Apre66.count" );
+	$countResults = isset($results) ? count($results) : 0;
 	if( $count > 65000 ) {
 		$button .= '<p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;">'.$this->Xhtml->image( 'icons/error.png' ).'<strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>';
 	}
@@ -79,7 +80,7 @@
 					Hash::flatten( $this->request->data, '__' )
 				)
 				, ( $this->Permissions->check( $controller, $action.'_impressions' ) && $count > 0 )
-				, 'Voulez vous imprimer les '.($count-1).' notifications APREs ?'
+				, 'Voulez vous imprimer les '.$countResults.' notifications APREs ?'
 				, 'popup_impression_cohorte'
 			).'</li><li>
 				<a href="javascript:location.reload();" class="refresh_page" >Recharger la page</a>
