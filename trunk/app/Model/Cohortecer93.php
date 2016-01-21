@@ -216,6 +216,14 @@
 
 						// Conditions sur la date d'impression
 						$conditionDateImpression = $this->conditionsDates( (array)$conditionDateImpression, $search, 'Cer93.dateimpressiondecision' );
+
+						// Conditions sur la date de décision
+						if(Hash::get($search, 'Contratinsertion.datedecision')) {
+							$conditionDateDecision = $this->conditionsDates( array(), $search, 'Contratinsertion.datedecision' );
+						}
+						else {
+							$conditionDateDecision = '1 = 1';
+						}
 					}
 
 					$conditions[] = array(
@@ -233,6 +241,7 @@
 												'Contratinsertion.personne_id = Personne.id',
 												'Cer93.positioncer' => $positioncer,
 												$conditionDateImpression,
+												$conditionDateDecision,
 												'Histochoixcer93.etape' => $etape,
 												'Histochoixcer93.id IN ( '.$Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'etape', array(), false ).' )'
 											),
