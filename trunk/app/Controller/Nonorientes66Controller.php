@@ -53,6 +53,9 @@
 					'cohorte_imprimeremploi' => array(
 						'filter' => 'Search'
 					),
+					'cohorte_reponse' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -239,6 +242,25 @@
 					'configurableQueryFieldsKey' => 'Dossierspcgs66.cohorte_imprimeremploi'
 				) 
 			);
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_reponse() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte->cohorte( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse' ) );
+			
+			// Selection automatique de la structure référente en fonction du type d'orientation et du canton
+			$this->set('structureAuto', json_encode($this->Nonoriente66->structuresAutomatiques()));
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_reponse() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse' ) );
 		}
 	}
 ?>

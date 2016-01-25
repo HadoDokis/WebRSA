@@ -160,6 +160,40 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
+
+			/**
+			 * Generateur de conditions
+			 */
+			$paths = array(
+				
+			);
+
+			// Fils de dependantSelect
+			$pathsToExplode = array(
+				
+			);
+
+			$pathsDate = array(
+				'Nonoriente66.dateimpression',
+			);
+
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			foreach( $pathsToExplode as $path ) {
+				$value = Hash::get( $search, $path );
+				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
+					list(,$value) = explode('_', $value);
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
+			
 			return $query;
 		}
 	}
