@@ -39,3 +39,24 @@ msgstr "Imprimer"
 
 msgid "/Nonorientes66/imprimeremploi/#Personne.id#"
 msgstr "Imprimer le questionnaire"
+
+msgid "/Nonorientes66/cohorte_reponse/:heading"
+msgstr "Gestion des réponses"
+
+msgid "Nonoriente66.search"
+msgstr "Rechercher par Non-orientation"
+
+msgid "Search.Nonoriente66.dateimpression"
+msgstr "Date d'impression du courrier"
+
+msgid "Nonoriente66.dateimpression"
+msgstr "Date d'impression du courrier"
+
+msgid "data[Cohorte][][Nonoriente66][reponseallocataire]"
+msgstr "Réponse de l'allocataire ?"
+
+msgid "data[Cohorte][][Orientstruct][typeorient_id]"
+msgstr "Type d'orientation"
+
+msgid "data[Cohorte][][Orientstruct][structurereferente_id]"
+msgstr "Structure référente"

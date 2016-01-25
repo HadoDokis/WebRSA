@@ -479,6 +479,20 @@
 				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
+			'Nonorientes66.cohorte_isemploi' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi',
+				'component' => 'WebrsaCohortesNonorientes66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Nonorientes66.exportcsv_isemploi' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi',
+				'component' => 'WebrsaCohortesNonorientes66New',
+				'keys' => array( 'results.fields' )
+			),
 			'Nonorientes66.cohorte_imprimeremploi' => array(
 				'departement' => 66,
 				'type' => 'search',
@@ -493,6 +507,20 @@
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi',
 				'component' => 'WebrsaCohortesNonorientes66ImpressionsNew',
+				'keys' => array( 'results.fields' )
+			),
+			'Nonorientes66.cohorte_reponse' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse',
+				'component' => 'WebrsaCohortesNonorientes66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Nonorientes66.exportcsv_reponse' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse',
+				'component' => 'WebrsaCohortesNonorientes66New',
 				'keys' => array( 'results.fields' )
 			),
 			'Orientsstructs.cohorte_nouvelles' => array(

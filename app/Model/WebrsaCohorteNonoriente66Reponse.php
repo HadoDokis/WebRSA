@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohorteNonoriente66Isemploi.
+	 * Code source de la classe WebrsaCohorteNonoriente66Reponse.
 	 *
 	 * PHP 5.3
 	 *
@@ -11,18 +11,18 @@
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
-	 * La classe WebrsaCohorteNonoriente66Isemploi ...
+	 * La classe WebrsaCohorteNonoriente66Reponse ...
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaCohorteNonoriente66Isemploi extends AbstractWebrsaCohorteNonoriente66
+	class WebrsaCohorteNonoriente66Reponse extends AbstractWebrsaCohorteNonoriente66
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'WebrsaCohorteNonoriente66Isemploi';
+		public $name = 'WebrsaCohorteNonoriente66Reponse';
 		
 		/**
 		 * Liste des champs de formulaire à inserer dans le tableau de résultats
@@ -41,8 +41,9 @@
 			'Orientstruct.personne_id' => array( 'type' => 'hidden' ),
 			'Orientstruct.statut_orient' => array( 'type' => 'hidden' ),
 			'Nonoriente66.selection' => array( 'type' => 'checkbox' ),
-			'Orientstruct.typeorient_id',
-			'Orientstruct.structurereferente_id',
+			'Nonoriente66.reponseallocataire' => array( 'type' => 'radio', 'legend' => false ),
+			'Orientstruct.typeorient_id' => array( 'empty' => true ),
+			'Orientstruct.structurereferente_id' => array( 'empty' => true ),
 			'Orientstruct.date_valid' => array( 'type' => 'date' )
 		);
 		
@@ -63,34 +64,40 @@
 				'Dossier' => 'INNER',
 				'Situationdossierrsa' => 'INNER',
 				'Adresse' => 'INNER',
+				'Nonorient66' => 'INNER',
 				
 				// LEFT OUTER JOIN
 				'Orientstruct' => 'LEFT OUTER',
 				'Structurereferente' => 'LEFT OUTER',
 				'Typeorient' => 'LEFT OUTER',
-				'Nonorient66' => 'LEFT OUTER',
 				'Informationpe' => 'LEFT OUTER',
 				'Canton' => 'LEFT OUTER',
 				'PersonneReferent' => 'LEFT OUTER',
 				'Referentparcours' => 'LEFT OUTER',
 				'Structurereferenteparcours' => 'LEFT OUTER',
+				'Historiqueetatpe' => 'LEFT OUTER',
+				'Detaildroitrsa' => 'LEFT OUTER',
 			);
 			
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
-				App::uses('WebrsaModelUtility', 'Utility');
 				$query = parent::searchQuery($types);
-				$joinOrientstruct =& $query['joins'][WebrsaModelUtility::findJoinKey('Orientstruct', $query)];
 				
-				$query['conditions']['Historiqueetatpe.etat'] = 'inscription';
-				$joinOrientstruct['conditions'] = array(
-					$joinOrientstruct['conditions'],
-					'Orientstruct.statut_orient' => 'Orienté'
+				// Force la présence des champs nbenfants et canton, utiles pour le prepareFormDataCohorte()
+				$query['fields'][] = $query['fields']['Foyer.nbenfants'];
+				if( Configure::read( 'CG.cantons' ) ) {
+					$query['fields'][] = 'Canton.canton';
+				}
+				
+				$query['conditions']['Nonoriente66.origine'] = 'notisemploi';
+				$query['conditions'][] = array(
+					'OR' => array(
+						'Orientstruct.id IS NULL',
+						'Orientstruct.statut_orient !=' => 'Orienté'
+					)
 				);
-				$query['conditions'][] = 'Orientstruct.id IS NULL';
-				$query['conditions'][] = 'Nonoriente66.id IS NULL';
 			}
 			
 			return $query;
@@ -111,16 +118,7 @@
 					continue;
 				}
 				
-				if ( empty($value['Nonoriente66']['id']) ) {
-					$data[$key]['Nonoriente66'] = array(
-						'personne_id' => Hash::get($value, 'Personne.id'),
-						'origine' => 'isemploi',
-						'dateimpression' => null,
-						'historiqueetatpe_id' => Hash::get($value, 'Historiqueetatpe.id'),
-						'user_id' => $user_id
-					);
-				}
-				
+				$data[$key]['Orientstruct']['structurereferente_id'] = suffix(Hash::get($value, 'Orientstruct.structurereferente_id'));
 				$data[$key]['Orientstruct']['personne_id'] = Hash::get($value, 'Personne.id');
 				$data[$key]['Orientstruct']['origine'] = 'cohorte';
 				$data[$key]['Orientstruct']['statut_orient'] = 'Orienté';
@@ -131,6 +129,31 @@
 			;
 			
 			return $success;
+		}
+		
+		/**
+		 * Préremplissage du formulaire en cohorte
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @param array $options
+		 * @return array
+		 */
+		public function prepareFormDataCohorte( array $results, array $params = array(), array &$options = array() ) {
+			$prepro = Configure::read( 'Nonoriente66.TypeorientIdPrepro' );
+			$social = Configure::read( 'Nonoriente66.TypeorientIdSocial' );
+			
+			$structurereferente = $this->Nonoriente66->structuresAutomatiques();
+			
+			foreach ($results as $key => $value) {
+				$typeorient =& $results[$key]['Orientstruct']['typeorient_id'];
+				$typeorient = Hash::get($value, 'Foyer.nbenfants') === 0 ? $prepro : $social;
+				if ( Configure::read( 'CG.cantons' ) && isset($structurereferente[Hash::get($value, 'Canton.canton')][$typeorient]) ) {
+					$results[$key]['Orientstruct']['structurereferente_id'] = $structurereferente[Hash::get($value, 'Canton.canton')][$typeorient];
+				}
+			}
+			
+			return $results;
 		}
 	}
 ?>
