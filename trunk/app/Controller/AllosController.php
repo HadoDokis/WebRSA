@@ -64,7 +64,7 @@
 		 */
 		public function version() {
 			$json = array(
-				'produit' => 'WEB-RSA',
+				'produit' => 'web-rsa',
 				'version' => app_version(),
 				'refClient' => Hash::get( $this->refsClients, Configure::read( 'Cg.departement' ) )
 			);
