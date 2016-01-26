@@ -126,28 +126,8 @@ class Criteredossierpcg66 extends AppModel {
         $sqDernierDetailcalculdroitrsa = $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier('Detaildroitrsa.id');
         $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->sqDernier('Dossierpcg66.id');
 
-        $conditions = array(
-            array(
-                array(
-                    'OR' => array(
-                        'Adressefoyer.id IS NULL',
-                        'Adressefoyer.id IN ( ' . $Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01('Foyer.id') . ' )'
-                    )
-                ),
-                array(
-                    'OR' => array(
-                        'Detailcalculdroitrsa.id IS NULL',
-                        "Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )"
-                    )
-                ),
-                array(
-                    'OR' => array(
-                        'Decisiondossierpcg66.id IS NULL',
-                        "Decisiondossierpcg66.id IN ( {$sqDerniereDecisiondossierpcg66} )",
-                    )
-                )
-            )
-        );
+        $conditions = array();
+		
         /// Filtre zone géographique
         $conditions[] = $this->conditionsZonesGeographiques($filtre_zone_geo, $mesCodesInsee);
 
@@ -395,7 +375,7 @@ class Criteredossierpcg66 extends AppModel {
             'recursive' => -1,
             'joins' => array(
                 $Dossierpcg66->join('Foyer', array('type' => 'INNER')),
-                $Dossierpcg66->join('User', array('type' => 'LEFT OUTER')),
+				$Dossierpcg66->Foyer->join('Dossier', array('type' => 'INNER')),
                 $Dossierpcg66->Foyer->join(
                     'Personne',
                     array(
@@ -407,20 +387,35 @@ class Criteredossierpcg66 extends AppModel {
                         )
                     )
                 ),
+				$Dossierpcg66->join('User', array('type' => 'LEFT OUTER')),
                 $Dossierpcg66->join('Personnepcg66'),
                 $joinTraitementpcg66,
-				$Dossierpcg66->Foyer->join('Adressefoyer', array('type' => 'LEFT OUTER')),
+				$Dossierpcg66->Foyer->join('Adressefoyer', 
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => 'Adressefoyer.id IN ( ' . $Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01('Foyer.id') . ' )'
+					)
+				),
                 $Dossierpcg66->Foyer->Adressefoyer->join('Adresse', array('type' => 'LEFT OUTER')),
-                $Dossierpcg66->Foyer->join('Dossier', array('type' => 'INNER')),
                 $Dossierpcg66->Foyer->Dossier->join('Situationdossierrsa', array('type' => 'INNER')),
                 $Dossierpcg66->join(
                         'Decisiondossierpcg66', array(
                     'type' => 'LEFT OUTER'
                         )
                 ),
-                $Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo', array('type' => 'LEFT OUTER')),
+                $Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo', 
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => "Decisiondossierpcg66.id IN ( {$sqDerniereDecisiondossierpcg66} )"
+					)
+				),
                 $Dossierpcg66->Foyer->Dossier->join('Detaildroitrsa', array('type' => 'LEFT OUTER')),
-                $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => 'LEFT OUTER')),
+                $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', 
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => "Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )"
+					)
+				),
                 $Dossierpcg66->join('Poledossierpcg66', array('type' => 'LEFT OUTER'))
             ),
             'limit' => 10,
