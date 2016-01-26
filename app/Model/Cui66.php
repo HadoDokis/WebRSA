@@ -210,6 +210,13 @@
 						)
 					)
 				));
+				
+				// Ajout canton calculé
+				if( Configure::read( 'CG.cantons' ) ) {
+					$query['fields']['Canton.canton'] = 'Canton.canton';
+					$query['joins'][] = ClassRegistry::init('Canton')->joinAdresse();
+				}
+				
 				$record = $this->Cui->Personne->find( 'first', $query );
 
 				$record['Partenairecui']['codepartenaire'] = str_pad( ($record['Partenairecui']['codepartenaire'] +1), 3, '0', STR_PAD_LEFT );
@@ -266,6 +273,11 @@
 					),
 					'Adressecui' => array()
 				);
+				
+				// Remplacement par le canton calculé
+				if( Configure::read( 'CG.cantons' ) ) {
+					$result['Personnecui66']['canton'] = Hash::get($record, 'Canton.canton');
+				}
 			}
 			// Mise à jour
 			else {
@@ -460,6 +472,12 @@
 			$query['joins'][] = $this->Cui->Personne->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) );
 			
 			$query['conditions']['Personne.id'] = $personne_id;
+			
+			// Ajout canton calculé
+			if( Configure::read( 'CG.cantons' ) ) {
+				$query['fields']['Canton.canton'] = 'Canton.canton';
+				$query['joins'][] = ClassRegistry::init('Canton')->joinAdresse();
+			}
 			
 			return $query;
 		}
