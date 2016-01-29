@@ -79,30 +79,51 @@
 		 * @var array
 		 */
 		public $modelesOdt = array(
-			'default' => 'Orientation/questionnaireorientation66.odt'
+			'default' => 'Orientation/questionnaireorientation66.odt',
+			'courrier1' => 'Orientation/orientationpedefait.odt',
+			'courrier2' => 'Orientation/orientationpe.odt',
+			'courrier3' => 'Orientation/orientationsociale.odt',
+			'courrier4' => 'Orientation/orientationsocialeauto.odt',
 		);
 		
 		/**
-		 * Retourne les données nécessaires à l'impression du questionnaire pour les non orientés du CG66
-		 * Les données contiennent les informations de la personne
+		 * Retourne les données nécessaires à l'impression
 		 *
-		 * @param integer $id
 		 * @param integer $user_id
 		 * @return array
 		 */
-		public function getDataForPdf() {
+		public function getDataForPdf($user_id = null) {
+			$User = ClassRegistry::init('User');
 			$querydata = array(
 				'fields' => array_merge(
 					$this->Personne->fields(),
 					$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
 					$this->Personne->Foyer->fields(),
-					$this->Personne->Foyer->Dossier->fields()
+					$this->Personne->Foyer->Dossier->fields(),
+					$this->Personne->Orientstruct->Nonoriente66->fields(),
+					$this->Personne->Orientstruct->Typeorient->fields(),
+					$this->Personne->Orientstruct->Structurereferente->fields(),
+					$this->Personne->Orientstruct->Referent->fields(),
+					$User->fields(),
+					$User->Serviceinstructeur->fields()
 				),
 				'joins' => array(
 					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Orientstruct->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Orientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					array(
+						'alias' => 'User',
+						'table' => 'users',
+						'conditions' => array('User.id' => $user_id),
+						'type' => 'LEFT OUTER'
+					),
+					$User->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'conditions' => array(
 					'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
@@ -194,7 +215,19 @@
 		 * @param array $data
 		 * @return string
 		 */
-		public function modeleOdt( $data = array() ) {
+		public function modeleOdt( $data = array(), $name = null ) {
+			if ($name === 'cohorte_imprimernotifications_impressions') {
+				$typeOrientParentIdPdf = Hash::get( $data, 'Typeorient.parentid' );
+
+				if( Hash::get($data, 'Nonoriente66.origine') === 'isemploi' ) {
+					return $this->modelesOdt['courrier1'];
+				} elseif (in_array( $typeOrientParentIdPdf, Configure::read( 'Orientstruct.typeorientprincipale.Emploi' ))) {
+					return $this->modelesOdt['courrier2'];
+				} elseif (in_array( $typeOrientParentIdPdf, Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' ))) {
+					return Hash::get($data, 'Nonoriente66.reponseallocataire') === 'N' ? $this->modelesOdt['courrier4'] : $this->modelesOdt['courrier3'];
+				}
+			}
+			
 			return $this->modelesOdt['default'];
 		}
 		
