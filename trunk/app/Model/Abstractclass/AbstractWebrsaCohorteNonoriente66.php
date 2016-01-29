@@ -165,7 +165,7 @@
 			 * Generateur de conditions
 			 */
 			$paths = array(
-				
+				'Nonoriente66.user_id'
 			);
 
 			// Fils de dependantSelect

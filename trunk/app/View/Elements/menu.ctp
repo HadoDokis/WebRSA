@@ -93,6 +93,7 @@
 				'Gestion des réponses' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploi' ) ),
 				'Gestion des réponses (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_reponse' ) ),
 				'Notifications à envoyer' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notifaenvoyer' ) ),
+				'Notifications à envoyer (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_imprimernotifications' ) ),
 				'Orientés et notifiés' => array( 'url' =>  array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ) ),
 			),
 			'Orientation' => array(

@@ -53,6 +53,9 @@
 					'cohorte_imprimeremploi' => array(
 						'filter' => 'Search'
 					),
+					'cohorte_imprimernotifications' => array(
+						'filter' => 'Search'
+					),
 					'cohorte_reponse' => array(
 						'filter' => 'Search'
 					),
@@ -261,6 +264,57 @@
 		public function exportcsv_reponse() {
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
 			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse' ) );
+		}
+		
+		/**
+		 * Le l'impression d'une notification pour un allocataire
+		 * 
+		 * @param integer $orientstruct_id
+		 */
+		public function imprimernotifications( $orientstruct_id ) {
+			$pdf = $this->Nonoriente66->Orientstruct->getPdfNonoriente66( $orientstruct_id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientation-%d-%s.pdf', $orientstruct_id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_imprimernotifications() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte->search( 
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' ) 
+			);
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_imprimernotifications() {
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte->exportcsv( 
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' ) 
+			);
+		}
+		
+		/**
+		 * Impression de la cohorte
+		 */
+		public function cohorte_imprimernotifications_impressions() {
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohortes->impressions( 
+				array( 
+					'modelName' => 'Personne', 
+					'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications',
+					'configurableQueryFieldsKey' => 'Nonorientes66.cohorte_imprimernotifications'
+				) 
+			);
 		}
 	}
 ?>

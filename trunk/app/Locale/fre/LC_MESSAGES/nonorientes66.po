@@ -60,3 +60,18 @@ msgstr "Type d'orientation"
 
 msgid "data[Cohorte][][Orientstruct][structurereferente_id]"
 msgstr "Structure référente"
+
+msgid "/Nonorientes66/cohorte_imprimernotifications/:heading"
+msgstr "Envoi des notifications"
+
+msgid "/Nonorientes66/imprimernotifications"
+msgstr "Imprimer"
+
+msgid "/Nonorientes66/imprimernotifications/#Orientstruct.id#"
+msgstr "Imprimer"
+
+msgid "Nonoriente66.cohorte_imprimernotifications"
+msgstr "Rechercher par Non-orientation"
+
+msgid "Search.Nonoriente66.user_id"
+msgstr "Utilisateur ayant réalisé l'orientation"

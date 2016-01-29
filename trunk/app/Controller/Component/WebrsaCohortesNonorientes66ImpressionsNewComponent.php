@@ -39,6 +39,51 @@
 		}
 		
 		/**
+		 * Retourne les options stockées liées à des enregistrements en base de
+		 * données, ne dépendant pas de l'utilisateur connecté.
+		 *
+		 * @return array
+		 */
+		protected function _optionsRecords( array $params = array() ) {
+			$User = ClassRegistry::init('User');
+			$User->forceVirtualFields(true);
+
+			$options = parent::_optionsRecords( $params );
+			$options['Nonoriente66']['user_id'] = $User->find(
+				'list',
+				array(
+					'fields' => array(
+						'User.nom_complet'
+					),
+					'order' => array( 'User.nom ASC' )
+				)
+			);
+
+			return $options;
+		}
+
+		/**
+		 * Retourne les noms des modèles dont des enregistrements seront mis en
+		 * cache après l'appel à la méthode _optionsRecords() afin que la clé de
+		 * cache générée par la méthode _options() se trouve associée dans
+		 * ModelCache.
+		 *
+		 * @see _optionsRecords(), _options()
+		 *
+		 * @return array
+		 */
+		protected function _optionsRecordsModels( array $params ) {
+			$result = array_merge(
+				parent::_optionsRecordsModels( $params ),
+				array(
+					'User',
+				)
+			);
+
+			return $result;
+		}
+		
+		/**
 		 * Modifie la requête pour ramener la clé primaire de l'enregistrement,
 		 * le document PDF et le chemin cmspath dans les résultats.
 		 *
@@ -57,8 +102,11 @@
 			$ids = Hash::extract($Controller->{$params['modelName']}->find('all', $query), '{n}.Personne.id');
 			
 			// On récupère les données nécéssaire au remplissage du PDF
-			$query = $Controller->Nonoriente66->getDataForPdf();
+			$query = $Controller->Nonoriente66->getDataForPdf($Controller->Session->read( 'Auth.User.id' ));
 			$query['conditions']['Personne.id'] = $ids;
+			
+			// Limite configurable
+			$query['limit'] = Configure::read($this->_configureKey('limit', $params));
 			
 			return $query;
 		}
@@ -83,25 +131,47 @@
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
 				'Personne' => array(
-					'qual' => $Option->qual()
+					'qual' => $Option->qual(),
+					'typevoie' => $Option->typevoie()
 				)
 			);
 			
-			$pdf = $Controller->Nonoriente66->ged(
-				array( 'cohorte' => $datas ),
-				$Controller->Nonoriente66->modeleOdt($datas),
-				true,
-				$options
-			);
-			
-			$results = array(
-				'Pdf' => array(
-					'document' => $pdf
-				),
-				'Personne' => array(
-					'id' => $query['conditions']['Personne.id']
-				)
-			);
+			if ($Controller->action === 'cohorte_imprimeremploi_impressions') {
+				$pdf = $Controller->Nonoriente66->ged(
+					array( 'cohorte' => $datas ),
+					$Controller->Nonoriente66->modeleOdt($datas, $Controller->action),
+					true,
+					$options
+				);
+
+				$results = array(
+					'Pdf' => array(
+						'document' => $pdf
+					),
+					'Personne' => array(
+						'id' => $query['conditions']['Personne.id']
+					)
+				);
+			} elseif ($Controller->action === 'cohorte_imprimernotifications_impressions') {
+				$results = array();
+				foreach ($datas as $data) {
+					$pdf = $Controller->Nonoriente66->ged(
+						array( 'cohorte' => $data ),
+						$Controller->Nonoriente66->modeleOdt($data, $Controller->action),
+						false,
+						$options
+					);
+
+					$results[] = array(
+						'Pdf' => array(
+							'document' => $pdf
+						),
+						'Nonoriente66' => array(
+							'id' => Hash::get($data, 'Nonoriente66.id')
+						)
+					);
+				}
+			}
 			
 			return $results;
 		}
@@ -118,8 +188,17 @@
 		protected function _postProcess( array $results, array $params ) {
 			$Controller = $this->_Collection->getController();
 			
-			foreach ($results['Personne']['id'] as $personne_id) {
-				$Controller->Nonoriente66->saveImpression($personne_id, $Controller->Session->read( 'Auth.User.id' ));
+			if ($Controller->action === 'cohorte_imprimeremploi_impressions') {
+				foreach ($results['Personne']['id'] as $personne_id) {
+					$Controller->Nonoriente66->saveImpression($personne_id, $Controller->Session->read( 'Auth.User.id' ));
+				}
+			} elseif ($Controller->action === 'cohorte_imprimernotifications_impressions') {
+				$Controller->Nonoriente66->updateAllUnBound(
+					array( 'Nonoriente66.datenotification' => "'".date( 'Y-m-d' )."'" ),
+					array(
+						'"Nonoriente66"."id"' => Hash::extract($results, '{n}.Nonoriente66.id')
+					)
+				);
 			}
 		 
 			return parent::_postProcess($results, $params);
@@ -133,7 +212,13 @@
 		 * @return string
 		 */
 		protected function _concat( $results, array $params ) {
-			return Hash::get($results, $params['documentPath']);
+			$Controller = $this->_Collection->getController();
+			
+			if ($Controller->action === 'cohorte_imprimeremploi_impressions') {
+				return Hash::get($results, $params['documentPath']);
+			}
+			
+			return parent::_concat($results, $params);
 		}
 	}
 ?>
