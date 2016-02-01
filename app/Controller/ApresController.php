@@ -861,9 +861,18 @@
 		 * Moteur de recherche par APRE / Toutes les APREs
 		 */
 		public function search() {
+			$this->loadModel( 'Apre' );
+			$this->Apre->recursive = -1;
+			$this->Apre->deepAfterFind = false;
+
 			$this->helpers[] = 'Search.SearchForm';
 			$Recherches = $this->Components->load( 'WebrsaRecherchesApresNew' );
-			$Recherches->search();
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$Recherches->search(
+				array(
+					'modelName' => 'Apre'
+				)
+			);
 
 			$this->Apre->validate = array();
 			ClassRegistry::init('Aideapre66')->validate = array();
