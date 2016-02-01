@@ -75,3 +75,18 @@ msgstr "Rechercher par Non-orientation"
 
 msgid "Search.Nonoriente66.user_id"
 msgstr "Utilisateur ayant réalisé l'orientation"
+
+msgid "/Nonorientes66/recherche_notifie/:heading"
+msgstr "Utilisateur ayant réalisé l'orientation"
+
+msgid "Search.Nonoriente66.datenotification"
+msgstr "Date de notification"
+
+msgid "/Orientsstructs/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Orientsstructs/filelink/#Orientstruct.id#"
+msgstr "Fichiers liés"
+
+msgid "Orientstruct.nbfichier_lies"
+msgstr "Nombre de fichiers liés"

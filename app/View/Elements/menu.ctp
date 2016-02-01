@@ -95,6 +95,7 @@
 				'Notifications à envoyer' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notifaenvoyer' ) ),
 				'Notifications à envoyer (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_imprimernotifications' ) ),
 				'Orientés et notifiés' => array( 'url' =>  array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ) ),
+				'Orientés et notifiés (nouveau)' => array( 'url' =>  array( 'controller' => 'nonorientes66', 'action' => 'recherche_notifie' ) ),
 			),
 			'Orientation' => array(
 				'Demandes non orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'nouvelles' ) ),

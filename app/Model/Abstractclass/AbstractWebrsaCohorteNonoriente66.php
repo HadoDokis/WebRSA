@@ -175,6 +175,7 @@
 
 			$pathsDate = array(
 				'Nonoriente66.dateimpression',
+				'Nonoriente66.datenotification',
 			);
 
 			foreach( $paths as $path ) {

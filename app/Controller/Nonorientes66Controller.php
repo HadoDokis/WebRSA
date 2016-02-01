@@ -59,6 +59,9 @@
 					'cohorte_reponse' => array(
 						'filter' => 'Search'
 					),
+					'recherche_notifie' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -314,6 +317,26 @@
 					'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications',
 					'configurableQueryFieldsKey' => 'Nonorientes66.cohorte_imprimernotifications'
 				) 
+			);
+		}
+		
+		/**
+		 * Recherche
+		 */
+		public function recherche_notifie() {
+			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66New' );
+			$Cohorte->search( 
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' ) 
+			);
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_notifie() {
+			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66New' );
+			$Cohorte->exportcsv( 
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' ) 
 			);
 		}
 	}
