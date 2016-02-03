@@ -300,18 +300,18 @@
 
 			return $this->_fieldset( 'Search.Personne', $content, $params );
 		}
-		
+
 		/**
 		 * Filtres de recherche configuré de type "possède un..."
-		 * 
+		 *
 		 * @param array $params
 		 * @return string
 		 */
 		public function blocHave( array $params = array() ) {
 			$params = $params + $this->default;
 			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
-			$params['configPath'] = ( isset($params['configPath']) && !empty( $params['configPath'] ) 
-				? $params['configPath'] 
+			$params['configPath'] = ( isset($params['configPath']) && !empty( $params['configPath'] )
+				? $params['configPath']
 				: 'ConfigurableQuery.'.Inflector::camelize($this->params['controller']).'.' ).$this->params['action'].'.filters.has'
 			;
 
@@ -320,18 +320,18 @@
 			if ( empty($configs) ) {
 				return '';
 			}
-			
+
 			$content = '';
 			foreach ($configs as $modelName) {
 				$inputName = "{$params['prefix']}Personne.has_".Inflector::underscore($modelName);
 				$option = Hash::get($params, "options.Personne.has_".Inflector::underscore($modelName)) ? Hash::get($params, "options.Personne.has_".Inflector::underscore($modelName)) : array('Non', 'Oui');
-				$content .= $this->_input( $inputName, $params, 
-					array( 
+				$content .= $this->_input( $inputName, $params,
+					array(
 						'label' => __d('allocataire', $inputName),
-						'type' => 'select', 
-						'empty' => true, 
+						'type' => 'select',
+						'empty' => true,
 						'options' => $option
-					) 
+					)
 				);
 			}
 
@@ -351,14 +351,39 @@
 			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
 			$script = "document.observe( 'dom:loaded', function() {
-				dependantSelect( '".$this->domId( "{$params['prefix']}PersonneReferent.referent_id" )."', '".$this->domId( "{$params['prefix']}PersonneReferent.structurereferente_id" )."' );
+				try {
+					dependantSelect( '".$this->domId( "{$params['prefix']}PersonneReferent.referent_id" )."', '".$this->domId( "{$params['prefix']}PersonneReferent.structurereferente_id" )."' );
+				} catch(e) {
+					console.log(e);
+				}
 			} );";
 
 			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 
-			$content = $this->Xform->input( "{$params['prefix']}PersonneReferent.structurereferente_id", array( 'label' => __d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.structurereferente_id' ), 'empty' => true ) );
-			$content .= $this->Xform->input( "{$params['prefix']}PersonneReferent.referent_id", array( 'label' => __d( $domain_search_plugin, 'Referentparcours.nom_complet' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.referent_id' ), 'empty' => true ) );
-			$content .= $this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) );
+			$content = $this->_input(
+				"{$params['prefix']}PersonneReferent.structurereferente_id",
+				$params,
+				array(
+					'label' => __d( $domain_search_plugin, 'Structurereferenteparcours.lib_struc' ),
+					'type' => 'select',
+					'options' => (array)Hash::get( $params, 'options.PersonneReferent.structurereferente_id' ),
+					'empty' => true
+				)
+			)
+			.$this->_input(
+				"{$params['prefix']}PersonneReferent.referent_id",
+				$params,
+				array(
+					'label' => __d( $domain_search_plugin, 'Referentparcours.nom_complet' ),
+					'type' => 'select',
+					'options' => (array)Hash::get( $params, 'options.PersonneReferent.referent_id' ),
+					'empty' => true
+				)
+			);
+
+			if( !empty( $content ) ) {
+				$content .= $this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) ); // FIXME: throw ?
+			}
 
 			return $this->_fieldset( 'Search.Referentparcours', $content, $params );
 		}
