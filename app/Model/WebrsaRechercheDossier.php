@@ -172,8 +172,6 @@
 							),
 						)
 					);
-
-					$query = $this->Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query );
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -209,7 +207,7 @@
 			}
 
 			// Début des spécificités par département
-			$departement = Configure::read( 'Cg.departement' );
+			$departement = (int)Configure::read( 'Cg.departement' );
 
 			// La personne possède-t-elle un rôle ?
 			if( $departement === 66 ) {
@@ -224,17 +222,15 @@
 
 			// CD 58: travailleur social chargé de l'évaluation: "Nom du chargé de
 			// l'évaluation" lorsque l'on crée une orientation
-			if( $departement == 58 ) {
+			if( $departement === 58 ) {
 				$referentorientant_id = (string)Hash::get( $search, 'Propoorientationcov58.referentorientant_id' );
 				if( $referentorientant_id !== '' ) {
 					$query['conditions']['Propoorientationcov58.referentorientant_id'] = $referentorientant_id;
 				}
-
-				$query = $this->Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query, $search );
 			}
 
 			// CD 66: Personne ne possédant pas d'orientation et sans entrée Nonoriente66
-			if( $departement == 66 ) {
+			if( $departement === 66 ) {
 				$exists = (string)Hash::get( $search, 'Personne.has_orientstruct' );
 				if( $exists === '0' ) {
 					$this->Dossier->Foyer->Personne->Behaviors->load('LinkedRecords');

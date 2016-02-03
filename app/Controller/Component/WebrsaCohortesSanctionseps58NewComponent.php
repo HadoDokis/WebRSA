@@ -35,18 +35,25 @@
 				$Controller->loadModel( 'Informationpe' );
 			}
 
-			return Hash::merge(
-				parent::_optionsEnums( $params ),
+			$enums = Hash::merge(
 				$Controller->Informationpe->enums(),
 				$Controller->Informationpe->Historiqueetatpe->enums(),
 				$Controller->Personne->Dossierep->enums(),
 				$Controller->Personne->Dossierep->Sanctionep58->enums(),
 				$Controller->Personne->Foyer->Dossier->Suiviinstruction->Serviceinstructeur->enums(),
 				$Controller->Personne->Orientstruct->enums(),
-				$Controller->Personne->Orientstruct->Referentorientant->enums(),
-				$Controller->Personne->Orientstruct->Structureorientante->enums(),
+				$Controller->Personne->Orientstruct->Referent->enums(),
 				$Controller->Personne->Orientstruct->Structurereferente->enums(),
 				$Controller->Personne->Orientstruct->Typeorient->enums()
+			);
+
+			return Hash::merge(
+				parent::_optionsEnums( $params ),
+				$enums,
+				array(
+					'Referentorientant' => $enums['Referent'],
+					'Structureorientante' => $enums['Structurereferente']
+				)
 			);
 		}
 	}

@@ -150,6 +150,13 @@
 
 				$query = $this->Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );
 
+				// Ajout de champs virtuels spécifiques pour les départements
+				$departement = (int)Configure::read( 'Cg.departement' );
+				if( $departement === 58 ) {
+					$sql = $this->Personne->vfEtapeDossierOrientation58();
+					$query['fields']['Personne.etat_dossier_orientation'] = "{$sql} AS \"Personne__etat_dossier_orientation\"";
+				}
+
 				// Enregistrement dans le cache
 				Cache::write( $cacheKey, $query );
 			}
@@ -184,7 +191,7 @@
 					$this->Personne->Foyer->join( 'Personne', array( 'type' => $types['Personne'] ) )
 				);
 			}
-			
+
 			else {
 				debug("Aucuns liens depuis Personne/Foyer/Dossier vers {$baseModelName} !");
 				throw new Exception("Aucuns liens depuis Personne/Foyer/Dossier vers {$baseModelName} !", 500);
@@ -208,6 +215,12 @@
 			$query['conditions'] = $this->conditionsDernierDossierAllocataire( $query['conditions'], $search );
 
 			$query = $this->Personne->PersonneReferent->completeSearchConditionsReferentParcours( $query, $search );
+
+			// Ajout de conditions spécifiques au département connecté
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement === 58 ) {
+				$query = $this->Personne->completeQueryVfEtapeDossierOrientation58( $query, $search );
+			}
 
 			return $query;
 		}
