@@ -161,7 +161,7 @@
 			$params += array(
 				'keys' => $this->keysRecherche,
 				'query' => $this->search( array() ),
-				'exportcsv' => true
+				'exportcsv' => false
 			);
 
 			// Vérification de l'existence des champs paramétrés dans le querydata

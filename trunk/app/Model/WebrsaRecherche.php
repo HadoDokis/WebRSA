@@ -10,6 +10,7 @@
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'AppController', 'Controller' );
 	App::uses( 'Folder', 'Utility' );
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe WebrsaRecherche ...
@@ -226,11 +227,13 @@
 			),
 			'Contratsinsertion.search' => array(
 				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaRechercheContratinsertion',
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Contratsinsertion.exportcsv' => array(
 				'modelName' => 'Contratinsertion',
+				'modelRechercheName' => 'WebrsaRechercheContratinsertion',
 				'component' => 'WebrsaRecherchesContratsinsertionNew',
 				'keys' => array( 'results.fields' )
 			),
@@ -279,12 +282,14 @@
 			'Cuis.search' => array(
 				'departement' => 66,
 				'modelName' => 'Cui',
+				'modelRechercheName' => 'WebrsaRechercheCui',
 				'component' => 'WebrsaRecherchesCuisNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Cuis.exportcsv' => array(
 				'departement' => 66,
 				'modelName' => 'Cui',
+				'modelRechercheName' => 'WebrsaRechercheCui',
 				'component' => 'WebrsaRecherchesCuisNew',
 				'keys' => array( 'results.fields' )
 			),
@@ -316,11 +321,13 @@
 			),
 			'Dossiers.search' => array(
 				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaRechercheDossier',
 				'component' => 'WebrsaRecherchesDossiersNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossiers.exportcsv' => array(
 				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaRechercheDossier',
 				'component' => 'WebrsaRecherchesDossiersNew',
 				'keys' => array( 'results.fields' )
 			),
@@ -424,11 +431,13 @@
 			),
 			'Entretiens.search' => array(
 				'modelName' => 'Entretien',
+				'modelRechercheName' => 'WebrsaRechercheEntretien',
 				'component' => 'WebrsaRecherchesEntretiensNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Entretiens.exportcsv' => array(
 				'modelName' => 'Entretien',
+				'modelRechercheName' => 'WebrsaRechercheEntretien',
 				'component' => 'WebrsaRecherchesEntretiensNew',
 				'keys' => array( 'results.fields' )
 			),
@@ -541,7 +550,7 @@
 			),
 			'Nonorientes66.recherche_notifie' => array(
 				'departement' => 66,
-				'modelName' => 'Personne', 
+				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie',
 				'component' => 'WebrsaRecherchesNonorientes66New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
@@ -577,23 +586,27 @@
 			),
 			'Orientsstructs.search' => array(
 				'modelName' => 'Orientstruct',
+				'modelRechercheName' => 'WebrsaRechercheOrientstruct',
 				'component' => 'WebrsaRecherchesOrientsstructsNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Orientsstructs.exportcsv' => array(
 				'modelName' => 'Orientstruct',
+				'modelRechercheName' => 'WebrsaRechercheOrientstruct',
 				'component' => 'WebrsaRecherchesOrientsstructsNew',
 				'keys' => array( 'results.fields' )
 			),
 			'Propospdos.search' => array(
 				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Propopdo',
+				'modelRechercheName' => 'WebrsaRecherchePropopdo',
 				'component' => 'WebrsaRecherchesPropospdosNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Propospdos.exportcsv' => array(
 				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Propopdo',
+				'modelRechercheName' => 'WebrsaRecherchePropopdo',
 				'component' => 'WebrsaRecherchesPropospdosNew',
 				'keys' => array( 'results.fields' )
 			),
@@ -635,11 +648,13 @@
 			),
 			'Rendezvous.search' => array(
 				'modelName' => 'Rendezvous',
+				'modelRechercheName' => 'WebrsaRechercheRendezvous',
 				'component' => 'WebrsaRecherchesRendezvousNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Rendezvous.exportcsv' => array(
 				'modelName' => 'Rendezvous',
+				'modelRechercheName' => 'WebrsaRechercheRendezvous',
 				'component' => 'WebrsaRecherchesRendezvousNew',
 				'keys' => array( 'results.fields' )
 			),
@@ -717,6 +732,16 @@
 		 */
 		protected $_cache = array();
 
+		/**
+		 * Live cache pour les modèles de recherche du département.
+		 *
+		 * @var array
+		 */
+		protected $_modelsDepartementCache = array();
+
+		/**
+		 * Méthode permettant de charger le (live) cache.
+		 */
 		protected function _loadCache() {
 			if( $this->_cache === array() ) {
 				$this->_cache = array();
@@ -743,7 +768,11 @@
 			}
 		}
 
-		// @deprecated
+		/**
+		 * @deprecated
+		 *
+		 * @return array
+		 */
 		public function configureKeys() {
 			$this->_loadCache();
 
@@ -755,6 +784,10 @@
 			return $result;
 		}
 
+		/**
+		 *
+		 * @return array
+		 */
 		public function checks() {
 			$this->_loadCache();
 
@@ -777,6 +810,12 @@
 			}
 		}
 
+		/**
+		 *
+		 * @param string $key
+		 * @param array $config
+		 * @return Component
+		 */
 		protected function _component( $key, array $config ) {
 			list($controllerName, $actionName) = explode( '.', $key );
 			$url = array( 'controller' => Inflector::underscore( $controllerName ), 'action' => Inflector::underscore( $actionName) );
@@ -805,6 +844,8 @@
 			$config += array( 'configurableQueryFieldsKey' => $key );
 			$Recherches = $Controller->Components->load( $config['component'] );
 
+			$Controller->{$config['modelName']}->forceVirtualFields = true;
+
 			return $Recherches;
 		}
 
@@ -832,25 +873,65 @@
 					ClassRegistry::flush();
 					$Recherches = $this->_component( $key, $config );
 
+					$Controller = $Recherches->_Collection->getController();
+					$Controller->{$config['modelName']}->forceVirtualFields = true;
+
 					if( ($type === null && strpos( $key, '.search' ) !== false) || $type === 'search' ) {
 						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
-						$Controller = $Recherches->_Collection->getController();
 						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );
 						$Recherches->search( $config );
 					}
 					else if( ($type === null && strpos( $key, '.cohorte' ) !== false) || $type === 'cohorte' ) {
 						// INFO: on triche pour prétendre que le formulaire a bien été envoyé
-						$Controller = $Recherches->_Collection->getController();
 						$Controller->request->data = array( 'Search' => array( 'active' => 1 ) );
 						$Recherches->cohorte( $config, array() );
 					}
 					else {
 						$Recherches->exportcsv( $config );
 					}
+
+					// Export CSV des champs disponibles
+					$query = $Controller->{$config['modelRechercheName']}->searchQuery();
+
+					$fileName = sprintf(
+						TMP.DS.'logs'.DS.'ConfigurableQuery__%s__%s.csv',
+						$Controller->name,
+						$Controller->action
+					);
+
+					ConfigurableQueryFields::exportQueryFields( $query, Inflector::tableize( $Controller->name ), $fileName );
 				}
 			}
 
 			return true;
+		}
+
+		/**
+		 * Retourne la liste des noms de modèles de recherche utilisés par le
+		 * département.
+		 *
+		 * @return array
+		 */
+		public function modelsDepartement() {
+			if( $this->_modelsDepartementCache === array() ) {
+				$departement = (int)Configure::read( 'Cg.departement' );
+				$result = array();
+
+				foreach( $this->searches as $path => $config ) {
+					$accepted = Hash::get( $config, 'departement' );
+					if( $accepted === null || in_array( $departement, (array)$accepted ) ) {
+						$modelRechercheName = Hash::get( $config, 'modelRechercheName' );
+						// TODO: if( $modelRechercheName === null ) -> Exception
+						$result[] = $modelRechercheName;
+					}
+				}
+
+				sort( $result );
+
+				$this->_modelsDepartementCache = array_unique( $result );
+			}
+
+			return $this->_modelsDepartementCache;
 		}
 	}
 ?>

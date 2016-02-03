@@ -34,6 +34,13 @@
 		public $useTable = false;
 
 		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'WebrsaRecherche' );
+
+		/**
 		 * Retourne la liste des tables du schéma de la connection default.
 		 *
 		 * @return array
@@ -193,12 +200,11 @@
 		/**
 		 * Préchargement du cache de l'application.
 		 *
-		 * @todo Paramètre pour vider le cache ou non
-		 *
 		 * @param boolean $clear Doit-on vider le cache avant le préchargement ?
 		 * @return array
 		 */
 		public function preloadCache( $clear = true ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
 			if( $clear ) {
 				$this->clearCache();
 			}
@@ -209,6 +215,20 @@
 			$missingTables = (array)Hash::get( $preloadTables, 'tables' );
 
 			$modelNames = App::objects( 'model' );
+
+			$modelRechercheNames = $this->WebrsaRecherche->modelsDepartement();
+
+			// Nettoyage de la liste des modèles à traiter
+			foreach( $modelNames as $key => $modelName ) {
+				// Modèles traités par WebrsaRecherche n'appartenant pas au département
+				if( preg_match( '/^Webrsa(Recherche|Cohorte).+/', $modelName ) && in_array( $modelName, $modelRechercheNames ) === false ) {
+					unset( $modelNames[$key] );
+				}
+				// Modèles n'appartenant pas au département
+				else if( preg_match( '/([0-9]{2,3})$/', $modelName ) && !preg_match( '/'.$departement.'$/', $modelName ) ) {
+					unset( $modelNames[$key] );
+				}
+			}
 			sort( $modelNames );
 
 			$this->_dispatchEvent( 'preloadModels', count( $modelNames ) );

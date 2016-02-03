@@ -123,11 +123,8 @@
 					$query['joins'][] = $this->Canton->joinAdresse();
 				}
 
-				// 5. Ajout de l'étape du dossier d'orientation de l'allocataire pour le CG 58
-				if( $departement === 58 ) {
-					$query = $this->Contratinsertion->Personne->completeQueryVfEtapeDossierOrientation58( $query );
-				}
-				else if( $departement === 93 ) {
+				// 5. Ajout de champs et de jointures spécifiques au département connecté
+				if( $departement === 93 ) {
 					$query['fields'] = array_merge(
 						$query['fields'],
 						ConfigurableQueryFields::getModelsFields(
