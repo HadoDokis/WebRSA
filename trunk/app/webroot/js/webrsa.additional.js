@@ -6,22 +6,24 @@
  * @source https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/create#Polyfill
  */
 if (typeof Object.create !== 'function') {
-  Object.create = (function() {
-	'use strict';
-    var Temp = function() { return; };
-    return function (prototype) {
-      if (arguments.length > 1) {
-        throw new Error('Cette prothèse ne supporte pas le second argument');
-      }
-      if (typeof prototype !== 'object') {
-        throw new TypeError('L\'argument doit être un objet');
-      }
-      Temp.prototype = prototype;
-      var result = new Temp();
-      Temp.prototype = null;
-      return result;
-    };
-  }());
+	Object.create = (function () {
+		'use strict';
+		var Temp = function () {
+			return;
+		};
+		return function (prototype) {
+			if (arguments.length > 1) {
+				throw new Error('Cette prothèse ne supporte pas le second argument');
+			}
+			if (typeof prototype !== 'object') {
+				throw new TypeError('L\'argument doit être un objet');
+			}
+			Temp.prototype = prototype;
+			var result = new Temp();
+			Temp.prototype = null;
+			return result;
+		};
+	}());
 }
 
 
@@ -35,11 +37,11 @@ if (typeof Object.create !== 'function') {
  * @param {HTML} radio
  * @returns {void}
  */
-function uncheckable( radio ){
+function uncheckable(radio) {
 	'use strict';
-	radio.onclick = function(){
-		$$('input[name="'+radio.name+'"]').each(function( radio ){
-			if ( radio.checked && radio.state ){
+	radio.onclick = function () {
+		$$('input[name="'+radio.name+'"]').each(function (radio) {
+			if (radio.checked && radio.state) {
 				radio.state = false;
 				radio.checked = false;
 				
@@ -47,7 +49,7 @@ function uncheckable( radio ){
 					radio.simulate('change');
 				}
 			}
-			else if ( radio.checked ){
+			else if (radio.checked) {
 				radio.state = true;
 			}
 			else{
@@ -57,16 +59,70 @@ function uncheckable( radio ){
 	};
 }
 
+
+/*************************************************************************
+ * Cache les optgroup vide dans un select								 *
+ *************************************************************************/
+
+/**
+ * Cache les optgroup vide dans un select
+ * 
+ * @param {HTML} select
+ * @returns {boolean}
+ */
+function removeEmptyOptgroup(select) {
+	'use strict';
+	var i, j, optgroups = select.select('optgroup'), options, empty;
+	
+	if (optgroups === null || optgroups.length === 0) {
+		return false;
+	}
+	
+	for (i=0; i<optgroups.length; i++) {
+		options = optgroups[i].select('option');
+		
+		// Si il n'y a pas d'option on cache
+		if (options === null || options.length === 0) {
+			optgroups[i].hide();
+			continue;
+		}
+		
+		// Si il y a des options mais qu'elles sont toutes cachés, on cache
+		empty = true;
+		for (j=0; j<options.length; j++) {
+			if (options[j].visible()) {
+				empty = false;
+				break;
+			}
+		}
+		
+		if (empty) {
+			optgroups[i].hide();
+		} else {
+			optgroups[i].show();
+		}
+	}
+	
+	return true;
+}
+
 /*************************************************************************
  * Ajoute un id au parent de l'élément ciblé							 *
  *************************************************************************/
 
-function addParentId( dom, id ){
+/**
+ * Ajoute un id au parent de l'élément ciblé
+ * 
+ * @param {DOM} dom
+ * @param {integer|string} id
+ * @returns {Boolean}
+ */
+function addParentId(dom, id) {
 	'use strict';
-	if ( dom === undefined || dom === null || dom.up().id !== '' ){
+	if (dom === undefined || dom === null || dom.up().id !== '') {
 		return false;
 	}
-	
+
 	dom.up().id = id === undefined ? dom.id + 'Parent' : id;
 	return true;
 }
@@ -89,7 +145,7 @@ function addParentId( dom, id ){
  * @param {integer} nbCollumn
  * @returns {Boolean}
  */
-function divideIntoCollumn( dom, nbCollumn ){
+function divideIntoCollumn(dom, nbCollumn) {
 	'use strict';
 	var parent = dom.up(),
 		parentWidth = Element.getWidth(parent), // Pour le calcul de la taille des colonnes
@@ -103,40 +159,40 @@ function divideIntoCollumn( dom, nbCollumn ){
 		dom.remove();
 		return true;
 	}
-	
+
 	parent.divided = true;
-	
+
 	// Si un label seul est présent, il doit avoir une taille de 100% pour eviter le décalage des colonnes
-	dom.siblings().each(function( sibling ) {
-		if ( sibling.tagName.toUpperCase() === 'LABEL' ) {
+	dom.siblings().each(function (sibling) {
+		if (sibling.tagName.toUpperCase() === 'LABEL') {
 			sibling.style.width = '100%';
 		}
 	});
-	
+
 	// Stock les labels et copie les elements
-	parent.select('div').each(function( div ){
+	parent.select('div').each(function (div) {
 		var name = div.select('label').first().innerHTML.replace(/[^A-Za-z]+/g, '');
 		childs[name.toUpperCase()] = Element.clone(div, true);
 		childsNames.push(name.toUpperCase());
 	});
-	
+
 	// Les labels sont trié
 	childsNames.sort();
-	
+
 	// On insert les colonnes
-	for (;i<nbCollumn;i++) {
-		divList[i] = new Element('div', {style: 'width:'+Math.floor(parentWidth/nbCollumn-1)+'px;display:inline-block;vertical-align:top;'});
+	for (; i < nbCollumn; i++) {
+		divList[i] = new Element('div', {style: 'width:' + Math.floor(parentWidth / nbCollumn - 1) + 'px;display:inline-block;vertical-align:top;'});
 		parent.insert(divList[i]);
 	}
-	
+
 	// On rempli les colonnes dans le bon ordre
-	for (i=0;i<childsNames.length;i++) {
-		divList[Math.floor(i / Math.ceil(childsNames.length/nbCollumn))].insert(childs[childsNames[i]]);
+	for (i = 0; i < childsNames.length; i++) {
+		divList[Math.floor(i / Math.ceil(childsNames.length / nbCollumn))].insert(childs[childsNames[i]]);
 	}
-	
+
 	// On retire l'ancien element
 	dom.remove();
-	
+
 	return true;
 }
 
@@ -150,7 +206,7 @@ function divideIntoCollumn( dom, nbCollumn ){
  * @param {type} defaultValue
  * @returns {unresolved}
  */
-function giveDefaultValue( valeur, defaultValue ){
+function giveDefaultValue(valeur, defaultValue) {
 	'use strict';
 	return valeur === undefined ? defaultValue : valeur;
 }
@@ -160,7 +216,7 @@ function giveDefaultValue( valeur, defaultValue ){
  * @param {String} dateString
  * @returns {String}
  */ 
-function zeroFillDate( dateString ){
+function zeroFillDate(dateString) {
 	'use strict';
 	return dateString.replace( /^(\d)\-/, '0$1-' ).replace( /\-(\d)\-/, '-0$1-' ).replace( /\-(\d)$/, '-0$1' );
 }
@@ -171,14 +227,16 @@ function zeroFillDate( dateString ){
  * @param {Array} array
  * @returns {Boolean}
  */
-function inArray( needle, haystack ){
+function inArray(needle, haystack) {
 	'use strict';
 	var key;
-	if ( needle === null || typeof toString(needle) !== 'string' || !Array.isArray( haystack ) ){
+	if (needle === null || typeof toString(needle) !== 'string' || !Array.isArray( haystack )) {
 		return false;
 	}
-	for (key in haystack){
-		if ( haystack.hasOwnProperty(key) && haystack[key] === needle ) { return true; }
+	for (key in haystack) {
+		if (haystack.hasOwnProperty(key) && haystack[key] === needle) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -188,7 +246,7 @@ function inArray( needle, haystack ){
  * @param {Mixed} values
  * @returns {Array}
  */
-function castArray( values ){
+function castArray(values) {
 	'use strict';
 	return typeof values !== 'object' ? [values] : values;
 }
@@ -198,10 +256,10 @@ function castArray( values ){
  * @param {String} modelField
  * @returns {String}
  */
-function fieldId( modelField ){
+function fieldId(modelField) {
 	'use strict';
 	var i, result = '', x, exploded = modelField.split(/[\._]/);
-	for(i=0; i<exploded.length; i++){
+	for (i = 0; i < exploded.length; i++) {
 		x = exploded[i];
 		result += x.charAt(0).toUpperCase() + x.substring(1);
 	}
@@ -217,31 +275,35 @@ function fieldId( modelField ){
  * @returns {String}
  */
 function sprintf() {
-    var args = arguments,
-    string = args[0],
-    i = 1;
-    return string.replace(/%((%)|s|d)/g, function (m) {
-        // m is the matched format, e.g. %s, %d
-        var val = null;
-        if (m[2]) {
-            val = m[2];
-        } else {
-            val = args[i];
-            // A switch statement so that the formatter can be extended. Default is %s
-            switch (m) {
-                case '%d':
-                    val = parseFloat(val);
-                    if (isNaN(val)) {
-                        val = 0;
-                    }
-                    break;
-				default: break;
-            }
-            i++;
-        }
-        return val;
-    });
+	var args = arguments,
+		string = args[0],
+		i = 1
+	;
+
+	return string.replace(/%((%)|s|d)/g, function (m) {
+		// m is the matched format, e.g. %s, %d
+		var val = null;
+		if (m[2]) {
+			val = m[2];
+		} else {
+			val = args[i];
+			// A switch statement so that the formatter can be extended. Default is %s
+			switch (m) {
+				case '%d':
+					val = parseFloat(val);
+					if (isNaN(val)) {
+						val = 0;
+					}
+					break;
+				default:
+					break;
+			}
+			i++;
+		}
+		return val;
+	});
 }
+
 
 /**
  * Rempli un element de type date Cakephp en fonction de la valeur en mois d'un autre élément.
@@ -251,7 +313,7 @@ function sprintf() {
  * @throws {error} La cible n'a pas été trouvée
  * @returns {Boolean}
  */
-function setDateCloture( id, target ){
+function setDateCloture(id, target) {
 	'use strict';
 	var duree = parseFloat( $F(id), 10 ),
 		now = new Date(),
@@ -267,7 +329,7 @@ function setDateCloture( id, target ){
 		targetYear
 	;
 
-	if ( isNaN(duree*2) || exploded.length < 2 ){
+	if (isNaN(duree*2) || exploded.length < 2) {
 		return false;
 	}
 	
@@ -279,7 +341,7 @@ function setDateCloture( id, target ){
 	targetMonth = $$('select[name="'+baseTargetName+'[month]"]').first();
 	targetYear = $$('select[name="'+baseTargetName+'[year]"]').first();
 	
-	if ( targetDay === undefined || targetMonth === undefined || targetYear === undefined ) {
+	if (targetDay === undefined || targetMonth === undefined || targetYear === undefined) {
 		throw 'select[name="'+baseTargetName+'"] + ([day] | [month] | [year]) Not Found!';
 	}
 	
@@ -296,7 +358,7 @@ function setDateCloture( id, target ){
 /**
  * Permet de récupérer un élément sans tenir compte du standard utilisé
  * 
- * @param {string|object} 'MonElement' ou 'Mon.element' ou $('MonElement)
+ * @param {string|object} string 'MonElement' ou 'Mon.element' ou $('MonElement)
  * @return {DOM}
  */
 function getElementByString(string) {
@@ -329,7 +391,7 @@ function getElementByString(string) {
  * 
  * @param {DOM} element à désactiver
  */
-function disable( element ) {
+function disable(element) {
 	if (typeof element.disable === 'function') {
 		element.disable();
 	} else {
@@ -342,7 +404,7 @@ function disable( element ) {
  * 
  * @param {DOM} element à désactiver
  */
-function enable( element ) {
+function enable(element) {
 	if (typeof element.enable === 'function') {
 		element.enable();
 	} else {
@@ -358,7 +420,7 @@ function enable( element ) {
  * @param {string} operator accepte : true, =, ==, ===, false, !, !=, !==, <, >, <=, >=
  * @returns {Boolean}
  */
-function evalCompare( value1, operator, value2 ) {
+function evalCompare(value1, operator, value2) {
 	var result, value1, value2;
 	
 	switch (operator === undefined ? '=' : operator) {
@@ -528,7 +590,7 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid, debug)
 				break;
 				
 			// Les conditions ne sont pas rempli, on active/montre l'element
-			} else if (element.up(validParents[j])){
+			} else if (element.up(validParents[j])) {
 				haveAValidParent = true;
 				enable(element);
 				element.up( validParents[j] ).removeClassName( 'disabled' );
@@ -546,43 +608,50 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid, debug)
 	}
 }
 
+
 /*************************************************************************
  * Execution systématique												 *
  *************************************************************************/
 
-document.observe( "dom:loaded", function(){
+document.observe("dom:loaded", function () {
 	'use strict';
 
 	// Rend les boutons radio décochable si ils portent la class uncheckable
-	$$('input[type="radio"].uncheckable').each(function( radio ){
+	$$('input[type="radio"].uncheckable').each(function (radio) {
 		// Ajoute un hidden vide si le bouton n'en possède pas
 		var parent = radio.up('fieldset');
 		var hidden = parent !== undefined ? parent.select('input[type="hidden"][name="' + radio.name + '"]').first() : undefined;
-		if ( parent === undefined ){
+		if (parent === undefined) {
 			parent = radio.up();
 		}
-		if ( hidden === undefined ){
+		if (hidden === undefined) {
 			parent.insert({top: '<input type="hidden" name="' + radio.name + '" value="" />'});
 		}
-		
+
 		radio.state = radio.checked;
 		uncheckable( radio );
 	});
-	
+
 	// Ajoute un visuel sur les input portant la class percent ou euros
-	$$('input.percent').each(function( input ){
+	$$('input.percent').each(function (input) {
 		input.insert({after: '<div class="input-group-addon">%</div>'});
 	});
-	$$('input.euros').each(function( input ){
+	$$('input.euros').each(function (input) {
 		input.insert({after: '<div class="input-group-addon">€</div>'});
 	});
-	
+
 	// Ajoute un id au parent de l'élément ciblé
-	$$('.add-parent-id').each(function( dom ){ addParentId( dom ); });
-	
+	$$('.add-parent-id').each(function (dom) {
+		addParentId(dom);
+	});
+
 	// Divise les elements portant la class divideInto2Collumn en deux colonnes
-	$$('.divideInto2Collumn').each(function( dom ){ divideIntoCollumn( dom, 2 ); });
-	
+	$$('.divideInto2Collumn').each(function (dom) {
+		divideIntoCollumn(dom, 2);
+	});
+
 	// Divise les elements portant la class divideInto3Collumn en trois colonnes
-	$$('.divideInto3Collumn').each(function( dom ){ divideIntoCollumn( dom, 3 ); });
+	$$('.divideInto3Collumn').each(function (dom) {
+		divideIntoCollumn(dom, 3);
+	});
 });
