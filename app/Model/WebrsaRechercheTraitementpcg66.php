@@ -58,25 +58,28 @@
 		 */
 		public function searchQuery( array $types = array() ) {
 			$types += array(
-				'Calculdroitrsa' => 'INNER',
-				'Foyer' => 'INNER',
-				'Prestation' => 'INNER',
-				'Adressefoyer' => 'LEFT OUTER',
-				'Dossier' => 'INNER',
-				'Adresse' => 'LEFT OUTER',
-				'Situationdossierrsa' => 'INNER',
-				'Detaildroitrsa' => 'LEFT OUTER',
-				'PersonneReferent' => 'LEFT OUTER',
-				'Personne' => 'INNER',
-				'Structurereferente' => 'LEFT OUTER',
-				'Referent' => 'LEFT OUTER',
-				'Traitementpcg66' => 'INNER',
+				// INNER
 				'Personnepcg66' => 'INNER',
 				'Dossierpcg66' => 'INNER',
+				'Personne' => 'INNER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'INNER',
+				'Dossier' => 'INNER',
+				'Situationdossierrsa' => 'INNER',
+				
+				// LEFT
 				'Situationpdo' => 'LEFT OUTER',
-				'Detailcalculdroitrsa' => 'LEFT OUTER',
 				'User' => 'LEFT OUTER',
 				'Descriptionpdo' => 'LEFT OUTER',
+				'Adressefoyer' => 'LEFT OUTER',
+				'Adresse' => 'LEFT OUTER',
+				'Detaildroitrsa' => 'LEFT OUTER',
+				'Detailcalculdroitrsa' => 'LEFT OUTER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER',
+				
+				'Calculdroitrsa' => 'LEFT OUTER',
 			);
 
 			$this->Allocataire = ClassRegistry::init( 'Allocataire' );
@@ -108,7 +111,7 @@
 						'Personnepcg66.personne_id',
 						'Dossierpcg66.id',
 
-						'Fichiermodule.nb_fichiers_lies' => '(SELECT COUNT("fichiermodule"."id") '
+						'Fichiermodule.nb_fichiers_lies' => '(SELECT COUNT(*) '
 						. 'FROM "fichiersmodules" AS "fichiermodule" '
 						. 'WHERE "fichiermodule"."modele" = \'Foyer\' '
 						. 'AND "fichiermodule"."fk_value" = "Foyer"."id") '
@@ -125,17 +128,25 @@
 					array(
 						$this->Personnepcg66->join('Dossierpcg66', array('type' => $types['Dossierpcg66'])),
 						$this->Personnepcg66->Traitementpcg66->join('Situationpdo', array('type' => $types['Situationpdo'])),
-						$this->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa'])),
+						$this->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', 
+							array(
+								'type' => $types['Detailcalculdroitrsa'],
+								'conditions' => array('Detailcalculdroitrsa.id IN (SELECT "d"."id" FROM detailscalculsdroitsrsa AS "d" WHERE "d"."detaildroitrsa_id" = "Detaildroitrsa"."id" ORDER BY "d"."ddnatdro" DESC LIMIT 1)')
+							)
+						),
 						$this->Personnepcg66->Dossierpcg66->join('User', array('type' => $types['User'])),
 						$this->Personnepcg66->Traitementpcg66->join('Descriptionpdo', array('type' => $types['Descriptionpdo'])),
 					)
 				);
-
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
+				
+				App::uses('WebrsaModelUtility', 'Utility');
+				// On fait la jointure de Personne sur Traitementpcg66->Personnepcg66 et non pas sur le Dossierpcg66->Foyer
+				$query['joins'][WebrsaModelUtility::findJoinKey('Personne', $query)]['conditions'] = array('Personne.id = Personnepcg66.personne_id');
+				// On se moque du rôle de la prestation de la personne possèdent un Traitmentpcg66
+				$query['joins'][WebrsaModelUtility::findJoinKey('Prestation', $query)]['conditions'] = array(
+					'Personne.id = Prestation.personne_id',
+					'Prestation.natprest' => 'RSA'
+				);
 
 				Cache::write( $cacheKey, $query );
 			}
@@ -153,16 +164,6 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
-
-			/**
-			 * Conditions obligatoire
-			 */
-			$query['conditions'][] = array(
-				'OR' => array(
-					'Detailcalculdroitrsa.id IS NULL',
-					'Detailcalculdroitrsa.id IN (SELECT "detailscalculsdroitsrsa"."id" AS detailscalculsdroitsrsa__id FROM detailscalculsdroitsrsa AS detailscalculsdroitsrsa WHERE "detailscalculsdroitsrsa"."detaildroitrsa_id" = "Detaildroitrsa"."id" ORDER BY "detailscalculsdroitsrsa"."ddnatdro" DESC LIMIT 1)'
-				)
-			);
 
 			/**
 			 * Generateur de conditions

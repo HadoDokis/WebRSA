@@ -119,12 +119,6 @@
 						$this->Nonoriente66->Historiqueetatpe->Informationpe->join( 'Historiqueetatpe', array( $types['Historiqueetatpe'] ) ),
 					)
 				);
-
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
 				
 				// 4. Conditions
 				$query['conditions'][] =  array(

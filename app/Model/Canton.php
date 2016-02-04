@@ -223,117 +223,92 @@
 		/**
 		 *
 		 */
-		public function joinAdresse( $adresseAlias = 'Adresse', $type = 'LEFT OUTER' ) {
+		public function joinAdresse( $type = 'LEFT OUTER' ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
 			$fullTableName = $dbo->fullTableName( $this, true, false );
 			
-			$conditions = array();
-			
-			if ( Configure::read('Canton.useAdresseCanton') && $adresseAlias === 'Adresse' ) {
-				$sq = $this->AdresseCanton->sq(
-					array_words_replace(
-						array(
-							'alias' => '"AdresseCanton"',
-							'fields' => array(
-								'AdresseCanton.canton_id'
+			$conditions = array(
+				'OR' => array(
+					// 156-161
+					array(
+						'OR' => array(
+							'OR' => array(
+								"Canton.numcom IS NULL",
+								"TRIM( BOTH ' ' FROM Canton.numcom ) = ''",
+								"Canton.codepos IS NULL",
+								"TRIM( BOTH ' ' FROM Canton.codepos ) = ''",
 							),
-							'conditions' => array(
-								'AdresseCanton.adresse_id = Adresse.id'
-							),
-							'contain' => false,
-							'recursive' => -1,
-							'limit' => 1
+							array(
+								"Canton.numcom = Adresse.numcom",
+								"Canton.codepos = Adresse.codepos",
+							)
 						),
-						array( 
-							'AdresseCanton' => $dbo->fullTableName( $this->AdresseCanton, false, false ),
-						)
-					)
-				);
-			}
-			else {
-				$conditions = array(
-					'OR' => array(
-						// 156-161
+					),
+					array(
 						array(
 							'OR' => array(
-								'OR' => array(
+								array(
 									"Canton.numcom IS NULL",
 									"TRIM( BOTH ' ' FROM Canton.numcom ) = ''",
+								),
+								"Canton.numcom = Adresse.numcom",
+							)
+						),
+						array(
+							'OR' => array(
+								array(
 									"Canton.codepos IS NULL",
 									"TRIM( BOTH ' ' FROM Canton.codepos ) = ''",
 								),
-								array(
-									"Canton.numcom = Adresse.numcom",
-									"Canton.codepos = Adresse.codepos",
-								)
-							),
+								"Canton.codepos = Adresse.codepos",
+							)
 						),
-						array(
-							array(
-								'OR' => array(
-									array(
-										"Canton.numcom IS NULL",
-										"TRIM( BOTH ' ' FROM Canton.numcom ) = ''",
-									),
-									"Canton.numcom = Adresse.numcom",
-								)
-							),
-							array(
-								'OR' => array(
-									array(
-										"Canton.codepos IS NULL",
-										"TRIM( BOTH ' ' FROM Canton.codepos ) = ''",
-									),
-									"Canton.codepos = Adresse.codepos",
-								)
-							),
-						)
-					),
-					// 170/178
-					array(
-						'OR' => array(
-							'OR' => array(
-								'Canton.nomcom IS NULL',
-								"TRIM( BOTH ' ' FROM Canton.nomcom ) = ''",
-							),
-							'Adresse.nomcom ILIKE Canton.nomcom'
-						)
-					),
-					array(
-						'OR' => array(
-							'OR' => array(
-								'Canton.libtypevoie IS NULL',
-								"TRIM( BOTH ' ' FROM Canton.libtypevoie ) = ''",
-							),
-							'Adresse.libtypevoie ILIKE Canton.libtypevoie'
-						)
-					),
-					array(
-						'OR' => array(
-							'OR' => array(
-								'Canton.nomvoie IS NULL',
-								"TRIM( BOTH ' ' FROM Canton.nomvoie ) = ''",
-							),
-							'Adresse.nomvoie ILIKE Canton.nomvoie'
-						)
-					),
-				);
-
-				$sq = $this->sq(
-					array(
-						'alias' => 'cantons',
-						'fields' => array( 'cantons.id' ),
-						'conditions' => array_words_replace( $conditions, array( 'Canton' => 'cantons' ) ),
-						'contain' => false,
-						'recursive' => -1,
-						'order' => array(
-							'cantons.nomvoie DESC',
-							'cantons.libtypevoie DESC',
-						),
-						'limit' => 1
 					)
-				);
-			}
+				),
+				// 170/178
+				array(
+					'OR' => array(
+						'OR' => array(
+							'Canton.nomcom IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.nomcom ) = ''",
+						),
+						'Adresse.nomcom ILIKE Canton.nomcom'
+					)
+				),
+				array(
+					'OR' => array(
+						'OR' => array(
+							'Canton.libtypevoie IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.libtypevoie ) = ''",
+						),
+						'Adresse.libtypevoie ILIKE Canton.libtypevoie'
+					)
+				),
+				array(
+					'OR' => array(
+						'OR' => array(
+							'Canton.nomvoie IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.nomvoie ) = ''",
+						),
+						'Adresse.nomvoie ILIKE Canton.nomvoie'
+					)
+				),
+			);
+
+			$sq = $this->sq(
+				array(
+					'alias' => 'cantons',
+					'fields' => array( 'cantons.id' ),
+					'conditions' => array_words_replace( $conditions, array( 'Canton' => 'cantons' ) ),
+					'contain' => false,
+					'recursive' => -1,
+					'order' => array(
+						'cantons.nomvoie DESC',
+						'cantons.libtypevoie DESC',
+					),
+					'limit' => 1
+				)
+			);
 			
 			$conditions[] = "Canton.id IN ( {$sq} )";
 

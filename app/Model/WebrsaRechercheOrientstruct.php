@@ -139,12 +139,6 @@
 					)
 				);
 
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
-
 				// 5. Pour le CG 58, ajout des champs et jointure sur Activite
 				if( $departement === 58 ) {
 					// Dernière activité

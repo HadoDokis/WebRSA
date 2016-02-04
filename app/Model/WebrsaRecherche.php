@@ -73,14 +73,14 @@
 				'component' => 'WebrsaCohortesActionscandidatsPersonnes',
 				'keys' => array( 'results.fields' )
 			),
-			'ActionscandidatsPersonnes.cohorte_enattente' => array(
+			'ActionscandidatsPersonnes.cohorte_encours' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'ActioncandidatPersonne',
 				'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEncours',
 				'component' => 'WebrsaCohortesActionscandidatsPersonnes',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
-			'ActionscandidatsPersonnes.exportcsv_enattente' => array(
+			'ActionscandidatsPersonnes.exportcsv_encours' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'ActioncandidatPersonne',
 				'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEncours',
@@ -296,16 +296,30 @@
 			'Defautsinsertionseps66.search_noninscrits' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
-				'modelRechercheName' => 'WebrsaRechercheNoninscrit',
+				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit',
 				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
-			'Defautsinsertionseps66.search_noninscrits' => array(
+			'Defautsinsertionseps66.exportcsv_noninscrits' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
-				'modelRechercheName' => 'WebrsaRechercheSelectionradie',
+				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'keys' => array( 'results.fields' )
+			),
+			'Defautsinsertionseps66.search_radies' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie',
 				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
 				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Defautsinsertionseps66.exportcsv_radies' => array(
+				'departement' => 66,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'keys' => array( 'results.fields' )
 			),
 			'Demenagementshorsdpts.search' => array(
 				'modelName' => 'Personne',
@@ -339,6 +353,20 @@
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv' => array(
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
+				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
+			),
+			'Dossierspcgs66.search_affectes' => array(
+				'departement' => 66,
+				'modelName' => 'Dossierpcg66',
+				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
+				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv_affectes' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
@@ -487,6 +515,13 @@
 				'modelRechercheName' => 'WebrsaRechercheNonorientationproep',
 				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
 				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Nonorientationsproseps.exportcsv' => array(
+				'departement' => 66,
+				'modelName' => 'Orientstruct',
+				'modelRechercheName' => 'WebrsaRechercheNonorientationproep',
+				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
+				'keys' => array( 'results.fields' )
 			),
 			'Nonorientes66.cohorte_isemploi' => array(
 				'departement' => 66,

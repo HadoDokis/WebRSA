@@ -57,6 +57,9 @@ class ContratsinsertionController extends AppController
         'add' => 'Contratsinsertion:edit',
 		'search' => 'Criteresci:index',
 		'exportcsv' => 'Criteresci:exportcsv',
+		'cohorte_cersimpleavalider' => 'Cohortesci:nouveauxsimple',
+		'cohorte_cerparticulieravalider' => 'Cohortesci:nouveauxparticulier',
+		'search_valides' => 'Cohortesci:valides',
 		'cohorte_nouveaux' => 'Cohortesci:nouveaux',
 		'cohorte_valides' => 'Cohortesci:valides',
 		'exportcsv_valides' => 'Cohortesci:valides',
@@ -99,6 +102,9 @@ class ContratsinsertionController extends AppController
         'validerparticulier' => 'update',
         'validersimple' => 'update',
         'view' => 'read',
+		'cohorte_cersimpleavalider' => 'update',
+		'cohorte_cerparticulieravalider' => 'update',
+		'search_valides' => 'read',
     );
 
     /**

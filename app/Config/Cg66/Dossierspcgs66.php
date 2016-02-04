@@ -39,9 +39,10 @@
 				// 5.2 Colonnes du tableau de résultats
 				'fields' => array (
 					'Dossier.numdemrsa',
-					'Personne.nom_complet',
-					'Dossierpcg66.originepdo_id',
-					'Dossierpcg66.typepdo_id',
+					// 'Personne.nom_complet', // Demandeur rsa
+					'Personnepcg66.noms_complet', // Liste des personnes dans le dossier pcg
+					'Originepdo.libelle',
+					'Typepdo.libelle',
 					'Dossierpcg66.datereceptionpdo',
 					'Poledossierpcg66.name',
 					'User.nom_complet',
@@ -336,6 +337,13 @@
 					'Dossier' => array(
 						// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
 						'dernier' => '1'
+					),
+					'Dossierpcg66' => array(
+						'etatdossierpcg' => array(
+							'attinstr', // En attente d'instruction
+							'decisionvalid', // Décision validée
+							'decisionnonvalid', // Décision validée
+						),
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
@@ -363,7 +371,8 @@
 				// 5.2 Colonnes du tableau de résultats
 				'fields' => array (
 					'Dossier.numdemrsa',
-					'Personne.nom_complet',
+					// 'Personne.nom_complet', // Demandeur rsa
+					'Personnepcg66.noms_complet', // Liste des personnes dans le dossier pcg
 					'Dossierpcg66.originepdo_id',
 					'Dossierpcg66.typepdo_id',
 					'Traitementpcg66.dateecheance',

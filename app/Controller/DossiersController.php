@@ -61,6 +61,7 @@
 			'exportcsv' => 'read',
 			'index' => 'read',
 			'view' => 'read',
+			'search' => 'read',
 		);
 
 		/**

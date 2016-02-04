@@ -62,4 +62,36 @@
 			'ini_set' => array()
 		)
 	);
+	
+	/**
+	 * Export CSV
+	 */
+	Configure::write(
+		'ConfigurableQuery.Nonorientationsproseps.exportcsv',
+		array(
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Orientsstructs.exportcsv.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Orientsstructs.exportcsv.query' ),
+			// 3. Résultats de la recherche
+			'results' => array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+					'Personne.nom_complet',
+					'Personne.dtnai',
+					'Adresse.codepos',
+					'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
+					'Orientstruct.date_valid',
+					'Contratinsertion.nbjours',
+					'Typeorient.lib_type_orient',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					'Structurereferenteparcours.lib_struc',
+					'Referentparcours.nom_complet'
+				)
+			),
+			// 4. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => Configure::read( 'ConfigurableQuery.Orientsstructs.exportcsv.ini_set' ),
+		)
+	);
 ?>

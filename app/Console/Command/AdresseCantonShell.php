@@ -67,7 +67,7 @@
 					'Canton.id',
 				),
 				'joins' => array(
-					$Canton->joinAdresse( 'AdresseCanton' )
+					$Canton->joinAdresse()
 				),
 				'conditions' => array(
 					"Adresse.codepos LIKE '{$departement}%'"

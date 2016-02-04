@@ -147,6 +147,19 @@
 						) )
 						: array()
 				);
+				
+				// Ajout des cantons
+				$Adresse =& $this->Personne->Foyer->Adressefoyer->Adresse;
+				if (Configure::read( 'CG.cantons' )) {
+					$query['fields']['Canton.canton'] = 'Canton.canton';
+
+					if (Configure::read('Canton.useAdresseCanton')) {
+						$query['joins'][] = $Adresse->join('AdresseCanton', array('type' => 'LEFT OUTER'));
+						$query['joins'][] = $Adresse->AdresseCanton->join('Canton', array('type' => 'LEFT OUTER'));
+					} else {
+						$query['joins'][] = $Adresse->AdresseCanton->Canton->joinAdresse();
+					}
+				}
 
 				$query = $this->Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );
 

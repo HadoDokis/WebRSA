@@ -63,31 +63,36 @@
 			$cgDepartement = Configure::read( 'Cg.departement' );
 
 			$types += array(
-				'Calculdroitrsa' => 'LEFT OUTER',
+				// INNER
 				'Foyer' => 'INNER',
-				'Prestation' => 'LEFT OUTER',
-				'Adressefoyer' => 'LEFT OUTER',
 				'Dossier' => 'INNER',
-				'Adresse' => 'LEFT OUTER',
 				'Situationdossierrsa' => 'INNER',
-				'Detaildroitrsa' => 'LEFT OUTER',
-				'PersonneReferent' => 'LEFT OUTER',
+				
+				// LEFT
 				'Personne' => 'LEFT OUTER',
-				'Structurereferente' => 'LEFT OUTER',
-				'Referent' => 'LEFT OUTER',
-				'Decisiondossierpcg66' => 'LEFT OUTER',
+				'User' => 'LEFT OUTER',
 				'Personnepcg66' => 'LEFT OUTER',
 				'Traitementpcg66' => 'LEFT OUTER',
-				'Detailcalculdroitrsa' => 'LEFT OUTER',
-				'Categorieromev3' => 'LEFT OUTER',
-				'User' => 'LEFT OUTER',
-				'Poledossierpcg66' => 'LEFT OUTER',
+				'Adressefoyer' => 'LEFT OUTER',
+				'Adresse' => 'LEFT OUTER',
+				'Decisiondossierpcg66' => 'LEFT OUTER',
 				'Decisionpdo' => 'LEFT OUTER',
+				'Detaildroitrsa' => 'LEFT OUTER',
+				'Detailcalculdroitrsa' => 'LEFT OUTER',
+				'Poledossierpcg66' => 'LEFT OUTER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER',
+				'Categoriesecteurromev2' => 'LEFT OUTER',
+				'Categoriemetierromev2' => 'LEFT OUTER',
+				'Categorieromev3' => 'LEFT OUTER',
 				'Familleromev3' => 'LEFT OUTER',
 				'Domaineromev3' => 'LEFT OUTER',
 				'Metierromev3' => 'LEFT OUTER',
 				'Appellationromev3' => 'LEFT OUTER',
-				'Categoriemetierromev2' => 'LEFT OUTER',
+				
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Prestation' => 'LEFT OUTER',
 				'Serviceinstructeur' => 'LEFT OUTER',
 				'Originepdo' => 'LEFT OUTER',
 				'Typepdo' => 'LEFT OUTER',
@@ -116,9 +121,9 @@
 							$this->Dossierpcg66->Decisiondossierpcg66->Decisionpersonnepcg66->Decisionpdo,
 							$this->Dossierpcg66->Personnepcg66->Categorieromev3,
 							$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3,
-							$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3,
-							$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3->Metierromev3,
-							$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3->Metierromev3->Appellationromev3,
+							$this->Dossierpcg66->Personnepcg66->Categorieromev3->Domaineromev3,
+							$this->Dossierpcg66->Personnepcg66->Categorieromev3->Metierromev3,
+							$this->Dossierpcg66->Personnepcg66->Categorieromev3->Appellationromev3,
 							$this->Dossierpcg66->Personnepcg66->Categoriemetierromev2,
 						)
 					),
@@ -127,6 +132,16 @@
 						'Dossierpcg66.id',
 						'Dossierpcg66.foyer_id',
 						'Decisiondossierpcg66.id',
+
+						'Personnepcg66.noms_complet' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
+						. 'SELECT \'<li>\' || "p"."nom" || \' \' || "p"."prenom" || \'</li>\' AS "Personnepcg66__noms_complet" '
+						. 'FROM "dossierspcgs66" AS "pcg" '
+						. 'LEFT JOIN "public"."personnespcgs66" AS "pers_pcg" '
+						. 'ON ("pers_pcg"."dossierpcg66_id" = "pcg"."id") '
+						. 'LEFT JOIN "public"."personnes" AS "p" '
+						. 'ON ("pers_pcg"."personne_id" = "p"."id") '
+						. 'WHERE "pcg"."id" = "Dossierpcg66"."id" ), \'\') || \'</ul>\') '
+						. 'AS "Personnepcg66__noms_complet"',
 
 						'Decisiondossierpcg66.org_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
 						. 'SELECT \'<li>\' || "Orgtransmisdossierpcg66"."name" || \'</li>\' AS "Orgtransmisdossierpcg66__name" '
@@ -196,47 +211,77 @@
 						'limit' => 1
 					)
 				));
-				$joinTraitementpcg66['conditions'] = 'Traitementpcg66.id IN ('.$sqJoinTraitement.')';
+				$joinTraitementpcg66['conditions'] = array(
+					$joinTraitementpcg66['conditions'],
+					'Traitementpcg66.id IN ('.$sqJoinTraitement.')'
+				);
 
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$this->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa'])),
+						$this->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array(
+							'type' => $types['Detailcalculdroitrsa'],
+							'conditions' => array(
+								'Detailcalculdroitrsa.id IN ('
+								. 'SELECT "detailscalculsdroitsrsa"."id" AS detailscalculsdroitsrsa__id '
+								. 'FROM detailscalculsdroitsrsa AS detailscalculsdroitsrsa '
+								. 'WHERE "detailscalculsdroitsrsa"."detaildroitrsa_id" = "Detaildroitrsa"."id" '
+								. 'ORDER BY "detailscalculsdroitsrsa"."ddnatdro" DESC '
+								. 'LIMIT 1)'
+							)
+						)),
 						$this->Dossierpcg66->join('Decisiondossierpcg66', 
 							array(
 								'type' => $types['Decisiondossierpcg66'],
-								'conditions' => array('Decisiondossierpcg66.validationproposition' => 'O')
+								'conditions' => array(
+									'Decisiondossierpcg66.validationproposition' => 'O',
+									'Decisiondossierpcg66.id IN ('
+									. 'SELECT "decisionsdossierspcgs66"."id" '
+									. 'FROM decisionsdossierspcgs66 '
+									. 'WHERE "decisionsdossierspcgs66"."dossierpcg66_id" = "Dossierpcg66"."id" '
+									. 'ORDER BY "decisionsdossierspcgs66"."created" DESC '
+									. 'LIMIT 1)'
+								)
 							)
 						),
 						$this->Dossierpcg66->join('User', array('type' => $types['User'])),
 						$this->Dossierpcg66->join('Poledossierpcg66', array('type' => $types['Poledossierpcg66'])),
-						$this->Dossierpcg66->join('Personnepcg66', array('type' => $types['Personnepcg66'])),
+						$this->Dossierpcg66->join('Personnepcg66', 
+							array(
+								'type' => $types['Personnepcg66'],
+								'conditions' => array(
+									'Personnepcg66.id IN ('
+									. 'SELECT "personnespcgs66"."id" '
+									. 'FROM personnespcgs66 '
+									. 'WHERE "personnespcgs66"."dossierpcg66_id" = "Dossierpcg66"."id" '
+									. 'ORDER BY "personnespcgs66"."created" '
+									. 'LIMIT 1)'
+								)
+							)
+						),
 						$this->Dossierpcg66->join('Serviceinstructeur', array('type' => $types['Serviceinstructeur'])),
 						$this->Dossierpcg66->join('Originepdo', array('type' => $types['Originepdo'])),
 						$this->Dossierpcg66->join('Typepdo', array('type' => $types['Typepdo'])),
 						$this->Dossierpcg66->Personnepcg66->join('Categorieromev3', array('type' => $types['Categorieromev3'])),
 						$this->Dossierpcg66->Personnepcg66->Categorieromev3->join('Familleromev3', array('type' => $types['Familleromev3'])),
-						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->join('Domaineromev3', array('type' => $types['Domaineromev3'])),
-						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3->join('Metierromev3', array('type' => $types['Metierromev3'])),
-						$this->Dossierpcg66->Personnepcg66->Categorieromev3->Familleromev3->Domaineromev3->Metierromev3->join('Appellationromev3', array('type' => $types['Appellationromev3'])),
+						$this->Dossierpcg66->Personnepcg66->Categorieromev3->join('Domaineromev3', array('type' => $types['Domaineromev3'])),
+						$this->Dossierpcg66->Personnepcg66->Categorieromev3->join('Metierromev3', array('type' => $types['Metierromev3'])),
+						$this->Dossierpcg66->Personnepcg66->Categorieromev3->join('Appellationromev3', array('type' => $types['Appellationromev3'])),
 						$this->Dossierpcg66->Personnepcg66->join('Categoriemetierromev2', array('type' => $types['Categoriemetierromev2'])),
 						$joinTraitementpcg66,
 						$this->Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo', array('type' => $types['Decisionpdo'])),
 					)
 				);
-
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
+				
+				// Conditions
+				$query['conditions'][] = array('Prestation.rolepers' => 'DEM');
 
 				Cache::write( $cacheKey, $query );
 			}
 
 			return $query;
 		}
-
+		
 		/**
 		 * Complète les conditions du querydata avec le contenu des filtres de
 		 * recherche.
@@ -247,63 +292,6 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->Allocataire->searchConditions( $query, $search );
-
-			// Conditions obligatoire
-			$query['conditions'][] = array(
-				'Prestation.rolepers' => 'DEM',
-				array(
-					'OR' => array(
-						'Detailcalculdroitrsa.id' => null,
-						'Detailcalculdroitrsa.id IN ('
-						. 'SELECT "detailscalculsdroitsrsa"."id" AS detailscalculsdroitsrsa__id '
-						. 'FROM detailscalculsdroitsrsa AS detailscalculsdroitsrsa '
-						. 'WHERE "detailscalculsdroitsrsa"."detaildroitrsa_id" = "Detaildroitrsa"."id" '
-						. 'ORDER BY "detailscalculsdroitsrsa"."ddnatdro" DESC '
-						. 'LIMIT 1)'
-					)
-				),
-				array(
-					'OR' => array(
-						'Decisiondossierpcg66.id' => null,
-						'Decisiondossierpcg66.id IN ('
-						. 'SELECT "decisionsdossierspcgs66"."id" '
-						. 'FROM decisionsdossierspcgs66 '
-						. 'WHERE "decisionsdossierspcgs66"."dossierpcg66_id" = "Dossierpcg66"."id" '
-						. 'ORDER BY "decisionsdossierspcgs66"."created" DESC '
-						. 'LIMIT 1)'
-					)
-				),
-				array(
-					'OR' => array(
-						'Categorieromev3.familleromev3_id IS NULL',
-						'Familleromev3.id = Categorieromev3.familleromev3_id',
-					)
-				),
-				array(
-					'OR' => array(
-						'Categorieromev3.domaineromev3_id IS NULL',
-						'Domaineromev3.id = Categorieromev3.domaineromev3_id',
-					)
-				),
-				array(
-					'OR' => array(
-						'Categorieromev3.metierromev3_id IS NULL',
-						'Metierromev3.id = Categorieromev3.metierromev3_id',
-					)
-				),
-				array(
-					'OR' => array(
-						'Categorieromev3.appellationromev3_id IS NULL',
-						'Appellationromev3.id = Categorieromev3.appellationromev3_id',
-					)
-				),
-				array(
-					'OR' => array(
-						'Personnepcg66.categoriedetail IS NULL',
-						'Categoriemetierromev2.id = Personnepcg66.categoriedetail',
-					)
-				),
-			);
 
 			/**
 			 * Generateur de conditions

@@ -129,52 +129,185 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 ?>
 
 <script type="text/javascript">
+	/**
+	 * @var {object} typeDecision - {"valeur decision": ["orientation actuelle", "orientation future"], ...}
+	 */
+	var typeDecision = <?php echo json_encode(Configure::read('Commissionseps.defautinsertionep66.decision.type'));?>,
+		isEmploi = [<?php echo implode(', ', (array)Configure::read('Commissionseps.defautinsertionep66.isemploi'));?>],
+		decision = [],
+		decisionsup = [],
+		typeorient = [],
+		typeorient_id = [],
+		i
+	;
+	
+	/**
+	 * Permet de savoir si un typeorient_id est de la catégorie emploi
+	 * 
+	 * @param {integer} typeorient_id
+	 * @returns {Boolean}
+	 */
+	function idIsEmploi(typeorient_id) {
+		for (var i=0; i<isEmploi.length; i++) {
+			if (typeorient_id === isEmploi[i]) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Retire les options qui ne correspondent pas à l'orientation actuelle de l'allocataire
+	 * 
+	 * @param {DOM} decision
+	 * @param {integer} typeorient_id
+	 */
+	function setAvailableDecision(decision, typeorient_id) {
+		var options = decision.select('option'),
+			isEmploi = idIsEmploi(typeorient_id);
+	
+		if (typeorient_id === null) {
+			return;
+		}
+		
+		for (var i=0; i<options.length; i++) {
+			if (typeDecision[options[i].value] === undefined) {
+				continue;
+			}
+			
+			if ((isEmploi && typeDecision[options[i].value][0] === 'social')
+					|| (!isEmploi && typeDecision[options[i].value][0] === 'emploi')) {
+				options[i].hide();
+			}
+		}
+	}
+	
+	/**
+	 * Selectionne le premier element visible d'un select
+	 * 
+	 * @param {DOM} select
+	 */
+	function selectFirstNonHiddenOption(select) {
+		var i, options = select.select('option'), first = true;
+		
+		for (i=0; i<options.length; i++) {
+			if (options[i].visible() && options[i].value !== '') {
+				options[i].selected = first;
+				if (first) {
+					select.setValue(options[i].value);
+					first = false;
+				}
+			} else {
+				options[i].selected = false;
+			}
+		}
+	}
+	
+	/**
+	 * Permet de masquer les options ne correspondent pas à une décision
+	 * 
+	 * @param {DOM} decisionSelect
+	 * @param {DOM} typeorientSelect
+	 * @global {object} typeDecision
+	 */
+	function setAvailableTypeOrient(decisionSelect, typeorientSelect) {
+		var isEmploi, options, change = false;
+		
+		if (typeDecision[decisionSelect.getValue()] !== undefined) {
+			isEmploi = typeDecision[decisionSelect.getValue()][1] === 'emploi';
+			options = typeorientSelect.select('option');
+		} else {
+			return ;
+		}
+		
+		for (var i=0; i<options.length; i++) {
+			if ((isEmploi && !idIsEmploi(parseInt(options[i].value, 10)))
+					|| (!isEmploi && idIsEmploi(parseInt(options[i].value, 10)))) {
+				options[i].hide();
+				if (typeorientSelect.getValue() === options[i].value) {
+					change = true;
+				}
+			} else {
+				options[i].show();
+			}
+		}
+		
+		if (change) {
+			selectFirstNonHiddenOption(typeorientSelect);
+			typeorientSelect.simulate('change');
+		}
+		
+		removeEmptyOptgroup(typeorientSelect);
+	}
+	
+	/**
+	 * Fonction utilisé à l'appel de page et dans le cas d'un evenement change sur decision
+	 * 
+	 * @param {DOM} decision
+	 * @param {DOM} decisionsup
+	 * @param {DOM} typeorient
+	 * @param {integer} typeorient_id
+	 */
+	function observableLogic(decision, decisionsup, typeorient, typeorient_id) {
+		// Affichage de la décision suplémentaire
+		if (inArray(decision.getValue(), ['reorientationprofverssoc', 'reorientationsocversprof', 'maintienorientsoc'])) {
+			decisionsup.show();
+		} else {
+			decisionsup.hide();
+		}
+		
+		// Colspan en cas de report ou d'annulation
+		if (inArray(decision.getValue(), ['reporte', 'annule'])) {
+			$(decision.id+'Column').setAttribute('colspan', 4);
+			$(decision.id+'Column').up('tr').select('div.disabled').each(function(div){
+				div.up('td').hide();
+			});
+		} else {
+			$(decision.id+'Column').removeAttribute('colspan');
+			$(decision.id+'Column').up('tr').select('div.disabled').each(function(div){
+				div.up('td').show();
+			});
+		}
+		
+		setAvailableDecision(decision, typeorient_id);
+		setAvailableTypeOrient(decision, typeorient);
+	}
+	
 	document.observe("dom:loaded", function() {
 		<?php foreach( array_keys($dossiers[$theme]['liste']) as $i):
 			if( isset( $this->request->data['Decisiondefautinsertionep66'][$i]['field_type'] ) && $this->request->data['Decisiondefautinsertionep66'][$i]['field_type'] == 'hidden' ) {
 				continue;
 			}
-			
+			$typeorient_id = Hash::get($dossiers, "{$theme}.liste.{$i}.Defautinsertionep66.Orientstruct.Typeorient.id");
 			?>
-			dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
+			i = <?php echo $i;?>;
+			decision[i] = $('Decisiondefautinsertionep66<?php echo $i;?>Decision');
+			decisionsup[i] = $('Decisiondefautinsertionep66<?php echo $i;?>Decisionsup');
+			typeorient[i] = $('Decisiondefautinsertionep66<?php echo $i;?>TypeorientId');
+			typeorient_id[i] = <?php echo $typeorient_id ? $typeorient_id : 'null'?>;
+			
+			dependantSelect('Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId');
+			dependantSelect('Decisiondefautinsertionep66<?php echo $i?>ReferentId', 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId');
 
-			dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId', 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' );
-
-			observeDisableFieldsOnValue(
-				'Decisiondefautinsertionep66<?php echo $i;?>Decision',
+			observeDisableElementsOnValues(
 				[
 					'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId',
 					'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId',
 					'Decisiondefautinsertionep66<?php echo $i;?>ReferentId'
 				],
 				[
-					'reorientationprofverssoc',
-					'reorientationsocversprof',
-					'maintienorientsoc'
+					{element: decision[i], value: 'reorientationprofverssoc', operator: '!='},
+					{element: decision[i], value: 'reorientationsocversprof', operator: '!='},
+					{element: decision[i], value: 'maintienorientsoc', operator: '!='}
 				],
+				false,
 				false
 			);
-
-			$( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-				if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'maintienorientsoc' ) {
-					$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
-				}
-				else {
-					$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).hide();
-				}
-			} );
-
-			if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'maintienorientsoc' ) {
-				$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
-			}
-			else {
-				$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).hide();
-			}
-
-			$( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanFormAnnuleReporteEps( 'Decisiondefautinsertionep66<?php echo $i;?>DecisionColumn', 4, 'Decisiondefautinsertionep66<?php echo $i;?>Decision', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ] );
+	
+			decision[i].observe('change', function(){ 
+				observableLogic(decision[<?php echo $i;?>], decisionsup[<?php echo $i;?>], typeorient[<?php echo $i;?>], typeorient_id[<?php echo $i;?>]); 
 			});
-			changeColspanFormAnnuleReporteEps( 'Decisiondefautinsertionep66<?php echo $i;?>DecisionColumn', 4, 'Decisiondefautinsertionep66<?php echo $i;?>Decision', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ] );
+			observableLogic(decision[i], decisionsup[i], typeorient[i], typeorient_id[i]);
 		<?php endforeach;?>
 	});
 </script>

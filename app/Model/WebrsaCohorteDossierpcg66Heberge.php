@@ -241,7 +241,39 @@
 		 * @return array
 		 */
 		public function searchQuery( array $types = array() ) {
-			$query = $this->WebrsaCohorteTag->searchQuery($types);
+			$types += array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'LEFT OUTER',
+				'Adressefoyer' => 'LEFT OUTER',
+				'Dossier' => 'INNER',
+				'Adresse' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'LEFT OUTER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Personne' => 'LEFT OUTER',
+				'Structurereferente' => 'LEFT OUTER',
+				'Referent' => 'LEFT OUTER',
+				'DspRev' => 'LEFT OUTER',
+				
+				'Tag' => 'LEFT OUTER',
+				'Valeurtag' => 'LEFT OUTER',
+				'Categorietag' => 'LEFT OUTER',
+			);
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = $this->WebrsaCohorteTag->searchQuery($types);
+				
+				// Gain de perf
+				App::uses('WebrsaModelUtility', 'Utility');
+				$newOrder = array(
+					'Situationdossierrsa', 'Foyer', 'Adressefoyer', 'Adresse'
+				);
+				$query = WebrsaModelUtility::changeJoinPriority($newOrder, $query);
+			}
 			
 			return $query;
 		}

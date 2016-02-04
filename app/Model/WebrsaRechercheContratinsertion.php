@@ -117,12 +117,6 @@
 					)
 				);
 
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
-
 				// 5. Ajout de champs et de jointures spécifiques au département connecté
 				if( $departement === 93 ) {
 					$query['fields'] = array_merge(

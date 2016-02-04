@@ -76,7 +76,7 @@
 					'Canton.id',
 				),
 				'joins' => array(
-					$this->Canton->joinAdresse( 'AdresseCanton' )
+					$this->Canton->joinAdresse()
 				),
 				'conditions' => $conditions,
 				'contain' => false

@@ -32,6 +32,7 @@
 		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.poledossierpcg66_id', $options )
 		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
+		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.etatdossierpcg', $options, 'divideInto2Collumn' )
 		. $this->Xform->multipleCheckbox( 'Search.Decisiondossierpcg66.org_id', $options, 'divideInto2Collumn' )
 		. $this->Default3->subform(
 			array(

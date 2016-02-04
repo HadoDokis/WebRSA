@@ -53,6 +53,8 @@
 		public $crudMap = array(
 			'search_noninscrits' => 'read',
 			'search_radies' => 'read',
+			'exportcsv_noninscrits' => 'read',
+			'exportcsv_radies' => 'read',
 		);
 		
 		public $commeDroit = array(
@@ -204,7 +206,7 @@
 		 */
 		public function search_noninscrits() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
-			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNoninscrit', 'modelName' => 'Personne') );
+			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
 			$this->view =  'search';
 		}
@@ -214,9 +216,25 @@
 		 */
 		public function search_radies() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
-			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheSelectionradie', 'modelName' => 'Personne') );
+			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
 			$this->view =  'search';
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function exportcsv_noninscrits() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
+			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit', 'modelName' => 'Personne') );
+		}
+		
+		/**
+		 * Moteur de recherche
+		 */
+		public function exportcsv_radies() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
+			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie', 'modelName' => 'Personne') );
 		}
 	}
 ?>

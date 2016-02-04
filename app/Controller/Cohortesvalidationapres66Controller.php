@@ -13,6 +13,7 @@
 	 * (CG 66 et 93).
 	 *
 	 * @package app.Controller
+	 * @deprecated since version 3.0
 	 */
 	class Cohortesvalidationapres66Controller extends AppController
 	{

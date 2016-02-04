@@ -12,6 +12,7 @@
 	 * La classe Cohortesfichescandidature66Controller ...
 	 *
 	 * @package app.Controller
+	 * @deprecated since version 3.0
 	 */
 	class Cohortesfichescandidature66Controller extends AppController
 	{

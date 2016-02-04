@@ -63,6 +63,9 @@
 			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
 			'cohorte_enattenteaffectation' => 'Cohortesdossierspcgs66:enattenteaffectation',
 			'imprimer' => 'Decisionsdossierspcgs66::decisionproposition',
+			'search_affectes' => 'Cohortesdossierspcgs66:affectes',
+			'cohorte_imprimer' => 'Cohortesdossierspcgs66:aimprimer',
+			'cohorte_atransmettre' => 'Cohortesdossierspcgs66:atransmettre',
 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo', 'ajax_getetatdossierpcg66' );
@@ -78,7 +81,10 @@
 			'ajaxetatpdo' => 'read',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
-			'cohorte_enattenteaffectation' => 'read',
+			'cohorte_atransmettre' => 'update',
+			'cohorte_enattenteaffectation' => 'update',
+			'cohorte_heberge' => 'update',
+			'cohorte_imprimer' => 'update',
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
@@ -88,6 +94,7 @@
 			'imprimer' => 'update',
 			'index' => 'read',
 			'search' => 'read',
+			'search_affectes' => 'read',
 			'search_gestionnaire' => 'read',
 			'view' => 'read',
 		);
