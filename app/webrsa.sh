@@ -201,7 +201,7 @@ function __minify() {
 	echo "}" >> "$CSSFILE"
 
 	echo "@media screen,presentation {" >> "$CSSFILE"
-	cat "$CSSDIR/menu.css" "$CSSDIR/popup.css" "$CSSDIR/screen.generic.css" >> "$CSSFILE"
+	cat "$CSSDIR/menu.css" "$CSSDIR/popup.css" "$CSSDIR/screen.generic.css" "$CSSDIR/screen.search.css" >> "$CSSFILE"
 	echo "}" >> "$CSSFILE"
 
 	echo "@media print {" >> "$CSSFILE"

@@ -35,7 +35,7 @@
 				echo $this->Xhtml->css( array( 'all.reset' ), 'stylesheet', array( 'media' => 'all' ) );
 				echo $this->Xhtml->css( array( 'all.base' ), 'stylesheet', array( 'media' => 'all' ) );
 				echo $this->Xhtml->css( array( 'bootstrap.custom' ), 'stylesheet', array( 'media' => 'all' ) ); // Ajoute quelques styles issu de bootstrap
-				echo $this->Xhtml->css( array( 'screen.generic' ), 'stylesheet', array( 'media' => 'screen,presentation' ) );
+				echo $this->Xhtml->css( array( 'screen.generic', 'screen.search' ), 'stylesheet', array( 'media' => 'screen,presentation' ) );
 				echo $this->Xhtml->css( array( 'print.generic' ), 'stylesheet', array( 'media' => 'print' ) );
 				echo $this->Xhtml->css( array( 'menu' ), 'stylesheet', array( 'media' => 'all' ) );
 				echo $this->Xhtml->css( array( 'popup' ), 'stylesheet', array( 'media' => 'all' ) );
