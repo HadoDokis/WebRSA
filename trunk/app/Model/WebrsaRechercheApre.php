@@ -76,18 +76,20 @@
 		public function searchQuery( array $types = array() ) {
 			$departement = (int)Configure::read( 'Cg.departement' );
 			$types += array(
-				'Calculdroitrsa' => ( $departement === 93 ? 'LEFT OUTER' : 'INNER' ),
+				'Calculdroitrsa' => ( in_array($departement, array(93, 66)) ? 'LEFT OUTER' : 'INNER' ),
 				'Foyer' => 'INNER',
-				'Prestation' => 'LEFT OUTER',
-				'Adressefoyer' => 'LEFT OUTER',
+				'Prestation' => ( $departement === 66 ? 'INNER' : 'LEFT OUTER' ),
+				'Adressefoyer' => ( $departement === 66 ? 'INNER' : 'LEFT OUTER' ),
 				'Dossier' => 'INNER',
-				'Adresse' => 'LEFT OUTER',
+				'Adresse' => ( $departement === 66 ? 'INNER' : 'LEFT OUTER' ),
 				'Situationdossierrsa' => 'LEFT OUTER',
 				'Detaildroitrsa' => 'LEFT OUTER',
 				'PersonneReferent' => 'LEFT OUTER',
 				'Personne' => 'INNER',
-				'Structurereferente' => 'LEFT OUTER',
-				'Referent' => 'LEFT OUTER',
+				'Structurereferente' => ( $departement === 66 ? 'INNER' : 'LEFT OUTER' ),
+				'Referent' => ( $departement === 66 ? 'INNER' : 'LEFT OUTER' ),
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER',
 				$this->Apre->name => 'LEFT OUTER',
 				'Aideapre66' => 'LEFT OUTER',
 				'Typeaideapre66' => 'LEFT OUTER',
@@ -136,7 +138,7 @@
 							array(
 								$this->Apre->Aideapre66,
 								$this->Apre->Aideapre66->Themeapre66,
-								$this->Apre->Aideapre66->Themeapre66->Typeaideapre66
+								$this->Apre->Aideapre66->Typeaideapre66
 							)
 						)
 					);
@@ -146,22 +148,16 @@
 						array(
 							$this->Apre->join( 'Aideapre66', array( 'type' => $types['Aideapre66'] ) ),
 							$this->Apre->Aideapre66->join( 'Themeapre66', array( 'type' => $types['Themeapre66'] ) ),
-							$this->Apre->Aideapre66->Themeapre66->join( 'Typeaideapre66', array( 'type' => $types['Typeaideapre66'] ) )
+							$this->Apre->Aideapre66->join( 'Typeaideapre66', array( 'type' => $types['Typeaideapre66'] ) )
 						)
 					);
 				}
-
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
-
-				$this->Apre->deepAfterFind = false;
-
+				
 				Cache::write( $cacheKey, $query );
 			}
-
+			
+			$this->Apre->deepAfterFind = false;
+			
 			return $query;
 		}
 

@@ -105,11 +105,6 @@
 					)
 				);
 
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
-
 				// Si on utilise les thématiques de RDV, ajout du champ virtuel
 				if( Configure::read('Rendezvous.useThematique' ) ) {
 					$query['fields']['Rendezvous.thematiques'] = '( '.$this->Rendezvous->vfListeThematiques( null ).' ) AS "Rendezvous__thematiques"';

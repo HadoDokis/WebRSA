@@ -866,60 +866,66 @@
 		 */
 		public function detailsApre( $personne_id, $user_id = null ) {
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
-			$personne = $this->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->fields(),
-						$this->Prestation->fields(),
-						$this->Foyer->fields(),
-						$this->Foyer->Dossier->fields(),
-						$this->Foyer->Adressefoyer->Adresse->fields(),
-						$this->Orientstruct->fields(),
-						$this->Orientstruct->Typeorient->fields(),
-						$this->Orientstruct->Structurereferente->fields(),
-						array(
-							'( '.$this->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
-							'Historiqueetatpe.id',
-							'Historiqueetatpe.etat',
-							'Historiqueetatpe.date',
-							'Historiqueetatpe.identifiantpe',
-							'Canton.id',
-							'Canton.canton',
-							'PersonneReferent.referent_id',
-							'Titresejour.dftitsej'
-						)
-					),
-					'joins' => array(
-						$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
-						$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
-						$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
-						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
-						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
-						ClassRegistry::init( 'Canton' )->joinAdresse()
-					),
-					'conditions' => array(
-						'Personne.id' => $personne_id,
-						'Prestation.natprest' => 'RSA',
-						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-						'OR' => array(
-							'Adressefoyer.id IS NULL',
-							'Adressefoyer.id IN ( '.$this->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-						)
-					),
-					'contain' => false,
-					'recursive' => -1
-				)
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Prestation->fields(),
+					$this->Foyer->fields(),
+					$this->Foyer->Dossier->fields(),
+					$this->Foyer->Adressefoyer->Adresse->fields(),
+					$this->Orientstruct->fields(),
+					$this->Orientstruct->Typeorient->fields(),
+					$this->Orientstruct->Structurereferente->fields(),
+					array(
+						'( '.$this->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
+						'Historiqueetatpe.id',
+						'Historiqueetatpe.etat',
+						'Historiqueetatpe.date',
+						'Historiqueetatpe.identifiantpe',
+						'PersonneReferent.referent_id',
+						'Titresejour.dftitsej'
+					)
+				),
+				'joins' => array(
+					$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id,
+					'Prestation.natprest' => 'RSA',
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$this->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				),
+				'contain' => false,
+				'recursive' => -1
 			);
-
-
+			
+			if (Configure::read( 'CG.cantons' )) {
+				$query['fields'][] = 'Canton.id';
+				$query['fields'][] = 'Canton.canton';
+				
+				if (Configure::read('Canton.useAdresseCanton')) {
+					$query['joins'][] = $this->Foyer->Adressefoyer->Adresse->join('AdresseCanton', array('type' => 'LEFT OUTER'));
+					$query['joins'][] = $this->Foyer->Adressefoyer->Adresse->AdresseCanton->join('Canton', array('type' => 'LEFT OUTER'));
+				} else {
+					$query['joins'][] = $this->Foyer->Adressefoyer->Adresse->AdresseCanton->Canton->joinAdresse();
+				}
+			}
+			
+			$personne = $this->find('first', $query);
 
 			///Récupération des données propres au contrat d'insertion, notammenrt le premier contrat validé ainsi que le dernier.
 			$contrat = $this->Contratinsertion->find(

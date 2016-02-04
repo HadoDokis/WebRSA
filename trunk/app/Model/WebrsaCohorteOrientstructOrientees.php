@@ -70,18 +70,20 @@
 
 			$query = parent::searchQuery( $types, $baseModelName, false );
 
-			$Pdf = ClassRegistry::init( 'Pdf' );
-			$sq = array(
-				'fields' => array( 'Pdf.fk_value' ),
-				'contain' => false,
-				'recursive' => -1,
-				'conditions' => array(
-					'Pdf.fk_value = Orientstruct.id',
-					'Pdf.modele' => 'Orientstruct'
-				)
-			);
-			$query['conditions'][] = 'Orientstruct.id IN ( '.$Pdf->sq( $sq ).' )';
-			$query['conditions'] = array_words_replace( $query['conditions'], array( 'Pdf' => 'pdfs' ) );
+			if( !in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) ) ) {
+				$Pdf = ClassRegistry::init( 'Pdf' );
+				$sq = array(
+					'fields' => array( 'Pdf.fk_value' ),
+					'contain' => false,
+					'recursive' => -1,
+					'conditions' => array(
+						'Pdf.fk_value = Orientstruct.id',
+						'Pdf.modele' => 'Orientstruct'
+					)
+				);
+				$query['conditions'][] = 'Orientstruct.id IN ( '.$Pdf->sq( $sq ).' )';
+				$query['conditions'] = array_words_replace( $query['conditions'], array( 'Pdf' => 'pdfs' ) );
+			}
 
 			return $query;
 		}

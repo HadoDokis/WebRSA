@@ -30,4 +30,54 @@
 			}
 			return false;
 		}
+		
+		/**
+		 * Permet de changer l'ordre des jointures d'un query
+		 * 
+		 * @param array $modelNames liste des modeles dans l'ordre de priorité (ex: array(model1, model2, ...))
+		 * @param array $query contenant une clef joins
+		 * @return array
+		 */
+		public static function changeJoinPriority( $modelNames, array $query ) {
+			$newQuery = $query;
+			$newQuery['joins'] = array();
+			$noPriorityJoins = array();
+			
+			// On commence par mettre de coté les jointures qui ne sont pas dans $modelNames
+			foreach ((array)Hash::get($query, 'joins') as $jointure) {
+				if (!in_array(Hash::get($jointure, 'alias'), (array)$modelNames)) {
+					$noPriorityJoins[] = $jointure;
+				}
+			}
+			
+			// On place les jointures dans l'ordre de modelNames
+			foreach ((array)$modelNames as $modelName) {
+				$joinKey = self::findJoinKey($modelName, $query);
+				if ($joinKey !== false) {
+					$newQuery['joins'][] = $query['joins'][$joinKey];
+				} else {
+					trigger_error(sprintf('La jointure sur le mod&egrave;le "%s" n\'a pas &eacute;t&eacute; trouv&eacute;.', $modelName));
+				}
+			}
+			
+			// On remet les autres jointures à la fin
+			$newQuery['joins'] = array_merge($newQuery['joins'], $noPriorityJoins);
+			
+			return $newQuery;
+		}
+		
+		/**
+		 * Permet de retirer des jointures en fonction du nom de l'alias des modeles
+		 * 
+		 * @param mixed $modelNames liste des modeles à retirer du query
+		 * @param array $query
+		 * @return array
+		 */
+		public static function unsetJoin( $modelNames, array $query ) {
+			foreach ((array)$modelNames as $modelName) {
+				unset($query['joins'][self::findJoinKey($modelName, $query)]);
+			}
+			
+			return $query;
+		}
 	}

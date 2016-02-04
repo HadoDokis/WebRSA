@@ -15,6 +15,7 @@ App::uses('ZipUtility', 'Utility');
  * (CG 66).
  *
  * @package app.Controller
+ * @deprecated since version 3.0
  */
 class Cohortesdossierspcgs66Controller extends AppController {
 

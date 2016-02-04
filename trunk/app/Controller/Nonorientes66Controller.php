@@ -65,6 +65,28 @@
 				)
 			),
 		);
+		
+		public $commeDroit = array(
+			'cohorte_isemploi' => 'Cohortesnonorientes66::isemploi',
+			'cohorte_imprimeremploi' => 'Cohortesnonorientes66::notisemploiaimprimer',
+			'cohorte_reponse' => 'Cohortesnonorientes66::notisemploi',
+			'cohorte_imprimernotifications' => 'Cohortesnonorientes66::notifaenvoyer',
+			'recherche_notifie' => 'Cohortesnonorientes66::oriente',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'cohorte_isemploi' => 'update',
+			'cohorte_imprimeremploi' => 'update',
+			'cohorte_reponse' => 'update',
+			'cohorte_imprimernotifications' => 'update',
+			'recherche_notifie' => 'read',
+		);
 
 		public function _setOptions() {
 			$this->set( 'options', (array)Hash::get( $this->Nonoriente66->enums(), 'Nonoriente66' ) );

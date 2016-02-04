@@ -13,6 +13,7 @@
 	 * impressions liées.
 	 *
 	 * @package app.Controller
+	 * @deprecated since version 3.0
 	 */
 	class Cohortesnonorientes66Controller extends AppController
 	{

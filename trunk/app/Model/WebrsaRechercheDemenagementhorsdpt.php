@@ -150,12 +150,6 @@
 					$query['joins'][] = $join;
 				}
 
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
-
 				// 5. Ajout des champs virtuels des modèles aliasés
 				$Models = array( $this->Personne->Foyer->Adressefoyer, $this->Personne->Foyer->Adressefoyer->Adresse );
 				$rangs = array( 2, 3 );

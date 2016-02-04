@@ -53,10 +53,13 @@
 		 */
 		public $crudMap = array(
 			'search' => 'read',
+			'exportcsv' => 'read',
+			'exportcsvNew' => 'read',
 		);
 		
 		public $commeDroit = array(
 			'search' => 'Nonorientationsproseps:index',
+			'exportcsvNew' => 'Nonorientationsproseps:exportcsv',
 		);
 
 		public function beforeFilter() {
@@ -141,9 +144,14 @@
 
 
 		/**
-		* Export du tableau en CSV
-		*/
+		 * Export du tableau en CSV
+		 * @deprecacted since version 3.0
+		 */
 		public function exportcsv() {
+			if ((int)Configure::read('Cg.departement') === 66) {
+				return $this->exportcsvNew();
+			}
+			
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
@@ -173,6 +181,14 @@
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsprosepsNew' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
+		}	
+		
+		/**
+		 * Exportcsv
+		 */
+		public function exportcsvNew() {
+			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsprosepsNew' );
+			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
 		}		
 	}
 ?>

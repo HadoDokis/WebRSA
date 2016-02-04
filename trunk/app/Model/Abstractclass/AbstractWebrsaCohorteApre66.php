@@ -115,12 +115,6 @@
 					)
 				);
 
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-				}
-
 				Cache::write( $cacheKey, $query );
 			}
 

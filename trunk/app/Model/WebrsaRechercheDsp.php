@@ -267,14 +267,6 @@
 					$query['fields']["Donnees.{$linkedFieldName}"] = $virtualField; // INFO: à ajouter dans le query de base (?)
 				}
 
-				// 8. Si on utilise les cantons, on ajoute une jointure
-				// TODO: à faire dans Allocataire ?
-				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
-				}
-
 				$query['conditions'][] = array(
 					'OR' => array(
 						'Dsp.id IS NOT NULL',

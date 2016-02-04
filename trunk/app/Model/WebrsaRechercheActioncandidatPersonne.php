@@ -35,7 +35,7 @@
 			'Canton',
 			'WebrsaCohorteActioncandidatPersonneEnattente',
 		);
-
+		
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
@@ -51,7 +51,7 @@
 				'Adressefoyer' => 'INNER',
 				'Dossier' => 'INNER',
 				'Adresse' => 'INNER',
-				'Situationdossierrsa' => 'INNER',
+				'Situationdossierrsa' => 'LEFT OUTER',
 				'Detaildroitrsa' => 'LEFT OUTER',
 				'PersonneReferent' => 'LEFT OUTER',
 				'Personne' => 'INNER',
@@ -62,11 +62,24 @@
 				'Referent' => 'INNER',
 				'Actioncandidat' => 'INNER',
 				'Contactpartenaire' => 'INNER',
-				'Partenaire' => 'LEFT OUTER',
+				'Partenaire' => 'INNER',
 				'Progfichecandidature66' => 'LEFT OUTER',
 			);
 
-			return $this->WebrsaCohorteActioncandidatPersonneEnattente->searchQuery($types);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = $this->WebrsaCohorteActioncandidatPersonneEnattente->searchQuery($types);
+				
+				App::uses('WebrsaModelUtility', 'Utility');
+				$highPriority = array('Actioncandidat', 'Referent');
+				$query = WebrsaModelUtility::changeJoinPriority($highPriority, $query);
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			return $query;
 		}
 
 		/**

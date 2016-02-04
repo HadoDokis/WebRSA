@@ -65,7 +65,12 @@
 
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
-			'add' => 'Apres66:edit'
+			'add' => 'Apres66:edit',
+			'cohorte_validation' => 'Cohortesvalidationapres66::apresvalider',
+			'cohorte_imprimer' => 'Cohortesvalidationapres66::validees',
+			'cohorte_notifiees' => 'Cohortesvalidationapres66::notifiees',
+			'cohorte_transfert' => 'Cohortesvalidationapres66::transfert',
+			'cohorte_traitement' => 'Cohortesvalidationapres66::traitement',
 		);
 
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajax_nb_fichiers_lies' );
@@ -94,6 +99,11 @@
 			'maillink' => 'read',
 			'notifications' => 'read',
 			'view66' => 'read',
+			'cohorte_validation' => 'update',
+			'cohorte_imprimer' => 'read',
+			'cohorte_notifiees' => 'read',
+			'cohorte_transfert' => 'update',
+			'cohorte_traitement' => 'update',
 		);
 
 		/**

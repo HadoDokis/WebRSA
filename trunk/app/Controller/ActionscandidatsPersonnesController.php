@@ -63,6 +63,8 @@
 			'add' => 'ActionscandidatsPersonnes:edit',
 			'search' => 'Criteresfichescandidature:index',
 			'exportcsv' => 'Criteresfichescandidature:exportcsv',
+			'cohorte_enattente' => 'Cohortesfichescandidature66:fichesenattente',
+			'cohorte_encours' => 'Cohortesfichescandidature66:fichesencours',
 		);
 
 		/**
@@ -92,6 +94,8 @@
 			'printFiche' => 'read',
 			'search' => 'read',
 			'view' => 'read',
+			'cohorte_enattente' => 'update',
+			'cohorte_encours' => 'update',
 		);
 
 		/**

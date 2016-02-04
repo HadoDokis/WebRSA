@@ -322,13 +322,6 @@
 					)
 				);
 
-				// 3. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $this->Canton->joinAdresse();
-					$query['joins'][] = $this->Canton->join('Zonegeographique', array('type' => 'LEFT OUTER'));
-				}
-
 				Cache::write( $cacheKey, $query );
 			}
 

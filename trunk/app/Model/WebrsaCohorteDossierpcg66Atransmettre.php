@@ -44,7 +44,9 @@
 		 */
 		public $uses = array(
 			'WebrsaRechercheDossierpcg66',
-			'Dossierpcg66'
+			'Dossierpcg66',
+			'Allocataire',
+			'Canton'
 		);
 
 		/**
@@ -72,7 +74,7 @@
 		 * @var array
 		 */
 		public $defaultValues = array();
-
+		
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
 		 * dans le moteur de recherche.
@@ -81,9 +83,86 @@
 		 * @return array
 		 */
 		public function searchQuery( array $types = array() ) {
-			$query = parent::searchQuery($types);
+			$types += array(
+				// INNER JOIN
+				'Foyer' => 'INNER',
+				'Personne' => 'INNER',
+				'Dossier' => 'INNER',
+				'Originepdo' => 'INNER',
+				'Typepdo' => 'INNER',
+				'Prestation' => 'INNER',
+				
+				// LEFT JOIN
+				'Adressefoyer' => 'LEFT OUTER',
+				'Adresse' => 'LEFT OUTER',
+				'Serviceinstructeur' => 'LEFT OUTER',
+				'Decisiondossierpcg66' => 'LEFT OUTER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'LEFT OUTER',
+				'Detaildroitrsa' => 'LEFT OUTER',
+			);
 
-			$query['fields'][] = 'Decisiondossierpcg66.id';
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = $this->Allocataire->searchQuery( $types, 'Dossierpcg66' );
+
+				// 1. Ajout des champs supplémentaires
+				$query['fields'] = array_merge(
+					$query['fields'],
+					ConfigurableQueryFields::getModelsFields(
+						array(
+							$this->Dossierpcg66,
+							$this->Dossierpcg66->Foyer->Personne->PersonneReferent,
+							$this->Dossierpcg66->Decisiondossierpcg66,
+							$this->Dossierpcg66->Serviceinstructeur,
+							$this->Dossierpcg66->Originepdo,
+							$this->Dossierpcg66->Typepdo,
+						)
+					),
+					// Champs nécessaires au traitement de la search
+					array(
+						'Dossierpcg66.id',
+						'Dossierpcg66.foyer_id',
+						'Decisiondossierpcg66.id',
+					)
+				);
+
+				// 2. Jointures
+				$query['joins'] = array_merge(
+					$query['joins'],
+					array(
+						$this->Dossierpcg66->join('Decisiondossierpcg66', 
+							array(
+								'type' => $types['Decisiondossierpcg66'],
+								'conditions' => array(
+									'Decisiondossierpcg66.validationproposition' => 'O',
+									'Decisiondossierpcg66.id IN ('
+									. 'SELECT "decisionsdossierspcgs66"."id" '
+									. 'FROM decisionsdossierspcgs66 '
+									. 'WHERE "decisionsdossierspcgs66"."dossierpcg66_id" = "Dossierpcg66"."id" '
+									. 'ORDER BY "decisionsdossierspcgs66"."created" DESC '
+									. 'LIMIT 1)'
+								)
+							)
+						),
+						$this->Dossierpcg66->join('Serviceinstructeur', array('type' => $types['Serviceinstructeur'])),
+						$this->Dossierpcg66->join('Originepdo', array('type' => $types['Originepdo'])),
+						$this->Dossierpcg66->join('Typepdo', array('type' => $types['Typepdo'])),
+					)
+				);
+				
+				// Conditions
+				$query['conditions'][] = array('Dossierpcg66.etatdossierpcg' => 'atttransmisop');
+				$query['conditions'][] = 'Dossierpcg66.dateimpression IS NOT NULL';
+				$query['conditions'][] = array('Dossierpcg66.istransmis' => '0');
+				$query['conditions'][] = array('Prestation.rolepers' => 'DEM');
+				
+				Cache::write( $cacheKey, $query );
+			}
 
 			return $query;
 		}
@@ -137,13 +216,6 @@
 		 */
 		public function searchConditions( array $query, array $search ) {
 			$query = $this->WebrsaRechercheDossierpcg66->searchConditions( $query, $search );
-
-			$query['conditions'][] = array(
-				'Dossierpcg66.etatdossierpcg' => 'atttransmisop',
-				'Dossierpcg66.dateimpression IS NOT NULL',
-				'Dossierpcg66.istransmis' => '0',
-			);
-
 			return $query;
 		}
 

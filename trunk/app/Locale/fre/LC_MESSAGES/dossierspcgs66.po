@@ -827,3 +827,6 @@ msgstr "Dossiers PCGs à imprimer"
 
 msgid "Search.Traitementpcg66.courriersansmodele"
 msgstr "Possède un traitement de type courrier sans modèle"
+
+msgid "Personnepcg66.noms_complet"
+msgstr "Nom de la personne concernée"
