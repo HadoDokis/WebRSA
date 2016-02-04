@@ -7,77 +7,46 @@
 		( Configure::read( 'Cg.departement' ) == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
 			'APRE' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'À valider' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'apresavalider' ) ),
-				'À valider (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_validation' ) ),
-				'À notifier' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ) ),
-				'À notifier (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_imprimer' ) ),
-				'Notifiées' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notifiees' ) ),
-				'Notifiées (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_notifiees' ) ),
-				'Transfert cellule' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),
-				'Transfert cellule (nouveau)' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_transfert' ) ),
-				'Traitement cellule' => array( 'url' =>  array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ) ),
-				'Traitement cellule (nouveau)' => array( 'url' =>  array( 'controller' => 'apres66', 'action' => 'cohorte_traitement' ) ),
+				'À valider' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_validation' ) ),
+				'À notifier' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_imprimer' ) ),
+				'Notifiées' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_notifiees' ) ),
+				'Transfert cellule' => array( 'url' => array( 'controller' => 'apres66', 'action' => 'cohorte_transfert' ) ),
+				'Traitement cellule' => array( 'url' =>  array( 'controller' => 'apres66', 'action' => 'cohorte_traitement' ) ),
 			),
 			'CER' => array(
 				'disabled' => ( !in_array( Configure::read( 'Cg.departement' ), array( 66, 93 ) ) ),
 				'Contrats Simples à valider' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-					'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxsimple' )
-				),
-				'Contrats Simples à valider (nouveau)' => array(
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_cersimpleavalider' )
 				),
 				'Contrats Particuliers à valider' => array(
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-					'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxparticulier' )
-				),
-				'Contrats Particuliers à valider (nouveau)' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_cerparticulieravalider' )
 				),
 				'Décisions prises' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-					'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
-				),
-				'Décisions prises (nouveau)' => array(
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'search_valides' )
 				),
 				'Contrats à valider' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-					'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveaux' )
-				),
-				'Contrats à valider (nouveau)' => array(
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_nouveaux' )
 				),
 				'Contrats validés' => array(
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-					'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
-				),
-				'Contrats validés (nouveau)' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 					'url' => array( 'controller' => 'contratsinsertion', 'action' => 'cohorte_valides' )
 				),
 			),
 			'Fiches de candidature' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'Fiches en attente' => array( 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ) ),
-				'Fiches en attente (nouveau)' => array( 'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'cohorte_enattente' ) ),
-				'Fiches en cours' => array( 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ) ),
-				'Fiches en cours (nouveau)' => array( 'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'cohorte_encours' ) ),
+				'Fiches en attente' => array( 'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'cohorte_enattente' ) ),
+				'Fiches en cours' => array( 'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'cohorte_encours' ) ),
 			),
 			'Dossiers PCGs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'Dossiers en attente d\'affectation' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'enattenteaffectation' ) ),
-				'Dossiers en attente d\'affectation (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_enattenteaffectation' ) ),
-				'Dossiers affectés' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'affectes' ) ),
-				'Dossiers affectés (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search_affectes' ) ),
-				'Dossiers à imprimer' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'aimprimer' ) ),
-				'Dossiers à imprimer (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_imprimer' ) ),
-				'Dossiers à transmettre' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'atransmettre' ) ),
-				'Dossiers à transmettre (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) ),
+				'Dossiers en attente d\'affectation' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_enattenteaffectation' ) ),
+				'Dossiers affectés' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search_affectes' ) ),
+				'Dossiers à imprimer' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_imprimer' ) ),
+				'Dossiers à transmettre' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) ),
 				'Requêtes PDU' => array(
 					'Allocataires hebergés' => array(
 						'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_heberge' ),
@@ -86,40 +55,24 @@
 			),
 			'Non orientation' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'Inscrits PE' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ) ),
-				'Inscrits PE (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_isemploi' ) ),
-				'Non inscrits PE' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploiaimprimer' ) ),
-				'Non inscrits PE (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_imprimeremploi' ) ),
-				'Gestion des réponses' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploi' ) ),
-				'Gestion des réponses (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_reponse' ) ),
-				'Notifications à envoyer' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notifaenvoyer' ) ),
-				'Notifications à envoyer (nouveau)' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_imprimernotifications' ) ),
-				'Orientés et notifiés' => array( 'url' =>  array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ) ),
-				'Orientés et notifiés (nouveau)' => array( 'url' =>  array( 'controller' => 'nonorientes66', 'action' => 'recherche_notifie' ) ),
+				'Inscrits PE' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_isemploi' ) ),
+				'Non inscrits PE' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_imprimeremploi' ) ),
+				'Gestion des réponses' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_reponse' ) ),
+				'Notifications à envoyer' => array( 'url' => array( 'controller' => 'nonorientes66', 'action' => 'cohorte_imprimernotifications' ) ),
+				'Orientés et notifiés' => array( 'url' =>  array( 'controller' => 'nonorientes66', 'action' => 'recherche_notifie' ) ),
 			),
 			'Orientation' => array(
-				'Demandes non orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'nouvelles' ) ),
-				'Demandes non orientées (nouvelles)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_nouvelles' ) ),
-				'Demandes en attente de validation d\'orientation' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'enattente' ) ),
-				'Demandes en attente de validation d\'orientation (nouvelles)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_enattente' ) ),
-				'Demandes orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'orientees' ) ),
-				'Demandes orientées (nouvelles)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_orientees' ) ),
+				'Demandes non orientées' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_nouvelles' ) ),
+				'Demandes en attente de validation d\'orientation' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_enattente' ) ),
+				'Demandes orientées' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'cohorte_orientees' ) ),
 			),
 			'PDOs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'Nouvelles demandes' => array(
-					'url' => array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ),
-					'title' => 'Avis CG demandé',
-				),
-				'Nouvelles demandes (nouveau)' => array(
 					'url' => array( 'controller' => 'propospdos', 'action' => 'cohorte_nouvelles' ),
 					'title' => 'Avis CG demandé',
 				),
 				'Liste PDOs' => array(
-					'url' => array( 'controller' => 'cohortespdos', 'action' => 'valide' ),
-					'title' => 'PDOs validés',
-				),
-				'Liste PDOs (nouveau)' => array(
 					'url' => array( 'controller' => 'propospdos', 'action' => 'cohorte_validees' ),
 					'title' => 'PDOs validés',
 				),
@@ -135,8 +88,7 @@
 			),
 			'Transferts PDV' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-				'Allocataires à transférer' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
-				'Allocataires à transférer (nouveau)' => array( 'url' => array( 'controller' => 'transfertspdvs93', 'action' => 'cohorte_atransferer' ) ),
+				'Allocataires à transférer' => array( 'url' => array( 'controller' => 'transfertspdvs93', 'action' => 'cohorte_atransferer' ) ),
 				'Allocataires transférés' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
 			),
             'Clôture référents' => array(
@@ -152,62 +104,39 @@
                 'url' => array( 'controller' => 'cohortesrendezvous', 'action' => 'cohorte' )
 			),
 		),
+		
 		'Recherches' => array(
-			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
-			'Par dossier / allocataire (nouveau)' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'search' ) ),
-			'Par Orientation' => array( 'url' => array( 'controller' => 'criteres', 'action' => 'index' ) ),
-			'Par Orientation (nouveau)' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'search' ) ),
+			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'search' ) ),
+			'Par Orientation' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'search' ) ),
 			'Par APREs' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
-			),
-			'Par APREs (nouveau)' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'apres', 'action' => 'search' )
 			),
 			'Par Contrats' => array(
-				'Par CER' => array( 'url' => array( 'controller' => 'criteresci', 'action' => 'index'  ) ),
-				'Par CER (nouveau)' => array( 'url' => array( 'controller' => 'contratsinsertion', 'action' => 'search'  ) ),
+				'Par CER' => array( 'url' => array( 'controller' => 'contratsinsertion', 'action' => 'search'  ) ),
 				'Par CUI' => array(
-					'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
-				),
-				'Par CUI (nouveau)' => array(
 					'url' => array( 'controller' => 'cuis', 'action' => 'search'  ),
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
 				),
 			),
-			'Par Entretiens' => array( 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
-			'Par Entretiens (nouveau)' => array( 'url' => array( 'controller' => 'entretiens', 'action' => 'search' ) ),
+			'Par Entretiens' => array( 'url' => array( 'controller' => 'entretiens', 'action' => 'search' ) ),
 			'Par Fiches de candidature' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'url' => array( 'controller' => 'criteresfichescandidature', 'action' => 'index' )
-			),
-			'Par Fiches de candidature (nouveau)' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'search' )
 			),
-			'Par Indus' => array( 'url' => array( 'controller' => 'cohortesindus', 'action' => 'index' ) ),
-			'Par Indus (nouveau)' => array( 'url' => array( 'controller' => 'indus', 'action' => 'search' ) ),
-			'Par DSPs' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
-			'Par DSPs (nouveau)' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'search' ) ),
-			'Par Rendez-vous' => array( 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
-			'Par Rendez-vous (nouveau)' => array( 'url' => array( 'controller' => 'rendezvous', 'action' => 'search'  ) ),
+			'Par Indus' => array( 'url' => array( 'controller' => 'indus', 'action' => 'search' ) ),
+			'Par DSPs' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'search' ) ),
+			'Par Rendez-vous' => array( 'url' => array( 'controller' => 'rendezvous', 'action' => 'search'  ) ),
 			'Par Dossiers PCGs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'Dossiers PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) ),
-				'Dossiers PCGs (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search'  ) ),
-				'Traitements PCGs' => array( 'url' => array( 'controller' => 'criterestraitementspcgs66', 'action' => 'index'  ) ),
-				'Traitements PCGs (nouveau)' => array( 'url' => array( 'controller' => 'traitementspcgs66', 'action' => 'search'  ) ),
-				'Gestionnaires PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'gestionnaire'  ) ),
-				'Gestionnaires PCGs (nouveau)' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search_gestionnaire'  ) ),
+				'Dossiers PCGs' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search'  ) ),
+				'Traitements PCGs' => array( 'url' => array( 'controller' => 'traitementspcgs66', 'action' => 'search'  ) ),
+				'Gestionnaires PCGs' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search_gestionnaire'  ) ),
 			),
 			'Par PDOs' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) == 66 ),
-				'Nouvelles PDOs' => array( 'url' => array( 'controller' => 'criterespdos', 'action' => 'nouvelles'  ) ),
-				'Nouvelles PDOs (nouvelles)' => array( 'url' => array( 'controller' => 'propospdos', 'action' => 'search_possibles'  ) ),
-				'Liste des PDOs' => array( 'url' => array( 'controller' => 'criterespdos', 'action' => 'index'  ) ),
-				'Liste des PDOs (nouvelle)' => array( 'url' => array( 'controller' => 'propospdos', 'action' => 'search' ) ),
+				'Nouvelles PDOs' => array( 'url' => array( 'controller' => 'propospdos', 'action' => 'search_possibles'  ) ),
+				'Liste des PDOs' => array( 'url' => array( 'controller' => 'propospdos', 'action' => 'search' ) ),
 			),
 			'Par Dossiers COV' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
@@ -217,57 +146,202 @@
 			),
 			'Par Dossiers EP' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
-				'Radiation de Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) ),
-				'Radiation de Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'cohorte_radiespe' ) ),
-				'Non inscription à Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) ),
-				'Non inscription à Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'cohorte_noninscritspe' ) ),
+				'Radiation de Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'cohorte_radiespe' ) ),
+				'Non inscription à Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'cohorte_noninscritspe' ) ),
 			),
 			'Par Bilans de parcours' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'url' => array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ),
-			),
-			'Par Bilans de parcours (nouveau)' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'bilansparcours66', 'action' => 'search'  ),
 			),
 			'Pôle Emploi' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'Non inscrits au Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits'  ) ),
-				'Non inscrits au Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'search_noninscrits'  ) ),
-				'Radiés de Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies'  ) ),
-				'Radiés de Pôle Emploi (nouveau)' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'search_radies'  ) ),
+				'Non inscrits au Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'search_noninscrits'  ) ),
+				'Radiés de Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'search_radies'  ) ),
 			),
 			'Demande de maintien dans le social' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-				'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index'  )
-			),
-			'Demande de maintien dans le social (nouveau)' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'search'  )
 			),
 			'Par allocataires sortants' => array(
 				'Intra-département' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-					'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
-				),
-				'Intra-département (nouveau)' => array(
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 					'url' => array( 'controller' => 'transfertspdvs93', 'action' => 'search'  )
 				),
 				'Hors département' => array(
-					'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search1'  )
-				),
-				'Hors département (nouveau)' => array(
 					'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search'  )
 				),
 			),
 			'Par fiches de prescription' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-				'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search1'  )
-			),
-			'Par fiches de prescription (nouveau)' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search'  )
+			),
+		),
+		'Anciens moteurs' => array(
+			( Configure::read( 'Cg.departement' ) == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
+				'APRE' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'À valider' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'apresavalider' ) ),
+					'À notifier' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ) ),
+					'Notifiées' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notifiees' ) ),
+					'Transfert cellule' => array( 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),
+					'Traitement cellule' => array( 'url' =>  array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ) ),
+				),
+				'CER' => array(
+					'disabled' => ( !in_array( Configure::read( 'Cg.departement' ), array( 66, 93 ) ) ),
+					'Contrats Simples à valider' => array(
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+						'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxsimple' )
+					),
+					'Contrats Particuliers à valider' => array(
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+						'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxparticulier' )
+					),
+					'Décisions prises' => array(
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+						'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
+					),
+					'Contrats à valider' => array(
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+						'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveaux' )
+					),
+					'Contrats validés' => array(
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+						'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
+					),
+				),
+				'Fiches de candidature' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'Fiches en attente' => array( 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ) ),
+					'Fiches en cours' => array( 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ) ),
+				),
+				'Dossiers PCGs' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'Dossiers en attente d\'affectation' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'enattenteaffectation' ) ),
+					'Dossiers affectés' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'affectes' ) ),
+					'Dossiers à imprimer' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'aimprimer' ) ),
+					'Dossiers à transmettre' => array( 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'atransmettre' ) ),
+				),
+				'Non orientation' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'Inscrits PE' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ) ),
+					'Non inscrits PE' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploiaimprimer' ) ),
+					'Gestion des réponses' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploi' ) ),
+					'Notifications à envoyer' => array( 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notifaenvoyer' ) ),
+					'Orientés et notifiés' => array( 'url' =>  array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ) ),
+				),
+				'Orientation' => array(
+					'Demandes non orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'nouvelles' ) ),
+					'Demandes en attente de validation d\'orientation' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'enattente' ) ),
+					'Demandes orientées' => array( 'url' => array( 'controller' => 'cohortes', 'action' => 'orientees' ) ),
+				),
+				'PDOs' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'Nouvelles demandes' => array(
+						'url' => array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ),
+						'title' => 'Avis CG demandé',
+					),
+					'Liste PDOs' => array(
+						'url' => array( 'controller' => 'cohortespdos', 'action' => 'valide' ),
+						'title' => 'PDOs validés',
+					),
+				),
+				'EPs' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'Relances (EP)' => array(
+						__d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) => array( 'url' => array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ) ),
+						__d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ) => array( 'url' => array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impressions' ) ),
+					),
+					'Parcours social sans réorientation' => array( 'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) ),
+					'Radiés de Pôle Emploi' => array( 'url' => array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies'  ) ),
+				),
+				'Transferts PDV' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'Allocataires à transférer' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
+					'Allocataires transférés' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
+				),
+				'Clôture référents' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'referents', 'action' => 'clotureenmasse' )
+				),
+				__d( 'cohortesd2pdvs93', '/Cohortesd2pdvs93/index/:heading' ) => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'cohortesd2pdvs93', 'action' => 'index' )
+				),
+				__d( 'cohortesrendezvous', '/Cohortesrendezvous/cohorte/:heading' ) => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'cohortesrendezvous', 'action' => 'cohorte' )
+				),
+			),
+			'Recherches' => array(
+				'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
+				'Par Orientation' => array( 'url' => array( 'controller' => 'criteres', 'action' => 'index' ) ),
+				'Par APREs' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
+				),
+				'Par Contrats' => array(
+					'Par CER' => array( 'url' => array( 'controller' => 'criteresci', 'action' => 'index'  ) ),
+					'Par CUI' => array(
+						'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
+					),
+				),
+				'Par Entretiens' => array( 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
+				'Par Fiches de candidature' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'url' => array( 'controller' => 'criteresfichescandidature', 'action' => 'index' )
+				),
+				'Par Indus' => array( 'url' => array( 'controller' => 'cohortesindus', 'action' => 'index' ) ),
+				'Par DSPs' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
+				'Par Rendez-vous' => array( 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
+				'Par Dossiers PCGs' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'Dossiers PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) ),
+					'Traitements PCGs' => array( 'url' => array( 'controller' => 'criterestraitementspcgs66', 'action' => 'index'  ) ),
+					'Gestionnaires PCGs' => array( 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'gestionnaire'  ) ),
+				),
+				'Par PDOs' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) == 66 ),
+					'Nouvelles PDOs' => array( 'url' => array( 'controller' => 'criterespdos', 'action' => 'nouvelles'  ) ),
+					'Liste des PDOs' => array( 'url' => array( 'controller' => 'criterespdos', 'action' => 'index'  ) ),
+				),
+				'Par Dossiers COV' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
+					'url' => array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ),
+					__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte1/:heading' ) => array( 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte1' ) ),
+					__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte/:heading' ) => array( 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte' ) )
+				),
+				'Par Dossiers EP' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
+					'Radiation de Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) ),
+					'Non inscription à Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) ),
+				),
+				'Par Bilans de parcours' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'url' => array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ),
+				),
+				'Pôle Emploi' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'Non inscrits au Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits'  ) ),
+					'Radiés de Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies'  ) ),
+				),
+				'Demande de maintien dans le social' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
+					'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index'  )
+				),
+				'Par allocataires sortants' => array(
+					'Intra-département' => array(
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+						'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
+					),
+					'Hors département' => array(
+						'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search1'  )
+					),
+				),
+				'Par fiches de prescription' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search1'  )
+				),
 			),
 		),
 		'APRE' => array(
@@ -470,6 +544,60 @@ $$( '#menu1Wrapper li.branch' ).each(
 		$(elmt).observe( 'mouseout', function() { $(this).removeClassName( 'hover' ); } );
     }
 );
+
+$('menu1Wrapper').select('li').each(function(li){
+	li.observe('click', function(event){
+		var parent, active = li.hasClassName('forceHover');
+		
+		event.preventDefault();
+		event.stopPropagation();
+		
+		// Reset all force* classes
+		$('menu1Wrapper').select('li').each(function(subli){ 
+			subli.removeClassName('forceHover');
+			subli.removeClassName('forceHide');
+		});
+		
+		if (!active) {
+			// On cache les sous elements des li voisins
+			li.siblings().each(function(subli){
+				subli.select('li').each(function(subsubli){
+					subsubli.addClassName('forceHide');
+				});
+			});
+		
+			// On applique forceHover sur l'element
+			li.addClassName('forceHover');
+		}
+		
+		if (li.hasClassName('forceHover')) {
+			parent = li.up('li');
+			while (true) {
+				if (parent === undefined) {
+					break;
+				}
+
+				parent.addClassName('forceHover');
+				parent.removeClassName('forceHide');
+				parent = parent.up('li');
+			}
+		}
+	});
+});
+
+// Empeche le code ci-dessus de s'appliquer lors d'un clic sur un véritable lien
+$('menu1Wrapper').select('a').each(function(a) {
+	a.observe('click', function(event){
+		if (a.getAttribute('href') !== '#') {
+			event.stopPropagation();
+		}
+	});	
+});
+
+document.observe('click', function(){
+	// Reset all forceHover
+	$('menu1Wrapper').select('li').each(function(subli){ subli.removeClassName('forceHover'); });
+});
 //]]>
 </script>
 <?php endif;?>
