@@ -135,7 +135,7 @@
 									foreach( $params as $action => $result ) {
 										$id = 'webrsa_configurable_query_'.Inflector::underscore( $controller ).'_'.Inflector::underscore( $action );
 										echo "<div id=\"{$id}\">\n";
-										echo "<h6 class=\"title\">{$controller}.{$action}</h6>\n";
+										echo "<h6 class=\"title\">{$action}</h6>\n";
 										$checks = array_merge(
 											$result['config'],
 											array(
