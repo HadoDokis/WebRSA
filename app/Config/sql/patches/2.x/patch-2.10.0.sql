@@ -24,6 +24,10 @@ CREATE TABLE correspondancespersonnes (
 );
 COMMENT ON TABLE correspondancespersonnes IS 'correspondancespersonnes';
 
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'correspondancespersonnes', 'correspondancespersonnes_personne1_id_fkey' );
+SELECT alter_table_drop_constraint_if_exists ( 'public', 'correspondancespersonnes', 'correspondancespersonnes_personne2_id_fkey' );
+ALTER TABLE correspondancespersonnes ADD CONSTRAINT correspondancespersonnes_personne1_id_fkey FOREIGN KEY (personne1_id) REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE correspondancespersonnes ADD CONSTRAINT correspondancespersonnes_personne2_id_fkey FOREIGN KEY (personne2_id) REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --------------------------------------------------------------------------------
 -- Nouveaux champs du dossierpcg66
