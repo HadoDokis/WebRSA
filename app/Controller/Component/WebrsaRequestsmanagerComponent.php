@@ -24,14 +24,16 @@
 		public function optionsAccepted( array $options, array $params ) {
 			$Controller = $this->_Collection->getController();
 			
-			$options['filter']['Tag']['valeurtag_id'] = $options['Tag']['valeurtag_id'];
-			
-			foreach( $options['Tag']['valeurtag_id'] as $title => $values ) {
-				foreach (array_keys($values) as $id) {
-					if (!in_array((string)$id, (array)Hash::get($Controller->request->data, 'Search.Tag.valeurtag_id'))) {
-						unset($options['Tag']['valeurtag_id'][$title][$id]);
-						if ( empty($options['Tag']['valeurtag_id'][$title]) ) {
-							unset($options['Tag']['valeurtag_id'][$title]);
+			if (isset($options['Tag']['valeurtag_id']) && !empty($options['Tag']['valeurtag_id'])) {
+				$options['filter']['Tag']['valeurtag_id'] = $options['Tag']['valeurtag_id'];
+
+				foreach( $options['Tag']['valeurtag_id'] as $title => $values ) {
+					foreach (array_keys($values) as $id) {
+						if (!in_array((string)$id, (array)Hash::get($Controller->request->data, 'Search.Tag.valeurtag_id'))) {
+							unset($options['Tag']['valeurtag_id'][$title][$id]);
+							if ( empty($options['Tag']['valeurtag_id'][$title]) ) {
+								unset($options['Tag']['valeurtag_id'][$title]);
+							}
 						}
 					}
 				}
