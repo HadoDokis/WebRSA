@@ -59,6 +59,7 @@
 				array(
 					 'Dossier.numdemrsatemp' => array( 'label' => 'Génération automatique d\'un N° de demande RSA temporaire', 'type' => 'checkbox' ),
 					 'Dossier.numdemrsa' => array( 'required' => true ),
+					 'Dossier.dtdemrsa' => array( 'type' => 'date', 'format' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+1 ),
 					 'Dossier.matricule',
                     'Serviceinstructeur.id' => array( 'label'=> 'Service instructeur', 'options' => $services ),
 				)
