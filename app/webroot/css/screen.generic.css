@@ -2074,3 +2074,11 @@ table.results_table.horizontal_view tr:hover th{
 table.results_table.full_size.horizontal_view th {
 	width: 33%;
 }
+
+.custom.color.PDA {
+	color: #df4505;
+}
+
+.custom.color.PDU {
+	color: #0545df;
+}

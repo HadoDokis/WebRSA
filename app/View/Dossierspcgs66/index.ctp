@@ -18,7 +18,7 @@
 		array(
 			'Typepdo.libelle',
 			'Dossierpcg66.datereceptionpdo',
-			'Pole.user',
+			'Pole.user' => array('class' => 'custom color #Poledossierpcg66.name#'),
 			'Dossierpcg66.etatdossierpcg_full',
 			'Personnepcg66.situationpdo_list_libelle_ulli',
 			'Decisionpdo.libelle',
