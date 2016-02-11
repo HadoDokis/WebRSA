@@ -154,6 +154,7 @@
 					'Dossierpcg66.etatdossierpcg',
 					'Decisiondossierpcg66.datetransmissionop',
 					'Decisionpdo.libelle',
+					'Poledossierpcg66.name',
 					'("Poledossierpcg66"."name" || \' / \' || "User"."nom" || \' \' || "User"."prenom") AS "Pole__user"',
 					"( {$sqBilanPersonne} ) AS \"Bilanparcours66__personne_nom_complet\"",
 					"( ARRAY_TO_STRING(ARRAY(({$sqTransmisOp})), ', ') ) AS \"Decisiondossierpcg66__orgtransmis_list_name\"",

@@ -98,6 +98,8 @@
 
 			unset( $htmlAttributes['label'], $htmlAttributes['options'], $htmlAttributes['format'] );
 
+			$htmlAttributes['class'] = DefaultUtility::evaluate( $this->_data, Hash::get( $htmlAttributes, 'class' ) );
+
 			return array(
 				$value,
 				Hash::merge(
