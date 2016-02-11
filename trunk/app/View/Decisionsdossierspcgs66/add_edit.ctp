@@ -434,7 +434,7 @@
 		</fieldset>
 	<?php endif;?>
 
-	<?php if( $validationmodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) && ( $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ) || $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ) ) ):?>
+	<?php if( $validationmodifiable && !in_array( $this->action, array( 'add', 'edit', 'avistechnique' ) ) && ( $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ) || $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ) ) ):?>
 		<fieldset id="propovalid"><legend>Validation de la proposition</legend>
 				<?php
 					echo $this->Default2->subform(
