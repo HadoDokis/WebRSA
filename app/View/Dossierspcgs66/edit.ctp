@@ -340,6 +340,7 @@ document.observe( "dom:loaded", function() {
 </div>
 
 <?php echo $this->Xform->end();?>
+<?php if ($this->action !== 'add') {?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		var impression = $$('a.ActionDecisionproposition').first();
@@ -376,3 +377,4 @@ document.observe( "dom:loaded", function() {
 		);
 	}
 </script>
+<?php } ?>
