@@ -59,13 +59,19 @@
 				<tbody>
 					<?php
 						foreach( $actionscandidats_personnes as $actioncandidat_personne ){
-
-							echo $this->Xhtml->tableCells(
+							$datas = array(
+								h( Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.name' ) ),
+								h( Set::classicExtract( $actioncandidat_personne, 'Referent.nom_complet' ) ),
+								h( Set::classicExtract( $actioncandidat_personne, 'Partenaire.libstruc' ) ),
+								h( date_short( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.datesignature' ) ) ),
+							);
+							if ((int)Configure::read('Cg.departement') === 66) {
+								$datas[] = h( date_short( Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.datebilan' ) ) );
+							}
+							
+							$datas = array_merge(
+								$datas,
 								array(
-									h( Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.name' ) ),
-									h( Set::classicExtract( $actioncandidat_personne, 'Referent.nom_complet' ) ),
-									h( Set::classicExtract( $actioncandidat_personne, 'Partenaire.libstruc' ) ),
-									h( date_short( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.datesignature' ) ) ),
 									h( Set::classicExtract( $options['ActioncandidatPersonne']['positionfiche'], Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) ) ),
 									h( date_short( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.sortiele' ) ) ),
 									h( Set::classicExtract( $actioncandidat_personne, 'Motifsortie.name' ) ),
@@ -141,10 +147,10 @@
 										)
 									),
 									h( '('.$actioncandidat_personne['ActioncandidatPersonne']['nb_fichiers_lies'].')' )
-								),
-								array( 'class' => 'odd' ),
-								array( 'class' => 'even' )
+								)
 							);
+
+							echo $this->Xhtml->tableCells( $datas, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
 						}
 
 					?>

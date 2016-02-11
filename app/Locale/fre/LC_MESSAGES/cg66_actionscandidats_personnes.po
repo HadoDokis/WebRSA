@@ -78,3 +78,6 @@ msgstr "Motif de sortie"
 
 msgid "data[Cohorte][][ActioncandidatPersonne][sortiele]"
 msgstr "Date de sortie"
+
+msgid "data[Cohorte][][ActioncandidatPersonne][datebilan]"
+msgstr "Date bilan"
