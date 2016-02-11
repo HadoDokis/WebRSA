@@ -35,6 +35,7 @@
 			'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'legend' => false ),
 			'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'legend' => false ),
 			'ActioncandidatPersonne.infocomplementaire' => array( 'type' => 'textarea' ),
+			'ActioncandidatPersonne.datebilan' => array( 'type' => 'date' ),
 		);
 		
 		/**
