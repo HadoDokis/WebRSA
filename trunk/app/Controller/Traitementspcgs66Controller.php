@@ -490,16 +490,32 @@ class Traitementspcgs66Controller extends AppController {
             $personnepcg66_id = $id;
             $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $this->Traitementpcg66->Personnepcg66->personneId($personnepcg66_id))));
 			
-			$traitementAImprimer = $this->Traitementpcg66->Personnepcg66->find( 'first',
+			$conditionsDatas = $this->Traitementpcg66->Personnepcg66->find( 'first',
+				array(
+					'fields' => array(
+						'Dossierpcg66.foyer_id',
+						'Dossierpcg66.poledossierpcg66_id'
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'Personnepcg66.id' => $personnepcg66_id,
+					)
+				)
+			);
+			$traitementAImprimer = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->find( 'first',
 				array(
 					'fields' => 'Decisiondossierpcg66.id',
 					'contain' => false,
 					'joins' => array(
-						$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
+						$this->Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
 						$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'INNER' ) ),
 					),
 					'conditions' => array(
-						'Personnepcg66.id' => $personnepcg66_id,
+						'Foyer.id' => Hash::get($conditionsDatas, 'Dossierpcg66.foyer_id'),
+						'Dossierpcg66.poledossierpcg66_id' => Hash::get($conditionsDatas, 'Dossierpcg66.poledossierpcg66_id'),
 						'Decisiondossierpcg66.etatdossierpcg IS NULL',
 						'Decisiondossierpcg66.validationproposition' => 'O',
 						'(Decisiondossierpcg66.created)::date = NOW()::date'
