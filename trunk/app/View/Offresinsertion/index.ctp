@@ -37,7 +37,7 @@
 					'Search.Actioncandidat.numcodefamille' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.numcodefamille' ) ),
 					'Search.Actioncandidat.referent_id' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.referent_id' ), 'options' => $correspondants, 'empty' => true ),
 					'Search.Actioncandidat.hasfichecandidature' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.hasfichecandidature', true ), 'options' => $options['Actioncandidat']['hasfichecandidature'], 'empty' => true ),
-					'Search.Actioncandidat.actif' => array( 'label' =>'Action active ?', 'options' => $options['Actioncandidat']['actif'], 'empty' => true )
+					'Search.Actioncandidat.actif' => array( 'label' =>'Action active ?', 'options' => $options['Actioncandidat']['actif'], 'value' => 'N' )
 				),
 				array(
 					'options' => $options
