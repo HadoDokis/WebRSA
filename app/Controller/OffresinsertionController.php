@@ -46,6 +46,35 @@
 			$listeContacts = $this->Actioncandidat->Contactpartenaire->find( 'list', array( 'order' => 'Contactpartenaire.nom ASC' ) );
 			$options['Partenaire']['typevoie'] = $this->Option->typevoie();
 			$correspondants = $this->Actioncandidat->ActioncandidatPersonne->Referent->find('list', array( 'order' => 'Referent.nom ASC' ) );
+			$query = array(
+				'fields' => 'Partenaire.codepartenaire',
+				'contain' => false,
+				'group' => 'Partenaire.codepartenaire',
+				'order' => 'Partenaire.codepartenaire'
+			);
+			foreach (Hash::extract($this->Actioncandidat->Partenaire->find('all', $query), '{n}.Partenaire.codepartenaire') as $code) {
+				$options['Partenaire']['codepartenaire'][$code] = $code;
+			}
+			
+			$query = array(
+				'fields' => 'Actioncandidat.themecode',
+				'contain' => false,
+				'group' => 'Actioncandidat.themecode',
+				'order' => 'Actioncandidat.themecode'
+			);
+			foreach (Hash::extract($this->Actioncandidat->find('all', $query), '{n}.Actioncandidat.themecode') as $code) {
+				$options['Actioncandidat']['themecode'][$code] = $code;
+			}
+			
+			$query = array(
+				'fields' => 'Actioncandidat.codefamille',
+				'contain' => false,
+				'group' => 'Actioncandidat.codefamille',
+				'order' => 'Actioncandidat.codefamille'
+			);
+			foreach (Hash::extract($this->Actioncandidat->find('all', $query), '{n}.Actioncandidat.codefamille') as $code) {
+				$options['Actioncandidat']['codefamille'][$code] = $code;
+			}
 
 // 			$options = Set::merge( $options, $typevoie );
 			$this->set( compact( 'options', 'listeActions', 'listePartenaires', 'listeContacts', 'typevoie', 'correspondants' ) );

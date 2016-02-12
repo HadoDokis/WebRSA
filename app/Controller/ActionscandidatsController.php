@@ -21,7 +21,7 @@
 		public $helpers = array( 'Xform', 'Default', 'Theme', 'Default2', 'Fileuploader' );
 		public $components = array( 'Default', 'Fileuploader', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
 		
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajax_getLastNumcodefamille' );
 
 		public $commeDroit = array(
 			'view' => 'Actionscandidats:index',
@@ -246,6 +246,29 @@
 
 		public function view( $id ) {
 			$this->Default->view( $id );
+		}
+		
+		/**
+		 * Permet à partir du themecode et de codefamille de trouver le dernier numéro du code famille
+		 */
+		public function ajax_getLastNumcodefamille() {
+			$query = array(
+				'fields' => 'Actioncandidat.numcodefamille',
+				'contain' => false,
+				'conditions' => array(
+					'Actioncandidat.themecode' => Hash::get($this->request->data, 'themecode'),
+					'Actioncandidat.codefamille' => Hash::get($this->request->data, 'codefamille'),
+					'Actioncandidat.numcodefamille ~ \'^[0-9]+$\''
+				),
+				'order' => array(
+					'Actioncandidat.numcodefamille' => 'DESC'
+				)
+			);
+			
+			$result = Hash::get($this->Actioncandidat->find('first', $query), 'Actioncandidat.numcodefamille');
+			echo $result ? $result : 'Aucun numéro du code famille n\'a été trouvé';
+			
+			exit;
 		}
 	}
 ?>

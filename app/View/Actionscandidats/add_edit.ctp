@@ -19,6 +19,13 @@
 			'Actioncandidat.themecode' => array( 'domain' => 'actioncandidat', 'required' => true ),
 			'Actioncandidat.codefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
 			'Actioncandidat.numcodefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
+		)
+	);
+	
+	echo '<div class="notice">Dernier numéro du code famille trouvé : <strong id="lastcodefamille"></strong></div>';
+	
+	echo $this->Default2->subform(
+		array(
 			'Actioncandidat.hasfichecandidature' => array( 'domain' => 'actioncandidat', 'required' => true, 'type'=>'radio', 'options' => $options['Actioncandidat']['hasfichecandidature'] ),
 			'Actioncandidat.actif' => array( 'label' => 'Active ?', 'type' => 'radio', 'options' => $options['Actioncandidat']['actif'] ),
 			'Actioncandidat.modele_document' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.modele_document' ), 'required' => true, 'value' => isset( $this->request->data['Actioncandidat']['modele_document'] ) ? $this->request->data['Actioncandidat']['modele_document'] : 'fichecandidature' )
@@ -49,6 +56,29 @@
 			false,
 			true
 		);
+
+		function lastCodeFamille() {
+			if ($('ActioncandidatThemecode').getValue() && $('ActioncandidatCodefamille').getValue()) {
+				new Ajax.Updater(
+					'lastcodefamille',
+					'<?php echo Router::url( array( "action" => "ajax_getLastNumcodefamille" ) ); ?>',
+					{
+						asynchronous:true,
+						evalScripts:true,
+						parameters:{
+							'themecode': $('ActioncandidatThemecode').getValue(),
+							'codefamille': $('ActioncandidatCodefamille').getValue()
+						},
+						requestHeaders:['X-Update', 'lastcodefamille']
+					}
+				);
+			} else {
+				$('lastcodefamille').innerHTML = '';
+			}
+		}
+		
+		$('ActioncandidatThemecode').observe('change', lastCodeFamille);
+		$('ActioncandidatCodefamille').observe('change', lastCodeFamille);
 	} );
 </script>
 
@@ -205,11 +235,16 @@
 		</script>
 		<fieldset class="col2">
 			<legend>Zones géographiques</legend>
+			<?php 
+			
+			/* NOTE : ActioncandidatFiltreZoneGeo n'existe pas
+
+
 			<script type="text/javascript">
 				document.observe( "dom:loaded", function() {
 					observeDisableFieldsetOnCheckbox( 'ActioncandidatFiltreZoneGeo', 'filtres_zone_geo', false );
 				} );
-			</script>
+			</script>*/?>
 				<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherZonesgeographiques();" ) );?>
 				<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherZonesgeographiques();" ) );?>
 
@@ -264,9 +299,12 @@
 		array('controller' => 'actionscandidats', 'action' => 'index'),
 		array('id' => 'Back')
 	);
-?>
+
+/* NOTE: ActioncandidatContractualisation n'existe pas
+
+
 <script type="text/javascript">
-	document.observe( "dom:loaded", function() {
+	document.observe( "dom:loaded", function() {c
 		var v = $( 'ActioncandidatAddEditForm' ).getInputs( 'radio', 'data[Actioncandidat][hasfichecandidature]' );
 		var currentSelectValue = $F('ActioncandidatContractualisation');
 		$( v ).each( function( radio ) {
@@ -280,4 +318,4 @@
 			} );
 		} );
 	} );
-</script>
+</script>*/
