@@ -32,7 +32,7 @@ msgid "Decisioncui66.datedecision"
 msgstr "Date de la décision"
 
 msgid "Decisioncui66.observation"
-msgstr "Observation"
+msgstr "Commentaire pour la notification à l'employeur"
 
 msgid "/Decisionscuis66/add/:heading"
 msgstr "Ajout d'une décision"

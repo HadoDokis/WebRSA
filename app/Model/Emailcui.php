@@ -47,7 +47,7 @@
 			'emailredacteur' => array(
 				'email' => array(
 					'rule' => array( 'email' ),
-					'allowEmpty' => true,
+					'allowEmpty' => false,
 				)
 			),
 			'emailemployeur' => array(
@@ -152,7 +152,7 @@
 		 * @param array $data
 		 * @return boolean
 		 */
-		public function saveAddEdit( array $data, $user_id = null ) {debug($data);
+		public function saveAddEdit( array $data, $user_id = null ) {
 			$data['Emailcui']['user_id'] = $user_id;
 			$data['Emailcui']['pj'] = is_array($data['Emailcui']['pj']) ? implode( '_', $data['Emailcui']['pj'] ) : '';
 			$data['Emailcui']['piecesmanquantes'] = is_array($data['Emailcui']['piecesmanquantes']) ? implode( '_', $data['Emailcui']['piecesmanquantes'] ) : '';
