@@ -619,7 +619,50 @@
 	Event.observe( $('Cui66DatebutoirSelect'), 'change', setDateCloture);
 	Event.observe( $('CuiFaitleDay'), 'change', setDateCloture);
 	Event.observe( $('CuiFaitleMonth'), 'change', setDateCloture);
-	Event.observe( $('CuiFaitleyear'), 'change', setDateCloture);
+	Event.observe( $('CuiFaitleYear'), 'change', setDateCloture);
+	
+	var disableFunction = {'setDatePriseEnCharge': <?php echo Hash::get($this->request->data, 'Cui.effetpriseencharge') === null ? 'false' : 'true';?>};
+	console.log(disableFunction);
+	/**
+	 * Prérempli les dates de prises en charge en fonction des dates d'embauche
+	 * Se désactive si une date d'embauche est saisie manuellement
+	 */
+	function setDatePriseEnCharge() {
+		if (disableFunction.setDatePriseEnCharge) {
+			return false;
+		}
+		
+		$('CuiEffetpriseenchargeDay').setValue($('CuiDateembaucheDay').getValue());
+		$('CuiEffetpriseenchargeMonth').setValue($('CuiDateembaucheMonth').getValue());
+		$('CuiEffetpriseenchargeYear').setValue($('CuiDateembaucheYear').getValue());
+		$('CuiFinpriseenchargeDay').setValue($('CuiFindecontratDay').getValue());
+		$('CuiFinpriseenchargeMonth').setValue($('CuiFindecontratMonth').getValue());
+		$('CuiFinpriseenchargeYear').setValue($('CuiFindecontratYear').getValue());
+	}
+	
+	/**
+	 * Permet d'empecher certaines fonctions de faire leur traitement
+	 * 
+	 * @param {string} functionName
+	 */
+	function stopFunction(functionName) {
+		disableFunction[functionName] = true;
+	}
+	
+	$('CuiEffetpriseenchargeDay').observe('change', function() {stopFunction('setDatePriseEnCharge');});
+	$('CuiEffetpriseenchargeMonth').observe('change', function() {stopFunction('setDatePriseEnCharge');});
+	$('CuiEffetpriseenchargeYear').observe('change', function() {stopFunction('setDatePriseEnCharge');});
+	$('CuiFinpriseenchargeDay').observe('change', function() {stopFunction('setDatePriseEnCharge');});
+	$('CuiFinpriseenchargeMonth').observe('change', function() {stopFunction('setDatePriseEnCharge');});
+	$('CuiFinpriseenchargeYear').observe('change', function() {stopFunction('setDatePriseEnCharge');});
+	$('CuiDateembaucheDay').observe('change', setDatePriseEnCharge);
+	$('CuiDateembaucheMonth').observe('change', setDatePriseEnCharge);
+	$('CuiDateembaucheYear').observe('change', setDatePriseEnCharge);
+	$('CuiFindecontratDay').observe('change', setDatePriseEnCharge);
+	$('CuiFindecontratMonth').observe('change', setDatePriseEnCharge);
+	$('CuiFindecontratYear').observe('change', setDatePriseEnCharge);
+	
+	setDatePriseEnCharge();
 </script>
 <?php
 	// Ici on défini les champs à faire apparaitre que si certains autres portent une certaine valeur

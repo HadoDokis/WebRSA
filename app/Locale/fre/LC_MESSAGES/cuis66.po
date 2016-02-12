@@ -460,7 +460,7 @@ msgid "Cui.contrattravail"
 msgstr "Contrat de travail"
 
 msgid "Cui.dateembauche"
-msgstr "Date d'embauche prévu"
+msgstr "Date d'embauche prévue"
 
 msgid "Entreeromev3"
 msgstr "Code ROME (v3)"
