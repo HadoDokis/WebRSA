@@ -859,4 +859,12 @@
 	 */
 	Configure::write( 'Alerte.changement_adresse.enabled', false );
 	Configure::write( 'Alerte.changement_adresse.delai', 2 );
+
+	/**
+	 * Permet d'activer l'utilisation du module CUI.
+	 *
+	 * @var boolean
+	 * @default null
+	 */
+	Configure::write( 'Module.Cui.enabled', false );
 ?>
