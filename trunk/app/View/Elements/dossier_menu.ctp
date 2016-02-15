@@ -185,7 +185,7 @@
 					'url' => '#',
 					'CER' => array( 'url' => array( 'controller' => $contratcontroller, 'action' => 'index', $personne['id'] ) ),
 				);
-				if ( $departement == 66 ){
+				if ( Configure::read( 'Module.Cui.enabled' ) === true ){
 					$subAllocataire['Accompagnement du parcours']['Contrats']['CUI'] = array( 'url' => array( 'controller' => 'cuis66', 'action' => 'index', $personne['id'] ) );
 				}
 				$subAllocataire['Accompagnement du parcours']['Actualisation suivi'] = array(
@@ -237,7 +237,7 @@
 					'url' => '#',
 					'Ressources' => array( 'url' => array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] ) ),
 				);
-				
+
 				// Informations personne
 				if( $departement === 66 ) {
 					$subAllocataire['Informations personne'] = array(
@@ -272,7 +272,7 @@
 				'Suivi instruction du dossier' => array( 'url' => array( 'controller' => 'suivisinstruction', 'action' => 'index', $dossier['Dossier']['id'] ) ),
 			)
 		);
-		
+
 		// Tags du foyer
 		if( $departement === 66 ) {
 			$items['Informations foyer'] += array(

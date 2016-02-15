@@ -331,6 +331,9 @@
 				'MultiDomainsTranslator.prefix' => array(
 					array( 'rule' => 'string', 'allowEmpty' => true )
 				),
+				'Module.Cui.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				)
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

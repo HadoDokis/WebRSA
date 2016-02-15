@@ -104,7 +104,7 @@
                 'url' => array( 'controller' => 'cohortesrendezvous', 'action' => 'cohorte' )
 			),
 		),
-		
+
 		'Recherches' => array(
 			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'search' ) ),
 			'Par Orientation' => array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'search' ) ),
@@ -116,7 +116,7 @@
 				'Par CER' => array( 'url' => array( 'controller' => 'contratsinsertion', 'action' => 'search'  ) ),
 				'Par CUI' => array(
 					'url' => array( 'controller' => 'cuis', 'action' => 'search'  ),
-					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
+					'disabled' => ( Configure::read( 'Module.Cui.enabled' ) !== true )
 				),
 			),
 			'Par Entretiens' => array( 'url' => array( 'controller' => 'entretiens', 'action' => 'search' ) ),
@@ -548,16 +548,16 @@ $$( '#menu1Wrapper li.branch' ).each(
 $('menu1Wrapper').select('li').each(function(li){
 	li.observe('click', function(event){
 		var parent, active = li.hasClassName('forceHover');
-		
+
 		event.preventDefault();
 		event.stopPropagation();
-		
+
 		// Reset all force* classes
-		$('menu1Wrapper').select('li').each(function(subli){ 
+		$('menu1Wrapper').select('li').each(function(subli){
 			subli.removeClassName('forceHover');
 			subli.removeClassName('forceHide');
 		});
-		
+
 		if (!active) {
 			// On cache les sous elements des li voisins
 			li.siblings().each(function(subli){
@@ -565,11 +565,11 @@ $('menu1Wrapper').select('li').each(function(li){
 					subsubli.addClassName('forceHide');
 				});
 			});
-		
+
 			// On applique forceHover sur l'element
 			li.addClassName('forceHover');
 		}
-		
+
 		if (li.hasClassName('forceHover')) {
 			parent = li.up('li');
 			while (true) {
@@ -591,7 +591,7 @@ $('menu1Wrapper').select('a').each(function(a) {
 		if (a.getAttribute('href') !== '#') {
 			event.stopPropagation();
 		}
-	});	
+	});
 });
 
 document.observe('click', function(){
