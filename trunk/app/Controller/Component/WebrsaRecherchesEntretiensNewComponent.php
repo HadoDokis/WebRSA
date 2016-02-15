@@ -16,5 +16,19 @@
 	 */
 	class WebrsaRecherchesEntretiensNewComponent extends WebrsaAbstractRecherchesNewComponent
 	{
+		/**
+		 * Surcharge de la méthode params pour limiter les utilisateurs externes
+		 * au code INSEE ou à la valeur de structurereferente_id de l'Entretien.
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _params( array $params = array() ) {
+			$defaults = array(
+				'structurereferente_id' => 'Entretien.structurereferente_id'
+			);
+
+			return parent::_params( $params + $defaults );
+		}
 	}
 ?>
