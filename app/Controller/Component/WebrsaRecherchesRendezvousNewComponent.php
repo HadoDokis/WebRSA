@@ -17,6 +17,21 @@
 	class WebrsaRecherchesRendezvousNewComponent extends WebrsaAbstractRecherchesNewComponent
 	{
 		/**
+		 * Surcharge de la méthode params pour limiter les utilisateurs externes
+		 * au code INSEE ou à la valeur de structurereferente_id du Rendezvous.
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _params( array $params = array() ) {
+			$defaults = array(
+				'structurereferente_id' => 'Rendezvous.structurereferente_id'
+			);
+
+			return parent::_params( $params + $defaults );
+		}
+
+		/**
 		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
 		 * tables de la base de données.
 		 *
