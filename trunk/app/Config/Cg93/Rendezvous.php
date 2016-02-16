@@ -64,8 +64,12 @@
 					/*'Dossier.numdemrsa' => array(
 						'condition' => false
 					),*/
-					'/Rendezvous/index/#Rendezvous.personne_id#',
-					'/Rendezvous/impression/#Rendezvous.id#'
+					'/Rendezvous/index/#Rendezvous.personne_id#' => array(
+						'disabled' => "( '#Rendezvous.horszone#' == true )",
+					),
+					'/Rendezvous/impression/#Rendezvous.id#' => array(
+						'disabled' => "( '#Rendezvous.horszone#' == true )",
+					)
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(

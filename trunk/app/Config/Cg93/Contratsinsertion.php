@@ -56,7 +56,10 @@
 					'Contratinsertion.datevalidation_ci',
 					'Contratinsertion.forme_ci',
 					'Contratinsertion.df_ci',
-					'/Cers93/index/#Contratinsertion.personne_id#' => array( 'class' => 'view' ),
+					'/Cers93/index/#Contratinsertion.personne_id#' => array(
+						'disabled' => "( '#Contratinsertion.horszone#' == true )",
+						'class' => 'view'
+					),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(
