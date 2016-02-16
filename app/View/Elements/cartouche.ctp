@@ -33,8 +33,8 @@
                     <td> <?php echo $this->Session->read( 'Auth.User.prenom' ) ;?> </td>
                     <td> <?php echo $this->Session->read( 'Auth.Group.name' ) ;?> </td>
                     <td> <?php echo $this->Session->read( 'Auth.Serviceinstructeur.lib_service' ) ;?> </td>
-				<?php if( !Configure::read( 'Jetons2.disabled' ) && Configure::read( 'Etatjetons.enabled' ) ) {?>
-                    <td class="dossier_locked"><a href="#" id="jetons_count" onclick="jetonDelete()">Loading...</a></td>
+				<?php if( !Configure::read( 'Jetons2.disabled' ) && Configure::read( 'Etatjetons.enabled' ) && isset($jetons_count) ) {?>
+                    <td class="dossier_locked"><a href="#" id="jetons_count" onclick="jetonDelete()"><?php echo $jetons_count;?></a></td>
 				<?php } ?>
                     <!--<td>
                         <ul>
@@ -68,23 +68,6 @@
 				});
 			}
 		}
-		
-		new Ajax.Request('<?php echo Router::url( array( 'controller' => 'jetons', 'action' => 'ajax_count' ) ).'/';?>', {
-			asynchronous:true, 
-			evalScripts:true, 
-			requestHeaders: {Accept: 'application/json'},
-			onComplete: function(request, json) {
-				if ( isNaN(json) || json === null ) {
-					$('jetons_count').innerHTML = '?';
-				}
-				else {
-					$('jetons_count').innerHTML = json;
-				}
-			},
-			onFailure: function() {
-				$('jetons_count').innerHTML = '?';
-			}
-		});
 	</script>
 <?php }?>
 <?php endif;?>
