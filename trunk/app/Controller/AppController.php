@@ -231,6 +231,24 @@
 		}
 
 		/**
+		 * Retourne un tableau contenant un booléen pour chacune des clés suivantes
+		 * permettant de savoir si l'appel à l'URL actuelle est un appel "classique"
+		 * ou non (login, logout, forgottenPass, allo, requested, ajax).
+		 * 
+		 * @return array
+		 */
+		protected function _is() {
+			return array(
+				'login' => ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/login' ),
+				'logout' => ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/logout' ),
+				'forgottenPass' => ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/forgottenpass' ),
+				'allo' => ( strpos( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ), '/api/rest/allo/' ) === 0 ),
+				'requested' => isset( $this->request->params['requested'] ),
+				'ajax' => isset( $this->request->params['isAjax'] )
+			);
+		}
+
+		/**
 		 * @return void
 		 */
 		public function beforeFilter() {
@@ -247,33 +265,28 @@
 			$this->Auth->loginRedirect = array( 'controller' => 'dossiers', 'action' => 'index' );
 			$this->Auth->authorize = array( 'Actions' => array( 'actionPath' => 'controllers' ) );
 
-			// TODO: nettoyer / supprimer...
 			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
 			$return = parent::beforeFilter();
 
 			$this->Auth->allow( '*' );
+			
+			$is = $this->_is();
 
 			// Fin du traitement pour les requestactions et les appels ajax
-			if( isset( $this->request->params['requested'] ) ) {
+			if( $is['requested'] ) {
 				return $return;
 			}
 
-			$requestTail = substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) );
-			$isLoginPage = ( $requestTail == '/users/login' );
-			$isLogoutPage = ( $requestTail == '/users/logout' );
-			$isForgottenpass = ( $requestTail == '/users/forgottenpass' );
-			$isAllo = ( strpos( $requestTail, '/api/rest/allo/' ) === 0 );
-
 			// Utilise-t'on l'alerte de fin de session ?
 			$useAlerteFinSession = (
-				!$isLoginPage
-				&& !$isForgottenpass
+				!$is['login']
+				&& !$is['forgottenPass']
 				&& ( Configure::read( "alerteFinSession" ) )
 				&& ( Configure::read( 'debug' ) == 0 )
 			);
 			$this->set( 'useAlerteFinSession', $useAlerteFinSession );
 
-			if( !$isLoginPage && !$isLogoutPage && !$isForgottenpass && !$isAllo ) {
+			if( !$is['login'] && !$is['logout'] && !$is['forgottenPass'] && !$is['allo'] ) {
 				if( !$this->Session->check( 'Auth' ) || !$this->Session->check( 'Auth.User' ) ) {
 					//le forcer a se connecter
 					$this->redirect( array( 'controller' => 'users', 'action' => 'login' ) );
@@ -281,13 +294,13 @@
 				else {
 					$this->_updateConnection();
 
-					if( !isset( $this->request->params['isAjax'] ) ) {
+					if( !$is['ajax'] ) {
 						$this->_checkHabilitations();
 						$this->_checkPermissions();
 					}
 				}
 			}
-
+			
 			// Chargement du fichier de configuration lié au contrôleur, s'il existe
 			$path = APP.'Config'.DS.'Cg'.Configure::read( 'Cg.departement' ).DS.$this->name.'.php';
 			if( file_exists( $path ) ) {
@@ -324,6 +337,23 @@
 				$this->helpers['Default3'] = array( 'className' => 'Default.DefaultDefault' );
 				$entriesAncienDossier = ClassRegistry::init( 'Personne' )->getEntriesAnciensDossiers( $personne_id, $modelAlias );
 				$this->set( compact( 'entriesAncienDossier' ) );
+			}
+		}
+		
+		/**
+		 * Called after the controller action is run, but before the view is rendered. You can use this method
+		 * to perform logic or set view variables that are required on every request.
+		 *
+		 * @return void
+		 * @link http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks
+		 */
+		public function beforeRender() {
+			parent::beforeRender();
+
+			// Affiche un cadenas avec le nombre de jetons pris par l'utilisateur
+			$is = $this->_is();
+			if (!Configure::read('Jetons2.disabled') && Configure::read('Etatjetons.enabled') && !in_array( true, $is )) {
+				$this->set('jetons_count', $this->Components->load('Jetons2')->count());
 			}
 		}
 	}
