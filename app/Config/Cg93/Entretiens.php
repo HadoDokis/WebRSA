@@ -54,7 +54,9 @@
 					'Entretien.arevoirle' => array(
 						'format' => '%B %Y'
 					),
-					'/Entretiens/index/#Entretien.personne_id#'
+					'/Entretiens/index/#Entretien.personne_id#' => array(
+						'disabled' => "( '#Entretien.horszone#' == true )",
+					)
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(

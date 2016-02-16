@@ -49,13 +49,16 @@
 					'Adresse.nomcom',
 					'Dossier.dtdemrsa',
 					'Orientstruct.date_valid',
-					'Orientstruct.propo_algo',
+					'Orientstruct.propo_algo' => array( 'type' => 'string' ),
 					'Orientstruct.origine',
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
 					'Orientstruct.statut_orient',
 					'Calculdroitrsa.toppersdrodevorsa' => array( 'type' => 'boolean' ),
-					'/Orientsstructs/index/#Orientstruct.personne_id#' => array( 'class' => 'view' ),
+					'/Orientsstructs/index/#Orientstruct.personne_id#' => array(
+						'disabled' => "( '#Orientstruct.horszone#' == true )",
+						'class' => 'view'
+					),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(
