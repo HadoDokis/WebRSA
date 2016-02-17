@@ -521,7 +521,7 @@
 				$query['conditions']['php_sid'] = $this->Session->id();
 			}
 			
-			$result = $this->Jeton->find('count', $query);
+			$result = ClassRegistry::init('Jeton')->find('count', $query);
 			
 			return $result;
 		}
@@ -542,7 +542,7 @@
 				$conditions['php_sid'] = $this->Session->id();
 			}
 			
-			return $this->Jeton->deleteAll($conditions);
+			return ClassRegistry::init('Jeton')->deleteAll($conditions);
 		}
 	}
 ?>
