@@ -229,13 +229,13 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Typeorient' => array(
-				'className' => 'Typeorient',
-				'foreignKey' => 'typeorient_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
+//			'Typeorient' => array(
+//				'className' => 'Typeorient',
+//				'foreignKey' => 'typeorient_id',
+//				'conditions' => '',
+//				'fields' => '',
+//				'order' => ''
+//			),
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',

@@ -148,7 +148,7 @@
 						<th>personne_id</th>';
 				foreach( $fields as $field ) {
 					list( $modelName, $field ) = Xinflector::modelField( $field );
-					echo "<th>{$field}</th>";
+					echo "<th title=\"".__d(strtolower($modelName), $modelName.'.'.$field)."\">{$field}</th>";
 				}
 				echo "<th class=\"innerTableHeader noprint\">Enregistrements liés</th>";
 				echo '</tr>';
@@ -175,7 +175,7 @@
 					$cells = array(
 						"<label><input name=\"data[{$modelName}][id][]\" id=\"{$modelName}Id{$i}\" value=\"{$record[$modelName]['id']}\" type=\"{$inputType}\" {$checked} class=\"".implode(' ', $classList)."\" />Garder</label>",
 						h( $record[$modelName]['id'] ),
-						h( $record['Personne']['id'] ),
+						array(h( $record['Personne']['id'] ), array('class' => 'personne_id')),
 					);
 
 					foreach( $fields as $field ) {
@@ -183,11 +183,14 @@
 
 						if( $fieldType != 'binary' ) {
 							if( $fieldType !== 'string' ) {
-								$cells[] = $this->Type2->format( $record, $field );
+								$value = $this->Type2->format( $record, $field );
 							}
 							else {
-								$cells[] = h( Set::classicExtract( $record, $field ) );//FIXME: traductions ?
+								$value = h( Set::classicExtract( $record, $field ) );//FIXME: traductions ?
 							}
+
+							list($m, $f) = model_field($field);
+							$cells[] = array( $value, array( 'class' => $f ) );
 						}
 					}
 
@@ -220,6 +223,8 @@
 				echo '</tbody>';
 				echo '</table>';
 			}
+			
+			echo '<div class="error_message" style="display: none;"><ul id="showerrors"></ul></div>';
 
 			echo $this->Xform->end( 'Enregistrer' );
 		}
@@ -320,3 +325,270 @@
 		)
 	);
 ?>
+<script>
+	/**
+	 * Liste des modèles liés à la fois à Personne et entre eux
+	 * ex: {12345: {'Model1.Model2.Model3': [0: {'Model1': {'id': 123}, 'Model3': {'id': 456}}]}}
+	 * @type {Object}
+	 */
+	var links = <?php echo json_encode($links);?>;
+		
+	/**
+	 * Affiche une alerte dans l'element showerrors
+	 * 
+	 * @param {string} message - Message à afficher
+	 * @param {boolean} condition - Si à vrai, ajoute le message, se contente de tout retirer sinon
+	 * @param {string} className1 - class à appliquer sur les elements li pour destruction ultérieur
+	 * @param {sting} className2
+	 */
+	function displayAlert(message, condition, className1, className2) {
+		className2 = className2 === undefined ? '' : className2;
+		
+		$('showerrors').select('.'+className1+'.'+className2).each(function(toDelete){toDelete.remove();});
+		if (condition) {
+			$('showerrors').insert('<li class="'+className1+' '+className2+'">'+message+'</li>');
+		}
+
+		if ($('showerrors').innerHTML !== '') {
+			$('showerrors').up('div').show();
+		} else {
+			$('showerrors').up('div').hide();
+		}
+	}
+	
+	/**
+	 * Alerte Relations entre les modeles
+	 */
+	function verifyRelations(element) {
+		element.observe('change', function() {
+			var personne_id = this.up('tr').select('td.personne_id').first().innerHTML,
+				modele = this.up('table').getAttribute('id'),
+				linkPath,
+				link,
+				i,
+				coche1,
+				coche2,
+				input,
+				classMsg1,
+				classMsg2,
+				otherModelName
+			;
+			/*
+			 * links[personne_id][linkPath][i][link][id]
+			 * 
+			 */
+			for (linkPath in links[personne_id]) {
+				if (linkPath.indexOf(modele+'.') === 0) {
+					for (i=0; i<links[personne_id][linkPath].length; i++) {
+						for (link in links[personne_id][linkPath][i]) {
+							input = $(link).select('tr.id'+links[personne_id][linkPath][i][link].id).first().select('input[type="radio"], input[type="checkbox"]').first();
+							if (link === modele) {
+								classMsg1 = link+'_'+links[personne_id][linkPath][i][link].id;
+								coche1 = input.checked;
+							} else {
+								otherModelName = link;
+								classMsg2 = link+'_'+links[personne_id][linkPath][i][link].id;
+								coche2 = input.checked;
+							}
+						}
+
+						displayAlert(
+							'Un lien existe entre '+modele+' id:'+links[personne_id][linkPath][i][modele].id+', et '+otherModelName+' id:'+links[personne_id][linkPath][i][otherModelName].id, 
+							coche1 !== coche2, 
+							classMsg1, 
+							classMsg2
+						);
+					}
+				}
+			}
+		});
+	}
+
+	$('PersonnesForm').select('input[type="radio"], input[type="checkbox"]').each(function(element) {
+		if (element.up('table').getAttribute('id') !== 'personnes') {
+			verifyRelations(element);
+		}
+	});
+	
+	/**
+	 * Alerte spéciale Orientstruct
+	 */ 
+	function verifyOrientstruct() {
+		var oriente = 0, 
+			nonOriente = 0, // Vide, Non orienté ou En attente
+			classMsg1 = 'special_Orientstruct_1',
+			classMsg2 = 'special_Orientstruct_2'
+		;
+		$('Orientstruct').select('input:checked').each(function(element){
+			if (element.up('tr').select('td.statut_orient').first().innerHTML === 'Orienté') {
+				oriente++;
+			} else {
+				nonOriente++;
+			}
+		});
+		
+		displayAlert(
+			'Aucune Orientation (Orientstruct) n\'a été choisie',
+			oriente === 0 && nonOriente === 0,
+			classMsg1
+		);
+		displayAlert(
+			'Une Orientation (Orientstruct) avec un statut_orient "Orienté" ne peut pas être selectionné en même temps qu\'un "Non orienté"',
+			oriente > 0 && nonOriente > 0,
+			classMsg2
+		);
+	}
+	
+	if ($('Orientstruct')) {
+		$('Orientstruct').select('input[type="checkbox"], input[type="radio"]').each(function(element){
+			element.observe('change', verifyOrientstruct);
+		});
+	}
+	
+	/**
+	 * Alerte spéciale PersonneReferent
+	 */
+	function verifyPersonneReferent() {
+		var sansDateFin = 0,
+			classMsg1 = 'special_PersonneReferent_1',
+			classMsg2 = 'special_PersonneReferent_2'
+		;
+		$('PersonneReferent').select('input:checked').each(function(element){
+			if (element.up('tr').select('td.dfdesignation').first().innerHTML === '') {
+				sansDateFin++;
+			}
+		});
+		
+		displayAlert(
+			'Aucuns référent (PersonneReferent) n\'est actif (dfdesignation à vide)',
+			sansDateFin === 0,
+			classMsg1
+		);
+		displayAlert(
+			'Plusieurs référents (PersonneReferent) sont actifs (dfdesignation à vide)',
+			sansDateFin > 1,
+			classMsg2
+		);
+	}
+	
+	if ($('PersonneReferent')) {
+		$('PersonneReferent').select('input[type="checkbox"], input[type="radio"]').each(function(element){
+			element.observe('change', verifyPersonneReferent);
+		});
+	}
+	
+	/**
+	 * Alerte spéciale Prestation
+	 */
+	function verifyPrestation() {
+		var pfa = 0,
+			rsa = 0,
+			classMsg1 = 'special_Prestation_1'
+		;
+		$('Prestation').select('input:checked').each(function(element){
+			if (element.up('tr').select('td.natprest').first().innerHTML === 'RSA') {
+				rsa++;
+			} else {
+				pfa++;
+			}
+		});
+		
+		displayAlert(
+			'Plusieurs Prestations avec même natprest ont été selectionné',
+			pfa > 1 || rsa > 1,
+			classMsg1
+		);
+	}
+	
+	if ($('Prestation')) {
+		$('Prestation').select('input[type="checkbox"], input[type="radio"]').each(function(element){
+			element.observe('change', verifyPrestation);
+		});
+	}
+	
+	/**
+	 * Alerte spéciale Rattachement
+	 */
+	function verifyRattachement() {
+		var noms = [],
+			nirs = [],
+			displayMsg = false,
+			classMsg1 = 'special_Rattachement_1'
+		;
+		$('Rattachement').select('input:checked').each(function(element){
+			var nom = element.up('tr').select('td.nomnai').first().innerHTML +'_'+ element.up('tr').select('td.prenom').first().innerHTML,
+				nir = element.up('tr').select('td.nir').first().innerHTML
+			;
+			
+			if (in_array(nom, noms) || in_array(nir, nirs)) {
+				displayMsg = true;
+				throw $break;
+			}
+			
+			noms.push(nom);
+			nirs.push(nir);
+		});
+		
+		displayAlert(
+			'Plusieurs Rattachements pointant sur la même personne ont été selectionné',
+			displayMsg,
+			classMsg1
+		);
+	}
+	
+	if ($('Rattachement')) {
+		$('Rattachement').select('input[type="checkbox"], input[type="radio"]').each(function(element){
+			element.observe('change', verifyRattachement);
+		});
+	}
+	
+	/**
+	 * Liste des noms de modele suivi du nombre maximum de selection possible
+	 * @type {Object}
+	 */
+	var maxCount = {
+		'Allocationsoutienfamilial': 2,
+		'Aviscgssdompersonne': 1, // Pas d'inflexion
+		'Avispcgpersonne': 1,
+		'Conditionactiviteprealable': 1,
+		'Correspondancepersonne': 0,
+		'Creancealimentaire': 1,
+		'Dernierdossierallocataire': 1,
+		'Dossiercaf': 1,
+		'Dsp': 1,
+		'Grossesse': 1,
+		'Informationeti': 1,
+		'Infoagricole': 1,
+		'Parcours': 1,
+		'Prestation': 2,
+		'Rattachement': 2,
+		'Ressource': 1,
+		'Suiviappuiorientation': 1,
+		'Titresejour': 1
+	};
+	
+	/**
+	 * Vérifications des quantités selectionné (max autorisé)
+	 * 
+	 * @param {string} modelName
+	 * @param {integer} max
+	 */
+	function verifyMaxCount(modelName, max) {
+		displayAlert(
+			'Le nombre de selections maximum pour '+modelName+' est de '+max+(max === 0 ? ' (ne pas selectionner)' : ''),
+			$(modelName).select('input:checked').length > max,
+			'verifyMaxCount_'+modelName
+		);
+	}
+	
+	for (var modelName in maxCount) {
+		if ($(modelName)) {
+			$(modelName).select('input[type="checkbox"], input[type="radio"]').each(function(element){
+				var name = modelName, count = maxCount[modelName];
+				element.observe('change', function() {
+					verifyMaxCount(name, count);
+				});
+			});
+		}
+	}
+</script>
