@@ -284,3 +284,6 @@ msgstr "Perennisation"
 
 msgid "Cui66.fonction"
 msgstr "Fonction occupée"
+
+msgid "Cui66.commentaireformation"
+msgstr "Commentaire formation"
