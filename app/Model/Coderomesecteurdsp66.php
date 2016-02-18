@@ -39,7 +39,7 @@
 			),
 			'Libsecactderact66SecteurDsp' => array(
 				'className' => 'Dsp',
-				'foreignKey' => 'libsecactderact66_metier_id',
+				'foreignKey' => 'libsecactderact66_secteur_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -52,7 +52,7 @@
 			),
 			'Libsecactderact66SecteurDspRev' => array(
 				'className' => 'DspRev',
-				'foreignKey' => 'libsecactderact66_metier_id',
+				'foreignKey' => 'libsecactderact66_secteur_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -65,7 +65,7 @@
 			),
 			'Libsecactdomi66SecteurDsp' => array(
 				'className' => 'Dsp',
-				'foreignKey' => 'libsecactdomi66_metier_id',
+				'foreignKey' => 'libsecactdomi66_secteur_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -78,7 +78,7 @@
 			),
 			'Libsecactdomi66SecteurDspRev' => array(
 				'className' => 'DspRev',
-				'foreignKey' => 'libsecactdomi66_metier_id',
+				'foreignKey' => 'libsecactdomi66_secteur_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -91,7 +91,7 @@
 			),
 			'Libsecactrech66SecteurDsp' => array(
 				'className' => 'Dsp',
-				'foreignKey' => 'libsecactrech66_metier_id',
+				'foreignKey' => 'libsecactrech66_secteur_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -104,7 +104,7 @@
 			),
 			'Libsecactrech66SecteurDspRev' => array(
 				'className' => 'DspRev',
-				'foreignKey' => 'libsecactrech66_metier_id',
+				'foreignKey' => 'libsecactrech66_secteur_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',

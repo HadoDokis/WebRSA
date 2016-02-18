@@ -89,7 +89,7 @@
 			),
 			'Libemploirech66MetierDsp' => array(
 				'className' => 'Dsp',
-				'foreignKey' => 'libemploirech_metier_id',
+				'foreignKey' => 'libemploirech66_metier_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -102,7 +102,7 @@
 			),
 			'Libemploirech66MetierDspRev' => array(
 				'className' => 'DspRev',
-				'foreignKey' => 'libemploirech_metier_id',
+				'foreignKey' => 'libemploirech66_metier_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',

@@ -1673,5 +1673,303 @@
 
 			return $query;
 		}
+		
+		/**
+		 * Permet d'économiser énormement de traitements en mode dev
+		 * @var boolean|array
+		 */
+		protected $listedForeignKey = false;
+		
+		/**
+		 * Permet d'obtenir la liste des tables liés à Personne
+		 * 
+		 * @return array <array 0: 'table1', 1: 'table2', ...>
+		 */
+		public function listForeignKey() {
+			$cacheKey = 'cache_'.__CLASS__.'-'.__FUNCTION__;
+			$cache = $this->listedForeignKey ? $this->listedForeignKey : Cache::read($cacheKey);
+			
+			if ($cache === false ) {
+				$schema = Hash::get( $this->getDataSource()->config, 'schema' );
+				$cache = Hash::extract($this->getDataSource()->getPostgresForeignKeys(
+					array(
+						'"From"."table_schema" = \''.$schema.'\'',
+						'"To"."table_schema" = \''.$schema.'\'',
+						'"To"."table_name" = \'personnes\'',
+						'"To"."column_name" = \'id\''
+					)
+				), '{n}.From.table');
+				Cache::write($cacheKey, $cache);
+			}
+
+			return $cache;
+		}
+		
+		/**
+		 * Liste des modeles à ne pas parcourir ou déjà parcouru
+		 * @var array
+		 */
+		public $explored = array(
+			'personnes', 
+			'foyers', 
+			'dossiers', 
+			'correspondancespersonnes', 
+			'fichiersmodules', 
+			'tags',
+			'structuresreferentes',
+			'referents',
+			'users',
+			'entreesromesv3',
+			'typesorients',
+			'codesromemetiersdsps66',
+			'codesromesecteursdsps66',
+			'partenaires',
+			'servicesinstructeurs',
+		);
+		
+		/**
+		 * Liste des liens trouvés
+		 * @var array - <array 'Model1.Model2...': $id, ...> En clef la liste des Tables parcouru et en valeur l'id de la derniere table
+		 */
+		public $found = array();
+		
+		/**
+		 * Enregistre l'existance d'un enregistrement en base
+		 * <array 'Model1': array($personne_id: true), 'Model2': array($personne_id: false), ...>
+		 * @var array
+		 */
+		public $haveLine = array();
+		
+		/**
+		 * Verifi l'existance d'une ligne pour un modele donné grâce à personne_id et met en cache
+		 * 
+		 * @param type $modelName
+		 * @param type $personne_id
+		 * @return type
+		 */
+		public function haveLine($Model, $personne_id) {
+			$modelName = $Model->alias;
+			$ignoreList = array(
+				'Correspondancepersonne', // Contient personne1_id et personne2_id
+			);
+			
+			if ((int)Configure::read('Cg.departement') === 66) {
+				$ignoreList[] = 'Apre'; // Apre66 remplace Apre
+			}
+			
+			if (in_array($modelName, $ignoreList)) {
+				return false;
+			}
+			
+			$cache = isset($this->haveLine[$modelName][$personne_id]) ? array($modelName => $this->haveLine[$modelName][$personne_id]) : false;
+			
+			if ($cache === false) {
+				$result = ClassRegistry::init($modelName)->find('first', 
+					array(
+						'fields' => 'id',
+						'conditions' => array_merge(
+							array(in_array($modelName, array('Fichiermodule', 'Tag')) ? 'fk_value' : 'personne_id' => $personne_id), 
+							in_array($modelName, array('Fichiermodule', 'Tag')) ? array('modele' => $modelName) : array()
+						), 
+						'contain' => false
+					)
+				);
+				$cache[$modelName] = !empty($result) ? Hash::get($result, $modelName.'.id') : false;
+				$this->haveLine = array_merge($this->haveLine, $cache);
+			}
+			
+			return $cache[$modelName];
+		}
+		
+		/**
+		 * Permet d'obtenir la liste des enregistrements dont dépendendes une Personne en fonction d'un nom de modele
+		 * Utiliser <Personne::resetFindLinkedPersonne()> entre deux utilisations pour obtenir des liens à valeur identique depuis
+		 * un autre nom de modele.
+		 * 
+		 * /!\ <ATTENTION> - Cette fonction utilise begin() et rollback() pour tester la suppression en cascade des modèles liés.
+		 * Ne pas utiliser à l'interieur d'une autre transaction sous peine de bug.
+		 * 
+		 * @param integer $personne_id
+		 * @param string $modelName
+		 * @param array $prevNames - Laisser vide
+		 * @return array $this->found
+		 */
+		public function findLinkedDepedent( $personne_id, $modelName, $prevNames = array() ) {
+			if (preg_match('/([0-9]{2,3})$/', $modelName, $matches) && (int)$matches[1] !== (int)Configure::read('Cg.departement')) {
+				return $this->found;
+			}
+			
+			$linkedModels = array(
+				'belongsTo' => array(),
+				'hasOne' => array(),
+				'hasMany' => array(),
+				'hasAndBelongsToMany' => array(),
+			);
+			$prevNames[] = $modelName;
+			$Model = $this;
+			foreach ($prevNames as $name) {
+				$Model = $Model->{$name};
+			}
+			
+			// Si le premier modele n'a pas d'enregistrement, inutile de continuer (sinon c'est mis en cache donc rapide)
+			if (!$this->haveLine($this->{$prevNames[0]}, $personne_id)) {
+				return $this->found;
+			}
+			
+			// Profondeur de recherche maximale
+			if (count($prevNames) > 10) {
+				return $this->found;
+			}
+			
+			$this->explored = array_merge($this->explored, array($Model->useTable));
+			
+			foreach (array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany') as $typeJoin) {
+				if (isset($Model->{$typeJoin})) {
+					$linkedModels[$typeJoin] = $Model->{$typeJoin};
+					foreach (array_keys($linkedModels[$typeJoin]) as $key) {
+						$linkedModels[$typeJoin][$key]['typeJoin'] = $typeJoin;
+					}
+				} else {
+					$linkedModels[$typeJoin] = array();
+				}
+			}
+			
+			$models = array_merge(
+				$linkedModels['belongsTo'], 
+				$linkedModels['hasOne'], 
+				$linkedModels['hasMany'], 
+				$linkedModels['hasAndBelongsToMany']
+			);
+			
+			$findMore = array();
+			foreach ($models as $linkedModelName => $params) {
+				$className = $params['typeJoin'] === 'hasAndBelongsToMany' ? $params['with'] : $params['className'];
+				$LinkedModel = ClassRegistry::init($className);
+				$usableName = $params['typeJoin'] === 'hasAndBelongsToMany' ? $params['with'] : $linkedModelName;
+				$isLinked = false;
+				
+				if (preg_match('/([0-9]{2,3})$/', $usableName, $matches) && (int)$matches[1] !== (int)Configure::read('Cg.departement')) {
+					continue;
+				}
+				
+				// On vérifi qu'un lien existe avec la personne concerné
+				if (!in_array($LinkedModel->useTable, $this->explored)) {
+					$query = array(
+						'fields' => array(
+							$usableName.'.id',
+							$prevNames[0].'.id',
+						),
+						'contain' => false,
+						'joins' => array(),
+						'conditions' => array($prevNames[0].'.personne_id' => $personne_id),
+						'limit' => 101
+					);
+					
+					// Si la table actuelle est lié à personne, on s'assure qu'elle est la même que $personne_id
+					if (in_array($LinkedModel->useTable, $this->listForeignKey())) {
+						$query['conditions'][] = array($usableName.'.personne_id' => $personne_id);
+					}
+					
+					$lastModel = $this;
+					try {
+						foreach (array_merge($prevNames, array($usableName)) as $name) {
+							// @throw [CakeException] Unknown status code #0 - Si $lastModel ne connait pas $name
+							$query['joins'][] = $lastModel->join($name, array('type' => 'INNER')); 
+							$lastModel = $lastModel->{$name};	
+						}
+						
+						// @throw SQLSTATE[42703]: Undefined column - Si une mauvaise relation est définie
+						$isLinked = $this->find('all', $query);
+						
+					} catch (Exception $e) {
+						debug('bug! '.$lastModel->alias.' -> '.$name);
+					}
+				}
+				
+				// Alerte en mode dev pour avertir qu'il manque des valeurs dans Personne::$explored
+				if (count($isLinked) > 100) {
+					debug(array('ALERTE! cette requête renvoi plus de 100 lignes ! Ajoutez des valeurs dans Personne::$explored' => $query));
+				}
+				
+				// La table actuelle fait parti des tables reliés directement à Personne
+				if (in_array($LinkedModel->useTable, $this->listForeignKey()) 
+						&& !empty($isLinked)
+				) {
+					$this->found = array_merge(
+						$this->found, 
+						array(implode('.', $prevNames).'.'.$usableName => $isLinked)
+					);
+				}
+				
+				// Si un lien existe, on approfondi la recherche pour le modele actuel
+				if (!empty($isLinked)) {
+					$findMore[$usableName] = $params;
+				}
+			}
+			
+			foreach ($findMore as $linkedModelName => $params) {
+				$LinkedModel = $Model->{$linkedModelName};
+				if (!in_array($LinkedModel->useTable, $this->explored)) {
+					$this->findLinkedDepedent($personne_id, $linkedModelName, $prevNames);
+				}
+			}
+			
+			return $this->found;
+		}
+		
+		/**
+		 * Permet d'effacer la mémoire de la fonction Personne::findLinkedPersonne()
+		 */
+		public function resetFindLinkedPersonne() {
+			$this->explored = array(
+				'personnes', 
+				'foyers', 
+				'dossiers', 
+				'correspondancespersonnes', 
+				'fichiersmodules', 
+				'tags',
+				'structuresreferentes',
+				'referents',
+				'users',
+				'entreesromesv3',
+				'typesorients',
+				'codesromemetiersdsps66',
+				'codesromesecteursdsps66',
+				'partenaires',
+				'servicesinstructeurs',
+				'actionscandidats_zonesgeographiques',
+				'zonesgeographiques',
+				'eps_zonesgeographiques',
+				'membreseps',
+			);
+			$this->found = array();
+		}
+		
+		/**
+		 * Permet d'obtenir les liens entre les tables liés à Personne
+		 * 
+		 * @param string|array $personne_ids
+		 * @return array - <array $personne_id1: array ('Model1.Model2.Model3': $model3_id), ...>
+		 */
+		public function getLinksBetweenTables($personne_ids) {
+			$links = array();
+			$personneLinkedModels = array_merge(
+				Hash::extract($this->hasOne, '{s}.className'), 
+				Hash::extract($this->hasMany, '{s}.className')
+			);
+			foreach ((array)$personne_ids as $id) {
+				$links[$id] = array();
+
+				foreach ($personneLinkedModels as $name) {
+					$link = $this->findLinkedDepedent($id, $name);
+					if (!empty($link)) {
+						$links[$id] = array_merge($links[$id], $link);
+					}
+					$this->resetFindLinkedPersonne();
+				}
+			}
+
+			return $links;
+		}
 	}
 ?>

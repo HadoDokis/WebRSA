@@ -805,6 +805,12 @@
 			}
 
 			$success = true;
+			
+			// Suppression des correspondances personnes pour eviter les bugs
+			ClassRegistry::init( "Correspondancepersonne" )->deleteAll(
+				array('OR' => array( 'personne1_id' => $personnes_id, 'personne2_id' => $personnes_id )),
+				false
+			);
 
 			// Suppression des enregistrements liés aux personnes à supprimer
 			foreach( $assocConditions as $linkedModel => $linkedConditions ) {
@@ -857,11 +863,23 @@
 					$personnesASupprimer[] = $personne_id;
 				}
 			}
+			
+			$tablesLies = $this->Dossier->Foyer->Personne->listForeignKey();
+			foreach ($tablesLies as $tablelie) {
+				if ($tablelie === 'correspondancespersonnes') { // Ne possède pas de personne_id mais personne1_id et personne2_id
+					continue; // Est de toute façon supprimé dans tous les cas
+				}
+				$query = $this->Dossier->query("SELECT id FROM {$tablelie} WHERE personne_id IN (".implode(', ', (array)$personnesASupprimer).") LIMIT 1");
+				if (!empty($query)) {
+					debug("Un enregistrement portant un personne_id à supprimer existe toujours dans {$tablelie}");
+					throw new Exception("Un enregistrement portant un personne_id à supprimer existe toujours dans {$tablelie}", 500);
+				}
+			}
 
 			$success = $this->Dossier->Foyer->Personne->deleteAll(
 				array( 'Personne.id' => $personnesASupprimer ),
 				false,
-				false // FIXME
+				false
 			) && $success;
 			
 			ClassRegistry::init( "Correspondancepersonne" )->updateByPersonneId( $data['Personne']['garder'] );
@@ -962,6 +980,16 @@
 			$this->assert( is_numeric( $personne_id ), 'error404' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
+			
+			$this->Components->load('Session');
+			
+			/** http://webrsa.dev/gestionsanomaliesbdds/personnes/81043/194387
+			 * FIXME : Session pour debug, retirer!!!
+			 * Retirer les $cache = null;
+			 */
+//			$cache = $this->Session->read('my_debug_mode');
+//			$cache = null;
+//			if ($cache === null) {
 
 			// Acquisition du lock ?
 			$dossier_id = $this->Dossier->Foyer->dossierId( $foyer_id );
@@ -1002,16 +1030,34 @@
 			);
 
 			$personnes = $this->Dossier->Foyer->Personne->find( 'all', $querydata );
+			$baseCacheKey = 'cache_'.__CLASS__.'-'.__FUNCTION__.'_'.$foyer_id.'_'.$personne_id.'.';
+			$signature = md5(json_encode($personnes));
 			$personnes_id = Set::extract( '/Personne/id', $personnes );
 
 			if( !empty( $personnes_id ) ) {
 				$assocConditions = $this->Gestionanomaliesbdd->assocConditions( $this->Dossier->Foyer->Personne );
-				$donnees = $this->_assocData( $this->Dossier->Foyer->Personne, $assocConditions, $personnes_id );
-				$donnees = Hash::filter( (array)$donnees );
+				$cacheKey = $baseCacheKey.$signature.'._assocData';
+				$cache = $this->Session->read($cacheKey);
+				
+				if ($cache === null) {
+					$donnees = $this->_assocData( $this->Dossier->Foyer->Personne, $assocConditions, $personnes_id );
+					$cache = Hash::filter( (array)$donnees );
+					$this->Session->write($cacheKey, $cache);
+				}
+				$donnees = $cache;
+				
+				// Liens présent d'une table à l'autre
+				$cacheKey = $baseCacheKey.$signature.'.getLinksBetweenTables';
+				$cache = $this->Session->read($cacheKey);
+				
+				if ($cache === null) {
+					$cache = $this->Dossier->Foyer->Personne->getLinksBetweenTables($personnes_id, $cacheKey);
+					$this->Session->write($cacheKey, $cache);
+				}
+				$this->set( 'links', $cache );
 
 				$fichiersModuleLies = $this->_fichiersModuleLies( array( 'Personne' => array( 'Personne' => array( 'id' => $personnes_id ) ) ) );
 				$this->set( 'fichiersModuleLies', $fichiersModuleLies );
-
 			}
 			else {
 				$donnees =  array();
@@ -1024,7 +1070,8 @@
 
 				$success = $this->_mergePersonnes( $this->request->data, $assocConditions, $donnees, $personnes_id, $dependencies );
 				if( $success ) {
-					$this->Dossier->Foyer->Personne->commit();
+					$this->Session->delete($baseCacheKey);
+					$this->Dossier->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'foyer', $this->request->params['pass'][0] ) );
@@ -1043,6 +1090,15 @@
 			$associations = $this->Gestionanomaliesbdd->associations( $this->Dossier->Foyer->Personne );
 			$methodes = $this->_methodes();
 			$this->set( compact( 'personnes', 'donnees', 'associations', 'methode', 'methodes', 'dependencies', 'foyer' ) );
+			
+			/**
+			 * FIXME : Session pour debug, retirer!!!
+			 */
+//			$links = $cache;
+//			$cache = compact( 'personnes', 'donnees', 'associations', 'methode', 'methodes', 'dependencies', 'foyer', 'fichiersModuleLies', 'links' );
+//			$this->Session->write('my_debug_mode', $cache);
+//			}
+//			$this->set($cache);
 		}
 		
 		/**
