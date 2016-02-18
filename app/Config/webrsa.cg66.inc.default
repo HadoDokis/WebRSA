@@ -1004,6 +1004,19 @@
 	$imprimanteRectoVerso = true;
 	Configure::write( 'Dossierspcgs66.imprimer.Impression.RectoVerso', $imprimanteRectoVerso );
 	Configure::write( 'Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso', $imprimanteRectoVerso );
+	
+	/**
+	 * Option dynamique dans les EPs
+	 */
+	Configure::write( 'Commissionseps.defautinsertionep66.decision.type',
+		array(
+			'maintienorientsoc' => array('social', 'social'),
+			'reorientationprofverssoc' => array('emploi', 'social'),
+			'reorientationsocversprof' => array('social', 'emploi'),
+		) 
+	);
+	// ID de Emploi - Pôle emploi, peut contenir plusieurs valeurs (si besoin)
+	Configure::write( 'Commissionseps.defautinsertionep66.isemploi', array(2) );
 
 	/**
 	 * Permet d'activer l'utilisation du module CUI.
