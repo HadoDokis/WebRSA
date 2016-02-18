@@ -719,6 +719,9 @@ msgstr "Organisme payeur de l’aide du conseil général à l’employeur :"
 msgid "Cui66.positions"
 msgstr "Position du CUI"
 
+msgid "Cui66.commentaireformation"
+msgstr "Commentaire formation"
+
 ################################################################################
 # Email Cui
 ################################################################################

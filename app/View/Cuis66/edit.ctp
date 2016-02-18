@@ -376,6 +376,7 @@
 				'Cui.acquisitioncompetences' => array( 'empty' => true ),
 				'Cui.formationqualifiante' => array( 'empty' => true ),
 				'Cui.formation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.formation' ) ),
+				'Cui66.commentaireformation',
 				'Cui.periodeprofessionnalisation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.periodeprofessionnalisation' ) ),
 				'Cui.niveauqualif' => array( 'empty' => true, 'type' => 'select' ),
 				'Cui.validationacquis' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.validationacquis' ) ),
