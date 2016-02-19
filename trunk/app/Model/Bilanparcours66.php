@@ -1187,7 +1187,7 @@
 
 						// Sauvegarde du bilan
 						$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
-						$data[$this->alias]['cui_id'] = $vxCui['Cui']['id'];
+						$data[$this->alias]['cui_id'] = Hash::get($vxCui, 'Cui.id');
 						$this->create( $data );
 						$success = $this->save() && $success;
 
@@ -1210,7 +1210,7 @@
 						$data['Defautinsertionep66']['dossierep_id'] = $this->Defautinsertionep66->Dossierep->id;
 						$data['Defautinsertionep66']['orientstruct_id'] = $vxOrientstruct['Orientstruct']['id'];
 						$data['Defautinsertionep66']['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
-						$data['Defautinsertionep66']['cui_id'] = $vxCui['Cui']['id'];
+						$data['Defautinsertionep66']['cui_id'] = Hash::get($vxCui, 'Cui.id');
 						$data['Defautinsertionep66']['origine'] = 'bilanparcours';
 
 						$this->Defautinsertionep66->create( $data );
