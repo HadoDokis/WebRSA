@@ -661,6 +661,9 @@
 							}
 						}
 					}
+					
+					// On regarde si des fichiers liés existent pour chaques enregistrements
+					$fields[] = '(SELECT COUNT(*) FROM fichiersmodules AS a WHERE a.modele = \''.$linkedModelName.'\' AND a.fk_value = "'.$linkedModelName.'"."id") AS "'.$linkedModelName.'__fichierslies"';
 
 					$querydata = array(
 						'fields' => $fields,
@@ -813,12 +816,20 @@
 			);
 
 			// Suppression des enregistrements liés aux personnes à supprimer
+			$Fichiermodule = ClassRegistry::init('Fichiermodule');
 			foreach( $assocConditions as $linkedModel => $linkedConditions ) {
 				$avant = Set::extract( "/{$linkedModel}/{$linkedModel}/id", $donnees );
 				$apres = Set::extract( "/{$linkedModel}/id", $data );
 				$diff = array_diff( $avant, $apres );
 
 				if( !empty( $avant ) && !empty( $diff ) ) {
+					$Fichiermodule->deleteAll(
+						array(
+							'Fichiermodule.modele' => $linkedModel,
+							'Fichiermodule.fk_value' => $diff,
+						),
+						false
+					);
 					$success = ClassRegistry::init( $linkedModel )->deleteAll(
 						array( "{$linkedModel}.id" => $diff )
 					) && $success;
@@ -982,14 +993,6 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 			
 			$this->Components->load('Session');
-			
-			/** http://webrsa.dev/gestionsanomaliesbdds/personnes/81043/194387
-			 * FIXME : Session pour debug, retirer!!!
-			 * Retirer les $cache = null;
-			 */
-//			$cache = $this->Session->read('my_debug_mode');
-//			$cache = null;
-//			if ($cache === null) {
 
 			// Acquisition du lock ?
 			$dossier_id = $this->Dossier->Foyer->dossierId( $foyer_id );
@@ -1090,15 +1093,6 @@
 			$associations = $this->Gestionanomaliesbdd->associations( $this->Dossier->Foyer->Personne );
 			$methodes = $this->_methodes();
 			$this->set( compact( 'personnes', 'donnees', 'associations', 'methode', 'methodes', 'dependencies', 'foyer' ) );
-			
-			/**
-			 * FIXME : Session pour debug, retirer!!!
-			 */
-//			$links = $cache;
-//			$cache = compact( 'personnes', 'donnees', 'associations', 'methode', 'methodes', 'dependencies', 'foyer', 'fichiersModuleLies', 'links' );
-//			$this->Session->write('my_debug_mode', $cache);
-//			}
-//			$this->set($cache);
 		}
 		
 		/**

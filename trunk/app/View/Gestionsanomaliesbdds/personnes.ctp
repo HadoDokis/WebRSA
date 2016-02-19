@@ -1,5 +1,11 @@
 <h1><?php echo $title_for_layout = __d( 'gestionanomaliebdd', 'Gestionsanomaliesbdds::personnes' );$this->set( 'title_for_layout', $title_for_layout );?></h1>
 
+<?php 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
+	}
+?>
+
 <?php if( !empty( $fichiersModuleLies ) ): ?>
 	<div class="errorslist">
 	Impossible de procéder à la fusion des enregistrements liés aux personnes en doublons car des fichiers liés à ces enregistrements existent:
@@ -130,12 +136,13 @@
 
 				$association = $associations[$modelName];
 
-				$modelClass = ClassRegistry::init( $modelName );;
+				$modelClass = ClassRegistry::init( $modelName );
 				$modelFields = array_keys( Hash::flatten( array( $modelClass->alias => Set::normalize( array_keys( $modelClass->schema() ) ) ) ) );
+				$modelFields[] = $modelName.'.fichierslies';
 
 				$fields = array(/* "{$modelName}.id", "{$modelName}.personne_id" */);
 				foreach( $modelFields as $modelField ) {
-					if( !in_array( $modelField, array( "{$modelName}.id", "{$modelName}.personne_id" ) ) && ( $this->Type2->type( $modelField ) != 'binary' ) ) {
+					if( (!in_array( $modelField, array( "{$modelName}.id", "{$modelName}.personne_id", "{$modelName}.fichierslies" ) ) && ( $this->Type2->type( $modelField ) != 'binary' )) || $modelField === "{$modelName}.fichierslies" ) {
 						$fields[] = $modelField;
 					}
 				}
@@ -174,12 +181,12 @@
 
 					$cells = array(
 						"<label><input name=\"data[{$modelName}][id][]\" id=\"{$modelName}Id{$i}\" value=\"{$record[$modelName]['id']}\" type=\"{$inputType}\" {$checked} class=\"".implode(' ', $classList)."\" />Garder</label>",
-						h( $record[$modelName]['id'] ),
+						array(h( $record[$modelName]['id'] ), array('class' => 'id')),
 						array(h( $record['Personne']['id'] ), array('class' => 'personne_id')),
 					);
 
 					foreach( $fields as $field ) {
-						$fieldType = $this->Type2->type( $field );
+						$fieldType = $field !== "{$modelName}.fichierslies" ? $this->Type2->type( $field ) : 'string';
 
 						if( $fieldType != 'binary' ) {
 							if( $fieldType !== 'string' ) {
@@ -240,6 +247,11 @@
 				toutDecocher( '.tableliee input[type="radio"]' );
 				toutCocher( '.tableliee .personne_id' + radio.value + ' input[type=checkbox]' );
 				toutCocher( '.tableliee .personne_id' + radio.value + ' input[type=radio]' );
+				$('PersonnesForm').select('input[type="checkbox"], .tableliee input[type="radio"]').each(function(element){
+					if (element.up('table').getAttribute('id') !== 'personnes') {
+						element.simulate('change');
+					}
+				});
 			} );
 		} );
 
@@ -253,6 +265,11 @@
 					toutDecocher( '#' + modelFrom + ' input[type="radio"]' );
 					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type=checkbox]' );
 					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type=radio]' );
+					$('PersonnesForm').select('input[type="checkbox"], .tableliee input[type="radio"]').each(function(element){
+						if (element.up('table').getAttribute('id') !== 'personnes') {
+							element.simulate('change');
+						}
+					});
 				} );
 			} );
 		}
@@ -359,49 +376,58 @@
 	/**
 	 * Alerte Relations entre les modeles
 	 */
-	function verifyRelations(element) {
-		element.observe('change', function() {
-			var personne_id = this.up('tr').select('td.personne_id').first().innerHTML,
-				modele = this.up('table').getAttribute('id'),
-				linkPath,
-				link,
-				i,
-				coche1,
-				coche2,
-				input,
-				classMsg1,
-				classMsg2,
-				otherModelName
-			;
-			/*
-			 * links[personne_id][linkPath][i][link][id]
-			 * 
-			 */
-			for (linkPath in links[personne_id]) {
-				if (linkPath.indexOf(modele+'.') === 0) {
-					for (i=0; i<links[personne_id][linkPath].length; i++) {
-						for (link in links[personne_id][linkPath][i]) {
-							input = $(link).select('tr.id'+links[personne_id][linkPath][i][link].id).first().select('input[type="radio"], input[type="checkbox"]').first();
-							if (link === modele) {
-								classMsg1 = link+'_'+links[personne_id][linkPath][i][link].id;
-								coche1 = input.checked;
-							} else {
-								otherModelName = link;
-								classMsg2 = link+'_'+links[personne_id][linkPath][i][link].id;
-								coche2 = input.checked;
-							}
+	function checkRelations(that) {
+		var personne_id = that.up('tr').select('td.personne_id').first().innerHTML,
+			modele = that.up('table').getAttribute('id'),
+			linkPath,
+			link,
+			i,
+			coche1,
+			coche2,
+			input,
+			classMsg1,
+			classMsg2,
+			otherModelName
+		;
+		/*
+		 * links[personne_id][linkPath][i][link][id]
+		 */
+		for (linkPath in links[personne_id]) {
+			if (linkPath.indexOf(modele+'.') === 0) {
+				for (i=0; i<links[personne_id][linkPath].length; i++) {
+					for (link in links[personne_id][linkPath][i]) {
+						input = $(link).select('tr.id'+links[personne_id][linkPath][i][link].id).first().select('input[type="radio"], input[type="checkbox"]').first();
+						if (link === modele) {
+							classMsg1 = link+'_'+links[personne_id][linkPath][i][link].id;
+							coche1 = input.checked;
+						} else {
+							otherModelName = link;
+							classMsg2 = link+'_'+links[personne_id][linkPath][i][link].id;
+							coche2 = input.checked;
 						}
-
-						displayAlert(
-							'Un lien existe entre '+modele+' id:'+links[personne_id][linkPath][i][modele].id+', et '+otherModelName+' id:'+links[personne_id][linkPath][i][otherModelName].id, 
-							coche1 !== coche2, 
-							classMsg1, 
-							classMsg2
-						);
 					}
+
+					displayAlert(
+						'Un lien existe entre '+modele+' id:'+links[personne_id][linkPath][i][modele].id+', et '+otherModelName+' id:'+links[personne_id][linkPath][i][otherModelName].id, 
+						coche1 !== coche2, 
+						classMsg1, 
+						classMsg2
+					);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Permet la vérification d'un lien entre deux enregistrements
+	 * 
+	 * @param {DOM} element
+	 */
+	function verifyRelations(element) {
+		element.observe('change', function() {
+			checkRelations(this);
 		});
+		checkRelations(element);
 	}
 
 	$('PersonnesForm').select('input[type="radio"], input[type="checkbox"]').each(function(element) {
@@ -443,6 +469,7 @@
 		$('Orientstruct').select('input[type="checkbox"], input[type="radio"]').each(function(element){
 			element.observe('change', verifyOrientstruct);
 		});
+		verifyOrientstruct();
 	}
 	
 	/**
@@ -475,6 +502,7 @@
 		$('PersonneReferent').select('input[type="checkbox"], input[type="radio"]').each(function(element){
 			element.observe('change', verifyPersonneReferent);
 		});
+		verifyPersonneReferent();
 	}
 	
 	/**
@@ -504,6 +532,7 @@
 		$('Prestation').select('input[type="checkbox"], input[type="radio"]').each(function(element){
 			element.observe('change', verifyPrestation);
 		});
+		verifyPrestation();
 	}
 	
 	/**
@@ -540,6 +569,7 @@
 		$('Rattachement').select('input[type="checkbox"], input[type="radio"]').each(function(element){
 			element.observe('change', verifyRattachement);
 		});
+		verifyRattachement();
 	}
 	
 	/**
@@ -588,7 +618,33 @@
 				element.observe('change', function() {
 					verifyMaxCount(name, count);
 				});
+				verifyMaxCount(name, count);
 			});
 		}
 	}
+	
+	/**
+	 * Alerte sur les fichiers liés non selectionnés
+	 */
+	$('PersonnesForm').select('td.fichierslies').each(function(td){
+		var modelName, id;
+		
+		if (td.innerHTML !== '0') {
+			modelName = td.up('table').getAttribute('id');
+			id = td.up('tr').select('td.id').first().innerHTML;
+			
+			td.up('tr').select('input[type="checkbox"], input[type="radio"]').first().observe('change', function(){
+				displayAlert(
+					'Des fichiers liés existent pour '+modelName+' id:'+id,
+					!this.checked,
+					'verifyFichierslies_'+modelName
+				);
+			});
+			displayAlert(
+				'Des fichiers liés existent pour '+modelName+' id:'+id,
+				!td.up('tr').select('input[type="checkbox"], input[type="radio"]').first().checked,
+				'verifyFichierslies_'+modelName
+			);
+		}
+	});
 </script>
