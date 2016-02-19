@@ -714,44 +714,85 @@
 
             $personnesFoyerIds = Hash::extract( $dossierpcg66, 'Foyer.Personne.{n}.id' );
             $listeTraitementsNonClos = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->listeTraitementpcg66NonClos( array_values( $personnesFoyerIds ), $this->action, $this->request->data );
+			
+			if (!empty($listeTraitementsNonClos)) {
+				$listeTraitementsNonClos['Traitementpcg66']['autorisations'] = array(
+					'printFicheCalcul' => array(),
+					'printModeleCourrier' => array(),
+				);
+				$authorize =& $listeTraitementsNonClos['Traitementpcg66']['autorisations'];
+				foreach (array_keys($listeTraitementsNonClos['Traitementpcg66']['traitementnonclosdecision']) as $traitement_id) {
+					$traitementpcg66s = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->find('first',
+						array(
+							'fields' => array(
+								'Traitementpcg66.typetraitement'
+							),
+							'conditions' => array(
+								'Traitementpcg66.id' => $traitement_id,
+								'Traitementpcg66.annule !=' => 'O',
+							),
+							'contain' => false
+						)
+					);
+					$authorize['printFicheCalcul'][$traitement_id] = Hash::get($traitementpcg66s, 'Traitementpcg66.typetraitement') === 'revenu';
+					$authorize['printModeleCourrier'][$traitement_id] = Hash::get($traitementpcg66s, 'Traitementpcg66.typetraitement') === 'courrier';
+				}
+			}
 
             $this->set( 'listeTraitementsNonClos', $listeTraitementsNonClos );
 
 			// avistechniquemodifiable, validationmodifiable
 			$avistechniquemodifiable = $validationmodifiable = false;
 			switch( $dossierpcg66['Dossierpcg66']['etatdossierpcg'] ) {
+				case 'attval':
+				case 'decisionvalid':
+				case 'decisionnonvalid':
+				case 'decisionnonvalidretouravis':
+				case 'decisionvalidretouravis':
+				case 'attpj':
+				case 'atttransmisop':
+                case 'transmisop':
+					$validationmodifiable = ( $this->action != 'add' );
 				case 'attavistech':
 					$avistechniquemodifiable = ( $this->action != 'add' );
 					break;
-				case 'attval':
-				case 'decisionvalid':
-                    $avistechniquemodifiable = ( $this->action != 'add' );
-					$validationmodifiable = ( $this->action != 'add' );
-					break;
-				case 'decisionnonvalid':
-                    $avistechniquemodifiable = ( $this->action != 'add' );
-					$validationmodifiable = ( $this->action != 'add' );
-					break;
-				case 'decisionnonvalidretouravis':
-                    $avistechniquemodifiable = ( $this->action != 'add' );
-					$validationmodifiable = ( $this->action != 'add' );
-					break;
-				case 'decisionvalidretouravis':
-                    $avistechniquemodifiable = ( $this->action != 'add' );
-					$validationmodifiable = ( $this->action != 'add' );
-					break;
-				case 'attpj':
-				case 'atttransmisop':
-					$avistechniquemodifiable = ( $this->action != 'add' );
-					$validationmodifiable = ( $this->action != 'add' );
-					break;
-                case 'transmisop':
-					$avistechniquemodifiable = ( $this->action != 'add' );
-					$validationmodifiable = ( $this->action != 'add' );
-					break;
 			}
+			
+			
+			// Fichiers liés aux traitements de type document arrivé
+			$fichiermoduleJoin = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->join('Fichiermodule', array('type' => 'INNER'));
+			$fichiermoduleJoin['conditions'] = array(
+				'Fichiermodule.modele' => 'Traitementpcg66',
+				'Fichiermodule.fk_value = Traitementpcg66.id',
+			);
 
-			$this->set( compact( 'personnespcgs66', 'dossierpcg66', 'decisiondossierpcg66', 'avistechniquemodifiable', 'validationmodifiable' ) );
+			$fichiersDocument = $this->Decisiondossierpcg66->Dossierpcg66->find('all', 
+				array(
+					'fields' => array(
+						'Fichiermodule.id',
+						'Fichiermodule.name',
+						'Fichiermodule.created',
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
+						$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->join('Traitementpcg66', 
+							array(
+								'type' => 'INNER',
+								'conditions' => array(
+									'Traitementpcg66.typetraitement' => 'documentarrive',
+								)
+							)
+						),
+						$fichiermoduleJoin
+					),
+					'conditions' => array(
+						'Dossierpcg66.id' => $dossierpcg66_id
+					)
+				)
+			);
+			
+			$this->set( compact( 'personnespcgs66', 'dossierpcg66', 'decisiondossierpcg66', 'avistechniquemodifiable', 'validationmodifiable', 'fichiersDocument' ) );
 
 			$this->_setOptions();
 
