@@ -69,17 +69,52 @@
 
 <?php
 	echo "<h2>Pièces liées au dossier</h2>";
-	echo $this->Fileuploader->results( Hash::get( $dossierpcg66, 'Fichiermodule' ) );
+	echo $this->Fileuploader->results( array_merge(Hash::get( $dossierpcg66, 'Fichiermodule' ), Hash::extract($fichiersDocument, '{n}.Fichiermodule')) );
 ?>
-    
+
 <?php echo "<h2>Liste des traitements non clos</h2>";?>
 <?php if( !empty( $listeTraitementsNonClos ) ):?>
     <?php
-        foreach( $listeTraitementsNonClos as $traitement ){
+        foreach( $listeTraitementsNonClos as $key => $traitement ){
+			foreach ($traitement['traitementnonclosdecision'] as $traitement_id => $option) {
+				$link = $traitement['autorisations']['printFicheCalcul'][$traitement_id] ? 
+					$this->Default2->button(
+						'Fiche de calcul',
+						array(
+							'controller' => 'traitementspcgs66',
+							'action'     => 'printFicheCalcul',
+							$traitement_id
+						),
+						array(
+							'label' => 'Fiche&nbsp;de&nbsp;calcul',
+							'class' => 'action_impression',
+							'enable' => false
+						)
+					) 
+					: ($traitement['autorisations']['printModeleCourrier'][$traitement_id] ?
+						$this->Default2->button(
+							'Fiche de calcul',
+							array(
+								'controller' => 'traitementspcgs66',
+								'action'     => 'printModeleCourrier',
+								$traitement_id
+							),
+							array(
+								'label' => 'Imprimer',
+								'class' => 'action_impression',
+								'enable' => false
+							)
+						) 
+					: '')
+				;
+				
+				$traitement['traitementnonclosdecision'][$traitement_id] = $traitement['traitementnonclosdecision'][$traitement_id].' '.$link;
+			}
+			
 //            echo $this->Form->input( 'Traitementpcg66.traitementnonclosdecision', array( 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'type' => 'select', 'options' => $traitement['traitementnonclosdecision'], 'empty' => true ) );
             echo $this->Default2->subform(
 				array(
-					'Traitementpcg66.Traitementpcg66' => array( 'type' => 'select', 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'multiple' => 'checkbox', 'empty' => false, 'options' => $traitement['traitementnonclosdecision'] )
+					'Traitementpcg66.Traitementpcg66' => array( 'type' => 'select', 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'multiple' => 'checkbox', 'empty' => false, 'options' => $traitement['traitementnonclosdecision'], 'escape' => false )
 				),
 				array(
 					'options' => $options
