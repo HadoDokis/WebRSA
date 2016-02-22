@@ -265,6 +265,7 @@
 					'configure_fields' => $this->Webrsacheck->allCheckParametrage(),
 					'configure_bad_keys' => $this->Webrsacheck->allCheckBadKeys(),
 					'configurable_query' => $recherches,
+					'configure_evidence' => $this->Webrsacheck->allConfigureEvidence()
 				)
 			);
 		}

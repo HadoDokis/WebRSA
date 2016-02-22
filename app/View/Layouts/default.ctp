@@ -196,6 +196,8 @@
 			</div>
 		</div>
 		<?php
+			echo $this->element( 'evidence' );
+
 			echo $this->fetch( 'scriptBottom' );
 
 			if( Configure::read( 'debug' ) > 0 ) {
