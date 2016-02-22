@@ -301,4 +301,116 @@
 			)
 		)
 	);
+
+	/**
+	 * Mise en évidence de certains champs du formulaire des Dsps
+	 */
+	Configure::write(
+		'Evidence.Dsps.add',
+		array(
+			'fields' => array(
+				// Bloc "Rencontrez vous des difficultés sociales ?"
+				// Difficultés de santé : Renseignez la ligne 1 du tableau B3
+				// Difficultés administratives : Renseignez la ligne 6 du tableau B3
+				// Difficultés linguistique : Renseignez la ligne 7 du tableau B3
+				// Difficultés de surendettement : Renseignez la ligne 5 du tableau B3
+				'#Detaildifsoc0DspId',
+				// -------------------------------------------------------------
+				// Difficultés de logement : Renseignez la ligne 2 du tableau B3
+				'#Detaildiflog0DspId',
+				// -------------------------------------------------------------
+				// Difficultés familiales : Renseignez la ligne 3 du tableau B3
+				'#Detailaccosocfam0DspId',
+				// -------------------------------------------------------------
+				// Difficultés de modes de garde : Renseignez la ligne 4 du tableau B3
+				'#Detaildifdisp0DspId',
+				// -------------------------------------------------------------
+				// Difficultés de qualification professionnelle : Renseignez la ligne 9 du tableau B3
+				'#DspNivetu',
+				// -------------------------------------------------------------
+				// Difficultés d’accès à l’emploi : Renseignez la ligne 10 du tableau B3
+				'#DspTopengdemarechemploi',
+				// -------------------------------------------------------------
+				// Autres : Renseignez la ligne 11 du tableau B3
+				'#Detailaccosocindi0DspId',
+			),
+			'options' => array(
+				// Difficultés de santé : Renseignez la ligne 1 du tableau B3
+				'input[id^=Detaildifsoc][id$=Difsoc][type=checkbox][value=0402]' => array(
+					'title' => 'Difficultés de santé : Renseignez la ligne 1 du tableau B3'
+				),
+				'input[id^=Detaildifsoc][id$=Difsoc][type=checkbox][value=0403]' => array(
+					'title' => 'Difficultés de santé : Renseignez la ligne 1 du tableau B3'
+				),
+				// Difficultés administratives : Renseignez la ligne 6 du tableau B3
+				'input[id^=Detaildifsoc][id$=Difsoc][type=checkbox][value=0405]' => array(
+					'title' => 'Difficultés administratives : Renseignez la ligne 6 du tableau B3'
+				),
+				// Difficultés linguistique : Renseignez la ligne 7 du tableau B3
+				'input[id^=Detaildifsoc][id$=Difsoc][type=checkbox][value=0404]' => array(
+					'title' => 'Difficultés linguistique : Renseignez la ligne 7 du tableau B3'
+				),
+				// Difficultés de surendettement : Renseignez la ligne 5 du tableau B3
+				'input[id^=Detaildifsoc][id$=Difsoc][type=checkbox][value=0406]' => array(
+					'title' => 'Difficultés de surendettement : Renseignez la ligne 5 du tableau B3'
+				),
+				// -------------------------------------------------------------
+				// Difficultés de logement : Renseignez la ligne 2 du tableau B3
+				'input[id^=Detaildiflog][id$=Diflog][type=checkbox][value=1004]' => array(
+					'title' => 'Difficultés de logement : Renseignez la ligne 2 du tableau B3'
+				),
+				'input[id^=Detaildiflog][id$=Diflog][type=checkbox][value=1005]' => array(
+					'title' => 'Difficultés de logement : Renseignez la ligne 2 du tableau B3'
+				),
+				'input[id^=Detaildiflog][id$=Diflog][type=checkbox][value=1006]' => array(
+					'title' => 'Difficultés de logement : Renseignez la ligne 2 du tableau B3'
+				),
+				'input[id^=Detaildiflog][id$=Diflog][type=checkbox][value=1007]' => array(
+					'title' => 'Difficultés de logement : Renseignez la ligne 2 du tableau B3'
+				),
+				'input[id^=Detaildiflog][id$=Diflog][type=checkbox][value=1008]' => array(
+					'title' => 'Difficultés de logement : Renseignez la ligne 2 du tableau B3'
+				),
+				'input[id^=Detaildiflog][id$=Diflog][type=checkbox][value=1009]' => array(
+					'title' => 'Difficultés de logement : Renseignez la ligne 2 du tableau B3'
+				),
+				// -------------------------------------------------------------
+				// Difficultés familiales : Renseignez la ligne 3 du tableau B3
+				'input[id^=Detailaccosocfam][id$=Nataccosocfam][type=checkbox][value=0412]' => array(
+					'title' => 'Difficultés familiales : Renseignez la ligne 3 du tableau B3'
+				),
+				// -------------------------------------------------------------
+				// Difficultés de modes de garde : Renseignez la ligne 4 du tableau B3
+				'input[id^=Detaildifdisp][id$=Difdisp][type=checkbox][value=0502]' => array(
+					'title' => 'Difficultés de modes de garde : Renseignez la ligne 4 du tableau B3'
+				),
+				'input[id^=Detaildifdisp][id$=Difdisp][type=checkbox][value=0503]' => array(
+					'title' => 'Difficultés de modes de garde : Renseignez la ligne 4 du tableau B3'
+				),
+				'input[id^=Detaildifdisp][id$=Difdisp][type=checkbox][value=0504]' => array(
+					'title' => 'Difficultés de modes de garde : Renseignez la ligne 4 du tableau B3'
+				),
+				// -------------------------------------------------------------
+				// Difficultés de qualification professionnelle : Renseignez la ligne 9 du tableau B3
+				'select[id=DspNivetu] option[value=1206]' => array(
+					'title' => 'Difficultés de qualification professionnelle : Renseignez la ligne 9 du tableau B3'
+				),
+				'select[id=DspNivetu] option[value=1207]' => array(
+					'title' => 'Difficultés de qualification professionnelle : Renseignez la ligne 9 du tableau B3'
+				),
+				// -------------------------------------------------------------
+				// Difficultés d’accès à l’emploi : Renseignez la ligne 10 du tableau B3
+				'select[id=DspTopengdemarechemploi] option[value=0]' => array(
+					'title' => 'Difficultés d’accès à l’emploi : Renseignez la ligne 10 du tableau B3'
+				),
+				// -------------------------------------------------------------
+				// Autres : Renseignez la ligne 11 du tableau B3
+				'input[id^=Detailaccosocindi][id$=Nataccosocindi][type=checkbox][value=0420]' => array(
+					'title' => 'Autres : Renseignez la ligne 11 du tableau B3'
+				)
+
+			)
+		)
+	);
+	Configure::write( 'Evidence.Dsps.edit', Configure::read( 'Evidence.Dsps.add' ) );
 ?>

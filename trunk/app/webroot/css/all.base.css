@@ -951,3 +951,19 @@ table thead a:hover, table thead a:focus {
 /* Présentation un peu spéciale pour la page de flux CNAF */
 body.flux tr.error.missing td { background: #fcc; }
 body.flux h1, body.flux h2, body.flux h3 { margin: 0.5em 0; }
+
+/* Mise en évidence (en gras) de champs et d'options de formulaires. @see Evidence (js) */
+div.input.evidence label, fieldset.evidence legend,
+option.evidence, div.input.checkbox label.evidence, div.input.radio label.evidence,
+div.input.select div.checkbox.evidence {
+	font-weight: bold;
+}
+div.input.evidence.title label, fieldset.evidence.title legend,
+option.evidence.title, div.input.checkbox.title label.evidence, div.input.radio label.title.evidence,
+div.input.select div.checkbox.evidence.title label {
+	cursor: help;
+}
+div.input.select.evidence div.checkbox label {
+	font-weight: inherit;
+	cursor: pointer;
+}

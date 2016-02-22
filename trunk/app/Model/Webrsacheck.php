@@ -1229,5 +1229,76 @@
 
 			return $results;
 		}
+
+		/**
+		 * XXX
+		 *
+		 * @return array
+		 */
+		public function allConfigureEvidence() {
+			$keys = array( 'fields', 'options' );
+			$attrs = array( 'title', 'class' );
+			$results = array();
+			$config = (array)Configure::read( 'Evidence' );
+
+			foreach( $config as $controller => $ctrParams ) {
+				$controllerClass = $controller.'Controller';
+				App::uses( $controllerClass, 'Controller' );
+
+				if( false === class_exists( $controllerClass ) ) {
+					foreach( array_keys( $ctrParams ) as $action ) {
+						$results[$controller.'.'.$action] = array(
+							'success' => false,
+							'value' => var_export( $config[$controller][$action], true ),
+							'message' => sprintf( 'Le contrôleur %s n\'existe pas.', $controller )
+						);
+					}
+				}
+				else {
+					$errors = array();
+					$actions = get_class_methods( $controllerClass );
+
+					foreach( $ctrParams as $action => $actionParams ) {
+						$path = "{$controller}.{$action}";
+						$actionParams = (array)$actionParams;
+
+						if( false === array_search( $action, $actions ) ) {
+							$errors[] = sprintf( 'L\'action %s n\'existe pas dans le contrôleur %s.', $action, $controller );
+						}
+						else {
+							// Clés non prises en compte ?
+							$diff = array_diff( array_keys( $actionParams ), $keys );
+							if( !empty( $diff ) ) {
+								foreach( $diff as $key ) {
+									$errors[] = sprintf( 'La clé %s n\'existe pas dans la configuration de %s, utilisez une des clés %s.', $key, $path, implode( ', ', $keys ) );
+								}
+							}
+
+							foreach( $keys as $key ) {
+								if( isset( $actionParams[$key] ) ) {
+									foreach( Hash::normalize( $actionParams[$key] ) as $selector => $params ) {
+										$params = (array)$params;
+										$diff = array_diff( array_keys( $params ), $attrs );
+										if( !empty( $diff ) ) {
+											foreach( $diff as $d ) {
+												$errors[] = sprintf( 'L\'attribut %s n\'existe pas dans la configuration de %s, utilisez une des clés %s.', $d, $path.'.'.$selector, implode( ', ', $keys ) );
+											}
+										}
+									}
+								}
+							}
+						}
+
+						$results[$controller.'.'.$action] = array(
+							'success' => empty($errors),
+							'value' => var_export( $config[$controller][$action], true ),
+							'message' => empty($errors) ? null : implode( "\n", $errors )
+						);
+					}
+				}
+			}
+
+			return $results;
+		}
 	}
 ?>

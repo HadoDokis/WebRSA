@@ -200,3 +200,41 @@
 			'Consultation INSER\'ECO93' => 'http://www.insereco93.com/',
 		)
 	);
+
+	/**
+	 * Mise en évidence de certains champs du formulaire des fiches de
+	 * prescription, pour remplir les tableaux de bord B5
+	 */
+	Configure::write(
+		'Evidence.Fichesprescriptions93.add',
+		array(
+			'fields' => array(
+				// Structure du référent
+				'#Ficheprescription93StructurereferenteId',
+				// Type
+				'#Ficheprescription93Typethematiquefp93Id',
+				// Thématique
+				'#Ficheprescription93Thematiquefp93Id',
+				// Catégorie
+				'#Ficheprescription93Categoriefp93Id',
+				// Date de début de l'action
+				'#Ficheprescription93DdActionDay',
+				// Signé le
+				'#Ficheprescription93DateSignatureDay',
+				// La personne s'est présentée
+				'#Ficheprescription93BenefRetourPresente',
+				// Signé par le partenaire le
+				'#Ficheprescription93DateSignaturePartenaireDay',
+				// La personne a été reçue en entretien
+				'#Ficheprescription93PersonneRecue',
+				// La personne a été retenue par la structure
+				'#Ficheprescription93PersonneRetenue',
+				// La personne souhaite intégrer l'action
+				'#Ficheprescription93PersonneSouhaiteIntegrer',
+				// L'allocataire a intégré l'action
+				'#Ficheprescription93PersonneAIntegre',
+			)
+		)
+	);
+	Configure::write( 'Evidence.Fichesprescriptions93.edit', Configure::read( 'Evidence.Fichesprescriptions93.add' ) );
+?>

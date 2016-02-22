@@ -159,6 +159,11 @@
 							?>
 						</div>
 					</div>
+					<div id="webrsa_configure_evidence">
+						<h4 class="title">Champs de formulaires mis en évidence</h4>
+						<?php echo $this->Checks->table( $results['Webrsa']['configure_evidence'] );?>
+						<?php debug($results['Webrsa']['configure_evidence']);?>
+					</div>
 				</div>
 			</div>
 		</div>

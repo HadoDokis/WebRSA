@@ -845,11 +845,11 @@ function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condit
 			if( toggleVisibility ) {
 				fieldset.hide();
 			}
-			
+
 			$$( '#'+fieldset.id+' div.input, #'+fieldset.id+' radio' ).each( function( elmt ) {
 				elmt.addClassName( 'disabled' );
 			} );
-			
+
 			$$( '#'+fieldset.id+' input, #'+fieldset.id+' select, #'+fieldset.id+' button, #'+fieldset.id+' textarea' ).each( function( elmt ) {
 				// INFO: elmt.disable() ne fonctionne pas avec des button
 				try{
@@ -1148,7 +1148,7 @@ function changeColspanFormAnnuleReporteEps( idColumnToChangeColspan, colspanMax,
 	if ( $(idColumnToChangeColspan) === null ) {
 		throw idColumnToChangeColspan + " element not found!";
 	}
-	
+
 	if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
 		$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 		idsNonRaisonpassage.each( function ( id ) {
@@ -2298,3 +2298,93 @@ var Commission = {
 		} );
 	}
 };
+
+/* Mise en évidence de champs et d'options de formulaires. @see Evidence (css) */
+var Evidence = ( function() {
+	'use strict';
+
+	var empty = function( value ) {
+			return value === undefined || value === null || value === false;
+		},
+		getElement = function(selector) {
+			var elements = $$(selector);
+			if(elements.length === 1) {
+				return elements[0];
+			}
+			return null;
+		},
+		getQuestion = function (field) {
+			if(!empty(field)) {
+				return $(field).up('div.input, fieldset');
+			}
+			return null;
+		},
+		config = function (params) {
+			params['class'] = params['class'] === undefined ? 'evidence' : params['class'];
+			params['title'] = params['title'] === undefined ? false : params['title'];
+
+			return params;
+		},
+		setParams = function (element, params) {
+			params = config(params === undefined ? {} : params);
+
+			if( !empty(element) ) {
+				if( !empty(params['class']) ) {
+					$(element).addClassName(params['class']);
+				}
+				if( !empty(params['title']) ) {
+					$(element).addClassName( 'title' );
+
+					if( $(element).tagName === 'DIV' ) {
+						$(element).down('label').title = params['title'];
+					}
+					else if( $(element).tagName === 'FIELDSET' ) {
+						$(element).down('legend').title = params['title'];
+					}
+					else {
+						$(element).title = params['title'];
+					}
+				}
+			}
+		};
+
+	return {
+		find: function(selector) {
+			var element = getElement(selector);
+			if( element !== null ) {
+				return element;
+			}
+			element = $$(selector);
+			if( element.length === 0 ) {
+				console.log( 'Le sélecteur ' + selector + ' ne retourne aucun élément' );
+			} else {
+				console.log( 'Le sélecteur ' + selector + ' retourne ' + element.length + ' éléments:' );
+				console.log( element );
+			}
+
+		},
+		setQuestionParams: function(selector, params) {
+			var question = getQuestion(getElement(selector));
+
+			if( question !== null ) {
+				setParams(question, params);
+			}
+			// TODO: else
+
+		},
+		setOptionParams: function(selector, params) {
+			var option = getElement(selector);
+			if( option !== null ) {
+
+				if( option.type === 'checkbox' ) {
+					option = $(option).up('div.input.checkbox, div.checkbox');
+				} else if( option.type === 'radio' ) {
+					option = getElement('label[for=' + option.id + ']');
+				}
+
+				setParams(option, params);
+			}
+			// TODO: else
+		}
+	};
+} () );
