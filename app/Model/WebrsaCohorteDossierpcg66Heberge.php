@@ -93,7 +93,7 @@
 			'Traitementpcg66.imprimer' => array( 'type' => 'checkbox' ),
 
 			// Tag
-			'Tag.modele' => array( 'type' => 'hidden', 'value' => 'Foyer' ),
+			'EntiteTag.modele' => array( 'type' => 'hidden', 'value' => 'Foyer' ),
 			'Tag.valeurtag_id',
 			'Tag.etat' => array( 'options' => array( 'encours' => 'Non traité', 'traite' => 'Traité' ), 'value' => 'encours' ),
 			'Tag.calcullimite' => array( 'empty' => true ),
@@ -146,6 +146,7 @@
 				$dataDossierpcg66 = Hash::get($value, 'Dossierpcg66');
 				$dataTraitementpcg66 = Hash::get($value, 'Traitementpcg66');
 				$dataModeletraitementpcg66 = Hash::get($value, 'Modeletraitementpcg66');
+				$dataEntiteTag = Hash::get($value, 'EntiteTag');
 				$dataTag = Hash::get($value, 'Tag');
 				
 				// Définition des foreign keys et renseignement des champs NOT NULL
@@ -154,11 +155,15 @@
 				$dataPersonnepcg66['personne_id'] = Hash::get($value, 'Personne.id');
 				$dataPersonnepcg66['user_id'] = $user_id;
 				$dataTraitementpcg66['situationpdo_id'] = Hash::get($value, 'Situationpdo.Situationpdo');
-				$dataTag['fk_value'] = Hash::get($value, 'Foyer.id');
+				$dataEntiteTag['fk_value'] = Hash::get($value, 'Foyer.id');
 				
 				// Sauvegarde Tag
-				$this->Dossierpcg66->Foyer->Tag->create($dataTag);
-				$success = $this->Dossierpcg66->Foyer->Tag->save() && $success;
+				$this->Dossierpcg66->Foyer->EntiteTag->Tag->create($dataTag);
+				$success = $this->Dossierpcg66->Foyer->EntiteTag->Tag->save() && $success;
+				$dataEntiteTag['tag_id'] = $this->Dossierpcg66->Foyer->EntiteTag->Tag->id;
+				
+				$this->Dossierpcg66->Foyer->EntiteTag->create($dataEntiteTag);
+				$success = $this->Dossierpcg66->Foyer->EntiteTag->save() && $success;
 				
 				// Si Dossierpcg66.create est à Non, on s'arrete ici (pas de création du dossier PCG)
 				if ( !Hash::get($value, 'Dossierpcg66.create') ) {
@@ -273,6 +278,7 @@
 					'Situationdossierrsa', 'Foyer', 'Adressefoyer', 'Adresse'
 				);
 				$query = WebrsaModelUtility::changeJoinPriority($newOrder, $query);
+				Cache::write($cacheKey, $query);
 			}
 			
 			return $query;

@@ -22,7 +22,7 @@
 			'Tag.commentaire',
 			'Tag.limite',
 			'Tag.created',
-			'/tags/edit/#Tag.id#' => array( 'disabled' => !$perm['edit'] ),
+			'/tags/edit/#Tag.id#' => array( 'disabled' => "((".(!$perm['edit'] ? 'TRUE' : 'FALSE').") OR ('#Tag.etat#' === 'annule'))" ),
 			'/tags/cancel/#Tag.id#' => array( 'disabled' => "((".(!$perm['cancel'] ? 'TRUE' : 'FALSE').") OR ('#Tag.etat#' === 'annule'))" ),
 			'/tags/delete/#Tag.id#' => array( 'disabled' => !$perm['delete'] ),
 		), 

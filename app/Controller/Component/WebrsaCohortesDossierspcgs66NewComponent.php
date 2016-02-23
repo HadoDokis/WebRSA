@@ -45,7 +45,7 @@
 
 			$options = array_merge(
 				$options,
-				$Controller->Tag->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
+				$Controller->Tag->EntiteTag->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
 			);
 			
 			$options['Cohorte'] = $options;

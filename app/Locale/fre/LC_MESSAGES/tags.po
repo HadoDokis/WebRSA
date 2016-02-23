@@ -82,7 +82,7 @@ msgstr "Adresse"
 msgid "data[Cohorte][][Tag][selection]"
 msgstr "Selectionner"
 
-msgid "data[Cohorte][][Tag][modele]"
+msgid "data[Cohorte][][EntiteTag][modele]"
 msgstr "Tagger sur"
 
 msgid "data[Cohorte][][Tag][valeurtag_id]"
@@ -127,7 +127,7 @@ msgstr "Préremplissage de la cohorte"
 msgid "Cohorte.Tag.selection"
 msgstr "Selectionner"
 
-msgid "Cohorte.Tag.modele"
+msgid "Cohorte.EntiteTag.modele"
 msgstr "Tagger sur"
 
 msgid "Cohorte.Tag.valeurtag_id"

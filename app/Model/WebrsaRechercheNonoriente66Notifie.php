@@ -66,6 +66,8 @@
 				$query['fields']['Orientstruct.nbfichier_lies'] = '(SELECT COUNT(*) FROM fichiersmodules AS a WHERE a.modele = \'Orientstruct\' AND a.fk_value = "Orientstruct"."id") AS "Orientstruct__nbfichier_lies"';
 				
 				$query['conditions'][] = 'Nonoriente66.datenotification IS NOT NULL';
+				
+				Cache::write($cacheKey, $query);
 			}
 			
 			return $query;

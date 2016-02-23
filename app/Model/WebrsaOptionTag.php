@@ -78,8 +78,8 @@
 			
 			$options = array_merge(
 				$options,
-				$this->Tag->Personne->Prestation->enums(),
-				$this->Tag->Personne->Dsp->enums()
+				$this->Tag->EntiteTag->Personne->Prestation->enums(),
+				$this->Tag->EntiteTag->Personne->Dsp->enums()
 			);
 			
 			$options['DspRev'] = $options['Dsp'];
@@ -101,9 +101,9 @@
 		 * @return array
 		 */
 		public function optionsRecords( array $options = array() ) {
-			$modeles = $this->Tag->find('list', array('fields' => 'modele', 'order' => 'modele'));
+			$modeles = $this->Tag->EntiteTag->find('list', array('fields' => 'modele', 'order' => 'modele'));
 			foreach ( $modeles as $value ) {
-				$options['Tag']['modele'][$value] = $value;
+				$options['EntiteTag']['modele'][$value] = $value;
 			}
 			
 			// Valeur tag / catégorie
@@ -119,7 +119,7 @@
 			));
 			
 			foreach ($results as $value) {
-				$categorie = Hash::get($value, 'Categorietag.name') ? Hash::get($value, 'Categorietag.name') : 'Sans catégorie';
+				$categorie = Hash::get($value, 'Categorietag.name') ?: 'Sans catégorie';
 				$valeur = Hash::get($value, 'Valeurtag.name');
 				$valeurtag_id = Hash::get($value, 'Valeurtag.id');
 				$options['Tag']['valeurtag_id'][$categorie][$valeurtag_id] = $valeur;

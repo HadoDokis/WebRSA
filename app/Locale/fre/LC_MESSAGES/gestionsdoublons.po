@@ -19,6 +19,12 @@ msgstr "Voir"
 msgid "/Gestionsdoublons/fusion"
 msgstr "Fusionner"
 
+msgid "/Tags/tag_gestionsdoublons_index"
+msgstr "N'est pas un doublon"
+
+msgid "/Tags/tag_gestionsdoublons_index/#Foyer.id#/#Foyer2.id#"
+msgstr "Tag cette ligne en : N'est pas un doublon"
+
 # ------------------------------------------------------------------------------
 
 msgid "Dossier.numdemrsa"

@@ -74,6 +74,8 @@
 						WHERE nonorientes66.personne_id = Personne.id
 					)'
 				;
+				
+				Cache::write($cacheKey, $query);
 			}
 			
 			return $query;

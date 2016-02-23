@@ -52,25 +52,36 @@
 
 		App::uses( 'SearchProgressivePagination', 'Search.Utility' );
 
-		$index = $this->Default3->index(
-			$results,
+		$nbActions = 3;
+		$indexCols = array(
+			'Dossier.numdemrsa',
+			'Dossier.dtdemrsa',
+			'Dossier.matricule',
+			'Demandeur.nom',
+			'Demandeur.prenom',
+			'Situationdossierrsa.etatdosrsa',
+			'Adresse.nomcom',
+			'Dossier.locked' => array( 'type' => 'boolean' ),
+			'Dossier2.numdemrsa',
+			'Dossier2.dtdemrsa' => array( 'type' => 'date' ),
+			'Dossier2.matricule',
+			'Demandeur2.nom',
+			'Demandeur2.prenom',
+			'Situationdossierrsa2.etatdosrsa',
+			'Adresse2.nomcom',
+			'Dossier2.locked' => array( 'type' => 'boolean' ),
+		);
+		
+		if (Configure::read('Gestionsdoublons.index.useTag') && Configure::read('Gestionsdoublons.index.Tag.valeurtag_id')) {
+			$indexCols['/Tags/tag_gestionsdoublons_index/#Foyer.id#/#Foyer2.id#'] = array(
+				'disabled' => '( !\''.!$this->Permissions->check( 'Tags', 'tag_gestionsdoublons_index' ).'\' )',
+			);
+			$nbActions++;
+		}
+		
+		$indexCols = array_merge(
+			$indexCols,
 			array(
-				'Dossier.numdemrsa',
-				'Dossier.dtdemrsa',
-				'Dossier.matricule',
-				'Demandeur.nom',
-				'Demandeur.prenom',
-				'Situationdossierrsa.etatdosrsa',
-				'Adresse.nomcom',
-				'Dossier.locked' => array( 'type' => 'boolean' ),
-				'Dossier2.numdemrsa',
-				'Dossier2.dtdemrsa' => array( 'type' => 'date' ),
-				'Dossier2.matricule',
-				'Demandeur2.nom',
-				'Demandeur2.prenom',
-				'Situationdossierrsa2.etatdosrsa',
-				'Adresse2.nomcom',
-				'Dossier2.locked' => array( 'type' => 'boolean' ),
 				'/Personnes/index/#Foyer.id#' => array(
 					'disabled' => '( !\''.$this->Permissions->check( 'Personnes', 'index' ).'\' )',
 				),
@@ -80,7 +91,12 @@
 				'/Gestionsdoublons/fusion/#Foyer.id#/#Foyer2.id#' => array(
 					'disabled' => '( \'#Dossier.locked#\' || \'#Dossier2.locked#\' || !\''.$this->Permissions->check( 'Gestionsdoublons', 'fusion' ).'\' )',
 				)
-			),
+			)
+		);
+		
+		$index = $this->Default3->index(
+			$results,
+			$indexCols,
 			array(
 				'options' => $options,
 				'format' => __( SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ) )
@@ -89,7 +105,7 @@
 
 		echo str_replace(
 			'<thead>',
-			'<thead><tr><th colspan="8">Dossier</th><th colspan="8">Dossier temporaire</th><th colspan="3"></th></tr>',
+			'<thead><tr><th colspan="8">Dossier</th><th colspan="8">Dossier temporaire</th><th colspan="'.$nbActions.'"></th></tr>',
 			$index
 		);
 	}

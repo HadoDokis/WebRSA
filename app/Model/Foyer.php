@@ -271,12 +271,12 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Tag' => array(
-				'className' => 'Tag',
+			'EntiteTag' => array(
+				'className' => 'EntiteTag',
 				'foreignKey' => 'fk_value',
 				'dependent' => false,
 				'conditions' => array(
-					'Tag.modele = \'Foyer\''
+					'EntiteTag.modele' => 'Foyer'
 				),
 				'fields' => '',
 				'order' => '',
@@ -287,7 +287,7 @@
 				'counterQuery' => ''
 			),
 		);
-
+		
 		/**
 		 * Retourne l'id du dossier à partir de l'id du foyer
 		 *

@@ -98,6 +98,8 @@
 						'Orientstruct.statut_orient !=' => 'Orienté'
 					)
 				);
+				
+				Cache::write($cacheKey, $query);
 			}
 			
 			return $query;

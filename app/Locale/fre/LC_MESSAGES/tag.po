@@ -25,9 +25,6 @@ msgstr "Commentaire"
 msgid "Tag.etat"
 msgstr "Etat du Tag"
 
-msgid "Tag.modele"
-msgstr "Taggé sur"
-
 msgid "ENUM::ETAT::traite"
 msgstr "Traité"
 

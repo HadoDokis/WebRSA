@@ -485,6 +485,7 @@ $irregularPlural = array(
 	'categorietag' => 'categorietags',
 	'valeurtag' => 'valeurstags',
 	'tag' => 'tags',
+	'entite_tag' => 'entites_tags',
 	// Conservation des données d'impression
 	'dataimpression' => 'dataimpressions',
 	// Paramêtrage des valeurs pour les programmes région

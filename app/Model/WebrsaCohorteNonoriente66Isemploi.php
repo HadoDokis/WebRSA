@@ -91,6 +91,8 @@
 				);
 				$query['conditions'][] = 'Orientstruct.id IS NULL';
 				$query['conditions'][] = 'Nonoriente66.id IS NULL';
+				
+				Cache::write($cacheKey, $query);
 			}
 			
 			return $query;

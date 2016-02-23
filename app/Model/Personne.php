@@ -506,12 +506,12 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Tag' => array(
-				'className' => 'Tag',
+			'EntiteTag' => array(
+				'className' => 'EntiteTag',
 				'foreignKey' => 'fk_value',
 				'dependent' => false,
 				'conditions' => array(
-					'Tag.modele = \'Personne\''
+					'EntiteTag.modele' => 'Personne'
 				),
 				'fields' => '',
 				'order' => '',

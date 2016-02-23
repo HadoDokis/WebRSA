@@ -68,6 +68,8 @@
 					'Nonoriente66.orientstruct_id IS NOT NULL',
 					'Nonoriente66.datenotification IS NULL',
 				);
+				
+				Cache::write($cacheKey, $query);
 			}
 			
 			return $query;

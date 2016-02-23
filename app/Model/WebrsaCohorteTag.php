@@ -125,6 +125,16 @@
 					array(
 						'alias' => 'tags',
 						'fields' => 'tags.id',
+						'joins' => array(
+							array(
+								'alias' => 'entites_tags',
+								'table' => 'entites_tags',
+								'conditions' => array(
+									'entites_tags.tag_id = tags.id'
+								),
+								'type' => 'INNER'
+							)
+						),
 						'conditions' => array(
 							array('OR' => array(
 								'tags.limite IS NULL',
@@ -134,12 +144,12 @@
 							'tags.valeurtag_id' => Hash::get($search, 'Tag.valeurtag_id'),
 							'OR' => array(
 								array(
-									'tags.modele' => 'Personne',
-									'tags.fk_value = Personne.id'
+									'entites_tags.modele' => 'Personne',
+									'entites_tags.fk_value = Personne.id'
 								),
 								array(
-									'tags.modele' => 'Foyer',
-									'tags.fk_value = Foyer.id'
+									'entites_tags.modele' => 'Foyer',
+									'entites_tags.fk_value = Foyer.id'
 								),
 							)
 						),
@@ -152,8 +162,8 @@
 			/**
 			 * Couple/Isolé avec/sans enfant(s)
 			 */
-			$sqEnfants = $this->Tag->Foyer->vfNbEnfants();
-			$isolement = $this->Tag->Foyer->sitfam_isole;
+			$sqEnfants = $this->Tag->EntiteTag->Foyer->vfNbEnfants();
+			$isolement = $this->Tag->EntiteTag->Foyer->sitfam_isole;
 			
 			$conditions = array();
 			foreach( (array)Hash::get($search, 'Foyer.composition') as $value ) {
@@ -194,7 +204,7 @@
 			 * Conditions allocataire hebergé
 			 */
 			if ( Hash::get($search, 'Adresse.heberge') !== null ) {
-				$sq = $this->Tag->Personne->DspRev->sqHeberge();
+				$sq = $this->Tag->EntiteTag->Personne->DspRev->sqHeberge();
 				$condition = array(
 					'OR' => array(
 						"Adresse.complideadr LIKE 'CHEZ%'",
@@ -284,9 +294,10 @@
 					ConfigurableQueryFields::getModelsFields(
 						array(
 							$this->Tag,
+							$this->Tag->EntiteTag,
 							$this->Tag->Valeurtag,
 							$this->Tag->Valeurtag->Categorietag,
-							$this->Tag->Personne->DspRev,
+							$this->Tag->EntiteTag->Personne->DspRev,
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -298,8 +309,8 @@
 				);
 
 				// 2. Jointures
-				$joinDsp = $this->Tag->Personne->join('DspRev', array('type' => $types['DspRev']));
-				$sqDsp = $this->Tag->Personne->DspRev->sq(
+				$joinDsp = $this->Tag->EntiteTag->Personne->join('DspRev', array('type' => $types['DspRev']));
+				$sqDsp = $this->Tag->EntiteTag->Personne->DspRev->sq(
 					array(
 						'alias' => 'dsps_revs',
 						'table' => 'dsps_revs',
@@ -313,7 +324,10 @@
 						'limit' => 1
 					)
 				);
-				$joinDsp['conditions'] = "DspRev.id IN ($sqDsp)";
+				$joinDsp['conditions'] = array(
+					$joinDsp['conditions'],
+					"DspRev.id IN ($sqDsp)"
+				);
 				
 				$query['joins'] = array_merge(
 					$query['joins'],
