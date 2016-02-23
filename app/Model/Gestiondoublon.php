@@ -251,7 +251,7 @@
 					
 					$joinEntiteTag['conditions'] = array(
 						$joinEntiteTag['conditions'],
-						'EntiteTag.tag_id IN (SELECT id FROM tags WHERE EntiteTag.tag_id = tags.id AND tags.valeurtag_id = '.$valeurtag_id.')'
+						'EntiteTag.tag_id IN (SELECT id FROM tags WHERE EntiteTag.tag_id = tags.id AND tags.valeurtag_id = '.$valeurtag_id.' AND tags.etat NOT IN (\'annule\', \'perime\') AND (tags.limite IS NULL OR tags.limite > NOW()))'
 					);
 					$joinEntiteTag2['conditions'] = array(
 						'EntiteTag2.fk_value = Foyer2.id',
