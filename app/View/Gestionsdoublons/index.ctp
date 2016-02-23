@@ -74,7 +74,7 @@
 		
 		if (Configure::read('Gestionsdoublons.index.useTag') && Configure::read('Gestionsdoublons.index.Tag.valeurtag_id')) {
 			$indexCols['/Tags/tag_gestionsdoublons_index/#Foyer.id#/#Foyer2.id#'] = array(
-				'disabled' => '( !\''.!$this->Permissions->check( 'Tags', 'tag_gestionsdoublons_index' ).'\' )',
+				'disabled' => '( !\''.$this->Permissions->check( 'Tags', 'tag_gestionsdoublons_index' ).'\' )',
 			);
 			$nbActions++;
 		}
