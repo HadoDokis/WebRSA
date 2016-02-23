@@ -242,6 +242,27 @@
 					array_words_replace( $Foyer->Dossier->Situationdossierrsa->fields(), array( 'Situationdossierrsa' => 'Situationdossierrsa2' ) ),
 					array_words_replace( $Foyer->Personne->fields(), array( 'Personne' => 'Demandeur2' ) )
 				);
+				
+				// Retirer les lignes taggés
+				$valeurtag_id = Configure::read('Gestionsdoublons.index.Tag.valeurtag_id');
+				if (Configure::read('Gestionsdoublons.index.useTag') && $valeurtag_id) { // N'est pas un doublon
+					$joinEntiteTag = $Foyer->join('EntiteTag');
+					$joinEntiteTag2 = array_words_replace($joinEntiteTag, array('EntiteTag' => 'EntiteTag2', 'Foyer' => 'Foyer2'));
+					
+					$joinEntiteTag['conditions'] = array(
+						$joinEntiteTag['conditions'],
+						'EntiteTag.tag_id IN (SELECT id FROM tags WHERE EntiteTag.tag_id = tags.id AND tags.valeurtag_id = '.$valeurtag_id.')'
+					);
+					$joinEntiteTag2['conditions'] = array(
+						'EntiteTag2.fk_value = Foyer2.id',
+						'EntiteTag2.modele' => 'Foyer',
+						'EntiteTag2.tag_id = EntiteTag2.tag_id'
+					);
+					
+					$query['joins'][] = $joinEntiteTag;
+					$query['joins'][] = $joinEntiteTag2;
+					$query['conditions'][] = 'EntiteTag2.id IS NULL';
+				}
 
 				Cache::write( $cacheKey, $query );
 			}

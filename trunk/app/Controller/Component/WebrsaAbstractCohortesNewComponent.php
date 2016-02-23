@@ -420,19 +420,38 @@
 				// Test d'enregistrement
 				if ( $field !== $Model->primaryKey ) {
 					$Model->begin();
-					$data = $Model->find('first', array( 'recursive' => -1, 'contain' => false ));
+					$blackList = array();
+					
+					while (true) {
+						$data = $Model->find('first', 
+							array( 
+								'recursive' => -1, 
+								'contain' => false,
+								'conditions' => !empty($blackList) ? array(
+									$Model->alias.'.id NOT IN ('.implode(', ', $blackList).')'
+								) : array()
+							)
+						);
 
-					// Si on a pas un enregistrement sain, inutile de continuer (n'arrive que sur des tables vide).
-					if (empty($data)) {
-						continue;
-					}
+						// Si on a pas un enregistrement sain, inutile de continuer (n'arrive que sur des tables vide).
+						if (empty($data)) {
+							break;
+						}
+						
+						// On teste avant tout l'enregistrement sans rien toucher (vérification par le modèle de l'enregistrement)
+						if (!$Model->save($data)) {
+							$blackList[] = Hash::get($data, $Model->alias.'.id');
+							continue;
+						}
 
-					$data[$Model->alias][$field] = $value;
+						$data[$Model->alias][$field] = $value;
 
-					if (!$Model->save($data)) {
-						$errors = implode(', ', (array)Hash::get($Model->validationErrors, $field));
-						$success = false;
-						$message[] = "La tentative d'insérer la valeur <b>{$value}</b> dans <b>{$path}</b> a échoué : {$errors}";
+						if (!$Model->save($data)) {
+							$errors = implode(', ', (array)Hash::get($Model->validationErrors, $field));
+							$success = false;
+							$message[] = "La tentative d'insérer la valeur <b>{$value}</b> dans <b>{$path}</b> a échoué : {$errors}";
+						}
+						break;
 					}
 
 					$Model->rollback();

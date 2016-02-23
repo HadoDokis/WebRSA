@@ -55,26 +55,17 @@
 				'order' => null,
 				'counterCache' => null
 			),
-			/**
-			 * INFO : Les modeles liés en fk_value doivent avoir la function dossierId()
-			 */
-			'Personne' => array(
-				'className' => 'Personne',
-				'foreignKey' => 'fk_value',
-				'conditions' => array(
-					'Tag.modele = \'Personne\''
-				),
-				'fields' => '',
-				'order' => ''
-			),
-			'Foyer' => array(
-				'className' => 'Foyer',
-				'foreignKey' => 'fk_value',
-				'conditions' => array(
-					'Tag.modele = \'Foyer\''
-				),
-				'fields' => '',
-				'order' => ''
+		);
+		
+		/**
+		 * Associations "Has many".
+		 *
+		 * @var array
+		 */
+		public $hasMany = array(
+			'EntiteTag' => array(
+				'className' => 'EntiteTag',
+				'foreignKey' => 'tag_id',
 			),
 		);
 		
@@ -115,11 +106,13 @@
 		public function queryTagByCondition( $conditions ) {
 			return array(
 				'fields' => array_merge(
+					$this->EntiteTag->fields(),
 					$this->fields(),
 					$this->Valeurtag->fields(),
 					$this->Valeurtag->Categorietag->fields()
 				),
 				'joins' => array(
+					$this->join('EntiteTag', array('type' => 'INNER')),
 					$this->join('Valeurtag'),
 					$this->Valeurtag->join('Categorietag')
 				),

@@ -78,6 +78,7 @@
 			'delete' => 'delete',
 			'edit' => 'update',
 			'index' => 'read',
+			'tag_gestionsdoublons_index' => 'update',
 		);
 
 		/**
@@ -108,8 +109,8 @@
 			$result = $this->Tag->findTagById($tag_id);
 			$this->assert( !empty( $result ), 'invalidParameter' );
 			
-			$id = Hash::get($result, 'Tag.fk_value');
-			$modele = Hash::get($result, 'Tag.modele');
+			$id = Hash::get($result, 'EntiteTag.fk_value');
+			$modele = Hash::get($result, 'EntiteTag.modele');
 			$this->_init_add_edit($modele, $id);
 			
 			$this->set(
@@ -136,10 +137,10 @@
 		 */
 		protected function _init_add_edit( $modele, $id ) {
 			// Validité de l'url
-			$this->assert( valid_int( $id ) && isset($this->Tag->{$modele}), 'invalidParameter' );
+			$this->assert( valid_int( $id ) && isset($this->Tag->EntiteTag->{$modele}), 'invalidParameter' );
 			
 			// Gestion des jetons
-			$dossier_id = $this->Tag->{$modele}->dossierId( $id );
+			$dossier_id = $this->Tag->EntiteTag->{$modele}->dossierId( $id );
 			$this->Jetons2->get( $dossier_id );
 			
 			// Redirection si Cancel
@@ -165,10 +166,25 @@
 		protected function _save_add_edit( $modele, $id ) {
 			$this->Tag->begin();
 
-			$this->request->data['Tag']['fk_value'] = $id;
-			$this->request->data['Tag']['modele'] = $modele;
+			$this->Tag->create( $this->request->data );
+			$success = $this->Tag->save();
+			$this->request->data['EntiteTag']['fk_value'] = $id;
+			$this->request->data['EntiteTag']['modele'] = $modele;
+			$this->request->data['EntiteTag']['tag_id'] = $this->Tag->id;
 			
-			if( $this->Tag->save( $this->request->data ) ) {
+			$entite = $this->Tag->EntiteTag->find('first', 
+				array(
+					'fields' => 'id',
+					'conditions' => $this->request->data['EntiteTag']
+				)
+			);
+			
+			if (empty($entite)) {
+				$this->Tag->EntiteTag->create( $this->request->data );
+				$success = $this->Tag->EntiteTag->save() && $success;
+			}
+			
+			if( $success ) {
 				$this->Tag->commit();
 				$this->Jetons2->release( $this->viewVars['dossier_id'] );
 				$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -188,14 +204,14 @@
 		 * @param integer $id
 		 */
 		public function index( $modele, $id ) {
-			$this->assert( valid_int( $id ) && isset($this->Tag->{$modele}), 'invalidParameter' );
+			$this->assert( valid_int( $id ) && isset($this->Tag->EntiteTag->{$modele}), 'invalidParameter' );
 			
-			$dossier_id = $this->Tag->{$modele}->dossierId($id);
+			$dossier_id = $this->Tag->EntiteTag->{$modele}->dossierId($id);
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 			
 			$results = $this->Tag->findTagModel( $modele, $id );
 			
-			$infos = $this->Tag->{$modele}->find('first', array('conditions' => array("{$modele}.id" => $id)));
+			$infos = $this->Tag->EntiteTag->{$modele}->find('first', array('conditions' => array("{$modele}.id" => $id)));
 			
 			// Incrustation de texte dans la traduction
 			switch ($modele) {
@@ -236,7 +252,7 @@
 				'Personne.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
 				'Foyer.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
 				'Tag.selection' => array( 'type' => 'checkbox', 'label' => '&nbsp;' ),
-				'Tag.modele' => array( 'type' => 'select', 'label' => '' ),
+				'EntiteTag.modele' => array( 'type' => 'select', 'label' => '' ),
 				'Tag.valeurtag_id' => array( 'type' => 'select', 'label' => '' ),
 				'Tag.limite' => array( 'type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4 ),
 				'Tag.commentaire' => array( 'type' => 'textarea', 'label' => '' ),
@@ -304,6 +320,71 @@
 			}
 			
 			$this->set( compact( 'options' ) );
+		}
+		
+		/**
+		 * Effectue un Tag pour le module Gestionsdoublons
+		 * 
+		 * @param integer $foyer1_id
+		 * @param integer $foyer2_id
+		 */
+		public function tag_gestionsdoublons_index($foyer1_id, $foyer2_id) {
+			$valeur_tag = Configure::read('Gestionsdoublons.index.Tag.valeurtag_id'); // N'est pas un doublon
+			$this->assert( (valid_int($foyer1_id) && valid_int($foyer2_id) && $valeur_tag !== null), 'invalidParameter' );
+			
+			$query = array(
+				'fields' => array(
+					'Dossier.numdemrsa',
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Tag->EntiteTag->Foyer->join('Dossier')
+				),
+			);
+			$dataFoyer1 = $this->Tag->EntiteTag->Foyer->find('first', $query + array('conditions' => array('Foyer.id' => $foyer1_id)));
+			$dataFoyer2 = $this->Tag->EntiteTag->Foyer->find('first', $query + array('conditions' => array('Foyer.id' => $foyer2_id)));
+			
+			$dataTag = array(
+				'commentaire' => sprintf(
+					'Dossier n°%s en lien avec le dossier n°%s', 
+					Hash::get($dataFoyer1, 'Dossier.numdemrsa'), 
+					Hash::get($dataFoyer2, 'Dossier.numdemrsa')
+				),
+				'valeurtag_id' => $valeur_tag,
+				'etat' => 'traite'
+			);
+			
+			$this->Tag->begin();
+			
+			$this->Tag->create($dataTag);
+			$success = $this->Tag->save();
+			$tag_id = $this->Tag->id;
+			
+			$dataEntite = array(
+				'tag_id' => $tag_id,
+				'modele' => 'Foyer',
+			);
+			
+			$this->Tag->EntiteTag->create($dataEntite + array('fk_value' => $foyer1_id));
+			$success = $success && $this->Tag->EntiteTag->save();
+			
+			$this->Tag->EntiteTag->create($dataEntite + array('fk_value' => $foyer2_id));
+			$success = $success && $this->Tag->EntiteTag->save();
+			
+			if ($success) {
+				$this->Tag->commit();
+				$this->Session->setFlash(
+					sprintf('Tag effectué sur Dossiers %s et %s', 
+						Hash::get($dataFoyer1, 'Dossier.numdemrsa'), 
+						Hash::get($dataFoyer2, 'Dossier.numdemrsa')
+					), 'flash/success'
+				);
+            } else {
+                $this->Tag->rollback();
+                $this->Session->setFlash('Erreur lors du Tag', 'flash/error');
+            }
+			
+			$this->redirect($this->referer());
 		}
 	}
 ?>

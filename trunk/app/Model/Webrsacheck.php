@@ -333,7 +333,13 @@
 				),
 				'Module.Cui.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				)
+				),
+				'Gestionsdoublons.index.useTag' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
+				'Gestionsdoublons.index.Tag.valeurtag_id' => array(
+					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Gestionsdoublons.index.useTag') )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

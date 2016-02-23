@@ -1025,4 +1025,10 @@
 	 * @default null
 	 */
 	Configure::write( 'Module.Cui.enabled', true );
+	
+	/**
+	 * ID de la valeur du Tag à créer lorsque on "Tag" depuis Gestionsdoublons::index()
+	 */
+	Configure::write('Gestionsdoublons.index.useTag', true);
+	Configure::write('Gestionsdoublons.index.Tag.valeurtag_id', 7); // N'est pas un doublon
 ?>

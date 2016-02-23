@@ -41,7 +41,7 @@
 		. $this->Default3->subform(
 			array(
 				'Cohorte.Tag.selection' => array( 'type' => 'checkbox' ),
-				'Cohorte.Tag.modele',
+				'Cohorte.EntiteTag.modele',
 				'Cohorte.Tag.valeurtag_id',
 				'Cohorte.Tag.calcullimite' => array( 'empty' => true, 'options' => Configure::read('Tags.cohorte.range_date_butoir') ),
 				'Cohorte.Tag.limite' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4 ),
