@@ -1030,5 +1030,48 @@
 	 * ID de la valeur du Tag à créer lorsque on "Tag" depuis Gestionsdoublons::index()
 	 */
 	Configure::write('Gestionsdoublons.index.useTag', true);
-	Configure::write('Gestionsdoublons.index.Tag.valeurtag_id', 7); // N'est pas un doublon
+	Configure::write('Gestionsdoublons.index.Tag.valeurtag_id', 1); // N'est pas un doublon
+	
+	/**
+	 * Options modifiable des cohortes liés aux tags (TAG et DossierPCG)
+	 */
+	Configure::write('Tag.Options.enums',
+		array(
+			'Personne' => array(
+				// Tranche d'age des personnes (25_30 sera entre 25 et 30 ans)
+				'trancheage' => array(
+					'0_24' => '< 25',
+					'25_30' => '25 - 30',
+					'31_55' => '31 - 55',
+					'56_65' => '56 - 65',
+					'66_999' => '> 65',
+				),
+			),
+			'Foyer' => array(
+				// Nombre d'enfants à charge dans un foyer (Nombre d'enfants sera >= à la clef de l'array
+				'nb_enfants' => array(
+					0 => '0',
+					1 => '>= 1',
+					2 => '>= 2',
+					3 => '>= 3',
+					4 => '>= 4',
+					5 => '>= 5',
+				)
+			),
+			'Detailcalculdroitrsa' => array(
+				// Montant du RSA (200_299 sera entre 200 et 299)
+				'mtrsavers' => array(
+					'0_99' => '< 100€',
+					'100_199' => '100€ - 199€',
+					'200_299' => '200€ - 299€',
+					'300_399' => '300€ - 399€',
+					'400_499' => '400€ - 499€',
+					'500_599' => '500€ - 599€',
+					'600_699' => '600€ - 699€',
+					'800_999' => '800€ - 999€',
+					'999_9999' => '> 1000 €',
+				),
+			),
+		)
+	);
 ?>

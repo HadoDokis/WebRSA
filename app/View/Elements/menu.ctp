@@ -48,6 +48,9 @@
 				'Dossiers à imprimer' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_imprimer' ) ),
 				'Dossiers à transmettre' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_atransmettre' ) ),
 				'Requêtes PDU' => array(
+					'RSA Majoré' => array(
+						'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_rsamajore' ),
+					),
 					'Allocataires hebergés' => array(
 						'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'cohorte_heberge' ),
 					)

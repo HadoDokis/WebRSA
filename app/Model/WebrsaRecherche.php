@@ -429,6 +429,20 @@
 				'component' => 'WebrsaCohortesDossierspcgs66New',
 				'keys' => array( 'results.fields' )
 			),
+			'Dossierspcgs66.cohorte_rsamajore' => array(
+				'departement' => 66,
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Dossierspcgs66.exportcsv_rsamajore' => array(
+				'departement' => 66,
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore',
+				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'keys' => array( 'results.fields' )
+			),
 			'Dossierspcgs66.cohorte_imprimer' => array(
 				'type' => 'search',
 				'departement' => 66,
