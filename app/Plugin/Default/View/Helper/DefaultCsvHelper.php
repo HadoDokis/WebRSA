@@ -51,16 +51,15 @@
 		 *
 		 * @return string
 		 */
-		protected function _getBodyCell( array $data, $path, array $types, array $params, array $cellParams ) {
+		protected function _getBodyCell( array $data, $path, array $types, array $params ) {
 			$value = Hash::get( $data, $path );
 
-			$type = Hash::get( $cellParams, 'type' );
+			$type = Hash::get( $params, 'type' );
 			$type = $type === null ? $types[$path] : $type;
 
-			$value = $this->DefaultData->format( $value, $type, Hash::get( $cellParams, 'format' ) );
-			if( !in_array( $value, array( null, array() ), true ) && Hash::check( $params, "options.{$path}" ) ) {
-				// TODO: pas efficace dans les boucles!
-				$value = $this->DefaultData->translateOptions( $value, array( 'options' => Hash::get( $params, "options.{$path}" ) ) );
+			$value = $this->DefaultData->format( $value, $type, Hash::get( $params, 'format' ) );
+			if( !in_array( $value, array( null, array() ), true ) && isset( $params['options'] ) ) {
+				$value = $this->DefaultData->translateOptions( $value, array( 'options' => &$params['options'] ) );
 			}
 
 			if( is_array( $value ) ) {
@@ -93,7 +92,12 @@
 				}
 
 				if( $condition ) {
-					$row[] = $this->_getBodyCell( $data, $path, $types, $params, (array)$innerParams );
+					list( $modelName, $fieldName ) = model_field( $path );
+					$innerParams = (array)$innerParams;
+					if( !isset( $innerParams['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
+						$innerParams['options'] = $params['options'][$modelName][$fieldName];
+					}
+					$row[] = $this->_getBodyCell( $data, $path, $types, $innerParams );
 				}
 			}
 
