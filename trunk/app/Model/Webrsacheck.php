@@ -392,6 +392,17 @@
 					)
 				);
 			}
+			
+			if ($departement === 66) {
+				$result = array_merge(
+					$result,
+					array(
+						'Tag.Options.enums.Personne.trancheage' => 'isarray',
+						'Tag.Options.enums.Foyer.nb_enfants' => 'isarray',
+						'Tag.Options.enums.Detailcalculdroitrsa.mtrsavers' => 'isarray',
+					)
+				);
+			}
 
 			return $result;
 		}

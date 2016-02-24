@@ -224,6 +224,14 @@
 				}
 			}
 			
+			/*
+			 * Condition montant RSA
+			 */
+			if (Hash::get($search, 'Detailcalculdroitrsa.mtrsavers') !== null) {
+				list($min, $max) = explode('_', Hash::get($search, 'Detailcalculdroitrsa.mtrsavers'));
+				$query['conditions'][] = "Detailcalculdroitrsa.mtrsavers BETWEEN {$min} AND {$max}";
+			}
+			
 			return $query;
 		}
 
@@ -280,6 +288,7 @@
 				'Tag' => 'LEFT OUTER',
 				'Valeurtag' => 'LEFT OUTER',
 				'Categorietag' => 'LEFT OUTER',
+				'Detailcalculdroitrsa' => 'LEFT OUTER',
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -298,6 +307,7 @@
 							$this->Tag->Valeurtag,
 							$this->Tag->Valeurtag->Categorietag,
 							$this->Tag->EntiteTag->Personne->DspRev,
+							$this->Tag->EntiteTag->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa,
 						)
 					),
 					// Champs nécessaires au traitement de la search
@@ -305,6 +315,7 @@
 						'Personne.id',
 						'Foyer.id',
 						'Dossier.id',
+						'Foyer.nb_enfants' => '('.$this->Tag->EntiteTag->Foyer->vfNbEnfants().') AS "Foyer__nb_enfants"',
 					)
 				);
 
@@ -332,7 +343,8 @@
 				$query['joins'] = array_merge(
 					$query['joins'],
 					array(
-						$joinDsp
+						$joinDsp,
+						$this->Tag->EntiteTag->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', array('type' => $types['Detailcalculdroitrsa']))
 					)
 				);
 

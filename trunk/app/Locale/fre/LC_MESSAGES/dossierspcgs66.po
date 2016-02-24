@@ -830,3 +830,18 @@ msgstr "Possède un traitement de type courrier sans modèle"
 
 msgid "Personnepcg66.noms_complet"
 msgstr "Nom de la personne concernée"
+
+msgid "Search.Detailcalculdroitrsa.mtrsavers"
+msgstr "Montant RSA"
+
+msgid "/Dossierspcgs66/cohorte_rsamajore/:heading"
+msgstr "Cohorte de création de dossier PCG pour les RSA majorés"
+
+msgid "Detailcalculdroitrsa.mtrsavers"
+msgstr "Montant RSA"
+
+msgid "Foyer.nb_enfants"
+msgstr "Nombre d'enfants"
+
+msgid "Foyer.ddsitfam"
+msgstr "Date de changement de situation familiale"

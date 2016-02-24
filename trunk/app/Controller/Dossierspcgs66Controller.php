@@ -49,7 +49,10 @@
 					),
 					'cohorte_heberge' => array(
 						'filter' => 'Search'
-					)
+					),
+					'cohorte_rsamajore' => array(
+						'filter' => 'Search'
+					),
 				)
 			),
 		);
@@ -83,6 +86,7 @@
 			'ajaxfileupload' => 'update',
 			'cohorte_atransmettre' => 'update',
 			'cohorte_enattenteaffectation' => 'update',
+			'cohorte_rsamajore' => 'update',
 			'cohorte_heberge' => 'update',
 			'cohorte_imprimer' => 'update',
 			'delete' => 'delete',
@@ -1068,6 +1072,22 @@
 		public function exportcsv_heberge() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
 			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge' ) );
+		}
+				
+		/**
+		 * Cohorte
+		 */
+		public function cohorte_rsamajore() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
+			$Recherches->cohorte( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore' ) );
+		}
+		
+		/**
+		 * Export du tableau de résultats de la recherche
+		 */
+		public function exportcsv_rsamajore() {
+			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66New' );
+			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore' ) );
 		}
 		
 		/**

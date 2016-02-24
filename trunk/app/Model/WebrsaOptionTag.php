@@ -47,37 +47,25 @@
 		 * @return array
 		 */
 		public function optionsEnums( array $options = array() ) {
-			$options['Personne']['trancheage'] = array(
-				'0_24' => '< 25',
-				'25_30' => '25 - 30',
-				'31_55' => '31 - 55',
-				'56_65' => '56 - 65',
-				'66_999' => '> 65',
-			);
-			
-			$options['Foyer']['composition'] = array(
-				'cpl_sans_enf' => 'Couple sans enfant',
-				'cpl_avec_enf' => 'Couple avec enfant(s)',
-				'iso_sans_enf' => 'Isolé sans enfant',
-				'iso_avec_enf' => 'Isolé avec enfant(s)'
-			);
-			
-			$options['Adresse']['heberge'] = array(
-				0 => 'Non',
-				1 => 'Oui',
-			);
-			
-			$options['Foyer']['nb_enfants'] = array(
-				'0',
-				'>= 1',
-				'>= 2',
-				'>= 3',
-				'>= 4',
-				'>= 5',
-			);
-			
-			$options = array_merge(
+			$options = Hash::merge(
 				$options,
+				array(
+					'Foyer' => array(
+						'composition' => array(
+							'cpl_sans_enf' => 'Couple sans enfant',
+							'cpl_avec_enf' => 'Couple avec enfant(s)',
+							'iso_sans_enf' => 'Isolé sans enfant',
+							'iso_avec_enf' => 'Isolé avec enfant(s)'
+						),
+					),
+					'Adresse' => array(
+						'heberge' => array(
+							0 => 'Non',
+							1 => 'Oui',
+						),
+					),
+				),
+				(array)Configure::read('Tag.Options.enums'),
 				$this->Tag->EntiteTag->Personne->Prestation->enums(),
 				$this->Tag->EntiteTag->Personne->Dsp->enums()
 			);
