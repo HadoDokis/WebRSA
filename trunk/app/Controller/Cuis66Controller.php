@@ -613,6 +613,7 @@
 			$Email = new CakeEmail( $this->configEmail );
 			if ( !empty($data['emailredacteur']) ){
 				$Email->replyTo( $data['emailredacteur'] );
+				$Email->cc( $data['emailredacteur'] );
 			}
 			
 			$Email	->subject( $data['titre'] )
