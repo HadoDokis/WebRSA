@@ -245,11 +245,7 @@
 			// 2. Recherche
 			'query' => array(
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
-				'restrict' => array(
-					'Decisiondossierpcg66.etatdossierpcg' => null,
-					'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
-					'Dossierpcg66.dateimpression' => null
-				),
+				'restrict' => array(),
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),
 				// 2.3 Tri par défaut

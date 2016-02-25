@@ -167,7 +167,7 @@
 			}
 			
 			if ( Configure::read('Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso') ) {
-				$results['pdfs'] = $PdfUtility->preparePdfListForRectoVerso( $results['pdfs'], WebrsaPdfUtility::ADD_BLANK_PAGES_BETWEEN_PDFS );
+				$results['pdfs'] = $PdfUtility->preparePdfListForRectoVerso( $results['pdfs'] );
 			}
 			
 			return $this->Gedooo->concatPdfs($results['pdfs'], 'Dossierpcg66');
