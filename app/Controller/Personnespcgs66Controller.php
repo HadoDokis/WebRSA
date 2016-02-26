@@ -460,6 +460,7 @@
                         'Personnepcg66' => array(
                             'Statutpdo',
                             'Situationpdo',
+                            'Categorieromev3',
                             'order' => array( 'Personnepcg66.created DESC' )
                         )
                     ),
@@ -473,6 +474,14 @@
                 // suivant la DERNIERE perosnne saisie préalablement
                 if( !empty( $dossierpcg66Pcd['Personnepcg66'] ) ){
                     $this->request->data['Personnepcg66']['personne_id'] = $dossierpcg66Pcd['Personnepcg66'][0]['personne_id'];
+					
+					//Préremplissage des rome v3
+					$romev3 = (array)Hash::get($dossierpcg66Pcd, 'Personnepcg66.0.Categorieromev3');
+					$depend['familleromev3_id'] = Hash::get($romev3, 'familleromev3_id');
+					$depend['domaineromev3_id'] = Hash::get($romev3, 'familleromev3_id').'_'.Hash::get($romev3, 'domaineromev3_id');
+					$depend['metierromev3_id'] = Hash::get($romev3, 'domaineromev3_id').'_'.Hash::get($romev3, 'metierromev3_id');
+					$depend['appellationromev3_id'] = Hash::get($romev3, 'metierromev3_id').'_'.Hash::get($romev3, 'appellationromev3_id');
+                    $this->request->data['Categorieromev3'] = $depend;
 
                     foreach( array( 'Situationpdo', 'Statutpdo' ) as $value ) {
                         foreach( $dossierpcg66Pcd['Personnepcg66'] as $i => $info ) {
