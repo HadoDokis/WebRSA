@@ -608,9 +608,10 @@
 											'Decisiondossierpcg66.id IS NULL',
 											'Decisiondossierpcg66.id' => $idsDossierspcgs66,
 										),
-										"(Traitementpcg66.created)::date = ('".Hash::get($listeDecisions, $key.'.Decisiondossierpcg66.created')."')::date",
+										'Dossierpcg66.poledossierpcg66_id' => Hash::get($decisiondossierpcg66, 'Dossierpcg66.poledossierpcg66_id'),
 										'Traitementpcg66.annule' => 'N',
 										'Traitementpcg66.typetraitement' => 'courrier',
+										'Traitementpcg66.etattraitementpcg' => 'contrôler',
 									)
 								)
 							);
@@ -623,7 +624,7 @@
 
 								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnbound(
 									array( 'imprimer' => 1, 'etattraitementpcg' => "'imprimer'" ),
-									array( 'Traitementpcg66.id' => $traitements_ids, 'Traitementpcg66.etattraitementpcg' => 'contrôler' )
+									array( 'Traitementpcg66.id' => $traitements_ids  )
 								);
 							}
 						}
