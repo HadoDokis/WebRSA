@@ -198,7 +198,9 @@
 						$this->Cui->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 						$this->Cui->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 						$this->Cui->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Cui->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Cui->Personne->Foyer->join( 'Adressefoyer', array( 
+							'type' => 'LEFT OUTER', 'conditions' => array('Adressefoyer.rgadr' => '01') 
+						)),
 						$this->Cui->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 						array(
 							'table' => 'departements',
@@ -213,13 +215,13 @@
 				
 				$Adresse =& $this->Cui->Personne->Foyer->Adressefoyer->Adresse;
 				if (Configure::read( 'CG.cantons' )) {
-					$querydata['fields'][] = 'Canton.canton';
+					$query['fields'][] = 'Canton.canton';
 
 					if (Configure::read('Canton.useAdresseCanton')) {
-						$querydata['joins'][] = $Adresse->join('AdresseCanton', array('type' => 'LEFT OUTER'));
-						$querydata['joins'][] = $Adresse->AdresseCanton->join('Canton', array('type' => 'LEFT OUTER'));
+						$query['joins'][] = $Adresse->join('AdresseCanton', array('type' => 'LEFT OUTER'));
+						$query['joins'][] = $Adresse->AdresseCanton->join('Canton', array('type' => 'LEFT OUTER'));
 					} else {
-						$querydata['joins'][] = $Adresse->AdresseCanton->Canton->joinAdresse();
+						$query['joins'][] = $Adresse->AdresseCanton->Canton->joinAdresse();
 					}
 				}
 				
