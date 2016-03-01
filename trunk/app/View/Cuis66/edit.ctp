@@ -269,7 +269,7 @@
 	echo '</div>' . $this->Default3->subform(
 			array(
 				'Cui66.zonecouverte' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datefinsejour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+				'Cui66.datefinsejour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+15 ),
 			),
 			array( 'options' => $options )
 		)
