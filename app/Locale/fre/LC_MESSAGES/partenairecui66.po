@@ -103,3 +103,6 @@ msgstr "Conseiller Départemental"
 
 msgid "Partenairecui66.commentaire"
 msgstr "Commentaire"
+
+msgid "Partenairecui66.activiteprincipale"
+msgstr "Activité principale"
