@@ -453,6 +453,7 @@
 					<?php
 						echo $this->Default2->subform(
 							array(
+								'Decisiondossierpcg66.vuavistechnique' => array( 'type' => 'checkbox' ),
 								'Decisiondossierpcg66.commentaireavistechnique',
 								'Decisiondossierpcg66.dateavistechnique' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
 							),
@@ -487,7 +488,6 @@
 						echo $this->Default2->subform(
 						array(
 							'Decisiondossierpcg66.retouravistechnique' => array( 'type' => 'checkbox' ),
-							'Decisiondossierpcg66.vuavistechnique' => array( 'type' => 'checkbox' ),
 							'Decisiondossierpcg66.commentairevalidation',
 							'Decisiondossierpcg66.datevalidation' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
 						),
