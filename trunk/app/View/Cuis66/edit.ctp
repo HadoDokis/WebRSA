@@ -172,6 +172,7 @@
 		.	 '<legend>' . __d('cuis66', 'Partenairecui66.informationssup') . '</legend>'
 		. $this->Default3->subform(
 			array(
+				'Partenairecui66.activiteprincipale',
 				'Partenairecui66.codepartenaire',
 				'Partenairecui66.objet',
 				'Partenairecui66.nomtitulairerib',

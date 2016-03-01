@@ -18,6 +18,9 @@ BEGIN;
 SELECT alter_table_drop_column_if_exists( 'public', 'cuis66', 'commentaireformation' );
 ALTER TABLE cuis66 ADD COLUMN commentaireformation TEXT;
 
+SELECT alter_table_drop_column_if_exists( 'public', 'partenairescuis66', 'activiteprincipale' );
+ALTER TABLE partenairescuis66 ADD COLUMN activiteprincipale VARCHAR(255);
+
 --------------------------------------------------------------------------------
 -- TAG -
 --------------------------------------------------------------------------------

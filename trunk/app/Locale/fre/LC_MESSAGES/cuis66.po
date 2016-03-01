@@ -777,6 +777,9 @@ msgstr "Ajout d'un e-mail"
 msgid "/Cuis66/email_add/:title"
 msgstr "Ajout d'un e-mail"
 
+msgid "Partenairecui66.activiteprincipale"
+msgstr "Activité principale"
+
 ################################################################################
 # Actions
 ################################################################################
