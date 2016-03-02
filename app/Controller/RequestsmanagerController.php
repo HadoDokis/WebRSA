@@ -139,11 +139,13 @@
 				'conditions' => array(),
 				'order' => array()
 			);
+			
+			$done = array();
 			foreach ($data as $key => $value) {
 				if ( $value === '' ) {
 					continue;
 				}
-
+				
 				// Savoir si c'est du field, du condition, du join ou du order
 				switch ( true ) {
 					// Fields
@@ -160,6 +162,16 @@
 					// Joins
 					case preg_match('/^join\-[\w]+\-([\w]+)/', $key, $matches):
 						$request['joins'][] = ClassRegistry::init($matches[1])->join($value);
+						break;
+					
+					case preg_match('/^joinscomplexe\-([\w]+)\-/', $key, $matches) && !in_array($matches[1], $done):
+						$done[] = $matches[1];
+						$request['joins'][] = array(
+							'alias' => $data['joinscomplexe-'.$matches[1].'-alias'],
+							'table' => $data['joinscomplexe-'.$matches[1].'-table'],
+							'conditions' => $data['joinscomplexe-'.$matches[1].'-conditions'],
+							'type' => $data['joinscomplexe-'.$matches[1].'-type'],
+						);
 						break;
 				}
 			}
@@ -327,7 +339,8 @@
 				'names' => $names,
 				'traductions' => $traductions,
 				'enums' => $Model->enums(),
-				'joins' => $joins
+				'joins' => $joins,
+				'echec' => false
 			);
 			
 			$this->set( compact( 'json' ) );
@@ -390,6 +403,9 @@
 		 * Permet de récupérer les données d'une requete précédement construite
 		 */
 		public function ajax_load( $id ) {
+			$Dbo = $this->Requestmanager->getDataSource( $this->Requestmanager->useDbConfig );
+			
+			
 			$result = $this->Requestmanager->find( 'first',
 				array(
 					'conditions' => array(
@@ -398,11 +414,69 @@
 				)
 			);
 			
+			// Assurance d'avoir des conditions de jointure utilisable en javascript (import de requetes)
+			$json = (array)json_decode(Hash::get($result, 'Requestmanager.json'), true);
+			if (isset($json['joins'])) {
+				foreach((array)$json['joins'] as $key => $value) {
+					$json['joins'][$key]['conditions'] = $Dbo->conditions($value['conditions'], true, false);
+				}
+			}
+			$result['Requestmanager']['json'] = json_encode($json);
+			
 			$json = Hash::get($result, 'Requestmanager');
 			
 			$this->set( compact( 'json' ) );
 			$this->layout = 'ajax';
 			$this->render( '/Elements/json' );
+		}
+
+		/**
+		 * Permet de récupérer une jointure entre deux modèles
+		 */
+		public function ajax_getjointure() {
+			$Model = ClassRegistry::init($this->request->data['modelName1']);
+			$result = array();
+			
+			if (isset($Model->{$this->request->data['modelName2']})) {
+				$result = ClassRegistry::init($this->request->data['modelName1'])->join($this->request->data['modelName2']);
+				$result['conditions'] = implode(' AND ', (array)Hash::get($result, 'conditions'));
+			}
+			
+			$this->set( 'json', $result );
+			$this->layout = 'ajax';
+			$this->render( '/Elements/json' );
+		}
+
+		/**
+		 * Permet de récupérer une jointure entre deux modèles
+		 */
+		public function ajax_gettable() {
+			$this->request->data['model'] = 
+				ClassRegistry::init(
+					Inflector::camelize(
+						Inflector::singularize(
+							trim($this->request->data['table'], '"')
+						)
+					)
+				)->alias
+			;
+			
+			// Anti tentative d'injection sql
+			if (!preg_match('/^[\w]+$/', trim($this->request->data['table'], '"'))) {
+				$this->set( 'json', array('echec' => true) );
+				$this->layout = 'ajax';
+				$this->render( '/Elements/json' );
+			}
+			
+			$results = $this->Requestmanager->query( "SELECT column_name FROM information_schema.columns WHERE table_name = '".trim($this->request->data['table'], '"')."' AND table_schema = 'public' LIMIT 1");
+			
+			if (!empty($results)) {
+				return $this->ajax_get();
+			} else {
+				$this->set( 'json', array('echec' => true) );
+				$this->layout = 'ajax';
+				$this->render( '/Elements/json' );
+			}
 		}
 		
 		/**
