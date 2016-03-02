@@ -44,6 +44,7 @@
 					'Difficulte.surendettement',
 					'Difficulte.administratives',
 					'Difficulte.linguistiques',
+					'Difficulte.mobilisation',
 					'Difficulte.qualification_professionnelle',
 					'Difficulte.acces_emploi',
 					'Difficulte.autres'
@@ -116,6 +117,23 @@
 					'Dossier.matricule',
 				)
 			),
+		)
+	);
+
+	/**
+	 * Pour les tableaux de suivi PDV du CG 93, on augmente la mémoire disponible
+	 * pour les actions historiser et exportcsvcorpus.
+	 */
+	Configure::write(
+		'Tableauxsuivispdvs93.historiser.ini_set',
+		array(
+			'memory_limit' => '4096M'
+		)
+	);
+	Configure::write(
+		'Tableauxsuivispdvs93.exportcsvcorpus.ini_set',
+		array(
+			'memory_limit' => '4096M'
 		)
 	);
 ?>

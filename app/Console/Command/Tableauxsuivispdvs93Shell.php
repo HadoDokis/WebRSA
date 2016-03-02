@@ -46,10 +46,17 @@
 
 		/**
 		 * Surcharge de la méthode startup pour vérifier que le département soit
-		 * uniquement le 93.
+		 * uniquement le 93 et modifier la valeur de memory_limit
 		 */
 		public function startup() {
 			parent::startup();
+
+			$memory_limit = $this->params['memory_limit'];
+			ini_set( 'memory_limit', $memory_limit );
+			if( (string)ini_get( 'memory_limit') !== (string)$memory_limit ) {
+				$msgstr = __( 'Impossible de modifier la valeur de memory_limit à \'%s\'' );
+				$this->error( sprintf( $msgstr, $memory_limit ) );
+			}
 
 			$this->checkDepartement( 93 );
 		}
@@ -60,7 +67,7 @@
 		public function main() {
 			$pdvs = $this->Tableausuivipdv93->listePdvs();
 			$referents = $this->Tableausuivipdv93->listeReferentsPdvs();
-			$search = array( 'Search' => array( 'annee' => date( 'Y' ), 'rdv_structurereferente' => false ) );
+			$search = array( 'Search' => array( 'annee' => $this->params['annee'], 'rdv_structurereferente' => false ) );
 			$success = true;
 			$tableaux = array_keys( $this->Tableausuivipdv93->tableaux );
 
@@ -99,6 +106,32 @@
 				$this->Tableausuivipdv93->rollback();
 				$this->err( 'Erreur' );
 			}
+		}
+
+		/**
+		 * Ajout de nouvelles options pour le shell.
+		 *
+		 * @return ConsoleOptionParser
+		 */
+		public function getOptionParser() {
+			$parser = parent::getOptionParser();
+
+			$parser->addOptions(
+				array(
+					'annee' => array(
+						'short' => 'a',
+						'help' => 'Année pour laquelle enregistrer les tableaux de suivi (n\'a de sens qu\'en tout début d\'année suivante)',
+						'default' => date( 'Y' )
+					),
+					'memory_limit' => array(
+						'short' => 'm',
+						'help' => 'Mémoire maximale pouvant être utilisée par le shell, surcharge ce qui a été défini dans le php.ini (memory_limit)',
+						'default' => '4096M'
+					),
+				)
+			);
+
+			return $parser;
 		}
 	}
 ?>

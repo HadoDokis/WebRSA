@@ -473,6 +473,7 @@ $irregularPlural = array(
 	'populationb3pdv93' => 'populationsb3pdvs93',
 	'populationb4b5pdv93' => 'populationsb4b5pdvs93',
 	'populationb6pdv93' => 'populationsb6pdvs93',
+	'corpuspdv93' => 'corpuspdvs93',
 	// Module de sauvegarde de recherche (en construction)
 	'savesearch' => 'savesearchs',
 	'group_savesearch' => 'groups_savesearchs',

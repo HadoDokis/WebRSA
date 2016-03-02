@@ -38,5 +38,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( "{$this->request->params['controller']}_{$action}-".date( 'Ymd-His' ).'.csv' );
+	echo $this->Csv->render( $csvfile );
 ?>

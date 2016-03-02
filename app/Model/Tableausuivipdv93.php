@@ -115,6 +115,17 @@
 				'exclusive' => null,
 				'finderQuery' => null
 			),
+			'Corpuspdv93' => array(
+				'className' => 'Corpuspdv93',
+				'foreignKey' => 'tableausuivipdv93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 		);
 
 		/**
@@ -333,6 +344,13 @@
 				'column' => 'difsoc',
 				'values' => array( '0404' )
 			),
+			'mobilisation' => array(
+				'table' => 'dsps',
+				'alias' => 'id',
+				'column' => 'id',
+				// INFO: valeur impossible, pour avoir la colonne dans l'export CSV
+				'values' => array( '0' )
+			),
 			'qualification_professionnelle' => array(
 				'table' => 'dsps',
 				'alias' => 'nivetu',
@@ -351,6 +369,21 @@
 				'column' => 'nataccosocindi',
 				'values' => array( '0420' )
 			)
+		);
+
+		/**
+		 * Liste, pour achacun des tableaux de suivi, le modèle sur lequel
+		 * effectuer la requête pour obtenir l'export CSV.
+		 *
+		 * @var array
+		 */
+		public $modelsCorpus = array(
+			'tableaud1' => 'Questionnaired1pdv93',
+			'tableaud2' => 'Questionnaired2pdv93',
+			'tableau1b3' => 'Rendezvous',
+			'tableau1b4' => 'Ficheprescription93',
+			'tableau1b5' => 'Ficheprescription93',
+			'tableau1b6' => 'Rendezvous'
 		);
 
 		/**
@@ -2899,99 +2932,32 @@
 			$this->create( $tableausuivipdv93 );
 			$success = $this->save() && $success;
 
-			// TODO: mise à jour des modified ?
 			if( $success && empty( $found ) ) {
-				if( in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
-					$dn = ( $action == 'tableaud1' ? 'd1' : 'd2' );
-					$Modelquestionnaire = ClassRegistry::init( "Questionnaire{$dn}pdv93" );
+				// Sauvegarde complète du corpus
+				if( $success ) {
+					$query = $this->queryCorpus($action, $search);
+					$modelClass = $this->modelsCorpus[$action];
 
-					$method = "qdTableau{$dn}"; // TODO: qd pour D1
-					$querydata = $this->{$method}( $search );
-
-					$querydata['fields'] = array(
-						"\"Questionnaire{$dn}pdv93\".\"id\" AS \"Populationd1d2pdv93__questionnaire{$dn}pdv93_id\"",
-						"'{$this->id}' AS \"Populationd1d2pdv93__tableausuivipdv93_id\"",
-						"NOW() AS \"Populationd1d2pdv93__created\"",
-						"NOW() AS \"Populationd1d2pdv93__modified\"",
-					);
-					unset( $querydata['group'] );
-					$sq = $Modelquestionnaire->sq( $querydata );
-
-					$Dbo = $this->getDataSource();
-					$table = $Dbo->fullTableName( $this->Populationd1d2pdv93 );
-					$sql = "INSERT INTO {$table} ( questionnaire{$dn}pdv93_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
-					$success = ( $this->Populationd1d2pdv93->query( $sql ) !== false ) && $success;
-				}
-				else if( $action === 'tableau1b3' ) {
-					$sql = $this->sqlInsertTableau1b3( $search );
-					$success = ( $this->Populationb3pdv93->query( $sql ) !== false ) && $success;
-				}
-				else if( in_array( $action, array( 'tableau1b4', 'tableau1b5' ) ) ) {
-					$dn = ( $action == 'tableau1b4' ? '1b4' : '1b5' );
-					$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
-
-					$method = "qdTableau{$dn}";
-					$query = $this->{$method}( $search );
-
-					$query['fields'] = array(
-						"\"Ficheprescription93\".\"id\" AS \"Populationb4b5pdv93__ficheprescription93_id\"",
-						"'{$this->id}' AS \"Populationb4b5pdv93__tableausuivipdv93_id\"",
-						"NOW() AS \"Populationb4b5pdv93__created\"",
-						"NOW() AS \"Populationb4b5pdv93__modified\"",
-					);
-
-					// Ajout des conditions des différentes catégories
-					$categories = $this->_tableau1b41b5Categories( $action, $search );
-					if( !empty( $categories ) ) {
-						$query['conditions'][] = array( 'OR' => Hash::extract( $categories, '{s}.{s}' ) );
-					}
-					else {
-						$query['conditions'][] = '0 = 1';
+					$models = array( $modelClass => null ) + Hash::normalize(Hash::extract( $query, 'joins.{n}.alias' ));
+					foreach( array_keys( $models ) as $model ) {
+						$models[$model] = ClassRegistry::init( $model )->schema();
 					}
 
-					// FIXME: pour 1B4 aussi ? D'autres jointures ?
-					if( $action === 'tableau1b5' ) {
-						$query['joins'] = array(
-							$this->Populationb4b5pdv93->Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
-							$this->Populationb4b5pdv93->Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Populationb4b5pdv93->Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-							$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
-							$this->Populationb4b5pdv93->Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) )
-						);
-					}
+					$modelClass = ClassRegistry::init( $modelClass );
+					$modelClass->forceVirtualFields = true;
 
-					//unset( $query['group'] );
-					$sq = $Ficheprescription93->sq( $query );
-
-					$Dbo = $this->getDataSource();
-					$table = $Dbo->fullTableName( $this->Populationb4b5pdv93 );
-					$sql = "INSERT INTO {$table} ( ficheprescription93_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
-
-					$success = ( $this->Populationb4b5pdv93->query( $sql ) !== false ) && $success;
-				}
-				else if( in_array( $action, array( 'tableau1b6' ) ) ) {
-					$Rendezvous = ClassRegistry::init( 'Rendezvous' );
-
-					$method = "qdTableau1b6";
-					$querydata = $this->{$method}( $search );
-
-					$querydata['fields'] = array(
-						"\"Rendezvous\".\"id\" AS \"Populationb6pdv93__rendezvous_id\"",
-						"'{$this->id}' AS \"Populationb6pdv93__tableausuivipdv93_id\"",
-						"NOW() AS \"Populationb6pdv93__created\"",
-						"NOW() AS \"Populationb6pdv93__modified\"",
+					// TODO: le faire dans le modèle beforeSave / afterFind ?
+					$record = array(
+						'Corpuspdv93' => array(
+							'tableausuivipdv93_id' => $this->id,
+							'fields' => json_encode( $models ),
+							'results' => json_encode( $modelClass->find( 'all', $query ) ),
+							'options' => json_encode( $this->getOptions( $action ) )
+						)
 					);
-					unset( $querydata['group'] ); // TODO: group by Rendezvous.id ?
-					$sq = $Rendezvous->sq( $querydata );
 
-					$Dbo = $this->getDataSource();
-					$table = $Dbo->fullTableName( $this->Populationb6pdv93 );
-					$sql = "INSERT INTO {$table} ( rendezvous_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
-
-					$success = ( $this->Populationb6pdv93->query( $sql ) !== false ) && $success;
-				}
-				else {
-					throw new RuntimeException();
+					$this->Corpuspdv93->create( $record );
+					$success = $this->Corpuspdv93->save();
 				}
 			}
 
@@ -3153,6 +3119,366 @@
 			}
 
 			return $options;
+		}
+
+		// ---------------------------------------------------------------------
+
+		// TODO: modifier l'autre fonction / s'en passer ?
+		protected function _completeQueryCorpus( array $query ) {
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			// Ajout des champs
+			$query['fields'] += ConfigurableQueryFields::getModelsFields(
+				array(
+					$Personne->Foyer,
+					$Personne->Prestation,
+					$Personne->Foyer->Dossier,
+					$Personne->Foyer->Adressefoyer,
+					$Personne->Foyer->Adressefoyer->Adresse
+				)
+			);
+
+			// Ajout des jointures
+			$query['joins'][] = $Personne->join( 'Foyer', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $Personne->Foyer->join(
+				'Adressefoyer',
+				array(
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						'Adressefoyer.id IN( '.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				)
+			);
+			$query['joins'][] = $Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) );
+
+			return $query;
+		}
+
+		/**
+		 * TODO: permet de déprécier qdExportcsvCorpusd1() et qdExportcsvCorpusd2()
+		 *
+		 * @param string $tableau
+		 * @param array $search
+		 * @return string
+		 */
+		protected function _queryCorpusD1D2( $tableau, array $search ) {
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			if( $tableau === 'tableaud1' ) {
+				$query = $this->qdTableaud1( $search );
+				$query['joins'][] = $Personne->Rendezvous->join( 'Personne' );
+			}
+			else if( $tableau === 'tableaud2' ) {
+				$query = $this->qdTableaud2( $search );
+			}
+			else {
+				$msg = sprintf( 'Valeur du paramètre $tableau non valide (%s)', $tableau );
+				throw new RuntimeException( $msg, 500 );
+			}
+
+			$query['fields'] = array();
+			$query['contain'] = false;
+
+			$query = $this->_completeQueryCorpus( $query );
+
+			$query['joins'][] = $Personne->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $Personne->Rendezvous->join( 'Referent', array( 'type' => 'LEFT OUTER' ) );
+
+			if( $tableau === 'tableaud1' ) {
+				$query['joins'][] = $Personne->Questionnaired1pdv93->join( 'Questionnaired2pdv93', array( 'type' => 'LEFT OUTER' ) );
+				$query['joins'][] = $Personne->Questionnaired1pdv93->Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) );
+			}
+
+			$query['fields'] += ConfigurableQueryFields::getModelsFields(
+				array(
+					$Personne,
+					$Personne->Rendezvous,
+					$Personne->Rendezvous->Structurereferente,
+					$Personne->Rendezvous->Referent,
+					$Personne->Questionnaired1pdv93,
+					$Personne->Questionnaired1pdv93->Situationallocataire
+				)
+			);
+
+			if( $tableau === 'tableaud2' ) {
+				$query['fields'] += ConfigurableQueryFields::getModelsFields(
+					array(
+						$Personne->Questionnaired1pdv93->Questionnaired2pdv93,
+						$Personne->Questionnaired1pdv93->Questionnaired2pdv93->Sortieaccompagnementd2pdv93
+					)
+				);
+			}
+
+			unset( $query['group'] );
+
+			$query['order'] = array(
+				'Rendezvous.daterdv ASC',
+				'Questionnaired2pdv93.date_validation ASC'
+			);
+
+			return $query;
+		}
+
+		protected function _queryCorpus1B3( $tableau, array $search ) {
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			$query = array(
+				'fields' => ConfigurableQueryFields::getModelsFields(
+					array(
+						$Personne,
+						$Personne->Dsp,
+						$Personne->DspRev,
+						$Personne->Rendezvous,
+						$Personne->Rendezvous->Structurereferente,
+						$Personne->Rendezvous->Referent
+					)
+				),
+				'conditions' => array(),
+				'contain' => false,
+				'joins' => array(
+					$Personne->Rendezvous->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Dsp', array( 'type' => 'INNER' ) ),
+					$Personne->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+					$Personne->Rendezvous->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'order' => array(
+					'Personne.nom' => 'ASC',
+					'Personne.prenom' => 'ASC'
+				)
+			);
+
+			$query = $this->_completeQueryCorpus( $query );
+
+			// FIXME
+			foreach( $this->_categories1b3 as $categorie => $params ) {
+				if( $params['table'] === 'dsps' ) {
+					$a = "( \"Dsp\".{$params['column']} IS NOT NULL AND \"Dsp\".{$params['column']} IN ( '".implode( "', '", $params['values'] )."' ) )
+						OR
+						( \"DspRev\".{$params['column']} IS NOT NULL AND \"DspRev\".{$params['column']} IN ( '".implode( "', '", $params['values'] )."' ) )";
+					$query['fields']["Difficulte.{$categorie}"] = "( {$a} ) AS \"Difficulte__{$categorie}\"";
+				}
+				else {
+					$a = "EXISTS(
+						SELECT *
+						FROM {$params['table']} AS {$params['alias']}
+						WHERE {$params['alias']}.dsp_id = \"Dsp\".\"id\"
+						AND ( {$params['alias']}.{$params['column']} IS NOT NULL AND {$params['alias']}.{$params['column']} IN ( '".implode( "', '", $params['values'] )."' ) )
+					)
+					OR EXISTS(
+						SELECT *
+						FROM {$params['table']}_revs AS {$params['alias']}_revs
+						WHERE {$params['alias']}_revs.dsp_rev_id = \"DspRev\".\"id\"
+						AND ( {$params['alias']}_revs.{$params['column']}  IS NOT NULL AND {$params['alias']}_revs.{$params['column']} IN ( '".implode( "', '", $params['values'] )."' ) )
+					)";
+					$query['fields']["Difficulte.{$categorie}"] = "( {$a} ) AS \"Difficulte__{$categorie}\"";
+				}
+			}
+
+			// -----------------------------------------------------------------
+
+			$conditions = array_words_replace(
+				$this->_tableau1b3Conditions( $search ),
+				array( 'rendezvous' => 'Rendezvous', 'dsps_revs' => 'DspRev' )
+			);
+
+			$subQuery = array(
+				'fields' => array(
+					'Rendezvous.id AS "rdv"',
+					'Dsp.id AS "dsp"',
+					'DspRev.id AS "dsp_rev"',
+				),
+				'contain' => false,
+				'joins' => array(
+					$Personne->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Dsp', array( 'type' => 'INNER' ) ),
+					$Personne->join(
+						'DspRev',
+						array(
+							'type' => 'LEFT OUTER',
+							// FIXME: <= moment du RDV ?
+							'DspRev.modified <=' => "{$conditions['annee']}-12-31"
+						)
+					)
+				),
+				'conditions' => array(
+					'Personne.id = Foo.id'
+				),
+				'order' => array(
+					'Rendezvous.daterdv DESC',
+					'Rendezvous.heurerdv DESC',
+					'Rendezvous.id DESC',
+					'Dsp.id DESC',
+					'DspRev.modified DESC',
+					'DspRev.id DESC'
+				),
+				'limit' => 1
+			);
+
+			// 2. Sous-requête
+			// Dont le type de RDV est individuel
+			$subQuery['conditions']['Rendezvous.typerdv_id'] = (array)Configure::read( 'Tableausuivipdv93.typerdv_id' );
+
+			// Avec un RDV honore durant l'annee N
+			$subQuery['conditions']['EXTRACT(\'YEAR\' FROM "Rendezvous"."daterdv")'] = $conditions['annee'];
+			$subQuery['conditions'][] = $this->_conditionStatutRdv( 'Rendezvous.statutrdv_id' );
+
+			// pour la structure referente X (eventuellement)
+			foreach( array( 'conditionpdv', 'conditionmaj' ) as $key ) {
+				$conditions[$key] = preg_replace( '/^AND /', '', $conditions[$key] );
+				if( $conditions[$key] !== '' ) {
+					$subQuery['conditions'][] = $conditions[$key];
+				}
+			}
+
+			// De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			$subQuery['conditions'][] = $this->_conditionStructurereferenteIsPdv( 'Rendezvous.structurereferente_id' );
+
+			$sql = $Personne->sq( $subQuery );
+
+			$replacements = array(
+				'Personne' => 'personnes',
+				'Dsp' => 'dsps',
+				'DspRev' => 'dsps_revs',
+				'Rendezvous' => 'rendezvous',
+				'Foo' => 'Personne'
+			);
+			$sql = array_words_replace( array( $sql ), $replacements )[0];
+
+			$query['conditions'][] = array(
+				'OR' => array(
+					array(
+						'DspRev.id IS NULL',
+						"( Rendezvous.id, Dsp.id ) IN ( SELECT \"tmp\".\"rdv\", \"tmp\".\"dsp\" FROM ( {$sql} ) AS \"tmp\" )"
+					),
+					array(
+						'DspRev.id IS NOT NULL',
+						"( Rendezvous.id, Dsp.id, DspRev.id ) IN ( SELECT \"tmp\".\"rdv\", \"tmp\".\"dsp\" , \"tmp\".\"dsp_rev\" FROM ( {$sql} ) AS \"tmp\" )"
+					)
+				)
+			);
+
+			$query['joins'][] = $Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' ));
+
+			return $query;
+		}
+
+		/**
+		 * TODO: permet de déprécier qdExportcsvCorpus1b4() et qdExportcsvCorpus1b5()
+		 *
+		 * @param string $tableau
+		 * @param array $search
+		 * @return string
+		 */
+		protected function _queryCorpus1B41B5( $tableau, array $search ) {
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			if( $tableau === 'tableau1b4' ) {
+				$query = $this->qdTableau1b4( $search );
+			}
+			else if( $tableau === 'tableau1b5' ) {
+				$query = $this->qdTableau1b5( $search );
+			}
+			else {
+				$msg = sprintf( 'Valeur du paramètre $tableau non valide (%s)', $tableau );
+				throw new RuntimeException( $msg, 500 );
+			}
+
+			// INFO: il manque la jointure sur Personne
+			array_unshift( $query['joins'], $Personne->Ficheprescription93->join( 'Personne' ) );
+
+			$categories = $this->_tableau1b41b5Categories( $tableau, $search );
+			$query['conditions'][] = array( 'OR' => Hash::extract($categories, '{s}.{s}') );
+
+			$query['fields'] = array();
+			$query['contain'] = false;
+			$query = $this->_completeQueryCorpus( $query );
+			$query['fields'] += ConfigurableQueryFields::getModelsFields(
+				array(
+					$Personne,
+					$Personne->Ficheprescription93,
+					$Personne->Ficheprescription93->Actionfp93,
+					$Personne->Ficheprescription93->Adresseprestatairefp93,
+					$Personne->Ficheprescription93->Filierefp93,
+					$Personne->Ficheprescription93->Personne,
+					$Personne->Ficheprescription93->Referent,
+					$Personne->Ficheprescription93->Adresseprestatairefp93->Prestatairefp93,
+					$Personne->Ficheprescription93->Filierefp93->Categoriefp93,
+					$Personne->Ficheprescription93->Filierefp93->Categoriefp93->Thematiquefp93,
+					$Personne->Ficheprescription93->Referent->Structurereferente
+				)
+			);
+			unset( $query['group'] );
+
+			$query['joins'][] = $Personne->Ficheprescription93->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) );
+
+			// Ajout de champs se trouvant dans les tableaux de résultats
+			if( $tableau === 'tableau1b5' ) {
+				$query['fields']['Ficheprescription93.personne_a_integre'] = '( CASE WHEN "Ficheprescription93"."personne_a_integre" = \'1\' THEN \'Oui\' ELSE NULL END ) AS "Ficheprescription93__personne_a_integre"';
+				$query['fields']['Ficheprescription93.personne_pas_deplace'] = '( CASE WHEN "Ficheprescription93"."benef_retour_presente" IN ( \'non\', \'excuse\' ) THEN \'Oui\' ELSE NULL END ) AS "Ficheprescription93__personne_pas_deplace"';
+				$query['fields']['Ficheprescription93.en_attente'] = '( CASE WHEN ( "Ficheprescription93"."date_signature_partenaire" IS NULL ) AND ( "Ficheprescription93"."benef_retour_presente" IS NULL OR "Ficheprescription93"."benef_retour_presente" = \'oui\' ) THEN \'Oui\' ELSE NULL END ) AS "Ficheprescription93__en_attente"';
+			}
+
+			return $query;
+		}
+
+		protected function _queryCorpus1B6( $tableau, array $search ) {
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			$query = $this->qdTableau1b6( $search );
+
+			$query['fields'] = array();
+			$query = $this->_completeQueryCorpus( $query );
+			$query['fields'] += ConfigurableQueryFields::getModelsFields(
+				array(
+					$Personne,
+					$Personne->Rendezvous,
+					$Personne->Rendezvous->RendezvousThematiquerdv,
+					$Personne->Rendezvous->RendezvousThematiquerdv->Thematiquerdv,
+					$Personne->Rendezvous->Referent,
+					$Personne->Rendezvous->Structurereferente,
+					$Personne->Rendezvous->Statutrdv,
+					$Personne->Rendezvous->Typerdv
+				)
+			);
+
+			unset( $query['group'] );
+			$query['joins'][] = $Personne->Rendezvous->join( 'Statutrdv', array( 'type' => 'INNER' ) );
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le querydata à utiliser pour réaliser l'export du corpus d'un
+		 * tableau de suivi.
+		 * Utilisé dans la méthode historiser.
+		 *
+		 * @param string $tableau Le nom du tableau de suivi
+		 * @param array $search Les filtes renvoyés par le moteur de recherche
+		 * @return array
+		 * @throws RuntimeException Lorsque le nom du tableau n'est pas reconnu
+		 */
+		public function queryCorpus( $tableau, array $search ) {
+			if( in_array( $tableau, array( 'tableaud1', 'tableaud2' ) ) ) {
+				$query = $this->_queryCorpusD1D2( $tableau, $search );
+			}
+			else if( $tableau === 'tableau1b3' ) {
+				$query = $this->_queryCorpus1B3( $tableau, $search );
+			}
+			// tableau1b4
+			else if( in_array( $tableau, array( 'tableau1b4', 'tableau1b5' ) ) ) {
+				$query = $this->_queryCorpus1B41B5( $tableau, $search );
+			}
+			else if( $tableau === 'tableau1b6' ) {
+				$query = $this->_queryCorpus1B6( $tableau, $search );
+			}
+			else {
+				$msg = sprintf( 'Valeur du paramètre $tableau non valide (%s)', $tableau );
+				throw new RuntimeException( $msg, 500 );
+			}
+
+			return $query;
 		}
 	}
 ?>
