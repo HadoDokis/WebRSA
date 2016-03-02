@@ -263,6 +263,7 @@
 					'configure_primary_key' => $this->_configurePrimaryKeys(),
 					'configure_regexps' => $this->Webrsacheck->allConfigureRegexpsErrors(),
 					'configure_fields' => $this->Webrsacheck->allCheckParametrage(),
+					'ini_set' => $this->Webrsacheck->allConfigureIniSet(),
 					'configure_bad_keys' => $this->Webrsacheck->allCheckBadKeys(),
 					'configurable_query' => $recherches,
 					'configure_evidence' => $this->Webrsacheck->allConfigureEvidence()

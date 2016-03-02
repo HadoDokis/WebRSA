@@ -112,6 +112,34 @@
 		public static function isWrite( $controllerName, $action ) {
 			return ( Hash::get( self::$_attributesCache, "{$controllerName}.crudMap.{$action}" ) !== 'read' );
 		}
+
+		/**
+		 * Retourne la liste des classes de contrôleurs de l'application (avec
+		 * le suffixe Controller).
+		 *
+		 * @return array
+		 */
+		public static function listControllers() {
+			self::init();
+
+			return array_keys( self::$_methodsCache );
+		}
+
+		/**
+		 * Retourne la liste des méthodes d'un contrôleur de l'application (avec
+		 * le suffixe Controller).
+		 *
+		 * @param string $controllerName Le nom du contrôleur (sans le suffixe
+		 *	Controller)
+		 * @param string $type Le type de méthodes à retourner (public, private,
+		 *	protected)
+		 * @return array
+		 */
+		public static function listActions( $controllerName, $type = 'public' ) {
+			self::init();
+
+			return (array)Hash::get( self::$_methodsCache, "{$controllerName}Controller.{$type}" );
+		}
 	}
 
 //	App::uses( 'AppControllers', 'AppClasses.Utility' );
