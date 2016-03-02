@@ -300,33 +300,54 @@
 				throw new NotFoundException();
 			}
 
-			if( $action === 'tableaud1' ) {
-				$query = $this->Tableausuivipdv93->qdExportcsvCorpusd1( $id );
+			// Récupération des données du corpus
+			$query = array(
+				'conditions' => array(
+					'Corpuspdv93.tableausuivipdv93_id' => $id
+				),
+				'contain' => false
+			);
+
+			$corpuspdv93 = $this->Tableausuivipdv93->Corpuspdv93->find( 'first', $query );
+
+			// Nouvelle façon de faire, avec la table corpuspdvs93
+			if( !empty( $corpuspdv93 ) ) {
+				// TODO: le faire dans le modèle beforeSave / afterFind ?
+				$fields = json_decode( $corpuspdv93['Corpuspdv93']['fields'], true );
+				$results = json_decode( $corpuspdv93['Corpuspdv93']['results'], true );
+				$options = json_decode( $corpuspdv93['Corpuspdv93']['options'], true );
 			}
-			else if( $action === 'tableaud2' ) {
-				$query = $this->Tableausuivipdv93->qdExportcsvCorpusd2( $id );
-			}
-			else if( $action === 'tableau1b3' ) {
-				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b3( $id );
-			}
-			else if( $action === 'tableau1b4' ) {
-				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b4( $id );
-			}
-			else if( $action === 'tableau1b5' ) {
-				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b5( $id );
-			}
-			else if( $action === 'tableau1b6' ) {
-				$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b6( $id );
+			// Ancienne façon de faire, tant que l'on n'a pas tout mis à jour
+			else {
+				if( $action === 'tableaud1' ) {
+					$query = $this->Tableausuivipdv93->qdExportcsvCorpusd1( $id );
+				}
+				else if( $action === 'tableaud2' ) {
+					$query = $this->Tableausuivipdv93->qdExportcsvCorpusd2( $id );
+				}
+				else if( $action === 'tableau1b3' ) {
+					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b3( $id );
+				}
+				else if( $action === 'tableau1b4' ) {
+					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b4( $id );
+				}
+				else if( $action === 'tableau1b5' ) {
+					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b5( $id );
+				}
+				else if( $action === 'tableau1b6' ) {
+					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b6( $id );
+				}
+
+				if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {
+					$query = ConfigurableQueryFields::getFieldsByKeys( "{$this->name}.{$action}.{$this->request->action}", $query );
+				}
+
+				$this->Tableausuivipdv93->forceVirtualFields = true;
+				$results = $this->Tableausuivipdv93->find( 'all', $query );
+
+				$options = $this->Tableausuivipdv93->getOptions( $action );
 			}
 
-			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {
-				$query = ConfigurableQueryFields::getFieldsByKeys( "{$this->name}.{$action}.{$this->request->action}", $query );
-			}
-
-			$this->Tableausuivipdv93->forceVirtualFields = true;
-			$results = $this->Tableausuivipdv93->find( 'all', $query );
-
-			$options = $this->Tableausuivipdv93->getOptions( $action );
 			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
 
 			$this->set( compact( 'results', 'options', 'csvfile', 'action' ) );
