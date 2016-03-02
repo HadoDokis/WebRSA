@@ -106,6 +106,10 @@
 						<h4 class="title">Champs spécifiés dans le webrsa.inc</h4>
 						<?php echo $this->Checks->table( $results['Webrsa']['configure_fields'] );?>
 					</div>
+					<div id="webrsa_ini_set">
+						<h4 class="title">Paramétrages ini_set dans le webrsa.inc en fonction du contrôleur et de l'action</h4>
+						<?php echo $this->Checks->table( $results['Webrsa']['ini_set'] );?>
+					</div>
 					<div id="webrsa_configure_badKeys">
 						<h4 class="title">Clefs non valide webrsa.inc</h4>
 						<?php echo $this->Checks->table( $results['Webrsa']['configure_bad_keys'] );?>

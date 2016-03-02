@@ -9,6 +9,7 @@
 	 */
 	App::uses( 'Folder', 'Utility' );
 	require_once( APPLIBS.'cmis.php' );
+	App::uses( 'AppControllers', 'AppClasses.Utility' );
 
 	/**
 	 * Classe permettant de connaître la liste des modèles de documents (odt),
@@ -392,7 +393,7 @@
 					)
 				);
 			}
-			
+
 			if ($departement === 66) {
 				$result = array_merge(
 					$result,
@@ -1311,6 +1312,48 @@
 							'value' => var_export( $config[$controller][$action], true ),
 							'message' => empty($errors) ? null : implode( "\n", $errors )
 						);
+					}
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Vérifie, pour l'ensemble des contrôleurs utilisés par le département
+		 * et de leurs actions (méthodes publiques) si une configuration existe
+		 * dans le fichier webrsa.inc (sous la clé <Contrôleur>.<action>.ini-set)
+		 * et teste les valeurs de cette configuration.
+		 *
+		 * @return array
+		 */
+		public function allConfigureIniSet() {
+			$results = array();
+
+			foreach( AppControllers::listControllers() as $className ) {
+				$name = preg_replace( '/Controller$/', '', $className );
+				if( departement_uses_class( $name ) ) {
+					foreach( AppControllers::listActions( $name ) as $action ) {
+						$path = "{$name}.{$action}.ini_set";
+						$configuration = Configure::read( $path );
+						$errors = array();
+
+						if( $configuration !== null ) {
+							foreach( $configuration as $varname => $newvalue ) {
+								$oldvalue = ini_get( $varname );
+								if( ini_set( $varname, $newvalue ) === false || (string)ini_get( $varname ) !== (string)$newvalue ) {
+									$msgstr = 'Erreur lors de la configuration de %s.%s à la valeur \'%s\'';
+									$errors[] = sprintf( $msgstr, $path, $varname, $newvalue );
+								}
+								ini_set( $varname, $oldvalue );
+							}
+
+							$results[$path] = array(
+								'success' => empty( $errors ),
+								'value' => var_export( $configuration, true ),
+								'message' => empty( $errors ) ? null : implode( ', ', $errors )
+							);
+						}
 					}
 				}
 			}

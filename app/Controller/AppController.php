@@ -234,7 +234,7 @@
 		 * Retourne un tableau contenant un booléen pour chacune des clés suivantes
 		 * permettant de savoir si l'appel à l'URL actuelle est un appel "classique"
 		 * ou non (login, logout, forgottenPass, allo, requested, ajax).
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _is() {
@@ -246,6 +246,25 @@
 				'requested' => isset( $this->request->params['requested'] ),
 				'ajax' => isset( $this->request->params['isAjax'] )
 			);
+		}
+
+		/**
+		 * Permet de modifier à la volée certaines valeurs de du fichier php.ini
+		 * via la commande ini_set.
+		 * Configuré dans le fichier webrsa.inc: <Contrôleur>.<action>.ini_set
+		 */
+		protected function _iniSet() {
+			$path = "{$this->name}.{$this->action}.ini_set";
+			$configuration = Configure::read( $path );
+
+			if( $configuration !== null && is_array( $configuration ) ) {
+				foreach( $configuration as $varname => $newvalue ) {
+					if( ini_set( $varname, $newvalue ) === false ) {
+						$msgstr = 'Erreur lors de la configuration de %s.%s à la valeur \'%s\'';
+						$this->log( sprintf( $msgstr, $path, $varname, $newvalue ) );
+					}
+				}
+			}
 		}
 
 		/**
@@ -269,7 +288,7 @@
 			$return = parent::beforeFilter();
 
 			$this->Auth->allow( '*' );
-			
+
 			$is = $this->_is();
 
 			// Fin du traitement pour les requestactions et les appels ajax
@@ -300,12 +319,14 @@
 					}
 				}
 			}
-			
+
 			// Chargement du fichier de configuration lié au contrôleur, s'il existe
 			$path = APP.'Config'.DS.'Cg'.Configure::read( 'Cg.departement' ).DS.$this->name.'.php';
 			if( file_exists( $path ) ) {
 				include_once $path;
 			}
+
+			$this->_iniSet();
 
 			return $return;
 		}
@@ -339,7 +360,7 @@
 				$this->set( compact( 'entriesAncienDossier' ) );
 			}
 		}
-		
+
 		/**
 		 * Called after the controller action is run, but before the view is rendered. You can use this method
 		 * to perform logic or set view variables that are required on every request.
