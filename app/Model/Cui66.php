@@ -98,12 +98,46 @@
 		);
 		
 		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
+		 * Chemin relatif pour les modèles de documents .odt utilisés lors des
+		 * impressions. Utiliser %s pour remplacer par l'alias.
+		 * @var array
+		 */
 		public $modelesOdt = array(
 			'ficheLiaison' => 'CUI/synthesecui66.odt',
 			'default' => 'CUI/impression.odt',
+		);
+		
+		/**
+		 * Permet de faire le lien entre Cui66.etatdossiercui66 et Cui.decision_ci
+		 * @var array
+		 */
+		public $correspondance_decision_ci = array(
+			'A' => array(
+				'annule',
+				'rupturecontrat',
+			),
+			'E' => array(
+				'attentepiece',
+				'dossierrecu',
+				'dossiereligible',
+				'attentemail',
+				'formulairecomplet',
+				'attenteavis',
+				'attentedecision',
+				'attentenotification',
+				'contratsuspendu',
+				'dossiernonrecu',
+				'dossierrelance',
+			),
+			'V' => array(
+				'notifie',
+				'encours',
+				'perime',
+			),
+			'R' => array(
+				'decisionsanssuite',
+				'nonvalide',
+			),
 		);
 		
 		/**
@@ -115,23 +149,6 @@
 		 */
 		public function addEnabled( array $messages ) {
 			return !in_array( 'error', $messages );
-		}
-		
-		/**
-		 * Affiche des messages dans index
-		 * 
-		 * @param integer $personne_id
-		 * @return array
-		 */
-		public function messages( $personne_id ) {
-			$messages = array();
-			$isRsaSocle = $this->Cui->isRsaSocle( $personne_id );
-			
-			if ( !$isRsaSocle ){
-				$messages['Personne.rsasocle'] = 'error';
-			}
-
-			return $messages;
 		}
 
 		/**
@@ -243,6 +260,7 @@
 					'Cui' => array(
 						'personne_id' => $personne_id,
 						'numconventionobjectif' => Configure::read( 'Cui.Numeroconvention' ),
+						'decision_cui' => 'E',
 					),
 					'Cui66' => array(
 						'encouple' => $record['Foyer']['nb_beneficiaires'] >= 2 ? 1 : 0,
@@ -289,8 +307,8 @@
 			}
 			// Mise à jour
 			else {
-				$query = $this->queryView($id);
-				$result = $this->find( 'first', $query );
+				$query = $this->Cui->queryView($id);
+				$result = $this->Cui->find( 'first', $query );
 
 				$result = $this->Cui->Entreeromev3->prepareFormDataAddEdit( $result );
 				
@@ -338,7 +356,7 @@
 				'recursive' => -1,
 				'conditions' => array(),
 				'joins' => array(
-					$this->join( 'Cui', array( 'type' => 'INNER' ) ),
+					$this->Cui->join( 'Cui66', array( 'type' => 'INNER' ) ),
 					$this->join( 'Personnecui66' ),
 					$this->Cui->join( 'Personnecui' ),
 					$this->Cui->join( 'Partenairecui' ),
@@ -432,8 +450,8 @@
 		 * @return type
 		 */
 		public function queryImpression( $cui_id = null ){
-			$queryView = $this->queryView( $cui_id );
-			$queryPersonne = $this->queryPersonne( 'Cui.personne_id' );
+			$queryView = $this->Cui->queryView( $cui_id );
+			$queryPersonne = $this->Cui->queryPersonne( 'Cui.personne_id' );
 			
 			$query['fields'] = array_merge( 
 				$queryView['fields'], 
@@ -454,32 +472,6 @@
 				), 
 				$queryPersonne['joins'] );
 			$query['conditions'] = $queryView['conditions'];
-			
-			return $query;
-		}
-
-		/**
-		 * Permet d'obtenir les informations lié à un Allocataire d'un Cui
-		 * 
-		 * @param integer $personne_id
-		 * @return array
-		 */
-		public function queryPersonne( $personne_id ){
-			$query = ClassRegistry::init( 'Allocataire' )->searchQuery();
-
-			$query['fields'] = array_merge(
-				$query['fields'],
-				array(
-					'Titresejour.dftitsej',
-					'Departement.name',
-					'( '.$this->Cui->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nb_enfants"'
-				)
-			);
-
-			$query['joins'][] = $this->Cui->Personne->Foyer->Adressefoyer->Adresse->join( 'Departement', array( 'type' => 'LEFT OUTER' ) );
-			$query['joins'][] = $this->Cui->Personne->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) );
-			
-			$query['conditions']['Personne.id'] = $personne_id;
 			
 			return $query;
 		}
@@ -606,7 +598,7 @@
 		 *
 		 * @return array
 		 */
-		public function options() {
+		public function options($user_id = null) {
 			$Typecontratcui66 = ClassRegistry::init( 'Typecontratcui66' );
 			
 			$options = Hash::merge(
@@ -637,11 +629,54 @@
 				$this->enums(),
 				$this->Decisioncui66->enums(),
 				$this->Personnecui66->enums(),
-				$this->Cui->options(),
+				$this->Cui->enums(),
 				$this->Cui->Partenairecui->enums(),
 				$this->Cui->Personnecui->enums(),
 				$this->Cui->Entreeromev3->options()
 			);
+			
+			foreach( $this->Cui->beneficiairede as $value ){
+				$options['Cui']['beneficiairede'][] = $value;
+			}
+			
+			if ($user_id !== null) {
+				// Récupération de la liste des actions avec une fiche de candidature (pour Cui.organismedesuivi)
+				$qd_user = array(
+					'conditions' => array(
+						'User.id' => $this->Session->read( 'Auth.User.id' )
+					),
+					'fields' => null,
+					'order' => null,
+					'contain' => array(
+						'Serviceinstructeur'
+					)
+				);
+				$user = $this->User->find( 'first', $qd_user );
+
+				$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
+
+				// On affiche les actions inactives en édition mais pas en ajout,
+				// afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
+				$isactive = 'O';
+				if( $this->action == 'edit' ){
+					$isactive = array( 'O', 'N' );
+				}
+
+				$actions = array();
+				foreach(ClassRegistry::init('Actioncandidat')->listePourFicheCandidature( $codeinseeUser, $isactive, '1' ) as $action) {
+					$actions[$action] = $action;
+				}
+				$options['Cui']['organismedesuivi'] = $actions;
+			}
+
+			// Ajout de la liste des partenaires
+			$options['Cui']['partenaire_id'] = $this->Cui->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
+			
+			// Liste des cantons pour l'adresse du partenaire
+			App::import('Component','Gestionzonesgeos');
+			$Gestionzonesgeos = new GestionzonesgeosComponent(new ComponentCollection());
+			$options['Adressecui']['canton'] = $Gestionzonesgeos->listeCantons();
+			$options['Adressecui']['canton2'] =& $options['Adressecui']['canton'];
 
 			return $options;
 		}
@@ -1081,5 +1116,54 @@
 			return $data;
 		}
 
+		
+		
+		
+		
+		
+		/*
+		 * TODO : Tester ci-dessous
+		 */
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * Met à jour les decision_cui
+		 * 
+		 * @param array $conditions
+		 */
+		public function updateDecisionCui($conditions = array()) {
+			$results = $this->find('all',
+				array(
+					'fields' => array(
+						'Cui66.cui_id',
+						'Cui66.etatdossiercui66',
+					),
+					'joins' => array(
+						$this->join('Cui')
+					),
+					'conditions' => $conditions
+				)
+			);
+			
+			foreach ($this->correspondance_decision_ci as $decision_cui => $etatdossiercui66) {
+				foreach ($results as $value) {
+					if (in_array(Hash::get($value, 'Cui66.etatdossiercui66'), $etatdossiercui66)) {
+						$this->Cui->updateAllUnBound(
+							array('Cui.decision_cui' => $decision_cui),
+							array(
+								'"Cui"."id"' => Hash::get($value, 'Cui66.cui_id'),
+							)
+						);
+					}
+				}
+			}
+		}
 	}
 ?>

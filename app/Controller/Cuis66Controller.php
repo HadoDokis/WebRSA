@@ -142,7 +142,7 @@
 			$this->set( compact( 'dossierMenu' ) );
 
 			$this->Fileuploader->filelink( $cui_id, array( 'action' => 'index', $personne_id ) );
-			$this->set( 'urlmenu', "/cuis66/index/{$personne_id}" );
+			$this->set( 'urlmenu', "/cuis/index/{$personne_id}" );
 
 			$options = $this->Cui->enums();
 			$this->set( compact( 'options' ) );
@@ -152,20 +152,22 @@
 		 * Liste des CUI du bénéficiaire.
 		 * 
 		 * @param integer $personne_id
+		 * @deprecated since version 3.1
+		 * @see CuisController::index
 		 */
 		public function index( $personne_id ) {
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
 			
-			$query = $this->Cui->Cui66->queryIndex($personne_id);
+			$query = $this->Cui->queryIndex($personne_id);
 			$results = $this->Cui->find( 'all', $query );
 			
-			$messages = $this->Cui->Cui66->messages( $personne_id );
-			$addEnabled = $this->Cui->Cui66->addEnabled( $messages );
+			$messages = $this->Cui->messages( $personne_id );
+			$addEnabled = $this->Cui->addEnabled( $messages );
 
 			// Options
-			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
+			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
 
 			$this->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle' ) );
 		}
@@ -174,6 +176,8 @@
 		 * Formulaire d'ajout de fiche de CUI
 		 *
 		 * @param integer $personne_id L'id de la Personne à laquelle on veut ajouter un CUI
+		 * @deprecated since version 3.1
+		 * @see CuisController::add
 		 */
 		public function add( $personne_id ) {
 			$args = func_get_args();
@@ -184,6 +188,8 @@
 		 * Méthode générique d'ajout et de modification de CUI
 		 *
 		 * @param integer $id L'id de la personne (add) ou du CUI (edit)
+		 * @deprecated since version 3.1
+		 * @see CuisController::edit
 		 */
 		public function edit( $id = null ) {
 			if( $this->action === 'add' ) {
@@ -209,65 +215,30 @@
 
 			// On tente la sauvegarde
 			if( !empty( $this->request->data ) ) {
-				$this->Cui->Cui66->begin();
-				if( $this->Cui->Cui66->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
-					$this->Cui->Cui66->commit();
+				$this->Cui->begin();
+				if( $this->Cui->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
+					$this->Cui->commit();
 					$cui_id = $this->Cui->id;
-					$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
+					$this->Cui->updatePositionsCuisById( $cui_id );
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
-					$this->Cui->Cui66->rollback();
+					$this->Cui->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {
-				$this->request->data = $this->Cui->Cui66->prepareFormDataAddEdit( $personne_id, $id );
+				$this->request->data = $this->Cui->prepareFormDataAddEdit( $personne_id, $id );
 			}
 			
 			// Options
-			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => true, 'autre' => true ) );
-			
-			// Récupération de la liste des actions avec une fiche de candidature (pour Cui.organismedesuivi)
-			$qd_user = array(
-				'conditions' => array(
-					'User.id' => $this->Session->read( 'Auth.User.id' )
-				),
-				'fields' => null,
-				'order' => null,
-				'contain' => array(
-					'Serviceinstructeur'
-				)
-			);
-			$user = $this->Cui->User->find( 'first', $qd_user );
+			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
 
-			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
-
-            // On affiche les actions inactives en édition mais pas en ajout,
-            // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
-            $isactive = 'O';
-            if( $this->action == 'edit' ){
-                $isactive = array( 'O', 'N' );
-            }
+			$urlmenu = "/cuis/index/{$personne_id}";
 			
-			$actions = array();
-			foreach(ClassRegistry::init('Actioncandidat')->listePourFicheCandidature( $codeinseeUser, $isactive, '1' ) as $action) {
-				$actions[$action] = $action;
-			}
-			$options['Cui']['organismedesuivi'] = $actions;
-
-			// Ajout de la liste des partenaires
-			$options['Cui']['partenaire_id'] = $this->Cui->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
-			
-			// Liste des cantons pour l'adresse du partenaire
-			$options['Adressecui']['canton'] = $this->Gestionzonesgeos->listeCantons();
-			$options['Adressecui']['canton2'] = $options['Adressecui']['canton'];
-
-			$urlmenu = "/cuis66/index/{$personne_id}";
-			
-			$queryPersonne = $this->Cui->Cui66->queryPersonne( $personne_id );
+			$queryPersonne = $this->Cui->queryPersonne( $personne_id );
 			$this->Cui->Personne->forceVirtualFields = true;
 			$personne = $this->Cui->Personne->find( 'first', $queryPersonne );
 
@@ -280,6 +251,8 @@
 		 * Vue d'un CUI
 		 * 
 		 * @param type $id
+		 * @deprecated since version 3.1
+		 * @see CuisController::view
 		 */
 		public function view( $id = null ) {
 			$personne_id = $this->Cui->personneId( $id );
@@ -287,16 +260,13 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
 			
-			$query = $this->Cui->Cui66->queryView( $id );
-			$this->request->data = $this->Cui->Cui66->find( 'first', $query );
+			$query = $this->Cui->queryView( $id );
+			$this->request->data = $this->Cui->find( 'first', $query );
 					
 			// Options
-			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => true, 'autre' => true ) );
-
-			$options['Adressecui']['canton'] = $this->Gestionzonesgeos->listeCantons();
-			$options['Adressecui']['canton2'] = $options['Adressecui']['canton'];
-
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$options = $this->Cui->options();
+			
+			$urlmenu = "/cuis/index/{$personne_id}";
 
 			$Allocataire = ClassRegistry::init( 'Allocataire' );
 			
@@ -401,7 +371,7 @@
 				$this->request->data = array( 'Cui66' => array( 'id' => $cui66_id ) );
 			}
 
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$urlmenu = "/cuis/index/{$personne_id}";
 
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu' ) );
 		}
@@ -472,7 +442,7 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
 			
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$urlmenu = "/cuis/index/{$personne_id}";
 
 			$query = array(
 				'conditions' => array(
@@ -487,7 +457,7 @@
 			$addEnabled = $this->Cui->Emailcui->addEnabled( $messages );
 
 			// Options
-			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
+			$options = $this->Cui->options();
 
 			$this->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'cui_id', 'urlmenu' ) );
 		}
@@ -551,7 +521,7 @@
 			// Options
 			$options = $this->Cui->Emailcui->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
 
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$urlmenu = "/cuis/index/{$personne_id}";
 			
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne', 'mailEmployeur', 'correspondancesChamps', 'files' ) );
 			$this->render( 'email_edit' );
@@ -582,7 +552,7 @@
 			// Options
 			$options = $this->Cui->Emailcui->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
 
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$urlmenu = "/cuis/index/{$personne_id}";
 			
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne', 'mailEmployeur', 'correspondancesChamps', 'files' ) );
 		}
@@ -688,7 +658,7 @@
 				}
 			}
 			
-			$options = $this->Cui->Cui66->options( array( 'allocataire' => false, 'find' => false, 'autre' => false ) );
+			$options = $this->Cui->options();
 			
 			foreach( $matches[1] as $key => $value ){
 				$modelName = $value;
@@ -757,7 +727,7 @@
 			$this->Cui->Cui66->forceVirtualFields = true;
 			
 			$data = $this->Cui->Cui66->find( 'first', $query );
-			$options = $this->Cui->Cui66->options();
+			$options = $this->Cui->options();
 
 			$data = $this->Cui->Cui66->completeDataImpression( $data );
 
@@ -845,7 +815,7 @@
 				$query = $this->Cui->Cui66->queryImpression( $cui_id );
 				$this->Cui->Cui66->forceVirtualFields = true;
 				$data = $this->Cui->Cui66->find( 'first', $query );
-				$options = $this->Cui->Cui66->options();
+				$options = $this->Cui->options();
 				$data = $this->Cui->Cui66->completeDataImpression( $data );
 				$pdf = $this->Cui->ged(
 					$data,

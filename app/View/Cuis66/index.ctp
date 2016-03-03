@@ -4,7 +4,7 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 	
-	echo $this->Default3->titleForLayout();
+	echo $this->Default3->titleForLayout(array(), array('msgid' => 'DEPRECATED'));
 
 	echo $this->element( 'ancien_dossier' );
 

@@ -56,7 +56,7 @@
 	echo '<br />' . $this->Default->button(
 		'back',
 		array(
-			'controller' => 'cuis66',
+			'controller' => 'cuis',
 			'action'     => 'index',
 			$personne_id
 		),

@@ -183,7 +183,7 @@
 			$htmlAttributes = self::evaluate( $data, $htmlAttributes );
 
 			return array(
-				__d( $domain, $msgid ),
+				__m($msgid),
 				$url,
 				$htmlAttributes
 			);

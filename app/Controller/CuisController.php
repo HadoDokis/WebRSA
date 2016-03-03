@@ -254,113 +254,52 @@
 		}
 
 		/**
-		 * http://valums.com/ajax-upload/
-		 * http://doc.ubuntu-fr.org/modules_php
-		 * increase post_max_size and upload_max_filesize to 10M
-		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		 * @deprecated since version 2.9.0
+		 * Envoi d'un fichier temporaire depuis le formualaire.
 		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		 * http://valums.com/ajax-upload/
-		 * http://doc.ubuntu-fr.org/modules_php
-		 * increase post_max_size and upload_max_filesize to 10M
-		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		 * FIXME: traiter les valeurs de retour
-		 * @deprecated since version 2.9.0
+		 * Suppression d'un fichier temporaire.
 		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-		 * @deprecated since version 2.9.0
+		 * Visualisation d'un fichier temporaire.
+		 *
+		 * @param integer $id
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
-		 * @deprecated since version 2.9.0
+		 * Visualisation d'un fichier stocké.
+		 *
+		 * @param integer $id
 		 */
-		public function download( $fichiermodule_id ) {
-			$this->assert( !empty( $fichiermodule_id ), 'error404' );
-			$this->Fileuploader->download( $fichiermodule_id );
+		public function download( $id ) {
+			$this->Fileuploader->download( $id );
 		}
 
 		/**
-		 * Fonction permettant d'accéder à la page pour lier les fichiers au CER
-		 * @deprecated since version 2.9.0
+		 * Liste des fichiers liés à une orientation.
+		 *
+		 * @param integer $cui_id
 		 */
-		public function filelink( $id ) {
-			$this->assert( valid_int( $id ), 'invalidParameter' );
+		public function filelink( $cui_id ) {
+			$personne_id = $this->Cui->personneId( $cui_id );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$this->set( compact( 'dossierMenu' ) );
 
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
+			$this->Fileuploader->filelink( $cui_id, array( 'action' => 'index', $personne_id ) );
+			$this->set( 'urlmenu', "/cuis/index/{$personne_id}" );
 
-			$fichiers = array( );
-			$cui = $this->Cui->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Cui.id' => $id
-					),
-					'contain' => array(
-						'Fichiermodule' => array(
-							'fields' => array( 'name', 'id', 'created', 'modified' )
-						)
-					)
-				)
-			);
-
-			$personne_id = $cui['Cui']['personne_id'];
-			$dossier_id = $this->Cui->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-
-			$this->Jetons2->get( $dossier_id );
-
-			// Retour à l'index en cas d'annulation
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
-
-			if( !empty( $this->request->data ) ) {
-                $this->Cui->begin();
-				$saved = $this->Cui->updateAllUnBound(
-					array( 'Cui.haspiecejointe' => '\''.$this->request->data['Cui']['haspiecejointe'].'\'' ),
-					array(
-						'"Cui"."personne_id"' => $personne_id,
-						'"Cui"."id"' => $id
-					)
-				);
-
-				if( $saved ) {
-					// Sauvegarde des fichiers liés à une PDO
-					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
-					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->request->data, "Cui.haspiecejointe" ), $id ) && $saved;
-				}
-
-				if( $saved ) {
-					$this->Cui->commit();
-					$this->Jetons2->release( $dossier_id );
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
-				}
-				else {
-					$fichiers = $this->Fileuploader->fichiers( $id );
-					$this->Cui->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-				}
-			}
-
-			$this->_setOptions();
-			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'cui' ) );
-			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
+			$options = $this->Cui->enums();
+			$this->set( compact( 'options' ) );
 		}
 
 		/**
@@ -369,7 +308,7 @@
 		 * @param integer $personne_id
 		 * @deprecated since version 2.9.0
 		 */
-		public function index( $personne_id = null ) {
+		public function index_old( $personne_id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
@@ -452,7 +391,7 @@
 		 * @param integer $personne_id
 		 * @deprecated since version 2.9.0
 		 */
-		public function add( $personne_id ) {
+		public function add_old( $personne_id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -463,7 +402,7 @@
 		 * @param integer $id
 		 * @deprecated since version 2.9.0
 		 */
-		public function edit( $id ) {
+		public function edit_old( $id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -783,7 +722,7 @@
 		 * @param integer $id
 		 * @deprecated since version 2.9.0
 		 */
-		public function view( $id ) {
+		public function view_old( $id ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
 
 			$qd_cui = array(
@@ -1210,5 +1149,196 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesCuisNew' );
 			$Recherches->exportcsv();
 		}
+		
+		/**
+		 * Début Intégration Cuis66Controller
+		 * les fonctions qui portent le même nom ont été renommé avec un suffix "_old"
+		 */
+		
+		/**
+		 * Liste des CUI du bénéficiaire.
+		 * 
+		 * @param integer $personne_id
+		 */
+		public function index( $personne_id ) {
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
+			
+			$query = $this->Cui->queryIndex($personne_id);
+			$results = $this->Cui->find( 'all', $query );
+			
+			$messages = $this->Cui->messages( $personne_id );
+			$addEnabled = $this->Cui->addEnabled( $messages );
+
+			// Options
+			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
+
+			$this->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle' ) );
+			
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $this->view = __FUNCTION__.'_cg66'; break;
+			}
+		}
+		
+		/**
+		 * Formulaire d'ajout de fiche de CUI
+		 *
+		 * @param integer $personne_id L'id de la Personne à laquelle on veut ajouter un CUI
+		 */
+		public function add( $personne_id ) {
+			$args = func_get_args();
+			call_user_func_array( array( $this, 'edit' ), $args );
+		}
+
+		/**
+		 * Méthode générique d'ajout et de modification de CUI
+		 *
+		 * @param integer $id L'id de la personne (add) ou du CUI (edit)
+		 */
+		public function edit( $id = null ) {
+			if( $this->action === 'add' ) {
+				$personne_id = $id;
+				$id = null;
+			}
+			else {
+				$personne_id = $this->Cui->personneId( $id );
+			}
+
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
+			
+			// INFO: champ non obligatoire
+			unset( $this->Cui->Entreeromev3->validate['familleromev3_id']['notEmpty'] );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			// On tente la sauvegarde
+			if( !empty( $this->request->data ) ) {
+				$this->Cui->begin();
+				if( $this->Cui->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
+					$this->Cui->commit();
+					$cui_id = $this->Cui->id;
+					$this->Cui->updatePositionsCuisById( $cui_id );
+					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->Cui->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else {
+				$this->request->data = $this->Cui->prepareFormDataAddEdit( $personne_id, $id );
+			}
+			
+			// Options
+			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
+
+			$urlmenu = "/cuis/index/{$personne_id}";
+			
+			$queryPersonne = $this->Cui->queryPersonne( $personne_id );
+			$this->Cui->Personne->forceVirtualFields = true;
+			$personne = $this->Cui->Personne->find( 'first', $queryPersonne );
+
+			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne' ) );
+			
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: 
+					$this->view = __FUNCTION__.'_cg66';
+					$this->set('mailEmployeur', $this->action !== 'add');
+					$this->set('correspondancesChamps', json_encode($this->Cui->Partenairecui->Partenairecui66->correspondancesChamps));
+					break;
+				default: $this->view = __FUNCTION__;
+			}
+		}
+		
+		/**
+		 * Vue d'un CUI
+		 * 
+		 * @param type $id
+		 */
+		public function view( $id = null ) {
+			$personne_id = $this->Cui->personneId( $id );
+
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
+			
+			$query = $this->Cui->queryView( $id );
+			$this->request->data = $this->Cui->find( 'first', $query );
+					
+			// Options
+			$options = $this->Cui->options();
+			
+			$urlmenu = "/cuis/index/{$personne_id}";
+
+			$Allocataire = ClassRegistry::init( 'Allocataire' );
+			
+			$queryPersonne = $Allocataire->searchQuery();
+			$queryPersonne['conditions']['Personne.id'] = $personne_id;
+			$fields = array(
+				'Personne.nom',
+				'Personne.prenom',
+				'Personne.dtnai',
+				'Personne.nir',
+				'Personne.nomcomnai',
+				'Personne.nati',
+				'Adresse.numvoie',
+				'Adresse.libtypevoie',
+				'Adresse.nomvoie',
+				'Adresse.codepos',
+				'Adresse.lieudist',
+				'Adresse.complideadr',
+				'Adresse.compladr',
+				'Adresse.nomcom',
+				'Adresse.canton',				
+				'Dossier.matricule',
+				'Dossier.dtdemrsa',
+				'Dossier.fonorg',
+				'Referentparcours.nom_complet' => $queryPersonne['fields']['Referentparcours.nom_complet'],
+				'Titresejour.dftitsej'
+			);
+			$queryPersonne['fields'] = $fields;
+			
+			// Jointure spéciale adresse actuelle / département pour obtenir le nom du dpt
+			$queryPersonne['fields'][] = 'Departement.name';
+			$queryPersonne['joins'][] = array(
+				'table' => 'departements',
+				'alias' => 'Departement',
+				'type' => 'LEFT OUTER',
+				'conditions' => array(
+					'SUBSTRING( Adresse.codepos FROM 1 FOR 2 ) = Departement.numdep'
+				)
+			);
+			$queryPersonne['joins'][] = array(
+				'table' => 'titressejour',
+				'alias' => 'Titresejour',
+				'type' => 'LEFT OUTER',
+				'conditions' => array(
+					'Titresejour.personne_id' => $personne_id
+				)
+			);
+			
+			$personne = $this->Cui->Personne->find('first', $queryPersonne);
+			$personne['Foyer']['nb_enfants'] = $this->Cui->Personne->Prestation->getNbEnfants( $personne_id );
+
+			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu', 'personne' ) );
+			
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: 
+					$this->view = __FUNCTION__.'_cg66';
+					break;
+				default: $this->view = __FUNCTION__;
+			}
+		}
+		
+		/**
+		 * Fin Intégration Cuis66Controller
+		 */
 	}
 ?>

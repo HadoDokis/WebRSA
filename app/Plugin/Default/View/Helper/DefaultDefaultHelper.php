@@ -224,7 +224,7 @@
 			$tag = ( isset( $params['tag'] ) ? $params['tag'] : 'h1' );
 			$msgid = ( isset( $params['msgid'] ) ? $params['msgid'] : '/'.Inflector::camelize( $this->request->params['controller'] ).'/'.$this->request->params['action'].'/:heading' );
 			unset( $params['tag'], $params['msgid'] );
-
+			
 			if( isset( $params['domain'] ) ) {
 				$title_for_layout = DefaultUtility::evaluate( $data, __d( $params['domain'], $msgid ) );
 				unset( $params['domain'] );

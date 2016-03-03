@@ -137,7 +137,7 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $cui_id ) );
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$urlmenu = "/cuis/index/{$personne_id}";
 			
 			$options = $this->Accompagnementcui66->enums();
 			$this->set( compact( 'options', 'dossierMenu', 'urlmenu' ) );
@@ -152,7 +152,7 @@
 		public function index( $cui_id ) {
 			$params = array(
 				'modelClass' => 'Accompagnementcui66',
-				'urlmenu' => "/Cuis66/index/#0.Cui.personne_id#"
+				'urlmenu' => "/cuis/index/#0.Cui.personne_id#"
 			);
 			$customQuery['fields'][] = $this->Accompagnementcui66->Fichiermodule->sqNbFichiersLies( $this->Accompagnementcui66, 'nombre' );
 			
@@ -167,7 +167,7 @@
 		public function view( $id ) {
 			$params = array(
 				'modelClass' => 'Accompagnementcui66',
-				'urlmenu' => "/Cuis66/index/#Cui.personne_id#"
+				'urlmenu' => "/cuis/index/#Cui.personne_id#"
 			);
 			return $this->WebrsaModelesLiesCuis66->view( $id, $params );
 		}
@@ -192,7 +192,7 @@
 				'modelClass' => 'Accompagnementcui66',
 				'view' => 'edit',
 				'redirect' => "/Accompagnementscuis66/index/#Cui.id#",
-				'urlmenu' => "/Cuis66/index/#Cui.personne_id#"
+				'urlmenu' => "/cuis/index/#Cui.personne_id#"
 			);
 			return $this->WebrsaModelesLiesCuis66->addEdit( $id, $params );
 		}

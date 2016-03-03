@@ -24,6 +24,9 @@ msgstr ""
 msgid "/Cuis/index/:heading"
 msgstr "Contrat Unique d'Insertion"
 
+msgid "/Cuis/view/:heading"
+msgstr "Contrat Unique d'Insertion"
+
 msgid "/Cuis/search/:heading"
 msgstr "Recherche par Contrat Unique d'Insertion (Nouveau)"
 
@@ -759,6 +762,9 @@ msgstr "Ajout d'un e-mail"
 msgid "/Cuis/email_add/:title"
 msgstr "Ajout d'un e-mail"
 
+msgid "Personne.rsasocle"
+msgstr "Cette personne ne possède pas de RSA Socle."
+
 ################################################################################
 # Actions
 ################################################################################
@@ -781,8 +787,29 @@ msgstr "Ruptures"
 msgid "/Cuis/notification"
 msgstr "Notification"
 
-msgid "/Cuis66/index"
+msgid "/cuis/index"
 msgstr "Voir"
 
-msgid "/Cuis66/index/#Cui.personne_id#"
+msgid "/cuis/index/#Cui.personne_id#"
 msgstr "Voir les CUIs de #Personne.nom_complet#"
+
+msgid "/Cuis/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Cuis/filelink/#Cui.id#"
+msgstr "Fichiers liés"
+
+msgid "Fichiermodule.nombre"
+msgstr " "
+
+msgid "Cui.beneficiaire_ass"
+msgstr "ASS"
+
+msgid "Cui.beneficiaire_aah"
+msgstr "AAH"
+
+msgid "Cui.beneficiaire_ata"
+msgstr "ATA"
+
+msgid "Cui.beneficiaire_rsa"
+msgstr "RSA"

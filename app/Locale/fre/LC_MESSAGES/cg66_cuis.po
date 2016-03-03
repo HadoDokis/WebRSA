@@ -21,7 +21,7 @@ msgstr ""
 # Titres
 ###############################################################################
 
-msgid "/cuis/index/:heading"
+msgid "/Cuis/index/:heading"
 msgstr "Contrat Unique d'Insertion"
 
 msgid "/Cuis66/add"
@@ -33,16 +33,16 @@ msgstr "Ajouter"
 msgid "/Cuis66/add/:heading"
 msgstr "Ajout d'un Contrat Unique d'Insertion"
 
-msgid "/Cuis66/edit/:heading"
+msgid "/Cuis/edit/:heading"
 msgstr "Modification d'un Contrat Unique d'Insertion"
 
-msgid "/Cuis66/view/:heading"
+msgid "/Cuis/view/:heading"
 msgstr "Vue d'un Contrat Unique d'Insertion"
 
-msgid "/Cuis66/view"
+msgid "/Cuis/view"
 msgstr "Voir"
 
-msgid "/Cuis66/edit"
+msgid "/Cuis/edit"
 msgstr "Modifier"
 
 msgid "/Cuis66/delete"

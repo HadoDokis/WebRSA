@@ -265,14 +265,14 @@ label.little.dark.label{
 	font-weight: bold;
 	display: inline-block;
 	vertical-align: top;
-	width: 150px;
-	margin-bottom: 5px; 
+	width: 40%;
+	margin-bottom: 15px; 
 }
 
 p.dark.label.value{	
 	display: inline-block;
 	vertical-align: top;
-	width: 265px;
+	width: 60%;
 	margin: 0;
 }
 

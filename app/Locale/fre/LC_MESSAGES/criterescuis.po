@@ -101,7 +101,7 @@ msgstr "Modèle du dernier e-mail"
 msgid "Emailcui.dateenvoi"
 msgstr "Date d'envoi du dernier e-mail"
 
-msgid "/Cuis66/index"
+msgid "/cuis/index"
 msgstr "Voir"
 
 msgid "/Cuis/view"
