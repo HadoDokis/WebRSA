@@ -157,10 +157,10 @@ msgstr "Date du changement de position"
 # Actions
 ###############################################################################
 
-msgid "/Cuis66/index"
+msgid "/cuis/index"
 msgstr "Voir"
 
-msgid "/Cuis66/index/#Cui.personne_id#"
+msgid "/cuis/index/#Cui.personne_id#"
 msgstr "Voir les CUIs de #Personne.nom_complet#"
 
 ###############################################################################

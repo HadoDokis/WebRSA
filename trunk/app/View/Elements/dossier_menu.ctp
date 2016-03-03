@@ -186,7 +186,7 @@
 					'CER' => array( 'url' => array( 'controller' => $contratcontroller, 'action' => 'index', $personne['id'] ) ),
 				);
 				if ( Configure::read( 'Module.Cui.enabled' ) === true ){
-					$subAllocataire['Accompagnement du parcours']['Contrats']['CUI'] = array( 'url' => array( 'controller' => 'cuis66', 'action' => 'index', $personne['id'] ) );
+					$subAllocataire['Accompagnement du parcours']['Contrats']['CUI'] = array( 'url' => array( 'controller' => 'cuis', 'action' => 'index', $personne['id'] ) );
 				}
 				$subAllocataire['Accompagnement du parcours']['Actualisation suivi'] = array(
 					'url' => '#',

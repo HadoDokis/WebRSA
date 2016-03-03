@@ -52,7 +52,7 @@
 					'Decisioncui66.datedecision' => array( 'type' => 'date' ), // Type datetime
 					'Emailcui.textmailcui66_id' => array( 'type' => 'varchar' ), // Type integer
 					'Emailcui.dateenvoi' => array( 'type' => 'date' ), // Type datetime
-					'/Cuis66/index/#Cui.personne_id#' => array( 'class' => 'view' ),
+					'/Cuis/index/#Cui.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array()

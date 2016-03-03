@@ -118,15 +118,15 @@
 			$options['Requestgroup']['name'] = $this->Requestmanager->Requestgroup->find('list', array('order' => 'name'));
 			$requestManager = $this->Requestmanager->find('all', array('conditions' => array( 'actif' => '1' )));
 			
-			foreach ($options['Requestgroup']['name'] as $group_id => $group) {
-				foreach ($requestManager as $value) {
-					if ( $value['Requestmanager']['requestgroup_id'] === $group_id
-						&& $this->Requestmanager->checkModelPresence($value, 'Foyer')
-						&& $this->Requestmanager->checkModelPresence($value, 'Personne') 
-						&& $this->Requestmanager->checkModelPresence($value, 'Dossier') 
-					) {
-						$options['Requestmanager']['name'][$group][$value['Requestmanager']['id']] = $value['Requestmanager']['name'];
-					}
+			foreach ($requestManager as $value) {
+				$group_id = $value['Requestmanager']['requestgroup_id'];
+				$group = $options['Requestgroup']['name'][$group_id];
+				$have['Foyer'] = $this->Requestmanager->modelPresence($value, 'Foyer');
+				$have['Personne'] = $this->Requestmanager->modelPresence($value, 'Personne');
+				$have['Dossier'] = $this->Requestmanager->modelPresence($value, 'Dossier');
+				
+				if (!in_array(false, $have, true)) {
+					$options['Requestmanager']['name'][$group][$value['Requestmanager']['id']] = $value['Requestmanager']['name'];
 				}
 			}
 			

@@ -137,7 +137,7 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $cui_id ) );
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$urlmenu = "/cuis/index/{$personne_id}";
 			
 			$options = $this->Rupturecui66->enums();
 			$this->set( compact( 'options', 'dossierMenu', 'urlmenu' ) );
@@ -151,7 +151,7 @@
 		public function index( $cui_id ) {
 			$params = array(
 				'modelClass' => 'Rupturecui66',
-				'urlmenu' => "/Cuis66/index/#0.Cui.personne_id#"
+				'urlmenu' => "/cuis/index/#0.Cui.personne_id#"
 			);
 			$customQuery['fields'][] = $this->Rupturecui66->Fichiermodule->sqNbFichiersLies( $this->Rupturecui66, 'nombre' );
 			
@@ -178,7 +178,7 @@
 				'modelClass' => 'Rupturecui66',
 				'view' => 'edit',
 				'redirect' => "/Rupturescuis66/index/#Cui.id#",
-				'urlmenu' => "/Cuis66/index/#Cui.personne_id#"
+				'urlmenu' => "/cuis/index/#Cui.personne_id#"
 			);
 			return $this->WebrsaModelesLiesCuis66->addEdit( $id, $params );
 		}

@@ -12,7 +12,21 @@
 	
 	echo '<p class="remarque center"><strong>' . __m('intitule_haut_cui') . '</strong><br>' . __m('intitule_haut_text') . '</p>';
 	
-	echo '<div class="CuiAddEdit">';
+	echo '<div class="Cui66AddEdit">';
+
+/***********************************************************************************
+ * Choix du formulaire
+/***********************************************************************************/
+	
+	echo '<fieldset><legend id="Cui66Choixformulaire">' . __m('Cui66.choixformulaire') . '</legend>'
+		. $this->Default3->subformView(
+			array(
+				'Cui66.typeformulaire',
+				'Cui66.renouvellement',
+			),
+			$defaultParams
+		) . '</fieldset>'
+	;
 	
 /***********************************************************************************
  * Secteur
@@ -22,6 +36,8 @@
 		. $this->Default3->subformView(
 			array(
 				'Cui.secteurmarchand',
+				'Cui66.typecontrat',
+				'Cui66.codecdiae',
 				'Cui.numconventionindividuelle',
 				'Cui.numconventionobjectif',			
 			),
@@ -59,6 +75,7 @@
 				'Adressecui.numtel',
 				'Adressecui.email',
 				'Adressecui.numfax',
+				'Adressecui.canton',
 			),
 			$defaultParams
 		)
@@ -79,6 +96,7 @@
 				'Adressecui.numtel2',
 				'Adressecui.email2',
 				'Adressecui.numfax2',
+				'Adressecui.canton2',
 			),
 			$defaultParams
 		)
@@ -96,32 +114,91 @@
 			),
 			$defaultParams
 		) 
-		. '</fieldset></fieldset>'
+		. '</fieldset>'
+		. '<fieldset id="Partenairecui66Informationssup">'
+		.	 '<legend>' . __m('Partenairecui66.informationssup') . '</legend>'
+		. $this->Default3->subformView(
+			array(
+				'Partenairecui66.codepartenaire',
+				'Partenairecui66.objet',
+				'Partenairecui66.nomtitulairerib',
+				'Partenairecui66.codebanque',
+				'Partenairecui66.codeguichet',
+				'Partenairecui66.numerocompte',
+				'Partenairecui66.etablissementbancaire',
+				'Partenairecui66.clerib',
+				'Partenairecui66.nblits',
+				'Partenairecui66.nbcontratsaideshorscg',
+				'Partenairecui66.nbcontratsaidescg',
+			),
+			$defaultParams
+		)
+		. '</fieldset>'
+		. $this->Default3->subformView(
+			array(
+				'Partenairecui.ajourversement',
+			),
+			$defaultParams
+		)
+		. '</fieldset>'
+	;
+	
+/***********************************************************************************
+ * DOSSIER RECU/ELIGIBLE/COMPLET
+/***********************************************************************************/
+	
+	echo '<fieldset id="Cui66Dossier"><legend>' . __m('Cui66.dossier') . '</legend>'
+		. $this->Default3->subformView(
+			array(
+				'Cui66.dossierrecu',
+				'Cui66.datereception' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+				'Cui66.dossiereligible',
+				'Cui66.dateeligibilite' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+				'Cui66.dossiercomplet',
+				'Cui66.datecomplet' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+				'Cui66.notedossier' => array( 'type' => 'textarea' ),
+			),
+			$defaultParams
+		) . '</fieldset>'
 	;
 
+	/**
+	 * Condition d'affichage : le dossier doit être complet et l'e-mail envoyé pour avoir la suite
+	 */
+if ( !in_array($this->request->data['Cui66']['etatdossiercui66'], array( 'attentepiece', 'dossierrecu', 'dossiereligible' )) ){
+	
 /***********************************************************************************
  * LE SALARIÉ
 /***********************************************************************************/
 	// On prépare les informations
-	$dtnai = new DateTime( Hash::get($this->request->data, 'Personnecui.datenaissance' ) );
+	$dtnai = new DateTime( $personne['Personne']['dtnai'] );
 	$dtdemrsa = new DateTime( $personne['Dossier']['dtdemrsa'] );
 	$personne['Personne']['dtnai'] = date_format($dtnai, 'd/m/Y');
 	$personne['Dossier']['dtdemrsa'] = date_format($dtdemrsa, 'd/m/Y');
-	switch ( $dif = floor((time() - strtotime(date_format($dtdemrsa, 'Y-m-d'))) / 60 / 60 / 24 / (365 / 12)) ) {
-		case $dif < 6: $diffStr = 'moins de 6 mois'; break;
-		case $dif <= 11: $diffStr = 'de 6 à 11 mois'; break;
-		case $dif <= 23: $diffStr = 'de 12 à 23 mois'; break;
-		default: $diffStr = '24 et plus'; break;
-	}
+	$personne['Adresse']['complete'] = $personne['Adresse']['numvoie'] . ' ' . $personne['Adresse']['libtypevoie'] . ' ' . $personne['Adresse']['nomvoie'] . '<br />';
+	$personne['Adresse']['complete'] .= $personne['Adresse']['complideadr'] !== null ? $personne['Adresse']['complideadr'] . '<br>' : '';
+	$personne['Adresse']['complete'] .= $personne['Adresse']['compladr'] !== null ? $personne['Adresse']['compladr'] . '<br />' : '';
+	$personne['Adresse']['complete'] .= $personne['Adresse']['lieudist'] !== null ? $personne['Adresse']['lieudist'] . '<br />' : '';
+	$personne['Adresse']['complete'] .= $personne['Adresse']['codepos'] . ' ' . $personne['Adresse']['nomcom'];
+	$diffMonth = floor((time() - strtotime(date_format($dtdemrsa, 'Y-m-d'))) / 60 / 60 / 24 / (365 / 12));
+	$diffMonth < 6 && $diffStr = 'moins de 6 mois';
+	$diffMonth >= 6 && $diffMonth < 11 && $diffStr = 'de 6 à 11 mois';
+	$diffMonth >= 11 && $diffMonth < 23 && $diffStr = 'de 12 à 23 mois';
+	$diffMonth >= 24 && $diffStr = '24 et plus';
 	
 	$darkLabelGauche = array(
-		array( __m('Personne.nom' ), Hash::get($this->request->data, 'Personnecui.nomusage' ) ),
-		array( __m('Personne.dtnai' ), date_format($dtnai, 'd/m/Y') ),
-		array( __m('Personne.nomcomnai' ), Hash::get($this->request->data, 'Personnecui.villenaissance' ) ),
+		array( __m('Personne.nom' ), $personne['Personne']['nom'] ),
+		array( __m('Personne.dtnai' ), $personne['Personne']['dtnai'] ),
+		array( __m('Personne.nomcomnai' ), $personne['Personne']['nomcomnai'] ),
+		array( __m('Adresse.complete' ), $personne['Adresse']['complete'] ),
 	);
 	$darkLabelDroit = array(		
-		array( __m('Personne.prenom' ), Hash::get($this->request->data, 'Personnecui.prenom1' ) ),
-		array( __m('Personne.nir' ), Hash::get($this->request->data, 'Personnecui.nir' ) ),
+		array( __m('Personne.prenom' ), $personne['Personne']['prenom'] ),
+		array( __m('Personne.nir' ), $personne['Personne']['nir'] ),
+		array( __m('Departement.name' ), $personne['Departement']['name'] ),
+		array( __m('Adresse.canton' ), $personne['Adresse']['canton'] ),	
+		array( __m('Personne.nati' ), $personne['Personne']['nati'] ),
+		array( __m('Referentparcours.nom_complet' ), $personne['Referentparcours']['nom_complet'] ),	
 	);
 	
 	// On affiche les informations
@@ -137,10 +214,17 @@
 		echo '<div class="input value"><label class="little dark label">' . $value[0] . '</label><p class="dark label value">' . $value[1] . '</p></div>';
 	}
 	
-	echo '</div>'
+	echo '</div>' . $this->Default3->subformView(
+			array(
+				'Cui66.zonecouverte',
+				'Cui66.datefinsejour' => array( 'type' => 'date', 'dateFormat' => 'DMY'  ),
+			),
+			$defaultParams
+		)
 		. $this->Xform->fieldValue('Dossier.matricule', $personne['Dossier']['matricule'])
 		. $this->Xform->fieldValue('Dossier.fonorg', $personne['Dossier']['fonorg'])
-		. '</fieldset>'
+		. '<div class="input text"><span class="label">' . __m('Cui66.coupleenfant') . '</span>'
+		. '<span class="input">' . __m('Couple.enfants_' . $this->request->data['Cui66']['encouple'] . '_' . $this->request->data['Cui66']['avecenfant']) . '</span></div></fieldset>'
 	;
 
 /***********************************************************************************
@@ -153,22 +237,7 @@
 				'Cui.niveauformation',
 				'Cui.inscritpoleemploi',
 				'Cui.sansemploi',
-			),
-			$defaultParams
-		)
-		. '<fieldset><legend>Le salarié est-il bénéficiaire</legend>'
-		. $this->Default3->subformView(
-			array(
-				'Cui.beneficiaire_ass',
-				'Cui.beneficiaire_aah',
-				'Cui.beneficiaire_ata',
-				'Cui.beneficiaire_rsa',
-			),
-			$defaultParams
-		)
-		. '</fieldset>'
-		. $this->Default3->subformView(
-			array(
+				'Cui.beneficiairede',
 				'Cui.majorationrsa',
 				'Cui.rsadepuis',
 				'Cui.travailleurhandicape',
@@ -189,7 +258,8 @@
 				'Cui.findecontrat' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
 			),
 			$defaultParams
-		)
+		) 
+		. $this->Romev3->fieldsetView( 'Entreeromev3', $defaultParams )
 		. $this->Default3->subformView(
 			array(
 				'Cui.salairebrut',
@@ -280,6 +350,8 @@
 		) . '</fieldset>'
 	;
 
+}	
+
 /***********************************************************************************
  * DATE
 /***********************************************************************************/
@@ -288,6 +360,8 @@
 		. $this->Default3->subformView(
 			array(
 				'Cui.faitle' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+				'Cui66.datebutoir' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+				'Cui66.demandeenregistree' => array( 'type' => 'date', 'dateFormat' => 'DMY' )
 			),
 			$defaultParams
 		) 

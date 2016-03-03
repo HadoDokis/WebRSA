@@ -52,13 +52,13 @@
 		 * @param string $modelName Nom du modele recherché
 		 * @return boolean Présent ou pas
 		 */
-		public function checkModelPresence( $result, $modelName ) {
+		public function modelPresence( $result, $modelName ) {
 			if ( Hash::get($result, 'Requestmanager.model') === $modelName ) {
 				return true;
 			}
 			
 			$json = json_decode(Hash::get($result, 'Requestmanager.json'), true);
-			if ( !Hash::get($json, 'joins') ) {
+			if ( !Hash::get((array)$json, 'joins') ) {
 				return false;
 			}
 			

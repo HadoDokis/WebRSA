@@ -351,6 +351,34 @@ msgstr "Oui"
 msgid "Cui.haspiecejointe"
 msgstr "Pièces jointes"
 
+###############################################################################
+# BENEFICIAIRE_
+###############################################################################
+
+msgid "ENUM::BENEFICIAIRE_ASS::0"
+msgstr "Non"
+
+msgid "ENUM::BENEFICIAIRE_ASS::1"
+msgstr "Oui"
+
+msgid "ENUM::BENEFICIAIRE_AAH::0"
+msgstr "Non"
+
+msgid "ENUM::BENEFICIAIRE_AAH::1"
+msgstr "Oui"
+
+msgid "ENUM::BENEFICIAIRE_ATA::0"
+msgstr "Non"
+
+msgid "ENUM::BENEFICIAIRE_ATA::1"
+msgstr "Oui"
+
+msgid "ENUM::BENEFICIAIRE_RSA::0"
+msgstr "Non"
+
+msgid "ENUM::BENEFICIAIRE_RSA::1"
+msgstr "Oui"
+
 
 ####################################### Traductions champs CUI #######################################
 
@@ -497,3 +525,15 @@ msgstr "Dates"
 
 msgid "Cui.faitle"
 msgstr "Demande faite le"
+
+msgid "Cui.beneficiaire_ass"
+msgstr "ASS"
+
+msgid "Cui.beneficiaire_aah"
+msgstr "AAH"
+
+msgid "Cui.beneficiaire_ata"
+msgstr "ATA"
+
+msgid "Cui.beneficiaire_rsa"
+msgstr "RSA"

@@ -260,16 +260,6 @@
 			return $isRsaSocle;
 		}
 		
-		public function options(){
-			$options = $this->enums();
-			
-			foreach( $this->beneficiairede as $key => $value ){
-				$options['Cui']['beneficiairede'][] = $value;
-			}
-			
-			return $options;
-		}
-		
 		/** 	 
 		 * Sous-requête permettant de récupérer le dernier CUI d'un allocataire. 	 
 		 * 	 
@@ -290,6 +280,373 @@
 					'limit' => 1 	 
 				) 	 
 			); 	 
+		}
+		
+		/**
+		 * Revoi la requete pour récuperer toutes les données pour l'affichage de l'index du CUI
+		 * 
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function queryIndex($personne_id){
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $query = $this->Cui66->queryIndex($personne_id); break;
+				default: $query = array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Partenairecui->fields(),
+						array(
+							$this->Fichiermodule->sqNbFichiersLies( $this, 'nombre' ),
+						)
+					),
+					'conditions' => array(
+						'Cui.personne_id' => $personne_id
+					),
+					'joins' => array(
+						$this->join( 'Partenairecui' ),
+					),
+					'order' => array( 'Cui.created DESC' )
+				);
+			}
+			
+			return $query;
+		}
+		
+		/**
+		 * Affiche des messages dans index
+		 * 
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function messages( $personne_id ) {
+			$messages = array();
+			$isRsaSocle = $this->isRsaSocle( $personne_id );
+			
+			if ( !$isRsaSocle ){
+				$messages['Personne.rsasocle'] = 'error';
+			}
+
+			return $messages;
+		}
+		
+		/**
+		 * Permet de savoir si un ajout est possible à partir des messages
+		 * renvoyés par la méthode messages.
+		 *
+		 * @param array $messages
+		 * @return boolean
+		 */
+		public function addEnabled( array $messages ) {
+			return !in_array( 'error', $messages );
+		}
+		
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @param integer $user_id
+		 * @return array
+		 */
+		public function options($user_id = null) {
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $options = $this->Cui66->options(); break;
+				default: 
+					$options = Hash::merge(
+						$this->enums(),
+						$this->Partenairecui->enums(),
+						$this->Personnecui->enums()
+					);
+					
+					foreach( $this->beneficiairede as $value ){
+						$options['Cui']['beneficiairede'][] = $value;
+					}
+					
+					if ($user_id !== null) {
+						// Récupération de la liste des actions avec une fiche de candidature (pour Cui.organismedesuivi)
+						$qd_user = array(
+							'conditions' => array(
+								'User.id' => $user_id
+							),
+							'fields' => null,
+							'order' => null,
+							'contain' => array(
+								'Serviceinstructeur'
+							)
+						);
+						$user = $this->User->find( 'first', $qd_user );
+
+						$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
+
+						// On affiche les actions inactives en édition mais pas en ajout,
+						// afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
+						$isactive = 'O';
+						if( $this->action == 'edit' ){
+							$isactive = array( 'O', 'N' );
+						}
+
+						$actions = array();
+						foreach(ClassRegistry::init('Actioncandidat')->listePourFicheCandidature( $codeinseeUser, $isactive, '1' ) as $action) {
+							$actions[$action] = $action;
+						}
+						$options['Cui']['organismedesuivi'] = $actions;
+					}
+
+					// Ajout de la liste des partenaires
+					$options['Cui']['partenaire_id'] = $this->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
+
+					// Liste des cantons pour l'adresse du partenaire
+					App::import('Component','Gestionzonesgeos');
+					$Gestionzonesgeos = new GestionzonesgeosComponent(new ComponentCollection());
+					$options['Adressecui']['canton'] = $Gestionzonesgeos->listeCantons();
+					$options['Adressecui']['canton2'] =& $options['Adressecui']['canton'];
+			}
+
+			return $options;
+		}
+		
+		/**
+		 * Sauvegarde d'un CUI
+		 * 
+		 * @param array $data
+		 * @return boolean
+		 */
+		public function saveAddEdit( array $data, $user_id = null ) {
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $success = $this->Cui66->saveAddEdit($data, $user_id); break;
+				default: 
+					$success = true;
+					$data['Cui']['user_id'] = $user_id;
+					
+					// Si un code famille (rome v3) est vide, on ne sauvegarde pas le code rome
+					if ( !isset($data['Entreeromev3']['familleromev3_id']) || $data['Entreeromev3']['familleromev3_id'] === '' ){ 
+						$data['Cui']['entreeromev3_id'] = null;
+
+						// Si le code rome avait un id, on supprime l'entreeromev3 correspondant
+						if ( isset($data['Entreeromev3']['id']) && $data['Entreeromev3']['id'] !== '' ){
+							$this->Entreeromev3->id = $data['Entreeromev3']['id'];
+							$success = $success && $this->Entreeromev3->delete();
+						}
+					}
+					// Dans le cas contraire, on enregistre le tout
+					else{
+						$this->Entreeromev3->create($data);
+						$success = $success && $this->Entreeromev3->save();
+						$data['Cui']['entreeromev3_id'] = $this->Entreeromev3->id;
+					}
+
+					// Si le contrat est un CDI, on s'assure que la date de fin soit nulle
+					if ( $data['Cui']['typecontrat'] === 'CDI' ){
+						$data['Cui']['findecontrat'] = null;
+					}
+					
+					// Partenairecui possède une Adressecui, on commence par cette dernière
+					$this->Partenairecui->Adressecui->create($data);
+					$success = $success && $this->Partenairecui->Adressecui->save();
+					$data['Partenairecui']['adressecui_id'] = $this->Partenairecui->Adressecui->id;
+					
+					// Cui possède un Partenairecui, il nous faut son id
+					$this->Partenairecui->create($data);
+					$success = $success && $this->Partenairecui->save();
+					$data['Cui']['partenairecui_id'] = $this->Partenairecui->id;
+					
+					// Cui possède un Personnecui
+					$this->Personnecui->create($data);
+					$success = $success && $this->Personnecui->save();
+					$data['Cui']['personnecui_id'] = $this->Personnecui->id;
+
+					// On termine par le Cui
+					$this->create($data);
+					$success = $success && $this->save();
+			}
+
+			return $success;
+		}
+		
+		/**
+		 * Mise à jour des positions des CUI suivant des conditions données.
+		 *
+		 * @param array $conditions
+		 * @return boolean
+		 */
+		public function updatePositionsCuisByConditions( array $conditions ) {
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $success = $this->Cui66->updatePositionsCuisByConditions($conditions); break;
+				default: $success = true;
+			}
+			
+			return $success;
+		}
+
+		/**
+		 * Mise à jour des positions des CUI qui devraient se trouver dans une
+		 * position donnée.
+		 *
+		 * @param integer $position
+		 * @return boolean
+		 */
+		public function updatePositionsCuisByPosition( $position ) {
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $success = $this->Cui66->updatePositionsCuisByPosition($position); break;
+				default: $success = true;
+			}
+			
+			return $success;
+		}
+
+		/**
+		 * Permet de mettre à jour les positions des CUI d'un allocataire retrouvé
+		 * grâce à la clé primaire d'un CUI en particulier.
+		 *
+		 * @param integer $id La clé primaire d'un CUI.
+		 * @return boolean
+		 */
+		public function updatePositionsCuisById( $id ) {
+			$return = $this->updatePositionsCuisByConditions(
+				array( "Cui.id" => $id )
+			);
+
+			return $return;
+		}
+		
+		/**
+		 * Récupère les donnés par defaut dans le cas d'un ajout, ou récupère les données stocké en base dans le cas d'une modification
+		 * 
+		 * @param integer $personne_id
+		 * @param integer $id
+		 * @return array
+		 */
+		public function prepareFormDataAddEdit( $personne_id, $id = null ) {
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $result = $this->Cui66->prepareFormDataAddEdit($personne_id, $id); break;
+				default:
+					// Ajout
+					if( empty( $id ) ) {
+						$query = $this->Personne->PersonneReferent->completeSearchQueryReferentParcours( array(
+							'fields' => array(
+								// Pour table personnescuis (pour impression uniquement)
+								'Personne.qual',
+								'Personne.nom',
+								'Personne.prenom',
+								'Personne.nomnai',
+								'Personne.prenom2',
+								'Personne.prenom3',
+								'Personne.nomcomnai',
+								'Personne.dtnai',
+								'Personne.nir',
+								'Personne.nati',
+								'Dossier.matricule',
+								'Dossier.fonorg',
+							),
+							'recursive' => -1,
+							'conditions' => array(
+								'Personne.id' => $personne_id
+							),
+							'joins' => array(
+								$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+								$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+							)
+						));
+
+						$record = $this->Personne->find( 'first', $query );
+
+						/** 
+						 * INFO: si one ne met pas le modèle Adressecui dans le $this->request->data, il n'est
+						 * pas instancié dans la vue, donc pas d'astérisque ni validation javascript...
+						 */
+						$result = array(
+							'Cui' => array(
+								'personne_id' => $personne_id,
+								'numconventionobjectif' => Configure::read( 'Cui.Numeroconvention' ),
+							),
+							'Personnecui' => array(
+								'civilite' => Hash::get($record, 'Personne.qual'),
+								'nomusage' => Hash::get($record, 'Personne.nom'),
+								'prenom1' => Hash::get($record, 'Personne.prenom'),
+								'nomfamille' => Hash::get($record, 'Personne.nomnai'),
+								'prenom2' => Hash::get($record, 'Personne.prenom2'),
+								'prenom3' => Hash::get($record, 'Personne.prenom3'),
+								'villenaissance' => Hash::get($record, 'Personne.nomcomnai'),
+								'datenaissance' => Hash::get($record, 'Personne.dtnai'),
+								'nir' => Hash::get($record, 'Personne.nir'),
+								'numallocataire' => Hash::get($record, 'Dossier.matricule'),
+								'nationalite' => Hash::get($record, 'Personne.nati'),
+								'organismepayeur' => Hash::get($record, 'Dossier.fonorg'),
+							),
+							'Adressecui' => array()
+						);
+					}
+					// Mise à jour
+					else {
+						$query = $this->queryView($id);
+						$result = $this->find( 'first', $query );
+
+						$result = $this->Entreeromev3->prepareFormDataAddEdit( $result );
+					}
+			}
+			
+			return $result;
+		}
+		
+		/**
+		 * Permet d'obtenir les informations lié à un Allocataire d'un Cui
+		 * 
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function queryPersonne( $personne_id ){
+			$query = ClassRegistry::init( 'Allocataire' )->searchQuery();
+
+			$query['fields'] = array_merge(
+				$query['fields'],
+				array(
+					'Titresejour.dftitsej',
+					'Departement.name',
+					'( '.$this->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nb_enfants"'
+				)
+			);
+
+			$query['joins'][] = $this->Personne->Foyer->Adressefoyer->Adresse->join( 'Departement', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Personne->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) );
+			
+			$query['conditions']['Personne.id'] = $personne_id;
+			
+			return $query;
+		}
+		
+		/**
+		 * Revoi la requete pour récuperer toutes les données pour l'affichage d'un CUI (Hors modules)
+		 * 
+		 * @param integer $id
+		 * @return array
+		 */
+		public function queryView( $id = null ){
+			switch ((int)Configure::read('Cg.departement')) {
+				case 66: $query = $this->Cui66->queryView($id); break;
+				default:
+					$query = array(
+						'fields' => array_merge(
+							$this->fields(),
+							$this->Personnecui->fields(),
+							$this->Partenairecui->fields(),
+							$this->Entreeromev3->fields(),
+							$this->Partenairecui->Adressecui->fields()
+						),
+						'recursive' => -1,
+						'conditions' => array(),
+						'joins' => array(
+							$this->join( 'Personnecui' ),
+							$this->join( 'Partenairecui' ),
+							$this->join( 'Entreeromev3' ),
+							$this->Partenairecui->join( 'Adressecui' ),						
+						)
+					);
+
+					if( $id !== null ) {
+						$query['conditions']['Cui.id'] = $id;
+					}
+			}
+			
+			return $query;
 		}
 	}
 ?>

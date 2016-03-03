@@ -223,7 +223,7 @@
 		}
 
 		if( Configure::read( 'Cg.departement' ) == 66 ) {
-			$linkView = '/Cuis66/index/#Cui.personne_id#';
+			$linkView = '/cuis/index/#Cui.personne_id#';
 			$linkEdit = '/Cuis66/edit/#Cui.id#';
 		}
 		else {

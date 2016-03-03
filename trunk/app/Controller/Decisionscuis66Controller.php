@@ -137,7 +137,7 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $cui_id ) );
-			$urlmenu = "/cuis66/index/{$personne_id}";
+			$urlmenu = "/cuis/index/{$personne_id}";
 			
 			$options = $this->Decisioncui66->enums();
 			$this->set( compact( 'options', 'dossierMenu', 'urlmenu' ) );
@@ -152,7 +152,7 @@
 			$params = array(
 				'modelClass' => 'Decisioncui66',
 				'view' => 'index',
-				'urlmenu' => "/Cuis66/index/#0.Cui.personne_id#"
+				'urlmenu' => "/cuis/index/#0.Cui.personne_id#"
 			);
 			$customQuery['fields'][] = $this->Decisioncui66->Fichiermodule->sqNbFichiersLies( $this->Decisioncui66, 'nombre' );
 			
@@ -179,7 +179,7 @@
 				'modelClass' => 'Decisioncui66',
 				'view' => 'edit',
 				'redirect' => "/Decisionscuis66/index/#Cui.id#",
-				'urlmenu' => "/Cuis66/index/#Cui.personne_id#"
+				'urlmenu' => "/cuis/index/#Cui.personne_id#"
 			);
 			$this->WebrsaModelesLiesCuis66->addEdit( $id, $params );
 			$results = $this->Decisioncui66->getPropositions( $id, $this->action );
