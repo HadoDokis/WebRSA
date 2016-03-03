@@ -21,6 +21,11 @@ ALTER TABLE cuis66 ADD COLUMN commentaireformation TEXT;
 SELECT alter_table_drop_column_if_exists( 'public', 'partenairescuis66', 'activiteprincipale' );
 ALTER TABLE partenairescuis66 ADD COLUMN activiteprincipale VARCHAR(255);
 
+SELECT alter_table_drop_column_if_exists( 'public', 'cuis', 'decision_cui' );
+ALTER TABLE cuis ADD COLUMN decision_cui VARCHAR(1);
+
+ALTER TABLE cuis ADD CONSTRAINT cuis_decision_ci_in_list_chk CHECK ( cakephp_validate_in_list( decision_cui, ARRAY['A','E','V','R'] ) );
+
 --------------------------------------------------------------------------------
 -- TAG -
 --------------------------------------------------------------------------------
