@@ -230,6 +230,7 @@
 						'fields' => array(
 							'Traitementpcg66.id',
 							'Traitementpcg66.datedepart',
+							'Traitementpcg66.dateecheance',
 							'Personnepcg66.dossierpcg66_id',
 							'Personnepcg66.id',
 							'Personnepcg66.personne_id',
@@ -264,12 +265,15 @@
 						else {
 							$date = '';
 						}
+						
+						$echeance = Hash::get($traitementpcg66, 'Traitementpcg66.dateecheance');
+						$echeance = $echeance ? ' au '.date_short($echeance) : '';
 
                         // Variable présente dans le formulaire d'ajout/édition des traitements PCGS
-                        $traitementsNonClos['Traitementpcg66']['traitementnonclos']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Situationpdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] );
+                        $traitementsNonClos['Traitementpcg66']['traitementnonclos']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Situationpdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] ).$echeance;
 
                         // Variable présente dans le formulaire d'ajout/édition des décisions d'un dossier PCG
-						$traitementsNonClos['Traitementpcg66']['traitementnonclosdecision']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Personne']['nom_complet'].' : '.$traitementpcg66['Descriptionpdo']['name'].' - '.$traitementpcg66['Situationpdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] );
+						$traitementsNonClos['Traitementpcg66']['traitementnonclosdecision']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Personne']['nom_complet'].' : '.$traitementpcg66['Descriptionpdo']['name'].' - '.$traitementpcg66['Situationpdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] ).$echeance;
 
 					}
 				}
