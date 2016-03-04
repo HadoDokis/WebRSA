@@ -3344,7 +3344,7 @@
 				'Rendezvous' => 'rendezvous',
 				'Foo' => 'Personne'
 			);
-			$sql = array_words_replace( array( $sql ), $replacements )[0];
+			$sql = Hash::get( array_words_replace( array( $sql ), $replacements ), '0' );
 
 			$query['conditions'][] = array(
 				'OR' => array(
