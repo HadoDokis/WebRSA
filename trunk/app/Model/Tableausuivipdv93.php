@@ -2803,7 +2803,7 @@
 			$conditionrdv = null;
 			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
 			if( $rdv_structurereferente ) {
-				$conditionrdv = "AND Rendezvous.personne_id IN (
+				$conditionrdv = "Rendezvous.personne_id IN (
 					SELECT DISTINCT rdvindividuelhonore.personne_id
 						FROM rendezvous AS rdvindividuelhonore
 					WHERE
@@ -2813,8 +2813,8 @@
 						AND rdvindividuelhonore.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
 						AND rdvindividuelhonore.".$this->_conditionStatutRdv()."
 						-- dont la SR du rendez-vous collectif est la même que celle du RDV individuel
-						AND rendezvous.structurereferente_id = rdvindividuelhonore.structurereferente_id
-						{$conditionpdv}
+						AND Rendezvous.structurereferente_id = rdvindividuelhonore.structurereferente_id
+						".( empty( $conditionpdv ) ? null : "AND {$conditionpdv}" )."
 				)";
 			}
 
