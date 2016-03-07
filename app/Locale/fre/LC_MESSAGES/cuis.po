@@ -787,10 +787,10 @@ msgstr "Ruptures"
 msgid "/Cuis/notification"
 msgstr "Notification"
 
-msgid "/cuis/index"
+msgid "/Cuis/index"
 msgstr "Voir"
 
-msgid "/cuis/index/#Cui.personne_id#"
+msgid "/Cuis/index/#Cui.personne_id#"
 msgstr "Voir les CUIs de #Personne.nom_complet#"
 
 msgid "/Cuis/filelink"

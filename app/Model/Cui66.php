@@ -1016,10 +1016,12 @@
 
 			$sq = $Dbo->startQuote;
 			$eq = $Dbo->endQuote;
+			$fullAlias = $sq.$this->alias.$eq;
+			$fullCuiAlias = $sq.$this->Cui->alias.$eq;
 
 			$conditionsSql = $Dbo->conditions( $conditions, true, true, $this );
 			
-			$sql = "UPDATE {$tableName} AS {$sq}{$this->alias}{$eq} SET {$sq}etatdossiercui66{$eq} = {$case} FROM {$tableNameCui} AS {$sq}{$this->Cui->alias}{$eq} {$conditionsSql} AND {$sq}{$this->Cui->alias}{$eq}.{$sq}id{$eq} = {$sq}{$this->alias}{$eq}.{$sq}cui_id{$eq};";
+			$sql = "UPDATE {$tableName} AS {$fullAlias} SET {$sq}etatdossiercui66{$eq} = {$case} FROM {$tableNameCui} AS {$fullCuiAlias} {$conditionsSql} AND {$fullCuiAlias}.{$sq}id{$eq} = {$fullAlias}.{$sq}cui_id{$eq};";
 
 			$result = $Dbo->query( $sql ) !== false;
 			
@@ -1044,6 +1046,7 @@
 			}
 			if ( $different ){
 				$result = $result && $this->Historiquepositioncui66->saveMany( $updateValues );
+				$this->updateDecisionCui($conditions);
 			}
 		
 			return $result;
@@ -1115,28 +1118,12 @@
 
 			return $data;
 		}
-
-		
-		
-		
-		
-		
-		/*
-		 * TODO : Tester ci-dessous
-		 */
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		/**
 		 * Met à jour les decision_cui
 		 * 
-		 * @param array $conditions
+		 * @param array|string $conditions
+		 * @return boolean
 		 */
 		public function updateDecisionCui($conditions = array()) {
 			$results = $this->find('all',
@@ -1152,11 +1139,15 @@
 				)
 			);
 			
+			if (empty($results)) {
+				return false;
+			}
+			
 			foreach ($this->correspondance_decision_ci as $decision_cui => $etatdossiercui66) {
 				foreach ($results as $value) {
 					if (in_array(Hash::get($value, 'Cui66.etatdossiercui66'), $etatdossiercui66)) {
 						$this->Cui->updateAllUnBound(
-							array('Cui.decision_cui' => $decision_cui),
+							array('Cui.decision_cui' => "'$decision_cui'"),
 							array(
 								'"Cui"."id"' => Hash::get($value, 'Cui66.cui_id'),
 							)
@@ -1164,6 +1155,8 @@
 					}
 				}
 			}
+			
+			return true;
 		}
 	}
 ?>
