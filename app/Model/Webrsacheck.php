@@ -401,6 +401,11 @@
 						'Tag.Options.enums.Personne.trancheage' => 'isarray',
 						'Tag.Options.enums.Foyer.nb_enfants' => 'isarray',
 						'Tag.Options.enums.Detailcalculdroitrsa.mtrsavers' => 'isarray',
+						'Commissionseps.defautinsertionep66.decision.type' => 'isarray',
+						'Commissionseps.defautinsertionep66.decision.type.maintienorientsoc' => 'isarray',
+						'Commissionseps.defautinsertionep66.decision.type.reorientationprofverssoc' => 'isarray',
+						'Commissionseps.defautinsertionep66.decision.type.reorientationsocversprof' => 'isarray',
+						'Commissionseps.defautinsertionep66.isemploi' => 'isarray',
 					)
 				);
 			}
