@@ -2,8 +2,25 @@
 <div id="menu1Wrapper">
 	<div class="menu1">
 <?php
+	$monMenu = array('disabled' => true);
+	$nomDuMenu = Configure::read('Module.Savesearch.mon_menu.name') ?: 'Mon menu';
+	if (Configure::read('Module.Savesearch.enabled') && Configure::read('Module.Savesearch.mon_menu.enabled')) {
+		$monMenu = array(
+			'disabled' => false,
+			'Modifier '.strtolower($nomDuMenu) => array('url' => array('controller' => 'savesearchs', 'action' => 'index'))
+		);
+		
+		if (isset($main_navigation_menu_data['mon_menu']['Sauvegardes personnelles'])) {
+			$monMenu['Sauvegardes personnelles'] = $main_navigation_menu_data['mon_menu']['Sauvegardes personnelles'];
+		}
+		if (isset($main_navigation_menu_data['mon_menu']['Sauvegardes de groupe'])) {
+			$monMenu['Sauvegardes de groupe'] = $main_navigation_menu_data['mon_menu']['Sauvegardes de groupe'];
+		}
+	}
+	
 	// INFO: réécriture des clés -> ajouter un espace en début ou fin par exemple
 	$items = array(
+		$nomDuMenu => $monMenu,
 		( Configure::read( 'Cg.departement' ) == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
 			'APRE' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),

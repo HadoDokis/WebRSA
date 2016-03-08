@@ -170,6 +170,7 @@
 		array(
 			'MultiDomainsTranslator' => array( 'bootstrap' => true ),
 			'AnalyseSql' => array( 'bootstrap' => true ),
+			'SaveSearch' => array( 'bootstrap' => true ),
 			'Fluxcnaf'
 		)
 	);

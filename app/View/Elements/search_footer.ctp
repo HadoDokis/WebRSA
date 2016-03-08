@@ -46,5 +46,6 @@
 			( $this->Permissions->check( $url['controller'], $url['action'] ) && $count > 0 )
 		)
 		.'</li>'
+		. (Configure::read('Module.Savesearch.enabled') ? '<li><a href="#" onclick="$(\'savesearch_popup\').show(); return false;">'.$this->Xhtml->image('icons/disk.png').' Sauvegarder recherche</a></li>' : '')
 	.'</ul>';
 ?>

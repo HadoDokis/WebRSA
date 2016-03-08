@@ -462,6 +462,26 @@
 				ini_set( $key, $value );
 			}
 		}
+		
+		/**
+		 * Actions à effectuer systématiquement
+		 * 
+		 * @param array $params
+		 */
+		protected function _alwaysDo($params) {
+			$Controller = $this->_Collection->getController();
+			
+			// Intégration du module Savesearch
+			if (Configure::read('Module.Savesearch.enabled')) {
+				$conditions = array(
+					'user_id' => $Controller->Session->read('Auth.User.id'),
+					'group_id' => $Controller->Session->read('Auth.User.group_id'),
+					'controller' => $Controller->name,
+					'action' => $Controller->action,
+				);
+				$Controller->set('moduleSavesearchDispo', ClassRegistry::init('Savesearch')->getAvailablesSearchs($conditions));
+			}
+		}
 
 		/**
 		 *

@@ -131,6 +131,9 @@
 			if( self::$_contexts === null ) {
 				$routerParams = Router::getParams();
 				$params = self::_params();
+				
+				// Ucfirst fonctionne dans l'url mais invalide les traductions
+				$routerParams['controller'] = strtolower($routerParams['controller']);
 
 				$urlDomains = array(
 					$params['prefix'] . $routerParams['controller'] . $params['separator'] . $routerParams['action'],
