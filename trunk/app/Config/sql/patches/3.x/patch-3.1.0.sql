@@ -62,6 +62,27 @@ DROP FUNCTION create_entites_tags();
 SELECT alter_table_drop_constraint_if_exists ( 'public', 'entites_tags', 'entites_tags_fk_value_modele_unique' );
 ALTER TABLE entites_tags ADD CONSTRAINT entites_tags_fk_value_modele_unique UNIQUE (tag_id, fk_value, modele);
 
+--------------------------------------------------------------------------------
+-- SaveSearch -
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS savesearchs;
+CREATE TABLE savesearchs (
+	id SERIAL NOT NULL PRIMARY KEY,
+	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	isforgroup SMALLINT NOT NULL DEFAULT 0,
+	isformenu SMALLINT NOT NULL DEFAULT 0,
+	name VARCHAR(255) NOT NULL,
+	url TEXT NOT NULL,
+	controller VARCHAR(255) NOT NULL,
+	action VARCHAR(255) NOT NULL,
+	created TIMESTAMP WITHOUT TIME ZONE,
+    modified TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE savesearchs ADD CONSTRAINT savesearchs_isforgroup_in_list_chk CHECK ( cakephp_validate_in_list( isforgroup, ARRAY[0, 1] ) );
+ALTER TABLE savesearchs ADD CONSTRAINT savesearchs_isformenu_in_list_chk CHECK ( cakephp_validate_in_list( isformenu, ARRAY[0, 1] ) );
+
 
 -- *****************************************************************************
 COMMIT;

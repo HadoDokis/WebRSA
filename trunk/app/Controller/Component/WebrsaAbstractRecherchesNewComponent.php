@@ -24,6 +24,7 @@
 			$Controller = $this->_Collection->getController();
 			$defaults = array( 'keys' => array( 'results.fields', 'results.innerTable' ) );
 			$params = $this->_params( $params + $defaults );
+			$this->_alwaysDo($params);
 
 			// Si la recherche doit être effectuée
 			if( $this->_needsSearch( $params ) ) {

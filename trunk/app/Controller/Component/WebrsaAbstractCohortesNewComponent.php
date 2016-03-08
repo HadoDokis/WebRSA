@@ -132,6 +132,7 @@
 			$Controller = $this->_Collection->getController();
 			$defaults = array( 'keys' => array( 'results.fields', 'results.innerTable' ) );
 			$params = $this->_params( $params + $defaults );
+			$this->_alwaysDo($params);
 
 			// Récupération des options
 			$options = $this->_options( $params );

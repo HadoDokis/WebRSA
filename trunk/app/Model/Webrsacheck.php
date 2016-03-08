@@ -341,6 +341,15 @@
 				'Gestionsdoublons.index.Tag.valeurtag_id' => array(
 					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Gestionsdoublons.index.useTag') )
 				),
+				'Module.Savesearch.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('Module.Savesearch.mon_menu.enabled') )
+				),
+				'Module.Savesearch.mon_menu.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('Module.Savesearch.enabled') )
+				),
+				'Module.Savesearch.mon_menu.name' => array(
+					array( 'rule' => 'string', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

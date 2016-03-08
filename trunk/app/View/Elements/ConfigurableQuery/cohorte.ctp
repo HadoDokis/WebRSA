@@ -54,6 +54,9 @@
 	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->action ), 'id' => $searchFormId, 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );
 
 	echo $beforeSearch;
+	if (Configure::read('Module.Savesearch.enabled')) {
+		echo $this->element('saved_criteres');
+	}
 	echo $this->Allocataires->blocDossier( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocAllocataire( array( 'prefix' => 'Search', 'options' => $options ) );
@@ -74,6 +77,10 @@
 
 	if( isset( $results ) ) {
 		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+		
+		if (Configure::read('Module.Savesearch.enabled')) {
+			echo $this->element('savesearch');
+		}
 
 		echo $beforeResults;
 
