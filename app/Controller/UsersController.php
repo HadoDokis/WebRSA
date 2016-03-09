@@ -727,6 +727,10 @@
 						$this->request->data['Droits']
 					);
 					$this->User->commit();
+					
+					// Suppression du cache du menu pour la personne concernée
+					Cache::delete('element_'.Hash::get($this->request->data, 'User.username'), 'views');
+					
 					$this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
 					$this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
 				}
