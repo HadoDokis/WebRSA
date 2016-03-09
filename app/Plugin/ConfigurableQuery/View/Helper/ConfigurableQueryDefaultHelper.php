@@ -106,7 +106,7 @@
 		 */
 		public function configuredFields( array $params = array(), array $insert = array() ) {
 			$params = $this->configuredParams( $params );
-			$configuredFields = (array)Configure::read( "{$params['keyPrefix']}.{$params['key']}" );
+			$configuredFields = (array)Configure::read( ltrim( "{$params['keyPrefix']}.{$params['key']}", '.' ) );
 
 			$fields = $this->normalizeConfiguredFields( $configuredFields );
 			$insertedFields = array();
@@ -170,12 +170,12 @@
 				(!$params['view'] ? $insert : array())
 			);
 
-			$header = (array)Configure::read( "{$params['keyPrefix']}.{$params['key']}".'.results.header' );
+			$header = (array)Configure::read( ltrim( "{$params['keyPrefix']}.{$params['key']}".'.results.header', '.' ) );
 			if( !empty( $header ) ) {
 				$params['header'] = $header;
 			}
 
-			$innerTable = (array)Configure::read( "{$params['keyPrefix']}.{$params['key']}".'.results.innerTable' );
+			$innerTable = (array)Configure::read( ltrim( "{$params['keyPrefix']}.{$params['key']}".'.results.innerTable', '.' ) );
 			if( !empty( $innerTable ) ) {
 				$params['innerTable'] = $this->normalizeConfiguredFields( $innerTable );
 			}

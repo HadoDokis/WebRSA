@@ -126,6 +126,8 @@
 			Router::setRequestInfo( $request );
 
 			App::build( array( 'locales' => CakePlugin::path( 'ConfigurableQuery' ).'Test'.DS.'Locale'.DS ) );
+			Configure::write( 'ConfigurableQuery', null );
+			Configure::write( 'Users', null );
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg66' ) );
 			Configure::write( 'Config.language', 'fre' );
 
@@ -186,7 +188,7 @@
 		 */
 		public function testConfiguredFields() {
 			Configure::write(
-				'ConfigurableQueryUsers.index.fields',
+				'ConfigurableQuery.Users.index.fields',
 				array(
 					'User.username',
 					'User.created',
@@ -249,7 +251,7 @@
 			$_SESSION['Auth']['Permissions']['Module:Users'] = true;
 
 			Configure::write(
-				'ConfigurableQueryUsers.index',
+				'ConfigurableQuery.Users.index.results',
 				array(
 					'fields' => array(
 						'User.username',
@@ -324,7 +326,7 @@
 					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
 				</div>';
 			$this->assertEqualsXhtml( $result, $expected );
-			
+
 			// On test l'insert de colonnes
 			$insert = array(
 				'User.modified' => array( 'label' => 'Modifié le' )
@@ -386,7 +388,7 @@
 			$_SESSION['Auth']['Permissions']['Module:Users'] = true;
 
 			Configure::write(
-				'ConfigurableQueryUsers.index',
+				'ConfigurableQuery.Users.index.results',
 				array(
 					'fields' => array(
 						'User.username',
@@ -402,7 +404,7 @@
 					)
 				)
 			);
-			
+
 			$this->Controller->User->Behaviors->attach( 'DatabaseTable' );
 			$query = array(
 				'fields' => array(
@@ -422,14 +424,14 @@
 					'hidden' => 'test'
 				)
 			);
-			
+
 			// Ces valeurs sont générés par WebrsaCohorteComponent et disponnible dans la vue dans $configuredCohorteParams
 			$params = array(
-				'extraHiddenFields' => array( 
+				'extraHiddenFields' => array(
 					'User.modified' => Hash::get($records, '0.User.modified')
 				),
 				'entityErrorPrefix' => 'Cohorte',
-				'cohorteFields' => array( 
+				'cohorteFields' => array(
 					'data[][Test][test]' => array(
 						'type' => 'select',
 						'label' => '',
@@ -446,7 +448,7 @@
 					),
 				)
 			);
-			
+
 			$result = $this->Default->configuredCohorte( $records, $params );
 
 			$base = Router::url( '/' );
@@ -470,7 +472,7 @@
 							<th id="ColumnGroupName">
 								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
 							</th>
-							<th id="ColumnInputDataTestTest">Test cohorte</th>
+							<th id="ColumnInputDataTestTest" class="input">Test cohorte</th>
 							<th colspan="2" class="actions" id="ColumnActions">Actions</th>
 						</tr>
 					</thead>
@@ -482,7 +484,7 @@
 							<td class="input select">
 								<div class="input select">
 									<label for="0TestTest"></label>
-									<select name="data[0][Test][test]" id="0TestTest">
+									<select name="data[0][Test][test]" class="input" id="0TestTest">
 										<option value=""></option>
 										<option value="0">1</option>
 										<option value="1">2</option>
@@ -505,11 +507,11 @@
 				<input type="hidden" name="data[0][Test][hidden]" hidden="1" value="test" id="0TestHidden"/>
 				<input type="hidden" name="data[User][modified]" value="2015-06-29 00:28:35" id="UserModified"/>'
 			;
-			
+
 			$this->assertEqualsXhtml( $result, $expected );
-			
+
 			Configure::write(
-				'ConfigurableQueryUsers.index',
+				'ConfigurableQuery.Users.index.results',
 				array(
 					'fields' => array(
 						'User.username',
@@ -518,7 +520,7 @@
 					),
 				)
 			);
-			
+
 			$result = $this->Default->configuredCohorte( $records, $params );
 
 			$base = Router::url( '/' );
@@ -537,7 +539,7 @@
 							<th id="ColumnGroupName">
 								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
 							</th>
-							<th id="ColumnInputDataTestTest">Test cohorte</th>
+							<th id="ColumnInputDataTestTest" class="input">Test cohorte</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -548,7 +550,7 @@
 							<td class="input select">
 								<div class="input select">
 									<label for="0TestTest"></label>
-									<select name="data[0][Test][test]" id="0TestTest">
+									<select name="data[0][Test][test]" class="input" id="0TestTest">
 										<option value=""></option>
 										<option value="0">1</option>
 										<option value="1">2</option>
@@ -565,7 +567,7 @@
 				<input type="hidden" name="data[0][Test][hidden]" hidden="1" value="test" id="0TestHidden"/>
 				<input type="hidden" name="data[User][modified]" value="2015-06-29 00:28:35" id="UserModified"/>'
 			;
-			
+
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
@@ -575,7 +577,7 @@
 		 */
 		public function testConfiguredIndexInnerTable() {
 			Configure::write(
-				'ConfigurableQueryUsers.index',
+				'ConfigurableQuery.Users.index.results',
 				array(
 					'fields' => array(
 						'User.username',
@@ -679,7 +681,7 @@
 			$records = $this->Controller->User->find( 'all', $query );
 
 			Configure::write(
-				'ConfigurableQueryUsers.index',
+				'ConfigurableQuery.Users.index.results.fields',
 				array(
 					'User.id',
 					'User.username',
