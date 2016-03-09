@@ -126,7 +126,7 @@
 					'memory_limit' => array(
 						'short' => 'm',
 						'help' => 'Mémoire maximale pouvant être utilisée par le shell, surcharge ce qui a été défini dans le php.ini (memory_limit)',
-						'default' => '4096M'
+						'default' => '-1'
 					),
 				)
 			);
