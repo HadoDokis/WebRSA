@@ -121,19 +121,19 @@
 	);
 
 	/**
-	 * Pour les tableaux de suivi PDV du CG 93, on augmente la mémoire disponible
-	 * pour les actions historiser et exportcsvcorpus.
+	 * Pour les tableaux de suivi PDV du CG 93, on ne met pas de limite à la
+	 * mémoire disponible pour les actions historiser et exportcsvcorpus.
 	 */
 	Configure::write(
 		'Tableauxsuivispdvs93.historiser.ini_set',
 		array(
-			'memory_limit' => '4096M'
+			'memory_limit' => '-1'
 		)
 	);
 	Configure::write(
 		'Tableauxsuivispdvs93.exportcsvcorpus.ini_set',
 		array(
-			'memory_limit' => '4096M'
+			'memory_limit' => '-1'
 		)
 	);
 ?>
