@@ -110,7 +110,7 @@
 		public function main() {
 			$annee = date( 'Y' ) + 1;
 			$referents = $this->Tableausuivipdv93->listeReferentsPdvs();
-			$referent_id = array_keys( $referents )[0];
+			$referent_id = Hash::get( array_keys( $referents ), 0 );
 
 			$criteres = array(
 				'structurereferente_id' => array( '' => null, prefix( $referent_id ) => 'Test' ),
