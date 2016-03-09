@@ -34,7 +34,7 @@
 							$inputs = array(
 								'Savesearch.controller' => array('type' => 'hidden', 'value' => $this->request->params['controller']),
 								'Savesearch.action' => array('type' => 'hidden', 'value' => $this->request->params['action']),
-								'Savesearch.url' => array('type' => 'text', 'value' => $urlToSave),
+								'Savesearch.url' => array('type' => 'hidden', 'value' => $urlToSave),
 
 								'Savesearch.name' => array('type' => 'text', 'required' => true),
 							);
