@@ -152,6 +152,11 @@
 				unset( $options['options'] );
 			}
 			
+			// Legend par défaut est la traduction du fieldName
+			if (Hash::get($options, "type") === 'radio' && Hash::get($options, "legend") === null) {
+				$options['legend'] = __m($fieldName);
+			}
+			
 			// Prise en charge de l'option fieldset
 			if( Hash::get( $options, "fieldset") ) {
 				$legend = $options['label'];
