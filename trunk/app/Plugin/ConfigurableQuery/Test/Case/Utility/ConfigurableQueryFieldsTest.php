@@ -8,6 +8,8 @@
 	 * @subpackage Test.Case.Utility
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( dirname( __FILE__ ).DS.'..'.DS.'bootstrap.php' );
+
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
@@ -152,6 +154,7 @@
 				ClassRegistry::init( array( 'class' => 'ConfigurableQuery.ConfigurableQueryUser', 'alias' => 'User' ) ),
 				ClassRegistry::init( array( 'class' => 'ConfigurableQuery.ConfigurableQueryGroup', 'alias' => 'Group' ) )
 			);
+
 			$result = ConfigurableQueryFields::getModelsFields( $Models );
 			$expected = array(
 				'User.id' => 'User.id',
