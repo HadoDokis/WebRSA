@@ -13,6 +13,10 @@
 </fieldset>
 <script>
 	$('ModuleSavesearchLoadButton').observe('click', function() {
+		if ($('SavesearchDispo').getValue() === '') {
+			return;
+		}
+		
 		new Ajax.Request('<?php echo Router::url( array( 'controller' => 'savesearchs', 'action' => 'ajax_geturl' ) ); ?>/', {
 			asynchronous:true, 
 			evalScripts:true, 
