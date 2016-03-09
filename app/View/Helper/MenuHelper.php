@@ -163,8 +163,22 @@
 					$content = '';
 					$htmlOptions = array( 'title' => $title );
 
-					$controllerName = ( isset( $item['url']['controller'] ) ? $item['url']['controller'] : $this->request->params['controller'] );
-					$actionName = ( isset( $item['url']['action'] ) ? $item['url']['action'] : $this->request->params['action'] );
+					// Cas array('url' => array('controller' => 'moncontroller', 'action' => 'monaction'))
+					if (isset($item['url']['controller']) && $item['url']['controller'] !== '/') {
+						$controllerName = $item['url']['controller'];
+						$actionName = isset($item['url']['action']) ? $item['url']['action'] : 'index';
+					}
+					
+					// Cas array('url' => '/moncontroller/monaction')
+					elseif (isset($item['url']) && is_string($item['url']) && preg_match('/^\/(?:([\w]+)\/([\w]+)|([\w]+))/', $item['url'], $matches)) {
+						$controllerName = $matches[1];
+						$actionName = isset($matches[2]) ? $matches[2] : 'index';
+					}
+					
+					else {
+						$controllerName = '/';
+						$actionName = '/';
+					}
 
 					$permission = $controllerName === 'fluxcnaf' || $this->Permissions->check( $controllerName, $actionName );
 					if( isset( $item['url'] ) && ( $item['url'] != '#' ) && $permission ) {
