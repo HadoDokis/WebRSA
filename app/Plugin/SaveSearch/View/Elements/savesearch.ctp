@@ -25,11 +25,16 @@
 									'id' => 'savesearch_popup_form'
 								)
 							);
+							
+							$urlToSave = $this->request->base 
+								? preg_replace('/^'.preg_quote($this->request->base, '/').'/', '', $this->here) 
+								: $this->here
+							; 
 						
 							$inputs = array(
 								'Savesearch.controller' => array('type' => 'hidden', 'value' => $this->request->params['controller']),
 								'Savesearch.action' => array('type' => 'hidden', 'value' => $this->request->params['action']),
-								'Savesearch.url' => array('type' => 'hidden', 'value' => $this->here),
+								'Savesearch.url' => array('type' => 'text', 'value' => $urlToSave),
 
 								'Savesearch.name' => array('type' => 'text', 'required' => true),
 							);

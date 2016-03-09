@@ -350,7 +350,7 @@
 			$savesearch_id = $this->request->data['id'];
 			$result = $this->Savesearch->find('first', array('fields' => 'url', 'conditions' => array('id' => $savesearch_id)));
 			
-			$this->set('json', Hash::get($result, 'Savesearch.url'));
+			$this->set('json', $this->request->base.Hash::get($result, 'Savesearch.url'));
 			$this->layout = 'ajax';
 			$this->render( '/Elements/json' );
 		}
