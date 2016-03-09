@@ -423,6 +423,40 @@
 						</div>';
 
 			$this->assertEqualsXhtml( $result, $expected );
+			
+			$fields = array(
+				'Apple.color' => array('type' => 'radio'),
+			);
+			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
+
+			$result = $this->DefaultDefault->subform( $fields, $params );debug($result);
+			$expected = '<div class="input radio">'
+				. '<fieldset>'
+					. '<legend>Apple.color</legend>' // Utilisera la traduction par __m()
+					. '<input type="hidden" name="data[Apple][color]" id="AppleColor_" value=""/>'
+					. '<input type="radio" name="data[Apple][color]" id="AppleColorRed" value="red" />'
+					. '<label for="AppleColorRed">Red</label>'
+				. '</fieldset>'
+			. '</div>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+			
+			$fields = array(
+				'Apple.color' => array('type' => 'radio', 'legend' => 'Foo'),
+			);
+			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
+
+			$result = $this->DefaultDefault->subform( $fields, $params );debug($result);
+			$expected = '<div class="input radio">'
+				. '<fieldset>'
+					. '<legend>Foo</legend>'
+					. '<input type="hidden" name="data[Apple][color]" id="AppleColor_" value=""/>'
+					. '<input type="radio" name="data[Apple][color]" id="AppleColorRed" value="red" />'
+					. '<label for="AppleColorRed">Red</label>'
+				. '</fieldset>'
+			. '</div>';
+
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 
 		/**
