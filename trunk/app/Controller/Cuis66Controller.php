@@ -339,7 +339,7 @@
 					$this->Cui->join( 'Cui66' )
 				)
 			);
-			$result = $this->Cui->find('first');
+			$result = $this->Cui->find('first', $query);
 			
 			$cui_id = $result['Cui']['id'];
 			$personne_id = $result['Cui']['personne_id'];
