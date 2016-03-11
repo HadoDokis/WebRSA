@@ -204,7 +204,6 @@
 							$joinTraitementpcg66['conditions'],
 							'Traitementpcg66.typetraitement' => 'documentarrive',
 							'Traitementpcg66.datereception IS NOT NULL',
-							'Dossierpcg66.etatdossierpcg' => 'attinstrdocarrive',
 						),
 						'order' => array('Traitementpcg66.created' => 'DESC'),
 						'recursive' => -1,
@@ -234,7 +233,6 @@
 							array(
 								'type' => $types['Decisiondossierpcg66'],
 								'conditions' => array(
-									'Decisiondossierpcg66.validationproposition' => 'O',
 									'Decisiondossierpcg66.id IN ('
 									. 'SELECT "decisionsdossierspcgs66"."id" '
 									. 'FROM decisionsdossierspcgs66 '
