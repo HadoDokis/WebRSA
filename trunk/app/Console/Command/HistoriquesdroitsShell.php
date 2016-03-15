@@ -48,15 +48,24 @@
 		/**
 		 *
 		 * @param array $querydata
+		 * @param boolean $cloturePcd
 		 * @return boolean
 		 */
-		protected function _ajoutHistoriques( array $querydata ) {
+		protected function _ajoutHistoriques( array $querydata, $cloturePcd = false ) {
 			$success = true;
 
 			$count = $this->Historiquedroit->Personne->find( 'count', $querydata );
 			$this->out( "\t{$count} enregistrement(s) à traiter" );
 
 			if( $count > 0 ) {
+				if( $cloturePcd ) {
+					$queryPcd = $querydata;
+					$queryPcd['fields'] = array( 'Historiquedroit.id' );
+					$sql = $this->Historiquedroit->Personne->sq( $queryPcd );
+					$sql = "UPDATE historiquesdroits SET modified = NOW() - INTERVAL '1 day' WHERE id IN ( {$sql} );";
+					$success = $success && ( $this->Historiquedroit->query( $sql ) !== false );
+				}
+
 				$sql = $this->Historiquedroit->Personne->sq( $querydata );
 				$sql = "INSERT INTO historiquesdroits ( personne_id, toppersdrodevorsa, etatdosrsa, created, modified ) {$sql}";
 				$success = ( $this->Historiquedroit->query( $sql ) !== false );
@@ -178,11 +187,12 @@
 			$success = $success && ( $this->Historiquedroit->query( $sql ) !== false );
 
 			// -----------------------------------------------------------------
-			// Ajout d'enregistrements pour les allocataires en possédant déjà mais dont un état a évolué
+			// Mise à jour et ajout d'enregistrements pour les allocataires en
+			// possédant déjà mais dont un état a évolué
 			// -----------------------------------------------------------------
 			$this->out( 'Ajout d\'enregistrements pour les allocataires en possédant déjà mais dont un état a évolué' );
 			$querydata = $this->_qdHistoriquesExistants( $querydataBase, false );
-			$success = $success && $this->_ajoutHistoriques( $querydata );
+			$success = $success && $this->_ajoutHistoriques( $querydata, true );
 
 			// -----------------------------------------------------------------
 			// Ajout d'enregistrements pour les allocataires n'en possédant pas encore

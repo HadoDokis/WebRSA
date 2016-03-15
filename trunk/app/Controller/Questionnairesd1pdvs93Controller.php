@@ -225,15 +225,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Questionnaired1pdv93->begin();
 
-				$result = $this->Questionnaired1pdv93->saveAssociated(
-					$this->request->data,
-					array(
-						'validate' => 'first',
-						'atomic' => false
-					)
-				);
-
-				if( $this->Questionnaired1pdv93->saveResultAsBool($result) ) {
+				if( $this->Questionnaired1pdv93->saveFormData( $personne_id, $this->request->data ) ) {
 					$this->Questionnaired1pdv93->commit();
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
