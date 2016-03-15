@@ -62,6 +62,23 @@
 		}
 
 		/**
+		 * Ajout des valeurs par défaut des filtres de recherche (cases à cocher)
+		 * se trouvant dans la configuration sous la clé
+		 * Tableauxsuivispdvs93.<tableau>.defaults.
+		 *
+		 * @param string $tableau
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _filters( $tableau, array $search ) {
+			$configureKey = "{$this->name}.{$tableau}.defaults";
+			return Hash::merge(
+				$search,
+				(array)Configure::read( $configureKey )
+			);
+		}
+
+		/**
 		 * Méthode principale.
 		 */
 		public function main() {
@@ -76,7 +93,10 @@
 			// Sauvegarde pour le CG
 			$this->out( "Enregistrement des tableaux de suivi CG pour l'année {$search['Search']['annee']}" );
 			foreach( $tableaux as $tableau ) {
-				$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
+				$success = $success && $this->Tableausuivipdv93->historiser(
+					$tableau,
+					$this->_filters( $tableau, $search )
+				);
 			}
 
 			// Sauvegarde par PDV
@@ -84,7 +104,10 @@
 				$search['Search']['structurereferente_id'] = $pdv_id;
 				$this->out( "Enregistrement des tableaux de suivi du PDV {$label} pour l'année {$search['Search']['annee']}" );
 				foreach( $tableaux as $tableau ) {
-					$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
+					$success = $success && $this->Tableausuivipdv93->historiser(
+						$tableau,
+						$this->_filters( $tableau, $search )
+					);
 				}
 			}
 
@@ -94,7 +117,10 @@
 				$search['Search']['referent_id'] = suffix( $referent_id );
 				$this->out( "Enregistrement des tableaux de suivi du référent {$label} pour l'année {$search['Search']['annee']}" );
 				foreach( $tableaux as $tableau ) {
-					$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
+					$success = $success && $this->Tableausuivipdv93->historiser(
+						$tableau,
+						$this->_filters( $tableau, $search )
+					);
 				}
 			}
 

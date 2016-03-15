@@ -1,7 +1,10 @@
 <?php
 	/**
+	 * Liste des valeurs par défaut des moteurs de recherches pour les tableaux
+	 * de suivi D1, D2, 1B3, 1B4, 1B5 et 1B6 (clé Tableauxsuivispdvs93.<tableau>.defaults).
+	 *
 	 * Liste des champs pris en compte dans l'export CSV des corpus des tableaux
-	 * de suivi 1B3, 1B4, 1B5 et 1B6.
+	 * de suivi 1B3, 1B4, 1B5 et 1B6 (clé Tableauxsuivispdvs93.<tableau>.exportcsvcorpus).
 	 *
 	 * La liste complète des champs utilisables pour chacun des tableaux se
 	 * trouvera dans le répertoire /app/tmp/logs après le lancement du shell de
@@ -20,7 +23,26 @@
 	Configure::write(
 		'Tableauxsuivispdvs93',
 		array(
+			'tableaud1' => array(
+				'defaults' => array(
+					'Search' => array(
+						'soumis_dd_dans_annee' => '1'
+					)
+				),
+			),
+			'tableaud2' => array(
+				'defaults' => array(
+					'Search' => array(
+						'soumis_dd_dans_annee' => '1'
+					)
+				),
+			),
 			'tableau1b3' => array(
+				'defaults' => array(
+					'Search' => array(
+						'dsps_maj_dans_annee' => '1'
+					)
+				),
 				'exportcsvcorpus' => array(
 					// Rendez-vous
 					'Rendezvous.daterdv',
@@ -51,6 +73,11 @@
 				)
 			),
 			'tableau1b4' => array(
+				'defaults' => array(
+					'Search' => array(
+						'rdv_structurereferente' => '1'
+					)
+				),
 				'exportcsvcorpus' => array(
 					// Fiche de prescription
 					'Ficheprescription93.date_signature',
@@ -73,6 +100,11 @@
 				)
 			),
 			'tableau1b5' => array(
+				'defaults' => array(
+					'Search' => array(
+						'rdv_structurereferente' => '1'
+					)
+				),
 				'exportcsvcorpus' => array(
 					// Fiche de prescription
 					'Ficheprescription93.date_signature',
@@ -98,6 +130,11 @@
 				)
 			),
 			'tableau1b6' => array(
+				'defaults' => array(
+					'Search' => array(
+						'rdv_structurereferente' => '0'
+					)
+				),
 				'exportcsvcorpus' => array(
 					// Rendez-vous
 					'Rendezvous.daterdv',
