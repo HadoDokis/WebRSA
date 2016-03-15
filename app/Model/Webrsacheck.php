@@ -552,6 +552,14 @@
 				'Rendezvous.Typerdv.individuel_id' => 'integer',
 				'Cohortesrendezvous.cohorte.fields' => 'isarray',
 				'Cohortesrendezvous.exportcsv' => 'isarray',
+				// Valeurs par défaut des filtres de recherche des tableaux de suivi PDV
+				'Tableauxsuivispdvs93.tableaud1.defaults' => 'isarray',
+				'Tableauxsuivispdvs93.tableaud2.defaults' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b3.defaults' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b4.defaults' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b5.defaults' => 'isarray',
+				'Tableauxsuivispdvs93.tableau1b6.defaults' => 'isarray',
+				// Export CSV du corpus des tableaux de suivi PDV
 				'Tableauxsuivispdvs93.tableau1b3.exportcsvcorpus' => 'isarray',
 				'Tableauxsuivispdvs93.tableau1b4.exportcsvcorpus' => 'isarray',
 				'Tableauxsuivispdvs93.tableau1b5.exportcsvcorpus' => 'isarray',

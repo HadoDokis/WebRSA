@@ -195,6 +195,11 @@
 					$search = Hash::insert( $search, 'Search.referent_id', $conditions['referent_id'] );
 				}
 			}
+			// Si c'est une méthode d'un des moteurs et que le formulaire n'a pas été envoyé
+			else if( in_array( $this->request->action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
+				$configureKey = "{$this->name}.{$this->request->action}.defaults";
+				$this->request->data = (array)Configure::read( $configureKey );
+			}
 
 			$this->_setOptions( $conditions['structurereferente_id'] );
 
