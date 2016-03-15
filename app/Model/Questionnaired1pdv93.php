@@ -363,6 +363,87 @@
 		}
 
 		/**
+		 * Sauvegarde du questionnaire D1 d'un allocataire.
+		 *
+		 * Si les informations enregistrées dans Situationallocataire diffèrent
+		 * des dernières informations enregistrées dans Historiquedroit pour la
+		 * personne, on met à jour l'ancienne entrée et on en crée une nouvelle,
+		 * sinon on met uniquement à jour la valeur du modified de l'ancienne
+		 * entrée.
+		 *
+		 * @param integer $personne_id L'id de la personne traitée.
+		 * @param array $data Les données renvoyées par le formulaire D1
+		 *	(Questionnaired1pdv93 et Situationallocataire)
+		 * @return boolean
+		 */
+		public function saveFormData( $personne_id, array $data ) {
+			// Sauvegarde des données du formulaire
+			$result = $this->saveAssociated(
+				$data,
+				array(
+					'validate' => 'first',
+					'atomic' => false
+				)
+			);
+
+			$success = $this->saveResultAsBool( $result );
+
+			// Ajout ou mise à jour dans Historiquedroit
+			if( $success ) {
+				// Recherche du dernier historique
+				$query = array(
+					'contain' => false,
+					'conditions' => array(
+						'Historiquedroit.personne_id' => $personne_id
+					),
+					'order' => array( 'Historiquedroit.created DESC' )
+				);
+				$historiquedroit = $this->Personne->Historiquedroit->find( 'first', $query );
+
+				$update = (
+					!empty( $historiquedroit )
+					&& (string)$data['Situationallocataire']['toppersdrodevorsa'] === (string)$historiquedroit['Historiquedroit']['toppersdrodevorsa']
+					&& (string)$data['Situationallocataire']['etatdosrsa'] === (string)$historiquedroit['Historiquedroit']['etatdosrsa']
+				);
+
+				if( $update ) {
+					$success = $this->Personne->Historiquedroit->updateAllUnbound(
+						array( 'Historiquedroit.modified' => 'NOW()' ),
+						array( 'Historiquedroit.id' => $historiquedroit['Historiquedroit']['id'] )
+					) && $success;
+				}
+				else {
+					if( !empty( $historiquedroit ) ) {
+						$now = strtotime( 'now' );
+						$yesterday = strtotime( '-1 day' );
+						$modified = strtotime( $historiquedroit['Historiquedroit']['modified'] );
+
+						// On met à jour l'historique si besoin (modified trop ancien ou dans le présent / futur)
+						if( $modified < $yesterday || $modified >= $now ) {
+							$success = $this->Personne->Historiquedroit->updateAllUnbound(
+								array( 'Historiquedroit.modified' => 'NOW() - INTERVAL \'1 day\'' ),
+								array( 'Historiquedroit.id' => $historiquedroit['Historiquedroit']['id'] )
+							) && $success;
+						}
+					}
+
+					$historiquedroit = array(
+						'Historiquedroit' => array(
+							'personne_id' => $personne_id,
+							'toppersdrodevorsa' => (string)$data['Situationallocataire']['toppersdrodevorsa'],
+							'etatdosrsa' => (string)$data['Situationallocataire']['etatdosrsa']
+						)
+					);
+
+					$this->Personne->Historiquedroit->create( $historiquedroit );
+					$success = $success && $this->Personne->Historiquedroit->save();
+				}
+			}
+
+			return $success;
+		}
+
+		/**
 		 * Filtrage des options pour le formulaire: pour les groupes vulnérables,
 		 * on ne garde que "Personnes handicapées (reconnues par la MDPH)" et
 		 * "Autres personnes défavorisées"
