@@ -1484,12 +1484,35 @@
 			}
 
 			// Filtre sur les DSP mises à jour dans l'année
+			// @see _tableau1b3ConditionDspMajDansAnnee
 			$dsp_maj = Hash::get( $search, 'Search.dsps_maj_dans_annee' );
 			if( !empty( $dsp_maj ) ) {
-				$conditions['conditionmaj'] = "AND dsps_revs.id IS NOT NULL AND EXTRACT( 'YEAR' FROM dsps_revs.modified ) = '{$conditions['annee']}'";
+				$conditions['conditionmaj'] = "AND dsps_revs.id IS NOT NULL";
 			}
 
 			return $conditions;
+		}
+
+		/**
+		 * Retourne la condition (avec la clause WHERE) à appliquer dans la jointure
+		 * sur dsps_revs pour le tableau 1B3 lorsque la case "Dont les DSP ont été
+		 * mises à jour dans l'année" est cochée.
+		 *
+		 * @param array $search Les filtres du moteur de recherche
+		 * @return string
+		 */
+		protected function _tableau1b3ConditionDspMajDansAnnee( array $search ) {
+			$conditions = $this->_tableau1b3Conditions( $search );
+			$dsp_maj = Hash::get( $search, 'Search.dsps_maj_dans_annee' );
+
+			if( $dsp_maj ) {
+				$result = "WHERE EXTRACT( 'YEAR' FROM dsps_revs.modified ) = '{$conditions['annee']}'";
+			}
+			else {
+				$result = '';
+			}
+
+			return $result;
 		}
 
 		/**
@@ -1509,6 +1532,8 @@
 		protected function _tableau1b3CategorieSubtable( array $search, $categorie, $table, $alias, $column, array $values ) {
 			$conditions = $this->_tableau1b3Conditions( $search );
 
+			$conditionsDspRev = $this->_tableau1b3ConditionDspMajDansAnnee( $search );
+
 			$sql = "SELECT
 							'{$categorie}'::text AS \"difficultes_exprimees\",
 							dsps.id AS dsp, dsps_revs.id AS dsp_rev
@@ -1522,7 +1547,12 @@
 							)
 							LEFT OUTER JOIN dsps_revs ON (
 								dsps.personne_id = dsps_revs.personne_id
-								AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id)
+								AND (dsps_revs.personne_id, dsps_revs.id) IN (
+									SELECT personne_id, MAX(dsps_revs.id)
+										FROM dsps_revs
+										{$conditionsDspRev}
+										GROUP BY personne_id
+								)
 							)
 							LEFT OUTER JOIN {$table}_revs {$alias}_revs ON (
 								dsps_revs.id = {$alias}_revs.dsp_rev_id
@@ -1563,6 +1593,8 @@
 		protected function _tableau1b3Categorie( array $search, $categorie, $alias, $column, array $values ) {
 			$conditions = $this->_tableau1b3Conditions( $search );
 
+			$conditionsDspRev = $this->_tableau1b3ConditionDspMajDansAnnee( $search );
+
 			$sql = "SELECT
 							'{$categorie}'::text AS \"difficultes_exprimees\",
 							dsps.id AS dsp, dsps_revs.id AS dsp_rev
@@ -1572,7 +1604,12 @@
 							--
 							LEFT OUTER JOIN dsps_revs ON (
 								dsps.personne_id = dsps_revs.personne_id
-								AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id)
+								AND (dsps_revs.personne_id, dsps_revs.id) IN (
+									SELECT personne_id, MAX(dsps_revs.id)
+										FROM dsps_revs
+										{$conditionsDspRev}
+										GROUP BY personne_id
+								)
 							)
 							LEFT OUTER JOIN dsps AS {$alias} ON (
 								dsps.id = {$alias}.id
