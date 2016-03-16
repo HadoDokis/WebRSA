@@ -63,6 +63,10 @@
 		 * @return array
 		 */
 		public function getAvailablesSearchs(array $conditions) {
+			if (Hash::get($conditions, 'user_id') === false) {
+				return array();
+			}
+			
 			$results = $this->find('all',
 				array(
 					'conditions' => array(
