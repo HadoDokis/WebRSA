@@ -318,10 +318,17 @@
 			}
 
 			$tableParams = $this->tableParams( $params );
+			
+			// Ajoute un thead avec un th colspan 2 contenant le titre du tableau
+			$caption = '';
+			if (Hash::get($params, 'caption')) {
+				$caption = $this->DefaultHtml->tag('caption', Hash::get($params, 'caption'));
+				unset($params['caption']);
+			}
 
 			$tbody = $this->detailsTbody( $data, $fields, $tableParams + $params );
 
-			return $this->DefaultHtml->tag( 'table', $tbody, array( 'id' => $tableParams['id'], 'class' => $tableParams['class'] ) );
+			return $this->DefaultHtml->tag( 'table', $caption.$tbody, array( 'id' => $tableParams['id'], 'class' => $tableParams['class'] ) );
 		}
 	}
 ?>

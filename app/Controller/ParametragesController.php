@@ -66,6 +66,10 @@
 					: null
 				,
 				'Équipes pluridisciplinaires' => array( 'controller' => 'gestionseps', 'action' => 'index' ),
+				'Fiche de liaisons' => ( $departement === 66 )
+					? array( 'controller' => 'fichedeliaisons', 'action' => 'indexparams' )
+					: null
+				,
 				'Fiches de prescription' => ( $departement === 93 )
 					? array( 'controller' => 'parametrages', 'action' => 'fichesprescriptions93' )
 					: null

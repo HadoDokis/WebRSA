@@ -585,7 +585,7 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid, debug)
 				disable(element);
 				element.up( validParents[j] ).addClassName( 'disabled' );
 				if (hide) {
-					element.hide();
+					element.up( validParents[j] ).hide();
 				}
 				break;
 				
@@ -595,15 +595,27 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid, debug)
 				enable(element);
 				element.up( validParents[j] ).removeClassName( 'disabled' );
 				if (hide) {
-					element.show();
+					element.up( validParents[j] ).show();
 				}
 				break;
 			}
 		}
 		
-		// On s'assure qu'un parent a bien été trouvé
+		// Si aucuns parents valide n'a été trouvé, on applique directement sur l'element
 		if (!haveAValidParent) {
-			throw "L"+(condition ? "'" : 'a dés')+"activation de l'element n'a pas pu être effectué car l'element choisi ne fait pas parti de la liste des cas pris en charge.";
+			if (condition) {
+				disable(element);
+				element.addClassName( 'disabled' );
+				if (hide) {
+					element.hide();
+				}
+			} else {
+				enable(element);
+				element.removeClassName( 'disabled' );
+				if (hide) {
+					element.show();
+				}
+			}
 		}
 	}
 }

@@ -83,6 +83,120 @@ CREATE TABLE savesearchs (
 ALTER TABLE savesearchs ADD CONSTRAINT savesearchs_isforgroup_in_list_chk CHECK ( cakephp_validate_in_list( isforgroup, ARRAY[0, 1] ) );
 ALTER TABLE savesearchs ADD CONSTRAINT savesearchs_isformenu_in_list_chk CHECK ( cakephp_validate_in_list( isformenu, ARRAY[0, 1] ) );
 
+--------------------------------------------------------------------------------
+-- Fiche de liaison - Paramêtrages
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS avisprimoanalyses, primoanalyses, fichedeliaisons_personnes, avisfichedeliaisons, logicielprimos_primoanalyses, fichedeliaisons, motiffichedeliaisons;
+CREATE TABLE motiffichedeliaisons (
+	id SERIAL NOT NULL PRIMARY KEY,
+	name VARCHAR(255),
+	actif SMALLINT
+);
+ALTER TABLE motiffichedeliaisons ADD CONSTRAINT motiffichedeliaisons_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0, 1] ) );
+
+DROP TABLE IF EXISTS logicielprimos;
+CREATE TABLE logicielprimos (
+	id SERIAL NOT NULL PRIMARY KEY,
+	name VARCHAR(255),
+	actif SMALLINT
+);
+ALTER TABLE logicielprimos ADD CONSTRAINT logicielprimos_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0, 1] ) );
+
+DROP TABLE IF EXISTS propositionprimos;
+CREATE TABLE propositionprimos (
+	id SERIAL NOT NULL PRIMARY KEY,
+	name VARCHAR(255),
+	actif SMALLINT
+);
+ALTER TABLE propositionprimos ADD CONSTRAINT propositionprimos_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0, 1] ) );
+
+--------------------------------------------------------------------------------
+-- Fiche de liaison - Tables principales
+--------------------------------------------------------------------------------
+
+CREATE TABLE fichedeliaisons (
+	id SERIAL NOT NULL PRIMARY KEY,
+	foyer_id INTEGER NOT NULL REFERENCES foyers(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	motiffichedeliaison_id INTEGER NOT NULL REFERENCES motiffichedeliaisons(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	expediteur_id INTEGER NOT NULL REFERENCES originespdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	destinataire_id INTEGER NOT NULL REFERENCES originespdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	datefiche DATE NOT NULL,
+	commentaire TEXT,
+	etat VARCHAR(16),
+	haspiecejointe CHAR(1) NOT NULL DEFAULT '0',
+	created TIMESTAMP WITHOUT TIME ZONE,
+    modified TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE fichedeliaisons ADD CONSTRAINT fichedeliaisons_etape_in_list_chk CHECK ( cakephp_validate_in_list( etat, ARRAY['attavistech', 'attval', 'decisionnonvalid', 'decisionvalid', 'traite', 'annule'] ) );
+
+CREATE TABLE primoanalyses (
+	id SERIAL NOT NULL PRIMARY KEY,
+	fichedeliaison_id INTEGER NOT NULL REFERENCES fichedeliaisons(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id INTEGER REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE, -- Gestionnaire, potentiellement != fichedeliaisons
+	dossierpcg66_id INTEGER REFERENCES dossierspcgs66(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	propositionprimo_id INTEGER REFERENCES propositionprimos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	createdossierpcg SMALLINT,
+	dateaffectation DATE,
+	dateprimo DATE,
+	commentaire TEXT,
+	etat VARCHAR(16),
+	created TIMESTAMP WITHOUT TIME ZONE,
+    modified TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE primoanalyses ADD CONSTRAINT primoanalyses_etape_in_list_chk CHECK ( cakephp_validate_in_list( etat, ARRAY['attaffect', 'attinstr', 'attavistech', 'attval', 'decisionnonvalid', 'traite', 'annule'] ) );
+ALTER TABLE primoanalyses ADD CONSTRAINT primoanalyses_createdossierpcg_in_list_chk CHECK ( cakephp_validate_in_list( createdossierpcg, ARRAY[0, 1] ) );
+
+--------------------------------------------------------------------------------
+-- Fiche de liaison - Tables de liaisons
+--------------------------------------------------------------------------------
+
+CREATE TABLE fichedeliaisons_personnes (
+	id SERIAL NOT NULL PRIMARY KEY,
+	fichedeliaison_id INTEGER NOT NULL REFERENCES fichedeliaisons(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	personne_id INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE logicielprimos_primoanalyses (
+	id SERIAL NOT NULL PRIMARY KEY,
+	logicielprimo_id INTEGER NOT NULL REFERENCES logicielprimos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	primoanalyse_id INTEGER NOT NULL REFERENCES primoanalyses(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	consultation DATE,
+	commentaire TEXT
+);
+
+--------------------------------------------------------------------------------
+-- Fiche de liaison - Avis et validations
+--------------------------------------------------------------------------------
+
+CREATE TABLE avisfichedeliaisons (
+	id SERIAL NOT NULL PRIMARY KEY,
+	fichedeliaison_id INTEGER NOT NULL REFERENCES fichedeliaisons(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape VARCHAR(10),
+	date DATE,
+	choix SMALLINT NOT NULL,
+	commentaire TEXT,
+	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created TIMESTAMP WITHOUT TIME ZONE,
+    modified TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE avisfichedeliaisons ADD CONSTRAINT avisfichedeliaisons_etape_in_list_chk CHECK ( cakephp_validate_in_list( etape, ARRAY['avis', 'validation'] ) );
+ALTER TABLE avisfichedeliaisons ADD CONSTRAINT avisfichedeliaisons_choix_in_list_chk CHECK ( cakephp_validate_in_list( choix, ARRAY[0, 1] ) );
+
+CREATE TABLE avisprimoanalyses (
+	id SERIAL NOT NULL PRIMARY KEY,
+	primoanalyse_id INTEGER NOT NULL REFERENCES primoanalyses(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape VARCHAR(10),
+	date DATE,
+	choix SMALLINT NOT NULL,
+	commentaire TEXT,
+	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created TIMESTAMP WITHOUT TIME ZONE,
+    modified TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE avisprimoanalyses ADD CONSTRAINT avisprimoanalyses_etape_in_list_chk CHECK ( cakephp_validate_in_list( etape, ARRAY['avis', 'validation'] ) );
+ALTER TABLE avisprimoanalyses ADD CONSTRAINT avisprimoanalyses_choix_in_list_chk CHECK ( cakephp_validate_in_list( choix, ARRAY[0, 1] ) );
 
 -- *****************************************************************************
 COMMIT;

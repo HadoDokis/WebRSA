@@ -153,6 +153,8 @@
 			$prefix = Hash::get( $url, 'prefix' );
 
 			// -----------------------------------------------------------------
+			
+			$htmlAttributes = self::evaluate( $data, $htmlAttributes );
 
 			$domain = self::domain( $url, $htmlAttributes );
 
@@ -179,8 +181,6 @@
 			if( isset( $htmlAttributes['confirm'] ) && $htmlAttributes['confirm'] === true ) {
 				$htmlAttributes['confirm'] = __d( $domain, "{$path} ?" );
 			}
-
-			$htmlAttributes = self::evaluate( $data, $htmlAttributes );
 
 			return array(
 				__m($msgid),
