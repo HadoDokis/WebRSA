@@ -415,6 +415,7 @@
 						'Commissionseps.defautinsertionep66.decision.type.reorientationprofverssoc' => 'isarray',
 						'Commissionseps.defautinsertionep66.decision.type.reorientationsocversprof' => 'isarray',
 						'Commissionseps.defautinsertionep66.isemploi' => 'isarray',
+						'Fichedeliaisons.typepdo_id' => 'integer',
 					)
 				);
 			}

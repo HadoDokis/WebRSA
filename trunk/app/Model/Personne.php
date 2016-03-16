@@ -676,6 +676,22 @@
 				'insertQuery' => null,
 				'with' => 'Dernierdossierallocataire'
 			),
+			'Fichedeliaison' => array(
+				'className' => 'Fichedeliaison',
+				'joinTable' => 'fichedeliaisons_personnes',
+				'foreignKey' => 'personne_id',
+				'associationForeignKey' => 'fichedeliaison_id',
+				'unique' => true,
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'finderQuery' => null,
+				'deleteQuery' => null,
+				'insertQuery' => null,
+				'with' => 'FichedeliaisonPersonne'
+			),
 			'Referent' => array(
 				'className' => 'Referent',
 				'joinTable' => 'personnes_referents',

@@ -967,3 +967,33 @@ div.input.select.evidence div.checkbox label {
 	font-weight: inherit;
 	cursor: pointer;
 }
+
+table.table-view {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+table.table-view tbody {
+	width: 100%;
+	border-width: 1px;
+}
+
+table.table-view caption {
+	font-weight: bold;
+	caption-side: top;
+	text-align: center;
+	background: #235f7d;
+	border: 1px solid #235f7d;
+	border-bottom: 0px;
+	color: white;
+	padding: 0.125em 0.25em;
+}
+
+table.table-view tbody th {
+	width: 30%;
+}
+
+table.table-view tbody td, table.table-view tbody td.data.integer {
+	text-align: left;
+	padding-left: 20px;
+}

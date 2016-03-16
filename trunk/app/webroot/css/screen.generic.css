@@ -2083,16 +2083,41 @@ table.results_table.full_size.horizontal_view th {
 	color: #0545df;
 }
 
-/* Lien tag (etiquette) */
-body table tbody td.action a.tag_gestionsdoublons_index {
-	background-image: url( ../img/icons/tag_red.png );
-}
-body table tbody td.action span.tag_gestionsdoublons_index.disabled {
-	background-image: url(../img/icons/tag_red.png);
-	/* Simule une icone _disabled */
+/**
+ * Simule une icone _disabled
+ */
+body table tbody td.action span.tag_gestionsdoublons_index.disabled,
+body table tbody td.action span.avis.disabled,
+body table tbody td.action span.validation.disabled,
+body table tbody td.action span.proposition.disabled
+{
 	-moz-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
 	-o-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
 	-webkit-filter: grayscale(100%);
 	filter: gray;
 	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+}
+
+body table tbody td.action a.tag_gestionsdoublons_index, body table tbody td.action span.tag_gestionsdoublons_index.disabled {
+	background-image: url( ../img/icons/tag_red.png );
+}
+
+body table tbody td.action a.affecter {
+	background-image: url( ../img/icons/user_go.png );
+}
+
+body table tbody td.action span.affecter.disabled {
+	background-image: url( ../img/icons/user_go_disabled.png );
+}
+
+body table tbody td.action span.avis.disabled {
+	background-image: url("../img/icons/page_attach");
+}
+
+body table tbody td.action span.validation.disabled {
+	background-image: url("../img/icons/tick.png");
+}
+
+body table tbody td.action span.proposition.disabled {
+	background-image: url("../img/icons/application_form_edit.png");
 }

@@ -1081,4 +1081,10 @@
 	Configure::write('Module.Savesearch.enabled', true);
 	Configure::write('Module.Savesearch.mon_menu.enabled', true); // Ajoute un element au Menu de navigation
 	Configure::write('Module.Savesearch.mon_menu.name', 'Mon menu'); // Nom du menu supplémentaire
+	
+	/**
+	 * Fiche de liaison
+	 * Défini l'origine d'une dossier PCG crée par la primoanalyse d'une fiche de liaison
+	 */
+	Configure::write('Fichedeliaisons.typepdo_id', 18);
 ?>

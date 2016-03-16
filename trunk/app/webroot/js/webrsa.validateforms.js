@@ -486,7 +486,9 @@ var FormValidator = {
 		FormValidator.debug( ('Valeur trouvé : ' + valeur), true, true );
 		return thisDate || FormValidator.formatValue( editable, valeur );
 	},
-	
+	empty: function( value ) {
+		return value === undefined || value === null || value === false;
+	},
 	/**
 	 * Permet le retrait d'un message d'erreur lié à un editable
 	 * 
@@ -502,9 +504,10 @@ var FormValidator = {
 
 		// On remonte vers la div maman pour chercher une erreur à l'interieur
 		parentDiv = editable.up(FormValidator.globalVars.errorElements);
-		parentDiv.removeClassName('error');
-
-		errorDiv = parentDiv.select('div.error-message');
+		if( false === FormValidator.empty( parentDiv ) ) {
+			parentDiv.removeClassName('error');
+			errorDiv = parentDiv.select('div.error-message');
+		}
 
 		// Si on trouve une erreur affiché, on la retire
 		if ( errorDiv !== undefined && errorDiv[0] !== undefined ){
@@ -625,10 +628,23 @@ var FormValidator = {
 		'use strict';
 		var message,
 			ruleName = FormValidator.globalVars.rules[editable.index].rules[i].name,
-			validation = false;
+			validation = false,
+			j,
+			val;
 
 		if ( (editable.type.toLowerCase() === 'checkbox' && ruleName === 'date') || editable.type.toLowerCase() === 'hidden' ){
 			return true;
+		}
+		
+		// Cas multiple checkbox
+		if (editable.type.toLowerCase() === 'checkbox' && value.indexOf(',') >= 0) {
+			val = value.split(',');
+			for (j=0; j<val.length; j++) {
+				if (FormValidator.isValid(editable, val[j], i, params, isOnchange) === false) {
+					return false;
+				}
+				return true;
+			}
 		}
 
 		// C'est maintenant qu'on vérifie l'editable
@@ -754,7 +770,7 @@ var FormValidator = {
 
 		// Pour chaque éditables... On vérifi la valeur...
 		$$('#' + form.id + ' input, #' + form.id + ' select,' + form.id + ' textarea').each( function( editable ){
-			if ( !editable.disabled && !FormValidator.validate( $( editable ), true ) ){
+			if ( editable.getAttribute('type') !== 'hidden' && !editable.disabled && !FormValidator.validate( $( editable ), true ) ){
 				if ( valid ){
 					$( editable ).scrollTo();
 					window.scrollTo(0, window.pageYOffset);				

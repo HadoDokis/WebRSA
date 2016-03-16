@@ -323,6 +323,15 @@
                 ),
                 'fields' => '',
                 'order' => ''
+            ),
+            'Fichedeliaison' => array(
+                'className' => 'Fichedeliaison',
+                'foreignKey' => 'fk_value',
+                'conditions' => array(
+                    'Fichiermodule.modele' => 'Fichedeliaison'
+                ),
+                'fields' => '',
+                'order' => ''
             )
 		);
 

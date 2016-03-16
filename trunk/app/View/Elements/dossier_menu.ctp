@@ -276,6 +276,7 @@
 		// Tags du foyer
 		if( $departement === 66 ) {
 			$items['Informations foyer'] += array(
+				'Fiche de liaison' => array( 'url' => array( 'controller' => 'fichedeliaisons', 'action' => 'index', $dossier['Foyer']['id'] ) ),
 				'Tags du foyer' => array( 'url' => array( 'controller' => 'tags', 'action' => 'index', 'Foyer', $dossier['Foyer']['id'] ) ),
 			);
 		}

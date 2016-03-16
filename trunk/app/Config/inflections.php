@@ -490,7 +490,10 @@ $irregularPlural = array(
 	// Conservation des données d'impression
 	'dataimpression' => 'dataimpressions',
 	// Paramêtrage des valeurs pour les programmes région
-	'valprogfichecandidature66' => 'valsprogsfichescandidatures66'
+	'valprogfichecandidature66' => 'valsprogsfichescandidatures66',
+	// Fiche de liaison
+	'fichedeliaison_personne' => 'fichedeliaisons_personnes',
+	'logicielprimo_primoanalyse' => 'logicielprimos_primoanalyses',
 );
 
 /**

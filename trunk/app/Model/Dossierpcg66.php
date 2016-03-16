@@ -128,7 +128,12 @@ class Dossierpcg66 extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        )
+        ),
+        'Primoanalyse' => array(
+            'className' => 'Primoanalyse',
+            'foreignKey' => 'dossierpcg66_id',
+            'dependent' => false,
+        ),
     );
     public $hasMany = array(
         'Decisiondossierpcg66' => array(
