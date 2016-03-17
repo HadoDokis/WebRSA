@@ -390,7 +390,7 @@
 				$field = $hasAndBelongsToMany ? $Model->primaryKey : $model_field[1];
 
 				// Table et champ existent
-				if ( !$hasAndBelongsToMany && $Model->fieldExists($model_field[1]) === false ) {
+				if ( !$hasAndBelongsToMany && in_array( $model_field[1], array_keys( $Model->schema() ) ) === false ) {
 					$success = false;
 					$message[] = "L'existance de <b>{$model_field[1]}</b> dans le modele <b>{$model_field[0]}</b> n'a pas été trouvé.";
 					continue;
@@ -422,11 +422,11 @@
 				if ( $field !== $Model->primaryKey ) {
 					$Model->begin();
 					$blackList = array();
-					
+
 					while (true) {
-						$data = $Model->find('first', 
-							array( 
-								'recursive' => -1, 
+						$data = $Model->find('first',
+							array(
+								'recursive' => -1,
 								'contain' => false,
 								'conditions' => !empty($blackList) ? array(
 									$Model->alias.'.id NOT IN ('.implode(', ', $blackList).')'
@@ -438,7 +438,7 @@
 						if (empty($data)) {
 							break;
 						}
-						
+
 						// On teste avant tout l'enregistrement sans rien toucher (vérification par le modèle de l'enregistrement)
 						if (!$Model->save($data)) {
 							$blackList[] = Hash::get($data, $Model->alias.'.id');
