@@ -113,17 +113,16 @@
 		/**
 		 * Vérifie si un champ est requis en fonction de la conf et des rêgles de validation.
 		 * 
-		 * @param string $path
+		 * @param Model $Model
+		 * @param string $fieldName
 		 * @return boolean
 		 */
-		protected static function _required( $path ) {
+		protected static function _required( Model $Model, $fieldName ) {
 			$allowEmpty = true;
 			
-			list($modelName, $fieldName) = model_field($path);
-			$cache = self::_getCacheByModelName( $modelName );
+			$cache = self::_getCacheByModelName( $Model->alias );
 			
 			if ( !isset($cache[$fieldName]) ) {
-				$Model = ClassRegistry::init( $modelName );
 				if ( isset( $Model->validate[$fieldName] ) ) {
 					foreach ( $Model->validate[$fieldName] as $key => $value ) {
 						if ( $key === 'notEmpty' || (is_array($value) && self::_getRuleName( $value ) === 'notEmpty') ) {
@@ -191,7 +190,7 @@
 			if ( is_array(self::_getCache($key)) === false ) {
 				$confData = array();
 				foreach ( array_keys($Model->validate) as $fieldName ) {
-					$confData[$fieldName] = self::_required("{$Model->alias}.{$fieldName}");
+					$confData[$fieldName] = self::_required($Model, $fieldName);
 				}
 				
 				Cache::write($key.'.validate', $Model->validate);
