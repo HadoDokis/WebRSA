@@ -149,11 +149,11 @@
 			if( $this->forceVirtualFields ) {
 				$dbo = $this->getDataSource();
 				$aliases = Hash::combine( $queryData, 'joins.{n}.alias', 'joins.{n}.table' );
+				$linkedModels = array_keys( $aliases );
+				$contains = Hash::get( $queryData, 'contain' );
 
-				$linkedModels = Set::extract( $queryData, '/joins/alias' );
-				$contains = Set::extract( $queryData, '/contain' );
-				if( !empty( $contains ) && is_array( $contains ) ) {
-					$linkedModels += array_keys( (array)Set::normalize( $contains ) );
+				if( !empty( $contains ) ) {
+					$linkedModels += array_keys( (array)Hash::normalize( (array)$contains ) );
 				}
 
 				if( !empty( $linkedModels ) ) {
