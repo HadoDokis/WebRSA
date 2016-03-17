@@ -2111,7 +2111,7 @@ body table tbody td.action span.affecter.disabled {
 }
 
 body table tbody td.action span.avis.disabled {
-	background-image: url("../img/icons/page_attach");
+	background-image: url("../img/icons/page_attach.png");
 }
 
 body table tbody td.action span.validation.disabled {
