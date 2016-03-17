@@ -1084,7 +1084,12 @@
 	
 	/**
 	 * Fiche de liaison
-	 * Défini l'origine d'une dossier PCG crée par la primoanalyse d'une fiche de liaison
+	 * Défini l'origine d'un dossier PCG crée par la primoanalyse d'une fiche de liaison
 	 */
 	Configure::write('Fichedeliaisons.typepdo_id', 18);
+	
+	/**
+	 * Affiche les anciens moteurs de cohorte et de recherche pour comparaison
+	 */
+	Configure::write('Anciensmoteurs.enabled', false);
 ?>
