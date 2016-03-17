@@ -37,10 +37,10 @@
 		 * Permet de forcer l'utilisation des champs virtuels pour les modèles liés
 		 */
 		public $forceVirtualFields = false;
-		
+
 		/**
 		 * Liste des champs où la valeur du notEmpty/allowEmpty est configurable
-		 * 
+		 *
 		 * @var array
 		 */
 		public $configuredAllowEmptyFields = array();
@@ -89,7 +89,7 @@
 					$this->virtualFields[$name] = str_replace( '%s', $this->alias, $this->virtualFields[$name] );
 				}
 			}
-			
+
 			ValidateAllowEmptyUtility::initialize( $this );
 		}
 
@@ -148,6 +148,8 @@
 
 			if( $this->forceVirtualFields ) {
 				$dbo = $this->getDataSource();
+				$aliases = Hash::combine( $queryData, 'joins.{n}.alias', 'joins.{n}.table' );
+
 				$linkedModels = Set::extract( $queryData, '/joins/alias' );
 				$contains = Set::extract( $queryData, '/contain' );
 				if( !empty( $contains ) && is_array( $contains ) ) {
@@ -156,7 +158,15 @@
 
 				if( !empty( $linkedModels ) ) {
 					foreach( $linkedModels as $linkedModel ) {
-						$linkedModel = ClassRegistry::init( $linkedModel );
+						$settings = $linkedModel;
+						if( isset( $aliases[$linkedModel] ) ) {
+							$class = Inflector::classify( trim( $aliases[$linkedModel], '"' ) );
+							if( $class !== $linkedModel ) {
+								$settings = array( 'alias' => $linkedModel, 'class' => $class );
+							}
+						}
+
+						$linkedModel = ClassRegistry::init( $settings );
 						if( !empty( $linkedModel->virtualFields ) ) {
 							$replacements = array();
 							$replacementsFields = array();
@@ -823,10 +833,10 @@
 
 			return false;
 		}
-		
+
 		/**
 		 * Verifi l'existance d'un champ dans la table
-		 * 
+		 *
 		 * @param string $fieldName
 		 * @return boolean
 		 */
@@ -837,13 +847,13 @@
 				. "AND column_name ='".$fieldName."'"
 				. ");"
 			;
-			
+
 			return Hash::get($Dbo->query($sql), '0.0.exists');
 		}
-		
+
 		/**
 		 * Envoi les informations d'un champ de la table
-		 * 
+		 *
 		 * @param string $fieldName
 		 * @return array
 		 */
@@ -854,7 +864,7 @@
 				. "AND column_name ='".$fieldName."'"
 				. ";"
 			;
-			
+
 			return Hash::get($Dbo->query($sql), '0.0');
 		}
 	}
