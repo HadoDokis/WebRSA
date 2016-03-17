@@ -197,6 +197,7 @@
 			),
 		),
 		'Anciens moteurs' => array(
+			'disabled' => (!Configure::read('Anciensmoteurs.enabled')),
 			( Configure::read( 'Cg.departement' ) == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
 				'APRE' => array(
 					'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),

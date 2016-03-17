@@ -350,6 +350,9 @@
 				'Module.Savesearch.mon_menu.name' => array(
 					array( 'rule' => 'string', 'allowEmpty' => true )
 				),
+				'Anciensmoteurs.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

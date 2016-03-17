@@ -442,4 +442,9 @@
 	 * @default null
 	 */
 	Configure::write( 'Module.Cui.enabled', false );
+	
+	/**
+	 * Affiche les anciens moteurs de cohorte et de recherche pour comparaison
+	 */
+	Configure::write('Anciensmoteurs.enabled', false);
 ?>
