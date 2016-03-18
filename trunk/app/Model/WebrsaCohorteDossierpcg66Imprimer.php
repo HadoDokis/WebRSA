@@ -53,7 +53,10 @@
 						. 'INNER JOIN personnespcgs66 AS b ON a.id = b.dossierpcg66_id '
 						. 'INNER JOIN traitementspcgs66 AS c ON c.personnepcg66_id = b.id '
 						. 'WHERE a.id = "Dossierpcg66"."id" '
+						. 'AND a.poledossierpcg66_id = "Dossierpcg66"."poledossierpcg66_id" '
+						. 'AND a.etatdossierpcg != \'annule\''
 						. 'AND c.imprimer = 1 '
+						. 'AND c.annule = \'N\''
 						. 'AND c.etattraitementpcg = \'imprimer\')'
 					)
 				)

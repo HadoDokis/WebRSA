@@ -1109,7 +1109,6 @@
 					$this->Personnepcg66->Dossierpcg66->Foyer->join('Dossierpcg66', array('type' => 'INNER')),
 					$this->Personnepcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
 					$this->Personnepcg66->join('Traitementpcg66', array('type' => 'LEFT')),
-					$this->Personnepcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT')),
 				),
 				'contain' => false,
 				'conditions' => array(
@@ -1118,23 +1117,9 @@
 					),
 					'Dossierpcg66.poledossierpcg66_id = Dossierpcg66_maitre.poledossierpcg66_id',
 					array(
-						'OR' => array(
-							'Decisiondossierpcg66.id IS NULL',
-							array(
-								'Decisiondossierpcg66.validationproposition' => 'O',
-								'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id,
-							)
-						)
-					),
-					array(
-						'OR' => array(
-							'Traitementpcg66.id IS NULL',
-							array(
-								$conditionTraitementpcg,
-								'Traitementpcg66.imprimer' => '1',
-								'Traitementpcg66.annule' => 'N',
-							)
-						)
+						$conditionTraitementpcg,
+						'Traitementpcg66.imprimer' => '1',
+						'Traitementpcg66.annule' => 'N',
 					),
 				)
 			);
