@@ -60,99 +60,6 @@
 		}
 
 		/**
-		 * Crée une table de correspondance entre les noms des champs utilisables
-		 * dans les modèles et leur traduction à partir des données envoyées.
-		 *
-		 * @param array $keys
-		 * @return array
-		 */
-		protected function _flatKeys( $keys ) {
-			$flatKeys = array( );
-
-			if( !empty( $keys ) ) {
-				foreach( $keys as $key ) {
-					if( strpos( $key, '.' ) !== false ) {
-						$modelField = model_field( $key );
-						$domain = Inflector::underscore( $modelField[0] );
-						$msgstr = __d( $domain, implode( '.', $modelField ) );
-						$flatKeys[strtolower( str_replace( '.', '_', $key ) )] = $msgstr;
-					}
-					else {
-						$flatKeys[strtolower( $key )] = $key;
-					}
-				}
-			}
-
-			return $flatKeys;
-		}
-
-		/**
-		 * Exporte la liste des champs disponibles dans un fichier CSV situé dans
-		 * app/tmp/logs, nommé suivant le nom du modèle de document utilisé.
-		 *
-		 * @param GDO_PartType $oMainPart
-		 * @param array $mainData
-		 * @param string $document
-		 * @return void
-		 */
-		protected function _exportChampsDisponibles( &$oMainPart, $mainData, $cohorteData, $document ) {
-			//
-			$flatKeys = $this->_flatKeys( array_keys( Hash::flatten( $mainData ) ) );
-			//
-			if( !empty( $cohorteData ) ) {
-				foreach( $cohorteData as $prefix => $foo ) {
-					if( isset( $foo[0] ) ) {
-						$flatKeys = array_merge(
-							$flatKeys,
-							$this->_flatKeys( array_keys( Hash::flatten( array( $prefix => $foo[0] ) ) ) )
-						);
-					}
-				}
-			}
-
-			$mainFields = array( );
-			$sectionFields = array( );
-
-			if( !empty( $oMainPart->field ) ) {
-				foreach( $oMainPart->field as $field ) {
-					//$mainFields[$field->target] = $field->dataType;
-					$msgstr = null;
-					if( isset( $flatKeys[$field->target] ) ) {
-						$msgstr = $flatKeys[$field->target];
-					}
-					$mainFields["contenu_{$field->target}"] = "\"contenu\";\"\";\"{$field->target}\";\"{$field->dataType}\";\"{$msgstr}\"";
-				}
-			}
-
-			if( !empty( $oMainPart->iteration ) ) {
-				foreach( $oMainPart->iteration as $iteration ) {
-					if( isset( $iteration->part[0] ) ) {
-						foreach( $iteration->part[0]->field as $field ) {
-							//$sectionFields[$iteration->name][$field->target] = $field->dataType;
-							$msgstr = null;
-							$key = strtolower( "{$iteration->name}_{$field->target}" );
-							if( isset( $flatKeys[$key] ) ) {
-								$msgstr = $flatKeys[$key];
-							}
-							$sectionFields["sections_{$iteration->name}_{$field->target}"] = "\"sections\";\"{$iteration->name}\";\"{$field->target}\";\"{$field->dataType}\";\"{$msgstr}\"";
-						}
-					}
-				}
-			}
-
-			$outputFile = TMP.DS.'logs'.DS.__CLASS__.'__'.str_replace( '/', '__', str_replace( '.', '_', $document ) ).'.csv';
-
-			$oldMask = umask( 0 );
-
-			file_put_contents(
-					$outputFile, "\"Partie\";\"Nom de la section\";\"Champ\";\"Type\";\"Traduction\"\n"
-					.implode( "\n", $mainFields )."\n".implode( "\n", $sectionFields )
-			);
-
-			umask( $oldMask );
-		}
-
-		/**
 		 * Fonction de génération de documents générique
 		 * @param $datas peut prendre la forme suivante:
 		 *     - array( ... ) si $section == false
@@ -234,7 +141,19 @@
 			}
 
 			if( Configure::read( 'debug' ) > 0 ) {
-				$this->_exportChampsDisponibles( $oMainPart, $mainData, $cohorteData, $document );
+				App::uses( 'GedoooUtility', 'Gedooo.Utility' );
+
+				$lines = GedoooUtility::toCsv(
+					$oMainPart,
+					$mainData,
+					$cohorteData,
+					Configure::read( 'Gedooo.debug_export_data' )
+				);
+
+				GedoooUtility::exportCsv(
+					TMP.DS.'logs'.DS.__CLASS__.'__'.str_replace( '/', '__', str_replace( '.', '_', $document ) ).'.csv',
+					$lines
+				);
 			}
 
 			$oTemplate = new GDO_ContentType(

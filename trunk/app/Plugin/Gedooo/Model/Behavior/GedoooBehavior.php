@@ -101,7 +101,10 @@
 		 * @return array
 		 */
 		public function gedConfigureKeys( Model $model ) {
-			$keys = array( 'Gedooo.method' => 'string' );
+			$keys = array(
+				'Gedooo.method' => 'string',
+				'Gedooo.debug_export_data' => 'boolean'
+			);
 
 			if( !is_null( $this->_gedoooBehavior ) ) {
 				$keys = array_merge(
