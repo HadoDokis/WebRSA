@@ -176,10 +176,10 @@
 			}
 
 			if( isset( $htmlAttributes['title'] ) && $htmlAttributes['title'] === true ) {
-				$htmlAttributes['title'] = __d( $domain, $path );
+				$htmlAttributes['title'] = self::evaluate( $data, __d( $domain, $path ) );
 			}
 			if( isset( $htmlAttributes['confirm'] ) && $htmlAttributes['confirm'] === true ) {
-				$htmlAttributes['confirm'] = __d( $domain, "{$path} ?" );
+				$htmlAttributes['confirm'] = self::evaluate( $data, __d( $domain, "{$path} ?" ) );
 			}
 
 			return array(
