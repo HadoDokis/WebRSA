@@ -281,7 +281,7 @@
 			//Paramétrage du composant Auth
 			$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
 			$this->Auth->logoutRedirect = array( 'controller' => 'users', 'action' => 'login' );
-			$this->Auth->loginRedirect = array( 'controller' => 'dossiers', 'action' => 'index' );
+			$this->Auth->loginRedirect = Router::parse( '/' );
 			$this->Auth->authorize = array( 'Actions' => array( 'actionPath' => 'controllers' ) );
 
 			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
@@ -376,7 +376,7 @@
 			if (!Configure::read('Jetons2.disabled') && Configure::read('Etatjetons.enabled') && !in_array( true, $is )) {
 				$this->set('jetons_count', $this->Components->load('Jetons2')->count());
 			}
-			
+
 			// Envoi des données au menu
 			$menuData = array();
 			if (Configure::read('Module.Savesearch.enabled') && Configure::read('Module.Savesearch.mon_menu.enabled')) {
@@ -384,19 +384,19 @@
 			}
 			$this->set('main_navigation_menu_data', $menuData);
 		}
-		
+
 		/**
 		 * Permet de récupérer les données formattés à envoyer au menu
 		 * ex: array(
 		 *		'Le titre' => array('url' => array('controller' => 'nom_du_controller', 'action' => 'nom_de_action' ),
 		 *		...
 		 * )
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _getMonMenu() {
 			$cache = $this->Session->read('Module.Monmenu');
-			
+
 			if (!$cache) {
 				$user_id = $this->Session->read('Auth.User.id');
 				$savedSearch = ClassRegistry::init('Savesearch')->find('all',
@@ -420,17 +420,17 @@
 						)
 					)
 				);
-				
+
 				$cache = array();
 				foreach ((array)$savedSearch as $saved) {
 					$s =& $saved['Savesearch'];
 					$params = (substr($s['url'], strlen('/'.$s['controller'].'/'.$s['action'].'/')));
-					
+
 					// FIXME : Controle des permissions dans le menu impossible avec une url valide
 					if (!WebrsaPermissions::check($s['controller'], $s['action'])) {
 						continue;
 					}
-					
+
 					$menu = array(
 						'url' => $s['url']
 //						'url' => array(
@@ -439,20 +439,20 @@
 //						)
 					);
 //					$menu['url'] = array_merge($menu['url'], explode('/', $params));
-					
+
 					if ($s['user_id'] == $user_id) {
 						$cache['Sauvegardes personnelles'][$s['name']] = $menu;
 					} else {
 						$cache['Sauvegardes de groupe'][$s['name']] = $menu;
 					}
 				}
-				
+
 				// Suppression du cache du menu
 				Cache::delete('element_'.$this->Session->read('Auth.User.username'), 'views');
-				
+
 				$this->Session->write('Module.Monmenu', $cache);
 			}
-			
+
 			return $cache;
 		}
 	}
