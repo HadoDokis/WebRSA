@@ -306,46 +306,50 @@
 				}
 			}
 
-			$rdvs = $this->Rendezvous->find(
-				'all',
-				array(
-					'fields' => array(
-						'Rendezvous.id',
-						'Rendezvous.personne_id',
-                        $this->Rendezvous->Personne->sqVirtualField( 'nom_complet' ),
-						'Structurereferente.lib_struc',
-						$this->Rendezvous->Referent->sqVirtualField( 'nom_complet' ),
-						'Permanence.libpermanence',
-						'Typerdv.libelle',
-						'Statutrdv.libelle',
-						'Rendezvous.daterdv',
-						'Rendezvous.heurerdv',
-						'Rendezvous.objetrdv',
-						'Rendezvous.commentairerdv',
-						'StatutrdvTyperdv.motifpassageep',
-						$this->Rendezvous->Fichiermodule->sqNbFichiersLies( $this->Rendezvous, 'nb_fichiers_lies' ),
-                        'Rendezvous.statutrdv_id'
-					),
-					'joins' => array(
-						$this->Rendezvous->join( 'Personne' ),
-						$this->Rendezvous->join( 'Structurereferente' ),
-						$this->Rendezvous->join( 'Referent' ),
-						$this->Rendezvous->join( 'Statutrdv' ),
-						$this->Rendezvous->join( 'Permanence' ),
-						$this->Rendezvous->join( 'Typerdv' ),
-						$joinStatutrdvTyperdv
-					),
-					'contain' => false,
-					'conditions' => array(
-						'Rendezvous.personne_id' => $personne_id,
-						$conditionStructure
-					),
-					'order' => array(
-						'Rendezvous.daterdv DESC',
-						'Rendezvous.heurerdv DESC'
-					)
+			$query = array(
+				'fields' => array(
+					'Rendezvous.id',
+					'Rendezvous.personne_id',
+					$this->Rendezvous->Personne->sqVirtualField( 'nom_complet' ),
+					'Structurereferente.lib_struc',
+					$this->Rendezvous->Referent->sqVirtualField( 'nom_complet' ),
+					'Permanence.libpermanence',
+					'Typerdv.libelle',
+					'Statutrdv.libelle',
+					'Rendezvous.daterdv',
+					'Rendezvous.heurerdv',
+					'Rendezvous.objetrdv',
+					'Rendezvous.commentairerdv',
+					'StatutrdvTyperdv.motifpassageep',
+					$this->Rendezvous->Fichiermodule->sqNbFichiersLies( $this->Rendezvous, 'nb_fichiers_lies' ),
+					'Rendezvous.statutrdv_id'
+				),
+				'joins' => array(
+					$this->Rendezvous->join( 'Personne' ),
+					$this->Rendezvous->join( 'Structurereferente' ),
+					$this->Rendezvous->join( 'Referent' ),
+					$this->Rendezvous->join( 'Statutrdv' ),
+					$this->Rendezvous->join( 'Permanence' ),
+					$this->Rendezvous->join( 'Typerdv' ),
+					$joinStatutrdvTyperdv
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Rendezvous.personne_id' => $personne_id,
+					$conditionStructure
+				),
+				'order' => array(
+					'Rendezvous.daterdv DESC',
+					'Rendezvous.heurerdv DESC'
 				)
 			);
+			if( (string)Configure::read( 'Cg.departement' ) === '93' ) {
+				if( false === $this->Rendezvous->Behaviors->attached( 'LinkedRecords' ) ) {
+					$this->Rendezvous->Behaviors->attach( 'LinkedRecords' );
+				}
+				$query = $this->Rendezvous->linkedRecordsCompleteQuerydata( $query, 'Questionnaired1pdv93' );
+			}
+			$rdvs = $this->Rendezvous->find( 'all', $query );
 
 			if( isset( $rdvs['0']['Rendezvous']['id'] ) && !empty( $rdvs['0']['Rendezvous']['id'] ) ) {
 				$lastrdv_id = $rdvs['0']['Rendezvous']['id'];

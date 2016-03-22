@@ -52,7 +52,7 @@
 		<?php
 			foreach( $rdvs as $index => $rdv ) {
 				$lastrdv = true;
-				if( Configure::read( 'Cg.departement' ) != 93 ) {
+				if( $departement != 93 ) {
 					$lastrdv = ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id );
 				}
 
@@ -109,7 +109,9 @@
 							( $this->Permissions->check( 'rendezvous', 'impression', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->deleteLink(
-							'Supprimer le Rendez-vous',
+							( $departement == 93 ) && Hash::get( $rdv, 'Rendezvous.has_questionnaired1pdv93' )
+								? 'Attention ce RDV est lié à un questionnaire D1, si vous le supprimez, vous supprimez également le D1'
+								: 'Supprimer le rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'delete',
 							$rdv['Rendezvous']['id'] ),
 							(
