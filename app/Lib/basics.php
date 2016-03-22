@@ -181,7 +181,7 @@
 		if ( $throwError ) {
 			trigger_error( "Could not extract model and field names from the following path: \"{$path}\"", E_USER_WARNING );
 		}
-		
+
 		return null;
 	}
 
@@ -1260,5 +1260,25 @@
 			( strpos( $_SERVER['PHP_SELF'], 'test.php' ) !== false ) // URL
 			|| ( isset( $_SERVER['SHELL'] ) && Hash::get( $_SERVER, 'argv.3' ) === 'test' ) // CLI
 		);
+	}
+
+	/**
+	 * Fonction in_array où l'ensemble des valeurs ($needle et $haystack) est
+	 * casté en string avant la comparaison.
+	 *
+	 * @param mixed $needle La valeur à rechercher
+	 * @param array $haystack La liste de valeurs possibles
+	 * @return boolean
+	 */
+	function in_array_strings( $needle, array $haystack ) {
+		$needle = (string)$needle;
+
+		foreach( $haystack as $item ) {
+			if( $needle === (string)$item ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 ?>

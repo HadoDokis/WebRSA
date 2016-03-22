@@ -231,7 +231,7 @@
 
 			foreach( $accepted as $path => $acceptedValues ) {
 				foreach( array_keys( (array)Hash::get( $options, $path ) ) as $value ) {
-					if( in_array( $value, $acceptedValues ) === false ) {
+					if( in_array_strings( $value, $acceptedValues ) === false ) {
 						$options = Hash::remove( $options, "{$path}.{$value}" );
 					}
 				}
@@ -264,7 +264,7 @@
 			foreach( $restrict as $path => $accepted ) {
 				$value = Hash::get( $search, $path );
 
-				if( $value === null || ( !is_array( $value ) && !in_array( $value, (array)$accepted ) ) ) {
+				if( $value === null || ( !is_array( $value ) && !in_array_strings( $value, (array)$accepted ) ) ) {
 					$value = $accepted;
 				}
 				else if( is_array( $value ) ) {
@@ -462,15 +462,15 @@
 				ini_set( $key, $value );
 			}
 		}
-		
+
 		/**
 		 * Actions à effectuer systématiquement
-		 * 
+		 *
 		 * @param array $params
 		 */
 		protected function _alwaysDo($params) {
 			$Controller = $this->_Collection->getController();
-			
+
 			// Intégration du module Savesearch
 			if (Configure::read('Module.Savesearch.enabled')) {
 				$conditions = array(

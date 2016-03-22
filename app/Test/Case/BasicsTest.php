@@ -891,5 +891,27 @@
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la fonction in_array_strings
+		 */
+		public function testInArrayStrings() {
+			// 1. Se comporte comme in_array (non strict)
+			$result = in_array_strings( '0', array( 0, 1, 2, 3, 4, 5, 6 ) );
+			$this->assertEqual( $result, true, var_export( $result, true ) );
+
+			$result = in_array_strings( 0, array( 0, 1, 2, 3, 4, 5, 6 ) );
+			$this->assertEqual( $result, true, var_export( $result, true ) );
+
+			$result = in_array_strings( '2', array( 0, 1, 2, 3, 4, 5, 6 ) );
+			$this->assertEqual( $result, true, var_export( $result, true ) );
+
+			$result = in_array_strings( 2, array( 0, 1, 2, 3, 4, 5, 6 ) );
+			$this->assertEqual( $result, true, var_export( $result, true ) );
+
+			// 2. Corrige le problème de in_array (non strict) avec Z
+			$result = in_array_strings( 'Z', array( 0, 1, 2, 3, 4, 5, 6 ) );
+			$this->assertEqual( $result, false, var_export( $result, true ) );
+		}
 	}
 ?>
