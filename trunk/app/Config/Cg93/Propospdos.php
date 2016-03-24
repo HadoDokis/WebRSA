@@ -22,7 +22,7 @@
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', '0' )
+					'Situationdossierrsa.etatdosrsa' => array( '0' )
 				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
@@ -32,7 +32,7 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(
 					'Situationdossierrsa.etatdosrsa_choice' => '1',
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', '0' )
+					'Situationdossierrsa.etatdosrsa' => array( '0' )
 				),
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),
@@ -133,7 +133,9 @@
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
-				'accepted' => array(),
+				'accepted' => array(
+					'Situationdossierrsa.etatdosrsa' => array( 0, 1, 2, 3, 4, 5, 6 )
+				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
 			),
@@ -142,7 +144,9 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(),
 				// 2.2 Conditions supplémentaires optionnelles
-				'conditions' => array(),
+				'conditions' => array(
+					'Situationdossierrsa.etatdosrsa <>' => 'Z'
+				),
 				// 2.3 Tri par défaut
 				'order' => array()
 			),
@@ -248,7 +252,7 @@
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', '0' )
+					'Situationdossierrsa.etatdosrsa' => array( '0' )
 				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
@@ -258,7 +262,7 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(
 					'Situationdossierrsa.etatdosrsa_choice' => '1',
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', '0' )
+					'Situationdossierrsa.etatdosrsa' => array( '0' )
 				),
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),
@@ -330,7 +334,7 @@
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', '0' )
+					'Situationdossierrsa.etatdosrsa' => array( '0' )
 				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
@@ -340,7 +344,7 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(
 					'Situationdossierrsa.etatdosrsa_choice' => '1',
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', '0' )
+					'Situationdossierrsa.etatdosrsa' => array( '0' )
 				),
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),

@@ -22,7 +22,7 @@
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', 2, 3, 4 )
+					'Situationdossierrsa.etatdosrsa' => array( 2, 3, 4 )
 				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
@@ -32,7 +32,7 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(
 					'Situationdossierrsa.etatdosrsa_choice' => '1',
-					'Situationdossierrsa.etatdosrsa' => array( 'Z', 2, 3, 4 )
+					'Situationdossierrsa.etatdosrsa' => array( 2, 3, 4 )
 				),
 				// 2.2 Conditions supplémentaires optionnelles
 				'conditions' => array(),
