@@ -272,6 +272,7 @@
 					'Dossierpcg66.poledossierpcg66_id',
 					'Dossierpcg66.user_id',
 					'Dossierpcg66.dateaffectation',
+					'Decisiondossierpcg66.decisionpdo_id',
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 					'/Dossierspcgs66/edit/#Dossierpcg66.id#' => array( 'class' => 'edit' ),
 					'/Dossierspcgs66/imprimer/#Dossierpcg66.id#/#Decisiondossierpcg66.id#' => array( 'class' => 'print' ),
@@ -311,6 +312,7 @@
 					'Dossierpcg66.poledossierpcg66_id',
 					'Dossierpcg66.user_id',
 					'Dossierpcg66.dateaffectation',
+					'Decisiondossierpcg66.decisionpdo_id',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet'
 				)
