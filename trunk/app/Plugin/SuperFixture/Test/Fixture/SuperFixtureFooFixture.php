@@ -42,6 +42,10 @@
 			'id' => array( 'type' => 'integer', 'key' => 'primary' ),
 			'name' => array( 'type' => 'string', 'length' => 255, 'null' => false ),
 			'super_fixture_bar_id' => array( 'type' => 'integer', 'null' => false ),
+			'integer_field' => array('type' => 'integer', 'null' => false),
+			'text_field' => array('type' => 'text', 'null' => false),
+			'boolean_field' => array('type' => 'boolean', 'null' => false),
+			'date_field' => array('type' => 'date', 'null' => false),
 			'created' => 'datetime',
 			'updated' => 'datetime',
 		);

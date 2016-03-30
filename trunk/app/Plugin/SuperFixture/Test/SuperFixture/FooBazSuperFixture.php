@@ -25,11 +25,19 @@
 				'SuperFixtureFoo' => array(
 					1 => array(
 						'name' => 'Foo 1',
-						'super_fixture_bar_id' => 1
+						'super_fixture_bar_id' => 1,
+						'integer_field' => 123,
+						'text_field' => 'blabla bla blablabla',
+						'boolean_field' => 1,
+						'date_field' => '2015-06-01',
 					),
 					2 => array(
 						'name' => 'Foo 2',
-						'super_fixture_bar_id' => 1
+						'super_fixture_bar_id' => 1,
+						'integer_field' => 123,
+						'text_field' => 'blabla bla blablabla',
+						'boolean_field' => 1,
+						'date_field' => '2015-06-01',
 					),
 				),
 				'SuperFixtureBar' => array(

@@ -451,7 +451,30 @@
 		 */
 		public function duree_engag() {
 			$function = 'duree_engag_cg'.Configure::read( 'Cg.departement' );
-			return $this->{$function}();
+			if (method_exists($this, $function)) {
+				return $this->{$function}();
+			} else {
+				return $this->duree_engag_default();
+			}
+		}
+
+		/**
+		 * Enums generique
+		 *	- contratsinsertion.duree_engag
+		 *	- proposcontratsinsertioncovs58.duree_engag
+		 *	- decisionsproposcontratsinsertioncovs58.duree_engag
+		 *
+		 * @return array
+		 */
+		public function duree_engag_default() {
+			return array(
+				'3' => '3 mois',
+				'6' => '6 mois',
+				'9' => '9 mois',
+				'12' => '12 mois',
+				'18' => '18 mois',
+				'24' => '24 mois'
+			);
 		}
 
 		/**

@@ -34,7 +34,11 @@
 				'SuperFixtureFoo' => array(
 					1 => array(
 						'name' => 'Bad Foo',
-						'super_fixture_bar_id' => 1
+						'super_fixture_bar_id' => 1,
+						'integer_field' => 123,
+						'text_field' => 'blabla bla blablabla',
+						'boolean_field' => 1,
+						'date_field' => array('type' => 'date', 'null' => false),
 					),
 				)
 			);
