@@ -4,8 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package MultiDomainsTranslator
-	 * @subpackage Test.Case.Utility.MultiDomainsTranslator
+	 * @package SuperFixture
+	 * @subpackage Test.Case.Utility.SuperFixture
 	 */
 
 	App::uses('SuperFixture', 'SuperFixture.Utility');
@@ -14,8 +14,8 @@
 	/**
 	 * SuperFixtureWithFixtureTest class
 	 *
-	 * @package MultiDomainsTranslator
-	 * @subpackage Test.Case.Utility.MultiDomainsTranslator
+	 * @package SuperFixture
+	 * @subpackage Test.Case.Utility.SuperFixture
 	 */
 	class SuperFixtureWithFixtureTest extends SuperFixtureTestParent
 	{

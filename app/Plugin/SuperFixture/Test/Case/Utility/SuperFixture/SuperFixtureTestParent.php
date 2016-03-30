@@ -4,8 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package MultiDomainsTranslator
-	 * @subpackage Test.Case.Utility.MultiDomainsTranslator
+	 * @package SuperFixture
+	 * @subpackage Test.Case.Utility.SuperFixture
 	 */
 
 	App::uses('SuperFixture', 'SuperFixture.Utility');
@@ -13,8 +13,8 @@
 	/**
 	 * SuperFixtureTestParent class
 	 *
-	 * @package MultiDomainsTranslator
-	 * @subpackage Test.Case.Utility.MultiDomainsTranslator
+	 * @package SuperFixture
+	 * @subpackage Test.Case.Utility.SuperFixture
 	 */
 	class SuperFixtureTestParent extends CakeTestCase
 	{
@@ -26,6 +26,10 @@
 		protected $_query = array(
 			'fields' => array(
 				'SuperFixtureFoo.name',
+				'SuperFixtureFoo.integer_field',
+				'SuperFixtureFoo.text_field',
+				'SuperFixtureFoo.boolean_field',
+				'SuperFixtureFoo.date_field',
 				'SuperFixtureBar.name',
 				'SuperFixtureBaz.name',
 			),

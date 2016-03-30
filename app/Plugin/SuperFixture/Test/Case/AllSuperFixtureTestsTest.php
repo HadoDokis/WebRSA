@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package MultiDomainsTranslator
+	 * @package SuperFixture
 	 * @subpackage Test.Case
 	 */
 	CakePlugin::load( 'SuperFixture' );
@@ -14,7 +14,7 @@
 	 *
 	 * This test group will run all tests.
 	 *
-	 * @package MultiDomainsTranslator
+	 * @package SuperFixture
 	 * @subpackage Test.Case
 	 */
 	class AllSuperFixtureTests extends PHPUnit_Framework_TestSuite
