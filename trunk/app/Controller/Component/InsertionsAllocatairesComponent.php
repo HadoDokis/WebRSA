@@ -13,6 +13,8 @@
 	 *
 	 * @todo ajouter un paramètre 'disabled' => true|false|null
 	 *
+	 * @deprecated since 3.1.0
+	 *
 	 * @package app.Controller.Component
 	 */
 	class InsertionsAllocatairesComponent extends Component
