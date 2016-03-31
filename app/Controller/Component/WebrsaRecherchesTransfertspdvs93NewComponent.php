@@ -51,7 +51,7 @@
 			$Controller = $this->_Collection->getController();
 			$options = parent::_optionsSession( $params );
 
-			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsAllocataires->typesorients();
+			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsBeneficiaires->typesorients( array( 'conditions' => array() ) );
 			$options['Orientstruct']['structurereferente_id'] = $Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 
 			return $options;

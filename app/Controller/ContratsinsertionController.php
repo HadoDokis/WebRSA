@@ -40,6 +40,7 @@ class ContratsinsertionController extends AppController
 		'Jetons2',
 		'DossiersMenus',
 		'InsertionsAllocataires',
+		'InsertionsBeneficiaires',
 		'Search.SearchPrg' => array(
 			'actions' => array(
 				'search',
