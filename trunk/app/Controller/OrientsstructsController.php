@@ -35,6 +35,7 @@
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Jetons2',
 			/*'Search.Filtresdefaut' => array(
 				'cohorte_nouvelles',
@@ -497,7 +498,7 @@
 			$options = Hash::merge( $options, $this->Orientstruct->enums() );
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$options['Orientstruct']['propo_algo'] = $this->InsertionsAllocataires->typesorients();
+				$options['Orientstruct']['propo_algo'] = $this->InsertionsBeneficiaires->typesorients( array( 'conditions' => array() ) );
 			}
 
 			// Liste des actions accessibles
@@ -598,7 +599,6 @@
 				),
 				'Orientstruct' => array(
 					'typeorient_id' => $this->Orientstruct->Typeorient->listOptions(), // FIXME
-					//'typeorient_id' => $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ),
 					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O', 'Structurereferente.actif' => 'O' ) ) ),
 					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
 					'statut_orient' => $this->Orientstruct->enum( 'statut_orient' ),

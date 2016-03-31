@@ -151,13 +151,17 @@
 				parent::_optionsSession( $params ),
 				array(
 					'Orientstruct' => array(
-						'typeorient_id' => $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ), 'empty' => ( $departement !== 58 ) ) )
+						'typeorient_id' => $Controller->InsertionsBeneficiaires->typesorients( array( 'empty' => ( $departement !== 58 ) ) )
 					)
 				)
 			);
 
 			if( $departement === 66 ) {
-				$options['Orientstruct']['not_typeorient_id'] = $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O', 'Typeorient.parentid IS NULL' ) ) );
+				$options['Orientstruct']['not_typeorient_id'] = $Controller->InsertionsBeneficiaires->typesorients(
+					array(
+						'conditions' => $Controller->InsertionsBeneficiaires->conditions['typesorients'] + array( 'Typeorient.parentid IS NULL' )
+					)
+				);
 			}
 
 			return $options;
