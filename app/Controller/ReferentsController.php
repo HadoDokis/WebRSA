@@ -218,7 +218,7 @@
          * Uniquement pour les CPDV
          */
 		public function clotureenmasse() {
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( true );
+			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
 			if( !empty( $this->request->data ) ) {
 				$queryData = $this->Referent->search( $this->request->data );

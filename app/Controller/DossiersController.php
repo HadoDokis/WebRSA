@@ -36,6 +36,7 @@
 			'DossiersMenus',
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array( 'index', 'search' )
@@ -218,7 +219,7 @@
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();
@@ -377,13 +378,13 @@
 						)
 					)
 				)
-			);			
+			);
 			$details = Set::merge( $details, array( 'Adresse' => Hash::get($adresseFoyer, 'Adresse') ) );
-			
+
 			if ( Configure::read('Alerte.changement_adresse.enabled') ) {
 				if ( empty($adresseFoyer) ) {
 					$this->Session->setFlash(
-						'Ce foyer ne possède actuellement aucune adresse.', 
+						'Ce foyer ne possède actuellement aucune adresse.',
 						'flash/error', array(), 'notice'
 					);
 				}
@@ -400,7 +401,7 @@
 
 					if ( strtotime(date('Y-m-d')) <= strtotime($date->format('Y-m-d')) ) {
 						$this->Session->setFlash(
-							sprintf('Attention, changement d\'adresse depuis le %s.', $olddate), 
+							sprintf('Attention, changement d\'adresse depuis le %s.', $olddate),
 							'flash/error', array(), 'notice'
 						);
 					}
@@ -889,25 +890,25 @@
 				}
 
 				$details[$role] = $personnesFoyer[$index];
-				
-				
+
+
 				// Calcul des Apre par années
 				if( (integer)Configure::read( 'Cg.departement' ) === 66 ) {
 					$Apre66 = ClassRegistry::init('Apre66');
 					$montantApres = array();
 					$begin = false;
-					
+
 					for ($i=2009; $i<=date('Y'); $i++) {
 						$dateDebut = $i.'-01-01';
 						$dateFin = $i.'-12-31';
 						$montant = (integer)$Apre66->getMontantAprePeriode($dateDebut, $dateFin, $personnesFoyer[$index]['Personne']['id']);
-						
+
 						if ( $montant > 0 || $begin ) {
 							$begin = true;
 							$montantApres[$i][$role] = $montant;
 						}
 					}
-					
+
 					if (empty($montantApres)) {
 						$montantApres[date('Y')][$role] = 0;
 					}

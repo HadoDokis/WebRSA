@@ -29,6 +29,7 @@
 			'Gestionzonesgeos',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Workflowscers93'
 		);
 
@@ -40,7 +41,7 @@
 		protected function _setOptions() {
 // 			$struct = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 // 			$this->set( 'struct', $struct );
-			$this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referents', $this->Contratinsertion->Referent->listOptions() );
 
 			$this->set( 'rolepers', $this->Option->rolepers() );
@@ -166,7 +167,7 @@
 			}
 
 			$this->set( 'typesorients', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ), 'empty' => ( Configure::read( 'Cg.departement' ) != 58 ) ) ) );
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();

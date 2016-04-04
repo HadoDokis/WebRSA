@@ -81,8 +81,9 @@
 			);
 
 			// Choix du référent affecté ?
-			if( isset( $search['PersonneReferent']['referent_id'] ) && ( $search['PersonneReferent']['referent_id'] != '' ) ) {
-				$conditions['PersonneReferent.referent_id'] = $search['PersonneReferent']['referent_id'];
+			$referent_id = suffix( Hash::get( $search, 'PersonneReferent.referent_id' ) );
+			if( !empty( $referent_id ) ) {
+				$conditions['PersonneReferent.referent_id'] = $referent_id;
 			}
 			$conditions = $this->conditionsDates( $conditions, $search, 'PersonneReferent.dddesignation' );
 

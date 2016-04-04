@@ -41,6 +41,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
         'Gedooo.Gedooo',
         'Gestionzonesgeos',
         'InsertionsAllocataires',
+        'InsertionsBeneficiaires',
         'Cohortes' => array(
             'enattenteaffectation',
             'atransmettre',
@@ -338,7 +339,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
 
         $this->_setOptions();
 
-        $this->set('structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes(array('optgroup' => true)));
+        $this->set('structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ));
         $this->set('referentsparcours', $this->InsertionsAllocataires->referents(array('prefix' => true)));
 
         switch ($statutAffectation) {
@@ -418,7 +419,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
 
 	/**
 	 * Créer un fichier zip avec la page entière d'impression en PDF
-	 * 
+	 *
 	 * @todo Jetons
 	 */
 	public function imprimer_cohorte() {
@@ -427,7 +428,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
 		$dossier_idList = array();
 		$datas = array();
 		$success = true;
-		
+
 		/**
 		 * On recherche tout les éléments dont on a besoin
 		 */
@@ -435,28 +436,28 @@ class Cohortesdossierspcgs66Controller extends AppController {
 			$query = $this->Dossierpcg66->getImpressionBaseQuery( $dossierpcg66_id );
 			unset($query['order']); // Gain de temps vu qu'on a un id dans cette action
 			$datas[$key] = $this->Dossierpcg66->find( 'first', $query );
-			
+
 			$dossier_idList[] = Hash::get( $datas[$key], 'Foyer.dossier_id' );
-			
+
 			if ( empty($datas[$key]) ) {
 				$success = false;
 				break;
 			}
 		}
-		
+
 		if ( $success ) {
 			$this->Cohortes->get( $dossier_idList );
-			
+
 			$prefix = 'Dossier_PCG';
 			$datetime = date('Y-m-d_His');
 			$PdfUtility = new WebrsaPdfUtility();
 			$pdfList = array();
-			
+
 			$this->Dossierpcg66->Decisiondossierpcg66->begin();
-			
+
 			foreach ( $datas as $key => $value ) {
 				$pdfs = array();
-				
+
 				// Si l'etat du dossier est decisionvalid on le passe en atttransmiop avec une date d'impression
 				if ( Hash::get( $value, 'Dossierpcg66.etatdossierpcg' ) === 'decisionvalid' ) {
 					$value['Dossierpcg66']['dateimpression'] = date('Y-m-d');
@@ -466,28 +467,28 @@ class Cohortesdossierspcgs66Controller extends AppController {
 				if ( !$success ) {
 					break;
 				}
-				
+
 				/**
 				 * On récupère les PDFs
 				 */
 				$decisionsdossierspcgs66_id = Hash::get($value, 'Decisiondossierpcg66.id');
 				$dossierpcg_id = Hash::get($value, 'Dossierpcg66.id');
-				
-				$decisionPdf = $decisionsdossierspcgs66_id !== null 
+
+				$decisionPdf = $decisionsdossierspcgs66_id !== null
 					? $this->Dossierpcg66->Decisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
 					: null
 				;
-				
+
 				$courriers = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->Personnepcg66
 					->Traitementpcg66->getPdfsByConditions( $dossierpcg_id, $decisionsdossierspcgs66_id, $this->Session->read('Auth.User.id') )
 				;
-				
+
 				// Il faut au moins 1 PDF sinon il y a un problême
 				if ( $decisionPdf === null && empty($courriers) ) {
 					$success = false;
 					break;
 				}
-				
+
 				if ( $decisionPdf !== null ) {
 					$pdfs[] = $decisionPdf;
 				}
@@ -495,29 +496,29 @@ class Cohortesdossierspcgs66Controller extends AppController {
 				foreach ( $courriers as $i => $courrier ) {
 					$pdfs[] = $courrier['pdf'];
 				}
-				
+
 				if ( Configure::read('Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso') ) {
 					$pdfs = $PdfUtility->preparePdfListForRectoVerso($pdfs);
 				}
-				
+
 				$pdfList[] = $this->Gedooo->concatPdfs($pdfs, 'Dossierpcg66');
 			}
 
 			if ( $success ) {
 				$this->Dossierpcg66->commit();
 				$this->Cohortes->release( $dossier_idList );
-				
+
 				if ( Configure::read('Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso') ) {
 					$pdfList = $PdfUtility->preparePdfListForRectoVerso( $pdfList, WebrsaPdfUtility::ADD_BLANK_PAGES_BETWEEN_PDFS );
 				}
-				
+
 				$concatPdf = $this->Gedooo->concatPdfs($pdfList, 'Dossierpcg66');
 				$this->Gedooo->sendPdfContentToClient($concatPdf, "{$datetime}_{$prefix}_Cohorte_impression.pdf");
 			}
 			else {
 				$this->Dossierpcg66->Decisiondossierpcg66->rollback();
 			}
-			
+
 			$this->Session->setFlash( 'Impossible de générer les fichiers PDF', 'default', array( 'class' => 'error' ) );
 			$this->redirect( $this->referer() );
 		}

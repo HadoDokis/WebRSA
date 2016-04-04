@@ -32,6 +32,7 @@
 			'Cohortes' => array( 'index' ),
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Search.Filtresdefaut' => array( 'index' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
@@ -105,7 +106,7 @@
 			);
 			$this->set( compact( 'options' ) );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( 'isAjax', $this->request->is( 'ajax' ) );

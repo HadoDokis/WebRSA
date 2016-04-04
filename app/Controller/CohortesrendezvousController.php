@@ -35,6 +35,7 @@
 				'cohorte'
 			),
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Search.Filtresdefaut' => array( 'cohorte' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
@@ -85,7 +86,7 @@
 			$query = ConfigurableQueryFields::getFieldsByKeys( $fieldsConfigureKeys, $query );
 
 			$query['limit'] = 10;
-			$query['conditions'][] = array( 'Rendezvous.structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'ids' => true ) ) );
+			$query['conditions'][] = array( 'Rendezvous.structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'ids' ) ) );
 
 			return $query;
 		}

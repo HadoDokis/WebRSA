@@ -33,6 +33,7 @@
 			'DossiersMenus',
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Jetons2', // FIXME: à cause de DossiersMenus
 			'Search.Filtresdefaut' => array( 'search', 'search1' ),
 			'Search.SearchPrg' => array(
@@ -653,7 +654,7 @@
 
 			$options = $this->Ficheprescription93->options( array( 'allocataire' => true, 'find' => true, 'autre' => true ) );
 
-			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
+			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
 
 			// INFO: si la structure ou le référent enregistrés ne se trouvent pas dans les options, on les ajoute

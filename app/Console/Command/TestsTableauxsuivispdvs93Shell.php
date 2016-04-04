@@ -181,9 +181,6 @@
 							$successHisoriser = true;
 						} catch( Exception $e ) {
 							$successHisoriser = false;
-							/*if( !isset( $errors[$tableau][$key] ) ) {
-								$errors[$tableau][$key] = array();
-							}*/
 							$errors[$tableau][$key]['historiser'] = $e->getMessage();
 						}
 

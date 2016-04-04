@@ -21,29 +21,30 @@
 
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
 
-		public $helpers = array( 
-			'Default', 
-			'Locale', 
-			'Cake1xLegacy.Ajax', 
-			'Xform', 
-			'Xhtml', 
-			'Fileuploader', 
+		public $helpers = array(
+			'Default',
+			'Locale',
+			'Cake1xLegacy.Ajax',
+			'Xform',
+			'Xhtml',
+			'Fileuploader',
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 		);
 
-		public $components = array( 
-			'Default', 
-			'Gedooo.Gedooo', 
-			'Fileuploader', 
-			'Jetons2', 
-			'DossiersMenus', 
+		public $components = array(
+			'Default',
+			'Gedooo.Gedooo',
+			'Fileuploader',
+			'Jetons2',
+			'DossiersMenus',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Cohortes',
 			'Search.SearchPrg' => array(
-				'actions' => array( 
+				'actions' => array(
 					'cohorte_validation' => array(
 						'filter' => 'Search'
 					),
@@ -319,9 +320,9 @@
 			$alerteMontantAides = false;
 			$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
 			$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
-			
+
 			$montantaccorde = $this->Apre66->getMontantApreEnCours($personne_id);
-			
+
 			if( $montantaccorde > Configure::read( "Apre.montantMaxComplementaires" ) ) {
 				$alerteMontantAides = true;
 			}
@@ -331,7 +332,7 @@
 			$this->_setOptions();
 			$this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'index66' );
 		}
-		
+
 		/**
 		 * Ajax pour les coordonnées de la structure référente liée
 		 *
@@ -651,7 +652,7 @@
 
 			///Récupération de la liste des structures référentes liés uniquement à l'APRE
 //			$structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
-            $structs = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'list' => true, 'conditions' => array( 'Structurereferente.apre' => 'O' ) ) );
+            $structs = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'conditions' => array( 'Structurereferente.apre' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) );
 			$this->set( 'structs', $structs );
 			///Récupération de la liste des référents liés à l'APRE
 			$referents = $this->Referent->listOptions();
@@ -1037,18 +1038,18 @@ $success = true; // FIXME
 
             $this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'cancel' );
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_validation() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Validation' ) );
-			
+
 			$this->Aideapre66->validate = array();
 			$this->Apre66->validate = array();
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -1056,31 +1057,31 @@ $success = true; // FIXME
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Validation' ) );
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_imprimer() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
 			$Recherches->search( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
-			
+
 			$this->Aideapre66->validate = array();
 			$this->Apre66->validate = array();
 		}
-		
+
 		/**
 		 * Impression de la cohorte
 		 */
 		public function cohorte_imprimer_impressions() {
 			$Cohortes = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
-			$Cohortes->impressions( 
+			$Cohortes->impressions(
 				array(
 					'modelRechercheName' => 'WebrsaCohorteApre66Imprimer',
 					'configurableQueryFieldsKey' => 'Apres66.cohorte_imprimer'
-				) 
+				)
 			);
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -1088,33 +1089,33 @@ $success = true; // FIXME
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_notifiees() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
 			$Recherches->search( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
-			
+
 			$this->Aideapre66->validate = array();
 			$this->Apre66->validate = array();
-			
+
 			$this->view = 'cohorte_imprimer';
 		}
-		
+
 		/**
 		 * Impression de la cohorte
 		 */
 		public function cohorte_notifiees_impressions() {
 			$Cohortes = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
-			$Cohortes->impressions( 
+			$Cohortes->impressions(
 				array(
 					'modelRechercheName' => 'WebrsaCohorteApre66Imprimer',
 					'configurableQueryFieldsKey' => 'Apres66.cohorte_notifiees'
-				) 
+				)
 			);
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -1122,18 +1123,18 @@ $success = true; // FIXME
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66Impressions' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Imprimer' ) );
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_transfert() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Transfert' ) );
-			
+
 			$this->Aideapre66->validate = array();
 			$this->Apre66->validate = array();
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -1141,18 +1142,18 @@ $success = true; // FIXME
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Transfert' ) );
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_traitement() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Traitement' ) );
-			
+
 			$this->Aideapre66->validate = array();
 			$this->Apre66->validate = array();
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -1160,7 +1161,7 @@ $success = true; // FIXME
 			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Traitement' ) );
 		}
-		
+
 		/**
 		 * Permet d'obtenir à partir d'un Apre66.id le nombre de fichiers liés
 		 */
@@ -1179,7 +1180,7 @@ $success = true; // FIXME
 					)
 				)
 			);
-			
+
 			$this->set( 'json', Hash::get($result, 'Apre66.nb_fichiers_lies') );
 			$this->layout = 'ajax';
 			$this->render( '/Elements/json' );

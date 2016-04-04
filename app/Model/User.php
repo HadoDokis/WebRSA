@@ -757,6 +757,7 @@
 			if( isset( $enums[$this->alias]['type'] ) && Configure::read( 'Cg.departement' ) == 66 ) {
 				unset( $enums[$this->alias]['type']['externe_cpdv'] );
 				unset( $enums[$this->alias]['type']['externe_secretaire'] );
+				unset( $enums[$this->alias]['type']['externe_cpdvcom'] );
 
 				$enums[$this->alias]['type']['externe_ci'] = 'Référent organisme agrée';
 			}

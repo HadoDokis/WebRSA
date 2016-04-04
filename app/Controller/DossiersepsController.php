@@ -33,6 +33,7 @@
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.Filtresdefaut' => array(
 				'administration',
@@ -180,7 +181,7 @@
 				);
 				$configuredOrder = Configure::read( $this->name.'.'.$this->action.'.order' );
 				$queryData['order'] = $configuredOrder ? $configuredOrder : array( 'Personne.nom', 'Personne.prenom' );
-				
+
 				$queryData = $this->Dossierep->queryDossiersSelectionnables( $queryData );
 
 				$options = $this->Dossierep->enums();
@@ -615,7 +616,7 @@
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$options = Hash::merge(

@@ -38,6 +38,7 @@
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'isemploi' => array( 'filter' => 'Search' ),
@@ -284,7 +285,7 @@
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutNonoriente ) {

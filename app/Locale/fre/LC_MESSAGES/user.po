@@ -66,5 +66,8 @@ msgstr "Externe, secrétaire structure référente"
 msgid "ENUM::TYPE::externe_ci"
 msgstr "Externe, référent structure référente"
 
+msgid "ENUM::TYPE::externe_cpdvcom"
+msgstr "Externe, chef de projet communautaire"
+
 msgid "User.nom_complet"
 msgstr "Gestionnaire"

@@ -28,7 +28,13 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
+		public $components = array(
+			'Gedooo.Gedooo',
+			'Jetons2',
+			'DossiersMenus',
+			'InsertionsAllocataires',
+			'InsertionsBeneficiaires'
+		);
 
 		/**
 		 * Helpers utilisés.
@@ -687,7 +693,7 @@
 			// Options
 			$options = array(
 				'Contratinsertion' => array(
-					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ),
+					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ),
 					'referent_id' => $this->Cer93->Contratinsertion->Referent->listOptions()
 				),
 				'Prestation' => array(

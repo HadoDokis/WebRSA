@@ -36,6 +36,7 @@
 			),
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Cohortes' => array(
 				'nouveaux',
 				'nouveauxsimple',
@@ -285,7 +286,7 @@
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutValidation ) {

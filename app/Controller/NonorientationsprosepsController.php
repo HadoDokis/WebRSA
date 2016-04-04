@@ -27,24 +27,25 @@
 			'Xpaginator',
 		);
 
-		public $uses = array( 
-			'Nonorientationproep58', 
-			'Nonorientationproep93', 
-			'Nonorientationproep66', 
-			'Orientstruct' 
+		public $uses = array(
+			'Nonorientationproep58',
+			'Nonorientationproep93',
+			'Nonorientationproep66',
+			'Orientstruct'
 		);
 
 		public $components = array(
 			'Allocataires',
 			'InsertionsAllocataires',
-			'Search.SearchPrg' => array( 
-				'actions' => array( 
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
+				'actions' => array(
 					'index',
 					'search'
-				) 
+				)
 			)
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -56,7 +57,7 @@
 			'exportcsv' => 'read',
 			'exportcsvNew' => 'read',
 		);
-		
+
 		public $commeDroit = array(
 			'search' => 'Nonorientationsproseps:index',
 			'exportcsvNew' => 'Nonorientationsproseps:exportcsv',
@@ -136,7 +137,7 @@
 			$this->_setOptions();
 			$this->set( 'options', $this->Allocataires->options() );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( compact( 'cohorte' ) );
@@ -151,7 +152,7 @@
 			if ((int)Configure::read('Cg.departement') === 66) {
 				return $this->exportcsvNew();
 			}
-			
+
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
@@ -174,21 +175,21 @@
 			$this->set( compact( 'orientsstructs' ) );
 
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
 		public function search() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsprosepsNew' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
-		}	
-		
+		}
+
 		/**
 		 * Exportcsv
 		 */
 		public function exportcsvNew() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsprosepsNew' );
 			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
-		}		
+		}
 	}
 ?>

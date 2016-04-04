@@ -19,7 +19,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterebilanparcours66', 'Bilanparcours66', 'Option', 'Referent' );
-		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
+		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires', 'InsertionsBeneficiaires', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsBeneficiaires' );
 		public $aucunDroit = array( 'exportcsv' );
 
 		/**
@@ -27,7 +27,7 @@
 		*/
 		public function _setOptions() {
 			$this->set( 'options', (array)Hash::get( $this->Bilanparcours66->enums(), 'Bilanparcours66' ) );
-            $this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true) ) );
+            $this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referents', $this->Bilanparcours66->Referent->listOptions() );
 		}
 
@@ -64,7 +64,7 @@
 
 			$this->_setOptions();
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->render( 'index' );

@@ -867,6 +867,7 @@
 		 */
 		public function qdTableaud1( array $search ) {
 			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
+			$Dbo = $this->getDataSource();
 
 			// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
@@ -875,7 +876,7 @@
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				$conditionpdv = $Dbo->conditions( array( 'Rendezvous.structurereferente_id' => $pdv_id ), true, false );
 			}
 
 			// Filtre sur un référent en particulier ?
@@ -883,9 +884,9 @@
 			if( !empty( $referent_id ) ) {
 				$conditionpdv = array(
 					$conditionpdv,
-					"Rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+					$Dbo->conditions( array( 'Rendezvous.referent_id' => suffix( $referent_id ) ), true, false )
 				);
-				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
 			}
 
 			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
@@ -1217,6 +1218,7 @@
 		 */
 		public function qdTableaud2( array $search ) {
 			$Questionnaired2pdv93 = ClassRegistry::init( 'Questionnaired2pdv93' );
+			$Dbo = $this->getDataSource();
 
 			// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
@@ -1225,7 +1227,7 @@
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				$conditionpdv = $Dbo->conditions( array( 'Rendezvous.structurereferente_id' => $pdv_id ), true, false );
 			}
 
 			// Filtre sur un référent en particulier ?
@@ -1233,9 +1235,9 @@
 			if( !empty( $referent_id ) ) {
 				$conditionpdv = array(
 					$conditionpdv,
-					"Rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+					$Dbo->conditions( array( 'Rendezvous.referent_id' => suffix( $referent_id ) ), true, false )
 				);
-				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
 			}
 
 			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
@@ -1414,6 +1416,7 @@
 		 * @return string
 		 */
 		protected function _conditionStatutRdv( $field = 'statutrdv_id' ) {
+			$field = '"'.implode( '"."', explode( '.', $field ) ).'"';
 			$values = "'".implode( "', '", (array)Configure::read( 'Tableausuivipdv93.statutrdv_id' ) )."'";
 			return "{$field} IN ( {$values} )";
 		}
@@ -1461,6 +1464,8 @@
 		 * @return array
 		 */
 		protected function _tableau1b3Conditions( array $search ) { // Conditions venant du filtre de recherche
+			$Dbo = $this->getDataSource();
+
 			$conditions = array(
 				'annee' => Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) ),
 				'conditionpdv' => null,
@@ -1470,7 +1475,7 @@
 			// Filtre sur un PDV ou sur l'ensemble du CG ?
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditions['conditionpdv'] = "AND rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				$conditions['conditionpdv'] = "AND ".$Dbo->conditions( array( 'rendezvous.structurereferente_id' => $pdv_id ), true, false );
 			}
 
 			// Filtre sur un référent en particulier ?
@@ -1478,9 +1483,9 @@
 			if( !empty( $referent_id ) ) {
 				$conditions['conditionpdv'] = array(
 					$conditions['conditionpdv'],
-					"rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+					$Dbo->conditions( array( 'rendezvous.referent_id' => suffix( $referent_id ) ), true, false )
 				);
-				$conditions['conditionpdv'] = $this->getDataSource()->conditions( $conditions['conditionpdv'], true, false );
+				$conditions['conditionpdv'] = $Dbo->conditions( $conditions['conditionpdv'], true, false );
 			}
 
 			// Filtre sur les DSP mises à jour dans l'année
@@ -1745,7 +1750,8 @@
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				debug(__LINE__);
+				$conditionpdv = "AND ".$Dbo->conditions( array( 'structurereferente_id' => $pdv_id ), true, false );
 			}
 
 			// S'assure-ton qu'il existe au moins un RDV individuel ?
@@ -1778,7 +1784,40 @@
 		 * @return string
 		 */
 		protected function _conditionsFicheprescription93Rendezvous( array $search, $operand ) {
-			// Filtre sur l'année
+			// FIXME: vérifier que l'on obtienne bien la même chose
+			$query = array(
+				'fields' => array(
+					'Rendezvous.personne_id'
+				),
+				'conditions' => array(
+					// Avec un RDV honoré durant l'année N
+					"EXTRACT('YEAR' FROM Rendezvous.daterdv)" => Hash::get( $search, 'Search.annee' ),
+					// Dont le type de RDV est individuel
+					'Rendezvous.typerdv_id' => (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ),
+					$this->_conditionStatutRdv( 'Rendezvous.statutrdv_id' ),
+					// Dont la SR du référent de la fiche est la SR du RDV
+					'Referent.structurereferente_id = Rendezvous.structurereferente_id'
+				)
+			);
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$query['conditions']['Referent.structurereferente_id'] = $pdv_id;
+			}
+
+						// S'assure-ton qu'il existe au moins un RDV individuel ?
+			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
+			if( $rdv_structurereferente ) {
+				$query['alias'] = 'Rendezvous';
+				$query = array_words_replace( $query, array( 'Rendezvous' => 'rendezvous' ) );
+				$sq = ClassRegistry::init( 'Rendezvous' )->sq( $query );
+				return "{$operand} \"Ficheprescription93\".\"personne_id\" IN ( {$sq} )";
+			}
+
+			return null;
+
+			/*// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
 
 			// Filtre sur un PDV ou sur l'ensemble du CG ?
@@ -1805,7 +1844,7 @@
 				)";
 			}
 
-			return null;
+			return null;*/
 		}
 
 		/**
@@ -1819,6 +1858,7 @@
 		protected function _qdTableau1b41b5( array $search, $tableau ) {
 			// Début TODO factorisaton query de base
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+			$Dbo = $this->getDataSource();
 
 			// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
@@ -1827,7 +1867,7 @@
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				$conditionpdv = $Dbo->conditions( array( 'Referent.structurereferente_id' => $pdv_id ), true, false );
 			}
 
 			// Filtre sur un référent en particulier ?
@@ -1835,16 +1875,16 @@
 			if( !empty( $referent_id ) ) {
 				$conditionpdv = array(
 					$conditionpdv,
-					"Referent.id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
+					$Dbo->conditions( array( 'Referent.id' => suffix( $referent_id ) ), true, false )
 				);
-				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
 			}
 
 			// Filtre sur le type d'action
 			$conditiontype = null;
 			$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
 			if( !empty( $typethematiquefp93_id ) ) {
-				$conditiontype = "Thematiquefp93.type = '".Sanitize::clean( $typethematiquefp93_id, array( 'encode' => false ) )."'";
+				$conditiontype = $Dbo->conditions( array( 'Thematiquefp93.type' => $typethematiquefp93_id ), true, false );
 			}
 
 			// Filtre sur le RDV individuel
@@ -1866,8 +1906,8 @@
 					$Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
 				),
 				'conditions' => array(
-					'Ficheprescription93.statut <>' => '99annulee',
-					"EXTRACT( 'YEAR' FROM Ficheprescription93.date_signature )" => $annee,
+					'"Ficheprescription93"."statut" <>' => '99annulee',
+					"EXTRACT( 'YEAR' FROM \"Ficheprescription93\".\"date_signature\" )" => $annee,
 					$this->_conditionStructurereferenteIsPdv( 'Referent.structurereferente_id' ),
 					$conditionpdv,
 					$conditionsrdv,
@@ -1942,8 +1982,8 @@
 						"'{$categorieName}' AS \"categorie\"",
 						"'{$thematiqueName}' AS \"thematique\"",
 						"{$counter} AS \"counter\"",
-						'COUNT( Ficheprescription93.id ) AS "nombre"',
-						'COUNT( DISTINCT Ficheprescription93.personne_id ) AS "nombre_unique"'
+						'COUNT( "Ficheprescription93"."id" ) AS "nombre"',
+						'COUNT( DISTINCT "Ficheprescription93"."personne_id" ) AS "nombre_unique"'
 					);
 					$query['conditions'][] = $conditions;
 
@@ -2678,6 +2718,7 @@
 		 */
 		public function tableau1b6( array $search ) {
 			$Thematiquerdv = ClassRegistry::init( array( 'class' => 'Thematiquerdv', 'alias' => 'Tableau1b6' ) );
+			$Dbo = $this->getDataSource();
 
 			$results = $this->_tableau1b6Thematiquesrdvs();
 
@@ -2688,7 +2729,7 @@
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				$conditionpdv = "AND ".$Dbo->conditions( array( 'rendezvous.structurereferente_id' => $pdv_id ), true, false );
 			}
 
 			// Filtre sur un référent en particulier ?
@@ -2698,7 +2739,7 @@
 					$conditionpdv,
 					"rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
 				);
-				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
 			}
 
 			// S'assure-ton qu'il existe au moins un RDV individuel ?
@@ -2815,6 +2856,7 @@
 		 */
 		public function qdTableau1b6( array $search ) {
 			$Rendezvous = ClassRegistry::init( 'Rendezvous' );
+			$Dbo = $this->getDataSource();
 
 			// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
@@ -2823,7 +2865,7 @@
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				$conditionpdv = $Dbo->conditions( array( 'Rendezvous.structurereferente_id' => $pdv_id ), true, false );
 			}
 
 			// Filtre sur un référent en particulier ?
@@ -2833,7 +2875,7 @@
 					$conditionpdv,
 					"Rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
 				);
-				$conditionpdv = $this->getDataSource()->conditions( $conditionpdv, true, false );
+				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
 			}
 
 			// S'assure-t-on qu'il existe au moins un RDV individuel ?
@@ -2850,7 +2892,7 @@
 						AND rdvindividuelhonore.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
 						AND rdvindividuelhonore.".$this->_conditionStatutRdv()."
 						-- dont la SR du rendez-vous collectif est la même que celle du RDV individuel
-						AND Rendezvous.structurereferente_id = rdvindividuelhonore.structurereferente_id
+						AND \"Rendezvous\".\"structurereferente_id\" = rdvindividuelhonore.structurereferente_id
 						".( empty( $conditionpdv ) ? null : "AND {$conditionpdv}" )."
 				)";
 			}
@@ -2939,7 +2981,7 @@
 				'Tableausuivipdv93' => array(
 					'name' => $action,
 					'annee' => Hash::get( $search, 'Search.annee' ),
-					'structurereferente_id' => Hash::get( $search, 'Search.structurereferente_id' ),
+					'structurereferente_id' => Hash::get( $search, 'Search.structurereferente_id' ), // FIXME
 					'referent_id' => suffix( Hash::get( $search, 'Search.referent_id' ) ),
 					'version' => app_version(),
 					'search' => serialize( $search ),

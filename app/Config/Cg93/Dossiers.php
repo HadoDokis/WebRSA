@@ -81,7 +81,7 @@
 			// 6. Temps d'exécution, mémoire maximum, ...
 			'ini_set' => array(
 				'max_execution_time' => 0,
-				'memory_limit' => '512M'
+				'memory_limit' => '1024M'
 			)
 		)
 	);

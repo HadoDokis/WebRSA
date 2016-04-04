@@ -38,6 +38,7 @@
             ),
             'Gestionzonesgeos',
             'InsertionsAllocataires',
+            'InsertionsBeneficiaires',
             'Cohortes' => array(
                 'fichesenattente',
                 'fichesencours'
@@ -186,7 +187,7 @@
 
 			$this->_setOptions();
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutFiche ) {

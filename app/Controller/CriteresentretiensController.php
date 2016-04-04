@@ -25,7 +25,8 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
-			'InsertionsAllocataires'
+			'InsertionsAllocataires',
+			'InsertionsBeneficiaires'
 		);
 
 		/**
@@ -34,7 +35,7 @@
 		public function _setOptions() {
 			$this->set( 'options', (array)Hash::get( $this->Entretien->enums(), 'Entretien' ) );
 // 			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
-			$this->set( 'structs', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structs', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referents', $this->Entretien->Referent->listOptions() );
 		}
 
@@ -68,7 +69,7 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 

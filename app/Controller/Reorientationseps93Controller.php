@@ -21,6 +21,7 @@
 		public $components = array(
 			'DossiersMenus',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
 		);
@@ -201,7 +202,7 @@
 			// Liste des options disponibles
 			$options = array(
 				'Reorientationep93' => array(
-					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) ) ),
+					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ),
 					'typeorient_id' => $this->Reorientationep93->Typeorient->listOptions(),
 					'motifreorientep93_id' => $this->Reorientationep93->Motifreorientep93->find( 'list' ),
 					'referent_id' => $this->Reorientationep93->Referent->listOptions()
