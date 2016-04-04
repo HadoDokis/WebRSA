@@ -38,6 +38,7 @@
 			'Default',
 			'DossiersMenus',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Gedooo.Gedooo',
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
@@ -89,7 +90,7 @@
 			$options[$this->modelClass]['typerdv_id'] = $this->Entretien->Typerdv->find( 'list' );
 			$options[$this->modelClass]['objetentretien_id'] = $this->Entretien->Objetentretien->find( 'list' );
 //			$options[$this->modelClass]['structurereferente_id'] = $this->Entretien->Structurereferente->listOptions();
-            $options[$this->modelClass]['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
+            $options[$this->modelClass]['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
 
 			$typerdv = $this->Entretien->Rendezvous->Typerdv->find( 'list' );
 			$this->set( compact( 'options', 'typerdv' ) );
@@ -503,7 +504,7 @@
 				$Model->options()
 			);
 
-			$options[$this->modelClass]['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
+			$options[$this->modelClass]['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
 
 			$result = $Model->ged(
 				$dataEntretien,

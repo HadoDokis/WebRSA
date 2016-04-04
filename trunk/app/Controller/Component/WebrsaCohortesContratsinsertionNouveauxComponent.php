@@ -28,8 +28,8 @@
 				parent::_optionsSession( $params ),
 				array(
 					'Contratinsertion' => array(
-						'structurereferente_id' => $Controller->InsertionsAllocataires->structuresreferentes(),
-						'referent_id' => $Controller->InsertionsAllocataires->referents()
+						'structurereferente_id' => $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup' ) ),
+						'referent_id' => $Controller->InsertionsBeneficiaires->referents()
 					)
 				)
 			);

@@ -877,7 +877,7 @@
 			$Controller->action = $actionName;
 			$Controller->modelClass = $config['modelName'];
 			$Controller->uses = array( $Controller->modelClass, Inflector::classify( $controllerName), $config['modelName'], 'Jeton', 'User' );
-			$Controller->components = array( 'Session', 'Jetons2', 'InsertionsAllocataires', 'Gestionzonesgeos', 'Cohortes' );
+			$Controller->components = array( 'Session', 'Jetons2', 'InsertionsAllocataires', 'InsertionsBeneficiaires', 'Gestionzonesgeos', 'Cohortes' );
 			$Controller->helpers = array(
 				'Default3' => array(
 					'className' => 'ConfigurableQuery.ConfigurableQueryDefault'

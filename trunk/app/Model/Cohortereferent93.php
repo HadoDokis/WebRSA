@@ -69,30 +69,6 @@
 			END
 		)';
 
-/*public $vfPersonneSituation = '(
-			CASE
---				WHEN ( "PersonneReferent"."id" IS NULL AND ( "Contratinsertion"."id" IS NULL OR ( "Contratinsertion"."id" IS NOT NULL AND "Cer93"."positioncer" NOT IN ( \'00enregistre\', \'01signe\' ) ) ) ) THEN 1
-
-WHEN ( "PersonneReferent"."id" IS NULL AND ( "Contratinsertion"."id" IS NULL ) )
-WHEN ( "PersonneReferent"."id" IS NULL AND ( "Contratinsertion"."id" IS NOT NULL AND "Cer93"."positioncer" NOT IN ( \'00enregistre\', \'01signe\' ) ) )
-
-				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'00enregistre\' ) THEN 2
-				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'01signe\' ) THEN 3
-
-WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
-
-				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NULL ) THEN 4
-				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'00enregistre\' ) THEN 5
-				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'01signe\' ) THEN 6
-				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" <= NOW() ) THEN 7
-				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" > NOW() ) THEN 8
-				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" <= NOW() ) THEN 9
-				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" > NOW() ) THEN 10
-				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'R\' AND "Cer93"."positioncer" IN ( \'99rejetecpdv\', \'99rejete\' ) ) THEN 11
-				ELSE 12
-			END
-		)';
-*/
 		/**
 		 * Retourne un querydata résultant du traitement du formulaire de recherche des cohortes de référent
 		 * du parcours.
@@ -175,8 +151,9 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 				}
 
 				// Choix du référent affecté ?
-				if( isset( $search['PersonneReferent']['referent_id'] ) && ( $search['PersonneReferent']['referent_id'] != '' ) ) {
-					$conditions['PersonneReferent.referent_id'] = $search['PersonneReferent']['referent_id'];
+				$referent_id = suffix( Hash::get( $search, 'PersonneReferent.referent_id' ) );
+				if( !empty( $referent_id ) ) {
+					$conditions['PersonneReferent.referent_id'] = $referent_id;
 				}
 
 				$conditions = $this->conditionsDates( $conditions, $search, 'PersonneReferent.dddesignation' );
@@ -251,6 +228,7 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 				'fields' => array_merge(
 					$Personne->fields(),
 					$Personne->PersonneReferent->fields(),
+					$Personne->PersonneReferent->Referent->fields(),
 					$Personne->Calculdroitrsa->fields(),
 					$Personne->Contratinsertion->fields(),
 					$Personne->Contratinsertion->Cer93->fields(),
@@ -264,7 +242,8 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 					array(
 						$Personne->sqVirtualField( 'nom_complet_court', true ),
 						"( {$sqDspExists} ) AS \"Dsp__exists\"", // TODO: mettre dans le modèle,
-						"( \"Contratinsertion\".\"structurereferente_id\" = {$structurereferente_id} ) AS \"Contratinsertion__interne\"",
+//						"( \"Contratinsertion\".\"structurereferente_id\" = {$structurereferente_id} ) AS \"Contratinsertion__interne\"",
+						"( \"Contratinsertion\".\"structurereferente_id\" IN ( '".implode( "', '", (array)$structurereferente_id )."' ) ) AS \"Contratinsertion__interne\"",
 						$Personne->sqVirtualField( 'situation', true ),
 					)
 				),
@@ -283,6 +262,7 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 							)
 						)
 					),
+					$Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
 					$Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
@@ -317,6 +297,34 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 			);
 
 			return $querydata;
+		}
+
+		/**
+		 * Préremplissage du formulaire en cohorte
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @param array $options
+		 * @return array
+		 */
+		public function prepareFormDataCohorte( array $results, array $params = array(), array &$options = array() ) {
+			$data = array( 'PersonneReferent' => array() );
+
+			foreach( $results as $index => $result ) {
+				$structurereferente_id = Hash::get( $result, 'Referent.structurereferente_id' );
+				$referent_id = Hash::get( $result, 'PersonneReferent.referent_id' );
+
+				$data['PersonneReferent'][$index] = array(
+					'id' => $result['PersonneReferent']['id'],
+					'dossier_id' => $result['Dossier']['id'],
+					'personne_id' => $result['Personne']['id'],
+					'dddesignation' => date( 'Y-m-d' ),
+					'action' => 'Desactiver',
+					'referent_id' => !empty( $structurereferente_id ) ? "{$structurereferente_id}_{$referent_id}" : null
+				);
+			}
+
+			return $data;
 		}
 	}
 ?>

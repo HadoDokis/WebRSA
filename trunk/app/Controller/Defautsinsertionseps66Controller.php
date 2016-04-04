@@ -15,35 +15,36 @@
 	 */
 	class Defautsinsertionseps66Controller extends AppController
 	{
-		public $components = array( 
-			'Search.SearchPrg' => array( 
-				'actions' => array( 
-					'selectionnoninscrits', 
-					'selectionradies', 
-					'courriersinformations', 
-					'search_noninscrits', 
-					'search_radies' 
-				) 
-			), 
-			'Gestionzonesgeos', 
-			'InsertionsAllocataires', 
+		public $components = array(
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'selectionnoninscrits',
+					'selectionradies',
+					'courriersinformations',
+					'search_noninscrits',
+					'search_radies'
+				)
+			),
+			'Gestionzonesgeos',
+			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Gedooo.Gedooo' ,
 			'Jetons2',
 		);
-		public $helpers = array( 
-			'Default2', 
+		public $helpers = array(
+			'Default2',
 			'Search',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 		);
-		
+
 		public $uses = array(
 			'Defautinsertionep66',
 			'WebrsaRechercheNoninscrit',
 			'Personne'
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -56,7 +57,7 @@
 			'exportcsv_noninscrits' => 'read',
 			'exportcsv_radies' => 'read',
 		);
-		
+
 		public $commeDroit = array(
 			'search_noninscrits' => 'Defautsinsertionseps66:selectionnoninscrits',
 			'search_radies' => 'Defautsinsertionseps66:selectionradies',
@@ -94,12 +95,12 @@
 				else{
 					$this->paginate = array( 'Personne' => $queryData );
 				}
-				
+
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
 				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne, array(), array(), $progressivePaginate );
 			}
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( compact( 'personnes' ) );
@@ -156,7 +157,7 @@
 				}
 			}
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
@@ -200,7 +201,7 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -210,7 +211,7 @@
 			$this->Personne->validate = array();
 			$this->view =  'search';
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -220,7 +221,7 @@
 			$this->Personne->validate = array();
 			$this->view =  'search';
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -228,7 +229,7 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
 			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit', 'modelName' => 'Personne') );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */

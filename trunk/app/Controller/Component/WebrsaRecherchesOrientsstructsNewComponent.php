@@ -78,7 +78,7 @@
 				array(
 					'Orientstruct' => array(
 						'typeorient_id' => $Controller->InsertionsBeneficiaires->typesorients(),
-						'structurereferente_id' => $Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'conditions' => array( 'orientation' => 'O' ) ) ),
+						'structurereferente_id' => $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $Controller->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ),
 					)
 				)
 			);

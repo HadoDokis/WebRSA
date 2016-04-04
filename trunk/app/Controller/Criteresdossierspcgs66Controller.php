@@ -15,14 +15,14 @@ App::uses('Sanitize', 'Utility');
  *
  * @deprecated since version 3.0.0
  * @see Dossierspcgs66::search(), Dossierspcgs66::exportcsv(), Dossierspcgs66::search_gestionnaire() et Dossierspcgs66::exportcsv_gestionnaire()
- * 
+ *
  * @package app.Controller
  */
 class Criteresdossierspcgs66Controller extends AppController {
 
     public $uses = array('Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton');
     public $helpers = array('Default', 'Default2', 'Locale', 'Csv', 'Search', 'Romev3');
-    public $components = array('Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array('actions' => array('dossier', 'gestionnaire')), 'Jetons2');
+    public $components = array('Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array('actions' => array('dossier', 'gestionnaire')), 'Jetons2', 'InsertionsBeneficiaires');
 
     /**
      *
@@ -151,7 +151,7 @@ class Criteresdossierspcgs66Controller extends AppController {
         $this->_setOptions();
         $this->set('mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee());
 
-        $this->set('structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes(array('optgroup' => true, 'conditions' => array('orientation' => 'O'))));
+		$this->set('structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
         $this->set('referentsparcours', $this->InsertionsAllocataires->referents(array('prefix' => true)));
 
 		// Ajout des options ROME V3

@@ -13,7 +13,7 @@ App::import('Sanitize');
 /**
  * La classe Criterestraitementspcgs66Controller ...
  *
- * @deprecated since version 3.0.0 
+ * @deprecated since version 3.0.0
  * @see Traitementspcgs66::search() et Traitementspcgs66::exportcsv()
  * @package app.Controller
  */
@@ -21,7 +21,7 @@ class Criterestraitementspcgs66Controller extends AppController {
 
     public $uses = array('Criteretraitementpcg66', 'Traitementpcg66', 'Option');
     public $helpers = array('Default', 'Default2', 'Locale', 'Csv', 'Search');
-    public $components = array('Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array('actions' => array('index')), 'Jetons2');
+    public $components = array('Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array('actions' => array('index')), 'Jetons2', 'InsertionsBeneficiaires');
 
     /**
      *
@@ -107,7 +107,7 @@ class Criterestraitementspcgs66Controller extends AppController {
         $this->_setOptions();
         $this->set('mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee());
 
-        $this->set('structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes(array('optgroup' => true, 'conditions' => array('orientation' => 'O'))));
+        $this->set('structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
         $this->set('referentsparcours', $this->InsertionsAllocataires->referents(array('prefix' => true)));
 
         $this->render($this->action);

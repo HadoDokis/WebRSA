@@ -27,7 +27,8 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'Search.SearchPrg' => array( 'actions' => array( 'all', 'eligible' ) ),
-            'InsertionsAllocataires'
+            'InsertionsAllocataires',
+            'InsertionsBeneficiaires'
 		);
 
 		/**
@@ -60,8 +61,7 @@
 			/// Liste des tiers prestataires
 			$this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
 
-//			$this->set( 'structures', $this->Apre->Structurereferente->listeParType( array( 'apre' => true ) ) );
-            $this->set( 'structures', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, array( 'conditions' => array( 'apre' => 'O' ) ) ) ) );
+            $this->set( 'structures', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.apre' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
 
 			$this->set( 'referents', $this->Apre->Referent->listOptions() );
 		}
@@ -169,7 +169,7 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $etatApre ) {

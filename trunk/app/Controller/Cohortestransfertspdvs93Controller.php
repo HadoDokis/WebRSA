@@ -41,6 +41,7 @@
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'atransferer' => array(
@@ -173,7 +174,7 @@
 			$options  = Set::merge( $options, $this->Transfertpdv93->VxOrientstruct->Personne->Contratinsertion->Cer93->enums() );
 			$this->set( compact( 'options' ) );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 

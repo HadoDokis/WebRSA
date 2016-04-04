@@ -34,9 +34,9 @@ CREATE OR REPLACE FUNCTION create_entites_tags() RETURNS void AS
 $$
 BEGIN
 
-    IF NOT EXISTS(SELECT * FROM pg_catalog.pg_tables 
+    IF NOT EXISTS(SELECT * FROM pg_catalog.pg_tables
 			WHERE  schemaname = 'public'
-			AND    tablename  = 'entites_tags') THEN 
+			AND    tablename  = 'entites_tags') THEN
 
         CREATE TABLE entites_tags (
 			id					SERIAL NOT NULL PRIMARY KEY,
@@ -197,6 +197,21 @@ CREATE TABLE avisprimoanalyses (
 );
 ALTER TABLE avisprimoanalyses ADD CONSTRAINT avisprimoanalyses_etape_in_list_chk CHECK ( cakephp_validate_in_list( etape, ARRAY['avis', 'validation'] ) );
 ALTER TABLE avisprimoanalyses ADD CONSTRAINT avisprimoanalyses_choix_in_list_chk CHECK ( cakephp_validate_in_list( choix, ARRAY[0, 1] ) );
+
+--------------------------------------------------------------------------------
+-- 20160404: ajout du type d'utilisateur externe_cpdvcom pour le ticket #8795 (CG 93)
+--------------------------------------------------------------------------------
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'users', 'users_type_in_list_chk' );
+ALTER TABLE users ADD CONSTRAINT users_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['cg', 'externe_cpdv', 'externe_secretaire', 'externe_ci', 'externe_cpdvcom'] ) );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'users', 'users_type_structurereferente_idreferent_id_chk' );
+ALTER TABLE users ADD CONSTRAINT users_type_structurereferente_idreferent_id_chk CHECK (
+	( type IN ( 'cg', 'externe_cpdvcom' ) AND structurereferente_id IS NULL AND referent_id IS NULL )
+	OR ( type IN ( 'externe_cpdv', 'externe_secretaire' ) AND structurereferente_id IS NOT NULL AND referent_id IS NULL )
+	OR ( type = 'externe_ci' AND structurereferente_id IS NULL AND referent_id IS NOT NULL )
+);
+
 
 -- *****************************************************************************
 COMMIT;

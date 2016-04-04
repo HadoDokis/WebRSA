@@ -41,6 +41,7 @@
 			'Jetons2',
 			'DossiersMenus',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Workflowscers93',
 			// 'Search.Filtresdefaut' => array( 'search' ), // FIXME
 			'Search.SearchPrg' => array(
@@ -110,7 +111,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->listOptions() );
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
 			$this->set( 'options', (array)Hash::get( $this->Rendezvous->enums(), 'Rendezvous' ) );
@@ -302,7 +303,7 @@
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
 				if( !is_null( $structurereferente_id ) ) {
-					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'ids' => true ) ) );
+					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'ids' ) ) );
 				}
 			}
 

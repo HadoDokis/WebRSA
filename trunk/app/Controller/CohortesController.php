@@ -43,6 +43,7 @@
 			),
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires'
 		);
 
 		public $paginate = array( 'limit' => 20 );
@@ -294,7 +295,7 @@
 			}
 			$this->set( 'modeles', $modeles );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			// On n'utilise pas le même layout suivant l'action.

@@ -24,6 +24,7 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Session',
 		);
@@ -168,7 +169,7 @@
 					'id' => $this->Gestionzonesgeos->listeSitescovs58()
 				),
 				'PersonneReferent' => array(
-					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ),
+					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ),
 					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true ) )
 				)
 			);

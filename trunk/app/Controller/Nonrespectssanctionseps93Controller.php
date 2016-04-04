@@ -16,7 +16,7 @@
 	class Nonrespectssanctionseps93Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Csv' );
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ), 'InsertionsAllocataires' );
+		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ), 'InsertionsAllocataires', 'InsertionsBeneficiaires' );
 
 		/**
 		*
@@ -367,7 +367,7 @@
 			}
 
 			$this->set( compact( 'radiespe' ) );
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 

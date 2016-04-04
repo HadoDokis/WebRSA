@@ -38,7 +38,7 @@
 						'typeorient_id' => $Controller->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ),
 						'structureorientante_id' => $Controller->Orientstruct->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
 						'referentorientant_id' => $Controller->Orientstruct->Structurereferente->Referent->listOptions(),
-						'structurereferente_id' => $Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'conditions' => array( 'orientation' => 'O' ) ) ),
+						'structurereferente_id' => $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $Controller->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ),
 						'statut_orient' => $Controller->Orientstruct->enum( 'statut_orient' )
 					),
 					'Personne' => array(

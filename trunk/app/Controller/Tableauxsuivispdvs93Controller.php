@@ -60,7 +60,8 @@
 					'tableau1b6',
 				)
 			),
-			'Workflowscers93'
+			'Workflowscers93',
+			'WebrsaUsers',
 		);
 
 		/**
@@ -117,16 +118,24 @@
 		protected function _setOptions( $user_structurereferente_id ) {
 			// TODO: dans le beforeFilter ?
 			$years = array_reverse( range( 2009, date( 'Y' ) ) );
-			$structurereferente_id = $this->Tableausuivipdv93->listePdvs();
+			$structuresreferentes = $this->Tableausuivipdv93->listePdvs();
+			$srLiees = $this->WebrsaUsers->structuresreferentes();
+			if( count( $srLiees ) > 1 ) {
+				foreach( array_keys( $structuresreferentes ) as $id ) {
+					if( !in_array( $id, $srLiees ) ) {
+						unset( $structuresreferentes[$id] );
+					}
+				}
+			}
 
 			if( $this->action == 'index' ) {
-				$structurereferente_id = Hash::merge( array( 'NULL' => 'Conseil général' ), $structurereferente_id );
+				$structuresreferentes = Hash::merge( array( 'NULL' => 'Conseil général' ), $structuresreferentes );
 			}
 
 			$options = array(
 				'Search' => array(
 					'annee' => array_combine( $years, $years ),
-					'structurereferente_id' => $structurereferente_id,
+					'structurereferente_id' => $structuresreferentes,
 					'referent_id' => $this->Tableausuivipdv93->listeReferentsPdvs( $user_structurereferente_id ),
 					'user_id' => $this->Tableausuivipdv93->listePhotographes(),
 					'tableau' => $this->Tableausuivipdv93->tableaux,
@@ -137,9 +146,9 @@
 				'Tableausuivipdv93' => array( 'name' => $this->Tableausuivipdv93->tableaux )
 			);
 
-			$userIsCg = empty( $user_structurereferente_id );
+			$hasStructuresreferentes = empty( $user_structurereferente_id ) || count( $user_structurereferente_id ) > 1;
 			$userIsCi = $this->Session->read( 'Auth.User.type' ) === 'externe_ci';
-			$this->set( compact( 'options', 'userIsCg', 'userIsCi' ) );
+			$this->set( compact( 'options', 'hasStructuresreferentes', 'userIsCi' ) );
 		}
 
 		/**

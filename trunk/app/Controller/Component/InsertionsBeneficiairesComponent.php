@@ -114,7 +114,7 @@
 		 * );
 		 * </pre>
 		 *
-		 * @todo InsertionsAllocataires->typesorients() <=> InsertionsBeneficiaires->typesorients( array( 'conditions' => array() ) )
+		 * @todo InsertionsAllocataires::typesorients() <=> InsertionsBeneficiaires::typesorients( array( 'conditions' => array() ) )
 		 * @todo Typeorient::listOptions (actif, parentid NULL)
 		 *
 		 * @param array $options La clé conditions permet de spécifier ou
@@ -259,7 +259,7 @@
 				)
 			);
 
-			$sessionKey = $Controller->Structurereferente->sessionKey( __FUNCTION__, $query );
+			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
 			$results = $this->Session->read( $sessionKey );
 
 			if( $results === null ) {
@@ -299,6 +299,9 @@
 				// Pour les listes optgroup, tri par clé
 				ksort( $results['optgroup'] );
 				ksort( $results['optgroup_prefix'] );
+
+				asort( $results['list'] );
+				asort( $results['list_prefix'] );
 
 				$this->Session->write( $sessionKey, $results );
 			}

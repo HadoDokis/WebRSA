@@ -27,6 +27,7 @@
 			),
 			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Cohortes' => array( 'cohorte' ),
 			'Jetons2',
 			'DossiersMenus'
@@ -320,7 +321,7 @@
 			}
 
 			$this->_setOptions();
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
@@ -457,7 +458,7 @@
 			}
 
 			$this->_setOptions();
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 

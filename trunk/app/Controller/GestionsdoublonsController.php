@@ -30,6 +30,7 @@
 			'DossiersMenus',
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.Filtresdefaut' => array( 'index' ),
 			'Search.SearchPrg' => array(
@@ -107,7 +108,7 @@
 			);
 			$this->set( compact( 'options' ) );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
@@ -139,7 +140,7 @@
 				$contain[] = Inflector::classify( $foreignkey['From']['table'] );
 			}
 			$contain = array_unique( $contain );
-			
+
 			$modelNames = $contain;
 			$key = array_search( 'Dossier', $modelNames );
 			if( $key !== false ) {
@@ -187,11 +188,11 @@
 					$this->set( compact( 'errors' ) );
 
 					// Tentative d'enregistrement s'il y a lieu
-					$success = empty( $errors ) 
+					$success = empty( $errors )
 						? $this->Gestiondoublon->fusionComplexe( $foyer1_id, $foyer2_id, $results, $this->request->data )
 						: false
 					;
-					
+
 					$this->Gestiondoublon->cmisTransaction( $success );
 
 					if( $success ) {

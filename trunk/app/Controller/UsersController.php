@@ -34,7 +34,8 @@
 			'Menu',
 			'Password',
 			'Jetons2',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
+			'WebrsaUsers',
 		);
 
 		public $aucunDroit = array( 'login', 'logout', 'forgottenpass' );
@@ -291,6 +292,9 @@
 		 * Pour le CG 66, si on est référent d'un OA, on va lire et mettre en
 		 * session la structure référente à laquelle le référent est lié.
 		 *
+		 * @deprecated since 3.1.0
+		 * @see WebrsaUsersComponent::loadStructurereferente()
+		 *
 		 * @return void
 		 */
 		protected function _loadStructurereferente() {
@@ -543,7 +547,7 @@
 				$this->_loadZonesgeographiques();
 				$this->_loadGroup();
 				$this->_loadServiceInstructeur();
-				$this->_loadStructurereferente();
+				$this->WebrsaUsers->loadStructurereferente();
 
 				// Supprimer la vue cachée du menu
 				$this->_deleteCachedElements( $authUser );
@@ -727,10 +731,10 @@
 						$this->request->data['Droits']
 					);
 					$this->User->commit();
-					
+
 					// Suppression du cache du menu pour la personne concernée
 					Cache::delete('element_'.Hash::get($this->request->data, 'User.username'), 'views');
-					
+
 					$this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
 					$this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
 				}

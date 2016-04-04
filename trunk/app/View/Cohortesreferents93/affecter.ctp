@@ -184,17 +184,16 @@
 						$personne_referent['Structurereferente']['lib_struc'],
 						// Choix du référent
 						array(
-							$this->Form->input( "PersonneReferent.{$index}.id", array( 'type' => 'hidden', 'value' => $personne_referent['PersonneReferent']['id'] ) )
-							.$this->Form->input( "PersonneReferent.{$index}.dossier_id", array( 'type' => 'hidden', 'value' => $personne_referent['Dossier']['id'] ) )
-							.$this->Form->input( "PersonneReferent.{$index}.personne_id", array( 'type' => 'hidden', 'value' => $personne_referent['Personne']['id'] ) )
-							.$this->Form->input( "PersonneReferent.{$index}.structurereferente_id", array( 'type' => 'hidden', 'value' => $structurereferente_id ) )
-							.$this->Form->input( "PersonneReferent.{$index}.dddesignation", array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) )
+							$this->Form->input( "PersonneReferent.{$index}.id", array( 'type' => 'hidden' ) )
+							.$this->Form->input( "PersonneReferent.{$index}.dossier_id", array( 'type' => 'hidden' ) )
+							.$this->Form->input( "PersonneReferent.{$index}.personne_id", array( 'type' => 'hidden' ) )
+							.$this->Form->input( "PersonneReferent.{$index}.dddesignation", array( 'type' => 'hidden' ) )
 							.$this->Form->input( "PersonneReferent.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'], 'separator' => '<br />' ) ),
 							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['action'] ) ? 'error' : null ) )
 						),
 						// Action
 						array(
-							$this->Form->input( "PersonneReferent.{$index}.referent_id", array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'select', 'options' => $options['referents'], 'empty' => true, 'value' => $personne_referent['PersonneReferent']['referent_id'] ) ),
+							$this->Form->input( "PersonneReferent.{$index}.referent_id", array( 'label' => false, 'legend' => false, 'type' => 'select', 'options' => $options['referents'], 'empty' => true ) ),
 							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['referent_id'] ) ? 'error' : null ) )
 						),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_referent['Personne']['id'] ) ),
@@ -240,6 +239,7 @@
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 		// On désactive le select du référent si on ne choisit pas de valider
+		// TODO: mettre ou enlever une classe disabled dans le TD ?
 		<?php foreach( array_keys( $personnes_referents ) as $index ):?>
 		observeDisableFieldsOnRadioValue(
 			'PersonneReferent',

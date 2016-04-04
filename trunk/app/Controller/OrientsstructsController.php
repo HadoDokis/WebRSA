@@ -599,12 +599,12 @@
 				),
 				'Orientstruct' => array(
 					'typeorient_id' => $this->Orientstruct->Typeorient->listOptions(), // FIXME
-					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O', 'Structurereferente.actif' => 'O' ) ) ),
+					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ),
 					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
 					'statut_orient' => $this->Orientstruct->enum( 'statut_orient' ),
 					// Pour le 66
 					// -> FIXME ?
-					'structureorientante_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'list' => true, 'conditions' => array( 'Structurereferente.orientation' => 'O' ) ) ),
+					'structureorientante_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ),
 					'referentorientant_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
 				)
 			);

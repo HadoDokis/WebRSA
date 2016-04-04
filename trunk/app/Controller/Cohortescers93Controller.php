@@ -44,6 +44,8 @@
 				'visualisation'
 			),
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'saisie' => array(
@@ -66,6 +68,7 @@
 					)
 				)
 			),
+			'WebrsaUsers',
 			'Workflowscers93',
 			'Gedooo.Gedooo'
 		);
@@ -91,11 +94,10 @@
 		 * @return void
 		 */
 		public function saisie() {
-// 			$this->Workflowscers93->assertUserCi();
-			$this->Workflowscers93->assertUserExterne(); //FIXME: accès CPDV + CI
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
+			$this->Workflowscers93->assertUserExterne();
+			$structuresreferentes_ids = $this->Workflowscers93->getUserStructurereferenteId();
 
-			$this->_traitercohorteajax( $structurereferente_id, '01signe' );
+			$this->_traitercohorteajax( $structuresreferentes_ids, '01signe' );
 		}
 
 		/**
@@ -106,19 +108,19 @@
 		public function avalidercpdv() {
 			$this->Workflowscers93->assertUserCpdv();
 
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
-			$this->_traitercohorteajax( $structurereferente_id, '02attdecisioncpdv' );
+			$structuresreferentes_ids = $this->Workflowscers93->getUserStructurereferenteId();
+			$this->_traitercohorteajax( $structuresreferentes_ids, '02attdecisioncpdv' );
 		}
 
 		/**
 		 * Moteur de recherche et de traitement Ajax commun pour les étapes
 		 * "2. Saisie d'un CER" et "3. Validation Responsable".
 		 *
-		 * @param integer $structurereferente_id
+		 * @param integer $structuresreferentes_ids
 		 * @param string $position
 		 */
-		protected function _traitercohorteajax( $structurereferente_id, $position ) {
-			$options = $this->_indexOptions( $structurereferente_id );
+		protected function _traitercohorteajax( $structuresreferentes_ids, $position ) {
+			$options = $this->_indexOptions( $structuresreferentes_ids );
 
 			if( $this->action == 'saisie' ) {
 				$histochoixcer93key = 'Histochoixcer93etape02';
@@ -138,8 +140,8 @@
 
 				$querydata = $this->_qd( $this->request->data['Search'] );
 
-                if( !empty( $structurereferente_id ) ) {
-                    $querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
+                if( !empty( $structuresreferentes_ids ) ) {
+                    $querydata['conditions']['Referent.structurereferente_id'] = $structuresreferentes_ids;
                 }
 
 
@@ -288,7 +290,7 @@
 					array(
 						'OR' => array(
 							'PersonneReferent.referent_id' => $this->Session->read( 'Auth.User.referent_id' ),
-							'PersonneReferent.structurereferente_id' => $this->Session->read( 'Auth.User.structurereferente_id' )
+							'PersonneReferent.structurereferente_id' => $this->WebrsaUsers->structuresreferentes()
 						)
 					)
 				);
@@ -304,10 +306,10 @@
 
 		/**
 		 *
-		 * @param integer $structurereferente_id
+		 * @param integer $structuresreferentes_ids
 		 * @return array
 		 */
-		protected function _indexOptions( $structurereferente_id ) {
+		protected function _indexOptions( $structuresreferentes_ids ) {
 			$options = array(
 				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
@@ -315,7 +317,7 @@
 				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
+				'referents' => $this->InsertionsBeneficiaires->referents( array( 'type' => 'optgroup' ) ),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci(),
@@ -575,9 +577,9 @@
 		 * @return void
 		 */
 		public function visualisation() {
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+			$structuresreferentes_ids = $this->WebrsaUsers->structuresreferentes();
 
-			$this->_index( $structurereferente_id );
+			$this->_index( $structuresreferentes_ids );
 		}
 
 		/**
@@ -589,17 +591,17 @@
 		 * @return void
 		 */
 		protected function _validations( $checkStructurereferente ) {
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( $checkStructurereferente );
+			$structuresreferentes_ids = $this->Workflowscers93->getUserStructurereferenteId( $checkStructurereferente );
 
-			$this->_index( $structurereferente_id );
+			$this->_index( $structuresreferentes_ids );
 		}
 
 		/**
 		 * Méthode de recherche générique.
 		 *
-		 * @param integer $structurereferente_id L'id de la structure référente à laquelle l'utilisateur est lié.
+		 * @param integer $structuresreferentes_ids L'id de la structure référente à laquelle l'utilisateur est lié.
 		 */
-		protected function _index( $structurereferente_id ) {
+		protected function _index( $structuresreferentes_ids ) {
 			if( !empty( $this->request->data ) ) {
 				// Traitement du formulaire d'affectation
 				if( ( $this->action != 'saisie' ) && isset( $this->request->data['Histochoixcer93'] ) ) {
@@ -665,8 +667,8 @@
 				$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 				$querydata = $this->Cohortes->qdConditions( $querydata );
 
-				if( !empty( $structurereferente_id ) ) {
-					$querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
+				if( !empty( $structuresreferentes_ids ) ) {
+					$querydata['conditions']['Referent.structurereferente_id'] = $structuresreferentes_ids;
 				}
 
 				// TODO: plus proprement, pour toute l'application, avec Configure
@@ -812,7 +814,7 @@
 				}
 			}
 
-			$this->set( 'structurereferente_id', $structurereferente_id );
+			$this->set( 'structurereferente_id', $structuresreferentes_ids );
 
 			// Options
 			$options = array(
@@ -822,12 +824,13 @@
 				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
+				'referents' => $this->InsertionsBeneficiaires->referents( array( 'type' => 'optgroup' ) ),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci(),
 				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
+
 			$options = Set::merge(
 				$options,
 				$this->Contratinsertion->Cer93->enums(),
@@ -879,9 +882,12 @@
 
 			unset( $querydata['limit'] );
 
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
-            if( !empty( $structurereferente_id ) ) {
-                $querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
+			$structuresreferentes_ids = $this->Workflowscers93->getUserStructurereferenteId( false );
+debug($structuresreferentes_ids);
+debug($this->InsertionsBeneficiaires->structuresreferentes());
+die();
+            if( !empty( $structuresreferentes_ids ) ) {
+                $querydata['conditions']['Referent.structurereferente_id'] = $structuresreferentes_ids;
             }
 
 			// TODO: factoriser
@@ -898,7 +904,7 @@
 					array(
 						'OR' => array(
 							'PersonneReferent.referent_id' => $this->Session->read( 'Auth.User.referent_id' ),
-							'PersonneReferent.structurereferente_id' => $this->Session->read( 'Auth.User.structurereferente_id' )
+							'PersonneReferent.structurereferente_id' => $this->WebrsaUsers->structuresreferentes()
 						)
 					)
 				);
@@ -914,7 +920,7 @@
 				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
+				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structuresreferentes_ids ),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci()

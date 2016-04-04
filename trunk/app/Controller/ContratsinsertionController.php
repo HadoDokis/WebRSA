@@ -1321,7 +1321,7 @@ class ContratsinsertionController extends AppController
               )
               ); */
 
-            $structures = $this->InsertionsAllocataires->structuresreferentes(array('optgroup' => true, 'list' => true, 'conditions' => array('Structurereferente.actif' => 'O', 'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId)));
+            $structures = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) );
 
             //On affiche les actions inactives en édition mais pas en ajout,
             // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours

@@ -37,6 +37,8 @@
 				'affecter'
 			),
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
+			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'affectes',
@@ -45,6 +47,7 @@
 					),
 				)
 			),
+			'WebrsaUsers',
 			'Workflowscers93'
 		);
 
@@ -71,7 +74,7 @@
 		 */
 		public function affecter() {
 			$this->Workflowscers93->assertUserCpdv();
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
+			$structuresreferentes_ids = $this->WebrsaUsers->structuresreferentes();
 
 			// On doit pouvoir abtenir les résultats dès le premier accès à la page
 			if( !isset( $this->request->data['Search'] ) ) {
@@ -92,13 +95,20 @@
 					$personneReferentValidate = $this->PersonneReferent->validate;
 					$this->PersonneReferent->validate = $this->Cohortereferent93->validatePersonneReferent;
 
-					$data = Set::extract( '/PersonneReferent[action]', $this->request->data );
+					$data = Hash::extract( $this->request->data, 'PersonneReferent.{n}' );
 
 					if( $this->PersonneReferent->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 						$this->PersonneReferent->begin();
 
-						$data = Set::extract( '/PersonneReferent[action=Activer]', $this->request->data );
+						$data = Hash::extract( $this->request->data, 'PersonneReferent.{n}[action=Activer]' );
+						foreach( $data as $key => $values ) {
+							$referent_id = Hash::get( $values, 'referent_id' );
+							$data[$key]['structurereferente_id'] = prefix( $referent_id );
+							$data[$key]['referent_id'] = suffix( $referent_id );
+						}
 
+						// TODO / FIXME: dans une méthode du modèle
+						// INFO: on ne clôture pas le référent du parcours précédent
 						if( !empty( $data ) && $this->PersonneReferent->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 							$this->PersonneReferent->commit();
 							$this->Cohortes->release( $dossiers_ids );
@@ -125,7 +135,7 @@
 
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortereferent93->search(
-					$structurereferente_id,
+					$structuresreferentes_ids,
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->request->data['Search'],
@@ -143,16 +153,13 @@
 
 				$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $personnes_referents ) ) );
 
-				// Par défaut, tout est mis en attente
 				if( !isset( $this->request->data['PersonneReferent'] ) ) {
-					$this->request->data['PersonneReferent'] = array();
-					foreach( array_keys( $personnes_referents ) as $index ) {
-						$this->request->data['PersonneReferent'][$index] = array( 'action' => 'Desactiver' );
-					}
+					$data = $this->Cohortereferent93->prepareFormDataCohorte(
+						$personnes_referents
+					);
+					$this->request->data['PersonneReferent'] = $data['PersonneReferent'];
 				}
 			}
-
-			$this->set( 'structurereferente_id', $structurereferente_id );
 
 			// Options
 			$options = array(
@@ -163,7 +170,12 @@
 				'rolepers' => $this->Option->rolepers(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'referents' => $this->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
+				'referents' => $this->InsertionsBeneficiaires->referents(
+					array(
+						'type' => 'optgroup',
+						'prefix' => true
+					)
+				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'Referent' => array(
 					'designe' => array( '0' => 'Référent non désigné', '1' => 'Référent désigné' )
@@ -196,12 +208,12 @@
 		 */
 		public function exportcsv() {
 			$this->Workflowscers93->assertUserCpdv();
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
+			$structuresreferentes_ids = $this->WebrsaUsers->structuresreferentes();
 
 			$data = Hash::expand( $this->request->params['named'], '__' );
 
 			$querydata = $this->Cohortereferent93->search(
-				$structurereferente_id,
+				$structuresreferentes_ids,
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$data['Search'],
@@ -219,7 +231,7 @@
 			$options = array(
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'rolepers' => $this->Option->rolepers(),
-				'referents' => $this->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
+				'referents' => $this->PersonneReferent->Referent->referentsListe( $structuresreferentes_ids ),
 			);
 			$options = Set::merge( $options, $this->PersonneReferent->Personne->Contratinsertion->Cer93->enums() );
 			$this->set( compact( 'options' ) );

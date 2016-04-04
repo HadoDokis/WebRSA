@@ -79,7 +79,7 @@
 	echo $this->Default3->form(
 		array(
 			'Search.annee' => array( 'empty' => ( $tableau == 'index' ? true : false ) ),
-			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
+			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $hasStructuresreferentes ? 'select' : 'hidden' ) ),
 			'Search.referent_id' => array( 'empty' => true, 'type' => ( $userIsCi ? 'hidden' : 'select' ) ),
 			'Search.user_id' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
 			'Search.tableau' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),

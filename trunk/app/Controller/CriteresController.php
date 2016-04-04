@@ -26,7 +26,7 @@
 
 		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires'  );
+		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires', 'InsertionsBeneficiaires' );
 
 		/**
 		*
@@ -56,8 +56,8 @@
 				);
 			}
 
-			$this->set( 'sr', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'conditions' => array( 'orientation' => 'O' ) ) ) );
-			$this->set( 'typeorient', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ) );
+			$this->set( 'sr', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ) );
+			$this->set( 'typeorient', $this->InsertionsBeneficiaires->typesorients() );
 
 			$this->set( 'statuts', $this->Orientstruct->enum( 'statut_orient' ) );
 			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
@@ -154,7 +154,7 @@
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
-			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();

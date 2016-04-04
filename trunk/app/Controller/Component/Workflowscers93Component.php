@@ -27,7 +27,10 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Session' );
+		public $components = array(
+			'Session',
+			'WebrsaUsers'
+		);
 
 		/**
 		 *
@@ -47,25 +50,15 @@
 		public function getUserStructurereferenteId( $required = true ) {
 			$Controller = $this->_Collection->getController();
 
-			// Si l'utilisateur est directement lié à une structure référente
-			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-
-			// Si l'utilisateur est indirectement lié, via un référent
-			if( empty( $structurereferente_id ) ) {
-				$referent_id = $this->Session->read( 'Auth.User.referent_id' );
-				if( !empty( $referent_id ) ) {
-					$Controller->User->Referent->id = $referent_id;
-					$structurereferente_id = $Controller->User->Referent->field( 'structurereferente_id' );
-				}
-			}
+			$structuresreferentes_ids = $this->WebrsaUsers->structuresreferentes();
 
 			// S'il est obligatoire d'être rattaché à une structure référente
-			if( $required && empty( $structurereferente_id ) ) {
+			if( $required && empty( $structuresreferentes_ids ) ) {
 				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
 				throw new Error403Exception( null );
 			}
 
-			return $structurereferente_id;
+			return $structuresreferentes_ids;
 		}
 
 		/**
@@ -74,8 +67,8 @@
 		 * @throws Error403Exception
 		 */
 		public function assertUserCpdv() {
-			if( !in_array( $this->Session->read( 'Auth.User.type' ), array( 'externe_cpdv', 'externe_secretaire' ) ) ) {
-				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable ou une secrétaire' ), 'flash/error' );
+			if( false === $this->isUserCpdv() ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable, une secrétaire ou un chef de projet communautaire' ), 'flash/error' );
 				throw new error403Exception( null );
 			}
 		}
@@ -86,7 +79,7 @@
 		 * @throws Error403Exception
 		 */
 		public function assertUserCi() {
-			if( $this->Session->read( 'Auth.User.type' ) !== 'externe_ci' ) {
+			if( false === $this->isUserCi() ) {
 				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un chargé d\'insertion' ), 'flash/error' );
 				throw new error403Exception( null );
 			}
@@ -98,7 +91,7 @@
 		 * @throws Error403Exception
 		 */
 		public function assertUserCg() {
-			if( $this->Session->read( 'Auth.User.type' ) !== 'cg' ) {
+			if( false === $this->isUserCg() ) {
 				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un utilisateur du conseil général' ), 'flash/error' );
 				throw new error403Exception( null );
 			}
@@ -111,10 +104,49 @@
 		 * @throws Error403Exception
 		 */
 		public function assertUserExterne() {
-			if( !in_array( $this->Session->read( 'Auth.User.type' ), array( 'externe_cpdv', 'externe_secretaire', 'externe_ci' ) ) ) {
-				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable, une secrétaire ou un chargé d\'insertion' ), 'flash/error' );
+			if( false === $this->isUserExterne() ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable, une secrétaire, un chargé d\'insertion ou un chef de projet communautaire' ), 'flash/error' );
 				throw new error403Exception( null );
 			}
+		}
+
+		/**
+		 * Retourne true si l'utilisateur connecté est un externe (CPDV,
+		 * secrétaire, CI, chef de projet communautaire).
+		 *
+		 * @return boolean
+		 */
+		public function isUserExterne() {
+			return ( strpos( $this->Session->read( 'Auth.User.type' ), 'externe_' ) === 0 );
+		}
+
+		/**
+		 * Retourne true si l'utilisateur connecté est de type CG.
+		 *
+		 * @return boolean
+		 */
+		public function isUserCg() {
+			return $this->Session->read( 'Auth.User.type' ) === 'cg';
+		}
+
+		/**
+		 * Retourne true si l'utilisateur connecté est de type externe CI.
+		 *
+		 * @return boolean
+		 */
+		public function isUserCi() {
+			return $this->Session->read( 'Auth.User.type' ) === 'externe_ci';
+		}
+
+		/**
+		 * Retourne true si l'utilisateur connecté est de type externe CPDV,
+		 * secrétaire structure ou chef de projet communautaire.
+		 *
+		 * @return boolean
+		 */
+		public function isUserCpdv() {
+			$accepted = array( 'externe_cpdv', 'externe_secretaire', 'externe_cpdvcom' );
+			return in_array( $this->Session->read( 'Auth.User.type' ), $accepted );
 		}
 	}
 ?>

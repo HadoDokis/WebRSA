@@ -57,7 +57,7 @@
 			//TODO: options des nouveaux modèles liés et aliasés
 
 			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsAllocataires->typesorients();
-			$options['Orientstruct']['structurereferente_id'] = $Controller->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
+			$options['Orientstruct']['structurereferente_id'] = $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
 
 			return $options;
 		}
