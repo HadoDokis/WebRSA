@@ -1607,4 +1607,9 @@
 	 * Affiche les anciens moteurs de cohorte et de recherche pour comparaison
 	 */
 	Configure::write('Anciensmoteurs.enabled', false);
+	
+	/**
+	 * Export CSV des droits des groupes
+	 */
+	Configure::write('Module.Synthesedroits.enabled', false);
 ?>
