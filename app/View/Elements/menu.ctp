@@ -530,6 +530,11 @@
 					'url' => array( 'controller' => 'users', 'action' => 'index' ),
 					'title' => 'Gestion des utilisateurs',
 				),
+				'Synthese' => array(
+					'disabled' => !Configure::read('Module.Synthesedroits.enabled'),
+					'url' => array( 'controller' => 'synthesedroits', 'action' => 'index' ),
+					'title' => 'Synthese des droits',
+				)
 			),
 			'Vérification de l\'application' => array(
 				'url' => array( 'controller' => 'checks', 'action' => 'index' ),

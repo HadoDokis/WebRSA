@@ -353,6 +353,9 @@
 				'Anciensmoteurs.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'Module.Synthesedroits.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
