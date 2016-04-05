@@ -48,9 +48,6 @@
 	 * La classe InsertionsBeneficiairesComponentTest réalise les tests de la
 	 * classe InsertionsBeneficiairesComponent
 	 *
-	 * @todo pour les méthodes structuresreferentes et referents, tester avec les
-	 *	conditions
-	 *
 	 * @package app.Test.Case.Controller.Component
 	 */
 	class InsertionsBeneficiairesComponentTest extends CakeTestCase
@@ -123,6 +120,8 @@
 
 		/**
 		 * Test de la méthode InsertionsBeneficiairesComponent::sessionKey()
+		 *
+		 * @covers InsertionsBeneficiairesComponent::sessionKey
 		 */
 		public function testSessionKey() {
 			$result = $this->Controller->InsertionsBeneficiaires->sessionKey( 'typesorients', array() );
@@ -135,7 +134,105 @@
 		}
 
 		/**
+		 * Test de la méthode InsertionsBeneficiairesComponent::options()
+		 *
+		 * @covers InsertionsBeneficiairesComponent::options
+		 */
+		public function testOptions() {
+			// 1. Tests de typesorients
+			// 1.1. Sans options supplémentaires
+			$result = $this->Controller->InsertionsBeneficiaires->options( 'typesorients' );
+			$expected = array(
+				'conditions' => array(
+					'Typeorient.actif' => 'O',
+				),
+				'empty' => false,
+				'cache' => true
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 1.2. Avec des options supplémentaires
+			$options = array( 'conditions' => array(), 'empty' => true, 'foo' => 'bar' );
+			$result = $this->Controller->InsertionsBeneficiaires->options( 'typesorients', $options );
+			$expected = array(
+				'conditions' => array(),
+				'empty' => true,
+				'cache' => true,
+				'foo' => 'bar'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Tests de structuresreferentes
+			// 2.1. Sans options supplémentaires
+			$result = $this->Controller->InsertionsBeneficiaires->options( 'structuresreferentes' );
+			$expected = array(
+				'conditions' => array(
+					'Typeorient.actif' => 'O',
+					'Structurereferente.actif' => 'O',
+				),
+				'prefix' => true,
+				'type' => 'list',
+				'cache' => true,
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2.2. Avec des options supplémentaires
+			$options = array( 'conditions' => array( 'Structurereferente.actif' => array( 'O', 'N' ) ), 'prefix' => false, 'foo' => 'bar' );
+			$result = $this->Controller->InsertionsBeneficiaires->options( 'structuresreferentes', $options );
+			$expected = array(
+				'conditions' => array(
+					'Structurereferente.actif' => array( 'O', 'N' ),
+				),
+				'prefix' => false,
+				'foo' => 'bar',
+				'type' => 'list',
+				'cache' => true,
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 3. Tests de referents
+			// 3.1. Sans options supplémentaires
+			$result = $this->Controller->InsertionsBeneficiaires->options( 'referents' );
+			$expected = array(
+				'conditions' => array(
+					'Typeorient.actif' => 'O',
+					'Structurereferente.actif' => 'O',
+					'Referent.actif' => 'O',
+				),
+				'prefix' => true,
+				'type' => 'list',
+				'cache' => true,
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 3.2. Avec des options supplémentaires
+			$options = array( 'conditions' => array(), 'type' => InsertionsBeneficiairesComponent::TYPE_IDS, 'foo' => 'bar' );
+			$result = $this->Controller->InsertionsBeneficiaires->options( 'referents', $options );
+			$expected = array(
+				'conditions' => array(),
+				'type' => 'ids',
+				'foo' => 'bar',
+				'prefix' => true,
+				'cache' => true,
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode InsertionsBeneficiairesComponent::options() lorsqu'un
+		 * mauvais nom de méthode est envoyé.
+		 *
+		 * @covers InsertionsBeneficiairesComponent::options
+		 * @expectedException RuntimeException
+		 */
+		public function testOptionsUnknownMethod() {
+			$this->Controller->InsertionsBeneficiaires->options( 'foo' );
+		}
+
+		/**
 		 * Test de la méthode InsertionsBeneficiairesComponent::typesorients()
+		 *
+		 * @covers InsertionsBeneficiairesComponent::typesorients
 		 */
 		public function testTypesorientsCg93() {
 			Configure::write( 'Cg.departement', 93 );
@@ -173,6 +270,8 @@
 		/**
 		 * Test de la méthode InsertionsBeneficiairesComponent::typesorients()
 		 * pour le CG 66 lorsque l'utilisateur est un "externe_ci".
+		 *
+		 * @covers InsertionsBeneficiairesComponent::typesorients
 		 */
 		public function testTypesorientsCg66() {
 			Configure::write( 'Cg.departement', 66 );
@@ -189,6 +288,9 @@
 		 * Test de la méthode InsertionsBeneficiairesComponent::structuresreferentes()
 		 * pour les CG 58 et 93, ainsi qu'au CG 66 lorsque l'utilisateur n'est
 		 * pas un "externe_ci".
+		 *
+		 * @covers InsertionsBeneficiairesComponent::structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testStructuresreferentes() {
 			Configure::write( 'Cg.departement', 93 );
@@ -245,6 +347,9 @@
 		/**
 		 * Test de la méthode InsertionsBeneficiairesComponent::structuresreferentes()
 		 * pour le CG 66 lorsque l'utilisateur est un "externe_ci".
+		 *
+		 * @covers InsertionsBeneficiairesComponent::structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testStructuresreferentesExterneCi66() {
 			Configure::write( 'Cg.departement', 66 );
@@ -259,8 +364,22 @@
 		}
 
 		/**
+		 * Test de la méthode InsertionsBeneficiairesComponent::structuresreferentes()
+		 * lorsqu'une valeur erronée est envoyée dans la clé "type".
+		 *
+		 * @covers InsertionsBeneficiairesComponent::structuresreferentes
+		 * @expectedException RuntimeException
+		 */
+		public function testStructuresreferentesUnknownType() {
+			$this->Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'foo' ) );
+		}
+
+		/**
 		 * Test de la méthode InsertionsBeneficiairesComponent::referents()
 		 * pour tous les CG, lorsque l'utilisateur n'est pas un "externe_ci".
+		 *
+		 * @covers InsertionsBeneficiairesComponent::referents
+		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testReferents() {
 			Configure::write( 'Cg.departement', 93 );
@@ -319,6 +438,9 @@
 		/**
 		 * Test de la méthode InsertionsBeneficiairesComponent::referents()
 		 * pour le CG 93 lorsque l'utilisateur est un "externe_ci".
+		 *
+		 * @covers InsertionsBeneficiairesComponent::referents
+		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testReferentsExterneCi93() {
 			Configure::write( 'Cg.departement', 93 );
@@ -334,10 +456,23 @@
 		}
 
 		/**
-		 * Test de la méthode InsertionsBeneficiairesComponent::completeOptionsWithCurrentReferent()
+		 * Test de la méthode InsertionsBeneficiairesComponent::referents() lorsqu'une
+		 * valeur erronée est envoyée dans la clé "type".
+		 *
+		 * @covers InsertionsBeneficiairesComponent::referents
+		 * @expectedException RuntimeException
 		 */
-		public function testCompleteOptionsWithCurrentReferent() {
-			$result = $this->Controller->InsertionsBeneficiaires->completeOptionsWithCurrentReferent(
+		public function testReferentsUnknownType() {
+			$this->Controller->InsertionsBeneficiaires->referents( array( 'type' => 'foo' ) );
+		}
+
+		/**
+		 * Test de la méthode InsertionsBeneficiairesComponent::completeOptions()
+		 *
+		 * @covers InsertionsBeneficiairesComponent::completeOptions
+		 */
+		public function testCompleteOptions() {
+			$result = $this->Controller->InsertionsBeneficiaires->completeOptions(
 				array(
 					'structurereferente_id' => array(
 						'Social' => array(
@@ -351,6 +486,19 @@
 				array(
 					'structurereferente_id' => 1,
 					'referent_id' => 1
+				),
+				array(
+					'typesorients' => false,
+					'structuresreferentes' => array(
+						'path' => 'structurereferente_id',
+						'type' => 'optgroup',
+						'prefix' => false
+					),
+					'referents' => array(
+						'path' => 'referent_id',
+						'type' => 'list',
+						'prefix' => true
+					)
 				)
 			);
 			$expected = array(

@@ -20,30 +20,30 @@
 	{
 		public $name = 'ActionscandidatsPersonnes';
 		public $uses = array( 'ActioncandidatPersonne','Option' );
-		
-		public $helpers = array( 
-			'Default', 
-			'Locale', 
-			'Cake1xLegacy.Ajax', 
-			'Xform', 
-			'Xhtml', 
-			'Fileuploader', 
+
+		public $helpers = array(
+			'Default',
+			'Locale',
+			'Cake1xLegacy.Ajax',
+			'Xform',
+			'Xhtml',
+			'Fileuploader',
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 		);
-		
+
 		public $components = array(
-			'Default', 
-			'Gedooo.Gedooo', 
-			'Fileuploader', 
-			'Jetons2', 
-			'DossiersMenus', 
-			'InsertionsAllocataires',
+			'Default',
+			'Gedooo.Gedooo',
+			'Fileuploader',
+			'Jetons2',
+			'DossiersMenus',
+			'InsertionsBeneficiaires',
 			'Cohortes',
 			'Search.SearchPrg' => array(
-				'actions' => array( 
+				'actions' => array(
 					'search' => array(
 						'filter' => 'Search'
 					),
@@ -56,7 +56,7 @@
 				)
 			),
 		);
-		
+
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 // 			'view' => 'ActionscandidatsPersonnes:index',
@@ -114,7 +114,7 @@
 			}
 			$field = Inflector::singularize( Inflector::tableize( 'Actioncandidat' ) ).'_id';
 			$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{'Actioncandidat'}->find( 'list', array( 'recursive' => -1, 'order' => 'name' ) ) );
-			
+
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
@@ -564,7 +564,7 @@
 				$this->assert( !empty( $actioncandidat_personne ), 'invalidParameter' );
 
 				$personne_id = $actioncandidat_personne['ActioncandidatPersonne']['personne_id'];
-				
+
 				$valsprog =& $actioncandidat_personne['ActioncandidatPersonne']['valprogfichecandidature66_id'];
 				if ( !empty($valsprog) ) {
 					$valsprog = $actioncandidat_personne['ActioncandidatPersonne']['progfichecandidature66_id'].'_'.$valsprog;
@@ -665,7 +665,7 @@
                     if( !in_array( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'], $actionsTypeRegionIds ) ){
                         $this->request->data['ActioncandidatPersonne']['poursuitesuivicg'] = '0';
                     }
-					
+
                     // Si aucune case n'est cochée pour les RDVs, on n'enregistre aucune info
                     if( empty( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] ) ) {
                         unset( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] );
@@ -679,7 +679,7 @@
                         unset( $this->request->data['ActioncandidatPersonne']['naturemobile'] );
                         unset( $this->request->data['ActioncandidatPersonne']['typemobile'] );
                     }
-					
+
 					// Valeurs pour progfichecandidature66
 					$valsprog =& $this->request->data['ActioncandidatPersonne']['valprogfichecandidature66_id'];
 					$valsprog = suffix($valsprog);
@@ -773,7 +773,7 @@
 
             // Cache géré dans les modèles
 			$options = Hash::merge( $options, $this->{$this->modelClass}->enums() );
-            $options[$this->modelClass]['referent_id'] = $this->InsertionsAllocataires->referents();
+            $options[$this->modelClass]['referent_id'] = $this->InsertionsBeneficiaires->referents( array( 'prefix' => false ) );
             $options[$this->modelClass]['motifsortie_id'] = $this->{$this->modelClass}->Motifsortie->listOptions();
             $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
             $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enum( 'nivetu' );
@@ -1027,7 +1027,7 @@
 
 			$this->redirect( $this->referer() );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -1045,14 +1045,14 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnesNew' );
 			$Recherches->exportcsv();
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
 		public function cohorte_enattente() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEnattente' ) );
-			
+
 			$this->ActioncandidatPersonne->validate = array();
 			$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->validate = array();
 		}
@@ -1064,14 +1064,14 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEnattente' ) );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
 		public function cohorte_encours() {
 			$Recherches = $this->Components->load( 'WebrsaCohortesActionscandidatsPersonnes' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteActioncandidatPersonneEncours' ) );
-			
+
 			$this->ActioncandidatPersonne->validate = array();
 			$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->validate = array();
 		}

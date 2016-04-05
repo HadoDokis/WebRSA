@@ -40,7 +40,6 @@
 			'Fileuploader',
 			'Jetons2',
 			'DossiersMenus',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Cohortes',
 			'Search.SearchPrg' => array(

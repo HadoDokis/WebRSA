@@ -48,7 +48,6 @@
 		 * @var array
 		 */
 		public $components = array(
-			'InsertionsAllocataires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'index',

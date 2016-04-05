@@ -32,7 +32,6 @@
 			'Gedooo.Gedooo',
 			'Jetons2',
 			'DossiersMenus',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires'
 		);
 

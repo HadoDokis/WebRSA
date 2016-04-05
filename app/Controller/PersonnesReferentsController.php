@@ -22,7 +22,7 @@
 
 		public $helpers = array( 'Locale', 'Xform', 'Fileuploader', 'Default2' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires', 'InsertionsBeneficiaires' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsBeneficiaires' );
 
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 

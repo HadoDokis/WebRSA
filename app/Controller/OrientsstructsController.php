@@ -34,7 +34,6 @@
 			'DossiersMenus',
 			'Fileuploader',
 			'Gedooo.Gedooo',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Jetons2',
 			/*'Search.Filtresdefaut' => array(
@@ -600,15 +599,41 @@
 				'Orientstruct' => array(
 					'typeorient_id' => $this->Orientstruct->Typeorient->listOptions(), // FIXME
 					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ),
-					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
+					'referent_id' => $this->InsertionsBeneficiaires->referents(),
 					'statut_orient' => $this->Orientstruct->enum( 'statut_orient' ),
 					// Pour le 66
 					// -> FIXME ?
 					'structureorientante_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ),
-					'referentorientant_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
+					'referentorientant_id' => $this->InsertionsBeneficiaires->referents(),
 				)
 			);
 			$options = Hash::merge( $options, $this->Orientstruct->enums() );
+
+			// INFO: si les données enregistrées ne se trouvent pas dans les options, on les ajoute
+			$options['Orientstruct'] = $this->InsertionsBeneficiaires->completeOptions(
+				$options['Orientstruct'],
+				$this->request->data['Orientstruct'],
+				array(
+					'structuresreferentes' => array(
+						'type' => 'list'
+					)
+				)
+			);
+			$options['Orientstruct'] = $this->InsertionsBeneficiaires->completeOptions(
+				$options['Orientstruct'],
+				$this->request->data['Orientstruct'],
+				array(
+					'typesorients' => false,
+					'structuresreferentes' => array(
+						'path' => 'structureorientante_id',
+						'type' => 'list',
+						'prefix' => false
+					),
+					'referents' => array(
+						'path' => 'referentorientant_id'
+					)
+				)
+			);
 			$this->set( compact( 'options' ) );
 
 			// Rendu

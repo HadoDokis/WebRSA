@@ -42,7 +42,6 @@
 				'enattente'
 			),
 			'Gestionzonesgeos',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires'
 		);
 
@@ -296,7 +295,7 @@
 			$this->set( 'modeles', $modeles );
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			// On n'utilise pas le même layout suivant l'action.
 			switch( $statutOrientation ) {

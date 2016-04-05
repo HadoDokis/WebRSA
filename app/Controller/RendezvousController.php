@@ -40,7 +40,6 @@
 			'Fileuploader',
 			'Jetons2',
 			'DossiersMenus',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Workflowscers93',
 			// 'Search.Filtresdefaut' => array( 'search' ), // FIXME

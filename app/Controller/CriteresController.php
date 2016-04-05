@@ -26,7 +26,7 @@
 
 		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires', 'InsertionsBeneficiaires' );
+		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsBeneficiaires' );
 
 		/**
 		*
@@ -155,7 +155,7 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();
 		}

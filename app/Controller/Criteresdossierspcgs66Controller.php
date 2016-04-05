@@ -22,7 +22,7 @@ class Criteresdossierspcgs66Controller extends AppController {
 
     public $uses = array('Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton');
     public $helpers = array('Default', 'Default2', 'Locale', 'Csv', 'Search', 'Romev3');
-    public $components = array('Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array('actions' => array('dossier', 'gestionnaire')), 'Jetons2', 'InsertionsBeneficiaires');
+    public $components = array('Gestionzonesgeos', 'Search.SearchPrg' => array('actions' => array('dossier', 'gestionnaire')), 'Jetons2', 'InsertionsBeneficiaires');
 
     /**
      *
@@ -152,7 +152,7 @@ class Criteresdossierspcgs66Controller extends AppController {
         $this->set('mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee());
 
 		$this->set('structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
-        $this->set('referentsparcours', $this->InsertionsAllocataires->referents(array('prefix' => true)));
+        $this->set('referentsparcours', $this->InsertionsBeneficiaires->referents());
 
 		// Ajout des options ROME V3
 		if( $this->action === 'dossier' ) {

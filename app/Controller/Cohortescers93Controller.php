@@ -44,7 +44,6 @@
 				'visualisation'
 			),
 			'Gestionzonesgeos',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(

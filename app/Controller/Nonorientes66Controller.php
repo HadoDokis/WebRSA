@@ -23,12 +23,12 @@
 		);
 
 		public $helpers = array(
-			'Default', 
-			'Locale', 
-			'Cake1xLegacy.Ajax', 
-			'Xform', 
-			'Xhtml', 
-			'Fileuploader', 
+			'Default',
+			'Locale',
+			'Cake1xLegacy.Ajax',
+			'Xform',
+			'Xhtml',
+			'Fileuploader',
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
@@ -38,15 +38,14 @@
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		public $components = array(
-			'Default', 
-			'Gedooo.Gedooo', 
-			'Fileuploader', 
-			'Jetons2', 
-			'DossiersMenus', 
-			'InsertionsAllocataires',
+			'Default',
+			'Gedooo.Gedooo',
+			'Fileuploader',
+			'Jetons2',
+			'DossiersMenus',
 			'Cohortes',
 			'Search.SearchPrg' => array(
-				'actions' => array( 
+				'actions' => array(
 					'cohorte_isemploi' => array(
 						'filter' => 'Search'
 					),
@@ -65,7 +64,7 @@
 				)
 			),
 		);
-		
+
 		public $commeDroit = array(
 			'cohorte_isemploi' => 'Cohortesnonorientes66::isemploi',
 			'cohorte_imprimeremploi' => 'Cohortesnonorientes66::notisemploiaimprimer',
@@ -73,7 +72,7 @@
 			'cohorte_imprimernotifications' => 'Cohortesnonorientes66::notifaenvoyer',
 			'recherche_notifie' => 'Cohortesnonorientes66::oriente',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -203,7 +202,7 @@
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'nonoriente66' ) );
 			$this->_setOptions();
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
@@ -211,7 +210,7 @@
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
 			$Cohorte->cohorte( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi' ) );
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -219,10 +218,10 @@
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
 			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi' ) );
 		}
-		
+
 		/**
 		 * Lance l'impression d'un questionnaire dans le cadre d'un Allocataire non inscrits au Pôle Emploi
-		 * 
+		 *
 		 * @param integer $personne_id
 		 */
 		public function imprimeremploi( $personne_id ) {
@@ -237,52 +236,52 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_imprimeremploi() {
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
-			$Cohorte->search( 
-				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' ) 
+			$Cohorte->search(
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' )
 			);
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_imprimeremploi() {
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
-			$Cohorte->exportcsv( 
-				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' ) 
+			$Cohorte->exportcsv(
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' )
 			);
 		}
-		
+
 		/**
 		 * Impression de la cohorte
 		 */
 		public function cohorte_imprimeremploi_impressions() {
 			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
-			$Cohortes->impressions( 
-				array( 
-					'modelName' => 'Personne', 
+			$Cohortes->impressions(
+				array(
+					'modelName' => 'Personne',
 					'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi',
 					'configurableQueryFieldsKey' => 'Dossierspcgs66.cohorte_imprimeremploi'
-				) 
+				)
 			);
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_reponse() {
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
 			$Cohorte->cohorte( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse' ) );
-			
+
 			// Selection automatique de la structure référente en fonction du type d'orientation et du canton
 			$this->set('structureAuto', json_encode($this->Nonoriente66->structuresAutomatiques()));
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -290,10 +289,10 @@
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
 			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse' ) );
 		}
-		
+
 		/**
 		 * Le l'impression d'une notification pour un allocataire
-		 * 
+		 *
 		 * @param integer $orientstruct_id
 		 */
 		public function imprimernotifications( $orientstruct_id ) {
@@ -307,58 +306,58 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
 		public function cohorte_imprimernotifications() {
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
-			$Cohorte->search( 
-				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' ) 
+			$Cohorte->search(
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' )
 			);
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_imprimernotifications() {
 			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
-			$Cohorte->exportcsv( 
-				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' ) 
+			$Cohorte->exportcsv(
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' )
 			);
 		}
-		
+
 		/**
 		 * Impression de la cohorte
 		 */
 		public function cohorte_imprimernotifications_impressions() {
 			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
-			$Cohortes->impressions( 
-				array( 
-					'modelName' => 'Personne', 
+			$Cohortes->impressions(
+				array(
+					'modelName' => 'Personne',
 					'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications',
 					'configurableQueryFieldsKey' => 'Nonorientes66.cohorte_imprimernotifications'
-				) 
+				)
 			);
 		}
-		
+
 		/**
 		 * Recherche
 		 */
 		public function recherche_notifie() {
 			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66New' );
-			$Cohorte->search( 
-				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' ) 
+			$Cohorte->search(
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' )
 			);
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_notifie() {
 			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66New' );
-			$Cohorte->exportcsv( 
-				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' ) 
+			$Cohorte->exportcsv(
+				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' )
 			);
 		}
 	}

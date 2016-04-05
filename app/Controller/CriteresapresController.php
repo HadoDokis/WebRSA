@@ -27,7 +27,6 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'Search.SearchPrg' => array( 'actions' => array( 'all', 'eligible' ) ),
-            'InsertionsAllocataires',
             'InsertionsBeneficiaires'
 		);
 
@@ -170,7 +169,7 @@
 			$this->_setOptions();
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			switch( $etatApre ) {
 				case 'Critereapre::all':

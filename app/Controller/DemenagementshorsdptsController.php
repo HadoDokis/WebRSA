@@ -31,7 +31,6 @@
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
-			'InsertionsAllocataires',
 			'Jetons2', // FIXME: à cause de DossiersMenus
 			'Search.Filtresdefaut' => array( 'search', 'search1' ),
 			'Search.SearchPrg' => array(
