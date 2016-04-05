@@ -20,7 +20,6 @@
 
 		public $components = array(
 			'DossiersMenus',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )

@@ -36,7 +36,6 @@
 
 		public $components = array(
 			'Allocataires',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
@@ -138,7 +137,7 @@
 			$this->set( 'options', $this->Allocataires->options() );
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( compact( 'cohorte' ) );
 		}

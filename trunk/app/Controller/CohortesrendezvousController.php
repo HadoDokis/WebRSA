@@ -34,7 +34,6 @@
 			'Cohortes'  => array(
 				'cohorte'
 			),
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Search.Filtresdefaut' => array( 'cohorte' ),
 			'Search.SearchPrg' => array(

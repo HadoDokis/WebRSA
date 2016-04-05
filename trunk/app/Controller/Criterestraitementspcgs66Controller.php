@@ -21,7 +21,7 @@ class Criterestraitementspcgs66Controller extends AppController {
 
     public $uses = array('Criteretraitementpcg66', 'Traitementpcg66', 'Option');
     public $helpers = array('Default', 'Default2', 'Locale', 'Csv', 'Search');
-    public $components = array('Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array('actions' => array('index')), 'Jetons2', 'InsertionsBeneficiaires');
+    public $components = array('Gestionzonesgeos', 'Search.SearchPrg' => array('actions' => array('index')), 'Jetons2', 'InsertionsBeneficiaires');
 
     /**
      *
@@ -108,7 +108,7 @@ class Criterestraitementspcgs66Controller extends AppController {
         $this->set('mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee());
 
         $this->set('structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
-        $this->set('referentsparcours', $this->InsertionsAllocataires->referents(array('prefix' => true)));
+        $this->set('referentsparcours', $this->InsertionsBeneficiaires->referents());
 
         $this->render($this->action);
     }

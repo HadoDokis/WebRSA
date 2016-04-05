@@ -37,7 +37,6 @@
 			'Jetons2',
 			'Default',
 			'DossiersMenus',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Gedooo.Gedooo',
 			'Search.SearchPrg' => array(

@@ -32,7 +32,6 @@
 			'Allocataires',
 			'DossiersMenus',
 			'Gedooo.Gedooo',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Jetons2', // FIXME: à cause de DossiersMenus
 			'Search.Filtresdefaut' => array( 'search', 'search1' ),
@@ -655,11 +654,24 @@
 			$options = $this->Ficheprescription93->options( array( 'allocataire' => true, 'find' => true, 'autre' => true ) );
 
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
-			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
+			$options['Ficheprescription93']['referent_id'] = $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) );
 
 			// INFO: si la structure ou le référent enregistrés ne se trouvent pas dans les options, on les ajoute
 			if( !empty( $this->request->data ) ) {
-				$options['Ficheprescription93'] = $this->InsertionsAllocataires->completeOptionsWithCurrentReferent( $options['Ficheprescription93'], $this->request->data['Ficheprescription93'] );
+				$options['Ficheprescription93'] = $this->InsertionsBeneficiaires->completeOptions(
+					$options['Ficheprescription93'],
+					$this->request->data['Ficheprescription93'],
+					array(
+						'structuresreferentes' => array(
+							'type' => 'optgroup',
+							'prefix' => false
+						),
+						'referents' => array(
+							'type' => 'list',
+							'prefix' => true
+						)
+					)
+				);
 			}
 
 			// On complète les options de l'adresse du prestataire PDI s'il y a lieu

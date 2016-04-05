@@ -23,7 +23,6 @@
 		 */
 		public $components = array(
 			'Gestionzonesgeos',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Session',
@@ -170,7 +169,7 @@
 				),
 				'PersonneReferent' => array(
 					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ),
-					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true ) )
+					'referent_id' => $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) )
 				)
 			);
 		}

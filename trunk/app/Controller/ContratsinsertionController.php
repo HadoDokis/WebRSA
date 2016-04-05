@@ -39,7 +39,6 @@ class ContratsinsertionController extends AppController
 		'Fileuploader',
 		'Jetons2',
 		'DossiersMenus',
-		'InsertionsAllocataires',
 		'InsertionsBeneficiaires',
 		'Search.SearchPrg' => array(
 			'actions' => array(

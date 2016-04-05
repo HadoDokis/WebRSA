@@ -18,16 +18,6 @@
 	 * métier (afin que ces valeurs apparaissent quoi qu'il arrive lors d'une
 	 * modification).
 	 *
-	 * @fixme
-	 *	- remplace la classe InsertionAllocatairesComponent qui sera dépréciée depuis
-	 *		la version 3.1.0 et avec laquelle elle présente quelques différences
-	 *		notables.
-	 *	- (OK) Cohérence des conditions initiales (actif) pour les différentes méthodes
-	 *	- voir où ça influe pour les options (array() + array() vs. Set::merge)
-	 *	- ajouter des tests (structuresreferentes) pour actif / inactif
-	 *	- ATTENTION: à présent, les conditions par défaut de typesorients sont
-	 *		'Typeorient.actif' => 'O' (ce n'était pas le cas avant)
-	 *
 	 * @package app.Controller.Component
 	 */
 	class InsertionsBeneficiairesComponent extends Component
@@ -100,6 +90,47 @@
 			return $sessionKey;
 		}
 
+		/**
+		 * Retourne les options par défaut pour les différentes méthodes.
+		 *
+		 * @param string $method
+		 * @param array $options
+		 * @return array
+		 * @throws RuntimeException
+		 */
+		public function options( $method, array $options = array() ) {
+			switch( $method ) {
+				case 'typesorients':
+					$options += array(
+						'conditions' => $this->conditions['typesorients'],
+						'empty' => false,
+						'cache' => true
+					);
+					break;
+				case 'structuresreferentes':
+					$options += array(
+						'conditions' => $this->conditions['structuresreferentes'],
+						'prefix' => true,
+						'type' => self::TYPE_LIST,
+						'cache' => true
+					);
+					break;
+				case 'referents':
+					$options += array(
+						'conditions' => $this->conditions['referents'],
+						'prefix' => true,
+						'type' => self::TYPE_LIST,
+						'cache' => true
+					);
+					break;
+				default:
+					$msgstr = sprintf( 'La méthode %s:%s n\'accepte pas la valeur %s comme paramètre $method', __CLASS__, __FUNCTION__, $method );
+					throw new RuntimeException( $msgstr, 500 );
+			}
+
+			return $options;
+		}
+
         /**
 		 * Retourne la liste des types d'oriention.
 		 * Mise en cache dans la session de l'utilisateur.
@@ -110,12 +141,14 @@
 		 * 	'conditions' => array(
 		 *		'Typeorient.actif' => 'O'
 		 *	),
-		 * 	'empty' => false
+		 * 	'empty' => false,
+		 * 	'cache' => true
 		 * );
 		 * </pre>
 		 *
-		 * @todo InsertionsAllocataires::typesorients() <=> InsertionsBeneficiaires::typesorients( array( 'conditions' => array() ) )
 		 * @todo Typeorient::listOptions (actif, parentid NULL)
+		 *
+		 * @see options()
 		 *
 		 * @param array $options La clé conditions permet de spécifier ou
 		 *	de surcharger les conditions, la clé empty permet de spécifier si
@@ -126,10 +159,7 @@
 			$Controller = $this->_Collection->getController();
 			$Controller->loadModel( 'Structurereferente' );
 
-			$options += array(
-				'conditions' => $this->conditions[__FUNCTION__],
-				'empty' => false
-			);
+			$options = $this->options( __FUNCTION__, $options );
 
             if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
                 $sq = $Controller->Structurereferente->sq(
@@ -159,7 +189,7 @@
 			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
 			$results = $this->Session->read( $sessionKey );
 
-			if( $results === null ) {
+			if( $results === null || false == $options['cache'] ) {
 				$results = array();
 
 				$typesorients = $Controller->Structurereferente->Typeorient->find( 'all', $query );
@@ -170,7 +200,9 @@
 					}
 				}
 
-				$this->Session->write( $sessionKey, $results );
+				if( true == $options['cache'] ) {
+					$this->Session->write( $sessionKey, $results );
+				}
 			}
 
 			if( Hash::get( $options, 'empty' ) ) {
@@ -196,7 +228,7 @@
 					'alias' => 'structuresreferentes_zonesgeographiques',
 					'fields' => array( 'structuresreferentes_zonesgeographiques.structurereferente_id' ),
 					'conditions' => array(
-						'structuresreferentes_zonesgeographiques.zonegeographique_id' => array_keys( $this->Session->read( 'Auth.Zonegeographique' ) )
+						'structuresreferentes_zonesgeographiques.zonegeographique_id' => array_keys( (array)$this->Session->read( 'Auth.Zonegeographique' ) )
 					),
 					'contain' => false
 				)
@@ -218,7 +250,8 @@
 		 *		'Structurereferente.actif' => 'O'
 		 *	),
 		 * 	'prefix' => true,
-		 * 	'type' => 'list'
+		 * 	'type' => 'list',
+		 * 	'cache' => true
 		 * );
 		 * </pre>
 		 *
@@ -229,11 +262,7 @@
 			$Controller = $this->_Collection->getController();
 			$Controller->loadModel( 'Structurereferente' );
 
-			$options += array(
-				'conditions' => $this->conditions[__FUNCTION__],
-				'prefix' => true,
-				'type' => self::TYPE_LIST
-			);
+			$options = $this->options( __FUNCTION__, $options );
 
 			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
 				$options['conditions'][] = $this->_sqStructurereferenteZonesgeographiques93();
@@ -262,7 +291,7 @@
 			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
 			$results = $this->Session->read( $sessionKey );
 
-			if( $results === null ) {
+			if( $results === null || false == $options['cache'] ) {
 				$results = array(
 					'optgroup' => array(),
 					'optgroup_prefix' => array(),
@@ -303,7 +332,9 @@
 				asort( $results['list'] );
 				asort( $results['list_prefix'] );
 
-				$this->Session->write( $sessionKey, $results );
+				if( true == $options['cache'] ) {
+					$this->Session->write( $sessionKey, $results );
+				}
 			}
 
 			if( !empty( $results ) ) {
@@ -313,8 +344,12 @@
 				else if( $options['type'] === self::TYPE_IDS ) {
 					$results = $options['prefix'] ? $results['ids_prefix'] : $results['ids'];
 				}
-				else {
+				else if( $options['type'] === self::TYPE_LIST ) {
 					$results = $options['prefix'] ? $results['list_prefix'] : $results['list'];
+				}
+				else {
+					$msgstr = sprintf( 'La valeur du paramètre "type" "%s" n\'est pas acceptée dans la méthode %s::%s', $options['type'], __CLASS__, __FUNCTION__ );
+					throw new RuntimeException( $msgstr, 500 );
 				}
 			}
 
@@ -335,12 +370,12 @@
 		 *		'Referent.actif' => 'O'
 		 *	),
 		 * 	'prefix' => true,
-		 * 	'type' => 'list'
+		 * 	'type' => 'list',
+		 * 	'cache' => true
 		 * );
 		 * </pre>
 		 *
 		 * @todo Referent::listOptions() -> actif, prefix
-		 * @todo InsertionsAllocataires::referents -> actif, sans prefix ni optgroup
 		 *
 		 * @param array $options
 		 * @return array
@@ -349,11 +384,7 @@
 			$Controller = $this->_Collection->getController();
 			$Controller->loadModel( 'Structurereferente' );
 
-			$options += array(
-				'conditions' => $this->conditions[__FUNCTION__],
-				'prefix' => true,
-				'type' => self::TYPE_LIST
-			);
+			$options = $this->options( __FUNCTION__, $options );
 
 			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
 				$options['conditions'][] = $this->_sqStructurereferenteZonesgeographiques93();
@@ -380,7 +411,7 @@
 			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
 			$results = $this->Session->read( $sessionKey );
 
-			if( $results === null ) {
+			if( $results === null || false == $options['cache'] ) {
 				$results = array(
 					'optgroup' => array(),
 					'optgroup_prefix' => array(),
@@ -416,7 +447,9 @@
 					}
 				}
 
-				$this->Session->write( $sessionKey, $results );
+				 if( true == $options['cache'] ) {
+					$this->Session->write( $sessionKey, $results );
+				 }
 			}
 
 			if( !empty( $results ) ) {
@@ -426,8 +459,12 @@
 				else if( $options['type'] === self::TYPE_IDS ) {
 					$results = $options['prefix'] ? $results['ids_prefix'] : $results['ids'];
 				}
-				else {
+				else if( $options['type'] === self::TYPE_LIST ) {
 					$results = $options['prefix'] ? $results['list_prefix'] : $results['list'];
+				}
+				else {
+					$msgstr = sprintf( 'La valeur du paramètre "type" "%s" n\'est pas acceptée dans la méthode %s::%s', $options['type'], __CLASS__, __FUNCTION__ );
+					throw new RuntimeException( $msgstr, 500 );
 				}
 			}
 
@@ -435,87 +472,74 @@
 		}
 
 		/**
-		 * Permet d'ajouter les entrées de la structure référente et du référent
-		 * de l'enregistrement à la liste des options pour ne pas perdre d'information
-		 * lors de la modification d'un enregistrement.
+		 * Permet d'ajouter les entrées du type d'orientation, de la structure
+		 * référente et du référent de l'enregistrement à la liste des options
+		 * pour ne pas perdre d'information lors de la modification d'un
+		 * enregistrement.
+		 * Les entrées ajoutées ne sont pas triées.
 		 *
-		 * Le liste des structures référentes est une liste à deux niveaux avec
-		 * en premier niveau le type d'orientation.
+		 * <pre>
+		 * array(
+		 *	'typesorients' => array(
+		 *		'path' => 'typeorient_id',
+		 *		'cache' => false
+		 *	),
+		 *	'structuresreferentes' => array(
+		 *		'path' => 'structurereferente_id',
+		 *		'cache' => false
+		 *	),
+		 *	'referents' => array(
+		 *		'path' => 'referent_id',
+		 *		'cache' => false
+		 *	)
+		 * );
+		 * </pre>
 		 *
-		 * La liste des référents est une liste à un niveau avec en clé
-		 * <structurereferente_id>_<referent_id>.
-		 *
-		 * @fixme params options['prefix'] et options['type']
+		 * @see InsertionsBeneficiairesComponent::options qui sera utilisée pour
+		 * les autres paramètres.
 		 *
 		 * @param array $options Les options qui seront envoyées à la vue
 		 * @param array $data L'enregistrement en cours de modification
-		 * @param array $params Les clés structurereferente_id et referent_id
-		 *	contiennent les chemins vers ces champs, dans les options et dans data.
+		 * @param array $params Les paramètres à utiliser pour chacune des méthodes
 		 * @return array
 		 */
-		public function completeOptionsWithCurrentReferent( array $options, array $data, array $params = array() ) {
+		public function completeOptions( array $options, array $data, array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$Controller->loadModel( 'Structurereferente' );
 
-			$params += array(
-				'structurereferente_id' => 'structurereferente_id',
-				'referent_id' => 'referent_id'
+			$tmpParams = array(
+				'typesorients' => array(
+					'path' => 'typeorient_id',
+					'cache' => false
+				),
+				'structuresreferentes' => array(
+					'path' => 'structurereferente_id',
+					'cache' => false
+				),
+				'referents' => array(
+					'path' => 'referent_id',
+					'cache' => false
+				)
 			);
 
-			$structurereferente_id = Hash::get( $data, $params['structurereferente_id'] );
-			$referent_id = Hash::get( $data, $params['referent_id'] );
-
-			$structuresreferentes = (array)Hash::get( $options, $params['structurereferente_id'] );
-			$referents = (array)Hash::get( $options, $params['referent_id'] );
-
-			$available = array();
-			foreach( $structuresreferentes as $group ) {
-				$available = array_merge( $available, array_keys( $group ) );
+			foreach( $tmpParams as $method => $tmpParam ) {
+				$foo = Hash::get( $params, $method );
+				if( false !== $foo ) {
+					$params[$method] = $this->options( $method, (array)$foo + $tmpParam );
+				}
+				else {
+					$params[$method] = false;
+				}
 			}
 
-			if( in_array( $structurereferente_id, $available ) === false || in_array( $referent_id, $referents ) === false ) {
-				$query = array(
-					'fields' => array(
-						'Typeorient.lib_type_orient',
-						'Structurereferente.id',
-						'Structurereferente.lib_struc',
-						'Referent.id',
-						'Referent.nom_complet',
-					),
-					'contain' => false,
-					'joins' => array(
-						$Controller->Structurereferente->Typeorient->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-						$Controller->Structurereferente->join( 'Referent', array( 'type' => 'INNER' ) )
-					),
-					'conditions' => array(
-						'Structurereferente.id' => $structurereferente_id,
-						'Referent.id' => suffix( $referent_id )
-					)
-				);
-
-				$forceVirtualFields = $Controller->Structurereferente->Typeorient->forceVirtualFields;
-				$Controller->Structurereferente->Typeorient->forceVirtualFields = true;
-				$result = $Controller->Structurereferente->Typeorient->find( 'first', $query );
-				$Controller->Structurereferente->Typeorient->forceVirtualFields = $forceVirtualFields;
-
-				if( !empty( $result ) ) {
-					$structuresreferentes = Hash::merge(
-						$structuresreferentes,
-						array(
-							$result['Typeorient']['lib_type_orient'] => array(
-								$result['Structurereferente']['id'] => $result['Structurereferente']['lib_struc']
-							)
-						)
-					);
-					$options = Hash::insert( $options, $params['structurereferente_id'], $structuresreferentes );
-
-					$referents = Hash::merge(
-						$referents,
-						array(
-							"{$result['Structurereferente']['id']}_{$result['Referent']['id']}" => $result['Referent']['nom_complet']
-						)
-					);
-					$options = Hash::insert( $options, $params['referent_id'], $referents );
+			foreach( $params as $method => $methodParams ) {
+				if( Hash::check( $data, $methodParams['path'] ) && false !== $methodParams ) {
+					$value = Hash::get( $data, $methodParams['path'] );
+					if( false === empty( $value ) ) {
+						$methodParams['conditions'] = array( Inflector::classify( $method ).'.id' => suffix( $value ) );
+						$results = $this->{$method}( $methodParams );
+						$options[$methodParams['path']] = Hash::merge( $options[$methodParams['path']], $results );
+					}
 				}
 			}
 

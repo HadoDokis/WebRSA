@@ -28,7 +28,6 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Workflowscers93'
 		);
@@ -162,13 +161,13 @@
 			$this->set( 'referents', $referents );
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$typesorientsNiveau0 = $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O', 'Typeorient.parentid IS NULL' ), 'empty' => false ) );
+				$typesorientsNiveau0 = $this->InsertionsBeneficiaires->typesorients( array( 'conditions' => array( 'Typeorient.parentid IS NULL' ) + $this->InsertionsBeneficiaires->conditions['typesorients'] ) );
 				$this->set( compact( 'typesorientsNiveau0' ) );
 			}
 
-			$this->set( 'typesorients', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ), 'empty' => ( Configure::read( 'Cg.departement' ) != 58 ) ) ) );
+			$this->set( 'typesorients', $this->InsertionsBeneficiaires->typesorients( array( 'empty' => ( Configure::read( 'Cg.departement' ) != 58 ) ) ) );
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();
 

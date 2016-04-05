@@ -19,7 +19,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterebilanparcours66', 'Bilanparcours66', 'Option', 'Referent' );
-		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires', 'InsertionsBeneficiaires', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsBeneficiaires' );
+		public $components = array( 'Gestionzonesgeos', 'InsertionsBeneficiaires', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsBeneficiaires' );
 		public $aucunDroit = array( 'exportcsv' );
 
 		/**
@@ -65,7 +65,7 @@
 			$this->_setOptions();
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			$this->render( 'index' );
 		}

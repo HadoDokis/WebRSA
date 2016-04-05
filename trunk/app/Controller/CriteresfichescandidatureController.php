@@ -19,7 +19,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterefichecandidature', 'ActioncandidatPersonne'/*, 'Actioncandidat' */, 'Partenaire');
-		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsBeneficiaires' );
+		public $components = array( 'Gestionzonesgeos', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsBeneficiaires' );
 		public $aucunDroit = array( 'exportcsv' );
 
 		/**
@@ -98,7 +98,7 @@
 			$this->_setOptions();
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			$this->render( 'index' );
 		}

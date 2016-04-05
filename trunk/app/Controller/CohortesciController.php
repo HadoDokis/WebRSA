@@ -35,7 +35,6 @@
 				)
 			),
 			'Gestionzonesgeos',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Cohortes' => array(
 				'nouveaux',
@@ -287,7 +286,7 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutValidation ) {
 				case 'Decisionci::nouveaux':

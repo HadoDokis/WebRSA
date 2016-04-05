@@ -37,7 +37,6 @@
 				'affecter'
 			),
 			'Gestionzonesgeos',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(

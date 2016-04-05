@@ -33,7 +33,6 @@
 //			'DossiersMenus',
 //			'Gedooo.Gedooo',
 			'Cohortes',
-			'InsertionsAllocataires',
 			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.Filtresdefaut' => array( 'search' ),
