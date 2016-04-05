@@ -32,6 +32,16 @@
 		public static $sessionPermissionsKey = 'Auth.Permissions';
 
 		/**
+		 * Retourne la liste des idds des structures référentes auxquelles
+		 * l'utilisateur est lié.
+		 *
+		 * @return array
+		 */
+		protected static function _structuresreferentesUser() {
+			return (array)Hash::extract( (array)CakeSession::read( 'Auth.Structurereferente' ), '{n}.id' );
+		}
+
+		/**
 		 * Vérification, pour l'utilisateur connecté, de l'accès à un contrôleur
 		 * et à une action (ACL).
 		 *
@@ -170,8 +180,11 @@
 			// Pour le CG 66 lorsque l'utilisateur connecté est référent dans un OA
 			else if( Configure::read( 'Cg.departement' ) == 66 && CakeSession::read( 'Auth.User.type' ) == 'externe_ci' ) {
 				$structuresreferentesIdsDossier = (array)Hash::filter( (array)Hash::extract( $dossierData, 'Foyer.Personne.{n}.Orientstruct.structurereferente_id' ) );
+				$structuresreferentesIdsUser = self::_structuresreferentesUser();
+				$intersect = array_intersect( $structuresreferentesIdsUser, $structuresreferentesIdsDossier );
+
 				return (
-					in_array( CakeSession::read( 'Auth.User.structurereferente_id' ), $structuresreferentesIdsDossier )
+					$intersect
 					&& self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee01, $mesZonesGeographiques )
 				);
 			}
@@ -251,7 +264,7 @@
 					'conditions' => array(
 						"foyers.dossier_id = {$dossierIdField}",
 						"orientsstructs.id IN ( {$sqlDerniereOrientstruct} )",
-						'orientsstructs.structurereferente_id' => CakeSession::read( 'Auth.User.structurereferente_id' ),
+						'orientsstructs.structurereferente_id' => self::_structuresreferentesUser()
 					),
 				);
 
@@ -265,8 +278,8 @@
 		 * Vérifie l'accès en modification et suppression des questionnaires D1
 		 * et D2 du CG 93.
 		 *
-		 * On vérifie si la structure référente à laquelle est attaché l'utilisateur
-		 * (clé Auth.User.structurereferente_id en session) est vide ou correspond
+		 * On vérifie si les structures référentes auxquelles est attaché l'utilisateur
+		 * (clé Auth.Structurereferente en session) sont vides ou correspondent
 		 * à la structure référente liée au questionnaire en plus des droits sur
 		 * l'action en elle-même (permissions de l'utilisateur).
 		 *
@@ -276,10 +289,12 @@
 		 * @return string|boolean
 		 */
 		public static function checkD1D2( $structurereferente_id, $permission = true, $string = false ) {
-			$userStructurereferente_id = CakeSession::read( 'Auth.User.structurereferente_id' );
+			$structuresreferentes = self::_structuresreferentesUser();
 			$permission = ( $permission ? '1' : '0' );
 
-			$enabled = "( ( strlen( '{$userStructurereferente_id}' ) == 0 || ( '{$userStructurereferente_id}' === '{$structurereferente_id}' ) ) && ( '{$permission}' == '1' ) )";
+			$liste = var_export( $structuresreferentes, true );
+
+			$enabled = "( ( count( $liste ) == 0 || ( in_array( '{$structurereferente_id}', {$liste} ) ) ) && ( '{$permission}' == '1' ) )";
 
 			if( !$string ) {
 				$enabled = eval( "return {$enabled};" );
