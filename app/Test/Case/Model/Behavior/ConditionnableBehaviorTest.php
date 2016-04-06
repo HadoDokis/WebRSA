@@ -30,6 +30,8 @@
 		 * @var array
 		 */
 		public $fixtures = array(
+			'app.Adresse',
+			'app.AdresseCanton',
 			'app.Canton',
 			'app.Zonegeographique',
 		);
@@ -218,6 +220,46 @@
 						),
 					),
 				),
+			);
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode ConditionnableBehavior::conditionsAdresse() avec
+		 * de multiples valeurs pour numcom.
+		 */
+		public function testConditionsAdresseNumcomMultiples() {
+			// 1. Avec des codes INSEE sur 5 caractères
+			$search = array(
+				'Adresse' => array(
+					'numcom' => array( 93001, 93002 )
+				)
+			);
+			$result = $this->Canton->conditionsAdresse( array(), $search );
+			$expected = array(
+				array(
+					'OR' => array(
+						'Adresse.numcom = \'93001\'',
+						'Adresse.numcom = \'93002\'',
+					)
+				)
+			);
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 2. Avec des codes INSEE sur 4 caractères
+			$search = array(
+				'Adresse' => array(
+					'numcom' => array( 6603, 6605 )
+				)
+			);
+			$result = $this->Canton->conditionsAdresse( array(), $search );
+			$expected = array(
+				array(
+					'OR' => array(
+						'Adresse.numcom ILIKE \'%6603%\'',
+						'Adresse.numcom ILIKE \'%6605%\'',
+					)
+				)
 			);
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
