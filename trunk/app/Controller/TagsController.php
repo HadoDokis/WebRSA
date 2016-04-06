@@ -257,7 +257,7 @@
 				'Tag.limite' => array( 'type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4 ),
 				'Tag.commentaire' => array( 'type' => 'textarea', 'label' => '' ),
 			);
-			$Recherches = $this->Components->load( 'WebrsaCohortesTagsNew' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesTags' );
 			$Recherches->cohorte( array( 'modelName' => 'Dossier' ) );
 		}
 		

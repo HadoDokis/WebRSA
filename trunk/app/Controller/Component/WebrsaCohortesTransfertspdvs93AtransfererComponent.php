@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAbstractCohortesNewComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractCohortesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaCohortesTransfertspdvs93AtransfererComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesTransfertspdvs93AtransfererComponent extends WebrsaAbstractCohortesNewComponent
+	class WebrsaCohortesTransfertspdvs93AtransfererComponent extends WebrsaAbstractCohortesComponent
 	{
 		/**
 		 * Retourne les options de type "enum", c'est à dire liées aux schémas des

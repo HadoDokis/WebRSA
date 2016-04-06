@@ -179,7 +179,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsprosepsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsproseps' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
 		}
 
@@ -187,7 +187,7 @@
 		 * Exportcsv
 		 */
 		public function exportcsvNew() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsprosepsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesNonorientationsproseps' );
 			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheNonorientationproep', 'modelName' => 'Orientstruct') );
 		}
 	}

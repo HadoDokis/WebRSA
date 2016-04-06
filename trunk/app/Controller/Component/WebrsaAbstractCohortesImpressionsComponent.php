@@ -7,7 +7,7 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAbstractRecherchesNewComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractRecherchesComponent', 'Controller/Component' );
 	require_once( APPLIBS.'cmis.php' );
 
 	/**
@@ -15,7 +15,7 @@
 	 *
 	 * @package app.Controller.Component
 	 */
-	abstract class WebrsaAbstractCohortesImpressionsComponent extends WebrsaAbstractRecherchesNewComponent
+	abstract class WebrsaAbstractCohortesImpressionsComponent extends WebrsaAbstractRecherchesComponent
 	{
 		/**
 		 * Components utilisés par ce component

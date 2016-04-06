@@ -7,7 +7,7 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAbstractCohortesNewComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractCohortesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaCohortesPropospdosNouvellesComponent ...
@@ -16,7 +16,7 @@
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesPropospdosNouvellesComponent extends WebrsaAbstractCohortesNewComponent
+	class WebrsaCohortesPropospdosNouvellesComponent extends WebrsaAbstractCohortesComponent
 	{
 		/**
 		 * @inheritdoc

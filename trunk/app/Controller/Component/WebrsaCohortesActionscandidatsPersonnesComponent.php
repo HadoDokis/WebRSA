@@ -7,21 +7,21 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAbstractCohortesNewComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractCohortesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaCohortesActionscandidatsPersonnesComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesActionscandidatsPersonnesComponent extends WebrsaAbstractCohortesNewComponent
+	class WebrsaCohortesActionscandidatsPersonnesComponent extends WebrsaAbstractCohortesComponent
 	{
 		/**
 		 * Components utilisés par ce component
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Allocataires', 'Gedooo.Gedooo', 'WebrsaRecherchesActionscandidatsPersonnesNew' );
+		public $components = array( 'Allocataires', 'Gedooo.Gedooo', 'WebrsaRecherchesActionscandidatsPersonnes' );
 		
 		/**
 		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
@@ -32,7 +32,7 @@
 		 * @return array
 		 */
 		protected function _optionsEnums( array $params ) {
-			return $this->WebrsaRecherchesActionscandidatsPersonnesNew->{__FUNCTION__}($params);
+			return $this->WebrsaRecherchesActionscandidatsPersonnes->{__FUNCTION__}($params);
 		}
 
 		/**
@@ -45,7 +45,7 @@
 		 * @return array
 		 */
 		protected function _optionsRecords( array $params ) {
-			return $this->WebrsaRecherchesActionscandidatsPersonnesNew->{__FUNCTION__}($params);
+			return $this->WebrsaRecherchesActionscandidatsPersonnes->{__FUNCTION__}($params);
 		}
 
 		/**
@@ -57,7 +57,7 @@
 		 * @return array
 		 */
 		protected function _optionsRecordsModels( array $params ) {
-			return $this->WebrsaRecherchesActionscandidatsPersonnesNew->{__FUNCTION__}($params);
+			return $this->WebrsaRecherchesActionscandidatsPersonnes->{__FUNCTION__}($params);
 		}
 	}
 ?>

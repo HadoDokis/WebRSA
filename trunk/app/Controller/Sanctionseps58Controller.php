@@ -326,7 +326,7 @@
 		public function cohorte_radiespe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
 
 			$Cohortes->cohorte(
 				array(
@@ -343,7 +343,7 @@
 		public function exportcsv_radiespe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
 
 			$Cohortes->exportcsv(
 				array(
@@ -360,7 +360,7 @@
 		public function cohorte_noninscritspe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
 
 			$Cohortes->cohorte(
 				array(
@@ -378,7 +378,7 @@
 		public function exportcsv_noninscritspe() {
 			$this->loadModel('Personne');
 
-			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58New' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesSanctionseps58' );
 
 			$Cohortes->exportcsv(
 				array(

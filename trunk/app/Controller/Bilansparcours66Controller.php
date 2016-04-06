@@ -1192,7 +1192,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66' );
 			$Recherches->search();
 			$this->Bilanparcours66->validate = array();
 		}
@@ -1201,7 +1201,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesBilansparcours66' );
 			$Recherches->exportcsv();
 		}
 	}

@@ -49,14 +49,14 @@
 				'departement' => array( 66 ),
 				'modelName' => 'ActioncandidatPersonne',
 				'modelRechercheName' => 'WebrsaRechercheActioncandidatPersonne',
-				'component' => 'WebrsaRecherchesActionscandidatsPersonnesNew',
+				'component' => 'WebrsaRecherchesActionscandidatsPersonnes',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'ActionscandidatsPersonnes.exportcsv' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'ActioncandidatPersonne',
 				'modelRechercheName' => 'WebrsaRechercheActioncandidatPersonne',
-				'component' => 'WebrsaRecherchesActionscandidatsPersonnesNew',
+				'component' => 'WebrsaRecherchesActionscandidatsPersonnes',
 				'keys' => array( 'results.fields' )
 			),
 			'ActionscandidatsPersonnes.cohorte_enattente' => array(
@@ -91,28 +91,28 @@
 				'departement' => array( 66, 93 ),
 				'modelName' => 'Apre',
 				'modelRechercheName' => 'WebrsaRechercheApre',
-				'component' => 'WebrsaRecherchesApresNew',
+				'component' => 'WebrsaRecherchesApres',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Apres.exportcsv' => array(
 				'departement' => array( 66, 93 ),
 				'modelName' => 'Apre',
 				'modelRechercheName' => 'WebrsaRechercheApre',
-				'component' => 'WebrsaRecherchesApresNew',
+				'component' => 'WebrsaRecherchesApres',
 				'keys' => array( 'results.fields' )
 			),
 			'Apres.search_eligibilite' => array(
 				'departement' => array( 93 ),
 				'modelName' => 'Apre',
 				'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
-				'component' => 'WebrsaRecherchesApresEligibiliteNew',
+				'component' => 'WebrsaRecherchesApresEligibilite',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Apres.exportcsv_eligibilite' => array(
 				'departement' => array( 93 ),
 				'modelName' => 'Apre',
 				'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
-				'component' => 'WebrsaRecherchesApresEligibiliteNew',
+				'component' => 'WebrsaRecherchesApresEligibilite',
 				'keys' => array( 'results.fields' )
 			),
 			'Apres66.cohorte_validation' => array(
@@ -193,14 +193,14 @@
 				'departement' => array( 66 ),
 				'modelName' => 'Bilanparcours66',
 				'modelRechercheName' => 'WebrsaRechercheBilanparcours66',
-				'component' => 'WebrsaRecherchesBilansparcours66New',
+				'component' => 'WebrsaRecherchesBilansparcours66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Bilansparcours66.exportcsv' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Bilanparcours66',
 				'modelRechercheName' => 'WebrsaRechercheBilanparcours66',
-				'component' => 'WebrsaRecherchesBilansparcours66New',
+				'component' => 'WebrsaRecherchesBilansparcours66',
 				'keys' => array( 'results.fields' )
 			),
 			'Contratsinsertion.cohorte_nouveaux' => array(
@@ -228,219 +228,219 @@
 			'Contratsinsertion.search' => array(
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaRechercheContratinsertion',
-				'component' => 'WebrsaRecherchesContratsinsertionNew',
+				'component' => 'WebrsaRecherchesContratsinsertion',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Contratsinsertion.exportcsv' => array(
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaRechercheContratinsertion',
-				'component' => 'WebrsaRecherchesContratsinsertionNew',
+				'component' => 'WebrsaRecherchesContratsinsertion',
 				'keys' => array( 'results.fields' )
 			),
 			'Contratsinsertion.search_valides' => array(
 				'departement' => 66,
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaRechercheContratinsertionValides',
-				'component' => 'WebrsaRecherchesContratsinsertionNew',
+				'component' => 'WebrsaRecherchesContratsinsertion',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Contratsinsertion.exportcsv_search_valides' => array(
 				'departement' => 66,
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaRechercheContratinsertionValides',
-				'component' => 'WebrsaRecherchesContratsinsertionNew',
+				'component' => 'WebrsaRecherchesContratsinsertion',
 				'keys' => array( 'results.fields' )
 			),
 			'Contratsinsertion.cohorte_cersimpleavalider' => array(
 				'departement' => 66,
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
-				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'component' => 'WebrsaCohortesContratsinsertion',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Contratsinsertion.exportcsv_cersimpleavalider' => array(
 				'departement' => 66,
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
-				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'component' => 'WebrsaCohortesContratsinsertion',
 				'keys' => array( 'results.fields' )
 			),
 			'Contratsinsertion.cohorte_cerparticulieravalider' => array(
 				'departement' => 66,
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
-				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'component' => 'WebrsaCohortesContratsinsertion',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Contratsinsertion.exportcsv_cerparticulieravalider' => array(
 				'departement' => 66,
 				'modelName' => 'Contratinsertion',
 				'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider',
-				'component' => 'WebrsaCohortesContratsinsertionNew',
+				'component' => 'WebrsaCohortesContratsinsertion',
 				'keys' => array( 'results.fields' )
 			),
 			'Cuis.search' => array(
 				'departement' => 66,
 				'modelName' => 'Cui',
 				'modelRechercheName' => 'WebrsaRechercheCui',
-				'component' => 'WebrsaRecherchesCuisNew',
+				'component' => 'WebrsaRecherchesCuis',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Cuis.exportcsv' => array(
 				'departement' => 66,
 				'modelName' => 'Cui',
 				'modelRechercheName' => 'WebrsaRechercheCui',
-				'component' => 'WebrsaRecherchesCuisNew',
+				'component' => 'WebrsaRecherchesCuis',
 				'keys' => array( 'results.fields' )
 			),
 			'Defautsinsertionseps66.search_noninscrits' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit',
-				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Defautsinsertionseps66.exportcsv_noninscrits' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit',
-				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66',
 				'keys' => array( 'results.fields' )
 			),
 			'Defautsinsertionseps66.search_radies' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie',
-				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Defautsinsertionseps66.exportcsv_radies' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie',
-				'component' => 'WebrsaRecherchesDefautsinsertionseps66New',
+				'component' => 'WebrsaRecherchesDefautsinsertionseps66',
 				'keys' => array( 'results.fields' )
 			),
 			'Demenagementshorsdpts.search' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
-				'component' => 'WebrsaRecherchesDemenagementshorsdptsNew',
+				'component' => 'WebrsaRecherchesDemenagementshorsdpts',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Demenagementshorsdpts.exportcsv' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDemenagementhorsdpt',
-				'component' => 'WebrsaRecherchesDemenagementshorsdptsNew',
+				'component' => 'WebrsaRecherchesDemenagementshorsdpts',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossiers.search' => array(
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaRechercheDossier',
-				'component' => 'WebrsaRecherchesDossiersNew',
+				'component' => 'WebrsaRecherchesDossiers',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossiers.exportcsv' => array(
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaRechercheDossier',
-				'component' => 'WebrsaRecherchesDossiersNew',
+				'component' => 'WebrsaRecherchesDossiers',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.search' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
-				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'component' => 'WebrsaRecherchesDossierspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
-				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'component' => 'WebrsaRecherchesDossierspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.search_affectes' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
-				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'component' => 'WebrsaRecherchesDossierspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv_affectes' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
-				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'component' => 'WebrsaRecherchesDossierspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.search_gestionnaire' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
-				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'component' => 'WebrsaRecherchesDossierspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv_gestionnaire' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaRechercheDossierpcg66',
-				'component' => 'WebrsaRecherchesDossierspcgs66New',
+				'component' => 'WebrsaRecherchesDossierspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.cohorte_atransmettre' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv_atransmettre' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.cohorte_enattenteaffectation' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv_enattenteaffectation' => array(
 				'departement' => 66,
 				'modelName' => 'Dossierpcg66',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.cohorte_heberge' => array(
 				'departement' => 66,
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv_heberge' => array(
 				'departement' => 66,
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.cohorte_rsamajore' => array(
 				'departement' => 66,
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dossierspcgs66.exportcsv_rsamajore' => array(
 				'departement' => 66,
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore',
-				'component' => 'WebrsaCohortesDossierspcgs66New',
+				'component' => 'WebrsaCohortesDossierspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Dossierspcgs66.cohorte_imprimer' => array(
@@ -462,64 +462,64 @@
 			'Dsps.search' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDsp',
-				'component' => 'WebrsaRecherchesDspsNew',
+				'component' => 'WebrsaRecherchesDsps',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Dsps.exportcsv' => array(
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheDsp',
-				'component' => 'WebrsaRecherchesDspsNew',
+				'component' => 'WebrsaRecherchesDsps',
 				'keys' => array( 'results.fields' )
 			),
 			'Entretiens.search' => array(
 				'modelName' => 'Entretien',
 				'modelRechercheName' => 'WebrsaRechercheEntretien',
-				'component' => 'WebrsaRecherchesEntretiensNew',
+				'component' => 'WebrsaRecherchesEntretiens',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Entretiens.exportcsv' => array(
 				'modelName' => 'Entretien',
 				'modelRechercheName' => 'WebrsaRechercheEntretien',
-				'component' => 'WebrsaRecherchesEntretiensNew',
+				'component' => 'WebrsaRecherchesEntretiens',
 				'keys' => array( 'results.fields' )
 			),
 			'Fichesprescriptions93.search' => array(
 				'departement' => 93,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheFicheprescription93',
-				'component' => 'WebrsaRecherchesFichesprescriptions93New',
+				'component' => 'WebrsaRecherchesFichesprescriptions93',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Fichesprescriptions93.exportcsv' => array(
 				'departement' => 93,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheFicheprescription93',
-				'component' => 'WebrsaRecherchesFichesprescriptions93New',
+				'component' => 'WebrsaRecherchesFichesprescriptions93',
 				'keys' => array( 'results.fields' )
 			),
 			'Indus.search' => array(
 				'modelName' => 'Dossier',
-				'component' => 'WebrsaRecherchesIndusNew',
+				'component' => 'WebrsaRecherchesIndus',
 				'modelRechercheName' => 'WebrsaRechercheIndu',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Indus.exportcsv' => array(
 				'modelName' => 'Dossier',
-				'component' => 'WebrsaRecherchesIndusNew',
+				'component' => 'WebrsaRecherchesIndus',
 				'modelRechercheName' => 'WebrsaRechercheIndu',
 				'keys' => array( 'results.fields' )
 			),
 			'Nonorientationsproscovs58.cohorte' => array(
 				'departement' => 58,
 				'modelName' => 'Orientstruct',
-				'component' => 'WebrsaCohortesNonorientationsproscovs58New',
+				'component' => 'WebrsaCohortesNonorientationsproscovs58',
 				'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientationsproscovs58.exportcsv' => array(
 				'departement' => 58,
 				'modelName' => 'Orientstruct',
-				'component' => 'WebrsaCohortesNonorientationsproscovs58New',
+				'component' => 'WebrsaCohortesNonorientationsproscovs58',
 				'modelRechercheName' => 'WebrsaCohorteNonorientationprocov58',
 				'keys' => array( 'results.fields' )
 			),
@@ -527,28 +527,28 @@
 				'departement' => 66,
 				'modelName' => 'Orientstruct',
 				'modelRechercheName' => 'WebrsaRechercheNonorientationproep',
-				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
+				'component' => 'WebrsaRecherchesNonorientationsproseps',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientationsproseps.exportcsv' => array(
 				'departement' => 66,
 				'modelName' => 'Orientstruct',
 				'modelRechercheName' => 'WebrsaRechercheNonorientationproep',
-				'component' => 'WebrsaRecherchesNonorientationsprosepsNew',
+				'component' => 'WebrsaRecherchesNonorientationsproseps',
 				'keys' => array( 'results.fields' )
 			),
 			'Nonorientes66.cohorte_isemploi' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi',
-				'component' => 'WebrsaCohortesNonorientes66New',
+				'component' => 'WebrsaCohortesNonorientes66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientes66.exportcsv_isemploi' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi',
-				'component' => 'WebrsaCohortesNonorientes66New',
+				'component' => 'WebrsaCohortesNonorientes66',
 				'keys' => array( 'results.fields' )
 			),
 			'Nonorientes66.cohorte_imprimeremploi' => array(
@@ -556,7 +556,7 @@
 				'type' => 'search',
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi',
-				'component' => 'WebrsaCohortesNonorientes66ImpressionsNew',
+				'component' => 'WebrsaCohortesNonorientes66Impressions',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientes66.exportcsv_imprimeremploi' => array(
@@ -564,21 +564,21 @@
 				'type' => 'search',
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi',
-				'component' => 'WebrsaCohortesNonorientes66ImpressionsNew',
+				'component' => 'WebrsaCohortesNonorientes66Impressions',
 				'keys' => array( 'results.fields' )
 			),
 			'Nonorientes66.cohorte_reponse' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse',
-				'component' => 'WebrsaCohortesNonorientes66New',
+				'component' => 'WebrsaCohortesNonorientes66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientes66.exportcsv_reponse' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse',
-				'component' => 'WebrsaCohortesNonorientes66New',
+				'component' => 'WebrsaCohortesNonorientes66',
 				'keys' => array( 'results.fields' )
 			),
 			'Nonorientes66.cohorte_imprimernotifications' => array(
@@ -586,7 +586,7 @@
 				'type' => 'search',
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications',
-				'component' => 'WebrsaCohortesNonorientes66ImpressionsNew',
+				'component' => 'WebrsaCohortesNonorientes66Impressions',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientes66.exportcsv_imprimernotifications' => array(
@@ -594,35 +594,35 @@
 				'type' => 'search',
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications',
-				'component' => 'WebrsaCohortesNonorientes66ImpressionsNew',
+				'component' => 'WebrsaCohortesNonorientes66Impressions',
 				'keys' => array( 'results.fields' )
 			),
 			'Nonorientes66.recherche_notifie' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie',
-				'component' => 'WebrsaRecherchesNonorientes66New',
+				'component' => 'WebrsaRecherchesNonorientes66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Nonorientes66.exportcsv_notifie' => array(
 				'departement' => 66,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie',
-				'component' => 'WebrsaRecherchesNonorientes66New',
+				'component' => 'WebrsaRecherchesNonorientes66',
 				'keys' => array( 'results.fields' )
 			),
 			'Orientsstructs.cohorte_nouvelles' => array(
 				'departement' => 93,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteOrientstructNouvelle',
-				'component' => 'WebrsaCohortesOrientsstructsNouvellesNew',
+				'component' => 'WebrsaCohortesOrientsstructsNouvelles',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Orientsstructs.cohorte_enattente' => array(
 				'departement' => 93,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteOrientstructEnattente',
-				'component' => 'WebrsaCohortesOrientsstructsEnattenteNew',
+				'component' => 'WebrsaCohortesOrientsstructsEnattente',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Orientsstructs.cohorte_orientees' => array(
@@ -636,41 +636,41 @@
 			'Orientsstructs.search' => array(
 				'modelName' => 'Orientstruct',
 				'modelRechercheName' => 'WebrsaRechercheOrientstruct',
-				'component' => 'WebrsaRecherchesOrientsstructsNew',
+				'component' => 'WebrsaRecherchesOrientsstructs',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Orientsstructs.exportcsv' => array(
 				'modelName' => 'Orientstruct',
 				'modelRechercheName' => 'WebrsaRechercheOrientstruct',
-				'component' => 'WebrsaRecherchesOrientsstructsNew',
+				'component' => 'WebrsaRecherchesOrientsstructs',
 				'keys' => array( 'results.fields' )
 			),
 			'Propospdos.search' => array(
 				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Propopdo',
 				'modelRechercheName' => 'WebrsaRecherchePropopdo',
-				'component' => 'WebrsaRecherchesPropospdosNew',
+				'component' => 'WebrsaRecherchesPropospdos',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Propospdos.exportcsv' => array(
 				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Propopdo',
 				'modelRechercheName' => 'WebrsaRecherchePropopdo',
-				'component' => 'WebrsaRecherchesPropospdosNew',
+				'component' => 'WebrsaRecherchesPropospdos',
 				'keys' => array( 'results.fields' )
 			),
 			'Propospdos.search_possibles' => array(
 				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRecherchePropopdoPossible',
-				'component' => 'WebrsaRecherchesPropospdosPossiblesNew',
+				'component' => 'WebrsaRecherchesPropospdosPossibles',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Propospdos.exportcsv_possibles' => array(
 				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaRecherchePropopdoPossible',
-				'component' => 'WebrsaRecherchesPropospdosPossiblesNew',
+				'component' => 'WebrsaRecherchesPropospdosPossibles',
 				'keys' => array( 'results.fields' )
 			),
 			'Propospdos.cohorte_nouvelles' => array(
@@ -698,55 +698,55 @@
 			'Rendezvous.search' => array(
 				'modelName' => 'Rendezvous',
 				'modelRechercheName' => 'WebrsaRechercheRendezvous',
-				'component' => 'WebrsaRecherchesRendezvousNew',
+				'component' => 'WebrsaRecherchesRendezvous',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Rendezvous.exportcsv' => array(
 				'modelName' => 'Rendezvous',
 				'modelRechercheName' => 'WebrsaRechercheRendezvous',
-				'component' => 'WebrsaRecherchesRendezvousNew',
+				'component' => 'WebrsaRecherchesRendezvous',
 				'keys' => array( 'results.fields' )
 			),
 			'Sanctionseps58.cohorte_radiespe' => array(
 				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
-				'component' => 'WebrsaCohortesSanctionseps58New',
+				'component' => 'WebrsaCohortesSanctionseps58',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Sanctionseps58.exportcsv_radiespe' => array(
 				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Radiepe',
-				'component' => 'WebrsaCohortesSanctionseps58New',
+				'component' => 'WebrsaCohortesSanctionseps58',
 				'keys' => array( 'results.fields' )
 			),
 			'Sanctionseps58.cohorte_noninscritspe' => array(
 				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
-				'component' => 'WebrsaCohortesSanctionseps58New',
+				'component' => 'WebrsaCohortesSanctionseps58',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Sanctionseps58.exportcsv_noninscritspe' => array(
 				'departement' => 58,
 				'modelName' => 'Personne',
 				'modelRechercheName' => 'WebrsaCohorteSanctionep58Noninscritpe',
-				'component' => 'WebrsaCohortesSanctionseps58New',
+				'component' => 'WebrsaCohortesSanctionseps58',
 				'keys' => array( 'results.fields' )
 			),
 			'Traitementspcgs66.search' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Traitementpcg66',
 				'modelRechercheName' => 'WebrsaRechercheTraitementpcg66',
-				'component' => 'WebrsaRecherchesTraitementspcgs66New',
+				'component' => 'WebrsaRecherchesTraitementspcgs66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Traitementspcgs66.exportcsv' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Traitementpcg66',
 				'modelRechercheName' => 'WebrsaRechercheTraitementpcg66',
-				'component' => 'WebrsaRecherchesTraitementspcgs66New',
+				'component' => 'WebrsaRecherchesTraitementspcgs66',
 				'keys' => array( 'results.fields' )
 			),
 			'Transfertspdvs93.cohorte_atransferer' => array(
@@ -760,14 +760,14 @@
 				'departement' => 93,
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaRechercheTransfertpdv93',
-				'component' => 'WebrsaRecherchesTransfertspdvs93New',
+				'component' => 'WebrsaRecherchesTransfertspdvs93',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Transfertspdvs93.exportcsv' => array(
 				'departement' => 93,
 				'modelName' => 'Dossier',
 				'modelRechercheName' => 'WebrsaRechercheTransfertpdv93',
-				'component' => 'WebrsaRecherchesTransfertspdvs93New',
+				'component' => 'WebrsaRecherchesTransfertspdvs93',
 				'keys' => array( 'results.fields' )
 			),
 		);

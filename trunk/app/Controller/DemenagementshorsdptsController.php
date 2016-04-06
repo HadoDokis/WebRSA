@@ -187,7 +187,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdptsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdpts' );
 			$Recherches->search( array('modelName' => 'Personne') );
 		}
 
@@ -195,7 +195,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdptsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDemenagementshorsdpts' );
 			$Recherches->exportcsv( array('modelName' => 'Personne') );
 		}
 	}

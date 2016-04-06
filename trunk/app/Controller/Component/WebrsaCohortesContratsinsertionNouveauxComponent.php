@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAbstractCohortesNewComponent', 'Controller/Component' );
+	App::uses( 'WebrsaAbstractCohortesComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaCohortesContratsinsertionNouveauxComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesContratsinsertionNouveauxComponent extends WebrsaAbstractCohortesNewComponent
+	class WebrsaCohortesContratsinsertionNouveauxComponent extends WebrsaAbstractCohortesComponent
 	{
 		/**
 		 * Retourne les options stockées en session, liées à l'utilisateur connecté.

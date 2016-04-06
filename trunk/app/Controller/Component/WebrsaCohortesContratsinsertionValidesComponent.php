@@ -7,14 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaRecherchesContratsinsertionNewComponent', 'Controller/Component' );
+	App::uses( 'WebrsaRecherchesContratsinsertionComponent', 'Controller/Component' );
 
 	/**
 	 * La classe WebrsaCohortesContratsinsertionValidesComponent ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesContratsinsertionValidesComponent extends WebrsaRecherchesContratsinsertionNewComponent
+	class WebrsaCohortesContratsinsertionValidesComponent extends WebrsaRecherchesContratsinsertionComponent
 	{
 		/**
 		 *

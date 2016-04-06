@@ -517,7 +517,7 @@
 		 * Moteur de recherche par fiche de prescription.
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93' );
 			$Recherches->search();
 		}
 
@@ -525,7 +525,7 @@
 		 * Export CSV des résultats du moteur de recherche par fiche de prescription.
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesFichesprescriptions93' );
 			$Recherches->exportcsv();
 		}
 

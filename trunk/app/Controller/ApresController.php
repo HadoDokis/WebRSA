@@ -866,7 +866,7 @@
 			$this->Apre->deepAfterFind = false;
 
 			$this->helpers[] = 'Search.SearchForm';
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApresNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
 			$departement = (int)Configure::read( 'Cg.departement' );
 			$Recherches->search(
 				array(
@@ -919,7 +919,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApresNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
 			$Recherches->exportcsv();
 		}
 
@@ -928,7 +928,7 @@
 		 */
 		public function search_eligibilite() {
 			$this->helpers[] = 'Search.SearchForm';
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibiliteNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibilite' );
 			$Recherches->search(
 				array(
 					'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
@@ -945,7 +945,7 @@
 		 * Export du tableau de résultats de la recherche par "Etat des demandes d'APRE"
 		 */
 		public function exportcsv_eligibilite() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibiliteNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibilite' );
 			$Recherches->exportcsv(
 				array(
 					'modelRechercheName' => 'WebrsaRechercheApreEligibilite',

@@ -1032,7 +1032,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnesNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnes' );
 			$Recherches->search();
 			$this->ActioncandidatPersonne->validate = array();
 			$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->validate = array();
@@ -1042,7 +1042,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnesNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesActionscandidatsPersonnes' );
 			$Recherches->exportcsv();
 		}
 

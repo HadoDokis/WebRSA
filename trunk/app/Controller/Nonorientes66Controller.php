@@ -207,7 +207,7 @@
 		 * Cohorte
 		 */
 		public function cohorte_isemploi() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66' );
 			$Cohorte->cohorte( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi' ) );
 		}
 
@@ -215,7 +215,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_isemploi() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66' );
 			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Isemploi' ) );
 		}
 
@@ -241,7 +241,7 @@
 		 * Cohorte
 		 */
 		public function cohorte_imprimeremploi() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66Impressions' );
 			$Cohorte->search(
 				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' )
 			);
@@ -251,7 +251,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_imprimeremploi() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66Impressions' );
 			$Cohorte->exportcsv(
 				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimeremploi' )
 			);
@@ -261,7 +261,7 @@
 		 * Impression de la cohorte
 		 */
 		public function cohorte_imprimeremploi_impressions() {
-			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66Impressions' );
 			$Cohortes->impressions(
 				array(
 					'modelName' => 'Personne',
@@ -275,7 +275,7 @@
 		 * Cohorte
 		 */
 		public function cohorte_reponse() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66' );
 			$Cohorte->cohorte( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse' ) );
 
 			// Selection automatique de la structure référente en fonction du type d'orientation et du canton
@@ -286,7 +286,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_reponse() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66New' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66' );
 			$Cohorte->exportcsv( array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Reponse' ) );
 		}
 
@@ -311,7 +311,7 @@
 		 * Cohorte
 		 */
 		public function cohorte_imprimernotifications() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66Impressions' );
 			$Cohorte->search(
 				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' )
 			);
@@ -321,7 +321,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_imprimernotifications() {
-			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohorte = $this->Components->load( 'WebrsaCohortesNonorientes66Impressions' );
 			$Cohorte->exportcsv(
 				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaCohorteNonoriente66Imprimernotifications' )
 			);
@@ -331,7 +331,7 @@
 		 * Impression de la cohorte
 		 */
 		public function cohorte_imprimernotifications_impressions() {
-			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66ImpressionsNew' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesNonorientes66Impressions' );
 			$Cohortes->impressions(
 				array(
 					'modelName' => 'Personne',
@@ -345,7 +345,7 @@
 		 * Recherche
 		 */
 		public function recherche_notifie() {
-			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66New' );
+			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66' );
 			$Cohorte->search(
 				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' )
 			);
@@ -355,7 +355,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_notifie() {
-			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66New' );
+			$Cohorte = $this->Components->load( 'WebrsaRecherchesNonorientes66' );
 			$Cohorte->exportcsv(
 				array( 'modelName' => 'Personne', 'modelRechercheName' => 'WebrsaRechercheNonoriente66Notifie' )
 			);

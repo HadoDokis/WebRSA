@@ -172,7 +172,7 @@
 		 * @return void
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiersNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiers' );
 			$Recherches->search();
 		}
 
@@ -183,7 +183,7 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiersNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiers' );
 			$Recherches->exportcsv();
 		}
 
