@@ -1186,7 +1186,7 @@ class Traitementspcgs66Controller extends AppController {
 	 * Moteur de recherche
 	 */
 	public function search() {
-		$Recherches = $this->Components->load( 'WebrsaRecherchesTraitementspcgs66New' );
+		$Recherches = $this->Components->load( 'WebrsaRecherchesTraitementspcgs66' );
 		$Recherches->search();
 		$this->Traitementpcg66->validate = array();
 	}
@@ -1195,7 +1195,7 @@ class Traitementspcgs66Controller extends AppController {
 	 * Export du tableau de résultats de la recherche
 	 */
 	public function exportcsv() {
-		$Recherches = $this->Components->load( 'WebrsaRecherchesTraitementspcgs66New' );
+		$Recherches = $this->Components->load( 'WebrsaRecherchesTraitementspcgs66' );
 		$Recherches->exportcsv();
 	}
 

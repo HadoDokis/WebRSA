@@ -728,7 +728,7 @@
 		 * @return void
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
 			$Recherches->search();
 		}
 
@@ -738,7 +738,7 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesOrientsstructs' );
 			$Recherches->exportcsv();
 		}
 
@@ -750,7 +750,7 @@
 			$this->Gedooo->check( false, true );
 
 			$this->loadModel( 'Personne' );
-			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsNouvellesNew' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsNouvelles' );
 
 			$Cohortes->cohorte(
 				array(
@@ -770,7 +770,7 @@
 			$this->Gedooo->check( false, true );
 
 			$this->loadModel( 'Personne' );
-			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsEnattenteNew' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesOrientsstructsEnattente' );
 
 			$Cohortes->cohorte(
 				array(

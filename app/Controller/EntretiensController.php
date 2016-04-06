@@ -235,12 +235,12 @@
 
 		public function search() {
 			$this->helpers[] = 'Search.SearchForm';
-			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiensNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiens' );
 			$Recherches->search();
 		}
 
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiensNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesEntretiens' );
 			$Recherches->exportcsv();
 		}
 

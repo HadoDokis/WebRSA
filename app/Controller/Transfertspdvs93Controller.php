@@ -88,7 +88,7 @@
 		 * Moteur de recherche par rendez-vous (nouveau).
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesTransfertspdvs93New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesTransfertspdvs93' );
 			$Recherches->search(
 				array(
 					'modelName' => 'Dossier',
@@ -101,7 +101,7 @@
 		 * Export CSV des résultats de la recherche par rendez-vous (nouveau).
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesTransfertspdvs93New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesTransfertspdvs93' );
 			$Recherches->exportcsv(
 				array(
 					'modelName' => 'Dossier',

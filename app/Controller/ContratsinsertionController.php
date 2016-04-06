@@ -1810,7 +1810,7 @@ class ContratsinsertionController extends AppController
 	public function search() {
 		$this->helpers[] = 'Search.SearchForm';
 
-		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
+		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
 		$Recherches->search();
 		$this->Contratinsertion->validate = array();
 		$this->Contratinsertion->Structurereferente->Orientstruct->validate = array();
@@ -1820,7 +1820,7 @@ class ContratsinsertionController extends AppController
 	 * Export du tableau de résultats de la recherche
 	 */
 	public function exportcsv() {
-		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
+		$Recherches = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
 		$Recherches->exportcsv();
 	}
 
@@ -1868,7 +1868,7 @@ class ContratsinsertionController extends AppController
 	 * Cohorte
 	 */
 	public function cohorte_cersimpleavalider() {
-		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertion' );
 		$Cohortes->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
 	}
 
@@ -1876,7 +1876,7 @@ class ContratsinsertionController extends AppController
 	 * Export CSV
 	 */
 	public function exportcsv_cersimpleavalider() {
-		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertion' );
 		$Cohortes->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
 	}
 
@@ -1884,7 +1884,7 @@ class ContratsinsertionController extends AppController
 	 * Cohorte
 	 */
 	public function cohorte_cerparticulieravalider() {
-		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertion' );
 		$Cohortes->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
 		$this->view = 'cohorte_cersimpleavalider';
 	}
@@ -1893,7 +1893,7 @@ class ContratsinsertionController extends AppController
 	 * Export CSV
 	 */
 	public function exportcsv_cerparticulieravalider() {
-		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertionNew' );
+		$Cohortes = $this->Components->load( 'WebrsaCohortesContratsinsertion' );
 		$Cohortes->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteContratinsertionCersimpleavalider' ) );
 	}
 
@@ -1901,7 +1901,7 @@ class ContratsinsertionController extends AppController
 	 * Cohorte
 	 */
 	public function search_valides() {
-		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
+		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
 		$Recherche->search( array( 'modelRechercheName' => 'WebrsaRechercheContratinsertionValides' ) );
 		$this->Contratinsertion->validate = array();
 	}
@@ -1910,7 +1910,7 @@ class ContratsinsertionController extends AppController
 	 * Export CSV
 	 */
 	public function exportcsv_search_valides() {
-		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertionNew' );
+		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
 		$Recherche->exportcsv( array( 'modelRechercheName' => 'WebrsaRechercheContratinsertionValides' ) );
 	}
 }

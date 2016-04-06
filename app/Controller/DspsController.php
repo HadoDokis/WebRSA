@@ -813,14 +813,14 @@
 		public function search() {
 			$this->loadModel( 'Personne' );
 
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDspsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDsps' );
 			$Recherches->search( array( 'modelName' => 'Personne' ) );
 		}
 
 		public function exportcsv() {
 			$this->loadModel( 'Personne' );
 
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDspsNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDsps' );
 			$Recherches->exportcsv( array( 'modelName' => 'Personne' ) );
 		}
 

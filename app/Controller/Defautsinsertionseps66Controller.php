@@ -205,7 +205,7 @@
 		 * Moteur de recherche
 		 */
 		public function search_noninscrits() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
 			$this->view =  'search';
@@ -215,7 +215,7 @@
 		 * Moteur de recherche
 		 */
 		public function search_radies() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
 			$Recherches->search( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie', 'modelName' => 'Personne') );
 			$this->Personne->validate = array();
 			$this->view =  'search';
@@ -225,7 +225,7 @@
 		 * Moteur de recherche
 		 */
 		public function exportcsv_noninscrits() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
 			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Noninscrit', 'modelName' => 'Personne') );
 		}
 
@@ -233,7 +233,7 @@
 		 * Moteur de recherche
 		 */
 		public function exportcsv_radies() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66New' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesDefautsinsertionseps66' );
 			$Recherches->exportcsv( array('modelRechercheName' => 'WebrsaRechercheDefautinsertionep66Selectionradie', 'modelName' => 'Personne') );
 		}
 	}

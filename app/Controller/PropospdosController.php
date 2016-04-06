@@ -520,7 +520,7 @@
 		 */
 		public function search() {
 			$this->helpers[] = 'Search.SearchForm';
-			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdos' );
 			$Recherches->search();
 			$this->Propopdo->validate = array();
 			$this->Propopdo->Decisionpropopdo->validate = array();
@@ -530,7 +530,7 @@
 		 * Export CSV des résultats du moteur de recherche par PDO
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdos' );
 			$Recherches->exportcsv();
 		}
 
@@ -538,7 +538,7 @@
 		 * Moteur de recherche par nouvelles PDOs
 		 */
 		public function search_possibles() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosPossiblesNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosPossibles' );
 			$Recherches->search(
 				array(
 					'modelName' => 'Personne',
@@ -551,7 +551,7 @@
 		 * Export CSV des résultats du moteur de recherche par nouvelles PDO
 		 */
 		public function exportcsv_possibles() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosPossiblesNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesPropospdosPossibles' );
 			$Recherches->exportcsv(
 				array(
 					'modelName' => 'Personne',

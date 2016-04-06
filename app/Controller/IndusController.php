@@ -109,7 +109,7 @@
 		 * Moteur de recherche
 		 */
 		public function search() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesIndusNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesIndus' );
 			$Recherches->search( array( 'modelRechercheName' => 'WebrsaRechercheIndu', 'modelName' => 'Dossier' ) );
 			$this->Infofinanciere->validate = array();
 		}
@@ -118,7 +118,7 @@
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv() {
-			$Recherches = $this->Components->load( 'WebrsaRecherchesIndusNew' );
+			$Recherches = $this->Components->load( 'WebrsaRecherchesIndus' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaRechercheIndu', 'modelName' => 'Dossier' ) );
 		}
 	}
