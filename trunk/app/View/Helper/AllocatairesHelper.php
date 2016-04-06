@@ -256,7 +256,14 @@
 
 			$content = $this->_input( "{$params['prefix']}Adresse.nomvoie", $params, array( 'type' => 'text' ) );
 			$content .= $this->_input( "{$params['prefix']}Adresse.nomcom", $params, array( 'type' => 'text' ) );
-			$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'empty' => true ) );
+
+			$multiple = Configure::read( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple' );
+			if( $multiple ) {
+				$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'class' => 'divideInto3Collumn' ) );
+			}
+			else {
+				$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'empty' => true ) );
+			}
 
 			if( Configure::read( 'CG.cantons' ) ) {
 				$content .= $this->_input( "{$params['prefix']}Canton.canton", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Canton.canton' ), 'empty' => true ) );

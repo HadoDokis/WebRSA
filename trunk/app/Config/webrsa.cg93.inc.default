@@ -1602,14 +1602,24 @@
 	 * @default null
 	 */
 	Configure::write( 'Module.Cui.enabled', false );
-	
+
 	/**
 	 * Affiche les anciens moteurs de cohorte et de recherche pour comparaison
 	 */
 	Configure::write('Anciensmoteurs.enabled', false);
-	
+
 	/**
 	 * Export CSV des droits des groupes
 	 */
 	Configure::write('Module.Synthesedroits.enabled', false);
+
+	/**
+	 * Nouveaux moteurs de recherche, permet d'afficher la liste des codes INSEE
+	 * sous forme de cases à cocher multiples plutôt que sous forme de liste
+	 * déroulante.
+	 *
+	 * @var boolean
+	 * @default null
+	 */
+	Configure::write( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple', true );
 ?>

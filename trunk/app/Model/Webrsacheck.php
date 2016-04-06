@@ -356,6 +356,9 @@
 				'Module.Synthesedroits.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'ConfigurableQuery.common.filters.Adresse.numcom.multiple' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

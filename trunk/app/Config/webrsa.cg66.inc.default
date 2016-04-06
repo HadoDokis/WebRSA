@@ -1004,7 +1004,7 @@
 	$imprimanteRectoVerso = true;
 	Configure::write( 'Dossierspcgs66.imprimer.Impression.RectoVerso', $imprimanteRectoVerso );
 	Configure::write( 'Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso', $imprimanteRectoVerso );
-	
+
 	/**
 	 * Option dynamique dans les EPs
 	 */
@@ -1013,7 +1013,7 @@
 			'maintienorientsoc' => array('social', 'social'),
 			'reorientationprofverssoc' => array('emploi', 'social'),
 			'reorientationsocversprof' => array('social', 'emploi'),
-		) 
+		)
 	);
 	// ID de Emploi - Pôle emploi, peut contenir plusieurs valeurs (si besoin)
 	Configure::write( 'Commissionseps.defautinsertionep66.isemploi', array(2) );
@@ -1025,13 +1025,13 @@
 	 * @default null
 	 */
 	Configure::write( 'Module.Cui.enabled', true );
-	
+
 	/**
 	 * ID de la valeur du Tag à créer lorsque on "Tag" depuis Gestionsdoublons::index()
 	 */
 	Configure::write('Gestionsdoublons.index.useTag', true);
 	Configure::write('Gestionsdoublons.index.Tag.valeurtag_id', 1); // N'est pas un doublon
-	
+
 	/**
 	 * Options modifiable des cohortes liés aux tags (TAG et DossierPCG)
 	 */
@@ -1074,27 +1074,37 @@
 			),
 		)
 	);
-	
+
 	/**
 	 * Sauvegarde recherches
 	 */
 	Configure::write('Module.Savesearch.enabled', true);
 	Configure::write('Module.Savesearch.mon_menu.enabled', true); // Ajoute un element au Menu de navigation
 	Configure::write('Module.Savesearch.mon_menu.name', 'Mon menu'); // Nom du menu supplémentaire
-	
+
 	/**
 	 * Fiche de liaison
 	 * Défini l'origine d'un dossier PCG crée par la primoanalyse d'une fiche de liaison
 	 */
 	Configure::write('Fichedeliaisons.typepdo_id', 18);
-	
+
 	/**
 	 * Affiche les anciens moteurs de cohorte et de recherche pour comparaison
 	 */
 	Configure::write('Anciensmoteurs.enabled', false);
-	
+
 	/**
 	 * Export CSV des droits des groupes
 	 */
 	Configure::write('Module.Synthesedroits.enabled', true);
+
+	/**
+	 * Nouveaux moteurs de recherche, permet d'afficher la liste des codes INSEE
+	 * sous forme de cases à cocher multiples plutôt que sous forme de liste
+	 * déroulante.
+	 *
+	 * @var boolean
+	 * @default null
+	 */
+	Configure::write( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple', false );
 ?>

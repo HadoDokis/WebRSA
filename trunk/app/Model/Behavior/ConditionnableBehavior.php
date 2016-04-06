@@ -37,14 +37,26 @@
                 }
             }
 
-			/// Critères sur l'adresse - code insee
-			if( isset( $search['Adresse']['numcom'] ) && !empty( $search['Adresse']['numcom'] ) ) {
-				$numcom = Sanitize::clean( trim( $search['Adresse']['numcom'] ), array( 'encode' => false ) );
-				if( strlen( $numcom ) == 5 ) {
-					$conditions[] = "Adresse.numcom = '{$numcom}'";
+			// Critères sur l'adresse - code insee
+			$numscoms = Hash::get( $search, 'Adresse.numcom' );
+			if( !empty( $numscoms ) ) {
+				$numscoms = (array)$numscoms;
+				$or = array();
+				foreach( $numscoms as $key => $numcom ) {
+					$numcom = Sanitize::clean( trim( $numcom ), array( 'encode' => false ) );
+					if( strlen( $numcom ) == 5 ) {
+						$or[] = "Adresse.numcom = '{$numcom}'";
+					}
+					else {
+						$or[] = "Adresse.numcom ILIKE '%{$numcom}%'";
+					}
+				}
+
+				if( count( $or ) === 1 ) {
+					$conditions[] = $or[0];
 				}
 				else {
-					$conditions[] = "Adresse.numcom ILIKE '%{$numcom}%'";
+					$conditions[] = array( 'OR' => $or );
 				}
 			}
 
