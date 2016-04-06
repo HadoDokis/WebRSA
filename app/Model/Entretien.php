@@ -230,9 +230,6 @@
 			$options[$this->alias]['typerdv_id'] = $this->Typerdv->find( 'list' );
 			$options[$this->alias]['objetentretien_id'] = $this->Objetentretien->find( 'list' );
 
-			$Structurereferente = ClassRegistry::init( 'Structurereferente' );
-			$options[$this->alias]['structurereferente_id'] = $Structurereferente->structuresreferentes( array( 'optgroup' => true ) );
-
 			return $options;
 		}
 	}

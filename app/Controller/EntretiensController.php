@@ -88,7 +88,6 @@
 
 			$options[$this->modelClass]['typerdv_id'] = $this->Entretien->Typerdv->find( 'list' );
 			$options[$this->modelClass]['objetentretien_id'] = $this->Entretien->Objetentretien->find( 'list' );
-//			$options[$this->modelClass]['structurereferente_id'] = $this->Entretien->Structurereferente->listOptions();
             $options[$this->modelClass]['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
 
 			$typerdv = $this->Entretien->Rendezvous->Typerdv->find( 'list' );

@@ -86,8 +86,10 @@
 		 */
 		public $fixtures = array(
 			'app.Adresse',
+			'app.AdresseCanton',
 			'app.Adressefoyer',
 			'app.Calculdroitrsa',
+			'app.Canton',
 			'app.Detaildroitrsa',
 			'app.Detailcalculdroitrsa',
 			'app.Dossier',
@@ -101,6 +103,7 @@
 			'app.PersonneReferent',
 			'app.Prestation',
 			'app.Referent',
+			'app.Serviceinstructeur',
 			'app.Situationdossierrsa',
 			'app.Structurereferente',
 			'app.StructurereferenteZonegeographique',
@@ -157,6 +160,7 @@
 			'PersonneReferent.structurereferente_id',
 			'Prestation.rolepers',
 			'Referentparcours.qual',
+			'Serviceinstructeur.id',
 			'Sitecov58.id',
 			'Situationdossierrsa.etatdosrsa',
 			'Situationdossierrsa.moticlorsa',

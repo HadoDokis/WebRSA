@@ -15,28 +15,29 @@
 	 */
 	class Bilansparcours66Controller extends AppController
 	{
-		public $helpers = array( 
-			'Default', 
-			'Default2', 
-			'Fileuploader', 
-			'Cake1xLegacy.Ajax', 
+		public $helpers = array(
+			'Default',
+			'Default2',
+			'Fileuploader',
+			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 		);
 
-		public $uses = array( 
-			'Bilanparcours66', 
-			'Option', 
-			'Dossierep', 
+		public $uses = array(
+			'Bilanparcours66',
+			'Option',
+			'Dossierep',
 			'Typeorient'
 		);
 
-		public $components = array( 
-			'Gedooo.Gedooo', 
-			'Fileuploader', 
-			'Jetons2', 
+		public $components = array(
+			'Gedooo.Gedooo',
+			'Fileuploader',
+			'Jetons2',
 			'DossiersMenus',
+			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
 			),
@@ -125,11 +126,12 @@
 
 				$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins <>' => 'C' ) ); // Liste des services instructeurs en lien avec un Service Social
 			}
-			
+
 			$Entretien = ClassRegistry::init( 'Entretien' );
 			$Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
 			$options = array_merge($options, $Entretien->options(), $Contratinsertion->options());
-			
+			$options['Entretien']['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
+
 			$this->set( compact( 'options' ) );
 		}
 
@@ -1017,7 +1019,7 @@
 			}
 
 			$entretiens = $this->Bilanparcours66->Personne->Entretien->find( 'all', $this->Bilanparcours66->Personne->Entretien->queryEntretiens( $personne_id ) );
-			
+
 			$contratsinsertion = $this->Bilanparcours66->Personne->Contratinsertion->find(
 				'first',
 				array(
@@ -1185,7 +1187,7 @@
 			$this->set( 'bilanparcours66', $this->Bilanparcours66->dataView( $bilanparcours66_id ) );
 			$this->set( 'urlmenu', "/bilansparcours66/index/{$personne_id}" );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -1194,7 +1196,7 @@
 			$Recherches->search();
 			$this->Bilanparcours66->validate = array();
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */

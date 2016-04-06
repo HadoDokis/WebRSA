@@ -548,6 +548,13 @@
 			return $sessionKey;
 		}
 
+		/**
+		 * @deprecated since 3.1.0
+		 * @see InsertionsBeneficiairesComponent::structuresreferentes()
+		 *
+		 * @param array $options
+		 * @return array
+		 */
 		public function structuresreferentes( $options = array() ){
 			App::uses('SessionComponent', 'Controller/Component');
 			App::uses('ComponentCollection', 'Controller/Component');

@@ -173,7 +173,9 @@ class ContratsinsertionController extends AppController
 
 		if ( Configure::read( 'Cg.departement' ) == 66 ) {
 			$Entretien = ClassRegistry::init( 'Entretien' );
+
 			$options = array_merge($options, $Entretien->options());
+			$options['Entretien']['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
 		}
 
         $this->set('options', $options);
