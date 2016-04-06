@@ -60,8 +60,6 @@
 		}
 	}
 
-	$userStructurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-
 	echo $this->Default2->index(
 		$questionnairesd1pdvs93,
 		array(

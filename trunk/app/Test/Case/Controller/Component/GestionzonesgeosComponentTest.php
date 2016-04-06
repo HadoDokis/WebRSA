@@ -93,7 +93,7 @@
 			Configure::write( 'Cg.departement', 93 );
 
 			CakeTestSession::write('Auth.User.type', 'externe_cpdv' );
-			CakeTestSession::write('Auth.User.structurereferente_id', 69 );
+			CakeTestSession::write('Auth.Structurereferente', array( array( 'id' => 69 ) ) );
 			CakeTestSession::write('Auth.User.filtre_zone_geo', true );
 			CakeTestSession::write('Auth.Zonegeographique', array( 37 => '93071' ) );
 
@@ -101,14 +101,14 @@
 			$result = $this->Controller->Gestionzonesgeos->completeQuery( $query, 'Contratinsertion.structurereferente_id' );
 			$expected = array(
 				'fields' => array(
-					'Contratinsertion.horszone' => '( NOT (( "Adresse"."numcom" IN ( \'93071\' ) )) AND "Contratinsertion"."structurereferente_id" = 69 ) AS "Contratinsertion__horszone"'
+					'Contratinsertion.horszone' => '( NOT (( "Adresse"."numcom" IN ( \'93071\' ) )) AND "Contratinsertion"."structurereferente_id" = (69) ) AS "Contratinsertion__horszone"'
 				),
 				'conditions' => array(
 					array(
 						'OR' => array(
 							'( Adresse.numcom IN ( \'93071\' ) )',
 							array(
-								'Contratinsertion.structurereferente_id' => 69
+								'Contratinsertion.structurereferente_id' => array( 69 )
 							)
 						)
 					)
@@ -124,7 +124,7 @@
 			Configure::write( 'Cg.departement', 93 );
 
 			CakeTestSession::write('Auth.User.type', 'externe_cpdv' );
-			CakeTestSession::write('Auth.User.structurereferente_id', 69 );
+			CakeTestSession::write('Auth.Structurereferente', array( array( 'id' => 69 ) ) );
 			CakeTestSession::write('Auth.User.filtre_zone_geo', false );
 			CakeTestSession::write('Auth.Zonegeographique', array( 37 => '93071' ) );
 
@@ -132,7 +132,7 @@
 			$result = $this->Controller->Gestionzonesgeos->completeQuery( $query, 'Contratinsertion.structurereferente_id' );
 			$expected = array(
 				'fields' => array(
-					'Contratinsertion.horszone' => '( NOT (1 = 1) AND "Contratinsertion"."structurereferente_id" = 69 ) AS "Contratinsertion__horszone"'
+					'Contratinsertion.horszone' => '( NOT (1 = 1) AND "Contratinsertion"."structurereferente_id" = (69) ) AS "Contratinsertion__horszone"'
 				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
