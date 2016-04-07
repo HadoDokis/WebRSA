@@ -259,7 +259,7 @@
 
 			$multiple = Configure::read( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple' );
 			if( $multiple ) {
-				$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'class' => 'divideInto3Collumn' ) );
+				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'class' => 'divideInto3Collumn', 'buttons' => true ) );
 			}
 			else {
 				$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'empty' => true ) );
