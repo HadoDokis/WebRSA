@@ -172,7 +172,11 @@
 				'referents' => $this->InsertionsBeneficiaires->referents(
 					array(
 						'type' => 'optgroup',
-						'prefix' => true
+						'prefix' => true,
+						'conditions' => array(
+							'Referent.actif' => 'O',
+							'Referent.structurereferente_id' => $structuresreferentes_ids
+						)
 					)
 				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
@@ -230,7 +234,16 @@
 			$options = array(
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'rolepers' => $this->Option->rolepers(),
-				'referents' => $this->PersonneReferent->Referent->referentsListe( $structuresreferentes_ids ),
+				'referents' => $this->InsertionsBeneficiaires->referents(
+					array(
+						'type' => 'optgroup',
+						'prefix' => true,
+						'conditions' => array(
+							'Referent.actif' => 'O',
+							'Referent.structurereferente_id' => $structuresreferentes_ids
+						)
+					)
+				)
 			);
 			$options = Set::merge( $options, $this->PersonneReferent->Personne->Contratinsertion->Cer93->enums() );
 			$this->set( compact( 'options' ) );

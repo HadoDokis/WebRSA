@@ -316,7 +316,17 @@
 				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'referents' => $this->InsertionsBeneficiaires->referents( array( 'type' => 'optgroup' ) ),
+				'referents' => $this->InsertionsBeneficiaires->referents(
+					array(
+						'type' => 'optgroup',
+						'conditions' => $this->InsertionsBeneficiaires->conditions['referents']
+							+ (
+								empty( $structuresreferentes_ids )
+								? array()
+								: array( 'Referent.structurereferente_id' => $structuresreferentes_ids )
+							)
+					)
+				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci(),
@@ -823,7 +833,17 @@
 				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'referents' => $this->InsertionsBeneficiaires->referents( array( 'type' => 'optgroup' ) ),
+				'referents' => $this->InsertionsBeneficiaires->referents(
+					array(
+						'type' => 'optgroup',
+						'conditions' => $this->InsertionsBeneficiaires->conditions['referents']
+							+ (
+								empty( $structuresreferentes_ids )
+								? array()
+								: array( 'Referent.structurereferente_id' => $structuresreferentes_ids )
+							)
+					)
+				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci(),
@@ -882,9 +902,6 @@
 			unset( $querydata['limit'] );
 
 			$structuresreferentes_ids = $this->Workflowscers93->getUserStructurereferenteId( false );
-debug($structuresreferentes_ids);
-debug($this->InsertionsBeneficiaires->structuresreferentes());
-die();
             if( !empty( $structuresreferentes_ids ) ) {
                 $querydata['conditions']['Referent.structurereferente_id'] = $structuresreferentes_ids;
             }
@@ -919,7 +936,17 @@ die();
 				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structuresreferentes_ids ),
+				'referents' => $this->InsertionsBeneficiaires->referents(
+					array(
+						'type' => 'optgroup',
+						'conditions' => $this->InsertionsBeneficiaires->conditions['referents']
+							+ (
+								empty( $structuresreferentes_ids )
+								? array()
+								: array( 'Referent.structurereferente_id' => $structuresreferentes_ids )
+							)
+					)
+				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci()
