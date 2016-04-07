@@ -49,6 +49,7 @@
 				'index',
 				'search'
 			),
+			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'index',
@@ -68,7 +69,7 @@
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->set( 'structs', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
-			$this->set( 'referents', $this->Referent->referentsListe() );
+			$this->set( 'referents', $this->InsertionsBeneficiaires->referents( array( 'type' => 'list', 'prefix' => false, 'conditions' => array( 'Referent.actif' => 'O' ) ) ) );
 			$this->set( 'options', (array)Hash::get( $this->Dossierep->enums(), 'Dossierep' ) );
 			$this->set( 'etatpe', (array)Hash::get( $this->Informationpe->Historiqueetatpe->enums(), 'Historiqueetatpe' ) );
 		}

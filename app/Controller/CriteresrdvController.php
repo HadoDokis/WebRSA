@@ -122,11 +122,6 @@
                 $rdvs = $this->Rendezvous->containThematique( $rdvs );
             }
 
-			// Population du select référents liés aux structures
-// 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Critererdv.structurereferente_id' );
-// 			$referents = $this->Rendezvous->Referent->referentsListe( $structurereferente_id );
-// 			$this->set( 'referents', $referents );
-
             if( Configure::read( 'Rendezvous.useThematique' ) ) {
                 $this->set( 'useThematiques', $this->Rendezvous->Thematiquerdv->used() );
             }

@@ -279,7 +279,18 @@
 
 			// Population du select référents liés aux structures
 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' );
-			$referents = $this->Dossier->Foyer->Personne->Contratinsertion->Referent->referentsListe( $structurereferente_id );
+			$referents = $this->InsertionsBeneficiaires->referents(
+				array(
+					'type' => 'list',
+					'prefix' => false,
+					'conditions' => $this->InsertionsBeneficiaires->conditions['referents']
+						+ (
+							empty( $structurereferente_id )
+							? array()
+							: array( 'Referent.structurereferente_id' => $structurereferente_id )
+						)
+				)
+			);
 			$this->set( 'referents', $referents );
 
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
@@ -326,7 +337,18 @@
 
 			/// Population du select référents liés aux structures
 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' );
-			$referents = $this->Dossier->Foyer->Personne->Contratinsertion->Referent->referentsListe( $structurereferente_id );
+			$referents = $this->InsertionsBeneficiaires->referents(
+				array(
+					'type' => 'list',
+					'prefix' => false,
+					'conditions' => $this->InsertionsBeneficiaires->conditions['referents']
+						+ (
+							empty( $structurereferente_id )
+							? array()
+							: array( 'Referent.structurereferente_id' => $structurereferente_id )
+						)
+				)
+			);
 			$this->set( 'referents', $referents );
 
 			$this->set( 'action', $this->Dossier->Foyer->Personne->Contratinsertion->Actioninsertion->find( 'list' ) );
