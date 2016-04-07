@@ -257,12 +257,14 @@
 			$content = $this->_input( "{$params['prefix']}Adresse.nomvoie", $params, array( 'type' => 'text' ) );
 			$content .= $this->_input( "{$params['prefix']}Adresse.nomcom", $params, array( 'type' => 'text' ) );
 
+			$numscoms = (array)Hash::get( $params, 'options.Adresse.numcom' );
 			$multiple = Configure::read( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple' );
-			if( $multiple ) {
-				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'class' => 'divideInto3Collumn', 'buttons' => true ) );
+			$multiple_larger_1 = Configure::read( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple_larger_1' );
+			if( $multiple && ( !$multiple_larger_1 || count( $numscoms ) > 1 ) ) {
+				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $numscoms, 'class' => 'divideInto3Collumn', 'buttons' => true ) );
 			}
 			else {
-				$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'empty' => true ) );
+				$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'options' => $numscoms, 'empty' => true ) );
 			}
 
 			if( Configure::read( 'CG.cantons' ) ) {

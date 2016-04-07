@@ -390,6 +390,84 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
+		/**
+		 * Test de la méthode AllocatairesHelper::blocAdresse()
+		 */
+		public function testBlocAdresseMultipleCheckboxNumcomLarger1() {
+			// 1. N'afficher la liste multiple que si on a plus d'un élément
+			Configure::write(
+				'ConfigurableQuery.common.filters.Adresse.numcom',
+				array(
+					'multiple' => true,
+					'multiple_larger_1' => true
+				)
+			);
+			$skip = array(
+				'Adresse.nomvoie',
+				'Adresse.nomcom'
+			);
+			Configure::write( 'ConfigurableQuery.Dossiers.search.filters.skip', $skip );
+
+			$this->setUpUrl();
+			Configure::write( 'CG.cantons', false );
+			Configure::write( 'Cg.departement', 93 );
+
+			$params = array(
+				'options' => array(
+					'Adresse' => array(
+						'numcom' => array(
+							93001 => '93001 AUBERVILLIERS'
+						)
+					)
+				)
+			);
+
+			$result = $this->Allocataires->blocAdresse( $params );
+			$expected = '<fieldset><legend>Recherche par adresse</legend><div class="input select"><label for="SearchAdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcom]" id="SearchAdresseNumcom">
+<option value=""></option>
+<option value="93001">93001 AUBERVILLIERS</option>
+</select></div></fieldset>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Afficher la liste multiple dans tous les cas
+			Configure::write(
+				'ConfigurableQuery.common.filters.Adresse.numcom',
+				array(
+					'multiple' => true
+				)
+			);
+			$skip = array(
+				'Adresse.nomvoie',
+				'Adresse.nomcom'
+			);
+			Configure::write( 'ConfigurableQuery.Dossiers.search.filters.skip', $skip );
+
+			$this->setUpUrl();
+			Configure::write( 'CG.cantons', false );
+			Configure::write( 'Cg.departement', 93 );
+
+			$params = array(
+				'options' => array(
+					'Adresse' => array(
+						'numcom' => array(
+							93001 => '93001 AUBERVILLIERS'
+						)
+					)
+				)
+			);
+
+			$result = $this->Allocataires->blocAdresse( $params );
+			$expected = '<fieldset><legend>Recherche par adresse</legend><div class="input checkbox"><input type="hidden" name="data[Search][Adresse][numcom_choice]" id="SearchAdresseNumcomChoice_" value="0"/><input type="checkbox" name="data[Search][Adresse][numcom_choice]"  value="1" id="SearchAdresseNumcomChoice"/><label for="SearchAdresseNumcomChoice">Filtrer par numéro de commune au sens INSEE</label></div><fieldset id="SearchAdresseNumcomFieldset"><legend>Numéro de commune au sens INSEE</legend><div class="buttons"><button onclick="try { toutCocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); } catch( e ) { console.log( e ); }; return false;" type="submit">Tout cocher</button><button onclick="toutDecocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); return false;" type="submit">Tout décocher</button></div><div class="input select"><input type="hidden" name="data[Search][Adresse][numcom]" value="" id="SearchAdresseNumcom"/>
+
+<div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93001" id="SearchAdresseNumcom93001" /><label for="SearchAdresseNumcom93001">93001 AUBERVILLIERS</label></div>
+</div></fieldset><script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchAdresseNumcomChoice\', \'SearchAdresseNumcomFieldset\', false, false ); } );
+//]]>
+</script></fieldset>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
 
 		/**
 		 * Test de la méthode AllocatairesHelper::blocAllocataire()

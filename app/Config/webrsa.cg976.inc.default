@@ -458,8 +458,18 @@
 	 * sous forme de cases à cocher multiples plutôt que sous forme de liste
 	 * déroulante.
 	 *
+	 * La clé "multiple" permet d'activer cette fonctionnalité.
+	 * La clé "multiple_larger_1" permet de retrouver la liste déroulante
+	 * "classique" si le nombre de codes INSEE est inférieur ou égal à 1.
+	 *
 	 * @var boolean
 	 * @default null
 	 */
-	Configure::write( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple', false );
+	Configure::write(
+		'ConfigurableQuery.common.filters.Adresse.numcom',
+		array(
+			'multiple' => false,
+			'multiple_larger_1' => false
+		)
+	);
 ?>
