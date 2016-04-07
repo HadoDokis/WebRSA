@@ -81,6 +81,7 @@
 				'domain' => 'search_plugin',
 				'options' => array(),
 				'hide' => false,
+				'buttons' => false
 			);
 			$params = $params + $default;
 
@@ -97,9 +98,25 @@
 				)
 			);
 
+			// Boutons "Tout cocher" / "Tout décocher" optionnels
+			$buttons = null;
+			if( Hash::get( $params, 'buttons' ) ) {
+				$selector = 'input[name=\\\'data['.str_replace( '.', '][', $path ).'][]\\\']';
+
+				$buttons = $this->Html->tag(
+					'div',
+					$this->Form->button( 'Tout cocher', array( 'onclick' => "try { toutCocher( '{$selector}' ); } catch( e ) { console.log( e ); }; return false;" ) )
+					.$this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '{$selector}' ); return false;" ) ),
+					array(
+						'class' => 'buttons'
+					)
+				);
+			}
+
 			$input .= $this->Html->tag(
 				'fieldset',
 				$this->Html->tag( 'legend', __d( $params['domain'], $path ) )
+				.$buttons
 				.$this->Form->input(
 					$path,
 					array(
@@ -107,23 +124,23 @@
 						'type' => 'select',
 						'multiple' => 'checkbox',
 						'options' => $options,
-						'fieldset' => false
+						'fieldset' => false,
+						'class' => Hash::get( $params, 'class' )
 					)
 				),
 				array( 'id' => $fieldsetId )
 			);
 
 			$script = $this->PrototypeObserver->disableFieldsetOnCheckbox( $choicePath, $fieldsetId, false, $params['hide'] );
-//			$script = $this->_constuctObserve( $this->domId( $choicePath ), $fieldsetId, false, $params['hide'] );
 
 			return $input.$script;
 		}
 
 		/**
 		 * Méthode générique permettant de filtrer sur une plage de dates.
-		 * 
+		 *
 		 * params['addYear'] Ajoute X années au "maxYear" du "TO"
-		 * 
+		 *
 		 * @todo Options: dateFormat, maxYear, minYear, ...
 		 *
 		 * @param string $path
@@ -163,22 +180,22 @@
 			$input .= $this->Html->tag(
 				'fieldset',
 				$this->Html->tag( 'legend', $legend )
-				.$this->Form->input( $path.'_from', 
-					array( 
-						'label' => 'Du (inclus)', 
-						'type' => 'date', 
-						'dateFormat' => 'DMY', 
-						'maxYear' => $params['maxYear_from'], 
-						'minYear' => $params['minYear_from'], 
-						'default' => strtotime( '-1 week' ) 
-					) 
+				.$this->Form->input( $path.'_from',
+					array(
+						'label' => 'Du (inclus)',
+						'type' => 'date',
+						'dateFormat' => 'DMY',
+						'maxYear' => $params['maxYear_from'],
+						'minYear' => $params['minYear_from'],
+						'default' => strtotime( '-1 week' )
+					)
 				)
-				.$this->Form->input( $path.'_to', 
-					array( 
-						'label' => 'Au (inclus)', 
-						'type' => 'date', 
-						'dateFormat' => 'DMY', 
-						'maxYear' => $params['maxYear_to'], 
+				.$this->Form->input( $path.'_to',
+					array(
+						'label' => 'Au (inclus)',
+						'type' => 'date',
+						'dateFormat' => 'DMY',
+						'maxYear' => $params['maxYear_to'],
 						'minYear' => $params['minYear_to']
 					)
 				),

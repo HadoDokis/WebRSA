@@ -131,6 +131,9 @@ msgstr "Commune de l'allocataire"
 msgid "Search.Adresse.numcom"
 msgstr "Numéro de commune au sens INSEE"
 
+msgid "Search.Adresse.numcom_choice"
+msgstr "Filtrer par numéro de commune au sens INSEE"
+
 msgid "Search.Canton.canton"
 msgstr "Canton"
 

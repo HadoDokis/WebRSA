@@ -45,6 +45,15 @@
 		);
 
 		/**
+		 * Exécuté avant chaque test.
+		 */
+		public function setUp() {
+			Configure::delete( 'ConfigurableQuery.common' );
+			Configure::delete( 'ValidateAllowEmpty' );
+			Configure::delete( '_ValidationConfiguredAllowEmptyFields' );
+		}
+
+		/**
 		 * Préparation du test.
 		 *
 		 * @param array $url Un array représentant une URL à la mode Cake (par
@@ -52,9 +61,6 @@
 		 * @param array $settings Les paramètres éventuels à passer à AllocataireHelper
 		 */
 		public function setUpUrl( array $url = array(), array $settings = array() ) {
-			Configure::delete( 'ValidateAllowEmpty' );
-			Configure::delete( '_ValidationConfiguredAllowEmptyFields' );
-
 			$url += array( 'controller' => 'dossiers', 'action' => 'search' );
 			$Request = new CakeRequest( "{$url['controller']}/{$url['action']}", false );
 			$Request->addParams( $url );
@@ -345,6 +351,45 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
+		/**
+		 * Test de la méthode AllocatairesHelper::blocAdresse()
+		 */
+		public function testBlocAdresseMultipleCheckboxNumcom() {
+			Configure::write( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple', true );
+			$skip = array(
+				'Adresse.nomvoie',
+				'Adresse.nomcom'
+			);
+			Configure::write( 'ConfigurableQuery.Dossiers.search.filters.skip', $skip );
+
+			$this->setUpUrl();
+			Configure::write( 'CG.cantons', false );
+			Configure::write( 'Cg.departement', 93 );
+
+			$params = array(
+				'options' => array(
+					'Adresse' => array(
+						'numcom' => array(
+							93001 => '93001 AUBERVILLIERS',
+							93005 => '93005 AULNAY-SOUS-BOIS'
+						)
+					)
+				)
+			);
+
+			$result = $this->Allocataires->blocAdresse( $params );
+			$expected = '<fieldset><legend>Recherche par adresse</legend><div class="input checkbox"><input type="hidden" name="data[Search][Adresse][numcom_choice]" id="SearchAdresseNumcomChoice_" value="0"/><input type="checkbox" name="data[Search][Adresse][numcom_choice]"  value="1" id="SearchAdresseNumcomChoice"/><label for="SearchAdresseNumcomChoice">Filtrer par numéro de commune au sens INSEE</label></div><fieldset id="SearchAdresseNumcomFieldset"><legend>Numéro de commune au sens INSEE</legend><div class="buttons"><button onclick="try { toutCocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); } catch( e ) { console.log( e ); }; return false;" type="submit">Tout cocher</button><button onclick="toutDecocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); return false;" type="submit">Tout décocher</button></div><div class="input select"><input type="hidden" name="data[Search][Adresse][numcom]" value="" id="SearchAdresseNumcom"/>
+
+<div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93001" id="SearchAdresseNumcom93001" /><label for="SearchAdresseNumcom93001">93001 AUBERVILLIERS</label></div>
+<div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93005" id="SearchAdresseNumcom93005" /><label for="SearchAdresseNumcom93005">93005 AULNAY-SOUS-BOIS</label></div>
+</div></fieldset><script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchAdresseNumcomChoice\', \'SearchAdresseNumcomFieldset\', false, false ); } );
+//]]>
+</script></fieldset>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
 
 		/**
 		 * Test de la méthode AllocatairesHelper::blocAllocataire()
@@ -463,7 +508,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <option value=""></option>
 <option value="1_1">M. Emploi Paul</option>
 </select></div><script type="text/javascript">document.observe( \'dom:loaded\', function() {
-				dependantSelect( \'SearchPersonneReferentReferentId\', \'SearchPersonneReferentStructurereferenteId\' );
+				try {
+					dependantSelect( \'SearchPersonneReferentReferentId\', \'SearchPersonneReferentStructurereferenteId\' );
+				} catch(e) {
+					console.log(e);
+				}
 			} );</script>';
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
@@ -535,7 +584,7 @@ document.observe( \'dom:loaded\', function() { $(\'UsersIndexForm\').hide(); } )
 				'Personne.trancheage',
 				'Calculdroitrsa.toppersdrodevorsa'
 			);
-			Configure::write( 'ConfigurableQueryDossiers.search.skip', $skip );
+			Configure::write( 'ConfigurableQuery.Dossiers.search.filters.skip', $skip );
 			$this->setUpUrl();
 
 			$result = $this->Allocataires->blocAllocataire();
@@ -559,7 +608,7 @@ document.observe( \'dom:loaded\', function() { $(\'UsersIndexForm\').hide(); } )
 				'Personne.trancheage',
 				'Calculdroitrsa.toppersdrodevorsa'
 			);
-			Configure::write( 'ConfigurableQueryDossiers.search.skip', $skip );
+			Configure::write( 'ConfigurableQuery.Dossiers.search.filters.skip', $skip );
 			$this->setUpUrl();
 
 			$result = $this->Allocataires->blocAllocataire();
@@ -581,7 +630,7 @@ document.observe( \'dom:loaded\', function() { $(\'UsersIndexForm\').hide(); } )
 				'Personne.trancheage',
 				'Calculdroitrsa.toppersdrodevorsa'
 			);
-			Configure::write( 'BarBazOrientsstructs.cohorte_nouvelle.skip', $skip );
+			Configure::write( 'BarBaz.Orientsstructs.cohorte_nouvelle.filters.skip', $skip );
 			$url = array(
 				'controller' => 'orientsstructs',
 				'action' => 'cohorte_nouvelle'
