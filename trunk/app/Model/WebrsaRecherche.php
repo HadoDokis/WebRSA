@@ -119,14 +119,14 @@
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
 				'modelRechercheName' => 'WebrsaCohorteApre66Validation',
-				'component' => 'WebrsaCohortesApres66New',
+				'component' => 'WebrsaCohortesApres66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Apres66.exportcsv_validation' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
 				'modelRechercheName' => 'WebrsaCohorteApre66Validation',
-				'component' => 'WebrsaCohortesApres66New',
+				'component' => 'WebrsaCohortesApres66',
 				'keys' => array( 'results.fields' )
 			),
 			'Apres66.cohorte_imprimer' => array(
@@ -165,28 +165,28 @@
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
 				'modelRechercheName' => 'WebrsaCohorteApre66Transfert',
-				'component' => 'WebrsaCohortesApres66New',
+				'component' => 'WebrsaCohortesApres66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Apres66.exportcsv_transfert' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
 				'modelRechercheName' => 'WebrsaCohorteApre66Transfert',
-				'component' => 'WebrsaCohortesApres66New',
+				'component' => 'WebrsaCohortesApres66',
 				'keys' => array( 'results.fields' )
 			),
 			'Apres66.cohorte_traitement' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
 				'modelRechercheName' => 'WebrsaCohorteApre66Traitement',
-				'component' => 'WebrsaCohortesApres66New',
+				'component' => 'WebrsaCohortesApres66',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
 			'Apres66.exportcsv_traitement' => array(
 				'departement' => array( 66 ),
 				'modelName' => 'Apre66',
 				'modelRechercheName' => 'WebrsaCohorteApre66Traitement',
-				'component' => 'WebrsaCohortesApres66New',
+				'component' => 'WebrsaCohortesApres66',
 				'keys' => array( 'results.fields' )
 			),
 			'Bilansparcours66.search' => array(
