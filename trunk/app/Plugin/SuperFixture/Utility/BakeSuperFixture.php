@@ -167,6 +167,8 @@
 						} else {
 							$save[$fieldName] = $params['value'];
 						}
+					} else {
+						$save[$fieldName] = null;
 					}
 				}
 				

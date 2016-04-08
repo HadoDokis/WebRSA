@@ -19,7 +19,11 @@
 				foreach ($allDatas as $id => $datas) {
 					$dataString .= "\t\t\t\t\t$id => array(\n";
 					foreach ($datas as $fieldName => $value) {
-						$escaped = is_integer($value) ? $value : "'$value'";
+						if ($value === null) {
+							$escaped = 'null';
+						} else {
+							$escaped = is_integer($value) ? $value : "'$value'";
+						}
 						$dataString .= "\t\t\t\t\t\t'$fieldName' => $escaped,\n";
 					}
 					$dataString .= "\t\t\t\t\t),\n";
