@@ -91,6 +91,35 @@
 
 			return $success;
 		}
+		
+		/**
+		 * Vérifi qu'un champ est à vide si le champ $reference ($condition ? '===' : '!==') $values
+		 * 
+		 * @param Model $Model
+		 * @param array $checks
+		 * @param string $reference
+		 * @param boolean $condition
+		 * @param array $values
+		 * @return boolean
+		 */
+		public function emptyIf(Model $Model, $checks, $reference, $condition, $values) {
+			if (!$this->_checkParams($checks, $reference)) {
+				return false;
+			}
+			
+			$check = in_array(Hash::get($Model->data, "{$Model->alias}.{$reference}"), (array)$values);
+			
+			if (empty($checks) || $check !== $condition) {
+				return true;
+			}
+			
+			foreach ($checks as $value) {
+				if (!empty($value)) {
+					return false;
+				}
+			}
+			return true;
+		}
 
 		/**
 		 * Exemple: 'dateentreeemploi' => notNullIf( $check, 'activitebeneficiaire', true, array( 'P' ) )

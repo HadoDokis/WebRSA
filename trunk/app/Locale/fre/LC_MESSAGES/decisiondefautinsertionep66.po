@@ -28,6 +28,9 @@ msgstr "Suspension suite à non respect du contrat"
 msgid "ENUM::DECISION::suspensionsanction"
 msgstr "Suspension - sanction 2 mois"
 
+msgid "ENUM::DECISIONSUP::suspensionsanction"
+msgstr "Suspension - sanction 2 mois"
+
 msgid "ENUM::DECISION::maintien"
 msgstr "Maintien du versement de l'allocation"
 

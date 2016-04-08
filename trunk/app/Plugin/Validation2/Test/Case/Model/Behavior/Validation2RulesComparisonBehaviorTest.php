@@ -330,5 +330,36 @@
 				}
 			}
 		}
+		
+		/**
+		 * Test de la fonction Validation2RulesComparisonBehavior::emptyIf()
+		 */
+		public function testEmptyIf() {
+			// Cas d'utilisation classique
+			
+			$this->Site->create(array('phone' => 'X', 'fax' => 'Y'));
+			$result = $this->Site->emptyIf(array('fax' => 'Y'), 'phone', true, array(null)); // Vide si phone === null
+			$expected = true;
+			$this->assertEqual($result, $expected, "Validation ok si la condition n'est pas remplie");
+			
+			$this->Site->create(array('phone' => null, 'fax' => null));
+			$result = $this->Site->emptyIf(array('fax' => null), 'phone', true, array(null)); // Vide si phone === null
+			$expected = true;
+			$this->assertEqual($result, $expected, "Validation ok si la condition est remplie et que le champ testé est vide");
+			
+			$this->Site->create(array('phone' => null, 'fax' => 'Y'));
+			$result = $this->Site->emptyIf(array('fax' => 'Y'), 'phone', true, array(null)); // Vide si phone === null
+			$expected = false;
+			$this->assertEqual($result, $expected, "Echec de validation car la condition est rempli mais le champ testé n'est pas vide");
+			
+			// Mauvaise utilisation
+			$result = $this->Site->emptyIf(null, null, null, null);
+			$expected = false;
+			$this->assertEqual($result, $expected, "Params non défini");
+			
+			$result = $this->Site->emptyIf(array(), 'phone', true, array(null));
+			$expected = true;
+			$this->assertEqual($result, $expected, "Pas de champs à vérifier");
+		}
 	}
 ?>

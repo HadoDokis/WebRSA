@@ -30,6 +30,12 @@ ALTER TABLE decisionscuis66 ADD CONSTRAINT decisionscuis66_haspiecejointe_in_lis
 SELECT alter_table_drop_constraint_if_exists ( 'public', 'propositionscuis66', 'propositionscuis66_haspiecejointe_in_list_chk' );
 ALTER TABLE propositionscuis66 ADD CONSTRAINT propositionscuis66_haspiecejointe_in_list_chk CHECK ( cakephp_validate_in_list( haspiecejointe, ARRAY['0','1'] ) );
 
+--------------------------------------------------------------------------------
+-- Option manquante dans la décision d'une EP AUDITION (decisionsup)
+--------------------------------------------------------------------------------
+
+SELECT alter_enumtype('TYPE_DECISIONSUPDEFAUTEP66', ARRAY['suspensionnonrespect', 'suspensiondefaut', 'suspensionsanction', 'maintien']);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
