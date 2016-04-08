@@ -661,7 +661,7 @@
 							}
 						}
 					}
-					
+
 					// On regarde si des fichiers liés existent pour chaques enregistrements
 					$fields[] = '(SELECT COUNT(*) FROM fichiersmodules AS a WHERE a.modele = \''.$linkedModelName.'\' AND a.fk_value = "'.$linkedModelName.'"."id") AS "'.$linkedModelName.'__fichierslies"';
 
@@ -681,7 +681,6 @@
 								'conditions' => $conditions
 							)
 						),
-						'limit' => 10,
 						'contain' => false,
 						'order' => array( 'Personne.id DESC' )
 
@@ -808,7 +807,7 @@
 			}
 
 			$success = true;
-			
+
 			// Suppression des correspondances personnes pour eviter les bugs
 			ClassRegistry::init( "Correspondancepersonne" )->deleteAll(
 				array('OR' => array( 'personne1_id' => $personnes_id, 'personne2_id' => $personnes_id )),
@@ -853,10 +852,10 @@
 						$modelClass = ClassRegistry::init( $model );
 						$recursive = $modelClass->recursive;
 						$modelClass->recursive = -1;
-						$foreignKey = isset($modelClass->belongsTo['Personne']['foreignKey']) 
+						$foreignKey = isset($modelClass->belongsTo['Personne']['foreignKey'])
 							? $modelClass->belongsTo['Personne']['foreignKey'] : 'personne_id'
 						;
-						
+
 						$success = $modelClass->updateAllUnBound(
 							array( "{$model}.{$foreignKey}" => $data['Personne']['garder'] ),
 							array( "{$model}.id" => Hash::filter($data[$model]['id'] ) )
@@ -874,7 +873,7 @@
 					$personnesASupprimer[] = $personne_id;
 				}
 			}
-			
+
 			$tablesLies = $this->Dossier->Foyer->Personne->listForeignKey();
 			foreach ($tablesLies as $tablelie) {
 				if ($tablelie === 'correspondancespersonnes') { // Ne possède pas de personne_id mais personne1_id et personne2_id
@@ -892,7 +891,7 @@
 				false,
 				false
 			) && $success;
-			
+
 			ClassRegistry::init( "Correspondancepersonne" )->updateByPersonneId( $data['Personne']['garder'] );
 
 			return $success;
@@ -991,7 +990,7 @@
 			$this->assert( is_numeric( $personne_id ), 'error404' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
-			
+
 			$this->Components->load('Session');
 
 			// Acquisition du lock ?
@@ -1041,18 +1040,18 @@
 				$assocConditions = $this->Gestionanomaliesbdd->assocConditions( $this->Dossier->Foyer->Personne );
 				$cacheKey = $baseCacheKey.$signature.'._assocData';
 				$cache = $this->Session->read($cacheKey);
-				
+
 				if ($cache === null) {
 					$donnees = $this->_assocData( $this->Dossier->Foyer->Personne, $assocConditions, $personnes_id );
 					$cache = Hash::filter( (array)$donnees );
 					$this->Session->write($cacheKey, $cache);
 				}
 				$donnees = $cache;
-				
+
 				// Liens présent d'une table à l'autre
 				$cacheKey = $baseCacheKey.$signature.'.getLinksBetweenTables';
 				$cache = $this->Session->read($cacheKey);
-				
+
 				if ($cache === null) {
 					$cache = $this->Dossier->Foyer->Personne->getLinksBetweenTables($personnes_id, $cacheKey);
 					$this->Session->write($cacheKey, $cache);
@@ -1094,10 +1093,10 @@
 			$methodes = $this->_methodes();
 			$this->set( compact( 'personnes', 'donnees', 'associations', 'methode', 'methodes', 'dependencies', 'foyer' ) );
 		}
-		
+
 		/**
 		 * On ne traite pas les entrées de Correspondance personne
-		 * 
+		 *
 		 * @param type $modelName
 		 * @param type $personneAgarderId
 		 * @param type $itemsIds
