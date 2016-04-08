@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaCohortesApres66NewComponent.
+	 * Code source de la classe WebrsaCohortesApres66Component.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,11 +10,11 @@
 	App::uses( 'WebrsaAbstractCohortesComponent', 'Controller/Component' );
 
 	/**
-	 * La classe WebrsaCohortesApres66NewComponent ...
+	 * La classe WebrsaCohortesApres66Component ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class WebrsaCohortesApres66NewComponent extends WebrsaAbstractCohortesComponent
+	class WebrsaCohortesApres66Component extends WebrsaAbstractCohortesComponent
 	{
 		/**
 		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
