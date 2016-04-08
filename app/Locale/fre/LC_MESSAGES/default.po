@@ -194,6 +194,9 @@ msgstr "Veuillez entrer des valeurs identiques"
 msgid "Validate::notEmptyIf"
 msgstr "Champ obligatoire"
 
+msgid "Validate::emptyIf"
+msgstr "Le champ doit être vide"
+
 msgid "Validate::notNullIf"
 msgstr "Champ obligatoire"
 
