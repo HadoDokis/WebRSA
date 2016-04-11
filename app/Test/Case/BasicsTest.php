@@ -495,11 +495,20 @@
 		 * Test de la fonction array_words_replace().
 		 */
 		 public function testArrayWordsReplace() {
+			// 1. Pour des "noms de champs" CakePHP
 			$result = array_words_replace(
 				array( 'Foo.id' => array( 'Bar' => 1 ), 'Foobar' => array( 'Foo.bar = Bar.foo' ) ),
 				array( 'Foo' => 'Baz' )
 			);
 			$expected = array( 'Baz.id' => array( 'Bar' => 1 ), 'Foobar' => array( 'Baz.bar = Bar.foo' ) );
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Pour des conditions de query CakePHP
+			$result = array_words_replace(
+				array( '"Fichiermodule"."modele" = \'Personne\' AND "Fichiermodule"."fk_value" = {$__cakeID__$}' ),
+				array( '{$__cakeID__$}' => 594593 )
+			);
+			$expected = array( '"Fichiermodule"."modele" = \'Personne\' AND "Fichiermodule"."fk_value" = 594593' );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		 }
 

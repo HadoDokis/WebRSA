@@ -1046,7 +1046,7 @@
 					$cache = Hash::filter( (array)$donnees );
 					$this->Session->write($cacheKey, $cache);
 				}
-				$donnees = $cache;
+				$donnees = Hash::remove($cache, 'PrestationPfa'); // Retire PrestationPfa qui fait doublon et cause des bugs
 
 				// Liens présent d'une table à l'autre
 				$cacheKey = $baseCacheKey.$signature.'.getLinksBetweenTables';
