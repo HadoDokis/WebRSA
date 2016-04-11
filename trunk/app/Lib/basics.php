@@ -822,7 +822,7 @@
 	function array_words_replace( array $subject, array $replacement ) {
 		$regexes = array();
 		foreach( $replacement as $key => $value ) {
-			$key = "/(?<!\.)(?<!\w)({$key})(?!\w)/";
+			$key = "/(?<!\.)(?<!\w)(".preg_quote( $key ).")(?!\w)/";
 			$regexes[$key] = $value;
 		}
 		return recursive_key_value_preg_replace( $subject, $regexes );

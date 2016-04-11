@@ -265,11 +265,6 @@
 					toutDecocher( '#' + modelFrom + ' input[type="radio"]' );
 					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type=checkbox]' );
 					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type=radio]' );
-					$('PersonnesForm').select('input[type="checkbox"], .tableliee input[type="radio"]').each(function(element){
-						if (element.up('table').getAttribute('id') !== 'personnes') {
-							element.simulate('change');
-						}
-					});
 				} );
 			} );
 		}
