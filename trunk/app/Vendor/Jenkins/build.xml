@@ -121,7 +121,8 @@
 				--configuration ${file.phpunit.config}
 				--log-junit ${dir.ant.logs}/phpunit.xml
 				--coverage-clover ${dir.ant.logs}/phpunit.coverage.xml
-				--coverage-html ${dir.ant.build}/coverage" />
+				--coverage-html ${dir.ant.build}/coverage
+				-app app" />
 		</exec>
 	</target>
 
@@ -129,7 +130,7 @@
 		<exec executable="phploc">
 			<arg value="--log-csv" />
 			<arg value="${dir.ant.logs}/phploc.csv" />
-			<arg path="${dir.cakephp.plugin}" />
+			<arg path="${dir.cakephp.app}" />
 		</exec>
 	</target>
 
