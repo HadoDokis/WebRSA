@@ -373,6 +373,35 @@
 		}
 
 		/**
+		 * Retourne un querydata permettant de cibler tous les dossiers de COV en
+		 * cours de traitement pour un bénéficiaire donné.
+		 *
+		 * @param integer $personne_id L'id du bénéficiaire
+		 * @return array
+		 */
+		public function qdDossiersepsOuverts( $personne_id ) {
+			$Cov58 = $this->Passagecov58->Cov58;
+
+			return array(
+				'conditions' => array(
+					'Dossiercov58.personne_id' => $personne_id,
+					array(
+						'OR' => array(
+							'Cov58.id IS NULL',
+							'Cov58.etatcov' => $Cov58::$etatsEnCours,
+							array(
+								'NOT' => array(
+									'Passagecov58.etatdossiercov' => array( 'traite', 'annule' )
+								)
+							)
+						)
+					)
+				),
+				'contain' => false
+			);
+		}
+
+		/**
 		 * Retourne la liste des dossiers de l'allocataire en cours de passage
 		 * en commission et pouvant déboucher sur une réorientation.
 		 *

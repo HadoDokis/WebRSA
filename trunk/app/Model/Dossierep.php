@@ -517,8 +517,12 @@
 		}
 
 		/**
-		*
-		*/
+		 * Retourne un querydata permettant de cibler tous les dossiers d'EP en
+		 * cours de traitement pour un bénéficiaire donné.
+		 *
+		 * @param integer $personne_id L'id du bénéficiaire
+		 * @return array
+		 */
 		public function qdDossiersepsOuverts( $personne_id ) {
 			$themes = array_keys( $this->themesCg() );
 
@@ -1049,10 +1053,10 @@
 				)"
 			);
 		}
-		
+
 		/**
 		 * Donne la query de base pour les dossiers selectionnable (à compléter avec le controller)
-		 *  
+		 *
 		 * @param array $query
 		 * @return array
 		 */
@@ -1082,22 +1086,22 @@
 					),
 				)
 			);
-			
+
 			return $query;
 		}
-		
+
 		public function querydataFragmentsErrors() {
 			$checks = array();
-			
+
 			$key = 'Dossierseps.choose.order';
 			$order = Configure::read($key);
 
 			$base = $this->queryDossiersSelectionnables();
 
 			foreach( $this->Passagecommissionep->Commissionep->Ep->themes() as $theme ) {
-				$model = Inflector::classify( $theme );		
+				$model = Inflector::classify( $theme );
 				$query = $this->{$model}->qdListeDossierChoose( 0 );
-				
+
 				$query['joins'] = array_merge( $query['joins'], $base['joins'] );
 				$query['contain'] = false;
 				$query['order'] = $order;
@@ -1110,7 +1114,7 @@
 
 				$checks["{$key} pour la thématique {$theme}"] = $check;
 			}
-	
+
 			return $checks;
 		}
 	}
