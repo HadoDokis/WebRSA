@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * AllRomev3TestsTests file
+	 * AllRecherchesTestsTests file
 	 *
 	 * PHP 5.3
 	 *
@@ -10,14 +10,14 @@
 	App::uses('Folder', 'Utility');
 
 	/**
-	 * AllRomev3TestsTests class
+	 * AllRecherchesTestsTests class
 	 *
 	 * This test group will run all tests.
 	 *
 	 * @see           http://book.cakephp.org/2.0/en/development/testing.html
 	 * @package       app.Test.Case
 	 */
-	class AllRomev3TestsTest extends PHPUnit_Framework_TestSuite
+	class AllRecherchesTestsTest extends PHPUnit_Framework_TestSuite
 	{
 		/**
 		 * Recursively adds all the files in a directory to the test suite.
@@ -41,7 +41,7 @@
 		 * @return void
 		 */
 		public static function suite() {
-			$Suite = new CakeTestSuite( 'Suite de tests unitaires du module "ROME V3"' );
+			$Suite = new CakeTestSuite( 'Nouveaux moteurs de recherche' );
 			$filters = array( 'WebrsaCohorte', 'WebrsaAbstractCohorte', 'WebrsaRecherche', 'WebrsaAbstractRecherche' );
 			self::addTestDirectoryRecursiveFilter( $Suite, TESTS.DS.'Case'.DS, $filters );
 			return $Suite;

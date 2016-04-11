@@ -98,11 +98,8 @@
 		 */
 		public function create( $Db ) {
 			$return = parent::create( $Db );
-
 			$sql = 'CREATE SEQUENCE dossiers_numdemrsatemp_seq START 1;';
-			$return = ( $Db->query( $sql ) !== false );
-
-			return $return;
+			return $return && ( $this->_query( $Db, $sql, true ) !== false );
 		}
 
 		/**
@@ -113,11 +110,8 @@
 		 */
 		public function drop( $Db ) {
 			$return = parent::drop( $Db );
-
 			$sql = 'DROP SEQUENCE IF EXISTS dossiers_numdemrsatemp_seq;';
-			$return = ( $Db->query( $sql ) !== false );
-
-			return $return;
+			return $return && ( $this->_query( $Db, $sql, true ) !== false );
 		}
 	}
 ?>
