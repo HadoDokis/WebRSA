@@ -35,6 +35,24 @@
 		public $testDb = null;
 
 		/**
+		 * Permet l'exécution protégée d'une requête sur une base de données,
+		 * sans ou avec mise en cache.
+		 *
+		 * @param object $Db La base de données
+		 * @param string $sql La requête SQL
+		 * @param boolean $cache Permettre la mise en cache ?
+		 * @return boolean|array
+		 */
+		protected function _query( &$Db, $sql, $cache = false ) {
+			try {
+				return $Db->query( $sql, array(), $cache );
+			} catch (Exception $e) {
+				debug( $e );
+				return false;
+			}
+		}
+
+		/**
 		 * Retourne la liste des contraintes de CHECK fisant appel à des fonctions
 		 * cakephp_validate_
 		 *
@@ -44,7 +62,7 @@
 		 * @param string $tableName
 		 * @return array
 		 */
-		protected function _getTableContraints( $conn, $tableName ) {
+		protected function _getTableContraints( &$conn, $tableName ) {
 			$sql = "SELECT
 					istc.table_catalog,
 					istc.table_schema,
@@ -62,7 +80,7 @@
 					AND istc.constraint_type = 'CHECK'
 					AND iscc.check_clause ~ 'cakephp_validate_.*(.*)';";
 
-			return $conn->query( $sql, array(), false );
+			return $this->_query( $conn, $sql );
 		}
 
 		/**
@@ -73,7 +91,7 @@
 		 *
 		 * @param DataSource $conn
 		 */
-		protected function _createContraintFunctions( $conn ) {
+		protected function _createContraintFunctions( &$conn ) {
 			$functions = array(
 				"CREATE OR REPLACE FUNCTION public.create_plpgsql_language ()
 					RETURNS TEXT
@@ -126,7 +144,7 @@
 					END;
 				$$
 				LANGUAGE plpgsql IMMUTABLE;",
-				
+
 				'CREATE OR REPLACE FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country text ) RETURNS boolean AS
 				$$
 					BEGIN
@@ -149,7 +167,7 @@
 							);
 					END;
 				$$ LANGUAGE plpgsql;',
-				
+
 				'CREATE OR REPLACE FUNCTION "public"."calcul_cle_nir" (text) RETURNS text AS
 				$body$
 					DECLARE
@@ -179,7 +197,7 @@
 					END;
 				$body$
 				LANGUAGE \'plpgsql\' VOLATILE RETURNS NULL ON NULL INPUT SECURITY INVOKER;',
-				
+
 				'CREATE OR REPLACE FUNCTION "public"."nir_correct" (TEXT) RETURNS BOOLEAN AS
 				$body$
 					DECLARE
@@ -198,7 +216,7 @@
 					END;
 				$body$
 				LANGUAGE \'plpgsql\';',
-				
+
 				'CREATE OR REPLACE FUNCTION public.nir_correct13( TEXT ) RETURNS BOOLEAN AS
 				$body$
 					DECLARE
@@ -222,7 +240,7 @@
 			);
 
 			foreach( $functions as $sql ) {
-				$conn->query( $sql, array(), false );
+				$this->_query( $conn, $sql );
 			}
 		}
 
@@ -246,7 +264,7 @@
 					$constraint = $constraint[0];
 					// TODO: prefixes
 					$sql = "ALTER TABLE {$this->table} ADD CONSTRAINT {$constraint['constraint_name']} CHECK ( {$constraint['check_clause']} );";
-					$this->testDb->query( $sql );
+					$this->_query( $this->testDb, $sql );
 				}
 			}
 

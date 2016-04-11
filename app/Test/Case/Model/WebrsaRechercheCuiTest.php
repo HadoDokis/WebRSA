@@ -47,6 +47,7 @@
 			'app.Suspensioncui66',
 			'app.Historiquepositioncui66',
 			'app.Canton',
+			'app.AdresseCanton',
 		);
 
 		/**

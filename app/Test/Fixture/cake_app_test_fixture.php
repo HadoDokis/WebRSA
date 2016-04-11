@@ -24,6 +24,24 @@
 		public $_masterTableTypes = array();
 
 		/**
+		 * Permet l'exécution protégée d'une requête sur une base de données,
+		 * sans ou avec mise en cache.
+		 *
+		 * @param object $Db La base de données
+		 * @param string $sql La requête SQL
+		 * @param boolean $cache Permettre la mise en cache ?
+		 * @return boolean|array
+		 */
+		protected function _query( &$Db, $sql, $cache = false ) {
+			try {
+				return $Db->query( $sql, array(), $cache );
+			} catch (Exception $e) {
+				debug( $e );
+				return false;
+			}
+		}
+
+		/**
 		 * À partir du nom du type, on vérifie s'il existe déjà dans le base de test ou non.
 		 * S'il existe ou s'il n'a aucunes valeurs la fonction se termine.
 		 * S'il n'existe pas, on va rechercher ses valeurs et on le crée.
@@ -31,23 +49,19 @@
 		 * @param string $typeName
 		 */
 		protected function _createTypeIfNotExists( $typeName ) {
-			// On contourne le cache mémoire du DataSource de CakePHP avec microtime()
-			$sql = "SELECT count(*), '{$this->testDbPrefix}{$typeName}".microtime()."' FROM pg_catalog.pg_type where typname = '{$this->testDbPrefix}{$typeName}';";
-			$existsType = $this->testDb->query( $sql );
-			$existsType = $existsType[0][0]['count'];
+			$sql = "SELECT count(*) FROM pg_catalog.pg_type where typname = '{$this->testDbPrefix}{$typeName}';";
+			$count = Hash::get( $this->_query( $this->testDb, $sql ), '0.0.count' );
 
-			if( $existsType == 0 ) {
-				$values = $this->masterDb->query( "SELECT enum_range(null::{$this->masterDbPrefix}{$typeName});" );
+			if( $count == 0 ) {
+				$sql = "SELECT enum_range(null::{$this->masterDbPrefix}{$typeName});";
+				$values = $this->_query( $this->masterDb, $sql, true );
 				if( !empty( $values ) ) {
 					$patterns = array( '{', '}' );
 					$values = str_replace( $patterns, '', Set::extract( $values, '0.0.enum_range' ) );
 					$values = explode( ',', $values );
 
-					//$this->testDb->query( 'SELECT 2;' );
 					$sql = "CREATE TYPE {$this->testDbPrefix}{$typeName} AS ENUM ( '".implode( "', '", $values )."' );";
-					$this->testDb->query( $sql);
-					//$this->log( sprintf( '%s (%s, %s)', $sql, __LINE__, $this->testDb->config['database']), LOG_DEBUG);
-
+					$this->_query( $this->testDb, $sql );
 				}
 			}
 		}
@@ -57,6 +71,7 @@
 		 *
 		 * @param string $typeName
 		 * @param string $columnName
+		 * @return boolean Toutes les requêtes ont été exécutées sans erreur
 		 */
 		protected function _alterColumns( $typeName, $columnName ) {
 			$queries = array();
@@ -76,11 +91,11 @@
 				$queries[] = "ALTER TABLE {$this->testDbPrefix}{$this->table} ALTER COLUMN {$columnName} SET NOT NULL;";
 			}
 
+			$success = true;
 			foreach( $queries as $sql ) {
-				$this->testDb->query( $sql );
-				//$this->log( sprintf( '%s (%s, %s)', $sql, __LINE__, $this->testDb->config['database']), LOG_DEBUG);
+				$success && $this->_query($this->testDb, $sql );
 			}
-
+			return $success;
 		}
 
 		/**
@@ -90,14 +105,11 @@
 		 */
 		protected function _dropTypeIfLastTable( $typeName ) {
 			$sql = "SELECT COUNT( DISTINCT(table_name) ) FROM information_schema.columns WHERE data_type = 'USER-DEFINED' AND udt_name = '{$this->testDbPrefix}{$typeName}' AND table_name <> '{$this->testDbPrefix}{$this->table}';";
-			$nbTableHaveType = $this->testDb->query( $sql );
-			$nbTableHaveType = $nbTableHaveType[0][0]['count'];
-			//$this->log( sprintf( '%s (%s, %s), %s', $sql, __LINE__, $this->testDb->config['database'], $nbTableHaveType), LOG_DEBUG);
+			$count = Hash::get( (array)$this->_query( $this->testDb, $sql ), '0.0.count' );
 
-			if ( $nbTableHaveType == 0 ) {
+			if ( $count === 0 ) {
 				$sql = "DROP TYPE {$this->testDbPrefix}{$typeName} CASCADE";
-				$this->testDb->query( $sql );
-				//$this->log( sprintf( '%s (%s, %s)', $sql, __LINE__, $this->testDb->config['database']), LOG_DEBUG);
+				$this->_query( $this->testDb, $sql );
 			}
 		}
 
@@ -109,13 +121,16 @@
 		 * @return array
 		 */
 		protected function _masterTableTypes( $tableName ) {
-			$results = $this->masterDb->query( "SELECT column_name, udt_name FROM information_schema.columns WHERE table_name = '{$this->masterDbPrefix}{$this->table}' AND data_type = 'USER-DEFINED';" );
-
+			$sql = "SELECT column_name, udt_name FROM information_schema.columns WHERE table_name = '{$this->masterDbPrefix}{$this->table}' AND data_type = 'USER-DEFINED';";
+			$results = $this->_query( $this->masterDb, $sql, true );
 			$return = array();
-			foreach( $results as $key => $fields ) {
-				$column_name = $fields[0]['column_name'];
-				$udt_name = $fields[0]['udt_name'];
-				$return[$udt_name][] = $column_name;
+
+			if( !empty( $results ) ) {
+				foreach( $results as $key => $fields ) {
+					$column_name = $fields[0]['column_name'];
+					$udt_name = $fields[0]['udt_name'];
+					$return[$udt_name][] = $column_name;
+				}
 			}
 
 			return $return;
@@ -129,7 +144,6 @@
 		 * @param object $db
 		 */
 		public function create( $db ) {
-			//$this->log( "CREATE TABLE {$this->table};", LOG_DEBUG);
 			$return = parent::create( $db );
 
 			if( $db instanceof Postgres ) {
@@ -151,13 +165,11 @@
 		 * @param object $db
 		 */
 		protected function _initPostgresqlEnums( $db ) {
-			////$this->log( "----- _initPostgresqlEnums {$this->table}", LOG_DEBUG );
 			$masterTableTypes = $this->_masterTableTypes( $this->table );
 			if ( !empty( $masterTableTypes ) ) {
 				foreach( $masterTableTypes as $type => $fields) {
 					$this->_createTypeIfNotExists( $type );
 					foreach( $fields as $field ) {
-						//$this->log("inittype=> '$type'", LOG_DEBUG);
 						$this->_alterColumns( $type, $field );
 					}
 				}
@@ -170,7 +182,6 @@
 		 * @param object $db
 		 */
 		public function drop( $db ) {
-			//$this->log( "DROP TABLE {$this->table};", LOG_DEBUG);
 			$return = parent::drop( $db );
 
 			if( $db instanceof Postgres ) {
@@ -195,7 +206,6 @@
 			$masterTableTypes = $this->_masterTableTypes( $this->table );
 			if ( !empty( $masterTableTypes ) ) {
 				foreach( $masterTableTypes as $type => $fields) {
-					//$this->log("droptype=> '$type'", LOG_DEBUG);
 					$this->_dropTypeIfLastTable( $type );
 				}
 			}
