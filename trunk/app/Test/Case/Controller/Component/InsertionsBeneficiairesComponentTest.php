@@ -97,6 +97,8 @@
 		public function setUp() {
 			parent::setUp();
 
+			Configure::write( 'with_parentid', false );
+
 			$Request = new CakeRequest( 'apples/index', false );
 			$Request->addParams( array( 'controller' => 'apples', 'action' => 'index' ) );
 
@@ -235,6 +237,7 @@
 		 * @covers InsertionsBeneficiairesComponent::typesorients
 		 */
 		public function testTypesorientsCg93() {
+			Configure::write( 'with_parentid', false );
 			Configure::write( 'Cg.departement', 93 );
 
 			// 1. Sans spécifier d'option
@@ -280,6 +283,60 @@
 			$result = $this->Controller->InsertionsBeneficiaires->typesorients();
 			$expected = array (
 				1 => 'Socioprofessionnelle',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Insertion des types d'orientation de second niveau pour tester avec
+		 * la configuration "with_parentid".
+		 */
+		protected function _insertTypeorientChildren() {
+			$this->Controller->loadModel( 'Structurereferente' );
+			$data = array(
+				array(
+					'parentid' => 3,
+					'lib_type_orient' => 'Professionnelle - Pôle Emploi',
+					'actif' => 'O'
+				),
+				array(
+					'parentid' => 2,
+					'lib_type_orient' => 'Social - Site de Chiconi',
+					'actif' => 'O'
+				),
+				array(
+					'parentid' => 1,
+					'lib_type_orient' => 'Socioprofessionnelle - Site de Chiconi',
+					'actif' => 'O'
+				),
+			);
+			$success = $this->Controller->Structurereferente->Typeorient->saveAll( $data );
+			$this->assertTrue( $success );
+		}
+
+		/**
+		 * Test de la méthode InsertionsBeneficiairesComponent::typesorients()
+		 * pour le CG 976, with_parentid.
+		 *
+		 * @covers InsertionsBeneficiairesComponent::typesorients
+		 */
+		public function testTypesorientsWithParentId976() {
+			Configure::write( 'Cg.departement', 976 );
+			Configure::write( 'with_parentid', true );
+
+			$this->_insertTypeorientChildren();
+
+			$result = $this->Controller->InsertionsBeneficiaires->typesorients();
+			$expected = array(
+				'Emploi' => array(
+					5 => 'Professionnelle - Pôle Emploi'
+				),
+				'Social' => array(
+					6 => 'Social - Site de Chiconi'
+				),
+				'Socioprofessionnelle' => array(
+					7 => 'Socioprofessionnelle - Site de Chiconi'
+				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -513,6 +570,72 @@
 				'referent_id' => array(
 					'2_3' => 'MME Nom Prénom',
 					'1_1' => 'MR Dupont Martin',
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode InsertionsBeneficiairesComponent::completeOptions()
+		 * pour le CG 976, with_parentid.
+		 *
+		 * @covers InsertionsBeneficiairesComponent::completeOptions
+		 */
+		public function testCompleteOptionsCg976WithParentid() {
+			Configure::write( 'Cg.departement', 976 );
+			Configure::write( 'with_parentid', true );
+			$this->_insertTypeorientChildren();
+
+			$result = $this->Controller->InsertionsBeneficiaires->completeOptions(
+				array(
+					'typeorient_id' => array(),
+					'structurereferente_id' => array(
+						'Social' => array(
+							2 => 'ADEPT',
+						)
+					),
+					'referent_id' => array(
+						'2_3' => 'MME Nom Prénom',
+					)
+				),
+				array(
+					'typeorient_id' => 7,
+					'structurereferente_id' => 1,
+					'referent_id' => 1
+				),
+				array(
+					'typesorients' => array(
+						'path' => 'typeorient_id',
+					),
+					'structuresreferentes' => array(
+						'path' => 'structurereferente_id',
+						'type' => 'optgroup',
+						'prefix' => false
+					),
+					'referents' => array(
+						'path' => 'referent_id',
+						'type' => 'list',
+						'prefix' => true
+					)
+				)
+			);
+			$expected = array(
+				'typeorient_id' => array(
+					'Socioprofessionnelle' => array(
+						7 => 'Socioprofessionnelle - Site de Chiconi'
+					)
+				),
+				'structurereferente_id' => array(
+					'Social' => array(
+						2 => 'ADEPT'
+					),
+					'Socioprofessionnelle' => array(
+						1 => '« Projet de Ville RSA d\'Aubervilliers»'
+					)
+				),
+				'referent_id' => array(
+					'2_3' => 'MME Nom Prénom',
+					'1_1' => 'MR Dupont Martin'
 				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
