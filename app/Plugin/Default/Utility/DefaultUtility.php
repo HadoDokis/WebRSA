@@ -36,6 +36,7 @@
 						$string = str_replace( "#{$token}#", Hash::get( $data, $token ), $string );
 					}
 				}
+				$string = preg_replace( '/^\/\//', '/', $string );
 			}
 
 			return $string;
@@ -153,7 +154,7 @@
 			$prefix = Hash::get( $url, 'prefix' );
 
 			// -----------------------------------------------------------------
-			
+
 			$htmlAttributes = self::evaluate( $data, $htmlAttributes );
 
 			$domain = self::domain( $url, $htmlAttributes );
