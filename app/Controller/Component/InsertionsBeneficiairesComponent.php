@@ -146,7 +146,7 @@
 		 * );
 		 * </pre>
 		 *
-		 * @todo Typeorient::listOptions (actif, parentid NULL)
+		 * @todo Typeorient->listOptions() -> -9 requêtes (max, en debug), -5 sinon
 		 *
 		 * @see options()
 		 *
@@ -159,9 +159,10 @@
 			$Controller = $this->_Collection->getController();
 			$Controller->loadModel( 'Structurereferente' );
 
+			$departement = (int)Configure::read( 'Cg.departement' );
 			$options = $this->options( __FUNCTION__, $options );
 
-            if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+            if( $departement === 66 && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
                 $sq = $Controller->Structurereferente->sq(
                    array(
                        'alias' => 'structuresreferentes',
@@ -177,26 +178,44 @@
                 $options['conditions'][] = "Typeorient.id IN ( {$sq} )";
             }
 
-			$query = array(
-				'fields' => $Controller->Structurereferente->Typeorient->fields(),
-				'conditions' => $options['conditions'],
-				'contain' => false,
-				'order' => array(
-					'Typeorient.lib_type_orient ASC'
-				)
-			);
-
-			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
+			$sessionKey = $this->sessionKey( __FUNCTION__, $options['conditions'] );
 			$results = $this->Session->read( $sessionKey );
 
 			if( $results === null || false == $options['cache'] ) {
+				$query = array(
+					'fields' => array(
+						'Typeorient.id',
+						'Typeorient.parentid',
+						'Typeorient.lib_type_orient',
+					),
+					'conditions' => $options['conditions'],
+					'contain' => false,
+					'order' => array(
+						'Typeorient.parentid IS NOT NULL ASC',
+						'Typeorient.lib_type_orient ASC'
+					)
+				);
+
+				$parents = array();
 				$results = array();
 
+				$with_parentid = Configure::read( 'with_parentid' );
 				$typesorients = $Controller->Structurereferente->Typeorient->find( 'all', $query );
 
 				if( !empty( $typesorients ) ) {
 					foreach( $typesorients as $typeorient ) {
-						$results[$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+						if( true === $with_parentid ) {
+							if( null === $typeorient['Typeorient']['parentid'] ) {
+								$parents[$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+							}
+							else {
+								$optgroup = $parents[$typeorient['Typeorient']['parentid']];
+								$results[$optgroup][$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+							}
+						}
+						else {
+							$results[$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+						}
 					}
 				}
 
@@ -260,38 +279,41 @@
 		 */
 		public function structuresreferentes( $options = array( ) ) {
 			$Controller = $this->_Collection->getController();
-			$Controller->loadModel( 'Structurereferente' );
-
+			$departement = (int)Configure::read( 'Cg.departement' );
 			$options = $this->options( __FUNCTION__, $options );
 
-			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
+			if( $departement === 93 && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
 				$options['conditions'][] = $this->_sqStructurereferenteZonesgeographiques93();
 			}
-			else if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+			else if( $departement === 66 && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
 				$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 				$options['conditions']['Structurereferente.id'] = $structurereferente_id;
 			}
 
-			$query = array(
-				'fields' => array_merge(
-					$Controller->Structurereferente->Typeorient->fields(),
-					$Controller->Structurereferente->fields()
-				),
-				'joins' => array(
-					$Controller->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => $options['conditions'],
-				'contain' => false,
-				'order' => array(
-					'Typeorient.lib_type_orient ASC',
-					'Structurereferente.lib_struc ASC',
-				)
-			);
-
-			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
+			$sessionKey = $this->sessionKey( __FUNCTION__, $options['conditions'] );
 			$results = $this->Session->read( $sessionKey );
 
 			if( $results === null || false == $options['cache'] ) {
+				$Controller->loadModel( 'Structurereferente' );
+
+				$query = array(
+					'fields' => array(
+						'Typeorient.lib_type_orient',
+						'Structurereferente.id',
+						'Structurereferente.typeorient_id',
+						'Structurereferente.lib_struc'
+					),
+					'joins' => array(
+						$Controller->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => $options['conditions'],
+					'contain' => false,
+					'order' => array(
+						'Typeorient.lib_type_orient ASC',
+						'Structurereferente.lib_struc ASC',
+					)
+				);
+
 				$results = array(
 					'optgroup' => array(),
 					'optgroup_prefix' => array(),
@@ -382,36 +404,40 @@
 		 */
 		public function referents( $options = array() ) {
 			$Controller = $this->_Collection->getController();
-			$Controller->loadModel( 'Structurereferente' );
-
+			$departement = (int)Configure::read( 'Cg.departement' );
 			$options = $this->options( __FUNCTION__, $options );
 
-			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
+			if( $departement === 93 && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
 				$options['conditions'][] = $this->_sqStructurereferenteZonesgeographiques93();
 			}
 
-			$query = array(
-				'fields' => array_merge(
-					$Controller->Structurereferente->Typeorient->fields(),
-					$Controller->Structurereferente->fields(),
-					$Controller->Structurereferente->Referent->fields()
-				),
-				'joins' => array(
-					$Controller->Structurereferente->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-					$Controller->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => $options['conditions'],
-				'contain' => false,
-				'order' => array(
-					'Referent.nom ASC',
-					'Referent.prenom ASC'
-				)
-			);
-
-			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
+			$sessionKey = $this->sessionKey( __FUNCTION__, $options['conditions'] );
 			$results = $this->Session->read( $sessionKey );
 
 			if( $results === null || false == $options['cache'] ) {
+				$Controller->loadModel( 'Structurereferente' );
+
+				$query = array(
+					'fields' => array(
+						'Referent.id',
+						'Referent.structurereferente_id',
+						'Referent.qual',
+						'Referent.nom',
+						'Referent.prenom',
+						'Structurereferente.lib_struc'
+					),
+					'joins' => array(
+						$Controller->Structurereferente->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$Controller->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => $options['conditions'],
+					'contain' => false,
+					'order' => array(
+						'Referent.nom ASC',
+						'Referent.prenom ASC'
+					)
+				);
+
 				$results = array(
 					'optgroup' => array(),
 					'optgroup_prefix' => array(),
@@ -506,8 +532,9 @@
 		public function completeOptions( array $options, array $data, array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$Controller->loadModel( 'Structurereferente' );
+			$with_parentid = Configure::read( 'with_parentid' );
 
-			$tmpParams = array(
+			$defaultMethodsParams = array(
 				'typesorients' => array(
 					'path' => 'typeorient_id',
 					'cache' => false
@@ -522,10 +549,10 @@
 				)
 			);
 
-			foreach( $tmpParams as $method => $tmpParam ) {
-				$foo = Hash::get( $params, $method );
-				if( false !== $foo ) {
-					$params[$method] = $this->options( $method, (array)$foo + $tmpParam );
+			foreach( $defaultMethodsParams as $method => $defaultMethodParams ) {
+				$methodParams = Hash::get( $params, $method );
+				if( false !== $methodParams ) {
+					$params[$method] = $this->options( $method, (array)$methodParams + $defaultMethodParams );
 				}
 				else {
 					$params[$method] = false;
@@ -536,9 +563,30 @@
 				if( Hash::check( $data, $methodParams['path'] ) && false !== $methodParams ) {
 					$value = Hash::get( $data, $methodParams['path'] );
 					if( false === empty( $value ) ) {
-						$methodParams['conditions'] = array( Inflector::classify( $method ).'.id' => suffix( $value ) );
+						$modelName = Inflector::classify( $method );
+						if( false === ( $method === 'typesorients' && $with_parentid ) ) {
+							$methodParams['conditions'] = array( "{$modelName}.id" => suffix( $value ) );
+						}
+						else {
+							$subQuery = array(
+								'alias' => 'typesorients',
+								'fields' => array( 'typesorients.parentid' ),
+								'conditions' => array(
+									'typesorients.id' => suffix( $value )
+								),
+								'contain' => false,
+								'limit' => 1
+							);
+							$sql = $Controller->Structurereferente->Typeorient->sq( $subQuery );
+							$methodParams['conditions'] = array(
+								'OR' => array(
+									"{$modelName}.id" => suffix( $value ),
+									"{$modelName}.id IN ( {$sql} )"
+								)
+							);
+						}
 						$results = $this->{$method}( $methodParams );
-						$options[$methodParams['path']] = Hash::merge( $options[$methodParams['path']], $results );
+						$options[$methodParams['path']] = (array)Hash::get( $options, $methodParams['path'] ) + (array)$results;
 					}
 				}
 			}
