@@ -89,7 +89,7 @@
 					'name' => 'Perferendis voluptatibus incidunt nostrum quia possimus.'
 				)
 			);
-			$this->assertEquals($result, $expected);
+			$this->assertEquals($result, $expected, "Test 1");
 			
 			/**
 			 * Test 2 : changement des valeurs en cas de rappel de la fonction
@@ -111,7 +111,7 @@
 					'name' => 'Nostrum et voluptas consequatur delectus autem nam.'
 				)
 			);
-			$this->assertEquals($result, $expected);
+			$this->assertEquals($result, $expected, "Test 2");
 			
 			/**
 			 * Test 3 : Ajout de rêgles pour générer les données
@@ -149,7 +149,7 @@
 					'name' => 'Une valeur generée 429'
 				)
 			);
-			$this->assertEquals($result, $expected);
+			$this->assertEquals($result, $expected, "Test 3");
 			
 			/**
 			 * Test 4 : mention "unique" NOTE : un 4e appel dans ce cas lance une exception car 
@@ -177,7 +177,7 @@
 					'name' => 'val1'
 				)
 			);
-			$this->assertEquals($result, $expected);
+			$this->assertEquals($result, $expected, "Test 4");
 			
 			/**
 			 * Test 5 : contain et auto foreignkey
@@ -205,7 +205,7 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 					'name' => 'val3'
 				)
 			);
-			$this->assertEquals($result, $expected);
+			$this->assertEquals($result, $expected, "Test 5");
 			
 			/**
 			 * Test 6 : création des données en une seule ligne
@@ -213,7 +213,12 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$result = $BakeSuperFixture->create(
 				array(new BSFObject('SuperFixtureBaz', array('name' => array('faker' => array('rule' => 'regexify', 'generated_[0-9]{5}')))))
 			);
-			$this->assertEquals(end($result['SuperFixtureBaz']), array('name' => 'generated_84994'));
+			$expected = array(
+				'name' => 'generated_84994',
+				'created' => null,
+				'updated' => null
+			);
+			$this->assertEquals(end($result['SuperFixtureBaz']), $expected, "Test 6");
 			
 			/**
 			 * Test 7 : autres parametres
@@ -233,9 +238,11 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 05 839 Legerdan',
 				'super_fixture_bar_id' => '6',
 				'integer_field' => (int) 9,
-				'date_field' => '2015-12-05'
+				'date_field' => '2015-12-05',
+				'created' => null,
+				'updated' => null
 			);
-			$this->assertEquals(end($result['SuperFixtureFoo']), $expected);
+			$this->assertEquals(end($result['SuperFixtureFoo']), $expected, "Test 7");
 		}
 		
 		/**

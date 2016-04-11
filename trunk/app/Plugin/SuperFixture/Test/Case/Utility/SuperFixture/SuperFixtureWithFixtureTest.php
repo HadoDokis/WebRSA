@@ -36,11 +36,15 @@
 		public function testLoad() {
 			SuperFixture::load($this, 'FooBaz'); // Ne pas confondre avec FooBar qui contien une fixture
 			
-			$result = ClassRegistry::init('SuperFixtureFoo')->find('all', $this->_query);
+			$result = ClassRegistry::init('SuperFixtureFoo')->find('all', $this->_query);debug($result);
 			$expected = array(
 				(int) 0 => array(
 					'SuperFixtureFoo' => array(
-						'name' => 'Foo 1'
+						'name' => 'Foo 2',
+						'integer_field' => (int) 123,
+						'text_field' => 'blabla bla blablabla',
+						'boolean_field' => true,
+						'date_field' => '2015-06-01'
 					),
 					'SuperFixtureBar' => array(
 						'name' => 'Bar'
@@ -51,7 +55,11 @@
 				),
 				(int) 1 => array(
 					'SuperFixtureFoo' => array(
-						'name' => 'Foo 2'
+						'name' => 'Foo 1',
+						'integer_field' => (int) 123,
+						'text_field' => 'blabla bla blablabla',
+						'boolean_field' => true,
+						'date_field' => '2015-06-01'
 					),
 					'SuperFixtureBar' => array(
 						'name' => 'Bar'
@@ -105,10 +113,9 @@
 		/**
 		 * Test de la méthode SuperFixture::load();
 		 * 
-		 * @expectedException NotFoundException
+		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testLoadFixtureNotFound() {
-			debug('test');
 			SuperFixture::load($this, 'BadBar');
 		}
 	}

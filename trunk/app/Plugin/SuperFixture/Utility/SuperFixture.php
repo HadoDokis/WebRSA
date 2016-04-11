@@ -33,6 +33,9 @@
 			if (empty($this->_oldFixtureManager)) {
 				$this->_oldFixtureManager = $CakeFixtureManager;
 			}
+			
+			$this->_initialized = false;
+			$this->_initDb();
 		}
 		
 		/**
@@ -134,16 +137,14 @@
 			}
 			
 			// Si la SuperFixture ne contien pas de fixtures, on s'arrete ici
-			if (!isset($fullClassName::$fixtures)) {
-				return;
-			}
-			
-			// On charge les fixtures supplémentaire
-			foreach ($fullClassName::$fixtures as $fixtures) {
-				$exploded = explode('.', $fixtures);
-				$modelName = end($exploded); // Variable obligatoire
-				$CakeTestCase->fixtureManager->loadFixtureClass($modelName);
-				$CakeTestCase->fixtureManager->setFixtureRecords($modelName, array());
+			if (isset($fullClassName::$fixtures)) {
+				// On charge les fixtures supplémentaire
+				foreach ($fullClassName::$fixtures as $fixtures) {
+					$exploded = explode('.', $fixtures);
+					$modelName = end($exploded); // Variable obligatoire
+					$CakeTestCase->fixtureManager->loadFixtureClass($modelName);
+					$CakeTestCase->fixtureManager->setFixtureRecords($modelName, array());
+				}
 			}
 		}
 	}

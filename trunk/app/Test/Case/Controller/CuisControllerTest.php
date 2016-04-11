@@ -33,7 +33,6 @@
 		 * Test de la méthode CuisControllerTest::search()
 		 */
 		public function testSearch() {
-			Faker\Factory::create('fr_FR')->seed(1234);
 			$this->_defineConf();
 			$this->_setRequestData();
 			SuperFixture::load($this, 'Cui');
@@ -42,7 +41,7 @@
 			$result = $this->controller->viewVars;
 			
 			$compareData = $result['results'][9];
-			$compareData['Cui']['effetpriseencharge'] = null; // Les dates changes d'une année à l'autre
+			$compareData['Cui']['effetpriseencharge'] = null; // Les dates changent d'une année à l'autre
 			$compareData['Cui']['finpriseencharge'] = null;
 			$compareData['Cui']['faitle'] = null;
 			
