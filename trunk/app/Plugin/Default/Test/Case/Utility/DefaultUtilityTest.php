@@ -146,6 +146,50 @@
 		}
 
 		/**
+		 * Test de la méthode DefaultUtility::linkParams() avec des URL définies
+		 * dans $data
+		 *
+		 * @return void
+		 */
+		public function testLinkParamsUrlData() {
+			$evaluated = array(
+				'fuu#User.lastname#baz' => array(
+					'#User.id#' => array(
+						'#User.username#.#User.lastname#'
+					)
+				)
+			);
+
+			$result = DefaultUtility::linkParams(
+				'/#Actions.view_url#',
+				array( 'title' => true, 'confirm' => true ),
+				Hash::merge(
+					$this->data,
+					array(
+						'Actions' => array(
+							'view_url' => '/Commissionseps/view/59#dossiers,nonorientationproep58'
+						)
+					)
+				)
+			);
+			$expected = array(
+				'/Commissionseps/view',
+				array(
+					'plugin' => NULL,
+					'controller' => 'commissionseps',
+					'action' => 'view',
+					'59',
+					'#' => 'dossiers,nonorientationproep58'
+				),
+				array(
+					'title' => '/Commissionseps/view/59#dossiers,nonorientationproep58',
+					'confirm' => '/Commissionseps/view/59#dossiers,nonorientationproep58 ?'
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode DefaultUtility::msgid()
 		 *
 		 * @return void
