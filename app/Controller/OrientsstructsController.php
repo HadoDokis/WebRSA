@@ -425,7 +425,7 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Orientstruct' );
 			//------------------------------------------------------------------
-			$departement = Configure::read( 'Cg.departement' );
+			$departement = (int)Configure::read( 'Cg.departement' );
 
 			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
 
@@ -439,15 +439,32 @@
 				)
 			);
 
-			// Dossiers de COV en cours de passage et pouvant déboucher sur une réorientation
-			$reorientationscovs = $this->Orientstruct->Personne->Dossiercov58->getReorientationsEnCours( $personne_id );
-			$reorientationscovs = $this->_getCompletedIndexResultsReorientationscovs(
-				$reorientationscovs,
+			// Dossiers d'EP en cours ne pouvant pas déboucher pas sur une orientation
+			$this->loadModel( 'WebrsaDossierep' );
+			$dossierseps = $this->WebrsaDossierep->getNonReorientationsEnCours( $personne_id );
+			$dossierseps = $this->_getCompletedIndexResultsReorientationseps(
+				$dossierseps,
 				array(
 					'dossier_menu' => $dossierMenu,
 					'rgorient_max' => $rgorient_max
 				)
 			);
+			$this->set( compact( 'dossierseps' ) );
+
+			if( $departement !== 58 ) {
+				$reorientationscovs = array();
+			}
+			else {
+				// Dossiers de COV en cours de passage et pouvant déboucher sur une réorientation
+				$reorientationscovs = $this->Orientstruct->Personne->Dossiercov58->getReorientationsEnCours( $personne_id );
+				$reorientationscovs = $this->_getCompletedIndexResultsReorientationscovs(
+					$reorientationscovs,
+					array(
+						'dossier_menu' => $dossierMenu,
+						'rgorient_max' => $rgorient_max
+					)
+				);
+			}
 
 			// Droits sur les actions
 			$ajoutPossible = $this->WebrsaOrientstruct->ajoutPossible( $personne_id )
@@ -512,7 +529,7 @@
 				)
 			);
 
-			$this->set( compact( 'orientsstructs', 'reorientationseps', 'reorientationscovs', 'ajoutPossible', 'options', 'actions', 'en_procedure_relance' ) );
+			$this->set( compact( 'orientsstructs', 'reorientationseps', 'dossierseps', 'reorientationscovs', 'ajoutPossible', 'options', 'actions', 'en_procedure_relance' ) );
 			$this->set( 'urlmenu', "/orientsstructs/index/{$personne_id}" );
 		}
 

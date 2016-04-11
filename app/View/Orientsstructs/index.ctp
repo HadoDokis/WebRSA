@@ -70,6 +70,31 @@
 		);
 	}
 
+	if( !empty( $dossierseps ) ) {
+		echo $this->Html->tag( 'h2', 'Dossiers en cours de passage en EP (hors réorientation)' );
+		echo $this->Default3->index(
+			$dossierseps,
+			array(
+				'Dossierep.created' => array( 'type' => 'date' ),
+				'Dossierep.themeep',
+				'Passagecommissionep.etatdossierep',
+				'Commissionep.dateseance',
+				'Commissionep.etatcommissionep',
+				'/#Actions.view_url#' => array(
+					'msgid' => 'Voir',
+					'title' => false,
+					'class' => 'view',
+					'disabled' => '"#Actions.view_enabled#" != "1"'
+				)
+			),
+			array(
+				'paginate' => false,
+				'options' => $options,
+				'id' => 'TableDossiersepsIndex'
+			)
+		);
+	}
+
 	if( !empty( $reorientationscovs ) ) {
 		echo $this->Html->tag( 'h2', 'Réorientations en cours de passage en COV' );
 		echo $this->Default3->index(
