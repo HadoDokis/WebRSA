@@ -7,7 +7,10 @@
 	 */
 	App::build(
 		array(
-			'Fixture' => array(TESTS.'Fixture'.DS),
+			'Fixture' => array(
+				TESTS.'Fixture'.DS,
+				CAKE.'Test'.DS.'Fixture'.DS
+			),
 			'SuperFixture' => array(TESTS.'SuperFixture'.DS),
 		), App::REGISTER
 	);
