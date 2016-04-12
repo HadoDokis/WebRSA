@@ -1,3 +1,12 @@
+<?php
+	$departement = (int)Configure::read( 'Cg.departement' );
+
+	echo $this->Form->input( 'User.filtre_zone_geo', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
+	echo $this->Form->input( 'User.communautesr_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
+	echo $this->Form->input( 'User.structurereferente_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
+	echo $this->Form->input( 'User.referent_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
+	echo $this->Form->input( 'User.type', array( 'type' => 'hidden', 'value' => 'cg', 'id' => false ) );
+?>
 <fieldset>
 	<?php echo $this->Form->input( 'User.nom', array( 'label' =>  required( __d( 'personne', 'Personne.nom' ) ), 'type' => 'text' ) );?>
 	<?php echo $this->Form->input( 'User.prenom', array( 'label' =>  required( __d( 'personne', 'Personne.prenom' ) ), 'type' => 'text' ) );?>
@@ -43,21 +52,17 @@
 	<legend><?php echo required( 'Service instructeur' );?></legend>
 	<?php echo $this->Form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si, 'empty' => true ) );?>
 </fieldset>
-<?php
-	echo $this->Form->input( 'User.structurereferente_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
-	echo $this->Form->input( 'User.referent_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
-	echo $this->Form->input( 'User.type', array( 'type' => 'hidden', 'value' => 'cg', 'id' => false ) );
-?>
-<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+<?php if( $departement === 93 ):?>
 <fieldset class="col2">
 	<legend>Type d'utilisateur</legend>
 	<?php
 		echo $this->Form->input( 'User.type', array( 'type' => 'select' , 'options' => $options['User']['type'], 'empty' => true, 'label' => required( __d( 'user', 'User.type' ) ) ) );
+		echo $this->Form->input( 'User.communautesr_id', array( 'label' => 'Communauté de structures référentes', 'type' => 'select' , 'options' => $communautessrs, 'empty' => true ) );
 		echo $this->Form->input( 'User.structurereferente_id', array( 'label' => 'Structure référente liée au CPDV ou secrétaire PDV', 'type' => 'select' , 'options' => $structuresreferentes, 'empty' => true ) );
 		echo $this->Form->input( 'User.referent_id', array( 'label' => 'Référent lié au chargé d\'insertion PDV', 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
 	?>
 </fieldset>
-<?php elseif( Configure::read( 'Cg.departement' ) == 66 ):?>
+<?php elseif( $departement === 66 ):?>
 <fieldset class="col2">
 	<legend>Type d'utilisateur</legend>
 	<?php
@@ -70,7 +75,7 @@
 	<legend><?php echo required( 'Est-il gestionnaire, notamment pour les PDOs ? ' );?></legend>
 	<?php
         echo $this->Xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['User']['isgestionnaire'] ) );
-        if( Configure::read( 'Cg.departement' ) == 66 ) {
+        if( $departement === 66 ) {
             echo '<fieldset id="poledossierpcg66" class="noborder">';
             echo $this->Xform->input( 'User.poledossierpcg66_id', array( 'legend' => 'Pôle lié au gestionnaire', 'type' => 'radio', 'options' => $polesdossierspcgs66, 'empty' => false ) );
             echo '</fieldset>';
@@ -81,21 +86,53 @@
 	<legend><?php echo required( 'Peut-il accéder aux données sensibles ? ' );?></legend>
 	<?php echo $this->Xform->input( 'User.sensibilite', array( 'legend' => false, 'type' => 'radio', 'options' => $options['User']['sensibilite'] ) );?>
 </fieldset>
-<script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
-		observeDisableFieldsOnValue( 'UserType', [ 'UserStructurereferenteId' ], [ 'externe_cpdv', 'externe_secretaire' ], false );
-		observeDisableFieldsOnValue( 'UserType', [ 'UserReferentId' ], 'externe_ci', false );
-        
-        <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
-            observeDisableFieldsetOnRadioValue(
-                'UserEditForm',
-                'data[User][isgestionnaire]',
-                $( 'poledossierpcg66' ),
-                'O',
-                false,
-                true
-            );
-        <?php endif;?>
-	} );
-</script>
+<?php
+	echo $this->Observer->disableFieldsetOnCheckbox(
+		'User.filtre_zone_geo',
+		'filtres_zone_geo',
+		false
+	);
+
+	if( $departement === 93 ) {
+		echo $this->Observer->disableFieldsetOnValue(
+			'User.type',
+			'filtres_zone_geo',
+			array( 'cg', '' ),
+			false
+		);
+		echo $this->Observer->disableFieldsOnValue(
+			'User.type',
+			'User.filtre_zone_geo',
+			array( 'externe_cpdvcom', 'externe_cpdv', 'externe_secretaire', 'externe_ci' ),
+			true
+		);
+	}
+	echo $this->Observer->disableFieldsOnValue(
+		'User.type',
+		'User.structurereferente_id',
+		array( 'externe_cpdv', 'externe_secretaire' ),
+		false
+	);
+	echo $this->Observer->disableFieldsOnValue(
+		'User.type',
+		'User.referent_id',
+		array( 'externe_ci' ),
+		false
+	);
+	echo $this->Observer->disableFieldsOnValue(
+		'User.type',
+		'User.communautesr_id',
+		array( 'externe_cpdvcom' ),
+		false
+	);
+	if( $departement === 66 ) {
+		echo $this->Observer->disableFieldsetOnRadioValue(
+			'UserEditForm',
+			'User.isgestionnaire',
+			'poledossierpcg66',
+			'O',
+			false,
+			true
+		);
+	}
+?>

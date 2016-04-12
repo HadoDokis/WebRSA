@@ -308,6 +308,22 @@
 		);
 
 		public $hasAndBelongsToMany = array(
+			'Communautesr' => array(
+				'className' => 'Communautesr',
+				'joinTable' => 'communautessrs_structuresreferentes',
+				'foreignKey' => 'structurereferente_id',
+				'associationForeignKey' => 'communautesr_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'CommunautesrStructurereferente'
+			),
 			'Zonegeographique' => array(
 				'className' => 'Zonegeographique',
 				'joinTable' => 'structuresreferentes_zonesgeographiques',

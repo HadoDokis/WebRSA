@@ -3475,3 +3475,20 @@ msgstr "Cohorte de rendez-vous"
 
 msgid "Cohortesrendezvous:exportcsv"
 msgstr "Export CSV des résultats de la cohorte de rendez-vous"
+
+#-------------------------------------------------------------------------------
+
+msgid "Module:Communautessrs"
+msgstr "Paramétrage des communautés de structures référentes"
+
+msgid "Communautessrs:index"
+msgstr "Liste des communautés de structures référentes"
+
+msgid "Communautessrs:add"
+msgstr "Ajout d'une communauté de structures référentes"
+
+msgid "Communautessrs:edit"
+msgstr "Modification d'une communauté de structures référentes"
+
+msgid "Communautessrs:delete"
+msgstr "Suppression d'une communauté de structures référentes"

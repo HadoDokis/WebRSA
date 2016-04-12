@@ -199,19 +199,58 @@ ALTER TABLE avisprimoanalyses ADD CONSTRAINT avisprimoanalyses_etape_in_list_chk
 ALTER TABLE avisprimoanalyses ADD CONSTRAINT avisprimoanalyses_choix_in_list_chk CHECK ( cakephp_validate_in_list( choix, ARRAY[0, 1] ) );
 
 --------------------------------------------------------------------------------
+-- 20160412: définition des communautés de structures référentes pour le ticket #8795 (CG 93)
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS communautessrs CASCADE;
+CREATE TABLE communautessrs (
+	id SERIAL					NOT NULL PRIMARY KEY,
+	name						VARCHAR(255) NOT NULL,
+	actif						SMALLINT NOT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE communautessrs IS 'Regroupements de structures référentes utilisés pour les chefs de projets communautaires';
+
+ALTER TABLE communautessrs ADD CONSTRAINT communautessrs_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0, 1] ) );
+
+CREATE UNIQUE INDEX communautessrs_name_idx ON communautessrs (name);
+CREATE INDEX communautessrs_actif_idx ON communautessrs (actif);
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS communautessrs_structuresreferentes CASCADE;
+CREATE TABLE communautessrs_structuresreferentes (
+	id						SERIAL NOT NULL PRIMARY KEY,
+	communautesr_id			INTEGER NOT NULL REFERENCES communautessrs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	structurereferente_id	INTEGER NOT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE INDEX communautessrs_structuresreferentes_communautesr_id_idx ON communautessrs_structuresreferentes (communautesr_id);
+CREATE INDEX communautessrs_structuresreferentes_structurereferente_id_idx ON communautessrs_structuresreferentes (structurereferente_id);
+CREATE UNIQUE INDEX communautessrs_structuresreferentes_communautesr_id_structurereferente_id_idx ON communautessrs_structuresreferentes (communautesr_id, structurereferente_id);
+
+--------------------------------------------------------------------------------
 -- 20160404: ajout du type d'utilisateur externe_cpdvcom pour le ticket #8795 (CG 93)
 --------------------------------------------------------------------------------
 
+SELECT add_missing_table_field ( 'public', 'users', 'communautesr_id', 'INTEGER DEFAULT NULL REFERENCES communautessrs(id) ON DELETE SET NULL ON UPDATE CASCADE' );
+DROP INDEX IF EXISTS users_communautesr_id_idx;
+CREATE INDEX users_communautesr_id_idx ON users (communautesr_id);
+
 SELECT alter_table_drop_constraint_if_exists( 'public', 'users', 'users_type_in_list_chk' );
-ALTER TABLE users ADD CONSTRAINT users_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['cg', 'externe_cpdv', 'externe_secretaire', 'externe_ci', 'externe_cpdvcom'] ) );
+UPDATE users SET type = 'cg', referent_id = NULL, structurereferente_id = NULL, communautesr_id = NULL WHERE type = 'externe_cpdvcom';
+ALTER TABLE users ADD CONSTRAINT users_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['cg', 'externe_cpdvcom', 'externe_cpdv', 'externe_secretaire', 'externe_ci'] ) );
 
 SELECT alter_table_drop_constraint_if_exists( 'public', 'users', 'users_type_structurereferente_idreferent_id_chk' );
 ALTER TABLE users ADD CONSTRAINT users_type_structurereferente_idreferent_id_chk CHECK (
-	( type IN ( 'cg', 'externe_cpdvcom' ) AND structurereferente_id IS NULL AND referent_id IS NULL )
-	OR ( type IN ( 'externe_cpdv', 'externe_secretaire' ) AND structurereferente_id IS NOT NULL AND referent_id IS NULL )
-	OR ( type = 'externe_ci' AND structurereferente_id IS NULL AND referent_id IS NOT NULL )
+	( type = 'cg' AND structurereferente_id IS NULL AND referent_id IS NULL AND communautesr_id IS NULL )
+	OR ( type = 'externe_cpdvcom' AND structurereferente_id IS NULL AND referent_id IS NULL AND communautesr_id IS NOT NULL )
+	OR ( type IN ( 'externe_cpdv', 'externe_secretaire' ) AND structurereferente_id IS NOT NULL AND referent_id IS NULL AND communautesr_id IS NULL )
+	OR ( type = 'externe_ci' AND structurereferente_id IS NULL AND referent_id IS NOT NULL AND communautesr_id IS NULL )
 );
 
+-- FIXME: ajouter la colonne communautesr_id à la table tableauxsuivispdvs93
 
 -- *****************************************************************************
 COMMIT;

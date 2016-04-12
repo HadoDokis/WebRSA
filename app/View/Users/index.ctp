@@ -42,6 +42,7 @@
 						'User.prenom' => array( 'label' => __d( 'user', 'User.prenom' ), 'type' => 'text' ),
 						'Group.name' => array( 'label' => __d( 'user', 'Group.name' ), 'options' => $options['Groups'] ),
 						'Serviceinstructeur.lib_service' => array( 'label' => __d( 'serviceinstructeur', 'Serviceinstructeur.lib_service' ), 'options' => $options['Serviceinstructeur'] ),
+						'User.communautesr_id' => array( 'label' => 'Communauté (chef de projet de ville communautaire)', 'options' => $options['communautessrs'] ),
 						'User.structurereferente_id' => array( 'label' => 'Structure référente (CPDV, secrétariat PDV)', 'options' => $options['structuresreferentes'] ),
 						'User.referent_id' => array( 'label' => 'Référent (chargé d\'insertion)', 'options' => $options['referents'] ),
 					),
