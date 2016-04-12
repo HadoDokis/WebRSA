@@ -138,7 +138,9 @@
 		}
 
 		/**
-		 * Lors de l'ajout d'une orientation ou  d'un référent ($modelName), on ajoute un nouveau référent de parcours si celui-ci a été précisé lors de la création.
+		 * Lors de l'ajout d'une orientation ou  d'un référent ($modelName), on
+		 * ajoute un nouveau référent de parcours si celui-ci a été précisé lors
+		 * de la création.
 		 *
 		 * @param array $data
 		 * @param string $modelName

@@ -72,11 +72,19 @@
 				}
 
 				// Listes dépendantes
-				$data[$this->Orientstruct->alias]['referent_id'] = "{$data[$this->Orientstruct->alias]['structurereferente_id']}_{$data[$this->Orientstruct->alias]['referent_id']}";
-				$data[$this->Orientstruct->alias]['structurereferente_id'] = "{$data[$this->Orientstruct->alias]['typeorient_id']}_{$data[$this->Orientstruct->alias]['structurereferente_id']}";
+				if( !empty( $data[$this->Orientstruct->alias]['structurereferente_id'] ) ) {
+					if( !empty( $data[$this->Orientstruct->alias]['referent_id'] ) ) {
+						$data[$this->Orientstruct->alias]['referent_id'] = "{$data[$this->Orientstruct->alias]['structurereferente_id']}_{$data[$this->Orientstruct->alias]['referent_id']}";
+					}
+					if( !empty( $data[$this->Orientstruct->alias]['typeorient_id'] ) ) {
+						$data[$this->Orientstruct->alias]['structurereferente_id'] = "{$data[$this->Orientstruct->alias]['typeorient_id']}_{$data[$this->Orientstruct->alias]['structurereferente_id']}";
+					}
+				}
 
 				if( $departement == 66 ) {
-					$data[$this->Orientstruct->alias]['referentorientant_id'] = "{$data[$this->Orientstruct->alias]['structureorientante_id']}_{$data[$this->Orientstruct->alias]['referentorientant_id']}";
+					if( !empty( $data[$this->Orientstruct->alias]['structureorientante_id'] ) && !empty( $data[$this->Orientstruct->alias]['referentorientant_id'] ) ) {
+						$data[$this->Orientstruct->alias]['referentorientant_id'] = "{$data[$this->Orientstruct->alias]['structureorientante_id']}_{$data[$this->Orientstruct->alias]['referentorientant_id']}";
+					}
 				}
 			}
 			// Ajout
@@ -208,9 +216,17 @@
 				$this->Orientstruct->Personne->Calculdroitrsa->create( $calculdroitsrsa );
 				$success = $this->Orientstruct->Personne->Calculdroitrsa->save() && $success;
 
-				// PersonneReferent
+				// Tentative d'ajout d'un référent de parcours
 				if( !empty( $referent_id ) && ( $statut_orient == 'Orienté' ) ) {
-					$success = $this->Orientstruct->Referent->PersonneReferent->referentParModele( $data, $this->Orientstruct->alias, 'date_valid' ) && $success;
+					$success = $this->Orientstruct->Referent->PersonneReferent->referentParModele(
+						$data,
+						$this->Orientstruct->alias,
+						'date_valid'
+					);
+					if( empty( $success ) ) {
+						$msgstr = 'Impossible d\'ajouter un nouveau référent du parcours. Il est peut-être nécessaire de clôturer l\'actuel.';
+						$this->Orientstruct->validationErrors['typeorient_id'][] = $msgstr;
+					}
 				}
 			}
 
@@ -436,9 +452,9 @@
 					'recursive' => -1
 				)
 			);
-			
+
 			$success = (( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ));
-			
+
 			if ( $success === false && (integer)Configure::read('Cg.departement') === 66 ) {
 				$joinBilan = $this->Orientstruct->Personne->join('Bilanparcours66', array( 'type' => 'INNER' ));
 				$sqDernierBilan = $this->Orientstruct->Personne->Bilanparcours66->sq(
@@ -455,10 +471,10 @@
 					)
 				);
 				$joinBilan['conditions'] = array( "Bilanparcours66.id IN ({$sqDernierBilan})" );
-				
+
 				$query = array(
 					'fields' => array(
-						'Bilanparcours66.id' 
+						'Bilanparcours66.id'
 					),
 					'joins' => array(
 						$this->Orientstruct->Personne->join('Orientstruct'),
@@ -471,7 +487,7 @@
 						'Orientstruct.id IS NULL'
 					)
 				);
-				
+
 				if ( count((array)$this->Orientstruct->Personne->find('first', $query)) > 0 ) {
 					$success = true;
 				}

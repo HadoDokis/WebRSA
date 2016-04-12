@@ -429,7 +429,7 @@
 					'notEmptyIf',
 					'statut_orient',
 					true,
-					array( 'Orienté' )
+					array( 'Orienté', 'En attente', '' )
 				),
 				'message' => 'Champ obligatoire'
 			);
@@ -441,7 +441,7 @@
 					'notEmptyIf',
 					'statut_orient',
 					true,
-					array( 'Orienté' )
+					array( 'Orienté', 'En attente', '' )
 				),
 				'message' => 'Champ obligatoire'
 			);
