@@ -44,7 +44,15 @@
 		 * @param String $name
 		 */
 		public function loadFixtureClass($name) {
-			$className = Inflector::camelize($name);
+			$parts = explode('.', $name);
+			$fixtureName = end($parts);
+			
+			if ($parts[0] === 'plugin') {
+				$pluginPath = CakePlugin::path(Inflector::camelize($parts[1])).'Test'.DS.'Fixture'.DS;
+				App::build(array('Fixture' => array($pluginPath)));
+			}
+			
+			$className = Inflector::camelize($fixtureName);
 			$fixtureClass = $className . 'Fixture';
 			
 			App::uses($fixtureClass, 'Fixture');
@@ -53,8 +61,8 @@
 				throw new NotFoundException("La classe {$fixtureClass} n'existe pas!");
 			}
 			
-			$this->_loaded[$name] = new $fixtureClass();
-			$this->_fixtureMap[$fixtureClass] = $this->_loaded[$name];
+			$this->_loaded[$fixtureName] = new $fixtureClass();
+			$this->_fixtureMap[$fixtureClass] = $this->_loaded[$fixtureName];
 		}
 		
 		/**
@@ -65,13 +73,16 @@
 		 * @param array $records
 		 */
 		public function setFixtureRecords($name, array $records) {
-			$className = Inflector::camelize($name);
+			$parts = explode('.', $name);
+			$fixtureName = end($parts);
+			
+			$className = Inflector::camelize($fixtureName);
 			$fixtureClass = $className . 'Fixture';
 			
-			$this->_loaded[$name]->records = $records;
-			$this->_fixtureMap[$fixtureClass] = $this->_loaded[$name];
+			$this->_loaded[$fixtureName]->records = $records;
+			$this->_fixtureMap[$fixtureClass] = $this->_loaded[$fixtureName];
 			
-			$this->loadSingle($name);
+			$this->loadSingle($fixtureName);
 		}
 		
 		/**
@@ -130,21 +141,36 @@
 				$CakeTestCase->fixtureManager = new SuperFixtureManager($Manager);
 			}
 			
-			// On charge les nouvelles valeurs dans les fixtures
-			foreach ($fullClassName::getData() as $modelName => $records) {
-				$CakeTestCase->fixtureManager->loadFixtureClass($modelName);
-				$CakeTestCase->fixtureManager->setFixtureRecords($modelName, $records);
+			// On initialise si besoin l'attribut $fixtures de la SuperFixture
+			if (!isset($fullClassName::$fixtures)) {
+				$fullClassName::$fixtures = array();
 			}
 			
-			// Si la SuperFixture ne contien pas de fixtures, on s'arrete ici
-			if (isset($fullClassName::$fixtures)) {
-				// On charge les fixtures supplémentaire
-				foreach ($fullClassName::$fixtures as $fixtures) {
-					$exploded = explode('.', $fixtures);
-					$modelName = end($exploded); // Variable obligatoire
-					$CakeTestCase->fixtureManager->loadFixtureClass($modelName);
-					$CakeTestCase->fixtureManager->setFixtureRecords($modelName, array());
+			// On ajoute les fixtures supplémentaire
+			$data = $fullClassName::getData();
+			foreach ($fullClassName::$fixtures as $fixturePath) {
+				$isDefined = false;
+				$parts = explode('.', $fixturePath);
+				$fixtureName = end($parts);
+				
+				// On cherche à savoir si la fixture additionnelle n'a pas été déja définie
+				foreach (array_keys($data) as $SuperFixturePath) {
+					$parts = explode('.', $SuperFixturePath);
+					if (end($parts) === $fixtureName) {
+						$isDefined = true;
+						break;
+					}
 				}
+				
+				if (!$isDefined) {
+					$data += array($fixturePath => array());
+				}
+			}
+			
+			// On charge les nouvelles valeurs dans les fixtures
+			foreach ($data as $modelName => $records) {
+				$CakeTestCase->fixtureManager->loadFixtureClass($modelName);
+				$CakeTestCase->fixtureManager->setFixtureRecords($modelName, $records);
 			}
 		}
 	}
