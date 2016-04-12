@@ -134,6 +134,12 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
+			'communautesr_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'type', true, array( 'externe_cpdvcom' ) ),
+					'message' => 'Champ obligatoire'
+				)
+			),
 			'structurereferente_id' => array(
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'type', true, array( 'externe_cpdv', 'externe_secretaire' ) ),
@@ -186,6 +192,13 @@
             'Poledossierpcg66' => array(
 				'className' => 'Poledossierpcg66',
 				'foreignKey' => 'poledossierpcg66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+            'Communautesr' => array(
+				'className' => 'Communautesr',
+				'foreignKey' => 'communautesr_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -568,6 +581,12 @@
 			// Critère sur le nom du serviceinstructeur de l'utilisateur
 			if ( isset($criteresusers['Serviceinstructeur']['lib_service']) && !empty($criteresusers['Serviceinstructeur']['lib_service']) ) {
 				$conditions[] = array('Serviceinstructeur.id'=>$this->wildcard( $criteresusers['Serviceinstructeur']['lib_service'] ));
+			}
+
+			// Critère sur la communauté de structures référentes
+			$communautesr_id = Hash::get( $criteresusers, 'User.communautesr_id' );
+			if ( !empty( $communautesr_id ) ) {
+				$conditions[] = array(' User.communautesr_id' => $communautesr_id );
 			}
 
 			// Critère sur la structure référente de l'utilisateur

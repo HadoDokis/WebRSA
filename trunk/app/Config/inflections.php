@@ -494,6 +494,8 @@ $irregularPlural = array(
 	// Fiche de liaison
 	'fichedeliaison_personne' => 'fichedeliaisons_personnes',
 	'logicielprimo_primoanalyse' => 'logicielprimos_primoanalyses',
+	'communautesr' => 'communautessrs',
+	'communautesr_structurereferente' => 'communautessrs_structuresreferentes',
 );
 
 /**

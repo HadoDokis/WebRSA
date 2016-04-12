@@ -112,6 +112,30 @@
 		}
 
 		/**
+		 * Si l'utilisateur est lié à une communauté de structures référentes.
+		 *
+		 * @param integer $communautesr_id
+		 */
+		protected function _loadCommunautesr( $communautesr_id ) {
+			$Controller = $this->_Collection->getController();
+			$Controller->loadModel( 'User' );
+
+			$query = array(
+				'fields' => array(
+					'CommunautesrStructurereferente.structurereferente_id'
+				),
+				'conditions' => array(
+					'CommunautesrStructurereferente.communautesr_id' => $communautesr_id
+				),
+				'contain' => false
+			);
+
+			$results = $Controller->User->Communautesr->CommunautesrStructurereferente->find( 'all', $query );
+			$structuresreferentes_ids = (array)Hash::extract( $results, '{n}.CommunautesrStructurereferente.structurereferente_id' );
+			$this->_loadStructurereferente( $structuresreferentes_ids );
+		}
+
+		/**
 		 * Chargement des structures référentes liés (directement ou indirectement)
 		 * à l'utilisateur connecté dans la session.
 		 */
@@ -126,16 +150,13 @@
 				if( $type === 'externe_ci' ) {
 					$this->_loadReferent( $this->Session->read( 'Auth.User.referent_id' ) );
 				}
+				else if( $type === 'externe_cpdvcom' ) {
+					$this->Session->write( 'Auth.Referent', false );
+					$this->_loadCommunautesr( $this->Session->read( 'Auth.User.communautesr_id' ) );
+				}
 				else {
 					$this->Session->write( 'Auth.Referent', false );
-
 					$structuresreferentes_ids = (array)$this->Session->read( 'Auth.User.structurereferente_id' );
-
-					// FIXME: pour les tests
-					if( $type === 'externe_cpdvcom' ) {
-						$structuresreferentes_ids = array( 1, 19, 63, 24, 29, 67, 68, 70, 32 );
-					}
-
 					$this->_loadStructurereferente( $structuresreferentes_ids );
 				}
 			}

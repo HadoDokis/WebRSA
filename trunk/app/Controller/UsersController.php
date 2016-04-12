@@ -61,6 +61,7 @@
 			$options = array(
 				'Groups' => $this->User->Group->find( 'list' ),
 				'Serviceinstructeur' => $this->User->Serviceinstructeur->listOptions(),
+				'communautessrs' => $this->User->Communautesr->find( 'list' ),
 				'structuresreferentes' => $this->User->Structurereferente->find( 'list' ),
 				'referents' => $this->User->Referent->find(
 					'list',
@@ -144,6 +145,7 @@
 				)
 			);
 
+			$this->set( 'communautessrs', $this->User->Communautesr->find( 'list' ) );
 		}
 
 		/**

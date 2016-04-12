@@ -40,7 +40,7 @@
 		 */
 		public function index() {
 			$departement = (integer)Configure::read( 'Cg.departement' );
-			
+
 			$links = array(
 				'Actions d\'insertion' => ( $departement !== 66 )
 					? array( 'controller' => 'actions', 'action' => 'index' )
@@ -54,6 +54,10 @@
 				,
 				__d( 'parametrages', '/Parametrages/cataloguesromesv3/:heading' ) => ( Configure::read( 'Romev3.enabled' ) )
 					? array( 'controller' => 'parametrages', 'action' => 'cataloguesromesv3' )
+					: null
+				,
+				__d( 'communautessrs', '/Communautessrs/index/:heading' ) => ( $departement === 93 )
+					? array( 'controller' => 'communautessrs', 'action' => 'index' )
 					: null
 				,
 				'CUIs' => ( $departement === 66 )

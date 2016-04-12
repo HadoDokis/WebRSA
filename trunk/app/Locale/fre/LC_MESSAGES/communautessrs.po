@@ -1,0 +1,44 @@
+# Traductions de communautessrs.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Communautessrs/index/:heading"
+msgstr "Communautés de structures référentes"
+
+msgid "/Communautessrs/add/:heading"
+msgstr "Ajout d'une communautés de structures référentes"
+
+msgid "/Communautessrs/edit/:heading"
+msgstr "Modification d'une communautés de structures référentes"
+
+msgid "Communautesr.name"
+msgstr "Nom"
+
+msgid "Communautesr.actif"
+msgstr "Actif ?"
+
+msgid "/Communautessrs/add"
+msgstr "Ajouter"
+
+msgid "/Communautessrs/edit"
+msgstr "Modifier"
+
+msgid "/Communautessrs/edit/#Communautesr.id#"
+msgstr "Modifier la communauté « #Communautesr.name# »"
+
+msgid "/Communautessrs/delete"
+msgstr "Supprimer"
+
+msgid "/Communautessrs/delete/#Communautesr.id#"
+msgstr "Supprimer la communauté « #Communautesr.name# »"
+
+msgid "/Communautessrs/delete/#Communautesr.id# ?"
+msgstr "Voulez-vous réellement supprimer la communauté « #Communautesr.name# » ?"
