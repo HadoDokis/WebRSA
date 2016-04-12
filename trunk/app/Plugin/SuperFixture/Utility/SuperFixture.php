@@ -141,14 +141,15 @@
 				$CakeTestCase->fixtureManager = new SuperFixtureManager($Manager);
 			}
 			
-			// On initialise si besoin l'attribut $fixtures de la SuperFixture
-			if (!isset($fullClassName::$fixtures)) {
-				$fullClassName::$fixtures = array();
+			// On charge les fixtures additionnelles si elles existent
+			$additionnalFixtures = array();
+			if (isset($fullClassName::$fixtures)) {
+				$additionnalFixtures = $fullClassName::$fixtures;
 			}
 			
 			// On ajoute les fixtures supplémentaire
 			$data = $fullClassName::getData();
-			foreach ($fullClassName::$fixtures as $fixturePath) {
+			foreach ($additionnalFixtures as $fixturePath) {
 				$isDefined = false;
 				$parts = explode('.', $fixturePath);
 				$fixtureName = end($parts);
