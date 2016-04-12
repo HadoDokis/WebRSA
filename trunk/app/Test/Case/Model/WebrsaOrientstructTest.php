@@ -145,7 +145,7 @@
 					'daterelance' => NULL,
 					'statutrelance' => 'E',
 					'date_impression_relance' => NULL,
-					'referent_id' => '1_',
+					'referent_id' => NULL,
 					'etatorient' => NULL,
 					'rgorient' => 1,
 					'structureorientante_id' => NULL,

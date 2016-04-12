@@ -556,6 +556,8 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
 
+			$departement = (int)Configure::read( 'Cg.departement' );
+
 			$this->Jetons2->get( Hash::get( $dossierMenu, 'Dossier.id' ) );
 
 			// -----------------------------------------------------------------
@@ -590,7 +592,6 @@
 			// Tentative de sauvegarde
 			if( !empty( $this->request->data ) ) {
 				$this->Orientstruct->begin();
-//				if( $this->Orientstruct->saveAddEditFormData( $this->request->data, $user_id ) ) {
 				if( $this->WebrsaOrientstruct->saveAddEditFormData( $this->request->data, $user_id ) ) {
 					$this->Orientstruct->commit();
 					$this->Jetons2->release( Hash::get( $dossierMenu, 'Dossier.id' ) );
@@ -614,19 +615,20 @@
 					'toppersdrodevorsa' => $Option->toppersdrodevorsa()
 				),
 				'Orientstruct' => array(
-					'typeorient_id' => $this->Orientstruct->Typeorient->listOptions(), // FIXME
-					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ),
+					'typeorient_id' => $this->InsertionsBeneficiaires->typesorients(),
+					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+						array(
+							'conditions' => array( 'Structurereferente.orientation' => 'O' )
+								+ $this->InsertionsBeneficiaires->conditions['structuresreferentes']
+						)
+					),
 					'referent_id' => $this->InsertionsBeneficiaires->referents(),
 					'statut_orient' => $this->Orientstruct->enum( 'statut_orient' ),
-					// Pour le 66
-					// -> FIXME ?
-					'structureorientante_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ),
-					'referentorientant_id' => $this->InsertionsBeneficiaires->referents(),
 				)
 			);
 			$options = Hash::merge( $options, $this->Orientstruct->enums() );
 
-			// INFO: si les données enregistrées ne se trouvent pas dans les options, on les ajoute
+			// Si les données enregistrées ne se trouvent pas dans les options, on les ajoute
 			$options['Orientstruct'] = $this->InsertionsBeneficiaires->completeOptions(
 				$options['Orientstruct'],
 				$this->request->data['Orientstruct'],
@@ -636,21 +638,37 @@
 					)
 				)
 			);
-			$options['Orientstruct'] = $this->InsertionsBeneficiaires->completeOptions(
-				$options['Orientstruct'],
-				$this->request->data['Orientstruct'],
-				array(
-					'typesorients' => false,
-					'structuresreferentes' => array(
-						'path' => 'structureorientante_id',
-						'type' => 'list',
+
+			// Structrure orientante, référent orientant
+			if( in_array( $departement, array( 58, 66 ), true ) ) {
+				$options['Orientstruct']['structureorientante_id'] = $this->InsertionsBeneficiaires->structuresreferentes(
+					array(
+						'type' => 'optgroup',
+						'conditions' => array( 'Structurereferente.orientation' => 'O' )
+							+ $this->InsertionsBeneficiaires->conditions['structuresreferentes'],
 						'prefix' => false
-					),
-					'referents' => array(
-						'path' => 'referentorientant_id'
 					)
-				)
-			);
+				);
+				$options['Orientstruct']['referentorientant_id'] = $this->InsertionsBeneficiaires->referents();
+
+				// Si les données enregistrées ne se trouvent pas dans les options, on les ajoute
+				$options['Orientstruct'] = $this->InsertionsBeneficiaires->completeOptions(
+					$options['Orientstruct'],
+					$this->request->data['Orientstruct'],
+					array(
+						'typesorients' => false,
+						'structuresreferentes' => array(
+							'path' => 'structureorientante_id',
+							'type' => 'optgroup',
+							'prefix' => false
+						),
+						'referents' => array(
+							'path' => 'referentorientant_id'
+						)
+					)
+				);
+			}
+
 			$this->set( compact( 'options' ) );
 
 			// Rendu

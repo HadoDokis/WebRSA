@@ -523,11 +523,13 @@
 		 * @param string $ds DataSource connection name.
 		 */
 		public function __construct( $id = false, $table = null, $ds = null ) {
-			// TODO: paramétrage
 			$active = !in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) );
 			$this->actsAs = Hash::insert( $this->actsAs, 'StorablePdf.active', $active );
 
+			parent::__construct( $id, $table, $ds );
+
 			$departement = (int)Configure::read( 'Cg.departement' );
+
 			if( $departement === 66 ) {
 				$this->validate['structureorientante_id']['notEmptyIf'] = array(
 					'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté' ) ),
@@ -555,8 +557,6 @@
 					'message' => 'Champ obligatoire',
 				);
 			}
-
-			parent::__construct( $id, $table, $ds );
 		}
 
 		// ---------------------------------------------------------------------
