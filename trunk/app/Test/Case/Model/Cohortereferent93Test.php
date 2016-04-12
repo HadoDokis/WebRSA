@@ -32,6 +32,7 @@
 			'app.Personne',
 			'app.PersonneReferent',
 			'app.Prestation',
+			'app.Referent',
 			'app.Situationdossierrsa',
 			'app.Structurereferente',
 		);
@@ -297,91 +298,84 @@
 				'contain' => '',
 				'joins' =>
 				array(
-					0 =>
 					array(
 						'table' => '"calculsdroitsrsa"',
 						'alias' => 'Calculdroitrsa',
 						'type' => 'LEFT OUTER',
 						'conditions' => '"Calculdroitrsa"."personne_id" = "Personne"."id"',
 					),
-					1 =>
 					array(
 						'table' => '"contratsinsertion"',
 						'alias' => 'Contratinsertion',
 						'type' => 'LEFT OUTER',
 						'conditions' => '"Contratinsertion"."personne_id" = "Personne"."id"',
 					),
-					2 =>
 					array(
 						'table' => '"foyers"',
 						'alias' => 'Foyer',
 						'type' => 'INNER',
 						'conditions' => '"Personne"."foyer_id" = "Foyer"."id"',
 					),
-					3 =>
 					array(
 						'table' => '"orientsstructs"',
 						'alias' => 'Orientstruct',
 						'type' => 'INNER',
 						'conditions' => '"Orientstruct"."personne_id" = "Personne"."id"',
 					),
-					4 =>
 					array(
 						'table' => '"personnes_referents"',
 						'alias' => 'PersonneReferent',
 						'type' => 'LEFT OUTER',
 						'conditions' => '"PersonneReferent"."personne_id" = "Personne"."id" AND "PersonneReferent"."id" IN ( SELECT "personnes_referents"."id" FROM personnes_referents WHERE "personnes_referents"."personne_id" = "Personne"."id" AND "personnes_referents"."dfdesignation" IS NULL ORDER BY "personnes_referents"."dddesignation" DESC LIMIT 1 )',
 					),
-					5 =>
+					array(
+						'table' => '"referents"',
+						'alias' => 'Referent',
+						'type' => 'LEFT OUTER',
+						'conditions' => '"PersonneReferent"."referent_id" = "Referent"."id"'
+					),
 					array(
 						'table' => '"prestations"',
 						'alias' => 'Prestation',
 						'type' => 'INNER',
 						'conditions' => '"Prestation"."personne_id" = "Personne"."id" AND "Prestation"."natprest" = \'RSA\'',
 					),
-					6 =>
 					array(
 						'table' => '"cers93"',
 						'alias' => 'Cer93',
 						'type' => 'LEFT OUTER',
 						'conditions' => '"Cer93"."contratinsertion_id" = "Contratinsertion"."id"',
 					),
-					7 =>
 					array(
 						'table' => '"adressesfoyers"',
 						'alias' => 'Adressefoyer',
 						'type' => 'INNER',
 						'conditions' => '"Adressefoyer"."foyer_id" = "Foyer"."id"',
 					),
-					8 =>
 					array(
 						'table' => '"dossiers"',
 						'alias' => 'Dossier',
 						'type' => 'INNER',
 						'conditions' => '"Foyer"."dossier_id" = "Dossier"."id"',
 					),
-					9 =>
 					array(
 						'table' => '"adresses"',
 						'alias' => 'Adresse',
 						'type' => 'INNER',
 						'conditions' => '"Adressefoyer"."adresse_id" = "Adresse"."id"',
 					),
-					10 =>
 					array(
 						'table' => '"situationsdossiersrsa"',
 						'alias' => 'Situationdossierrsa',
 						'type' => 'INNER',
 						'conditions' => '"Situationdossierrsa"."dossier_id" = "Dossier"."id"',
 					),
-					11 =>
 					array(
 						'table' => '"orientsstructs"',
 						'alias' => 'Orientstructpcd',
 						'type' => 'LEFT OUTER',
 						'conditions' => '"Orientstructpcd"."personne_id" = "Personne"."id" AND (("Orientstructpcd"."id" IS NULL) OR ("Orientstructpcd"."id" IN ( SELECT "orientsstructs"."id" AS orientsstructs__id FROM orientsstructs AS orientsstructs WHERE "orientsstructs"."personne_id" = "Personne"."id" AND "orientsstructs"."statut_orient" = \'Orienté\' AND "orientsstructs"."id" NOT IN ( SELECT "orientsstructs"."id" AS orientsstructs__id FROM orientsstructs AS orientsstructs WHERE "orientsstructs"."personne_id" = "Personne"."id" AND "orientsstructs"."statut_orient" = \'Orienté\' AND "orientsstructs"."date_valid" IS NOT NULL ORDER BY "orientsstructs"."date_valid" DESC LIMIT 1 ) ORDER BY "orientsstructs"."date_valid" DESC LIMIT 1 )))',
 					),
-					12 =>
 					array(
 						'table' => '"structuresreferentes"',
 						'alias' => 'Structurereferente',
