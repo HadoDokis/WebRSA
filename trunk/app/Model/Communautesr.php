@@ -83,5 +83,30 @@
 			),
 		);
 
+		/**
+		 * Permet de vérifier que des cases à cocher multiples (ou select
+		 * multiples) comprennent bien au moins une valeur.
+		 *
+		 * @param mixed $check Les données à vérifier
+		 * @param string $modelName Le nom du modèle (HABTM) concerné par les
+		 *	cases à cocher
+		 * @return boolean
+		 */
+		public function checkMultipleSelect( $check, $modelName ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$path = "{$modelName}.{$modelName}";
+
+			if( Hash::check( $check, $path ) ) {
+				$checked = (array)Hash::get( $check, $path );
+				$checked = Hash::filter( $checked );
+
+				return !empty( $checked );
+			}
+
+			return true;
+		}
 	}
 ?>
