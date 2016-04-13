@@ -126,43 +126,6 @@
 		protected function _setRequestData() {
 			$this->controller->request->data = array(
 				'Search' => array(
-//					'Dossier' => array(
-//						'dernier' => '1',
-//						'dtdemrsa' => '0'
-//					),
-//					'Situationdossierrsa' => array(
-//						'etatdosrsa_choice' => '0'
-//					),
-//					'Detailcalculdroitrsa' => array(
-//						'natpf_choice' => '0'
-//					),
-//					'Detaildroitrsa' => array(
-//						'oridemrsa_choice' => '0'
-//					),
-//					'Cui66' => array(
-//						'dateeligibilite' => '0',
-//						'datereception' => '0',
-//						'datecomplet' => '0'
-//					),
-//					'Historiquepositioncui66' => array(
-//						'created' => '0'
-//					),
-//					'Cui' => array(
-//						'dateembauche' => '0',
-//						'findecontrat' => '0',
-//						'effetpriseencharge' => '0',
-//						'finpriseencharge' => '0',
-//						'decisionpriseencharge' => '0',
-//						'faitle' => '0'
-//					),
-//					'Emailcui' => array(
-//						'insertiondate' => '0',
-//						'created' => '0',
-//						'dateenvoi' => '0'
-//					),
-//					'Decisioncui66' => array(
-//						'datedecision' => '0'
-//					),
 					'Pagination' => array(
 						'nombre_total' => '0'
 					)

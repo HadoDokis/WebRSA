@@ -14,7 +14,7 @@
 	 *
 	 * @package app.Test.Fixture
 	 */
-	class CalculdroitrsaFixture extends CakeTestFixture
+	class CalculdroitrsaFixture extends CakeAppTestFixture
 	{
 		/**
 		 * On importe la définition de la table, pas les enregistrements.
