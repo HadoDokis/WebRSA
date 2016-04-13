@@ -276,9 +276,7 @@ document.observe( "dom:loaded", function() {
 		$perm['cancel'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'cancel', $dossierMenu ).'" != "1" ) 
 								|| ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
 		);
-		$perm['delete'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'delete', $dossierMenu ).'" != "1" ) 
-								|| ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
-		);
+		$perm['delete'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'delete', $dossierMenu ).'" != "1" )' );
 		$perm['filelink'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'filelink', $dossierMenu ).'" != "1" )' );
 
 
@@ -321,7 +319,10 @@ document.observe( "dom:loaded", function() {
 				array(
 					'options' => $options,
 					'tooltip' => array( 'Decisiondossierpcg66.motifannulation' ), // FIXME Ne fonctionne pas sous default3
-					'paginate' => false
+					'paginate' => false,
+					'innerTable' => array(
+						'Decisiondossierpcg66.motifannulation' => array('label' => __d('decisiondossierpcg66', 'Decisiondossierpcg66.motifannulation'))
+					)
 				)
 			)
 		);
