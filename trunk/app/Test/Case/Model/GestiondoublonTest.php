@@ -182,6 +182,7 @@
 		public function setUp() {
 			parent::setUp();
 			$this->Gestiondoublon = ClassRegistry::init( 'Gestiondoublon' );
+			Configure::write('Gestionsdoublons.index.useTag', false);
 
 			$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
 			if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {

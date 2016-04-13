@@ -52,6 +52,8 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			Configure::write( 'CG.cantons', false );
+			Configure::write( 'Cg.departement', 93 );
 			$this->Demenagementhorsdpt = ClassRegistry::init( 'Demenagementhorsdpt' );
 		}
 
@@ -94,7 +96,6 @@
 		 * Test de la méthode Demenagementhorsdpt::search()
 		 */
 		public function testSearch() {
-			Configure::write( 'Cg.departement', 93 );
 			$search = array( 'Adresse' => array( 'numcom' => '93000' ) );
 			$query = $this->Demenagementhorsdpt->search( $search );
 			$result = (array)Hash::get( $query, 'conditions' );

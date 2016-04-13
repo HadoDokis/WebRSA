@@ -310,7 +310,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$this->setUpUrl();
 			Configure::write( 'CG.cantons', true );
 			Configure::write( 'Cg.departement', 58 );
-
+			
+			// Utile pour réinitialiser la validation sur Adresse qui est modifié en cas de AllTests
+			ClassRegistry::init('Adresse')->validate['nomvoie'] = array();
+			ClassRegistry::init('Adresse')->validate['nomcom'] = array('notEmpty');
+			
 			$params = array(
 				'options' => array(
 					'Adresse' => array(
@@ -329,7 +333,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocAdresse( $params );
 
-			$expected = '<div class="input text required"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire</label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseNomcom">Commune de l\'allocataire</label><input name="data[Search][Adresse][nomcom]" type="text" id="SearchAdresseNomcom"/></div><div class="input select"><label for="SearchAdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcom]" id="SearchAdresseNumcom">
+			$expected = '<div class="input text"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire</label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseNomcom">Commune de l\'allocataire</label><input name="data[Search][Adresse][nomcom]" type="text" id="SearchAdresseNomcom"/></div><div class="input select"><label for="SearchAdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcom]" id="SearchAdresseNumcom">
 <option value=""></option>
 <option value="58000">Nevers</option>
 </select></div><div class="input select required"><label for="SearchCantonCanton">Canton</label><select name="data[Search][Canton][canton]" id="SearchCantonCanton">

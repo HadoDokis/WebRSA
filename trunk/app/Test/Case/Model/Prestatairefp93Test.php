@@ -24,6 +24,7 @@
 		public $fixtures = array(
 			'app.Actionfp93',
 			'app.Prestatairefp93',
+			'app.Adresseprestatairefp93',
 		);
 
 		/**

@@ -139,9 +139,9 @@
 				'fields' => array(),
 				'conditions' => array(),
 				'order' => array(
-					'( SUBSTR("Adresse"."codepos", 1, 2) ) AS "Adresse__numdep"',
-					'"Personne"."dtnai" DESC',
-				),
+					'( SUBSTR("Adresse"."codepos", 1, 2) ) AS "Adresse__numdep"' => 'ASC',
+					'"Personne"."dtnai"' => 'DESC'
+				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 			

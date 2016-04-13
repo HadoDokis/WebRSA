@@ -99,15 +99,20 @@
 		 * @return void
 		 */
 		public function testBlocAdresse() {
+			// Utile pour réinitialiser la validation sur Adresse qui est modifié en cas de AllTests
+			ClassRegistry::init('Adresse')->validate['nomvoie'] = array();
+			ClassRegistry::init('Adresse')->validate['nomcom'] = array('notEmpty');
+			
 			$result = $this->Search->blocAdresse( array( '1' => 'One' ), array( '2' => 'Two' ) );
-			$expected = '<fieldset><legend>Recherche par Adresse</legend><div class="input text required"><label for="AdresseNomvoie">Nom de voie de l\'allocataire </label><input name="data[Adresse][nomvoie]" type="text" id="AdresseNomvoie"/></div><div class="input text required"><label for="AdresseNomcom">Commune de l\'allocataire </label><input name="data[Adresse][nomcom]" type="text" id="AdresseNomcom"/></div><div class="input select"><label for="AdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Adresse][numcom]" id="AdresseNumcom"> <option value=""></option> <option value="1">One</option> </select></div></fieldset>';
+			$expected = '<fieldset><legend>Recherche par Adresse</legend><div class="input text"><label for="AdresseNomvoie">Nom de voie de l\'allocataire </label><input name="data[Adresse][nomvoie]" type="text" id="AdresseNomvoie"/></div><div class="input text required"><label for="AdresseNomcom">Commune de l\'allocataire </label><input name="data[Adresse][nomcom]" type="text" id="AdresseNomcom"/></div><div class="input select"><label for="AdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Adresse][numcom]" id="AdresseNumcom"> <option value=""></option> <option value="1">One</option> </select></div></fieldset>';
+			
 			$expected = preg_replace( '/[[:space:]]+/m', ' ', $expected );
 			$result = preg_replace( '/[[:space:]]+/m', ' ', $result );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			Configure::write( 'CG.cantons', true );
 			$result = $this->Search->blocAdresse( array( '1' => 'One' ), array( '2' => 'Two' ) );
-			$expected = '<fieldset><legend>Recherche par Adresse</legend><div class="input text required"><label for="AdresseNomvoie">Nom de voie de l\'allocataire </label><input name="data[Adresse][nomvoie]" type="text" id="AdresseNomvoie"/></div><div class="input text required"><label for="AdresseNomcom">Commune de l\'allocataire </label><input name="data[Adresse][nomcom]" type="text" id="AdresseNomcom"/></div><div class="input select"><label for="AdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Adresse][numcom]" id="AdresseNumcom"> <option value=""></option> <option value="1">One</option> </select></div><div class="input select required"><label for="CantonCanton">Canton</label><select name="data[Canton][canton]" id="CantonCanton"> <option value=""></option> <option value="2">Two</option> </select></div></fieldset>';
+			$expected = '<fieldset><legend>Recherche par Adresse</legend><div class="input text"><label for="AdresseNomvoie">Nom de voie de l\'allocataire </label><input name="data[Adresse][nomvoie]" type="text" id="AdresseNomvoie"/></div><div class="input text required"><label for="AdresseNomcom">Commune de l\'allocataire </label><input name="data[Adresse][nomcom]" type="text" id="AdresseNomcom"/></div><div class="input select"><label for="AdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Adresse][numcom]" id="AdresseNumcom"> <option value=""></option> <option value="1">One</option> </select></div><div class="input select required"><label for="CantonCanton">Canton</label><select name="data[Canton][canton]" id="CantonCanton"> <option value=""></option> <option value="2">Two</option> </select></div></fieldset>';
 			$expected = preg_replace( '/[[:space:]]+/m', ' ', $expected );
 			$result = preg_replace( '/[[:space:]]+/m', ' ', $result );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );

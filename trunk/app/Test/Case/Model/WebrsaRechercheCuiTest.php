@@ -56,6 +56,7 @@
 		public function setUp() {
 			Configure::write( 'Cg.departement', 66 );
 			Configure::write( 'CG.cantons', true );
+			Configure::write( 'Canton.useAdresseCanton', true );
 
 			parent::setUp();
 			$this->WebrsaRechercheCui = ClassRegistry::init( 'WebrsaRechercheCui' );
@@ -99,7 +100,8 @@
 				'Suspensioncui66' => 'LEFT OUTER',
 				'Historiquepositioncui66' => 'LEFT OUTER',
 				'Canton' => 'LEFT OUTER',
-				'Entreeromev3' => 'LEFT OUTER'
+				'Entreeromev3' => 'LEFT OUTER',
+				'AdresseCanton' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -129,7 +131,8 @@
 				'Suspensioncui66' => 'LEFT OUTER',
 				'Historiquepositioncui66' => 'LEFT OUTER',
 				'Canton' => 'LEFT OUTER',
-				'Entreeromev3' => 'LEFT OUTER'
+				'Entreeromev3' => 'LEFT OUTER',
+				'AdresseCanton' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

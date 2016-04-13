@@ -30,6 +30,12 @@
 		 * @var WebrsaRechercheDossier
 		 */
 		public $WebrsaRechercheDossier = null;
+		
+		public function setUp() {
+			parent::setUp();
+			Configure::write( 'CG.cantons', false );
+			Configure::write( 'Canton.useAdresseCanton', false );
+		}
 
 		/**
 		 * Préparation du test manuelle pour un département en particulier.

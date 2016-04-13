@@ -78,7 +78,7 @@
 				'Detaildroitrsa' => 'INNER',
 			);
 
-			$cacheKey = Inflector::underscore( $this->Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) ).'_'.$baseModelName;
+			$cacheKey = Inflector::underscore( $this->Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ).'_'. ( $forceBeneficiaire ? '1' : '0' ) ).'_'.$baseModelName;
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {

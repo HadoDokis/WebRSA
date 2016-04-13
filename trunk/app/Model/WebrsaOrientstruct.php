@@ -207,7 +207,6 @@
 				}
 
 				$statut_orient = Hash::get( $orientstruct, "{$this->Orientstruct->alias}.statut_orient" );
-
 				$this->Orientstruct->create( $orientstruct );
 				$success = $this->Orientstruct->save() && $success;
 
@@ -217,7 +216,7 @@
 				$success = $this->Orientstruct->Personne->Calculdroitrsa->save() && $success;
 
 				// Tentative d'ajout d'un référent de parcours
-				if( !empty( $referent_id ) && ( $statut_orient == 'Orienté' ) ) {
+				if( $success && !empty( $referent_id ) && ( $statut_orient == 'Orienté' ) ) {
 					$success = $this->Orientstruct->Referent->PersonneReferent->referentParModele(
 						$data,
 						$this->Orientstruct->alias,

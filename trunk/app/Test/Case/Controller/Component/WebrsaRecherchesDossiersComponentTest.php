@@ -93,7 +93,10 @@
 
 			Configure::write( 'Cg.departement', 976 );
 			Configure::delete( 'ConfigurableQuery.Dossiers.search' );
-
+			Configure::delete( 'Module.Savesearch.enabled' );
+			Configure::write( 'CG.cantons', false );
+			Configure::write( 'Canton.useAdresseCanton', false );
+			
 			$Request = new CakeRequest( 'dossiers/search', false );
 			$Request->addParams(array( 'controller' => 'dossiers', 'action' => 'search' ) );
 

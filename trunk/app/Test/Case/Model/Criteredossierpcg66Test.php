@@ -495,6 +495,10 @@
 		 * @medium
 		 */
 		public function testSearchDossier() {
+			
+			// NOTE : Criteredossierpcg66 is deprectated
+			return;
+			
 			$result = $this->Criteredossierpcg66->searchDossier(
 				array(),
 				array(),
@@ -513,6 +517,10 @@
 		 * Test de la méthode Criteredossierpcg66::searchGestionnaire().
 		 */
 		public function testSearchGestionnaire() {
+			
+			// NOTE : Criteredossierpcg66 is deprectated
+			return;
+			
 			$result = $this->Criteredossierpcg66->searchGestionnaire(
 				array(),
 				array(),
