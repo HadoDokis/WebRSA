@@ -24,9 +24,6 @@ msgstr "Aucun traitement de présent pour cet allocataire"
 msgid "Traitementspcgs66::decision"
 msgstr "Décision pour le traitement :"
 
-msgid "Traitementpcg66.situationpdo_id"
-msgstr "Motif (situation) de la personne"
-
 msgid "Search.Personnepcg66.dossierpcg66_id"
 msgstr "Liste des dossiers pour cet allocataire : "
 
