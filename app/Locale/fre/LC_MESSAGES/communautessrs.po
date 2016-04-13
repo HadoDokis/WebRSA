@@ -25,6 +25,9 @@ msgstr "Nom"
 msgid "Communautesr.actif"
 msgstr "Actif ?"
 
+msgid "Structurereferente.Structurereferente"
+msgstr "Projets de ville"
+
 msgid "/Communautessrs/add"
 msgstr "Ajouter"
 

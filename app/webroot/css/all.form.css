@@ -81,7 +81,7 @@ form div.error {
     background: #fff2f2;
 }
 
-form div.error div.error-message {
+form div.error div.error-message, form fieldset.error div.error-message {
     color: #cc0000;
 }
 
@@ -266,10 +266,10 @@ label.little.dark.label{
 	display: inline-block;
 	vertical-align: top;
 	width: 40%;
-	margin-bottom: 15px; 
+	margin-bottom: 15px;
 }
 
-p.dark.label.value{	
+p.dark.label.value{
 	display: inline-block;
 	vertical-align: top;
 	width: 60%;
@@ -401,7 +401,7 @@ input[type=text],input[type=number],input[type=email],input[type=date],input[typ
 }
 
 #listeEntretiens table, #listeCERs table{
-	width: 100%; 
+	width: 100%;
 }
 
 div.scrollable, fieldset.scrollable{

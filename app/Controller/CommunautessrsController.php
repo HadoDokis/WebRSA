@@ -97,7 +97,11 @@
 				$this->Communautesr->begin();
 				$this->Communautesr->create( $this->request->data );
 
-				if( $this->Communautesr->save() ) {
+				$success = $this->Communautesr->checkMultipleSelect( $this->request->data, 'Structurereferente' );
+				if( false === $success ) {
+					$this->set( 'checkedError', 'Champ obligatoire' );
+				}
+				if( $this->Communautesr->save() && $success ) {
 					$this->Communautesr->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index' ) );
