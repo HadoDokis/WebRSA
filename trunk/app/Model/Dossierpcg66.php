@@ -1069,6 +1069,7 @@ class Dossierpcg66 extends AppModel {
 					$this->Decisiondossierpcg66->alias . '.decisionpdo_id IS NOT NULL',
 					$this->Decisiondossierpcg66->alias . '.instrencours IS NOT NULL',
 					$this->Decisiondossierpcg66->alias . '.instrencours' => '1',
+					$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 				),
 			),
 			'attavistech' => array(
@@ -1080,6 +1081,7 @@ class Dossierpcg66 extends AppModel {
 						$this->Decisiondossierpcg66->alias . '.instrencours' => '0',
 					),
 					$this->Decisiondossierpcg66->alias . '.avistechnique IS NULL',
+					$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 				),
 			),
 			'attval' => array(
@@ -1092,7 +1094,7 @@ class Dossierpcg66 extends AppModel {
 					),
 					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
 					$this->Decisiondossierpcg66->alias . '.validationproposition IS NULL',
-
+					$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 				),
 			),
 			'transmisop' => array(
@@ -1104,6 +1106,7 @@ class Dossierpcg66 extends AppModel {
 				$this->alias.'.dateimpression IS NOT NULL',
 				$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
 				$this->Decisiondossierpcg66->alias . '.datevalidation <= '.$this->alias.'.dateimpression',
+				$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 				'OR' => array(
 					array(
 						$this->Decisiondossierpcg66->alias . '.etatop IS NOT NULL',
@@ -1125,6 +1128,7 @@ class Dossierpcg66 extends AppModel {
 					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
 					$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
 					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'N',
+					$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 					array(
 						'OR' => array(
 							$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '0',
@@ -1151,6 +1155,7 @@ class Dossierpcg66 extends AppModel {
 					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'N',
 					$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
 					$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
+					$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 				),
 			),
 			'decisionvalidretouravis' => array(
@@ -1168,6 +1173,7 @@ class Dossierpcg66 extends AppModel {
 					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
 					$this->Decisiondossierpcg66->alias . '.retouravistechnique' => '1',
 					$this->Decisiondossierpcg66->alias . '.vuavistechnique' => '0',
+					$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 				),
 			),
 			'decisionvalid' => array(
@@ -1183,6 +1189,7 @@ class Dossierpcg66 extends AppModel {
 					$this->Decisiondossierpcg66->alias . '.avistechnique IS NOT NULL',
 					$this->Decisiondossierpcg66->alias . '.validationproposition IS NOT NULL',
 					$this->Decisiondossierpcg66->alias . '.validationproposition' => 'O',
+					$this->Decisiondossierpcg66->alias . '.etatdossierpcg IS NULL',
 					array(
 						'OR' => array(
 							array(

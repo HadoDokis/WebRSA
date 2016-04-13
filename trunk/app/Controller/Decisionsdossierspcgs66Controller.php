@@ -1088,7 +1088,8 @@
 				'recursive' => -1
 			);
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find( 'first', $qd_decisiondossierpcg66 );
-
+			$dossierpcg66_id = Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id');
+			
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) ) );
 
 			$dossier_id = $this->Decisiondossierpcg66->dossierId( $id );
@@ -1112,7 +1113,7 @@
 					)
 				) && $saved;
 
-				if( $saved ) {
+				if( $saved && $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id) ) {
 					$this->Decisiondossierpcg66->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

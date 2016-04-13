@@ -19,15 +19,16 @@ echo $this->Xhtml->tag('h1', $this->pageTitle);
             'Decisiondossierpcg66.datepropositiontechnicien',
             'Decisiondossierpcg66.avistechnique',
             'Decisiondossierpcg66.commentaireavistechnique' => array( 'type' => 'text'),
-            'Decisiondossierpcg66.useravistechnique_id' => array('type' => 'text', 'value' => Hash::get($gestionnaire, Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.useravistechnique_id'))),
+            'Decisiondossierpcg66.useravistechnique_id' => array('type' => 'text', 'value' => Hash::get($gestionnaire, (string)Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.useravistechnique_id'))),
             'Decisiondossierpcg66.dateavistechnique',
             'Decisiondossierpcg66.validationproposition',
             'Decisiondossierpcg66.commentairevalidation' => array( 'type' => 'text'),
-            'Decisiondossierpcg66.userproposition_id' => array('type' => 'text', 'value' => Hash::get($gestionnaire, Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id'))),
+            'Decisiondossierpcg66.userproposition_id' => array('type' => 'text', 'value' => Hash::get($gestionnaire, (string)Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id'))),
             'Decisiondossierpcg66.datevalidation',
             'Dossierpcg66.etatdossierpcg',
             'Notificationdecisiondossierpcg66.name' => array('label' => 'Transmission à', 'value' => $orgs),
-            'Decisiondossierpcg66.datetransmissionop'
+            'Decisiondossierpcg66.datetransmissionop',
+			'Decisiondossierpcg66.motifannulation'
         ),
         array(
             'class' => 'aere',
