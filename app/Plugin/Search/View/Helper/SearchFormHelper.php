@@ -81,7 +81,8 @@
 				'domain' => 'search_plugin',
 				'options' => array(),
 				'hide' => false,
-				'buttons' => false
+				'buttons' => false,
+				'autoCheck' => false
 			);
 			$params = $params + $default;
 
@@ -90,23 +91,26 @@
 			$fieldsetId = $this->domId( "{$path}_fieldset" );
 			$choicePath = "{$path}_choice";
 
-			$input = $this->Form->input(
-				$choicePath,
-				array(
-					'label' => __d( $params['domain'], $choicePath ),
-					'type' => 'checkbox'
-				)
+			$selector = 'input[name=\\\'data['.str_replace( '.', '][', $path ).'][]\\\']';
+
+			$choiceParams = array(
+				'label' => __d( $params['domain'], $choicePath ),
+				'type' => 'checkbox'
 			);
+
+			if( Hash::get( $params, 'autoCheck' ) ) {
+				$choiceParams['onclick'] = "try { toutCocher( '{$selector}' ); } catch( e ) { console.log( e ); };";
+			}
+
+			$input = $this->Form->input( $choicePath, $choiceParams );
 
 			// Boutons "Tout cocher" / "Tout décocher" optionnels
 			$buttons = null;
 			if( Hash::get( $params, 'buttons' ) ) {
-				$selector = 'input[name=\\\'data['.str_replace( '.', '][', $path ).'][]\\\']';
-
 				$buttons = $this->Html->tag(
 					'div',
-					$this->Form->button( 'Tout cocher', array( 'onclick' => "try { toutCocher( '{$selector}' ); } catch( e ) { console.log( e ); }; return false;" ) )
-					.$this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '{$selector}' ); return false;" ) ),
+					$this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => "try { toutCocher( '{$selector}' ); } catch( e ) { console.log( e ); }; return false;" ) )
+					.$this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => "toutDecocher( '{$selector}' ); return false;" ) ),
 					array(
 						'class' => 'buttons'
 					)
