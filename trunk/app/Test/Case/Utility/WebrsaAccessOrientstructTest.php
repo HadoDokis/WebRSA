@@ -56,7 +56,7 @@
 					'delete' => false,
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEqual( $result, $expected, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
@@ -78,11 +78,32 @@
 
 			// Défini
 			$result = WebrsaAccessOrientstruct::check( 'impression', $record, $params );
-			$this->assertTrue( $result );
+			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 
 			// Non défini
 			$result = WebrsaAccessOrientstruct::check( 'foo', $record, $params );
-			$this->assertFalse( $result );
+			$this->assertFalse( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
+		}
+
+		/**
+		 * @covers WebrsaAccessOrientstruct::_edit
+		 */
+		public function test_edit() {
+			Configure::write( 'Cg.departement', 58 );
+			$record = array(
+				'Orientstruct' => array(
+					'rgorient' => 1,
+					'printable' => true,
+					'linked_records' => true,
+				)
+			);
+			$params = array(
+				'ajout_possible' => true,
+				'reorientationseps' => false
+			);
+
+			$result = WebrsaAccessOrientstruct::check( 'edit', $record, $params );
+			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 	}
 ?>
