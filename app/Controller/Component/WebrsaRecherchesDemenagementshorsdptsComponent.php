@@ -20,7 +20,27 @@
 			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 
-			$query = parent::_queryConditions( $query, $filters, $params );
+			// On veut que les conditions sur les zones géographiques soit faites sur les rangs 02 et 03
+			$query = parent::_queryConditions(
+				$query,
+				$filters,
+				$params + array( 'completequery_zonesgeos_disabled' => true )
+			);
+
+			$q = $this->Allocataires->Gestionzonesgeos->completeQuery( array() );
+			$conditions = array(
+				'OR' => array(
+					array_words_replace(
+						$q['conditions'],
+						array( 'Adresse' => 'Adresse2', 'Adressefoyer' => 'Adressefoyer2' )
+					),
+					array_words_replace(
+						$q['conditions'],
+						array( 'Adresse' => 'Adresse3', 'Adressefoyer' => 'Adressefoyer3' )
+					)
+				)
+			);
+			$query['conditions'][] = $conditions;
 
 			// Conditions sur les dates d'emménagement pour les externes
 			if( $departement === 93 && ( strpos( $Controller->Session->read( 'Auth.User.type' ), 'externe_' ) === 0 ) ) {
