@@ -1042,7 +1042,7 @@ $success = true; // FIXME
 		 * Cohorte
 		 */
 		public function cohorte_validation() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Validation' ) );
 
 			$this->Aideapre66->validate = array();
@@ -1053,7 +1053,7 @@ $success = true; // FIXME
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_validation() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Validation' ) );
 		}
 
@@ -1127,7 +1127,7 @@ $success = true; // FIXME
 		 * Cohorte
 		 */
 		public function cohorte_transfert() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Transfert' ) );
 
 			$this->Aideapre66->validate = array();
@@ -1138,7 +1138,7 @@ $success = true; // FIXME
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_transfert() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Transfert' ) );
 		}
 
@@ -1146,7 +1146,7 @@ $success = true; // FIXME
 		 * Cohorte
 		 */
 		public function cohorte_traitement() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66' );
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteApre66Traitement' ) );
 
 			$this->Aideapre66->validate = array();
@@ -1157,7 +1157,7 @@ $success = true; // FIXME
 		 * Export du tableau de résultats de la recherche
 		 */
 		public function exportcsv_traitement() {
-			$Recherches = $this->Components->load( 'WebrsaCohortesApres66New' );
+			$Recherches = $this->Components->load( 'WebrsaCohortesApres66' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteApre66Traitement' ) );
 		}
 
