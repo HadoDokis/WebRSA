@@ -52,7 +52,7 @@
 
 		echo $this->element( 'search_footer', array( 'modelName' => 'Personne', 'url' => array( 'action' => 'exportcsv_noninscritspe' ) ) );
 
-		echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'return toutCocher();' ) );
-		echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'return toutDecocher();' ) );
+		echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => 'return toutCocher();' ) );
+		echo $this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => 'return toutDecocher();' ) );
 	}
 ?>

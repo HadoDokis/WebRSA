@@ -137,8 +137,8 @@
 			echo $this->Xform->end();
 
 			echo $pagination;
-			echo $this->Form->button( 'Tout Activer', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Activer', true );" ) );
-			echo $this->Form->button( 'Tout Désactiver', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Desactiver', true );" ) );
+			echo $this->Form->button( 'Tout Activer', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Activer', true );" ) );
+			echo $this->Form->button( 'Tout Désactiver', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Desactiver', true );" ) );
 		}
 
 	}

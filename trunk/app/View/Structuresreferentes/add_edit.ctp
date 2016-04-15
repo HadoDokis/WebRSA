@@ -54,8 +54,8 @@
 			observeDisableFieldsetOnCheckbox( 'StructurereferenteFiltreZoneGeo', 'filtres_zone_geo', false );
 		} );
 	</script>
-	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherZonesgeographiques();" ) );?>
-	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherZonesgeographiques();" ) );?>
+	<?php echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => "return toutCocherZonesgeographiques();" ) );?>
+	<?php echo $this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => "return toutDecocherZonesgeographiques();" ) );?>
 
 	<?php echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 </fieldset>

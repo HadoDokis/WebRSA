@@ -26,8 +26,8 @@
 		echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options ) );
 	?>
 	<div class="submit noprint">
-		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
-		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'button', 'type' => 'submit' ) );?>
+		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'button', 'type' => 'reset' ) );?>
 	</div>
 <?php
 	echo $this->Form->end();
@@ -52,7 +52,7 @@
 
 		echo $this->element( 'search_footer', array( 'modelName' => 'Personne', 'url' => array( 'action' => 'exportcsv_radiespe' ) ) );
 
-		echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'return toutCocher();' ) );
-		echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'return toutDecocher();' ) );
+		echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => 'return toutCocher();' ) );
+		echo $this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => 'return toutDecocher();' ) );
 	}
 ?>

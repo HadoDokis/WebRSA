@@ -92,6 +92,6 @@
 ?>
 <?php endif;?>
 <?php if( !empty( $radiespe ) ):?>
-	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'return toutCocher();' ) );?>
-	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'return toutDecocher();' ) );?>
+	<?php echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => 'return toutCocher();' ) );?>
+	<?php echo $this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => 'return toutDecocher();' ) );?>
 <?php endif;?>

@@ -25,8 +25,8 @@
 		// Boutons "Tout cocher"
 		$buttons = null;
 		if( isset( $results ) ) {
-			$buttons = $this->Form->button( 'Tout valider', array( 'onclick' => "return toutChoisir( $( '{$cohorteFormId}' ).getInputs( 'radio' ), '1', true );" ) );
-			$buttons .= $this->Form->button( 'Tout mettre en attente', array( 'onclick' => "return toutChoisir( $( '{$cohorteFormId}' ).getInputs( 'radio' ), '0', true );" ) );
+			$buttons = $this->Form->button( 'Tout valider', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( '{$cohorteFormId}' ).getInputs( 'radio' ), '1', true );" ) );
+			$buttons .= $this->Form->button( 'Tout mettre en attente', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( '{$cohorteFormId}' ).getInputs( 'radio' ), '0', true );" ) );
 		}
 	?>
 </fieldset>
