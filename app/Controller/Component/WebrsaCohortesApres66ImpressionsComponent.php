@@ -21,7 +21,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Allocataires', 'Gedooo.Gedooo', 'WebrsaCohortesApres66New' );
+		public $components = array( 'Allocataires', 'Gedooo.Gedooo', 'WebrsaCohortesApres66' );
 		
 		/**
 		 * Retourne les options de type "enum", c'est à dire liées aux schémas des
@@ -32,7 +32,7 @@
 		 * @return array
 		 */
 		protected function _optionsEnums( array $params ) {
-			return $this->WebrsaCohortesApres66New->{__FUNCTION__}($params);
+			return $this->WebrsaCohortesApres66->{__FUNCTION__}($params);
 		}
 
 		/**
@@ -45,7 +45,7 @@
 		 * @return array
 		 */
 		protected function _optionsRecords( array $params ) {
-			return $this->WebrsaCohortesApres66New->{__FUNCTION__}($params);
+			return $this->WebrsaCohortesApres66->{__FUNCTION__}($params);
 		}
 
 		/**
@@ -57,7 +57,7 @@
 		 * @return array
 		 */
 		protected function _optionsRecordsModels( array $params ) {
-			return $this->WebrsaCohortesApres66New->{__FUNCTION__}($params);
+			return $this->WebrsaCohortesApres66->{__FUNCTION__}($params);
 		}
 
 		/**
