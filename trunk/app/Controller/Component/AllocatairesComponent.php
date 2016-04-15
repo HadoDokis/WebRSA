@@ -68,12 +68,15 @@
 		 * Ajout de conditions supplémentaires liées à l'utilisateur connecté.
 		 *
 		 * @param array $query
-		 * @param array $params
+		 * @param array $params Clé completequery_zonesgeos_disabled pour ne pas
+		 *	appliquer les filtres par zones géographiques.
 		 * @return array
 		 */
 		public function addAllConditions( array $query, array $params = array() ) {
 			$params += array( 'structurereferente_id' => false );
-			$query = $this->Gestionzonesgeos->completeQuery( $query, $params['structurereferente_id'] );
+			if( true !== Hash::get( $params, 'completequery_zonesgeos_disabled' ) ) {
+				$query = $this->Gestionzonesgeos->completeQuery( $query, $params['structurereferente_id'] );
+			}
 			$query['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$query = $this->addQdFilters( $query );
 
