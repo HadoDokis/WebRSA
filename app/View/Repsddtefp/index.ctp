@@ -19,7 +19,7 @@
 ?>
 <?php if( !empty( $this->request->data ) && isset( $listeSexe ) && isset( $listeAge ) ) :?>
 	<div class="submit noprint">
-		<?php echo $this->Form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
+		<?php echo $this->Form->button( 'Imprimer cette page', array( 'type' => 'button', 'onclick' => 'printit();' ) );?>
 	</div>
 <?php endif;?>
 <?php

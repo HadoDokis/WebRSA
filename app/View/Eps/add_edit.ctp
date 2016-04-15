@@ -58,9 +58,9 @@
 		)
 	);
 
-	echo $this->Form->button('Tout cocher', array('onclick' => "GereChkbox('listeZonesgeographiques','cocher');return false;"));
+	echo $this->Form->button('Tout cocher', array( 'type' => 'button', 'onclick' => "GereChkbox('listeZonesgeographiques','cocher');return false;"));
 
-	echo $this->Form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');return false;"));
+	echo $this->Form->button('Tout décocher', array( 'type' => 'button', 'onclick' => "GereChkbox('listeZonesgeographiques','decocher');return false;"));
 
 	$i = 0;
 	if ( isset( $this->validationErrors['Ep']['Membreep.Membreep'] ) && !empty( $this->validationErrors['Ep']['Membreep.Membreep'] ) ) {

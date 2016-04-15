@@ -102,8 +102,8 @@
 			echo $pagination;
 
             // Demande d'amélioration #6475
-            echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '1', true );" ) );
-			echo $this->Form->button( 'Tout Mettre En Attente', array( 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '0', true );" ) );
+            echo $this->Form->button( 'Tout Valider', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '1', true );" ) );
+			echo $this->Form->button( 'Tout Mettre En Attente', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '0', true );" ) );
 
 		}
 	}

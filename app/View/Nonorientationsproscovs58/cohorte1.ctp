@@ -127,8 +127,8 @@
 
 			echo $this->Observer->disableFormOnSubmit( 'Nonorientationsproscovs58CohorteForm' );
 
-			echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( '#Nonorientationsproscovs58CohorteForm input[type=checkbox]' ); return false;" ) );
-			echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '#Nonorientationsproscovs58CohorteForm input[type=checkbox]' ); return false;" ) );
+			echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => "toutCocher( '#Nonorientationsproscovs58CohorteForm input[type=checkbox]' ); return false;" ) );
+			echo $this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => "toutDecocher( '#Nonorientationsproscovs58CohorteForm input[type=checkbox]' ); return false;" ) );
 		}
 	}
 ?>

@@ -213,14 +213,14 @@
 
 		<?php
 			if( Configure::read( 'Cg.departement' ) == 58 ){
-				echo $this->Form->button( 'Tout cocher COV', array( 'onclick' => "return toutCocherCov('input[type=checkbox].passagecov.enabled', 'passagecov', 'passageep');" ) );
-				echo $this->Form->button( 'Tout décocher COV', array( 'onclick' => "return toutDecocherCov('input[type=checkbox].passagecov.enabled', 'passagecov', 'passageep');" ) );
+				echo $this->Form->button( 'Tout cocher COV', array( 'type' => 'button', 'onclick' => "return toutCocherCov('input[type=checkbox].passagecov.enabled', 'passagecov', 'passageep');" ) );
+				echo $this->Form->button( 'Tout décocher COV', array( 'type' => 'button', 'onclick' => "return toutDecocherCov('input[type=checkbox].passagecov.enabled', 'passagecov', 'passageep');" ) );
 			}
 		?>
 		<?php
 			if( Configure::read( 'Cg.departement' ) == 93 ){
-				echo $this->Form->button( 'Tout cocher EP', array( 'onclick' => "return toutCocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
-				echo $this->Form->button( 'Tout décocher EP', array( 'onclick' => "return toutDecocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
+				echo $this->Form->button( 'Tout cocher EP', array( 'type' => 'button', 'onclick' => "return toutCocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
+				echo $this->Form->button( 'Tout décocher EP', array( 'type' => 'button', 'onclick' => "return toutDecocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
 			}
 		?>
 	<?php endif;?>

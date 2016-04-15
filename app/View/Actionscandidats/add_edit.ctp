@@ -21,9 +21,9 @@
 			'Actioncandidat.numcodefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
 		)
 	);
-	
+
 	echo '<div class="notice">Dernier numéro du code famille trouvé : <strong id="lastcodefamille"></strong></div>';
-	
+
 	echo $this->Default2->subform(
 		array(
 			'Actioncandidat.hasfichecandidature' => array( 'domain' => 'actioncandidat', 'required' => true, 'type'=>'radio', 'options' => $options['Actioncandidat']['hasfichecandidature'] ),
@@ -76,7 +76,7 @@
 				$('lastcodefamille').innerHTML = '';
 			}
 		}
-		
+
 		$('ActioncandidatThemecode').observe('change', lastCodeFamille);
 		$('ActioncandidatCodefamille').observe('change', lastCodeFamille);
 	} );
@@ -235,8 +235,8 @@
 		</script>
 		<fieldset class="col2">
 			<legend>Zones géographiques</legend>
-			<?php 
-			
+			<?php
+
 			/* NOTE : ActioncandidatFiltreZoneGeo n'existe pas
 
 
@@ -245,8 +245,8 @@
 					observeDisableFieldsetOnCheckbox( 'ActioncandidatFiltreZoneGeo', 'filtres_zone_geo', false );
 				} );
 			</script>*/?>
-				<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherZonesgeographiques();" ) );?>
-				<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherZonesgeographiques();" ) );?>
+				<?php echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => "return toutCocherZonesgeographiques();" ) );?>
+				<?php echo $this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => "return toutDecocherZonesgeographiques();" ) );?>
 
 
 			<?php
@@ -274,12 +274,8 @@
 			}
 		</script>
 		<fieldset class="invisible">
-		<?php
-// 			echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
-// 			echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
-		?>
-			<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherMotifs();" ) );?>
-			<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherMotifs();" ) );?>
+			<?php echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => "return toutCocherMotifs();" ) );?>
+			<?php echo $this->Form->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => "return toutDecocherMotifs();" ) );?>
 			<?php
 				echo $this->Default2->subform(
 					array(

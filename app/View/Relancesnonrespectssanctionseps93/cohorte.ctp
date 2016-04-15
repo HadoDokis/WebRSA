@@ -190,8 +190,8 @@
 			echo '</tbody></table>';
 
 			echo '<div class="selectall">';
-			echo $this->Form->button( 'Tout Relancer', array( 'onclick' => "return toutChoisir( $( 'Relancenonrespectsanctionep93Form' ).getInputs( 'radio' ), 'R', true );" ) );
-			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'Relancenonrespectsanctionep93Form' ).getInputs( 'radio' ), 'E', true );" ) );
+			echo $this->Form->button( 'Tout Relancer', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( 'Relancenonrespectsanctionep93Form' ).getInputs( 'radio' ), 'R', true );" ) );
+			echo $this->Form->button( 'Tout mettre En attente', array( 'type' => 'button', 'onclick' => "return toutChoisir( $( 'Relancenonrespectsanctionep93Form' ).getInputs( 'radio' ), 'E', true );" ) );
 			echo '</div>';
 
 			echo $pagination;
