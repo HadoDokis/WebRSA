@@ -28,19 +28,21 @@
 			);
 
 			$q = $this->Allocataires->Gestionzonesgeos->completeQuery( array() );
-			$conditions = array(
-				'OR' => array(
-					array_words_replace(
-						$q['conditions'],
-						array( 'Adresse' => 'Adresse2', 'Adressefoyer' => 'Adressefoyer2' )
-					),
-					array_words_replace(
-						$q['conditions'],
-						array( 'Adresse' => 'Adresse3', 'Adressefoyer' => 'Adressefoyer3' )
+			if( !empty( $q ) ) {
+				$conditions = array(
+					'OR' => array(
+						array_words_replace(
+							$q['conditions'],
+							array( 'Adresse' => 'Adresse2', 'Adressefoyer' => 'Adressefoyer2' )
+						),
+						array_words_replace(
+							$q['conditions'],
+							array( 'Adresse' => 'Adresse3', 'Adressefoyer' => 'Adressefoyer3' )
+						)
 					)
-				)
-			);
-			$query['conditions'][] = $conditions;
+				);
+				$query['conditions'][] = $conditions;
+			}
 
 			// Conditions sur les dates d'emménagement pour les externes
 			if( $departement === 93 && ( strpos( $Controller->Session->read( 'Auth.User.type' ), 'externe_' ) === 0 ) ) {
