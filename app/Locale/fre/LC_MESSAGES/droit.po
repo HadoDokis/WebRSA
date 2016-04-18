@@ -696,7 +696,7 @@ msgid "Covs58:impressiondecision"
 msgstr "Impression d'une décision"
 
 msgid "Covs58:visualisationdecisions"
-msgstr "Visualisation des décision"
+msgstr "Visualisation des décisions"
 
 ###############################################################################
 
