@@ -21,6 +21,7 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
+			'Conditionnable',
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(
@@ -71,48 +72,45 @@
 		public static $etatsEnCours = array( 'cree', 'associe', 'valide', 'decision' );
 
 		/**
+		 * Moteur de recherche par COV.
 		 *
-		 * @param array $criterescov58
+		 * @param array $search
 		 * @return array
 		 */
-		public function search( $criterescov58 ) {
-			/// Conditions de base
-
-			$conditions = array();
-
-			if ( isset($criterescov58['Cov58']['name']) && !empty($criterescov58['Cov58']['name']) ) {
-				$conditions[] = array( 'Cov58.name ILIKE' => $this->wildcard( $criterescov58['Cov58']['name'] ) );
-			}
-
-			if ( isset($criterescov58['Cov58']['sitecov58_id']) && !empty($criterescov58['Cov58']['sitecov58_id']) ) {
-				$conditions[] = array( 'Cov58.sitecov58_id' => $criterescov58['Cov58']['sitecov58_id'] );
-			}
-
-			if ( isset($criterescov58['Cov58']['lieu']) && !empty($criterescov58['Cov58']['lieu']) ) {
-				$conditions[] = array('Cov58.lieu'=>$criterescov58['Cov58']['lieu']);
-			}
-
-			/// Critères sur le Comité - date du comité
-			if( isset( $criterescov58['Cov58']['datecommission'] ) && !empty( $criterescov58['Cov58']['datecommission'] ) ) {
-				$valid_from = ( valid_int( $criterescov58['Cov58']['datecommission_from']['year'] ) && valid_int( $criterescov58['Cov58']['datecommission_from']['month'] ) && valid_int( $criterescov58['Cov58']['datecommission_from']['day'] ) );
-				$valid_to = ( valid_int( $criterescov58['Cov58']['datecommission_to']['year'] ) && valid_int( $criterescov58['Cov58']['datecommission_to']['month'] ) && valid_int( $criterescov58['Cov58']['datecommission_to']['day'] ) );
-				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Cov58.datecommission BETWEEN \''.implode( '-', array( $criterescov58['Cov58']['datecommission_from']['year'], $criterescov58['Cov58']['datecommission_from']['month'], $criterescov58['Cov58']['datecommission_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterescov58['Cov58']['datecommission_to']['year'], $criterescov58['Cov58']['datecommission_to']['month'], $criterescov58['Cov58']['datecommission_to']['day'] ) ).'\'';
-				}
-			}
-
+		public function search( array $search = array() ) {
 			$query = array(
 				'fields' => array(
 					'Cov58.id',
 					'Cov58.name',
 					'Cov58.datecommission',
 					'Cov58.etatcov',
-					'Cov58.observation'
+					'Cov58.observation',
+					'Sitecov58.name'
 				),
-				'contain'=> array( 'Sitecov58' => array( 'fields' => array( 'name' ) ) ),
+				'joins' => array(
+					$this->join( 'Sitecov58', array( 'type' => 'iNNER' ) )
+				),
+				'contain' => false,
+				'conditions' => array(),
 				'order' => array( '"Cov58"."datecommission" ASC' ),
-				'conditions' => $conditions
 			);
+
+			// Valeurs approchantes
+			$name = Hash::get( $search, 'Cov58.name' );
+			if( !empty( $name ) ) {
+				$query['conditions'][] = array( 'Cov58.name ILIKE' => $this->wildcard( $name ) );
+			}
+
+			// Valeurs exactes
+			foreach( array( 'sitecov58_id', 'lieu', 'etatcov' ) as $key ) {
+				$value = Hash::get( $search, "Cov58.{$key}" );
+				if( !empty( $value ) ) {
+					$query['conditions'][] = array( "Cov58.{$key}" => $value );
+				}
+			}
+
+			// Plages de dates
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, array( 'Cov58.datecommission' ) );
 
 			return $query;
 		}

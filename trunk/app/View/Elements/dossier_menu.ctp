@@ -197,6 +197,12 @@
 					$subAllocataire['Accompagnement du parcours']['Actualisation suivi']['Relances'] = array( 'url' => array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $personne['id'] ) );
 				}
 
+				if( $departement == 58 ) {
+					$subAllocataire['Accompagnement du parcours']['Historique des COV'] = array(
+						'url' => array( 'controller' => 'historiquescovs58', 'action' => 'index', $personne['id'] ),
+					);
+				}
+
 				$subAllocataire['Accompagnement du parcours']['Historique des EPs'] = array(
 					'url' => array( 'controller' => 'historiqueseps', 'action' => 'index', $personne['id'] ),
 				);

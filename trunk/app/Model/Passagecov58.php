@@ -187,5 +187,33 @@
 				)
 			);
 		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$query = array(
+				'fields' => array( 'Dossiercov58.personne_id' ),
+				'joins' => array(
+					$this->join( 'Dossiercov58', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $query );
+
+			if( !empty( $result ) ) {
+				return $result['Dossiercov58']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

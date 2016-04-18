@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
 	 * La classe Covs58Controller ...
@@ -17,7 +18,20 @@
 	{
 		public $name = 'Covs58';
 		public $uses = array( 'Cov58', 'Option' );
-		public $helpers = array( 'Default', 'Default2' );
+
+		/**
+		 * Helpers utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Search.SearchForm',
+		);
 		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'Gedooo.Gedooo' );
 
 		public $commeDroit = array(
@@ -35,19 +49,25 @@
 				'covs58::printConvocationBeneficiaire',
 				'covs58::printConvocationsBeneficiaires',
 				'covs58::printOrdreDuJour',
+				'covs58::ordredujour',
 				'covs58::edit',
 				'covs58::delete',
+				'covs58::decisioncov'
 			),
 			'traite' => array(
 				'covs58::printOrdreDuJour',
+				'covs58::ordredujour',
 				'covs58::impressionpv',
+				'covs58::visualisationdecisions',
 				'covs58::printDecision',
 				'covs58::printConvocationBeneficiaire',
 				'covs58::printConvocationsBeneficiaires',
 			),
 			'finalise' => array(
 				'covs58::printOrdreDuJour',
+				'covs58::ordredujour',
 				'covs58::impressionpv',
+				'covs58::visualisationdecisions',
 				'covs58::printDecision',
 				'covs58::printConvocationBeneficiaire',
 				'covs58::printConvocationsBeneficiaires',
@@ -57,7 +77,10 @@
 				'covs58::printConvocationBeneficiaire',
 				'covs58::printConvocationsBeneficiaires',
 				'covs58::printOrdreDuJour',
+				'covs58::ordredujour',
+				'covs58::visualisationdecisions',
 				'covs58::delete',
+				'covs58::decisioncov'
 			),
 			'annule' => array()
 		);
@@ -108,18 +131,151 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche de COV.
+		 */
 		public function index() {
-			if( !empty( $this->request->data ) ) {
-				$queryData = $this->Cov58->search( $this->request->data );
-				$queryData['limit'] = 10;
-				$this->paginate = $queryData;
-				$covs58 = $this->paginate( $this->Cov58 );
-				$this->set( 'covs58', $covs58 );
+			$search = (array)Hash::get( $this->request->data, 'Search' );
+			if( !empty( $search ) ) {
+				$query = $this->Cov58->search( $search );
+				$query['order'] = array( 'Cov58.datecommission DESC' );
+				$query['limit'] = 10;
+				$this->paginate = $query;
+				$results = $this->paginate( $this->Cov58 );
 			}
-			$this->_setOptions();
+			else {
+				$this->request->data = array(
+					'Search' => array(
+						'datecommission_from' => strtotime( '-1 week' ),
+						'datecommission_to' => strtotime( 'now' )
+					)
+				);
+			}
+
+			$options = array_merge(
+				$this->Cov58->enums(),
+				$this->Cov58->Sitecov58->enums()
+			);
+			$options['Cov58']['sitecov58_id'] = $this->Cov58->Sitecov58->find( 'list', array( 'contain' => false ) );
+			foreach( array_keys( $options['Cov58']['etatcov'] ) as $etatcov ) {
+				if( !in_array( $etatcov, array( 'cree', 'associe', 'finalise' ) ) ) {
+					unset( $options['Cov58']['etatcov'][$etatcov] );
+				}
+			}
+
+			$this->set( compact( 'results', 'options' ) + array( 'etatsActions' => $this->etatsActions ) );
+		}
+
+		/**
+		 *
+		 * @param integer $id
+		 */
+		public function visualisationdecisions( $id ) {
+			$query = array(
+				'conditions' => array(
+					'Cov58.id' => $id
+				),
+				'contain' => array(
+					'Sitecov58.name'
+				)
+			);
+			$cov58 = $this->Cov58->find( 'first', $query );
+			$this->assert( !empty( $cov58 ), 'error404' );
+
+			// On s'assure que le commission soit dans un état accepté
+			$this->assert( in_array( 'covs58::'.__FUNCTION__, (array)Hash::get( $this->etatsActions, $cov58['Cov58']['etatcov'] ) ) );
+
+			// Préparation des résultats
+			$this->loadModel( 'WebrsaDossiercov58' );
+			$options = $this->WebrsaDossiercov58->options();
+
+			$this->loadModel( 'Allocataire' );
+			$types = array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Prestation' => 'LEFT OUTER',
+				'Adressefoyer' => 'LEFT OUTER',
+				'Adresse' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'LEFT OUTER',
+				'Detaildroitrsa' => 'LEFT OUTER'
+			);
+			$base = $this->Allocataire->searchQuery();
+			$base['fields'] = array_merge(
+				array(
+					'Personne.id',
+					'Dossiercov58.themecov58',
+					'Passagecov58.id',
+					'Passagecov58.etatdossiercov'
+				),
+				$base['fields'],
+				ConfigurableQueryFields::getModelsFields(
+					array(
+						$this->Cov58,
+						$this->Cov58->Passagecov58,
+						$this->Cov58->Passagecov58->Dossiercov58
+					)
+				)
+			);
+			$base['joins'][] = $this->Cov58->Passagecov58->Dossiercov58->Personne->join( 'Dossiercov58', array( 'type' => 'INNER' ) );
+			$base['joins'][] = $this->Cov58->Passagecov58->Dossiercov58->join( 'Passagecov58', array( 'type' => 'INNER' ) );
+			$base['joins'][] = $this->Cov58->Passagecov58->join( 'Cov58', array( 'type' => 'INNER' ) );
+			$base['conditions']['Cov58.id'] = $id;
+
+			$fields = array();
+			$results = array();
+
+			// Récupération des thématiques de COV
+			$themes = array_keys( (array)Hash::get( $options, 'Dossiercov58.themecov58' ) );
+			foreach( $themes as $theme ) {
+				$modelName = Inflector::classify( $theme );
+				$modelDecisionName = Inflector::classify( "decisions{$theme}" );
+
+				$webrsaModelName = 'Webrsa'.Inflector::classify( $theme );
+				$webrsaModelDecisionName = 'Webrsa'.Inflector::classify( "decisions{$theme}" );
+				$query = $base;
+
+				$query['fields'] = array_merge(
+					$query['fields'],
+					ConfigurableQueryFields::getModelsFields(
+						array(
+							$this->Cov58->Passagecov58->Dossiercov58->{$modelName},
+							$this->Cov58->Passagecov58->{$modelDecisionName}
+						)
+					)
+				);
+				$query['joins'][] = $this->Cov58->Passagecov58->Dossiercov58->join( $modelName, array( 'type' => 'INNER' ) );
+				$query['joins'][] = $this->Cov58->Passagecov58->join( $modelDecisionName, array( 'type' => 'INNER' ) );
+
+				$this->loadModel( $webrsaModelName );
+				$query = $this->{$webrsaModelName}->completeQuery( $query );
+
+				$this->loadModel( $webrsaModelDecisionName );
+				$query = $this->{$webrsaModelDecisionName}->completeQuery( $query );
+
+				$configurePath = "ConfigurableQuery.{$this->name}.{$this->action}.{$theme}";
+				$keys = array( $configurePath );
+				$query = ConfigurableQueryFields::getFieldsByKeys( $keys, $query );
+				$fields[$theme] = (array)Configure::read( $configurePath );
+
+				$this->Cov58->Passagecov58->Dossiercov58->Personne->forceVirtualFields = true;
+				$results[$theme] = $this->Cov58->Passagecov58->Dossiercov58->Personne->find( 'all', $query );
+			}
+
+			// On ne peut imprimer la décision que dans certains cas
+			foreach( $fields as $theme => $themeFields ) {
+				$themeFields = Hash::normalize( $themeFields );
+				foreach( $themeFields as $themeField => $params ) {
+					$params = (array)$params;
+
+					if( strpos( $themeField, '/Covs58/impressiondecision' ) === 0 ) {
+						// TODO: si ça existait déjà...
+						$params['disabled'] = '( "#Passagecov58.etatdossiercov#" != "traite" ) || ( "#Dossiercov58.themecov58#" == "propocontratinsertioncov58" )';
+					}
+
+					$themeFields[$themeField] = $params;
+				}
+				$fields[$theme] = $themeFields;
+			}
+
+			$this->set( compact( 'cov58', 'results', 'fields', 'options' ) );
 		}
 
 		/**
@@ -141,10 +297,15 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Formulaire d'ajout ou de modification de COV.
+		 *
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
+            if (isset($this->request->data['Cancel'])) {
+                $this->redirect(array('action' => 'index'));
+            }
+
 			if( !empty( $this->request->data ) ) {
 				$this->Cov58->begin();
 				$this->Cov58->create( $this->request->data );
