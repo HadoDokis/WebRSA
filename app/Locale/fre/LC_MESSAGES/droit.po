@@ -695,6 +695,9 @@ msgstr "Impression du PV"
 msgid "Covs58:impressiondecision"
 msgstr "Impression d'une décision"
 
+msgid "Covs58:visualisationdecisions"
+msgstr "Visualisation des décision"
+
 ###############################################################################
 
 msgid "Module:Criteres"
@@ -3492,3 +3495,14 @@ msgstr "Modification d'une communauté de structures référentes"
 
 msgid "Communautessrs:delete"
 msgstr "Suppression d'une communauté de structures référentes"
+
+#-------------------------------------------------------------------------------
+
+msgid "Module:Historiquescovs58"
+msgstr "Historique des passages en COV"
+
+msgid "Historiquescovs58:index"
+msgstr "Visualisation de l'historique"
+
+msgid "Historiquescovs58:view"
+msgstr "Visualisation d'un passage en COV"

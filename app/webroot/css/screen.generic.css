@@ -1104,6 +1104,14 @@ ul.actions li.action span.historiser.disabled {
 	background-image: url( ../img/icons/camera_disabled.png );
 }
 
+ul.actions li.action a.print {
+	background-image: url( ../img/icons/printer.png );
+}
+
+ul.actions li.action span.print.disabled {
+	background-image: url( ../img/icons/printer_disabled.png );
+}
+
 /**/
 
 td.button a, td.action a, td.button span, td span.button, table.default2 td a.button, table.default2 td span.button, a.action_impression {
