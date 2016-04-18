@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'WebrsaAbstractLogic', 'Model' );
+	App::uses( 'DepartementUtility', 'Utility' );
 
 	/**
 	 * La classe WebrsaOrientstruct possède la logique métier web-rsa pour les
@@ -737,5 +738,87 @@
 			// Génération du PDF
 			return $this->Orientstruct->ged( $orientation, $modeleodt, false, $options );
 		}
+		
+		/**
+		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
+		 * 
+		 * @param array $query
+		 * @return type
+		 */
+		public function completeVirtualFieldsForAccess(array $query = array()) {
+			$fields = array(
+				'dernier' => $this->Orientstruct->sqVirtualField('dernier'),
+				'date_valid' => 'Orientstruct.date_valid',
+				'dernier_oriente' => $this->Orientstruct->sqVirtualField('dernier_oriente'),
+				'printable' => $this->getPrintableSq('printable'),
+				'linked_records' => $this->Orientstruct->getSqLinkedModelsDepartement('linked_records'),
+				'premier_oriente' => $this->Orientstruct->sqVirtualField('premier_oriente'),
+			);
+			
+			if ((int)Configure::read('Cg.departement') === 66) {
+				$sql = $this->Orientstruct->getDataSource()->conditions(
+					array('Typeorient.parentid' => (array)Configure::read('Orientstruct.typeorientprincipale.SOCIAL')), true, false
+				);
+				$fields['notifbenefcliquable'] = "({$sql}) AS \"Orientstruct__notifbenefcliquable\"";
+			}
+			
+			return Hash::merge($query, array('fields' => array_values( $fields )));
+		}
+		
+		/**
+		 * Permet d'obtenir le nécéssaire pour calculer les droits d'accès métier à une action sur les orientations
+		 * 
+		 * @param array $conditions
+		 * @return array
+		 */
+		public function getDataForAccess(array $conditions) {
+			$query = array(
+				'joins' => array(),
+				'conditions' => $conditions, 
+				'contain' => false
+			);
+			
+			if ((int)Configure::read('Cg.departement') === 66) {
+				$query['joins'][] = $this->Orientstruct->join('Typeorient');
+			}
+			
+			$query = $this->completeVirtualFieldsForAccess($query);
+			return $this->Orientstruct->find('all', $query);
+		}
+		
+		/**
+		 * Donne les options du rang d'orientation selon le département et le contenu de $records
+		 * 
+		 * @param array $records
+		 * @return array
+		 */
+		public function rangOrientationIndexOptions(array $records) {
+			$departement = (int)Configure::read('Cg.departement');
+			
+			foreach (array_keys($records) as $key) {
+				$rgorient =& $records[$key]['Orientstruct']['rgorient'];
+				
+				if (!empty($rgorient)) {
+					if ($departement == 58) {
+						if (Hash::get($records, "{$key}.Orientstruct.premier_oriente")) {
+							$rgorient = 'Première orientation';
+						} elseif ($records[$key]['Orientstruct']['typeorient_id'] != $records[$key+1]['Orientstruct']['typeorient_id']) {
+							$rgorient = 'Réorientation';
+						} elseif ($records[$key]['Orientstruct']['typeorient_id'] == Configure::read('Typeorient.emploi_id')) {
+							$rgorient = 'Maintien en emploi';
+						} else {
+							$rgorient = 'Maintien en social';
+						}
+					}
+					elseif ($departement == 66) {
+						$rgorient = DepartementUtility::getTypeorientName($records, $key);
+					}
+					else {
+						$rgorient = $rgorient == 1 ? 'Première orientation' : 'Réorientation';
+					}
+				}
+			}
+			
+			return $records;
+		}
 	}
-?>

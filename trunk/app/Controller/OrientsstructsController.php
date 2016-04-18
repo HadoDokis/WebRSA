@@ -9,6 +9,7 @@
 	 */
 	App::uses('AppController', 'Controller');
 	App::uses( 'DepartementUtility', 'Utility' );
+	App::uses( 'WebrsaAccessOrientstruct', 'Utility' );
 
 	/**
 	 * La classe OrientsstructsController ...
@@ -171,6 +172,7 @@
 		 * Orientstruct::getIndexQuery(), pour les droits (edit, delete) et le
 		 * "Rang d'orientation".
 		 *
+		 * @deprecated since version 3.1
 		 * @param array $results
 		 * @param array $params
 		 * @return array
@@ -373,43 +375,28 @@
 		 * @param array $params
 		 * @return array
 		 */
-		protected function _getIndexActionsList( array $records, array $params = array() ) {
-			App::uses( 'DefaultUrl', 'Default.Utility' );
-			App::uses( 'DefaultUtility', 'Default.Utility' );
-
-			$departement = Configure::read( 'Cg.departement' );
-			$domain = $this->request->params['controller'];
-			$actions = array();
-
-			if( $departement == 93 ) {
-				if( $params['rgorient_max'] >= 1 ) {
-					$actions["/Reorientationseps93/add/{$records[0]['Orientstruct']['id']}"] = array(
-						'domain' => $domain,
-						'enabled' => $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'reorientationseps93', 'add', $params['dossier_menu'] )
-					);
-				}
-				else {
-					$actions["/Orientsstructs/add/{$params['personne_id']}"] = array(
-						'domain' => $domain,
-						'msgid' => 'Demander une réorientation',
-						'enabled' => !$params['force_edit'] && $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'orientsstructs', 'add', $params['dossier_menu'] )
-					);
-				}
+		protected function _getIndexActionsList(array $records, array $params = array()) {
+			$departement = (int)Configure::read('Cg.departement');
+			
+			$msgid = null;
+			if ($departement === 93 && $params['rgorient_max'] >= 1) {
+				$url = "/Reorientationseps93/add/{$records[0]['Orientstruct']['id']}";
+				$controller = 'reorientationseps93';
+			} elseif ($departement === 58) {
+				$url = "/Proposorientationscovs58/add/{$params['personne_id']}";
+				$controller = 'proposorientationscovs58';
+			} else {
+				$url = "/Orientsstructs/add/{$params['personne_id']}";
+				$controller = 'orientsstructs';
+				$msgid = $departement === 93 ? 'Demander une réorientation' : 'Ajouter';
 			}
-			else if( $departement == 58 ) {
-				$actions["/Proposorientationscovs58/add/{$params['personne_id']}"] = array(
-					'domain' => $domain,
-					//'msgid' => 'Préconiser une orientation',
-					'enabled' => $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'proposorientationscovs58', 'add', $params['dossier_menu'] )
-				);
-			}
-			else {
-				$actions["/Orientsstructs/add/{$params['personne_id']}"] = array(
-					'domain' => $domain,
-					'msgid' => 'Ajouter',
-					'enabled' => !$params['force_edit'] && $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'orientsstructs', 'add', $params['dossier_menu'] )
-				);
-			}
+			
+			$actions[$url] = array(
+				'domain' => $this->request->params['controller'],
+				'msgid' => $msgid,
+				'enabled' => WebrsaAccessOrientstruct::check('add', $records, $params)
+					&& WebrsaPermissions::checkDossier($controller, 'add', $params['dossier_menu'])
+			);
 
 			return $actions;
 		}
@@ -472,46 +459,47 @@
 					&& empty( $reorientationscovs );
 
 			$en_procedure_relance = $this->WebrsaOrientstruct->enProcedureRelance( $personne_id );
-
-			$force_edit = ( $departement == 93 && $rgorient_max == 0 );
-
-			// Liste des orientations
-			$query = $this->WebrsaOrientstruct->getIndexQuery( $personne_id );
-			$orientsstructs = $this->Orientstruct->find( 'all', $query );
-			$orientsstructs = $this->_getCompletedIndexResults(
-				$orientsstructs,
-				array(
-					'ajout_possible' => $ajoutPossible,
-					'reorientationseps' => $reorientationseps
-				)
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$params = array(
+				'ajout_possible' => $ajoutPossible,
+				'reorientationseps' => $reorientationseps
+			);
+			$query = $this->WebrsaOrientstruct->completeVirtualFieldsForAccess(
+				$this->WebrsaOrientstruct->getIndexQuery($personne_id)
+			);
+			$orientsstructs = $this->WebrsaOrientstruct->rangOrientationIndexOptions(
+				WebrsaAccessOrientstruct::accesses($this->Orientstruct->find('all', $query), $params)
 			);
 
 			// Options
-			$Option = ClassRegistry::init( 'Option' );
-			$options = array(
-				'Commissionep' => array(
-					'etatcommissionep' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->Commissionep->enum( 'etatcommissionep' )
-				),
-				'Cov58' => array(
-					'etatcov' => $this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->enum( 'etatcov' )
-				),
-				'Dossiercov58' => array(
-					'themecov58' => $this->Orientstruct->Personne->Dossiercov58->enum( 'themecov58' )
-				),
-				'Dossierep' => array(
-					'themeep' => $this->Orientstruct->Personne->Dossierep->enum( 'themeep' )
-				),
-				'Orientstruct' => array(
-					'statut_orient' => $this->Orientstruct->enum( 'statut_orient' )
-				),
-				'Passagecommissionep' => array(
-					'etatdossierep' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enum( 'etatdossierep' )
-				),
-				'Passagecov58' => array(
-					'etatdossiercov' => $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enum( 'etatdossiercov' )
-				)
+			$options = Hash::merge(
+				array(
+					'Commissionep' => array(
+						'etatcommissionep' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->Commissionep->enum( 'etatcommissionep' )
+					),
+					'Cov58' => array(
+						'etatcov' => $this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->enum( 'etatcov' )
+					),
+					'Dossiercov58' => array(
+						'themecov58' => $this->Orientstruct->Personne->Dossiercov58->enum( 'themecov58' )
+					),
+					'Dossierep' => array(
+						'themeep' => $this->Orientstruct->Personne->Dossierep->enum( 'themeep' )
+					),
+					'Orientstruct' => array(
+						'statut_orient' => $this->Orientstruct->enum( 'statut_orient' )
+					),
+					'Passagecommissionep' => array(
+						'etatdossierep' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enum( 'etatdossierep' )
+					),
+					'Passagecov58' => array(
+						'etatdossiercov' => $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enum( 'etatdossiercov' )
+					)
+				), $this->Orientstruct->enums()
 			);
-			$options = Hash::merge( $options, $this->Orientstruct->enums() );
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$options['Orientstruct']['propo_algo'] = $this->InsertionsBeneficiaires->typesorients( array( 'conditions' => array() ) );
@@ -524,7 +512,6 @@
 					'dossier_menu' => $dossierMenu,
 					'personne_id' => $personne_id,
 					'ajout_possible' => $ajoutPossible,
-					'force_edit' => $force_edit,
 					'rgorient_max' => $rgorient_max,
 				)
 			);
@@ -563,14 +550,25 @@
 			// -----------------------------------------------------------------
 			$redirectUrl = array( 'action' => 'index', $personne_id );
 			$user_id = $this->Session->read( 'Auth.User.id' );
-			// -----------------------------------------------------------------
-			// Retour à l'index s'il n'est pas possible d'ajouter une orientation
-			if( $this->action === 'add' && !$this->WebrsaOrientstruct->ajoutPossible( $personne_id ) ) {
-				$this->Session->setFlash( 'Impossible d\'ajouter une orientation à cette personne.', 'flash/error' );
-				$this->redirect( $redirectUrl );
+			
+			$ajout_possible = $this->WebrsaOrientstruct->ajoutPossible($personne_id);
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			if ($this->action === 'add') {
+				$record = array();
+				$msgstr = 'Impossible d\'ajouter une orientation à cette personne.';
+			} else {
+				$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
+				$msgstr = 'Impossible de modifier cette orientation.';
 			}
-
-			// -----------------------------------------------------------------
+			
+			if (!WebrsaAccessOrientstruct::check($this->action, $record, compact('ajout_possible'))) {
+				$this->Session->setFlash($msgstr, 'flash/error');
+				$this->redirect($redirectUrl);
+			}
+			
 			//$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 			$originalAddEditFormData = $this->WebrsaOrientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 
@@ -685,6 +683,17 @@
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
+			$redirectUrl = array('action' => 'index', $personne_id);
+			
+			if (!WebrsaAccessOrientstruct::check($this->action, current($record))) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -714,6 +723,17 @@
 		public function impression( $id ) {
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
+			$redirectUrl = array('action' => 'index', $personne_id);
+			
+			if (!WebrsaAccessOrientstruct::check($this->action, current($record))) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
 
 			if( in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) ) ) {
 				$pdf = $this->Orientstruct->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
@@ -728,7 +748,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'orientation.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect($redirectUrl);
 			}
 		}
 
@@ -745,6 +765,17 @@
 		public function impression_changement_referent( $id = null ) {
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
+			$redirectUrl = array('action' => 'index', $personne_id);
+			
+			if (!WebrsaAccessOrientstruct::check($this->action, current($record))) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
 
 			$pdf = $this->WebrsaOrientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
 
@@ -753,7 +784,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect($redirectUrl);
 			}
 		}
 

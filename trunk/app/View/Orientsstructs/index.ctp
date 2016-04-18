@@ -200,17 +200,17 @@
 	if( $departement == 66 ) {
 		$links = array(
 			'/Orientsstructs/edit/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.edit#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'edit', $dossierMenu ).'" )'
+				'disabled' => '!( "#Orientstruct.action_edit#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'edit', $dossierMenu ).'" )'
 			),
 			'/Orientsstructs/impression/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.impression#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
+				'disabled' => '!( "#Orientstruct.action_impression#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
 			),
 			'/Orientsstructs/impression_changement_referent/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.impression_changement_referent#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
+				'disabled' => '!( "#Orientstruct.action_impression_changement_referent#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
 			),
 			'/Orientsstructs/delete/#Orientstruct.id#' => array(
 				'confirm' => true,
-				'disabled' => '!( "#Orientstruct.delete#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'delete', $dossierMenu ).'" )'
+				'disabled' => '!( "#Orientstruct.action_delete#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'delete', $dossierMenu ).'" )'
 			),
 			'/Orientsstructs/filelink/#Orientstruct.id#' => array(
 				'disabled' => !$this->Permissions->checkDossier( 'Orientsstructs', 'filelink', $dossierMenu )
@@ -220,14 +220,14 @@
 	else {
 		$links = array(
 			'/Orientsstructs/edit/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.edit#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'edit', $dossierMenu ).'" )'
+				'disabled' => '!( "#Orientstruct.action_edit#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'edit', $dossierMenu ).'" )'
 			),
 			'/Orientsstructs/impression/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.impression#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
+				'disabled' => '!( "#Orientstruct.action_impression#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
 			),
 			'/Orientsstructs/delete/#Orientstruct.id#' => array(
 				'confirm' => true,
-				'disabled' => '!( "#Orientstruct.delete#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'delete', $dossierMenu ).'" )'
+				'disabled' => '!( "#Orientstruct.action_delete#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'delete', $dossierMenu ).'" )'
 			),
 			'/Orientsstructs/filelink/#Orientstruct.id#' => array(
 				'disabled' => !$this->Permissions->checkDossier( 'Orientsstructs', 'filelink', $dossierMenu )
