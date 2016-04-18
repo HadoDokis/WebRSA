@@ -21,7 +21,7 @@
 		 * @param array $params
 		 * @return array - array('action1', 'action2', ...)
 		 */
-		public static function actions(array $params = array()) {debug(2);
+		public static function actions(array $params = array()) {
 			return array();
 		}
 		
@@ -43,8 +43,9 @@
 		 * @return array
 		 */
 		public final static function access(array $record, array $params = array()) {
-			$params = self::params($params);
-			$actions = self::actions($params);
+			$className = get_called_class();
+			$params = call_user_func(array($className, 'params'), $params);
+			$actions = call_user_func(array($className, 'actions'), $params);
 
 			foreach ($actions as $action) {
 				$record[$params['alias']]['action_'.$action] = self::check($action, $record, $params);
@@ -54,6 +55,7 @@
 		}
 
 		/**
+		 * Permet d'obtenir les accès pour un index
 		 *
 		 * @param array $records
 		 * @param array $params
@@ -68,6 +70,7 @@
 		}
 
 		/**
+		 * Permet de vérifier les droits d'accès à une action sur un enregistrement
 		 *
 		 * @param string $action
 		 * @param array $record
@@ -75,12 +78,13 @@
 		 * @return boolean
 		 */
 		public final static function check($action, array $record, array $params = array()) {
+			$className = get_called_class();
 			$method = "_{$action}";
 
-			return method_exists(__CLASS__, $method)
-				&& in_array($action, self::actions($params))
-				&& call_user_func_array(array(__CLASS__, $method),
-					array($record, self::params($params )));
+			return method_exists($className, $method)
+				&& in_array($action, call_user_func(array($className, 'actions'), $params))
+				&& call_user_func(array($className, $method), $record, call_user_func(array($className, 'params'), $params))
+			;
 		}
 	}
 ?>

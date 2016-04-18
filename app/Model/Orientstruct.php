@@ -512,6 +512,41 @@
 				'type'      => 'integer',
 				'postgres'  => 'DATE_PART( \'day\', NOW() - "%s"."date_impression" )'
 			),
+			// ---------------------
+			'dernier' => array(
+				'type'      => 'boolean',
+				'postgres'  => '"%s"."id" IN (
+					SELECT a.id FROM orientsstructs AS a 
+					WHERE a.personne_id = "%s"."personne_id" 
+					ORDER BY COALESCE( a.rgorient, \'0\') DESC, 
+						a.date_valid DESC, 
+						a.id DESC 
+					LIMIT 1)'
+			),
+			'dernier_oriente' => array(
+				'type'      => 'boolean',
+				'postgres'  => 'NOT EXISTS(
+					SELECT * FROM orientsstructs AS a 
+					WHERE a.personne_id = "%s"."personne_id" 
+					AND a.statut_orient = \'Orienté\' AND "%s"."statut_orient" = \'Orienté\' 
+					AND "%s"."id" != a.id 
+					AND (
+						a.date_valid > "%s"."date_valid" 
+						OR (a.date_valid = "%s"."date_valid" AND a.id > "%s"."id")
+					) LIMIT 1)'
+			),
+			'premier_oriente' => array(
+				'type'      => 'boolean',
+				'postgres'  => 'NOT EXISTS(
+					SELECT a.id FROM orientsstructs AS a 
+					WHERE a.personne_id = "%s"."personne_id" 
+					AND a.statut_orient = \'Orienté\' AND "%s"."statut_orient" = \'Orienté\' 
+					AND "%s"."id" != a.id 
+					AND (
+						a.date_valid < "%s"."date_valid" 
+						OR (a.date_valid = "%s"."date_valid" AND a.id < "%s"."id")
+					) LIMIT 1)'
+			),
 		);
 
 		/**
