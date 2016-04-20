@@ -252,6 +252,37 @@ ALTER TABLE users ADD CONSTRAINT users_type_structurereferente_idreferent_id_chk
 
 -- FIXME: ajouter la colonne communautesr_id à la table tableauxsuivispdvs93
 
+
+--------------------------------------------------------------------------------
+-- Dashboard
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS actionroles, roles_users, roles;
+
+CREATE TABLE roles (
+	id SERIAL NOT NULL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	actif SMALLINT NOT NULL
+);
+ALTER TABLE roles ADD CONSTRAINT roles_actif_in_list_chk CHECK (cakephp_validate_in_list(actif, ARRAY[0, 1]));
+CREATE UNIQUE INDEX roles_name_unique ON roles (name);
+
+CREATE TABLE roles_users (
+	id SERIAL NOT NULL PRIMARY KEY,
+	role_id	INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id	INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE UNIQUE INDEX roles_users_unique ON roles_users (role_id, user_id);
+
+CREATE TABLE actionroles (
+	id SERIAL NOT NULL PRIMARY KEY,
+	role_id	INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	name VARCHAR(255),
+	description TEXT,
+	url TEXT
+);
+CREATE UNIQUE INDEX actionroles_role_name_unique ON actionroles (role_id, name);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

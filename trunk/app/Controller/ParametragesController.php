@@ -101,6 +101,10 @@
 					: null
 				,
 				'Structures référentes' => array( 'controller' => 'structuresreferentes', 'action' => 'index' ),
+				'Tableau de bord' => Configure::read('Module.Dashboards.enabled') 
+					? array('controller' => 'dashboards', 'action' => 'indexparams')
+					: array()
+				,
 				'Tags' => ( $departement === 66 )
 					? array( 'controller' => 'tags', 'action' => 'indexparams' )
 					: null

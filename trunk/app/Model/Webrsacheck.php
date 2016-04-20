@@ -362,6 +362,9 @@
 				'ConfigurableQuery.common.filters.Adresse.numcom.multiple_larger_1' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'Module.Dashboards.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
