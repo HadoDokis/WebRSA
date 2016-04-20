@@ -203,6 +203,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Fichedeliaison' => array(
+				'className' => 'Fichedeliaison',
+				'foreignKey' => 'foyer_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
 				'foreignKey' => false,

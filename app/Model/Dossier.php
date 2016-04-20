@@ -521,6 +521,11 @@
 				$querydata[$key] = array_merge( $querydata[$key], $qdPartsJetons[$key] );
 			}
 			$dossier = $this->find( 'first', $querydata );
+			
+			if (empty($dossier)) {
+				trigger_error("Aucun Foyer n'a été trouvé avec les conditions suivantes : ".var_export($conditions, true));
+				exit;
+			}
 
 			$adresses = $this->Foyer->Adressefoyer->find(
 				'all',
