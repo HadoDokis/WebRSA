@@ -471,6 +471,10 @@
 			'5. Tableau de suivi' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'visualisation'  ) ),
 		),
 		'Tableaux de bord' => array(
+			'Principal' => array(
+				'disabled' => ((boolean)Configure::read('Module.Dashboards.enabled') === false),
+				'url' => array('controller' => 'dashboards', 'action' => 'index'),
+			),
 			'Editeur de requete' => array(
 				'disabled' => ( (boolean)Configure::read( 'Requestmanager.enabled' ) === false ),
 				'url' => array( 'controller' => 'requestsmanager', 'action' => 'index' ),
