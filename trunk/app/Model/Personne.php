@@ -1762,6 +1762,7 @@
 			'thematiquesrdvs',
 			'typesrdv',
 			'populationsb3pdvs93',
+			'polesdossierspcgs66',
 		);
 
 		/**
@@ -1995,6 +1996,7 @@
 				'thematiquesrdvs',
 				'typesrdv',
 				'populationsb3pdvs93',
+				'polesdossierspcgs66',
 			);
 			$this->found = array();
 		}
