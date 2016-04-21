@@ -12,6 +12,7 @@
 	 * La classe Cohortereferent permet de rechercher le allocataires ne possédant pas de référent de parcours
 	 * en cours.
 	 *
+	 * @deprecated since 3.1.0
 	 * @package app.Model
 	 */
 	class Cohortereferent93 extends AppModel
