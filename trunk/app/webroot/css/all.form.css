@@ -81,7 +81,7 @@ form div.error {
     background: #fff2f2;
 }
 
-form div.error div.error-message, form fieldset.error div.error-message {
+form div.error div.error-message, form fieldset.error div.error-message, form table div.error-message {
     color: #cc0000;
 }
 

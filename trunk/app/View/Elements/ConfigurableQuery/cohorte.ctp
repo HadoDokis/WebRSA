@@ -44,8 +44,8 @@
 	echo $this->Default3->titleForLayout();
 
 	$actions['/'.Inflector::camelize( $this->request->params['controller'] ).'/'.$this->request->params['action'].'/#toggleform'] =  array(
-		'title' => 'Visibilité formulaire', // TODO: nettoyer les fichiers de traduction
-		'text' => 'Formulaire', // TODO: nettoyer les fichiers de traduction
+		'title' => 'Visibilité formulaire',
+		'text' => 'Formulaire',
 		'class' => 'search',
 		'onclick' => "$( '{$searchFormId}' ).toggle(); return false;"
 	);
@@ -77,7 +77,7 @@
 
 	if( isset( $results ) ) {
 		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
-		
+
 		if (Configure::read('Module.Savesearch.enabled')) {
 			echo $this->element('savesearch');
 		}

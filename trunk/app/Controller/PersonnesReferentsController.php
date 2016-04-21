@@ -20,9 +20,42 @@
 
 		public $uses = array( 'PersonneReferent', 'Option' );
 
-		public $helpers = array( 'Locale', 'Xform', 'Fileuploader', 'Default2' );
+		public $helpers = array(
+			'Locale',
+			'Xform',
+			'Fileuploader',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Search.SearchForm',
+		);
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsBeneficiaires' );
+		/**
+		 * Components utilisés
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Cohortes',
+			'Fileuploader',
+			'Jetons2',
+			'DossiersMenus',
+			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
+				'actions' => array( 'cohorte_affectation93' )
+			),
+			'Workflowscers93'
+		);
+
+		/**
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'cohorte_affectation93' => 'Cohortesreferents93:affecter',
+			'exportcsv_affectation93' => 'Cohortesreferents93:exportcsv'
+		);
 
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
@@ -37,8 +70,10 @@
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
 			'cloturer' => 'update',
+			'cohorte_affectation93' => 'create',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv_affectation93' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
@@ -400,6 +435,45 @@
 
 			$this->set( 'personne_id', $personne_referent['PersonneReferent']['personne_id'] );
 			$this->set( 'urlmenu', '/personnes_referents/index/'.$personne_referent['PersonneReferent']['personne_id'] );
+		}
+
+		/**
+		 * Cohorte d'affectation des référents au sein d'une structure référente
+		 * (PDV). La date de début d'affectation est la date du jour.
+		 *
+		 * @return void
+		 */
+		public function cohorte_affectation93() {
+			$this->Workflowscers93->assertUserCpdv();
+
+			$this->loadModel( 'Personne' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesPersonnesReferentsAffectation93' );
+
+			return $Cohortes->cohorte(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohortePersonneReferentAffectation93'
+				)
+			);
+		}
+
+		/**
+		 * Export CSV des résultats de la cohorte d'affectation des référents.
+		 *
+		 * @return void
+		 */
+		public function exportcsv_affectation93() {
+			$this->Workflowscers93->assertUserCpdv();
+
+			$this->loadModel( 'Personne' );
+			$Cohortes = $this->Components->load( 'WebrsaCohortesPersonnesReferentsAffectation93' );
+
+			return $Cohortes->exportcsv(
+				array(
+					'modelName' => 'Personne',
+					'modelRechercheName' => 'WebrsaCohortePersonneReferentAffectation93'
+				)
+			);
 		}
 	}
 ?>

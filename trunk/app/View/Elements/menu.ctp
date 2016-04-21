@@ -461,6 +461,7 @@
 		'CER' => array(
 			'disabled' => ( $departement != 93 ),
 			'1. Affectation d\'un référent' => array( 'url' => array( 'controller' => 'cohortesreferents93', 'action' => 'affecter'  ) ),
+			'1. Affectation d\'un référent (nouveau)' => array( 'url' => array( 'controller' => 'personnes_referents', 'action' => 'cohorte_affectation93'  ) ),
 			'2. Saisie d\'un CER' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'saisie'  ) ),
 			'3. Validation Responsable' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'avalidercpdv'  ) ),
 			'4. Décision CG' => array(

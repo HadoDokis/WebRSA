@@ -12,6 +12,7 @@
 	 * La classe Cohortesreferents93Controller permet d'assigner un référent du parcours aux allocataires qui
 	 * n'en possèdent pas.
 	 *
+	 * @deprecated since 3.1.0
 	 * @package app.Controller
 	 */
 	class Cohortesreferents93Controller extends AppController

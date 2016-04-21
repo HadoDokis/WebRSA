@@ -645,6 +645,20 @@
 				'component' => 'WebrsaRecherchesOrientsstructs',
 				'keys' => array( 'results.fields' )
 			),
+			'PersonnesReferents.cohorte_affectation93' => array(
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohortePersonneReferentAffectation93',
+				'component' => 'WebrsaCohortesPersonnesReferentsAffectation93',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'PersonnesReferents.exportcsv_affectation93' => array(
+				'departement' => 93,
+				'modelName' => 'Personne',
+				'modelRechercheName' => 'WebrsaCohortePersonneReferentAffectation93',
+				'component' => 'WebrsaCohortesPersonnesReferentsAffectation93',
+				'keys' => array( 'results.fields' )
+			),
 			'Propospdos.search' => array(
 				'departement' => array( 58, 93, 976 ),
 				'modelName' => 'Propopdo',
@@ -801,7 +815,7 @@
 					foreach( $this->searches as $key => $config ) {
 					$departement = Hash::get( $config, 'departement' );
 					if( $departement === null || in_array( $currentDepartement, (array)$departement ) ) {
-						ClassRegistry::flush();//FIXME: vérifier
+						ClassRegistry::flush();
 						$Recherches = $this->_component( $key, $config );
 
 						$this->_cache[$key]['config'] = $Recherches->configureKeys( $config );
