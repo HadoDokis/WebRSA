@@ -154,6 +154,14 @@
 							'conditions' => $Foyer->Personne->conditionsRapprochementPersonne1Personne2( 'Personne', 'p2', false ),
 						),
 						array(
+							'table'      => 'calculsdroitsrsa',
+							'alias'      => 'Calculdroitrsa',
+							'type'       => 'LEFT',
+							'conditions' => array(
+								'Calculdroitrsa.personne_id = Demandeur.id',
+							)
+						),
+						array(
 							'table'      => 'foyers',
 							'alias'      => 'Foyer2',
 							'type'       => 'INNER',
