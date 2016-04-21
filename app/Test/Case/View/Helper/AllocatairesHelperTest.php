@@ -605,6 +605,16 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$expected = '<fieldset><legend>Suivi du parcours</legend>'.$expected.'</fieldset>';
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 3. Avec "skip" sur ces filtres
+			$params['skip'] = array(
+				'Search.PersonneReferent.structurereferente_id',
+				'Search.PersonneReferent.referent_id'
+			);
+			$result = $this->Allocataires->blocReferentparcours( $params );
+			$expected = '';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
