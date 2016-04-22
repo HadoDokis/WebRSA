@@ -55,7 +55,7 @@
 			false
 		);
 		echo $this->Observer->disableFieldsOnRadioValue(
-			'PersonnesReferentsCohorteAffectation93Form',
+			$cohorteFormId,
 			'Search.Referent.designe',
 			array( 'Search.Referent.id', 'Search.PersonneReferent.dddesignation' ),
 			array( '1' ),
