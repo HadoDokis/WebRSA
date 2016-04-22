@@ -47,45 +47,34 @@
 		)
 	);
 ?>
-<?php if( isset( $results ) && !empty( $results ) ):?>
-<script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-		try {
-			observeDisableFieldsetOnCheckbox(
-				'SearchReferentFiltrer',
-				'SearchFiltreReferent',
-				false
-			);
-		} catch( e ) {
-			console.log( e );
-		}
-
-		try {
-			observeDisableFieldsOnRadioValue(
-				'PersonnesReferentsCohorteAffectation93Form',
-				'data[Search][Referent][designe]',
-				[ 'SearchReferentId', 'SearchPersonneReferentDddesignation' ],
-				[ '1' ],
-				true
-			);
-		} catch( e ) {
-			console.log( e );
-		}
-
+<?php
+	if( isset( $results ) && !empty( $results ) ) {
+		echo $this->Observer->disableFieldsetOnCheckbox(
+			'VaTeFaireEnculerKevin',
+			'XXX',
+			false
+		);
+		echo $this->Observer->disableFieldsetOnCheckbox(
+			'Search.Referent.filtrer',
+			'SearchFiltreReferent',
+			false
+		);
+		echo $this->Observer->disableFieldsOnRadioValue(
+			'PersonnesReferentsCohorteAffectation93Form',
+			'Search.Referent.designe',
+			array( 'Search.Referent.id', 'Search.PersonneReferent.dddesignation' ),
+			array( '1' ),
+			true
+		);
 		// On désactive le select du référent si on ne choisit pas de valider
-		<?php foreach( array_keys( $results ) as $index ):?>
-		try {
-			observeDisableFieldsOnRadioValue(
-				'<?php echo $cohorteFormId;?>',
-				'data[Cohorte][<?php echo $index;?>][PersonneReferent][active]',
-				[ 'Cohorte<?php echo $index;?>PersonneReferentReferentId' ],
-				[ '1' ],
+		foreach( array_keys( $results ) as $index ) {
+			echo $this->Observer->disableFieldsOnRadioValue(
+				$cohorteFormId,
+				"Cohorte.{$index}.PersonneReferent.active",
+				array( "Cohorte.{$index}.PersonneReferent.referent_id" ),
+				array( '1' ),
 				true
 			);
-		} catch( e ) {
-			console.log( e );
 		}
-		<?php endforeach;?>
-	} );
-</script>
-<?php endif;?>
+	}
+?>

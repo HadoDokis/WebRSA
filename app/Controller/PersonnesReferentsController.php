@@ -28,6 +28,10 @@
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
+			'Observer' => array(
+				'className' => 'Prototype.PrototypeObserver',
+				'useBuffer' => true
+			),
 			'Search.SearchForm',
 		);
 
