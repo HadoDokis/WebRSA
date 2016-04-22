@@ -169,7 +169,7 @@
 			$master = $this->domId( $master );
 
 			$slaves = $this->_toJsSlaves( $slaves );
-			
+
 			$values = $this->_toJsValues( $values );
 
 			$condition = ( $condition ? 'true' : 'false' );
@@ -203,7 +203,7 @@
 			$script = "observeDisableFieldsetOnValue( '{$master}', '{$slave}', {$values}, {$condition}, {$hide} );";
 			return $this->render( $script );
 		}
-		
+
 		/**
 		 * Permet de désactiver et éventuellement de masquer un fieldset suivant
 		 * la valeur d'un champ maître.
@@ -228,7 +228,7 @@
 			$script = "observeDisableFieldsetOnRadioValue( '{$formId}', '{$master}', '{$slave}', {$values}, {$condition}, {$hide} );";
 			return $this->render( $script );
 		}
-		
+
 		/**
 		 * Permet de désactiver et éventuellement de masquer un ensemble de champs
 		 * suivant la valeur d'un champ maître.
@@ -243,7 +243,7 @@
 		 */
 		public function disableFieldsOnRadioValue( $formId, $master, $slaves, $values, $condition, $hide = false ){
 			$master = $this->_toName( $master );
-			
+
 			$slaves = $this->_toJsSlaves( $slaves );
 
 			$values = $this->_toJsValues( $values );
@@ -253,7 +253,7 @@
 			$hide = ( $hide ? 'true' : 'false' );
 
 			$script = "observeDisableFieldsOnRadioValue( '{$formId}', '{$master}', {$slaves}, {$values}, {$condition}, {$hide} );";
-			
+
 			return $this->render( $script );
 		}
 
@@ -264,6 +264,7 @@
 		 * @param string $script Le code javascript à ajouter.
 		 */
 		public function render( $script ) {
+			$script = "try {\n\t${script};\n} catch( e ) {\n\tconsole.error( e );\n}";
 			if( $this->useBuffer ) {
 				$this->script = "{$this->script}\n{$script}";
 			}
@@ -289,24 +290,24 @@
 
 		/**
 		 * Retourne le name d'un input (data[User][id]) à partir de son chemin (User.id).
-		 * 
+		 *
 		 * @param string $path
 		 * @return string
 		 */
 		protected function _toName( $path ) {
 			return 'data['.implode( '][', explode( '.', $path ) ).']';
 		}
-		
+
 		/**
 		 * Transforme un array|string php en array javascript
 		 * Donne l'attribu undefined aux élements null
-		 * 
+		 *
 		 * @param Mixed $array Contenu de l'array cible sous forme String ou Array php
 		 * @return String
 		 */
 		protected function _toJsValues( $array ){
 			$values = (array)$array;
-			
+
 			foreach( $values as $i => $value ) {
 				if( $value === null ) {
 					$value = 'undefined';
@@ -318,21 +319,21 @@
 			}
 			return "[ ".implode( ", ", $values )." ]";
 		}
-		
+
 		/**
 		 * Transforme un array|string php en array javascript
 		 * Appel la fonction $this->domId() sur chaques elements avant transformation
-		 * 
+		 *
 		 * @param Mixed $slaves Contenu de l'array cible sous forme String ou Array php
 		 * @return String
 		 */
 		protected function _toJsSlaves( $slaves ){
 			$values = (array)$slaves;
-			
+
 			foreach( $values as $i => $slave ) {
 				$values[$i] = $this->domId( $slave );
 			}
-			
+
 			return "[ '".implode( "', '", $values )."' ]";
 		}
 	}
