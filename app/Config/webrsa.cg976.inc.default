@@ -472,4 +472,9 @@
 			'multiple_larger_1' => false
 		)
 	);
+	
+	/**
+	 * Affichage de Fleches pour effectuer un order sur les colonnes de résultat
+	 */
+	Configure::write('ConfigurableQuery.common.two_ways_order.enabled', false);
 ?>
