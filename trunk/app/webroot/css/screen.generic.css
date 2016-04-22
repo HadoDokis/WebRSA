@@ -2129,3 +2129,45 @@ body table tbody td.action span.validation.disabled {
 body table tbody td.action span.proposition.disabled {
 	background-image: url("../img/icons/application_form_edit.png");
 }
+
+body table thead th a:visited {
+	color: #FFF;
+}
+
+body table thead th a:hover {
+	color: #C2E0EF;
+}
+
+body table thead th div.container {
+	display: inline-block;
+}
+
+body table thead th div.img-asc, body table thead th div.img-desc {
+	width: 20px;
+	height: 4px;
+	background-repeat: no-repeat;
+}
+
+body table thead th div.img-asc,
+body table thead th a.asc:hover + div.container div.img-asc {
+	background-image: url("../img/asc.png");
+}
+
+body table thead th div.img-asc:hover, 
+body table thead th div.img-asc.active, 
+body table thead th a:hover:not(.asc) + div.container div.img-asc {
+	background-image: url("../img/asc_alt.png");
+}
+
+body table thead th div.img-desc,
+body table thead th a.desc:hover + div.container div.img-desc {
+	background-image: url("../img/desc.png");
+	background-position: bottom;
+	margin-top: 1px;
+}
+
+body table thead th div.img-desc:hover, 
+body table thead th div.img-desc.active, 
+body table thead th a.asc:hover + div.container div.img-desc {
+	background-image: url("../img/desc_alt.png");
+}
