@@ -50,11 +50,6 @@
 <?php
 	if( isset( $results ) && !empty( $results ) ) {
 		echo $this->Observer->disableFieldsetOnCheckbox(
-			'VaTeFaireEnculerKevin',
-			'XXX',
-			false
-		);
-		echo $this->Observer->disableFieldsetOnCheckbox(
 			'Search.Referent.filtrer',
 			'SearchFiltreReferent',
 			false
