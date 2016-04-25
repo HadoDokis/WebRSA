@@ -30,7 +30,7 @@
 
 	echo $this->Search->date( 'Search.Orientstruct.date_valid' ); // FIXME : A commenter suite à la demande du BUG #6891 ??
 // 	echo $this->Form->input( 'Search.Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
-	echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
+	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
 
 	// TODO: dans la visualisation
 //	echo $this->Form->input( 'Search.Adresse.departement', array( 'label' => 'Département de la nouvelle adresse', 'type' => 'select', 'options' => $options['departementsnvadresses'], 'empty' => true ) );

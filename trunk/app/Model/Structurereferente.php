@@ -324,6 +324,22 @@
 				'insertQuery' => '',
 				'with' => 'CommunautesrStructurereferente'
 			),
+			'Tableausuivipdv93' => array(
+				'className' => 'Tableausuivipdv93',
+				'joinTable' => 'structuresreferentes_tableauxsuivispdvs93',
+				'foreignKey' => 'structurereferente_id',
+				'associationForeignKey' => 'tableausuivipdv93_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'StructurereferenteTableausuivipdv93'
+			),
 			'Zonegeographique' => array(
 				'className' => 'Zonegeographique',
 				'joinTable' => 'structuresreferentes_zonesgeographiques',

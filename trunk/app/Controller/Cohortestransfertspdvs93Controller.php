@@ -58,7 +58,13 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Default2', 'Xpaginator2', 'Search', 'Csv' );
+		public $helpers = array(
+			'Allocataires',
+			'Default2',
+			'Xpaginator2',
+			'Search',
+			'Csv'
+		);
 
 		/**
 		 * Modèles utilisés.
@@ -170,6 +176,8 @@
 				'departementsnvadresses' => array( '1' => 'Dans le département', '0' => 'Hors du départment' ),
 				'typesorients' => $this->Transfertpdv93->VxOrientstruct->Typeorient->listOptions()
 			);
+			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
+			$options['Adresse']['canton'] = $options['cantons'];
 			$options  = Set::merge( $options, $this->Transfertpdv93->VxOrientstruct->Personne->Contratinsertion->Cer93->enums() );
 			$this->set( compact( 'options' ) );
 

@@ -29,7 +29,7 @@
 		// Filtres concernant le dossier
 		echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
 
-		echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
+		echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
 
 		// Filtres concernant l'allocataire
 		echo '<fieldset>';

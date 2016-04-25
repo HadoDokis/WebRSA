@@ -42,6 +42,13 @@
 		);
 
 		public $belongsTo = array(
+			'Communautesr' => array(
+				'className' => 'Communautesr',
+				'foreignKey' => 'communautesr_id',
+				'conditions' => null,
+				'fields' => null,
+				'order' => null
+			),
 			'Pdv' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
@@ -126,6 +133,30 @@
 				'exclusive' => null,
 				'finderQuery' => null
 			),
+		);
+
+		/**
+		 * Associations "Has and belongs to many".
+		 *
+		 * @var array
+		 */
+		public $hasAndBelongsToMany = array(
+			'Structurereferente' => array(
+				'className' => 'Structurereferente',
+				'joinTable' => 'structuresreferentes_tableauxsuivispdvs93',
+				'foreignKey' => 'tableausuivipdv93_id',
+				'associationForeignKey' => 'structurereferente_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'StructurereferenteTableausuivipdv93'
+			)
 		);
 
 		/**
@@ -860,6 +891,69 @@
 		}
 
 		/**
+		 * Filtre sur l'ensemble du CG, une communauté de structures référentes
+		 * ou un PDV ?
+		 *
+		 * @param array $search
+		 * @param array $fields
+		 * @param boolean $and
+		 * @return string
+		 */
+		protected function _conditionpdv( array $search, array $fields, $and = false ) {
+			$fields += array(
+				'structurereferente_id' => null,
+				'referent_id' => null
+			);
+
+			$Dbo = $this->getDataSource();
+
+			$conditionpdv = array();
+
+			// Filtre sur une communauté de structures référentes en particulier ?
+			$communautesr_id = Hash::get( $search, 'Search.communautesr_id' );
+			if( !empty( $communautesr_id ) ) {
+				$sql = $this->Communautesr->sqStructuresreferentes( $communautesr_id );
+				$conditionpdv[] = $Dbo->conditions( array( "{$fields['structurereferente_id']} IN ( {$sql} )" ), true, false );
+			}
+
+			// Filtre sur une structures référente en particulier ?
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv[] = $Dbo->conditions( array( $fields['structurereferente_id'] => $pdv_id ), true, false );
+			}
+
+			// Filtre sur un référent en particulier ?
+			$referent_id = Hash::get( $search, 'Search.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionpdv[] = $Dbo->conditions( array( $fields['referent_id'] => suffix( $referent_id ) ), true, false );
+			}
+
+			return ( !empty( $conditionpdv ) && $and ? 'AND ' : '' ).$Dbo->conditions( $conditionpdv, true, false );
+		}
+
+		/**
+		 * Retourne les conditions issues des filtres du moteur de recherche à
+		 * utiliser dans les tableaux D1 et D2.
+		 * Celles-ci se trouvent sous les clés "annee", "conditionpdv", "conditiondd".
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _conditionpdvD1D2( array $search ) {
+			return array(
+				'annee' => Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) ),
+				'conditionpdv' => $this->_conditionpdv(
+					$search,
+					array(
+						'structurereferente_id' => 'Rendezvous.structurereferente_id',
+						'referent_id' => 'Rendezvous.referent_id'
+					)
+				),
+				'conditiondd' => $this->_conditionTableauxD1D2SoumisDD( $search )
+			);
+		}
+
+		/**
 		 * Retourne le querydata utilisé pour la tableau D1.
 		 *
 		 * @param array $search
@@ -867,36 +961,15 @@
 		 */
 		public function qdTableaud1( array $search ) {
 			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
-			$Dbo = $this->getDataSource();
 
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = $Dbo->conditions( array( 'Rendezvous.structurereferente_id' => $pdv_id ), true, false );
-			}
-
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv = array(
-					$conditionpdv,
-					$Dbo->conditions( array( 'Rendezvous.referent_id' => suffix( $referent_id ) ), true, false )
-				);
-				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
-			}
-
-			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
+			$conditions = $this->_conditionpdvD1D2( $search );
 
 			$querydata = array(
 				'fields' => array(),
 				'conditions' => array(
-					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => $annee,
-					$conditionpdv,
-					$conditiondd
+					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => $conditions['annee'],
+					$conditions['conditionpdv'],
+					$conditions['conditiondd']
 				),
 				'contain' => false,
 				'joins' => array(
@@ -1218,29 +1291,8 @@
 		 */
 		public function qdTableaud2( array $search ) {
 			$Questionnaired2pdv93 = ClassRegistry::init( 'Questionnaired2pdv93' );
-			$Dbo = $this->getDataSource();
 
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = $Dbo->conditions( array( 'Rendezvous.structurereferente_id' => $pdv_id ), true, false );
-			}
-
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv = array(
-					$conditionpdv,
-					$Dbo->conditions( array( 'Rendezvous.referent_id' => suffix( $referent_id ) ), true, false )
-				);
-				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
-			}
-
-			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
+			$conditions = $this->_conditionpdvD1D2( $search );
 
 			$querydata = array(
 				'fields' => array(
@@ -1253,9 +1305,9 @@
 					'COUNT(CASE WHEN ( EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."date_validation" ) AND contratsinsertion.df_ci >= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."date_validation" ) ) ) THEN 1 ELSE NULL END ) AS "Tableaud2pdv93__cer"',
 				),
 				'conditions' => array(
-					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.date_validation )' => $annee,
-					$conditionpdv,
-					$conditiondd
+					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.date_validation )' => $conditions['annee'],
+					$conditions['conditionpdv'],
+					$conditions['conditiondd']
 				),
 				'joins' => array(
 					$Questionnaired2pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
@@ -1440,13 +1492,13 @@
 		 * Retourne une condition permettant de limiter les résultats du niveau
 		 * CG aux seuls PDV définis dans la configuration.
 		 *
-		 * @see Tableausuivipdv93::listePdvs()
+		 * @see WebrsaTableausuivipdv93::listePdvs()
 		 *
 		 * @param string $field
 		 * @return string
 		 */
 		protected function _conditionStructurereferenteIsPdv( $field = 'structurereferente_id' ) {
-			$ids = array_keys( (array)$this->listePdvs() );
+			$ids = array_keys( (array)$this->WebrsaTableausuivipdv93->listePdvs() );
 
 			if( !empty( $ids ) ) {
 				return $field.' IN ( '.implode( ',', $ids ).' )';
@@ -1468,25 +1520,16 @@
 
 			$conditions = array(
 				'annee' => Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) ),
-				'conditionpdv' => null,
+				'conditionpdv' => $this->_conditionpdv(
+					$search,
+					array(
+						'structurereferente_id' => 'rendezvous.structurereferente_id',
+						'referent_id' => 'rendezvous.referent_id'
+					),
+					true
+				),
 				'conditionmaj' => null,
 			);
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditions['conditionpdv'] = "AND ".$Dbo->conditions( array( 'rendezvous.structurereferente_id' => $pdv_id ), true, false );
-			}
-
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditions['conditionpdv'] = array(
-					$conditions['conditionpdv'],
-					$Dbo->conditions( array( 'rendezvous.referent_id' => suffix( $referent_id ) ), true, false )
-				);
-				$conditions['conditionpdv'] = $Dbo->conditions( $conditions['conditionpdv'], true, false );
-			}
 
 			// Filtre sur les DSP mises à jour dans l'année
 			// @see _tableau1b3ConditionDspMajDansAnnee
@@ -1737,6 +1780,7 @@
 
 		/**
 		 *
+		 * @deprecated
 		 *
 		 * @param array $search
 		 * @param string $operand
@@ -1753,7 +1797,7 @@
 				debug(__LINE__);
 				$conditionpdv = "AND ".$Dbo->conditions( array( 'structurereferente_id' => $pdv_id ), true, false );
 			}
-
+debug($conditionpdv);//FIXME
 			// S'assure-ton qu'il existe au moins un RDV individuel ?
 			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
 			if( $rdv_structurereferente ) {
@@ -1800,13 +1844,14 @@
 				)
 			);
 
+			// FIXME
 			// Filtre sur un PDV ou sur l'ensemble du CG ?
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
 				$query['conditions']['Referent.structurereferente_id'] = $pdv_id;
 			}
 
-						// S'assure-ton qu'il existe au moins un RDV individuel ?
+			// S'assure-ton qu'il existe au moins un RDV individuel ?
 			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
 			if( $rdv_structurereferente ) {
 				$query['alias'] = 'Rendezvous';
@@ -1816,35 +1861,6 @@
 			}
 
 			return null;
-
-			/*// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
-			}
-
-			// S'assure-ton qu'il existe au moins un RDV individuel ?
-			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
-			if( $rdv_structurereferente ) {
-				return "{$operand} Ficheprescription93.personne_id IN (
-					SELECT DISTINCT personne_id FROM rendezvous
-					WHERE
-						-- avec un RDV honoré durant l'année N
-						EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-						-- Dont le type de RDV est individuel
-						AND rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-						AND ".$this->_conditionStatutRdv()."
-						-- dont la SR du référent de la fiche est la SR du RDV
-						AND Referent.structurereferente_id = rendezvous.structurereferente_id
-						{$conditionpdv}
-				)";
-			}
-
-			return null;*/
 		}
 
 		/**
@@ -1864,21 +1880,13 @@
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
 
 			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = $Dbo->conditions( array( 'Referent.structurereferente_id' => $pdv_id ), true, false );
-			}
-
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv = array(
-					$conditionpdv,
-					$Dbo->conditions( array( 'Referent.id' => suffix( $referent_id ) ), true, false )
-				);
-				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
-			}
+			$conditionpdv = $this->_conditionpdv(
+				$search,
+				array(
+					'structurereferente_id' => 'Referent.structurereferente_id',
+					'referent_id' => 'Referent.id'
+				)
+			);
 
 			// Filtre sur le type d'action
 			$conditiontype = null;
@@ -2725,22 +2733,14 @@
 			// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
 
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND ".$Dbo->conditions( array( 'rendezvous.structurereferente_id' => $pdv_id ), true, false );
-			}
-
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv = array(
-					$conditionpdv,
-					"rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
-				);
-				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
-			}
+			$conditionpdv = $this->_conditionpdv(
+				$search,
+				array(
+					'structurereferente_id' => 'rendezvous.structurereferente_id',
+					'referent_id' => 'rendezvous.referent_id'
+				),
+				true
+			);
 
 			// S'assure-ton qu'il existe au moins un RDV individuel ?
 			$conditionrdv = null;
@@ -2860,7 +2860,14 @@
 
 			// Filtre sur l'année
 			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
+			$conditionpdv = $this->_conditionpdv(
+				$search,
+				array(
+					'structurereferente_id' => 'Rendezvous.structurereferente_id',
+					'referent_id' => 'Rendezvous.referent_id'
+				)
+			);
+debug( $conditionpdv ); // FIXME
 			// Filtre sur un PDV ou sur l'ensemble du CG ?
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
@@ -2981,18 +2988,39 @@
 				'Tableausuivipdv93' => array(
 					'name' => $action,
 					'annee' => Hash::get( $search, 'Search.annee' ),
-					'structurereferente_id' => Hash::get( $search, 'Search.structurereferente_id' ), // FIXME
-					'referent_id' => suffix( Hash::get( $search, 'Search.referent_id' ) ),
+					'communautesr_id' => Hash::get( $search, 'Search.communautesr_id' ),
+					'referent_id' => suffix( Hash::get( $search, 'Search.referent_id' ) ), // FIXME: NULL ?
 					'version' => app_version(),
 					'search' => serialize( $search ),
 					'results' => serialize( $results ),
 					'user_id' => $user_id
+				),
+				'Structurereferente' => array(
+					'Structurereferente' => (array)Hash::get( $search, 'Search.structurereferente_id' )
 				)
 			);
 
 			// On sauvegarde au maximum une fois par jour les mêmes requêtes et résultats
-			$conditions = Hash::flatten( $tableausuivipdv93 );
+			// FIXME -> memes entrées dans StructurereferenteTableausuivipdv93
+			$conditions = Hash::flatten(
+				array( 'Tableausuivipdv93' => $tableausuivipdv93['Tableausuivipdv93'] )
+			);
 			$conditions["DATE_TRUNC( 'day', \"Tableausuivipdv93\".\"modified\" )"] = date( 'Y-m-d' );
+			// FIXME: début mise en commun
+			foreach( (array)Hash::get( $tableausuivipdv93, 'Structurereferente.Structurereferente' ) as $structurereferente_id ) {
+				$subQuery = array(
+					'alias' => 'structuresreferentes_tableauxsuivispdvs93',
+					'fields' => array( 'structuresreferentes_tableauxsuivispdvs93.id' ),
+					'conditions' => array(
+						'structuresreferentes_tableauxsuivispdvs93.structurereferente_id' => $structurereferente_id
+					),
+					'contain' => false,
+					'limit' => 1
+				);
+				$sql = $this->StructurereferenteTableausuivipdv93->sq( $subQuery );
+				$conditions[] = "EXISTS( {$sql} )";
+			}
+			// FIXME: fin mise en commun
 
 			// A-t'on déjà sauvegardé exactement ce résultat ?
 			$found = $this->find( 'first', array( 'conditions' => $conditions ) );
@@ -3001,7 +3029,7 @@
 
 			// Si c'est le cas, on se contente de le réenregistrer pour que la date de modifcation soit mise à jour
 			if( !empty( $found ) ) {
-				$tableausuivipdv93 = $found;
+				$tableausuivipdv93 = Hash::merge( $tableausuivipdv93, $found );
 				unset(
 					$tableausuivipdv93['Tableausuivipdv93']['created'],
 					$tableausuivipdv93['Tableausuivipdv93']['modified']
@@ -3041,90 +3069,6 @@
 			}
 
 			return $success;
-		}
-
-		/**
-		 * Retourne la liste des PDV pour lesquels les tableaux de PDV doivent
-		 * être calculés.
-		 *
-		 * @see Tableausuivipdv93.conditionsPdv dans le webrsa.inc
-		 *
-		 * @return array
-		 */
-		public function listePdvs() {
-			return $this->Pdv->find(
-				'list',
-				array(
-					'contain' => false,
-					'joins' => array(
-						$this->Pdv->join( 'Typeorient', array( 'type' => 'INNER' ) ),
-					),
-					'conditions' => (array)Configure::read( 'Tableausuivipdv93.conditionsPdv' ),
-					'order' => array( 'Pdv.lib_struc' )
-				)
-			);
-		}
-
-		/**
-		 * Retourne la liste des référents des PDV pour lesquels les tableaux de
-		 * PDV doivent être calculés.
-		 *
-		 * @see Tableausuivipdv93.conditionsPdv dans le webrsa.inc
-		 *
-		 * @param integer $structurereferente_id L'id du PDV pour filtrage éventuel
-		 * @return array
-		 */
-		public function listeReferentsPdvs( $structurereferente_id = null ) {
-			$query = array(
-				'fields' => array(
-					'( "Structurereferente"."id" || \'_\' || "Referent"."id" ) AS "Referent__id"',
-					'Referent.nom_complet'
-				),
-				'contain' => false,
-				'joins' => array(
-					$this->Pdv->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-					$this->Pdv->Referent->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
-				),
-				'conditions' => array_words_replace(
-					(array)Configure::read( 'Tableausuivipdv93.conditionsPdv' ),
-					array( 'Pdv' => 'Structurereferente' )
-				),
-				'order' => array( 'Referent.nom_complet_court' )
-			);
-
-			if( !empty( $structurereferente_id ) ) {
-				$query['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
-			}
-
-			$results = $this->Pdv->Referent->find( 'all', $query );
-			$results = Hash::combine( $results, '{n}.Referent.id', '{n}.Referent.nom_complet' );
-
-			return $results;
-		}
-
-		/**
-		 * Retourne la liste des photographes des tableaux PDV.
-		 *
-		 * @return array
-		 */
-		public function listePhotographes() {
-			$sq = $this->sq( array( 'fields' => array( 'DISTINCT(user_id)' ) ) );
-
-			$list = $this->Photographe->find(
-				'list',
-				array(
-					'fields' => array( 'Photographe.id', 'Photographe.nom_complet' ),
-					'contain' => false,
-					'order' => array( 'Photographe.nom_complet' ),
-					'conditions' => array(
-						"Photographe.id IN ( {$sq} )"
-					)
-				)
-			);
-
-			$list = Hash::merge( array( 'NULL' => 'Photographie automatique' ), $list );
-
-			return $list;
 		}
 
 		/**

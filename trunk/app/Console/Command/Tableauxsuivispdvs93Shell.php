@@ -21,7 +21,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Tableausuivipdv93' );
+		public $uses = array( 'Tableausuivipdv93', 'WebrsaTableausuivipdv93' );
 
 		/**
 		 * Paramètres par défaut pour ce shell
@@ -82,15 +82,18 @@
 		 * Méthode principale.
 		 */
 		public function main() {
-			$pdvs = $this->Tableausuivipdv93->listePdvs();
-			$referents = $this->Tableausuivipdv93->listeReferentsPdvs();
-			$search = array( 'Search' => array( 'annee' => $this->params['annee'], 'rdv_structurereferente' => false ) );
+			$communautessrs = $this->Tableausuivipdv93->Communautesr->find( 'list', array( 'conditions' => array( 'Communautesr.actif' => 1 ) ) );
+			$pdvs = $this->WebrsaTableausuivipdv93->listePdvs();
+			$referents = $this->WebrsaTableausuivipdv93->listeReferentsPdvs();
+			$base = array( 'Search' => array( 'annee' => $this->params['annee'], 'rdv_structurereferente' => false ) );
 			$success = true;
 			$tableaux = array_keys( $this->Tableausuivipdv93->tableaux );
 
 			$this->Tableausuivipdv93->begin();
 
+
 			// Sauvegarde pour le CG
+			$search = $base;
 			$this->out( "Enregistrement des tableaux de suivi CG pour l'année {$search['Search']['annee']}" );
 			foreach( $tableaux as $tableau ) {
 				$success = $success && $this->Tableausuivipdv93->historiser(
@@ -99,7 +102,21 @@
 				);
 			}
 
+			// Sauvegarde par communauté
+			$search = $base;
+			foreach( $communautessrs as $communautesr_id => $label ) {
+				$search['Search']['communautesr_id'] = $communautesr_id;
+				$this->out( "Enregistrement des tableaux de suivi de la communauté {$label} pour l'année {$search['Search']['annee']}" );
+				foreach( $tableaux as $tableau ) {
+					$success = $success && $this->Tableausuivipdv93->historiser(
+						$tableau,
+						$this->_filters( $tableau, $search )
+					);
+				}
+			}
+
 			// Sauvegarde par PDV
+			$search = $base;
 			foreach( $pdvs as $pdv_id => $label ) {
 				$search['Search']['structurereferente_id'] = $pdv_id;
 				$this->out( "Enregistrement des tableaux de suivi du PDV {$label} pour l'année {$search['Search']['annee']}" );
@@ -112,6 +129,7 @@
 			}
 
 			// Sauvegarde par référent de PDV
+			$search = $base;
 			foreach( $referents as $referent_id => $label ) {
 				$search['Search']['structurereferente_id'] = prefix( $referent_id );
 				$search['Search']['referent_id'] = suffix( $referent_id );
