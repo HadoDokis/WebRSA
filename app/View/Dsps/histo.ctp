@@ -28,16 +28,32 @@
 				echo "</td><td>";
 				if (isset($histo['DspRev']['modified'])) echo date_short( $histo['DspRev']['modified'] );
 				echo "<td>".$histo['diff'].'</td>';
-				if ($histo['diff']>0)
-					echo '<td>'.$this->Xhtml->link($this->Xhtml->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array('escape'=>false, 'enabled' => $this->Permissions->checkDossier( 'dsps', 'view_diff', $dossierMenu ))).'</td>';
-				else
-					echo '<td><span class="disabled">'.$this->Xhtml->image('icons/style.png', array()).' Voir les différences</span></td>';
-				echo "</td><td>".$this->Xhtml->link($this->Xhtml->image('icons/zoom.png', array()).'Voir', '/dsps/view_revs/'.$histo['DspRev']['id'], array('escape'=>false, 'enabled' => $this->Permissions->checkDossier( 'dsps', 'view_revs', $dossierMenu )))."</td><td>".$this->Xhtml->link($this->Xhtml->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array('escape'=>false, 'enabled' => $this->Permissions->checkDossier( 'dsps', 'edit', $dossierMenu )))."</td>";
+				
+				echo '<td>'.$this->Xhtml->link($this->Xhtml->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array(
+					'escape'=>false, 
+					'enabled' => $histo['Dsp']['action_view_diff'] 
+						&& $this->Permissions->checkDossier( 'dsps', 'view_diff', $dossierMenu )
+				)).'</td>';
+				
+				echo "</td><td>".$this->Xhtml->link($this->Xhtml->image('icons/zoom.png', array()).'Voir', '/dsps/view_revs/'.$histo['DspRev']['id'], array(
+					'escape'=>false, 
+					'enabled' => $histo['Dsp']['action_view_revs']
+						&& $this->Permissions->checkDossier( 'dsps', 'view_revs', $dossierMenu )
+				))."</td><td>".$this->Xhtml->link($this->Xhtml->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array('escape'=>false, 'enabled' => $this->Permissions->checkDossier( 'dsps', 'edit', $dossierMenu )))."</td>";
 				if( Configure::read( 'Cg.departement' ) != 66 ){
-					echo "<td>".$this->Xhtml->link($this->Xhtml->image('icons/arrow_redo.png', array()).'Revenir à cette version', '/dsps/revertTo/'.$histo['DspRev']['id'], array('escape'=>false, 'enabled' => $this->Permissions->checkDossier( 'dsps', 'revertTo', $dossierMenu )))."</td>";
+					echo "<td>".$this->Xhtml->link($this->Xhtml->image('icons/arrow_redo.png', array()).'Revenir à cette version', '/dsps/revertTo/'.$histo['DspRev']['id'], array(
+						'escape'=>false, 
+						'enabled' => $histo['Dsp']['action_revertTo']
+							&& $this->Permissions->checkDossier( 'dsps', 'revertTo', $dossierMenu )
+					))."</td>";
 				}
 
-				echo "<td>".$this->Xhtml->link($this->Xhtml->image('icons/attach.png', array()).'Fichiers liés', '/dsps/filelink/'.$histo['DspRev']['id'], array('escape'=>false, 'enabled' => $this->Permissions->checkDossier( 'dsps', 'filelink', $dossierMenu )))."</td>";
+				echo "<td>".$this->Xhtml->link($this->Xhtml->image('icons/attach.png', array()).'Fichiers liés', '/dsps/filelink/'.$histo['DspRev']['id'], array(
+					'escape'=>false, 
+					'enabled' => $histo['Dsp']['action_filelink']
+						&& $this->Permissions->checkDossier( 'dsps', 'filelink', $dossierMenu )
+				))."</td>";
+				
 				echo "<td>".'('.$nbFichiersLies.')'."</td>";
 				echo "</tr>";
 			}
