@@ -87,7 +87,8 @@
 			'class' => 'divideInto3Collumn',
 			'buttons' => true,
 			'autoCheck' => true,
-			'id' => 'SearchStructurereferenteIdMacro'
+			'id' => 'SearchStructurereferenteIdMacro',
+			'domain' => 'tableauxsuivispdvs93'
 		)
 	);
 	echo '</fieldset>';

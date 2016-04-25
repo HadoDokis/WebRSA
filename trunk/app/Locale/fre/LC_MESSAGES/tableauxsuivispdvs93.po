@@ -20,8 +20,14 @@ msgstr ""
 msgid "Search.annee"
 msgstr "Année d'opération"
 
+msgid "Search.mode"
+msgstr "Mode de calcul"
+
 msgid "Search.communautesr_id"
 msgstr "Communauté de structures référentes"
+
+msgid "Search.structurereferente_id_choice"
+msgstr "Filtrer par projet de ville"
 
 msgid "Search.structurereferente_id"
 msgstr "Projet de ville"

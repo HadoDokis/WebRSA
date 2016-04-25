@@ -41,6 +41,20 @@
 			'Formattable',
 		);
 
+		/**
+		 * Liste des modèles supplémentaires utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'WebrsaTableausuivipdv93'
+		);
+
+		/**
+		 * Associations "Belongs to".
+		 *
+		 * @var array
+		 */
 		public $belongsTo = array(
 			'Communautesr' => array(
 				'className' => 'Communautesr',

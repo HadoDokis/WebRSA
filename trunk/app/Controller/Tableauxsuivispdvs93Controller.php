@@ -182,15 +182,15 @@
 			if( $type === 'externe_cpdvcom' ) {
 				$conditions['communautesr_id'] = $this->Session->read( 'Auth.User.communautesr_id' );
 			}
-			// Si l'utilisateur connecté est limité à un PDV
-			if( $type !== 'cg' ) {
-				$user_structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
-				$conditions['structurereferente_id'] = $user_structurereferente_id;
-			}
-			// Si l'utilisateur connecté est un référent, on limite encore plus
-			if( $type === 'externe_ci' ) {
+			// Si l'utilisateur connecté est un référent
+			else if( $type === 'externe_ci' ) {
 				$user_referent_id = $this->Session->read( 'Auth.User.referent_id' );
 				$conditions['referent_id'] = $user_referent_id;
+			}
+			// Si l'utilisateur connecté est limité à un PDV
+			else if( $type !== 'cg' ) {
+				$user_structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+				$conditions['structurereferente_id'] = $user_structurereferente_id;
 			}
 
 			return $conditions;
