@@ -20,6 +20,9 @@ msgstr ""
 msgid "Search.annee"
 msgstr "Année d'opération"
 
+msgid "Search.communautesr_id"
+msgstr "Communauté de structures référentes"
+
 msgid "Search.structurereferente_id"
 msgstr "Projet de ville"
 
@@ -214,6 +217,9 @@ msgstr "Recherche d'historique de tableaux de suivi PDV"
 
 msgid "Tableausuivipdv93.annee"
 msgstr "Année"
+
+msgid "Communautesr.name"
+msgstr "Communauté"
 
 msgid "Pdv.lib_struc"
 msgstr "PDV"

@@ -48,6 +48,7 @@
 		 * @var array
 		 */
 		public $components = array(
+			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'index',
@@ -72,6 +73,7 @@
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
+			'Search.SearchForm',
 			'Tableaud2'
 		);
 
@@ -80,7 +82,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Tableausuivipdv93', 'Cohortetransfertpdv93' );
+		public $uses = array( 'Tableausuivipdv93', 'Cohortetransfertpdv93', 'WebrsaTableausuivipdv93' );
 
 		/**
 		 *
@@ -115,71 +117,102 @@
 		 * @param integer $user_structurereferente_id
 		 */
 		protected function _setOptions( $user_structurereferente_id ) {
-			// TODO: dans le beforeFilter ?
-			$years = array_reverse( range( 2009, date( 'Y' ) ) );
-			$structuresreferentes = $this->Tableausuivipdv93->listePdvs();
-			$srLiees = $this->WebrsaUsers->structuresreferentes();
-			if( count( $srLiees ) > 1 ) {
-				foreach( array_keys( $structuresreferentes ) as $id ) {
-					if( !in_array( $id, $srLiees ) ) {
-						unset( $structuresreferentes[$id] );
-					}
-				}
+			// FIXME: $user_structurereferente_id / filtre, etc...
+			$tableau = null;
+			if( in_array( $this->action, array( 'view', 'historiser' ) ) ) {
+				$tableau = Hash::get( $this->request->params, 'pass.0' );
+			}
+			else if( in_array( $this->action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
+				$tableau = $this->action;
 			}
 
-			if( $this->action == 'index' ) {
-				$structuresreferentes = Hash::merge( array( 'NULL' => 'Conseil général' ), $structuresreferentes );
-			}
+			$type = $this->Session->read( 'Auth.User.type' );
+			// TODO: lire dans la Configuration
+			$pdvs_ids = array_keys( $this->WebrsaTableausuivipdv93->listePdvs() );
 
-			$options = array(
-				'Search' => array(
-					'annee' => array_combine( $years, $years ),
-					'structurereferente_id' => $structuresreferentes,
-					'referent_id' => $this->Tableausuivipdv93->listeReferentsPdvs( $user_structurereferente_id ),
-					'user_id' => $this->Tableausuivipdv93->listePhotographes(),
-					'tableau' => $this->Tableausuivipdv93->tableaux,
-					'typethematiquefp93_id' => ClassRegistry::init( 'Thematiquefp93' )->enum( 'type' )
-				),
-				'problematiques' => $this->Tableausuivipdv93->problematiques(),
-				'acteurs' => $this->Tableausuivipdv93->acteurs(),
-				'Tableausuivipdv93' => array( 'name' => $this->Tableausuivipdv93->tableaux )
+			$options = $this->WebrsaTableausuivipdv93->options(
+				array(
+					'user_type' => $type,
+					'tableau' => $tableau,
+					'structuresreferentes' => $this->InsertionsBeneficiaires->structuresreferentes(
+						array(
+							'type' => 'list',
+							'prefix' => false,
+							'conditions' => array(
+								'Structurereferente.id' => $pdvs_ids
+							)
+						)
+					),
+					'referents' => $this->InsertionsBeneficiaires->referents(
+						array(
+							'type' => 'list',
+							'prefix' => true,
+							'conditions' => array(
+								'Referent.structurereferente_id' => $pdvs_ids
+							)
+						)
+					)
+				)
 			);
 
+			$hasMode = in_array( $type, array( 'cg', 'externe_cpdvcom' ) );
+			$hasCommunautessrs = $type === 'cg';
 			$hasStructuresreferentes = empty( $user_structurereferente_id ) || count( $user_structurereferente_id ) > 1;
-			$userIsCi = $this->Session->read( 'Auth.User.type' ) === 'externe_ci';
-			$this->set( compact( 'options', 'hasStructuresreferentes', 'userIsCi' ) );
+			$hasReferents = $type === 'externe_ci';
+			$this->set( compact( 'options', 'hasMode', 'hasCommunautessrs', 'hasStructuresreferentes', 'hasReferents' ) );
 		}
 
 		/**
-		 * Retourne un array contenant les clés structurereferente_id et referent_id
-		 * pas à NULL  lorsque l'on doit ajouter des conditions aux requêtes
-		 * en fonction de l'utilisateur connecté (CPDV / secrétaire ou chargé
-		 * d'insertion).
+		 * Retourne un array contenant les clés communautesr_id, structurereferente_id
+		 * et referent_id pas à NULL  lorsque l'on doit ajouter des conditions aux requêtes
+		 * en fonction de l'utilisateur connecté (chef communautaire, CPDV,
+		 * secrétaire ou chargé d'insertion).
 		 *
 		 * @return array
 		 */
 		protected function _getConditionsUtilisateur() {
 			$conditions = array(
+				'communautesr_id' => null,
 				'structurereferente_id' => null,
 				'referent_id' => null
 			);
 
+			$type = $this->Session->read( 'Auth.User.type' );
+
+			if( $type === 'externe_cpdvcom' ) {
+				$conditions['communautesr_id'] = $this->Session->read( 'Auth.User.communautesr_id' );
+			}
 			// Si l'utilisateur connecté est limité à un PDV
-			$user_structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
-			if( !empty( $user_structurereferente_id ) ) {
+			if( $type !== 'cg' ) {
+				$user_structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
 				$conditions['structurereferente_id'] = $user_structurereferente_id;
 			}
-
 			// Si l'utilisateur connecté est un référent, on limite encore plus
-			$user_referent_id = null;
-			if( $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+			if( $type === 'externe_ci' ) {
 				$user_referent_id = $this->Session->read( 'Auth.User.referent_id' );
-				if( !empty( $user_referent_id ) ) {
-					$conditions['referent_id'] = $user_referent_id;
-				}
+				$conditions['referent_id'] = $user_referent_id;
 			}
 
 			return $conditions;
+		}
+
+		/**
+		 * Prépare les données du formulaire de recherche en fonction de l'URL
+		 * et de l'utilisateur connecté pour le premier appel à la page.
+		 *
+		 * @param array $search
+		 */
+		protected function _prepareFormData( array $search ) {
+			// Si le formulaire n'a pas été envoyé
+			if( empty( $search ) ) {
+				// Si c'est une méthode d'un des moteurs
+				if( in_array( $this->request->action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
+					$configureKey = "{$this->name}.{$this->request->action}.defaults";
+					$this->request->data = (array)Configure::read( $configureKey );
+				}
+
+				$this->request->data['Search']['mode'] = 'fse';
+			}
 		}
 
 		/**
@@ -196,6 +229,9 @@
 			$conditions = $this->_getConditionsUtilisateur();
 
 			if( !empty( $search ) ) {
+				if( !empty( $conditions['communautesr_id'] ) ) {
+					$search = Hash::insert( $search, 'Search.communautesr_id', $conditions['communautesr_id'] );
+				}
 				if( !empty( $conditions['structurereferente_id'] ) ) {
 					$search = Hash::insert( $search, 'Search.structurereferente_id', $conditions['structurereferente_id'] );
 				}
@@ -203,13 +239,9 @@
 					$search = Hash::insert( $search, 'Search.referent_id', $conditions['referent_id'] );
 				}
 			}
-			// Si c'est une méthode d'un des moteurs et que le formulaire n'a pas été envoyé
-			else if( in_array( $this->request->action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
-				$configureKey = "{$this->name}.{$this->request->action}.defaults";
-				$this->request->data = (array)Configure::read( $configureKey );
-			}
 
 			$this->_setOptions( $conditions['structurereferente_id'] );
+			$this->_prepareFormData( $search );
 
 			return $search;
 		}
@@ -225,7 +257,7 @@
 		protected function _completeQueryUtilisateur( array $query, $modelName ) {
 			$conditions = $this->_getConditionsUtilisateur();
 
-			foreach( array( 'structurereferente_id', 'referent_id' ) as $fieldName ) {
+			foreach( array( 'communautesr_id', /*'structurereferente_id', */'referent_id' ) as $fieldName ) {
 				if( !empty( $conditions[$fieldName] ) ) {
 					$query['conditions']["{$modelName}.{$fieldName}"] = $conditions[$fieldName];
 				}
@@ -352,7 +384,10 @@
 				}
 
 				if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {
-					$query = ConfigurableQueryFields::getFieldsByKeys( "{$this->name}.{$action}.{$this->request->action}", $query );
+					$query = ConfigurableQueryFields::getFieldsByKeys(
+						"{$this->name}.{$action}.{$this->request->action}",
+						$query
+					);
 				}
 
 				$this->Tableausuivipdv93->forceVirtualFields = true;
@@ -472,7 +507,11 @@
 			$search = $this->_applyStructurereferente( Hash::expand( $this->request->params['named'] ) );
 
 			$this->Tableausuivipdv93->begin();
-			$success = $this->Tableausuivipdv93->historiser( $action, $search, $this->Session->read( 'Auth.User.id' ) );
+			$success = $this->Tableausuivipdv93->historiser(
+				$action,
+				$search,
+				$this->Session->read( 'Auth.User.id' )
+			);
 
 			if( $success ) {
 				$this->Tableausuivipdv93->commit();
@@ -493,74 +532,17 @@
 		 */
 		public function index( $action = null ) {
 			$search = $this->_applyStructurereferente( $this->request->data );
-			$vfNomcomplet = $this->Tableausuivipdv93->Photographe->sqVirtualfield( 'nom_complet', false );
 
 			if( !empty( $search ) ) {
-				$querydata = array(
-					'fields' => array(
-						'Tableausuivipdv93.id',
-						'Tableausuivipdv93.annee',
-						'Pdv.lib_struc',
-						//'Referent.nom_complet',
-						$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' ),
-						'Tableausuivipdv93.name',
-						'Tableausuivipdv93.version',
-						"( CASE WHEN \"Photographe\".\"id\" IS NOT NULL THEN {$vfNomcomplet} ELSE 'Photographie automatique' END ) AS \"Photographe__nom_complet\"",
-						'Tableausuivipdv93.created',
-						'Tableausuivipdv93.modified',
-					),
-					'contain' => array(
-						'Pdv',
-						'Referent',
-						'Photographe'
-					),
-					'order' => array(
-						'Tableausuivipdv93.annee DESC',
-						'Pdv.lib_struc ASC',
-						'Referent.nom_complet ASC',
-						'Tableausuivipdv93.name ASC',
-						'Tableausuivipdv93.modified DESC'
-					),
-					'limit' => 10
-				);
+				$query = $this->WebrsaTableausuivipdv93->searchQuery();
+				$query = $this->WebrsaTableausuivipdv93->searchConditions( $query, $search );
 
-				// TODO: une méthode search dans le modèle
 				// TODO: en paramètre de la recherche + version
 				if( !empty( $action ) ) {
-					$querydata['conditions']['Tableausuivipdv93.name'] = $action;
-				}
-				if( !empty( $search['Search']['annee'] ) ) {
-					$querydata['conditions']['Tableausuivipdv93.annee'] = $search['Search']['annee'];
-				}
-				if( !empty( $search['Search']['structurereferente_id'] ) ) {
-					if( $search['Search']['structurereferente_id'] == 'NULL' ) {
-						$querydata['conditions'][] = 'Tableausuivipdv93.structurereferente_id IS NULL';
-					}
-					else {
-						$querydata['conditions']['Tableausuivipdv93.structurereferente_id'] = $search['Search']['structurereferente_id'];
-					}
-				}
-				if( !empty( $search['Search']['user_id'] ) ) {
-					if( $search['Search']['user_id'] == 'NULL' ) {
-						$querydata['conditions'][] = 'Tableausuivipdv93.user_id IS NULL';
-					}
-					else {
-						$querydata['conditions']['Tableausuivipdv93.user_id'] = $search['Search']['user_id'];
-					}
-				}
-				if( !empty( $search['Search']['referent_id'] ) ) {
-					if( $search['Search']['referent_id'] == 'NULL' ) {
-						$querydata['conditions'][] = 'Tableausuivipdv93.referent_id IS NULL';
-					}
-					else {
-						$querydata['conditions']['Tableausuivipdv93.referent_id'] = suffix( $search['Search']['referent_id'] );
-					}
-				}
-				if( !empty( $search['Search']['tableau'] ) ) {
-					$querydata['conditions']['Tableausuivipdv93.name'] = $search['Search']['tableau'];
+					$query['conditions']['Tableausuivipdv93.name'] = $action;
 				}
 
-				$this->paginate = array( 'Tableausuivipdv93' => $querydata );
+				$this->paginate = array( 'Tableausuivipdv93' => $query + array( 'limit' => 10 ) );
 				$tableauxsuivispdvs93 = $this->paginate( 'Tableausuivipdv93', array(), array(), false );
 				$this->set( compact( 'tableauxsuivispdvs93' ) );
 			}
@@ -583,9 +565,9 @@
 			);
 
 			$query = $this->_completeQueryUtilisateur( $query, 'Tableausuivipdv93' );
-
+debug($query);
 			$tableausuivipdv93 = $this->Tableausuivipdv93->find( 'first', $query );
-
+debug($tableausuivipdv93);
 			if( empty( $tableausuivipdv93 ) ) {
 				throw new NotFoundException();
 			}

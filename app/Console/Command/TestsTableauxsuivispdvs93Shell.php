@@ -23,7 +23,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Tableausuivipdv93' );
+		public $uses = array( 'Tableausuivipdv93', 'WebrsaTableausuivipdv93' );
 
 		/**
 		 * Paramètres par défaut pour ce shell
@@ -109,7 +109,7 @@
 		 */
 		public function main() {
 			$annee = date( 'Y' ) + 1;
-			$referents = $this->Tableausuivipdv93->listeReferentsPdvs();
+			$referents = $this->WebrsaTableausuivipdv93->listeReferentsPdvs();
 			$referent_id = Hash::get( array_keys( $referents ), 0 );
 
 			$criteres = array(

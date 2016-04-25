@@ -41,11 +41,31 @@
 		);
 
 		/**
+		 * Tri par défaut.
+		 *
+		 * @var array
+		 */
+		public $order = array(
+			'name ASC'
+		);
+
+		/**
 		 * Associations "Has many".
 		 *
 		 * @var array
 		 */
 		public $hasMany = array(
+			'Tableausuivipdv93' => array(
+				'className' => 'Tableausuivipdv93',
+				'foreignKey' => 'communautesr_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'communautesr_id',
@@ -107,6 +127,35 @@
 			}
 
 			return true;
+		}
+
+		/**
+		 * Retourne une sous-requete comprenant les valeurs des clés primaires de
+		 * la table structuresreferentes liées à la communauté dont l'id est passée
+		 * en paramètre.
+		 *
+		 * @param integer $id L'id de la communauté
+		 * @return string
+		 */
+		public function sqStructuresreferentes( $id ) {
+			$query = array(
+				'fields' => array(
+					'CommunautesrStructurereferente.structurereferente_id'
+				),
+				'joins' => array(
+					$this->join( 'CommunautesrStructurereferente', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.{$this->primaryKey}" => $id
+				)
+			);
+
+			$replacements = array(
+				'Communautesr' => 'communautessrs',
+				'CommunautesrStructurereferente' => 'communautessrs_structuresreferentes'
+			);
+
+			return Hash::get( array_words_replace( array( $this->sq( $query ) ), $replacements ), '0' );
 		}
 	}
 ?>

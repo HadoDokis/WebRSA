@@ -250,8 +250,26 @@ ALTER TABLE users ADD CONSTRAINT users_type_structurereferente_idreferent_id_chk
 	OR ( type = 'externe_ci' AND structurereferente_id IS NULL AND referent_id IS NOT NULL AND communautesr_id IS NULL )
 );
 
--- FIXME: ajouter la colonne communautesr_id à la table tableauxsuivispdvs93
+--------------------------------------------------------------------------------
+-- 20160413: ajout de la communauté de structures référentes aux tableaux de suivi
+--------------------------------------------------------------------------------
 
+SELECT add_missing_table_field( 'public', 'tableauxsuivispdvs93', 'communautesr_id', 'INTEGER');
+ALTER TABLE tableauxsuivispdvs93 ALTER COLUMN communautesr_id SET DEFAULT NULL;
+-- FIXME: en mode développement
+DELETE FROM tableauxsuivispdvs93 WHERE communautesr_id IS NOT NULL;
+SELECT add_missing_constraint ( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_communautesr_id_fkey', 'communautessrs', 'communautesr_id', true );
+DROP INDEX IF EXISTS tableauxsuivispdvs93_communautesr_id_idx;
+CREATE INDEX tableauxsuivispdvs93_communautesr_id_idx ON tableauxsuivispdvs93(communautesr_id);
+
+DROP TABLE IF EXISTS structuresreferentes_tableauxsuivispdvs93 CASCADE;
+CREATE TABLE structuresreferentes_tableauxsuivispdvs93 (
+	id						SERIAL NOT NULL PRIMARY KEY,
+	structurereferente_id	INTEGER NOT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	tableausuivipdv93_id	INTEGER NOT NULL REFERENCES tableauxsuivispdvs93(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+INSERT INTO structuresreferentes_tableauxsuivispdvs93 ( structurereferente_id, tableausuivipdv93_id )
+	SELECT structurereferente_id, id FROM tableauxsuivispdvs93 WHERE structurereferente_id IS NOT NULL;
 
 --------------------------------------------------------------------------------
 -- Dashboard

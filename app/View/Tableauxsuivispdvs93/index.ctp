@@ -8,6 +8,7 @@
 			$tableauxsuivispdvs93,
 			array(
 				'Tableausuivipdv93.annee' => array( 'type' => 'text', 'class' => 'integer number' ),
+				'Communautesr.name',
 				'Pdv.lib_struc',
 				'Referent.nom_complet',
 				'Tableausuivipdv93.name',

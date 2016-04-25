@@ -77,7 +77,16 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Csv', 'Default2', 'Search', 'Xform', 'Xhtml', 'Cake1xLegacy.Ajax', 'Checkboxes' );
+		public $helpers = array(
+			'Allocataires',
+			'Csv',
+			'Default2',
+			'Search',
+			'Xform',
+			'Xhtml',
+			'Cake1xLegacy.Ajax',
+			'Checkboxes'
+		);
 
 		/**
 		 * Modèles utilisés par ce contrôleur.
@@ -332,6 +341,8 @@
 				'formeci' => $this->Option->forme_ci(),
 				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
+			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
+			$options['Adresse']['canton'] = $options['cantons'];
 			$options = Set::merge(
 				$options,
 				$this->Contratinsertion->Cer93->enums(),
@@ -849,7 +860,8 @@
 				'formeci' => $this->Option->forme_ci(),
 				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
-
+			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
+			$options['Adresse']['canton'] = $options['cantons'];
 			$options = Set::merge(
 				$options,
 				$this->Contratinsertion->Cer93->enums(),

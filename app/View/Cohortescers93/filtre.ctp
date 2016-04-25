@@ -59,7 +59,7 @@
 
 		echo $this->Search->date( 'Search.Orientstruct.date_valid' );
 
-		echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
+		echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
 
 		echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
 

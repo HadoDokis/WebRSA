@@ -202,6 +202,7 @@
 					}
 
 					$conditionDateImpression = 'Cer93.dateimpressiondecision IS NULL';
+					$conditionDateDecision = '1 = 1';
 					if( $mode_operation == 'impression' ) {
 						// Conditions sur la présence d'une date d'impression
 						$hasDateImpression = Hash::get( $search, 'Cer93.hasdateimpression' );
@@ -221,9 +222,6 @@
 						// Conditions sur la date de décision
 						if(Hash::get($search, 'Contratinsertion.datedecision')) {
 							$conditionDateDecision = $this->conditionsDates( array(), $search, 'Contratinsertion.datedecision' );
-						}
-						else {
-							$conditionDateDecision = '1 = 1';
 						}
 					}
 

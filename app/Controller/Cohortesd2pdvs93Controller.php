@@ -46,6 +46,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
+			'Allocataires',
 			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
@@ -57,7 +58,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option', 'Personne', 'Questionnaired2pdv93' );
+		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option', 'Personne', 'Questionnaired2pdv93', 'WebrsaTableausuivipdv93' );
 
 		/**
 		 * Moteur de recherche des questionnaires D2
@@ -93,12 +94,14 @@
 					'annee' => array_combine( $years, $years )
 				),
 				'Rendezvous' => array(
-					'structurereferente_id' => $this->Tableausuivipdv93->listePdvs()
+					'structurereferente_id' => $this->WebrsaTableausuivipdv93->listePdvs()
 				),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 			);
+			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
+			$options['Adresse']['canton'] = $options['cantons'];
 			$options = Hash::merge(
 				$options,
 				$this->Questionnaired2pdv93->options( array( 'find' => true ) )

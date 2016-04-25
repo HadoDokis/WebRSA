@@ -496,6 +496,7 @@ $irregularPlural = array(
 	'logicielprimo_primoanalyse' => 'logicielprimos_primoanalyses',
 	'communautesr' => 'communautessrs',
 	'communautesr_structurereferente' => 'communautessrs_structuresreferentes',
+	'structurereferente_tableausuivipdv93' => 'structuresreferentes_tableauxsuivispdvs93',
 	// Tableau de bord
 	'role_user' => 'roles_users',
 );

@@ -47,7 +47,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Communautesr'
+			'Communautesr',
+			'WebrsaTableausuivipdv93'
 		);
 
 		/**
@@ -139,7 +140,7 @@
 
 			// Options
 			$options = $this->Communautesr->enums();
-			$options['Structurereferente']['Structurereferente'] = $this->Communautesr->Structurereferente->Tableausuivipdv93->listePdvs();
+			$options['Structurereferente']['Structurereferente'] = $this->WebrsaTableausuivipdv93->listePdvs();
 
 			$this->set( compact( 'options' ) );
 			$this->render( 'edit' );
