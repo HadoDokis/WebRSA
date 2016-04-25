@@ -94,7 +94,16 @@
 					'annee' => array_combine( $years, $years )
 				),
 				'Rendezvous' => array(
-					'structurereferente_id' => $this->WebrsaTableausuivipdv93->listePdvs()
+					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+						array(
+							'type' => InsertionsBeneficiairesComponent::TYPE_LIST,
+							'prefix' => false,
+							'conditions' => array(
+								'Structurereferente.id' => array_keys( $this->WebrsaTableausuivipdv93->listePdvs() )
+							)
+						)
+					)
+
 				),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
