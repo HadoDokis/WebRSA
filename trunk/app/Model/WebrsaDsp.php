@@ -67,6 +67,7 @@
 			$ids = (array)Hash::extract($bases, '{n}.DspRev.id');
 			$personne_ids = array_unique((array)Hash::extract($bases, '{n}.DspRev.personne_id'));
 			
+			$results = array();
 			foreach ($personne_ids as $personne_id) {
 				$query = $this->completeVirtualFieldsForAccess($this->getViewQuery());
 				$query['conditions'] = array('DspRev.personne_id' => $personne_id);
@@ -276,5 +277,19 @@
 			}
 
 			return $return;
+		}
+		
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$results = $this->getViewQuery();
+			$success = !empty($results);
+
+			return $success;
 		}
 	}

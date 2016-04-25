@@ -23,10 +23,10 @@
 		 * @param array $params
 		 * @return array
 		 */
-		public static function params( array $params = array() ) {
+		public static function params(array $params = array()) {
 			return $params + array(
 				'alias' => 'Orientstruct',
-				'departement' => (int)Configure::read( 'Cg.departement' ),
+				'departement' => (int)Configure::read('Cg.departement'),
 				'ajout_possible' => null,
 				'reorientationseps' => null
 			);
@@ -39,8 +39,8 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		public static function _add( array $record, array $params ) {
-			return Hash::get( $params, 'ajout_possible' ) == true;
+		public static function _add(array $record, array $params) {
+			return Hash::get($params, 'ajout_possible') == true;
 		}
 
 		/**
@@ -54,20 +54,20 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _edit( array $record, array $params ) {
-			$result = Hash::get( $record, "{$params['alias']}.dernier" ) == true
-				&& Hash::get( $params, 'ajout_possible' ) == true;
+		protected static function _edit(array $record, array $params) {
+			$result = Hash::get($record, "{$params['alias']}.dernier") == true
+				&& Hash::get($params, 'ajout_possible') == true;
 
-			if( 66 == $params['departement'] ) {
+			if ($params['departement'] === 66) {
 				// Délai de modification orientation (10 jours par défaut)
-				$date_valid = Hash::get( $record, "{$params['alias']}.date_valid" );
-				$nbheure = Configure::read( 'Periode.modifiableorientation.nbheure' );
-				$periodeblock = !empty( $date_valid )
-					&& ( time() >= ( strtotime( $date_valid ) + 3600 * $nbheure ) );
+				$date_valid = Hash::get($record, "{$params['alias']}.date_valid");
+				$nbheure = Configure::read('Periode.modifiableorientation.nbheure');
+				$periodeblock = !empty($date_valid)
+					&& (time() >= (strtotime($date_valid) + 3600 * $nbheure));
 
 				$result = $result
 					&& $periodeblock == false
-					&& Hash::get( $record, "{$params['alias']}.dernier_oriente" ) == true;
+					&& Hash::get($record, "{$params['alias']}.dernier_oriente") == true;
 			}
 
 			return $result;
@@ -83,8 +83,8 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _impression( array $record, array $params ) {
-			return Hash::get( $record, "{$params['alias']}.printable" ) == 1;
+		protected static function _impression(array $record, array $params) {
+			return Hash::get($record, "{$params['alias']}.printable") == 1;
 		}
 
 		/**
@@ -95,12 +95,12 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _delete( array $record, array $params ) {
+		protected static function _delete(array $record, array $params) {
 			$reorientationseps = Hash::get($params, 'reorientationseps');
 			
-			return Hash::get( $record, "{$params['alias']}.dernier" ) == true
-				&& Hash::get( $record, "{$params['alias']}.dernier_oriente" ) == true
-				&& Hash::get( $record, "{$params['alias']}.linked_records" ) == false
+			return Hash::get($record, "{$params['alias']}.dernier") == true
+				&& Hash::get($record, "{$params['alias']}.dernier_oriente") == true
+				&& Hash::get($record, "{$params['alias']}.linked_records") == false
 				&& empty($reorientationseps);
 		}
 
@@ -112,9 +112,9 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _impression_changement_referent( array $record, array $params ) {
-			return Hash::get( $record, "{$params['alias']}.premier_oriente" ) == true
-				&& Hash::get( $record, "{$params['alias']}.notifbenefcliquable" ) == true;
+		protected static function _impression_changement_referent(array $record, array $params) {
+			return Hash::get($record, "{$params['alias']}.premier_oriente") == true
+				&& Hash::get($record, "{$params['alias']}.notifbenefcliquable") == true;
 		}
 
 		/**
@@ -123,11 +123,11 @@
 		 * @param array $params
 		 * @return array
 		 */
-		public static function actions( array $params = array() ) {
-			$params = self::params( $params );
-			$result = array( 'add', 'edit', 'impression', 'delete' );
+		public static function actions(array $params = array()) {
+			$params = self::params($params);
+			$result = array('add', 'edit', 'impression', 'delete');
 
-			if( 66 == $params['departement'] ) {
+			if ($params['departement'] === 66) {
 				$result[] = 'impression_changement_referent';
 			}
 

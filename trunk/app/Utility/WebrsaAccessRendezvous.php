@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaAccessDsp.
+	 * Code source de la classe WebrsaAccessRendezvous.
 	 *
 	 * PHP 5.3
 	 *
@@ -11,11 +11,11 @@
 	App::uses('WebrsaAbstractAccess', 'Utility');
 
 	/**
-	 * La classe WebrsaAccessDsp ...
+	 * La classe WebrsaAccessRendezvous ...
 	 *
 	 * @package app.Utility
 	 */
-	class WebrsaAccessDsp extends WebrsaAbstractAccess
+	class WebrsaAccessRendezvous extends WebrsaAbstractAccess
 	{
 		/**
 		 * Paramètres par défaut
@@ -25,7 +25,7 @@
 		 */
 		public static function params(array $params = array()) {
 			return $params + array(
-				'alias' => 'Dsp',
+				'alias' => 'Rendezvous',
 				'departement' => (int)Configure::read( 'Cg.departement' ),
 			);
 		}
@@ -37,8 +37,9 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _view_diff(array $record, array $params) {
-			return (int)Hash::get($record, 'diff') >= 1;
+		protected static function _add(array $record, array $params) {
+			$params = self::params($params);
+			return Hash::get($params, 'ajoutPossible');
 		}
 
 		/**
@@ -59,7 +60,19 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _view_revs(array $record, array $params) {
+		protected static function _edit(array $record, array $params) {
+			$params = self::params($params);
+			return Hash::get($record, 'Rendezvous.dernier') && !Hash::get($params, 'dossiercommissionLie');
+		}
+
+		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _impression(array $record, array $params) {
 			return true;
 		}
 
@@ -70,8 +83,9 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _edit(array $record, array $params) {
-			return true;
+		protected static function _delete(array $record, array $params) {
+			$params = self::params($params);
+			return Hash::get($record, 'Rendezvous.dernier') && !Hash::get($params, 'dossiercommissionLie');
 		}
 
 		/**
@@ -84,32 +98,15 @@
 		protected static function _filelink(array $record, array $params) {
 			return true;
 		}
-
-		/**
-		 * Permission d'accès
-		 * 
-		 * @param array $record
-		 * @param array $params
-		 * @return boolean
-		 */
-		protected static function _revertTo(array $record, array $params) {
-			return true;
-		}
-
+		
 		/**
 		 * Liste les actions disponnible
 		 * 
 		 * @param array $params
 		 * @return array
 		 */
-		public static function actions( array $params = array() ) {
-			$params = self::params( $params );
-			$result = array('view', 'view_revs', 'view_diff', 'edit', 'filelink');
-
-			if ($params['departement'] !== 66) {
-				$result[] = 'revertTo';
-			}
-			
+		public static function actions(array $params = array()) {
+			$result = array('add', 'view', 'edit', 'impression', 'delete', 'filelink');
 			return $result;
 		}
 	}
