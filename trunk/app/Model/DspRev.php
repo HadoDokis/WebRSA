@@ -322,9 +322,12 @@
 		 * d'historique des DspRev, dans la page de différences entre deux versions
 		 * des DspRev.
 		 *
+		 * @deprecated since version 3.1
+		 * @see WebrsaDsp::getViewQuery()
 		 * @return array
 		 */
 		public function getViewQuery() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_NOTICE);
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
 			$query = Cache::read( $cacheKey );
 
@@ -412,11 +415,14 @@
 		 * Permet d'obtenir les différences entre deux versions des DspRev obtenues
 		 * grâce au query se trouvant dans la méthode getViewQuery().
 		 *
+		 * @deprecated since version 3.1
+		 * @see WebrsaDsp::getDiffs()
 		 * @param array $old
 		 * @param array $new
 		 * @return array
 		 */
 		public function getDiffs( $old, $new ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_NOTICE);
 			$return = array();
 
 			// Suppression des champs de clés primaires et étrangères des résultats des Dsps actuelles
