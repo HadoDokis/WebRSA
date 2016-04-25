@@ -15,7 +15,8 @@
                     echo '<li>'.$this->Xhtml->addLink(
                         'Ajouter un Rendez-vous',
                         array( 'controller' => 'rendezvous', 'action' => 'add', $personne_id ),
-                        ( $this->Permissions->checkDossier( 'rendezvous', 'add', $dossierMenu ) && ( $ajoutPossible ) )
+                        $ajoutPossible
+							&& ( $this->Permissions->checkDossier( 'rendezvous', 'add', $dossierMenu ))
 
                     ).' </li>';
                 ?>
@@ -29,9 +30,6 @@
 		}
 		if( isset( $dossiercov ) && !empty( $dossiercov ) ) {
 			echo '<p class="error">Ce dossier est en cours de passage en COV: '.$dossiercov['StatutrdvTyperdv']['motifpassageep'].'.</p>';
-		}
-		if ( !isset( $dossiercommissionLie ) ) {
-			$dossiercommissionLie = 0;
 		}
 	?>
 <table id="listeRendezvous" class="tooltips">
@@ -51,11 +49,6 @@
 	<tbody>
 		<?php
 			foreach( $rdvs as $index => $rdv ) {
-				$lastrdv = true;
-				if( $departement != 93 ) {
-					$lastrdv = ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id );
-				}
-
 				// TODO: code en commun avec Criteresrdv/index.ctp
 				$thematiques = Hash::extract( $rdv, 'Thematiquerdv.{n}.name' );
 				$row = null;
@@ -94,19 +87,22 @@
 							'Voir le Rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'view',
 							$rdv['Rendezvous']['id'] ),
-							( $this->Permissions->checkDossier( 'rendezvous', 'view', $dossierMenu ) == 1 )
+							Hash::get($rdv, 'Rendezvous.action_view') 
+								&& ( $this->Permissions->checkDossier( 'rendezvous', 'view', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->editLink(
 							'Editer le référent',
 							array( 'controller' => 'rendezvous', 'action' => 'edit',
 							$rdv['Rendezvous']['id'] ),
-							( $lastrdv && ( $dossiercommissionLie== 0 ) && ( $this->Permissions->checkDossier( 'rendezvous', 'edit', $dossierMenu ) == 1 ) )
+							Hash::get($rdv, 'Rendezvous.action_edit') 
+								&& ( $this->Permissions->checkDossier( 'rendezvous', 'edit', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->printLink(
 							'Imprimer le Rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'impression',
 							$rdv['Rendezvous']['id'] ),
-							( $this->Permissions->check( 'rendezvous', 'impression', $dossierMenu ) == 1 )
+							Hash::get($rdv, 'Rendezvous.action_impression') 
+								&& ( $this->Permissions->check( 'rendezvous', 'impression', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->deleteLink(
 							( $departement == 93 ) && Hash::get( $rdv, 'Rendezvous.has_questionnaired1pdv93' )
@@ -114,17 +110,15 @@
 								: 'Supprimer le rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'delete',
 							$rdv['Rendezvous']['id'] ),
-							(
-								$lastrdv
-								&& ( $dossiercommissionLie== 0 )
-								&& ( $this->Permissions->checkDossier( 'rendezvous', 'delete', $dossierMenu ) == 1 )
-							)
+							Hash::get($rdv, 'Rendezvous.action_delete') 
+								&& ($this->Permissions->checkDossier( 'rendezvous', 'delete', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->fileLink(
 							'Lier des fichiers',
 							array( 'controller' => 'rendezvous', 'action' => 'filelink',
 							$rdv['Rendezvous']['id'] ),
-							( $this->Permissions->checkDossier( 'rendezvous', 'filelink', $dossierMenu )  )
+							Hash::get($rdv, 'Rendezvous.action_filelink') 
+								&& ( $this->Permissions->checkDossier( 'rendezvous', 'filelink', $dossierMenu )  )
 						),
 						h( '('.Set::classicExtract( $rdv, 'Fichiermodule.nb_fichiers_lies' ).')' ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),

@@ -87,6 +87,18 @@
 				)
 			),
 		);
+		
+		public $virtualFields = array(
+			'dernier' => array(
+				'type'      => 'boolean',
+				'postgres'  => '"%s"."id" IN (
+					SELECT a.id FROM rendezvous AS a 
+					WHERE a.personne_id = "%s"."personne_id" 
+					ORDER BY a.daterdv DESC, 
+						a.heurerdv DESC 
+					LIMIT 1)'
+			),
+		);
 
 		/**
 		 * Règle de validation: on vérifie qu'il n'existe pas d'autre RDV pour

@@ -505,22 +505,6 @@
 			return $return;
 		}
 
-		/**
-		 * Exécute les différentes méthods du modèle permettant la mise en cache.
-		 * Utilisé au préchargement de l'application (/prechargements/index).
-		 *
-		 * @return boolean true en cas de succès, false en cas d'erreur,
-		 * 	null pour les méthodes qui ne font rien.
-		 */
-		public function prechargement() {
-			$success = true;
-
-			$results = $this->getViewQuery();
-			$success = $success && !empty( $results );
-
-			return $success;
-		}
-		
 		public function sqHeberge( $personne_id = 'Personne.id' ) {
 			$sq = $this->sq(
 				array(

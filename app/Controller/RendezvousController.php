@@ -9,6 +9,7 @@
 	 */
 	App::import( 'Helper', 'Locale' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
+	App::uses('WebrsaAccessRendezvous', 'Utility');
 
 	/**
 	 * La classe RendezvousController ...
@@ -19,7 +20,7 @@
 	{
 		public $name = 'Rendezvous';
 
-		public $uses = array( 'Rendezvous', 'Option' );
+		public $uses = array( 'Rendezvous', 'Option', 'WebrsaRendezvous' );
 
 		public $helpers = array(
 			'Locale',
@@ -209,6 +210,17 @@
 
 			$personne_id = $rendezvous['Rendezvous']['personne_id'];
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$redirectUrl = array('action' => 'index', $personne_id);
+			$params = array();
+			
+			if (!WebrsaAccessRendezvous::check($this->action, $rendezvous, $params)) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
 
 			$dossier_id = $this->Rendezvous->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -242,7 +254,7 @@
 					$this->Rendezvous->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect($redirectUrl);
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -349,27 +361,15 @@
 				}
 				$query = $this->Rendezvous->linkedRecordsCompleteQuerydata( $query, 'Questionnaired1pdv93' );
 			}
+			
+			$query = $this->WebrsaRendezvous->completeVirtualFieldsForAccess($query);
 			$rdvs = $this->Rendezvous->find( 'all', $query );
 
-			if( isset( $rdvs['0']['Rendezvous']['id'] ) && !empty( $rdvs['0']['Rendezvous']['id'] ) ) {
-				$lastrdv_id = $rdvs['0']['Rendezvous']['id'];
-				$statutrdv_id = $rdvs['0']['Rendezvous']['statutrdv_id'];
-			}
-			else {
-				$lastrdv_id = 0;
-			}
-			$this->set( 'lastrdv_id', $lastrdv_id );
-
             // variable permettant de savoir si on peut ou non ajouter un nouveau RDV
-            $ajoutPossible = true;
-            if( Configure::read( 'Cg.departement' ) == 66 && isset( $statutrdv_id ) ) {
-                if( in_array( $statutrdv_id, (array) Configure::read( 'Rendezvous.Ajoutpossible.statutrdv_id' ) ) ) {
-                    $ajoutPossible = false;
-                }
-            }
+            $ajoutPossible = $this->WebrsaRendezvous->ajoutPossible($personne_id);
             $this->set( compact( 'ajoutPossible' ) );
 
-			if( Configure::read( 'Cg.departement' ) == 58 ) {
+			if( Configure::read( 'Cg.departement' ) !== 58 ) {
 				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
 					'first',
 					array(
@@ -439,75 +439,19 @@
 					)
 				);
 				$this->set( compact( 'dossiercov' ) );
-
-				$dossierepLie = $this->Rendezvous->Personne->Dossierep->find(
-					'count',
-					array(
-						'conditions' => array(
-							'Dossierep.id IN ( '.
-							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array(
-											'passagescommissionseps.dossierep_id'
-										),
-										'alias' => 'passagescommissionseps',
-										'conditions' => array(
-											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
-										)
-									)
-							)
-							.' )'
-						),
-						'joins' => array(
-							array(
-								'table' => 'sanctionsrendezvouseps58',
-								'alias' => 'Sanctionrendezvousep58',
-								'type' => 'INNER',
-								'conditions' => array(
-									'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
-									'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
-								)
-							)
-						),
-						'order' => array( 'Dossierep.created ASC' )
-					)
-				);
-
-				$dossiercovLie = $this->Rendezvous->Personne->Dossiercov58->find(
-					'count',
-					array(
-						'conditions' => array(
-							'OR' => array(
-								'Dossiercov58.id IS NULL',
-								'Dossiercov58.id IN ( '.
-									$this->Rendezvous->Personne->Dossiercov58->Passagecov58->sq(
-										array(
-											'fields' => array(
-												'passagescovs58.dossiercov58_id'
-											),
-											'alias' => ' passagescovs58',
-											'conditions' => array(
-												'passagescovs58.etatdossiercov' => array( 'cree', 'associe', 'annule', 'reporte' )
-											)
-										)
-									)
-								.' )',
-							),
-							'Propoorientsocialecov58.rendezvous_id' => $lastrdv_id
-						),
-						'joins' => array(
-							$this->Rendezvous->Personne->Dossiercov58->join( 'Propoorientsocialecov58', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Rendezvous->Personne->Dossiercov58->Propoorientsocialecov58->join( 'Rendezvous', array( 'type' => 'LEFT OUTER' ) )
-						),
-						'order' => array( 'Dossiercov58.created ASC' ),
-						'contain' => false
-					)
-				);
-
-				$this->set( 'dossiercommissionLie', ( $dossierepLie + $dossiercovLie ) );
 			}
 
 			$rdvs = $this->Rendezvous->containThematique( $rdvs );
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$lastrdv_id = Hash::get($rdvs, '0.Rendezvous.id');
+			$params = array(
+				'ajoutPossible' => $ajoutPossible,
+				'dossiercommissionLie' => $this->WebrsaRendezvous->haveDossiercommissionLie($personne_id),
+			);
+			$rdvs = WebrsaAccessRendezvous::accesses($rdvs, $params);
 
 			$this->set( compact( 'rdvs' ) );
 			$this->set( 'personne_id', $personne_id );
@@ -550,6 +494,17 @@
 			);
 
 			$this->assert( !empty( $rendezvous ), 'invalidParameter' );
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$personne_id = Hash::get($rendezvous, 'Rendezvous.personne_id');
+			$redirectUrl = array('action' => 'index', $personne_id);
+			
+			if (!WebrsaAccessRendezvous::check($this->action, $rendezvous)) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $rendezvous['Rendezvous']['personne_id'] ) ) );
 
@@ -563,6 +518,21 @@
 		 */
 		public function add() {
 			$args = func_get_args();
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$personne_id = $args[0];
+			$redirectUrl = array('action' => 'index', $personne_id);
+			$params = array(
+				'ajoutPossible' => $this->WebrsaRendezvous->ajoutPossible($personne_id)
+			);
+			
+			if (!WebrsaAccessRendezvous::check($this->action, array(), $params)) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
+			
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
@@ -571,6 +541,22 @@
 		 */
 		public function edit() {
 			$args = func_get_args();
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$records = $this->WebrsaRendezvous->getDataForAccess(array('Rendezvous.id' => $args[0]));
+			$personne_id = Hash::get($records, '0.Rendezvous.personne_id');
+			$redirectUrl = array('action' => 'index', $personne_id);
+			$params = array(
+				'dossiercommissionLie' => $this->WebrsaRendezvous->haveDossiercommissionLie($personne_id)
+			);
+			
+			if (!WebrsaAccessRendezvous::check($this->action, current($records), $params)) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
+			
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
@@ -603,6 +589,8 @@
 			}
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			
+			
 
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
@@ -758,18 +746,21 @@
 		 * @param integer $id L'id du rendez-vous que l'on souhaite supprimer
 		 */
 		public function delete( $id ) {
-			$rendezvous = $this->Rendezvous->find(
-				'first',
-				array(
-					'fields' => array(
-						'Rendezvous.personne_id'
-					),
-					'conditions' => array(
-						'Rendezvous.id' => $id
-					),
-					'contain' => false
-				)
+			/**
+			 * Contrôle d'accès
+			 */
+			$records = $this->WebrsaRendezvous->getDataForAccess(array('Rendezvous.id' => $id));
+			$personne_id = Hash::get($records, '0.Rendezvous.personne_id');
+			$redirectUrl = array('action' => 'index', $personne_id);
+			$params = array(
+				'dossiercommissionLie' => $this->WebrsaRendezvous->haveDossiercommissionLie($personne_id)
 			);
+			$rendezvous = current($records);
+			
+			if (!WebrsaAccessRendezvous::check($this->action, $rendezvous, $params)) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
 
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $rendezvous['Rendezvous']['personne_id'] ) );
 
@@ -826,6 +817,18 @@
 		public function impression( $rdv_id = null ) {
 			$personne_id = $this->Rendezvous->personneId( $rdv_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+			
+			/**
+			 * Contrôle d'accès
+			 */
+			$records = $this->WebrsaRendezvous->getDataForAccess(array('Rendezvous.id' => $rdv_id));
+			$redirectUrl = array('action' => 'index', $personne_id);
+			$params = array();
+			
+			if (!WebrsaAccessRendezvous::check($this->action, current($records), $params)) {
+				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
+				$this->redirect($redirectUrl);
+			}
 
 			$pdf = $this->Rendezvous->getDefaultPdf( $rdv_id, $this->Session->read( 'Auth.User.id' ) );
 
@@ -834,7 +837,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de rendez-vous.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect($redirectUrl);
 			}
 		}
 
