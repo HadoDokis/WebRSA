@@ -7,6 +7,7 @@
 	$searchFormId = Inflector::camelize( Inflector::underscore( Inflector::classify( $this->request->params['controller'] ) )."_{$this->request->params['action']}_form" );
 	$type = $this->Session->read( 'Auth.User.type' );
 
+	// TODO: dans le contrôleur
 	$tableau = null;
 	$tableaux = array_keys( (array)$options['Tableausuivipdv93']['name'] );
 	if( in_array( $this->request->params['action'], $tableaux ) ) {
@@ -22,7 +23,21 @@
 		}
 	}
 
-	echo $this->Default3->titleForLayout();
+	if( isset( $tableausuivipdv93 ) ) {
+		echo $this->Default3->titleForLayout(
+			Hash::merge(
+				$tableausuivipdv93,
+				array(
+					'Tableausuivipdv93' => array(
+						'name' => value( $options['Tableausuivipdv93']['name'], $tableausuivipdv93['Tableausuivipdv93']['name'] )
+					)
+				)
+			)
+		);
+	}
+	else {
+		echo $this->Default3->titleForLayout();
+	}
 
 	$actions['/'.Inflector::camelize( $this->request->params['controller'] ).'/'.$this->request->params['action'].'/#toggleform'] =  array(
 		'title' => 'Visibilité formulaire',
@@ -167,7 +182,10 @@
 		}
 	}
 
-	echo $this->Default3->DefaultForm->buttons( array( 'Search' ) );
+	if( !in_array( $this->request->params['action'], array( 'view', 'historiser' ) ) ) {
+		echo $this->Default3->DefaultForm->buttons( array( 'Search' ) );
+	}
+
 	echo $this->Default3->DefaultForm->end();
 
 	echo $this->Observer->dependantSelect(

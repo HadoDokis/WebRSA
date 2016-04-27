@@ -492,6 +492,27 @@
 		 }
 
 		/**
+		 * Test de la fonction words_replace().
+		 */
+		 public function testWordsReplace() {
+			// 1. Pour des "noms de champs" CakePHP
+			$result = words_replace(
+				'Foo.bar = Bar.foo',
+				array( 'Foo' => 'Baz' )
+			);
+			$expected = 'Baz.bar = Bar.foo';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Pour des conditions de query CakePHP
+			$result = words_replace(
+				'"Fichiermodule"."modele" = \'Personne\' AND "Fichiermodule"."fk_value" = {$__cakeID__$}',
+				array( '{$__cakeID__$}' => 594593 )
+			);
+			$expected = '"Fichiermodule"."modele" = \'Personne\' AND "Fichiermodule"."fk_value" = 594593';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
+
+		/**
 		 * Test de la fonction array_words_replace().
 		 */
 		 public function testArrayWordsReplace() {

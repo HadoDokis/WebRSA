@@ -126,7 +126,6 @@
 			}
 
 			// 2. Valeurs particulières avec potentiellement la chaîne de caractères NULL
-			// FIXME: si je choisis la SR "Conseil général", j'ai aussi les communautés
 			$fields = array( 'communautesr_id', 'user_id' );
 			foreach( $fields as $field ) {
 				$value = suffix( Hash::get( $search, "Search.{$field}" ) );
@@ -253,10 +252,6 @@
 				'structuresreferentes' => null,
 				'referents' => null
 			);
-
-			if( $params['tableau'] === null ) {
-				$params['structuresreferentes']['NULL'] = 'Conseil général';
-			}
 
 			$years = array_reverse( range( 2009, date( 'Y' ) ) );
 

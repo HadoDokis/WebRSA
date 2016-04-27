@@ -231,7 +231,7 @@ msgid "Tableausuivipdv93.type"
 msgstr "Niveau"
 
 msgid "Communautesr.name"
-msgstr "Communauté"
+msgstr "Projet de ville territorial"
 
 msgid "Pdv.lib_struc"
 msgstr "PDV"
