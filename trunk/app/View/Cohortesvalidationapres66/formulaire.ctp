@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'APREs à valider';
+	$this->pageTitle = 'APRE/ADREs à valider';
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -38,7 +38,7 @@
 
 /* echo $this->Xform->input( 'Cohortevalidationapre66.apresavalider', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );*/?>
 
-            <legend>Filtrer par APRE</legend>
+            <legend>Filtrer par APRE/ADRE</legend>
             <?php
 
                 echo $this->Default2->subform(
@@ -92,14 +92,14 @@
     <table id="searchResults" class="tooltips">
         <thead>
             <tr>
-				<th>N° demande APRE</th>
+				<th>N° demande APRE/ADRE</th>
                 <th>N° Dossier</th>
                 <th>Nom de l'allocataire</th>
-                <th>Référent APRE</th>
-                <th>Date demande APRE</th>
+                <th>Référent APRE/ADRE</th>
+                <th>Date demande APRE/ADRE</th>
                 <th>Montant proposé</th>
                 <th>Sélectionner</th>
-                <th>Décision APRE</th>
+                <th>Décision APRE/ADRE</th>
                 <th>Montant accordé</th>
                 <th>Motif du rejet</th>
                 <th>Date de la décision</th>

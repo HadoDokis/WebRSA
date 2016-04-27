@@ -1,5 +1,5 @@
-<?php $this->pageTitle = 'APREs de '.Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' );?>
-<h1><?php echo 'APRE   de '.Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' );?></h1>
+<?php $this->pageTitle = 'APRE/ADREs de '.Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' );?>
+<h1><?php echo 'APRE/ADRE   de '.Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' );?></h1>
 
 <?php
 	$montantrestant = null;

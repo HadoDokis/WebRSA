@@ -499,6 +499,9 @@ $irregularPlural = array(
 	'structurereferente_tableausuivipdv93' => 'structuresreferentes_tableauxsuivispdvs93',
 	// Tableau de bord
 	'role_user' => 'roles_users',
+	// APRE -> ADRE
+	'nameapre66_typeaideapre66' => 'namesapres66_typesaidesapres66',
+	'nameapre66' => 'namesapres66',
 );
 
 /**

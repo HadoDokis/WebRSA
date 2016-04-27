@@ -19,7 +19,7 @@
 
         public $helpers = array( 'Default', 'Default2' );
 
-        public $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66' );
+        public $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66', 'Nameapre66' );
 
 		/**
 		 * Components utilisés par ce contrôleur.
@@ -71,6 +71,8 @@
                 )
             );
             $this->set( 'piececomptable', $piececomptable );
+			
+			$this->set('namesapres', $this->Nameapre66->find('list'));
 
             return $return;
         }

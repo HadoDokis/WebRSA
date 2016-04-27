@@ -766,3 +766,13 @@ msgstr "Date du comité d'APRE"
 
 msgid "ApreComiteapre.decisioncomite"
 msgstr "Décision du comité"
+
+
+msgid "Apre.isapre"
+msgstr "Type formulaire"
+
+msgid "ENUM::ISAPRE::0"
+msgstr "ADRE"
+
+msgid "ENUM::ISAPRE::1"
+msgstr "APRE"

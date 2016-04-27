@@ -845,7 +845,8 @@
 				}
 			}
 
-
+			$this->set('typeaideOptions', $this->_typeaideOptions());
+			
 			$struct_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.structurereferente_id" );
 			$this->set( 'struct_id', $struct_id );
 
@@ -949,7 +950,7 @@
 				$this->log( $e->getMessage(), LOG_ERROR );
 				$success = false;
 			}
-$success = true; // FIXME
+
 			if( $success ) {
 				$this->Session->setFlash( 'Mail envoyé', 'flash/success' );
 			}
@@ -1183,6 +1184,37 @@ $success = true; // FIXME
 			$this->set( 'json', Hash::get($result, 'Apre66.nb_fichiers_lies') );
 			$this->layout = 'ajax';
 			$this->render( '/Elements/json' );
+		}
+
+		/**
+		 * Fait la distinction entre les options pour les APREs et celles des ADREs
+		 * 
+		 * @return array
+		 */
+		protected function _typeaideOptions() {
+			$typeaide = $this->Typeaideapre66->find(
+				'all',
+				array (
+					'fields' => array(
+						'Typeaideapre66.id',
+						'Typeaideapre66.themeapre66_id',
+						'Typeaideapre66.name',
+						'Nameapre66Typeaideapre66.nameapre66_id',
+					),
+					'joins' => array(
+						$this->Typeaideapre66->join('Nameapre66Typeaideapre66')
+					),
+					'contain' => false,
+					'order' => 'Typeaideapre66.name ASC',
+				)
+			);
+			
+			$options = array();
+			foreach ($typeaide as $key => $value) {
+				$options[$value['Nameapre66Typeaideapre66']['nameapre66_id']][] = $value['Typeaideapre66']['themeapre66_id'].'_'.$value['Typeaideapre66']['id'];
+			}
+
+			return $options;
 		}
 	}
 ?>

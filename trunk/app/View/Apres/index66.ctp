@@ -1,18 +1,18 @@
 <?php
-	$this->pageTitle = sprintf( 'APREs liées à %s', $personne['Personne']['nom_complet'] );
+	$this->pageTitle = sprintf( 'APRE/ADREs liées à %s', $personne['Personne']['nom_complet'] );
 	$this->modelClass = Inflector::classify( $this->request->params['controller'] );
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
 <?php echo $this->element( 'ancien_dossier' );?>
 
 		<?php if( empty( $apres ) ):?>
-			<p class="notice">Cette personne ne possède pas encore d'APRE.</p>
+			<p class="notice">Cette personne ne possède pas encore d'APRE/ADRE.</p>
 		<?php endif;?>
 		<?php if( $this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'add', $dossierMenu ) ):?>
 			<ul class="actionMenu">
 				<?php
 					echo '<li>'.$this->Xhtml->addLink(
-						'Ajouter APRE',
+						'Ajouter APRE/ADRE',
 						array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'add', $personne_id )
 					).' </li>';
 				?>
@@ -34,7 +34,7 @@
 <table class="tooltips default2">
 	<thead>
 		<tr>
-			<th>Date demande APRE</th>
+			<th>Date demande APRE/ADRE</th>
 			<th>Etat du dossier</th>
 			<th>Thème de l'aide</th>
 			<th>Type d'aides</th>
@@ -72,7 +72,7 @@
 				$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 					<tbody>
 						<tr>
-							<th>N° APRE</th>
+							<th>N° APRE/ADRE</th>
 							<td>'.h( Set::classicExtract( $apre, "{$this->modelClass}.numeroapre" ) ).'</td>
 						</tr>
 						<tr>
@@ -80,7 +80,7 @@
 							<td>'.h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ).'</td>
 						</tr>
 						<tr>
-							<th>Référent APRE</th>
+							<th>Référent APRE/ADRE</th>
 							<td>'.h( Set::enum( Set::classicExtract( $apre, "{$this->modelClass}.referent_id" ), $referents ) ).'</td>
 						</tr>
 						<tr>
@@ -104,19 +104,19 @@
 						h( $this->Locale->money( $mtattribue ) ),
 						h(  Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $options['decisionapre'] ) ),
 						$this->Xhtml->viewLink(
-							'Voir la demande APRE',
+							'Voir la demande APRE/ADRE',
 							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view'.Configure::read( 'Cg.departement' ), $apre[$this->modelClass]['id'] ),
 							$this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'view', $dossierMenu )
 						),
 						$this->Xhtml->editLink(
-							'Editer la demande APRE',
+							'Editer la demande APRE/ADRE',
 							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
 							$editButton
 							&& $this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit', $dossierMenu )
 							&& ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
 						),
 						$this->Xhtml->printLink(
-							'Imprimer la demande APRE',
+							'Imprimer la demande APRE/ADRE',
 							array( 'controller' => 'apres66', 'action' => 'impression', $apre[$this->modelClass]['id'] ),
 							$buttonEnabledInc
 							&& $this->Permissions->checkDossier( 'apres66', 'impression', $dossierMenu )

@@ -80,7 +80,7 @@
 					Hash::flatten( $this->request->data, '__' )
 				)
 				, ( $this->Permissions->check( $controller, $action.'_impressions' ) && $count > 0 )
-				, 'Voulez vous imprimer les '.$countResults.' notifications APREs ?'
+				, 'Voulez vous imprimer les '.$countResults.' notifications APRE/ADREs ?'
 				, 'popup_impression_cohorte'
 			).'</li><li>
 				<a href="javascript:location.reload();" class="refresh_page" >Recharger la page</a>

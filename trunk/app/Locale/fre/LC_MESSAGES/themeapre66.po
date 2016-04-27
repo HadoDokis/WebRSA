@@ -20,10 +20,10 @@ msgstr ""
 ###############################################################################
 
 msgid "Themeapre66::index::empty"
-msgstr "Aucun thème pour l'APRE présente"
+msgstr "Aucun thème pour l'APRE/ADRE présente"
 
 msgid "Themesapres66::index"
-msgstr "Intitulé des thèmes de l'APRE"
+msgstr "Intitulé des thèmes de l'APRE/ADRE"
 
 msgid "Themesapres66::add"
 msgstr "Ajout d'un thème"

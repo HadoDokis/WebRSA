@@ -36,6 +36,8 @@
 					'istransfere' => array( 'domain' => 'apre' )
 				)
 			),
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2RulesFieldtypes',
 			'Frenchfloat' => array(
 				'fields' => array(
 					'montantaverser',

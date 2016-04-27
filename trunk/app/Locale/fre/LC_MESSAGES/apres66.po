@@ -11,10 +11,10 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Apres66/cohorte_validation/:heading"
-msgstr "APREs à valider"
+msgstr "APRE/ADREs à valider"
 
 msgid "Apres66.cohorte_validation"
-msgstr "Rechercher par APRE"
+msgstr "Rechercher par APRE/ADRE"
 
 msgid "Search.Aideapre66.themeapre66_id"
 msgstr "Thème de l'aide"
@@ -23,25 +23,25 @@ msgid "Search.Aideapre66.typeaideapre66_id"
 msgstr "Type d'aide"
 
 msgid "Search.Apre66.numeroapre"
-msgstr "N° du dossier APRE "
+msgstr "N° du dossier APRE/ADRE "
 
 msgid "Search.Apre66.referent_id"
 msgstr "Référent lié"
 
 msgid "Referentapre.nom_complet"
-msgstr "Référent APRE"
+msgstr "Référent APRE/ADRE"
 
 msgid "/Apres66/index"
 msgstr "Voir"
 
 msgid "/Apres66/index/#Personne.id#"
-msgstr "Voir les APREs de #Personne.nom_complet#"
+msgstr "Voir les APRE/ADREs de #Personne.nom_complet#"
 
 msgid "data[Cohorte][][Apre66][selection]"
 msgstr "Sélectionner"
 
 msgid "data[Cohorte][][Aideapre66][decisionapre]"
-msgstr "Décision APRE"
+msgstr "Décision APRE/ADRE"
 
 msgid "data[Cohorte][][Aideapre66][montantaccorde]"
 msgstr "Montant accordé"
@@ -53,10 +53,10 @@ msgid "data[Cohorte][][Aideapre66][datemontantaccorde]"
 msgstr "Date de la décision"
 
 msgid "/Apres66/cohorte_imprimer/:heading"
-msgstr "APREs à notifier"
+msgstr "APRE/ADREs à notifier"
 
 msgid "Apres66.cohorte_imprimer"
-msgstr "Rechercher par APRE"
+msgstr "Rechercher par APRE/ADRE"
 
 msgid "/Apres66/notifications"
 msgstr "Notifications"
@@ -65,16 +65,16 @@ msgid "/Apres66/notifications/#Apre66.id#"
 msgstr "Notifier la décision"
 
 msgid "/Apres66/cohorte_notifiees/:heading"
-msgstr "APREs notifiées"
+msgstr "APRE/ADREs notifiées"
 
 msgid "Apres66.cohorte_notifiees"
-msgstr "Rechercher par APRE"
+msgstr "Rechercher par APRE/ADRE"
 
 msgid "/Apres66/cohorte_transfert/:heading"
-msgstr "APREs à transférer à la cellule"
+msgstr "APRE/ADREs à transférer à la cellule"
 
 msgid "Apres66.cohorte_transfert"
-msgstr "Rechercher par APRE"
+msgstr "Rechercher par APRE/ADRE"
 
 msgid "Apre66.nb_fichiers_lies"
 msgstr "Nombre de fichiers liés"
@@ -92,10 +92,13 @@ msgid "data[Cohorte][][Apre66][istransfere]"
 msgstr "Transférer cellule"
 
 msgid "/Apres66/cohorte_traitement/:heading"
-msgstr "APREs à traiter par la cellule"
+msgstr "APRE/ADREs à traiter par la cellule"
 
 msgid "Apres66.cohorte_traitement"
-msgstr "Rechercher par APRE"
+msgstr "Rechercher par APRE/ADRE"
 
 msgid "data[Cohorte][][Apre66][istraite]"
 msgstr "Traité"
+
+msgid "Apre66.isapre"
+msgstr "Type"

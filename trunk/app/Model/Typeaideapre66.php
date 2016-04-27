@@ -51,7 +51,20 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Nameapre66Typeaideapre66' => array(
+				'className' => 'Nameapre66Typeaideapre66',
+				'foreignKey' => 'typeaideapre66_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -86,7 +99,23 @@
 				'deleteQuery' => '',
 				'insertQuery' => '',
 				'with' => 'Piececomptable66Typeaideapre66'
-			)
+			),
+			'Nameapre66' => array(
+				'className' => 'Nameapre66',
+				'joinTable' => 'namesapres66_typesaidesapres66',
+				'foreignKey' => 'typeaideapre66_id',
+				'associationForeignKey' => 'nameapre66_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'Nameapre66Typeaideapre66'
+			),
 		);
 
 

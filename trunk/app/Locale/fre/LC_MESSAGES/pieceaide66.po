@@ -20,10 +20,10 @@ msgstr ""
 ###############################################################################
 
 msgid "Pieceaide66::index::empty"
-msgstr "Aucune pièce administrative pour l'APRE présente"
+msgstr "Aucune pièce administrative pour l'APRE/ADRE présente"
 
 msgid "Piecesaides66::index"
-msgstr "Intitulé des pièces administratives de l'APRE"
+msgstr "Intitulé des pièces administratives de l'APRE/ADRE"
 
 msgid "Piecesaides66::add"
 msgstr "Ajout d'une pièce administrative "

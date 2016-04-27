@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'APREs à transférer à la cellule';
+	$this->pageTitle = 'APRE/ADREs à transférer à la cellule';
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -36,7 +36,7 @@
 			<?php echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>
 
 
-            <legend>Filtrer par APRE</legend>
+            <legend>Filtrer par APRE/ADRE</legend>
             <?php
 
                 echo $this->Default2->subform(
@@ -90,10 +90,10 @@
     <table id="searchResults" class="tooltips">
         <thead>
             <tr>
-                <th>N° Demande APRE</th>
+                <th>N° Demande APRE/ADRE</th>
                 <th>Nom de l'allocataire</th>
-                <th>Référent APRE</th>
-                <th>Date demande APRE</th>
+                <th>Référent APRE/ADRE</th>
+                <th>Date demande APRE/ADRE</th>
                 <th>Etat du dossier</th>
                 <th>Décision</th>
                 <th>Montant accordé</th>

@@ -18,6 +18,9 @@
             'Typeaideapre66.isincohorte' => array( 'type' => 'radio'),
 			'Typeaideapre66.objetaide' => array( 'type' => 'text' ),
 			'Typeaideapre66.plafond' => array( 'type' => 'text' ),
+			'Nameapre66.Nameapre66' => array(
+				'label' => 'Type d\'aide', 'multiple' => 'checkbox' , 'options' => $namesapres, 'empty' => false
+			),
 			'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces administratives', 'multiple' => 'checkbox' , 'options' => $pieceadmin, 'empty' => false ),
 		),
 		array(
