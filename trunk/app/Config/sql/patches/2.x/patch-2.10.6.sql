@@ -16,7 +16,7 @@ BEGIN;
 --------------------------------------------------------------------------------
 
 SELECT add_missing_table_field ('public', 'apres', 'isapre', 'SMALLINT');
-ALTER TABLE apres ALTER COLUMN isapre SET DEFAULT '1';
+UPDATE apres SET isapre = 1;
 SELECT alter_table_drop_constraint_if_exists ('public', 'apres', 'apres_isapre_in_list_chk');
 ALTER TABLE apres ADD CONSTRAINT apres_isapre_in_list_chk CHECK (cakephp_validate_in_list(isapre, ARRAY[0,1]));
 
