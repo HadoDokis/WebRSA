@@ -47,6 +47,7 @@
 	if ( $departement === 66 ) {
 			echo $this->Default3->subform(
 				array(
+					'Search.Apre.isapre' => array('empty' => true),
 					'Search.Apre.structurereferente_id' => array('empty' => true),
 					'Search.Apre.referent_id' => array('empty' => true),
 					'Search.Apre.activitebeneficiaire' => array('empty' => true),

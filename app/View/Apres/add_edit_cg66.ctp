@@ -5,13 +5,13 @@
 
     $this->modelClass = Inflector::classify( $this->request->params['controller'] );
 
-    $this->pageTitle = 'APRE';
+    $this->pageTitle = 'APRE/ADRE';
 
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout APRE';
+        $this->pageTitle = 'Ajout APRE/ADRE';
     }
     else {
-        $this->pageTitle = 'Édition APRE';
+        $this->pageTitle = 'Édition APRE/ADRE';
     }
 
 
@@ -90,7 +90,7 @@
     });
 </script>
 
-    <h1>Formulaire de demande de l'APRE</h1>
+    <h1>Formulaire de demande de l'APRE/ADRE</h1>
 	<br />
     <?php
         echo $this->Form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre' ) );
@@ -107,8 +107,16 @@
     ?>
 
     <div class="aere">
-
-
+<?php
+	echo '<fieldset><legend>Formulaire</legend>'
+		. $this->Default3->subform(
+			array(
+				$this->modelClass.'.isapre'
+			),
+			array('options' => array($this->modelClass => $options))
+		) . '</fieldset>'
+	;
+?>
         <fieldset>
             <legend>Demandeur</legend>
             <table class="wide noborder">
@@ -233,7 +241,7 @@
 
 		<fieldset>
 			<?php
-				//Ajout des 3 checkbox pour les APREs 66 concernant le droit ou non à une APRE
+				//Ajout des 3 checkbox pour les APRE/ADREs 66 concernant le droit ou non à une APRE/ADRE
 				echo $this->Xform->input( "{$this->modelClass}.isbeneficiaire", array( 'label' => __d( 'apre', 'Apre66.isbeneficiaire' ), 'type' => 'checkbox' ) );
 				echo $this->Xform->input( "{$this->modelClass}.hascer", array( 'label' => __d( 'apre', 'Apre66.hascer' ), 'type' => 'checkbox' ) );
 				echo $this->Xform->input( "{$this->modelClass}.respectdelais", array( 'label' => __d( 'apre', 'Apre66.respectdelais' ), 'type' => 'checkbox' ) );
@@ -309,12 +317,12 @@
     }
 ?>
 <fieldset>
-    <legend>Attributions antérieures de l'APRE (le cas échéant)</legend>
+    <legend>Attributions antérieures de l'APRE/ADRE (le cas échéant)</legend>
     <?php if( !empty( $listesAidesSelonApre ) ):?>
         <table>
             <thead>
                 <tr>
-                    <th>Date de demande de l'APRE</th>
+                    <th>Date de demande de l'APRE/ADRE</th>
                     <th>Thème de l'aide</th>
                     <th>Type d'aide</th>
                     <th>Montant accordé</th>
@@ -337,7 +345,7 @@
             </tbody>
         </table>
     <?php else:?>
-        <p class="notice">Aucune APRE antérieure présente pour cette personne</p>
+        <p class="notice">Aucune APRE/ADRE antérieure présente pour cette personne</p>
     <?php endif;?>
 </fieldset>
 <?php
@@ -512,7 +520,7 @@
 				else{
 					echo $this->Xhtml->tag(
 						'p',
-						'Aucune décision n\'a encore été prise pour cette demande d\'APRE',
+						'Aucune décision n\'a encore été prise pour cette demande d\'APRE/ADRE',
 						array( 'class' => 'notice' )
 					);
 				}
@@ -634,5 +642,43 @@
 	calculTotalTranspub();
 	calcultotalHebergt();
 	calculTotalRepas();
+	
+	var options = {
+		APRE: <?php echo json_encode($typeaideOptions[1]);?>,
+		ADRE: <?php echo json_encode($typeaideOptions[2]);?>
+	};
+	
+	function limiteOptionsTypeaideapre() {
+		setTimeout(function(){
+			var optionsAvailables = $('Apre66Isapre').getValue() === '1' ? options['APRE'] : options['ADRE'],
+				selectedValue = $('Aideapre66Typeaideapre66Id').getValue()
+			;
+			$$('#Aideapre66Typeaideapre66Id option').each(function(option) {
+				var value = option.getAttribute('value');
+				if (value !== '' && !inArray(value, optionsAvailables)) {
+					option.setAttribute('style', 'display:none;');
+					if (value === selectedValue) {
+						option.up('select').setValue('');
+					}
+				} else {
+					option.removeAttribute('style');
+				}
+			});
+			
+			$$('#Aideapre66VirementCHE, label[for="Aideapre66VirementCHE"]').each(function(element){
+				if ($('Apre66Isapre').getValue() === '1') {
+					element.removeAttribute('style');
+				} else {
+					element.setAttribute('style', 'display:none;');
+					if (element.checked) {
+						element.checked = false;
+					}
+				}
+			});
+		},200);
+	}
 
+	$('Apre66Isapre').observe('change', limiteOptionsTypeaideapre);
+	$('Aideapre66Themeapre66Id').observe('change', limiteOptionsTypeaideapre);
+	limiteOptionsTypeaideapre();
 </script>

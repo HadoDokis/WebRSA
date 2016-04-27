@@ -181,6 +181,7 @@
 				'Aideapre66.themeapre66_id',
 				'Apre.etatdossierapre',
 				'Apre.isdecision',
+				'Apre.isapre',
 			);
 
 			// Fils de dependantSelect

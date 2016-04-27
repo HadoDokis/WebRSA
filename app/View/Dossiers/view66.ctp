@@ -639,7 +639,7 @@
 			</tbody>
 		</table>
 		
-		<h2>APREs Accordées par années</h2>
+		<h2>APRE/ADREs Accordées par années</h2>
 		<table>
 			<thead>
 				<tr>

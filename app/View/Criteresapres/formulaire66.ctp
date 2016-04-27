@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'Recherche de demande APRE';
+	$this->pageTitle = 'Recherche de demande APRE/ADRE';
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -73,10 +73,10 @@
 			});
 		</script>
     <fieldset>
-        <legend>Recherche par demande APRE</legend>
+        <legend>Recherche par demande APRE/ADRE</legend>
             <?php echo $this->Xform->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 
-            <?php echo $this->Xform->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
+            <?php echo $this->Xform->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE/ADRE', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de la saisie de la demande</legend>
                 <?php
@@ -103,8 +103,8 @@
             ?>
 
             <?php
-				echo $this->Xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => 	$options['etatdossierapre'] ) );
-				echo $this->Xform->enum( 'Filtre.isdecision', array(  'label' => 'Décision émise concernant le dossier APRE', 'type' => 'radio', 'options' => $options['isdecision'] ) );
+				echo $this->Xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE/ADRE', 'options' => 	$options['etatdossierapre'] ) );
+				echo $this->Xform->enum( 'Filtre.isdecision', array(  'label' => 'Décision émise concernant le dossier APRE/ADRE', 'type' => 'radio', 'options' => $options['isdecision'] ) );
 
             ?>
             <fieldset class="noborder" id="avisdecision">
@@ -139,14 +139,14 @@
             <thead>
                 <tr>
                     <th><?php echo $this->Xpaginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $this->Xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
+                    <th><?php echo $this->Xpaginator->sort( 'N° demande APRE/ADRE', 'Apre.numeroapre' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
-                    <th><?php echo $this->Xpaginator->sort( 'Date de demande APRE', 'Aideapre66.datedemande' );?></th>
+                    <th><?php echo $this->Xpaginator->sort( 'Date de demande APRE/ADRE', 'Aideapre66.datedemande' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Référent/Prescripteur', 'Referent.nom' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Activité du bénéficiaire', 'Apre.activitebeneficiaire' );?></th>
-                    <th><?php echo $this->Xpaginator->sort( 'Etat du dossier APRE', 'Apre.etatdossierapre' );?></th>
+                    <th><?php echo $this->Xpaginator->sort( 'Etat du dossier APRE/ADRE', 'Apre.etatdossierapre' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Décision émise ?', 'Apre.isdecision' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Accord ou rejet', 'Aideapre66.decisionapre' );?></th>
                     <th class="action noprint">Actions</th>
@@ -238,7 +238,7 @@
 
 
     <?php else:?>
-        <p>Vos critères n'ont retourné aucune demande d'APRE.</p>
+        <p>Vos critères n'ont retourné aucune demande d'APRE/ADRE.</p>
     <?php endif?>
 
 <?php endif?>

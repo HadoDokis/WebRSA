@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle = 'Paramétrages des APREs';?></h1>
+<h1><?php echo $this->pageTitle = 'Paramétrages des APRE/ADREs';?></h1>
 
 <table >
 	<thead>
@@ -12,7 +12,7 @@
 
 			echo $this->Xhtml->tableCells(
 				array(
-					h( 'Liste des aides de l\'APRE' ),
+					h( 'Liste des aides de l\'APRE/ADRE' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
 						array( 'controller' => 'typesaidesapres66', 'action' => 'index' ),
@@ -48,7 +48,7 @@
 			);
 			echo $this->Xhtml->tableCells(
 				array(
-					h( 'Thèmes de la demande d\'aide APRE' ),
+					h( 'Thèmes de la demande d\'aide APRE/ADRE' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
 						array( 'controller' => 'themesapres66', 'action' => 'index' ),

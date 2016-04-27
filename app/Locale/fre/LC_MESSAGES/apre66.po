@@ -22,16 +22,16 @@ msgstr ""
 # Apre66
 ###############################################################################
 msgid "Apres66::cancel"
-msgstr "Annulation de la demande d'APRE"
+msgstr "Annulation de la demande d'APRE/ADRE"
 
 msgid "Apre66.motifannulation"
 msgstr "Raison de l'annulation"
 
 msgid "Apre66.numeroapre"
-msgstr "N° du dossier APRE "
+msgstr "N° du dossier APRE/ADRE "
 
 msgid "Apre66.typedemandeapre"
-msgstr "Type de demande d'APRE"
+msgstr "Type de demande d'APRE/ADRE"
 
 msgid "Apre66.datedemandeapre"
 msgstr "Date de l'envoi de la demande au CG "
@@ -82,7 +82,7 @@ msgid "Apre66.montantaverser"
 msgstr "Montant à verser"
 
 msgid "Apre66.etatdossierapre"
-msgstr "Etat du dossier APRE"
+msgstr "Etat du dossier APRE/ADRE"
 
 msgid "Apre66.isdecision"
 msgstr "Décision prise ?"
@@ -103,7 +103,7 @@ msgid "Apre66.montantdejaverse"
 msgstr "Montant déjà versé"
 
 msgid "Apre66.statutapre"
-msgstr "Statut de l'APRE"
+msgstr "Statut de l'APRE/ADRE"
 
 msgid "Apre66.justificatif"
 msgstr "Justificatif"
@@ -118,7 +118,7 @@ msgid "Apre66.ajoutcomiteexamen"
 msgstr "Ajouter comité examen "
 
 msgid "Apre66.eligibiliteapre"
-msgstr "Eligibilité de l'APRE"
+msgstr "Eligibilité de l'APRE/ADRE"
 
 msgid "ENUM::ISDECISION::N"
 msgstr "Non"
@@ -171,7 +171,7 @@ msgid "Relanceapre.daterelance"
 msgstr "Date de la relance "
 
 msgid "Relanceapre.etatdossierapre"
-msgstr "Etat du dossier APRE "
+msgstr "Etat du dossier APRE/ADRE "
 
 msgid "Relanceapre.commentairerelance"
 msgstr "Commentaire "
@@ -608,10 +608,10 @@ msgid "Parametrefinancier.lib_programme"
 msgstr "Libellé programme"
 
 msgid "Parametrefinancier.apreforfait"
-msgstr "Identification tranche APRE forfaitaire"
+msgstr "Identification tranche APRE/ADRE forfaitaire"
 
 msgid "Parametrefinancier.aprecomplem"
-msgstr "Identification tranche APRE complémentaire"
+msgstr "Identification tranche APRE/ADRE complémentaire"
 
 msgid "Parametrefinancier.natureimput"
 msgstr "Nature imputation"
@@ -627,7 +627,7 @@ msgid "Etatliquidatif.budgetapre_id"
 msgstr "Budget"
 
 msgid "Etatliquidatif.typeapre"
-msgstr "Type d'APREs traitées"
+msgstr "Type d'APRE/ADREs traitées"
 
 msgid "Etatliquidatif.commentaire"
 msgstr "Commentaire"
@@ -734,7 +734,7 @@ msgid "Permisb.tiersprestataireapre_id"
 msgstr "Nom de l'auto-école"
 
 msgid "Apre66s::filelink"
-msgstr "Liste des fichiers liés à l'APRE"
+msgstr "Liste des fichiers liés à l'APRE/ADRE"
 
 msgid "Apre66.haspiecejointe"
 msgstr "Ajouter une pièce jointe"
@@ -759,7 +759,16 @@ msgstr "Respect des délais"
 
 
 msgid "Comiteapre.datecomite"
-msgstr "Date du comité d'APRE"
+msgstr "Date du comité d'APRE/ADRE"
 
 msgid "Apre66Comiteapre.decisioncomite"
 msgstr "Décision du comité"
+
+msgid "Apre66.isapre"
+msgstr "Type"
+
+msgid "ENUM::ISAPRE::0"
+msgstr "ADRE"
+
+msgid "ENUM::ISAPRE::1"
+msgstr "APRE"

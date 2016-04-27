@@ -37,3 +37,6 @@ msgstr "Activité du bénéficiaire"
 # FIXME ?!?
 msgid "Search.Apre.datedemandeapre"
 msgstr "Date de demande APRE"
+
+msgid "Search.Apre.isapre"
+msgstr "Type de formulaire"

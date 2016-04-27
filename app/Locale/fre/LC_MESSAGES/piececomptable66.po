@@ -20,10 +20,10 @@ msgstr ""
 ###############################################################################
 
 msgid "Piececomptable66::index::empty"
-msgstr "Aucune pièce comptable pour l'APRE présente"
+msgstr "Aucune pièce comptable pour l'APRE/ADRE présente"
 
 msgid "Piecescomptables66::index"
-msgstr "Intitulé des pièces comptables de l'APRE"
+msgstr "Intitulé des pièces comptables de l'APRE/ADRE"
 
 msgid "Piecescomptables66::add"
 msgstr "Ajout d'une pièce comptable"

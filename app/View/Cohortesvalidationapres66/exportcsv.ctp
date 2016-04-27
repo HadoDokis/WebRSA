@@ -3,10 +3,10 @@
 
 	$this->Csv->addRow(
 		array(
-			'N° Demande APRE',
+			'N° Demande APRE/ADRE',
 			'Nom/Prénom allocataire',
 			'Commune de l\'allocataire',
-			'Date de demande APRE',
+			'Date de demande APRE/ADRE',
 			'Etat du dossier',
 			'Décision',
 			'Montant accordé',
