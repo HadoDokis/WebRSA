@@ -24,16 +24,19 @@ msgid "Search.mode"
 msgstr "Mode de calcul"
 
 msgid "Search.communautesr_id"
-msgstr "Communauté de structures référentes"
+msgstr "Projet de ville territoriale"
 
 msgid "Search.structurereferente_id_choice"
-msgstr "Filtrer par projet de ville"
+msgstr "Filtrer par plusieurs projets de ville"
 
 msgid "Search.structurereferente_id"
 msgstr "Projet de ville"
 
 msgid "Search.referent_id"
 msgstr "Référent"
+
+msgid "Search.type"
+msgstr "Niveau de statistiques"
 
 msgid "Search.dsps_maj_dans_annee"
 msgstr "Dont les DSP ont été mises à jour dans l'année"
@@ -223,6 +226,9 @@ msgstr "Recherche d'historique de tableaux de suivi PDV"
 
 msgid "Tableausuivipdv93.annee"
 msgstr "Année"
+
+msgid "Tableausuivipdv93.type"
+msgstr "Niveau"
 
 msgid "Communautesr.name"
 msgstr "Communauté"

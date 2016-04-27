@@ -58,10 +58,27 @@
 
 			$vfNomcomplet = $this->Tableausuivipdv93->Photographe->sqVirtualfield( 'nom_complet', false );
 
+			// Jointure spéciale pour le PDV: soit via Pdv, soit via la structure du référent
+			$joins = array(
+				'Structurereferente' => array_words_replace(
+					$this->Tableausuivipdv93->Referent->join( 'Structurereferente', array( 'type' => $types['Pdv'] ) ),
+					array( 'Structurereferente' => 'Pdv' )
+				),
+				'Pdv' => $this->Tableausuivipdv93->join( 'Pdv', array( 'type' => $types['Pdv'] ) )
+			);
+			$joinPdv = $joins['Pdv'];
+			$joinPdv['conditions'] = array(
+				'OR' => array(
+					$joins['Pdv']['conditions'],
+					$joins['Structurereferente']['conditions']
+				)
+			);
+
 			$query = array(
 				'fields' => array(
 					'Tableausuivipdv93.id',
 					'Tableausuivipdv93.annee',
+					'Tableausuivipdv93.type',
 					'Communautesr.name',
 					'Pdv.lib_struc',
 					$this->Tableausuivipdv93->Referent->sqVirtualField( 'nom_complet' ),
@@ -74,9 +91,9 @@
 				'contain' => false,
 				'joins' => array(
 					$this->Tableausuivipdv93->join( 'Communautesr', array( 'type' => $types['Communautesr'] ) ),
-					$this->Tableausuivipdv93->join( 'Pdv', array( 'type' => $types['Pdv'] ) ),
 					$this->Tableausuivipdv93->join( 'Photographe', array( 'type' => $types['Photographe'] ) ),
-					$this->Tableausuivipdv93->join( 'Referent', array( 'type' => $types['Referent'] ) )
+					$this->Tableausuivipdv93->join( 'Referent', array( 'type' => $types['Referent'] ) ),
+					$joinPdv
 				),
 				'order' => array(
 					'Tableausuivipdv93.annee DESC',
@@ -100,7 +117,7 @@
 		 */
 		public function searchConditions( array $query, array $search = array() ) {
 			// 1. Valeurs simples
-			$fields = array( 'annee' => 'annee', 'tableau' => 'name' );
+			$fields = array( 'annee' => 'annee', 'tableau' => 'name', 'type' => 'type' );
 			foreach( $fields as $searchField => $tableField ) {
 				$value = Hash::get( $search, "Search.{$searchField}" );
 				if( !empty( $value ) ) {
@@ -110,7 +127,7 @@
 
 			// 2. Valeurs particulières avec potentiellement la chaîne de caractères NULL
 			// FIXME: si je choisis la SR "Conseil général", j'ai aussi les communautés
-			$fields = array( 'communautesr_id', 'structurereferente_id', 'referent_id', 'user_id' );
+			$fields = array( 'communautesr_id', 'user_id' );
 			foreach( $fields as $field ) {
 				$value = suffix( Hash::get( $search, "Search.{$field}" ) );
 				if( !empty( $value ) ) {
@@ -123,7 +140,16 @@
 				}
 			}
 
-			// TODO: zones géographiques
+			$referent_id = suffix( Hash::get( $search, 'Search.referent_id' ) );
+			if( !empty( $referent_id ) ) {
+				$query['conditions']['Referent.id'] = $referent_id;
+			}
+			else {
+				$structurereferente_id = suffix( Hash::get( $search, 'Search.structurereferente_id' ) );
+				if( !empty( $structurereferente_id ) ) {
+					$query['conditions'][] = array( 'Pdv.id' => $structurereferente_id );
+				}
+			}
 
 			return $query;
 		}

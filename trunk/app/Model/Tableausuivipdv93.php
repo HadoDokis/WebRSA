@@ -923,26 +923,35 @@
 
 			$conditionpdv = array();
 
-			// Filtre sur une communauté de structures référentes en particulier ?
-			$communautesr_id = Hash::get( $search, 'Search.communautesr_id' );
-			if( !empty( $communautesr_id ) ) {
-				$sql = $this->Communautesr->sqStructuresreferentes( $communautesr_id );
-				$conditionpdv[] = $Dbo->conditions( array( "{$fields['structurereferente_id']} IN ( {$sql} )" ), true, false );
+			// Filtre interne sur un ensemble de structures referentes ?
+			$structuresreferentes_ids = (array)Hash::get( $search, 'Search.Structurereferente.Structurereferente' );
+			if( !empty( $structuresreferentes_ids ) ) {
+				$conditionpdv[] = $Dbo->conditions( array( $fields['structurereferente_id'] => $structuresreferentes_ids ), true, false );
+			}
+			else {
+				// Filtre sur une communauté de structures référentes en particulier ?
+				$communautesr_id = Hash::get( $search, 'Search.communautesr_id' );
+				if( !empty( $communautesr_id ) ) {
+					$sql = $this->Communautesr->sqStructuresreferentes( $communautesr_id );
+					$conditionpdv[] = $Dbo->conditions( array( "{$fields['structurereferente_id']} IN ( {$sql} )" ), true, false );
+				}
+				else {
+					// Filtre sur une structures référente en particulier ?
+					$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+					if( !empty( $pdv_id ) ) {
+						$conditionpdv[] = $Dbo->conditions( array( $fields['structurereferente_id'] => $pdv_id ), true, false );
+					}
+					else {
+						// Filtre sur un référent en particulier ?
+						$referent_id = Hash::get( $search, 'Search.referent_id' );
+						if( !empty( $referent_id ) ) {
+							$conditionpdv[] = $Dbo->conditions( array( $fields['referent_id'] => suffix( $referent_id ) ), true, false );
+						}
+					}
+				}
 			}
 
-			// Filtre sur une structures référente en particulier ?
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv[] = $Dbo->conditions( array( $fields['structurereferente_id'] => $pdv_id ), true, false );
-			}
-
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv[] = $Dbo->conditions( array( $fields['referent_id'] => suffix( $referent_id ) ), true, false );
-			}
-
-			return ( !empty( $conditionpdv ) && $and ? 'AND ' : '' ).$Dbo->conditions( $conditionpdv, true, false );
+			return ( $and ? 'AND ' : '' ).$Dbo->conditions( $conditionpdv, true, false );
 		}
 
 		/**
@@ -2881,23 +2890,6 @@ debug($conditionpdv);//FIXME
 					'referent_id' => 'Rendezvous.referent_id'
 				)
 			);
-debug( $conditionpdv ); // FIXME
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = $Dbo->conditions( array( 'Rendezvous.structurereferente_id' => $pdv_id ), true, false );
-			}
-
-			// Filtre sur un référent en particulier ?
-			$referent_id = Hash::get( $search, 'Search.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionpdv = array(
-					$conditionpdv,
-					"Rendezvous.referent_id = ".Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) )
-				);
-				$conditionpdv = $Dbo->conditions( $conditionpdv, true, false );
-			}
 
 			// S'assure-t-on qu'il existe au moins un RDV individuel ?
 			$conditionrdv = null;
@@ -3002,39 +2994,30 @@ debug( $conditionpdv ); // FIXME
 				'Tableausuivipdv93' => array(
 					'name' => $action,
 					'annee' => Hash::get( $search, 'Search.annee' ),
+					'type' => Hash::get( $search, 'Search.type' ),
 					'communautesr_id' => Hash::get( $search, 'Search.communautesr_id' ),
-					'referent_id' => suffix( Hash::get( $search, 'Search.referent_id' ) ), // FIXME: NULL ?
+					'structurereferente_id' => Hash::get( $search, 'Search.structurereferente_id' ),
+					'referent_id' => suffix( Hash::get( $search, 'Search.referent_id' ) ),
 					'version' => app_version(),
 					'search' => serialize( $search ),
 					'results' => serialize( $results ),
 					'user_id' => $user_id
-				),
-				'Structurereferente' => array(
-					'Structurereferente' => (array)Hash::get( $search, 'Search.structurereferente_id' )
 				)
 			);
 
+			if( $tableausuivipdv93['Tableausuivipdv93']['type'] === 'interne' ) {
+				$tableausuivipdv93 = Hash::insert(
+					$tableausuivipdv93,
+					'Structurereferente.Structurereferente',
+					(array)Hash::get( $search, 'Search.Structurereferente.Structurereferente' )
+				);
+			}
+
 			// On sauvegarde au maximum une fois par jour les mêmes requêtes et résultats
-			// FIXME -> memes entrées dans StructurereferenteTableausuivipdv93
 			$conditions = Hash::flatten(
 				array( 'Tableausuivipdv93' => $tableausuivipdv93['Tableausuivipdv93'] )
 			);
 			$conditions["DATE_TRUNC( 'day', \"Tableausuivipdv93\".\"modified\" )"] = date( 'Y-m-d' );
-			// FIXME: début mise en commun
-			foreach( (array)Hash::get( $tableausuivipdv93, 'Structurereferente.Structurereferente' ) as $structurereferente_id ) {
-				$subQuery = array(
-					'alias' => 'structuresreferentes_tableauxsuivispdvs93',
-					'fields' => array( 'structuresreferentes_tableauxsuivispdvs93.id' ),
-					'conditions' => array(
-						'structuresreferentes_tableauxsuivispdvs93.structurereferente_id' => $structurereferente_id
-					),
-					'contain' => false,
-					'limit' => 1
-				);
-				$sql = $this->StructurereferenteTableausuivipdv93->sq( $subQuery );
-				$conditions[] = "EXISTS( {$sql} )";
-			}
-			// FIXME: fin mise en commun
 
 			// A-t'on déjà sauvegardé exactement ce résultat ?
 			$found = $this->find( 'first', array( 'conditions' => $conditions ) );
