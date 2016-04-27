@@ -1209,7 +1209,10 @@
 				)
 			);
 			
-			$options = array();
+			$options = array(
+				1 => array(), // APRE
+				2 => array(), // ADRE
+			);
 			foreach ($typeaide as $key => $value) {
 				$options[$value['Nameapre66Typeaideapre66']['nameapre66_id']][] = $value['Typeaideapre66']['themeapre66_id'].'_'.$value['Typeaideapre66']['id'];
 			}

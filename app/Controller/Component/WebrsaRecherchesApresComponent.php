@@ -31,7 +31,6 @@
 			if( $departement === 66 ) {
 				$options = Hash::merge(
 					$options,
-					$this->Apre->enums(),
 					$this->Apre->Aideapre66->enums()
 				);
 			}
