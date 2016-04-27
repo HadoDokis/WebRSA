@@ -254,6 +254,7 @@ ALTER TABLE users ADD CONSTRAINT users_type_structurereferente_idreferent_id_chk
 -- 20160413: ajout de la communauté de structures référentes aux tableaux de suivi
 --------------------------------------------------------------------------------
 
+-- Ajout de la colonne communautesr_id
 SELECT add_missing_table_field( 'public', 'tableauxsuivispdvs93', 'communautesr_id', 'INTEGER');
 ALTER TABLE tableauxsuivispdvs93 ALTER COLUMN communautesr_id SET DEFAULT NULL;
 -- FIXME: en mode développement
@@ -262,14 +263,33 @@ SELECT add_missing_constraint ( 'public', 'tableauxsuivispdvs93', 'tableauxsuivi
 DROP INDEX IF EXISTS tableauxsuivispdvs93_communautesr_id_idx;
 CREATE INDEX tableauxsuivispdvs93_communautesr_id_idx ON tableauxsuivispdvs93(communautesr_id);
 
+-- Ajout de la colonne type
+SELECT add_missing_table_field( 'public', 'tableauxsuivispdvs93', 'type', 'VARCHAR(10)');
+SELECT alter_table_drop_constraint_if_exists( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_type_in_list_chk' );
+ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_type_in_list_chk CHECK (cakephp_validate_in_list(type, ARRAY['interne', 'cg', 'communaute', 'pdv', 'referent']));
+DROP INDEX IF EXISTS tableauxsuivispdvs93_type_idx;
+CREATE INDEX tableauxsuivispdvs93_type_idx ON tableauxsuivispdvs93 (type);
+
+-- On aura, dans le cadre des statistiques non internes, soit une communauté, soit un PDV, soit un référent
+UPDATE tableauxsuivispdvs93 SET type= 'referent', structurereferente_id = NULL WHERE referent_id IS NOT NULL;
+UPDATE tableauxsuivispdvs93 SET type= 'pdv' WHERE structurereferente_id IS NOT NULL;
+UPDATE tableauxsuivispdvs93 SET type= 'communaute', structurereferente_id = NULL, referent_id = NULL WHERE communautesr_id IS NOT NULL;
+UPDATE tableauxsuivispdvs93 SET type= 'cg' WHERE communautesr_id IS NULL AND structurereferente_id IS NULL AND referent_id IS NULL;
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_fk_internes_chk' );
+ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_fk_internes_chk CHECK (
+	( type IN ( 'interne', 'cg' ) AND communautesr_id IS NULL AND structurereferente_id IS NULL AND referent_id IS NULL )
+	OR ( type= 'communaute' AND communautesr_id IS NOT NULL AND structurereferente_id IS NULL AND referent_id IS NULL )
+	OR ( type= 'pdv' AND communautesr_id IS NULL AND structurereferente_id IS NOT NULL AND referent_id IS NULL )
+	OR ( type= 'referent' AND communautesr_id IS NULL AND structurereferente_id IS NULL AND referent_id IS NOT NULL )
+);
+
 DROP TABLE IF EXISTS structuresreferentes_tableauxsuivispdvs93 CASCADE;
 CREATE TABLE structuresreferentes_tableauxsuivispdvs93 (
 	id						SERIAL NOT NULL PRIMARY KEY,
 	structurereferente_id	INTEGER NOT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	tableausuivipdv93_id	INTEGER NOT NULL REFERENCES tableauxsuivispdvs93(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-INSERT INTO structuresreferentes_tableauxsuivispdvs93 ( structurereferente_id, tableausuivipdv93_id )
-	SELECT structurereferente_id, id FROM tableauxsuivispdvs93 WHERE structurereferente_id IS NOT NULL;
 
 --------------------------------------------------------------------------------
 -- Dashboard

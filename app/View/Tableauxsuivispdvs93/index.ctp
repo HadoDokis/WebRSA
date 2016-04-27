@@ -1,13 +1,14 @@
 <?php
 	require_once( dirname( __FILE__ ).DS.'search.ctp' );
 
-	if( isset( $tableauxsuivispdvs93 ) ) {
+	if( isset( $results ) ) {
 		$this->Default3->DefaultPaginator->options( array( 'url' => $this->request->params['named'] ) );
 
 		echo $this->Default3->index(
-			$tableauxsuivispdvs93,
+			$results,
 			array(
 				'Tableausuivipdv93.annee' => array( 'type' => 'text', 'class' => 'integer number' ),
+				'Tableausuivipdv93.type',
 				'Communautesr.name',
 				'Pdv.lib_struc',
 				'Referent.nom_complet',

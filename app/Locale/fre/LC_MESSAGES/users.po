@@ -24,3 +24,6 @@ msgstr "Identifiant"
 
 msgid "User.email"
 msgstr "Adresse de courriel"
+
+msgid "User.communautesr_id"
+msgstr "Projet de ville territoriale"

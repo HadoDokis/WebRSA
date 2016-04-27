@@ -5,11 +5,15 @@
 	}
 
 	$searchFormId = Inflector::camelize( Inflector::underscore( Inflector::classify( $this->request->params['controller'] ) )."_{$this->request->params['action']}_form" );
+	$type = $this->Session->read( 'Auth.User.type' );
 
 	$tableau = null;
 	$tableaux = array_keys( (array)$options['Tableausuivipdv93']['name'] );
 	if( in_array( $this->request->params['action'], $tableaux ) ) {
 		$tableau = $this->request->params['action'];
+	}
+	else if( $this->request->params['action'] === 'view' ) {
+		$tableau = $tableausuivipdv93['Tableausuivipdv93']['name'];
 	}
 	else {
 		$pass = Hash::get( $this->request->params, 'pass.0' );
@@ -40,58 +44,78 @@
 			'options' => $options
 		)
 	);
-	if( $hasMode ) {
-		echo $this->Default3->subform(
-			array(
-				'Search.mode' => array( 'empty' => false )
-			),
-			array(
-				'options' => $options
-			)
-		);
-	}
-	else {
-		echo $this->Default3->subform(
-			array(
-				'Search.mode' => array( 'type' => 'hidden' )
-			)
-		);
-	}
-	echo '<fieldset class="invisible" id="SearchStructurereferenteFieldsetPdv">';
-	if( $hasCommunautessrs ) {
-		echo $this->Default3->subform(
-			array(
-				'Search.communautesr_id' => array( 'empty' => true, 'type' => 'select' )
-			),
-			array(
-				'options' => $options
-			)
-		);
-	}
-	echo $this->Default3->subform(
-		array(
-			'Search.structurereferente_id' => array( 'empty' => true, 'type' => 'select' ),
-			'Search.referent_id' => array( 'empty' => true, 'type' => 'select' )
-		),
-		array(
-			'options' => $options
-		)
-	);
-	echo '</fieldset>';
 
-	echo '<fieldset class="invisible" id="SearchStructurereferenteFieldsetMacro">';
-	echo $this->SearchForm->dependantCheckboxes(
-		'Search.structurereferente_id',
-		array(
-			'options' => $options['Search']['structurereferente_id'],
-			'class' => 'divideInto3Collumn',
-			'buttons' => true,
-			'autoCheck' => true,
-			'id' => 'SearchStructurereferenteIdMacro',
-			'domain' => 'tableauxsuivispdvs93'
-		)
-	);
-	echo '</fieldset>';
+	if( empty( $tableau ) ) {
+		echo $this->Default3->subform(
+			array(
+				'Search.type' => array( 'empty' => true, 'type' => 'select' )
+			),
+			array(
+				'options' => $options
+			)
+		);
+	}
+
+	/*if( !empty( $tableau ) && in_array( $type, array( 'cg', 'externe_cpdvcom' ) ) ) {
+		echo $this->Default3->subform(
+			array(
+				'Search.statistiques_internes' => array( 'type' => 'checkbox', 'label' => 'Statistiques internes' )
+			)
+		);
+	}*/
+
+	if( in_array( $type, array( 'cg' ) ) ) {
+		echo '<fieldset class="invisible" id="SearchStructurereferenteFieldsetPdv">';
+		if( $hasCommunautessrs ) {
+			echo $this->Default3->subform(
+				array(
+					'Search.communautesr_id' => array( 'empty' => true, 'type' => 'select' )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		}
+	}
+
+	if( in_array( $type, array( 'cg', 'externe_cpdvcom' ) ) ) {
+		echo $this->Default3->subform(
+			array(
+				'Search.structurereferente_id' => array( 'empty' => true, 'type' => 'select' )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		echo '</fieldset>';
+	}
+
+	if( in_array( $type, array( 'cg', 'externe_cpdvcom', 'externe_cpdv' ) ) ) {
+		echo $this->Default3->subform(
+			array(
+				'Search.referent_id' => array( 'empty' => true, 'type' => 'select' )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		echo '</fieldset>';
+	}
+
+	if( !empty( $tableau ) && in_array( $type, array( 'cg', 'externe_cpdvcom' ) ) ) {
+		echo $this->SearchForm->dependantCheckboxes(
+			'Search.structurereferente_id',
+			array(
+				'options' => $options['Search']['structurereferente_id'],
+				'class' => 'divideInto3Collumn',
+				'buttons' => true,
+				'autoCheck' => true,
+				'id' => 'SearchStructurereferenteIdMacro',
+				'domain' => 'tableauxsuivispdvs93',
+				'hide' => true
+			)
+		);
+	}
 
 	// Formulaire de recherche seulement
 	if( empty( $tableau ) ) {
@@ -105,6 +129,44 @@
 			)
 		);
 	}
+	else {
+		if( in_array( $tableau, array( 'tableaud1', 'tableaud2' ) ) ) {
+			echo $this->Default3->subform(
+				array(
+					'Search.soumis_dd_dans_annee' => array( 'type' => 'checkbox' )
+				)
+			);
+		}
+		else if( in_array( $tableau, array( 'tableau1b3' ) ) ) {
+			echo $this->Default3->subform(
+				array(
+					'Search.dsps_maj_dans_annee' => array( 'type' => 'checkbox' )
+				)
+			);
+		}
+		else if( in_array( $tableau, array( 'tableau1b4', 'tableau1b5' ) ) ) {
+			echo $this->Default3->subform(
+				array(
+					'Search.typethematiquefp93_id' => array( 'type' => 'select', 'empty' => true ),
+					'Search.rdv_structurereferente' => array( 'type' => 'checkbox' )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		}
+		else if( in_array( $tableau, array( 'tableau1b6' ) ) ) {
+			echo $this->Default3->subform(
+				array(
+					'Search.rdv_structurereferente' => array( 'type' => 'checkbox' )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		}
+	}
+
 	echo $this->Default3->DefaultForm->buttons( array( 'Search' ) );
 	echo $this->Default3->DefaultForm->end();
 
@@ -116,17 +178,28 @@
 
 	echo $this->Observer->disableFormOnSubmit( $searchFormId );
 
-	echo $this->Observer->disableFieldsetOnValue(
-		'Search.mode',
-		'SearchStructurereferenteFieldsetMacro',
-		'statistiques',
+	echo $this->Observer->disableFieldsOnCheckbox(
+		'Search.structurereferente_id_choice',
+		array(
+			'Search.communautesr_id',
+			'Search.structurereferente_id',
+			'Search.referent_id',
+		),
+		true,
+		true
+	);
+
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.communautesr_id',
+		'Search.structurereferente_id',
+		'',
 		false,
 		true
 	);
-	echo $this->Observer->disableFieldsetOnValue(
-		'Search.mode',
-		'SearchStructurereferenteFieldsetPdv',
-		'fse',
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.communautesr_id',
+		'Search.referent_id',
+		'',
 		false,
 		true
 	);

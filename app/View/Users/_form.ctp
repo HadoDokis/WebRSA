@@ -57,7 +57,7 @@
 	<legend>Type d'utilisateur</legend>
 	<?php
 		echo $this->Form->input( 'User.type', array( 'type' => 'select' , 'options' => $options['User']['type'], 'empty' => true, 'label' => required( __d( 'user', 'User.type' ) ) ) );
-		echo $this->Form->input( 'User.communautesr_id', array( 'label' => 'Communauté de structures référentes', 'type' => 'select' , 'options' => $communautessrs, 'empty' => true ) );
+		echo $this->Form->input( 'User.communautesr_id', array( 'label' => __d( 'users', 'User.communautesr_id' ), 'type' => 'select' , 'options' => $communautessrs, 'empty' => true ) );
 		echo $this->Form->input( 'User.structurereferente_id', array( 'label' => 'Structure référente liée au CPDV ou secrétaire PDV', 'type' => 'select' , 'options' => $structuresreferentes, 'empty' => true ) );
 		echo $this->Form->input( 'User.referent_id', array( 'label' => 'Référent lié au chargé d\'insertion PDV', 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
 	?>
