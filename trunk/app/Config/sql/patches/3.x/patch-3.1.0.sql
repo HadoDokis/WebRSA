@@ -266,7 +266,7 @@ CREATE INDEX tableauxsuivispdvs93_communautesr_id_idx ON tableauxsuivispdvs93(co
 -- Ajout de la colonne type
 SELECT add_missing_table_field( 'public', 'tableauxsuivispdvs93', 'type', 'VARCHAR(10)');
 SELECT alter_table_drop_constraint_if_exists( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_type_in_list_chk' );
-ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_type_in_list_chk CHECK (cakephp_validate_in_list(type, ARRAY['interne', 'cg', 'communaute', 'pdv', 'referent']));
+ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_type_in_list_chk CHECK (cakephp_validate_in_list(type, ARRAY['cg', 'interne', 'communaute', 'pdv', 'referent']));
 DROP INDEX IF EXISTS tableauxsuivispdvs93_type_idx;
 CREATE INDEX tableauxsuivispdvs93_type_idx ON tableauxsuivispdvs93 (type);
 

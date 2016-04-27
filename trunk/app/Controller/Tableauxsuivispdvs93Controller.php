@@ -612,6 +612,7 @@
 					'Tableausuivipdv93.name' => $action,
 				),
 				'contain' => array(
+					'Communautesr',
 					'Pdv',
 					'Referent' => array(
 						'fields' => array(
@@ -694,14 +695,20 @@
 		/**
 		 * Retourne le nom de fichier utilisé pour un export CSV.
 		 *
-		 * @param string $type
+		 * @param string $typeExport
 		 * @param array $tableausuivipdv93
 		 * @return string
 		 */
-		protected function _csvFileName( $type, $tableausuivipdv93 ) {
-			$lieu = ( empty( $tableausuivipdv93['Pdv']['lib_struc'] ) ? 'CG' : $tableausuivipdv93['Pdv']['lib_struc'] );
-			$lieu = preg_replace( '/[^a-z0-9\-_]+/i', '_', $lieu );
-			$lieu = trim( $lieu, '_' );
+		protected function _csvFileName( $typeExport, $tableausuivipdv93 ) {
+			$type = Hash::get( $tableausuivipdv93, 'Tableausuivipdv93.type' );
+
+			$communautesr = Hash::get( $tableausuivipdv93, 'Communautesr.name' );
+			$communautesr = preg_replace( '/[^a-z0-9\-_]+/i', '_', $communautesr );
+			$communautesr = trim( $communautesr, '_' );
+
+			$structurereferente = Hash::get( $tableausuivipdv93, 'Pdv.lib_struc' );
+			$structurereferente = preg_replace( '/[^a-z0-9\-_]+/i', '_', $structurereferente );
+			$structurereferente = trim( $structurereferente, '_' );
 
 			$referent = Hash::get( $tableausuivipdv93, 'Referent.nom_complet' );
 			$referent = preg_replace( '/[^a-z0-9\-_]+/i', '_', $referent );
@@ -711,9 +718,11 @@
 				'-',
 				Hash::filter(
 					array(
-						$type,
+						$typeExport,
 						$tableausuivipdv93['Tableausuivipdv93']['name'],
-						$lieu,
+						$type,
+						$communautesr,
+						$structurereferente,
 						$referent,
 						$tableausuivipdv93['Tableausuivipdv93']['annee'],
 						date( 'Ymd-His' )
@@ -742,6 +751,7 @@
 					'Tableausuivipdv93.name' => $action,
 				),
 				'contain' => array(
+					'Communautesr',
 					'Pdv',
 					'Referent' => array(
 						'fields' => array(
@@ -878,7 +888,7 @@
 				if( !empty( $action ) ) {
 					$query['conditions']['Tableausuivipdv93.name'] = $action;
 				}
-//debug( $query['conditions'] );
+
 				$this->paginate = array( 'Tableausuivipdv93' => $query + array( 'limit' => 10 ) );
 				$results = $this->paginate( 'Tableausuivipdv93', array(), array(), false );
 				$this->set( compact( 'results' ) );

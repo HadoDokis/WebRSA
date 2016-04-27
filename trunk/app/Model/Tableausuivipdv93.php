@@ -1002,6 +1002,31 @@
 				'group' => array()
 			);
 
+			// Dernier RDV dont la SR est sur la communauté
+			$type = Hash::get( $search, 'Search.type' );
+			if( $type === 'communaute' ) {
+				$sqRendezvous = array(
+					'alias' => 'rendezvous',
+					'fields' => array( 'rendezvous.id' ),
+					'contain' => false,
+					'joins' => array(
+						array_words_replace(
+							$Questionnaired1pdv93->Rendezvous->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+							array( 'Questionnaired1pdv93' => 'questionnairesd1pdvs93', 'Rendezvous' => 'rendezvous' )
+						)
+					),
+					'conditions' => array(
+						'rendezvous.personne_id = Rendezvous.personne_id',
+						'EXTRACT( \'YEAR\' FROM questionnairesd1pdvs93.date_validation )' => $conditions['annee'],
+						words_replace( $conditions['conditionpdv'], array( 'Rendezvous' => 'rendezvous' ) ),
+					),
+					'order' => array( 'questionnairesd1pdvs93.date_validation DESC' ),
+					'limit' => 1
+				);
+				$sql =  $Questionnaired1pdv93->Rendezvous->sq( $sqRendezvous );
+				$querydata['conditions'][] = "Rendezvous.id IN ( {$sql} )";
+			}
+
 			return $querydata;
 		}
 
@@ -1347,6 +1372,35 @@
 					'Sortieaccompagnementd2pdv93.name',
 				)
 			);
+
+			// Dernier RDV dont la SR est sur la communauté
+			$type = Hash::get( $search, 'Search.type' );
+			if( $type === 'communaute' ) {
+				$sqRendezvous = array(
+					'alias' => 'rendezvous',
+					'fields' => array( 'rendezvous.id' ),
+					'contain' => false,
+					'joins' => array(
+						array_words_replace(
+							$Questionnaired2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+							array( 'Questionnaired1pdv93' => 'questionnairesd1pdvs93', 'Rendezvous' => 'rendezvous' )
+						),
+						array_words_replace(
+							$Questionnaired2pdv93->Questionnaired1pdv93->join( 'Questionnaired2pdv93', array( 'type' => 'INNER' ) ),
+							array( 'Questionnaired2pdv93' => 'questionnairesd2pdvs93', 'Questionnaired1pdv93' => 'questionnairesd1pdvs93' )
+						)
+					),
+					'conditions' => array(
+						'rendezvous.personne_id = Rendezvous.personne_id',
+						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.date_validation )' => $conditions['annee'],
+						words_replace( $conditions['conditionpdv'], array( 'Rendezvous' => 'rendezvous' ) ),
+					),
+					'order' => array( 'questionnairesd2pdvs93.date_validation DESC' ),
+					'limit' => 1
+				);
+				$sql =  $Questionnaired2pdv93->Questionnaired1pdv93->Rendezvous->sq( $sqRendezvous );
+				$querydata['conditions'][] = "Rendezvous.id IN ( {$sql} )";
+			}
 
 			return $querydata;
 		}

@@ -46,7 +46,8 @@
 
 		/**
 		 * Surcharge de la méthode startup pour vérifier que le département soit
-		 * uniquement le 93 et modifier la valeur de memory_limit
+		 * uniquement le 93, modifier la valeur de memory_limit et inclure le
+		 * fichier de configuration.
 		 */
 		public function startup() {
 			parent::startup();
@@ -59,6 +60,12 @@
 			}
 
 			$this->checkDepartement( 93 );
+
+			// Chargement du fichier de configuration lié, s'il existe
+			$path = APP.'Config'.DS.'Cg'.Configure::read( 'Cg.departement' ).DS.$this->name.'.php';
+			if( file_exists( $path ) ) {
+				include_once $path;
+			}
 		}
 
 		/**
@@ -85,7 +92,7 @@
 			$communautessrs = $this->Tableausuivipdv93->Communautesr->find( 'list', array( 'conditions' => array( 'Communautesr.actif' => 1 ) ) );
 			$pdvs = $this->WebrsaTableausuivipdv93->listePdvs();
 			$referents = $this->WebrsaTableausuivipdv93->listeReferentsPdvs();
-			$base = array( 'Search' => array( 'annee' => $this->params['annee'], 'rdv_structurereferente' => false ) );
+			$base = array( 'Search' => array( 'annee' => $this->params['annee'] ) );
 			$success = true;
 			$tableaux = array_keys( $this->Tableausuivipdv93->tableaux );
 
@@ -96,24 +103,36 @@
 			$search = $base;
 			$this->out( "Enregistrement des tableaux de suivi CG pour l'année {$search['Search']['annee']}" );
 			foreach( $tableaux as $tableau ) {
+				$filters = Hash::merge(
+					$this->_filters( $tableau, $search ),
+					array( 'Search' => array( 'type' => 'cg' ) )
+				);
 				$success = $success && $this->Tableausuivipdv93->historiser(
 					$tableau,
-					$this->_filters( $tableau, $search )
+					$filters
 				);
 			}
+
+			$this->hr();
 
 			// Sauvegarde par communauté
 			$search = $base;
 			foreach( $communautessrs as $communautesr_id => $label ) {
 				$search['Search']['communautesr_id'] = $communautesr_id;
-				$this->out( "Enregistrement des tableaux de suivi de la communauté {$label} pour l'année {$search['Search']['annee']}" );
+				$this->out( "Enregistrement des tableaux de suivi du projet de ville territorial {$label} pour l'année {$search['Search']['annee']}" );
 				foreach( $tableaux as $tableau ) {
+					$filters = Hash::merge(
+						$this->_filters( $tableau, $search ),
+						array( 'Search' => array( 'type' => 'communaute' ) )
+					);
 					$success = $success && $this->Tableausuivipdv93->historiser(
 						$tableau,
-						$this->_filters( $tableau, $search )
+						$filters
 					);
 				}
 			}
+
+			$this->hr();
 
 			// Sauvegarde par PDV
 			$search = $base;
@@ -121,23 +140,32 @@
 				$search['Search']['structurereferente_id'] = $pdv_id;
 				$this->out( "Enregistrement des tableaux de suivi du PDV {$label} pour l'année {$search['Search']['annee']}" );
 				foreach( $tableaux as $tableau ) {
+					$filters = Hash::merge(
+						$this->_filters( $tableau, $search ),
+						array( 'Search' => array( 'type' => 'pdv' ) )
+					);
 					$success = $success && $this->Tableausuivipdv93->historiser(
 						$tableau,
-						$this->_filters( $tableau, $search )
+						$filters
 					);
 				}
 			}
 
+			$this->hr();
+
 			// Sauvegarde par référent de PDV
 			$search = $base;
 			foreach( $referents as $referent_id => $label ) {
-				$search['Search']['structurereferente_id'] = prefix( $referent_id );
 				$search['Search']['referent_id'] = suffix( $referent_id );
 				$this->out( "Enregistrement des tableaux de suivi du référent {$label} pour l'année {$search['Search']['annee']}" );
 				foreach( $tableaux as $tableau ) {
+					$filters = Hash::merge(
+						$this->_filters( $tableau, $search ),
+						array( 'Search' => array( 'type' => 'referent' ) )
+					);
 					$success = $success && $this->Tableausuivipdv93->historiser(
 						$tableau,
-						$this->_filters( $tableau, $search )
+						$filters
 					);
 				}
 			}

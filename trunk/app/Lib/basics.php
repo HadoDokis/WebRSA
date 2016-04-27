@@ -806,6 +806,15 @@
 		);
 	}
 
+	function words_replace( $subject, array $replacement ) {
+		$regexes = array();
+		foreach( $replacement as $key => $value ) {
+			$key = "/(?<!\.)(?<!\w)(".preg_quote( $key ).")(?!\w)/";
+			$regexes[$key] = $value;
+		}
+		return preg_replace( array_keys( $regexes ), array_values( $regexes ), $subject );
+	}
+
 	/**
 	 * Remplace tous les "mots" se trouvant dans $replacement sous la forme
 	 * avant => apres dans les clés et les valeurs de $subject, de manière récursive.

@@ -3482,19 +3482,19 @@ msgstr "Export CSV des résultats de la cohorte de rendez-vous"
 #-------------------------------------------------------------------------------
 
 msgid "Module:Communautessrs"
-msgstr "Paramétrage des communautés de structures référentes"
+msgstr "Paramétrage des projets de villes territoriaux"
 
 msgid "Communautessrs:index"
-msgstr "Liste des communautés de structures référentes"
+msgstr "Liste des projets de villes territoriaux"
 
 msgid "Communautessrs:add"
-msgstr "Ajout d'une communauté de structures référentes"
+msgstr "Ajout d'un projet de ville territorial"
 
 msgid "Communautessrs:edit"
-msgstr "Modification d'une communauté de structures référentes"
+msgstr "Modification d'un projet de ville territorial"
 
 msgid "Communautessrs:delete"
-msgstr "Suppression d'une communauté de structures référentes"
+msgstr "Suppression d'un projet de ville territorial"
 
 #-------------------------------------------------------------------------------
 

@@ -11,13 +11,13 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Communautessrs/index/:heading"
-msgstr "Communautés de structures référentes"
+msgstr "Projets de villes territoriaux"
 
 msgid "/Communautessrs/add/:heading"
-msgstr "Ajout d'une communautés de structures référentes"
+msgstr "Ajout d'un projet de ville territorial"
 
 msgid "/Communautessrs/edit/:heading"
-msgstr "Modification d'une communautés de structures référentes"
+msgstr "Modification d'un projet de ville territorial"
 
 msgid "Communautesr.name"
 msgstr "Nom"
@@ -35,13 +35,13 @@ msgid "/Communautessrs/edit"
 msgstr "Modifier"
 
 msgid "/Communautessrs/edit/#Communautesr.id#"
-msgstr "Modifier la communauté « #Communautesr.name# »"
+msgstr "Modifier le projet de ville territorial « #Communautesr.name# »"
 
 msgid "/Communautessrs/delete"
 msgstr "Supprimer"
 
 msgid "/Communautessrs/delete/#Communautesr.id#"
-msgstr "Supprimer la communauté « #Communautesr.name# »"
+msgstr "Supprimer le projet de ville territorial « #Communautesr.name# »"
 
 msgid "/Communautessrs/delete/#Communautesr.id# ?"
-msgstr "Voulez-vous réellement supprimer la communauté « #Communautesr.name# » ?"
+msgstr "Voulez-vous réellement supprimer le projet de ville territorial « #Communautesr.name# » ?"

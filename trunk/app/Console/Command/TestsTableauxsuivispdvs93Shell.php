@@ -102,6 +102,12 @@
 			$this->stdout->styles( 'important', array( 'text' => 'yellow', 'bold' => true ) );
 
 			$this->checkDepartement( 93 );
+
+			// Chargement du fichier de configuration lié, s'il existe
+			$path = APP.'Config'.DS.'Cg'.Configure::read( 'Cg.departement' ).DS.$this->name.'.php';
+			if( file_exists( $path ) ) {
+				include_once $path;
+			}
 		}
 
 		/**
