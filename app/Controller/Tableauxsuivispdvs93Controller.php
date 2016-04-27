@@ -418,6 +418,20 @@
 				$this->Tableausuivipdv93->enums()
 			);
 
+			// Filtrage des types de recherches suivant l'utilisateur connecté
+			$type = $this->Session->read( 'Auth.User.type' );
+			if( strpos( $type, 'externe_' ) === 0 ) {
+				unset( $options['Tableausuivipdv93']['type']['cg'] );
+			}
+			if( in_array( $type, array( 'externe_cpdv', 'externe_secretaire', 'externe_ci' ) ) ) {
+				unset( $options['Tableausuivipdv93']['type']['interne'], $options['Tableausuivipdv93']['type']['communaute'] );
+			}
+			if( $type === 'externe_ci' ) {
+				unset( $options['Tableausuivipdv93']['type']['pdv'] );
+			}
+			$options['Search']['type'] = $options['Tableausuivipdv93']['type'];
+
+			// TODO: à nettoyer
 			$hasMode = in_array( $type, array( 'cg', 'externe_cpdvcom' ) );
 			$hasCommunautessrs = $type === 'cg';
 			$hasStructuresreferentes = empty( $user_structurereferente_id ) || count( $user_structurereferente_id ) > 1;
@@ -802,17 +816,69 @@
 		 * @param string $action
 		 */
 		public function index( $action = null ) {
-			$search = $this->_applyStructurereferente( $this->request->data );
+			//$search = $this->_applyStructurereferente( $this->request->data );
+			$search = $this->request->data;
+			$this->_setOptions();
+			$this->_prepareFormData( $search );
 
 			if( !empty( $search ) ) {
 				$query = $this->WebrsaTableausuivipdv93->searchQuery();
 				$query = $this->WebrsaTableausuivipdv93->searchConditions( $query, $search );
 
+				// Ajout de filtres en fonction de l'utilisateur connecté
+				$or = array(
+					'Pdv.id' => array_keys(
+						$this->InsertionsBeneficiaires->structuresreferentes(
+							array(
+								'type' => 'list',
+								'prefix' => false,
+								'conditions' => array(
+									'Structurereferente.id' => array_keys( $this->WebrsaTableausuivipdv93->listePdvs() )
+								)
+							)
+						)
+					),
+					'Referent.id' => array_keys(
+						$this->InsertionsBeneficiaires->referents(
+							array(
+								'type' => 'list',
+								'prefix' => false,
+								'conditions' => array(
+									'Referent.structurereferente_id' => array_keys( $this->WebrsaTableausuivipdv93->listePdvs() )
+								)
+							)
+						)
+					),
+					'Photographe.id' => $this->Session->read( 'Auth.User.id' )
+				);
+
+				$type = $this->Session->read( 'Auth.User.type' );
+				if( $type === 'cg' ) {
+					$or[] = array( 'Pdv.id IS NULL' );
+					$or[] = array( 'Referent.id IS NULL' );
+					$or[] = array( 'Communautesr.id IS NULL' );
+				}
+				else if( $type === 'externe_cpdvcom' ) {
+					$or['Communautesr.id'] = $this->Session->read( 'Auth.User.communautesr_id' );
+				}
+				else if( in_array( $type, array( 'externe_cpdv', 'externe_secretaire' ) ) ) {
+					$query['conditions'][] = array(
+						'Pdv.id' => $this->Session->read( 'Auth.User.structurereferente_id' )
+					);
+				}
+				else if( $type === 'externe_ci' ) {
+					$query['conditions'][] = array(
+						'Referent.id' => $this->Session->read( 'Auth.User.referent_id' )
+					);
+				}
+
+				$query['conditions'][] = array( 'OR' => $or );
+
 				// TODO: en paramètre de la recherche + version
 				if( !empty( $action ) ) {
 					$query['conditions']['Tableausuivipdv93.name'] = $action;
 				}
-
+//debug( $query['conditions'] );
 				$this->paginate = array( 'Tableausuivipdv93' => $query + array( 'limit' => 10 ) );
 				$results = $this->paginate( 'Tableausuivipdv93', array(), array(), false );
 				$this->set( compact( 'results' ) );
@@ -850,22 +916,29 @@
 				}
 			}
 
+			// Préparation des données du formulaire
 			$this->request->data = unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] );
+			//FIXME: pas de type pour le passif....
 			// INFO: pour le passif... -> faire un shell ?
 			$this->request->data['Search']['type'] = $tableausuivipdv93['Tableausuivipdv93']['type'];
 			$this->request->data['Search']['tableau'] = $tableausuivipdv93['Tableausuivipdv93']['name'];
-//			debug( $this->request->data );//FIXME: pas de type pour le passif....
-//			debug( $tableausuivipdv93['Tableausuivipdv93']['type'] );
 			if( $this->request->data['Search']['type'] === 'interne' ) {
 				$this->request->data['Search']['structurereferente_id_choice'] = true;
+				$this->request->data['Search']['structurereferente_id'] = Hash::extract( $tableausuivipdv93, 'Structurereferente.{n}.id' );
 			}
 
 			// On préfixe l'id du référent avec l'id de sa structure si ce n'est pas déjà fait
-			// FIXME
 			$referent_id = Hash::get( $this->request->data, 'Search.referent_id' );
 			if( !empty( $referent_id ) && strpos( $referent_id, '_' ) === false ) {
-				$structurereferente_id = Hash::get( $this->request->data, 'Search.structurereferente_id' );
-				$this->request->data = Hash::insert( $this->request->data, 'Search.referent_id', "{$structurereferente_id}_{$referent_id}" );
+				$query = array(
+					'fields' => array( 'Referent.structurereferente_id' ),
+					'contain' => false,
+					'conditions' => array( 'Referent.id' => $referent_id )
+				);
+				$referent = $this->Tableausuivipdv93->Referent->find( 'first', $query );
+				$structurereferente_id = Hash::get( $referent, 'Referent.structurereferente_id' );
+				$this->request->data['Search']['structurereferente_id'] = $structurereferente_id;
+				$this->request->data['Search']['referent_id'] = "{$structurereferente_id}_{$referent_id}";
 			}
 
 			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
