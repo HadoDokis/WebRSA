@@ -18,9 +18,8 @@
             'Typeaideapre66.isincohorte' => array( 'type' => 'radio'),
 			'Typeaideapre66.objetaide' => array( 'type' => 'text' ),
 			'Typeaideapre66.plafond' => array( 'type' => 'text' ),
-			'Nameapre66.Nameapre66' => array(
-				'label' => 'Type d\'aide', 'multiple' => 'checkbox' , 'options' => $namesapres, 'empty' => false
-			),
+			'Typeaideapre66.plafondadre' => array( 'type' => 'text' ),
+			'Typeaideapre66.typeplafond' => array('label' => 'Type d\'aide', 'empty' => false),
 			'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces administratives', 'multiple' => 'checkbox' , 'options' => $pieceadmin, 'empty' => false ),
 		),
 		array(
@@ -61,6 +60,23 @@
 	function toutDecocherPiececomptable66() {
 		return toutDecocher( 'input[name="data[Piececomptable66][Piececomptable66][]"]' );
 	}
+	
+	observeDisableElementsOnValues(
+		[
+			'Typeaideapre66Plafond', 
+			$$('label[for="Typeaideapre66Plafond"]').first()
+		], 
+		{element: 'Typeaideapre66Typeplafond', value: 'ADRE'}
+		, true
+	);
+	observeDisableElementsOnValues(
+		[
+			'Typeaideapre66Plafondadre', 
+			$$('label[for="Typeaideapre66Plafondadre"]').first()
+		], 
+		{element: 'Typeaideapre66Typeplafond', value: 'APRE'}
+		, true
+	);
 </script>
 <?php
 	echo $this->Form->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => "return toutCocherPiececomptable66();" ) );

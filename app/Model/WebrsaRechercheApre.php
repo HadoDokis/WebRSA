@@ -191,6 +191,7 @@
 			);
 
 			$pathsDate = array(
+				'Aideapre66.datedemande',
 				'Apre.datedemandeapre'
 			);
 

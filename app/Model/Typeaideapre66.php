@@ -20,12 +20,9 @@
 		public $order = 'Typeaideapre66.name ASC';
 
 		public $actsAs = array(
-            'Autovalidate2',
-            'Enumerable' => array(
-                'fields' => array(
-                    'isincohorte'
-                )
-            )
+            'Enumerable',
+			'Validation2.Validation2Formattable',
+			'Postgres.PostgresAutovalidate',
         );
 
 		public $belongsTo = array(
@@ -41,19 +38,6 @@
 		public $hasMany = array(
 			'Aideapre66' => array(
 				'className' => 'Aideapre66',
-				'foreignKey' => 'typeaideapre66_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-			'Nameapre66Typeaideapre66' => array(
-				'className' => 'Nameapre66Typeaideapre66',
 				'foreignKey' => 'typeaideapre66_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -100,21 +84,20 @@
 				'insertQuery' => '',
 				'with' => 'Piececomptable66Typeaideapre66'
 			),
-			'Nameapre66' => array(
-				'className' => 'Nameapre66',
-				'joinTable' => 'namesapres66_typesaidesapres66',
-				'foreignKey' => 'typeaideapre66_id',
-				'associationForeignKey' => 'nameapre66_id',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => '',
-				'with' => 'Nameapre66Typeaideapre66'
+		);
+		
+		public $validate = array(
+			'plafond' => array(
+				'notEmptyIf' => array(
+					'rule' => array('notEmptyIf', 'plafondadre', true, array(null, '')),
+					'message' => 'Champ obligatoire',
+				),
+			),
+			'plafondadre' => array(
+				'notEmptyIf' => array(
+					'rule' => array('notEmptyIf', 'plafond', true, array(null, '')),
+					'message' => 'Champ obligatoire',
+				),
 			),
 		);
 

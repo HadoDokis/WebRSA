@@ -241,7 +241,7 @@
 
 		<fieldset>
 			<?php
-				//Ajout des 3 checkbox pour les APRE/ADREs 66 concernant le droit ou non à une APRE/ADRE
+				//Ajout des 3 checkbox pour les APREs 66 concernant le droit ou non à une APRE
 				echo $this->Xform->input( "{$this->modelClass}.isbeneficiaire", array( 'label' => __d( 'apre', 'Apre66.isbeneficiaire' ), 'type' => 'checkbox' ) );
 				echo $this->Xform->input( "{$this->modelClass}.hascer", array( 'label' => __d( 'apre', 'Apre66.hascer' ), 'type' => 'checkbox' ) );
 				echo $this->Xform->input( "{$this->modelClass}.respectdelais", array( 'label' => __d( 'apre', 'Apre66.respectdelais' ), 'type' => 'checkbox' ) );
@@ -281,6 +281,7 @@
         );
 
         echo $this->Ajax->observeField( 'Aideapre66Typeaideapre66Id', $ajaxOptions );
+        echo $this->Ajax->observeField( 'Apre66Isapre', $ajaxOptions );
 
 
 
@@ -644,8 +645,8 @@
 	calculTotalRepas();
 	
 	var options = {
-		APRE: <?php echo json_encode($typeaideOptions[1]);?>,
-		ADRE: <?php echo json_encode($typeaideOptions[2]);?>
+		APRE: <?php echo json_encode($typeaideOptions['APRE']);?>,
+		ADRE: <?php echo json_encode($typeaideOptions['ADRE']);?>
 	};
 	
 	function limiteOptionsTypeaideapre() {

@@ -227,7 +227,10 @@
 				);
 				$typeaideapre66 = $this->Typeaideapre66->find('first', $qd_typeaideapre66);
 
-				$plafond = Set::classicExtract( $typeaideapre66, 'Typeaideapre66.plafond' );
+				$plafond = Hash::get($this->data, 'Apre66.isapre') 
+					? Hash::get($typeaideapre66, 'Typeaideapre66.plafond')
+					: Hash::get($typeaideapre66, 'Typeaideapre66.plafondadre')
+				;
 
 				foreach( $check as $field => $value ) {
 					$return = ( $value <= $plafond ) && $return;
@@ -443,7 +446,10 @@
 					'contain' => false
 				)
 			);
-			$plafondAide = Set::classicExtract( $typeaideapre66, 'Typeaideapre66.plafond' );
+			$plafondAide = Hash::get($this->data, 'Apre66.isapre') 
+				? Hash::get($typeaideapre66, 'Typeaideapre66.plafond')
+				: Hash::get($typeaideapre66, 'Typeaideapre66.plafondadre')
+			;
 
 
 			list( $year, $month, $day ) = explode( '-',  $this->data['Aideapre66']['datemontantpropose'] );

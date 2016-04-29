@@ -4,7 +4,9 @@
 // 	debug( $typeaideapre );
 		$tmp = array(
 			'Typeaideapre66.objetaide' => Set::classicExtract( $typeaideapre, 'Typeaideapre66.objetaide' ),
-			'Typeaideapre66.plafond' => Set::classicExtract( $typeaideapre, 'Typeaideapre66.plafond' )
+			'Typeaideapre66.plafond' => $isapre === '1' 
+				? Hash::get($typeaideapre, 'Typeaideapre66.plafond')
+				: Hash::get($typeaideapre, 'Typeaideapre66.plafondadre')
 		);
 		echo $this->Default->view(
 			Hash::expand( $tmp ),

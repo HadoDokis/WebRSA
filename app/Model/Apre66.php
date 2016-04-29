@@ -37,6 +37,7 @@
 				)
 			),
 			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable',
 			'Validation2.Validation2RulesFieldtypes',
 			'Frenchfloat' => array(
 				'fields' => array(

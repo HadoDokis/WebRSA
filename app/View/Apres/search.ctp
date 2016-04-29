@@ -41,8 +41,14 @@
 			)
 			: ''
 		)
-		. $this->SearchForm->dateRange( 'Search.Apre.datedemandeapre', $paramDate + array( 'legend' => __m( 'Search.Apre.datedemandeapre' ) ) )
 	;
+	
+	$datedemandeParams = array('legend' => __m('Search.Apre.datedemandeapre'));
+	if ($departement === 66) {
+		echo $this->SearchForm->dateRange('Search.Aideapre66.datedemande', $paramDate + $datedemandeParams);
+	} else {
+		echo $this->SearchForm->dateRange('Search.Apre.datedemandeapre', $paramDate + $datedemandeParams);
+	}
 
 	if ( $departement === 66 ) {
 			echo $this->Default3->subform(
@@ -88,18 +94,20 @@
 			),
 			array( 'options' => array( 'Search' => $options ) )
 		);
-	}
-	echo '</fieldset>';
+		
+		echo '</fieldset>';
 
-	echo '<fieldset><legend>' . __m( 'Search.Relanceapre' ) . '</legend>'
-		. $this->SearchForm->dateRange( 'Search.Relanceapre.daterelance', $paramDate + array( 'legend' => __m( 'Search.Relanceapre.daterelance' ) ) )
-		. $this->Default3->subform(
-			array(
-				'Search.Apre.etatdossierapre' => array('empty' => true)
-			),
-			array( 'options' => array( 'Search' => $options ) )
-		)
-	;
+		echo '<fieldset><legend>' . __m( 'Search.Relanceapre' ) . '</legend>'
+			. $this->SearchForm->dateRange( 'Search.Relanceapre.daterelance', $paramDate + array( 'legend' => __m( 'Search.Relanceapre.daterelance' ) ) )
+			. $this->Default3->subform(
+				array(
+					'Search.Apre.etatdossierapre' => array('empty' => true)
+				),
+				array( 'options' => array( 'Search' => $options ) )
+			)
+		;
+	}
+	
 	echo '</fieldset>';
 ?>
 <?php $this->end();?>
