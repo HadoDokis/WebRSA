@@ -1290,4 +1290,22 @@
 
 		return false;
 	}
+
+
+	/**
+	 * Retourne un array comportant uniquement les valeurs des chemins.
+	 *
+	 * @param array $data
+	 * @param array $paths
+	 * @return array
+	 */
+	function hash_filter_keys( array $data, array $paths ) {
+		$result = array();
+
+		foreach( $paths as $path ) {
+			$result = Hash::insert( $result, $path, Hash::get( $data, $path ) );
+		}
+
+		return $result;
+	}
 ?>
