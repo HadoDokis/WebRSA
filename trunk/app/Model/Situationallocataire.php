@@ -317,11 +317,11 @@
 			$enums = parent::enums();
 			$Tableausuivipdv93 = ClassRegistry::init( 'Tableausuivipdv93' );
 
-			$enums[$this->alias]['sitfam_view'] = $Tableausuivipdv93->sitfam;
-			$enums[$this->alias]['anciennete_dispositif'] = $Tableausuivipdv93->anciennetes_dispositif;
-			$enums[$this->alias]['natpf_view'] = $Tableausuivipdv93->natpf;
-			$enums[$this->alias]['tranche_age_view'] = $Tableausuivipdv93->tranches_ages;
-			$enums[$this->alias]['anciennete_dispositif_view'] = $Tableausuivipdv93->anciennetes_dispositif;
+			$enums[$this->alias]['sitfam_view'] = $Tableausuivipdv93->WebrsaTableausuivipdv93->sitfam;
+			$enums[$this->alias]['anciennete_dispositif'] = $Tableausuivipdv93->WebrsaTableausuivipdv93->anciennetes_dispositif;
+			$enums[$this->alias]['natpf_view'] = $Tableausuivipdv93->WebrsaTableausuivipdv93->natpf;
+			$enums[$this->alias]['tranche_age_view'] = $Tableausuivipdv93->WebrsaTableausuivipdv93->tranches_ages;
+			$enums[$this->alias]['anciennete_dispositif_view'] = $Tableausuivipdv93->WebrsaTableausuivipdv93->anciennetes_dispositif;
 
 			$enums[$this->alias]['natpf_d1'] = array();
 			foreach( $this->natpf_d1 as $natpf_d1 ) {

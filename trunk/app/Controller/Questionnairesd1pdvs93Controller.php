@@ -256,7 +256,7 @@
 			);
 
 			$options['Questionnaired1pdv93']['rendezvous_id'] = $this->Questionnaired1pdv93->Personne->Rendezvous->findListPersonneId( $personne_id );
-			$options['Situationallocataire']['nati'] = ClassRegistry::init( 'Tableausuivipdv93' )->nati;
+			$options['Situationallocataire']['nati'] = ClassRegistry::init( 'WebrsaTableausuivipdv93' )->nati;
 			$options = $this->Questionnaired1pdv93->filterOptions( $options );
 
 			$this->set( compact( 'personne_id', 'options', 'dossierMenu', 'personne' ) );
@@ -294,6 +294,8 @@
 				$this->Questionnaired1pdv93->enums(),
 				$this->Questionnaired1pdv93->Situationallocataire->enums()
 			);
+
+			$this->set( 'urlmenu', "/questionnairesd1pdvs93/index/{$questionnaired1pdv93['Questionnaired1pdv93']['personne_id']}" );
 
 			$this->set( compact( 'questionnaired1pdv93', 'dossierMenu', 'options' ) );
 		}
