@@ -50,7 +50,7 @@ msgid "Typeaideapre66.themeapre66_id"
 msgstr "Thème auquel l'aide est lié"
 
 msgid "Typeaideapre66.plafond"
-msgstr "Plafond de l'aide"
+msgstr "Plafond de l'aide APRE"
 
 msgid "Typeaideapre66.objetaide"
 msgstr "Objet de l'aide"
@@ -69,3 +69,15 @@ msgstr "Non"
 
 msgid "Typeaideapre66.isincohorte"
 msgstr "Passage par la gestion de listes des APRE/ADREs ?"
+
+msgid "Typeaideapre66.plafondadre"
+msgstr "Plafond de l'aide ADRE"
+
+msgid "ENUM::TYPEPLAFOND::APRE"
+msgstr "APRE"
+
+msgid "ENUM::TYPEPLAFOND::ADRE"
+msgstr "ADRE"
+
+msgid "ENUM::TYPEPLAFOND::ALL"
+msgstr "APRE/ADRE"

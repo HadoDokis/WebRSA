@@ -391,15 +391,10 @@
 		 *
 		 * @param integer $apre_id
 		 */
-		public function ajaxpiece( $apre_id = null ) { // FIXME
-// 			$typeaideapre66_id = Set::classicExtract( $this->request->params, 'named.typeaideapre66_id' );
-// 			$pieceadmin = explode( ',', Set::classicExtract( $this->request->params, 'named.pieceadmin' ) );
-// 			$piececomptable = explode( ',', Set::classicExtract( $this->request->params, 'named.piececomptable' ) );
+		public function ajaxpiece( $apre_id = null ) {
 			$typeaideapre66_id = Set::classicExtract( $this->request->data, 'Aideapre66.typeaideapre66_id' );
-// 			$pieceadmin = Set::classicExtract( $this->request->data, 'named.pieceadmin' );
-// 			$piececomptable = Set::classicExtract( $this->request->data, 'named.piececomptable' );
-// 			$this->request->data['Pieceaide66']['Pieceaide66'] = $pieceadmin;
-// 			$this->request->data['Piececomptable66']['Piececomptable66'] = $piececomptable;
+			$isapre = Hash::get($this->request->data, 'Apre66.isapre');
+			$typeaideapre = array();
 
 			if( !empty( $typeaideapre66_id ) ) {
 				$typeaideapre66_id = suffix( $typeaideapre66_id );
@@ -448,18 +443,11 @@
 					'recursive' => -1
 						)
 				);
-				$typeaideapre = $this->request->data = $this->{$this->modelClass}->Aideapre66->find(
-						'first', array(
-					'conditions' => array(
-						'Aideapre66.typeaideapre66_id' => $typeaideapre66_id
-					),
-					'contain' => array( 'Typeaideapre66' )
-						)
+				$typeaideapre = $this->request->data = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->find(
+					'first', array('conditions' => array('Typeaideapre66.id' => $typeaideapre66_id),)
 				);
 			}
-
-// 			$typeaideapre = array();
-
+			
 			$this->request->data = array( );
 
 			if( !empty( $apre_id ) ) {
@@ -498,8 +486,7 @@
 				}
 			}
 
-			Configure::write( 'debug', 0 );
-			$this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
+			$this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre', 'isapre' ) );
 
 			$this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxpiece', 'ajax' );
 		}
@@ -1199,10 +1186,7 @@
 						'Typeaideapre66.id',
 						'Typeaideapre66.themeapre66_id',
 						'Typeaideapre66.name',
-						'Nameapre66Typeaideapre66.nameapre66_id',
-					),
-					'joins' => array(
-						$this->Typeaideapre66->join('Nameapre66Typeaideapre66')
+						'Typeaideapre66.typeplafond',
 					),
 					'contain' => false,
 					'order' => 'Typeaideapre66.name ASC',
@@ -1210,11 +1194,18 @@
 			);
 			
 			$options = array(
-				1 => array(), // APRE
-				2 => array(), // ADRE
+				'ADRE' => array(),
+				'APRE' => array(),
 			);
+			// INFO : Typeaideapre66.typeplafond renvoie soit : 'APRE', 'ADRE' ou 'ALL'
 			foreach ($typeaide as $key => $value) {
-				$options[$value['Nameapre66Typeaideapre66']['nameapre66_id']][] = $value['Typeaideapre66']['themeapre66_id'].'_'.$value['Typeaideapre66']['id'];
+				$dependentSelectOption = $value['Typeaideapre66']['themeapre66_id'].'_'.$value['Typeaideapre66']['id'];
+				if ($value['Typeaideapre66']['typeplafond'] !== 'APRE') {
+					$options['ADRE'][] = $dependentSelectOption;
+				}
+				if ($value['Typeaideapre66']['typeplafond'] !== 'ADRE') {
+					$options['APRE'][] = $dependentSelectOption;
+				}
 			}
 
 			return $options;
