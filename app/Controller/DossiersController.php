@@ -84,7 +84,7 @@
 			$this->set( 'couvsoc', $this->Option->couvsoc() ); // INFO: pas dans view
 			$this->set( 'categorie', $this->Option->categorie() );
 			$this->set( 'sexe', $this->Option->sexe() );
-			$this->set( 'anciennete_dispositif', $this->Tableausuivipdv93->anciennetes_dispositif );
+			$this->set( 'anciennete_dispositif', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->anciennetes_dispositif );
 
 			$enums = $this->Dossier->Foyer->Personne->Dsp->enums();
 			asort( $enums['Dsp']['natlog'] );

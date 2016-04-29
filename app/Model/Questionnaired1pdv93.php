@@ -250,24 +250,11 @@
 			}
 			$data['Situationallocataire']['sitfam_view'] = $sitfam_view;
 
-			// Calcul de la nature de la prestation suivant les catégories du tableau D1
-			/*$natpf_view = null;
-			if( $data['Situationallocataire']['natpf_socle'] && $data['Situationallocataire']['natpf_activite'] ) {
-				$natpf_view = 'socle_activite';
-			}
-			else if( $data['Situationallocataire']['natpf_socle'] ) {
-				$natpf_view = 'socle';
-			}
-			else if( $data['Situationallocataire']['natpf_majore'] ) {
-				$natpf_view = 'majore';
-			}
-			$data['Situationallocataire']['natpf_view'] = $natpf_view;*/
-
 			$date_validation = Hash::get( $data, 'Questionnaired1pdv93.date_validation' );
 
 			// Calcul des tranches d'âge suivant les catégories du tableau D1
 			$Tableausuivipdv93 = ClassRegistry::init( 'Tableausuivipdv93' );
-			$tranches = array_keys( $Tableausuivipdv93->tranches_ages );
+			$tranches = array_keys( $Tableausuivipdv93->WebrsaTableausuivipdv93->tranches_ages );
 			$tranche_age_view = null;
 			$age = age( $data['Situationallocataire']['dtnai'], $date_validation );
 			foreach( $tranches as $tranche ) {
@@ -280,7 +267,7 @@
 
 			// Calcul de l'ancienneté dans le dispositif suivant les catégories du tableau D1
 			$Tableausuivipdv93 = ClassRegistry::init( 'Tableausuivipdv93' );
-			$tranches = array_keys( $Tableausuivipdv93->anciennetes_dispositif );
+			$tranches = array_keys( $Tableausuivipdv93->WebrsaTableausuivipdv93->anciennetes_dispositif );
 			$anciennete_dispositif_view = null;
 			$age = age( $data['Situationallocataire']['dtdemrsa'], $date_validation );
 			foreach( $tranches as $tranche ) {

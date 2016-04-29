@@ -85,58 +85,6 @@
 		public $uses = array( 'Tableausuivipdv93', 'Cohortetransfertpdv93', 'WebrsaTableausuivipdv93' );
 
 		/**
-		 * Liste des filtres acceptés en fonction du tableau.
-		 *
-		 * @var array
-		 */
-		public $filters = array(
-			'tableaud1' => array(
-				'Search.annee',
-				'Search.communautesr_id',
-				'Search.structurereferente_id',
-				'Search.referent_id',
-				'Search.soumis_dd_dans_annee'
-			),
-			'tableaud2' => array(
-				'Search.annee',
-				'Search.communautesr_id',
-				'Search.structurereferente_id',
-				'Search.referent_id',
-				'Search.soumis_dd_dans_annee'
-			),
-			'tableau1b3' => array(
-				'Search.annee',
-				'Search.communautesr_id',
-				'Search.structurereferente_id',
-				'Search.referent_id',
-				'Search.dsps_maj_dans_annee',
-			),
-			'tableau1b4' => array(
-				'Search.annee',
-				'Search.communautesr_id',
-				'Search.structurereferente_id',
-				'Search.referent_id',
-				'Search.typethematiquefp93_id',
-				'Search.rdv_structurereferente',
-			),
-			'tableau1b5' => array(
-				'Search.annee',
-				'Search.communautesr_id',
-				'Search.structurereferente_id',
-				'Search.referent_id',
-				'Search.typethematiquefp93_id',
-				'Search.rdv_structurereferente',
-			),
-			'tableau1b6' => array(
-				'Search.annee',
-				'Search.communautesr_id',
-				'Search.structurereferente_id',
-				'Search.referent_id',
-				'Search.rdv_structurereferente',
-			)
-		);
-
-		/**
 		 *
 		 * @param array $search
 		 * @throws RuntimeException
@@ -249,7 +197,7 @@
 
 			if( !empty( $search ) ) {
 				// 1. Nettoyage des filtres
-				$filters = (array)Hash::get( $this->filters, $tableau );
+				$filters = (array)Hash::get( $this->WebrsaTableausuivipdv93->filters, $tableau );
 				foreach( $filters as $path ) {
 					$result = Hash::insert(
 						$result,
@@ -347,12 +295,12 @@
 			$this->_prepareFormData( $search );
 
 			if( !empty( $search ) ) {
-				$results = $this->Tableausuivipdv93->tableaud1( $search );
+				$results = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableaud1( $search );
 				$this->set( compact( 'results' ) );
 			}
 
-			$this->set( 'categories', $this->Tableausuivipdv93->tableaud1Categories() );
-			$this->set( 'columns', $this->Tableausuivipdv93->columns_d1 );
+			$this->set( 'categories', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableaud1Categories() );
+			$this->set( 'columns', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->columns_d1 );
 		}
 
 		/**
@@ -364,11 +312,11 @@
 			$this->_prepareFormData( $search );
 
 			if( !empty( $search ) ) {
-				$results = $this->Tableausuivipdv93->tableaud2( $search );
+				$results = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableaud2( $search );
 				$this->set( compact( 'results' ) );
 			}
 
-			$this->set( 'categories', $this->Tableausuivipdv93->tableaud2Categories() );
+			$this->set( 'categories', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableaud2Categories() );
 		}
 
 		/**
@@ -380,7 +328,7 @@
 			if( in_array( $this->action, array( 'view', 'historiser' ) ) ) {
 				$tableau = Hash::get( $this->request->params, 'pass.0' );
 			}
-			else if( in_array( $this->action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
+			else if( in_array( $this->action, array_keys( $this->WebrsaTableausuivipdv93->tableaux ) ) ) {
 				$tableau = $this->action;
 			}
 
@@ -483,7 +431,7 @@
 			// Si le formulaire n'a pas été envoyé
 			if( empty( $search ) ) {
 				// Si c'est une méthode d'un des moteurs
-				if( in_array( $this->request->action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
+				if( in_array( $this->request->action, array_keys( $this->WebrsaTableausuivipdv93->tableaux ) ) ) {
 					$configureKey = "{$this->name}.{$this->request->action}.defaults";
 					$this->request->data = (array)Configure::read( $configureKey );
 				}
@@ -602,7 +550,7 @@
 		 * @throws NotFoundException
 		 */
 		public function exportcsvcorpus( $action, $id ) {
-			if( !in_array( $action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
+			if( !in_array( $action, array_keys( $this->WebrsaTableausuivipdv93->tableaux ) ) ) {
 				throw new NotFoundException();
 			}
 
@@ -648,22 +596,22 @@
 			// Ancienne façon de faire, tant que l'on n'a pas tout mis à jour
 			else {
 				if( $action === 'tableaud1' ) {
-					$query = $this->Tableausuivipdv93->qdExportcsvCorpusd1( $id );
+					$query = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->qdExportcsvCorpusd1( $id );
 				}
 				else if( $action === 'tableaud2' ) {
-					$query = $this->Tableausuivipdv93->qdExportcsvCorpusd2( $id );
+					$query = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->qdExportcsvCorpusd2( $id );
 				}
 				else if( $action === 'tableau1b3' ) {
-					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b3( $id );
+					$query = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->qdExportcsvCorpus1b3( $id );
 				}
 				else if( $action === 'tableau1b4' ) {
-					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b4( $id );
+					$query = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->qdExportcsvCorpus1b4( $id );
 				}
 				else if( $action === 'tableau1b5' ) {
-					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b5( $id );
+					$query = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->qdExportcsvCorpus1b5( $id );
 				}
 				else if( $action === 'tableau1b6' ) {
-					$query = $this->Tableausuivipdv93->qdExportcsvCorpus1b6( $id );
+					$query = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->qdExportcsvCorpus1b6( $id );
 				}
 
 				if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {
@@ -676,7 +624,7 @@
 				$this->Tableausuivipdv93->forceVirtualFields = true;
 				$results = $this->Tableausuivipdv93->find( 'all', $query );
 
-				$options = $this->Tableausuivipdv93->getOptions( $action );
+				$options = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->getOptions( $action );
 			}
 
 			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
@@ -741,7 +689,7 @@
 		 * @throws NotFoundException
 		 */
 		public function exportcsvdonnees( $action, $id ) {
-			if( !in_array( $action, array_keys( $this->Tableausuivipdv93->tableaux ) ) ) {
+			if( !in_array( $action, array_keys( $this->WebrsaTableausuivipdv93->tableaux ) ) ) {
 				throw new NotFoundException();
 			}
 
@@ -770,14 +718,14 @@
 			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
 
 			if( $action === 'tableaud1' ) {
-				$categories = $this->Tableausuivipdv93->tableaud1Categories();
-				$this->set( 'columns', $this->Tableausuivipdv93->columns_d1 );
+				$categories = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableaud1Categories();
+				$this->set( 'columns', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->columns_d1 );
 			}
 			else if( $action === 'tableaud2' ) {
-				$categories = $this->Tableausuivipdv93->tableaud2Categories();
+				$categories = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableaud2Categories();
 			}
 			else if( $action === 'tableau1b3' ) {
-				$categories = $this->Tableausuivipdv93->problematiques();
+				$categories = $this->Tableausuivipdv93->WebrsaTableausuivipdv93->problematiques();
 			}
 
 			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
@@ -802,7 +750,7 @@
 			$this->_prepareFormData( $search );
 
 			$this->Tableausuivipdv93->begin();
-			$success = $this->Tableausuivipdv93->historiser(
+			$success = $this->WebrsaTableausuivipdv93->historiser(
 				$action,
 				$search,
 				$this->Session->read( 'Auth.User.id' )
@@ -920,9 +868,9 @@
 
 			if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableaud1', 'tableaud2' ) ) ) {
 				$method = $tableausuivipdv93['Tableausuivipdv93']['name'].'Categories';
-				$this->set( 'categories', $this->Tableausuivipdv93->{$method}() );
+				$this->set( 'categories', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->{$method}() );
 				if( $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' ) {
-					$this->set( 'columns', $this->Tableausuivipdv93->columns_d1 );
+					$this->set( 'columns', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->columns_d1 );
 				}
 			}
 
