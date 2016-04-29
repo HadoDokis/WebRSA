@@ -943,5 +943,45 @@
 			$result = in_array_strings( 'Z', array( 0, 1, 2, 3, 4, 5, 6 ) );
 			$this->assertEqual( $result, false, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la fonction hash_filter_keys()
+		 */
+		public function testHashFilterKeys() {
+			$data = array(
+                'Search' => array(
+                        'annee' => '2015',
+                        'structurereferente_id' => (int) 64,
+                        'referent_id' => (int) 314,
+                        'user_id' => '',
+                        'tableau' => '',
+                        'typethematiquefp93_id' => '',
+                        'rdv_structurereferente' => '',
+                        'dsps_maj_dans_annee' => '',
+                        'soumis_dd_dans_annee' => '1'
+                )
+			);
+
+			$filters = array(
+				'Search.annee',
+				'Search.communautesr_id',
+				'Search.structurereferente_id',
+				'Search.referent_id',
+				'Search.soumis_dd_dans_annee'
+			);
+
+			$expected = array(
+                'Search' => array(
+					'annee' => '2015',
+					'communautesr_id' => '',
+					'structurereferente_id' => 64,
+					'referent_id' => 314,
+					'soumis_dd_dans_annee' => '1'
+                )
+			);
+
+			$result = hash_filter_keys( $data, $filters );
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>
