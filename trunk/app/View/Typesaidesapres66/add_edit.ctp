@@ -9,6 +9,10 @@
 	);
 
 	echo $this->Xform->create();
+	
+	if (Hash::get($this->request->data, 'Typeaideapre66.typeplafond') === null) {
+		$this->request->data['Typeaideapre66']['typeplafond'] = 'ADRE';
+	}
 
 	echo $this->Default->subform(
 		array(
