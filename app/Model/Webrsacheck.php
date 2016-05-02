@@ -1037,7 +1037,7 @@
 			$modelNames = array( 'Statistiqueministerielle', 'Dossierep', 'Commissionep' );
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$modelNames[] = 'Tableausuivipdv93';
+				$modelNames[] = 'WebrsaTableausuivipdv93';
 			}
 
 			foreach( $modelNames as $modelName ) {
