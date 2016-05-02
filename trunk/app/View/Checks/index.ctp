@@ -165,8 +165,31 @@
 					</div>
 					<div id="webrsa_configure_evidence">
 						<h4 class="title">Champs de formulaires mis en évidence</h4>
-						<?php echo $this->Checks->table( $results['Webrsa']['configure_evidence'] );?>
-						<?php debug($results['Webrsa']['configure_evidence']);?>
+						<div id="tabbedWrapperWebrsaConfigureEvidence" class="tabs">
+							<?php
+								$tabs = array();
+								$paths = array_keys( $results['Webrsa']['configure_evidence'] );
+								foreach( $paths as $path ) {
+									list( $controller, $action ) = model_field( $path, false );
+									if( !isset( $tabs[$controller] ) ) {
+										$tabs[$controller] = array();
+									}
+									$tabs[$controller][] = $path;
+								}
+
+								foreach( $tabs as $controller => $subtabs ) {
+									$id = 'webrsa_configure_evidence_'.Inflector::underscore( $controller );
+									echo "<div id=\"{$id}\">\n";
+									echo "<h5 class=\"title\">{$controller}</h5>\n";
+									$configs = array();
+									foreach( $subtabs as $subtab ) {
+										$configs[$subtab] = $results['Webrsa']['configure_evidence'][$subtab];
+									}
+									echo $this->Checks->table( $configs );
+									echo "</div>\n";
+								}
+							?>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -255,6 +278,7 @@
 	makeTabbed( 'tabbedWrapperSoftware', 3 );
 	makeTabbed( 'tabbedWrapperWebrsa', 4 );
 	makeTabbed( 'tabbedWrapperWebrsaConfigurableQuery', 5 );
+	makeTabbed( 'tabbedWrapperWebrsaConfigureEvidence', 5 );
 
 	<?php foreach( $extratabs as $id => $level ):?>
 		<?php echo "makeTabbed( '{$id}', {$level} );\n";?>
