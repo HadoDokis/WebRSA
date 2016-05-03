@@ -191,6 +191,84 @@
 							?>
 						</div>
 					</div>
+					<div id="webrsa_configure_tableaux_conditions">
+						<h4 class="title">Conditions pour les tableaux</h4>
+						<div id="tabbedWrapperWebrsaConfigureTableauxConditions" class="tabs">
+							<?php
+								$departement = (int)Configure::read( 'Cg.departement' );
+
+								foreach( $results['Webrsa']['tableaux_conditions'] as $modelName => $modelResults ) {
+									$id = 'webrsa_configure_tableaux_conditions_'.Inflector::underscore( $modelName );
+									echo "<div id=\"{$id}\">\n";
+									echo "<h5 class=\"title\">".__m( $modelName )."</h5>\n";
+
+									foreach( $modelResults as $label => $data ) {
+										$id = 'webrsa_configure_tableaux_conditions_'.Inflector::underscore( $modelName ).'_'.Inflector::slug( $label);
+										echo "<div id=\"{$id}\">\n";
+										echo "<h6 class=\"title\">".__m( $label )."</h6>\n";
+
+										$fields = $data['fields'];
+										$data = $data['records'];
+
+										// Création des lignes du tableau
+										$rows = array();
+										foreach( $data as $label => $records ) {
+											if( !empty( $records ) ) {
+												foreach( $records as $record ) {
+													$row = array( array( $label, array( 'rowspan' => 1 ) ) );
+													foreach( $fields as $field ) {
+														$row[] = array( Hash::get( $record, $field ), array( 'rowspan' => 1 ) );
+													}
+													$rows[] = $row;
+												}
+											}
+											else {
+												$row = array( array( $label, array( 'rowspan' => 1 ) ) );
+												foreach( $fields as $field ) {
+													$row[] = array( null, array( 'rowspan' => 1 ) );
+												}
+												$rows[] = $row;
+											}
+										}
+
+										// Calcul des rowspan pour chacune des cellules du tableau
+										$subkeys = array_reverse( array_keys( $fields ) );
+										foreach( array_reverse( array_keys( $rows ) ) as $key ) {
+											if( $key > 0 ) {
+												foreach( $subkeys as $subkey ) {
+													$same = true;
+													for( $i = $subkey ; $i >= 0 ; $i-- ) {
+														$same = $same && ( $rows[$key-1][$i][0] === $rows[$key][$i][0] );
+													}
+													if( $same ) {
+														$rows[$key-1][$subkey][1]['rowspan'] += $rows[$key][$subkey][1]['rowspan'];
+														unset( $rows[$key][$subkey] );
+													}
+												}
+											}
+										}
+
+										// Affichage du tableau
+										echo '<table>';
+										echo '<thead>';
+										echo '<tr>';
+										foreach( array_merge( array( 'Intitulé' ), $fields ) as $field ) {
+											echo '<th>'.__m( $field ).'</th>';
+										}
+										echo '</tr>';
+										echo '</thead>';
+										echo '<tbody>';
+										echo $this->Html->tableCells( $rows );
+										echo '</tbody>';
+										echo '</table>';
+										echo '</div>';
+									}
+
+									echo '</div>';
+								}
+							?>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -279,6 +357,7 @@
 	makeTabbed( 'tabbedWrapperWebrsa', 4 );
 	makeTabbed( 'tabbedWrapperWebrsaConfigurableQuery', 5 );
 	makeTabbed( 'tabbedWrapperWebrsaConfigureEvidence', 5 );
+	makeTabbed( 'tabbedWrapperWebrsaConfigureTableauxConditions', 5 );
 
 	<?php foreach( $extratabs as $id => $level ):?>
 		<?php echo "makeTabbed( '{$id}', {$level} );\n";?>
