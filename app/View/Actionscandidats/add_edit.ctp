@@ -181,8 +181,8 @@
 
 			echo $this->Default->subform(
 				array(
-					'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 ),
-					'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 )
+					'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => 2009, 'maxYear' => date( 'Y' ) + 5, 'dateFormat' => 'DMY' ),
+					'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => 2009, 'maxYear' => date( 'Y' ) + 5, 'dateFormat' => 'DMY' )
 				),
 				array(
 					'options' => $options
