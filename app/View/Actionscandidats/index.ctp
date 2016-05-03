@@ -3,7 +3,7 @@
 		'h1',
 		$this->pageTitle = __d( 'actioncandidat', "Actionscandidats::{$this->action}" )
 	);
-            
+
     if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
@@ -50,6 +50,7 @@
                         'Actioncandidat.themecode',
                         'Actioncandidat.codefamille',
                         'Actioncandidat.numcodefamille',
+                        'Actioncandidat.naturecer',
                         'Actioncandidat.lieuaction',
                         'Actioncandidat.cantonaction' => array( 'options' => $cantons ),
                         'Actioncandidat.hasfichecandidature',
@@ -71,7 +72,7 @@
 		</div>
 
 <?php echo $this->Xform->end();?>
-    
+
 <?php if( !empty( $this->request->data ) ) :?>
 	<?php if( !empty( $actionscandidats ) ):?>
         <?php echo $pagination;?>

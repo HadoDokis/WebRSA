@@ -130,6 +130,29 @@
 		);
 
 		/**
+		 * Catégories du tableau "Indicateurs de natures des actions des contrats".
+		 *
+		 * @var array
+		 */
+		public $natures_cers = array(
+			'01' => 'activités, stages ou formations destinés à acquérir des compétences professionnelles',
+			'02' => 'orientation vers le service public de l\'emploi, parcours de recherche d\'emploi',
+			'03' => 'mesures d\'insertion par l\'activité économique (IAE)',
+			'04' => 'aide à la réalisation d’un projet de création, de reprise ou de poursuite d’une activité non salariée ',
+			'05' => 'emploi aidé (hors CIA) (*)',
+			'06' => 'contrat d\'insertion par l\'activité (CIA) (*)',
+			'07' => 'emploi non aidé',
+			'08' => 'actions facilitant le lien social (développement de l\'autonomie sociale, activités collectives, ...)',
+			'09' => 'actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport...)',
+			'10' => 'actions visant l\'accès à un logement, relogement ou à l\'amélioration de l\'habitat',
+			'11' => 'actions facilitant l\'accès aux soins',
+			'12' => 'actions visant l\'autonomie financière (constitution d\'un dossier de surendettement,...)',
+			'13' => 'actions visant la famille et la parentalité (soutien familial, garde d\'enfant, ...)',
+			'14' => 'lutte contre l\'illettrisme ; acquisition des savoirs de base',
+			'15' => 'autres actions'
+		);
+
+		/**
 		 * Constante définissant un parcours professionnel.
 		 *
 		 * @see Statistiqueministerielle::getConditionsTypeParcours()
@@ -1526,6 +1549,242 @@
 			return $results;
 		}
 
+		protected function _conditionsNatures() {
+			$results = array();
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			if( $departement === 66 ) {
+				$Actioncandidat = ClassRegistry::init( 'Actioncandidat' );
+				$query = array(
+					'fields' => array(
+						'Actioncandidat.id',
+						'Actioncandidat.naturecer'
+					),
+					'conditions' => array(
+						'Actioncandidat.naturecer IS NOT NULL'
+					),
+					'contain' => false
+				);
+
+				// 1. Préparation du tableau de conditions
+				$results = $this->natures_cers;
+				foreach( array_keys( $results ) as $key ) {
+					$results[$key] = array( 'Actioncandidat.id' => array() );
+				}
+
+				// 2. Remplissage du tableau de conditions
+				foreach( $Actioncandidat->find( 'list', $query ) as $id => $naturecer ) {
+					$results[$naturecer]['Actioncandidat.id'][] = $id;
+				}
+
+				// 3. Nettoyage du tableau de conditions
+				foreach( $results as $key => $conditions ) {
+					if( empty( $conditions['Actioncandidat.id'] ) ) {
+						$results[$key] = null;
+					}
+				}
+			}
+			else if( $departement === 93 ) {
+				 $results = (array)Configure::read( 'Statistiqueministerielle.conditions_natures_contrats' );
+			}
+
+			if( !empty( $results ) ) {
+				$tmp = $results;
+				$results = array();
+				foreach( $tmp as $key => $value ) {
+					$results["{$key} - {$this->natures_cers[$key]}"] = $value;
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * ...
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function getIndicateursNaturesContrats( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+			$results = array();
+
+			$base = $this->_getBaseQuery( $search );
+
+			// En cours de validité au 31 décembre
+			$base['conditions']['Contratinsertion.decision_ci'] = 'V';
+			$base['conditions'][] = array(
+				'Contratinsertion.dd_ci <=' => "{$annee}-12-31",
+				'Contratinsertion.df_ci >=' => "{$annee}-12-31",
+			);
+
+			$base['fields'] = array( 'COUNT( DISTINCT "Contratinsertion"."id" ) AS "Contratinsertion__count"' );
+
+			$replacements = array( 'Structurereferente' => 'Structurereferentecer', 'Typeorient' => 'Typeorientcer' );
+			$base['joins'][] = $Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) );
+			$base['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+				$replacements
+			);
+			$base['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+				$replacements
+			);
+
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( $departement === 93 ) {
+				$base['joins'][] = $Dossier->Foyer->Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'INNER' ) );
+				$base['joins'][] = $Dossier->Foyer->Personne->Contratinsertion->Cer93->join( 'Cer93Sujetcer93', array( 'type' => 'LEFT OUTER' ) );
+			}
+			else if( $departement === 66 ) {
+				$base['joins'][] = $Dossier->Foyer->Personne->Contratinsertion->join( 'Actioncandidat', array( 'type' => 'LEFT OUTER' ) );
+			}
+
+			$organismes = array(
+				'spe' => array(
+					$this->getConditionsTypeOrganisme(
+						self::ORGANISME_SPE,
+						$replacements
+					),
+					'NOT' => array(
+						$this->getConditionsTypeOrganisme(
+							self::ORGANISME_SPE_POLE_EMPLOI,
+							$replacements
+						)
+					)
+				),
+				'horsspe' => $this->getConditionsTypeOrganisme(
+					self::ORGANISME_HORS_SPE,
+					$replacements
+				)
+			);
+
+			$conditionsNatures = $this->_conditionsNatures();
+
+			foreach( $organismes as $organisme => $conditionsOrganisme ) {
+				foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
+					if( !empty( $conditionsNature ) ) {
+						$query = $base;
+						$query['conditions'][] = $conditionsOrganisme;
+						$query['conditions'][] = $conditionsNature;
+
+						$results['Indicateurnature'][$organisme][$nature_cer] = Hash::get( $Dossier->find( 'all', $query ), '0.Contratinsertion.count' );
+					}
+					else {
+						$results['Indicateurnature'][$organisme][$nature_cer] = null;
+					}
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Vérification du paramétrage pour le tableau "Indicateurs de natures
+		 * des actions des contrats" (CG 93).
+		 *
+		 * @return array
+		 */
+		public function getTableauNaturesContrats() {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$results = array();
+
+			$base = array();
+			$replacements = array();
+
+			if( $departement === 93 ) {
+				$Sujetcer93 = ClassRegistry::init( 'Sujetcer93' );
+				$base = array(
+					'fields' => array(
+						'Sujetcer93.name',
+						'Soussujetcer93.name',
+						'Valeurparsoussujetcer93.name'
+					),
+					'joins' => array(
+						$Sujetcer93->join( 'Soussujetcer93', array( 'type' => 'LEFT OUTER' ) ),
+						$Sujetcer93->Soussujetcer93->join( 'Valeurparsoussujetcer93', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'conditions' => array(),
+					'order' => array(
+						'Sujetcer93.name',
+						'Soussujetcer93.name',
+						'Valeurparsoussujetcer93.name'
+					)
+				);
+
+				$replacements = array(
+					'Cer93Sujetcer93.sujetcer93_id' => 'Sujetcer93.id',
+					'Cer93Sujetcer93.soussujetcer93_id' => 'Soussujetcer93.id',
+					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => 'Valeurparsoussujetcer93.id',
+				);
+
+				$Model = $Sujetcer93;
+			}
+			else if( $departement === 66 ) {
+				$base = array(
+					'fields' => array(
+						'Actioncandidat.name'
+					),
+					'conditions' => array(),
+					'order' => array(
+						'Actioncandidat.name'
+					)
+				);
+
+				$Model = ClassRegistry::init( 'Actioncandidat' );
+			}
+
+			if( !empty( $base ) ) {
+				$conditionsNatures = $this->_conditionsNatures();
+				foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
+					if( !empty( $conditionsNature ) ) {
+						$query = $base;
+						$query['conditions'][] = $conditionsNature;
+						$query = array_words_replace( $query, $replacements );
+
+						$results[$nature_cer] = $Model->find( 'all', $query );
+					}
+					else {
+						$results[$nature_cer] = null;
+					}
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 *
+		 * @return array
+		 */
+		public function getTableauxConditions() {
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			$result = array();
+			if( in_array( $departement, array( 66, 93 ), true ) ) {
+				$result = array(
+					$this->alias => array(
+						'conditions_natures_contrats' => array(
+							'fields' => (
+								$departement === 66
+									? array(
+										'Actioncandidat.name'
+									)
+									: array(
+										'Sujetcer93.name',
+										'Soussujetcer93.name',
+										'Valeurparsoussujetcer93.name'
+									)
+							),
+							'records' => $this->getTableauNaturesContrats()
+						)
+					)
+				);
+			}
+
+			return $result;
+		}
 
 		/**
 		 * Permet de tester toutes les clés de configuration du webrsa.inc pour
@@ -1577,6 +1836,10 @@
 			// 7. conditions_types_cers
 			$query = $this->getIndicateursDelais( $search );
 			$return['Statistiqueministerielle.conditions_types_cers'] = $query;
+
+			// 8. conditions_natures_contrats
+			$query = $this->getIndicateursNaturesContrats( $search );
+			$return['Statistiqueministerielle.conditions_natures_contrats'] = $query;
 
 			// Test des différentes requêtes.
 			foreach( $return as $key => $query ) {

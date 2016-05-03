@@ -1508,6 +1508,131 @@
 					'orientation_initiale_inadaptee' => null,
 					'changement_situation_allocataire' => null
 				)
+			),
+			/**
+			 * Conditions utilisées dans le tableau "Indicateurs de natures des
+			 * actions des contrats"
+			 */
+			'conditions_natures_contrats' => array(
+				// activités, stages ou formations destinés à acquérir des compétences professionnelles
+				'01' => array(
+					'OR' => array(
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 2, // La formation
+							'Cer93Sujetcer93.soussujetcer93_id' => 6, // Aide ou suivi pour la recherche de stage ou formation
+							'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 40, 41, 42, 43, 44 ),
+						),
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 2, // La formation
+							'Cer93Sujetcer93.soussujetcer93_id' => 7, // Demande d'aide financière(FDIF, APRE)
+						),
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+							'Cer93Sujetcer93.soussujetcer93_id' => 2, // Reconversion professionnelle
+						),
+					)
+				),
+				// orientation vers le service public de l'emploi, parcours de recherche d'emploi
+				'02' => array(
+					'OR' => array(
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+							'Cer93Sujetcer93.soussujetcer93_id' => 1, // Aide ou suivi pour la recherche d'emploi
+							'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 20, 1, 2, 10, 6, 26, 4, 14, 3, 18, 21, 19, 22, 11, 30, 29, 28, 27, 25, 24, 23, 12, 7, 9, 15, 16, 13, 5, 17 ), // En fait, toutes les valeurs
+						),
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+							'Cer93Sujetcer93.soussujetcer93_id' => 4, // Bilan professionnel et orientation
+						),
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+							'Cer93Sujetcer93.soussujetcer93_id' => 5, // Prescription vers une action :
+							'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 37, 34, 32 ), // Autre organisme, PLIE, Pôle Emploi
+						),
+					),
+				),
+				// mesures d'insertion par l'activité économique (IAE)
+				'03' => array(
+					'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+					'Cer93Sujetcer93.soussujetcer93_id' => 5, // Prescription vers une action :
+					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => 35, // SIAE
+				),
+				// aide à la réalisation d’un projet de création, de reprise ou de poursuite d’une activité non salariée
+				'04' => array(
+					'OR' => array(
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+							'Cer93Sujetcer93.soussujetcer93_id' => 3, // Création d'entreprise
+						),
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+							'Cer93Sujetcer93.soussujetcer93_id' => 5, // Prescription vers une action :
+							'Cer93Sujetcer93.valeurparsoussujetcer93_id' => 36, // Organisme d'appui à la création d'entreprise
+						),
+					)
+				),
+				// emploi aidé (hors CIA) (*)
+				'05' => false,
+				// contrat d\'insertion par l'activité (CIA) (*)
+				'06' => false,
+				// emploi non aidé
+				'07' => false,
+				// actions facilitant le lien social (développement de l\'autonomie sociale, activités collectives, ...)
+				'08' => array(
+					'OR' => array(
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 2, // La formation
+							'Cer93Sujetcer93.soussujetcer93_id' => 6, // Aide ou suivi pour la recherche de stage ou formation
+							'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 38, 39 ),
+						),
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
+							'Cer93Sujetcer93.soussujetcer93_id' => 10, // Accés aux droits
+							'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 56, 57, 58, 59, 60 ),
+						),
+						array(
+							'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
+							'Cer93Sujetcer93.soussujetcer93_id' => 9, // actions liées à la resolution de difficultés en lien avec la parentalité
+							'Cer93Sujetcer93.valeurparsoussujetcer93_id' => 54 // Action visant à lutter contre la maltraitance et la violence
+						),
+					)
+				),
+				// actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport...)
+				'09' => array(
+					'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
+					'Cer93Sujetcer93.soussujetcer93_id' => 10, // Accés aux droits
+					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => 55 // Accés à la mobilité
+				),
+				// actions visant l\'accès à un logement, relogement ou à l\'amélioration de l\'habitat
+				'10' => array(
+					'Cer93Sujetcer93.sujetcer93_id' => 5, // Le Logement
+					'Cer93Sujetcer93.soussujetcer93_id' => array( 22, 18, 19, 20, 21 ), // ...
+				),
+				// actions facilitant l\'accès aux soins
+				'11' => array(
+					'Cer93Sujetcer93.sujetcer93_id' => 4, // La santé
+					'Cer93Sujetcer93.soussujetcer93_id' => array( 15, 14, 17, 11, 12, 16 ), // ...
+				),
+				// actions visant l\'autonomie financière (constitution d\'un dossier de surendettement,...)
+				'12' => array(
+					'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
+					'Cer93Sujetcer93.soussujetcer93_id' => 8, // actions liées à la resolution de difficultés financières
+					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 47, 49, 48, 45, 46, 61 ) // ...
+				),
+				// actions visant la famille et la parentalité (soutien familial, garde d\'enfant, ...)
+				'13' => array(
+					'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
+					'Cer93Sujetcer93.soussujetcer93_id' => 9, // actions liées à la resolution de difficultés en lien avec la parentalité
+					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 52, 50, 53, 51 ) // ...
+				),
+				// lutte contre l\'illettrisme ; acquisition des savoirs de base
+				'14' => false,
+				// autres actions
+				'15' => array(
+					'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
+					'Cer93Sujetcer93.soussujetcer93_id' => 5, // Prescription vers une action :
+					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 33, 31 ), // ...
+				),
 			)
 		)
 	);
@@ -1632,7 +1757,7 @@
 			'multiple_larger_1' => true
 		)
 	);
-	
+
 	/**
 	 * Affichage de Fleches pour effectuer un order sur les colonnes de résultat
 	 */

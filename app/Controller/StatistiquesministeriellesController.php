@@ -163,5 +163,20 @@
 
 			$this->set( 'title_for_layout', 'Indicateurs de caractéristiques des contrats' );
 		}
+
+		/**
+		 * Moteur de recherche pour les indicateurs de natures de contrats.
+		 *
+		 * @return void
+		 */
+		public function indicateurs_natures_contrats() {
+			if( !empty( $this->request->data ) ) {
+				$results = $this->Statistiqueministerielle->getIndicateursNaturesContrats( $this->request->data );
+
+				$this->set( compact( 'results' ) );
+			}
+
+			$this->set( 'title_for_layout', 'Indicateurs de natures des actions des contrats' );
+		}
 	}
 ?>

@@ -3215,8 +3215,8 @@ msgstr "Indicateurs de motifs de réorientations"
 msgid "Statistiquesministerielles:indicateurs_caracteristiques_contrats"
 msgstr "Indicateurs de caractéristiques de contrats"
 
-msgid "Statistiquesministerielles:indicateursNatureContrats"
-msgstr "Indicateurs de nature de contrats"
+msgid "Statistiquesministerielles:indicateurs_natures_contrats"
+msgstr "Indicateurs de natures des actions des contrats"
 
 msgid "Statistiquesministerielles:indicateurs_delais"
 msgstr "Indicateurs de délais"

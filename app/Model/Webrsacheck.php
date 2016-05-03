@@ -583,6 +583,7 @@
 				'Tableauxsuivispdvs93.tableau1b4.exportcsvcorpus' => 'isarray',
 				'Tableauxsuivispdvs93.tableau1b5.exportcsvcorpus' => 'isarray',
 				'Tableauxsuivispdvs93.tableau1b6.exportcsvcorpus' => 'isarray',
+				'Statistiqueministerielle.conditions_natures_contrats' => 'isarray',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
@@ -1394,6 +1395,31 @@
 								'value' => var_export( $configuration, true ),
 								'message' => empty( $errors ) ? null : implode( ', ', $errors )
 							);
+						}
+					}
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 *
+		 * @return array
+		 */
+		public function allConfigureTableauxConditions() {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$results = array();
+
+			foreach( App::objects( 'model' ) as $modelName ) {
+				if( !in_array( $modelName, $this->notMyModels[$departement] ) ) {
+					App::import( 'Model', $modelName );
+					$Reflection = new ReflectionClass( $modelName );
+					if( $Reflection->isAbstract() === false ) {
+						$Model = ClassRegistry::init( $modelName );
+
+						if( method_exists( $Model,'getTableauxConditions' ) ) {
+							$results = Hash::merge( $results, $Model->getTableauxConditions() );
 						}
 					}
 				}

@@ -37,7 +37,8 @@
 					),
 				)
 			),
-            'Conditionnable'
+            'Conditionnable',
+			'Postgres.PostgresAutovalidate'
 		);
 
 		public $validate = array(
@@ -396,7 +397,7 @@
             $isactive = Hash::get( $criteres, 'Actioncandidat.actif' );
 
 			// Critères sur l'action
-			foreach( array( 'name', 'lieuaction', 'cantonaction', 'themecode', 'codefamille', 'numcodefamille' ) as $critereAction ) {
+			foreach( array( 'name', 'lieuaction', 'cantonaction', 'themecode', 'codefamille', 'numcodefamille', 'naturecer' ) as $critereAction ) {
 				if( isset( $criteres['Actioncandidat'][$critereAction] ) && !empty( $criteres['Actioncandidat'][$critereAction] ) ) {
 					$conditions[] = 'Actioncandidat.'.$critereAction.' ILIKE \''.$this->wildcard( $criteres['Actioncandidat'][$critereAction] ).'\'';
 				}

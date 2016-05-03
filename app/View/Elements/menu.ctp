@@ -498,6 +498,7 @@
 				'Indicateurs de réorientations' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_reorientations'  ) ),
 				'Indicateurs de motifs de réorientation' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_motifs_reorientation'  ) ),
 				'Indicateurs de caractéristiques de contrats' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_caracteristiques_contrats'  ) ),
+				'Indicateurs de natures des actions des contrats' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_natures_contrats'  ) ),
 			),
 			'Indicateurs de suivi' => array( 'url' => array( 'controller' => 'indicateurssuivis', 'action' => 'search' ) ),
 			'Tableaux de suivi d\'activité' => array(
