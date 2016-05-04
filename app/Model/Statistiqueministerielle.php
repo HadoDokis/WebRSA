@@ -1584,8 +1584,9 @@
 					}
 				}
 			}
-			else if( $departement === 93 ) {
-				 $results = (array)Configure::read( 'Statistiqueministerielle.conditions_natures_contrats' );
+			else {
+				 $results = (array)Configure::read( 'Statistiqueministerielle.conditions_natures_contrats' )
+					+ array_combine( array_keys( $this->natures_cers ), array_fill( 0, count( $this->natures_cers ), null ) );
 			}
 
 			if( !empty( $results ) ) {
@@ -1735,8 +1736,8 @@
 				$Model = ClassRegistry::init( 'Actioncandidat' );
 			}
 
+			$conditionsNatures = $this->_conditionsNatures();
 			if( !empty( $base ) ) {
-				$conditionsNatures = $this->_conditionsNatures();
 				foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
 					if( !empty( $conditionsNature ) ) {
 						$query = $base;
@@ -1748,6 +1749,11 @@
 					else {
 						$results[$nature_cer] = null;
 					}
+				}
+			}
+			else {
+				foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
+					$results[$nature_cer] = null;
 				}
 			}
 
