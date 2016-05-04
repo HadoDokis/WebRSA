@@ -1511,7 +1511,12 @@
 			),
 			/**
 			 * Conditions utilisées dans le tableau "Indicateurs de natures des
-			 * actions des contrats"
+			 * actions des contrats".
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): Contratinsertion, Structurereferentecer,
+			 * Typeorientcer.
+			 * Modèles disponibles en plus pour le CG 93: Cer93, Cer93Sujetcer93.
 			 */
 			'conditions_natures_contrats' => array(
 				// activités, stages ou formations destinés à acquérir des compétences professionnelles
