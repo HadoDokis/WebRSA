@@ -39,6 +39,7 @@
 		public $components = array(
 			'Jetons2',
 			'Default',
+			'InsertionsBeneficiaires',
 			'Fileuploader',
 			'Gestionzonesgeos',
 			'Search.SearchPrg' => array(
@@ -194,18 +195,18 @@
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-			
+
 			/**
 			 * Contrôle d'accès
 			 */
 			$record = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
 			$redirectUrl = array('action' => 'histo', $personne_id);
-			
+
 			if (!WebrsaAccessDsp::check($this->action, current($record))) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
-			
+
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
@@ -425,13 +426,13 @@
 			$personne_id = Hash::get( $record, 'DspRev.personne_id' );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
-			
+
 			/**
 			 * Contrôle d'accès
 			 */
 			$record2 = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
 			$redirectUrl = array('action' => 'histo', $personne_id);
-			
+
 			if (!WebrsaAccessDsp::check($this->action, current($record2))) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
@@ -490,13 +491,13 @@
 
 			$dsprevs = $this->DspRev->find( 'first', $query );
 			$personne_id = Hash::get($dsprevs, 'DspRev.personne_id');
-			
+
 			/**
 			 * Contrôle d'accès
 			 */
 			$record = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
 			$redirectUrl = array('action' => 'histo', $personne_id);
-			
+
 			if (!WebrsaAccessDsp::check($this->action, current($record))) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
@@ -553,7 +554,7 @@
 			 */
 			$record = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
 			$redirectUrl = array('action' => 'histo', $personne_id);
-			
+
 			if (!WebrsaAccessDsp::check($this->action, current($record))) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
