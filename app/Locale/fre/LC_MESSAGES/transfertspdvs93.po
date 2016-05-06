@@ -23,10 +23,10 @@ msgid "Orientstruct.search"
 msgstr "Recherche par transfert"
 
 msgid "Search.NvOrientstruct.date_valid"
-msgstr "Date d'orientation"
+msgstr "Date de transfert"
 
 msgid "Search.Orientstruct.typeorient_id"
-msgstr "Type d'orientation"
+msgstr "Type de transfert"
 
 msgid "Search.NvOrientstruct.structurereferente_id"
 msgstr "Transféré vers"
