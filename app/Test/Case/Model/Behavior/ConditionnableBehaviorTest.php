@@ -580,6 +580,33 @@
 			$result = $this->_normalizeQueryPart( $result );
 			$expected = $this->_normalizeQueryPart( $expected );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 7. Valeurs multiples conjointes sous forme de valeur simple
+			$search = array(
+				'Detailcalculdroitrsa' => array(
+					'natpf' => array(
+						'RSD-RCD'
+					),
+				),
+			);
+			$result = $this->Canton->conditionsDetailcalculdroitrsa( array(), $search );
+			$expected = array(
+				array(
+					'OR' => array(
+						array(
+							'Detaildroitrsa.id IN ( SELECT detailscalculsdroitsrsa.detaildroitrsa_id FROM detailscalculsdroitsrsa INNER JOIN detailsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id ) WHERE detailsdroitsrsa.dossier_id = Dossier.id AND detailscalculsdroitsrsa.natpf = \'RSD\' )',
+							array(
+								'NOT' => array(
+									'Detaildroitrsa.id IN ( SELECT detailscalculsdroitsrsa.detaildroitrsa_id FROM detailscalculsdroitsrsa INNER JOIN detailsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id ) WHERE detailsdroitsrsa.dossier_id = Dossier.id AND detailscalculsdroitsrsa.natpf = \'RCD\' )',
+								)
+							)
+						)
+					)
+				)
+			);
+			$result = $this->_normalizeQueryPart( $result );
+			$expected = $this->_normalizeQueryPart( $expected );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
