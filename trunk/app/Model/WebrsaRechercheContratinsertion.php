@@ -207,20 +207,13 @@
 			if( Hash::get( $search, 'Contratinsertion.periode_validite' ) ) {
 				$debutValidite = date_cakephp_to_sql($search['Contratinsertion']['periode_validite_from']);
 				$finValidite = date_cakephp_to_sql($search['Contratinsertion']['periode_validite_to']);
+				// INFO: OVERLAPS ne prend les bornes (lorsque dd et df sont les mêmes)
+				//(StartA <= EndB) and (EndA >= StartB)
+				// @source http://stackoverflow.com/a/325964
 				$query['conditions'][] = array(
 					'Contratinsertion.decision_ci' => 'V',
-					'OR' => array(
-						// Date de debut dans les clous
-						array(
-							'Contratinsertion.dd_ci >=' => $debutValidite,
-							'Contratinsertion.dd_ci <=' => $finValidite,
-						),
-						// Date de fin dans les clous
-						array(
-							'Contratinsertion.df_ci >=' => $debutValidite,
-							'Contratinsertion.df_ci <=' => $finValidite,
-						),
-					)
+					'Contratinsertion.dd_ci <=' => $finValidite,
+					'Contratinsertion.df_ci >=' => $debutValidite
 				);
 			}
 			if( Hash::get( $search, 'Contratinsertion.arriveaecheance' ) ) {
