@@ -331,7 +331,7 @@
 			// Secteur d'activité et code métier, texte libre
 			foreach( array( 'libsecactderact', 'libderact', 'libsecactdomi', 'libactdomi', 'libsecactrech', 'libemploirech' ) as $fieldName ) {
 				if( !empty( $search['Dsp'][$fieldName] ) ) {
-					$query['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName} ILIKE" => $Dsp->wildcard( $search['Dsp'][$fieldName] ) ) );
+					$query['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName} ILIKE" => "%{$search['Dsp'][$fieldName]}%" ) );
 				}
 			}
 
