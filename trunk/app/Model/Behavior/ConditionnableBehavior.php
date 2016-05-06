@@ -376,7 +376,7 @@
 				else {
 					$multipleEnd = false;
 					foreach( $search['Detailcalculdroitrsa']['natpf'] as $natpf ) {
-						if( strstr( $natpf, ',' ) !== false ) {
+						if( strstr( $natpf, ',' ) !== false || strstr( $natpf, '-' ) !== false ) {
 							$multipleEnd = true;
 						}
 					}
