@@ -27,7 +27,7 @@
 
 			$options = Hash::merge(
 				parent::_optionsEnums( $params ),
-				$Controller->Dsp->options( array( 'find' => false, 'allocataire' => false, 'alias' => 'Donnees', 'nums' => true ) )
+				$Controller->Dsp->options( array( 'find' => false, 'allocataire' => false, 'alias' => 'Donnees', 'enums' => true ) )
 			);
 
 			return $options;
@@ -44,7 +44,7 @@
 
 			$options = Hash::merge(
 				parent::_optionsRecords( $params ),
-				$Controller->Dsp->options( array( 'find' => true, 'allocataire' => false, 'alias' => 'Donnees', 'nums' => false ) )
+				$Controller->Dsp->options( array( 'find' => true, 'allocataire' => false, 'alias' => 'Donnees', 'enums' => false ) )
 			);
 
 			return $options;
