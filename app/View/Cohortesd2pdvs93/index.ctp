@@ -119,7 +119,7 @@
 						);?>",
 						edit = "<?php echo $this->Ajax->remoteFunction(
 							array(
-								'url' => array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'add', '#questionnaired2pdv93Id#' ),
+								'url' => array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'edit', '#questionnaired2pdv93Id#' ),
 								'update' => 'popup-content1',
 								'evalScripts' => true
 							)
