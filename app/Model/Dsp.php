@@ -1238,9 +1238,10 @@
 			if( $return === false ) {
 				$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
 
-				$return = $this->enums();
+				$return = array();
 
 				if( $params['enums'] ) {
+					$return = Hash::merge( $return, $this->enums() );
 					foreach( array_keys( $this->getCheckboxes() ) as $modelDetail ) {
 						$return = Hash::merge( $return, $this->{$modelDetail}->enums() );
 					}
@@ -1293,7 +1294,7 @@
 
 				$return = $this->getFilteredOptions( $return );
 
-				if( $params['alias'] !== 'Dsp' ) {
+				if( $params['alias'] !== 'Dsp' && isset( $return['Dsp'] ) ) {
 					$return[$params['alias']] = $return['Dsp'];
 					unset( $return['Dsp'] );
 				}
@@ -1319,7 +1320,9 @@
 				'Detaildifdisp' => 'difdisp'
 			);
 			foreach( $correspondances as $alias => $fieldName ) {
-				$return['Donnees'][$fieldName] =& $return[$alias][$fieldName];
+				if( isset( $return[$alias][$fieldName] ) && !empty( $return[$alias][$fieldName] ) ) {
+					$return['Donnees'][$fieldName] =& $return[$alias][$fieldName];
+				}
 			}
 
 			return $return;
