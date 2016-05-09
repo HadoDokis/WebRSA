@@ -20,21 +20,22 @@
 	class DatabaseTableBehavior extends ModelBehavior
 	{
 		/**
-		* Transforme les $querydata d'un appel "find all" en requête SQL,
-		* ce qui permet de faire des sous-requêtes moins dépendantes du SGBD.
-		*
-		* Les fields sont échappés.
-		*
-		* INFO: http://book.cakephp.org/view/74/Complex-Find-Conditions (Sub-queries)
-		*
-		* @param AppModel $model
-		* @param array $querydata
-		* @return string
-		*/
-
+		 * Transforme les $querydata d'un appel "find all" en requête SQL,
+		 * ce qui permet de faire des sous-requêtes moins dépendantes du SGBD.
+		 *
+		 * Les fields sont échappés.
+		 *
+		 * INFO: http://book.cakephp.org/view/74/Complex-Find-Conditions (Sub-queries)
+		 *
+		 * @param Model $model
+		 * @param array $querydata
+		 * @return string
+		 * @throws RuntimeException
+		 */
 		public function sq( Model $model, $querydata ) {
 			if( $model->useTable === false ) {
-				throw new Exception( "Cannot generate a subquery for model \"{$model->alias}\" since it does not use a table." );
+				$message = "Cannot generate a subquery for model \"{$model->alias}\" since it does not use a table.";
+				throw new RuntimeException( $message, 500 );
 				return array();
 			}
 
@@ -63,11 +64,12 @@
 		}
 
 		/**
-		* Merges a mixed set of string/array conditions
-		*
-		* @return array
-		*/
-
+		 * Merges a mixed set of string/array conditions
+		 *
+		 * @param mixed $query
+		 * @param mixed $assoc
+		 * @return array
+		 */
 		protected function _mergeConditions( $query, $assoc ) {
 			if( empty( $assoc ) ) {
 				return $query;
@@ -91,41 +93,52 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param Model $model
+		 * @param string $needleModelName
+		 * @return string
+		 */
 		protected function _whichHabtmModel( Model $model, $needleModelName ) {
 			foreach( $model->hasAndBelongsToMany as $habtmModel => $habtmAssoc ) {
 				if( $habtmAssoc['with'] == $needleModelName ) {
 					return $habtmModel;
 				}
 			}
+			return null;
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param Model $model
+		 * @param string $assoc
+		 * @param array $params
+		 * @return array
+		 * @throws RuntimeException
+		 */
 		public function join( Model $model, $assoc, $params = array(/* 'type' => 'INNER' */) ) {
 			// Is the assoc model really associated ?
 			if( !isset( $model->{$assoc} ) ) {
-				throw new Exception( "Unknown association \"{$assoc}\" for model \"{$model->alias}\"" );
+				$message = "Unknown association \"{$assoc}\" for model \"{$model->alias}\"";
+				throw new RuntimeException( $message, 500 );
 				return array();
 			}
 
 			if( $model->useTable === false ) {
-				throw new Exception( "Cannot generate a join from model \"{$model->alias}\" since it does not use a table." );
+				$message = "Cannot generate a join from model \"{$model->alias}\" since it does not use a table.";
+				throw new RuntimeException( $message, 500 );
 				return array();
 			}
 
 			if( $model->{$assoc}->useTable === false ) {
-				throw new Exception( "Cannot generate a join to model \"{$model->{$assoc}->alias}\" since it does not use a table." );
+				$message = "Cannot generate a join to model \"{$model->{$assoc}->alias}\" since it does not use a table.";
+				throw new RuntimeException( $message, 500 );
 				return array();
 			}
 
 			// Is the assoc model using the same DbConfig as the model's ?
 			if( $model->useDbConfig != $model->{$assoc}->useDbConfig ) {
-				throw new Exception( "Database configuration differs: \"{$model->alias}\" ({$model->useDbConfig}) and \"{$assoc}\" ({$model->{$assoc}->useDbConfig})" );
+				$message = "Database configuration differs: \"{$model->alias}\" ({$model->useDbConfig}) and \"{$assoc}\" ({$model->{$assoc}->useDbConfig})";
+				throw new RuntimeException( $message, 500 );
 				return array();
 			}
 
@@ -149,13 +162,6 @@
 						'className' => $habtmAssoc['with'],
 						'foreignKey' => $habtmAssoc['foreignKey'],
 						'conditions' => $habtmAssoc['conditions'],
-// 							'fields' => '',
-// 							'order' => '',
-// 							'limit' => '',
-// 							'offset' => '',
-// 							'exclusive' => '',
-// 							'finderQuery' => '',
-// 							'counterQuery' => '',
 						'association' => 'hasOne'
 					);
 
@@ -164,7 +170,8 @@
 			}
 
 			if( empty( $assocData ) ) {
-				throw new Exception( "Cannot generate a join from model \"{$model->alias}\" to model \"{$assoc}\"." );
+				$message = "Cannot generate a join from model \"{$model->alias}\" to model \"{$assoc}\".";
+				throw new RuntimeException( $message, 500 );
 				return array();
 			}
 
@@ -193,14 +200,17 @@
 		}
 
 		/**
-		* Retourne la liste des champs du modèle.
-		*
-		* @param AppModel $model
-		*/
-
+		 * Retourne la liste des champs du modèle.
+		 *
+		 * @param Model $model
+		 * @param boolean $virtualFields
+		 * @return array
+		 * @throws RuntimeException
+		 */
 		public function fields( Model $model, $virtualFields = false ) {
 			if( $model->useTable === false ) {
-				throw new Exception( "Cannot get fields for model \"{$model->alias}\" since it does not use a table." );
+				$message = "Cannot get fields for model \"{$model->alias}\" since it does not use a table.";
+				throw new RuntimeException( $message, 500 );
 				return array();
 			}
 
@@ -216,13 +226,10 @@
 		 * Retourne une sous-requête permettant de trouver le dernier enregistrement du modèle passé en
 		 * paramètres. L'alias du modèle dans la sous-requête est le nom de la table.
 		 *
-		 * @todo grep -nri "function sqDernier" app | grep -v "\.svn"
-		 * @todo grep -nri ">sqDerniereRgadr01" app | grep -v "\.svn"
-		 *
-		 * @param AppModel $model
+		 * @param Model $model
 		 * @param string $modelSubquery Le modèle sur lequel faire la sous-requête
 		 * @param string $sortField Le champ sur lequel faire le tri
-		 * @param boolean Autorise-ton les valeurs NULL (pour les left join)
+		 * @param boolean Autorise-t-on les valeurs NULL (pour les left join)
 		 * @return string
 		 */
 		public function sqLatest( Model $model, $modelSubquery, $sortField, $conditions = array(), $null = true ) {
