@@ -61,6 +61,7 @@
 				)
 			),
 			'Workflowscers93',
+			'WebrsaTableauxsuivispdvs93',
 			'WebrsaUsers',
 		);
 
@@ -338,7 +339,6 @@
 
 			$options = $this->WebrsaTableausuivipdv93->options(
 				array(
-					'user_type' => $type,
 					'tableau' => $tableau,
 					'structuresreferentes' => $this->InsertionsBeneficiaires->structuresreferentes(
 						array(
@@ -360,7 +360,9 @@
 					)
 				)
 			);
+			$options['Search']['user_id'] = $this->WebrsaTableauxsuivispdvs93->photographes();
 			$options['Search']['type'] = $this->Tableausuivipdv93->enum( 'type' );
+
 			$options = Hash::merge(
 				$options,
 				$this->Tableausuivipdv93->enums()
@@ -472,26 +474,6 @@
 		}
 
 		/**
-		 * Complète le querydata en s'assurant de bien limiter l'utilisateur à ce
-		 * à quoi il a droit.
-		 *
-		 * @param array $query
-		 * @param string $modelName
-		 * @return array
-		 */
-		protected function _completeQueryUtilisateur( array $query, $modelName ) {
-			$conditions = $this->_getConditionsUtilisateur();
-
-			foreach( array( 'communautesr_id', /*'structurereferente_id', */'referent_id' ) as $fieldName ) {
-				if( !empty( $conditions[$fieldName] ) ) {
-					$query['conditions']["{$modelName}.{$fieldName}"] = $conditions[$fieldName];
-				}
-			}
-
-			return $query;
-		}
-
-		/**
 		 * Formulaire de filtres pour le tableau de suivi 1 B3.
 		 */
 		public function tableau1b3() {
@@ -500,7 +482,7 @@
 			$this->_prepareFormData( $search );
 
 			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableau1b3( $search ) );
+				$this->set( 'results', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableau1b3( $search ) );
 			}
 		}
 
@@ -513,7 +495,7 @@
 			$this->_prepareFormData( $search );
 
 			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableau1b4( $search ) );
+				$this->set( 'results', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableau1b4( $search ) );
 			}
 		}
 
@@ -526,7 +508,7 @@
 			$this->_prepareFormData( $search );
 
 			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableau1b5( $search ) );
+				$this->set( 'results', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableau1b5( $search ) );
 			}
 		}
 
@@ -539,7 +521,7 @@
 			$this->_prepareFormData( $search );
 
 			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableau1b6( $search ) );
+				$this->set( 'results', $this->Tableausuivipdv93->WebrsaTableausuivipdv93->tableau1b6( $search ) );
 			}
 		}
 
@@ -575,6 +557,8 @@
 			if( empty( $tableausuivipdv93 ) ) {
 				throw new NotFoundException();
 			}
+
+			$this->WebrsaTableauxsuivispdvs93->checkAccess( $tableausuivipdv93 );
 
 			// Récupération des données du corpus
 			$query = array(
@@ -715,6 +699,8 @@
 				throw new NotFoundException();
 			}
 
+			$this->WebrsaTableauxsuivispdvs93->checkAccess( $tableausuivipdv93 );
+
 			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
 
 			if( $action === 'tableaud1' ) {
@@ -832,6 +818,14 @@
 
 				$query['conditions'][] = array( 'OR' => $or );
 
+				// Limitation des résultats en fonction de l'utilisateur connecté
+				$query['conditions'][] = array(
+					'OR' => array(
+						'Tableausuivipdv93.user_id IS NULL',
+						'Tableausuivipdv93.user_id' => $this->WebrsaTableauxsuivispdvs93->photographesIds()
+					)
+				);
+
 				// TODO: en paramètre de la recherche + version
 				if( !empty( $action ) ) {
 					$query['conditions']['Tableausuivipdv93.name'] = $action;
@@ -850,6 +844,7 @@
 		 *
 		 * @param string $action
 		 *
+		 * @throws Error403Exception
 		 * @throws NotFoundException
 		 */
 		public function view( $id ) {
@@ -865,6 +860,8 @@
 			if( empty( $tableausuivipdv93 ) ) {
 				throw new NotFoundException();
 			}
+
+			$this->WebrsaTableauxsuivispdvs93->checkAccess( $tableausuivipdv93 );
 
 			if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableaud1', 'tableaud2' ) ) ) {
 				$method = $tableausuivipdv93['Tableausuivipdv93']['name'].'Categories';
@@ -931,20 +928,21 @@
 		public function delete( $id ) {
 			$query = array(
 				'fields' => array(
-					'Tableausuivipdv93.id'
+					'Tableausuivipdv93.id',
+					'Tableausuivipdv93.user_id'
 				),
 				'conditions' => array(
 					'Tableausuivipdv93.id' => $id
 				)
 			);
 
-			$query = $this->_completeQueryUtilisateur( $query, 'Tableausuivipdv93' );
-
 			$record = $this->Tableausuivipdv93->find( 'first', $query );
 
 			if( empty( $record ) ) {
 				throw new NotFoundException();
 			}
+
+			$this->WebrsaTableauxsuivispdvs93->checkAccess( $record );
 
 			$this->Tableausuivipdv93->begin();
 
