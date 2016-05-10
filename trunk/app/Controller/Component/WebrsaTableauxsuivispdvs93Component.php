@@ -159,7 +159,8 @@
 		 * @throws Error403Exception
 		 */
 		public function checkAccess( array $tableausuivipdv93 ) {
-			$access = isset( $tableausuivipdv93['Tableausuivipdv93']['user_id'] )
+			$access = isset( $tableausuivipdv93['Tableausuivipdv93'] )
+				&& array_key_exists( 'user_id', $tableausuivipdv93['Tableausuivipdv93'] )
 				&& (
 					empty( $tableausuivipdv93['Tableausuivipdv93']['user_id'] )
 					|| in_array(
