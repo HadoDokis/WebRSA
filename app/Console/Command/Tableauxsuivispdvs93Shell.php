@@ -80,9 +80,6 @@
 			'historisation' => array(
 				'help' => 'Historisation automatique des tableaux de suivi PDV (commande par défaut)'
 			),
-			'test' => array(
-				'help' => 'Test d\'historisation des différents tableaux de suivi, avec toutes les combinaisons de filtres, sans enregistrement.'
-			),
 			'update' => array(
 				'help' => 'Mise à jour des résultats des anciens tableaux de suivi'
 			)
@@ -143,13 +140,6 @@
 				$search,
 				(array)Configure::read( $configureKey )
 			);
-		}
-
-		/**
-		 * Méthode principale, historisation des tableaux de suivi.
-		 */
-		public function main() {
-			return $this->historisation();
 		}
 
 		/**

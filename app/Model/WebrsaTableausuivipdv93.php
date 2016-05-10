@@ -45,7 +45,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Tableausuivipdv93' );
+		public $uses = array( 'Tableausuivipdv93', 'User' );
 
 		/**
 		 * Liste des filtres acceptés en fonction du tableau.
@@ -381,7 +381,6 @@
 		}
 
 		/**
-		 * FIXME: les dates, voir avec D1/D2
 		 *
 		 * @param array $search
 		 * @return array
@@ -1779,46 +1778,6 @@
 			$results['total'] = array_sum( array_values( $results ) );
 
 			return $results;
-		}
-
-		/**
-		 *
-		 * @deprecated
-		 *
-		 * @param array $search
-		 * @param string $operand
-		 * @return string
-		 */
-		protected function _conditionRendezvousPdv( array $search, $operand ) {
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				debug(__LINE__);
-				$conditionpdv = "AND ".$Dbo->conditions( array( 'structurereferente_id' => $pdv_id ), true, false );
-			}
-debug($conditionpdv);//FIXME
-			// S'assure-ton qu'il existe au moins un RDV individuel ?
-			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
-			if( $rdv_structurereferente ) {
-				return "{$operand} actionscandidats_personnes.personne_id IN (
-					SELECT DISTINCT personne_id FROM rendezvous
-					WHERE
-						-- avec un RDV honoré durant l'année N
-						EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-						-- Dont le type de RDV est individuel
-						AND rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-						AND ".$this->_conditionStatutRdv()."
-						-- dont la SR du référent de la fiche est la SR du RDV
-						AND referents.structurereferente_id = structurereferente_id
-						{$conditionpdv}
-				)";
-			}
-
-			return null;
 		}
 
 		/**
@@ -3261,7 +3220,6 @@ debug($conditionpdv);//FIXME
 
 			$query = $this->_completeQueryCorpus( $query );
 
-			// FIXME
 			foreach( $this->_categories1b3 as $categorie => $params ) {
 				if( $params['table'] === 'dsps' ) {
 					$a = "( \"Dsp\".{$params['column']} IS NOT NULL AND \"Dsp\".{$params['column']} IN ( '".implode( "', '", $params['values'] )."' ) )
@@ -3307,7 +3265,6 @@ debug($conditionpdv);//FIXME
 						'DspRev',
 						array(
 							'type' => 'LEFT OUTER',
-							// FIXME: <= moment du RDV ?
 							'DspRev.modified <=' => "{$conditions['annee']}-12-31"
 						)
 					)
@@ -3604,33 +3561,6 @@ debug($conditionpdv);//FIXME
 		}
 
 		/**
-		 * Retourne la liste des photographes des tableaux PDV.
-		 *
-		 * @fixme la liste des photographes contient des doublons
-		 *
-		 * @return array
-		 */
-		public function listePhotographes() {
-			$sq = $this->Tableausuivipdv93->sq( array( 'fields' => array( 'DISTINCT(user_id)' ) ) );
-
-			$list = $this->Tableausuivipdv93->Photographe->find(
-				'list',
-				array(
-					'fields' => array( 'Photographe.id', 'Photographe.nom_complet' ),
-					'contain' => false,
-					'order' => array( 'Photographe.nom_complet' ),
-					'conditions' => array(
-						"Photographe.id IN ( {$sq} )"
-					)
-				)
-			);
-
-			$list = Hash::merge( array( 'NULL' => 'Photographie automatique' ), $list );
-
-			return $list;
-		}
-
-		/**
 		 * Retourne la liste des référents des PDV pour lesquels les tableaux de
 		 * PDV doivent être calculés.
 		 *
@@ -3697,7 +3627,6 @@ debug($conditionpdv);//FIXME
 		 */
 		public function options( array $params = array() ) {
 			$params += array(
-				'user_type' => null,
 				'tableau' => null,
 				'structuresreferentes' => null,
 				'referents' => null
@@ -3711,7 +3640,6 @@ debug($conditionpdv);//FIXME
 					'communautesr_id' => $this->Tableausuivipdv93->Communautesr->find( 'list' ),
 					'structurereferente_id' => $params['structuresreferentes'],
 					'referent_id' => $params['referents'],
-					'user_id' => $this->listePhotographes(),
 					'tableau' => $this->tableaux,
 					'typethematiquefp93_id' => ClassRegistry::init( 'Thematiquefp93' )->enum( 'type' ),
 					'mode' => array( 'fse' => 'FSE', 'statistiques' => 'Statistiques' )
