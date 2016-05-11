@@ -412,6 +412,25 @@
 			);
 			$sqDateChangementPosition = $this->Historiquepositioncui66->sq( $sqDateChangementQuery );
 
+			$sqDerniereSuspension = $this->Suspensioncui66->sq(
+				array(
+					'alias' => 'suspensionscuis66',
+					'fields' => 'suspensionscuis66.id',
+					'conditions' => array(
+						'suspensionscuis66.cui66_id = Cui66.id'
+					),
+					'conditions' => array(
+						'suspensionscuis66.datedebut >= NOW()',
+						'suspensionscuis66.datefin <= NOW()',
+					),
+					'order' => array(
+						'suspensionscuis66.datefin' => 'DESC',
+						'suspensionscuis66.created' => 'DESC',
+					),
+					'limit' => 1
+				)
+			);
+
 			$query = array(
 				'fields' => array_merge(
 					$this->Cui->fields(),
@@ -431,9 +450,9 @@
 				'joins' => array(
 					$this->Cui->join( 'Cui66', array( 'type' => 'INNER' ) ),
 					$this->Cui->join( 'Partenairecui' ),
-					$this->Cui->join( 'Emailcui', array( 'conditions' => "Emailcui.id IN ({$sqRelanceMail})" ) ),
+					$this->Cui->join( 'Emailcui', array( 'conditions' => array("Emailcui.id IN ({$sqRelanceMail})")) ),
 					$this->join( 'Decisioncui66' ),
-					$this->join( 'Suspensioncui66' ),
+					$this->join( 'Suspensioncui66', array( 'conditions' => array("Suspensioncui66.id IN ({$sqDerniereSuspension})")) ),
 					$this->join( 'Rupturecui66' ),
 					$this->join( 'Historiquepositioncui66', array( 'conditions' => "Historiquepositioncui66.id IN ({$sqDateChangementPosition})") ),
 				),
