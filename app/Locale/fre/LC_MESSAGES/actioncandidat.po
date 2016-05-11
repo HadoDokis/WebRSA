@@ -159,7 +159,7 @@ msgstr "Email partenaire/prestataire"
 # ------------------------------------------------------------------------------
 
 msgid "Actioncandidat.naturecer"
-msgstr "Nature du CER"
+msgstr "Nature des Actions Dress"
 
 msgid "ENUM::NATURECER::01"
 msgstr "activités, stages ou formations destinés à acquérir des compétences professionnelles"
