@@ -1602,6 +1602,8 @@
 		/**
 		 * ...
 		 *
+		 * @see Configure Statistiquesministerielles.indicateurs_natures_contrats.optim
+		 *
 		 * @param array $search
 		 * @return array
 		 */
@@ -1662,19 +1664,77 @@
 
 			$conditionsNatures = $this->_conditionsNatures();
 
-			foreach( $organismes as $organisme => $conditionsOrganisme ) {
-				foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
-					if( !empty( $conditionsNature ) ) {
-						$query = $base;
-						$query['conditions'][] = $conditionsOrganisme;
-						$query['conditions'][] = $conditionsNature;
+			$optim = Configure::read( 'Statistiquesministerielles.indicateurs_natures_contrats.optim' );
+			if( $optim === false ) {
+				foreach( $organismes as $organisme => $conditionsOrganisme ) {
+					foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
+						if( !empty( $conditionsNature ) ) {
+							$query = $base;
+							$query['conditions'][] = $conditionsOrganisme;
+							$query['conditions'][] = $conditionsNature;
 
-						$results['Indicateurnature'][$organisme][$nature_cer] = Hash::get( $Dossier->find( 'all', $query ), '0.Contratinsertion.count' );
-					}
-					else {
-						$results['Indicateurnature'][$organisme][$nature_cer] = null;
+							$results['Indicateurnature'][$organisme][$nature_cer] = Hash::get( $Dossier->find( 'all', $query ), '0.Contratinsertion.count' );
+						}
+						else {
+							$results['Indicateurnature'][$organisme][$nature_cer] = null;
+						}
 					}
 				}
+			}
+			else {
+				$Dbo = $Dossier->getDataSource();
+				$casesOrganisme = '';
+				$casesNatures = '';
+
+				$query = $base;
+				$query['group'] = array();
+
+				foreach( $organismes as $organisme => $conditionsOrganisme ) {
+					$casesOrganisme .= " WHEN ".$Dbo->conditions( $conditionsOrganisme, true, false, $Dossier )." THEN '".Sanitize::clean( $organisme, array( 'encode' => false ) )."'";
+				}
+				$casesOrganisme = "( CASE {$casesOrganisme} ELSE NULL END )";
+
+				$query['fields'][] = "{$casesOrganisme} AS \"Contratinsertion__organisme\"";
+				$query['group'][] = $casesOrganisme;
+				$query['conditions'][] = "{$casesOrganisme} IS NOT NULL";
+
+				foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
+					if( !empty( $conditionsNature ) ) {
+						$casesNatures .= " WHEN ".$Dbo->conditions( $conditionsNature, true, false, $Dossier )." THEN '".Sanitize::clean( $nature_cer, array( 'encode' => false ) )."'";
+					}
+				}
+
+				foreach( $organismes as $organisme => $conditionsOrganisme ) {
+					foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
+						if( !empty( $conditionsNature ) ) {
+							$results[$organisme][$nature_cer] = 0;
+						}
+						else {
+							$results[$organisme][$nature_cer] = null;
+						}
+					}
+				}
+
+				$casesNatures = "( CASE {$casesNatures} ELSE NULL END )";
+
+				$query['fields'][] = "{$casesNatures} AS \"Contratinsertion__nature_cer\"";
+				$query['group'][] = $casesNatures;
+				$query['conditions'][] = "{$casesNatures} IS NOT NULL";
+
+				if( (int)Configure::read( 'Cg.departement' ) === 93 ) {
+					$query['group'][] = 'Cer93Sujetcer93.sujetcer93_id';
+					$query['group'][] = 'Cer93Sujetcer93.soussujetcer93_id';
+					$query['group'][] = 'Cer93Sujetcer93.valeurparsoussujetcer93_id';
+				}
+
+				$entries = $Dossier->find( 'all', $query );
+				foreach( $entries as $entry ) {
+					$results[$entry['Contratinsertion']['organisme']][$entry['Contratinsertion']['nature_cer']] += $entry['Contratinsertion']['count'];
+				}
+				foreach( array_keys( $results ) as $organisme ) {
+					ksort( $results[$organisme] );
+				}
+				$results = array( 'Indicateurnature' => $results );
 			}
 
 			return $results;
