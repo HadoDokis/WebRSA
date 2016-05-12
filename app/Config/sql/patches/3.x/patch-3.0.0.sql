@@ -214,7 +214,7 @@ DROP FUNCTION public.migration_traitementspcgs66_situationpdo();
 
 SELECT add_missing_table_field ( 'public', 'actionscandidats', 'naturecer', 'VARCHAR(2) DEFAULT NULL' );
 SELECT alter_table_drop_constraint_if_exists( 'public', 'actionscandidats', 'actionscandidats_naturecer_in_list_chk' );
-ALTER TABLE actionscandidats ADD CONSTRAINT actionscandidats_naturecer_in_list_chk CHECK ( cakephp_validate_in_list( naturecer, ARRAY[ '01','02','03','04','05','06','07','08','09','10','11','12','13','14','15' ] ) );
+ALTER TABLE actionscandidats ADD CONSTRAINT actionscandidats_naturecer_in_list_chk CHECK ( cakephp_validate_in_list( naturecer, ARRAY[ '01','02','03','04','05','06','07','08','09','10','11','12','13','14' ] ) );
 COMMENT ON COLUMN actionscandidats.naturecer IS 'Nature des CER, utilisé dans le tableau "Indicateurs de natures des actions des contrats" des statistiques ministérielles';
 
 -- *****************************************************************************
