@@ -1692,11 +1692,18 @@
 				foreach( $organismes as $organisme => $conditionsOrganisme ) {
 					$casesOrganisme .= " WHEN ".$Dbo->conditions( $conditionsOrganisme, true, false, $Dossier )." THEN '".Sanitize::clean( $organisme, array( 'encode' => false ) )."'";
 				}
-				$casesOrganisme = "( CASE {$casesOrganisme} ELSE NULL END )";
+				if( !empty( $casesOrganisme ) ) {
+					$casesOrganisme = "( CASE {$casesOrganisme} ELSE NULL END )";
+				}
+				else {
+					$casesOrganisme = "( NULL )";
+				}
 
 				$query['fields'][] = "{$casesOrganisme} AS \"Contratinsertion__organisme\"";
-				$query['group'][] = $casesOrganisme;
 				$query['conditions'][] = "{$casesOrganisme} IS NOT NULL";
+				if( $casesOrganisme !== "( NULL )" ) {
+					$query['group'][] = $casesOrganisme;
+				}
 
 				foreach( $conditionsNatures as $nature_cer => $conditionsNature ) {
 					if( !empty( $conditionsNature ) ) {
@@ -1715,11 +1722,18 @@
 					}
 				}
 
-				$casesNatures = "( CASE {$casesNatures} ELSE NULL END )";
+				if( !empty( $casesNatures ) ) {
+					$casesNatures = "( CASE {$casesNatures} ELSE NULL END )";
+				}
+				else {
+					$casesNatures = "( NULL )";
+				}
 
 				$query['fields'][] = "{$casesNatures} AS \"Contratinsertion__nature_cer\"";
-				$query['group'][] = $casesNatures;
 				$query['conditions'][] = "{$casesNatures} IS NOT NULL";
+				if( $casesNatures !== "( NULL )" ) {
+					$query['group'][] = $casesNatures;
+				}
 
 				if( (int)Configure::read( 'Cg.departement' ) === 93 ) {
 					$query['group'][] = 'Cer93Sujetcer93.sujetcer93_id';
