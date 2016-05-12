@@ -139,17 +139,16 @@
 			'02' => 'orientation vers le service public de l\'emploi, parcours de recherche d\'emploi',
 			'03' => 'mesures d\'insertion par l\'activité économique (IAE)',
 			'04' => 'aide à la réalisation d’un projet de création, de reprise ou de poursuite d’une activité non salariée ',
-			'05' => 'emploi aidé (hors CIA) (*)',
-			'06' => 'contrat d\'insertion par l\'activité (CIA) (*)',
-			'07' => 'emploi non aidé',
-			'08' => 'actions facilitant le lien social (développement de l\'autonomie sociale, activités collectives, ...)',
-			'09' => 'actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport...)',
-			'10' => 'actions visant l\'accès à un logement, relogement ou à l\'amélioration de l\'habitat',
-			'11' => 'actions facilitant l\'accès aux soins',
-			'12' => 'actions visant l\'autonomie financière (constitution d\'un dossier de surendettement,...)',
-			'13' => 'actions visant la famille et la parentalité (soutien familial, garde d\'enfant, ...)',
-			'14' => 'lutte contre l\'illettrisme ; acquisition des savoirs de base',
-			'15' => 'autres actions'
+			'05' => 'emploi aidé',
+			'06' => 'emploi non aidé',
+			'07' => 'actions facilitant le lien social (développement de l\'autonomie sociale, activités collectives, ...)',
+			'08' => 'actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport...)',
+			'09' => 'actions visant l\'accès à un logement, relogement ou à l\'amélioration de l\'habitat',
+			'10' => 'actions facilitant l\'accès aux soins',
+			'11' => 'actions visant l\'autonomie financière (constitution d\'un dossier de surendettement,...)',
+			'12' => 'actions visant la famille et la parentalité (soutien familial, garde d\'enfant, ...)',
+			'13' => 'lutte contre l\'illettrisme ; acquisition des savoirs de base',
+			'14' => 'autres actions'
 		);
 
 		/**

@@ -1576,14 +1576,12 @@
 						),
 					)
 				),
-				// emploi aidé (hors CIA) (*)
+				// emploi aidé
 				'05' => false,
-				// contrat d\'insertion par l'activité (CIA) (*)
-				'06' => false,
 				// emploi non aidé
-				'07' => false,
+				'06' => false,
 				// actions facilitant le lien social (développement de l\'autonomie sociale, activités collectives, ...)
-				'08' => array(
+				'07' => array(
 					'OR' => array(
 						array(
 							'Cer93Sujetcer93.sujetcer93_id' => 2, // La formation
@@ -1603,37 +1601,37 @@
 					)
 				),
 				// actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport...)
-				'09' => array(
+				'08' => array(
 					'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
 					'Cer93Sujetcer93.soussujetcer93_id' => 10, // Accés aux droits
 					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => 55 // Accés à la mobilité
 				),
 				// actions visant l\'accès à un logement, relogement ou à l\'amélioration de l\'habitat
-				'10' => array(
+				'09' => array(
 					'Cer93Sujetcer93.sujetcer93_id' => 5, // Le Logement
 					'Cer93Sujetcer93.soussujetcer93_id' => array( 22, 18, 19, 20, 21 ), // ...
 				),
 				// actions facilitant l\'accès aux soins
-				'11' => array(
+				'10' => array(
 					'Cer93Sujetcer93.sujetcer93_id' => 4, // La santé
 					'Cer93Sujetcer93.soussujetcer93_id' => array( 15, 14, 17, 11, 12, 16 ), // ...
 				),
 				// actions visant l\'autonomie financière (constitution d\'un dossier de surendettement,...)
-				'12' => array(
+				'11' => array(
 					'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
 					'Cer93Sujetcer93.soussujetcer93_id' => 8, // actions liées à la resolution de difficultés financières
 					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 47, 49, 48, 45, 46, 61 ) // ...
 				),
 				// actions visant la famille et la parentalité (soutien familial, garde d\'enfant, ...)
-				'13' => array(
+				'12' => array(
 					'Cer93Sujetcer93.sujetcer93_id' => 3, // L'Autonomie sociale
 					'Cer93Sujetcer93.soussujetcer93_id' => 9, // actions liées à la resolution de difficultés en lien avec la parentalité
 					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 52, 50, 53, 51 ) // ...
 				),
 				// lutte contre l\'illettrisme ; acquisition des savoirs de base
-				'14' => false,
+				'13' => false,
 				// autres actions
-				'15' => array(
+				'14' => array(
 					'Cer93Sujetcer93.sujetcer93_id' => 1, // L'Emploi
 					'Cer93Sujetcer93.soussujetcer93_id' => 5, // Prescription vers une action :
 					'Cer93Sujetcer93.valeurparsoussujetcer93_id' => array( 33, 31 ), // ...
