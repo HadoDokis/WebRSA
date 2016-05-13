@@ -15,7 +15,7 @@
 	 *
 	 * @package app.Utility
 	 */
-	class WebrsaAccessDsp extends WebrsaAbstractAccess
+	class WebrsaAccessDsps extends WebrsaAbstractAccess
 	{
 		/**
 		 * Paramètres par défaut
@@ -104,10 +104,18 @@
 		 */
 		public static function actions( array $params = array() ) {
 			$params = self::params( $params );
-			$result = array('view', 'view_revs', 'view_diff', 'edit', 'filelink');
+			$result = self::normalize_actions(
+				array(
+					'view', 
+					'view_revs', 
+					'view_diff', 
+					'edit', 
+					'filelink'
+				)
+			);
 
 			if ($params['departement'] !== 66) {
-				$result[] = 'revertTo';
+				$result = self::merge_actions($result, array('revertTo'));
 			}
 			
 			return $result;

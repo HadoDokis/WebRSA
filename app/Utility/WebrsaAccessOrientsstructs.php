@@ -15,7 +15,7 @@
 	 *
 	 * @package app.Utility
 	 */
-	class WebrsaAccessOrientstruct extends WebrsaAbstractAccess
+	class WebrsaAccessOrientsstructs extends WebrsaAbstractAccess
 	{
 		/**
 		 * Paramètres par défaut
@@ -125,10 +125,17 @@
 		 */
 		public static function actions(array $params = array()) {
 			$params = self::params($params);
-			$result = array('add', 'edit', 'impression', 'delete');
+			$result = self::normalize_actions(
+				array(
+					'add' => array('ajout_possible' => true), 
+					'edit' => array('ajout_possible' => true), 
+					'impression', 
+					'delete' => array('reorientationseps' => true)
+				)
+			);
 
 			if ($params['departement'] === 66) {
-				$result[] = 'impression_changement_referent';
+				$result = self::merge_actions($result, array('impression_changement_referent'));
 			}
 
 			return $result;

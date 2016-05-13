@@ -321,6 +321,13 @@ CREATE TABLE actionroles (
 );
 CREATE UNIQUE INDEX actionroles_role_name_unique ON actionroles (role_id, name);
 
+
+--------------------------------------------------------------------------------
+-- ACO
+--------------------------------------------------------------------------------
+
+UPDATE acos SET alias = 'Contratsinsertion:reconduction_cer_plus_55_ans' WHERE alias = 'Contratsinsertion:reconductionCERPlus55Ans';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

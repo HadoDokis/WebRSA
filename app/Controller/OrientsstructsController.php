@@ -9,7 +9,7 @@
 	 */
 	App::uses('AppController', 'Controller');
 	App::uses( 'DepartementUtility', 'Utility' );
-	App::uses( 'WebrsaAccessOrientstruct', 'Utility' );
+	App::uses( 'WebrsaAccessOrientsstructs', 'Utility' );
 
 	/**
 	 * La classe OrientsstructsController ...
@@ -394,7 +394,7 @@
 			$actions[$url] = array(
 				'domain' => $this->request->params['controller'],
 				'msgid' => $msgid,
-				'enabled' => WebrsaAccessOrientstruct::check('add', $records, $params)
+				'enabled' => WebrsaAccessOrientsstructs::check($this->name, 'add', $records, $params)
 					&& WebrsaPermissions::checkDossier($controller, 'add', $params['dossier_menu'])
 			);
 
@@ -471,7 +471,7 @@
 				$this->WebrsaOrientstruct->getIndexQuery($personne_id)
 			);
 			$orientsstructs = $this->WebrsaOrientstruct->rangOrientationIndexOptions(
-				WebrsaAccessOrientstruct::accesses($this->Orientstruct->find('all', $query), $params)
+				WebrsaAccessOrientsstructs::accesses($this->Orientstruct->find('all', $query), $params)
 			);
 
 			// Options
@@ -564,7 +564,7 @@
 				$msgstr = 'Impossible de modifier cette orientation.';
 			}
 			
-			if (!WebrsaAccessOrientstruct::check($this->action, $record, compact('ajout_possible'))) {
+			if (!WebrsaAccessOrientsstructs::check($this->name, $this->action, $record, compact('ajout_possible'))) {
 				$this->Session->setFlash($msgstr, 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -690,7 +690,7 @@
 			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
 			$redirectUrl = array('action' => 'index', $personne_id);
 			
-			if (!WebrsaAccessOrientstruct::check($this->action, current($record))) {
+			if (!WebrsaAccessOrientsstructs::check($this->action, current($record))) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -730,7 +730,7 @@
 			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
 			$redirectUrl = array('action' => 'index', $personne_id);
 			
-			if (!WebrsaAccessOrientstruct::check($this->action, current($record))) {
+			if (!WebrsaAccessOrientsstructs::check($this->action, current($record))) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -772,7 +772,7 @@
 			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
 			$redirectUrl = array('action' => 'index', $personne_id);
 			
-			if (!WebrsaAccessOrientstruct::check($this->action, current($record))) {
+			if (!WebrsaAccessOrientsstructs::check($this->action, current($record))) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}

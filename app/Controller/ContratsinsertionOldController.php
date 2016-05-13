@@ -9,21 +9,19 @@
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
 
-App::uses('WebrsaAccessContratsinsertion', 'Utility');
-App::uses('WebrsaPermissions', 'Utility');
-
 /**
  * La classe ContratsinsertionController permet la gestion des contrats d'insertion au niveau du dossier
  * de l'allocataire.
  *
  * @package app.Controller
+ * @deprecated since version 3.1
  */
-class ContratsinsertionController extends AppController
+class ContratsinsertionOldController extends AppController
 {
 
-    public $name = 'Contratsinsertion';
+    public $name = 'ContratsinsertionOld';
 
-    public $uses = array('Contratinsertion', 'Option', 'WebrsaContratinsertion');
+    public $uses = array('Contratinsertion', 'Option');
 
     public $helpers = array(
 		'Cake1xLegacy.Ajax',
@@ -56,8 +54,14 @@ class ContratsinsertionController extends AppController
 	);
 
     public $commeDroit = array(
+        'index' => 'Contratsinsertion:index',
         'view' => 'Contratsinsertion:index',
         'add' => 'Contratsinsertion:edit',
+        'valider' => 'Contratsinsertion:valider',
+        'cancel' => 'Contratsinsertion:cancel',
+        'delete' => 'Contratsinsertion:delete',
+        'impression' => 'Contratsinsertion:impression',
+        'add' => 'Contratsinsertion:add',
 		'search' => 'Criteresci:index',
 		'exportcsv' => 'Criteresci:exportcsv',
 		'cohorte_cersimpleavalider' => 'Cohortesci:nouveauxsimple',
@@ -116,10 +120,8 @@ class ContratsinsertionController extends AppController
      * @return void
      */
     protected function _setOptions() {
-		$options = array_merge(
-			$this->Contratinsertion->enums(),
-			$this->Contratinsertion->Personne->Dossierep->Passagecommissionep->enums()
-		);
+        $options = $this->Contratinsertion->enums();
+
 		$this->set('duree_engag', $this->Option->duree_engag());
 
         if (in_array($this->action, array('index', 'add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier'))) {
@@ -216,6 +218,52 @@ class ContratsinsertionController extends AppController
         }
         $this->render('ajaxaction', 'ajax');
     }
+
+    /**
+     *
+     * @param type $typeorient_id
+     * @return type
+     */
+//		protected function _libelleTypeorientNiv0( $typeorient_id ) {
+//			$typeorient_niv1_id = $this->Contratinsertion->Personne->Orientstruct->Typeorient->getIdLevel0( $typeorient_id );
+//
+//			$typeOrientation = $this->Contratinsertion->Personne->Orientstruct->Typeorient->find(
+//				'first',
+//				array(
+//					'fields' => array( 'Typeorient.lib_type_orient' ),
+//					'recursive' => -1,
+//					'conditions' => array(
+//						'Typeorient.id' => $typeorient_niv1_id
+//					)
+//				)
+//			);
+//
+//			return Set::classicExtract( $typeOrientation, 'Typeorient.lib_type_orient' );
+//		}
+
+    /**
+     *
+     * @param type $structurereferente_id
+     * @return type
+     */
+//		protected function _referentStruct( $structurereferente_id ) {
+//			$referents = $this->Contratinsertion->Structurereferente->Referent->find(
+//				'all',
+//				array(
+//					'recursive' => -1,
+//					'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ),
+//					'conditions' => array( 'structurereferente_id' => $structurereferente_id )
+//				)
+//			);
+//
+//			if( !empty( $referents ) ) {
+//				$ids = Set::extract( $referents, '/Referent/id' );
+//				$values = Set::format( $referents, '{0} {1}', array( '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+//				$referents = array_combine( $ids, $values );
+//			}
+//
+//			return $referents;
+//		}
 
     /**
      * Ajax pour les coordonnées du référent (CG 58, 66, 93).
@@ -342,7 +390,6 @@ class ContratsinsertionController extends AppController
 
         $personne_id = $contratinsertion['Contratinsertion']['personne_id'];
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
-		$this->_checkAccess($id);
 
         $dossier_id = $this->Contratinsertion->Personne->dossierId($personne_id);
         $this->assert(!empty($dossier_id), 'invalidParameter');
@@ -395,14 +442,11 @@ class ContratsinsertionController extends AppController
     /**
      * (CG 58, 93)
      *
-	 * @deprecated since version 3.1
-	 * @see WebrsaContratinsertion::qdThematiqueEp
      * @param type $modele
      * @param type $personne_id
      * @return type
      */
     protected function _qdThematiqueEp($modele, $personne_id) {
-		trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
         return array(
             'fields' => array(
                 'Dossierep.id',
@@ -462,164 +506,229 @@ class ContratsinsertionController extends AppController
      * @param integer $personne_id L'id technique de la personne.
      */
     public function index($personne_id = null) {
-		$departement = (int)Configure::read('Cg.departement');
-		$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id));
-		$this->_setEntriesAncienDossier($personne_id, 'Contratinsertion');
-		
-		/**
-		 * Informations nécéssaires pour l'affichage des messages
-		 */
-		$personne = $this->Contratinsertion->Personne->find(
-			'first', array(
-				'fields' => array(
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					$this->Contratinsertion->Personne->sqVirtualField('age'),
-					'PersonneReferent.id',
-				),
-				'joins' => array(
-					$this->Contratinsertion->Personne->join(
-						'PersonneReferent', array(
-							'conditions' => array('PersonneReferent.dfdesignation IS NULL')
-						)
-					),
-				),
-				'contain' => false,
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				)
-			)
-		);
-		$this->request->data = $personne;
-		
-		/**
-		 * Messages liés a l'impossibilitée d'ajouter un CER
-		 */
-		$controle = $this->WebrsaContratinsertion->haveNeededDatas($personne_id);
-		$messages = array();
-		if ($controle['haveOrient'] === false) {
-			$message = "Cette personne ne possède pas d'orientation. Impossible de créer un CER.";
-			$messages[$message] = 'error';
-		}
-		if (!$controle['needReorientationsociale'] && $controle['haveOrientEmploi']) {
-			$message = "Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.";
-			$messages[$message] = 'error';
-		}
-		if ($controle['haveCui']) {
-			$message = "Cette personne possède actuellement un CUI en cours. Impossible de créer un CER.";
-			$messages[$message] = 'error';
-		}
-		if ($controle['haveDossiercovnonfinal']) {
-			$message = "Cette personne possède un contrat d'engagement réciproque en attente de passage en COV.";
-			$messages[$message] = 'notice';
-		}
-		if ($controle['haveDemandemaintiencovnonfinal']) {
-			$message = "Cette personne est en cours de passage en COV pour la thématique &laquo; "
-				. "maintien en social &raquo;. Impossible de créer un CER.";
-			$messages[$message] = 'error';
-		}
-		if ($controle['needReorientationsociale']) {
-			$message = "Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.<br /> "
-				. "Une réorientation sociale doit être sollicitée pour pouvoir enregistrer un CER.";
-			$messages[$message] = 'error';
-		}
-		if ($departement === 58 && !$controle['isSoumisdroitetdevoir']) {
-			$message = "Cette personne n'est pas soumise à droit et devoir. Impossible de créer un CER.";
-			$messages[$message] = 'error';
-		}
+        // On s'assure que la personne existe
+        $nbrPersonnes = $this->Contratinsertion->Personne->find(
+                'count', array(
+            'conditions' => array(
+                'Personne.id' => $personne_id
+            ),
+            'recursive' => -1
+                )
+        );
+        $this->assert(( $nbrPersonnes == 1), 'invalidParameter');
 
-		// Contrôles supplémentaire utile pour un CG en particulier
-		if ($departement === 58) {
-			$querydata = $this->WebrsaContratinsertion->qdThematiqueEp('Sanctionep58', $personne_id);
-            $querydata['fields'] = Set::merge($querydata['fields'], 
-				array(
-					'Sanctionep58.id',
-					'Sanctionep58.contratinsertion_id',
-					'Sanctionep58.created',
-					'Sanctionep58.modified',
-				)
+        $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
+
+		$this->_setEntriesAncienDossier( $personne_id, 'Contratinsertion' );
+
+        // Pour les CGs 58  et 66, on veut avoir assez bien d'informations en plus
+        if (Configure::read('Cg.departement') != 93) {
+            // Recherche de la dernière orientation en cours pour l'allocataire
+            // Si aucun alors message d'erreur signalant la présence d'une orientation en emploi (CG 58 et 66)
+            $orientstruct = $this->Contratinsertion->Personne->Orientstruct->find(
+                    'count', array(
+                'conditions' => array(
+                    'Orientstruct.personne_id' => $personne_id,
+                    'Orientstruct.statut_orient' => 'Orienté',
+                ),
+                'recursive' => -1
+                    )
             );
-			$querydata = $this->WebrsaContratinsertion->completeVirtualFieldsForAccess($querydata);
+            $this->set(compact('orientstruct'));
 
-			// Note : completeVirtualFieldsForAccess fait la jointure sur Dossierep
-			$querydata = WebrsaModelUtility::unsetJoin('Dossierep', $querydata);
+            $conditionsTypeorient = array();
+            $blockCumulCER66 = false;
+            if (Configure::read('Cg.departement') == 66) {
+                $this->Contratinsertion->Personne->id = $personne_id;
+                $agePersonne = $this->Contratinsertion->Personne->field('age');
+                // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs
+                // dépasse 24 mois et que l'allocataire a moins de 55ans
+                if ($agePersonne < Configure::read('Tacitereconduction.limiteAge')) {
+                    if ($this->Contratinsertion->limiteCumulDureeCER($personne_id) > 24) {
+                        $blockCumulCER66 = true;
+                    }
+                }
+                $this->set('blockCumulCER66', $blockCumulCER66);
 
-            $sanctionseps58 = WebrsaAccessContratsinsertion::accesses(
-				$this->Contratinsertion->Signalementep93->Dossierep->find('all', $querydata), $controle
-			);
-			$this->set('sanctionseps58', $sanctionseps58);
 
-			$controle['erreursCandidatePassage'] = $this->Contratinsertion
-				->Sanctionep58->Dossierep->getErreursCandidatePassage($personne_id)
-			;
-			$controle['haveSanctionep'] = !empty($sanctionseps58);
-		}
-		
-		/**
-		 * Contrôle d'accès
-		 */
-		$querydata = Hash::merge(
-			$this->WebrsaContratinsertion->completeVirtualFieldsForAccess($this->Contratinsertion->qdIndex($personne_id)),
-			array(
-				'fields' => array(
-					'(SELECT COUNT(*) FROM fichiersmodules AS a WHERE a.modele = \'Contratinsertion\' AND a.fk_value = "Contratinsertion"."id") AS "Fichiermodule__count"',
-					'Contratinsertion.personne_id'
-				)
-			)
-		);
-		$querydata['contain'] = false;
-		
-		$actionsParams = WebrsaAccessContratsinsertion::getParamsList();
-		$paramsAccess = $this->WebrsaContratinsertion->getParamsForAccess($personne_id, $actionsParams);
-		$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
-		
-		$contratsinsertions = WebrsaAccessContratsinsertion::accesses(
-			$this->Contratinsertion->find('all', $querydata), $paramsAccess
-		);
-		$options = array_merge(
-			$this->Contratinsertion->enums(),
-			$this->Contratinsertion->Personne->Dossierep->Passagecommissionep->enums()
-		);
-		$this->set('options', $options);
+                $typeOrientPrincipaleEmploiId = Configure::read('Orientstruct.typeorientprincipale.Emploi');
+                if (is_array($typeOrientPrincipaleEmploiId) && isset($typeOrientPrincipaleEmploiId[0])) {
+                    $typeOrientPrincipaleEmploiId = $typeOrientPrincipaleEmploiId[0];
+                } else {
+                    trigger_error(__('Le type orientation principale Emploi n\'est pas bien défini.'), E_USER_WARNING);
+                }
 
-		/**
-		 * Spécifique aux Départements
-		 */
-		if ($departement === 66) {
-			if (Hash::get($personne, 'Personne.age') < (int)Configure::read('Tacitereconduction.limiteAge') 
-				&& $this->Contratinsertion->limiteCumulDureeCER($personne_id) > 24
-			) {
-				$message = "Cet allocataire dépasse les 24 mois de contractualisation "
-					. "dans une orientation SOCIALE. Vous devez donc proposer un bilan pour passage en EPL.";
-				$messages[$message] = 'error';
-			}
-			if (!Hash::get($personne, 'PersonneReferent.id')) {
-				$message = "Aucun référent n'est lié au parcours de cette personne.";
-				$messages[$message] = 'error';
-			}
-			if (!Hash::get($contratsinsertions, '0.Contratinsertion.id')) {
-				$message = "Cette personne ne possède pas encore de CER.";
-				$messages[$message] = 'notice';
-			}
-			
-			foreach ($contratsinsertions as $key => $contratinsertion) {
-				$positioncer = Hash::get($contratinsertion, 'Contratinsertion.positioncer');
-				
-				// Ajoute à la position traduite la mention "le <date>"
-				if (in_array($positioncer, array('nonvalid', 'encours'))
-					&& $datenotif = Hash::get($contratinsertion, 'Contratinsertion.datenotification')
-				) {
-					$contratsinsertions[$key]['Contratinsertion']['positioncer'] = Hash::get(
-						Hash::get($options, 'Contratinsertion.positioncer'),
-						$positioncer
-					).' le '.date_short($datenotif);
-				}
-			}
-		}
-		
-		$this->set(compact('personne_id', 'contratsinsertions', 'messages', 'dossierMenu', 'ajoutPossible'));
-		$this->view = Configure::read('nom_form_ci_cg') ? 'index_'.Configure::read('nom_form_ci_cg') : 'index';
+                $conditionsTypeorient = array('Typeorient.parentid' => $typeOrientPrincipaleEmploiId);
+
+                $cuiEncours = $this->Contratinsertion->Personne->Cui->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Cui.personne_id' => $personne_id,
+							'NOT' => array(
+								'Cui66.etatdossiercui66' => array( 'perime', 'rupturecontrat', 'decisionsanssuite', 'nonvalide', 'annule' )
+							)
+						),
+						'contain' => false,
+						'joins' => array(
+							$this->Contratinsertion->Personne->Cui->join( 'Cui66' )
+						),
+						'recursive' => -1
+					)
+                );
+                $this->set(compact('cuiEncours'));
+            } else {
+                $typeOrientPrincipaleEmploiId = Configure::read('Typeorient.emploi_id');
+                if (empty($typeOrientPrincipaleEmploiId)) {
+                    trigger_error(__('Le type orientation principale Emploi n\'est pas bien défini.'), E_USER_WARNING);
+                }
+
+                $conditionsTypeorient = array('Typeorient.id' => $typeOrientPrincipaleEmploiId);
+            }
+
+            $orientstructEmploi = $this->Contratinsertion->Personne->Orientstruct->find(
+                    'first', array(
+                'conditions' => array(
+                    'Orientstruct.personne_id' => $personne_id,
+                    'Orientstruct.statut_orient' => 'Orienté',
+                    $conditionsTypeorient,
+                    'Orientstruct.id IN ( ' . $this->Contratinsertion->Personne->Orientstruct->sqDerniere('Orientstruct.personne_id') . ' )'
+                ),
+                'order' => 'Orientstruct.date_valid DESC',
+                'contain' => array(
+                    'Typeorient',
+                    'Structurereferente'
+                )
+                    )
+            );
+            $this->set(compact('orientstructEmploi'));
+            if (Configure::read('Cg.departement') == 58) {
+                $isOrientBloquante = Set::classicExtract($orientstructEmploi, 'Structurereferente.typestructure');
+                $bloquageAjoutCER = 0;
+                if ($isOrientBloquante == 'oa') {
+                    $bloquageAjoutCER = 1;
+                }
+                $this->set('bloquageAjoutCER', $bloquageAjoutCER);
+            }
+        }
+
+        if (Configure::read('Cg.departement') == 58) {
+
+            $nbDemandedemaintienNonfinalisesCovs = 0;
+            $cumulCer = $this->Contratinsertion->limiteCumulDureeCER($personne_id);
+            if ($cumulCer >= 12) {
+                // Nombre de dossiers COV de cette thématique qui ne sont pas finalisés (Demande de maintien en social)
+                $demandedemaintien = $this->Contratinsertion->Personne->Dossiercov58->qdDossiersNonFinalises($personne_id, 'proposnonorientationsproscovs58');
+                $nbDemandedemaintienNonfinalisesCovs = $this->Contratinsertion->Personne->Dossiercov58->find('count', $demandedemaintien);
+            }
+            $this->set('nbDemandedemaintienNonfinalisesCovs', $nbDemandedemaintienNonfinalisesCovs);
+
+            $qdEnCours = $this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->qdEnCours($personne_id);
+            $propocontratinsertioncov58 = $this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find('first', $qdEnCours);
+
+            // Nombre de dossiers COV de cette thématique qui ne sont pas finalisés.
+            $qdDossiersCov58NonFinalises = $this->Contratinsertion->Personne->Dossiercov58->qdDossiersNonFinalises($personne_id, 'proposcontratsinsertioncovs58');
+            $nbdossiersnonfinalisescovs = $this->Contratinsertion->Personne->Dossiercov58->find('count', $qdDossiersCov58NonFinalises);
+            $this->set('nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs);
+
+			// 
+            $querydata = $this->_qdThematiqueEp('Sanctionep58', $personne_id);
+            $querydata['fields'] = Set::merge(
+                            $querydata['fields'], array(
+                        'Sanctionep58.id',
+                        'Sanctionep58.contratinsertion_id',
+                        'Sanctionep58.created',
+                        'Sanctionep58.modified',
+                            )
+            );
+
+            $sanctionseps58 = $this->Contratinsertion->Signalementep93->Dossierep->find('all', $querydata);
+
+            $contratsenep = Set::extract($sanctionseps58, '/Sanctionep58/contratinsertion_id');
+
+            $soumisADroitEtDevoir = $this->Contratinsertion->Personne->Calculdroitrsa->isSoumisAdroitEtDevoir($personne_id);
+
+            $this->set(compact('sanctionseps58', 'contratsenep', 'soumisADroitEtDevoir', 'propocontratinsertioncov58'));
+
+            $this->set('erreursCandidatePassage', $this->Contratinsertion->Sanctionep58->Dossierep->getErreursCandidatePassage($personne_id));
+            $this->set('optionsdossierscovs58', array_merge($this->Contratinsertion->Personne->Orientstruct->Personne->Dossiercov58->Passagecov58->enums(), $this->Contratinsertion->Personne->Orientstruct->Personne->Dossiercov58->Propocontratinsertioncov58->enums()));
+            $this->set('optionsdossierseps', $this->Contratinsertion->Sanctionep58->Dossierep->Passagecommissionep->enums());
+        } else if (Configure::read('Cg.departement') == 66) {
+            $persreferent = $this->Contratinsertion->Personne->PersonneReferent->find(
+                    'count', array(
+                'conditions' => array(
+                    'PersonneReferent.personne_id' => $personne_id,
+                    'PersonneReferent.dfdesignation IS NULL'
+                ),
+                'recursive' => -1
+                    )
+            );
+            $this->set(compact('persreferent'));
+
+
+            $listesActions = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
+                    'all', array(
+                'fields' => array(
+                    'Actioncandidat.name'
+                ),
+                'conditions' => array(
+                    'ActioncandidatPersonne.personne_id' => $personne_id,
+                    'ActioncandidatPersonne.positionfiche = \'encours\''
+                ),
+                'contain' => array(
+                    'Actioncandidat'
+                ),
+                'order' => 'ActioncandidatPersonne.id DESC'
+                    )
+            );
+            $this->set('listesActions', $listesActions);
+        } else if (Configure::read('Cg.departement') == 93) {
+            // Des dossiers pour la thématique des signalements ?
+            $querydata = $this->_qdThematiqueEp('Signalementep93', $personne_id);
+            $querydata['fields'] = Set::merge(
+                            $querydata['fields'], array(
+                        'Signalementep93.contratinsertion_id',
+                        'Signalementep93.id',
+                        'Signalementep93.motif',
+                        'Signalementep93.date',
+                        'Signalementep93.rang',
+                        'Signalementep93.created',
+                        'Signalementep93.modified',
+                            )
+            );
+
+            $signalementseps93 = $this->Contratinsertion->Signalementep93->Dossierep->find('all', $querydata);
+
+            // Des dossiers pour la thématique des signalements ?
+            $querydata = $this->_qdThematiqueEp('Contratcomplexeep93', $personne_id);
+            $querydata['fields'] = Set::merge(
+                            $querydata['fields'], array(
+                        'Contratcomplexeep93.contratinsertion_id',
+                        'Contratcomplexeep93.id',
+                        'Contratcomplexeep93.created',
+                        'Contratcomplexeep93.modified',
+                            )
+            );
+            $contratscomplexeseps93 = $this->Contratinsertion->Contratcomplexeep93->Dossierep->find('all', $querydata);
+
+            $contratsenep = Set::merge(
+                            Set::extract($signalementseps93, '/Signalementep93/contratinsertion_id'), Set::extract($contratscomplexeseps93, '/Contratcomplexeep93/contratinsertion_id')
+            );
+
+            $this->set(compact('signalementseps93', 'contratscomplexeseps93', 'contratsenep'));
+
+            $this->set('erreursCandidatePassage', $this->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage($personne_id));
+            $this->set('optionsdossierseps', $this->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums());
+        }
+
+        $this->_setOptions();
+        $this->set('personne_id', $personne_id);
+
+        // Recherche des CER, suivanrt le CG
+        $querydata = $this->Contratinsertion->qdIndex($personne_id);
+        $this->set('contratsinsertion', $this->Contratinsertion->find('all', $querydata));
+
+        $this->render('index_' . Configure::read('nom_form_ci_cg'));
     }
 
     /**
@@ -628,7 +737,6 @@ class ContratsinsertionController extends AppController
      * @param integer $contratinsertion_id
      */
     public function view($contratinsertion_id = null) {
-		$this->_checkAccess($contratinsertion_id);
 		$query = array(
 			'fields' => array_merge(
 					$this->Contratinsertion->fields(),
@@ -706,15 +814,6 @@ class ContratsinsertionController extends AppController
      * @param integer $id
      */
     public function add($id = null) {
-		$actionsParams = WebrsaAccessContratsinsertion::getActionParamsList($this->action);
-		$paramsAccess = $this->WebrsaContratinsertion->getParamsForAccess($id, $actionsParams);
-
-		if (!WebrsaAccessContratsinsertion::check($this->name, $this->action, array(), $paramsAccess)) {
-			throw new Error403Exception(
-				__("Exception::access_denied", __CLASS__, __FUNCTION__, $this->Session->read('Auth.User.username'))
-			);
-		}
-		
         $args = func_get_args();
         call_user_func_array(array($this, '_add_edit'), $args);
     }
@@ -725,7 +824,6 @@ class ContratsinsertionController extends AppController
      * @param integer $id
      */
     public function edit($id = null) {
-		$this->_checkAccess($id);
         $args = func_get_args();
         call_user_func_array(array($this, '_add_edit'), $args);
     }
@@ -1435,7 +1533,6 @@ class ContratsinsertionController extends AppController
     public function delete($id) {
         $dossier_id = $this->Contratinsertion->dossierId($id);
         $this->DossiersMenus->checkDossierMenu(array('id' => $dossier_id));
-		$this->_checkAccess($id);
 
         $this->Jetons2->get($dossier_id);
 
@@ -1474,7 +1571,6 @@ class ContratsinsertionController extends AppController
         $this->set('personne_id', $personne_id);
 
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
-		$this->_checkAccess($id);
 
         $dossier_id = $this->Contratinsertion->dossierId($id);
         $this->Jetons2->get($dossier_id);
@@ -1534,7 +1630,6 @@ class ContratsinsertionController extends AppController
     public function notificationsop($contratinsertion_id = null) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getNotificationopPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1555,7 +1650,6 @@ class ContratsinsertionController extends AppController
     public function ficheliaisoncer($contratinsertion_id) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getPdfFicheliaisoncer($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1577,7 +1671,6 @@ class ContratsinsertionController extends AppController
     public function notifbenef($contratinsertion_id) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getPdfNotifbenef($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1600,7 +1693,6 @@ class ContratsinsertionController extends AppController
     public function impression($contratinsertion_id = null) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getDefaultPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1637,7 +1729,6 @@ class ContratsinsertionController extends AppController
         $this->set('personne_id', $personne_id);
 
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
-		$this->_checkAccess($id);
 
         $dossier_id = $this->Contratinsertion->Personne->dossierId($personne_id);
         $this->assert(!empty($dossier_id), 'invalidParameter');
@@ -1703,7 +1794,6 @@ class ContratsinsertionController extends AppController
     public function reconduction_cer_plus_55_ans($contratinsertion_id) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getPdfReconductionCERPlus55Ans($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1830,26 +1920,6 @@ class ContratsinsertionController extends AppController
 	public function exportcsv_search_valides() {
 		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
 		$Recherche->exportcsv( array( 'modelRechercheName' => 'WebrsaRechercheContratinsertionValides' ) );
-	}
-	
-	/**
-	 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès 
-	 * à une action en fonction d'un enregistrement
-	 * 
-	 * @param integer $contratinsertion_id
-	 */
-	protected function _checkAccess($contratinsertion_id) {
-		$records = $this->WebrsaContratinsertion->getDataForAccess(array('Contratinsertion.id' => $contratinsertion_id));
-		$record = end($records);
-		$personne_id = Hash::get($record, 'Contratinsertion.personne_id');
-		$actionsParams = WebrsaAccessContratsinsertion::getActionParamsList($this->action);
-		$paramsAccess = $this->WebrsaContratinsertion->getParamsForAccess($personne_id, $actionsParams);
-
-		if (!WebrsaAccessContratsinsertion::check($this->name, $this->action, $record, $paramsAccess)) {
-			throw new Error403Exception(
-				__("Exception::access_denied", __CLASS__, __FUNCTION__, $this->Session->read('Auth.User.username'))
-			);
-		}
 	}
 }
 ?>

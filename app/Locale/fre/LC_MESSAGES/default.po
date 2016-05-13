@@ -573,7 +573,7 @@ msgstr "Impression en cohorte fin sanction 1"
 msgid "Button::impressionsSanctions2"
 msgstr "Impression en cohorte fin sanction 2"
 
-msgid "Button::reconductionCERPlus55Ans"
+msgid "Button::reconduction_cer_plus_55_ans"
 msgstr "Tacite reconduction"
 
 ################################################################################
@@ -672,3 +672,8 @@ msgstr "Attestation de compétence"
 
 msgid "%a days, %h hours, %i minutes and %s seconds"
 msgstr "%a jours, %h heures, %i minutes et %s secondes"
+
+################################################################################
+
+msgid "Exception::access_denied"
+msgstr "Accès à la fonction %s::%s refusé pour l'utilisateur: %s"
