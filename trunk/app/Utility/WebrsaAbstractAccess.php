@@ -8,54 +8,79 @@
      * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
      */
 
+	App::uses('WebrsaAccessInterface', 'Utility/Interfaces');
+
     /**
 	 * La classe WebrsaAbstractAccess 
      *
      * @package app.Utility
      */
-	abstract class WebrsaAbstractAccess
+	abstract class WebrsaAbstractAccess implements WebrsaAccessInterface
 	{
 		/**
-		 * Renvoi la liste des actions disponibles
+		 * Liste des classes WebrsaAccess par controller
 		 * 
-		 * @param array $params
-		 * @return array - array('action1', 'action2', ...)
+		 * @var array
 		 */
-		public static function actions(array $params = array()) {
-			return array();
-		}
+		public static $WebrsaAccess = array();
 		
 		/**
-		 * Permet d'obtenir | de compléter les paramètres par défaut
-		 * 
-		 * @param array $params
-		 * @return array
-		 */
-		public static function params(array $params = array()) {
-			return $params;
-		}
+		* Paramètres par défaut
+		* 
+		* @param array $params
+		* @return array
+		*/
+	   public abstract static function params(array $params = array());
 
+	   /**
+		* Renvoi la liste des actions disponibles
+		* 
+		* @param array $params
+		* @return array - array('action1', 'action2', ...)
+		*/
+	   public abstract static function actions(array $params = array());
+		
 		/**
-		 * Complète $record avec 
+		 * Permet d'obtenir les accès pour un find first
 		 * 
 		 * @param array $record
 		 * @param array $params
 		 * @return array
 		 */
 		public final static function access(array $record, array $params = array()) {
-			$className = get_called_class();
+			$matches = null;
+			if (!preg_match('/^WebrsaAccess(.*)$/', get_called_class(), $matches)) {
+				trigger_error("Nom de class mal défini, il doit porter WebrsaAccess suivi du nom du controller");
+				exit;
+			}
+			
+			list($className, $mainController) = $matches;
+			
 			$params = call_user_func(array($className, 'params'), $params);
 			$actions = call_user_func(array($className, 'actions'), $params);
 
-			foreach ($actions as $action) {
-				$record[$params['alias']]['action_'.$action] = self::check($action, $record, $params);
+			foreach (array_keys($actions) as $action) {
+				if (strpos($action, '.')) {
+					list($controller, $action) = explode('.', $action);
+				} else {
+					$controller = $mainController;
+				}
+				
+				$url = "/$controller/$action";
+				
+				if (!isset(self::$WebrsaAccess[$controller])) {
+					App::uses("WebrsaAccess".$controller, 'Utility');
+					self::$WebrsaAccess[$controller] = "WebrsaAccess".$controller;
+				}
+				
+				$record[$url] = self::check($controller, $action, $record, $params);
 			}
 
 			return $record;
 		}
 
 		/**
-		 * Permet d'obtenir les accès pour un index
+		 * Permet d'obtenir les accès pour un find all
 		 *
 		 * @param array $records
 		 * @param array $params
@@ -72,19 +97,120 @@
 		/**
 		 * Permet de vérifier les droits d'accès à une action sur un enregistrement
 		 *
+		 * @param string $controller
 		 * @param string $action
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
 		 */
-		public final static function check($action, array $record, array $params = array()) {
-			$className = get_called_class();
+		public final static function check($controller, $action, array $record = array(), array $params = array()) {
+			if (!isset(self::$WebrsaAccess[$controller])) {
+				App::uses("WebrsaAccess".$controller, 'Utility');
+				self::$WebrsaAccess[$controller] = "WebrsaAccess".$controller;
+			}
+			$params = call_user_func(array(get_called_class(), 'params'), $params);
+			
+			$className = self::$WebrsaAccess[$controller];
 			$method = "_{$action}";
+			
+			$availablesActions = array();
+			foreach (array_keys(call_user_func(array(get_called_class(), 'actions'), $params)) as $availableAction) {
+				if (!strpos($availableAction, '.')) {
+					$availablesActions[] = $controller.'.'.$availableAction;
+				} else {
+					$availablesActions[] = $availableAction;
+				}
+			}
+			
+			if (strpos($action, '.')) {
+				list($controller, $action) = explode('.', $action);
+			}
 
 			return method_exists($className, $method)
-				&& in_array($action, call_user_func(array($className, 'actions'), $params))
+				&& in_array("$controller.$action", $availablesActions)
 				&& call_user_func(array($className, $method), $record, call_user_func(array($className, 'params'), $params))
 			;
+		}
+		
+		/**
+		 * Merge et normalize les actions par défault avec celles ajoutés
+		 * 
+		 * @param array $defaults
+		 * @param array $actions
+		 * @return array
+		 */
+		public static function merge_actions(array $defaults, array $actions) {
+			return Hash::merge(
+				self::normalize_actions($defaults),
+				self::normalize_actions($actions)
+			);
+		}
+		
+		/**
+		 * Normalize la liste des actions
+		 * 
+		 * @param array $actions
+		 * @return array
+		 */
+		public static function normalize_actions(array $actions) {
+			$controller = str_replace('WebrsaAccess', '', get_called_class());
+			$results = array();
+			foreach (Hash::normalize($actions) as $action => $params) {
+				$action = strpos($action, '.') === false ? $controller.'.'.$action : $action;
+				$results[$action] = $params === null ? array() : $params;
+			}
+			return $results;
+		}
+		
+		/**
+		 * Permet d'obtenir les clefs à calculer pour connaitre les droits d'accès 
+		 * à toutes les actions disponnibles
+		 * 
+		 * @return array
+		 */
+		public static function getParamsList(array $params = array()) {
+			$params = call_user_func(array(get_called_class(), 'params'), $params);
+			
+			$paramsList = array();
+			foreach (call_user_func(array(get_called_class(), 'actions'), $params) as $values) {
+				foreach ($values as $key => $value) {
+					if ($value) {
+						$paramsList[] = $key;
+					}
+				}
+			}
+			
+			return $paramsList;
+		}
+		
+		/**
+		 * Même utilitée que self::getParamsList, à la différence qu'on ne récupère 
+		 * la liste que d'une seule action
+		 * 
+		 * @param String $action
+		 * @param array $params
+		 * @return array
+		 */
+		public static function getActionParamsList($action, array $params = array()) {
+			$params = call_user_func(array(get_called_class(), 'params'), $params);
+			
+			$controller = str_replace('WebrsaAccess', '', get_called_class());
+			$action = strpos($action, '.') === false ? $controller.'.'.$action : $action;
+			$actions = call_user_func(array(get_called_class(), 'actions'), $params);
+			
+			if (!isset($actions[$action])) {
+				trigger_error("L'action $action n'est pas disponnible pour le calcul des droits d'accès.");
+				$actions[$action] = array();
+			}
+			
+			$results = array();
+			foreach ($actions[$action] as $key => $value) {
+				if ($value) {
+					$results[] = $key;
+				}
+			}
+			
+			return $results;
 		}
 	}
 ?>

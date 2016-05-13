@@ -224,7 +224,7 @@
 			$url = array(
 				'plugin' => ( empty( $plugin ) ? null : Inflector::underscore( $plugin ) ),
 				'controller' => Inflector::underscore( $controller ),
-				'action' => Inflector::underscore( $tokens[2] ),
+				'action' => $tokens[2],
 			) + array_slice( $tokens, 3 );
 
 			$url = self::_prefixSplit( $url );

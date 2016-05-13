@@ -104,7 +104,8 @@
 					$options += array(
 						'conditions' => $this->conditions['typesorients'],
 						'empty' => false,
-						'cache' => true
+						'cache' => true,
+						'with_parentid' => Configure::read( 'with_parentid' )
 					);
 					break;
 				case 'structuresreferentes':
@@ -142,7 +143,8 @@
 		 *		'Typeorient.actif' => 'O'
 		 *	),
 		 * 	'empty' => false,
-		 * 	'cache' => true
+		 * 	'cache' => true,
+		 *	'with_parentid' => null
 		 * );
 		 * </pre>
 		 *
@@ -152,7 +154,9 @@
 		 *
 		 * @param array $options La clé conditions permet de spécifier ou
 		 *	de surcharger les conditions, la clé empty permet de spécifier si
-		 *	l'on veut une entrée dont la clé sera 0 et la valeur 'Non orienté'.
+		 *	l'on veut une entrée dont la clé sera 0 et la valeur 'Non orienté',
+		 *	la clé with_parentid permet de surcharger la valeur lue par
+		 *	Configure::read( 'with_parentid' ).
 		 * @return array
 		 */
 		public function typesorients( array $options = array() ) {
@@ -199,12 +203,11 @@
 				$parents = array();
 				$results = array();
 
-				$with_parentid = Configure::read( 'with_parentid' );
 				$typesorients = $Controller->Structurereferente->Typeorient->find( 'all', $query );
 
 				if( !empty( $typesorients ) ) {
 					foreach( $typesorients as $typeorient ) {
-						if( true === $with_parentid ) {
+						if( true === $options['with_parentid'] ) {
 							if( null === $typeorient['Typeorient']['parentid'] ) {
 								$parents[$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
 							}
@@ -532,7 +535,6 @@
 		public function completeOptions( array $options, array $data, array $params = array() ) {
 			$Controller = $this->_Collection->getController();
 			$Controller->loadModel( 'Structurereferente' );
-			$with_parentid = Configure::read( 'with_parentid' );
 
 			$defaultMethodsParams = array(
 				'typesorients' => array(
@@ -564,7 +566,7 @@
 					$value = Hash::get( $data, $methodParams['path'] );
 					if( false === empty( $value ) ) {
 						$modelName = Inflector::classify( $method );
-						if( false === ( $method === 'typesorients' && $with_parentid ) ) {
+						if( false === ( $method === 'typesorients' && $options['with_parentid'] ) ) {
 							$methodParams['conditions'] = array( "{$modelName}.id" => suffix( $value ) );
 						}
 						else {

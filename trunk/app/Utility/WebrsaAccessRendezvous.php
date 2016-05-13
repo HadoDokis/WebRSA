@@ -106,7 +106,16 @@
 		 * @return array
 		 */
 		public static function actions(array $params = array()) {
-			$result = array('add', 'view', 'edit', 'impression', 'delete', 'filelink');
+			$result = self::normalize_actions(
+				array(
+					'add' => array('ajoutPossible' => true), 
+					'view', 
+					'edit', 
+					'impression', 
+					'delete', 
+					'filelink'
+				)
+			);
 			return $result;
 		}
 	}

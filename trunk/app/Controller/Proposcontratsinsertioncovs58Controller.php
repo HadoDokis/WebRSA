@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	App::uses('WebrsaAccessContratsinsertion', 'Utility');
+
 	/**
 	 * La classe Proposcontratsinsertioncovs58Controller ... (CG 58).
 	 *
@@ -17,7 +19,7 @@
 	{
 		public $name = "Proposcontratsinsertioncovs58";
 
-		public $uses = array( 'Propocontratinsertioncov58', 'Option', 'Action' );
+		public $uses = array( 'Propocontratinsertioncov58', 'Option', 'Action', 'WebrsaContratinsertion' );
 
 		public $helpers = array( 'Cake1xLegacy.Ajax' );
 
@@ -152,6 +154,7 @@
 		 */
 		public function add() {
 			$args = func_get_args();
+			$this->_checkAccess($args[1]);
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
@@ -494,5 +497,24 @@
 			$this->redirect( $this->referer() );
 		}
 
+		/**
+		 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès 
+		 * à une action en fonction d'un enregistrement
+		 * 
+		 * @see ContratsinsertionController::_checkAccess
+		 * @param integer $contratinsertion_id
+		 */
+		protected function _checkAccess($contratinsertion_id) {
+			$records = $this->WebrsaContratinsertion->getDataForAccess(array('Contratinsertion.id' => $contratinsertion_id));
+			$record = end($records);
+			$params = $this->WebrsaContratinsertion->haveNeededDatas(Hash::get($record, 'Contratinsertion.personne_id'));
+			$redirectUrl = array('controller' => 'Contratsinsertion', 'action' => 'index', Hash::get($record, 'Contratinsertion.personne_id'));
+			$msgstr = 'Impossible d\'effectuer cette action.';
+
+			if (!WebrsaAccessContratsinsertion::check($this->name, $this->action, $record, $params)) {
+				$this->Session->setFlash($msgstr, 'flash/error');
+				$this->redirect($redirectUrl);
+			}
+		}
 	}
 ?>

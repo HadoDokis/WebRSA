@@ -159,7 +159,8 @@
 			if( $departement === 66 ) {
 				$options['Orientstruct']['not_typeorient_id'] = $Controller->InsertionsBeneficiaires->typesorients(
 					array(
-						'conditions' => $Controller->InsertionsBeneficiaires->conditions['typesorients'] + array( 'Typeorient.parentid IS NULL' )
+						'conditions' => $Controller->InsertionsBeneficiaires->conditions['typesorients'] + array( 'Typeorient.parentid IS NULL' ),
+						'with_parentid' => false
 					)
 				);
 			}

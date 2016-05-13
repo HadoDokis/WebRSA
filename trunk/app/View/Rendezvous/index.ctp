@@ -87,21 +87,21 @@
 							'Voir le Rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'view',
 							$rdv['Rendezvous']['id'] ),
-							Hash::get($rdv, 'Rendezvous.action_view') 
+							Hash::get($rdv, '/Rendezvous/view') 
 								&& ( $this->Permissions->checkDossier( 'rendezvous', 'view', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->editLink(
 							'Editer le référent',
 							array( 'controller' => 'rendezvous', 'action' => 'edit',
 							$rdv['Rendezvous']['id'] ),
-							Hash::get($rdv, 'Rendezvous.action_edit') 
+							Hash::get($rdv, '/Rendezvous/edit') 
 								&& ( $this->Permissions->checkDossier( 'rendezvous', 'edit', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->printLink(
 							'Imprimer le Rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'impression',
 							$rdv['Rendezvous']['id'] ),
-							Hash::get($rdv, 'Rendezvous.action_impression') 
+							Hash::get($rdv, '/Rendezvous/impression') 
 								&& ( $this->Permissions->check( 'rendezvous', 'impression', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->deleteLink(
@@ -110,14 +110,14 @@
 								: 'Supprimer le rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'delete',
 							$rdv['Rendezvous']['id'] ),
-							Hash::get($rdv, 'Rendezvous.action_delete') 
+							Hash::get($rdv, '/Rendezvous/delete') 
 								&& ($this->Permissions->checkDossier( 'rendezvous', 'delete', $dossierMenu ) == 1 )
 						),
 						$this->Xhtml->fileLink(
 							'Lier des fichiers',
 							array( 'controller' => 'rendezvous', 'action' => 'filelink',
 							$rdv['Rendezvous']['id'] ),
-							Hash::get($rdv, 'Rendezvous.action_filelink') 
+							Hash::get($rdv, '/Rendezvous/filelink') 
 								&& ( $this->Permissions->checkDossier( 'rendezvous', 'filelink', $dossierMenu )  )
 						),
 						h( '('.Set::classicExtract( $rdv, 'Fichiermodule.nb_fichiers_lies' ).')' ),

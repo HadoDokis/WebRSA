@@ -22,22 +22,55 @@ msgstr "Modification d'un contrat d'insertion de #Personne.qual# #Personne.nom# 
 msgid "/Contratsinsertion/add"
 msgstr "Ajouter"
 
+msgid "/Contratsinsertion/add/:title"
+msgstr "Ajouter"
+
 msgid "/Contratsinsertion/view"
+msgstr "Voir"
+
+msgid "/Contratsinsertion/view/#Contratinsertion.id#"
 msgstr "Voir"
 
 msgid "/Contratsinsertion/edit"
 msgstr "Modifier"
 
+msgid "/Contratsinsertion/edit/#Contratinsertion.id#"
+msgstr "Modifier"
+
 msgid "/Contratsinsertion/valider"
+msgstr "Décision"
+
+msgid "/Contratsinsertion/valider/#Contratinsertion.id#"
+msgstr "Décision"
+
+msgid "/Proposdecisionscers66/propositionsimple"
+msgstr "Décision"
+
+msgid "/Proposdecisionscers66/propositionsimple/#Contratinsertion.id#"
+msgstr "Décision"
+
+msgid "/Proposdecisionscers66/propositionparticulier"
+msgstr "Décision"
+
+msgid "/Proposdecisionscers66/propositionparticulier/#Contratinsertion.id#"
 msgstr "Décision"
 
 msgid "/Contratsinsertion/impression"
 msgstr "Impression"
 
+msgid "/Contratsinsertion/impression/#Contratinsertion.id#"
+msgstr "Impression"
+
 msgid "/Contratsinsertion/cancel"
 msgstr "Annuler"
 
+msgid "/Contratsinsertion/cancel/#Contratinsertion.id#"
+msgstr "Annuler"
+
 msgid "/Contratsinsertion/delete"
+msgstr "Supprimer"
+
+msgid "/Contratsinsertion/delete/#Contratinsertion.id#"
 msgstr "Supprimer"
 
 msgid "/Contratsinsertion/delete/#Contratinsertion.id# ?"
@@ -45,6 +78,15 @@ msgstr "Confirmez-vous la suppression du CER ?"
 
 msgid "/Contratsinsertion/filelink"
 msgstr "Fichiers liés"
+
+msgid "/Contratsinsertion/filelink/#Contratinsertion.id#"
+msgstr "Fichiers liés"
+
+msgid "/Contratsinsertion/reconduction_cer_plus_55_ans"
+msgstr "Tacite reconduction"
+
+msgid "/Contratsinsertion/reconduction_cer_plus_55_ans/#Contratinsertion.id#"
+msgstr "Tacite reconduction"
 
 # ------------------------------------------------------------------------------
 
@@ -185,3 +227,57 @@ msgstr "Décisions prises"
 
 msgid "/Contratsinsertion/impression/#Contratinsertion.id#"
 msgstr "Impression"
+
+msgid "Contratinsertion.forme_ci"
+msgstr "Forme du contrat"
+
+msgid "Contratinsertion.num_contrat_66"
+msgstr "Type de contrat"
+
+msgid "/Contratsinsertion/notification"
+msgstr "Date d'envoi"
+
+msgid "/Contratsinsertion/reconduction"
+msgstr "Tacite reconduction"
+
+msgid "/Contratsinsertion/notification/#Contratinsertion.id#"
+msgstr "Date d'envoi"
+
+msgid "/Contratsinsertion/reconduction/#Contratinsertion.id#"
+msgstr "Tacite reconduction"
+
+msgid "Contratinsertion.num_contrat"
+msgstr "Rang contrat"
+
+msgid "Contratinsertion.datevalidation_ci"
+msgstr "Date décision"
+
+msgid "Cov58.infocov"
+msgstr "COV ayant traitée le dossier"
+
+msgid "Decisionpropocontratinsertioncov58.commentaire"
+msgstr "Observation de la COV"
+
+msgid "/Sanctionseps58/nonrespectcer"
+msgstr "Sanction"
+
+msgid "/Sanctionseps58/nonrespectcer/#Contratinsertion.id#"
+msgstr "Sanction"
+
+msgid "/Proposcontratsinsertioncovs58/add"
+msgstr "Avenant"
+
+msgid "/Proposcontratsinsertioncovs58/add/#Contratinsertion.id#"
+msgstr "Avenant"
+
+msgid "Sanctionep58.created"
+msgstr "Date signalement"
+
+msgid "Passagecommissionep.etatdossierep"
+msgstr "État dossier EP"
+
+msgid "/Sanctionseps58/deleteNonrespectcer"
+msgstr "Supprimer"
+
+msgid "/Sanctionseps58/deleteNonrespectcer/#Sanctionep58.id#"
+msgstr "Supprimer"

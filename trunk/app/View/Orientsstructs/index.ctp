@@ -1,6 +1,9 @@
 <?php
 	$personne_id = Hash::get( $dossierMenu, 'personne_id' );
 	$personne = Hash::get( (array)Hash::extract( $dossierMenu, "Foyer.Personne.{n}[id={$personne_id}]" ), 0 );
+	
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 
 	$departement = Configure::read( 'Cg.departement' );
 
@@ -198,39 +201,27 @@
 	}
 
 	if( $departement == 66 ) {
-		$links = array(
-			'/Orientsstructs/edit/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.action_edit#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'edit', $dossierMenu ).'" )'
-			),
-			'/Orientsstructs/impression/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.action_impression#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
-			),
-			'/Orientsstructs/impression_changement_referent/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.action_impression_changement_referent#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
-			),
-			'/Orientsstructs/delete/#Orientstruct.id#' => array(
-				'confirm' => true,
-				'disabled' => '!( "#Orientstruct.action_delete#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'delete', $dossierMenu ).'" )'
-			),
-			'/Orientsstructs/filelink/#Orientstruct.id#' => array(
-				'disabled' => !$this->Permissions->checkDossier( 'Orientsstructs', 'filelink', $dossierMenu )
+		$links = WebrsaAccess::links(
+			array(
+				'/Orientsstructs/edit/#Orientstruct.id#',
+				'/Orientsstructs/impression/#Orientstruct.id#',
+				'/Orientsstructs/impression_changement_referent/#Orientstruct.id#',
+				'/Orientsstructs/delete/#Orientstruct.id#' => array(
+					'confirm' => true
+				),
+				'/Orientsstructs/filelink/#Orientstruct.id#'
 			)
 		);
 	}
 	else {
-		$links = array(
-			'/Orientsstructs/edit/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.action_edit#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'edit', $dossierMenu ).'" )'
-			),
-			'/Orientsstructs/impression/#Orientstruct.id#' => array(
-				'disabled' => '!( "#Orientstruct.action_impression#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'impression', $dossierMenu ).'" )'
-			),
-			'/Orientsstructs/delete/#Orientstruct.id#' => array(
-				'confirm' => true,
-				'disabled' => '!( "#Orientstruct.action_delete#" == "1" && "'.$this->Permissions->checkDossier( 'Orientsstructs', 'delete', $dossierMenu ).'" )'
-			),
-			'/Orientsstructs/filelink/#Orientstruct.id#' => array(
-				'disabled' => !$this->Permissions->checkDossier( 'Orientsstructs', 'filelink', $dossierMenu )
+		$links = WebrsaAccess::links(
+			array(
+				'/Orientsstructs/edit/#Orientstruct.id#',
+				'/Orientsstructs/impression/#Orientstruct.id#',
+				'/Orientsstructs/delete/#Orientstruct.id#' => array(
+					'confirm' => true,
+				),
+				'/Orientsstructs/filelink/#Orientstruct.id#'
 			)
 		);
 	}

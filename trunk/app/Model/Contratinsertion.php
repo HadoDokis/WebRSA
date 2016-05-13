@@ -544,6 +544,20 @@
 				'type' => 'boolean',
 				'postgres' => '(CASE WHEN "%s"."id" IS NOT NULL THEN true ELSE false END )'
 			),
+			'dernier' => array(
+				'type'      => 'boolean',
+				'postgres'  => 'NOT EXISTS(
+					SELECT * FROM contratsinsertion AS a 
+					WHERE a.personne_id = "%s"."personne_id" 
+					AND (
+						a.date_saisi_ci > "%s"."date_saisi_ci" 
+						OR (
+							a.date_saisi_ci = "%s"."date_saisi_ci" 
+							AND a.created > "%s"."created"
+						)
+					)
+					LIMIT 1)'
+			),
 		);
 
 		/**

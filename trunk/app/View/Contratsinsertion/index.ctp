@@ -14,31 +14,22 @@
 	);
 
 	// A-t'on des messages à afficher à l'utilisateur ?
-//	foreach ((array)$messages as $message => $class) {
-//		echo $this->Html->tag('p', __m($message), array('class' => "message {$class}"));
-//	}
-	// NOTE : Actuellement, pas de messages pour le 976
+	foreach ((array)$messages as $message => $class) {
+		echo $this->Html->tag('p', __m($message), array('class' => "message {$class}"));
+	}
 	
 	echo $this->Default3->index(
 		$contratsinsertions,
 		array(
-			'Contratinsertion.date_saisi_ci',
-			'Typeorient.lib_type_orient',
-			'Structurereferente.lib_struc',
 			'Contratinsertion.dd_ci',
 			'Contratinsertion.df_ci',
-			'Contratinsertion.duree_engag' => array( 'type' => 'text' ),
 			'Contratinsertion.decision_ci',
-			'Contratinsertion.datevalidation_ci',
 		)
 		+ WebrsaAccess::links(
 			array(
 				'/Contratsinsertion/view/#Contratinsertion.id#',
 				'/Contratsinsertion/edit/#Contratinsertion.id#',
-				'/Contratsinsertion/valider/#Contratinsertion.id#',
 				'/Contratsinsertion/impression/#Contratinsertion.id#',
-				'/Contratsinsertion/cancel/#Contratinsertion.id#',
-				'/Contratsinsertion/delete/#Contratinsertion.id#',
 				'/Contratsinsertion/filelink/#Contratinsertion.id#' => array(
 					'msgid' => __m('/Contratsinsertion/filelink').' (#Fichiermodule.count#)'
 				),

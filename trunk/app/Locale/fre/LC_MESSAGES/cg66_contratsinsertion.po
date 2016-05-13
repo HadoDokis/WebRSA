@@ -30,3 +30,37 @@ msgstr "Rechercher par CER"
 
 msgid "Contratsinsertion.search_valides"
 msgstr "Rechercher par CER"
+
+msgid "Contratinsertion.forme_ci"
+msgstr "Forme du contrat"
+
+msgid "Contratinsertion.num_contrat_66"
+msgstr "Type de contrat"
+
+msgid "Contratinsertion.dd_ci"
+msgstr "Date de début de contrat"
+
+msgid "Contratinsertion.df_ci"
+msgstr "Date de fin de contrat"
+
+msgid "Contratinsertion.date_saisi_ci"
+msgstr "Contrat signé le"
+
+msgid "Contratinsertion.decision_ci"
+msgstr "Décision"
+
+msgid "Contratinsertion.datedecision"
+msgstr "Date de décision"
+
+msgid "Contratinsertion.positioncer"
+msgstr "Position du CER"
+
+msgid "/Contratinsertion/add"
+msgstr "Ajouter"
+
+msgid "/Contratinsertion/add/:title"
+msgstr "Ajouter"
+
+msgid "/Contratsinsertion/index/:heading"
+msgstr "CER"
+

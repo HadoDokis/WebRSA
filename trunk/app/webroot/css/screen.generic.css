@@ -1076,7 +1076,7 @@ ul.actions li.add a, ul.actions li a.add, td.action a.add {
 	background-image: url( ../img/icons/add.png );
 }
 
-ul.actions li.add span.disabled, ul.actions li span.add.disabled {
+ul.actions li.add span.disabled, ul.actions li span.add.disabled, td.action span.add.disabled {
 	background-image: url( ../img/icons/add_disabled.png );
 }
 
@@ -1637,8 +1637,14 @@ table#Cers93Index span.button.secondelecture.disabled { background-image: url( .
 table#Cers93Index a.button.aviscadre { background-image: url( ../img/icons/tick.png ); }
 table#Cers93Index span.button.aviscadre.disabled { background-image: url( ../img/icons/tick_disabled.png ); }
 
-table#Cers93Index a.button.add { background-image: url( ../img/icons/folder_table.png ); }
-table#Cers93Index span.button.add.disabled { background-image: url( ../img/icons/folder_table_disabled.png ); }
+table#Cers93Index a.button.add,
+table#TableContratsinsertionIndex a.nonrespectcer {
+	background-image: url( ../img/icons/folder_table.png ); 
+}
+table#Cers93Index span.button.add.disabled,
+table#TableContratsinsertionIndex span.nonrespectcer.disabled {
+	background-image: url( ../img/icons/folder_table_disabled.png );
+}
 
 /**
  * Cloture en masse des référents

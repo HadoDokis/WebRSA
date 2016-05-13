@@ -217,7 +217,7 @@
 			$redirectUrl = array('action' => 'index', $personne_id);
 			$params = array();
 			
-			if (!WebrsaAccessRendezvous::check($this->action, $rendezvous, $params)) {
+			if (!WebrsaAccessRendezvous::check($this->name, $this->action, $rendezvous, $params)) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -501,7 +501,7 @@
 			$personne_id = Hash::get($rendezvous, 'Rendezvous.personne_id');
 			$redirectUrl = array('action' => 'index', $personne_id);
 			
-			if (!WebrsaAccessRendezvous::check($this->action, $rendezvous)) {
+			if (!WebrsaAccessRendezvous::check($this->name, $this->action, $rendezvous)) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -528,7 +528,7 @@
 				'ajoutPossible' => $this->WebrsaRendezvous->ajoutPossible($personne_id)
 			);
 			
-			if (!WebrsaAccessRendezvous::check($this->action, array(), $params)) {
+			if (!WebrsaAccessRendezvous::check($this->name, $this->action, array(), $params)) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -552,7 +552,7 @@
 				'dossiercommissionLie' => $this->WebrsaRendezvous->haveDossiercommissionLie($personne_id)
 			);
 			
-			if (!WebrsaAccessRendezvous::check($this->action, current($records), $params)) {
+			if (!WebrsaAccessRendezvous::check($this->name, $this->action, current($records), $params)) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -757,7 +757,7 @@
 			);
 			$rendezvous = current($records);
 			
-			if (!WebrsaAccessRendezvous::check($this->action, $rendezvous, $params)) {
+			if (!WebrsaAccessRendezvous::check($this->name, $this->action, $rendezvous, $params)) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
@@ -825,7 +825,7 @@
 			$redirectUrl = array('action' => 'index', $personne_id);
 			$params = array();
 			
-			if (!WebrsaAccessRendezvous::check($this->action, current($records), $params)) {
+			if (!WebrsaAccessRendezvous::check($this->name, $this->action, current($records), $params)) {
 				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
 				$this->redirect($redirectUrl);
 			}
