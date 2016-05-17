@@ -118,6 +118,17 @@
 		}
 
 		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _filelink(array $record, array $params) {
+			return true;
+		}
+
+		/**
 		 * Liste les actions disponnible
 		 * 
 		 * @param array $params
@@ -130,7 +141,8 @@
 					'add' => array('ajout_possible' => true), 
 					'edit' => array('ajout_possible' => true), 
 					'impression', 
-					'delete' => array('reorientationseps' => true)
+					'delete' => array('reorientationseps' => true),
+					'filelink'
 				)
 			);
 

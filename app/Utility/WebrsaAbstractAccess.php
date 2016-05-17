@@ -1,3 +1,4 @@
+
 <?php
     /**
      * Code source de la classe WebrsaAbstractAccess.
@@ -23,22 +24,6 @@
 		 * @var array
 		 */
 		public static $WebrsaAccess = array();
-		
-		/**
-		* Paramètres par défaut
-		* 
-		* @param array $params
-		* @return array
-		*/
-	   public abstract static function params(array $params = array());
-
-	   /**
-		* Renvoi la liste des actions disponibles
-		* 
-		* @param array $params
-		* @return array - array('action1', 'action2', ...)
-		*/
-	   public abstract static function actions(array $params = array());
 		
 		/**
 		 * Permet d'obtenir les accès pour un find first

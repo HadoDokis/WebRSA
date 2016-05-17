@@ -9,6 +9,7 @@
 	 */
 
 	App::uses('WebrsaAbstractLogic', 'Model');
+	App::uses('WebrsaLogicAccessInterface', 'Model/Interface');
 
 	/**
 	 * La classe WebrsaRendezvous possède la logique métier web-rsa
@@ -17,7 +18,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaRendezvous extends WebrsaAbstractLogic
+	class WebrsaRendezvous extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
 	{
 		/**
 		 * Nom du modèle.
@@ -237,5 +238,25 @@
 			} else {
 				return false;
 			}
+		}
+		
+		/**
+		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
+		 * 
+		 * @see WebrsaAccess::getParamsList
+		 * @param integer $personne_id
+		 * @param array $params - Liste des paramètres actifs
+		 */
+		public function getParamsForAccess($personne_id, array $params = array()) {
+			$results = array();
+			
+			if (in_array('ajoutPossible', $params)) {
+				$results['ajoutPossible'] = $this->ajoutPossible($personne_id);
+			}
+			if (in_array('dossiercommissionLie', $params)) {
+				$results['dossiercommissionLie'] = $this->haveDossiercommissionLie($personne_id);
+			}
+			
+			return $results;
 		}
 	}

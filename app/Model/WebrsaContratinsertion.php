@@ -9,6 +9,7 @@
 	 */
 
 	App::uses('WebrsaAbstractLogic', 'Model');
+	App::uses('WebrsaLogicAccessInterface', 'Model/Interface');
 	App::uses('WebrsaModelUtility', 'Utility');
 
 	/**
@@ -18,7 +19,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaContratinsertion extends WebrsaAbstractLogic
+	class WebrsaContratinsertion extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
 	{
 		/**
 		 * Nom du modèle.

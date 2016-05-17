@@ -566,7 +566,7 @@
 					$value = Hash::get( $data, $methodParams['path'] );
 					if( false === empty( $value ) ) {
 						$modelName = Inflector::classify( $method );
-						if( false === ( $method === 'typesorients' && $options['with_parentid'] ) ) {
+						if( false === ( $method === 'typesorients' && $methodParams['with_parentid'] ) ) {
 							$methodParams['conditions'] = array( "{$modelName}.id" => suffix( $value ) );
 						}
 						else {
