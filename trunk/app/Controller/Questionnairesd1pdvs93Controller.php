@@ -80,6 +80,18 @@
 			$add_enabled = $this->Questionnaired1pdv93->addEnabled( $messages );
 			$this->set( compact( 'messages', 'add_enabled' ) );
 
+			$subQuery = array(
+				'alias' => 'historiquesdroits',
+				'fields' => array( 'historiquesdroits.id' ),
+				'conditions' => array(
+					'Questionnaired1pdv93.personne_id = historiquesdroits.personne_id',
+					'Questionnaired1pdv93.created::DATE <= historiquesdroits.modified::DATE',
+					'Questionnaired1pdv93.created::DATE >= historiquesdroits.created::DATE'
+				),
+				'order' => array( 'historiquesdroits.modified ASC' ),
+				'limit' => 1
+			);
+
 			$querydata = array(
                 'fields' => array(
                     'Personne.id',
@@ -102,7 +114,14 @@
                     $this->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
                     $this->Questionnaired1pdv93->Rendezvous->join( 'Statutrdv', array( 'type' => 'INNER' ) ),
 					$this->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-                    $this->Questionnaired1pdv93->Personne->join( 'Historiquedroit', array( 'type' => 'LEFT OUTER', 'conditions' => array( 'Questionnaired1pdv93.created BETWEEN Historiquedroit.created AND Historiquedroit.modified' ) ) ),
+                    $this->Questionnaired1pdv93->Personne->join( 'Historiquedroit',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Historiquedroit.id IN ( '.$this->Questionnaired1pdv93->Personne->Historiquedroit->sq( $subQuery ).' )'
+							)
+						)
+					)
                 ),
                 'contain' => false,
                 'conditions' => array(
