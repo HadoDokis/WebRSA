@@ -1,0 +1,207 @@
+<?php
+	/**
+	 * Code source de la classe WebrsaAccessesComponent.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller.Component
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe WebrsaAccessesComponent fournit des méthodes de contrôle d'accès métier
+	 *
+	 * @package app.Controller.Component
+	 */
+	class WebrsaAccessesComponent extends Component
+	{
+		/**
+		 * Nom du component
+		 *
+		 * @var string
+		 */
+		public $name = 'WebrsaAccesses';
+		
+		/**
+		 * Controller lié au component
+		 * 
+		 * @var Object
+		 */
+		public $Controller = null;
+		
+		/**
+		 * Modèle principal
+		 * 
+		 * @var Object
+		 */
+		public $MainModel = null;
+		
+		/**
+		 * Modèle de logique
+		 * 
+		 * @var Object
+		 */
+		public $WebrsaModel = null;
+		
+		/**
+		 * Nom de la classe de logique d'accès métier à une action
+		 * 
+		 * @var String - WebrsaAccess<i>Nomducontroller</i>
+		 */
+		public $WebrsaAccessClassName = '';
+		
+		/**
+		 * Funcion init() appelé ?
+		 * 
+		 * @var boolean
+		 */
+		protected $_initialized = false;
+		
+		/**
+		 * Alias du modèle lié au Controller
+		 * 
+		 * @var String
+		 */
+		protected $_alias = '';
+		
+		/**
+		 * Assure le chargement des modèles et Utilitaires liés
+		 * 
+		 * @param Controller $controller
+		 * @return void
+		 */
+		public function initialize(Controller $controller) {
+			$MainModelName = Inflector::singularize($controller->name);
+			$WebrsaModelClassName = 'Webrsa'.Inflector::singularize($controller->name);
+			$WebrsaAccessClassName = 'WebrsaAccess'.$controller->name;
+			
+			// Si le modèle principal n'est pas chargé
+			if (!isset($controller->{$MainModelName})) {
+				$controller->{$MainModelName} = ClassRegistry::init($MainModelName);
+			}
+			
+			// Si le modèle de logique n'est pas chargé
+			if (!isset($controller->{$WebrsaModelClassName})) {
+				$controller->{$WebrsaModelClassName} = ClassRegistry::init($WebrsaModelClassName);
+			}
+			
+			// Si l'utilitaire n'est pas chargé...
+			if (!class_exists($WebrsaAccessClassName)) {
+				App::uses($WebrsaAccessClassName, 'Utility');
+			}
+			
+			$this->Controller = $controller;
+			$this->MainModel =& $this->Controller->{$MainModelName};
+			$this->WebrsaModel =& $this->Controller->{$WebrsaModelClassName};
+			$this->WebrsaAccessClassName = $WebrsaAccessClassName;
+			
+			// Vérifications
+			$interfaces = class_implements($WebrsaModelClassName);
+			if (!in_array('WebrsaLogicAccessInterface', $interfaces)) {
+				trigger_error(
+					sprintf("La classe %s doit impl&eacute;menter l'interface %s", $WebrsaModelClassName, 'WebrsaLogicAccessInterface')
+				);
+			}
+			
+			$this->_initialized = true;
+			
+			return parent::initialize($controller);
+		}
+		
+		/**
+		 * Assure l'initialisation du component
+		 * 
+		 * @return void
+		 */
+		public function init() {
+			return $this->_initialized ?: $this->initialize($this->_Collection->getController());
+		}
+
+		/**
+		 * Fait appel à WebrsaAccess<i>Nomducontroller</i> pour vérifier les droits 
+		 * d'accès à une action en fonction d'un enregistrement
+		 * 
+		 * @param integer $id - Id de l'enregistrement si il existe
+		 * @param integer $personne_id - Id de la personne si disponnible (nécéssaire si $id = null)
+		 * @param String $alias - Par défaut, Nom du controller au singulier
+		 * @return void
+		 * @throws Error403Exception
+		 */
+		public function check($id = null, $personne_id = null, $alias = null) {
+			$this->init();
+			$this->alias = $alias ?: Inflector::singularize($this->Controller->name);
+			
+			$record = $this->_getRecord($id);
+			$actionsParams = call_user_func(array($this->WebrsaAccessClassName, 'getActionParamsList'), $this->Controller->action);
+			$paramsAccess = $this->WebrsaModel->getParamsForAccess(
+				$this->_personneId($id, $record, $personne_id), $actionsParams
+			);
+			
+			if ($this->_haveAccess($record, $paramsAccess) === false) {
+				throw new Error403Exception(
+					__("Exception::access_denied", __CLASS__, __FUNCTION__, $this->Controller->Session->read('Auth.User.username'))
+				);
+			}
+		}
+		
+		/**
+		 * Appel de la fonction check sur l'utilitaire de logique d'accès métier lié au Controller
+		 * 
+		 * @param array $record
+		 * @param array $paramsAccess
+		 * @return boolean
+		 */
+		protected function _haveAccess(array $record, array $paramsAccess) {
+			return call_user_func(
+				array($this->WebrsaAccessClassName, 'check'), 
+				$this->Controller->name, 
+				$this->Controller->action, 
+				$record, 
+				$paramsAccess
+			);
+		}
+		
+		/**
+		 * Permet d'obtenir l'enregistrement lié à l'id donné
+		 * 
+		 * @param integer $id
+		 * @return array
+		 */
+		protected function _getRecord($id) {
+			$record = array();
+			if ($id !== null) {
+				$records = $this->WebrsaModel->getDataForAccess(
+					array($this->alias.'.'.$this->MainModel->primaryKey => $id)
+				);
+				$record = end($records);
+			}
+			
+			return $record;
+		}
+		
+		/**
+		 * Permet d'obtenir un personne_id à partir de différentes sources
+		 * 
+		 * @param integer $id
+		 * @param array $record
+		 * @param integer $personne_id
+		 * @return integer
+		 */
+		protected function _personneId($id, array $record, $personne_id = null) {
+			$result = $personne_id ?: (Hash::get($record, $this->alias.'.personne_id') ?: Hash::get($record, 'Personne.id'));
+			if ($result === null) {
+				$data = (array)$this->MainModel->find(
+					'first', array(
+						'fields' => array('Personne.id'),
+						'joins' => array($this->MainModel->join('Personne')),
+						'contain' => false,
+						'conditions' => array($this->alias.'.'.$this->MainModel->primaryKey => $id)
+					)
+				);
+				$result = Hash::get($data, 'Personne.id');
+			}
+			
+			return $result;
+		}
+	}
+?>

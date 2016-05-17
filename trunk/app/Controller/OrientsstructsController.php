@@ -50,7 +50,8 @@
 					'cohorte_enattente' => array( 'filter' => 'Search' ),
 					'cohorte_orientees' => array( 'filter' => 'Search' )
 				)
-			)
+			),
+			'WebrsaAccesses'
 		);
 
 		/**
@@ -155,6 +156,7 @@
 		 * @param integer $id
 		 */
 		public function filelink( $id ) {
+			$this->WebrsaAccesses->check($id);
 			// Début TODO: à mettre en commun
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -538,8 +540,14 @@
 		 * @throws NotFoundException
 		 */
 		public function edit( $id = null ) {
-			$personne_id = ( $this->action === 'add' ? $id : $this->Orientstruct->personneId( $id ) );
-			$id = ( $this->action === 'add' ? null : $id );
+			if ($this->action === 'edit') {
+				$this->WebrsaAccesses->check($id);
+				$personne_id = $this->Orientstruct->personneId($id);
+			} else {
+				$personne_id = $id;
+				$id = null;
+				$this->WebrsaAccesses->check(null, $personne_id);
+			}
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
 
@@ -550,24 +558,6 @@
 			// -----------------------------------------------------------------
 			$redirectUrl = array( 'action' => 'index', $personne_id );
 			$user_id = $this->Session->read( 'Auth.User.id' );
-			
-			$ajout_possible = $this->WebrsaOrientstruct->ajoutPossible($personne_id);
-			
-			/**
-			 * Contrôle d'accès
-			 */
-			if ($this->action === 'add') {
-				$record = array();
-				$msgstr = 'Impossible d\'ajouter une orientation à cette personne.';
-			} else {
-				$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
-				$msgstr = 'Impossible de modifier cette orientation.';
-			}
-			
-			if (!WebrsaAccessOrientsstructs::check($this->name, $this->action, $record, compact('ajout_possible'))) {
-				$this->Session->setFlash($msgstr, 'flash/error');
-				$this->redirect($redirectUrl);
-			}
 			
 			//$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 			$originalAddEditFormData = $this->WebrsaOrientstruct->getAddEditFormData( $personne_id, $id, $user_id );
@@ -584,8 +574,6 @@
 				$this->redirect( $redirectUrl );
 			}
 			// -----------------------------------------------------------------
-
-			$user_id = $this->Session->read( 'Auth.User.id' );
 
 			// Tentative de sauvegarde
 			if( !empty( $this->request->data ) ) {
@@ -680,21 +668,11 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
 			
-			/**
-			 * Contrôle d'accès
-			 */
-			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
-			$redirectUrl = array('action' => 'index', $personne_id);
-			
-			if (!WebrsaAccessOrientsstructs::check($this->action, current($record))) {
-				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
-				$this->redirect($redirectUrl);
-			}
-
 			$this->Jetons2->get( $dossier_id );
 
 			$this->Orientstruct->begin();
@@ -721,20 +699,10 @@
 		 * @param integer $id La clé primaire de l'Orientstruct
 		 */
 		public function impression( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 			
-			/**
-			 * Contrôle d'accès
-			 */
-			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
-			$redirectUrl = array('action' => 'index', $personne_id);
-			
-			if (!WebrsaAccessOrientsstructs::check($this->action, current($record))) {
-				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
-				$this->redirect($redirectUrl);
-			}
-
 			if( in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) ) ) {
 				$pdf = $this->Orientstruct->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 			}
@@ -748,7 +716,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'orientation.', 'default', array( 'class' => 'error' ) );
-				$this->redirect($redirectUrl);
+				$this->redirect(array('action' => 'index', $personne_id));
 			}
 		}
 
@@ -763,20 +731,10 @@
 		 * @return void
 		 */
 		public function impression_changement_referent( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 			
-			/**
-			 * Contrôle d'accès
-			 */
-			$record = $this->WebrsaOrientstruct->getDataForAccess(array('Orientstruct.id' => $id));
-			$redirectUrl = array('action' => 'index', $personne_id);
-			
-			if (!WebrsaAccessOrientsstructs::check($this->action, current($record))) {
-				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
-				$this->redirect($redirectUrl);
-			}
-
 			$pdf = $this->WebrsaOrientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
@@ -784,7 +742,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification.', 'default', array( 'class' => 'error' ) );
-				$this->redirect($redirectUrl);
+				$this->redirect(array('action' => 'index', $personne_id));
 			}
 		}
 

@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'WebrsaAbstractLogic', 'Model' );
+	App::uses( 'WebrsaLogicAccessInterface', 'Model/Interface' );
 	App::uses( 'DepartementUtility', 'Utility' );
 
 	/**
@@ -18,7 +19,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaOrientstruct extends WebrsaAbstractLogic
+	class WebrsaOrientstruct extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
 	{
 		/**
 		 * Nom du modèle.
@@ -820,5 +821,25 @@
 			}
 			
 			return $records;
+		}
+		
+		/**
+		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
+		 * 
+		 * @see WebrsaAccess::getParamsList
+		 * @param integer $personne_id
+		 * @param array $params - Liste des paramètres actifs
+		 */
+		public function getParamsForAccess($personne_id, array $params = array()) {
+			$results = array();
+			
+			if (in_array('ajout_possible', $params)) {
+				$results['ajout_possible'] = $this->ajoutPossible($personne_id);
+			}
+			if (in_array('reorientationseps', $params)) {
+				$results['reorientationseps'] = $this->Orientstruct->Personne->Dossierep->getReorientationsEnCours($personne_id);
+			}
+			
+			return $results;
 		}
 	}

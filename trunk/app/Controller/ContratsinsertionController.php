@@ -53,6 +53,7 @@ class ContratsinsertionController extends AppController
 				'search_valides' => array( 'filter' => 'Search' ),
 			),
 		),
+		'WebrsaAccesses'
 	);
 
     public $commeDroit = array(
@@ -342,7 +343,7 @@ class ContratsinsertionController extends AppController
 
         $personne_id = $contratinsertion['Contratinsertion']['personne_id'];
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
-		$this->_checkAccess($id);
+		$this->WebrsaAccesses->check($id);
 
         $dossier_id = $this->Contratinsertion->Personne->dossierId($personne_id);
         $this->assert(!empty($dossier_id), 'invalidParameter');
@@ -628,7 +629,7 @@ class ContratsinsertionController extends AppController
      * @param integer $contratinsertion_id
      */
     public function view($contratinsertion_id = null) {
-		$this->_checkAccess($contratinsertion_id);
+		$this->WebrsaAccesses->check($contratinsertion_id);
 		$query = array(
 			'fields' => array_merge(
 					$this->Contratinsertion->fields(),
@@ -703,18 +704,10 @@ class ContratsinsertionController extends AppController
     /**
      * Formulaire d'ajout d'un CER (CG 58, 66, 93).
      *
-     * @param integer $id
+     * @param integer $personne_id
      */
-    public function add($id = null) {
-		$actionsParams = WebrsaAccessContratsinsertion::getActionParamsList($this->action);
-		$paramsAccess = $this->WebrsaContratinsertion->getParamsForAccess($id, $actionsParams);
-
-		if (!WebrsaAccessContratsinsertion::check($this->name, $this->action, array(), $paramsAccess)) {
-			throw new Error403Exception(
-				__("Exception::access_denied", __CLASS__, __FUNCTION__, $this->Session->read('Auth.User.username'))
-			);
-		}
-		
+    public function add($personne_id = null) {
+		$this->WebrsaAccesses->check(null, $personne_id);
         $args = func_get_args();
         call_user_func_array(array($this, '_add_edit'), $args);
     }
@@ -725,7 +718,7 @@ class ContratsinsertionController extends AppController
      * @param integer $id
      */
     public function edit($id = null) {
-		$this->_checkAccess($id);
+		$this->WebrsaAccesses->check($id);
         $args = func_get_args();
         call_user_func_array(array($this, '_add_edit'), $args);
     }
@@ -1435,7 +1428,7 @@ class ContratsinsertionController extends AppController
     public function delete($id) {
         $dossier_id = $this->Contratinsertion->dossierId($id);
         $this->DossiersMenus->checkDossierMenu(array('id' => $dossier_id));
-		$this->_checkAccess($id);
+		$this->WebrsaAccesses->check($id);
 
         $this->Jetons2->get($dossier_id);
 
@@ -1474,7 +1467,7 @@ class ContratsinsertionController extends AppController
         $this->set('personne_id', $personne_id);
 
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
-		$this->_checkAccess($id);
+		$this->WebrsaAccesses->check($id);
 
         $dossier_id = $this->Contratinsertion->dossierId($id);
         $this->Jetons2->get($dossier_id);
@@ -1534,7 +1527,7 @@ class ContratsinsertionController extends AppController
     public function notificationsop($contratinsertion_id = null) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
+		$this->WebrsaAccesses->check($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getNotificationopPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1555,7 +1548,7 @@ class ContratsinsertionController extends AppController
     public function ficheliaisoncer($contratinsertion_id) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
+		$this->WebrsaAccesses->check($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getPdfFicheliaisoncer($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1577,7 +1570,7 @@ class ContratsinsertionController extends AppController
     public function notifbenef($contratinsertion_id) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
+		$this->WebrsaAccesses->check($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getPdfNotifbenef($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1600,7 +1593,7 @@ class ContratsinsertionController extends AppController
     public function impression($contratinsertion_id = null) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
+		$this->WebrsaAccesses->check($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getDefaultPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1637,7 +1630,7 @@ class ContratsinsertionController extends AppController
         $this->set('personne_id', $personne_id);
 
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
-		$this->_checkAccess($id);
+		$this->WebrsaAccesses->check($id);
 
         $dossier_id = $this->Contratinsertion->Personne->dossierId($personne_id);
         $this->assert(!empty($dossier_id), 'invalidParameter');
@@ -1703,7 +1696,7 @@ class ContratsinsertionController extends AppController
     public function reconduction_cer_plus_55_ans($contratinsertion_id) {
         $personne_id = $this->Contratinsertion->personneId($contratinsertion_id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
-		$this->_checkAccess($contratinsertion_id);
+		$this->WebrsaAccesses->check($contratinsertion_id);
 
         $pdf = $this->Contratinsertion->getPdfReconductionCERPlus55Ans($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
@@ -1830,26 +1823,6 @@ class ContratsinsertionController extends AppController
 	public function exportcsv_search_valides() {
 		$Recherche = $this->Components->load( 'WebrsaRecherchesContratsinsertion' );
 		$Recherche->exportcsv( array( 'modelRechercheName' => 'WebrsaRechercheContratinsertionValides' ) );
-	}
-	
-	/**
-	 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès 
-	 * à une action en fonction d'un enregistrement
-	 * 
-	 * @param integer $contratinsertion_id
-	 */
-	protected function _checkAccess($contratinsertion_id) {
-		$records = $this->WebrsaContratinsertion->getDataForAccess(array('Contratinsertion.id' => $contratinsertion_id));
-		$record = end($records);
-		$personne_id = Hash::get($record, 'Contratinsertion.personne_id');
-		$actionsParams = WebrsaAccessContratsinsertion::getActionParamsList($this->action);
-		$paramsAccess = $this->WebrsaContratinsertion->getParamsForAccess($personne_id, $actionsParams);
-
-		if (!WebrsaAccessContratsinsertion::check($this->name, $this->action, $record, $paramsAccess)) {
-			throw new Error403Exception(
-				__("Exception::access_denied", __CLASS__, __FUNCTION__, $this->Session->read('Auth.User.username'))
-			);
-		}
 	}
 }
 ?>

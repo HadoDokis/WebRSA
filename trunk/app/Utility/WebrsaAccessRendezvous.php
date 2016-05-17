@@ -110,9 +110,9 @@
 				array(
 					'add' => array('ajoutPossible' => true), 
 					'view', 
-					'edit', 
+					'edit' => array('dossiercommissionLie' => true), 
 					'impression', 
-					'delete', 
+					'delete' => array('dossiercommissionLie' => true), 
 					'filelink'
 				)
 			);
