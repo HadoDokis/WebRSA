@@ -6,6 +6,9 @@
 	else {
 		$this->pageTitle = 'Fiche de saisine de la personne';
 	}
+	
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
 
@@ -175,10 +178,7 @@
 						array( 'controller' => 'bilansparcours66', 'action' => 'view',
 						$bilanparcours66['Bilanparcours66']['id']),
 						array(
-							'enabled' => (
-								( $this->Permissions->checkDossier( 'bilansparcours66', 'view', $dossierMenu ) == 1 )
-								&& $block
-							)
+							'enabled' => WebrsaAccess::isEnabled($bilanparcours66, '/Bilansparcours66/view')
 						)
 					)
 				);
@@ -189,10 +189,7 @@
 						array( 'controller' => 'bilansparcours66', 'action' => 'edit',
 						$bilanparcours66['Bilanparcours66']['id']),
 						array(
-							'enabled' => (
-								( $this->Permissions->checkDossier( 'bilansparcours66', 'edit', $dossierMenu ) == 1 )
-								&& $block
-							)
+							'enabled' => WebrsaAccess::isEnabled($bilanparcours66, '/Bilansparcours66/edit')
 						)
 					)
 				);
@@ -203,18 +200,12 @@
 						array( 'controller' => 'bilansparcours66', 'action' => 'impression',
 						$bilanparcours66['Bilanparcours66']['id']),
 						array(
-							'enabled' => (
-								( $this->Permissions->checkDossier( 'bilansparcours66', 'impression', $dossierMenu ) == 1 )
-								&& $block
-							)
+							'enabled' => WebrsaAccess::isEnabled($bilanparcours66, '/Bilansparcours66/impression')
 						)
 					)
 				);
 				
-				$enabled = (( $this->Permissions->checkDossier( 'manifestationsbilansparcours66', 'index', $dossierMenu ) == 1 )
-								&& $block
-								&& !$epparcours
-				);
+				$enabled = WebrsaAccess::isEnabled($bilanparcours66, '/Manifestationsbilansparcours66/index');
 				
 				$manif = $this->Xhtml->tag(
 					'td',
@@ -241,11 +232,7 @@
 						array( 'controller' => 'bilansparcours66', 'action' => 'cancel',
 						$bilanparcours66['Bilanparcours66']['id']),
 						array(
-							'enabled' => (
-								( $this->Permissions->checkDossier( 'bilansparcours66', 'cancel', $dossierMenu ) == 1 )
-								&& $block 
-								&& !in_array($bilanparcours66['Bilanparcours66']['positionbilan'], array('traite', 'ajourne', 'annule'))
-							)
+							'enabled' => WebrsaAccess::isEnabled($bilanparcours66, '/Bilansparcours66/cancel')
 						)
 					)
 				);
@@ -256,9 +243,7 @@
 						array( 'controller' => 'bilansparcours66', 'action' => 'filelink',
 						$bilanparcours66['Bilanparcours66']['id']),
 						array(
-							'enabled' => (
-								( $this->Permissions->checkDossier( 'bilansparcours66', 'filelink', $dossierMenu ) == 1 )
-							)
+							'enabled' => WebrsaAccess::isEnabled($bilanparcours66, '/Bilansparcours66/filelink')
 						)
 					)
 				);

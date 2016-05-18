@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	App::uses('WebrsaAccessBilansparcours66', 'Utility');
+
 	/**
 	 * La classe CohortesciController permet de gérer les bilans de parcours (CG 66).
 	 *
@@ -27,6 +29,7 @@
 
 		public $uses = array(
 			'Bilanparcours66',
+			'WebrsaBilanparcours66',
 			'Option',
 			'Dossierep',
 			'Typeorient'
@@ -41,6 +44,7 @@
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
 			),
+			'WebrsaAccesses'
 		);
 
 		public $commeDroit = array(
@@ -181,6 +185,7 @@
 		 * @param integer $id
 		 */
 		public function filelink( $id ){
+			$this->WebrsaAccesses->check($id);
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $id ) ) ) );
 
@@ -477,8 +482,10 @@
 
 			$query['conditions']['Bilanparcours66.personne_id'] = $personne_id;
 
-			$bilansparcours66 = $this->Bilanparcours66->find( 'all', $query );
-
+			$bilansparcours66 = WebrsaAccessBilansparcours66::accesses(
+				$this->Bilanparcours66->find('all', $this->WebrsaBilanparcours66->completeVirtualFieldsForAccess($query))
+			);
+			
 			$this->_setOptions( array(), array( 'find' => false ) );
 			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
 		}
@@ -486,7 +493,8 @@
 		/**
 		 *
 		 */
-		public function add() {
+		public function add($personne_id) {
+			$this->WebrsaAccesses->check(null, $personne_id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -495,7 +503,8 @@
 		 * TODO: que modifie-t'on ? Dans quel cas peut-on supprimer ?
 		 *
 		 */
-		public function edit() {
+		public function edit($id) {
+			$this->WebrsaAccesses->check($id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -1071,6 +1080,7 @@
 		 * @param integer $id
 		 */
 		public function cancel( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $id ) ) ) );
 
 			$qd_bilan = array(
@@ -1160,6 +1170,7 @@
 		 * @param integer $id
 		 */
 		public function impression( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->assert( !empty( $id ), 'error404' );
 
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $id ) ) );

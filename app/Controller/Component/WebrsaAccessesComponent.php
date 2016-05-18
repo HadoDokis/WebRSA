@@ -126,8 +126,13 @@
 		 * @param String $alias - Par défaut, Nom du controller au singulier
 		 * @return void
 		 * @throws Error403Exception
+		 * @throws Error404Exception
 		 */
 		public function check($id = null, $personne_id = null, $alias = null) {
+			if (($id !== null && !self::_validId($id)) || ($personne_id !== null && !self::_validId($personne_id))) {
+				throw new Error404Exception();
+			}
+			
 			$this->init();
 			$this->alias = $alias ?: Inflector::singularize($this->Controller->name);
 			
@@ -142,6 +147,16 @@
 					__("Exception::access_denied", __CLASS__, __FUNCTION__, $this->Controller->Session->read('Auth.User.username'))
 				);
 			}
+		}
+		
+		/**
+		 * Vérifi qu'un ID est un entier positif de base 10
+		 * 
+		 * @param integer $id
+		 * @return boolean
+		 */
+		protected static function _validId($id) {
+			return is_numeric($id) && (integer)$id > 0 && preg_match('/^[\d]+$/', (string)$id);
 		}
 		
 		/**
@@ -189,16 +204,14 @@
 		 */
 		protected function _personneId($id, array $record, $personne_id = null) {
 			$result = $personne_id ?: (Hash::get($record, $this->alias.'.personne_id') ?: Hash::get($record, 'Personne.id'));
+			
 			if ($result === null) {
-				$data = (array)$this->MainModel->find(
-					'first', array(
-						'fields' => array('Personne.id'),
-						'joins' => array($this->MainModel->join('Personne')),
-						'contain' => false,
-						'conditions' => array($this->alias.'.'.$this->MainModel->primaryKey => $id)
-					)
-				);
-				$result = Hash::get($data, 'Personne.id');
+				if ($this->MainModel->Behaviors->attached('Allocatairelie') || method_exists($this->MainModel, 'personneId')) {
+					$result = $this->MainModel->personneId($id);
+				} else {
+					trigger_error(sprintf("Field: Personne.id n'existe pas dans %s::getDataForAccess", $this->WebrsaModel->name));
+					exit;
+				}
 			}
 			
 			return $result;
