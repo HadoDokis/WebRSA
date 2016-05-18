@@ -9,6 +9,7 @@
 	 */
 
 	App::uses('WebrsaAbstractLogic', 'Model');
+	App::uses('WebrsaLogicAccessInterface', 'Model/Interface');
 
 	/**
 	 * La classe WebrsaDsp possède la logique métier web-rsa
@@ -17,7 +18,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaDsp extends WebrsaAbstractLogic
+	class WebrsaDsp extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
 	{
 		/**
 		 * Nom du modèle.
@@ -59,11 +60,6 @@
 				'contain' => false
 			);
 			$bases = $this->DspRev->find('all', array('contain' => false, 'conditions' => $conditions));
-			
-			$datas = array();
-			foreach ($bases as $value) {
-				$datas[Hash::get($value, 'DspRev.personne_id')][] = Hash::get($value, 'DspRev.id');
-			}
 			$ids = (array)Hash::extract($bases, '{n}.DspRev.id');
 			$personne_ids = array_unique((array)Hash::extract($bases, '{n}.DspRev.personne_id'));
 			
@@ -291,5 +287,32 @@
 			$success = !empty($results);
 
 			return $success;
+		}
+		
+		/**
+		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
+		 * 
+		 * @see WebrsaAccess::getParamsList
+		 * @param integer $personne_id
+		 * @param array $params - Liste des paramètres actifs
+		 */
+		public function getParamsForAccess($personne_id, array $params = array()) {
+			$results = array();
+			
+			if (in_array('ajoutPossible', $params)) {
+				$results['ajoutPossible'] = $this->ajoutPossible($personne_id);
+			}
+			
+			return $results;
+		}
+		
+		/**
+		 * Permet de savoir si il est possible d'ajouter un enregistrement
+		 * 
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
+		public function ajoutPossible($personne_id) {
+			return true;
 		}
 	}
