@@ -8,6 +8,9 @@
 		__( 'Historique des DSPs de %s' ),
 		Set::extract( $dsp, 'Personne.qual' ).' '.Set::extract( $dsp, 'Personne.nom' ).' '.Set::extract( $dsp, 'Personne.prenom' )
 	);
+	
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 ?>
 
 <div class="tab_histo_dsp">
@@ -31,27 +34,26 @@
 				
 				echo '<td>'.$this->Xhtml->link($this->Xhtml->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array(
 					'escape'=>false, 
-					'enabled' => $histo['Dsp']['action_view_diff'] 
-						&& $this->Permissions->checkDossier( 'dsps', 'view_diff', $dossierMenu )
+					'enabled' => WebrsaAccess::isEnabled($histo, '/Dsps/view_diff')
 				)).'</td>';
 				
 				echo "</td><td>".$this->Xhtml->link($this->Xhtml->image('icons/zoom.png', array()).'Voir', '/dsps/view_revs/'.$histo['DspRev']['id'], array(
 					'escape'=>false, 
-					'enabled' => $histo['Dsp']['action_view_revs']
-						&& $this->Permissions->checkDossier( 'dsps', 'view_revs', $dossierMenu )
-				))."</td><td>".$this->Xhtml->link($this->Xhtml->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array('escape'=>false, 'enabled' => $this->Permissions->checkDossier( 'dsps', 'edit', $dossierMenu )))."</td>";
+					'enabled' => WebrsaAccess::isEnabled($histo, '/Dsps/view_revs')
+				))."</td><td>".$this->Xhtml->link($this->Xhtml->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array(
+						'escape'=>false, 
+						'enabled' => WebrsaAccess::isEnabled($histo, '/Dsps/edit')
+					))."</td>";
 				if( Configure::read( 'Cg.departement' ) != 66 ){
 					echo "<td>".$this->Xhtml->link($this->Xhtml->image('icons/arrow_redo.png', array()).'Revenir à cette version', '/dsps/revertTo/'.$histo['DspRev']['id'], array(
 						'escape'=>false, 
-						'enabled' => $histo['Dsp']['action_revertTo']
-							&& $this->Permissions->checkDossier( 'dsps', 'revertTo', $dossierMenu )
+						'enabled' => WebrsaAccess::isEnabled($histo, '/Dsps/revertTo')
 					))."</td>";
 				}
 
 				echo "<td>".$this->Xhtml->link($this->Xhtml->image('icons/attach.png', array()).'Fichiers liés', '/dsps/filelink/'.$histo['DspRev']['id'], array(
 					'escape'=>false, 
-					'enabled' => $histo['Dsp']['action_filelink']
-						&& $this->Permissions->checkDossier( 'dsps', 'filelink', $dossierMenu )
+					'enabled' => WebrsaAccess::isEnabled($histo, '/Dsps/filelink')
 				))."</td>";
 				
 				echo "<td>".'('.$nbFichiersLies.')'."</td>";

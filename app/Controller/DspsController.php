@@ -8,7 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
-	App::uses('WebrsaAccessDsp', 'Utility');
+	App::uses('WebrsaAccessDsps', 'Utility');
 
 	/**
 	 * La classe DspsController ...
@@ -45,7 +45,8 @@
 			'Search.SearchPrg' => array(
 				'actions' => array( 'index', 'search' )
 			),
-			'DossiersMenus'
+			'DossiersMenus',
+			'WebrsaAccesses'
 		);
 
 		public $paginate = array(
@@ -168,6 +169,7 @@
 		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
 		 */
 		public function filelink( $id ) {
+			$this->WebrsaAccesses->check($id, null, 'DspRev');
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
@@ -195,17 +197,6 @@
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-
-			/**
-			 * Contrôle d'accès
-			 */
-			$record = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
-			$redirectUrl = array('action' => 'histo', $personne_id);
-
-			if (!WebrsaAccessDsp::check($this->action, current($record))) {
-				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
-				$this->redirect($redirectUrl);
-			}
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -260,7 +251,8 @@
 		/**
 		 *
 		 */
-		public function edit() {
+		public function edit($personne_id, $id) {
+			$this->WebrsaAccesses->check($id, $personne_id, 'DspRev');
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -385,10 +377,12 @@
 			/**
 			 * Contrôle d'accès
 			 */
-			$params = array();
-			$histos = WebrsaAccessDsp::accesses($this->WebrsaDsp->getDataForAccess(array('DspRev.personne_id' => $id)), $params);
+			$actionsParams = WebrsaAccessDsps::getParamsList();
+			$paramsAccess = $this->WebrsaDsp->getParamsForAccess($id, $actionsParams);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+			$histos = WebrsaAccessDsps::accesses($this->WebrsaDsp->getDataForAccess(array('DspRev.personne_id' => $id)), $paramsAccess);
 
-			$this->set( array( 'dsp' => $dsp, 'histos' => $histos, 'personne_id' => $id ) );
+			$this->set( array( 'dsp' => $dsp, 'histos' => $histos, 'personne_id' => $id, 'ajoutPossible' => $ajoutPossible ) );
 		}
 
 		/**
@@ -399,6 +393,7 @@
 		 * @throws NotFoundException
 		 */
 		public function revertTo( $id = null ) {
+			$this->WebrsaAccesses->check($id, null, 'DspRev');
 			$belongsToRomev3 = $this->DspRev->belongsTo;
 			foreach( $belongsToRomev3 as $alias => $params ) {
 				if( strpos( $alias, 'romev3Rev' ) === false ) {
@@ -426,17 +421,6 @@
 			$personne_id = Hash::get( $record, 'DspRev.personne_id' );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
-
-			/**
-			 * Contrôle d'accès
-			 */
-			$record2 = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
-			$redirectUrl = array('action' => 'histo', $personne_id);
-
-			if (!WebrsaAccessDsp::check($this->action, current($record2))) {
-				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
-				$this->redirect($redirectUrl);
-			}
 
 			// INFO: on obtient un jeton qui sera traité dans la méthode edit()
 			$this->Jetons2->get( $dossier_id );
@@ -486,25 +470,11 @@
 		 * Visualisation d'une version particulière des DspRev.
 		 */
 		public function view_revs( $id = null ) {
+			$this->WebrsaAccesses->check($id, null, 'DspRev');
 			$query = $this->WebrsaDsp->getViewQuery();
 			$query['conditions'] = array( 'DspRev.id' => $id );
 
 			$dsprevs = $this->DspRev->find( 'first', $query );
-			$personne_id = Hash::get($dsprevs, 'DspRev.personne_id');
-
-			/**
-			 * Contrôle d'accès
-			 */
-			$record = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
-			$redirectUrl = array('action' => 'histo', $personne_id);
-
-			if (!WebrsaAccessDsp::check($this->action, current($record))) {
-				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
-				$this->redirect($redirectUrl);
-			}
-
-            $personne = Hash::get( $dsprevs, 'Personne.nom_complet' );
-            $this->set( compact( 'personne' ) );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevs['DspRev']['personne_id'] ) ) );
 
@@ -539,6 +509,7 @@
 		 *
 		 */
 		public function view_diff( $id = null ) {
+			$this->WebrsaAccesses->check($id, null, 'DspRev');
 			$base = $this->WebrsaDsp->getViewQuery();
 
 			$query = $base;
@@ -549,16 +520,6 @@
 			$personne_id = $dsprevact['Personne']['id'];
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevact['Personne']['id'] ) ) );
-			/**
-			 * Contrôle d'accès
-			 */
-			$record = $this->WebrsaDsp->getDataForAccess(array('DspRev.id' => $id));
-			$redirectUrl = array('action' => 'histo', $personne_id);
-
-			if (!WebrsaAccessDsp::check($this->action, current($record))) {
-				$this->Session->setFlash('Impossible d\'effectuer cette action', 'flash/error');
-				$this->redirect($redirectUrl);
-			}
 
 			// -----------------------------------------------------------------
 
