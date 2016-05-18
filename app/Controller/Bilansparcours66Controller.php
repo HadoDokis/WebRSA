@@ -482,12 +482,17 @@
 
 			$query['conditions']['Bilanparcours66.personne_id'] = $personne_id;
 
+			$actionsParams = WebrsaAccessBilansparcours66::getParamsList();
+			$paramsAccess = $this->WebrsaBilanparcours66->getParamsForAccess($personne_id, $actionsParams);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+			
 			$bilansparcours66 = WebrsaAccessBilansparcours66::accesses(
-				$this->Bilanparcours66->find('all', $this->WebrsaBilanparcours66->completeVirtualFieldsForAccess($query))
+				$this->Bilanparcours66->find('all', $this->WebrsaBilanparcours66->completeVirtualFieldsForAccess($query)),
+				$paramsAccess
 			);
 			
 			$this->_setOptions( array(), array( 'find' => false ) );
-			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
+			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct', 'ajoutPossible' )  );
 		}
 
 		/**

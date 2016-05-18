@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaBilanparcours66.
+	 * Code source de la classe WebrsaPersonneReferent.
 	 *
 	 * PHP 5.3
 	 *
@@ -13,27 +13,27 @@
 	App::uses('WebrsaModelUtility', 'Utility');
 
 	/**
-	 * La classe WebrsaBilanparcours66 possède la logique métier web-rsa
+	 * La classe WebrsaPersonneReferent possède la logique métier web-rsa
 	 *
-	 * @todo WebrsaLogicBilanparcours66 ?
+	 * @todo WebrsaLogicPersonneReferent ?
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaBilanparcours66 extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
+	class WebrsaPersonneReferent extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'WebrsaBilanparcours66';
+		public $name = 'WebrsaPersonneReferent';
 
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $uses = array('Bilanparcours66');
+		public $uses = array('PersonneReferent');
 
 		/**
 		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
@@ -43,14 +43,8 @@
 		 */
 		public function completeVirtualFieldsForAccess(array $query = array()) {
 			$fields = array(
-				'positionbilan' => 'Bilanparcours66.positionbilan',
-				'proposition' => 'Bilanparcours66.proposition',
-				'dateimpressionconvoc' => 'Defautinsertionep66.dateimpressionconvoc',
+				'dfdesignation' => 'PersonneReferent.dfdesignation',
 			);
-			
-			if (!WebrsaModelUtility::findJoinKey('Defautinsertionep66', $query)) {
-				$query['joins'][] = $this->Bilanparcours66->join('Defautinsertionep66');
-			}
 			
 			return Hash::merge($query, array('fields' => array_values($fields)));
 		}
@@ -64,21 +58,21 @@
 		public function getDataForAccess(array $conditions) {
 			$query = array(
 				'fields' => array(
-					'Bilanparcours66.id',
-					'Bilanparcours66.personne_id',
+					'PersonneReferent.id',
+					'PersonneReferent.personne_id',
 				),
 				'conditions' => $conditions,
 				'joins' => array(
-					$this->Bilanparcours66->join('Personne')
+					$this->PersonneReferent->join('Personne')
 				),
 				'contain' => false,
 				'order' => array(
-					'Bilanparcours66.datebilan' => 'DESC',
-					'Bilanparcours66.id' => 'DESC',
+					'PersonneReferent.dddesignation' => 'DESC',
+					'PersonneReferent.id' => 'DESC',
 				)
 			);
 			
-			$results = $this->Bilanparcours66->find('all', $this->completeVirtualFieldsForAccess($query));
+			$results = $this->PersonneReferent->find('all', $this->completeVirtualFieldsForAccess($query));
 			return $results;
 		}
 		
@@ -106,6 +100,16 @@
 		 * @return boolean
 		 */
 		public function ajoutPossible($personne_id) {
-			return true;
+			$query = array(
+				'fields' => array('PersonneReferent.id'),
+				'conditions' => array(
+					'PersonneReferent.personne_id' => $personne_id,
+					'PersonneReferent.dfdesignation IS NULL',
+				),
+				'contain' => false,
+			);
+			$result = $this->PersonneReferent->find('first', $query);
+			
+			return empty($result);
 		}
 	}

@@ -16,7 +16,10 @@
 		echo $this->element( 'ancien_dossier' );
 
 		echo "<ul class='actions'><li class='add'>";
-			echo $this->Default2->button('add', array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id));
+			echo $this->Default2->button('add', 
+				array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id), 
+				array('enabled' => WebrsaAccess::addIsEnabled('/Bilansparcours66/add', $ajoutPossible))
+			);
 		echo "</li></ul>";
 
 		if( empty( $bilansparcours66 ) ){
