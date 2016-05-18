@@ -30,3 +30,30 @@ msgstr "Créé le"
 
 msgid "Memo.modified"
 msgstr "Modifié le"
+
+msgid "/Memos/delete"
+msgstr "Supprimer le mémo"
+
+msgid "/Memos/delete/#Memo.id#"
+msgstr "Supprimer le mémo"
+
+msgid "/Memos/delete/#Memo.id# ?"
+msgstr "Confirmer la suppression ?"
+
+msgid "/Memos/view"
+msgstr "Voir le mémo"
+
+msgid "/Memos/view/#Memo.id#"
+msgstr "Voir le mémo"
+
+msgid "/Memos/edit"
+msgstr "Modifier le mémo"
+
+msgid "/Memos/edit/#Memo.id#"
+msgstr "Modifier le mémo"
+
+msgid "/Memos/filelink"
+msgstr "Lier des fichiers"
+
+msgid "/Memos/filelink/#Memo.id#"
+msgstr "Lier des fichiers"
