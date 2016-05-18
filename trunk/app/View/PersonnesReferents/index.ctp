@@ -2,6 +2,9 @@
 	$departement = Configure::read( 'Cg.departement' );
 
 	$this->pageTitle = $departement == 93 ? 'Personne chargée du suivi' : 'Référents liés à la personne';
+	
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -29,7 +32,7 @@
 					'action' => 'add',
 					$personne_id
 				),
-				( $ajoutPossible && $this->Permissions->checkDossier( 'personnes_referents', 'add', $dossierMenu ) )
+				WebrsaAccess::addIsEnabled('/PersonnesReferents/add', $ajoutPossible)
 			).' </li>';
 		?>
 	</ul>
@@ -67,19 +70,19 @@
 							'edit',
 							array( 'controller' => 'personnes_referents', 'action' => 'edit',
 							$personne_referent['PersonneReferent']['id'] ),
-							array( 'enabled' => ( !$cloture && $this->Permissions->checkDossier( 'personnes_referents', 'edit', $dossierMenu ) ) )
+							array( 'enabled' => WebrsaAccess::isEnabled($personne_referent, '/PersonnesReferents/edit') )
 						),
 						$this->Default2->button(
 							'cloture_referent',
 							array( 'controller' => 'personnes_referents', 'action' => 'cloturer',
 							$personne_referent['PersonneReferent']['id'] ),
-							array( 'enabled' => ( !$cloture && $this->Permissions->checkDossier( 'personnes_referents', 'cloturer', $dossierMenu ) ) )
+							array( 'enabled' => WebrsaAccess::isEnabled($personne_referent, '/PersonnesReferents/cloturer') )
 						),
 						$this->Default2->button(
 							'filelink',
 							array( 'controller' => 'personnes_referents', 'action' => 'filelink',
 							$personne_referent['PersonneReferent']['id'] ),
-							array( 'enabled' => $this->Permissions->checkDossier( 'personnes_referents', 'filelink', $dossierMenu ) )
+							array( 'enabled' => WebrsaAccess::isEnabled($personne_referent, '/PersonnesReferents/filelink') )
 						),
 						h( "({$personne_referent['Fichiermodule']['nombre']})" )
 					),

@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	 App::uses('WebrsaAccessPersonnesReferents', 'Utility');
+
 	/**
 	 * La classe PersonnesReferentsController permet la gestion des référents du parcours au niveau du dossier
 	 * de l'allocataire.
@@ -18,7 +20,7 @@
 	{
 		public $name = 'PersonnesReferents';
 
-		public $uses = array( 'PersonneReferent', 'Option' );
+		public $uses = array( 'PersonneReferent', 'Option', 'WebrsaPersonneReferent' );
 
 		public $helpers = array(
 			'Locale',
@@ -50,7 +52,8 @@
 			'Search.SearchPrg' => array(
 				'actions' => array( 'cohorte_affectation93' )
 			),
-			'Workflowscers93'
+			'Workflowscers93',
+			'WebrsaAccesses'
 		);
 
 		/**
@@ -125,6 +128,7 @@
 		 * @param integer $id
 		 */
 		public function filelink( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
@@ -206,8 +210,7 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'PersonneReferent' );
 
-			$personnes_referents = $this->PersonneReferent->find(
-				'all',
+			$query = $this->WebrsaPersonneReferent->completeVirtualFieldsForAccess(
 				array(
 					'fields' => array_merge(
 						$this->PersonneReferent->fields(),
@@ -230,10 +233,15 @@
 					)
 				)
 			);
-
-			// Existe-t'il un référent non clôturé ?
-			$dfdesignations = Set::extract( '/PersonneReferent/dfdesignation', $personnes_referents );
-			$ajoutPossible = ( count( $dfdesignations ) == count( Hash::filter( (array)$dfdesignations ) ) );
+			
+			$actionsParams = WebrsaAccessPersonnesReferents::getParamsList();
+			$paramsAccess = $this->WebrsaPersonneReferent->getParamsForAccess($personne_id, $actionsParams);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+			
+			$personnes_referents = WebrsaAccessPersonnesReferents::accesses(
+				$this->PersonneReferent->find('all', $query),
+				$paramsAccess
+			);
 
 			$this->set( 'personnes_referents', $personnes_referents );
 			$this->set( 'personne_id', $personne_id );
@@ -247,6 +255,7 @@
 		 * @return void
 		 */
 		public function add( $id = null ) {
+			$this->WebrsaAccesses->check(null, $id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -258,6 +267,7 @@
 		 * @return void
 		 */
 		public function edit( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -372,6 +382,7 @@
 		 * @return void
 		 */
 		public function cloturer( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$personne_referent = $this->PersonneReferent->find(

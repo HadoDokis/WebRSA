@@ -47,24 +47,17 @@
 		 * @return array - array('/controller/action/id' => array('disable' => true))
 		 */
 		public static function link($url, $params = array()) {
-			$matches = null;
-			if (!preg_match('/^\/([\w]+)(?:\/([\w]+)){0,1}/', $url, $matches)) {
-				trigger_error("URL mal d&eacute;finie");
-				exit;
-			}
-			
+			$path = self::_extractControllerAction($url);
 			$useModel = Hash::get((array)$params, 'regles_metier');
 			unset($params['regles_metier']);
 			
-			$controller = strtolower($matches[1]);
-			$action = count($matches) === 3 ? $matches[2] : 'index';
-			
+			$action = $path['action'];
 			$aclAccess = self::$dossierMenu !== null
-				? WebrsaPermissions::checkDossier($controller, $action, self::$dossierMenu)
-				: WebrsaPermissions::check($controller, $action)
+				? WebrsaPermissions::checkDossier($path['controller'], $action, self::$dossierMenu)
+				: WebrsaPermissions::check($path['controller'], $action)
 			;
 			
-			$toEval = "!'#/".ucfirst($controller)."/$action#'";
+			$toEval = "!'#/".Inflector::camelize($path['controller'])."/$action#'";
 			
 			$disabled = $useModel !== false
 				? ($aclAccess ? $toEval : true)
@@ -120,17 +113,12 @@
 		 * @return boolean
 		 */
 		public static function isDisabled($record, $url) {
-			$matches = null;
-			if (!preg_match('/^\/([\w]+)(?:\/([\w]+)){0,1}/', $url, $matches)) {
-				trigger_error("URL mal d&eacute;finie");
-				exit;
-			}
-			
-			$controller = strtolower($matches[1]);
-			$action = count($matches) === 3 ? $matches[2] : 'index';
+			$path = self::_extractControllerAction($url);
+			$controller = $path['controller'];
+			$action = $path['action'];
 			$access = Hash::get($record, "/$controller/$action") !== null
 				? Hash::get($record, "/$controller/$action")
-				: Hash::get($record, "/".ucfirst($controller)."/$action")
+				: Hash::get($record, "/".Inflector::camelize($controller)."/$action")
 			;
 			
 			if ($access === null) {
@@ -159,6 +147,42 @@
 		 */
 		public static function isEnabled($record, $url) {
 			return !self::isDisabled($record, $url);
+		}
+		
+		/**
+		 * Mix entre WebrsaAccess::isEnabled et WebrsaAccess::actionAdd
+		 * Permet de savoir si un bouton ajouter est grisé ou pas
+		 * 
+		 * @param String $url
+		 * @param boolean $ajoutPossible
+		 * @return boolean
+		 */
+		public static function addIsEnabled($url, $ajoutPossible) {
+			$path = self::_extractControllerAction($url);
+			$aclAccess = self::$dossierMenu !== null
+				? WebrsaPermissions::checkDossier($path['controller'], $path['action'], self::$dossierMenu)
+				: WebrsaPermissions::check($path['controller'], $path['action'])
+			;
+			
+			return $ajoutPossible && $aclAccess;
+		}
+		
+		/**
+		 * Extrait le nom du controller et l'action à partir d'une url
+		 * 
+		 * @param String $url - /MonController/monaction
+		 * @return array - array('controller' => 'mon_controller', 'action' => 'monaction')
+		 */
+		protected static function _extractControllerAction($url) {
+			if (!preg_match('/^\/([\w]+)(?:\/([\w]+)){0,1}/', $url, $matches)) {
+				trigger_error("URL mal d&eacute;finie");
+				exit;
+			}
+			
+			return array(
+				'controller' => Inflector::underscore($matches[1]),
+				'action' => count($matches) === 3 ? $matches[2] : 'index'
+			);
 		}
 	}
 ?>

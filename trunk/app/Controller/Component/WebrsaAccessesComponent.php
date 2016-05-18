@@ -71,8 +71,8 @@
 		 * @return void
 		 */
 		public function initialize(Controller $controller) {
-			$MainModelName = Inflector::singularize($controller->name);
-			$WebrsaModelClassName = 'Webrsa'.Inflector::singularize($controller->name);
+			$MainModelName = self::controllerNameToModelName($controller->name);
+			$WebrsaModelClassName = 'Webrsa'.$MainModelName;
 			$WebrsaAccessClassName = 'WebrsaAccess'.$controller->name;
 			
 			// Si le modèle principal n'est pas chargé
@@ -134,7 +134,7 @@
 			}
 			
 			$this->init();
-			$this->alias = $alias ?: Inflector::singularize($this->Controller->name);
+			$this->alias = $alias ?: $this->MainModel->alias;
 			
 			$record = $this->_getRecord($id);
 			$actionsParams = call_user_func(array($this->WebrsaAccessClassName, 'getActionParamsList'), $this->Controller->action);
@@ -215,6 +215,16 @@
 			}
 			
 			return $result;
+		}
+		
+		/**
+		 * Renvoi une chaine en Camelcase pluriel en Camelcase singulier
+		 * 
+		 * @param String $controllerName
+		 * @return String
+		 */
+		protected static function controllerNameToModelName($controllerName) {
+			return Inflector::camelize(Inflector::singularize(Inflector::underscore($controllerName)));
 		}
 	}
 ?>
