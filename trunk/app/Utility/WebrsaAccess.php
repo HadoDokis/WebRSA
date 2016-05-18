@@ -49,7 +49,7 @@
 		public static function link($url, $params = array()) {
 			$matches = null;
 			if (!preg_match('/^\/([\w]+)(?:\/([\w]+)){0,1}/', $url, $matches)) {
-				trigger_error("URL mal définie");
+				trigger_error("URL mal d&eacute;finie");
 				exit;
 			}
 			
@@ -108,6 +108,57 @@
 			}
 			
 			return $link;
+		}
+		
+		/**
+		 * Permet de vérifier les droits d'accès à partir d'un $record 
+		 * (équivalent find->first complété par WebrsaAbstractAccess::access)
+		 * et d'une url
+		 * 
+		 * @param Array $record
+		 * @param String $url - /$controller/$action
+		 * @return boolean
+		 */
+		public static function isDisabled($record, $url) {
+			$matches = null;
+			if (!preg_match('/^\/([\w]+)(?:\/([\w]+)){0,1}/', $url, $matches)) {
+				trigger_error("URL mal d&eacute;finie");
+				exit;
+			}
+			
+			$controller = strtolower($matches[1]);
+			$action = count($matches) === 3 ? $matches[2] : 'index';
+			$access = Hash::get($record, "/$controller/$action") !== null
+				? Hash::get($record, "/$controller/$action")
+				: Hash::get($record, "/".ucfirst($controller)."/$action")
+			;
+			
+			if ($access === null) {
+				trigger_error("L'URL <b>/$controller/$action</b> n'a pas &eacute;t&eacute; trouv&eacute;e dans les donn&eacute;es envoy&eacute;es");
+				debug(array_keys($record));
+				exit;
+			}
+			
+			$aclAccess = self::$dossierMenu !== null
+				? WebrsaPermissions::checkDossier($controller, $action, self::$dossierMenu)
+				: WebrsaPermissions::check($controller, $action)
+			;
+			
+			return $access && $aclAccess ? false : true;
+		}
+		
+		/**
+		 * Permet de vérifier les droits d'accès à partir d'un $record 
+		 * (équivalent find->first complété par WebrsaAbstractAccess::access)
+		 * et d'une url
+		 * 
+		 * @see WebrsaAccess::isDisabled
+		 * @param Array $record
+		 * @param String $url - /$controller/$action
+		 * @return boolean
+		 */
+		public static function isEnabled($record, $url) {
+			return !self::isDisabled($record, $url);
 		}
 	}
 ?>
