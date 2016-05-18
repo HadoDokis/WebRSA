@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	 App::uses('WebrsaAccessMemos', 'Utility');
+
 	/**
 	 * La classe MemosController permet de gérer les mémos attachés à un allocataire.
 	 *
@@ -17,7 +19,7 @@
 	{
 		public $name = 'Memos';
 
-		public $uses = array( 'Memo', 'Option', 'Personne' );
+		public $uses = array( 'Memo', 'Option', 'Personne', 'WebrsaMemo' );
 
 		public $helpers = array(
 			'Locale',
@@ -29,7 +31,7 @@
 			)
 		);
 
-		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'DossiersMenus' );
+		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'DossiersMenus', 'WebrsaAccesses' );
 
 		public $commeDroit = array(
 			'add' => 'Memos:edit',
@@ -186,8 +188,7 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Memo' );
 
-			$memos = $this->Memo->find(
-				'all',
+			$query = $this->WebrsaMemo->completeVirtualFieldsForAccess(
 				array(
 					'fields' => array_merge(
 						$this->Memo->fields(),
@@ -201,20 +202,28 @@
 					'recursive' => -1
 				)
 			);
-
-			$this->set( 'memos', $memos );
-			$this->set( 'personne_id', $personne_id );
+			$actionsParams = WebrsaAccessMemos::getParamsList();
+			$paramsAccess = $this->WebrsaMemo->getParamsForAccess($personne_id, $actionsParams);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+			$memos = WebrsaAccessMemos::accesses(
+				$this->Memo->find('all', $query),
+				$paramsAccess
+			);
+			
+			$this->set(compact('memos', 'personne_id', 'ajoutPossible'));
 		}
 
 		/**		 * *******************************************************************
 		 *
 		 * ** ****************************************************************** */
-		public function add() {
+		public function add($personne_id) {
+			$this->WebrsaAccesses->check(null, $personne_id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		public function edit() {
+		public function edit($id) {
+			$this->WebrsaAccesses->check($id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -290,6 +299,7 @@
 		 * @throws NotFoundException
 		 */
 		public function view( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->Memo->personneId( $id );
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
@@ -328,6 +338,7 @@
 		 *
 		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Memo->personneId( $id ) ) );
 
 			$this->Default->delete( $id );

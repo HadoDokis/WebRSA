@@ -1,4 +1,10 @@
-<?php  $this->pageTitle = 'Mémos concernant la personne';?>
+<?php  $this->pageTitle = 'Mémos concernant la personne';
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+	
+	$domain = current(MultiDomainsTranslator::urlDomains());
+	$defaultParams = compact('options', 'domain');
+?>
 
 <h1>Mémos</h1>
 <?php echo $this->element( 'ancien_dossier' );?>
@@ -10,7 +16,7 @@
 					'action' => 'add',
 					$personne_id
 				),
-				$this->Permissions->checkDossier( 'memos', 'add', $dossierMenu )
+				WebrsaAccess::addIsEnabled('/Memos/add', $ajoutPossible)
 			);
 		?>
 	</li>
@@ -27,31 +33,22 @@
 			$memos[$key]['Memo']['name'] = $value;
 		}
 	}
-
-	echo $this->Default2->index(
+	
+	echo $this->Default3->index(
 		$memos,
 		array(
 			'Memo.name',
 			'Memo.created',
 			'Memo.modified',
-			'Memo.nb_fichiers_lies' => array( 'type' => 'integer' )
-		),
-		array(
-			'cohorte' => false,
-			'actions' => array(
-				'Memos::view' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'memos', 'view', $dossierMenu )
-				),
-				'Memos::edit' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'memos', 'edit', $dossierMenu )
-				),
-				'Memos::delete' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'memos', 'delete', $dossierMenu )
-				),
-				'Memos::filelink' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'memos', 'filelink', $dossierMenu )
-				)
+		) + WebrsaAccess::links(
+			array(
+				'/Memos/view/#Memo.id#',
+				'/Memos/edit/#Memo.id#',
+				'/Memos/delete/#Memo.id#' => array('confirm' => true),
+				'/Memos/filelink/#Memo.id#' => array('msgid' => __m('/Memos/filelink').' (#Memo.nb_fichiers_lies#)'),
 			)
+		),
+		$defaultParams + array(
+			'paginate' => false,
 		)
-	)
-?>
+	);
