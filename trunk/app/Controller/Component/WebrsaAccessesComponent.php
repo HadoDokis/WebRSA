@@ -121,9 +121,14 @@
 		 * Fait appel à WebrsaAccess<i>Nomducontroller</i> pour vérifier les droits 
 		 * d'accès à une action en fonction d'un enregistrement
 		 * 
-		 * @param integer $id - Id de l'enregistrement si il existe
-		 * @param integer $personne_id - Id de la personne si disponnible (nécéssaire si $id = null)
-		 * @param String $alias - Par défaut, Nom du controller au singulier
+		 * @param integer $id			- Id de l'enregistrement si il existe
+		 *								  Sera envoyé à Webrsa<i>Nomdumodel</i>::getDataForAccess
+		 * 
+		 * @param integer $personne_id	- Id de la personne si disponnible (nécéssaire si $id = null)
+		 *								  Sera envoyé à Webrsa<i>Nomdumodel</i>::getParamsForAccess
+		 * 
+		 * @param String $alias			- Par défaut, Nom du controller au singulier
+		 * 
 		 * @return void
 		 * @throws Error403Exception
 		 * @throws Error404Exception
@@ -186,7 +191,7 @@
 			$record = array();
 			if ($id !== null) {
 				$records = $this->WebrsaModel->getDataForAccess(
-					array($this->alias.'.'.$this->MainModel->primaryKey => $id)
+					array($this->alias.'.'.$this->Controller->{$this->alias}->primaryKey => $id)
 				);
 				$record = end($records);
 			}

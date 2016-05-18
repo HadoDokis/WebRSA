@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	App::uses('WebrsaAccessPersonnes', 'Utility');
+	
 	/**
 	 * La classe PersonnesController permet de gérer les personnes au sein d'un foyer RSA.
 	 *
@@ -17,11 +19,11 @@
 	{
 		public $name = 'Personnes';
 
-		public $uses = array( 'Personne', 'Option', 'Grossesse', 'Foyer' );
+		public $uses = array( 'Personne', 'Option', 'Grossesse', 'Foyer', 'WebrsaPersonne' );
 
 		public $helpers = array( 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
 
 		public $commeDroit = array(
 			'view' => 'Personnes:index',
@@ -123,6 +125,7 @@
 				)
 			);
 
+			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$foyer_id = Set::classicExtract( $personne, 'Personne.foyer_id' );
@@ -177,8 +180,7 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
-			$personnes = $this->Personne->find(
-				'all',
+			$query = $this->WebrsaPersonne->completeVirtualFieldsForAccess(
 				array(
 					'fields' => array(
 						'Personne.id',
@@ -199,11 +201,19 @@
 					)
 				)
 			);
+			
+			$actionsParams = WebrsaAccessPersonnes::getParamsList();
+			$paramsAccess = $this->WebrsaPersonne->getParamsForAccess($foyer_id, $actionsParams);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+			
+			$personnes = WebrsaAccessPersonnes::accesses(
+				$this->Personne->find('all', $query),
+				$paramsAccess
+			);
 
 			// Assignations à la vue
 			$this->_setOptions();
-			$this->set( 'foyer_id', $foyer_id );
-			$this->set( 'personnes', $personnes );
+			$this->set(compact('foyer_id', 'ajoutPossible', 'personnes'));
 		}
 
 		/**
@@ -259,7 +269,8 @@
 			}
 
 			$personne = $this->Personne->find( 'first', $queryData );
-// debug($personne);
+			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
+			
 			// Mauvais paramètre ?
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 
@@ -274,6 +285,7 @@
 		 *   Ajout d'une personne au foyer
 		 */
 		public function add( $foyer_id = null ) {
+			$this->WebrsaAccesses->check(null, $foyer_id, 'Foyer');
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
@@ -461,6 +473,8 @@
 
 				$this->Personne->commit();
 			}
+			
+			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
 
 			$this->set( 'personne', $personne );
 			$this->_setOptions();

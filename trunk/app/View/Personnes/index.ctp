@@ -1,4 +1,7 @@
-<?php $this->pageTitle = 'Personnes du foyer';?>
+<?php $this->pageTitle = 'Personnes du foyer';
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+?>
 
 <h1>Personnes du foyer</h1>
 
@@ -8,7 +11,7 @@
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter une personne au foyer',
 				array( 'controller' => 'personnes', 'action' => 'add', $foyer_id ),
-				$this->Permissions->checkDossier( 'personnes', 'add', $dossierMenu )
+				WebrsaAccess::addIsEnabled('/Personnes/add', $ajoutPossible)
 			).' </li>';
 		?>
 	</ul>
@@ -67,17 +70,17 @@
 							$this->Xhtml->viewLink(
 								'Voir la personne « '.$title.' »',
 								array( 'controller' => 'personnes', 'action' => 'view', $personne['Personne']['id'] ),
-								$this->Permissions->checkDossier( 'personnes', 'view', $dossierMenu )
+								WebrsaAccess::isEnabled($personne, '/Personnes/view')
 							),
 							$this->Xhtml->editLink(
 								'Éditer la personne « '.$title.' »',
 								array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
-								$this->Permissions->checkDossier( 'personnes', 'edit', $dossierMenu )
+								WebrsaAccess::isEnabled($personne, '/Personnes/edit')
 							),
 							$this->Xhtml->fileLink(
 								'Lier des fichiers',
 								array( 'controller' => 'personnes', 'action' => 'filelink', $personne['Personne']['id'] ),
-								$this->Permissions->checkDossier( 'personnes', 'filelink', $dossierMenu )
+								WebrsaAccess::isEnabled($personne, '/Personnes/filelink')
 							),
 							h( '('.Set::classicExtract( $personne, 'Fichiermodule.nb_fichiers_lies' ).')' ),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) ),
