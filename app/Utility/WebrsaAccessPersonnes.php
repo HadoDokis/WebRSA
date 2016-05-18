@@ -63,6 +63,7 @@
 		protected static function _edit(array $record, array $params) {
 			return true;
 		}
+		
 		/**
 		 * Permission d'accès
 		 * 
@@ -72,7 +73,18 @@
 		 */
 		protected static function _filelink(array $record, array $params) {
 			return true;
-		}		
+		}
+		
+		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _coordonnees(array $record, array $params) {
+			return true;
+		}
 		
 		/**
 		 * Liste les actions disponnible
@@ -89,7 +101,8 @@
 					'add' => array('ajoutPossible' => true),
 					'view',
 					'edit',
-					'filelink'
+					'filelink',
+					'coordonnees',
 				)
 			);
 			

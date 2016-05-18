@@ -12,6 +12,9 @@
 	);
 
 	$this->pageTitle = 'Visualisation d\'une personne « '.$title.' »';
+	
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 
 	function thead( $pct = 10 ) {
 		return '<thead>
@@ -26,28 +29,24 @@
 
 <ul class="actions">
 <?php
-    if( $this->Permissions->check( 'personnes', 'edit' ) ) {
-        echo '<li class="action">'.$this->Xhtml->link(
-            'Modifier',
-            array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
-            array(
-                'title' => 'Éditer la personne « '.$title.' »',
-                'enabled' => $this->Permissions->checkDossier( 'personnes', 'edit', $dossierMenu ),
-                'class' => 'personnes edit'
-            )
-        ).' </li>';
-    }
-    if( $this->Permissions->check( 'personnes', 'coordonnees' ) ) {
-        echo '<li class="action">'.$this->Xhtml->link(
-            'Modifier les coordonnées',
-            array( 'controller' => 'personnes', 'action' => 'coordonnees', $personne['Personne']['id'] ),
-            array(
-                'title' => 'Modifier les coordonnées de « '.$title.' »',
-                'enabled' => $this->Permissions->checkDossier( 'personnes', 'coordonnees', $dossierMenu ),
-                'class' => 'personnes coordonnees'
-            )
-        ).' </li>';
-    }
+	echo '<li class="action">'.$this->Xhtml->link(
+		'Modifier',
+		array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
+		array(
+			'title' => 'Éditer la personne « '.$title.' »',
+			'enabled' => WebrsaAccess::isEnabled($personne, '/Personnes/edit'),
+			'class' => 'personnes edit'
+		)
+	).' </li>';
+	echo '<li class="action">'.$this->Xhtml->link(
+		'Modifier les coordonnées',
+		array( 'controller' => 'personnes', 'action' => 'coordonnees', $personne['Personne']['id'] ),
+		array(
+			'title' => 'Modifier les coordonnées de « '.$title.' »',
+			'enabled' => WebrsaAccess::isEnabled($personne, '/Personnes/coordonnees'),
+			'class' => 'personnes coordonnees'
+		)
+	).' </li>';
 ?>
 </ul>
 

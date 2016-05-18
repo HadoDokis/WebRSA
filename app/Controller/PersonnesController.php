@@ -225,40 +225,42 @@
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$queryData = array(
-				'fields' => array(
-					'Personne.id',
-					'Personne.foyer_id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.nomnai',
-					'Personne.prenom2',
-					'Personne.prenom3',
-					'Personne.nomcomnai',
-					'Personne.dtnai',
-					'Personne.rgnai',
-					'Personne.typedtnai',
-					'Personne.nir',
-					'Personne.topvalec',
-					'Personne.sexe',
-					'Personne.nati',
-					'Personne.dtnati',
-					'Personne.pieecpres',
-					'Personne.idassedic',
-					'Personne.numagenpoleemploi',
-					'Personne.dtinscpoleemploi',
-					'Personne.numfixe',
-					'Personne.numport',
-					'Personne.email',
-					'Prestation.rolepers',
-				),
-				'conditions' => array( 'Personne.id' => $id ),
-				'contain' => array(
-					'Prestation',
-					'Grossesse' => array(
-						'order' => array( 'Grossesse.ddgro DESC' ),
-						'limit' => 1
+			$queryData = $this->WebrsaPersonne->completeVirtualFieldsForAccess(
+				array(
+					'fields' => array(
+						'Personne.id',
+						'Personne.foyer_id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.nomnai',
+						'Personne.prenom2',
+						'Personne.prenom3',
+						'Personne.nomcomnai',
+						'Personne.dtnai',
+						'Personne.rgnai',
+						'Personne.typedtnai',
+						'Personne.nir',
+						'Personne.topvalec',
+						'Personne.sexe',
+						'Personne.nati',
+						'Personne.dtnati',
+						'Personne.pieecpres',
+						'Personne.idassedic',
+						'Personne.numagenpoleemploi',
+						'Personne.dtinscpoleemploi',
+						'Personne.numfixe',
+						'Personne.numport',
+						'Personne.email',
+						'Prestation.rolepers',
+					),
+					'conditions' => array( 'Personne.id' => $id ),
+					'contain' => array(
+						'Prestation',
+						'Grossesse' => array(
+							'order' => array( 'Grossesse.ddgro DESC' ),
+							'limit' => 1
+						)
 					)
 				)
 			);
@@ -268,8 +270,13 @@
 				$queryData['contain'][] = 'Foyer';
 			}
 
-			$personne = $this->Personne->find( 'first', $queryData );
-			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
+			$personne = $this->Personne->find('first', $queryData);
+			$foyer_id = Hash::get($personne, 'Personne.foyer_id');
+			$actionsParams = WebrsaAccessPersonnes::getActionParamsList($this->action);
+			$paramsAccess = $this->WebrsaPersonne->getParamsForAccess($id, $actionsParams);
+			
+			$personne = WebrsaAccessPersonnes::access($personne, $paramsAccess);
+			$this->WebrsaAccesses->check($id, $foyer_id);
 			
 			// Mauvais paramètre ?
 			$this->assert( !empty( $personne ), 'invalidParameter' );
@@ -397,8 +404,19 @@
 		public function edit( $id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			$foyer_id = Set::classicExtract( $this->request->data, 'Personne.foyer_id' );
+			$personne = $this->Personne->find(
+				'first',
+				array(
+					'conditions' => array( 'Personne.id' => $id ),
+					'contain' => array(
+						'Foyer',
+						'Prestation'
+					)
+				)
+			);
+			$this->assert(!empty($personne), 'invalidParameter');
+			$foyer_id = Hash::get($personne, 'Personne.foyer_id');
+			$this->WebrsaAccesses->check($id, $foyer_id);
 
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -416,69 +434,29 @@
 			// Essai de sauvegarde
 			if( !empty( $this->request->data ) ) {
 				$this->Personne->begin();
-
-				if( $this->Personne->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					if( $this->Personne->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-
-						// FIXME: mettre dans un afterSave (mais ça pose des problèmes)
-						// FIXME: valeur de retour
-						$qd_thisPersonne = array(
-							'conditions' => array(
-								'Personne.id' => $this->Personne->id
-							),
-							'fields' => null,
-							'order' => null,
-							'recursive' => -1
-						);
-						$thisPersonne = $this->Personne->find( 'first', $qd_thisPersonne );
-
-						$this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
-
-						$this->Personne->commit();
-						$this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $this->request->data['Personne']['foyer_id'] ) );
-					}
-					else {
-						$this->Personne->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
-				}
-				else {
+				
+				if ($this->Personne->saveAll($this->request->data)) {
+					$this->Personne->Foyer->refreshSoumisADroitsEtDevoirs($foyer_id);
+					$this->Personne->commit();
+					$this->Jetons2->release($dossier_id);
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect(
+						array('controller' => 'personnes', 'action' => 'index', $this->request->data['Personne']['foyer_id'])
+					);
+				} else {
 					$this->Personne->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
-			}
-			// Affichage des données
-			else {
-				$personne = $this->Personne->find(
-					'first',
-					array(
-						'conditions' => array( 'Personne.id' => $id ),
-						'contain' => array(
-							'Foyer',
-							'Prestation'
-						)
-					)
-				);
-
-				$this->assert( !empty( $personne ), 'invalidParameter' );
-
-				$sitfam = $this->Option->sitfam();
-				$situationfamiliale = Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );
-				$this->set( 'situationfamiliale', $situationfamiliale );
-
-				// Assignation au formulaire
+			} else {
 				$this->request->data = $personne;
-
-				$this->Personne->commit();
 			}
 			
-			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
-
+			$sitfam = $this->Option->sitfam();
+			$situationfamiliale = Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );
+			$this->set( 'situationfamiliale', $situationfamiliale );
 			$this->set( 'personne', $personne );
 			$this->_setOptions();
-			$this->render( 'add_edit' );
+			$this->view = 'add_edit';
 		}
                 
                 /**
@@ -488,48 +466,49 @@
                  * @throws NotFoundException
                  */
 		public function coordonnees( $id = null ) {
-                    $query = array(
-                        'conditions' => array( 'Personne.id' => $id ),
-                        'contain' => false
-                    );
-                    $personne = $this->Personne->find('first',$query);
-                                     
-                    if (empty($personne)) {
-                        throw new NotFoundException();
-                    }
+			$query = array(
+				'conditions' => array( 'Personne.id' => $id ),
+				'contain' => false
+			);
+			$personne = $this->Personne->find('first',$query);
+			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
 
-                    $dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) );                  
-                    $this->Jetons2->get( $dossierMenu['Dossier']['id'] );
-                    $redirectUrl = array( 'controller' => 'personnes', 'action' => 'view', $id );
+			if (empty($personne)) {
+				throw new NotFoundException();
+			}
 
-                    // Retour à la liste en cas d'annulation
-                    if( isset( $this->request->data['Cancel'] ) ) {
-                        $this->Jetons2->release( $dossierMenu['Dossier']['id'] );
-                        $this->redirect( $redirectUrl );
-                    }
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) );                  
+			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
+			$redirectUrl = array( 'controller' => 'personnes', 'action' => 'view', $id );
 
-                    if( $this->request->is('post') || $this->request->is('put') ) {
-                        $this->Personne->begin();
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
+				$this->redirect( $redirectUrl );
+			}
 
-                        $data = Hash::merge( $personne, $this->request->data );
-                        $this->Personne->create( $data );
-                        if ( $this->Personne->save() ) {   
-                            $this->Personne->commit();
-                            $this->Jetons2->release( $dossierMenu['Dossier']['id'] );
-                            $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                            return $this->redirect( $redirectUrl );
+			if( $this->request->is('post') || $this->request->is('put') ) {
+				$this->Personne->begin();
+
+				$data = Hash::merge( $personne, $this->request->data );
+				$this->Personne->create( $data );
+				if ( $this->Personne->save() ) {   
+					$this->Personne->commit();
+					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					return $this->redirect( $redirectUrl );
+				}
+				else {
+					$this->Personne->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
 			}
 			else {
-                            $this->Personne->rollback();
-                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				$this->request->data = $personne;
 			}
-                    }
-                    else {
-                        $this->request->data = $personne;
-                    }
-  
-                    $urlmenu = "/personnes/view/{$id}";
-                    $this->set( compact( 'personne', 'dossierMenu', 'urlmenu' ) );
+
+			$urlmenu = "/personnes/view/{$id}";
+			$this->set( compact( 'personne', 'dossierMenu', 'urlmenu' ) );
 		} 
 	}
 ?>
