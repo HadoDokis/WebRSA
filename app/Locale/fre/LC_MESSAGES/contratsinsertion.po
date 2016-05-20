@@ -225,9 +225,6 @@ msgstr "Notification bénéficiaire"
 msgid "/Contratsinsertion/notificationsop/#Contratinsertion.id#"
 msgstr "Décisions prises"
 
-msgid "/Contratsinsertion/impression/#Contratinsertion.id#"
-msgstr "Impression"
-
 msgid "Contratinsertion.forme_ci"
 msgstr "Forme du contrat"
 

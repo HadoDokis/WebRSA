@@ -9,6 +9,8 @@
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
 
+App::uses('WebrsaAccessTraitementspcgs66', 'Utility');
+
 /**
  * La classe Traitementspcgs66Controller (CG 66).
  *
@@ -17,7 +19,7 @@
 class Traitementspcgs66Controller extends AppController {
 
     public $name = 'Traitementspcgs66';
-    public $uses = array('Traitementpcg66', 'Option', 'Dossierpcg66');
+    public $uses = array('Traitementpcg66', 'Option', 'Dossierpcg66', 'WebrsaTraitementpcg66');
 	
     public $helpers = array(
 		'Locale', 
@@ -41,6 +43,7 @@ class Traitementspcgs66Controller extends AppController {
 		'Search.SearchPrg' => array(
 			'actions' => array( 'search' )
 		),
+		'WebrsaAccesses'
 	);
 	
     public $commeDroit = array(
@@ -316,56 +319,55 @@ class Traitementspcgs66Controller extends AppController {
         $this->set('dossierpcgId', $dossierpcg66_id);
 
         //Formulaire de recherche pour trouver l'historique de tous les dossiers PCG d'une personne
-        $queryData = array(
-            'conditions' => array(
-                'Personnepcg66.personne_id' => $personne_id,
-                'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-            ),
-            'fields' => array(
-                'Situationpdo.libelle',
-                'Traitementpcg66.id',
-                'Traitementpcg66.descriptionpdo_id',
-                'Traitementpcg66.datedepart',
-                'Traitementpcg66.datereception',
-                'Traitementpcg66.daterevision',
-                'Traitementpcg66.dateecheance',
-                'Traitementpcg66.typetraitement',
-                'Traitementpcg66.dtdebutperiode',
-                'Traitementpcg66.datefinperiode',
-                'Traitementpcg66.typetraitement',
-                'Traitementpcg66.imprimer',
-                'Traitementpcg66.dateenvoicourrier',
-				'Traitementpcg66.etattraitementpcg',
-                'Traitementpcg66.reversedo',
-                'Traitementpcg66.clos',
-                'Traitementpcg66.annule',
-                'Traitementpcg66.motifannulation',
-                'Traitementpcg66.created',
-            ),
-            'joins' => array(
-                $this->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
-                $this->Traitementpcg66->join('Situationpdo', array('type' => 'LEFT OUTER'))
-            ),
-            'contain' => false,
-            'order' => array(
-                'Traitementpcg66.created DESC',
-                'Traitementpcg66.id DESC'
-            )
-        );
-        /**
-          SELECT
-          traitementspcgs66.*,
-         *
-          FROM personnespcgs66
-          LEFT OUTER JOIN traitementspcgs66 ON ( traitementspcgs66.personnepcg66_id = personnespcgs66.id )
-          LEFT OUTER JOIN personnespcgs66_situationspdos ON ( traitementspcgs66.personnepcg66_situationpdo_id = personnespcgs66_situationspdos.id )
-          LEFT OUTER JOIN situationspdos ON ( personnespcgs66_situationspdos.situationpdo_id = situationspdos.id )
-          WHERE personnespcgs66.id = 6;
-         */
+        $queryData = $this->WebrsaTraitementpcg66->completeVirtualFieldsForAccess(
+			array(
+				'fields' => array(
+					'Situationpdo.libelle',
+					'Traitementpcg66.id',
+					'Traitementpcg66.descriptionpdo_id',
+					'Traitementpcg66.datedepart',
+					'Traitementpcg66.datereception',
+					'Traitementpcg66.daterevision',
+					'Traitementpcg66.dateecheance',
+					'Traitementpcg66.typetraitement',
+					'Traitementpcg66.dtdebutperiode',
+					'Traitementpcg66.datefinperiode',
+					'Traitementpcg66.typetraitement',
+					'Traitementpcg66.imprimer',
+					'Traitementpcg66.dateenvoicourrier',
+					'Traitementpcg66.etattraitementpcg',
+					'Traitementpcg66.reversedo',
+					'Traitementpcg66.clos',
+					'Traitementpcg66.annule',
+					'Traitementpcg66.motifannulation',
+					'Traitementpcg66.created',
+				),
+				'joins' => array(
+					$this->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
+					$this->Traitementpcg66->join('Situationpdo', array('type' => 'LEFT OUTER'))
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Personnepcg66.personne_id' => $personne_id,
+					'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+				),
+				'order' => array(
+					'Traitementpcg66.created DESC',
+					'Traitementpcg66.id DESC'
+				)
+			)
+		);
+		
         if (!empty($dossierpcg66_id)) {
+			$actionsParams = WebrsaAccessTraitementspcgs66::getParamsList();
+			$paramsAccess = $this->WebrsaTraitementpcg66->getParamsForAccess($dossierpcg66_id, $actionsParams);
+			$this->set('ajoutPossible', $paramsAccess['ajoutPossible']);
+			
             $this->paginate = array('Traitementpcg66' => $queryData);
-            $listeTraitements = $this->paginate($this->Traitementpcg66);
-
+            $listeTraitements = WebrsaAccessTraitementspcgs66::accesses(
+				$this->paginate($this->Traitementpcg66),
+				$paramsAccess
+			);
             $this->set(compact('listeTraitements'));
 
             //Liste des liens entre un dossier et un allocataire
@@ -463,7 +465,8 @@ class Traitementspcgs66Controller extends AppController {
     /**
      *
      */
-    public function add() {
+    public function add($personnepcg66_id) {
+		$this->WebrsaAccesses->check(null, $personnepcg66_id, 'Personnepcg66');
         $args = func_get_args();
         call_user_func_array(array($this, '_add_edit'), $args);
     }
@@ -471,7 +474,8 @@ class Traitementspcgs66Controller extends AppController {
     /**
      *
      */
-    public function edit() {
+    public function edit($id) {
+		$this->WebrsaAccesses->check($id);
         $args = func_get_args();
         call_user_func_array(array($this, '_add_edit'), $args);
     }
@@ -775,6 +779,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function view($id = null) {
+		$this->WebrsaAccesses->check($id);
         $traitementpcg66 = $this->Traitementpcg66->find(
                 'first', array(
             'conditions' => array(
@@ -814,6 +819,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function cancel($id) {
+		$this->WebrsaAccesses->check($id);
         $traitementpcg66 = $this->Traitementpcg66->find(
                 'first', array(
             'fields' => array_merge(
@@ -885,6 +891,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function clore($id) {
+		$this->WebrsaAccesses->check($id);
         $traitementpcg66 = $this->Traitementpcg66->find(
                 'first', array(
             'conditions' => array(
@@ -958,6 +965,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function reverseDO($id) {
+		$this->WebrsaAccesses->check($id);
         $traitementpcg66 = $this->Traitementpcg66->find(
                 'first', array(
             'conditions' => array(
@@ -990,6 +998,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function deverseDO($id) {
+		$this->WebrsaAccesses->check($id);
         $traitementpcg66 = $this->Traitementpcg66->find(
                 'first', array(
             'conditions' => array(
@@ -1022,6 +1031,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function printFicheCalcul($id) {
+		$this->WebrsaAccesses->check($id);
         $this->assert(!empty($id), 'error404');
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
 
@@ -1041,6 +1051,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function printModeleCourrier($id) {
+		$this->WebrsaAccesses->check($id);
         $this->assert(!empty($id), 'error404');
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
 
@@ -1060,6 +1071,7 @@ class Traitementspcgs66Controller extends AppController {
      * @param integer $id
      */
     public function delete($id) {
+		$this->WebrsaAccesses->check($id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
 		
 		$this->Traitementpcg66->begin();
@@ -1131,6 +1143,7 @@ class Traitementspcgs66Controller extends AppController {
      *
      */
     public function envoiCourrier($id) {
+		$this->WebrsaAccesses->check($id);
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
 
         $traitementpcg66 = $this->Traitementpcg66->find(
@@ -1205,6 +1218,7 @@ class Traitementspcgs66Controller extends AppController {
 	 * @param type $traitement_id
 	 */
 	public function switch_imprimer( $traitement_id ) {
+		$this->WebrsaAccesses->check($traitement_id);
 		$this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($traitement_id)));
 		$this->Traitementpcg66->begin();
 		
