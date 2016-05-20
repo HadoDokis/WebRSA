@@ -547,12 +547,12 @@
 			'dernier' => array(
 				'type'      => 'boolean',
 				'postgres'  => 'NOT EXISTS(
-					SELECT * FROM contratsinsertion AS a 
-					WHERE a.personne_id = "%s"."personne_id" 
+					SELECT * FROM contratsinsertion AS a
+					WHERE a.personne_id = "%s"."personne_id"
 					AND (
-						a.date_saisi_ci > "%s"."date_saisi_ci" 
+						a.date_saisi_ci > "%s"."date_saisi_ci"
 						OR (
-							a.date_saisi_ci = "%s"."date_saisi_ci" 
+							a.date_saisi_ci = "%s"."date_saisi_ci"
 							AND a.created > "%s"."created"
 						)
 					)
@@ -586,11 +586,23 @@
 										contratsinsertionpcd.dd_ci < contratsinsertion.dd_ci
 										OR (
 											contratsinsertionpcd.dd_ci = contratsinsertion.dd_ci
+											AND contratsinsertionpcd.datevalidation_ci IS NOT NULL
+											AND contratsinsertion.datevalidation_ci IS NOT NULL
 											AND contratsinsertionpcd.datevalidation_ci < contratsinsertion.datevalidation_ci
 										)
 										OR (
 											contratsinsertionpcd.dd_ci = contratsinsertion.dd_ci
+											AND contratsinsertionpcd.datevalidation_ci IS NOT NULL
+											AND contratsinsertion.datevalidation_ci IS NOT NULL
 											AND contratsinsertionpcd.datevalidation_ci = contratsinsertion.datevalidation_ci
+											AND contratsinsertionpcd.id < contratsinsertion.id
+										)
+										OR (
+											contratsinsertionpcd.dd_ci = contratsinsertion.dd_ci
+											AND (
+												contratsinsertionpcd.datevalidation_ci IS NULL
+												OR contratsinsertion.datevalidation_ci IS NULL
+											)
 											AND contratsinsertionpcd.id < contratsinsertion.id
 										)
 									)
