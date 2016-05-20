@@ -4,6 +4,11 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
+	
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+	$domain = current(MultiDomainsTranslator::urlDomains());
+	$defaultParams = compact('options', 'domain');
 ?>
 <?php
 	echo $this->Xhtml->tag(
@@ -38,7 +43,15 @@
 		}
 		unset($options['Traitementpcg66']['imprimer']);
 		
-		echo $this->Default2->index(
+		$this->Default3->DefaultPaginator->options(
+			array( 'url' => $this->request->params['pass'] )
+		);
+		
+		echo $this->Default3->actions(
+			WebrsaAccess::actionAdd("/Traitementspcgs66/add/{$personne_id}", $ajoutPossible)
+		);
+			
+		echo $this->Default3->index(
 			$listeTraitements,
 			array(
 				'Situationpdo.libelle' => array( 'type'=>'string' ),
@@ -52,46 +65,46 @@
 				'Traitementpcg66.dateenvoicourrier',
 				'Traitementpcg66.etattraitementpcg',
 				'Traitementpcg66.created',
-			),
-			array(
-				'actions' => array(
-					'Traitementspcgs66::view',
-
-					'Traitementspcgs66::edit' => array( 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'edit', $dossierMenu ).'\' != \'1\'' ),
-
-					'Traitementspcgs66::print' => array( 'label' => 'Fiche de calcul', 'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'printFicheCalcul' ), 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'revenu\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'printfichecalcul', $dossierMenu ).'\' != \'1\'' ),
-
-					'Traitementspcgs66::switch_imprimer' => array( 
-						'label' => __d('traitementpcg66', 'Traitementspcgs66::switch_imprimer'), 
-						'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'switch_imprimer' ), 
-						'class' => 'boolean number',
-						'disabled' => '\'#Traitementpcg66.dateenvoicourrier#\' !== \'\' '
-						. '|| \'#Traitementpcg66.typetraitement#\' != \'courrier\' '
-						. '|| \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'switch_imprimer', $dossierMenu ).'\' != \'1\'' 
+			) + WebrsaAccess::links(
+				array(
+					'/Traitementspcgs66/view/#Traitementpcg66.id#',
+					'/Traitementspcgs66/edit/#Traitementpcg66.id#',
+					'/Traitementspcgs66/printFicheCalcul/#Traitementpcg66.id#' => array('class' => 'print'),
+					'/Traitementspcgs66/switch_imprimer/#Traitementpcg66.id#' => array(
+						'class' => 'boolean enabled',
+						'condition' => "'#Traitementpcg66.typetraitement#' === 'courrier'"
 					),
-					
-					'Traitementspcgs66::printModeleCourrier' => array( 'label' => 'Imprimer courrier', 'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'printModeleCourrier' ), 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'courrier\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'printModeleCourrier', $dossierMenu ).'\' != \'1\'' ),
-						
-					'Traitementspcgs66::envoiCourrier' => array( 'label' => 'Envoi courrier', 'disabled' => 'trim(\'#Traitementpcg66.dateenvoicourrier#\') != \'\' || \'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'courrier\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'envoiCourrier', $dossierMenu ).'\' != \'1\''  ),
-
-					'Traitementspcgs66::reverseDO' => array( 'label' => 'Reverser dans DO', 'condition' => '(\'#Traitementpcg66.reversedo#\' != 1)', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'revenu\'', 'confirm' => 'Confirmer la répercussion de la fiche de calcul ?'  ),
-					'Traitementspcgs66::deverseDO' => array( 'label' => 'Déverser de la DO', 'condition' => '(\'#Traitementpcg66.reversedo#\' == 1)', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'revenu\'', 'confirm' => 'Confirmer la non répercussion de la fiche de calcul ?'  ),
-
-					'Traitementspcgs66::clore' => array( 'disabled' => '\'#Traitementpcg66.clos#\' == \'O\' || \'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'clore', $dossierMenu ).'\' != \'1\'', 'confirm' => 'Confirmer la clôture de ce traitement ?' ),
-
-					'Traitementspcgs66::cancel' => array( 'label' => 'Annuler', 'condition' => '(\'#Traitementpcg66.annule#\' != \'O\')', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'cancel', $dossierMenu ).'\' != \'1\'' ),
-					'Traitementspcgs66::canceled' => array( 'label' => 'Annulé', 'condition' => '(\'#Traitementpcg66.annule#\' == \'O\')', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\'' ),
-
-					'Traitementspcgs66::delete' => array( 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'delete', $dossierMenu ).'\' != \'1\'', 'confirm' => 'Confirmer la suppression de ce traitement ?' ),
-					///FIXME: à remettre quand on aura la fonction et qu'on saura quoi imprimer
-				),
-				'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspcgs66', 'action'=>'add', $personnepcg66_id ) ),
-				'options' => $options,
-				'class' => 'default2',
-				'tooltip' => array( 'Traitementpcg66.motifannulation', 'Traitementpcg66.dtdebutperiode', 'Traitementpcg66.datefinperiode' )
+					'/False/switch_imprimer' => array(
+						'msgid' => '',
+						'condition' => "'#Traitementpcg66.typetraitement#' !== 'courrier'"
+					),
+					'/Traitementspcgs66/printModeleCourrier/#Traitementpcg66.id#' => array('class' => 'print'),
+					'/Traitementspcgs66/envoiCourrier/#Traitementpcg66.id#' => array('class' => 'email_send'),
+					'/Traitementspcgs66/reverseDO/#Traitementpcg66.id#' => array(
+						'class' => 'button',
+						'condition' => "'#Traitementpcg66.reversedo#' !== '1'"
+					),
+					'/Traitementspcgs66/deverseDO/#Traitementpcg66.id#' => array(
+						'class' => 'button',
+						'condition' => "'#Traitementpcg66.reversedo#' === '1'"
+					),
+					'/Traitementspcgs66/clore/#Traitementpcg66.id#' => array('class' => 'button'),
+					'/Traitementspcgs66/cancel/#Traitementpcg66.id#' => array(
+						'condition' => "'#Traitementpcg66.annule#' !== 'O'"
+					),
+					'/Traitementspcgs66/canceled/#Traitementpcg66.id#' => array(
+						'msgid' => 'Annulé',
+						'class' => 'cancel',
+						'condition' => "'#Traitementpcg66.annule#' === 'O'"
+					),
+					'/Traitementspcgs66/delete/#Traitementpcg66.id#',
+				)
+			),
+			$defaultParams + array(
+				'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, '
+					. 'starting on record %start%, ending on %end%')
 			)
 		);
-
 	}
 
 	if( !empty( $personnepcg66 ) ){
@@ -114,13 +127,13 @@
 
 ?>
 <script>
-	$('Traitementspcgs66Index').select('td.boolean.number').each(function(td) {
+	$('TableTraitementspcgs66Index').select('td.boolean').each(function(td) {
 		var addClassName = 'true', tdAction;
 		if ( td.hasClassName( 'true' ) ) {
 			addClassName = 'false';
 		}
 		
-		tdAction = td.up('tr').select('td.action>a.enabled.boolean.number');
+		tdAction = td.up('tr').select('td.action>a.boolean.enabled');
 		if ( tdAction.length ) {
 			tdAction.first().addClassName(addClassName);
 		}
