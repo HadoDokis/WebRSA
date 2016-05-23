@@ -14,9 +14,7 @@
 
 	/**
 	 * La classe WebrsaPersonne possède la logique métier web-rsa
-	 *
-	 * @todo WebrsaLogicPersonne ?
-	 *
+	 * 
 	 * @package app.Model
 	 */
 	class WebrsaPersonne extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
