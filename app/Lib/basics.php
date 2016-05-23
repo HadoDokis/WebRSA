@@ -16,7 +16,7 @@
 	 * @return string
 	 */
 	function core_version() {
-		$versionData = explode( "\n", file_get_contents( ROOT.DS.'lib'.DS.'Cake'.DS.'VERSION.txt' ) );
+		$versionData = array_filter( explode( "\n", file_get_contents( ROOT.DS.'lib'.DS.'Cake'.DS.'VERSION.txt' ) ) );
 		$version = explode( '.', $versionData[count( $versionData ) - 1] );
 		return implode( '.', $version );
 	}
@@ -27,7 +27,7 @@
 	 * @return string
 	 */
 	function app_version() {
-		$versionData = explode( "\n", file_get_contents( ROOT.DS.'app'.DS.'VERSION.txt' ) );
+		$versionData = array_filter( explode( "\n", file_get_contents( ROOT.DS.'app'.DS.'VERSION.txt' ) ) );
 		$version = explode( '.', $versionData[count( $versionData ) - 1] );
 		return implode( '.', $version );
 	}
