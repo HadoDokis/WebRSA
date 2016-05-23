@@ -368,6 +368,10 @@
 					'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search1'  )
 				),
 			),
+			'CER' => array(
+				'disabled' => ( $departement != 93 ),
+				'1. Affectation d\'un référent' => array( 'url' => array( 'controller' => 'cohortesreferents93', 'action' => 'affecter'  ) ),
+			),
 		),
 		'APRE' => array(
 			'disabled' => ( $departement != 93 || $user_externe ),
