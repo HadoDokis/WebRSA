@@ -353,6 +353,9 @@
 				'Anciensmoteurs.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'MultiDomainsTranslator.prefix' => array(
+					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93', 'cg976' ) ),
+				),
 				'Module.Synthesedroits.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
