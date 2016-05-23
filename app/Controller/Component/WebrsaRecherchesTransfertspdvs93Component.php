@@ -52,7 +52,7 @@
 			$options = parent::_optionsSession( $params );
 
 			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsBeneficiaires->typesorients( array( 'conditions' => array() ) );
-			$options['Orientstruct']['structurereferente_id'] = $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
+			$options['Orientstruct']['structurereferente_id'] = $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'prefix' => true ) );
 
 			return $options;
 		}
