@@ -134,6 +134,9 @@
 			$personne_id = $result['Cui']['personne_id'];
 			$cui_id = $result['Cui']['id'];
 			
+			$this->WebrsaModelesLiesCuis66->initAccess();
+			$this->WebrsaModelesLiesCuis66->WebrsaAccesses->check($id, $personne_id, 'Suspensioncui66');
+			
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $cui_id ) );

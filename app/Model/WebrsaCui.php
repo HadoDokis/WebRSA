@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaTraitementpcg66.
+	 * Code source de la classe WebrsaCui.
 	 *
 	 * PHP 5.3
 	 *
@@ -13,25 +13,25 @@
 	App::uses('WebrsaModelUtility', 'Utility');
 
 	/**
-	 * La classe WebrsaTraitementpcg66 possède la logique métier web-rsa
-	 * 
+	 * La classe WebrsaCui possède la logique métier web-rsa
+	 *
 	 * @package app.Model
 	 */
-	class WebrsaTraitementpcg66 extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
+	class WebrsaCui extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'WebrsaTraitementpcg66';
+		public $name = 'WebrsaCui';
 
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
-		public $uses = array('Traitementpcg66');
+		public $uses = array('Cui');
 
 		/**
 		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
@@ -40,12 +40,26 @@
 		 * @return type
 		 */
 		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
+			$departement = (integer)Configure::read('Cg.departement');
+			$modelDepartement = 'Cui'.$departement;
 			$fields = array(
-				'Traitementpcg66.annule',
-				'Traitementpcg66.typetraitement',
-				'Traitementpcg66.dateenvoicourrier',
-				'Traitementpcg66.reversedo',
+				
 			);
+			
+			if (isset($this->Cui->{$modelDepartement})) {
+				if (!isset($query['joins'])) {
+					$query['joins'] = array();
+				}
+				if (WebrsaModelUtility::findJoinKey($modelDepartement, $query) === false) {
+					$query['joins'][] = $this->Cui->join($modelDepartement);
+				}
+				
+				$fields[] = $modelDepartement.'.cui_id';
+				
+				if ($departement === 66) {
+					$fields[] = 'Cui66.etatdossiercui66';
+				}
+			}
 			
 			return Hash::merge($query, array('fields' => array_values($fields)));
 		}
@@ -59,21 +73,21 @@
 		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
-					'Traitementpcg66.id',
-					'Traitementpcg66.personnepcg66_id',
+					'Cui.id',
+					'Cui.personne_id',
 				),
 				'conditions' => $conditions,
 				'joins' => array(
-					$this->Traitementpcg66->join('Personnepcg66')
+					$this->Cui->join('Personne')
 				),
 				'contain' => false,
 				'order' => array(
-					'Traitementpcg66.created' => 'DESC',
-					'Traitementpcg66.id' => 'DESC',
+					'Cui.created' => 'DESC',
+					'Cui.id' => 'DESC',
 				)
 			);
 			
-			$results = $this->Traitementpcg66->find('all', $this->completeVirtualFieldsForAccess($query));
+			$results = $this->Cui->find('all', $this->completeVirtualFieldsForAccess($query, $params));
 			return $results;
 		}
 		
@@ -81,14 +95,14 @@
 		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
 		 * 
 		 * @see WebrsaAccess::getParamsList
-		 * @param integer $dossierpcg66_id
+		 * @param integer $personne_id
 		 * @param array $params - Liste des paramètres actifs
 		 */
-		public function getParamsForAccess($dossierpcg66_id, array $params = array()) {
+		public function getParamsForAccess($personne_id, array $params = array()) {
 			$results = array();
 			
 			if (in_array('ajoutPossible', $params)) {
-				$results['ajoutPossible'] = $this->ajoutPossible($dossierpcg66_id);
+				$results['ajoutPossible'] = $this->ajoutPossible($personne_id, $params);
 			}
 			
 			return $results;
@@ -97,10 +111,11 @@
 		/**
 		 * Permet de savoir si il est possible d'ajouter un enregistrement
 		 * 
-		 * @param integer $dossierpcg66_id
+		 * @param integer $personne_id
+		 * @param array $params
 		 * @return boolean
 		 */
-		public function ajoutPossible($dossierpcg66_id) {
+		public function ajoutPossible($personne_id, array $params = array()) {
 			return true;
 		}
 	}

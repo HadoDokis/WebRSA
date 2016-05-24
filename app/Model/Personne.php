@@ -1707,7 +1707,7 @@
 		 * Permet d'économiser énormement de traitements en mode dev
 		 * @var boolean|array
 		 */
-		protected $listedForeignKey = false;
+		protected $_listedForeignKey = false;
 
 		/**
 		 * Permet d'obtenir la liste des tables liés à Personne
@@ -1716,7 +1716,7 @@
 		 */
 		public function listForeignKey() {
 			$cacheKey = 'cache_'.__CLASS__.'-'.__FUNCTION__;
-			$cache = $this->listedForeignKey ? $this->listedForeignKey : Cache::read($cacheKey);
+			$cache = $this->_listedForeignKey ?: Cache::read($cacheKey);
 
 			if ($cache === false ) {
 				$schema = Hash::get( $this->getDataSource()->config, 'schema' );
@@ -1729,6 +1729,7 @@
 					)
 				), '{n}.From.table');
 				Cache::write($cacheKey, $cache);
+				$this->_listedForeignKey = $cache;
 			}
 
 			return $cache;

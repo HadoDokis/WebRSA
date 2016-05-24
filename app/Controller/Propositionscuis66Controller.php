@@ -136,6 +136,8 @@
 			$result = $this->Propositioncui66->find( 'first', $query );
 			$personne_id = $result['Cui']['personne_id'];
 			$cui_id = $result['Cui']['id'];
+			$this->WebrsaModelesLiesCuis66->initAccess();
+			$this->WebrsaModelesLiesCuis66->WebrsaAccesses->check($id, $personne_id, 'Propositioncui66');
 			
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 

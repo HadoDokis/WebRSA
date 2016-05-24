@@ -15,8 +15,6 @@
 	/**
 	 * La classe WebrsaContratinsertion possède la logique métier web-rsa
 	 *
-	 * @todo WebrsaLogicContratinsertion ?
-	 *
 	 * @package app.Model
 	 */
 	class WebrsaContratinsertion extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -59,7 +57,7 @@
 		 * @param array $query
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array()) {
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			$departement = (int)Configure::read('Cg.departement');
 			$fields = array(
 				'positioncer' => 'Contratinsertion.positioncer',
@@ -124,7 +122,7 @@
 		 * @param array $conditions
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions) {
+		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
 					'Contratinsertion.id',

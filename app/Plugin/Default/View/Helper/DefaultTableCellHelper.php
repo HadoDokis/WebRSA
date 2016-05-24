@@ -96,7 +96,7 @@
 				}
 			}
 
-			unset( $htmlAttributes['label'], $htmlAttributes['options'], $htmlAttributes['format'] );
+			unset( $htmlAttributes['label'], $htmlAttributes['options'], $htmlAttributes['format'], $htmlAttributes['domain'] );
 
 			$htmlAttributes['class'] = DefaultUtility::evaluate( $this->_data, Hash::get( $htmlAttributes, 'class' ) );
 

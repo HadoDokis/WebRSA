@@ -20,9 +20,10 @@
 		 * Permet d'obtenir le nécéssaire pour calculer les droits d'accès métier à une action
 		 * 
 		 * @param array $conditions
+		 * @param array $params
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions);
+		public function getDataForAccess(array $conditions, array $params = array());
 		
 		/**
 		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
@@ -37,8 +38,9 @@
 		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
 		 * 
 		 * @param array $query
+		 * @param array $params
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array());
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array());
 	}
 ?>

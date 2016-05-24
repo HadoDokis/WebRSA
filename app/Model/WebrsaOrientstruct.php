@@ -14,9 +14,7 @@
 	/**
 	 * La classe WebrsaOrientstruct possède la logique métier web-rsa pour les
 	 * orientations stockées dans Orientstruct.
-	 *
-	 * @todo WebrsaLogicOrientstruct ?
-	 *
+	 * 
 	 * @package app.Model
 	 */
 	class WebrsaOrientstruct extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -746,7 +744,7 @@
 		 * @param array $query
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array()) {
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			$fields = array(
 				'dernier' => $this->Orientstruct->sqVirtualField('dernier'),
 				'date_valid' => 'Orientstruct.date_valid',
@@ -772,7 +770,7 @@
 		 * @param array $conditions
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions) {
+		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'joins' => array(),
 				'conditions' => $conditions, 

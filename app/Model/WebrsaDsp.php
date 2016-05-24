@@ -14,8 +14,6 @@
 	/**
 	 * La classe WebrsaDsp possède la logique métier web-rsa
 	 *
-	 * @todo WebrsaLogicDsp ?
-	 *
 	 * @package app.Model
 	 */
 	class WebrsaDsp extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -40,7 +38,7 @@
 		 * @param array $query
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array()) {
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			return $query;
 		}
 		
@@ -50,7 +48,7 @@
 		 * @param array $conditions
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions) {
+		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
 					'DspRev.id',

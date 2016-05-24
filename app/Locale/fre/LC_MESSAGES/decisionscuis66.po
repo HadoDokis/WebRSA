@@ -46,13 +46,25 @@ msgstr "Décision"
 msgid "/Decisionscuis66/add"
 msgstr "Prendre une décision"
 
+msgid "/Decisionscuis66/add/:title"
+msgstr "Prendre une décision"
+
 msgid "/Decisionscuis66/edit"
+msgstr "Modifier"
+
+msgid "/Decisionscuis66/edit/#Decisioncui66.id#"
 msgstr "Modifier"
 
 msgid "/Decisionscuis66/delete"
 msgstr "Supprimer"
 
+msgid "/Decisionscuis66/delete/#Decisioncui66.id#"
+msgstr "Supprimer"
+
 msgid "/Decisionscuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Decisionscuis66/filelink/#Decisioncui66.id#"
 msgstr "Fichiers liés"
 
 msgid "Decisionscuis66::filelink"
@@ -64,14 +76,29 @@ msgstr " "
 msgid "/Decisionscuis66/impression"
 msgstr "Imprimer"
 
+msgid "/Decisionscuis66/impression/#Decisioncui66.id#"
+msgstr "Imprimer"
+
 msgid "/Decisionscuis66/impression_decisionelu"
+msgstr "Décision élu"
+
+msgid "/Decisionscuis66/impression_decisionelu/#Decisioncui66.id#"
 msgstr "Décision élu"
 
 msgid "/Decisionscuis66/impression_notifbenef"
 msgstr "Notification bénéficiaire"
 
+msgid "/Decisionscuis66/impression_notifbenef/#Decisioncui66.id#"
+msgstr "Notification bénéficiaire"
+
 msgid "/Decisionscuis66/impression_notifemployeur"
 msgstr "Notification employeur"
 
+msgid "/Decisionscuis66/impression_notifemployeur/#Decisioncui66.id#"
+msgstr "Notification employeur"
+
 msgid "/Decisionscuis66/impression_attestationcompetence"
+msgstr "Attestation de compétence"
+
+msgid "/Decisionscuis66/impression_attestationcompetence/#Decisioncui66.id#"
 msgstr "Attestation de compétence"

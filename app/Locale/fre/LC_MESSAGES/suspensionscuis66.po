@@ -55,16 +55,28 @@ msgstr "Date de fin"
 msgid "/Suspensionscuis66/view"
 msgstr "Voir"
 
+msgid "/Suspensionscuis66/view/#Suspensioncui66.id#"
+msgstr "Voir"
+
 msgid "/Suspensionscuis66/edit"
 msgstr "Modifier"
 
+msgid "/Suspensionscuis66/edit/#Suspensioncui66.id#"
+msgstr "Modifier"
+
 msgid "/Suspensionscuis66/delete"
+msgstr "Supprimer"
+
+msgid "/Suspensionscuis66/delete/#Suspensioncui66.id#"
 msgstr "Supprimer"
 
 msgid "Suspensioncui66.motif"
 msgstr "Motif"
 
 msgid "/Suspensionscuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Suspensionscuis66/filelink/#Suspensioncui66.id#"
 msgstr "Fichiers liés"
 
 msgid "Suspensionscuis66::filelink"

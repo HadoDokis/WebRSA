@@ -68,12 +68,15 @@
 		 * Assure le chargement des modèles et Utilitaires liés
 		 * 
 		 * @param Controller $controller
+		 * @param String $mainModelName
+		 * @param String $webrsaModelName
+		 * @param String $webrsaAccessName
 		 * @return void
 		 */
-		public function initialize(Controller $controller) {
-			$MainModelName = self::controllerNameToModelName($controller->name);
-			$WebrsaModelClassName = 'Webrsa'.$MainModelName;
-			$WebrsaAccessClassName = 'WebrsaAccess'.$controller->name;
+		public function initialize(Controller $controller, $mainModelName = null, $webrsaModelName = null, $webrsaAccessName = null) {
+			$MainModelName = $mainModelName ?: self::controllerNameToModelName($controller->name);
+			$WebrsaModelClassName = $webrsaModelName ?: 'Webrsa'.$MainModelName;
+			$WebrsaAccessClassName = $webrsaAccessName ?: 'WebrsaAccess'.$controller->name;
 			
 			// Si le modèle principal n'est pas chargé
 			if (!isset($controller->{$MainModelName})) {
@@ -109,12 +112,59 @@
 		}
 		
 		/**
+		 * Permet de modifier les modèles liés au component
+		 * 
+		 * @param String $attr - Nom de l'attribut
+		 * @param mixed $name - Model ou String
+		 * @return \WebrsaAccessesComponent
+		 */
+		protected function _setAttr($attr, $name) {
+			if ($name instanceof Model) {
+				$this->{$attr} = $name;
+			} elseif (isset($this->Controller->{$name})) {
+				$this->{$attr} =& $this->Controller->{$name};
+			} else {
+				$this->Controller->{$name} = ClassRegistry::init($name);
+				$this->{$attr} =& $this->Controller->{$name};
+			}
+			return $this;
+		}
+		
+		/**
+		 * Permet le changement du modèle principal (singulier du nom du controller)
+		 * 
+		 * @param mixed $modelName
+		 * @return \WebrsaAccessesComponent
+		 */
+		public function setWebrsaModel($modelName) {
+			return $this->_setAttr('WebrsaModel', $modelName);
+		}
+		
+		/**
+		 * Permet le changement du modèle principal (singulier du nom du controller)
+		 * 
+		 * @param mixed $modelName
+		 * @return \WebrsaAccessesComponent
+		 */
+		public function setMainModel($modelName) {
+			return $this->_setAttr('MainModel', $modelName);
+		}
+		
+		/**
 		 * Assure l'initialisation du component
 		 * 
+		 * @param String $mainModelName
+		 * @param String $webrsaModelName
+		 * @param String $webrsaAccessName
 		 * @return void
 		 */
-		public function init() {
-			return $this->_initialized ?: $this->initialize($this->_Collection->getController());
+		public function init($mainModelName = null, $webrsaModelName = null, $webrsaAccessName = null) {
+			return $this->_initialized ?: $this->initialize(
+				$this->_Collection->getController(),
+				$mainModelName,
+				$webrsaModelName,
+				$webrsaAccessName
+			);
 		}
 
 		/**
@@ -129,11 +179,13 @@
 		 * 
 		 * @param String $alias			- Par défaut, Nom du controller au singulier
 		 * 
+		 * @param array $params			- Paramètres à envoyer à WebrsaAccess<i>Nomducontroller</i>
+		 * 
 		 * @return void
 		 * @throws Error403Exception
 		 * @throws Error404Exception
 		 */
-		public function check($id = null, $personne_id = null, $alias = null) {
+		public function check($id = null, $personne_id = null, $alias = null, array $params = array()) {
 			if (($id !== null && !self::_validId($id)) || ($personne_id !== null && !self::_validId($personne_id))) {
 				throw new Error404Exception();
 			}
@@ -141,15 +193,29 @@
 			$this->init();
 			$this->alias = $alias ?: $this->MainModel->alias;
 			
+			if (!isset($this->Controller->{$this->alias})) {
+				trigger_error(sprintf("Le controller '%s' doit avoir la valeur '%s' dans l'attribut 'uses'", 
+					$this->Controller->name, $this->alias)
+				);
+			}
+			
 			$record = $this->_getRecord($id);
-			$actionsParams = call_user_func(array($this->WebrsaAccessClassName, 'getActionParamsList'), $this->Controller->action);
+			$actionsParams = call_user_func(
+				array($this->WebrsaAccessClassName, 'getActionParamsList'), 
+				$this->Controller->action, 
+				$params
+			);
 			$paramsAccess = $this->WebrsaModel->getParamsForAccess(
 				$this->_personneId($id, $record, $personne_id), $actionsParams
 			);
 			
 			if ($this->_haveAccess($record, $paramsAccess) === false) {
 				throw new Error403Exception(
-					__("Exception::access_denied", __CLASS__, __FUNCTION__, $this->Controller->Session->read('Auth.User.username'))
+					__("Exception::access_denied", 
+						$this->Controller->name, 
+						$this->Controller->action, 
+						$this->Controller->Session->read('Auth.User.username')
+					)
 				);
 			}
 		}
@@ -191,7 +257,8 @@
 			$record = array();
 			if ($id !== null) {
 				$records = $this->WebrsaModel->getDataForAccess(
-					array($this->alias.'.'.$this->Controller->{$this->alias}->primaryKey => $id)
+					array($this->alias.'.'.$this->Controller->{$this->alias}->primaryKey => $id),
+					array('controller' => $this->Controller->name, 'action' => $this->Controller->action)
 				);
 				$record = end($records);
 			}

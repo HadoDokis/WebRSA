@@ -28,7 +28,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cui', 'Option', 'Personne' );
+		public $uses = array( 'Cui', 'Option', 'Personne', 'WebrsaCui', 'WebrsaEmailcui', 'Emailcui' );
 		
 		/**
 		 * Components utilisés.
@@ -42,6 +42,7 @@
 			'Gestionzonesgeos',
 			'Gedooo.Gedooo',
 			'Jetons2',
+			'WebrsaAccesses'
 		);
 
 		/**
@@ -138,6 +139,7 @@
 		 */
 		public function filelink( $cui_id ) {
 			$personne_id = $this->Cui->personneId( $cui_id );
+			$this->WebrsaAccesses->check($cui_id, $personne_id, 'Cui');
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
 
@@ -156,6 +158,7 @@
 		 * @see CuisController::index
 		 */
 		public function index( $personne_id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
@@ -180,6 +183,7 @@
 		 * @see CuisController::add
 		 */
 		public function add( $personne_id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$args = func_get_args();
 			call_user_func_array( array( $this, 'edit' ), $args );
 		}
@@ -192,6 +196,7 @@
 		 * @see CuisController::edit
 		 */
 		public function edit( $id = null ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			if( $this->action === 'add' ) {
 				$personne_id = $id;
 				$id = null;
@@ -255,6 +260,7 @@
 		 * @see CuisController::view
 		 */
 		public function view( $id = null ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$personne_id = $this->Cui->personneId( $id );
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -327,6 +333,7 @@
 		 * @param type $cui66_id
 		 */
 		public function annule( $cui66_id ){
+			$this->WebrsaAccesses->check($cui66_id);
 			$query = array(
 				'fields' => array(
 					'Cui.id',
@@ -382,6 +389,7 @@
 		 * @param type $cui_id
 		 */
 		public function delete( $cui_id ){
+			$this->WebrsaAccesses->check($cui_id, null, 'Cui');
 			$this->Cui->begin();
 			$success = $this->Cui->delete($cui_id);
 			$this->_setFlashResult('Delete', $success);
@@ -399,7 +407,9 @@
 		 * 
 		 * @param type $id
 		 */
-		public function email_delete( $id ){			
+		public function email_delete( $id ){
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
+					->check($id, null, 'Emailcui', array('isModuleEmail' => true));
 			$this->Cui->Emailcui->begin();
 			$success = $this->Cui->Emailcui->delete($id);
 			$this->_setFlashResult('Delete', $success);
@@ -419,6 +429,7 @@
 		 * @param type $cui66_id
 		 */
 		public function notification( $cui66_id ){
+			$this->WebrsaAccesses->check($cui66_id);
 			$this->Cui->Cui66->id = $cui66_id;
 			$this->Cui->Cui66->saveField( 'notifie', 1 );
 			$this->Session->setFlash( 'Le CUI à été notifié.');
@@ -435,6 +446,7 @@
 		 * @param integer $personne_id
 		 */
 		public function email( $personne_id = null, $cui_id = null ) {
+			$this->WebrsaAccesses->check($cui_id, $personne_id, 'Cui');
 			if ( empty($personne_id) || empty($cui_id) || !is_numeric($personne_id) || !is_numeric($cui_id) ){
 				throw new NotFoundException();
 			}
@@ -444,22 +456,33 @@
 			
 			$urlmenu = "/cuis/index/{$personne_id}";
 
-			$query = array(
-				'conditions' => array(
-					'Emailcui.cui_id' => $cui_id,
-					'Emailcui.personne_id' => $personne_id
-				),
-				'order' => array( 'Emailcui.created DESC' )
+			$params = WebrsaAccessCuis66::getParamsList(array('isModuleEmail' => true));
+			$paramsAccess = $this->WebrsaEmailcui->getParamsForAccess($cui_id, $params);
+			$query = $this->WebrsaEmailcui->completeVirtualFieldsForAccess(
+				array(
+					'fields' => array(
+						'Emailcui.id',
+						'Emailcui.cui_id',
+						'Emailcui.personne_id',
+						'Emailcui.titre',
+						'Emailcui.created',
+						'Emailcui.dateenvoi',
+					),
+					'conditions' => array(
+						'Emailcui.cui_id' => $cui_id,
+						'Emailcui.personne_id' => $personne_id
+					),
+					'order' => array( 'Emailcui.created DESC' )
+				)
 			);
-			$results = $this->Cui->Emailcui->find( 'all', $query );
-			
+			$results = WebrsaAccessCuis66::accesses($this->Cui->Emailcui->find('all', $query), $paramsAccess);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
 			$messages = $this->Cui->Emailcui->messages( $personne_id );
-			$addEnabled = $this->Cui->Emailcui->addEnabled( $messages );
 
 			// Options
 			$options = $this->Cui->options();
 
-			$this->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'cui_id', 'urlmenu' ) );
+			$this->set( compact( 'results', 'dossierMenu', 'messages', 'ajoutPossible', 'personne_id', 'options', 'cui_id', 'urlmenu' ) );
 		}
 		
 		/**
@@ -469,6 +492,8 @@
 		 * @param integer $cui_id L'id du cui visé
 		 */
 		public function email_add( $personne_id, $cui_id ) {
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
+				->check($cui_id, $personne_id, 'Cui', array('isModuleEmail' => true));
 			$args = func_get_args();
 			call_user_func_array( array( $this, 'email_edit' ), $args );
 		}
@@ -490,6 +515,8 @@
 			else {
 				$cui_id = isset( $this->request->data['Emailcui']['cui_id'] ) ? $this->request->data['Emailcui']['cui_id'] : null;
 				$email_id = $id;
+				$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
+					->check($email_id, $personne_id, 'Emailcui', array('isModuleEmail' => true));
 			}
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -535,6 +562,8 @@
 		 * @throws NotFoundException
 		 */
 		public function email_view( $personne_id = null, $id = null ) {
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
+					->check($id, $personne_id, 'Emailcui', array('isModuleEmail' => true));
 			if ( ($personne_id === null && $id === null) || ($this->action === 'email_add' && $id === null) || ($personne_id !== null && !is_numeric($personne_id)) || ($id !== null && !is_numeric($id)) ){
 				throw new NotFoundException();
 			}
@@ -566,6 +595,8 @@
 		 * @throws Exception
 		 */
 		public function email_send( $personne_id, $cui_id, $email_id ){
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
+					->check($email_id, $personne_id, 'Emailcui', array('isModuleEmail' => true));
 			$datas = $this->Cui->Emailcui->find('first', array( 'conditions' => array( 'Emailcui.id' => $email_id ) ) );
 			$data = $datas['Emailcui'];
 			
@@ -748,6 +779,7 @@
 		 * @param string $modeleOdt
 		 */
 		protected function _impression( $cui_id, $modeleOdt = null ){
+			$this->WebrsaAccesses->check($cui_id, null, 'Cui');
 			$personne_id = $this->Cui->personneId( $cui_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 

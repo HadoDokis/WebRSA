@@ -145,15 +145,28 @@
 		);
 
 		/**
+		 * Defini une url fictive
 		 *
 		 * @param array $requestParams
 		 */
-		protected function _setRequest( $requestParams ) {
-			$Request = new CakeRequest( null, false );
-			$Request->addParams( $requestParams );
+		protected function _setRequest( array $requestParams = array() ) {
+			$default = array(
+				'plugin' => null,
+				'controller' => 'apples',
+				'action' => 'index',
+			);
 
-			$this->DefaultTable->request = $Request;
-			$this->DefaultTable->DefaultPaginator->request = $Request;
+			$requestParams = Hash::merge( $default, $requestParams );
+
+			Router::reload();
+			$request = new CakeRequest();
+
+			$request->addParams( $requestParams );
+
+			Router::setRequestInfo( $request );
+			
+			$this->DefaultTable->request = $request;
+			$this->DefaultTable->DefaultPaginator->request = $request;
 		}
 
 		/**
@@ -170,6 +183,7 @@
 			$this->DefaultTable = new DefaultTableHelper( $this->View );
 
 			$this->_setRequest( self::$requestsParams['page_2_of_7'] );
+			Configure::write('ConfigurableQuery.common.two_ways_order.enabled', false);
 		}
 
 		/**
@@ -224,11 +238,13 @@
 			$result = $this->DefaultTable->thead( $this->fields, $params );
 			$expected = '<thead>
 							<tr>
-								<th id="ColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+								<th id="ColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
 								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
+			debug([self::_normalizeXhtml( $result ),
+				self::_normalizeXhtml( $expected )]);
 			$this->assertEqualsXhtml( $result, $expected );
 
 			// Sans le tri
@@ -365,7 +381,7 @@
 			$expected = '<table id="TableApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -385,14 +401,15 @@
 								</tr>
 							</tbody>
 						</table>';
-			$this->assertEqualsXhtml( $result, $expected );
+debug([self::_normalizeXhtml( $result ),
+				self::_normalizeXhtml( $expected )]);			$this->assertEqualsXhtml( $result, $expected );
 
 			// 2. En ajoutant explicitement l'id de la table
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params + array( 'id' => 'TableTestApplesIndex' ) );
 			$expected = '<table id="TableTestApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -422,7 +439,7 @@
 			$expected = '<table id="TableTestApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -460,7 +477,7 @@
 									<th class="action"> </th>
 								</tr>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -495,9 +512,9 @@
 			$expected = '<table id="TableApplesIndex" class="apples index">
 				<thead>
 					<tr>
-						<th id="TableApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
-						<th id="TableApplesIndexColumnAppleCreated"><a href="/index/page:1/sort:Apple.created/direction:asc">Apple.created</a></th>
-						<th id="TableApplesIndexColumnAppleModified"><a href="/index/page:1/sort:Apple.modified/direction:asc">Apple.modified</a></th>
+						<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+						<th id="TableApplesIndexColumnAppleCreated"><a href="/apples/index/page:1/sort:Apple.created/direction:asc">Apple.created</a></th>
+						<th id="TableApplesIndexColumnAppleModified"><a href="/apples/index/page:1/sort:Apple.modified/direction:asc">Apple.modified</a></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -507,6 +524,33 @@
 					</tr>
 				</tbody>
 			</table>';
+			$this->assertEqualsXhtml( $result, $expected );
+			
+			debug($params);
+			$result = $this->DefaultTable->index( $this->data, $this->fields, $params );
+			$expected = '<table id="TableApplesIndex" class="apples index">
+							<thead>
+								<tr>
+									<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
+									<th colspan="1" class="actions" id="TableApplesIndexColumnActions">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="odd">
+									<td class="data integer positive">6</td>
+									<td class="input string">
+										<div class="input text">
+											<label for="AppleColor">Color</label>
+											<input name="data[Apple][color]" maxlength="40" type="text" id="AppleColor"/>
+										</div>
+									</td>
+									<td class="action">
+										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
