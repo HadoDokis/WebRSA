@@ -118,42 +118,7 @@
 			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 
-			if( 93 === $departement ) {
-				$options = Hash::merge(
-					parent::_optionsRecords( $params ),
-					array(
-						'Contratinsertion' => array(
-							'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
-								array(
-									'type' => 'optgroup',
-									'prefix' => false,
-									'conditions' => array( 'Structurereferente.orientation' => 'O' )
-										+ $this->InsertionsBeneficiaires->conditions['structuresreferentes']
-								)
-							),
-							'referent_id' => $this->InsertionsBeneficiaires->referents(
-								array(
-									'type' => 'list',
-									'prefix' => true,
-									'conditions' => array( 'Structurereferente.orientation' => 'O' )
-										+ $this->InsertionsBeneficiaires->conditions['referents']
-								)
-							)
-						)
-					)
-				);
-			}
-			else {
-				$options = Hash::merge(
-					parent::_optionsRecords( $params ),
-					array(
-						'Contratinsertion' => array(
-							'structurereferente_id' => $Controller->Contratinsertion->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
-							'referent_id' => $Controller->Contratinsertion->Structurereferente->Referent->listOptions()
-						)
-					)
-				);
-			}
+			$options = parent::_optionsRecords( $params );
 
 			if( $departement === 93 ) {
 				$Controller->loadModel( 'Catalogueromev3' );
@@ -166,6 +131,17 @@
 						'Expprocer93' => array(
 							'metierexerce_id' => $Controller->Contratinsertion->Cer93->Expprocer93->Metierexerce->find( 'list' ),
 							'secteuracti_id' => $Controller->Contratinsertion->Cer93->Expprocer93->Secteuracti->find( 'list' )
+						)
+					)
+				);
+			}
+			else {
+				$options = Hash::merge(
+					$options,
+					array(
+						'Contratinsertion' => array(
+							'structurereferente_id' => $Controller->Contratinsertion->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
+							'referent_id' => $Controller->Contratinsertion->Structurereferente->Referent->listOptions()
 						)
 					)
 				);
@@ -200,6 +176,31 @@
 					)
 				);
 			}
+			else if( 93 === $departement ) {
+				$options = Hash::merge(
+					$options,
+					array(
+						'Contratinsertion' => array(
+							'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+								array(
+									'type' => 'optgroup',
+									'prefix' => false,
+									'conditions' => array( 'Structurereferente.orientation' => 'O' )
+										+ $this->InsertionsBeneficiaires->conditions['structuresreferentes']
+								)
+							),
+							'referent_id' => $this->InsertionsBeneficiaires->referents(
+								array(
+									'type' => 'list',
+									'prefix' => true,
+									'conditions' => array( 'Structurereferente.orientation' => 'O' )
+										+ $this->InsertionsBeneficiaires->conditions['referents']
+								)
+							)
+						)
+					)
+				);
+			}
 
 			return $options;
 		}
@@ -215,13 +216,16 @@
 		 * @return array
 		 */
 		protected function _optionsRecordsModels( array $params ) {
-			$result = array_merge(
-				parent::_optionsRecordsModels( $params ),
-				array( 'Typeorient', 'Structurereferente', 'Referent' )
-			);
-
 			$departement = (int)Configure::read( 'Cg.departement' );
-			if( $departement === 93 ) {
+			$result = parent::_optionsRecordsModels( $params );
+
+			if( $departement !== 93 ) {
+				$result = array_merge(
+					$result,
+					array( 'Typeorient', 'Structurereferente', 'Referent' )
+				);
+			}
+			else {
 				$result = array_merge(
 					$result,
 					array(
