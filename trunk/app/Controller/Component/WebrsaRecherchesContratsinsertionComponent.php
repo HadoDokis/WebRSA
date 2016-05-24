@@ -17,6 +17,16 @@
 	class WebrsaRecherchesContratsinsertionComponent extends WebrsaAbstractRecherchesComponent
 	{
 		/**
+		 * Components utilisés par ce component.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Allocataires',
+			'InsertionsBeneficiaires'
+		);
+
+		/**
 		 * Surcharge de la méthode params pour limiter les utilisateurs externes
 		 * au code INSEE ou à la valeur de structurereferente_id du CER.
 		 *
@@ -108,16 +118,42 @@
 			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 
-			$options = Hash::merge(
-				parent::_optionsRecords( $params ),
-				// TODO: dans la session, plutôt ?
-				array(
-					'Contratinsertion' => array(
-						'structurereferente_id' => $Controller->Contratinsertion->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
-						'referent_id' => $Controller->Contratinsertion->Structurereferente->Referent->listOptions()
+			if( 93 === $departement ) {
+				$options = Hash::merge(
+					parent::_optionsRecords( $params ),
+					array(
+						'Contratinsertion' => array(
+							'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+								array(
+									'type' => 'optgroup',
+									'prefix' => false,
+									'conditions' => array( 'Structurereferente.orientation' => 'O' )
+										+ $this->InsertionsBeneficiaires->conditions['structuresreferentes']
+								)
+							),
+							'referent_id' => $this->InsertionsBeneficiaires->referents(
+								array(
+									'type' => 'list',
+									'prefix' => true,
+									'conditions' => array( 'Structurereferente.orientation' => 'O' )
+										+ $this->InsertionsBeneficiaires->conditions['referents']
+								)
+							)
+						)
 					)
-				)
-			);
+				);
+			}
+			else {
+				$options = Hash::merge(
+					parent::_optionsRecords( $params ),
+					array(
+						'Contratinsertion' => array(
+							'structurereferente_id' => $Controller->Contratinsertion->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
+							'referent_id' => $Controller->Contratinsertion->Structurereferente->Referent->listOptions()
+						)
+					)
+				);
+			}
 
 			if( $departement === 93 ) {
 				$Controller->loadModel( 'Catalogueromev3' );
