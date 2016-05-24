@@ -14,9 +14,7 @@
 
 	/**
 	 * La classe WebrsaBilanparcours66 possède la logique métier web-rsa
-	 *
-	 * @todo WebrsaLogicBilanparcours66 ?
-	 *
+	 * 
 	 * @package app.Model
 	 */
 	class WebrsaBilanparcours66 extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -41,7 +39,7 @@
 		 * @param array $query
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array()) {
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			$fields = array(
 				'positionbilan' => 'Bilanparcours66.positionbilan',
 				'proposition' => 'Bilanparcours66.proposition',
@@ -61,7 +59,7 @@
 		 * @param array $conditions
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions) {
+		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
 					'Bilanparcours66.id',

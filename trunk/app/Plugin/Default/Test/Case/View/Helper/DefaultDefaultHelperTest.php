@@ -88,6 +88,8 @@
 			$this->DefaultDefault->DefaultCsv->Csv = new CsvTestHelper( $this->View );
 
 			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_2_of_7'] );
+			
+			Configure::write('ConfigurableQuery.common.two_ways_order.enabled', false);
 		}
 
 		/**

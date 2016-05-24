@@ -7,6 +7,7 @@
 	 */
 	App::uses( 'DefaultUrl', 'Default.Utility' );
 	App::uses( 'DefaultUtility', 'Default.Utility' );
+	App::uses( 'WebrsaModelUtility', 'Utility' );
 
 	/**
 	 * La classe WebrsaModelesLiesCuis66Component ...
@@ -31,10 +32,18 @@
 			'DossiersMenus',
 			'Gedooo.Gedooo',
 			'Jetons2',
-			'Session'			
+			'Session',
+			'WebrsaAccesses',
 		);
+		
+		public function initAccess($mainModelName = 'Cui', $webrsaModelName = 'WebrsaCui66') {
+			App::uses('WebrsaAccess'.Inflector::camelize($this->_Collection->getController()->name), 'Utility');
+			return $this->WebrsaAccesses->init($mainModelName, $webrsaModelName);
+		}
 
 		public function index( $cui_id, $params = array(), $customQuery = array() ){
+			$this->initAccess();
+			$this->WebrsaAccesses->check($cui_id);
 			$Controller = $this->_Collection->getController();
 
 			$params += array(
@@ -71,8 +80,18 @@
 				),
 				'order' => array( $params['modelClass'] . '.created DESC' )
 			);
-			$query = Hash::merge( $query, $customQuery );
-			$results = $Model->Cui66->find( 'all', $query );
+			$query = WebrsaModelUtility::unsetJoin(
+				'Cui66', $Controller->WebrsaCui66->completeVirtualfieldsForAccess(
+					Hash::merge($query, $customQuery), array('controller' => $Controller->name)
+				)
+			);
+			$accessClassName = 'WebrsaAccess'.Inflector::camelize($Controller->name);
+			
+			$paramsAccess = $Controller->WebrsaCui66->getParamsForAccess(
+				$cui_id, call_user_func(array($accessClassName, 'getParamsList'), $params)
+			);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+			$results = call_user_func(array($accessClassName, 'accesses'), $Model->Cui66->find('all', $query), $paramsAccess);
 			
 			$messages = $Model->messages( $personne_id );
 			$addEnabled = $Model->addEnabled( $messages );
@@ -91,7 +110,7 @@
 			
 			$urlmenu = $params['urlmenu'];
 
-			$Controller->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'cui_id', 'urlmenu', 'etatdossiercui66' ) );
+			$Controller->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'cui_id', 'urlmenu', 'etatdossiercui66', 'ajoutPossible' ) );
 			$Controller->view = $params['view'];
 		}
 		
@@ -142,6 +161,7 @@
 		}
 		
 		public function addEdit( $id = null, $params = array() ) {
+			$this->initAccess();
 			$Controller = $this->_Collection->getController();
 
 			$params += array(
@@ -153,7 +173,7 @@
 			$Model = $Controller->{$params['modelClass']};
 
 			if( $Controller->action == 'add' ) {
-				$cui_id = $id;
+				$cui_id = $id;				
 				$id = null;
 				$data = $Model->Cui66->find(
 					'first', 
@@ -167,6 +187,7 @@
 				);
 				$personne_id = Hash::get( $data, 'Cui.personne_id' );
 				$cui66_id = Hash::get( $data, 'Cui66.id' );
+				$this->WebrsaAccesses->check(null, $cui_id, 'Cui');
 			}
 			else {
 				$data = $Model->find( 'first', 
@@ -182,6 +203,7 @@
 				$personne_id = Hash::get( $data, 'Cui.personne_id' );
 				$cui66_id = Hash::get( $data, 'Cui66.id' );
 				$cui_id = Hash::get( $data, 'Cui.id' );
+				$this->WebrsaAccesses->check($id, $personne_id, $params['modelClass']);
 			}
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -223,6 +245,7 @@
 		}
 		
 		public function delete( $id = null, $params = array() ) {
+			$this->initAccess();
 			$Controller = $this->_Collection->getController();
 
 			$params += array(
@@ -244,6 +267,7 @@
 			
 			$personne_id = Hash::get( $data, 'Cui.personne_id' );
 			$cui_id = Hash::get( $data, 'Cui.id' );
+			$this->WebrsaAccesses->check($id, $personne_id, $params['modelClass']);
 			
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
@@ -289,7 +313,8 @@
 			$queryImpressionCui66['joins'][] = $Model->Cui66->join( $Model->alias, array( 'type' => 'INNER' ) );
 			$queryImpressionCui66['conditions']["{$Model->alias}.{$Model->primaryKey}"] = $id;
 
-			$dataCui66 = $Model->Cui66->find( 'first', $queryImpressionCui66 );
+			$Model->Cui66->Cui->forceVirtualFields = true;
+			$dataCui66 = $Model->Cui66->Cui->find( 'first', $queryImpressionCui66 );
 
 			$data = $Model->Cui66->completeDataImpression( $dataCui66 );
 			
@@ -315,6 +340,7 @@
 		 * @param string $modeleOdt
 		 */
 		public function impression( $id, $modeleOdt = null ){
+			$this->initAccess();
 			$Controller = $this->_Collection->getController();
 			$Model = $Controller->{$Controller->modelClass};
 			
@@ -350,6 +376,7 @@
 			
 			$personne_id = Hash::get( $result, 'Cui.personne_id' );
 			$cui_id = Hash::get( $result, 'Cui.id' );
+			$this->WebrsaAccesses->check($id, $personne_id, $Controller->modelClass);
 			
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 

@@ -14,9 +14,7 @@
 
 	/**
 	 * La classe WebrsaPersonneReferent possède la logique métier web-rsa
-	 *
-	 * @todo WebrsaLogicPersonneReferent ?
-	 *
+	 * 
 	 * @package app.Model
 	 */
 	class WebrsaPersonneReferent extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -41,7 +39,7 @@
 		 * @param array $query
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array()) {
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			$fields = array(
 				'dfdesignation' => 'PersonneReferent.dfdesignation',
 			);
@@ -55,7 +53,7 @@
 		 * @param array $conditions
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions) {
+		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
 					'PersonneReferent.id',

@@ -1,8 +1,8 @@
-# translation of messages.po to
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# translation of messages.po to"
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER"
+# This file is distributed under the same license as the PACKAGE package."
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR."
+#"
 msgid ""
 msgstr ""
 "Project-Id-Version: messages\n"
@@ -17,20 +17,26 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-###############################################################################
-# Titres
-###############################################################################
+###############################################################################"
+# Titres"
+###############################################################################"
 
 msgid "/Cuis/index/:heading"
 msgstr "Contrat Unique d'Insertion"
 
-msgid "/Cuis66/add"
+msgid "/Cuis/add"
+msgstr "Ajouter"
+
+msgid "/Cuis/add/:title"
 msgstr "Ajouter"
 
 msgid "/Cuis66/email_add"
 msgstr "Ajouter"
 
-msgid "/Cuis66/add/:heading"
+msgid "/Cuis66/email_add/#Cui.personne_id#/#Cui.id#"
+msgstr "Ajouter"
+
+msgid "/Cuis/add/:heading"
 msgstr "Ajout d'un Contrat Unique d'Insertion"
 
 msgid "/Cuis/edit/:heading"
@@ -42,28 +48,55 @@ msgstr "Vue d'un Contrat Unique d'Insertion"
 msgid "/Cuis/view"
 msgstr "Voir"
 
+msgid "/Cuis/view/#Cui.id#"
+msgstr "Voir"
+
 msgid "/Cuis/edit"
+msgstr "Modifier"
+
+msgid "/Cuis/edit/#Cui.id#"
 msgstr "Modifier"
 
 msgid "/Cuis66/delete"
 msgstr "Supprimer"
 
+msgid "/Cuis66/delete/#Cui.id#"
+msgstr "Supprimer"
+
 msgid "/Cuis66/email_send"
+msgstr "Envoyer E-mail"
+
+msgid "/Cuis66/email_send/#Cui.personne_id#/#Cui.id#/#Emailcui.id#"
 msgstr "Envoyer E-mail"
 
 msgid "/Cuis66/email_view"
 msgstr "Voir"
 
+msgid "/Cuis66/email_view/#Cui.personne_id#/#Emailcui.id#"
+msgstr "Voir"
+
 msgid "/Cuis66/email_edit"
+msgstr "Modifier"
+
+msgid "/Cuis66/email_edit/#Cui.personne_id#/#Emailcui.id#"
 msgstr "Modifier"
 
 msgid "/Cuis66/email_impression"
 msgstr "Imprimer"
 
+msgid "/Cuis66/email_impression/#Cui.personne_id#/#Emailcui.id#"
+msgstr "Imprimer"
+
 msgid "/Cuis66/annule"
 msgstr "Annuler"
 
+msgid "/Cuis66/annule/#Cui66.id#"
+msgstr "Annuler"
+
 msgid "/Cuis66/email_delete"
+msgstr "Supprimer"
+
+msgid "/Cuis66/email_delete/#Cui.personne_id#/#Emailcui.id#"
 msgstr "Supprimer"
 
 msgid "/Cuis66/email/:heading"
@@ -73,6 +106,9 @@ msgid "/Cuis66/email_view/:heading"
 msgstr "Voir E-mail CUI"
 
 msgid "/Cuis66/email"
+msgstr "E-mails"
+
+msgid "/Cuis66/email/#Cui.personne_id#/#Cui.id#"
 msgstr "E-mails"
 
 msgid "intitule_haut_cui"
@@ -99,9 +135,9 @@ msgstr "Annulation d'un CUI"
 msgid "Cuis66::filelink"
 msgstr "Fichiers liés au CUI"
 
-###############################################################################
-# Choix Formulaire
-###############################################################################
+###############################################################################"
+# Choix Formulaire"
+###############################################################################"
 
 msgid "Cui66.choixformulaire"
 msgstr "Choix du formulaire"
@@ -109,9 +145,9 @@ msgstr "Choix du formulaire"
 msgid "Cui66.typeformulaire"
 msgstr "Type de formulaire"
 
-###############################################################################
-# Secteur Marchand/Non marchand
-###############################################################################
+###############################################################################"
+# Secteur Marchand/Non marchand"
+###############################################################################"
 
 msgid "Cui.secteur"
 msgstr "Secteur"
@@ -131,9 +167,9 @@ msgstr "N° de convention individuelle"
 msgid "Cui.numconventionobjectif"
 msgstr "N° de convention annuelle d'objectifs et de moyens"
 
-###############################################################################
-# L'employeur
-###############################################################################
+###############################################################################"
+# L'employeur"
+###############################################################################"
 
 msgid "Partenairecui.employeur"
 msgstr "L'Employeur"
@@ -159,9 +195,9 @@ msgstr "Nom du responsable"
 msgid "Partenairecui66.telresponsable"
 msgstr "Numéro de téléphone du responsable"
 
-###############################################################################
-# Adresse employeur
-###############################################################################
+###############################################################################"
+# Adresse employeur"
+###############################################################################"
 
 msgid "Cui66.renouvellement"
 msgstr "Renouvellement"
@@ -241,9 +277,9 @@ msgstr "Canton"
 msgid "Partenairecui66.conseillerdep"
 msgstr "Conseiller Départemental"
 
-###############################################################################
-# Volet droit de l'employeur (CERFA)
-###############################################################################
+###############################################################################"
+# Volet droit de l'employeur (CERFA)"
+###############################################################################"
 
 msgid "Cui.voletdroit"
 msgstr "Volet de droite"
@@ -263,9 +299,9 @@ msgstr "Effectif salarié au 31 décembre"
 msgid "Partenairecui.organismerecouvrement"
 msgstr "Organisme de recouvrement des cotisations sociales :"
 
-###############################################################################
-# Informations additionnelles pour le cg66
-###############################################################################
+###############################################################################"
+# Informations additionnelles pour le cg66"
+###############################################################################"
 
 msgid "Partenairecui66.informationssup"
 msgstr "Informations additionnelles pour le cg66"
@@ -309,9 +345,9 @@ msgstr "Subventionné par CG"
 msgid "Partenairecui66.commentaire"
 msgstr "Commentaire"
 
-###############################################################################
-# Dossier Reçu/Éligible/complet
-###############################################################################
+###############################################################################"
+# Dossier Reçu/Éligible/complet"
+###############################################################################"
 
 msgid "Cui66.dossier"
 msgstr "Dossier Reçu/Éligible/complet"
@@ -337,9 +373,9 @@ msgstr "Date du dossier complet"
 msgid "Cui66.notedossier"
 msgstr "Commentaire sur le dossier"
 
-###############################################################################
-# E-mail employeur
-###############################################################################
+###############################################################################"
+# E-mail employeur"
+###############################################################################"
 
 msgid "Cui66.mailinitial"
 msgstr "E-mail Initial pour l'employeur"
@@ -362,9 +398,9 @@ msgstr "Choix des pièces à joindre au mail de l'employeur"
 msgid "Cui.dureecontrat"
 msgstr "Durée du contrat (Date de début/Date de fin d'un Contrat CDD)"
 
-###############################################################################
-# E-mail de relance
-###############################################################################
+###############################################################################"
+# E-mail de relance"
+###############################################################################"
 
 msgid "Cui66.mailrelance"
 msgstr "E-mail de relance à l'employeur"
@@ -378,9 +414,9 @@ msgstr "Date butoir pour transmission des pièces"
 msgid "Cui66.commentairerelance"
 msgstr "Commentaire du mail de relance"
 
-###############################################################################
-# Informations sur le salarié
-###############################################################################
+###############################################################################"
+# Informations sur le salarié"
+###############################################################################"
 
 msgid "Personne.info"
 msgstr "Informations sur le salarié"
@@ -442,9 +478,9 @@ msgstr "Cette personne ne possède pas de RSA Socle."
 msgid "Personnecui66.montantrsa"
 msgstr "Montant du droit RSA à la date de début du CUI"
 
-################################################################################
-# Fieldset du formulaire CUI
-################################################################################
+################################################################################"
+# Fieldset du formulaire CUI"
+################################################################################"
 
 msgid "Cui.situationsalarie"
 msgstr "Situation du salarié avant la signature de la convention"
@@ -452,9 +488,9 @@ msgstr "Situation du salarié avant la signature de la convention"
 msgid "Cui.niveauformation"
 msgstr "Niveau de formation"
 
-################################################################################
-# Contrat de travail
-################################################################################
+################################################################################"
+# Contrat de travail"
+################################################################################"
 
 msgid "Cui.contrattravail"
 msgstr "Contrat de travail"
@@ -498,9 +534,9 @@ msgstr "Appellation métier"
 msgid "Cui66.fonction"
 msgstr "Fonction occupée"
 
-################################################################################
-# Les actions d'accompagnement et de formation prévues
-################################################################################
+################################################################################"
+# Les actions d'accompagnement et de formation prévues"
+################################################################################"
 
 msgid "Cui.accompagnement"
 msgstr "Les actions d'accompagnement et de formation prévues"
@@ -562,9 +598,9 @@ msgstr "Formation qualifiante"
 msgid "Cui.niveauqualif"
 msgstr "Si oui, niveau de qualification visé"
 
-################################################################################
-# Décision de prise en charge (Cadre réservé au prescripteur)
-################################################################################
+################################################################################"
+# Décision de prise en charge (Cadre réservé au prescripteur)"
+################################################################################"
 
 msgid "Cui.prise_en_charge"
 msgstr "Décision de prise en charge (Cadre réservé au prescripteur)"
@@ -599,9 +635,9 @@ msgstr "Organisme"
 msgid "Cui.adressautreorganisme"
 msgstr "Adresse"
 
-################################################################################
-# Date
-################################################################################
+################################################################################"
+# Date"
+################################################################################"
 
 msgid "Cui.date"
 msgstr "Dates"
@@ -618,9 +654,9 @@ msgstr "Date de cloture automatique"
 msgid "Cui66.demandeenregistree"
 msgstr "Demande enregistrée le"
 
-################################################################################
-# Autre champs
-################################################################################
+################################################################################"
+# Autre champs"
+################################################################################"
 
 msgid "Cui66.etatdossiercui66"
 msgstr "Position du CUI"
@@ -643,9 +679,9 @@ msgstr "Date du dernier changement de position"
 msgid "Fichiermodule.nombre"
 msgstr " "
 
-################################################################################
-# Fieldset du formulaire CUI
-################################################################################
+################################################################################"
+# Fieldset du formulaire CUI"
+################################################################################"
 
 msgid "Partenairecui.assurancechomage"
 msgstr "L’employeur public ou privé est affilié à l’Unédic ?"
@@ -722,9 +758,9 @@ msgstr "Position du CUI"
 msgid "Cui66.commentaireformation"
 msgstr "Commentaire formation"
 
-################################################################################
-# Email Cui
-################################################################################
+################################################################################"
+# Email Cui"
+################################################################################"
 
 msgid "Emailcui.entete_email"
 msgstr "Generateur d'e-mail"
@@ -780,33 +816,60 @@ msgstr "Ajout d'un e-mail"
 msgid "Partenairecui66.activiteprincipale"
 msgstr "Activité principale de l'employeur"
 
-################################################################################
-# Actions
-################################################################################
+################################################################################"
+# Actions"
+################################################################################"
 
 msgid "/Propositionscuis66/index"
+msgstr "Avis techniques"
+
+msgid "/Propositionscuis66/index/#Cui.id#"
 msgstr "Avis techniques"
 
 msgid "/Decisionscuis66/index"
 msgstr "Décisions"
 
+msgid "/Decisionscuis66/index/#Cui.id#"
+msgstr "Décisions"
+
 msgid "/Accompagnementscuis66/index"
+msgstr "Accompagnements"
+
+msgid "/Accompagnementscuis66/index/#Cui.id#"
 msgstr "Accompagnements"
 
 msgid "/Suspensionscuis66/index"
 msgstr "Suspensions"
 
+msgid "/Suspensionscuis66/index/#Cui.id#"
+msgstr "Suspensions"
+
 msgid "/Rupturescuis66/index"
+msgstr "Ruptures"
+
+msgid "/Rupturescuis66/index/#Cui.id#"
 msgstr "Ruptures"
 
 msgid "/Cuis66/notification"
 msgstr "Notification"
 
+msgid "/Cuis66/notification/#Cui66.id#"
+msgstr "Notification"
+
 msgid "/Cuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Cuis66/filelink/#Cui.id#"
 msgstr "Fichiers liés"
 
 msgid "/Cuis66/impression_fichedeliaison"
 msgstr "Fiche de synthèse"
 
+msgid "/Cuis66/impression_fichedeliaison/#Cui.id#"
+msgstr "Fiche de synthèse"
+
 msgid "/Cuis66/impression"
+msgstr "Imprimer"
+
+msgid "/Cuis66/impression/#Cui.id#"
 msgstr "Imprimer"

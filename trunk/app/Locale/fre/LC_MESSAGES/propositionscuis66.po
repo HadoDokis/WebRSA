@@ -25,13 +25,25 @@ msgstr "Avis techniques"
 msgid "/Propositionscuis66/add"
 msgstr "Ajouter"
 
+msgid "/Propositionscuis66/add/:title"
+msgstr "Ajouter"
+
 msgid "/Propositionscuis66/view"
+msgstr "Voir"
+
+msgid "/Propositionscuis66/view/#Propositioncui66.id#"
 msgstr "Voir"
 
 msgid "/Propositionscuis66/edit"
 msgstr "Modifier"
 
+msgid "/Propositionscuis66/edit/#Propositioncui66.id#"
+msgstr "Modifier"
+
 msgid "/Propositionscuis66/delete"
+msgstr "Supprimer"
+
+msgid "/Propositionscuis66/delete/#Propositioncui66.id#"
 msgstr "Supprimer"
 
 msgid "/Propositionscuis66/view/:heading"
@@ -64,6 +76,9 @@ msgstr "Observations"
 msgid "/Propositionscuis66/filelink"
 msgstr "Fichiers liés"
 
+msgid "/Propositionscuis66/filelink/#Propositioncui66.id#"
+msgstr "Fichiers liés"
+
 msgid "Propositionscuis66::filelink"
 msgstr "Fichiers liés"
 
@@ -73,5 +88,11 @@ msgstr " "
 msgid "/Propositionscuis66/impression_aviselu"
 msgstr "Avis élu"
 
+msgid "/Propositionscuis66/impression_aviselu/#Propositioncui66.id#"
+msgstr "Avis élu"
+
 msgid "/Propositionscuis66/impression"
+msgstr "Fiche de liaison commission"
+
+msgid "/Propositionscuis66/impression/#Propositioncui66.id#"
 msgstr "Fiche de liaison commission"

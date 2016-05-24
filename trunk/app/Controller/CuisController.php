@@ -20,7 +20,7 @@
 	{
 		public $name = 'Cuis';
 
-		public $uses = array( 'Cui', 'Option', 'Departement' );
+		public $uses = array( 'Cui', 'Option', 'Departement', 'WebrsaCui' );
 
 		public $helpers = array( 
 			'Default', 
@@ -44,6 +44,7 @@
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
 			),
+			'WebrsaAccesses'
 		);
 
 
@@ -89,6 +90,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		protected function _setOptions() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$options = array();
 			$options = $this->Cui->enums();
 			$optionsaccompagnement = $this->Cui->Accompagnementcui66->enums();
@@ -247,6 +249,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function indexparams() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
@@ -309,6 +312,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function index_old( $personne_id = null ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
@@ -392,6 +396,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function add_old( $personne_id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -403,6 +408,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function edit_old( $id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -415,7 +421,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		protected function _add_edit( $id = null ) {
-
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
             if( $this->action == 'add' ) {
 				$personne_id = $id;
 			}
@@ -648,6 +654,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function valider( $cui_id = null ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $cui_id ) ) ) );
 
 			$qd_cui = array(
@@ -691,6 +698,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function impression( $id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
 
 			$pdf = $this->Cui->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
@@ -723,6 +731,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function view_old( $id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
 
 			$qd_cui = array(
@@ -860,6 +869,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function maillink( $id = null ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$personne_id = $this->Cui->personneId( $id );
             $this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
@@ -1117,6 +1127,7 @@
 		 * @deprecated since version 2.9.0
 		 */
 		public function synthesecui66( $id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
 
 			$pdf = $this->Cui->getSynthesecui66Pdf( $id, $this->Session->read( 'Auth.User.id' ) );
@@ -1165,8 +1176,15 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
 			
-			$query = $this->Cui->queryIndex($personne_id);
-			$results = $this->Cui->find( 'all', $query );
+			$query = $this->WebrsaCui->completeVirtualFieldsForAccess($this->Cui->queryIndex($personne_id));
+			$actionsParams = WebrsaAccessCuis::getParamsList();
+			$paramsAccess = $this->WebrsaCui->getParamsForAccess($personne_id, $actionsParams);
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+			
+			$results = WebrsaAccessCuis::accesses(
+				$this->Cui->find('all', $query),
+				$paramsAccess
+			);
 			
 			$messages = $this->Cui->messages( $personne_id );
 			$addEnabled = $this->Cui->addEnabled( $messages );
@@ -1174,7 +1192,9 @@
 			// Options
 			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
 
-			$this->set( compact( 'results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle' ) );
+			$this->set(
+				compact('results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle', 'ajoutPossible')
+			);
 			
 			switch ((int)Configure::read('Cg.departement')) {
 				case 66: $this->view = __FUNCTION__.'_cg66'; break;
@@ -1200,9 +1220,11 @@
 			if( $this->action === 'add' ) {
 				$personne_id = $id;
 				$id = null;
+				$this->WebrsaAccesses->check(null, $personne_id);
 			}
 			else {
 				$personne_id = $this->Cui->personneId( $id );
+				$this->WebrsaAccesses->check($id);
 			}
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -1264,6 +1286,7 @@
 		 * @param type $id
 		 */
 		public function view( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->Cui->personneId( $id );
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );

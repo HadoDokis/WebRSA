@@ -150,6 +150,9 @@
 
 			foreach( $fields as $path => $attributes ) {
 				$path = str_replace( '[]', "[{$index}]", $path );
+				if( !isset( $attributes['domain'] ) && isset( $params['domain'] ) ) {
+					$attributes['domain'] = $params['domain'];
+				}
 
 				if( $this->_isDataField( $path ) ) {
 					list( $modelName, $fieldName ) = model_field( $path );

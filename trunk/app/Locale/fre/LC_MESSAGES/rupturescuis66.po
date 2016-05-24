@@ -49,10 +49,19 @@ msgstr "Motif"
 msgid "/Rupturescuis66/edit"
 msgstr "Modifier"
 
+msgid "/Rupturescuis66/edit/#Rupturecui66.id#"
+msgstr "Modifier"
+
 msgid "/Rupturescuis66/delete"
 msgstr "Supprimer"
 
+msgid "/Rupturescuis66/delete/#Rupturecui66.id#"
+msgstr "Supprimer"
+
 msgid "/Rupturescuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Rupturescuis66/filelink/#Rupturecui66.id#"
 msgstr "Fichiers liés"
 
 msgid "Rupturescuis66::filelink"

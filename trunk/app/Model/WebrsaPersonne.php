@@ -39,7 +39,7 @@
 		 * @param array $query
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array()) {
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			$fields = array('Personne.nom');
 			return Hash::merge($query, array('fields' => array_values($fields)));
 		}
@@ -50,7 +50,7 @@
 		 * @param array $conditions
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions) {
+		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
 					'Personne.id',

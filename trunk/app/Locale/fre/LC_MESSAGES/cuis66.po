@@ -27,7 +27,13 @@ msgstr "Contrat Unique d'Insertion"
 msgid "/Cuis66/add"
 msgstr "Ajouter"
 
+msgid "/Cuis66/add/#Cui.id#"
+msgstr "Ajouter"
+
 msgid "/Cuis66/email_add"
+msgstr "Ajouter"
+
+msgid "/Cuis66/email_add/#Cui.id#"
 msgstr "Ajouter"
 
 msgid "/Cuis66/add/:heading"
@@ -42,28 +48,67 @@ msgstr "Vue d'un Contrat Unique d'Insertion"
 msgid "/Cuis66/view"
 msgstr "Voir"
 
+msgid "/Cuis66/view/#Cui.id#"
+msgstr "Voir"
+
 msgid "/Cuis66/edit"
+msgstr "Modifier"
+
+msgid "/Cuis66/edit/#Cui.id#"
 msgstr "Modifier"
 
 msgid "/Cuis66/delete"
 msgstr "Supprimer"
 
+msgid "/Cuis66/delete/#Cui.id#"
+msgstr "Supprimer"
+
 msgid "/Cuis66/email_send"
+msgstr "Envoyer E-mail"
+
+msgid "/Cuis66/email_send/#Cui.id#"
+msgstr "Envoyer E-mail"
+
+msgid "/Cuis66/email_send/#Emailcui.personne_id#/#Emailcui.cui_id#/#Emailcui.id#"
 msgstr "Envoyer E-mail"
 
 msgid "/Cuis66/email_view"
 msgstr "Voir"
 
+msgid "/Cuis66/email_view/#Cui.id#"
+msgstr "Voir"
+
+msgid "/Cuis66/email_view/#Emailcui.personne_id#/#Emailcui.id#"
+msgstr "Voir"
+
 msgid "/Cuis66/email_edit"
+msgstr "Modifier"
+
+msgid "/Cuis66/email_edit/#Cui.id#"
+msgstr "Modifier"
+
+msgid "/Cuis66/email_edit/#Emailcui.personne_id#/#Emailcui.id#"
 msgstr "Modifier"
 
 msgid "/Cuis66/email_impression"
 msgstr "Imprimer"
 
+msgid "/Cuis66/email_impression/#Cui.id#"
+msgstr "Imprimer"
+
 msgid "/Cuis66/annule"
 msgstr "Annuler"
 
+msgid "/Cuis66/annule/#Cui.id#"
+msgstr "Annuler"
+
 msgid "/Cuis66/email_delete"
+msgstr "Supprimer"
+
+msgid "/Cuis66/email_delete/#Cui.id#"
+msgstr "Supprimer"
+
+msgid "/Cuis66/email_delete/#Emailcui.id#"
 msgstr "Supprimer"
 
 msgid "/Cuis66/email/:heading"
@@ -73,6 +118,9 @@ msgid "/Cuis66/email_view/:heading"
 msgstr "Voir E-mail CUI"
 
 msgid "/Cuis66/email"
+msgstr "E-mails"
+
+msgid "/Cuis66/email/#Cui.id#"
 msgstr "E-mails"
 
 msgid "intitule_haut_cui"
@@ -802,11 +850,23 @@ msgstr "Ruptures"
 msgid "/Cuis66/notification"
 msgstr "Notification"
 
+msgid "/Cuis66/notification/#Cui.id#"
+msgstr "Notification"
+
 msgid "/Cuis66/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Cuis66/filelink/#Cui.id#"
 msgstr "Fichiers liés"
 
 msgid "/Cuis66/impression_fichedeliaison"
 msgstr "Fiche de synthèse"
 
+msgid "/Cuis66/impression_fichedeliaison/#Cui.id#"
+msgstr "Fiche de synthèse"
+
 msgid "/Cuis66/impression"
+msgstr "Imprimer"
+
+msgid "/Cuis66/impression/#Cui.id#"
 msgstr "Imprimer"

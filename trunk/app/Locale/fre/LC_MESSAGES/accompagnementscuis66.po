@@ -34,6 +34,9 @@ msgstr "Modifier un accompagnement"
 msgid "/Accompagnementscuis66/view"
 msgstr "Voir"
 
+msgid "/Accompagnementscuis66/view/#Accompagnementcui66.id#"
+msgstr "Voir"
+
 msgid "/Accompagnementscuis66/add"
 msgstr "Ajouter"
 
@@ -43,7 +46,13 @@ msgstr "Ajouter"
 msgid "/Accompagnementscuis66/edit"
 msgstr "Modifier"
 
+msgid "/Accompagnementscuis66/edit/#Accompagnementcui66.id#"
+msgstr "Modifier"
+
 msgid "/Accompagnementscuis66/delete"
+msgstr "Supprimer"
+
+msgid "/Accompagnementscuis66/delete/#Accompagnementcui66.id#"
 msgstr "Supprimer"
 
 msgid "Accompagnementcui66.formulaire"
@@ -121,6 +130,9 @@ msgstr "Appellation métier"
 msgid "/Accompagnementscuis66/filelink"
 msgstr "Fichiers liés"
 
+msgid "/Accompagnementscuis66/filelink/#Accompagnementcui66.id#"
+msgstr "Fichiers liés"
+
 msgid "Accompagnementscuis66::filelink"
 msgstr "Fichiers liés"
 
@@ -128,4 +140,7 @@ msgid "Fichiermodule.nombre"
 msgstr " "
 
 msgid "/Accompagnementscuis66/impression"
+msgstr "Imprimer"
+
+msgid "/Accompagnementscuis66/impression/#Accompagnementcui66.id#"
 msgstr "Imprimer"

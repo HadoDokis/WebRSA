@@ -13,9 +13,7 @@
 
 	/**
 	 * La classe WebrsaRendezvous possède la logique métier web-rsa
-	 *
-	 * @todo WebrsaLogicRendezvous ?
-	 *
+	 * 
 	 * @package app.Model
 	 */
 	class WebrsaRendezvous extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -40,7 +38,7 @@
 		 * @param array $query
 		 * @return type
 		 */
-		public function completeVirtualFieldsForAccess(array $query = array()) {
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			$fields = array(
 				'dernier' => $this->Rendezvous->sqVirtualField('dernier'),
 			);
@@ -54,7 +52,7 @@
 		 * @param array $conditions
 		 * @return array
 		 */
-		public function getDataForAccess(array $conditions) {
+		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
 					'Rendezvous.id',

@@ -54,6 +54,30 @@
 				'Foo' => array( 'bar' => array() )
 			);
 			$this->DefaultTableCell->set( $data );
+			
+			$this->_setRequest();
+		}
+		
+		/**
+		 * Defini une url fictive
+		 *
+		 * @param array $requestParams
+		 */
+		protected function _setRequest( array $requestParams = array() ) {
+			$default = array(
+				'plugin' => null,
+				'controller' => 'apples',
+				'action' => 'index',
+			);
+
+			$requestParams = Hash::merge( $default, $requestParams );
+
+			Router::reload();
+			$request = new CakeRequest();
+
+			$request->addParams( $requestParams );
+
+			Router::setRequestInfo( $request );
 		}
 
 		/**
