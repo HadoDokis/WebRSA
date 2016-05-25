@@ -56,16 +56,18 @@
 						'Childapple' => array(
 							'className' => 'Apple'
 						)
-					),
-					/*'hasAndBelongsToMany' => array(
-						'Neighbourapple' => array(
-							'className' => 'Apple',
-							'joinTable' => 'apples_neighbourapples',
-							'foreignKey' => 'apple_id',
-							'associationForeignKey' => 'neighbourapple_id',
-							'with' => 'AppleNeighbourapple'
+					)
+				),
+				false
+			);
+
+			$this->Apple->Parentapple->bindModel(
+				array(
+					'hasMany' => array(
+						'Childapple2' => array(
+							'className' => 'Apple'
 						)
-					),*/
+					)
 				),
 				false
 			);
@@ -260,6 +262,81 @@
 				false
 			);
 			$expected = 'SELECT "parentapples"."id" AS "parentapples__id" FROM "apples" AS "parentapples"   WHERE "Apple"."parentapple_id" = "parentapples"."id" AND "parentapples"."color" = \'red\'   ORDER BY "parentapples"."modified" DESC  LIMIT 1';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DatabaseTableBehavior::joins() avec des jointures
+		 * à un seul niveau.
+		 *
+		 * @covers DatabaseTableBehavior::joins
+		 */
+		public function testJoins1Level() {
+			$result = $this->Apple->joins(
+				array(
+					'Parentapple' => array( 'type' => 'INNER' ),
+					'Childapple'
+				)
+			);
+			$expected = array(
+				array(
+					'table' => '"apples"',
+					'alias' => 'Parentapple',
+					'type' => 'INNER',
+					'conditions' => '"Apple"."parentapple_id" = "Parentapple"."id"',
+				),
+				array(
+					'table' => '"apples"',
+					'alias' => 'Childapple',
+					'type' => 'LEFT',
+					'conditions' => '"Childapple"."apple_id" = "Apple"."id"',
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DatabaseTableBehavior::joins() avec des jointures
+		 * à plusieurs niveaux.
+		 *
+		 * @covers DatabaseTableBehavior::joins
+		 */
+		public function testJoins2Levels() {
+			$result = $this->Apple->joins(
+				array(
+					'Parentapple' => array(
+						'type' => 'INNER',
+						'joins' => array(
+							'Childapple2' => array( 'type' => 'LEFT OUTER' )
+						)
+					)
+				)
+			);
+			$expected = array(
+				array(
+					'table' => '"apples"',
+					'alias' => 'Parentapple',
+					'type' => 'INNER',
+					'conditions' => '"Apple"."parentapple_id" = "Parentapple"."id"',
+				),
+				array(
+					'table' => '"apples"',
+					'alias' => 'Childapple2',
+					'type' => 'LEFT OUTER',
+					'conditions' => '"Childapple2"."apple_id" = "Parentapple"."id"',
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DatabaseTableBehavior::joins() sans jointure.
+		 * 
+		 * @covers DatabaseTableBehavior::joins
+		 */
+		public function testJoinsEmpty() {
+			$result = $this->Apple->joins( array() );
+			$expected = array();
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
