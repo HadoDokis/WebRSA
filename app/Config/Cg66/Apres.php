@@ -49,6 +49,7 @@
 					'Apre.etatdossierapre',
 					'Apre.isdecision',
 					'Aideapre66.decisionapre',
+					'Canton.canton',
 					'/Apres66/index/#Apre.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats

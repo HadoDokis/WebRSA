@@ -57,6 +57,7 @@
 					'IndusConstates.mtmoucompta' => array( 'type' => 'float' ),
 					'IndusTransferesCG.mtmoucompta' => array( 'type' => 'float' ),
 					'RemisesIndus.mtmoucompta' => array( 'type' => 'float' ),
+					'Canton.canton',
 					'/Indus/view/#Dossier.id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -108,7 +109,8 @@
 					'IndusTransferesCG.mtmoucompta' => array( 'type' => 'float' ),
 					'RemisesIndus.mtmoucompta' => array( 'type' => 'float' ),
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

@@ -66,6 +66,7 @@
 						'type' => 'boolean',
 						'class' => 'dossier_locked'
 					),
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#'
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -120,7 +121,8 @@
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
 					'Personne.sexe',
-					'Dsp.natlog'
+					'Dsp.natlog',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

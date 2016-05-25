@@ -53,6 +53,7 @@
 					'Structurereferente.lib_struc',
 					'Orientstruct.statut_orient',
 					'Calculdroitrsa.toppersdrodevorsa' => array( 'type' => 'boolean' ),
+					'Canton.canton',
 					'/Orientsstructs/index/#Orientstruct.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -206,6 +207,7 @@
 					'Orientstruct.statut_orient',
 					'Orientstruct.date_propo',
 					'Orientstruct.date_valid',
+					'Canton.canton',
 					'/Orientsstructs/impression/#Orientstruct.id#' => array(
 						'class' => 'external'
 					)

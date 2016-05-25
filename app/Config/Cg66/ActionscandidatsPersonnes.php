@@ -46,6 +46,7 @@
 					'Referent.nom_complet',
 					'ActioncandidatPersonne.positionfiche',
 					'ActioncandidatPersonne.datesignature',
+					'Canton.canton',
 					'/ActionscandidatsPersonnes/index/#ActioncandidatPersonne.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -90,6 +91,7 @@
 					'Adresse.nomcom',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -147,6 +149,7 @@
 					'Partenaire.libstruc',
 					'Referent.nom_complet',
 					'ActioncandidatPersonne.datesignature',
+					'Canton.canton',
 					'/ActionscandidatsPersonnes/index/#ActioncandidatPersonne.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -182,6 +185,7 @@
 					'ActioncandidatPersonne.datesignature',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -241,6 +245,7 @@
 					'ActioncandidatPersonne.datesignature',
 					'ActioncandidatPersonne.bilanvenu',
 					'ActioncandidatPersonne.bilanretenu',
+					'Canton.canton',
 					'/ActionscandidatsPersonnes/index/#ActioncandidatPersonne.personne_id#' => array( 'class' => 'view external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -278,6 +283,7 @@
 					'ActioncandidatPersonne.bilanretenu',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

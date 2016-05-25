@@ -54,6 +54,7 @@
 					'Traitementpcg66.annule',
 					'Fichiermodule.nb_fichiers_lies',
 					'Dossier.locked',
+					'Canton.canton',
 					'/Traitementspcgs66/index/#Personnepcg66.personne_id#/#Dossierpcg66.id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -101,6 +102,7 @@
 					'Fichiermodule.nb_fichiers_lies',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

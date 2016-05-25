@@ -55,6 +55,7 @@
 					'Situationpdo.libelle',
 					'Traitementpcg66.statutpdo_id',
 					'Fichiermodule.nb_fichiers_lies',
+					'Canton.canton',
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 					'/Dossierspcgs66/edit/#Dossierpcg66.id#' => array( 'class' => 'edit' ),
 				),
@@ -111,7 +112,8 @@
 					'Metierromev3.name',
 					'Appellationromev3.name',
 					'Categoriemetierromev2.code',
-					'Categoriemetierromev2.name'
+					'Categoriemetierromev2.name',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -171,6 +173,7 @@
 					'Dossierpcg66.poledossierpcg66_id',
 					'Dossierpcg66.user_id',
 					'Dossierpcg66.dateaffectation',
+					'Canton.canton',
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -209,7 +212,8 @@
 					'Dossierpcg66.user_id',
 					'Dossierpcg66.dateaffectation',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -273,6 +277,7 @@
 					'Dossierpcg66.user_id',
 					'Dossierpcg66.dateaffectation',
 					'Decisiondossierpcg66.decisionpdo_id',
+					'Canton.canton',
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 					'/Dossierspcgs66/edit/#Dossierpcg66.id#' => array( 'class' => 'edit' ),
 					'/Dossierspcgs66/imprimer/#Dossierpcg66.id#/#Decisiondossierpcg66.id#' => array( 'class' => 'print' ),
@@ -314,7 +319,8 @@
 					'Dossierpcg66.dateaffectation',
 					'Decisiondossierpcg66.decisionpdo_id',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -384,6 +390,7 @@
 					'Traitementpcg66.statutpdo_id',
 					'Fichiermodule.nb_fichiers_lies',
 					'Dossier.locked',
+					'Canton.canton',
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 					'/Dossierspcgs66/edit/#Dossierpcg66.id#' => array( 'class' => 'edit' ),
 				),
@@ -429,7 +436,8 @@
 					'Dossierpcg66.etatdossierpcg',
 					'Fichiermodule.nb_fichiers_lies',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -484,6 +492,7 @@
 					'Originepdo.libelle',
 					'Dossierpcg66.orgpayeur',
 					'Serviceinstructeur.lib_service',
+					'Canton.canton',
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -519,7 +528,8 @@
 					'Dossierpcg66.orgpayeur',
 					'Serviceinstructeur.lib_service',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				),
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -574,6 +584,7 @@
 					'Originepdo.libelle',
 					'Dossierpcg66.orgpayeur',
 					'Serviceinstructeur.lib_service',
+					'Canton.canton',
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -609,7 +620,8 @@
 					'Dossierpcg66.orgpayeur',
 					'Serviceinstructeur.lib_service',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				),
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -694,6 +706,7 @@
 					'Foyer.nb_enfants' => array( 'options' => array() ),
 					'Adresse.nomcom',
 					'Adressefoyer.dtemm',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -775,7 +788,8 @@
 					'Adresse.nomcom',
 					'Adressefoyer.dtemm',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				),
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -858,6 +872,7 @@
 					'Foyer.nb_enfants' => array( 'options' => array() ),
 					'Adresse.nomcom',
 					'Foyer.ddsitfam',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -939,7 +954,8 @@
 					'Adresse.nomcom',
 					'Foyer.ddsitfam',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				),
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

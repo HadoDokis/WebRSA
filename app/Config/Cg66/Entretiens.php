@@ -54,6 +54,7 @@
 					'Entretien.arevoirle' => array(
 						'format' => '%B %Y'
 					),
+					'Canton.canton',
 					'/Entretiens/index/#Entretien.personne_id#'
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -106,7 +107,8 @@
 						'format' => '%B %Y'
 					),
 					'Referentparcours.nom_complet',
-					'Structurereferenteparcours.lib_struc'
+					'Structurereferenteparcours.lib_struc',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

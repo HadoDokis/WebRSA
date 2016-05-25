@@ -51,6 +51,7 @@
 					'Bilanparcours66.examenaudition',
 					'Bilanparcours66.examenauditionpe',
 					'Dossierep.themeep',
+					'Canton.canton',
 					'/Bilansparcours66/index/#Bilanparcours66.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -92,7 +93,8 @@
 					'Adresse.numcom',
 					'Adresse.nomcom',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

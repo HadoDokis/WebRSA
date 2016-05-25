@@ -50,6 +50,7 @@
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
 					'Referent.nom_complet',
+					'Canton.canton',
 					'/Rendezvous/index/#Personne.id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -87,7 +88,8 @@
 					'Structurereferente.lib_struc',
 					'Referent.nom_complet',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

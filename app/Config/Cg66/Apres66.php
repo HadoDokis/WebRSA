@@ -50,6 +50,7 @@
 					'Referentapre.nom_complet',
 					'Aideapre66.datedemande',
 					'Aideapre66.montantpropose',
+					'Canton.canton',
 					'/Apres66/index/#Personne.id#' => array( 'class' => 'view external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -83,7 +84,8 @@
 					'Apre66.datedemandeapre',
 					'Aideapre66.montantpropose',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -146,6 +148,7 @@
 					'Aideapre66.montantaccorde',
 					'Aideapre66.motifrejetequipe',
 					'Aideapre66.datemontantaccorde',
+					'Canton.canton',
 					'/Apres66/index/#Personne.id#' => array( 'class' => 'view external' ),
 					'/Apres66/notifications/#Apre66.id#' => array( 'class' => 'print' ),
 				),
@@ -196,7 +199,8 @@
 					'Adresse.codepos',
 					'Adresse.nomcom',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -314,6 +318,7 @@
 					'Aideapre66.montantaccorde',
 					'Aideapre66.motifrejetequipe',
 					'Aideapre66.datemontantaccorde',
+					'Canton.canton',
 					'Apre66.nb_fichiers_lies' => array( 'class' => 'center ajax_refresh' ),
 					'/Apres66/filelink/#Apre66.id#' => array( 'class' => 'external' ),
 					'/Apres66/index/#Personne.id#' => array( 'class' => 'view external' ),
@@ -352,7 +357,8 @@
 					'Aideapre66.motifrejetequipe',
 					'Aideapre66.datemontantaccorde',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -417,6 +423,7 @@
 					'Aideapre66.montantaccorde',
 					'Aideapre66.motifrejetequipe',
 					'Aideapre66.datemontantaccorde',
+					'Canton.canton',
 					'/Apres66/index/#Personne.id#' => array( 'class' => 'view external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -452,7 +459,8 @@
 					'Aideapre66.motifrejetequipe',
 					'Aideapre66.datemontantaccorde',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
