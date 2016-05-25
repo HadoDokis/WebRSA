@@ -263,5 +263,43 @@
 
 			return $sq;
 		}
+
+
+		/**
+		 * Permet de décrire les jointures à appliquer sur un modèle en spécifiant
+		 * uniquement les noms des modèles (et éventuellement le type, condition,
+		 * alias, table) ainsi que des sous-jointures dans la clé joins, un peu
+		 * à la manière des contain.
+		 *
+		 * TODO:
+		 *	- params -> replacements (alias, de manière générale + dans chaque jointure)
+		 *	- conditions ?
+		 *
+		 * @param Model $model
+		 * @param array $joins
+		 * @return array
+		 */
+		public function joins( Model $model, array $joins = array() ) {
+			$results = array();
+			$joins = Hash::normalize( $joins );
+
+			foreach( $joins as $joinModel => $joinParams ) {
+				$joinParams = (array)$joinParams;
+
+				$innerJoins = (array)Hash::get( $joinParams, 'joins' );
+				unset( $joinParams['joins'] );
+
+				$results[] = $model->join( $joinModel, $joinParams );
+
+				if( !empty( $innerJoins ) ) {
+					$results = array_merge(
+						$results,
+						$model->{$joinModel}->joins( $innerJoins )
+					);
+				}
+			}
+
+			return $results;
+		}
 	}
 ?>
