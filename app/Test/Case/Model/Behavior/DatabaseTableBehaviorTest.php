@@ -330,8 +330,49 @@
 		}
 
 		/**
+		 * Test de la méthode DatabaseTableBehavior::joins() avec des jointures
+		 * à plusieurs niveaux, contenant des conditions.
+		 *
+		 * @covers DatabaseTableBehavior::joins
+		 */
+		public function testJoins2LevelsConditions() {
+			$result = $this->Apple->joins(
+				array(
+					'Parentapple' => array(
+						'type' => 'INNER',
+						'conditions' => '1 = 1',
+						'joins' => array(
+							'Childapple2' => array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'1 = 2'
+								)
+							)
+						)
+					)
+				)
+			);
+			$expected = array(
+				array(
+					'table' => '"apples"',
+					'alias' => 'Parentapple',
+					'type' => 'INNER',
+					// @todo: utiliser systématiquement un array dans le behavior pour avoir les conditions supplémentaires à la fin
+					'conditions' => '1 = 1 AND "Apple"."parentapple_id" = "Parentapple"."id"',
+				),
+				array(
+					'table' => '"apples"',
+					'alias' => 'Childapple2',
+					'type' => 'LEFT OUTER',
+					'conditions' => '"Childapple2"."apple_id" = "Parentapple"."id" AND 1 = 2',
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode DatabaseTableBehavior::joins() sans jointure.
-		 * 
+		 *
 		 * @covers DatabaseTableBehavior::joins
 		 */
 		public function testJoinsEmpty() {
