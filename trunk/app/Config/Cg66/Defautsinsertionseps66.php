@@ -54,6 +54,7 @@
 					'Orientstruct.date_valid',
 					'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 					'Situationdossierrsa.etatdosrsa',
+					'Canton.canton',
 					'/Bilansparcours66/add/#Personne.id#/Bilanparcours66__examenauditionpe:noninscriptionpe' => array( 'class' => 'add external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -87,7 +88,8 @@
 					'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 					'Situationdossierrsa.etatdosrsa',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -124,6 +126,7 @@
 					'Orientstruct.date_valid',
 					'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 					'Situationdossierrsa.etatdosrsa',
+					'Canton.canton',
 					'/Bilansparcours66/add/#Personne.id#/Bilanparcours66__examenauditionpe:radiationpe' => array( 'class' => 'add external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -157,7 +160,8 @@
 					'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 					'Situationdossierrsa.etatdosrsa',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

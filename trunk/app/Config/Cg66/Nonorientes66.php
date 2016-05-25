@@ -47,6 +47,7 @@
 					'Situationdossierrsa.etatdosrsa',
 					'Adresse.nomcom',
 					'Foyer.enerreur',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'view external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -91,7 +92,8 @@
 					'Adresse.nomcom',
 					'Foyer.enerreur',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -149,6 +151,7 @@
 					'Historiqueetatpe.etat',
 					'Foyer.nbenfants',
 					'Foyer.enerreur',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'view external' ),
 					'/Nonorientes66/imprimeremploi/#Personne.id#' => array( 'class' => 'print imprimer' ),
 				),
@@ -186,7 +189,8 @@
 					'Foyer.nbenfants',
 					'Foyer.enerreur',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -244,6 +248,7 @@
 					'Nonoriente66.dateimpression',
 					'Foyer.nbenfants',
 					'Foyer.enerreur',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'view external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -280,7 +285,8 @@
 					'Foyer.nbenfants',
 					'Foyer.enerreur',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -338,6 +344,7 @@
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
 					'Foyer.enerreur',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'view external' ),
 					'/Nonorientes66/imprimernotifications/#Orientstruct.id#' => array( 'class' => 'print imprimer' ),
 				),
@@ -375,7 +382,8 @@
 					'Foyer.nbenfants',
 					'Foyer.enerreur',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -434,6 +442,7 @@
 					'Structurereferente.lib_struc',
 					'Foyer.enerreur',
 					'Orientstruct.nbfichier_lies',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'view external' ),
 					'/Nonorientes66/imprimernotifications/#Orientstruct.id#' => array( 'class' => 'print imprimer' ),
 					'/Orientsstructs/filelink/#Orientstruct.id#' => array( 'class' => 'external' ),
@@ -473,7 +482,8 @@
 					'Foyer.enerreur',
 					'Orientstruct.nbfichier_lies',
 					'Structurereferenteparcours.lib_struc',
-					'Referentparcours.nom_complet'
+					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

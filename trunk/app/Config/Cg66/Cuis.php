@@ -52,6 +52,7 @@
 					'Decisioncui66.datedecision' => array( 'type' => 'date' ), // Type datetime
 					'Emailcui.textmailcui66_id' => array( 'type' => 'varchar' ), // Type integer
 					'Emailcui.dateenvoi' => array( 'type' => 'date' ), // Type datetime
+					'Canton.canton',
 					'/Cuis/index/#Cui.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -87,6 +88,7 @@
 					'Decisioncui66.datedecision' => array( 'type' => 'date' ),
 					'Emailcui.textmailcui66_id' => array( 'type' => 'varchar' ),
 					'Emailcui.dateenvoi' => array( 'type' => 'date' ),
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

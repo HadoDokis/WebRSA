@@ -59,6 +59,7 @@
 					'Contratinsertion.forme_ci',
 					'Contratinsertion.positioncer',
 					'Contratinsertion.df_ci',
+					'Canton.canton',
 					'/Contratsinsertion/index/#Contratinsertion.personne_id#' => array( 'class' => 'view' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -177,6 +178,7 @@
 					'Referent.nom_complet',
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.df_ci',
+					'Canton.canton',
 					'/Contratsinsertion/index/#Contratinsertion.personne_id#' => array( 'class' => 'view external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -225,7 +227,8 @@
 						'Adresse.numcom',
 						'Contratinsertion.positioncer',
 						'Structurereferenteparcours.lib_struc',
-						'Referentparcours.nom_complet'
+						'Referentparcours.nom_complet',
+						'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -284,6 +287,7 @@
 					'Referent.nom_complet',
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.df_ci',
+					'Canton.canton',
 					'/Contratsinsertion/index/#Contratinsertion.personne_id#' => array( 'class' => 'view external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
@@ -332,7 +336,8 @@
 						'Adresse.numcom',
 						'Contratinsertion.positioncer',
 						'Structurereferenteparcours.lib_struc',
-						'Referentparcours.nom_complet'
+						'Referentparcours.nom_complet',
+						'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...
@@ -392,6 +397,7 @@
 					'Contratinsertion.observ_ci',
 					'Contratinsertion.forme_ci',
 					'Contratinsertion.positioncer',
+					'Canton.canton',
 					'/Contratsinsertion/index/#Contratinsertion.personne_id#' => array( 'class' => 'view external' ),
 					'/Contratsinsertion/ficheliaisoncer/#Contratinsertion.id#' => array( 
 						'class' => 'print', 
@@ -460,6 +466,7 @@
 					'Contratinsertion.current_action',
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',
+					'Canton.canton',
 				)
 			),
 			// 4. Temps d'exécution, mémoire maximum, ...

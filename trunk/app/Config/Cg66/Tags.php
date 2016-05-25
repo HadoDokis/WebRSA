@@ -81,6 +81,7 @@
 					'Situationdossierrsa.etatdosrsa',
 					'Personne.nom_complet_prenoms',
 					'Adresse.complete',
+					'Canton.canton',
 					'/Dossiers/view/#Dossier.id#' => array( 'class' => 'external' ),
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
