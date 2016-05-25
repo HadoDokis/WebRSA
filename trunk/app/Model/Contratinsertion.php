@@ -1216,7 +1216,7 @@
 				$return .= "WHEN {$conditions} THEN '{$positioncer}' ";
 			}
 
-			$return = "( CASE {$return} ELSE NULL END )";
+			$return = "( CASE {$return} ELSE positioncer END )";
 
 			return $return;
 		}
