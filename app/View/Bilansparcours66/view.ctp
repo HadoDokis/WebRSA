@@ -64,14 +64,33 @@
 
 		?>
 	</fieldset>
-	<?php if( $bilanparcours66['Bilanparcours66']['bilanparcoursinsertion'] != '0' ) :?>
+	<?php 
+	
+	if (Hash::get($bilanparcours66, 'Bilanparcours66.typeformulaire') === 'pe') :?>
+		<fieldset><legend>BILAN DU PARCOURS (Pôle Emploi)</legend>
+			<?php
+			echo '<div class="input value textarea"><span class="label">'
+				.__d('bilanparcours66','Bilanparcours66.textbilanparcours')
+				.'</span><br /><span class="input">'
+				.nl2br(hash::get($bilanparcours66, 'Bilanparcours66.textbilanparcours'))
+				.'</span></div>';
+			echo '<div class="input value textarea"><span class="label">'
+				.__d('bilanparcours66','Bilanparcours66.observbenef')
+				.'</span><br /><span class="input">'
+				.nl2br(hash::get($bilanparcours66, 'Bilanparcours66.observbenef'))
+				.'</span></div>';
+			?>
+		</fieldset>
+	<?php endif;
+	
+	if( $bilanparcours66['Bilanparcours66']['bilanparcoursinsertion'] != '0' && $bilanparcours66['Bilanparcours66']['bilanparcoursinsertion'] !== null ) :?>
 		<fieldset><legend>Bilan du parcours d'insertion</legend>
 			<?php
 				echo '<div class="input value textarea"><span class="label">' . __d('bilanparcours66','Bilanparcours66.situationperso') . '</span><br /><span class="input">' . nl2br(Set::classicExtract( $bilanparcours66, 'Bilanparcours66.situationperso' )) . '</span></div>';
 			?>
 		</fieldset>
 	<?php endif;?>
-	<?php if( $bilanparcours66['Bilanparcours66']['motifep'] != '0' ) :?>
+	<?php if( $bilanparcours66['Bilanparcours66']['motifep'] != '0' && $bilanparcours66['Bilanparcours66']['motifep'] !== null ) :?>
 		<fieldset><legend>Motif de la saisine</legend>
 			<?php
 				echo $this->Xform->fieldValue( 'Bilanparcours66.motifsaisine', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.motifsaisine' ) );
@@ -190,7 +209,12 @@
 
                 $avisEPTypeorient = Set::enum( $bilanparcours66['Decisiondefautinsertionep66ep']['typeorient_id'], $typesorients );
                 $avisEPStructure = Set::enum( $bilanparcours66['Decisiondefautinsertionep66ep']['structurereferente_id'], $structuresreferentes );
-                $avisEPReferent = Set::enum( $bilanparcours66['Decisiondefautinsertionep66ep']['referent_id'], $options['Bilanparcours66']['nvsansep_referent_id'] );
+				$referent_id = $bilanparcours66['Decisiondefautinsertionep66ep']['referent_id'];
+                $avisEPReferent = 
+					isset($options['Bilanparcours66']['nvsansep_Type']) 
+					? Set::enum($referent_id, $options['Bilanparcours66']['nvsansep_Type'])
+					: Set::enum($referent_id, (array)Hash::get($options, 'Bilanparcours66.nvsansep_referent_id'))
+				;
 
                 echo $this->Xhtml->tag(
                     'p',
