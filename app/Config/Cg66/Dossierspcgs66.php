@@ -57,7 +57,9 @@
 					'Fichiermodule.nb_fichiers_lies',
 					'Canton.canton',
 					'/Dossierspcgs66/ajax_view_decisions/#Dossierpcg66.id#' => array(
-						'class' => 'view ajax-link', 'msgid' => 'Voir propositions (#Decisiondossierpcg66.count#)'
+						'class' => 'view ajax-link', 
+						'msgid' => 'Voir propositions (#Decisiondossierpcg66.count#)',
+						'disabled' => "!'#Decisiondossierpcg66.count#'"
 					),
 					'/Dossierspcgs66/index/#Dossierpcg66.foyer_id#' => array( 'class' => 'view' ),
 					'/Dossierspcgs66/edit/#Dossierpcg66.id#' => array( 'class' => 'edit' ),
