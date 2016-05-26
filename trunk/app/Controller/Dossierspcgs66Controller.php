@@ -1228,5 +1228,38 @@
 			$this->Session->setFlash( 'Impossible de générer le(s) fichier PDF', 'default', array( 'class' => 'error' ) );
 			$this->redirect( $this->referer() );
 		}
+		
+		public function ajax_view_decisions($dossierpcg66_id) {
+			$decisionsdossierspcgs66 = $this->Dossierpcg66->find('all',
+				array(
+					'fields' => array_merge(
+						$this->Dossierpcg66->Decisiondossierpcg66->fields(),
+						array(
+							'Dossierpcg66.id',
+							'Dossierpcg66.foyer_id',
+							'Decisionpdo.libelle'
+						)
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Dossierpcg66->join('Decisiondossierpcg66'),
+						$this->Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo'),
+					),
+					'conditions' => array('Dossierpcg66.id' => $dossierpcg66_id)
+				)
+			);
+			
+			$users = array();
+			$users_list = $this->Dossierpcg66->Decisiondossierpcg66->User->find('all', 
+				array('fields' => array('id', 'nom', 'prenom'), 'contain' => false)
+			);
+			foreach ($users_list as $user) {
+				$users[$user['User']['id']] = $user['User']['nom'].' '.$user['User']['prenom'];
+			}
+			
+			$this->set(compact('decisionsdossierspcgs66', 'dossierMenu', 'users'));
+			
+			$this->render('ajax_view_decisions', 'ajax');
+		}
 	}
 ?>
