@@ -64,22 +64,6 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 						break;
 					}
 				}
-				if ($decisionPCG === null) {
-					foreach ((array)Hash::get($dossierep, 'Personne.Foyer.Dossierpcg66') as $dossierpcg) {
-						$decisiondefautinsertionep66_id = Hash::get($dossierpcg, 'decisiondefautinsertionep66_id');
-						if ($decisiondefautinsertionep66_id === Hash::get($decisionep, 'id')
-							|| $decisiondefautinsertionep66_id === Hash::get($decisioncg, 'id')
-						) {debug($dossierpcg);
-							foreach ((array)Hash::get($dossierpcg, 'Decisiondossierpcg66') as $decision) {
-								if (Hash::get($decision, 'validationproposition') === 'O') {
-									$decisionPCG = Hash::get($options, 'Decisiondossierpcg66.decisionpdo_id.'.Hash::get($decision, 'decisionpdo_id'));
-									break;
-								}
-							}
-							break;
-						}
-					}
-				}
 			}
 			
             //FIXME: si les décision CG ont écrasé les décision EP on les récupère depuis les CGs
