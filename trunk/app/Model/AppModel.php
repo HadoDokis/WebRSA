@@ -384,15 +384,20 @@
 		}
 
 		/**
-		* Retourne la sous-requête d'un des champs virtuels se trouvant dans $this->virtualFields
-		*
-		* @return string
-		*/
+		 * Retourne la sous-requête d'un des champs virtuels se trouvant dans
+		 * $this->virtualFields.
+		 *
+		 * @param string $field
+		 * @param string $alias
+		 * @return string
+		 * @throws RuntimeException
+		 */
 		public function sqVirtualField( $field, $alias = true ) {
-			$virtualField = Set::classicExtract( $this->virtualFields, $field );
+			$virtualField = Hash::get( $this->virtualFields, $field );
 
 			if( empty( $virtualField ) ) {
-				throw new Exception( "Virtual field \"{$field}\" does not exist in model \"{$this->alias}\"." );
+				$message = "Virtual field \"{$field}\" does not exist in model \"{$this->alias}\".";
+				throw new RuntimeException( $message, 500 );
 				return null;
 			}
 
