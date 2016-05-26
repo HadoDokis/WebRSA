@@ -192,6 +192,11 @@
 						. 'FROM traitementspcgs66 '
 						. 'WHERE traitementspcgs66.personnepcg66_id = "Personnepcg66"."id") '
 						. 'AS "Personnepcg66__nbtraitements"',
+						
+						'(SELECT COUNT(*) '
+						. 'FROM decisionsdossierspcgs66 '
+						. 'WHERE decisionsdossierspcgs66.dossierpcg66_id = "Dossierpcg66"."id") '
+						. 'AS "Decisiondossierpcg66__count"',
 					)
 				);
 

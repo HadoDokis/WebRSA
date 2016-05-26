@@ -73,3 +73,40 @@
 			'customSearch' => $this->fetch( 'custom_search_filters' )
 		)
 	);
+?>
+
+<div id="progressBarContainer123" style="display: none;">
+	<div id="popups2" style="z-index: 1000;">
+		<div id="popup_1">
+			<div class="hideshow">
+				<div class="fade" style="z-index: 31"></div>
+				<div class="popup_block">
+					<div class="popup">
+						<a href="#" onclick="$('progressBarContainer123').hide(); return false;"><?php echo $this->Xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+						<div id="popup-content123"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$$('a.ajax_view_decisions').each(function(a){
+		a.observe('click', function(event){
+			event.preventDefault();
+			new Ajax.Updater(
+				'popup-content123',
+				a.getAttribute('href'),
+				{
+					asynchronous:true,
+					evalScripts:true,
+					requestHeaders:['X-Update', 'popup-content123'],
+					onSuccess: function(){
+						$('progressBarContainer123').show();
+					}
+				}
+			);
+		});
+	});
+</script>
