@@ -140,6 +140,7 @@
 				)
 			);
 
+			$options['Decisiondossierpcg66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Dossierpcg66->Decisiondossierpcg66->Decisionpdo->find('list');
 
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions(
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Session->read( 'Auth.Zonegeographique' )
