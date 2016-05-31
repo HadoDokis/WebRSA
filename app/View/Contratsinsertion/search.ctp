@@ -65,6 +65,14 @@
 					'Search.Contratinsertion.referent_id' => array( 'empty' => true ),
 				),
 				(
+					$departement === 66
+					? array(
+						'Search.Dernierreferent.recherche' => array('name' => false, 'before' => '<hr>'),
+						'Search.Dernierreferent.dernierreferent_id' => array('empty' => true, 'after' => '<hr>'),
+					)
+					: array()
+				),
+				(
 					$departement === 93
 					? array(
 						'Search.Cer93.positioncer' => array( 'empty' => true, 'required' => false ),
@@ -230,6 +238,58 @@
 		<?php if( $departement == 58 ): ?>
 			new MaskedInput( '#SearchContratinsertionDureeEngag', '9?9' );
 		<?php endif;?>
+			
+		<?php if( $departement == 66 ): ?>
+		/**
+		 * Remplissage auto Dernierreferent
+		 * 
+		 * @see View/Referents/add_edit.ctp
+		 */
+		var index = [];
+
+		function format_approchant(text) {
+			return text.toLowerCase().replace(/[àâä]/g, 'a').replace(/[éèêë]/g, 'e')
+					.replace(/[ïî]/g, 'i').replace(/[ôö]/g, 'o').replace(/[ùüû]/g, 'u').replace('-', ' ');
+		}
+
+		$$('#SearchDernierreferentDernierreferentId option').each(function(option){
+			index.push({
+				value: option.getAttribute('value'),
+				textlo: format_approchant(option.innerHTML),
+				text: option.innerHTML
+			});
+		});
+
+		$('SearchDernierreferentRecherche').observe('keypress', function(event){
+			'use strict';
+			var value = $('SearchDernierreferentRecherche').getValue(),
+				regex = /^[a-zA-Z éèï\-ç]$/,
+				i, 
+				newValue = ''
+			;
+
+			// Ajoute à la valeur du champ, la "lettre" utilisé
+			if (regex.test(event.key)) {
+				value += event.key;
+			} else if (event.key === 'Backspace') {
+				value = value.substr(0, value.length -1);
+			}
+
+			// Recherche la valeur à selectionner
+			for (i=0; i<index.length; i++) {
+				if (index[i].text.indexOf(value) >= 0) {
+					newValue = index[i].value;
+					break;
+				} else if (index[i].textlo.toLowerCase().indexOf(format_approchant(value)) >= 0) {
+					newValue = index[i].value;
+				}
+			}
+
+			// Set de la valeur
+			$('SearchDernierreferentDernierreferentId').setValue(newValue);
+		});
+		<?php endif;?>
+		
 		dependantSelect( 'SearchContratinsertionReferentId', 'SearchContratinsertionStructurereferenteId' );
 	});
 </script>

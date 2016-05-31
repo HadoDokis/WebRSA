@@ -499,6 +499,8 @@ $irregularPlural = array(
 	'structurereferente_tableausuivipdv93' => 'structuresreferentes_tableauxsuivispdvs93',
 	// Tableau de bord
 	'role_user' => 'roles_users',
+	// Liens entre referents
+	'dernierreferent' => 'derniersreferents'
 );
 
 /**
