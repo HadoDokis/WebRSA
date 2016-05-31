@@ -82,6 +82,12 @@ msgstr "Étape du dossier d'orientation"
 msgid "Search.Orientstruct.not_typeorient_id"
 msgstr "Type d'orientation à exclure"
 
+msgid "Search.Dernierreferent.recherche"
+msgstr "Rechercher un référent (hors structure)"
+
+msgid "Search.Dernierreferent.dernierreferent_id"
+msgstr "Nom du référent (hors structure)"
+
 # ==============================================================================
 
 msgid "Adresse.nomcom"

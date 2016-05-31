@@ -70,6 +70,7 @@
 				'Structurereferenteparcours' => 'LEFT OUTER',
 				'Orientstruct' => 'LEFT OUTER',
 				'Referent' => 'LEFT OUTER',
+				'Dernierreferent' => 'LEFT OUTER',
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -104,6 +105,7 @@
 					array(
 						$this->Contratinsertion->join( 'Structurereferente', array( 'type' => $types['Structurereferente'] ) ),
 						$this->Contratinsertion->join( 'Referent', array( 'type' => $types['Referent'] ) ),
+						$this->Contratinsertion->Referent->join( 'Dernierreferent', array( 'type' => $types['Dernierreferent'] ) ),
 						$this->Contratinsertion->Personne->join(
 							'Orientstruct',
 							array(
@@ -155,7 +157,8 @@
 			$paths = array(
 				'Contratinsertion.forme_ci',
 				'Contratinsertion.structurereferente_id',
-				'Personne.etat_dossier_orientation'
+				'Personne.etat_dossier_orientation',
+				'Dernierreferent.dernierreferent_id',
 			);
 
 			// Fils de dependantSelect

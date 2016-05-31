@@ -33,10 +33,19 @@
 
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'fonction_pers', $this->Option->fonction_pers() );
-			$this->set( 'referent', $this->Referent->find( 'list' ) );
+			$this->set( 'referent', $referent = $this->Referent->find( 'list' ) );
 
 			$options = array();
 			$options = $this->Referent->enums();
+			$options['Referent']['id'] = $referent;
+			$options['Dernierreferent']['prevreferent_id'] = $this->Referent->find('list', 
+				array(
+					'joins' => array($this->Referent->join('Dernierreferent')),
+					'conditions' => array('Dernierreferent.referent_id = Dernierreferent.dernierreferent_id'),
+					'order' => array('Referent.nom', 'Referent.prenom')
+				)
+			);
+			
 			foreach( array( 'Structurereferente' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
 				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
@@ -107,6 +116,7 @@
 
 			$this->_setOptions();
 			$args = func_get_args();
+			
 			call_user_func_array( array( $this->Default, $this->action ), $args );
 		}
 
@@ -236,5 +246,30 @@
             $this->render( 'index' );
 		}
 
+		/**
+		 * Lecture de la table Dernierreferent pour ajax sur add_edit
+		 */
+		public function ajax_getreferent() {
+			$id = Hash::get($this->request->data, 'id');
+			$json = false;
+			
+			if (!empty($id) && preg_match('/^[\d]+$/', (string)$id)) {
+				$json = $this->Referent->find('first', array(
+					'fields' => array_merge(
+						$this->Referent->fields(),
+						$this->Referent->Dernierreferent->fields()
+					),
+					'joins' => array(
+						$this->Referent->join('Dernierreferent')
+					),
+					'contain' => false,
+					'conditions' => array('Referent.id' => $id),
+				));
+			}
+			
+			$this->set('json', Hash::flatten($json, '__'));
+			$this->layout = 'ajax';
+			$this->view = '/Elements/json';
+		}
 	}
 ?>
