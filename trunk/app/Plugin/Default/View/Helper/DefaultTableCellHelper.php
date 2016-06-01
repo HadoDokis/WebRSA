@@ -75,12 +75,40 @@
 		 */
 		public function data( $path, array $htmlAttributes = array() ) {
 			$type = $this->_type( $path, $htmlAttributes );
-			unset( $htmlAttributes['type'] );
+			$value = Hash::get( $htmlAttributes, 'value' );
+			unset( $htmlAttributes['type'], $htmlAttributes['value'] );
 
-			$value = Hash::get( $this->_data, $path );
-			// On prend les attributs avant la valeur, sinon on aura des bugs, par exemple avec boolean
-			$attributes = $this->DefaultData->attributes( $value, $type );
-			$value = $this->DefaultData->format( $value, $type, Hash::get( $htmlAttributes, 'format' ) );
+			if( null !== $value ) {
+				// TODO: une méthode (evaluate ?)
+				if( preg_match_all( '/#([^#]+)#/', $value, $matches ) ) {
+					foreach( $matches[1] as $match ) {
+						$tokens = explode( ',', $match );
+
+						$tmpPath = $tokens[0];
+						$tmpFunctions = array_slice( $tokens, 1 );
+						$tmpValue = Hash::get( $this->_data, $tmpPath );
+
+						if( isset( $htmlAttributes['options'] ) && isset( $htmlAttributes['options'][$tmpValue] ) ) {
+							$tmpValue = $htmlAttributes['options'][$tmpValue];
+						}
+
+						foreach( $tmpFunctions as $tmpFunction ) {
+							$tmpValue = call_user_func( $tmpFunction, $tmpValue );
+						}
+
+						$value = str_replace( "#{$match}#", $tmpValue, $value );
+					}
+				}
+
+				$attributes = array();
+			}
+			else {
+				$value = Hash::get( $this->_data, $path );
+
+				// On prend les attributs avant la valeur, sinon on aura des bugs, par exemple avec boolean
+				$attributes = $this->DefaultData->attributes( $value, $type );
+				$value = $this->DefaultData->format( $value, $type, Hash::get( $htmlAttributes, 'format' ) );
+			}
 
 			if( isset( $htmlAttributes['options'] ) ) {
 				$value = $this->DefaultData->translateOptions( $value, $htmlAttributes );

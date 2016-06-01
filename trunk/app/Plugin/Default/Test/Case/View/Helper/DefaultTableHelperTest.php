@@ -164,7 +164,7 @@
 			$request->addParams( $requestParams );
 
 			Router::setRequestInfo( $request );
-			
+
 			$this->DefaultTable->request = $request;
 			$this->DefaultTable->DefaultPaginator->request = $request;
 		}
@@ -238,13 +238,12 @@
 			$result = $this->DefaultTable->thead( $this->fields, $params );
 			$expected = '<thead>
 							<tr>
-								<th id="ColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+								<th id="ColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
 								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
-			debug([self::_normalizeXhtml( $result ),
-				self::_normalizeXhtml( $expected )]);
+
 			$this->assertEqualsXhtml( $result, $expected );
 
 			// Sans le tri
@@ -310,7 +309,7 @@
 									</div>
 								</td>
 								<td class="action">
-									<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+									<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 								</td>
 							</tr>
 						</tbody>';
@@ -381,7 +380,7 @@
 			$expected = '<table id="TableApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -396,20 +395,19 @@
 										</div>
 									</td>
 									<td class="action">
-										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+										<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 									</td>
 								</tr>
 							</tbody>
 						</table>';
-debug([self::_normalizeXhtml( $result ),
-				self::_normalizeXhtml( $expected )]);			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $result, $expected );
 
 			// 2. En ajoutant explicitement l'id de la table
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params + array( 'id' => 'TableTestApplesIndex' ) );
 			$expected = '<table id="TableTestApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -424,7 +422,7 @@ debug([self::_normalizeXhtml( $result ),
 										</div>
 									</td>
 									<td class="action">
-										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+										<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 									</td>
 								</tr>
 							</tbody>
@@ -439,7 +437,7 @@ debug([self::_normalizeXhtml( $result ),
 			$expected = '<table id="TableTestApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -454,7 +452,7 @@ debug([self::_normalizeXhtml( $result ),
 										</div>
 									</td>
 									<td class="action">
-										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+										<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 									</td>
 								</tr>
 							</tbody>
@@ -477,7 +475,7 @@ debug([self::_normalizeXhtml( $result ),
 									<th class="action"> </th>
 								</tr>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -492,7 +490,7 @@ debug([self::_normalizeXhtml( $result ),
 										</div>
 									</td>
 									<td class="action">
-										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+										<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 									</td>
 								</tr>
 							</tbody>
@@ -512,9 +510,9 @@ debug([self::_normalizeXhtml( $result ),
 			$expected = '<table id="TableApplesIndex" class="apples index">
 				<thead>
 					<tr>
-						<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
-						<th id="TableApplesIndexColumnAppleCreated"><a href="/apples/index/page:1/sort:Apple.created/direction:asc">Apple.created</a></th>
-						<th id="TableApplesIndexColumnAppleModified"><a href="/apples/index/page:1/sort:Apple.modified/direction:asc">Apple.modified</a></th>
+						<th id="TableApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+						<th id="TableApplesIndexColumnAppleCreated"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.created/direction:asc">Apple.created</a></th>
+						<th id="TableApplesIndexColumnAppleModified"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.modified/direction:asc">Apple.modified</a></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -525,13 +523,12 @@ debug([self::_normalizeXhtml( $result ),
 				</tbody>
 			</table>';
 			$this->assertEqualsXhtml( $result, $expected );
-			
-			debug($params);
+
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params );
 			$expected = '<table id="TableApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableApplesIndexColumnAppleId"><a href="/apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableApplesIndexColumnActions">Actions</th>
 								</tr>
@@ -546,7 +543,7 @@ debug([self::_normalizeXhtml( $result ),
 										</div>
 									</td>
 									<td class="action">
-										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+										<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 									</td>
 								</tr>
 							</tbody>
@@ -643,6 +640,30 @@ debug([self::_normalizeXhtml( $result ),
 							<tr class="even">
 								<th>Apple.color</th>
 								<td class="data string ">Foo</td>
+							</tr>
+						</tbody>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultTableHelper::detailsTbody() avec une condition
+		 * pour l'affichage d'une ligne
+		 *
+		 * @return void
+		 */
+		public function testDetailsTbodyCondition() {
+			$fields = array(
+				'Apple.id' => array(
+					'condition' => '"#Apple.id#" != "6"'
+				),
+				'Apple.color',
+			);
+
+			$result = $this->DefaultTable->detailsTbody( $this->data[0], $fields );
+			$expected = '<tbody>
+							<tr class="odd">
+								<td>Apple.color</td>
+								<td class="data string ">red</td>
 							</tr>
 						</tbody>';
 			$this->assertEqualsXhtml( $result, $expected );

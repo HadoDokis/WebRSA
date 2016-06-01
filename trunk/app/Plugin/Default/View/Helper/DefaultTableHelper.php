@@ -149,30 +149,25 @@
 			$tr = array();
 
 			foreach( $fields as $path => $attributes ) {
-				$path = str_replace( '[]', "[{$index}]", $path );
-				if( !isset( $attributes['domain'] ) && isset( $params['domain'] ) ) {
-					$attributes['domain'] = $params['domain'];
-				}
+				$attributes = (array)$attributes;
 
-				if( $this->_isDataField( $path ) ) {
-					list( $modelName, $fieldName ) = model_field( $path );
-					if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
-						$attributes['options'] = $params['options'][$modelName][$fieldName];
-					}
-				}
-
-				$condition = true;
-				if( isset( $attributes['condition'] ) ) {
-					$condition = $attributes['condition'];
-					unset( $attributes['condition'] );
-
-					if( is_string( $condition ) ) {
-						$condition = eval( 'return '.DefaultUtility::evaluate( $data, $condition ).';' );
-					}
-				}
+				$condition = $this->_condition( $data, $attributes );
+				unset( $attributes['condition'] );
 
 				if( $condition ) {
-					$tr[] = $this->DefaultTableCell->auto( $path, (array)$attributes );
+					$path = str_replace( '[]', "[{$index}]", $path );
+					if( !isset( $attributes['domain'] ) && isset( $params['domain'] ) ) {
+						$attributes['domain'] = $params['domain'];
+					}
+
+					if( $this->_isDataField( $path ) ) {
+						list( $modelName, $fieldName ) = model_field( $path );
+						if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
+							$attributes['options'] = $params['options'][$modelName][$fieldName];
+						}
+					}
+
+					$tr[] = $this->DefaultTableCell->auto( $path, $attributes );
 				}
 			}
 
@@ -248,6 +243,28 @@
 		}
 
 		/**
+		 * Retourne un booléen permettant de savoir s'il faut effectuer l'affichage,
+		 * en fonction des données et d'une éventuelle clé condition dans les paramètres.
+		 *
+		 * @param array $data Les données à utiliser pour l'évaluation
+		 * @param array $params Les paramètres contenant une éventuelle clé condition
+		 * @return boolean
+		 */
+		protected function _condition( array &$data, array &$params ) {
+			$condition = true;
+
+			if( isset( $params['condition'] ) ) {
+				$condition = $params['condition'];
+
+				if( is_string( $condition ) ) {
+					$condition = eval( 'return '.DefaultUtility::evaluate( $data, $condition ).';' );
+				}
+			}
+
+			return $condition;
+		}
+
+		/**
 		 * Retourne le tbody une table de détails (verticale) pour un
 		 * enregistrement particulier.
 		 *
@@ -269,33 +286,42 @@
 			foreach( $fields as $path => $attributes ) {
 				$attributes = (array)$attributes;
 
-				if (strpos($path, '/') === false) {					
-					// INFO: la mise en cache n'a pas de sens ici
-					list( $modelName, $fieldName ) = model_field( $path );
-				
+				$condition = $this->_condition( $data, $attributes );
+				unset( $attributes['condition'] );
 
-					if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
-						$attributes['options'] = $params['options'][$modelName][$fieldName];
+				if( $condition ) {
+					if (strpos($path, '/') === false) {
+						// INFO: la mise en cache n'a pas de sens ici
+						list( $modelName, $fieldName ) = model_field( $path );
+
+
+						if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
+							$attributes['options'] = $params['options'][$modelName][$fieldName];
+						}
 					}
-				}
 
-				if( isset( $attributes['domain'] ) && !empty( $attributes['domain'] ) ) {
-					$specificDomain = $attributes['domain'];
-				}
-				else {
-					$specificDomain = $domain;
-				}
+					if( isset( $attributes['domain'] ) && !empty( $attributes['domain'] ) ) {
+						$specificDomain = $attributes['domain'];
+					}
+					else {
+						$specificDomain = $domain;
+					}
 
-				$label = Hash::get( $attributes, 'label' );
-				unset( $attributes['label'] );
-				if( empty( $label ) ) {
-					$label = __d( $specificDomain, $path );
-				}
+					$label = Hash::get( $attributes, 'label' );
+					unset( $attributes['label'] );
+					if( empty( $label ) ) {
+						$label = __d( $specificDomain, $path );
+					}
 
-				$trs[] = array(
-					$label, // INFO: pas possible me mettre un th de cette manière, avec tableCells
-					$this->DefaultTableCell->auto( $path, $attributes ),
-				);
+					$trs[] = array(
+						$label, // INFO: pas possible me mettre un th de cette manière, avec tableCells
+						$this->DefaultTableCell->auto( $path, $attributes ),
+					);
+				}
+			}
+
+			if( empty( $trs ) ) {
+				return null;
 			}
 
 			// INFO: en fait, on peut remplacer par des th -> options
@@ -321,7 +347,7 @@
 			}
 
 			$tableParams = $this->tableParams( $params );
-			
+
 			// Ajoute un thead avec un th colspan 2 contenant le titre du tableau
 			$caption = '';
 			if (Hash::get($params, 'caption')) {
