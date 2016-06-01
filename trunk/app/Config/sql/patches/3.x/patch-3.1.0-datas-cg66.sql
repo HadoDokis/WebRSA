@@ -74,6 +74,46 @@ INSERT INTO requestsmanager (name, requestgroup_id, actif, model, json) VALUES (
 
 INSERT INTO requestsmanager (name, requestgroup_id, actif, model, json) VALUES ('Moteur de recherche par Allocataires sortants', 1, 1, 'Personne', '{"conditions":{"Adresse.numcom NOT LIKE":"66%","0":{"OR":{"Adresse2.numcom LIKE":"66%","Adresse3.numcom LIKE":"66%"}},"OR":{"Prestation.rolepers":["DEM","CJT"],"0":"Prestation.id IS NULL"},"1":"( Situationdossierrsa.etatdosrsa IN ( ''2'', ''3'', ''4'' ) )","2":"Dossier.id IN (\n\t\t\t\t\t\tSELECT\n\t\t\t\t\t\t\t\tderniersdossiersallocataires.dossier_id\n\t\t\t\t\t\t\tFROM derniersdossiersallocataires\n\t\t\t\t\t\t\tWHERE\n\t\t\t\t\t\t\t\tderniersdossiersallocataires.personne_id = Personne.id\n\t\t\t\t\t)","3":[]},"fields":{"Personne.nom_complet":"Personne.nom_complet","Adressefoyer.dtemm":"Adressefoyer.dtemm","( COALESCE( \"Adresse\".\"codepos\", '''' ) || '' '' || COALESCE( \"Adresse\".\"nomcom\", '''' ) ) AS  \"Adresse__localite\"":"( COALESCE( \"Adresse\".\"codepos\", '''' ) || '' '' || COALESCE( \"Adresse\".\"nomcom\", '''' ) ) AS  \"Adresse__localite\"","Dossier.matricule":"Dossier.matricule","0":"Dossier.id","Adressefoyer2.dtemm":"Adressefoyer2.dtemm","Adresse2.localite":"( ( ( COALESCE( \"Adresse2\".\"codepos\", '''' ) || '' '' || COALESCE( \"Adresse2\".\"nomcom\", '''' ) ) ) ) AS \"Adresse2__localite\"","Adressefoyer3.dtemm":"Adressefoyer3.dtemm","Adresse3.localite":"( ( ( COALESCE( \"Adresse3\".\"codepos\", '''' ) || '' '' || COALESCE( \"Adresse3\".\"nomcom\", '''' ) ) ) ) AS \"Adresse3__localite\"","Dossier.locked":"( \"Dossier\".\"id\" IN ( SELECT \"jetons\".\"dossier_id\" AS \"jetons__dossier_id\" FROM \"jetons\" AS \"jetons\"   WHERE (NOT (\"jetons\".\"php_sid\" = ''od519i29tjmn1e5iruagj114k2'') AND NOT (\"jetons\".\"user_id\" = 432)) AND \"modified\" >= ''2016-02-21 16:25:35'' AND \"jetons\".\"dossier_id\" = \"Dossier\".\"id\"    ) ) AS \"Dossier__locked\""},"joins":[{"table":"\"foyers\"","alias":"Foyer","type":"INNER","conditions":"\"Personne\".\"foyer_id\" = \"Foyer\".\"id\""},{"table":"\"dossiers\"","alias":"Dossier","type":"INNER","conditions":"\"Foyer\".\"dossier_id\" = \"Dossier\".\"id\""},{"table":"\"calculsdroitsrsa\"","alias":"Calculdroitrsa","type":"LEFT OUTER","conditions":"\"Calculdroitrsa\".\"personne_id\" = \"Personne\".\"id\""},{"table":"\"prestations\"","alias":"Prestation","type":"LEFT OUTER","conditions":"\"Prestation\".\"personne_id\" = \"Personne\".\"id\" AND \"Prestation\".\"natprest\" = ''RSA''"},{"table":"\"adressesfoyers\"","alias":"Adressefoyer","type":"LEFT OUTER","conditions":"\"Adressefoyer\".\"foyer_id\" = \"Foyer\".\"id\" AND \"Adressefoyer\".\"id\" IN( SELECT \"adressesfoyers\".\"id\" AS adressesfoyers__id FROM adressesfoyers AS adressesfoyers   WHERE \"adressesfoyers\".\"foyer_id\" = \"Foyer\".\"id\" AND \"adressesfoyers\".\"rgadr\" = ''01''   ORDER BY \"adressesfoyers\".\"dtemm\" DESC  LIMIT 1 )"},{"table":"\"adresses\"","alias":"Adresse","type":"LEFT OUTER","conditions":"\"Adressefoyer\".\"adresse_id\" = \"Adresse\".\"id\""},{"table":"\"situationsdossiersrsa\"","alias":"Situationdossierrsa","type":"INNER","conditions":"\"Situationdossierrsa\".\"dossier_id\" = \"Dossier\".\"id\""},{"table":"\"detailsdroitsrsa\"","alias":"Detaildroitrsa","type":"LEFT OUTER","conditions":"\"Detaildroitrsa\".\"dossier_id\" = \"Dossier\".\"id\""},{"table":"\"adresses_cantons\"","alias":"AdresseCanton","type":"LEFT OUTER","conditions":"\"AdresseCanton\".\"adresse_id\" = \"Adresse\".\"id\""},{"table":"\"cantons\"","alias":"Canton","type":"LEFT OUTER","conditions":"\"AdresseCanton\".\"canton_id\" = \"Canton\".\"id\""},{"table":"\"personnes_referents\"","alias":"PersonneReferent","type":"LEFT OUTER","conditions":"\"PersonneReferent\".\"personne_id\" = \"Personne\".\"id\" AND ((\"PersonneReferent\".\"id\" IS NULL) OR (\"PersonneReferent\".\"id\" IN ( SELECT \"personnes_referents\".\"id\"\n\t\t\t\t\tFROM personnes_referents\n\t\t\t\t\tWHERE\n\t\t\t\t\t\t\"personnes_referents\".\"personne_id\" = \"Personne\".\"id\"\n\t\t\t\t\t\tAND \"personnes_referents\".\"dfdesignation\" IS NULL\n\t\t\t\t\tORDER BY \"personnes_referents\".\"dddesignation\" DESC\n\t\t\t\t\tLIMIT 1 )))"},{"table":"\"referents\"","alias":"Referentparcours","type":"LEFT OUTER","conditions":"\"PersonneReferent\".\"referent_id\" = \"Referentparcours\".\"id\""},{"table":"\"structuresreferentes\"","alias":"Structurereferenteparcours","type":"LEFT OUTER","conditions":"\"Referentparcours\".\"structurereferente_id\" = \"Structurereferenteparcours\".\"id\""},{"table":"\"adressesfoyers\"","alias":"Adressefoyer2","type":"LEFT OUTER","conditions":"\"Adressefoyer2\".\"foyer_id\" = \"Foyer\".\"id\" AND \"Adressefoyer2\".\"id\" IN ( SELECT \"adressesfoyers\".\"id\" AS adressesfoyers__id FROM adressesfoyers AS adressesfoyers   WHERE \"adressesfoyers\".\"foyer_id\" = \"Foyer\".\"id\" AND \"adressesfoyers\".\"rgadr\" = ''02''   ORDER BY \"adressesfoyers\".\"dtemm\" DESC  LIMIT 1 )"},{"table":"\"adresses\"","alias":"Adresse2","type":"LEFT OUTER","conditions":"\"Adressefoyer2\".\"adresse_id\" = \"Adresse2\".\"id\""},{"table":"\"adressesfoyers\"","alias":"Adressefoyer3","type":"LEFT OUTER","conditions":"\"Adressefoyer3\".\"foyer_id\" = \"Foyer\".\"id\" AND \"Adressefoyer3\".\"id\" IN ( SELECT \"adressesfoyers\".\"id\" AS adressesfoyers__id FROM adressesfoyers AS adressesfoyers   WHERE \"adressesfoyers\".\"foyer_id\" = \"Foyer\".\"id\" AND \"adressesfoyers\".\"rgadr\" = ''03''   ORDER BY \"adressesfoyers\".\"dtemm\" DESC  LIMIT 1 )"},{"table":"\"adresses\"","alias":"Adresse3","type":"LEFT OUTER","conditions":"\"Adressefoyer3\".\"adresse_id\" = \"Adresse3\".\"id\""}],"limit":11,"offset":0,"order":[""],"page":1,"group":null,"callbacks":true,"maxLimit":100,"paramType":"named","contain":false,"recursive":-1}');
 
+
+--------------------------------------------------------------------------------
+-- Liens entre referents
+--------------------------------------------------------------------------------
+
+-- Ajoute une ligne pour chaque nom / prenom identique
+CREATE OR REPLACE FUNCTION public.garnissagederniersreferents() RETURNS VOID AS
+$$
+	DECLARE
+		v_row record;
+	BEGIN
+		FOR v_row IN
+			SELECT id, nom, prenom FROM referents ORDER BY id ASC
+		LOOP
+			INSERT INTO derniersreferents (referent_id, prevreferent_id, dernierreferent_id) VALUES
+			(
+				v_row.id,
+				(
+					SELECT referents.id FROM referents 
+					WHERE referents.id < v_row.id
+					AND referents.nom = v_row.nom
+					AND referents.prenom = v_row.prenom
+					ORDER BY referents.id DESC
+					LIMIT 1
+				),
+				v_row.id
+			);
+
+			UPDATE derniersreferents SET dernierreferent_id = v_row.id 
+			WHERE dernierreferent_id IN (SELECT a.prevreferent_id FROM derniersreferents AS a WHERE a.dernierreferent_id = v_row.id);
+			
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.garnissagederniersreferents();
+DROP FUNCTION public.garnissagederniersreferents();
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

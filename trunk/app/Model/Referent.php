@@ -636,38 +636,40 @@
 		public function afterSave($created) {
 			parent::afterSave($created);
 			
-			$id = Hash::get($this->data, 'Referent.id');
-			$prevreferent_id = Hash::get($this->data, 'Dernierreferent.prevreferent_id');
-			$prevdatas = $this->Dernierreferent->find('first',
-				array('conditions' => array('Dernierreferent.referent_id' => $prevreferent_id))
-			);
-			$dernierreferent_id = Hash::get($prevdatas, 'Dernierreferent.dernierreferent_id');
-			
-			$toSave = Hash::get($this->data, 'Dernierreferent');
-			$toSave['referent_id'] = $id;
-			$toSave['dernierreferent_id'] = $created || $dernierreferent_id === null ? $id : $dernierreferent_id;
-			
-			if (!$created) {
-				// Si un lien n'existait pas dans l'edition, on traite comme un nouvel enregistrement
-				$datas = $this->Dernierreferent->find('first',
-					array(
-						'fields' => '(referent_id != dernierreferent_id) AS "Dernierreferent__is_diff"',
-						'conditions' => array('Dernierreferent.referent_id' => $id)
-					)
+			if ((integer)Configure::read('Cg.departement') === 66) {
+				$id = Hash::get($this->data, 'Referent.id');
+				$prevreferent_id = Hash::get($this->data, 'Dernierreferent.prevreferent_id');
+				$prevdatas = $this->Dernierreferent->find('first',
+					array('conditions' => array('Dernierreferent.referent_id' => $prevreferent_id))
 				);
-				$create = empty($datas) || Hash::get($datas, 'Dernierreferent.is_diff') === false;
-			}
-			
-			if ($created || $create) {
-				$this->Dernierreferent->create($toSave);
-				$this->Dernierreferent->save();
-			}
-			
-			if ($toSave['dernierreferent_id'] !== $dernierreferent_id && $dernierreferent_id !== null) {
-				$this->Dernierreferent->updateAllUnbound(
-					array('Dernierreferent.dernierreferent_id' => $toSave['dernierreferent_id']),
-					array('Dernierreferent.dernierreferent_id' => $dernierreferent_id)
-				);
+				$dernierreferent_id = Hash::get($prevdatas, 'Dernierreferent.dernierreferent_id');
+
+				$toSave = Hash::get($this->data, 'Dernierreferent');
+				$toSave['referent_id'] = $id;
+				$toSave['dernierreferent_id'] = $created || $dernierreferent_id === null ? $id : $dernierreferent_id;
+
+				if (!$created) {
+					// Si un lien n'existait pas dans l'edition, on traite comme un nouvel enregistrement
+					$datas = $this->Dernierreferent->find('first',
+						array(
+							'fields' => '(referent_id != dernierreferent_id) AS "Dernierreferent__is_diff"',
+							'conditions' => array('Dernierreferent.referent_id' => $id)
+						)
+					);
+					$create = empty($datas) || Hash::get($datas, 'Dernierreferent.is_diff') === false;
+				}
+
+				if ($created || $create) {
+					$this->Dernierreferent->create($toSave);
+					$this->Dernierreferent->save();
+				}
+
+				if ($toSave['dernierreferent_id'] !== $dernierreferent_id && $dernierreferent_id !== null) {
+					$this->Dernierreferent->updateAllUnbound(
+						array('Dernierreferent.dernierreferent_id' => $toSave['dernierreferent_id']),
+						array('Dernierreferent.dernierreferent_id' => $dernierreferent_id)
+					);
+				}
 			}
 		}
 	}

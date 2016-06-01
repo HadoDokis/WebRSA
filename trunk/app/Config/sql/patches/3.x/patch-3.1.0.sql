@@ -342,40 +342,6 @@ CREATE TABLE derniersreferents (
 	dernierreferent_id INTEGER REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Ajoute une ligne pour chaque nom / prenom identique
-CREATE OR REPLACE FUNCTION public.garnissagederniersreferents() RETURNS VOID AS
-$$
-	DECLARE
-		v_row record;
-	BEGIN
-		FOR v_row IN
-			SELECT id, nom, prenom FROM referents ORDER BY id ASC
-		LOOP
-			INSERT INTO derniersreferents (referent_id, prevreferent_id, dernierreferent_id) VALUES
-			(
-				v_row.id,
-				(
-					SELECT referents.id FROM referents 
-					WHERE referents.id < v_row.id
-					AND referents.nom = v_row.nom
-					AND referents.prenom = v_row.prenom
-					ORDER BY referents.id DESC
-					LIMIT 1
-				),
-				v_row.id
-			);
-
-			UPDATE derniersreferents SET dernierreferent_id = v_row.id 
-			WHERE dernierreferent_id IN (SELECT a.prevreferent_id FROM derniersreferents AS a WHERE a.dernierreferent_id = v_row.id);
-			
-		END LOOP;
-	END;
-$$
-LANGUAGE plpgsql;
-
-SELECT public.garnissagederniersreferents();
-DROP FUNCTION public.garnissagederniersreferents();
-
 
 -- *****************************************************************************
 COMMIT;
