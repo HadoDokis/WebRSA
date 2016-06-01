@@ -22,7 +22,7 @@
 		echo '</div>';
 	}
 ?>
-
+<?php if ((integer)Configure::read('Cg.departement') === 66) {?>
 	<fieldset><legend>Référent lié</legend>
 		<?php
 			// Ajout de l'option manquante si besoin
@@ -46,7 +46,7 @@
 			echo $this->Xform->input('Charger', array('type' => 'button', 'id' => 'load_referent'));
 		?>
 	</fieldset>
-
+<?php } ?>
 	<fieldset>
 		<?php
 			echo $this->Default2->subform(
