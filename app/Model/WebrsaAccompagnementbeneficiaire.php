@@ -244,6 +244,7 @@
 		 *
 		 * @fixme
 		 *	- droits d'accès (contrôleur / component)
+		 *  - mise en cache
 		 *
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
@@ -679,6 +680,7 @@
 		 * @fixme
 		 *	- parfois, le fichier est lié à un enregistrement lié (ex. Passagecommissionep, <Thematiqueep>, ...)
 		 *	- droits d'accès (contrôleur / component)
+		 *	- mise en cache
 		 *
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
@@ -768,6 +770,7 @@
 		 *	- ici, on ne prend que les PDF stockés
 		 *	- parfois, le PDF est lié à un enregistrement lié (ex. Passagecommissionep, <Thematiqueep>, ...)
 		 *	- droits d'accès (contrôleur / component)
+		 *	- mise en cache
 		 *
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
@@ -830,6 +833,27 @@
 			}
 
 			return $pdfs;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			if( 93 === $departement ) {
+				$qdDetails = $this->qdDetails();
+				$success = !empty( $qdDetails );
+			}
+			else {
+				$success = null;
+			}
+
+			return $success;
 		}
 	}
 ?>
