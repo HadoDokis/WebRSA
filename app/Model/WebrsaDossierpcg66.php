@@ -186,7 +186,14 @@
 				),
 				'conditions' => $conditions,
 				'contain' => false,
-				'order' => array( 'Dossierpcg66.datereceptionpdo DESC', 'Dossierpcg66.id DESC' )
+				'order' => array(
+					'Decisiondossierpcg66.datetransmissionop IS NULL' => 'DESC',
+					'Decisiondossierpcg66.datetransmissionop' => 'DESC',
+					'Decisiondossierpcg66.datevalidation IS NULL' => 'DESC',
+					'Decisiondossierpcg66.datevalidation' => 'DESC',
+					'Dossierpcg66.datereceptionpdo' => 'DESC',
+					'Dossierpcg66.id' => 'DESC',
+				)
 			);
 
 			return $query;
