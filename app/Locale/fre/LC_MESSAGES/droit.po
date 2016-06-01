@@ -3506,3 +3506,11 @@ msgstr "Visualisation de l'historique"
 
 msgid "Historiquescovs58:view"
 msgstr "Visualisation d'un passage en COV"
+
+#-------------------------------------------------------------------------------
+
+msgid "Module:Accompagnementsbeneficiaires"
+msgstr "Accompagnement du bénéficiaire"
+
+msgid "Accompagnementsbeneficiaires:index"
+msgstr "Visualisation de l'accompagnement du bénéficiaire"

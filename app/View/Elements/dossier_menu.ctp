@@ -137,6 +137,10 @@
 					$subAllocataire["Mémos ({$count})"] = array( 'url' => array( 'controller' => 'memos', 'action' => 'index', $personne['id'] ) );
 				}
 
+				if( $departement == 93 ) {
+					$subAllocataire['Accompagnement'] = array( 'url' => array( 'controller' => 'accompagnementsbeneficiaires', 'action' => 'index', $personne['id'] ) );
+				}
+
 				// Droit
 				$subAllocataire['Droit'] = array(
 					( $departement == 93 ? 'DSP' : 'DSP d\'origine' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] ) ),
