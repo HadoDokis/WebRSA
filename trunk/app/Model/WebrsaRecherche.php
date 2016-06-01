@@ -210,6 +210,21 @@
 				'component' => 'WebrsaCohortesContratsinsertionNouveaux',
 				'keys' => array( 'results.fields', 'results.innerTable' )
 			),
+			'Changementsadresses.search' => array(
+				'type' => 'search',
+				'departement' => array( 66 ),
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaRechercheChangementadresse',
+				'component' => 'WebrsaRecherchesChangementsadresses',
+				'keys' => array( 'results.fields', 'results.innerTable' )
+			),
+			'Changementsadresses.exportcsv' => array(
+				'departement' => array( 66 ),
+				'modelName' => 'Dossier',
+				'modelRechercheName' => 'WebrsaRechercheChangementadresse',
+				'component' => 'WebrsaRecherchesChangementsadresses',
+				'keys' => array( 'results.fields' )
+			),
 			'Contratsinsertion.cohorte_valides' => array(
 				'type' => 'search',
 				'departement' => array( 93 ),
