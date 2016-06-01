@@ -230,7 +230,10 @@ function __minify() {
 	"$JSDIR/fileuploader.js" \
 	"$JSDIR/fileuploader.webrsa.js" \
 	"$JSDIR/droits.js" \
-	"$JSDIR/cake.prototype.js" > "$JSFILE"
+	"$JSDIR/cake.prototype.js" \
+	"$JSDIR/prototype.fabtabulous.js" \
+	"$JSDIR/prototype.tablekit.js" \
+	> "$JSFILE"
 
 	java -jar "$YUICOMPRESSOR" "$JSFILE" -o "$JSDIR/webrsa.js" --charset utf-8 --preserve-semi
 	rm "$JSFILE"
