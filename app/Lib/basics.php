@@ -1195,10 +1195,6 @@
 		return ( @preg_match( $pattern, '' ) !== false );
 	}
 
-
-    $now   = time();
-    $date2 = strtotime('2012-08-14 16:01:05');
-
     function dateDiff($date1, $date2){
         $diff = abs($date1 - $date2); // abs pour avoir la valeur absolute, ainsi éviter d'avoir une différence négative
         $retour = array();
