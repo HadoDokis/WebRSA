@@ -87,15 +87,15 @@
 				)
 			),
 		);
-		
+
 		public $virtualFields = array(
 			'dernier' => array(
 				'type'      => 'boolean',
 				'postgres'  => '"%s"."id" IN (
-					SELECT a.id FROM rendezvous AS a 
-					WHERE a.personne_id = "%s"."personne_id" 
-					ORDER BY a.daterdv DESC, 
-						a.heurerdv DESC 
+					SELECT a.id FROM rendezvous AS a
+					WHERE a.personne_id = "%s"."personne_id"
+					ORDER BY a.daterdv DESC,
+						a.heurerdv DESC
 					LIMIT 1)'
 			),
 		);
@@ -500,6 +500,7 @@
 			// train d'importer des fixtures
 			if( !( unittesting() && $this->useDbConfig === 'default' ) && Configure::read( 'Rendezvous.useThematique' ) ) {
 				$this->virtualFields['thematiques'] = $this->vfListeThematiques( null );
+				$this->virtualFields['thematiques_virgules'] = $this->vfListeThematiques( null, ', ' );
 			}
 		}
 

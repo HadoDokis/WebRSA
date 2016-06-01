@@ -55,5 +55,33 @@
 				'counterCache' => null
 			),
 		);
+
+		/**
+		 * Retourne une sous-requête permettant de récupérer le dernier diplôme
+		 * lié à un CER, triée en fonction de l'année et de l'id.
+		 *
+		 * @param string $joinField Le champ cers93.id sur lequel faire la jointure
+		 * @return string
+		 */
+		public function sqDernier( $joinField = 'Cer93.id' ) {
+			$alias = Inflector::tableize( $this->alias );
+
+			return $this->sq(
+				array(
+					'alias' => $alias,
+					'fields' => array(
+						$alias.'.'.$this->primaryKey
+					),
+					'conditions' => array(
+						"{$alias}.cer93_id = {$joinField}"
+					),
+					'order' => array(
+						$alias.'.annee' => 'DESC',
+						$alias.'.'.$this->primaryKey => 'DESC'
+					),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>

@@ -305,6 +305,60 @@
 		);
 
 		/**
+		 * Surcharge du constructeur pour ajouter des champs virtuels.
+		 *
+		 * @param mixed $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			// Seulement lorsque l'on n'est pas en train d'importer des fixtures
+			if( !( unittesting() && $this->useDbConfig === 'default' ) ) {
+				$this->virtualFields['sujets'] = $this->vfListeSujetscers93( null );
+				$this->virtualFields['sujets_virgules'] = $this->vfListeSujetscers93( null, ', ' );
+			}
+		}
+
+		/**
+		 * Retourne un champ virtuel contenant la liste des sujets liées à
+		 * une CER, séparées par la chaîne de caractères $glue.
+		 *
+		 * Si le nom du champ virtuel est vide, alors le champ non aliasé sera
+		 * retourné.
+		 *
+		 * @param string $fieldName Le nom du champ virtuel; le modèle sera l'alias
+		 *	du modèle (Cer93) utilisé.
+		 * @param string $glue La chaîne de caratcères utilisée pour séparer les
+		 *	noms des aides.
+		 * @return string
+		 */
+		public function vfListeSujetscers93( $fieldName = 'sujets', $glue = '\\n\r-' ) {
+			$query = array(
+				'fields' => array( 'Sujetcer93.name' ),
+				'alias' => 'cer93_sujetscers93',
+				'joins' => array(
+					$this->Cer93Sujetcer93->join( 'Sujetcer93', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'Cer93Sujetcer93.cer93_id = Cer93.id'
+				),
+				'contain' => false
+			);
+			$replacements = array( 'Cer93Sujetcer93' => 'cer93_sujetscers93', 'Sujetcer93' => 'sujetscers93' );
+			$query = array_words_replace( $query, $replacements );
+
+			$sql = "TRIM( BOTH ' ' FROM TRIM( TRAILING '{$glue}' FROM ARRAY_TO_STRING( ARRAY( ".$this->Cer93Sujetcer93->sq( $query )." ), '{$glue}' ) ) )";
+
+			if( !empty( $fieldName ) ) {
+				$sql = "{$sql} AS \"{$this->alias}__{$fieldName}\"";
+			}
+
+			return $sql;
+		}
+
+		/**
 		 * 	Fonction permettant la sauvegarde du formulaire du CER 93.
 		 *
 		 * 	Une règle de validation est supprimée en amont
