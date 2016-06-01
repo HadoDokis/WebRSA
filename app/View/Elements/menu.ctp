@@ -199,6 +199,10 @@
 				'disabled' => ( $departement != 93 ),
 				'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search'  )
 			),
+			'Par changement d\'adresse' => array(
+				'disabled' => ( $departement != 66 ),
+				'url' => array( 'controller' => 'changementsadresses', 'action' => 'search'  )
+			),
 		),
 		'Anciens moteurs' => array(
 			'disabled' => (!Configure::read('Anciensmoteurs.enabled')),
