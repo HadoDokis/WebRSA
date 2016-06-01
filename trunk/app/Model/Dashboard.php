@@ -59,7 +59,8 @@
 				
 				$roles[$kRole]['Role']['date_count'] = date('d/m/Y G:i');
 				foreach ($role['Actionrole'] as $kActionrole => $actionrole) {
-					if (!preg_match('/\/([\w]+)\/([\w]+)((?:\/[\w]+:[\w]*)*)$/', (string)Hash::get($actionrole, 'url'), $matches)) {
+					// /controller/action[/var:value]+||[number]+
+					if (!preg_match('/\/([\w]+)\/([\w]+)((?:\/[\w]+:[\w]*|\/[\d]+)*)$/', (string)Hash::get($actionrole, 'url'), $matches)) {
 						continue;
 					}
 					
@@ -67,13 +68,15 @@
 					$roles[$kRole]['Actionrole'][$kActionrole]['controller'] = $controller;
 					$roles[$kRole]['Actionrole'][$kActionrole]['action'] = $action;
 
-					$params = array();
-					foreach (explode('/', trim($flattenParams, '/')) as $param) {
-						list($key, $value) = explode(':', $param);
-						$params = Hash::merge($params, Hash::expand(array($key => $value), '__'));
-					}
-
 					if (isset($this->WebrsaRecherche->searches[ucfirst($controller).'.'.$action])) {
+						$params = array();
+						foreach (explode('/', trim($flattenParams, '/')) as $param) {
+							if (strpos($param, ':')) {
+								list($key, $value) = explode(':', $param);
+								$params = Hash::merge($params, Hash::expand(array($key => $value), '__'));
+							}
+						}
+						
 						$rechercheParams = $this->WebrsaRecherche->searches[ucfirst($controller).'.'.$action];
 						$Modelrecherche = ClassRegistry::init($rechercheParams['modelRechercheName']);
 						$query = $Modelrecherche->searchConditions($Modelrecherche->searchQuery(), $params['Search']);
