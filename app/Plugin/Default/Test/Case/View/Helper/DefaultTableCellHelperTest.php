@@ -54,10 +54,10 @@
 				'Foo' => array( 'bar' => array() )
 			);
 			$this->DefaultTableCell->set( $data );
-			
+
 			$this->_setRequest();
 		}
-		
+
 		/**
 		 * Defini une url fictive
 		 *
@@ -220,6 +220,52 @@
 				)
 			);
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec une clé value (composée de deux champs)
+			$data = array(
+				'Apple' => array(
+					'id' => 6,
+					'created' => '2015-07-03 11:58:13'
+				)
+			);
+			$this->DefaultTableCell->set( $data );
+			$result = $this->DefaultTableCell->data(
+				'Apple.created',
+				array(
+					'value' => 'Pomme d\'id #Apple.id# datant du #Apple.created,date_short#'
+				)
+			);
+			$expected = array(
+				'Pomme d\'id 6 datant du 03/07/2015',
+				array(
+					'class' => ''
+				)
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec une clé value (composée de deux champs) et la traduction d'options
+			$data = array(
+				'Apple' => array(
+					'id' => 6,
+					'color' => 'blue',
+					'created' => '2015-07-03 11:58:13'
+				)
+			);
+			$this->DefaultTableCell->set( $data );
+			$result = $this->DefaultTableCell->data(
+				'Apple.created',
+				array(
+					'options' => array( 'blue' => 'bleue' ),
+					'value' => 'Pomme d\'id #Apple.id#, de couleur #Apple.color#, datant du #Apple.created,date_short#'
+				)
+			);
+			$expected = array(
+				'Pomme d\'id 6, de couleur bleue, datant du 03/07/2015',
+				array(
+					'class' => ''
+				)
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
@@ -233,7 +279,7 @@
 			$htmlAttributes = array();
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				'<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => NULL,
@@ -244,7 +290,7 @@
 			$htmlAttributes = array( 'for' => 'ApplesView' );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				'<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => 'ApplesView',
@@ -265,7 +311,7 @@
 			$htmlAttributes = array( 'confirm' => true );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view" onclick="return confirm(&#039;/Apples/view/6 ?&#039;);">/Apples/view</a>',
+				'<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view" onclick="return confirm(&#039;/Apples/view/6 ?&#039;);">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => NULL,
@@ -276,7 +322,7 @@
 			$htmlAttributes = array( 'for' => 'ApplesView' );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				'<a href="'.Router::url('/').'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => 'ApplesView',
