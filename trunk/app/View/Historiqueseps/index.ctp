@@ -1,5 +1,7 @@
 <h1><?php echo $this->pageTitle = 'Historique des passages en EP';?></h1>
 <?php
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 	echo $this->Default2->search(
 		array(
 			'Dossierep.themeep' => array( 'domain' => 'historiqueep' )
@@ -40,18 +42,18 @@
 		}
 
 		echo '</thead><tbody>';
-		foreach( $passages as $passsage ) {
+		foreach( $passages as $passage ) {
 			echo $this->Xhtml->tableCells(
 				array(
-					$this->Type2->format( $passsage, 'Commissionep.Ep.identifiant' ),
-					$this->Type2->format( $passsage, 'Commissionep.identifiant' ),
-					$this->Type2->format( $passsage, 'Commissionep.dateseance' ),
-					$this->Type2->format( $passsage, 'Passagecommissionep.etatdossierep', array( 'options' => $options ) ),
-					$this->Type2->format( $passsage, 'Dossierep.themeep', array( 'options' => $options ) ),
-					$this->Type2->format( $passsage, 'Dossierep.created' ),
-					$this->Type2->format( $passsage, 'Dossierep.actif', array( 'options' => $options ) ), // FIXME "ENUM" Oui/Non, + dans les deux autres vues
-					$this->Xhtml->link( 'Passage', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $passsage['Passagecommissionep']['id'] ), array( 'class' => 'button view', 'enabled' => $this->Permissions->checkDossier( 'historiqueseps', 'view_passage', $dossierMenu ) ) ),
-					$this->Xhtml->link( 'Commission', array( 'controller' => 'commissionseps', 'action' => $actionDecisionsCommission, $passsage['Commissionep']['id'] ), array( 'class' => 'button view', 'enabled' => $this->Permissions->check( 'commissionseps', $actionDecisionsCommission ) ) ),
+					$this->Type2->format( $passage, 'Commissionep.Ep.identifiant' ),
+					$this->Type2->format( $passage, 'Commissionep.identifiant' ),
+					$this->Type2->format( $passage, 'Commissionep.dateseance' ),
+					$this->Type2->format( $passage, 'Passagecommissionep.etatdossierep', array( 'options' => $options ) ),
+					$this->Type2->format( $passage, 'Dossierep.themeep', array( 'options' => $options ) ),
+					$this->Type2->format( $passage, 'Dossierep.created' ),
+					$this->Type2->format( $passage, 'Dossierep.actif', array( 'options' => $options ) ), // FIXME "ENUM" Oui/Non, + dans les deux autres vues
+					$this->Xhtml->link( 'Passage', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $passage['Passagecommissionep']['id'] ), array( 'class' => 'button view', 'enabled' => WebrsaAccess::isEnabled($passage, '/Historiqueseps/view_passage') ) ),
+					$this->Xhtml->link( 'Commission', array( 'controller' => 'commissionseps', 'action' => $actionDecisionsCommission, $passage['Commissionep']['id'] ), array( 'class' => 'button view', 'enabled' => WebrsaAccess::isEnabled($passage, '/Commissionseps/'.$actionDecisionsCommission) ) ),
 				),
 				array( 'class' => 'odd' ),
 				array( 'class' => 'even' )

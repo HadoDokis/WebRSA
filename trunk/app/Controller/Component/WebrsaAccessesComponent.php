@@ -74,6 +74,7 @@
 		 * @return void
 		 */
 		public function initialize(Controller $controller, $mainModelName = null, $webrsaModelName = null, $webrsaAccessName = null) {
+			extract($this->settings);
 			$MainModelName = $mainModelName ?: self::controllerNameToModelName($controller->name);
 			$WebrsaModelClassName = $webrsaModelName ?: 'Webrsa'.$MainModelName;
 			$WebrsaAccessClassName = $webrsaAccessName ?: 'WebrsaAccess'.$controller->name;

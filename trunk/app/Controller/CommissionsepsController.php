@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	App::uses('WebrsaAccessCommissionseps', 'Utility');
+
 	/**
 	 * Gestion des séances d'équipes pluridisciplinaires.
 	 *
@@ -18,7 +20,15 @@
 
 		public $helpers = array( 'Default', 'Default2', 'Csv' );
 		public $uses = array( 'Commissionep', 'Option' );
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo.Gedooo' );
+		public $components = array(
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions'
+				)
+			), 
+			'Gedooo.Gedooo', 
+			'WebrsaAccesses' => array('webrsaModelName' => 'WebrsaHistoriqueep')
+		);
 		public $commeDroit = array(
 			'edit' => 'Commissionseps:add',
 			'view' => 'Commissionseps:recherche'
@@ -1170,6 +1180,7 @@
 		 * Affichage des décisions de la commission d'EP
 		 */
 		protected function _decision( $commissionep_id, $niveauDecision ) {
+			$this->WebrsaAccesses->check($commissionep_id);
 			$commissionep = $this->Commissionep->find(
 					'first', array(
 				'conditions' => array(
