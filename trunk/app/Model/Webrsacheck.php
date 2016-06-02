@@ -1445,6 +1445,7 @@
 			
 			$actionExists = array();
 			$actionUsedByMyCg = array();
+			$ignoreList = array();
 			
 			$toCheck = array();
 			
@@ -1470,6 +1471,11 @@
 					if (strpos($method, '_') === 0) {
 						$actionExists[] = $controllerName.'/'.substr($method, 1);
 					}
+				}
+				
+				foreach (array_keys(call_user_func(array($className, 'ignoreCheck'))) as $ignore) {
+					list($controller, $action) = explode('.', $ignore);
+					$ignoreList[] = $controller.'/'.$action;
 				}
 			}
 
@@ -1500,16 +1506,20 @@
 			foreach ($actionExists as $action) {
 				if (!in_array($action, array_keys($results))) {
 					list($controllerName) = explode('/',$action);
+					$ignore = in_array($action, $ignoreList);
+					
 					$results[$action] = array(
-						'success' => false,
-						'value' => 'false',
-						'message' => "L'action est définie dans WebrsaAccess$controllerName mais n'est jamais utilisée"
+						'success' => $ignore,
+						'value' => $ignore ? 'N/A' : 'false',
+						'message' => $ignore 
+							? 'Cette action possède des règles particulières non '
+								. 'prise en compte dans la vérification de l\'application'
+							: "L'action est définie dans WebrsaAccess$controllerName mais n'est jamais utilisée"
 					);
 				}
 			}
 			
 			ksort($results);
-			
 			return $results;
 		}
 	}

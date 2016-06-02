@@ -208,5 +208,16 @@
 		public final static function get_class_methods() {
 			return get_class_methods(get_called_class());
 		}
+		
+		/**
+		 * Liste des "actions" à ignorer leur utilitée dans la vérification de l'application.
+		 * Peut servir à ignorer des méthodes protégés qui ne concernent pas une action ou
+		 * des actions qui dépendent de paramètres autre que celui du département.
+		 * 
+		 * @return array - normalisé avec self::normalize_actions
+		 */
+		public static function ignoreCheck() {
+			return array();
+		}
 	}
 ?>

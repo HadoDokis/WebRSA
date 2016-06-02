@@ -222,17 +222,6 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _reconduction(array $record, array $params) {
-			return true;
-		}
-
-		/**
-		 * Permission d'accès
-		 * 
-		 * @param array $record
-		 * @param array $params
-		 * @return boolean
-		 */
 		protected static function _reconduction_cer_plus_55_ans(array $record, array $params) {
 			$params = self::params($params);
 			

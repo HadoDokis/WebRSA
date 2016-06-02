@@ -195,7 +195,6 @@
 					'add' => array('ajoutPossible' => true),
 					'view',
 					'edit',
-					'filelink',
 					'cancel',
 					'delete',
 					'printFicheCalcul',

@@ -163,6 +163,26 @@
 		}
 		
 		/**
+		 * Liste des "actions" à ignorer leur utilitée dans la vérification de l'application.
+		 * Peut servir à ignorer des méthodes protégés qui ne concernent pas une action ou
+		 * des actions qui dépendent de paramètres autre que celui du département.
+		 * 
+		 * @return array - normalisé avec self::normalize_actions
+		 */
+		public static function ignoreCheck() {
+			return self::normalize_actions(
+				array(
+					'email_add' => array('isModuleEmail' => true),
+					'email_edit' => array('isModuleEmail' => true),
+					'email_view' => array('isModuleEmail' => true),
+					'email_send' => array('isModuleEmail' => true),
+					'email_delete' => array('isModuleEmail' => true),
+					'Propositionscuis66.index' => array('isModuleProposition' => true),
+				)
+			);
+		}
+		
+		/**
 		 * Liste les actions disponnible
 		 * Si une action pointe sur un autre controler, il faut préciser son nom
 		 * ex : Moncontroller.monaction
