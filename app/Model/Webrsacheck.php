@@ -1430,5 +1430,87 @@
 
 			return $results;
 		}
+		
+		/**
+		 * Vérifi que les rêgles d'accès métier sont bien défini pour toutes les actions
+		 * 
+		 * @return array
+		 */
+		public function checkWebrsaAccess() {
+			$allConfigureKeysCommon = $this->_allConfigureKeysCommon();
+			$departements = $allConfigureKeysCommon['Cg.departement'][0][0];
+			$myDepartement = (integer)Configure::read('Cg.departement');
+			$results = array();
+			$matches = null;
+			
+			$actionExists = array();
+			$actionUsedByMyCg = array();
+			
+			$toCheck = array();
+			
+			// Récupère la liste des WebrsaAccess dans app/Utility
+			foreach (scandir(APP.'Utility') as $utilityName) {
+				// On ne veux que les fichiers correspondant à : WebrsaAccess<Nomducontroller>.php
+				if (!preg_match('/^(WebrsaAccess([A-Z][\w]+))\.php$/', $utilityName, $matches)) {
+					continue;
+				}
+				
+				list(, $className, $controllerName) = $matches;
+
+				// On charge le fichier
+				App::uses($className, 'Utility');
+				
+				// On garni la liste
+				$toCheck[$className] = $controllerName;
+			}
+
+			// On récupère la liste des actions définies
+			foreach ($toCheck as $className => $controllerName) {
+				foreach (call_user_func(array($className, 'get_class_methods')) as $method) {
+					if (strpos($method, '_') === 0) {
+						$actionExists[] = $controllerName.'/'.substr($method, 1);
+					}
+				}
+			}
+
+			// Pour chaque département, on vérifi la liste des actions disponible pour vérifier qu'elles sont toutes utilisés
+			// par au moins un Département. Permet aussi d'afficher la liste des actions disponible pour le département configuré
+			foreach ($toCheck as $className => $controllerName) {
+				foreach ($departements as $departement) {
+					foreach (array_keys(call_user_func(array($className, 'actions'), array('departement' => $departement))) as $fullAction) {
+						list($controller, $action) = explode('.', $fullAction);
+						$actionClassName = 'WebrsaAccess'.$controller;
+						
+						// Pour affichage des actions disponible
+						if ($departement === $myDepartement) {
+							$actionUsedByMyCg[] = $controller.'/'.$action;
+						}
+						
+						$results[$controller.'/'.$action] = array(
+							'success' => $success = in_array($controller.'/'.$action, $actionExists),
+							'value' => $access = in_array($controller.'/'.$action, $actionUsedByMyCg) ? 'true' : 'false',
+							'message' => $success
+								? ($access === 'true' ? null : 'Action non disponible pour votre département')
+								: 'L\'action semble ne pas être définie dans le fichier '.$actionClassName
+						);
+					}
+				}
+			}
+			
+			foreach ($actionExists as $action) {
+				if (!in_array($action, array_keys($results))) {
+					list($controllerName) = explode('/',$action);
+					$results[$action] = array(
+						'success' => false,
+						'value' => 'false',
+						'message' => "L'action est définie dans WebrsaAccess$controllerName mais n'est jamais utilisée"
+					);
+				}
+			}
+			
+			ksort($results);
+			
+			return $results;
+		}
 	}
 ?>

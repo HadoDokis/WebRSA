@@ -269,6 +269,10 @@
 							?>
 						</div>
 					</div>
+					<div id="webrsa_access">
+						<h4 class="title">Contrôle des accès métier</h4>
+						<?php echo $this->Checks->table( $results['Webrsa']['webrsa_access'] );?>
+					</div>
 				</div>
 			</div>
 		</div>

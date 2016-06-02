@@ -9,6 +9,7 @@
 	 */
 	App::uses( 'CakeEmail', 'Network/Email' );
 	App::uses( 'WebrsaEmailConfig', 'Utility' );
+	App::uses('WebrsaActionscandidatsPersonnes', 'Utility');
 
 	/**
 	 * La classe ActionscandidatsPersonnesController permet la gestion des fiches
@@ -19,7 +20,7 @@
 	class ActionscandidatsPersonnesController extends AppController
 	{
 		public $name = 'ActionscandidatsPersonnes';
-		public $uses = array( 'ActioncandidatPersonne','Option' );
+		public $uses = array( 'ActioncandidatPersonne','Option', 'WebrsaActioncandidatPersonne' );
 
 		public $helpers = array(
 			'Default',
@@ -55,6 +56,7 @@
 					),
 				)
 			),
+			'WebrsaAccesses'
 		);
 
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -181,6 +183,7 @@
 		 * @param integer $id
 		 */
 		public function filelink( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
@@ -285,36 +288,45 @@
 			);
 			$this->set( compact( 'orientationLiee' ) );
 
-			$queryData = array(
-				'fields' => array_merge(
-					$this->ActioncandidatPersonne->Actioncandidat->fields(),
-					$this->ActioncandidatPersonne->Motifsortie->fields(),
-					$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->fields(),
-					$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire->fields(),
-					$this->ActioncandidatPersonne->fields(),
-					array(
-						$this->ActioncandidatPersonne->Referent->sqVirtualField( 'nom_complet' ),
-						$this->ActioncandidatPersonne->Fichiermodule->sqNbFichiersLies( $this->ActioncandidatPersonne, 'nb_fichiers_lies', 'ActioncandidatPersonne' )
-					)
-				),
-				'conditions' => array(
-					'ActioncandidatPersonne.personne_id' => $personne_id
-				),
-				'joins' => array(
-					$this->ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
-					$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => 'INNER' ) ),
-					$this->ActioncandidatPersonne->join( 'Motifsortie', array( 'type' => 'LEFT OUTER' ) ),
-					$this->ActioncandidatPersonne->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
-					$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) )
-				),
-				'contain' => false,
-				'order' => array( 'ActioncandidatPersonne.datesignature DESC' )
+			$queryData = $this->WebrsaActioncandidatPersonne->completeVirtualFieldsForAccess(
+				array(
+					'fields' => array_merge(
+						$this->ActioncandidatPersonne->Actioncandidat->fields(),
+						$this->ActioncandidatPersonne->Motifsortie->fields(),
+						$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->fields(),
+						$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire->fields(),
+						$this->ActioncandidatPersonne->fields(),
+						array(
+							$this->ActioncandidatPersonne->Referent->sqVirtualField( 'nom_complet' ),
+							$this->ActioncandidatPersonne->Fichiermodule->sqNbFichiersLies( $this->ActioncandidatPersonne, 'nb_fichiers_lies', 'ActioncandidatPersonne' )
+						)
+					),
+					'conditions' => array(
+						'ActioncandidatPersonne.personne_id' => $personne_id
+					),
+					'joins' => array(
+						$this->ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
+						$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$this->ActioncandidatPersonne->join( 'Motifsortie', array( 'type' => 'LEFT OUTER' ) ),
+						$this->ActioncandidatPersonne->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
+						$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'contain' => false,
+					'order' => array( 'ActioncandidatPersonne.datesignature DESC' )
+				)
 			);
-			$actionscandidats_personnes = $this->ActioncandidatPersonne->find( 'all', $queryData );
+			
+			$paramsAccess = $this->WebrsaActioncandidatPersonne->getParamsForAccess(
+				$personne_id, WebrsaAccessActionscandidatsPersonnes::getParamsList()
+			);
+			$actionscandidats_personnes = WebrsaAccessActionscandidatsPersonnes::accesses(
+				$this->ActioncandidatPersonne->find('all', $queryData), $paramsAccess
+			);
 			$this->set( 'actionscandidats_personnes', $actionscandidats_personnes );
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
+			$this->set('ajoutPossible', $paramsAccess['ajoutPossible']);
 		}
 
 		/**
@@ -481,7 +493,8 @@
 		/**
 		 *
 		 */
-		public function add() {
+		public function add($personne_id) {
+			$this->WebrsaAccesses->check(null, $personne_id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -489,7 +502,8 @@
 		/**
 		 *
 		 */
-		public function edit() {
+		public function edit($id) {
+			$this->WebrsaAccesses->check($id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -791,6 +805,7 @@
 		 * @param integer $actioncandidat_personne_id
 		 */
 		public function printFiche( $actioncandidat_personne_id ) {
+			$this->WebrsaAccesses->check($actioncandidat_personne_id);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->ActioncandidatPersonne->personneId( $actioncandidat_personne_id ) ) );
 
 			$pdf = $this->ActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
@@ -810,6 +825,7 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->ActioncandidatPersonne->personneId( $id ) ) );
 
 			$this->Default->delete( $id );
@@ -821,6 +837,7 @@
 		 * @param integer $id
 		 */
 		public function cancel( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$qd_actioncandidat = array(
 				'conditions' => array(
 					$this->modelClass.'.id' => $id
@@ -866,6 +883,7 @@
 		 * @param integer $id
 		 */
 		public function view( $id ) {
+			$this->WebrsaAccesses->check($id);
 			if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
 				$actioncandidat_personne = $this->ActioncandidatPersonne->getFichecandidatureData( $id );
 
@@ -968,6 +986,7 @@
 		 * @param integer $id
 		 */
 		public function maillink( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->ActioncandidatPersonne->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
