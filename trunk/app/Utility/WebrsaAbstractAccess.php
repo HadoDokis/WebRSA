@@ -197,5 +197,16 @@
 			
 			return $results;
 		}
+		
+		/**
+		 * Similaire à get_class_methods() de php mais permet à l'interieur de 
+		 * la classe, de lister les méthodes protégées (utile pour la vérification
+		 * de l'application)
+		 * 
+		 * @return array
+		 */
+		public final static function get_class_methods() {
+			return get_class_methods(get_called_class());
+		}
 	}
 ?>

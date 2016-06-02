@@ -267,7 +267,8 @@
 					'configure_bad_keys' => $this->Webrsacheck->allCheckBadKeys(),
 					'configurable_query' => $recherches,
 					'configure_evidence' => $this->Webrsacheck->allConfigureEvidence(),
-					'tableaux_conditions' => $this->Webrsacheck->allConfigureTableauxConditions()
+					'tableaux_conditions' => $this->Webrsacheck->allConfigureTableauxConditions(),
+					'webrsa_access' => $this->Webrsacheck->checkWebrsaAccess(),
 				)
 			);
 		}

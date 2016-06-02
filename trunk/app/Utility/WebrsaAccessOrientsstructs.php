@@ -39,7 +39,7 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		public static function _add(array $record, array $params) {
+		protected static function _add(array $record, array $params) {
 			return Hash::get($params, 'ajout_possible') == true;
 		}
 
