@@ -5,6 +5,8 @@
 	);
 	echo $this->element( 'ancien_dossier' );
 	$departement = Configure::read( 'Cg.departement' );
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 ?>
 <br />
 	<div id="tabbedWrapper" class="tabs">
@@ -17,7 +19,8 @@
 							echo '<li>'.
 								$this->Xhtml->addLink(
 									'Ajouter un entretien',
-									array( 'controller' => 'entretiens', 'action' => 'add', $personne_id )
+									array( 'controller' => 'entretiens', 'action' => 'add', $personne_id ),
+									WebrsaAccess::addIsEnabled('/entretiens/add/'.$personne_id, $ajoutPossible)
 								).
 							' </li>';
 						?>
@@ -59,12 +62,12 @@
 									$this->Xhtml->viewLink(
 										'Voir le contrat',
 										array( 'controller' => 'entretiens', 'action' => 'view', $entretien['Entretien']['id'] ),
-										$this->Permissions->checkDossier( 'entretiens', 'index', $dossierMenu )
+										WebrsaAccess::isEnabled($entretien, '/entretiens/view/'.$entretien['Entretien']['id'])
 									),
 									$this->Xhtml->editLink(
 										'Editer l\'orientation',
 										array( 'controller' => 'entretiens', 'action' => 'edit', $entretien['Entretien']['id'] ),
-										$this->Permissions->checkDossier( 'entretiens', 'edit', $dossierMenu )
+										WebrsaAccess::isEnabled($entretien, '/entretiens/edit/'.$entretien['Entretien']['id'])
 									),
 								);
 								
@@ -78,7 +81,9 @@
 												$entretien['Entretien']['id'] ),
 												array(
 													'class' => 'action_impression',
-													'enabled' => ($this->Permissions->checkDossier( 'entretiens', 'impression', $dossierMenu ))
+													'enabled' => WebrsaAccess::isEnabled(
+														$entretien, '/entretiens/impression/'.$entretien['Entretien']['id']
+													)
 												)
 											),
 										)	
@@ -91,12 +96,12 @@
 										$this->Xhtml->deleteLink(
 											'Supprimer l\'entretien',
 											array( 'controller' => 'entretiens', 'action' => 'delete', $entretien['Entretien']['id'] ),
-											$this->Permissions->checkDossier( 'entretiens', 'delete', $dossierMenu )
+											WebrsaAccess::isEnabled($entretien, '/entretiens/delete/'.$entretien['Entretien']['id'])
 										),
 										$this->Xhtml->fileLink(
 											'Fichiers liés',
 											array( 'controller' => 'entretiens', 'action' => 'filelink', $entretien['Entretien']['id'] ),
-											$this->Permissions->checkDossier( 'entretiens', 'filelink', $dossierMenu )
+											WebrsaAccess::isEnabled($entretien, '/entretiens/filelink/'.$entretien['Entretien']['id'])
 										),
 										h( '('.$nbFichiersLies.')' )
 									)

@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	App::uses('WebrsaAccessDsps', 'Utility');
+
 	/**
 	 * La classe EntretiensController ....
 	 *
@@ -17,7 +19,7 @@
 	{
 		public $name = 'Entretiens';
 
-		public $uses = array( 'Entretien', 'Option' );
+		public $uses = array( 'Entretien', 'Option', 'WebrsaEntretien' );
 
 		public $helpers = array(
 			'Locale',
@@ -42,6 +44,7 @@
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
 			),
+			'WebrsaAccesses',
 		);
 
 		public $commeDroit = array(
@@ -169,6 +172,7 @@
 		 * @param integer $id
 		 */
 		public function filelink( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Entretien->personneId( $id ) ) ) );
 
@@ -265,8 +269,7 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Entretien' );
 
-			$entretiens = $this->Entretien->find(
-				'all',
+			$query = $this->WebrsaEntretien->completeVirtualFieldsForAccess(
 				array(
 					'fields' => array(
 						'Entretien.id',
@@ -292,22 +295,28 @@
 					)
 				)
 			);
+			
+			$paramsAccess = $this->WebrsaEntretien->getParamsForAccess($personne_id, WebrsaAccessEntretiens::getParamsList());
+			$entretiens = WebrsaAccessEntretiens::accesses($this->Entretien->find('all', $query), $paramsAccess);
 
 			$this->_setOptions();
 
 			$this->set( compact( 'entretiens', 'nbFichiersLies' ) );
 			$this->set( 'personne_id', $personne_id );
+			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
 		}
 
 		/**
 		 *
 		 */
-		public function add() {
+		public function add($personne_id) {
+			$this->WebrsaAccesses->check(null, $personne_id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		public function edit() {
+		public function edit($id) {
+			$this->WebrsaAccesses->check($id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -425,6 +434,7 @@
 		 * @param integer $id
 		 */
 		public function view( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$qd_entretien = array(
 				'conditions' => array(
 					'Entretien.id' => $id
@@ -467,6 +477,7 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Entretien->personneId( $id ) ) );
 
 			$this->Default->delete( $id );
@@ -538,9 +549,10 @@
 		/**
 		 * Impression d'un CUI
 		 *
-		 * @param integer $entretien_id La clé primaire du CUI
+		 * @param integer $entretien_id
 		 */
 		public function impression( $entretien_id ) {
+			$this->WebrsaAccesses->check($entretien_id);
 			$this->_impression($entretien_id);
 		}
 	}
