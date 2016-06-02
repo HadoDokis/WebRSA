@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	 App::uses('WebrsaAccessHistoriqueseps', 'Utility');
+
 	/**
 	 * La classe HistoriquesepsController ...
 	 *
@@ -17,11 +19,11 @@
 	{
 		public $name = 'Historiqueseps';
 
-		public $uses = array( 'Dossierep', 'Option' );
+		public $uses = array( 'Dossierep', 'Option', 'WebrsaHistoriqueep', 'Passagecommissionep' );
 
 		public $helpers = array( 'Default2', 'Xpaginator2' );
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -72,18 +74,20 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
-			$queryData = array(
-				'conditions' => array(
-					'Dossierep.personne_id' => $personne_id
-				),
-				'contain' => array(
-					'Dossierep',
-					'Commissionep' => array(
-						'Ep'
+			$queryData = $this->WebrsaHistoriqueep->completeVirtualFieldsForAccess(
+				array(
+					'conditions' => array(
+						'Dossierep.personne_id' => $personne_id
 					),
-				),
-				'order' => array(
-					'Commissionep.dateseance DESC'
+					'contain' => array(
+						'Dossierep',
+						'Commissionep' => array(
+							'Ep'
+						),
+					),
+					'order' => array(
+						'Commissionep.dateseance DESC'
+					)
 				)
 			);
 
@@ -96,7 +100,8 @@
 
 			$this->paginate = array( 'Passagecommissionep' => $queryData );
 
-			$passages = $this->paginate( $this->Dossierep->Passagecommissionep );
+			$paramsAccess = $this->WebrsaHistoriqueep->getParamsForAccess($personne_id, WebrsaAccessHistoriqueseps::getParamsList());
+			$passages = WebrsaAccessHistoriqueseps::accesses($this->paginate($this->Dossierep->Passagecommissionep), $paramsAccess);
 
 			$this->_setOptions();
 			$this->set( compact( 'passages' ) );
@@ -109,6 +114,7 @@
 		 * @param integer $passagecommssionep_id
 		 */
 		public function view_passage( $passagecommssionep_id ) {
+			$this->WebrsaAccesses->check($passagecommssionep_id, null, 'Passagecommissionep');
 			$this->assert( valid_int( $passagecommssionep_id ), 'error404' );
 
 			$personne_id = $this->Dossierep->Passagecommissionep->personneId( $passagecommssionep_id );
