@@ -88,7 +88,7 @@
 			$this->DefaultDefault->DefaultCsv->Csv = new CsvTestHelper( $this->View );
 
 			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_2_of_7'] );
-			
+
 			Configure::write('ConfigurableQuery.common.two_ways_order.enabled', false);
 		}
 
@@ -425,13 +425,13 @@
 						</div>';
 
 			$this->assertEqualsXhtml( $result, $expected );
-			
+
 			$fields = array(
 				'Apple.color' => array('type' => 'radio'),
 			);
 			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
 
-			$result = $this->DefaultDefault->subform( $fields, $params );debug($result);
+			$result = $this->DefaultDefault->subform( $fields, $params );
 			$expected = '<div class="input radio">'
 				. '<fieldset>'
 					. '<legend>Apple.color</legend>' // Utilisera la traduction par __m()
@@ -442,13 +442,13 @@
 			. '</div>';
 
 			$this->assertEqualsXhtml( $result, $expected );
-			
+
 			$fields = array(
 				'Apple.color' => array('type' => 'radio', 'legend' => 'Foo'),
 			);
 			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
 
-			$result = $this->DefaultDefault->subform( $fields, $params );debug($result);
+			$result = $this->DefaultDefault->subform( $fields, $params );
 			$expected = '<div class="input radio">'
 				. '<fieldset>'
 					. '<legend>Foo</legend>'

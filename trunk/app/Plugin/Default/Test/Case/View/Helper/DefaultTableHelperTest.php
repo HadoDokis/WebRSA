@@ -240,7 +240,7 @@
 							<tr>
 								<th id="ColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
-								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
+								<th class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
 
@@ -252,20 +252,20 @@
 							<tr>
 								<th id="ColumnAppleId">Apple.id</th>
 								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
-								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
+								<th class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
 			$this->assertEqualsXhtml( $result, $expected );
 
 			// Sans le tri sur certaines colonnes
 			$fields = Hash::normalize($this->fields);
-			$this->fields['Apple.id']['sort'] = false;
-			$result = $this->DefaultTable->thead( $this->fields, $params );
+			$fields['Apple.id']['sort'] = false;
+			$result = $this->DefaultTable->thead( $fields, $params );
 			$expected = '<thead>
 							<tr>
 								<th id="ColumnAppleId">Apple.id</th>
 								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
-								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
+								<th class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
 			$this->assertEqualsXhtml( $result, $expected );
@@ -279,9 +279,85 @@
 							<tr>
 								<th id="ColumnAppleId">Test Apple.id</th>
 								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
-								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
+								<th class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultTableHelper::thead() avec des conditions sur
+		 * l'affichage des colonnes.
+		 *
+		 * @return void
+		 */
+		public function testTheadConditions() {
+			// 1. Sans condition_group
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+				'/Apples/edit/#Apple.id#' => array(
+					'disabled' => '!"#/Apples/edit#"'
+				),
+				'/Apples/turn_blue/#Apple.id#' => array(
+					'condition' => '"#Apple.color#" === "red"'
+				),
+				'/Apples/turn_red/#Apple.id#' => array(
+					'condition' => '"#Apple.color#" !== "red"'
+				),
+				'/Apples/print/#Apple.id#',
+			);
+
+			$result = $this->DefaultTable->thead(
+				Hash::normalize( $fields ),
+				array( 'sort' => false )
+			);
+			$expected = '<thead>
+							<tr>
+								<th id="ColumnAppleId">Apple.id</th>
+								<th id="ColumnAppleColor">Apple.color</th>
+								<th colspan="3" class="actions" id="ColumnActions">Actions</th>
+							</tr>
+						</thead>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 1. Avec et sans condition_group
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+				'/Apples/edit/#Apple.id#' => array(
+					'disabled' => '!"#/Apples/edit#"'
+				),
+				'/Apples/turn_blue/#Apple.id#' => array(
+					'condition' => '"#Apple.color#" === "red"'
+				),
+				'/Apples/turn_red/#Apple.id#' => array(
+					'condition' => '"#Apple.color#" !== "red"'
+				),
+				'/Apples/eat/#Apple.id#' => array(
+					'condition' => '"#Apple.color#" === "red"',
+					'condition_group' => 'eatable'
+				),
+				'/Apples/throw/#Apple.id#' => array(
+					'condition' => '"#Apple.color#" !== "red"',
+					'condition_group' => 'eatable'
+				),
+				'/Apples/print/#Apple.id#',
+			);
+
+			$result = $this->DefaultTable->thead(
+				Hash::normalize( $fields ),
+				array( 'sort' => false )
+			);
+			$expected = '<thead>
+							<tr>
+								<th id="ColumnAppleId">Apple.id</th>
+								<th id="ColumnAppleColor">Apple.color</th>
+								<th colspan="4" class="actions" id="ColumnActions">Actions</th>
+							</tr>
+						</thead>';
+
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
@@ -382,7 +458,7 @@
 								<tr>
 									<th id="TableApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
-									<th colspan="1" class="actions" id="TableApplesIndexColumnActions">Actions</th>
+									<th class="actions" id="TableApplesIndexColumnActions">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -409,7 +485,7 @@
 								<tr>
 									<th id="TableTestApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
-									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
+									<th class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -437,9 +513,9 @@
 			$expected = '<table id="TableTestApplesIndex" class="apples index">
 							<thead>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th class="dossier_id" id="TableTestApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
-									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
+									<th class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -475,9 +551,9 @@
 									<th class="action"> </th>
 								</tr>
 								<tr>
-									<th id="TableTestApplesIndexColumnAppleId" class="dossier_id"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th class="dossier_id" id="TableTestApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
-									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
+									<th class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -530,7 +606,7 @@
 								<tr>
 									<th id="TableApplesIndexColumnAppleId"><a href="'.Router::url('/').'apples/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
 									<th id="TableApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
-									<th colspan="1" class="actions" id="TableApplesIndexColumnActions">Actions</th>
+									<th class="actions" id="TableApplesIndexColumnActions">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
