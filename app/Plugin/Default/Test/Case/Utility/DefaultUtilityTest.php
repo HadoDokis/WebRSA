@@ -34,6 +34,19 @@
 		);
 
 		/**
+		 * Autres données utilisées pour l'évaluation.
+		 *
+		 * @var array
+		 */
+		public $data2 = array(
+			'Prestatairefp93' => array(
+				'id' => 6,
+				'name' => 'CCAS / Résidence "La butte aux pinsons"',
+				'description' => 'Le rôle social du C.C.A.S. s\'exprime ...',
+			)
+		);
+
+		/**
 		 * setUp method
 		 *
 		 * @return void
@@ -62,12 +75,24 @@
 		 * @return void
 		 */
 		public function testEvaluateString() {
+			// 1. Remplacement simple
 			$result = DefaultUtility::evaluateString( $this->data, '#User.username#' );
 			$expected = 'foo';
 			$this->assertEqual( $result, $expected, $result );
 
+			// 2. Remplacement double
 			$result = DefaultUtility::evaluateString( $this->data, '#User.username# is a #User.lastname#' );
 			$expected = 'foo is a bar';
+			$this->assertEqual( $result, $expected, $result );
+
+			// 3. Remplacement avec une apostrophe
+			$result = DefaultUtility::evaluateString( $this->data2, '"#Prestatairefp93.description#" == "Le rôle social du C.C.A.S. s\'exprime ..."' );
+			$expected = '"Le rôle social du C.C.A.S. s\'exprime ..." == "Le rôle social du C.C.A.S. s\'exprime ..."';
+			$this->assertEqual( $result, $expected, $result );
+
+			// 4. Remplacement avec des guillemets doubles
+			$result = DefaultUtility::evaluateString( $this->data2, '"#Prestatairefp93.name#" == "CCAS / Résidence \"La butte aux pinsons\""' );
+			$expected = '"CCAS / Résidence \"La butte aux pinsons\"" == "CCAS / Résidence \"La butte aux pinsons\""';
 			$this->assertEqual( $result, $expected, $result );
 		}
 

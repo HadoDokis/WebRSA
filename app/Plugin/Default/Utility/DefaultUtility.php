@@ -29,11 +29,31 @@
 		 */
 		public static function evaluateString( array $data, $string ) {
 			if( strpos( $string, '#' ) !== false ) {
-				if( preg_match_all( '/(#[^#]+#)/', $string, $out ) ) {
+				$pattern = '/("#[^#]+#"|\'#[^#]#\'|#[^#]+#)/';
+				if( preg_match_all( $pattern, $string, $out ) ) {
 					$tokens = $out[0];
 					foreach( array_unique( $tokens ) as $token ) {
+						// Pour échapper efficacement les guillemets simples et doubles
+						if( $token[0] === '"' ) {
+							$escape = '"';
+							$token = trim( $token, '"' );
+						}
+						else if( $token[0] === "'" ) {
+							$escape = "'";
+							$token = trim( $token, "'" );
+						}
+						else {
+							$escape = false;
+						}
+
 						$token = trim( $token, '#' );
-						$string = str_replace( "#{$token}#", Hash::get( $data, $token ), $string );
+						$value = Hash::get( $data, $token );
+
+						if( false !== $escape ) {
+							$value = str_replace( $escape, "\\{$escape}", $value );
+						}
+
+						$string = str_replace( "#{$token}#", $value, $string );
 					}
 				}
 				$string = preg_replace( '/^\/\//', '/', $string );

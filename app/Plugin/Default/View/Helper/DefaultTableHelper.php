@@ -82,45 +82,100 @@
 			$tableId = Hash::get( $params, 'id' );
 			$sort = ( isset( $params['sort'] ) ? $params['sort'] : true );
 
+			$columns = array();
+			$colspans = array();
+
 			foreach( $fields as $field => $attributes ) {
 				$attributes = (array)$attributes;
-				if( $this->_isUrlField( $field ) ) {
-					$for = "{$tableId}ColumnActions";
-				}
-				else if( $this->_isInputField( $field ) ) {
-					$for = "{$tableId}ColumnInput".Inflector::camelize( preg_replace( '/(\[|\])+/', '_', $field ) );
-					$theadTr[] = array(
-						//__d( $domain, $field ) => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) )
-						// NOTE : si cette ligne pose problème, il faudra corriger sur actionscandidats_personnes/cohorte_enattente
-						__m($field) => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) )
-					);
-				}
-				else if( $this->_isDataField( $field ) ) {
-					// INFO: la mise en cache n'a pas de sens ici
-					list( $modelName, $fieldName ) = model_field( $field );
+				$attributes['sort'] = isset( $attributes['sort'] ) ? $attributes['sort'] : $sort;
 
-					$for = "{$tableId}Column{$modelName}".Inflector::camelize( $fieldName );
+				$hasUrl = $this->_isUrlField( $field );
+				$hasCondition = Hash::check( $attributes, 'condition' );
+				$conditionGroup = (string)Hash::get( $attributes, 'condition_group' );
 
-					// Intitulé depuis la traductions ou surchargé
-					$label = Hash::get( $attributes, 'label' );
-					unset( $attributes['label'] );
-					if( empty( $label ) ) {
-						$label = __d( $domain, "{$modelName}.{$fieldName}" );
+				// On détermine le groupe
+				if( $hasUrl ) {
+					$group = '__actions__';
+				}
+				else if( $hasCondition ) {
+					$group = $conditionGroup;
+				}
+				else {
+					$group = $field;
+				}
+
+				// Stockage des colspan, en fonction des conditions et de condition_group
+				if( !isset( $colspans[$group] ) ) {
+					$colspans[$group] = array();
+				}
+				if( !isset( $colspans[$group][$conditionGroup] ) ) {
+					$colspans[$group][$conditionGroup] = array( 1 => 0, 0 => 0 );
+				}
+				$colspans[$group][$conditionGroup][(int)$hasCondition]++;
+
+				// On détermine les attributs pour chaque groupe
+				if( !isset( $columns[$group] ) ) {
+					$columns[$group] = $attributes;
+
+					if( $hasUrl ) {
+						$columns[$group]['id'] = "{$tableId}ColumnActions";
+						$columns[$group] = $this->addClass( $columns[$group], 'actions' );
 					}
-
-					$cellSort = Hash::get( $attributes, 'sort' );
-					if( ( $cellSort === null && $sort ) || ( $cellSort !== null && $cellSort ) ) {
-						$label = $this->DefaultPaginator->sort( $field, $label );
+					else if( $this->_isInputField( $field ) ) {
+						$columns[$group]['id'] = "{$tableId}ColumnInput".Inflector::camelize( preg_replace( '/(\[|\])+/', '_', $field ) );
+						$columns[$group]['label'] = __m($field);
 					}
+					else if( $this->_isDataField( $field ) ) {
+						// INFO: la mise en cache n'a pas de sens ici
+						list( $modelName, $fieldName ) = model_field( $field );
 
-					$theadTr[] = array( $label => array( 'id' => $for, 'class' => Hash::get( $attributes, 'class' ) ) );
+						$columns[$group]['id'] = "{$tableId}Column{$modelName}".Inflector::camelize( $fieldName );
+
+						// Intitulé depuis la traductions ou surchargé
+						$label = Hash::get( $attributes, 'label' );
+						unset( $attributes['label'] );
+						if( empty( $label ) ) {
+							$label = __d( $domain, "{$modelName}.{$fieldName}" );
+						}
+
+						$cellSort = Hash::get( $attributes, 'sort' );
+						if( ( $cellSort === null && $sort ) || ( $cellSort !== null && $cellSort ) ) {
+							$label = $this->DefaultPaginator->sort( $field, $label );
+						}
+
+						$columns[$group]['label'] = $label;
+					}
 				}
-				$fields[$field] = $attributes + array( 'for' => $for );
 			}
 
-			$countDiff = count( $fields ) - count( $theadTr );
-			if( $countDiff > 0 ) {
-				$theadTr[] = array( __d( $domain, 'Actions' ) => array( 'colspan' => $countDiff, 'class' => 'actions', 'id' => "{$tableId}ColumnActions" ) );
+			// Normalisation des colonnes pur une utilisation avec (Default)Html::tableHeaders
+			foreach( $columns as $group => $colParams ) {
+				$label = $group === '__actions__'
+					? __d( $domain, 'Actions' )
+					: $colParams['label'];
+
+				// Calcul du colspan réel
+				$colspan = 0;
+				foreach( $colspans[$group] as $conditionGroup => $bools ) {
+					$colspan += $bools[0];
+					if( $bools[1] > 0 ) {
+						$colspan += 1;
+					}
+				}
+				if( $colspan === 1 ) {
+					$colspan = null;
+				}
+
+				$class = preg_replace( '/#[^#]+#/', '', Hash::get( $colParams, 'class' ) );
+				$id = Hash::get( $colParams, 'id' );
+
+				$theadTr[] = array(
+					$label => array(
+						'colspan' => $colspan,
+						'class' => ( '' === $class ? null : $class ),
+						'id' => ( '' === $id ? null : $id )
+					)
+				);
 			}
 
 			// Ligne d'en-têtes supplémentaires ?
@@ -152,7 +207,7 @@
 				$attributes = (array)$attributes;
 
 				$condition = $this->_condition( $data, $attributes );
-				unset( $attributes['condition'] );
+				unset( $attributes['condition'], $attributes['condition_group'] );
 
 				if( $condition ) {
 					$path = str_replace( '[]', "[{$index}]", $path );
