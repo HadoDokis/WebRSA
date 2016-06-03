@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	 App::uses('WebrsaCheckAccess', 'Utility');
+
 	/**
 	 * La classe ChecksController ...
 	 *
@@ -268,7 +270,7 @@
 					'configurable_query' => $recherches,
 					'configure_evidence' => $this->Webrsacheck->allConfigureEvidence(),
 					'tableaux_conditions' => $this->Webrsacheck->allConfigureTableauxConditions(),
-					'webrsa_access' => $this->Webrsacheck->checkWebrsaAccess(),
+					'webrsa_access' => WebrsaCheckAccess::checkWebrsaAccess(),
 				)
 			);
 		}
