@@ -22,6 +22,8 @@
 		<?php
 			// Premier onglet, accompagnement
 			echo $this->Html->tag( 'h2', 'Accompagnement', array( 'class' => 'title' ) );
+
+			echo '<table class="noborder"><tr><td class="noborder" style="width: 50%;">';
 			echo $this->Html->tag( 'h3', 'Droits' );
 			echo $this->Default3->view(
 				$details,
@@ -70,7 +72,9 @@
 					'class' => 'details'
 				)
 			);
+			echo '</td>';
 
+			echo '<td class="noborder" style="width: 50%;">';
 			echo $this->Html->tag( 'h3', 'Compétences' );
 			echo $this->Default3->view(
 				$details,
@@ -111,6 +115,8 @@
 					'class' => 'details'
 				)
 			);
+			echo '</td></tr></table>';
+
 			echo $this->Html->tag( 'h3', 'Suivi' );
 			echo $this->Default3->view(
 				$details,
