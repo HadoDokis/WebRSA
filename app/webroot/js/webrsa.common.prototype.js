@@ -2388,3 +2388,76 @@ var Evidence = ( function() {
 		}
 	};
 } () );
+
+/**
+ * Convertit une date générée par le FormHelper de CakePHP (sous forme de
+ * trois listes déroulantes) en un objet Date javascript.
+ *
+ * @param {String} prefix Le préfixe de l'id des listes déroulantes (ex. UserBirthday)
+ * @returns {Date|null}
+ */
+function dateFromCakeSelects( prefix ) {
+	var result = null;
+
+	try {
+		result = new Date( 1970, 0, 1, 0, 0, 0, 0 );
+		result.setDate( parseInt( $F( prefix + 'Day' ), 10 ) );
+		result.setMonth( parseInt( $F( prefix + 'Month' ), 10 ) - 1 );
+		result.setYear( parseInt( $F( prefix + 'Year' ), 10 ) );
+	} catch( e ) {
+		console.log( e );
+	}
+
+	return result;
+}
+
+/**
+ * Convertit une date écrite au format JJ/MM/AAAA en un objet Date javascript.
+ *
+ * @param {String} text La chaîne de caractères contenant la date
+ * @returns {Date|null}
+ */
+function dateFromText( text ) {
+	var result = null, matches;
+
+	try {
+		matches = text.match( /^([0-9]+)\/([0-9]+)\/([0-9]+)$/ );
+		if( null !== matches ) {
+			result = new Date( 1970, 0, 1, 0, 0, 0, 0 );
+			result.setDate( parseInt( matches[1], 10 ) );
+			result.setMonth( parseInt( matches[2], 10 ) - 1 );
+			result.setYear( parseInt( matches[3], 10 ) );
+		}
+	} catch( e ) {
+		console.log( e );
+	}
+
+	return result;
+}
+
+/**
+ * Initialisation des tables triables en JavaScript (classe sortable sur la table),
+ * pour éviter le lien de tri sur les actions.
+ *
+ * @param {String} className La classe des tables à trier (sortable par défaut).
+ * @returns {undefined}
+ */
+function initSortableTables( className ) {
+	className = ( className === undefined ? 'sortable' : className );
+
+	TableKit.options.rowEvenClass = 'even';
+	TableKit.options.rowOddClass = 'odd';
+	TableKit.options.descendingClass = 'desc';
+	TableKit.options.ascendingClass = 'asc';
+	TableKit.options.sortableSelector = ['table.' + className];
+
+	$$( 'table.' + className + ' thead th' ).each( function ( th ) {
+		if( $(th).hasClassName( 'actions' ) ) {
+			$(th).addClassName( 'nosort' );
+		}
+
+		if( $(th).hasClassName( 'date' ) ) {
+			$(th).addClassName( 'date-au' );
+		}
+	} );
+}
