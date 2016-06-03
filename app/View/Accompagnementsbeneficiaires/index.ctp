@@ -185,27 +185,45 @@
 						'label' => __m( 'Action.name' ),
 						'class' => '#Action.name#'
 					),
+					//  ----------------------------------------------------------------
 					'Action.statut' => array(
-						'label' => __m( 'Action.statut' )
+						'label' => __m( 'Action.statut' ),
+						'condition' => '!in_array("#Action.name#", array( "Contratinsertion", "Ficheprescription93", "Rendezvousindividuel", "Rendezvouscollectif" ))',
+						'condition_group' => 'statut'
+					),
+					'Action.statut_rendezvous' => array(
+						'label' => __m( 'Action.statut' ),
+						'condition' => 'in_array("#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ))',
+						'condition_group' => 'statut'
+					),
+					'Action.statut_cer' => array(
+						'label' => __m( 'Action.statut' ),
+						'condition' => 'in_array("#Action.name#", array( "Contratinsertion" ))',
+						'condition_group' => 'statut'
+					),
+					'Action.statut_ficheprescription' => array(
+						'label' => __m( 'Action.statut' ),
+						'condition' => 'in_array("#Action.name#", array( "Ficheprescription93" ))',
+						'condition_group' => 'statut'
 					),
 					//  ----------------------------------------------------------------
 					'Action.informations_rendezvous' => array(
 						'label' => __m( 'Action.informations' ),
-						'sort' => false,
+//						'sort' => false,
 						'condition' => 'in_array("#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ))',
 						'value' => '#Action.informations#',
 						'class' => 'informations'
 					),
 					'Action.informations_contratsinsertion' => array(
 						'label' => __m( 'Action.informations' ),
-						'sort' => false,
+//						'sort' => false,
 						'condition' => '"#Action.name#" === "Contratinsertion"',
 						'value' => 'Contrat de #Action.duree# mois du #Action.dd_ci,date_short# au #Action.df_ci,date_short#',
 						'class' => 'informations'
 					),
 					'Action.informations_fichesprescriptions93' => array(
 						'label' => __m( 'Action.informations' ),
-						'sort' => false,
+//						'sort' => false,
 						'condition' => '"#Action.name#" === "Ficheprescription93"',
 						'value' => '#Action.thematiquefp#, #Action.categoriefp#',
 						'class' => 'informations'
@@ -219,21 +237,21 @@
 					),
 					'Action.informations_questionnairesd2pdvs93' => array(
 						'label' => __m( 'Action.informations' ),
-						'sort' => false,
+//						'sort' => false,
 						'condition' => '"#Action.name#" === "Questionnaired2pdv93"',
 						'value' => '#Action.informations#',
 						'class' => 'informations'
 					),
 					'Action.informations_dsps_revs' => array(
 						'label' => __m( 'Action.informations' ),
-						'sort' => false,
+//						'sort' => false,
 						'condition' => '"#Action.name#" === "DspRev"',
 						'value' => '',
 						'class' => 'informations'
 					),
 					'Action.informations_entretiens' => array(
 						'label' => __m( 'Action.informations' ),
-						'sort' => false,
+//						'sort' => false,
 						'condition' => '"#Action.name#" === "Entretien"',
 						'value' => '#Action.informations#',
 						'class' => 'informations'
@@ -252,6 +270,7 @@
 				array(
 					'class' => 'search sortable',
 					'paginate' => false,
+					'sort' => false,
 					'options' => $options,
 					'id' => 'TableAccompagnementsbeneficiairesIndexActions',
 					'innerTable' => array(
@@ -278,6 +297,7 @@
 					)
 				)
 			);
+			debug($actions);
 		?>
 	</div>
 	<div id="fichiersmodules">

@@ -264,7 +264,7 @@
 							'path' => 'Referent.nom_complet',
 							'virtual' => true,
 						),
-						'statut' => 'Statutrdv.libelle',
+						'statut_rendezvous' => 'Statutrdv.libelle',
 						'informations' => array(
 							'path' => 'Rendezvous.thematiques_virgules',
 							'virtual' => true,
@@ -294,7 +294,7 @@
 							'path' => 'Referent.nom_complet',
 							'virtual' => true,
 						),
-						'statut' => 'Statutrdv.libelle',
+						'statut_rendezvous' => 'Statutrdv.libelle',
 						'informations' => array(
 							'path' => 'Rendezvous.thematiques_virgules',
 							'virtual' => true,
@@ -323,7 +323,7 @@
 							'path' => 'Referent.nom_complet',
 							'virtual' => true,
 						),
-						'statut' => 'Cer93.positioncer',
+						'statut_cer' => 'Cer93.positioncer',
 						'dd_ci' => array(
 							'path' => 'Contratinsertion.dd_ci',
 							'type' => 'date',
@@ -362,7 +362,7 @@
 							'path' => 'Referent.nom_complet',
 							'virtual' => true,
 						),
-						'statut' => 'Ficheprescription93.statut',
+						'statut_ficheprescription' => 'Ficheprescription93.statut',
 						'categoriefp' => 'Categoriefp93.name',
 						'thematiquefp' => 'Thematiquefp93.name',
 						'prestatairefphorspdi' => 'Prestatairehorspdifp93.name',
@@ -643,7 +643,9 @@
 						'Ficheprescription93' => 'Prescription',
 						'Rendezvouscollectif' => 'RDV collectif',
 						'Rendezvousindividuel' => 'RDV individuel',
-					)
+					),
+					'statut_cer' => $this->Personne->Contratinsertion->Cer93->enum( 'positioncer' ),
+					'statut_ficheprescription' => $this->Personne->Ficheprescription93->enum( 'statut' )
 				),
 				'Calculdroitrsa' => array(
 					'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
@@ -669,6 +671,8 @@
 					'etatdosrsa' => $this->Option->etatdosrsa()
 				)
 			);
+
+			// 666
 
 			return $result;
 		}
