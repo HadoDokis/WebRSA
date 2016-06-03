@@ -137,14 +137,6 @@
 			echo $this->Html->tag( 'h3', 'Actions' );
 
 			echo $this->Default3->DefaultForm->create();
-			echo $this->Default3->DefaultForm->input(
-				'Search.Action.name',
-				array(
-					'label' => __m( 'Search.Action.name' ),
-					'options' => $options['Action']['name'],
-					'empty' => true
-				)
-			);
 
 			$this->request->data = array(
 				'Search' => array(
@@ -165,6 +157,16 @@
 					'maxYear_to' => date( 'Y' ) + 1
 				)
 			);
+
+			echo $this->Default3->DefaultForm->input(
+				'Search.Action.name',
+				array(
+					'label' => __m( 'Search.Action.name' ),
+					'options' => $options['Action']['name'],
+					'empty' => true
+				)
+			);
+
 			echo $this->Default3->DefaultForm->end();
 
 			echo $this->Default3->index(
@@ -209,21 +211,18 @@
 					//  ----------------------------------------------------------------
 					'Action.informations_rendezvous' => array(
 						'label' => __m( 'Action.informations' ),
-//						'sort' => false,
 						'condition' => 'in_array("#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ))',
 						'value' => '#Action.informations#',
 						'class' => 'informations'
 					),
 					'Action.informations_contratsinsertion' => array(
 						'label' => __m( 'Action.informations' ),
-//						'sort' => false,
 						'condition' => '"#Action.name#" === "Contratinsertion"',
 						'value' => 'Contrat de #Action.duree# mois du #Action.dd_ci,date_short# au #Action.df_ci,date_short#',
 						'class' => 'informations'
 					),
 					'Action.informations_fichesprescriptions93' => array(
 						'label' => __m( 'Action.informations' ),
-//						'sort' => false,
 						'condition' => '"#Action.name#" === "Ficheprescription93"',
 						'value' => '#Action.thematiquefp#, #Action.categoriefp#',
 						'class' => 'informations'
@@ -237,21 +236,18 @@
 					),
 					'Action.informations_questionnairesd2pdvs93' => array(
 						'label' => __m( 'Action.informations' ),
-//						'sort' => false,
 						'condition' => '"#Action.name#" === "Questionnaired2pdv93"',
 						'value' => '#Action.informations#',
 						'class' => 'informations'
 					),
 					'Action.informations_dsps_revs' => array(
 						'label' => __m( 'Action.informations' ),
-//						'sort' => false,
 						'condition' => '"#Action.name#" === "DspRev"',
 						'value' => '',
 						'class' => 'informations'
 					),
 					'Action.informations_entretiens' => array(
 						'label' => __m( 'Action.informations' ),
-//						'sort' => false,
 						'condition' => '"#Action.name#" === "Entretien"',
 						'value' => '#Action.informations#',
 						'class' => 'informations'
