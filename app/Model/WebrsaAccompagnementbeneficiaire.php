@@ -635,14 +635,14 @@
 				),
 				'Action' => array(
 					'name' => array(
-						'Rendezvouscollectif' => 'RDV collectif',
-						'Rendezvousindividuel' => 'RDV individuel',
 						'Contratinsertion' => 'CER',
-						'Ficheprescription93' => 'Prescription',
 						'Questionnaired1pdv93' => 'D1',
 						'Questionnaired2pdv93' => 'D2',
+						'Entretien' => 'Entretien',
 						'DspRev' => 'MAJ DSP',
-						'Entretien' => 'Entretien'
+						'Ficheprescription93' => 'Prescription',
+						'Rendezvouscollectif' => 'RDV collectif',
+						'Rendezvousindividuel' => 'RDV individuel',
 					)
 				),
 				'Calculdroitrsa' => array(
