@@ -472,7 +472,7 @@
 							<th id="ColumnGroupName">
 								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
 							</th>
-							<th id="ColumnInputDataTestTest" class="input">Test cohorte</th>
+							<th class="input" id="ColumnInputDataTestTest">Test cohorte</th>
 							<th colspan="2" class="actions" id="ColumnActions">Actions</th>
 						</tr>
 					</thead>
@@ -539,7 +539,7 @@
 							<th id="ColumnGroupName">
 								<a href="'.$base.'users/index/page:1/sort:Group.name/direction:asc">Groupe</a>
 							</th>
-							<th id="ColumnInputDataTestTest" class="input">Test cohorte</th>
+							<th class="input" id="ColumnInputDataTestTest">Test cohorte</th>
 						</tr>
 					</thead>
 					<tbody>
