@@ -4,7 +4,7 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
-	
+
 	App::uses('WebrsaAccess', 'Utility');
 	WebrsaAccess::init($dossierMenu);
 	$domain = current(MultiDomainsTranslator::urlDomains());
@@ -42,15 +42,15 @@
 			$listeTraitements[$key]['Traitementpcg66']['imprimer'] = (boolean)Hash::get($value, 'Traitementpcg66.imprimer');
 		}
 		unset($options['Traitementpcg66']['imprimer']);
-		
+
 		$this->Default3->DefaultPaginator->options(
 			array( 'url' => $this->request->params['pass'] )
 		);
-		
+
 		echo $this->Default3->actions(
 			WebrsaAccess::actionAdd("/Traitementspcgs66/add/{$personne_id}", $ajoutPossible)
 		);
-			
+
 		echo $this->Default3->index(
 			$listeTraitements,
 			array(
@@ -72,30 +72,36 @@
 					'/Traitementspcgs66/printFicheCalcul/#Traitementpcg66.id#' => array('class' => 'print'),
 					'/Traitementspcgs66/switch_imprimer/#Traitementpcg66.id#' => array(
 						'class' => 'boolean enabled',
-						'condition' => "'#Traitementpcg66.typetraitement#' === 'courrier'"
+						'condition' => "'#Traitementpcg66.typetraitement#' === 'courrier'",
+						'condition_group' => 'typetraitement'
 					),
 					'/False/switch_imprimer' => array(
 						'msgid' => '',
-						'condition' => "'#Traitementpcg66.typetraitement#' !== 'courrier'"
+						'condition' => "'#Traitementpcg66.typetraitement#' !== 'courrier'",
+						'condition_group' => 'typetraitement'
 					),
 					'/Traitementspcgs66/printModeleCourrier/#Traitementpcg66.id#' => array('class' => 'print'),
 					'/Traitementspcgs66/envoiCourrier/#Traitementpcg66.id#' => array('class' => 'email_send'),
 					'/Traitementspcgs66/reverseDO/#Traitementpcg66.id#' => array(
 						'class' => 'button',
-						'condition' => "'#Traitementpcg66.reversedo#' !== '1'"
+						'condition' => "'#Traitementpcg66.reversedo#' !== '1'",
+						'condition_group' => 'reversedo'
 					),
 					'/Traitementspcgs66/deverseDO/#Traitementpcg66.id#' => array(
 						'class' => 'button',
-						'condition' => "'#Traitementpcg66.reversedo#' === '1'"
+						'condition' => "'#Traitementpcg66.reversedo#' === '1'",
+						'condition_group' => 'reversedo'
 					),
 					'/Traitementspcgs66/clore/#Traitementpcg66.id#' => array('class' => 'button'),
 					'/Traitementspcgs66/cancel/#Traitementpcg66.id#' => array(
-						'condition' => "'#Traitementpcg66.annule#' !== 'O'"
+						'condition' => "'#Traitementpcg66.annule#' !== 'O'",
+						'condition_group' => 'annule'
 					),
 					'/Traitementspcgs66/canceled/#Traitementpcg66.id#' => array(
 						'msgid' => 'Annulé',
 						'class' => 'cancel',
-						'condition' => "'#Traitementpcg66.annule#' === 'O'"
+						'condition' => "'#Traitementpcg66.annule#' === 'O'",
+						'condition_group' => 'annule'
 					),
 					'/Traitementspcgs66/delete/#Traitementpcg66.id#',
 				)
@@ -132,7 +138,7 @@
 		if ( td.hasClassName( 'true' ) ) {
 			addClassName = 'false';
 		}
-		
+
 		tdAction = td.up('tr').select('td.action>a.boolean.enabled');
 		if ( tdAction.length ) {
 			tdAction.first().addClassName(addClassName);
