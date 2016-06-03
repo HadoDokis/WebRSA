@@ -350,44 +350,44 @@
 </div>
 <script type="text/javascript">
 	//<![CDATA[
-	makeTabbed( 'tabbedWrapper', 2 );
-
-	function cakeDateToObject( prefix ) {
-		var date = new Date();
-
-		try {
-			date.setDate( parseInt( $F( prefix + 'Day' ), 10 ) );
-			date.setMonth( parseInt( $F( prefix + 'Month' ), 10 ) - 1 );
-			date.setYear( parseInt( $F( prefix + 'Year' ), 10 ) );
-		} catch( e ) {
-			console.log( e );
-		}
-
-		return date;
-	}
-
+	/**
+	 * Vérifie si une ligne doit être affichée en vérifiant s'il existe au moins
+	 * une cellule (td) possédant la classe passée en paramètre.
+	 *
+	 * @param {String} target Le nom de la classe à trouver
+	 * @param {type} row
+	 * @returns {Boolean}
+	 */
 	function conditionAction( target, row ) {
 		try {
 			target = $(target).value;
 			return ( target === '' ) || $(row).select( 'td.' + target ).length > 0;
 		} catch( e ) {
+			console.log( e );
 			return false;
 		}
 	}
 
+	/**
+	 * Vérifie si une ligne doit être affichée en vérifiant si la plage de dates
+	 * a été activée et si la date contenue dans la première colonne de classe
+	 * filter_date est bien dans la plage de dates.
+	 *
+	 * @param {String} checkbox L'id de la case à cocher
+	 * @param {String} from Le préfixe des ids des select pour la date de début
+	 * @param {String} to Le préfixe des ids des select pour la date de fin
+	 * @param {type} row
+	 * @returns {Boolean}
+	 */
 	function conditionDateRange( checkbox, from, to, row ) {
 		var checked = $(checkbox).checked, text, value;
 
-		from = cakeDateToObject(from);
-		to = cakeDateToObject(to);
+		from = dateFromCakeSelects(from);
+		to = dateFromCakeSelects(to);
 
 		try {
 			text = $(row).select( 'td.date.filter_date' )[0].innerHTML;
-
-			value = new Date();
-			value.setDate( parseInt( text.replace( /^([0-9]+)\/.*$/, '$1' ), 10 ) );
-			value.setMonth( parseInt( text.replace( /^.*\/([0-9]+)\/.*$/, '$1' ), 10 ) - 1 );
-			value.setYear( parseInt( text.replace( /^.*\/.*\/([0-9]+)$/, '$1' ), 10 ) );
+			value = dateFromText(text);
 
 		return checked === false
 			|| value === null
@@ -399,98 +399,132 @@
 		}
 	}
 
+	/**
+	 * Vérifie le nombre de lignes d'une table (dans tbody). Si aucune ligne
+	 * n'est affichée, alors la table sera cachée et la notice "Aucun enregistrement"
+	 * sera affichée; dans le cas contraire, la notice sera supprimée si elle
+	 * existe et la table sera montrée.
+	 *
+	 * @param {String} table L'id de la table à traiter
+	 * @returns {undefined}
+	 */
+	function computeTableVisibility( table ) {
+		var rows,
+			messageId = table + 'EmptyMessage',
+			shown = 0, message;
+
+		// Si la table existe
+		if( null !== $(table) ) {
+			rows = $(table).select( 'tbody tr' );
+
+			$(rows).each( function( row ) {
+				if( $(row).visible() ) {
+					shown++;
+				}
+			} );
+
+			// Si aucun enregistrement n'est à afficher, afficher un message et cacher le tableau, etc...
+			message = $(messageId);
+			// On supprimer le message s'il existe
+			if( null !== message ) {
+				$(message).remove();
+			}
+
+			// Si aucune ligne n'est à afficher
+			if( 0 === shown ) {
+				message = new Element( 'p', { 'class': 'notice', 'id': messageId } ).update( 'Aucun enregistrement' );
+				$(table).insert( { 'before' : message } );
+				$(table).hide();
+			}
+			// S'il existe des lignes à afficher
+			else {
+				$(table).show();
+			}
+		}
+	}
 
 	/**
 	 * Filtre des lignes de la table d'actions par type d'action suivant la valeur
 	 * du champ de liste déroulante (et de la plage de dates le cas échéant).
+	 *
+	 * @param {String} table L'id de la table à traiter
+	 * @returns {undefined}
 	 */
-	function filterByAction( table ) {
-		var rows = $(table).select( 'tbody tr' ),
-			show;
+	function filterActionsTableByAction( table ) {
+		var rows, show;
 
-		$(rows).each( function( row ) {
-			show = conditionAction( 'SearchActionName', row )
-				&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
+		// Si la table existe
+		if( null !== $(table) ) {
+			rows = $(table).select( 'tbody tr' );
 
-			if( show ) {
-				$(row).show();
-			}
-			else {
-				$(row).hide();
-			}
-		} );
+			$(rows).each( function( row ) {
+				show = conditionAction( 'SearchActionName', row )
+					&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
+
+				if( show ) {
+					$(row).show();
+				}
+				else {
+					$(row).hide();
+				}
+			} );
+
+			computeTableVisibility( table );
+		}
 	}
 
 	/**
 	 * Filtre des lignes de la table d'actions par plage de dates (et par type
 	 * d'action suivant la valeur du champ de liste déroulante le cas échéant).
+	 *
+	 * @param {String} table L'id de la table à traiter
+	 * @returns {undefined}
 	 */
-	function filterByDateRange( table ) {
-		var rows = $(table).select( 'tbody tr' ),
-			show;
+	function filterActionsTableByDateRange( table ) {
+		var rows, show;
 
-		$(rows).each( function( row ) {
-			show = conditionAction( 'SearchActionName', row )
-				&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
+		// Si la table existe
+		if( null !== $(table) ) {
+			rows = $(table).select( 'tbody tr' );
 
-			if( show ) {
-				$(row).show();
-			}
-			else {
-				$(row).hide();
-			}
-		} );
+			$(rows).each( function( row ) {
+				show = conditionAction( 'SearchActionName', row )
+					&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
+
+				if( show ) {
+					$(row).show();
+				}
+				else {
+					$(row).hide();
+				}
+			} );
+
+			computeTableVisibility( table );
+		}
 	}
 
 	// -------------------------------------------------------------------------
-
+	// Initialisation des filtres à appliquer sur la table d'actions, observation
+	// des champs de formulaire.
+	// -------------------------------------------------------------------------
 	$('SearchActionName').observe( 'change', function() {
-		filterByAction( 'TableAccompagnementsbeneficiairesIndexActions' );
+		filterActionsTableByAction( 'TableAccompagnementsbeneficiairesIndexActions' );
 		return false;
 	} );
 
 	[ 'SearchActionDate', 'SearchActionDateFromYear', 'SearchActionDateFromMonth', 'SearchActionDateFromDay', 'SearchActionDateToYear', 'SearchActionDateToMonth', 'SearchActionDateToDay'].each(
 		function( field ) {
 			$(field).observe( 'change', function() {
-				filterByDateRange( 'TableAccompagnementsbeneficiairesIndexActions' );
+				filterActionsTableByDateRange( 'TableAccompagnementsbeneficiairesIndexActions' );
 				return false;
 			} );
 		}
 	);
 
-	//--------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
-	// FIXME: on triche tant que le plugin Default(3) n'a pas été mis à jour avec la clé condition_group
-	var colonne = 0;
-	$$( 'table#TableAccompagnementsbeneficiairesIndexActions thead th' ).each( function ( th ) {
-		if( $(th).hasClassName( 'informations' ) ) {
-			colonne++;
-		}
-		if( colonne > 1 && false === $(th).hasClassName( 'actions' ) ) {
-			$(th).hide();
-		}
-//		console.log(th);
-	} );
-	//]]>
-</script>
-<!-- FIXME: à factoriser - Sortable Default3 index table -->
-<script type="text/javascript">
-	//<![CDATA[
-	TableKit.options.rowEvenClass = 'even';
-	TableKit.options.rowOddClass = 'odd';
-	TableKit.options.descendingClass = 'desc';
-	TableKit.options.ascendingClass = 'asc';
+	initSortableTables();
+	makeTabbed( 'tabbedWrapper', 2 );
 
-	$$( 'table.sortable thead th' ).each( function ( th ) {
-		console.log( $(th) );
-
-		if( $(th).hasClassName( 'actions' ) ) {
-			$(th).addClassName( 'nosort' );
-		}
-
-		if( $(th).hasClassName( 'date' ) ) {
-			$(th).addClassName( 'date-au' );
-		}
-	} );
 	//]]>
 </script>
