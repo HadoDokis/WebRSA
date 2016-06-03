@@ -293,7 +293,6 @@
 					)
 				)
 			);
-			debug($actions);
 		?>
 	</div>
 	<div id="fichiersmodules">
@@ -480,14 +479,16 @@
 			rows = $(table).select( 'tbody tr' );
 
 			$(rows).each( function( row ) {
-				show = conditionAction( 'SearchActionName', row )
-					&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
+				if( false === $(row).up('table').hasClassName('innerTable') ) {
+					show = conditionAction( 'SearchActionName', row )
+						&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
 
-				if( show ) {
-					$(row).show();
-				}
-				else {
-					$(row).hide();
+					if( show ) {
+						$(row).show();
+					}
+					else {
+						$(row).hide();
+					}
 				}
 			} );
 
@@ -510,14 +511,16 @@
 			rows = $(table).select( 'tbody tr' );
 
 			$(rows).each( function( row ) {
-				show = conditionAction( 'SearchActionName', row )
-					&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
+				if( false === $(row).up('table').hasClassName('innerTable') ) {
+					show = conditionAction( 'SearchActionName', row )
+						&& conditionDateRange( 'SearchActionDate', 'SearchActionDateFrom', 'SearchActionDateTo', row );
 
-				if( show ) {
-					$(row).show();
-				}
-				else {
-					$(row).hide();
+					if( show ) {
+						$(row).show();
+					}
+					else {
+						$(row).hide();
+					}
 				}
 			} );
 
