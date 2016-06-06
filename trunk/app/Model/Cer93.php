@@ -342,7 +342,7 @@
 					$this->Cer93Sujetcer93->join( 'Sujetcer93', array( 'type' => 'INNER' ) )
 				),
 				'conditions' => array(
-					'Cer93Sujetcer93.cer93_id = Cer93.id'
+					"Cer93Sujetcer93.cer93_id = {$this->alias}.id"
 				),
 				'contain' => false
 			);
