@@ -696,10 +696,12 @@
 			$qd_userDb = array(
 				'conditions' => array(
 					'User.id' => $user_id
+				),
+				'contain' => array(
+					'Zonegeographique'
 				)
 			);
 			$userDb = $this->User->find( 'first', $qd_userDb );
-
 
 			$this->assert( !empty( $userDb ), 'error404' );
 
