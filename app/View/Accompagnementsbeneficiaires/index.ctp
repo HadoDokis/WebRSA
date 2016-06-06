@@ -172,96 +172,256 @@
 			echo $this->Default3->index(
 				$actions,
 				array(
-					'Action.lib_struc' => array(
+					//----------------------------------------------------------
+					// Structure effectuant l'action
+					//----------------------------------------------------------
+					'Structurereferente.lib_struc' => array(
 						'label' => __m( 'Action.lib_struc' )
 					),
-					'Action.nom_complet' => array(
+					//----------------------------------------------------------
+					// Nom du référent effectuant l'action
+					//----------------------------------------------------------
+					'Referent.nom_complet' => array(
 						'label' => __m( 'Action.nom_complet' )
 					),
-					'Action.date' => array(
+					//----------------------------------------------------------
+					// Date
+					//----------------------------------------------------------
+					'Action.date' => array( // Lorsqu'on n'a pas de date
 						'label' => __m( 'Action.date' ),
-						'type' => 'date',
-						'class' => 'sortable date filter_date'
+						'class' => 'sortable date filter_date date-au',
+						'condition' => '!in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel", "Contratinsertion", "Ficheprescription93", "Questionnaired1pdv93", "Questionnaired2pdv93", "Entretien", "DspRev" ) )', // FIXME
+						'condition_group' => 'date',
 					),
+					'Rendezvous.daterdv' => array(
+						'type' => 'date',
+						'class' => 'sortable date filter_date date-au',
+						'condition' => 'in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel" ) )',
+						'condition_group' => 'date',
+					),
+					'Contratinsertion.created' => array(
+						'type' => 'date',
+						'class' => 'sortable date filter_date date-au',
+						'condition' => '"#Action.name#" == "Contratinsertion"',
+						'condition_group' => 'date',
+					),
+					'Ficheprescription93.created' => array(
+						'type' => 'date',
+						'class' => 'sortable date filter_date date-au',
+						'condition' => '"#Action.name#" == "Ficheprescription93"',
+						'condition_group' => 'date',
+					),
+					'Questionnaired1pdv93.created' => array(
+						'type' => 'date',
+						'class' => 'sortable date filter_date date-au',
+						'condition' => '"#Action.name#" == "Questionnaired1pdv93"',
+						'condition_group' => 'date',
+					),
+					'Questionnaired2pdv93.created' => array(
+						'type' => 'date',
+						'class' => 'sortable date filter_date date-au',
+						'condition' => '"#Action.name#" == "Questionnaired2pdv93"',
+						'condition_group' => 'date',
+					),
+					'Entretien.dateentretien' => array(
+						'type' => 'date',
+						'class' => 'sortable date filter_date date-au',
+						'condition' => '"#Action.name#" == "Entretien"',
+						'condition_group' => 'date',
+					),
+					'DspRev.created' => array(
+						'type' => 'date',
+						'class' => 'sortable date filter_date date-au',
+						'condition' => '"#Action.name#" == "DspRev"',
+						'condition_group' => 'date',
+					),
+					//----------------------------------------------------------
+					// Action
+					//----------------------------------------------------------
 					'Action.name' => array(
 						'label' => __m( 'Action.name' ),
 						'class' => '#Action.name#'
 					),
-					//  ----------------------------------------------------------------
+					//----------------------------------------------------------
+					// Statut
+					//----------------------------------------------------------
 					'Action.statut' => array(
 						'label' => __m( 'Action.statut' ),
-						'condition' => '!in_array("#Action.name#", array( "Contratinsertion", "Ficheprescription93", "Rendezvousindividuel", "Rendezvouscollectif" ))',
+						'condition' => '!in_array("#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif", "Contratinsertion", "Ficheprescription93", "Questionnaired1pdv93", "Questionnaired2pdv93" ))',
 						'condition_group' => 'statut'
 					),
-					'Action.statut_rendezvous' => array(
+					'Statutrdv.libelle' => array(
 						'label' => __m( 'Action.statut' ),
 						'condition' => 'in_array("#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ))',
 						'condition_group' => 'statut'
 					),
-					'Action.statut_cer' => array(
+					'Cer93.positioncer' => array(
 						'label' => __m( 'Action.statut' ),
 						'condition' => 'in_array("#Action.name#", array( "Contratinsertion" ))',
 						'condition_group' => 'statut'
 					),
-					'Action.statut_ficheprescription' => array(
+					'Ficheprescription93.statut' => array(
 						'label' => __m( 'Action.statut' ),
 						'condition' => 'in_array("#Action.name#", array( "Ficheprescription93" ))',
 						'condition_group' => 'statut'
 					),
+					'Questionnaired1d2pdv93.statut' => array(
+						'label' => __m( 'Action.statut' ),
+						'value' => 'Validé',
+						'condition' => 'in_array("#Action.name#", array( "Questionnaired1pdv93", "Questionnaired2pdv93" ))',
+						'condition_group' => 'statut'
+					),
 					//  ----------------------------------------------------------------
-					'Action.informations_rendezvous' => array(
+					// Informations
+					//----------------------------------------------------------
+					'Rendezvous.thematiques_virgules' => array(
 						'label' => __m( 'Action.informations' ),
 						'condition' => 'in_array("#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ))',
-						'value' => '#Action.informations#',
-						'class' => 'informations'
+						'class' => 'informations',
+						'condition_group' => 'informations'
 					),
-					'Action.informations_contratsinsertion' => array(
+					'Contratinsertion.informations' => array(
 						'label' => __m( 'Action.informations' ),
 						'condition' => '"#Action.name#" === "Contratinsertion"',
-						'value' => 'Contrat de #Action.duree# mois du #Action.dd_ci,date_short# au #Action.df_ci,date_short#',
-						'class' => 'informations'
+						'value' => 'Contrat de #Cer93.duree# mois du #Contratinsertion.dd_ci,date_short# au #Contratinsertion.df_ci,date_short#',
+						'class' => 'informations',
+						'condition_group' => 'informations'
 					),
-					'Action.informations_fichesprescriptions93' => array(
+					'Ficheprescription93.informations' => array(
 						'label' => __m( 'Action.informations' ),
 						'condition' => '"#Action.name#" === "Ficheprescription93"',
-						'value' => '#Action.thematiquefp#, #Action.categoriefp#',
-						'class' => 'informations'
+						'value' => '#Thematiquefp93.name#, #Categoriefp93.name#',
+						'class' => 'informations',
+						'condition_group' => 'informations'
 					),
-					'Action.informations_questionnairesd1pdvs93' => array(
+					'Action.informations' => array(
 						'label' => __m( 'Action.informations' ),
-						'sort' => false,
-						'condition' => '"#Action.name#" === "Questionnaired1pdv93"',
-						'value' => '',
-						'class' => 'informations'
+						'condition' => 'in_array( "#Action.name#", array( "Questionnaired1pdv93", "DspRev" ) )',
+						'class' => 'informations',
+						'condition_group' => 'informations'
 					),
-					'Action.informations_questionnairesd2pdvs93' => array(
+					'Questionnaired2pdv93.situationaccompagnement' => array(
 						'label' => __m( 'Action.informations' ),
-						'condition' => '"#Action.name#" === "Questionnaired2pdv93"',
-						'value' => '#Action.informations#',
-						'class' => 'informations'
-					),
-					'Action.informations_dsps_revs' => array(
-						'label' => __m( 'Action.informations' ),
-						'condition' => '"#Action.name#" === "DspRev"',
-						'value' => '',
-						'class' => 'informations'
+						'condition' => '"#Action.name#" == "Questionnaired2pdv93"',
+						'class' => 'informations',
+						'condition_group' => 'informations'
 					),
 					'Action.informations_entretiens' => array(
 						'label' => __m( 'Action.informations' ),
 						'condition' => '"#Action.name#" === "Entretien"',
-						'value' => '#Action.informations#',
-						'class' => 'informations'
+						'value' => '#Objetentretien.name#',
+						'class' => 'informations',
+						'condition_group' => 'informations'
 					),
-					//  ----------------------------------------------------------------
-					// FIXME: les liens
+					//  --------------------------------------------------------
+					//  Lien voir
+					//  --------------------------------------------------------
+					'/Rendezvous/view/#Rendezvous.id#' => array(
+						'class' => 'view',
+						'msgid' => 'Voir',
+						'condition' => 'in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ) )',
+						'condition_group' => 'view'
+					),
+					'/Cers93/view/#Contratinsertion.id#' => array(
+						'class' => 'view',
+						'msgid' => 'Voir',
+						'condition' => '"#Action.name#" == "Contratinsertion"',
+						'condition_group' => 'view'
+					),
+					// FIXME: pas de visualisation pour la fiche de prescription
+					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
+						'class' => 'view',
+						'msgid' => 'Voir',
+						'disabled' => true,
+						'condition' => '"#Action.name#" == "Ficheprescription93"',
+						'condition_group' => 'view'
+					),
+					'/Questionnairesd1pdvs93/view/#Questionnaired1pdv93.id#' => array(
+						'class' => 'view',
+						'msgid' => 'Voir',
+						'condition' => '"#Action.name#" == "Questionnaired1pdv93"',
+						'condition_group' => 'view'
+					),
+					// FIXME: pas de visualisation pour le questionnaire D2
+					'/Questionnairesd2pdvs93/view/#Questionnaired2pdv93.id#' => array(
+						'class' => 'view',
+						'msgid' => 'Voir',
+						'disabled' => true,
+						'condition' => '"#Action.name#" == "Questionnaired2pdv93"',
+						'condition_group' => 'view'
+					),
+					'/Dsps/view_revs/#DspRev.id#' => array(
+						'class' => 'view',
+						'msgid' => 'Voir',
+						'condition' => '"#Action.name#" == "DspRev"',
+						'condition_group' => 'view'
+					),
+					'/Entretiens/view/#Entretien.id#' => array(
+						'class' => 'view',
+						'msgid' => 'Voir',
+						'condition' => '"#Action.name#" == "Entretien"',
+						'condition_group' => 'view'
+					),
 					'/#Action.view#' => array(
 						'class' => 'view',
-						'msgid' => 'Voir'
+						'msgid' => 'Voir',
+						'disabled' => true,
+						'condition' => '!in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif", "Contratinsertion", "Ficheprescription93", "Questionnaired1pdv93", "Questionnaired2pdv93", "DspRev", "Entretien" ) )',
+						'condition_group' => 'view'
+					),
+					//  --------------------------------------------------------
+					//  Lien modifier
+					//  --------------------------------------------------------
+					'/Rendezvous/edit/#Rendezvous.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'condition' => 'in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ) )',
+						'condition_group' => 'edit'
+					),
+					'/Cers93/edit/#Contratinsertion.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'condition' => '"#Action.name#" == "Contratinsertion"',
+						'condition_group' => 'edit'
+					),
+					'/Fichesprescriptions93/edit/#Ficheprescription93.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'condition' => '"#Action.name#" == "Ficheprescription93"',
+						'condition_group' => 'edit'
+					),
+					// FIXME: pas de modification pour le questionnaire D1
+					'/Questionnairesd1pdvs93/edit/#Questionnaired1pdv93.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'disabled' => true,
+						'condition' => '"#Action.name#" == "Questionnaired1pdv93"',
+						'condition_group' => 'edit'
+					),
+					'/Questionnairesd2pdvs93/edit/#Questionnaired2pdv93.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'condition' => '"#Action.name#" == "Questionnaired2pdv93"',
+						'condition_group' => 'edit'
+					),
+					'/Dsps/edit/#DspRev.personne_id#/#DspRev.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'condition' => '"#Action.name#" == "DspRev"',
+						'condition_group' => 'edit'
+					),
+					'/Entretiens/edit/#Entretien.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'condition' => '"#Action.name#" == "Entretien"',
+						'condition_group' => 'edit'
 					),
 					'/#Action.edit#' => array(
 						'class' => 'edit',
-						'msgid' => 'Modifier'
-					)
+						'msgid' => 'Modifier',
+						'condition' => '!in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif", "Contratinsertion", "Ficheprescription93", "Questionnaired1pdv93", "Questionnaired2pdv93", "DspRev", "Entretien" ) )',
+						'condition_group' => 'edit'
+					),
 				),
 				array(
 					'class' => 'search sortable',
@@ -270,23 +430,23 @@
 					'options' => $options,
 					'id' => 'TableAccompagnementsbeneficiairesIndexActions',
 					'innerTable' => array(
-						'Action.commentairerdv' => array(
+						'Rendezvous.commentairerdv' => array(
 							'label' => __m( 'Action.commentairerdv' ),
 							'condition' => 'in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel" ) )',
 						),
-						'Action.prestatairefphorspdi' => array(
+						'Prestatairehorspdifp93.name' => array(
 							'label' => __m( 'Action.prestatairefp' ),
-							'condition' => '"#Action.name#" === "Ficheprescription93" && "#Action.prestatairefphorspdi#" != ""',
+							'condition' => '"#Action.name#" === "Ficheprescription93" && "#Prestatairehorspdifp93.name#" != ""',
 						),
-						'Action.prestatairefppdi' => array(
+						'Prestatairefp93.name' => array(
 							'label' => __m( 'Action.prestatairefp' ),
-							'condition' => '"#Action.name#" === "Ficheprescription93" && "#Action.prestatairefphorspdi#" == ""',
+							'condition' => '"#Action.name#" === "Ficheprescription93" && "#Prestatairefp93.name#" != ""',
 						),
-						'Action.sujets_virgules' => array(
+						'Cer93.sujets_virgules' => array(
 							'label' => __m( 'Action.sujets_virgules' ),
 							'condition' => '"#Action.name#" === "Contratinsertion"',
 						),
-						'Action.prevu' => array(
+						'Cer93.prevu' => array(
 							'label' => __m( 'Action.prevu' ),
 							'condition' => '"#Action.name#" === "Contratinsertion"',
 						),
@@ -439,8 +599,13 @@
 			rows = $(table).select( 'tbody tr' );
 
 			$(rows).each( function( row ) {
-				if( $(row).visible() ) {
+				if( false === $(row).up('table').hasClassName('innerTable') && $(row).visible() ) {
 					shown++;
+
+					$(row).removeClassName( 'odd' );
+					$(row).removeClassName( 'even' );
+
+					$(row).addClassName( ( shown % 2 == 0 ? 'even' : 'odd' ) );
 				}
 			} );
 
@@ -549,7 +714,11 @@
 	// -------------------------------------------------------------------------
 
 	initSortableTables();
+
 	makeTabbed( 'tabbedWrapper', 2 );
 
+	document.observe( "dom:loaded", function() {
+		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexActions', 3, -1 );
+	} );
 	//]]>
 </script>

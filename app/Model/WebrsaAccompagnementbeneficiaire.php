@@ -249,7 +249,7 @@
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
-		public function actions( $personne_id ) {
+		public function fixme_actions( $personne_id ) {
 			// Début "paramétrage"
 			$models = array(
 				'Rendezvouscollectif' => array(
@@ -621,6 +621,221 @@
 		}
 
 		/**
+		 * Récupère la liste des actions liées au bénéficiaire.
+		 *
+		 * @fixme
+		 *	- droits d'accès (contrôleur / component)
+		 *  - mise en cache
+		 *
+		 * @param integer $personne_id L'id du bénéficiaire
+		 * @return array
+		 */
+		public function actions( $personne_id ) {
+			// Début "paramétrage"
+			$models = array(
+				'Rendezvouscollectif' => array(
+					'modelName' => 'Rendezvous',
+					'fields' => array(
+						'Rendezvous.id',
+						'Rendezvous.daterdv',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Statutrdv.libelle',
+						'Rendezvous.thematiques_virgules',
+						'Rendezvous.commentairerdv'
+					),
+					'joins' => array(
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' ),
+						'Statutrdv' => array( 'type' => 'INNER' )
+					),
+					'conditions' => array(
+						'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.collectif_id' )
+					)
+				),
+				'Rendezvousindividuel' => array(
+					'modelName' => 'Rendezvous',
+					'fields' => array(
+						'Rendezvous.id',
+						'Rendezvous.daterdv',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Statutrdv.libelle',
+						'Rendezvous.thematiques_virgules',
+						'Rendezvous.commentairerdv'
+					),
+					'joins' => array(
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' ),
+						'Statutrdv' => array( 'type' => 'INNER' )
+					),
+					'conditions' => array(
+						'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.individuel_id' )
+					)
+				),
+				'Contratinsertion' => array(
+					'fields' => array(
+						'Contratinsertion.id',
+						'Contratinsertion.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Cer93.positioncer',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
+						'Cer93.duree',
+						'Cer93.sujets_virgules',
+						'Cer93.prevu'
+					),
+					'joins' => array(
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' ),
+						'Cer93' => array( 'type' => 'INNER' )
+					)
+				),
+				'Ficheprescription93' => array(
+					'fields' => array(
+						'Ficheprescription93.id',
+						'Ficheprescription93.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Ficheprescription93.statut',
+						'Categoriefp93.name',
+						'Thematiquefp93.name',
+						'Prestatairehorspdifp93.name',
+						'Prestatairefp93.name',
+					),
+					'joins' => array(
+						'Adresseprestatairefp93' => array(
+							'type' => 'LEFT OUTER',
+							'joins' => array(
+								'Prestatairefp93' => array(
+									'type' => 'LEFT OUTER',
+								)
+							)
+						),
+						'Filierefp93' => array(
+							'type' => 'LEFT OUTER',
+							'joins' => array(
+								'Categoriefp93' => array(
+									'type' => 'LEFT OUTER',
+									'joins' => array(
+										'Thematiquefp93' => array( 'type' => 'LEFT OUTER' )
+									)
+								),
+							)
+						),
+						'Prestatairehorspdifp93' => array(
+							'type' => 'LEFT OUTER'
+						),
+						'Referent' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Structurereferente' => array(
+									'type' => 'INNER'
+								)
+							)
+						),
+					),
+				),
+				'Questionnaired1pdv93' => array(
+					'fields' => array(
+						'Questionnaired1pdv93.id',
+						'Questionnaired1pdv93.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet'
+					),
+					'joins' => array(
+						'Rendezvous' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Structurereferente' => array( 'type' => 'INNER' ),
+								'Referent' => array( 'type' => 'LEFT OUTER' )
+							)
+						)
+					),
+				),
+				'Questionnaired2pdv93' => array(
+					'fields' => array(
+						'Questionnaired2pdv93.id',
+						'Questionnaired2pdv93.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Questionnaired2pdv93.situationaccompagnement',
+					),
+					'joins' => array(
+						'Questionnaired1pdv93' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Rendezvous' => array(
+									'type' => 'INNER',
+									'joins' => array(
+										'Structurereferente' => array( 'type' => 'INNER' ),
+										'Referent' => array( 'type' => 'LEFT OUTER' )
+									)
+								)
+							)
+						)
+					),
+				),
+				'DspRev' => array(
+					'fields' => array(
+						'DspRev.id',
+						'DspRev.personne_id',
+						'DspRev.created'
+					)
+				),
+				'Entretien' => array(
+					'fields' => array(
+						'Entretien.id',
+						'Entretien.dateentretien',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Objetentretien.name',
+					),
+					'joins' => array(
+						'Objetentretien' => array( 'type' => 'INNER' ),
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' )
+					)
+				)
+			);
+			// Fin "paramétrage"
+
+			$models = Hash::normalize( $models );
+			$results = array();
+
+			// -----------------------------------------------------------------
+
+			foreach( $models as $alias => $query ) {
+				$query = (array)$query;
+
+				$modelName = isset( $query['modelName'] ) ? $query['modelName'] : $alias;
+				unset( $query['modelName'] );
+
+				// Jointures
+				$joins = (array)Hash::get( $query, 'joins' );
+				if( !empty( $joins ) ) {
+					$joins = $this->Personne->{$modelName}->joins( $joins );
+				}
+				$query['joins'] = $joins;
+
+				// Conditions
+				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+
+				// Contain à false
+				$query['contain'] = false;
+
+				$this->Personne->{$modelName}->forceVirtualFields = true;
+				$tmp = $this->Personne->{$modelName}->find( 'all', $query );
+				$tmp = Hash::insert( $tmp, '{n}.Action.name', $alias );
+
+				$results = array_merge( $results, $tmp );
+			}
+
+			return $results;
+		}
+
+		/**
 		 * Retourne les options à utiliser dans la vue.
 		 *
 		 * @todo Nom de la méthode en paramètre + cache
@@ -643,15 +858,14 @@
 						'Ficheprescription93' => 'Prescription',
 						'Rendezvouscollectif' => 'RDV collectif',
 						'Rendezvousindividuel' => 'RDV individuel',
-					),
-					'statut_cer' => $this->Personne->Contratinsertion->Cer93->enum( 'positioncer' ),
-					'statut_ficheprescription' => $this->Personne->Ficheprescription93->enum( 'statut' )
+					)
 				),
 				'Calculdroitrsa' => array(
 					'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
 				),
 				'Cer93' => array(
-					'nivetu' => $this->Personne->Contratinsertion->Cer93->enum( 'nivetu' )
+					'nivetu' => $this->Personne->Contratinsertion->Cer93->enum( 'nivetu' ),
+					'positioncer' => $this->Personne->Contratinsertion->Cer93->enum( 'positioncer' ),
 				),
 				'Detailcalculdroitrsa' => array(
 					'natpf_activite' => array( 0 => 'Non', 1 => 'Oui' ),
@@ -664,8 +878,14 @@
 				'DspRev' => array(
 					'nivetu' => $this->Personne->Dsp->enum( 'nivetu' )
 				),
+				'Ficheprescription93' => array(
+					'statut' => $this->Personne->Ficheprescription93->enum( 'statut' )
+				),
 				'Questionnaired1pdv93' => array(
 					'nivetu' => $this->Personne->Questionnaired1pdv93->enum( 'nivetu' )
+				),
+				'Questionnaired2pdv93' => array(
+					'situationaccompagnement' => $this->Personne->Questionnaired2pdv93->enum( 'situationaccompagnement' )
 				),
 				'Situationdossierrsa' => array(
 					'etatdosrsa' => $this->Option->etatdosrsa()
