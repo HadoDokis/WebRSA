@@ -19,7 +19,7 @@ App::uses('WebrsaAccessTraitementspcgs66', 'Utility');
 class Traitementspcgs66Controller extends AppController {
 
     public $name = 'Traitementspcgs66';
-    public $uses = array('Traitementpcg66', 'Option', 'Dossierpcg66', 'WebrsaTraitementpcg66');
+    public $uses = array('Traitementpcg66', 'Option', 'Dossierpcg66', 'WebrsaTraitementpcg66', 'Personnepcg66');
 	
     public $helpers = array(
 		'Locale', 

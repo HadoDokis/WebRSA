@@ -187,11 +187,9 @@
 				'conditions' => $conditions,
 				'contain' => false,
 				'order' => array(
-					'Decisiondossierpcg66.datetransmissionop IS NULL' => 'DESC',
-					'Decisiondossierpcg66.datetransmissionop' => 'DESC',
-					'Decisiondossierpcg66.datevalidation IS NULL' => 'DESC',
-					'Decisiondossierpcg66.datevalidation' => 'DESC',
-					'Dossierpcg66.datereceptionpdo' => 'DESC',
+					'Decisiondossierpcg66.datetransmissionop' => 'DESC NULLS FIRST',
+					'Decisiondossierpcg66.datevalidation' => 'DESC NULLS FIRST',
+					'Dossierpcg66.datereceptionpdo' => 'DESC NULLS LAST',
 					'Dossierpcg66.id' => 'DESC',
 				)
 			);

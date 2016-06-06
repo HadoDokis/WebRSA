@@ -25,14 +25,15 @@
 		)
 	);
 
+	$addLink = $this->Default3->actions(
+		WebrsaAccess::actionAdd("/Traitementspcgs66/add/{$personnepcg66_id}", $ajoutPossible)
+	);
+		
 	if( empty( $dossierpcg66_id ) ){
 		echo '<p class="notice"> Veuillez sélectionner un dossier afin d\'afficher les traitements</p>';
 	}
 	else if( empty( $listeTraitements ) ) {
-		echo '<ul class="actionMenu"><li>'.$this->Xhtml->addLink(
-			__d('Traitementpcg66','Traitementpcg66.add',true),
-			array( 'controller' => 'traitementspcgs66', 'action' => 'add', $personnepcg66_id )
-		).' </li></ul>';
+		echo $addLink;
 		echo '<p class="notice"> Aucun traitement présent pour ce dossier</p>';
 	}
 	else{
@@ -47,9 +48,7 @@
 			array( 'url' => $this->request->params['pass'] )
 		);
 
-		echo $this->Default3->actions(
-			WebrsaAccess::actionAdd("/Traitementspcgs66/add/{$personne_id}", $ajoutPossible)
-		);
+		echo $addLink;
 
 		echo $this->Default3->index(
 			$listeTraitements,
