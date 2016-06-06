@@ -71,6 +71,12 @@
 				$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 				$querydata = $this->Cohortes->qdConditions( $querydata );
 
+				// Ajout d'une condition afin que l'utilisateur puisse voir uniquement
+				// les RDV liés à une structure à laquelle il a accès
+				$querydata['conditions'][] = array(
+					'Rendezvous.structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'ids', 'prefix' => false ) )
+				);
+
 				$this->paginate = array( 'Personne' => $querydata );
 				$results = $this->paginate(
 					$this->Personne,
