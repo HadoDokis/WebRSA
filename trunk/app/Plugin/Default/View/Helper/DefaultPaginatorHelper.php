@@ -41,57 +41,75 @@
 		 */
 		public function sort($key, $title = null, $options = array()) {
 			if (!Configure::read('ConfigurableQuery.common.two_ways_order.enabled')) {
-				return parent::sort($key, $title, $options);
-			}
-			
-			$options = array_merge(array('url' => array(), 'model' => null), $options);
-			$url = $options['url'];
-			unset($options['url']);
-
-			if (empty($title)) {
-				$title = $key;
-				$title = __(Inflector::humanize(preg_replace('/_id$/', '', $title)));
-			}
-			$dir = isset($options['direction']) ? $options['direction'] : 'asc';
-			unset($options['direction']);
-
-			$sortKey = $this->sortKey($options['model']);
-			$defaultModel = $this->defaultModel();
-			$isSorted = (
-				$sortKey === $key ||
-				$sortKey === $defaultModel . '.' . $key ||
-				$key === $defaultModel . '.' . $sortKey
-			);
-			
-			$ascClass = "img-asc";
-			$descClass = "img-desc";
-
-			if ($isSorted) {
-				$dir = $this->sortDir($options['model']) === 'asc' ? 'desc' : 'asc';
-				$class = $dir === 'asc' ? 'desc' : 'asc';
-				if (!empty($options['class'])) {
-					$options['class'] .= ' ' . $class;
-				} else {
-					$options['class'] = $class;
-				}
+				$return = parent::sort($key, $title, $options);
+			} else {
 				
-				${$class."Class"} .= ' active';
-			}
-			
-			if (is_array($title) && array_key_exists($dir, $title)) {
-				$title = $title[$dir];
-			}
+				$options = array_merge(array('url' => array(), 'model' => null), $options);
+				$url = $options['url'];
+				unset($options['url']);
 
-			$asc = array_merge(array('sort' => $key, 'direction' => 'asc'), $url, array('order' => null));
-			$desc = array_merge(array('sort' => $key, 'direction' => 'desc'), $url, array('order' => null));
+				if (empty($title)) {
+					$title = $key;
+					$title = __(Inflector::humanize(preg_replace('/_id$/', '', $title)));
+				}
+				$dir = isset($options['direction']) ? $options['direction'] : 'asc';
+				unset($options['direction']);
+
+				$sortKey = $this->sortKey($options['model']);
+				$defaultModel = $this->defaultModel();
+				$isSorted = (
+					$sortKey === $key ||
+					$sortKey === $defaultModel . '.' . $key ||
+					$key === $defaultModel . '.' . $sortKey
+				);
+
+				$ascClass = "img-asc";
+				$descClass = "img-desc";
+
+				if ($isSorted) {
+					$dir = $this->sortDir($options['model']) === 'asc' ? 'desc' : 'asc';
+					$class = $dir === 'asc' ? 'desc' : 'asc';
+					if (!empty($options['class'])) {
+						$options['class'] .= ' ' . $class;
+					} else {
+						$options['class'] = $class;
+					}
+
+					${$class."Class"} .= ' active';
+				}
+
+				if (is_array($title) && array_key_exists($dir, $title)) {
+					$title = $title[$dir];
+				}
+
+				$asc = array_merge(array('sort' => $key, 'direction' => 'asc'), $url, array('order' => null));
+				$desc = array_merge(array('sort' => $key, 'direction' => 'desc'), $url, array('order' => null));
+
+				$ascImg = '<div class="'.$ascClass.'" title="Ranger par ordre croissant"></div>';
+				$descImg = '<div class="'.$descClass.'" title="Ranger par ordre décroissant"></div>';
+
+				$options['escape'] = false;
+				$options['class'] = trim((string)Hash::get($options, 'class').' two_ways');
+				
+				$url = array_merge(array('sort' => $key, 'direction' => $dir), $url, array('order' => null));
+				
+				$ascLink = $this->link($ascImg, $asc,
+					array('class' => 'arrow arrow-up', 'title' => 'Ranger par ordre croissant') + $options
+				);
+				$descLink = $this->link($descImg, $desc,
+					array('class' => 'arrow arrow-down', 'title' => 'Ranger par ordre décroissant') + $options
+				);
+				
+				$options['title'] = $dir === 'asc' ? 'Ranger par ordre croissant' : 'Ranger par ordre décroissant';
+				
+				$return = '<div class="two_ways order-container">'.$this->link($title, $url, $options)
+					.' <div class="container two_ways">'
+					.$ascLink
+					.$descLink
+					.'</div></div>';
+			}
 			
-			$ascImg = '<div class="'.$ascClass.'" title="Ranger par ordre croissant"></div>';
-			$descImg = '<div class="'.$descClass.'" title="Ranger par ordre décroissant"></div>';
-			
-			$options['escape'] = false;
-			$url = array_merge(array('sort' => $key, 'direction' => $dir), $url, array('order' => null));
-			return $this->link($title, $url, $options)
-				.' <div class="container">'.$this->link($ascImg, $asc, $options).$this->link($descImg, $desc, $options).'</div>';
+			return $return;
 		}
 	}
 ?>

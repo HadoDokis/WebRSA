@@ -2145,6 +2145,12 @@ body table thead th a:hover {
 }
 
 body table thead th div.container {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+body table thead th div.container, body table thead th div.order-container>a {
 	display: inline-block;
 }
 
@@ -2154,25 +2160,42 @@ body table thead th div.img-asc, body table thead th div.img-desc {
 	background-repeat: no-repeat;
 }
 
+body table thead th div.container a {
+	display: block;
+	height: 20px;
+}
+
+body table thead th div.container a.arrow-up {
+	padding-top: 15px;
+	height: 5px;
+}
+
+body table thead th div.order-container {
+	padding-right: 20px;
+	position: relative;
+	display: inline-block;
+}
+
 body table thead th div.img-asc,
+body table thead th div.container:hover div.img-asc.active,
 body table thead th a.asc:hover + div.container div.img-asc {
 	background-image: url("../img/asc.png");
 }
 
-body table thead th div.img-asc:hover, 
-body table thead th div.img-asc.active, 
+body table thead th a:hover>div.img-asc,
+body table thead th div.img-asc.active,
 body table thead th a:hover:not(.asc) + div.container div.img-asc {
 	background-image: url("../img/asc_alt.png");
 }
 
 body table thead th div.img-desc,
+body table thead th div.container a.arrow-up:hover + a div.img-desc.active,
 body table thead th a.desc:hover + div.container div.img-desc {
 	background-image: url("../img/desc.png");
 	background-position: bottom;
-	margin-top: 1px;
 }
 
-body table thead th div.img-desc:hover, 
+body table thead th a:hover>div.img-desc,
 body table thead th div.img-desc.active, 
 body table thead th a.asc:hover + div.container div.img-desc {
 	background-image: url("../img/desc_alt.png");
