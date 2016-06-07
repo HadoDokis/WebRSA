@@ -500,25 +500,191 @@
 		<?php
 			echo $this->Html->tag( 'h2', 'Impressions', array( 'class' => 'title' ) );
 			echo $this->Default3->index(
-				$pdfs,
+				$impressions,
 				array(
-					'Pdf.modele' => array(
-						'label' => 'Module',
-						//'sort' => true // TODO
+					'Action.module' => array(
+						'label' => 'Module'
 					),
-					'Pdf.created' => array(
-						'label' => 'Créé le'
+					// ---------------------------------------------------------
+					// Crée le
+					// ---------------------------------------------------------
+					'Apre.datedemandeapre' => array(
+						'label' => 'Créé le',
+						'condition' => '"#Action.module#" == "Apre"',
+						'condition_group' => 'created',
 					),
-					'/#Pdf.controller#/impression/#Pdf.fk_value#' => array(
-						'msgid' => 'Imprimer'
+					'Commissionep.dateseance' => array(
+						'label' => 'Créé le',
+						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition_group' => 'created',
 					),
-					'/#Pdf.controller#/view/#Pdf.fk_value#' => array(
+					'Contratinsertion.created' => array(
+						'label' => 'Créé le',
+						'condition' => '"#Action.module#" == "Contratinsertion"',
+						'condition_group' => 'created',
+					),
+					'Ficheprescription93.created' => array(
+						'label' => 'Créé le',
+						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition_group' => 'created',
+					),
+					'Orientstruct.date_valid' => array(
+						'label' => 'Créé le',
+						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition_group' => 'created',
+					),
+					'Relancenonrespectsanctionep93.daterelance' => array(
+						'label' => 'Créé le',
+						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition_group' => 'created',
+					),
+					'Rendezvous.created' => array(
+						'label' => 'Créé le',
+						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition_group' => 'created',
+					),
+					// ---------------------------------------------------------
+					// Lien impression
+					// ---------------------------------------------------------
+					'/Apres/impression/#Apre.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Apre"',
+						'condition_group' => 'impression',
+					),
+					'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition_group' => 'impression',
+					),
+					'/Cers93/impression/#Contratinsertion.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Contratinsertion" && "#Action.impression#" == "impression"',
+						'condition_group' => 'impression',
+					),
+					'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Contratinsertion" && "#Action.impression#" == "impressionDecision"',
+						'condition_group' => 'impression',
+					),
+					'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition_group' => 'impression',
+					),
+					'/Orientsstructs/impression/#Orientstruct.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition_group' => 'impression',
+					),
+					'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition_group' => 'impression',
+					),
+					'/Rendezvous/impression/#Rendezvous.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition_group' => 'impression',
+					),
+					// ---------------------------------------------------------
+					// Lien voir
+					// ---------------------------------------------------------
+					'/Apres/view/#Apre.id#' => array(
 						'msgid' => 'Voir',
-						'title' => 'Voir l\'enregistrement auquel le fichier est lié'
+						'class' => 'view',
+						'condition' => '"#Action.module#" == "Apre"',
+						'condition_group' => 'view',
 					),
-					"/#Pdf.controller#/index/{$personne_id}" => array(
-						'msgid' => 'index',
-						'msgid' => 'Liste'
+					'/Commissionseps/viewDecision/#Passagecommissionep.id#' => array(
+						'msgid' => 'Voir',
+						'class' => 'view',
+						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition_group' => 'view',
+					),
+					'/Cers93/view/#Contratinsertion.id#' => array(
+						'msgid' => 'Voir',
+						'class' => 'view',
+						'condition' => '"#Action.module#" == "Contratinsertion"',
+						'condition_group' => 'view',
+					),
+					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
+						'msgid' => 'Voir',
+						'class' => 'view',
+						'disabled' => true,
+						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition_group' => 'view',
+					),
+					'/Orientsstructs/view/#Orientstruct.id#' => array(
+						'msgid' => 'Voir',
+						'class' => 'view',
+						'disabled' => true,
+						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition_group' => 'view',
+					),
+					'/Relancesnonrespectssanctionseps93/view/#Relancenonrespectsanctionep93.id#' => array(
+						'msgid' => 'Voir',
+						'class' => 'view',
+						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition_group' => 'view',
+					),
+					'/Rendezvous/view/#Rendezvous.id#' => array(
+						'msgid' => 'Voir',
+						'class' => 'view',
+						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition_group' => 'view',
+					),
+					// ---------------------------------------------------------
+					// Lien liste
+					// ---------------------------------------------------------
+					'/Apres/index/#Apre.personne_id#' => array(
+						'msgid' => 'Liste',
+						'class' => 'index',
+						'condition' => '"#Action.module#" == "Apre"',
+						'condition_group' => 'index',
+					),
+					'/Commissionseps/indexDecision/#Passagecommissionep.personne_id#' => array(
+						'msgid' => 'Liste',
+						'class' => 'index',
+						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition_group' => 'index',
+					),
+					'/Cers93/index/#Contratinsertion.personne_id#' => array(
+						'msgid' => 'Liste',
+						'class' => 'index',
+						'condition' => '"#Action.module#" == "Contratinsertion"',
+						'condition_group' => 'index',
+					),
+					'/Fichesprescriptions93/index/#Ficheprescription93.personne_id#' => array(
+						'msgid' => 'Liste',
+						'class' => 'index',
+						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition_group' => 'index',
+					),
+					'/Orientsstructs/index/#Orientstruct.personne_id#' => array(
+						'msgid' => 'Liste',
+						'class' => 'index',
+						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition_group' => 'index',
+					),
+					'/Relancesnonrespectssanctionseps93/index/#Relancenonrespectsanctionep93.personne_id#' => array(
+						'msgid' => 'Liste',
+						'class' => 'index',
+						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition_group' => 'index',
+					),
+					'/Rendezvous/index/#Rendezvous.personne_id#' => array(
+						'msgid' => 'Liste',
+						'class' => 'index',
+						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition_group' => 'index',
 					)
 				),
 				array(

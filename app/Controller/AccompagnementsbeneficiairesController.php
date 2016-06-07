@@ -116,8 +116,8 @@
 			//isset( $this->request->params['isAjax'] )
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
-			$pdfs = $this->WebrsaAccompagnementbeneficiaire->impressions( $personne_id );
-			$this->set( compact( 'pdfs' ) );
+			$impressions = $this->WebrsaAccompagnementbeneficiaire->impressions( $personne_id );
+			$this->set( compact( 'impressions' ) );
 		}
 	}
 ?>
