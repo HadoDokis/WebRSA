@@ -1,33 +1,25 @@
-<?php  $this->pageTitle = 'Ressources de la personne';?>
+<?php 
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+	$this->pageTitle = 'Ressources de la personne';
+?>
 <h1>Ressources</h1>
 
 <?php if( empty( $ressources ) ):?>
 	<p class="notice">aucune information relative aux ressources de cette personne.</p>
+<?php endif;?>
+	
+<ul class="actionMenu">
+	<?php
+		echo '<li>'.$this->Xhtml->addLink(
+			'Déclarer une ressource',
+			array( 'controller' => 'ressources', 'action' => 'add', $personne_id ),
+			WebrsaAccess::addIsEnabled('/ressources/add', $ajoutPossible)
+		).' </li>';
+	?>
+</ul>
 
-	<?php if( $this->Permissions->checkDossier( 'ressources', 'add', $dossierMenu ) ) :?>
-		<ul class="actionMenu">
-			<?php
-				echo '<li>'.$this->Xhtml->addLink(
-					'Déclarer une ressource',
-					array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
-				).' </li>';
-			?>
-		</ul>
-	<?php endif;?>
-
-<?php  else:?>
-
-	<?php if( $this->Permissions->checkDossier( 'ressources', 'add', $dossierMenu ) ) :?>
-		<ul class="actionMenu">
-			<?php
-				echo '<li>'.$this->Xhtml->addLink(
-					'Déclarer une ressource',
-					array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
-				).' </li>';
-			?>
-		</ul>
-	<?php endif;?>
-
+<?php if( !empty( $ressources ) ):?>
 <table class="tooltips">
 	<thead>
 		<tr>
@@ -58,12 +50,12 @@
 						$this->Xhtml->viewLink(
 							'Voir la ressource',
 							array( 'controller' => 'ressources', 'action' => 'view', $ressource['Ressource']['id'] ),
-							$this->Permissions->checkDossier( 'ressources', 'view', $dossierMenu )
+							WebrsaAccess::isEnabled($ressource, '/ressources/view')
 						),
 						$this->Xhtml->editLink(
 							'Éditer la ressource ',
 							array( 'controller' => 'ressources', 'action' => 'edit', $ressource['Ressource']['id'] ),
-							$this->Permissions->checkDossier( 'ressources', 'edit', $dossierMenu )
+							WebrsaAccess::isEnabled($ressource, '/ressources/edit')
 						)
 					),
 					array( 'class' => 'odd' ),
