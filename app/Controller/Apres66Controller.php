@@ -19,7 +19,7 @@
 	{
 		public $name = 'Apres66';
 
-		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
+		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer', 'WebrsaApre66' );
 
 		public $helpers = array(
 			'Default',
@@ -61,6 +61,7 @@
 					),
 				)
 			),
+			'WebrsaAccesses'
 		);
 
 		public $commeDroit = array(
@@ -188,6 +189,7 @@
 		 * @param integer $id
 		 */
 		public function filelink( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) ) );
@@ -297,16 +299,32 @@
 			$this->set( 'personne', $personne );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Apre' );
-
-			$apres = $this->{$this->modelClass}->find(
-                'all',
-                array(
+			
+			$query = $this->WebrsaApre66->completeVirtualFieldsForAccess(
+				array(
+					'fields' => array_merge(
+						$this->{$this->modelClass}->fields(),
+						$this->{$this->modelClass}->Personne->fields(),
+						$this->{$this->modelClass}->Aideapre66->fields(),
+						array(
+							$this->{$this->modelClass}->Fichiermodule->sqNbFichiersLies($this->{$this->modelClass}, 'nombre'),
+						)
+					),
+					'contain' => array(
+						'Personne',
+						'Aideapre66'
+					),
                     'conditions' => array(
                         "{$this->modelClass}.personne_id" => $personne_id
                     ),
                     'order' => array( "Aideapre66.datedemande DESC"  )
                 )
 			);
+			
+			$paramsAccess = $this->WebrsaApre66->getParamsForAccess($personne_id, WebrsaAccessApres66::getParamsList());
+			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
+			
+			$apres = WebrsaAccessApres66::accesses($this->{$this->modelClass}->find('all', $query), $paramsAccess);
 			$this->set( 'apres', $apres );
 
 			$referents = $this->Referent->find( 'list' );
@@ -497,6 +515,7 @@
 		 * @param integer $apre_id
 		 */
 		public function view66( $apre_id = null ) {
+			$this->WebrsaAccesses->check($apre_id);
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $apre_id ) ) ) );
 
 			$apre = $this->Apre66->find(
@@ -526,7 +545,8 @@
 		/**
 		 *
 		 */
-		public function add() {
+		public function add($personne_id) {
+			$this->WebrsaAccesses->check(null, $personne_id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -534,7 +554,8 @@
 		/**
 		 *
 		 */
-		public function edit() {
+		public function edit($id) {
+			$this->WebrsaAccesses->check($id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -854,6 +875,7 @@
 		 * @return void
 		 */
 		public function impression( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
 
 			$pdf = $this->Apre66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
@@ -894,6 +916,7 @@
 		 * @param integer $id
 		 */
 		public function maillink( $id = null ) {
+			$this->WebrsaAccesses->check($id);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
 
 			$apre = $this->Apre66->find(
@@ -955,6 +978,7 @@
 		 * @param integer $id
 		 */
 		public function cancel( $id ) {
+			$this->WebrsaAccesses->check($id);
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) ) );
 
 			$qd_apre = array(

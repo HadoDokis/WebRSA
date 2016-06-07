@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaAccessRupturescuis66.
+	 * Code source de la classe WebrsaAccessApres66.
 	 *
 	 * PHP 5.3
 	 *
@@ -11,11 +11,11 @@
 	App::uses('WebrsaAbstractAccess', 'Utility');
 
 	/**
-	 * La classe WebrsaAccessRupturescuis66 ...
+	 * La classe WebrsaAccessApres66 ...
 	 *
 	 * @package app.Utility
 	 */
-	class WebrsaAccessRupturescuis66 extends WebrsaAbstractAccess
+	abstract class WebrsaAccessApres66 extends WebrsaAbstractAccess
 	{
 		/**
 		 * Paramètres par défaut
@@ -25,11 +25,11 @@
 		 */
 		public static function params(array $params = array()) {
 			return $params + array(
-				'alias' => 'Accompagnementcui66',
-				'departement' => (int)Configure::read( 'Cg.departement' ),
+				'alias' => 'Apre66',
+				'departement' => (int)Configure::read('Cg.departement')
 			);
 		}
-				
+
 		/**
 		 * Permission d'accès
 		 * 
@@ -37,10 +37,31 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _index(array $record, array $params) {
-			return !in_array(Hash::get($record, 'Cui66.etatdossiercui66'), array(
-				'attentepiece', 'dossierrecu', 'dossiereligible', 'attentemail', 'formulairecomplet', 'attenteavis')
-			);
+		protected static function _add(array $record, array $params) {
+			$params = self::params($params);
+			return Hash::get($params, 'ajoutPossible');
+		}
+
+		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _view66(array $record, array $params) {
+			return true;
+		}
+
+		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _edit(array $record, array $params) { //		ANNulé TRAité ou VALidé
+			return !in_array(Hash::get($record, 'Apre66.etatdossierapre'), array('ANN', 'TRA', 'VAL'));
 		}
 		
 		/**
@@ -50,31 +71,8 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _add(array $record, array $params) {
-			return self::_index($record, $params)
-				&& Hash::get($params, 'ajoutPossible');
-		}
-
-		/**
-		 * Permission d'accès
-		 * 
-		 * @param array $record
-		 * @param array $params
-		 * @return boolean
-		 */
-		protected static function _view(array $record, array $params) {
-			return self::_index($record, $params);
-		}
-
-		/**
-		 * Permission d'accès
-		 * 
-		 * @param array $record
-		 * @param array $params
-		 * @return boolean
-		 */
-		protected static function _edit(array $record, array $params) {
-			return self::_index($record, $params);
+		protected static function _maillink(array $record, array $params) {
+			return Hash::get($record, 'Apre66.etatdossierapre') !== 'ANN';
 		}
 		
 		/**
@@ -85,7 +83,7 @@
 		 * @return boolean
 		 */
 		protected static function _filelink(array $record, array $params) {
-			return self::_index($record, $params);
+			return true;
 		}
 		
 		/**
@@ -95,8 +93,8 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _delete(array $record, array $params) {
-			return self::_index($record, $params);
+		protected static function _cancel(array $record, array $params) {
+			return Hash::get($record, 'Apre66.etatdossierapre') !== 'ANN';
 		}
 		
 		/**
@@ -106,8 +104,8 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function _impression(array $record, array $params) {
-			return self::_index($record, $params);
+		protected static function _impression(array $record, array $params) { // ANNulé ou INComplet
+			return !in_array(Hash::get($record, 'Apre66.etatdossierapre'), array('ANN', 'INC'));
 		}
 		
 		/**
@@ -122,13 +120,13 @@
 			$params = self::params($params);
 			$result = self::normalize_actions(
 				array(
-					'index',
-					'add' => array('ajoutPossible' => true, 'isModuleRupture' => true),
+					'add' => array('ajoutPossible' => true),
+					'view66',
 					'edit',
-					'view',
 					'impression',
-					'delete',
+					'maillink',
 					'filelink',
+					'cancel',
 				)
 			);
 			
@@ -139,3 +137,4 @@
 			return $result;
 		}
 	}
+?>
