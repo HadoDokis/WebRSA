@@ -77,6 +77,10 @@
 				'deleteNonrespectcer'
 			));
 			
+			if ($params['departement'] !== 58) {
+				$result = array();
+			}
+			
 			return $result;
 		}
 	}

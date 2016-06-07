@@ -79,6 +79,10 @@
 				)
 			);
 			
+			if ($params['departement'] !== 66) {
+				$result = array();
+			}
+			
 			return $result;
 		}
 	}

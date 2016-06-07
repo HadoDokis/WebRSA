@@ -1,32 +1,37 @@
 <?php
-	$this->pageTitle = sprintf( 'APRE/ADREs liées à %s', $personne['Personne']['nom_complet'] );
-	$this->modelClass = Inflector::classify( $this->request->params['controller'] );
+	$this->pageTitle = sprintf('APRE/ADREs liées à %s', $personne['Personne']['nom_complet']);
+	$this->modelClass = Inflector::classify($this->request->params['controller']);
+	
+	$urlController = 'apres'.Configure::read('Apre.suffixe');
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
-<?php echo $this->element( 'ancien_dossier' );?>
+<?php echo $this->element('ancien_dossier');?>
 
-		<?php if( empty( $apres ) ):?>
+		<?php if(empty($apres)):?>
 			<p class="notice">Cette personne ne possède pas encore d'APRE/ADRE.</p>
 		<?php endif;?>
-		<?php if( $this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'add', $dossierMenu ) ):?>
+		<?php if($this->Permissions->checkDossier($urlController, 'add', $dossierMenu)):?>
 			<ul class="actionMenu">
 				<?php
 					echo '<li>'.$this->Xhtml->addLink(
 						'Ajouter APRE/ADRE',
-						array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'add', $personne_id )
+						array('controller' => $urlController, 'action' => 'add', $personne_id),
+						WebrsaAccess::addIsEnabled("/$urlController/add", $ajoutPossible)
 					).' </li>';
 				?>
 			</ul>
 		<?php endif;?>
 
-<?php if( !empty( $apres ) ):?>
+<?php if(!empty($apres)):?>
 <?php
 	echo 'Montant accordé à ce jour : '.$apresPourCalculMontant.' €';
-	if( $alerteMontantAides ) {
+	if($alerteMontantAides) {
 		echo $this->Xhtml->tag(
 			'p',
-			$this->Xhtml->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne risque de bénéficier de plus de %s € d\'aides sur l\'année en cours', Configure::read( 'Apre.montantMaxComplementaires' ) ),
-			array( 'class' => 'error' )
+			$this->Xhtml->image('icons/error.png', array('alt' => 'Remarque')).' '.sprintf('Cette personne risque de bénéficier de plus de %s € d\'aides sur l\'année en cours', Configure::read('Apre.montantMaxComplementaires')),
+			array('class' => 'error')
 		);
 	}
 ?>
@@ -46,118 +51,96 @@
 	</thead>
 	<tbody>
 		<?php
-			foreach( $apres as $index => $apre ) {
+			foreach($apres as $index => $apre) {
+				$nbFichiersLies = Hash::get($apre, 'Fichiermodule.nombre');
 
-				$nbFichiersLies = 0;
-				$nbFichiersLies = ( isset( $apre['Fichiermodule'] ) ? count( $apre['Fichiermodule'] ) : 0 );
+				$statutApre = Hash::get($apre, "{$this->modelClass}.statutapre");
 
-				$statutApre = Set::classicExtract( $apre, "{$this->modelClass}.statutapre" );
+				$mtforfait = Hash::get($apre, 'Aideapre66.montantpropose');
+				$mtattribue = Hash::get($apre, 'Aideapre66.montantaccorde');
 
-				$etat = Set::classicExtract( $apre, "{$this->modelClass}.etatdossierapre" );
-
-				$mtforfait = Set::classicExtract( $apre, 'Aideapre66.montantpropose' );
-				$mtattribue = Set::classicExtract( $apre, 'Aideapre66.montantaccorde' );
-
-				$buttonEnabled = true;
-				$editButton = true;
-
-				$buttonEnabledInc = ( ( $etat != 'INC' ) ? true : false );
-				$editButton = ( ( $etat == 'VAL' || $etat == 'TRA' ) ? false : true );
-				$buttonEnabledNotif = ( ( $apre['Apre66']['isdecision']=='N' ) ? false :  true );
-
-				$etat = Set::enum( $etat, $options['etatdossierapre'] );
-
-
+				$etat = Set::enum(Hash::get($apre, "{$this->modelClass}.etatdossierapre"), $options['etatdossierapre']);
 
 				$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 					<tbody>
 						<tr>
 							<th>N° APRE/ADRE</th>
-							<td>'.h( Set::classicExtract( $apre, "{$this->modelClass}.numeroapre" ) ).'</td>
+							<td>'.h(Hash::get($apre, "{$this->modelClass}.numeroapre")).'</td>
 						</tr>
 						<tr>
 							<th>Nom/Prénom Allocataire</th>
-							<td>'.h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ).'</td>
+							<td>'.h($apre['Personne']['nom'].' '.$apre['Personne']['prenom']).'</td>
 						</tr>
 						<tr>
 							<th>Référent APRE/ADRE</th>
-							<td>'.h( Set::enum( Set::classicExtract( $apre, "{$this->modelClass}.referent_id" ), $referents ) ).'</td>
+							<td>'.h(Set::enum(Hash::get($apre, "{$this->modelClass}.referent_id"), $referents)).'</td>
 						</tr>
 						<tr>
 							<th>Natures de la demande</th>
-							<td>'.( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ).'</td>
+							<td>'.(empty($aidesApre) ? null :'<ul><li>'.implode('</li><li>', $aidesApre).'</li></ul>').'</td>
 						</tr>
 						<tr>
 							<th>Raison annulation</th>
-							<td>'.h( $apre['Apre66']['motifannulation'] ).'</td>
+							<td>'.h($apre['Apre66']['motifannulation']).'</td>
 						</tr>
 					</tbody>
 				</table>';
 
 				echo $this->Xhtml->tableCells(
 					array(
-						h( date_short( Set::classicExtract( $apre, 'Aideapre66.datedemande' ) ) ),
-						h( $etat ),
-						h( Set::enum( Set::classicExtract( $apre, 'Aideapre66.themeapre66_id' ), $themes  ) ),
-						h( Set::enum( Set::classicExtract( $apre, 'Aideapre66.typeaideapre66_id' ), $nomsTypeaide  ) ),
-						h( $this->Locale->money( $mtforfait ) ),
-						h( $this->Locale->money( $mtattribue ) ),
-						h(  Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $options['decisionapre'] ) ),
+						h(date_short(Hash::get($apre, 'Aideapre66.datedemande'))),
+						h($etat),
+						h(Set::enum(Hash::get($apre, 'Aideapre66.themeapre66_id'), $themes )),
+						h(Set::enum(Hash::get($apre, 'Aideapre66.typeaideapre66_id'), $nomsTypeaide )),
+						h($this->Locale->money($mtforfait)),
+						h($this->Locale->money($mtattribue)),
+						h(Set::enum(Hash::get($apre, 'Aideapre66.decisionapre'), $options['decisionapre'])),
 						$this->Xhtml->viewLink(
 							'Voir la demande APRE/ADRE',
-							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view'.Configure::read( 'Cg.departement' ), $apre[$this->modelClass]['id'] ),
-							$this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'view', $dossierMenu )
+							array(
+								'controller' => $urlController,
+								'action' => 'view'.Configure::read('Cg.departement'),
+								$apre[$this->modelClass]['id']
+							),
+							WebrsaAccess::isEnabled($apre, "/$urlController/view66")
 						),
 						$this->Xhtml->editLink(
 							'Editer la demande APRE/ADRE',
-							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
-							$editButton
-							&& $this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit', $dossierMenu )
-							&& ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
+							array('controller' => $urlController, 'action' => 'edit', $apre[$this->modelClass]['id']),
+							WebrsaAccess::isEnabled($apre, "/$urlController/edit")
 						),
 						$this->Xhtml->printLink(
 							'Imprimer la demande APRE/ADRE',
-							array( 'controller' => 'apres66', 'action' => 'impression', $apre[$this->modelClass]['id'] ),
-							$buttonEnabledInc
-							&& $this->Permissions->checkDossier( 'apres66', 'impression', $dossierMenu )
-							&& ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
+							array('controller' => 'apres66', 'action' => 'impression', $apre[$this->modelClass]['id']),
+							WebrsaAccess::isEnabled($apre, "/$urlController/impression")
 						),
 						$this->Default2->button(
 							'email',
-							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'maillink', $apre[$this->modelClass]['id'] ),
+							array('controller' => $urlController, 'action' => 'maillink', $apre[$this->modelClass]['id']),
 							array(
 								'label' => 'Envoi mail référent',
 								'title' => 'Envoi Mail',
-								'enabled' => (
-									$buttonEnabled
-									&& $this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'maillink', $dossierMenu )
-									&& ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
-								)
+								'enabled' => WebrsaAccess::isEnabled($apre, "/$urlController/maillink")
 							)
 						),
-						$this->Xhtml->fileLink(
-							'Fichiers liés',
-							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'filelink', $apre[$this->modelClass]['id'] ),
-							$buttonEnabled
-							&& $this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink', $dossierMenu )
-//                                && ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
+						$this->Default2->button(
+							'filelink',
+							array('controller' => $urlController, 'action' => 'filelink', $apre[$this->modelClass]['id']),
+							array(
+								'label' => 'Fichiers liés ('.$nbFichiersLies.')',
+								'title' => 'Fichiers liés ('.$nbFichiersLies.')',
+								'enabled' => WebrsaAccess::isEnabled($apre, "/$urlController/filelink")
+							)
 						),
-						h( '('.$nbFichiersLies.')' ),
 						$this->Default2->button(
 							'cancel',
-							array( 'controller' => 'apres66', 'action' => 'cancel', $apre[$this->modelClass]['id'] ),
-							array(
-								'enabled' => (
-									$this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'cancel', $dossierMenu )
-									&& ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
-//                                        && ( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ) != 'ACC' )
-								)
-							)
+							array('controller' => 'apres66', 'action' => 'cancel', $apre[$this->modelClass]['id']),
+							array('enabled' => WebrsaAccess::isEnabled($apre, "/$urlController/cancel"))
 						),
-						array( $innerTable, array( 'class' => 'innerTableCell' ) )
+						array($innerTable, array('class' => 'innerTableCell'))
 					),
-					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-					array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+					array('class' => 'odd', 'id' => 'innerTableTrigger'.$index),
+					array('class' => 'even', 'id' => 'innerTableTrigger'.$index)
 				);
 			}
 		?>
