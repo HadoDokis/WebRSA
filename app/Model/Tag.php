@@ -147,5 +147,44 @@
 		public function afterSave( $created ) {
 			$this->updateEtatTagByConditions( array( 'Tag.id' => $this->id ) );
 		}
+		
+		/**
+		 * Envoi un personne_id
+		 * Si entité est sur le foyer, enverra le premier demandeur trouvé
+		 * 
+		 * @param integer $tag_id
+		 * @return integer personne_id
+		 */
+		public function personneId($tag_id) {
+			$query = array(
+				'fields' => array(
+					'COALESCE("Personne"."id", "FoyerPersonneDem"."id") AS "Tag__personne_id"',
+				),
+				'joins' => array_merge(
+					array(
+						$this->join('EntiteTag', array('type' => 'INNER')),
+						$this->EntiteTag->join('Personne'),
+						$this->EntiteTag->join('Foyer', array('conditions' => array('Personne.id IS NULL'))),
+					),
+					array_words_replace(
+						array(
+							$this->EntiteTag->Foyer->join('Personne'),
+							$this->EntiteTag->Foyer->Personne->join('Prestation'),
+						), array(
+							'Personne' => 'FoyerPersonneDem'
+						)
+					)
+				),
+				'conditions' => array(
+					'Tag.id' => $tag_id,
+					'OR' => array(
+						'FoyerPersonneDem.id IS NULL',
+						'Prestation.rolepers' => 'DEM'
+					)
+				)
+			);
+			
+			return Hash::get($this->find('first', $query), 'Tag.personne_id');
+		}
 	}
 ?>
