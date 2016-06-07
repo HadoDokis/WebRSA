@@ -5,7 +5,7 @@
 	 * @package app.Controller
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
 	 */
-	App::uses('AppController', 'Controller');
+	App::uses('WebrsaAccessTags', 'Utility');
 
 	/**
 	 * La classe TagsController ...
@@ -42,6 +42,7 @@
 					),
 				)
 			),
+			'WebrsaAccesses'
 		);
 
 		/**
@@ -63,7 +64,10 @@
 		 */
 		public $uses = array(
 			'Tag',
-			'WebrsaCohorteTag'
+			'WebrsaCohorteTag',
+			'WebrsaTag',
+			'Personne',
+			'Foyer',
 		);
 		
 		/**
@@ -86,12 +90,14 @@
 		 * 
 		 * @param integer $id
 		 */
-		public function add( $modele, $id ) {
+		public function add($modele, $id) {
+			$this->WebrsaAccesses->check(null, $id, $modele);
+			
 			// Initialisation
 			$this->_init_add_edit($modele, $id);
 			
 			// Sauvegarde du formulaire
-			if( !empty( $this->request->data ) ) {
+			if(!empty($this->request->data)) {
 				$this->_save_add_edit($modele, $id);
 			}
 			
@@ -104,10 +110,12 @@
 		 * 
 		 * @param integer $tag_id
 		 */
-		public function edit( $tag_id ) {
+		public function edit($tag_id) {
+			$this->WebrsaAccesses->check($tag_id);
+			
 			// Initialisation
 			$result = $this->Tag->findTagById($tag_id);
-			$this->assert( !empty( $result ), 'invalidParameter' );
+			$this->assert(!empty($result), 'invalidParameter');
 			
 			$id = Hash::get($result, 'EntiteTag.fk_value');
 			$modele = Hash::get($result, 'EntiteTag.modele');
@@ -120,7 +128,7 @@
 			);
 
 			// Sauvegarde du formulaire
-			if( !empty( $this->request->data ) ) {
+			if(!empty($this->request->data)) {
 				$this->_save_add_edit($modele, $id);
 			}
 			else {
@@ -135,25 +143,25 @@
 		 * @param string $modele
 		 * @param integer $id
 		 */
-		protected function _init_add_edit( $modele, $id ) {
+		protected function _init_add_edit($modele, $id) {
 			// Validité de l'url
-			$this->assert( valid_int( $id ) && isset($this->Tag->EntiteTag->{$modele}), 'invalidParameter' );
+			$this->assert(valid_int($id) && isset($this->Tag->EntiteTag->{$modele}), 'invalidParameter');
 			
 			// Gestion des jetons
-			$dossier_id = $this->Tag->EntiteTag->{$modele}->dossierId( $id );
-			$this->Jetons2->get( $dossier_id );
+			$dossier_id = $this->Tag->EntiteTag->{$modele}->dossierId($id);
+			$this->Jetons2->get($dossier_id);
 			
 			// Redirection si Cancel
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'index', $modele, $id ) );
+			if(isset($this->request->data['Cancel'])) {
+				$this->Jetons2->release($dossier_id);
+				$this->redirect(array('action' => 'index', $modele, $id));
 			}
 			
-			$urlmenu = implode('/', array( '', 'tags', 'index', $modele, $id ));
+			$urlmenu = implode('/', array('', 'tags', 'index', $modele, $id));
 			
 			// Variables pour la vue
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
-			$this->set( compact( 'personne_id', 'dossier_id', 'urlmenu' ) );
+			$this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('id' => $dossier_id)));
+			$this->set(compact('personne_id', 'dossier_id', 'urlmenu'));
 			
 			$this->_setOptions();
 		}
@@ -163,10 +171,10 @@
 		 * 
 		 * @param integer $id
 		 */
-		protected function _save_add_edit( $modele, $id ) {
+		protected function _save_add_edit($modele, $id) {
 			$this->Tag->begin();
 
-			$this->Tag->create( $this->request->data );
+			$this->Tag->create($this->request->data);
 			$success = $this->Tag->save();
 			$this->request->data['EntiteTag']['fk_value'] = $id;
 			$this->request->data['EntiteTag']['modele'] = $modele;
@@ -180,20 +188,20 @@
 			);
 			
 			if (empty($entite)) {
-				$this->Tag->EntiteTag->create( $this->request->data );
+				$this->Tag->EntiteTag->create($this->request->data);
 				$success = $this->Tag->EntiteTag->save() && $success;
 			}
 			
-			if( $success ) {
+			if($success) {
 				$this->Tag->commit();
-				$this->Jetons2->release( $this->viewVars['dossier_id'] );
-				$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-				$this->redirect( array(  'controller' => 'tags','action' => 'index', $modele, $id ) );
+				$this->Jetons2->release($this->viewVars['dossier_id']);
+				$this->Session->setFlash('Enregistrement effectué', 'flash/success');
+				$this->redirect(array( 'controller' => 'tags','action' => 'index', $modele, $id));
 			}
 			else {
-				$id && $this->set('fichiers', $this->Fileuploader->fichiers( $id ));
+				$id && $this->set('fichiers', $this->Fileuploader->fichiers($id));
 				$this->Tag->rollback();
-				$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				$this->Session->setFlash('Erreur lors de l\'enregistrement', 'flash/error');
 			}
 		}
 		
@@ -203,13 +211,25 @@
 		 * @param string $modele
 		 * @param integer $id
 		 */
-		public function index( $modele, $id ) {
-			$this->assert( valid_int( $id ) && isset($this->Tag->EntiteTag->{$modele}), 'invalidParameter' );
+		public function index($modele, $id) {
+			$this->assert(valid_int($id) && isset($this->Tag->EntiteTag->{$modele}), 'invalidParameter');
 			
 			$dossier_id = $this->Tag->EntiteTag->{$modele}->dossierId($id);
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
+			$this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('id' => $dossier_id)));
 			
-			$results = $this->Tag->findTagModel( $modele, $id );
+			$conditions = array(
+				'modele' => $modele,
+				'fk_value' => $id
+			);
+			
+			$query = $this->WebrsaTag->completeVirtualFieldsForAccess(
+				$this->Tag->queryTagByCondition($conditions) + array(
+					'order' => array('Tag.created' => 'DESC')
+				)
+			);
+			$paramsAccess = $this->WebrsaTag->getParamsForAccess($id, WebrsaAccessTags::getParamsList() + compact('modele'));
+			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible');
+			$results = WebrsaAccessTags::accesses($this->Tag->find('all', $query), $paramsAccess);
 			
 			$infos = $this->Tag->EntiteTag->{$modele}->find('first', array('conditions' => array("{$modele}.id" => $id)));
 			
@@ -220,7 +240,7 @@
 				default: $infos['Info']['tag'] = ''; break;
 			}
 			
-			$this->set( compact( 'results', 'dossier_id', 'id', 'modele', 'infos' ) );
+			$this->set(compact('results', 'dossier_id', 'id', 'modele', 'infos', 'ajoutPossible'));
 			$this->_setOptions();
 		}
 
@@ -229,19 +249,21 @@
 		 *
 		 * @param integer $tag_id
 		 */
-		public function delete( $tag_id ) {
+		public function delete($tag_id) {
+			$this->WebrsaAccesses->check($tag_id);
+			
 			$this->{$this->modelClass}->begin();
 
-			if( $this->{$this->modelClass}->delete( $tag_id ) ) {
+			if($this->{$this->modelClass}->delete($tag_id)) {
 				$this->{$this->modelClass}->commit();
-				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+				$this->Session->setFlash('Suppression effectuée', 'flash/success');
 			}
 			else {
 				$this->{$this->modelClass}->rollback();
-				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
+				$this->Session->setFlash('Erreur lors de la suppression', 'flash/error');
 			}
 
-			$this->redirect( $this->referer() );
+			$this->redirect($this->referer());
 		}
 		
 		/**
@@ -249,16 +271,16 @@
 		 */
 		public function cohorte() {
 			$this->WebrsaCohorteTag->cohorteFields = array(
-				'Personne.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-				'Foyer.id' => array( 'type' => 'hidden', 'label' => '', 'hidden' => true ),
-				'Tag.selection' => array( 'type' => 'checkbox', 'label' => '&nbsp;' ),
-				'EntiteTag.modele' => array( 'type' => 'select', 'label' => '' ),
-				'Tag.valeurtag_id' => array( 'type' => 'select', 'label' => '' ),
-				'Tag.limite' => array( 'type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4 ),
-				'Tag.commentaire' => array( 'type' => 'textarea', 'label' => '' ),
+				'Personne.id' => array('type' => 'hidden', 'label' => '', 'hidden' => true),
+				'Foyer.id' => array('type' => 'hidden', 'label' => '', 'hidden' => true),
+				'Tag.selection' => array('type' => 'checkbox', 'label' => '&nbsp;'),
+				'EntiteTag.modele' => array('type' => 'select', 'label' => ''),
+				'Tag.valeurtag_id' => array('type' => 'select', 'label' => ''),
+				'Tag.limite' => array('type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4),
+				'Tag.commentaire' => array('type' => 'textarea', 'label' => ''),
 			);
-			$Recherches = $this->Components->load( 'WebrsaCohortesTags' );
-			$Recherches->cohorte( array( 'modelName' => 'Dossier' ) );
+			$Recherches = $this->Components->load('WebrsaCohortesTags');
+			$Recherches->cohorte(array('modelName' => 'Dossier'));
 		}
 		
 		/**
@@ -269,28 +291,28 @@
 		/**
 		 * Annule un tag
 		 * 
-		 * @param integer $id
+		 * @param integer $tag_id
 		 */
-		public function cancel( $id ) {
-			$this->assert( valid_int( $id ), 'invalidParameter' );
+		public function cancel($tag_id) {
+			$this->WebrsaAccesses->check($tag_id);
 			
 			$data = array(
-				'id' => $id,
+				'id' => $tag_id,
 				'etat' => 'annule'
 			);
 			
 			$this->{$this->modelClass}->begin();
 
-			if( $this->{$this->modelClass}->save($data) ) {
+			if($this->{$this->modelClass}->save($data)) {
 				$this->{$this->modelClass}->commit();
-				$this->Session->setFlash( 'Annulation effectuée', 'flash/success' );
+				$this->Session->setFlash('Annulation effectuée', 'flash/success');
 			}
 			else {
 				$this->{$this->modelClass}->rollback();
-				$this->Session->setFlash( 'Erreur lors de l\'annulation', 'flash/error' );
+				$this->Session->setFlash('Erreur lors de l\'annulation', 'flash/error');
 			}
 
-			$this->redirect( $this->referer() );
+			$this->redirect($this->referer());
 		}
 		
 		/**
@@ -319,7 +341,7 @@
 				$options['Tag']['valeurtag_id'][$categorie][$valeurtag_id] = $valeur;
 			}
 			
-			$this->set( compact( 'options' ) );
+			$this->set(compact('options'));
 		}
 		
 		/**
@@ -330,7 +352,7 @@
 		 */
 		public function tag_gestionsdoublons_index($foyer1_id, $foyer2_id) {
 			$valeur_tag = Configure::read('Gestionsdoublons.index.Tag.valeurtag_id'); // N'est pas un doublon
-			$this->assert( (valid_int($foyer1_id) && valid_int($foyer2_id) && $valeur_tag !== null), 'invalidParameter' );
+			$this->assert((valid_int($foyer1_id) && valid_int($foyer2_id) && $valeur_tag !== null), 'invalidParameter');
 			
 			$query = array(
 				'fields' => array(

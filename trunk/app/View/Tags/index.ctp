@@ -1,16 +1,13 @@
 <?php
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+	
 	echo $this->Default3->titleForLayout($infos);
 	
 	echo $this->element( 'ancien_dossier' );
-	
-	$perm = $this->Permissions->permList(array( 'add', 'edit', 'delete', 'cancel' ), $dossierMenu);
 
 	echo $this->Default3->actions(
-		array(
-			"/Tags/add/{$modele}/{$id}" => array(
-				'disabled' => !$perm['add']
-			),
-		)
+		WebrsaAccess::actionAdd("/Tags/add/{$modele}/{$id}", $ajoutPossible)
 	);
 	
 	echo $this->Default3->index(
@@ -22,9 +19,12 @@
 			'Tag.commentaire',
 			'Tag.limite',
 			'Tag.created',
-			'/tags/edit/#Tag.id#' => array( 'disabled' => "((".(!$perm['edit'] ? 'TRUE' : 'FALSE').") OR ('#Tag.etat#' === 'annule'))" ),
-			'/tags/cancel/#Tag.id#' => array( 'disabled' => "((".(!$perm['cancel'] ? 'TRUE' : 'FALSE').") OR ('#Tag.etat#' === 'annule'))" ),
-			'/tags/delete/#Tag.id#' => array( 'disabled' => !$perm['delete'] ),
+		) + WebrsaAccess::links(
+			array(
+				'/tags/edit/#Tag.id#',
+				'/tags/cancel/#Tag.id#',
+				'/tags/delete/#Tag.id#',
+			)
 		), 
 		array(
 			'options' => $options,
