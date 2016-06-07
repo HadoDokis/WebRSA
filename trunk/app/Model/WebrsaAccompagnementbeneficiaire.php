@@ -240,384 +240,207 @@
 		}
 
 		/**
-		 * Récupère la liste des actions liées au bénéficiaire.
+		 * Retourne la "configuration" (composée de query) normalisée du tableau
+		 * "Actions" de l'accompagnement du bénéficiaire.
 		 *
-		 * @fixme
-		 *	- droits d'accès (contrôleur / component)
-		 *  - mise en cache
-		 *
-		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
-		public function fixme_actions( $personne_id ) {
-			// Début "paramétrage"
-			$models = array(
-				'Rendezvouscollectif' => array(
-					'modelName' => 'Rendezvous',
-					'fields' => array(
-						'date' => array(
-							'path' => 'Rendezvous.daterdv',
-							'type' => 'date',
+		protected function _configActions() {
+			$cacheKey = $this->useDbConfig.'_'.$this->alias.'_'.__FUNCTION__;
+			$config = Cache::read( $cacheKey );
+
+			if( false === $config ) {
+				$config = array(
+					'Rendezvouscollectif' => array(
+						'modelName' => 'Rendezvous',
+						'fields' => array(
+							'Rendezvous.id',
+							'Rendezvous.daterdv',
+							'Structurereferente.lib_struc',
+							'Referent.nom_complet',
+							'Statutrdv.libelle',
+							'Rendezvous.thematiques_virgules',
+							'Rendezvous.commentairerdv'
 						),
-						'lib_struc' => 'Structurereferente.lib_struc',
-						'nom_complet' => array(
-							'path' => 'Referent.nom_complet',
-							'virtual' => true,
+						'joins' => array(
+							'Structurereferente' => array( 'type' => 'INNER' ),
+							'Referent' => array( 'type' => 'LEFT OUTER' ),
+							'Statutrdv' => array( 'type' => 'INNER' )
 						),
-						'statut_rendezvous' => 'Statutrdv.libelle',
-						'informations' => array(
-							'path' => 'Rendezvous.thematiques_virgules',
-							'virtual' => true,
-						),
-						'commentairerdv' => array(
-							'path' => 'Rendezvous.commentairerdv'
+						'conditions' => array(
+							'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.collectif_id' )
 						)
 					),
-					'joins' => array(
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' ),
-						'Statutrdv' => array( 'type' => 'INNER' )
-					),
-					'conditions' => array(
-						'Rendezvouscollectif.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.collectif_id' )
-					)
-				),
-				'Rendezvousindividuel' => array(
-					'modelName' => 'Rendezvous',
-					'fields' => array(
-						'date' => array(
-							'path' => 'Rendezvous.daterdv',
-							'type' => 'date',
+					'Rendezvousindividuel' => array(
+						'modelName' => 'Rendezvous',
+						'fields' => array(
+							'Rendezvous.id',
+							'Rendezvous.daterdv',
+							'Structurereferente.lib_struc',
+							'Referent.nom_complet',
+							'Statutrdv.libelle',
+							'Rendezvous.thematiques_virgules',
+							'Rendezvous.commentairerdv'
 						),
-						'lib_struc' => 'Structurereferente.lib_struc',
-						'nom_complet' => array(
-							'path' => 'Referent.nom_complet',
-							'virtual' => true,
+						'joins' => array(
+							'Structurereferente' => array( 'type' => 'INNER' ),
+							'Referent' => array( 'type' => 'LEFT OUTER' ),
+							'Statutrdv' => array( 'type' => 'INNER' )
 						),
-						'statut_rendezvous' => 'Statutrdv.libelle',
-						'informations' => array(
-							'path' => 'Rendezvous.thematiques_virgules',
-							'virtual' => true,
-						),
-						'commentairerdv' => array(
-							'path' => 'Rendezvous.commentairerdv'
+						'conditions' => array(
+							'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.individuel_id' )
 						)
 					),
-					'joins' => array(
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' ),
-						'Statutrdv' => array( 'type' => 'INNER' )
+					'Contratinsertion' => array(
+						'fields' => array(
+							'Contratinsertion.id',
+							'Contratinsertion.created',
+							'Structurereferente.lib_struc',
+							'Referent.nom_complet',
+							'Cer93.positioncer',
+							'Contratinsertion.dd_ci',
+							'Contratinsertion.df_ci',
+							'Cer93.duree',
+							'Cer93.sujets_virgules',
+							'Cer93.prevu'
+						),
+						'joins' => array(
+							'Structurereferente' => array( 'type' => 'INNER' ),
+							'Referent' => array( 'type' => 'LEFT OUTER' ),
+							'Cer93' => array( 'type' => 'INNER' )
+						)
 					),
-					'conditions' => array(
-						'Rendezvousindividuel.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.individuel_id' )
-					)
-				),
-				'Contratinsertion' => array(
-					'fields' => array(
-						'date' => array(
-							'path' => 'Contratinsertion.created',
-							'type' => 'date',
+					'Ficheprescription93' => array(
+						'fields' => array(
+							'Ficheprescription93.id',
+							'Ficheprescription93.created',
+							'Structurereferente.lib_struc',
+							'Referent.nom_complet',
+							'Ficheprescription93.statut',
+							'Categoriefp93.name',
+							'Thematiquefp93.name',
+							'Prestatairehorspdifp93.name',
+							'Prestatairefp93.name',
 						),
-						'lib_struc' => 'Structurereferente.lib_struc',
-						'nom_complet' => array(
-							'path' => 'Referent.nom_complet',
-							'virtual' => true,
-						),
-						'statut_cer' => 'Cer93.positioncer',
-						'dd_ci' => array(
-							'path' => 'Contratinsertion.dd_ci',
-							'type' => 'date',
-						),
-						'df_ci' => array(
-							'path' => 'Contratinsertion.df_ci',
-							'type' => 'date',
-						),
-						'duree' => array(
-							'path' => 'Cer93.duree',
-							'type' => 'integer',
-						),
-						'sujets_virgules' => array(
-							'path' => 'Cer93.sujets_virgules',
-							'virtual' => true
-						),
-						'prevu' => array(
-							'path' => 'Cer93.prevu'
-						),
-					),
-					'joins' => array(
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' ),
-						'Cer93' => array( 'type' => 'INNER' )
-					),
-					// FIXME: le controleur est cers93
-				),
-				'Ficheprescription93' => array(
-					'fields' => array(
-						'date' => array(
-							'path' => 'Ficheprescription93.created',
-							'type' => 'date',
-						),
-						'lib_struc' => 'Structurereferente.lib_struc',
-						'nom_complet' => array(
-							'path' => 'Referent.nom_complet',
-							'virtual' => true,
-						),
-						'statut_ficheprescription' => 'Ficheprescription93.statut',
-						'categoriefp' => 'Categoriefp93.name',
-						'thematiquefp' => 'Thematiquefp93.name',
-						'prestatairefphorspdi' => 'Prestatairehorspdifp93.name',
-						'prestatairefppdi' => 'Prestatairefp93.name',
-					),
-					'joins' => array(
-						'Adresseprestatairefp93' => array(
-							'type' => 'LEFT OUTER',
-							'joins' => array(
-								'Prestatairefp93' => array(
-									'type' => 'LEFT OUTER',
-								)
-							)
-						),
-						'Filierefp93' => array(
-							'type' => 'LEFT OUTER',
-							'joins' => array(
-								'Categoriefp93' => array(
-									'type' => 'LEFT OUTER',
-									'joins' => array(
-										'Thematiquefp93' => array( 'type' => 'LEFT OUTER' )
+						'joins' => array(
+							'Adresseprestatairefp93' => array(
+								'type' => 'LEFT OUTER',
+								'joins' => array(
+									'Prestatairefp93' => array(
+										'type' => 'LEFT OUTER',
 									)
-								),
-							)
+								)
+							),
+							'Filierefp93' => array(
+								'type' => 'LEFT OUTER',
+								'joins' => array(
+									'Categoriefp93' => array(
+										'type' => 'LEFT OUTER',
+										'joins' => array(
+											'Thematiquefp93' => array( 'type' => 'LEFT OUTER' )
+										)
+									),
+								)
+							),
+							'Prestatairehorspdifp93' => array(
+								'type' => 'LEFT OUTER'
+							),
+							'Referent' => array(
+								'type' => 'INNER',
+								'joins' => array(
+									'Structurereferente' => array(
+										'type' => 'INNER'
+									)
+								)
+							),
 						),
-						'Prestatairehorspdifp93' => array(
-							'type' => 'LEFT OUTER'
+					),
+					'Questionnaired1pdv93' => array(
+						'fields' => array(
+							'Questionnaired1pdv93.id',
+							'Questionnaired1pdv93.created',
+							'Structurereferente.lib_struc',
+							'Referent.nom_complet'
 						),
-						'Referent' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Structurereferente' => array(
-									'type' => 'INNER'
+						'joins' => array(
+							'Rendezvous' => array(
+								'type' => 'INNER',
+								'joins' => array(
+									'Structurereferente' => array( 'type' => 'INNER' ),
+									'Referent' => array( 'type' => 'LEFT OUTER' )
 								)
 							)
 						),
 					),
-				),
-				'Questionnaired1pdv93' => array(
-					'fields' => array(
-						'date' => array(
-							'path' => 'Questionnaired1pdv93.created',
-							'type' => 'date',
+					'Questionnaired2pdv93' => array(
+						'fields' => array(
+							'Questionnaired2pdv93.id',
+							'Questionnaired2pdv93.created',
+							'Structurereferente.lib_struc',
+							'Referent.nom_complet',
+							'Questionnaired2pdv93.situationaccompagnement',
 						),
-						'lib_struc' => 'Structurereferente.lib_struc',
-						'nom_complet' => array(
-							'path' => 'Referent.nom_complet',
-							'virtual' => true,
-						),
-					),
-					'joins' => array(
-						'Rendezvous' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Structurereferente' => array( 'type' => 'INNER' ),
-								'Referent' => array( 'type' => 'LEFT OUTER' )
-							)
-						)
-					),
-				),
-				'Questionnaired2pdv93' => array(
-					'fields' => array(
-						'date' => array(
-							'path' => 'Questionnaired2pdv93.created',
-							'type' => 'date',
-						),
-						'lib_struc' => 'Structurereferente.lib_struc',
-						'nom_complet' => array(
-							'path' => 'Referent.nom_complet',
-							'virtual' => true,
-						),
-						'informations' => 'Questionnaired2pdv93.situationaccompagnement',
-					),
-					'joins' => array(
-						'Questionnaired1pdv93' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Rendezvous' => array(
-									'type' => 'INNER',
-									'joins' => array(
-										'Structurereferente' => array( 'type' => 'INNER' ),
-										'Referent' => array( 'type' => 'LEFT OUTER' )
+						'joins' => array(
+							'Questionnaired1pdv93' => array(
+								'type' => 'INNER',
+								'joins' => array(
+									'Rendezvous' => array(
+										'type' => 'INNER',
+										'joins' => array(
+											'Structurereferente' => array( 'type' => 'INNER' ),
+											'Referent' => array( 'type' => 'LEFT OUTER' )
+										)
 									)
 								)
 							)
+						),
+					),
+					'DspRev' => array(
+						'fields' => array(
+							'DspRev.id',
+							'DspRev.personne_id',
+							'DspRev.created'
 						)
 					),
-				),
-				'DspRev' => array(
-					'fields' => array(
-						'date' => array(
-							'path' => 'DspRev.created',
-							'type' => 'date',
+					'Entretien' => array(
+						'fields' => array(
+							'Entretien.id',
+							'Entretien.dateentretien',
+							'Structurereferente.lib_struc',
+							'Referent.nom_complet',
+							'Objetentretien.name',
 						),
-//						'view' => '/Dsps/view_revs/#DspRev.id#',
-//						'edit' => '/Dsps/edit/#DspRev.dsp_id#/#DspRev.id#'
-					)
-				),
-				'Entretien' => array(
-					'fields' => array(
-						'date' => array(
-							'path' => 'Entretien.dateentretien',
-							'type' => 'date',
-						),
-						'lib_struc' => 'Structurereferente.lib_struc',
-						'nom_complet' => array(
-							'path' => 'Referent.nom_complet',
-							'virtual' => true,
-						),
-						'informations' => 'Objetentretien.name',
-					),
-					'joins' => array(
-						'Objetentretien' => array( 'type' => 'INNER' ),
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' )
-					)
-				)
-			);
-			// Fin "paramétrage"
-
-			$models = Hash::normalize( $models );
-			$sqls = array();
-
-			// -----------------------------------------------------------------
-
-			$fieldsList = array();
-
-			// Normalisation
-			foreach( $models as $alias => $params ) {
-				$params = (array)$params
-					+ array(
-						'modelName' => $alias,
-						'fields' => array(),
-						'joins' => array(),
-						'conditions' => array(),
-					);
-				$params['fields'] = Hash::normalize( $params['fields'] );
-
-				// 1. Champs
-				foreach( $params['fields'] as $key => $value ) {
-					if( is_string( $value ) ) {
-						$value = array( 'path' => $value, 'type' => 'text' );
-					}
-					$params['fields'][$key] = (array)$value + array( 'type' => 'text' );
-
-					$fieldsList[$key] = null;
-				}
-
-				// 2. Jointures
-				$joins = (array)Hash::get( $params, 'joins' );
-				if( !empty( $joins ) ) {
-					$joins = $this->Personne->{$params['modelName']}->joins( $joins );
-				}
-				$params['joins'] = $joins;
-
-				$models[$alias] = $params;
-			}
-
-			$fieldsList = array_keys( $fieldsList );
-
-			// -----------------------------------------------------------------
-
-			// Unions
-			foreach( $models as $alias => $params ) {
-				$modelName = $params['modelName'];
-
-				$replacements = array( $modelName => $alias );
-
-				$query = array(
-					'alias' => $modelName,
-					'fields' => array(
-						"\"{$modelName}\".\"id\" AS \"Action__id\"",
-						"'{$modelName}' AS \"Action__name\""
-					),
-					'contain' => false,
-					'joins' => array(),
-					'conditions' => array(
-						"{$modelName}.personne_id = '#Personne.id#'"
+						'joins' => array(
+							'Objetentretien' => array( 'type' => 'INNER' ),
+							'Structurereferente' => array( 'type' => 'INNER' ),
+							'Referent' => array( 'type' => 'LEFT OUTER' )
+						)
 					)
 				);
 
-				// Ajout de conditions supplémentaires ?
-				if( !empty( $params['conditions'] ) ) {
-					$query['conditions'][] = $params['conditions'];
-				}
+				// Normalisation
+				foreach( $config as $alias => $query ) {
+					$query = (array)$query;
 
-				// Ajout de jointures supplémentaires ?
-				if( !empty( $params['joins'] ) ) {
-					$joins = $params['joins'];
-					$query['joins'] = array_merge( $query['joins'], $joins );
-				}
+					$query['modelName'] = isset( $query['modelName'] ) ? $query['modelName'] : $alias;
 
-				// Ajout de champs supplémentaires
-				foreach( $fieldsList as $fieldName ) {
-					$fieldNameParams = (array)Hash::get( $params, "fields.{$fieldName}" );
-
-					$field = Hash::get( $fieldNameParams, 'path' );
-					$type = Hash::get( $fieldNameParams, 'type' );
-					$virtual = Hash::get( $fieldNameParams, 'virtual' );
-					$subquery = Hash::get( $fieldNameParams, 'subquery' );
-
-					if( !empty( $field ) ) {
-						if( strpos( $field, '/' ) === 0 ) {
-							$query['fields'][] = "'{$field}' AS \"Action__{$fieldName}\"";
-						}
-						else {
-							if( $subquery ) {
-								$sq = $field;
-							}
-							else {
-								list($model, $field) = model_field( $field );
-
-								if( $virtual ) {
-									$this->loadModel( $model );
-									$sq = $this->{$model}->sqVirtualField( $field, false );
-								}
-								else {
-									$sq = "\"{$model}\".\"{$field}\"";
-								}
-							}
-
-							if( 'date' === $type ) {
-								$query['fields'][] = "DATE({$sq})::TEXT AS \"Action__{$fieldName}\"";
-							}
-							else if( 'integer' === $type ) {
-								$query['fields'][] = "{$sq}::TEXT AS \"Action__{$fieldName}\"";
-							}
-							else {
-								$query['fields'][] = "{$sq} AS \"Action__{$fieldName}\"";
-							}
-						}
+					// Jointures
+					$joins = (array)Hash::get( $query, 'joins' );
+					if( !empty( $joins ) ) {
+						$joins = $this->Personne->{$query['modelName']}->joins( $joins );
 					}
-					else {
-						if( in_array( $fieldName, array( 'view', 'edit' ) ) ) {
-							$query['fields'][] = "'/".Inflector::tableize( $modelName )."/{$fieldName}/#Action.id#' AS \"Action__{$fieldName}\"";
-						}
-						else {
-							$query['fields'][] = "NULL AS \"Action__{$fieldName}\"";
-						}
-					}
+					$query['joins'] = $joins;
+
+					// Contain à false
+					$query['contain'] = false;
+
+					$config[$alias] = $query;
 				}
 
-				$query = array_words_replace( $query, $replacements );
-
-				$this->Personne->{$modelName}->forceVirtualFields = true;
-				$sqls[] = $this->Personne->{$modelName}->sq( $query );
+				Cache::write( $cacheKey, $config );
 			}
 
-			$sql = implode( ' UNION ', $sqls )." ORDER BY \"Action__date\" DESC"; // FIXME: liens de tri
-			// Fin mise en cache - modulo le tri
-			$sql = str_replace( '#Personne.id#', $personne_id, $sql );
-
-			$results = $this->Personne->query( $sql );
-
-			return $results;
+			return $config;
 		}
 
 		/**
@@ -625,211 +448,30 @@
 		 *
 		 * @fixme
 		 *	- droits d'accès (contrôleur / component)
-		 *  - mise en cache
 		 *
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
 		public function actions( $personne_id ) {
-			// Début "paramétrage"
-			$models = array(
-				'Rendezvouscollectif' => array(
-					'modelName' => 'Rendezvous',
-					'fields' => array(
-						'Rendezvous.id',
-						'Rendezvous.daterdv',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Statutrdv.libelle',
-						'Rendezvous.thematiques_virgules',
-						'Rendezvous.commentairerdv'
-					),
-					'joins' => array(
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' ),
-						'Statutrdv' => array( 'type' => 'INNER' )
-					),
-					'conditions' => array(
-						'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.collectif_id' )
-					)
-				),
-				'Rendezvousindividuel' => array(
-					'modelName' => 'Rendezvous',
-					'fields' => array(
-						'Rendezvous.id',
-						'Rendezvous.daterdv',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Statutrdv.libelle',
-						'Rendezvous.thematiques_virgules',
-						'Rendezvous.commentairerdv'
-					),
-					'joins' => array(
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' ),
-						'Statutrdv' => array( 'type' => 'INNER' )
-					),
-					'conditions' => array(
-						'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.individuel_id' )
-					)
-				),
-				'Contratinsertion' => array(
-					'fields' => array(
-						'Contratinsertion.id',
-						'Contratinsertion.created',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Cer93.positioncer',
-						'Contratinsertion.dd_ci',
-						'Contratinsertion.df_ci',
-						'Cer93.duree',
-						'Cer93.sujets_virgules',
-						'Cer93.prevu'
-					),
-					'joins' => array(
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' ),
-						'Cer93' => array( 'type' => 'INNER' )
-					)
-				),
-				'Ficheprescription93' => array(
-					'fields' => array(
-						'Ficheprescription93.id',
-						'Ficheprescription93.created',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Ficheprescription93.statut',
-						'Categoriefp93.name',
-						'Thematiquefp93.name',
-						'Prestatairehorspdifp93.name',
-						'Prestatairefp93.name',
-					),
-					'joins' => array(
-						'Adresseprestatairefp93' => array(
-							'type' => 'LEFT OUTER',
-							'joins' => array(
-								'Prestatairefp93' => array(
-									'type' => 'LEFT OUTER',
-								)
-							)
-						),
-						'Filierefp93' => array(
-							'type' => 'LEFT OUTER',
-							'joins' => array(
-								'Categoriefp93' => array(
-									'type' => 'LEFT OUTER',
-									'joins' => array(
-										'Thematiquefp93' => array( 'type' => 'LEFT OUTER' )
-									)
-								),
-							)
-						),
-						'Prestatairehorspdifp93' => array(
-							'type' => 'LEFT OUTER'
-						),
-						'Referent' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Structurereferente' => array(
-									'type' => 'INNER'
-								)
-							)
-						),
-					),
-				),
-				'Questionnaired1pdv93' => array(
-					'fields' => array(
-						'Questionnaired1pdv93.id',
-						'Questionnaired1pdv93.created',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet'
-					),
-					'joins' => array(
-						'Rendezvous' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Structurereferente' => array( 'type' => 'INNER' ),
-								'Referent' => array( 'type' => 'LEFT OUTER' )
-							)
-						)
-					),
-				),
-				'Questionnaired2pdv93' => array(
-					'fields' => array(
-						'Questionnaired2pdv93.id',
-						'Questionnaired2pdv93.created',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Questionnaired2pdv93.situationaccompagnement',
-					),
-					'joins' => array(
-						'Questionnaired1pdv93' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Rendezvous' => array(
-									'type' => 'INNER',
-									'joins' => array(
-										'Structurereferente' => array( 'type' => 'INNER' ),
-										'Referent' => array( 'type' => 'LEFT OUTER' )
-									)
-								)
-							)
-						)
-					),
-				),
-				'DspRev' => array(
-					'fields' => array(
-						'DspRev.id',
-						'DspRev.personne_id',
-						'DspRev.created'
-					)
-				),
-				'Entretien' => array(
-					'fields' => array(
-						'Entretien.id',
-						'Entretien.dateentretien',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Objetentretien.name',
-					),
-					'joins' => array(
-						'Objetentretien' => array( 'type' => 'INNER' ),
-						'Structurereferente' => array( 'type' => 'INNER' ),
-						'Referent' => array( 'type' => 'LEFT OUTER' )
-					)
-				)
-			);
-			// Fin "paramétrage"
-
-			$models = Hash::normalize( $models );
+			$config = Hash::normalize( $this->_configActions() );
 			$results = array();
 
-			// -----------------------------------------------------------------
-
-			foreach( $models as $alias => $query ) {
-				$query = (array)$query;
-
+			foreach( $config as $alias => $query ) {
 				$modelName = isset( $query['modelName'] ) ? $query['modelName'] : $alias;
 				unset( $query['modelName'] );
-
-				// Jointures
-				$joins = (array)Hash::get( $query, 'joins' );
-				if( !empty( $joins ) ) {
-					$joins = $this->Personne->{$modelName}->joins( $joins );
-				}
-				$query['joins'] = $joins;
 
 				// Conditions
 				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
-				// Contain à false
-				$query['contain'] = false;
-
 				$this->Personne->{$modelName}->forceVirtualFields = true;
-				$tmp = $this->Personne->{$modelName}->find( 'all', $query );
-				$tmp = Hash::insert( $tmp, '{n}.Action.name', $alias );
-
-				$results = array_merge( $results, $tmp );
+				$results = array_merge(
+					$results,
+					Hash::insert(
+						$this->Personne->{$modelName}->find( 'all', $query ),
+						'{n}.Action.name',
+						$alias
+					)
+				);
 			}
 
 			return $results;
@@ -987,6 +629,183 @@
 		}
 
 		/**
+		 * Retourne la "configuration" (composée de query) normalisée du tableau
+		 * "Impressions" de l'accompagnement du bénéficiaire.
+		 *
+		 * @return array
+		 */
+		protected function _configImpressions() {
+			$cacheKey = $this->useDbConfig.'_'.$this->alias.'_'.__FUNCTION__;
+			$config = Cache::read( $cacheKey );
+
+			if( false === $config ) {
+				$config = array(
+					'/Apres/impression/#Apre.id#' => array(
+						'modelName' => 'Apre',
+						'module' => 'Apre',
+						'fields' => array(
+							'Apre.id',
+							'Apre.personne_id',
+							'Apre.datedemandeapre'
+						),
+						'conditions' => array(
+							'Apre.statutapre' => 'C'
+						)
+					),
+					'/Cers93/impression/#Contratinsertion.id#' => array(
+						'modelName' => 'Contratinsertion',
+						'fields' => array(
+							'Contratinsertion.id',
+							'Contratinsertion.personne_id',
+							'Contratinsertion.created',
+							'\'impression\' AS "Action__impression"',
+						),
+						'joins' => array(
+							'Cer93' => array( 'type' => 'INNER' )
+						)
+					),
+					'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
+						'modelName' => 'Contratinsertion',
+						'fields' => array(
+							'Contratinsertion.id',
+							'Contratinsertion.personne_id',
+							'Contratinsertion.created',
+							'\'impressionDecision\' AS "Action__impression"',
+						),
+						'joins' => array(
+							'Cer93' => array( 'type' => 'INNER' )
+						)
+					),
+					'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
+						'modelName' => 'Dossierep',
+						'module' => 'Commissionseps',
+						'fields' => array(
+							'Passagecommissionep.id',
+							'Dossierep.id',
+							'Dossierep.personne_id',
+							'Dossierep.created',
+							'Commissionep.dateseance',
+						),
+						'joins' => array(
+							'Passagecommissionep' => array(
+								'type' => 'INNER', // FIXME: ajout de conditions
+								'joins' => array(
+									'Commissionep' => array(
+										'type' => 'INNER'
+									)
+								)
+							)
+						)
+					),
+					'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
+						'modelName' => 'Ficheprescription93',
+						'fields' => array(
+							'Ficheprescription93.id',
+							'Ficheprescription93.personne_id',
+							'Ficheprescription93.created',
+						)
+					),
+					'/Orientsstructs/impression/#Orientstruct.id#' => array(
+						'pdf' => true, // Stocké dans la table PDF pour le 93
+						'modelName' => 'Orientstruct',
+						'fields' => array(
+							'Orientstruct.id',
+							'Orientstruct.personne_id',
+							'Orientstruct.date_valid',
+						)
+					),
+					'/Rendezvous/impression/#Rendezvous.id#' => array(
+						'modelName' => 'Rendezvous',
+						'fields' => array(
+							'Rendezvous.id',
+							'Rendezvous.personne_id',
+							'Rendezvous.created',
+						)
+					),
+					'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
+						'modelName' => 'Orientstruct',
+						'module' => 'Relancenonrespectsanctionep93',
+						'fields' => array(
+							'Relancenonrespectsanctionep93.id',
+							'Relancenonrespectsanctionep93.daterelance',
+							'Orientstruct.id',
+							'Orientstruct.personne_id'
+						),
+						'joins' => array(
+							'Nonrespectsanctionep93' => array(
+								'type' => 'INNER',
+								'joins' => array(
+									'Relancenonrespectsanctionep93' => array( 'type' => 'INNER' )
+								)
+							)
+						)
+					)
+				);
+
+				// Normalisation
+				$config = Hash::normalize( $config );
+				foreach( $config as $path => $query ) {
+					$query = (array)$query;
+					$query += array(
+						'pdf' => false,
+						'contain' => false
+					);
+
+					if( !isset( $query['module'] ) ) {
+						$query['module'] = $query['modelName'];
+					}
+
+					// Jointures
+					$joins = (array)Hash::get( $query, 'joins' );
+					if( !empty( $joins ) ) {
+						$joins = $this->Personne->{$query['modelName']}->joins( $joins );
+					}
+					$query['joins'] = $joins;
+
+					$config[$path] = $query;
+				}
+
+				Cache::write( $cacheKey, $config );
+			}
+
+			return $config;
+		}
+
+		/**
+		 * Retourne la liste des impression possibles
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function impressions( $personne_id ) {
+			$results = array();
+			$config = $this->_configImpressions();
+
+			foreach( $config as $path => $query ) {
+				$modelName = $query['modelName'];
+				$module = $query['module'];
+				$pdf = Hash::get( $query, 'pdf' ); // TODO: on peut imprimer ou non...
+
+				unset( $query['modelName'], $query['pdf'], $query['module'] );
+
+				// Conditions
+				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+
+				$this->Personne->{$modelName}->forceVirtualFields = true;
+				$results = array_merge(
+					$results,
+					Hash::insert(
+						$this->Personne->{$modelName}->find( 'all', $query ),
+						'{n}.Action.module',
+						$module
+					)
+				);
+			}
+
+			return $results;
+		}
+
+		/**
 		 * Récupère la liste des impressions liées aux enregistrements d'un
 		 * bénéficiaire.
 		 *
@@ -999,7 +818,7 @@
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
-		public function impressions( $personne_id ) {
+		public function fixme_impressions( $personne_id ) {
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			$fields = $this->Pdf->fields();
@@ -1070,8 +889,12 @@
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			if( 93 === $departement ) {
-				$qdDetails = $this->qdDetails();
-				$success = !empty( $qdDetails );
+				$success = true;
+				$methods = array( 'qdDetails', '_configActions', '_configImpressions' );
+				foreach( $methods as $method ) {
+					$data = $this->{$method}();
+					$success = !empty( $data ) && $success;
+				}
 			}
 			else {
 				$success = null;
