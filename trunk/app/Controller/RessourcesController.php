@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	 App::uses('WebrsaAccessRessource', 'Utility');
+
 	/**
 	 * La classe RessourcesController permet de gérer les ressources d'un allocataire.
 	 *
@@ -17,9 +19,9 @@
 	{
 		public $name = 'Ressources';
 
-		public $uses = array( 'Ressource', 'Option', 'Personne', 'Ressourcemensuelle', 'Detailressourcemensuelle' );
+		public $uses = array( 'Ressource', 'Option', 'Personne', 'Ressourcemensuelle', 'Detailressourcemensuelle', 'WebrsaRessource' );
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
 
 		public $commeDroit = array(
 			'view' => 'Ressources:index',
@@ -59,18 +61,21 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
-			$ressources = $this->Ressource->find(
-					'all', array(
-				'conditions' => array(
-					'Ressource.personne_id' => $personne_id
-				),
-				'contain' => array(
-					'Ressourcemensuelle' => array(
-						'Detailressourcemensuelle'
+			$query = $this->WebrsaRessource->completeVirtualFieldsForAccess(
+				array(
+					'conditions' => array(
+						'Ressource.personne_id' => $personne_id
+					),
+					'contain' => array(
+						'Ressourcemensuelle' => array(
+							'Detailressourcemensuelle'
+						)
 					)
 				)
-					)
 			);
+			$paramsAccess = $this->WebrsaRessource->getParamsForAccess($personne_id, WebrsaAccessRessources::getParamsList());
+			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
+			$ressources = WebrsaAccessRessources::accesses($this->Ressource->find('all', $query), $paramsAccess);
 
 			foreach( $ressources as $i => $ressource ) {
 				$ressources[$i]['Ressource']['avg'] = $this->Ressource->moyenne( $ressource );
@@ -84,6 +89,7 @@
 		 * @param integer $ressource_id
 		 */
 		public function view( $ressource_id = null ) {
+			$this->WebrsaAccesses->check($ressource_id);
 			// Vérification du format de la variable
 			$this->assert( valid_int( $ressource_id ), 'invalidParameter' );
 
@@ -115,6 +121,7 @@
 		 * @param integer $personne_id
 		 */
 		public function add( $personne_id = null ) {
+			$this->WebrsaAccesses->check(null, $personne_id);
 			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
@@ -199,6 +206,7 @@
 		 * @param integer $ressource_id
 		 */
 		public function edit( $ressource_id = null ) {
+			$this->WebrsaAccesses->check($ressource_id);
 			// Vérification du format de la variable
 			$this->assert( valid_int( $ressource_id ), 'invalidParameter' );
 
