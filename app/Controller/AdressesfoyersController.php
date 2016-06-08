@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	 App::uses('WebrsaAccessAdressesfoyers', 'Utility');
+
 	/**
 	 * La classe AdressesfoyersController permet de lister, voir, ajouter et supprimer des adresses à un foyer RSA.
 	 *
@@ -17,9 +19,9 @@
 	{
 		public $name = 'Adressesfoyers';
 
-		public $uses = array( 'Adressefoyer', 'Option' );
+		public $uses = array( 'Adressefoyer', 'Option', 'WebrsaAdressefoyer' );
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
 
 		public $commeDroit = array(
 			'view' => 'Adressesfoyers:index',
@@ -64,10 +66,8 @@
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
-
-			// Recherche des adresses du foyer
-			$adresses = $this->Adressefoyer->find(
-				'all',
+			
+			$query = $this->WebrsaAdressefoyer->completeVirtualFieldsForAccess(
 				array(
 					'conditions' => array( 'Adressefoyer.foyer_id' => $foyer_id ),
 					'contain' => array(
@@ -75,6 +75,13 @@
 					)
 				)
 			);
+			
+			$paramsAccess = $this->WebrsaAdressefoyer->getParamsForAccess($foyer_id, WebrsaAccessAdressesfoyers::getParamsList());
+			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
+
+			// Recherche des adresses du foyer
+			$adresses = WebrsaAccessAdressesfoyers::accesses($this->Adressefoyer->find('all', $query), $paramsAccess);
+			
 			// Assignations à la vue
 			$this->set( 'foyer_id', $foyer_id );
 			$this->set( 'adresses', $adresses );
@@ -86,12 +93,10 @@
 		 * @param integer $id  L'id technique de l'enregistrement de la table adressesfoyers
 		 */
 		public function view( $id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			// Recherche de l'adresse
-			$adresse = $this->Adressefoyer->find(
-				'first',
+			$this->WebrsaAccesses->check($id);
+			$foyer_id = $this->Adressefoyer->foyerId($id);
+			
+			$query = $this->WebrsaAdressefoyer->completeVirtualFieldsForAccess(
 				array(
 					'conditions' => array( 'Adressefoyer.id' => $id ),
 					'contain' => array(
@@ -99,6 +104,9 @@
 					)
 				)
 			);
+			
+			$paramsAccess = $this->WebrsaAdressefoyer->getParamsForAccess($foyer_id, WebrsaAccessAdressesfoyers::getParamsList());
+			$adresse = WebrsaAccessAdressesfoyers::access($this->Adressefoyer->find('first', $query), $paramsAccess);
 
 			// Mauvais paramètre
 			$this->assert( !empty( $adresse ), 'invalidParameter' );
@@ -118,8 +126,7 @@
 		 * @return void
 		 */
 		public function add( $foyer_id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+			$this->WebrsaAccesses->check(null, $foyer_id);
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
@@ -165,8 +172,7 @@
 		 * @return void
 		 */
 		public function edit( $id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $id ), 'invalidParameter' );
+			$this->WebrsaAccesses->check($id);
 
 			$dossier_id = $this->Adressefoyer->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
