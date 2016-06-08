@@ -8,6 +8,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	App::uses('WebrsaAccessModescontact', 'Utility');
+
 	/**
 	 * La classe ModescontactController ...
 	 * (CG 66 et 93).
@@ -18,11 +20,19 @@
 	{
 		public $name = 'Modescontact';
 
-		public $uses = array( 'Modecontact',  'Option' , 'Foyer');
+		public $uses = array( 'Modecontact',  'Option' , 'Foyer', 'WebrsaModecontact' );
 
-		public $helpers = array( 'Xform','Default2',  'Default', 'Theme' );
+		public $helpers = array(
+			'Xform',
+			'Default2',
+			'Default',
+			'Theme',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+		);
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
 
 		public $commeDroit = array(
 			'view' => 'Modescontact:index',
@@ -64,15 +74,20 @@
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
-
-			// Recherche des personnes du foyer
-			$modescontact = $this->Modecontact->find(
-				'all',
+			
+			$query = $this->WebrsaModecontact->completeVirtualFieldsForAccess(
 				array(
-					'conditions' => array( 'Modecontact.foyer_id' => $foyer_id ),
+					'fields' => $this->Modecontact->fields(),
+					'conditions' => array('Modecontact.foyer_id' => $foyer_id),
 					'contain' => false
 				)
 			);
+			
+			$paramsAccess = $this->WebrsaModecontact->getParamsForAccess($foyer_id, WebrsaAccessModescontact::getParamsList());
+			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
+
+			// Recherche des personnes du foyer
+			$modescontact = WebrsaAccessModescontact::accesses($this->Modecontact->find('all', $query), $paramsAccess);
 
 			// Assignations à la vue
 			$this->set( 'foyer_id', $foyer_id );
@@ -85,7 +100,7 @@
 		 * @param integer $foyer_id
 		 */
 		public function add( $foyer_id = null ){
-			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+			$this->WebrsaAccesses->check(null, $foyer_id);
 
 			$dossier_id = $this->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -130,7 +145,7 @@
 		 * @param integer $id
 		 */
 		public function edit( $id = null ){
-			$this->assert( valid_int( $id ), 'invalidParameter' );
+			$this->WebrsaAccesses->check($id);
 
 			$dossier_id = $this->Modecontact->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -190,8 +205,7 @@
 		 * @param integer $modecontact_id
 		 */
 		public function view( $modecontact_id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $modecontact_id ), 'error404' );
+			$this->WebrsaAccesses->check($modecontact_id);
 
 			$modecontact = $this->Modecontact->find(
 				'first',

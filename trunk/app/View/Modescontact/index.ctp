@@ -1,28 +1,14 @@
 <?php
-    $domain = 'modecontact';
-?>
-
-<?php
-	echo $this->Xhtml->tag(
-		'h1',
-		$this->pageTitle = __d( $domain, "Modescontact::{$this->action}" )
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+	
+	echo $this->Default3->titleForLayout($this->request->data);
+		
+	echo $this->Default3->actions(
+		WebrsaAccess::actionAdd('/modescontact/add/'.$foyer_id, $ajoutPossible)
 	);
-?>
-<ul class="actionMenu">
-	<li><?php
-			echo $this->Xhtml->addLink(
-				'Ajouter',
-				array(
-					'action' => 'add',
-					$foyer_id
-				),
-				$this->Permissions->checkDossier( 'modescontact', 'add', $dossierMenu )
-			);
-		?>
-	</li>
-</ul>
-<?php
-	echo $this->Default2->index(
+	
+	echo $this->Default3->index(
 		$modescontact,
 		array(
 			'Modecontact.numtel',
@@ -32,19 +18,15 @@
 			'Modecontact.autorutitel',
 			'Modecontact.adrelec',
 			'Modecontact.autorutiadrelec'
+		) + WebrsaAccess::links(
+			array(
+				'/Modescontact/view/#Modecontact.id#',
+				'/Modescontact/edit/#Modecontact.id#',
+			)
 		),
 		array(
-			'actions' => array(
-				'Modescontact::view' => array(
-					'domain' => $domain,
-					'disabled' =>  '( "'.$this->Permissions->checkDossier( 'modescontact', 'view', $dossierMenu ).'" != "1" )'
-				),
-				'Modescontact::edit' => array(
-					'domain' => $domain,
-					'disabled' =>  '( "'.$this->Permissions->checkDossier( 'modescontact', 'edit', $dossierMenu ).'" != "1" )'
-				)
-			),
 			'options' => $options,
+			'paginate' => false,
 		)
 	);
 ?>
