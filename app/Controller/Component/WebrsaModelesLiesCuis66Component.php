@@ -38,7 +38,7 @@
 		
 		public function initAccess($mainModelName = 'Cui', $webrsaModelName = 'WebrsaCui66') {
 			App::uses('WebrsaAccess'.Inflector::camelize($this->_Collection->getController()->name), 'Utility');
-			return $this->WebrsaAccesses->init($mainModelName, $webrsaModelName);
+			return $this->WebrsaAccesses->init(compact('mainModelName', 'webrsaModelName'));
 		}
 
 		public function index( $cui_id, $params = array(), $customQuery = array() ){

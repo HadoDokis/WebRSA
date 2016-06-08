@@ -102,6 +102,43 @@
 		}
 
 		/**
+		 * Retourne la clé primaire du foyer de l'allocataire auquel est
+		 * lié un enregistrement.
+		 *
+		 * @param Model $Model Le modèle qui utilise ce behavior
+		 * @param integer $id La clé primaire de l'enregistrement lié
+		 * @return integer
+		 */
+		public function foyerId( Model $Model, $id ) {
+			$joins = (array)Hash::get( $this->config, "{$Model->alias}.joins" );
+
+			$querydata = array(
+				'fields' => array( 'Foyer.id' ),
+				'joins' => array(),
+				'conditions' => array(
+					"{$Model->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$LastModel = $Model;
+
+			if( !empty( $joins ) ) {
+				foreach( $joins as $joinModel ) {
+					$querydata['joins'][] = $LastModel->join( $joinModel, array( 'type' => 'INNER' ) );
+					$LastModel = $LastModel->{$joinModel};
+				}
+			}
+
+			$querydata['joins'][] = $LastModel->join( 'Personne', array( 'type' => 'INNER' ) );
+			$querydata['joins'][] = $LastModel->Personne->join( 'Foyer', array( 'type' => 'INNER' ) );
+
+			$result = $Model->find( 'first', $querydata );
+
+			return Hash::get( $result, 'Foyer.id' );
+		}
+
+		/**
 		 * Retourne la clé primaire de l'allocataire auquel est lié un
 		 * enregistrement.
 		 *

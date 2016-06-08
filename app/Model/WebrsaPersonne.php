@@ -53,6 +53,7 @@
 		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'fields' => array(
+					'Foyer.id',
 					'Personne.id',
 				),
 				'conditions' => $conditions,

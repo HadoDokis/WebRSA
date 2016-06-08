@@ -23,7 +23,9 @@
 
 		public $helpers = array( 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
+		public $components = array(
+			'Fileuploader', 'Jetons2', 'DossiersMenus', 'WebrsaAccesses'
+		);
 
 		public $commeDroit = array(
 			'view' => 'Personnes:index',
@@ -48,7 +50,7 @@
 			'fileview' => 'read',
 			'index' => 'read',
 			'view' => 'read',
-                        'coordonnees' => 'update',
+			'coordonnees' => 'update',
 		);
 
 		/**
@@ -106,7 +108,7 @@
 		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
 		 */
 		public function filelink( $id ) {
-			$this->assert( valid_int( $id ), 'invalidParameter' );
+			$this->WebrsaAccesses->check($id);
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
 
@@ -125,7 +127,6 @@
 				)
 			);
 
-			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$foyer_id = Set::classicExtract( $personne, 'Personne.foyer_id' );
@@ -222,9 +223,8 @@
 		 *
 		 */
 		public function view( $id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $id ), 'invalidParameter' );
-
+			$this->WebrsaAccesses->check($id);
+			
 			$queryData = $this->WebrsaPersonne->completeVirtualFieldsForAccess(
 				array(
 					'fields' => array(
@@ -276,7 +276,6 @@
 			$paramsAccess = $this->WebrsaPersonne->getParamsForAccess($id, $actionsParams);
 			
 			$personne = WebrsaAccessPersonnes::access($personne, $paramsAccess);
-			$this->WebrsaAccesses->check($id, $foyer_id);
 			
 			// Mauvais paramètre ?
 			$this->assert( !empty( $personne ), 'invalidParameter' );
@@ -292,9 +291,7 @@
 		 *   Ajout d'une personne au foyer
 		 */
 		public function add( $foyer_id = null ) {
-			$this->WebrsaAccesses->check(null, $foyer_id, 'Foyer');
-			// Vérification du format de la variable
-			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+			$this->WebrsaAccesses->check(null, $foyer_id);
 
 			$dossier_id = $this->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -402,8 +399,8 @@
 		 *   Éditer une personne spécifique d'un foyer
 		 */
 		public function edit( $id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $id ), 'invalidParameter' );
+			$this->WebrsaAccesses->check($id);
+			
 			$personne = $this->Personne->find(
 				'first',
 				array(
@@ -416,8 +413,7 @@
 			);
 			$this->assert(!empty($personne), 'invalidParameter');
 			$foyer_id = Hash::get($personne, 'Personne.foyer_id');
-			$this->WebrsaAccesses->check($id, $foyer_id);
-
+			
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -466,12 +462,13 @@
                  * @throws NotFoundException
                  */
 		public function coordonnees( $id = null ) {
+			$this->WebrsaAccesses->check($id);
+			
 			$query = array(
 				'conditions' => array( 'Personne.id' => $id ),
 				'contain' => false
 			);
 			$personne = $this->Personne->find('first',$query);
-			$this->WebrsaAccesses->check($id, Hash::get($personne, 'Personne.foyer_id'));
 
 			if (empty($personne)) {
 				throw new NotFoundException();
