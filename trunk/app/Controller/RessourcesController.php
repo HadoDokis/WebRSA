@@ -61,8 +61,8 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
-			$query = $this->WebrsaRessource->completeVirtualFieldsForAccess(
-				array(
+			$ressources = $this->WebrsaAccesses->getIndexRecords(
+				$personne_id, array(
 					'conditions' => array(
 						'Ressource.personne_id' => $personne_id
 					),
@@ -73,9 +73,6 @@
 					)
 				)
 			);
-			$paramsAccess = $this->WebrsaRessource->getParamsForAccess($personne_id, WebrsaAccessRessources::getParamsList());
-			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
-			$ressources = WebrsaAccessRessources::accesses($this->Ressource->find('all', $query), $paramsAccess);
 
 			foreach( $ressources as $i => $ressource ) {
 				$ressources[$i]['Ressource']['avg'] = $this->Ressource->moyenne( $ressource );

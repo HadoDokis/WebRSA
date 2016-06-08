@@ -91,7 +91,7 @@
 		 * @param integer $id
 		 */
 		public function add($modele, $id) {
-			$this->WebrsaAccesses->check(null, $id, $modele);
+			$this->WebrsaAccesses->check(null, $id);
 			
 			// Initialisation
 			$this->_init_add_edit($modele, $id);

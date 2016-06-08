@@ -114,8 +114,7 @@
 		 * @param integer $passagecommssionep_id
 		 */
 		public function view_passage( $passagecommssionep_id ) {
-			$this->WebrsaAccesses->check($passagecommssionep_id, null, 'Passagecommissionep');
-			$this->assert( valid_int( $passagecommssionep_id ), 'error404' );
+			$this->WebrsaAccesses->setMainModel('Passagecommissionep')->check($passagecommssionep_id);
 
 			$personne_id = $this->Dossierep->Passagecommissionep->personneId( $passagecommssionep_id );
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );

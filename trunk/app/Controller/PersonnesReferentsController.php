@@ -209,9 +209,9 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'PersonneReferent' );
-
-			$query = $this->WebrsaPersonneReferent->completeVirtualFieldsForAccess(
-				array(
+			
+			$personnes_referents = $this->WebrsaAccesses->getIndexRecords(
+				$personne_id, array(
 					'fields' => array_merge(
 						$this->PersonneReferent->fields(),
 						$this->PersonneReferent->Referent->fields(),
@@ -233,19 +233,9 @@
 					)
 				)
 			);
-			
-			$actionsParams = WebrsaAccessPersonnesReferents::getParamsList();
-			$paramsAccess = $this->WebrsaPersonneReferent->getParamsForAccess($personne_id, $actionsParams);
-			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
-			
-			$personnes_referents = WebrsaAccessPersonnesReferents::accesses(
-				$this->PersonneReferent->find('all', $query),
-				$paramsAccess
-			);
 
 			$this->set( 'personnes_referents', $personnes_referents );
 			$this->set( 'personne_id', $personne_id );
-			$this->set( 'ajoutPossible', $ajoutPossible );
 		}
 
 		/**

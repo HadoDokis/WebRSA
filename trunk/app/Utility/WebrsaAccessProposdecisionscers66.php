@@ -41,9 +41,10 @@
 		protected static function _propositionsimple(array $record, array $params) {
 			$params = self::params($params);
 			
-			return !in_array(Hash::get($record, $params['alias'].'.positioncer'), array('fincontrat', 'annule'))
-				&& Hash::get($record, $params['alias'].'.decision_ci') === 'E'
-				&& !Hash::get($record, $params['alias'].'.datenotification')
+			return !in_array(Hash::get($record, 'Contratinsertion.positioncer'), array('fincontrat', 'annule'))
+				&& Hash::get($record, 'Contratinsertion.decision_ci') === 'E'
+				&& !Hash::get($record, 'Contratinsertion.datenotification')
+				&& Hash::get($record, 'Contratinsertion.forme_ci') === 'S'
 			;
 		}
 		
@@ -57,9 +58,10 @@
 		protected static function _propositionparticulier(array $record, array $params) {
 			$params = self::params($params);
 			
-			return !in_array(Hash::get($record, $params['alias'].'.positioncer'), array('fincontrat', 'annule'))
-				&& Hash::get($record, $params['alias'].'.decision_ci') === 'E'
-				&& !Hash::get($record, $params['alias'].'.datenotification')
+			return !in_array(Hash::get($record, 'Contratinsertion.positioncer'), array('fincontrat', 'annule'))
+				&& Hash::get($record, 'Contratinsertion.decision_ci') === 'E'
+				&& !Hash::get($record, 'Contratinsertion.datenotification')
+				&& Hash::get($record, 'Contratinsertion.forme_ci') === 'C'
 			;
 		}
 		

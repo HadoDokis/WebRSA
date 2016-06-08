@@ -1176,15 +1176,7 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
 			
-			$query = $this->WebrsaCui->completeVirtualFieldsForAccess($this->Cui->queryIndex($personne_id));
-			$actionsParams = WebrsaAccessCuis::getParamsList();
-			$paramsAccess = $this->WebrsaCui->getParamsForAccess($personne_id, $actionsParams);
-			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
-			
-			$results = WebrsaAccessCuis::accesses(
-				$this->Cui->find('all', $query),
-				$paramsAccess
-			);
+			$results = $this->WebrsaAccesses->getIndexRecords($personne_id, $this->Cui->queryIndex($personne_id));
 			
 			$messages = $this->Cui->messages( $personne_id );
 			$addEnabled = $this->Cui->addEnabled( $messages );
@@ -1193,7 +1185,7 @@
 			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
 
 			$this->set(
-				compact('results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle', 'ajoutPossible')
+				compact('results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle')
 			);
 			
 			switch ((int)Configure::read('Cg.departement')) {

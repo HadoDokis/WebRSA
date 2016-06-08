@@ -352,7 +352,6 @@
 				$query = $this->Rendezvous->linkedRecordsCompleteQuerydata( $query, 'Questionnaired1pdv93' );
 			}
 			
-			$query = $this->WebrsaRendezvous->completeVirtualFieldsForAccess($query);
 			$rdvs = $this->Rendezvous->find( 'all', $query );
 
 			if( Configure::read( 'Cg.departement' ) !== 58 ) {
@@ -426,16 +425,10 @@
 				);
 				$this->set( compact( 'dossiercov' ) );
 			}
-			
-			$actionsParams = WebrsaAccessRendezvous::getParamsList();
-			$paramsAccess = $this->WebrsaRendezvous->getParamsForAccess($personne_id, $actionsParams);
-			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
 
-			$rdvs = WebrsaAccessRendezvous::accesses(
-				$this->Rendezvous->containThematique($rdvs), $paramsAccess
-			);
+			$rdvs = $this->WebrsaAccesses->getIndexRecords($personne_id, $query);
 
-			$this->set(compact('rdvs', 'personne_id', 'ajoutPossible'));
+			$this->set(compact('rdvs', 'personne_id'));
 		}
 
 		/**

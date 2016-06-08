@@ -561,7 +561,7 @@ class ContratsinsertionController extends AppController
 		 * Contrôle d'accès
 		 */
 		$querydata = Hash::merge(
-			$this->WebrsaContratinsertion->completeVirtualFieldsForAccess($this->Contratinsertion->qdIndex($personne_id)),
+			$this->Contratinsertion->qdIndex($personne_id),
 			array(
 				'fields' => array(
 					'(SELECT COUNT(*) FROM fichiersmodules AS a WHERE a.modele = \'Contratinsertion\' AND a.fk_value = "Contratinsertion"."id") AS "Fichiermodule__count"',
@@ -571,13 +571,8 @@ class ContratsinsertionController extends AppController
 		);
 		$querydata['contain'] = false;
 		
-		$actionsParams = WebrsaAccessContratsinsertion::getParamsList();
-		$paramsAccess = $this->WebrsaContratinsertion->getParamsForAccess($personne_id, $actionsParams);
-		$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
+		$contratsinsertions = $this->WebrsaAccesses->getIndexRecords($personne_id, $querydata);
 		
-		$contratsinsertions = WebrsaAccessContratsinsertion::accesses(
-			$this->Contratinsertion->find('all', $querydata), $paramsAccess
-		);
 		$options = array_merge(
 			$this->Contratinsertion->enums(),
 			$this->Contratinsertion->Personne->Dossierep->Passagecommissionep->enums()

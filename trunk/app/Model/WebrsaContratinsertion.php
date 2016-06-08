@@ -65,6 +65,7 @@
 				'dd_ci' => 'Contratinsertion.dd_ci',
 				'df_ci' => 'Contratinsertion.df_ci',
 				'decision_ci' => 'Contratinsertion.decision_ci',
+				'forme_ci' => 'Contratinsertion.forme_ci',
 				'Personne.age' => $this->Contratinsertion->Personne->sqVirtualfield('age'),
 				'Contratinsertion.dernier' => $this->Contratinsertion->sqVirtualfield('dernier'),
 			);

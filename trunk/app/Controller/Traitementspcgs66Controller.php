@@ -294,6 +294,10 @@ class Traitementspcgs66Controller extends AppController {
         $this->assert(valid_int($personne_id), 'error404');
 
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
+		
+		// Anti Undefined variable
+		$this->set('personnepcg66_id', null);
+		$this->set('ajoutPossible', null);
 
         // Récupération du nom de l'allocataire
         $personne = $this->Traitementpcg66->Personnepcg66->Personne->find(
@@ -466,7 +470,7 @@ class Traitementspcgs66Controller extends AppController {
      *
      */
     public function add($personnepcg66_id) {
-		$this->WebrsaAccesses->check(null, $personnepcg66_id, 'Personnepcg66');
+		$this->WebrsaAccesses->setMainModel('Personnepcg66')->check($personnepcg66_id);
         $args = func_get_args();
         call_user_func_array(array($this, '_add_edit'), $args);
     }

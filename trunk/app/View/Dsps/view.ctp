@@ -1,4 +1,7 @@
 <?php
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
@@ -45,7 +48,8 @@
 				echo '<ul class="actionMenu">
 						<li>'.$this->Xhtml->editLink(
 							'Modifier cette DSP',
-							array( 'controller' => 'dsps', 'action' => 'edit', Set::classicExtract( $dsp, 'Personne.id' ) )
+							array( 'controller' => 'dsps', 'action' => 'edit', Set::classicExtract( $dsp, 'Personne.id' ) ),
+							WebrsaAccess::isEnabled($dsp, '/dsps/edit')
 						).' </li></ul>';
 			}
 
@@ -53,7 +57,8 @@
 				echo '<ul class="actionMenu">
 						<li>'.$this->Xhtml->revertToLink(
 							'Revenir à cette version',
-							array( 'controller' => 'dsps', 'action' => 'revertTo', Set::classicExtract( $dsp, 'Dsp.id' ) )
+							array( 'controller' => 'dsps', 'action' => 'revertTo', Set::classicExtract( $dsp, 'Dsp.id' ) ),
+							WebrsaAccess::isEnabled($dsp, '/dsps/revertTo')
 						).' </li></ul>';
 			}
 

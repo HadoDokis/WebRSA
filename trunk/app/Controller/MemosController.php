@@ -188,8 +188,8 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Memo' );
 
-			$query = $this->WebrsaMemo->completeVirtualFieldsForAccess(
-				array(
+			$memos = $this->WebrsaAccesses->getIndexRecords(
+				$personne_id, array(
 					'fields' => array_merge(
 						$this->Memo->fields(),
 						array(
@@ -201,13 +201,6 @@
 					),
 					'recursive' => -1
 				)
-			);
-			$actionsParams = WebrsaAccessMemos::getParamsList();
-			$paramsAccess = $this->WebrsaMemo->getParamsForAccess($personne_id, $actionsParams);
-			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
-			$memos = WebrsaAccessMemos::accesses(
-				$this->Memo->find('all', $query),
-				$paramsAccess
 			);
 			
 			$this->set(compact('memos', 'personne_id', 'ajoutPossible'));

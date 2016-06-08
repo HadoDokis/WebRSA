@@ -180,9 +180,9 @@
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
-
-			$query = $this->WebrsaPersonne->completeVirtualFieldsForAccess(
-				array(
+			
+			$personnes = $this->WebrsaAccesses->getIndexRecords(
+				$foyer_id, array(
 					'fields' => array(
 						'Personne.id',
 						'Personne.qual',
@@ -202,19 +202,10 @@
 					)
 				)
 			);
-			
-			$actionsParams = WebrsaAccessPersonnes::getParamsList();
-			$paramsAccess = $this->WebrsaPersonne->getParamsForAccess($foyer_id, $actionsParams);
-			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
-			
-			$personnes = WebrsaAccessPersonnes::accesses(
-				$this->Personne->find('all', $query),
-				$paramsAccess
-			);
 
 			// Assignations à la vue
 			$this->_setOptions();
-			$this->set(compact('foyer_id', 'ajoutPossible', 'personnes'));
+			$this->set(compact('foyer_id', 'personnes'));
 		}
 
 		/**
