@@ -490,6 +490,7 @@
 					'topmoyloco' => $this->Personne->Dsp->enum( 'topmoyloco' ),
 					'toppermicondu' => $this->Personne->Dsp->enum( 'toppermicondu' )
 				),
+				// Tableau "Actions"
 				'Action' => array(
 					'name' => array(
 						'Contratinsertion' => 'CER',
@@ -522,6 +523,17 @@
 				),
 				'Ficheprescription93' => array(
 					'statut' => $this->Personne->Ficheprescription93->enum( 'statut' )
+				),
+				// Tableau "Actions"
+				'Impression' => array(
+					// Tableau "Impressions"
+					'name' => array(
+						'Commissionep' => 'EP',
+						'Contratinsertion' => 'CER',
+						'Ficheprescription93' => 'Prescription',
+						'Orientstruct' => 'Orientation',
+						'Rendezvous' => 'Rendez-vous',
+					)
 				),
 				'Questionnaired1pdv93' => array(
 					'nivetu' => $this->Personne->Questionnaired1pdv93->enum( 'nivetu' )
@@ -632,6 +644,9 @@
 		 * Retourne la "configuration" (composée de query) normalisée du tableau
 		 * "Impressions" de l'accompagnement du bénéficiaire.
 		 *
+		 * @todo
+		 *	- Transfert PDV
+		 *
 		 * @return array
 		 */
 		protected function _configImpressions() {
@@ -642,7 +657,7 @@
 				$config = array(
 					'/Apres/impression/#Apre.id#' => array(
 						'modelName' => 'Apre',
-						'module' => 'Apre',
+						'name' => 'Apre',
 						'fields' => array(
 							'Apre.id',
 							'Apre.personne_id',
@@ -658,7 +673,8 @@
 							'Contratinsertion.id',
 							'Contratinsertion.personne_id',
 							'Contratinsertion.created',
-							'\'impression\' AS "Action__impression"',
+							'\'impression\' AS "Impression__impression"',
+							'\'Contrat\' AS "Impression__type"',
 						),
 						'joins' => array(
 							'Cer93' => array( 'type' => 'INNER' )
@@ -670,7 +686,8 @@
 							'Contratinsertion.id',
 							'Contratinsertion.personne_id',
 							'Contratinsertion.created',
-							'\'impressionDecision\' AS "Action__impression"',
+							'\'impressionDecision\' AS "Impression__impression"',
+							'\'Décision\' AS "Impression__type"',
 						),
 						'joins' => array(
 							'Cer93' => array( 'type' => 'INNER' )
@@ -678,13 +695,36 @@
 					),
 					'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
 						'modelName' => 'Dossierep',
-						'module' => 'Commissionseps',
+						'name' => 'Commissionep',
 						'fields' => array(
 							'Passagecommissionep.id',
 							'Dossierep.id',
 							'Dossierep.personne_id',
 							'Dossierep.created',
 							'Commissionep.dateseance',
+							'\'Décision\' AS "Impression__type"',
+						),
+						'joins' => array(
+							'Passagecommissionep' => array(
+								'type' => 'INNER', // FIXME: ajout de conditions
+								'joins' => array(
+									'Commissionep' => array(
+										'type' => 'INNER'
+									)
+								)
+							)
+						)
+					),
+					'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
+						'modelName' => 'Dossierep',
+						'name' => 'Commissionep',
+						'fields' => array(
+							'Passagecommissionep.id',
+							'Dossierep.id',
+							'Dossierep.personne_id',
+							'Dossierep.created',
+							'Commissionep.dateseance',
+							'\'Convocation\' AS "Impression__type"',
 						),
 						'joins' => array(
 							'Passagecommissionep' => array(
@@ -703,6 +743,7 @@
 							'Ficheprescription93.id',
 							'Ficheprescription93.personne_id',
 							'Ficheprescription93.created',
+							'\'Fiche\' AS "Impression__type"',
 						)
 					),
 					'/Orientsstructs/impression/#Orientstruct.id#' => array(
@@ -712,6 +753,7 @@
 							'Orientstruct.id',
 							'Orientstruct.personne_id',
 							'Orientstruct.date_valid',
+							'\'Orientation\' AS "Impression__type"',
 						)
 					),
 					'/Rendezvous/impression/#Rendezvous.id#' => array(
@@ -720,11 +762,12 @@
 							'Rendezvous.id',
 							'Rendezvous.personne_id',
 							'Rendezvous.created',
+							'\'Rendez-vous\' AS "Impression__type"',
 						)
 					),
 					'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
 						'modelName' => 'Orientstruct',
-						'module' => 'Relancenonrespectsanctionep93',
+						'name' => 'Relancenonrespectsanctionep93',
 						'fields' => array(
 							'Relancenonrespectsanctionep93.id',
 							'Relancenonrespectsanctionep93.daterelance',
@@ -751,8 +794,8 @@
 						'contain' => false
 					);
 
-					if( !isset( $query['module'] ) ) {
-						$query['module'] = $query['modelName'];
+					if( !isset( $query['name'] ) ) {
+						$query['name'] = $query['modelName'];
 					}
 
 					// Jointures
@@ -783,10 +826,10 @@
 
 			foreach( $config as $path => $query ) {
 				$modelName = $query['modelName'];
-				$module = $query['module'];
+				$name = $query['name'];
 				$pdf = Hash::get( $query, 'pdf' ); // TODO: on peut imprimer ou non...
 
-				unset( $query['modelName'], $query['pdf'], $query['module'] );
+				unset( $query['modelName'], $query['pdf'], $query['name'] );
 
 				// Conditions
 				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
@@ -796,8 +839,8 @@
 					$results,
 					Hash::insert(
 						$this->Personne->{$modelName}->find( 'all', $query ),
-						'{n}.Action.module',
-						$module
+						'{n}.Impression.name',
+						$name
 					)
 				);
 			}
@@ -808,6 +851,8 @@
 		/**
 		 * Récupère la liste des impressions liées aux enregistrements d'un
 		 * bénéficiaire.
+		 *
+		 * @deprecated
 		 *
 		 * @fixme
 		 *	- ici, on ne prend que les PDF stockés

@@ -112,3 +112,11 @@ msgstr "Thématique(s)"
 
 msgid "Action.prevu"
 msgstr "Nature"
+
+# ------------------------------------------------------------------------------
+
+msgid "Search.Impression.name"
+msgstr "Module"
+
+msgid "Search.Impression.date"
+msgstr "Date"
