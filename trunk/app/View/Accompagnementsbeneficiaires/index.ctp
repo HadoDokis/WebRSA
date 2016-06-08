@@ -136,8 +136,7 @@
 			// Tableau d'actions
 			echo $this->Html->tag( 'h3', 'Actions' );
 
-			echo $this->Default3->DefaultForm->create();
-
+			echo $this->Default3->DefaultForm->create( null, array( 'AccompagnementsbeneficiairesActionsSearchForm' ) );
 			$this->request->data = array(
 				'Search' => array(
 					'Action' => array(
@@ -145,7 +144,6 @@
 					)
 				)
 			);
-
 			echo $this->SearchForm->dateRange(
 				'Search.Action.date',
 				array(
@@ -157,7 +155,6 @@
 					'maxYear_to' => date( 'Y' ) + 1
 				)
 			);
-
 			echo $this->Default3->DefaultForm->input(
 				'Search.Action.name',
 				array(
@@ -166,7 +163,6 @@
 					'empty' => true
 				)
 			);
-
 			echo $this->Default3->DefaultForm->end();
 
 			echo $this->Default3->index(
@@ -499,49 +495,92 @@
 	<div id="impressions">
 		<?php
 			echo $this->Html->tag( 'h2', 'Impressions', array( 'class' => 'title' ) );
+
+			echo $this->Default3->DefaultForm->create( null, array( 'AccompagnementsbeneficiairesImpressionsSearchForm' ) );
+			$this->request->data = array(
+				'Search' => array(
+					'Impression' => array(
+						'date_from' => date_sql_to_cakephp( '2009-01-01' )
+					)
+				)
+			);
+			echo $this->SearchForm->dateRange(
+				'Search.Impression.date',
+				array(
+					'prefix' => 'Search',
+					'legend' => __m( 'Search.Impression.date' ),
+					'minYear_from' => 2009,
+					'minYear_to' => 2009,
+					'maxYear_from' => date( 'Y' ) + 1,
+					'maxYear_to' => date( 'Y' ) + 1
+				)
+			);
+			echo $this->Default3->DefaultForm->input(
+				'Search.Impression.name',
+				array(
+					'label' => __m( 'Search.Impression.name' ),
+					'options' => $options['Impression']['name'],
+					'empty' => true
+				)
+			);
+			echo $this->Default3->DefaultForm->end();
+
 			echo $this->Default3->index(
 				$impressions,
 				array(
-					'Action.module' => array(
-						'label' => 'Module'
+					'Impression.name' => array(
+						'label' => 'Module',
+						'class' => '#Impression.name#',
+						'class' => 'sortable',
+					),
+					'Impression.type' => array(
+						'label' => 'Type',
+						'class' => 'sortable',
 					),
 					// ---------------------------------------------------------
 					// Crée le
 					// ---------------------------------------------------------
 					'Apre.datedemandeapre' => array(
 						'label' => 'Créé le',
-						'condition' => '"#Action.module#" == "Apre"',
+						'condition' => '"#Impression.name#" == "Apre"',
 						'condition_group' => 'created',
+						'class' => 'sortable date filter_date date-au',
 					),
 					'Commissionep.dateseance' => array(
 						'label' => 'Créé le',
-						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition' => '"#Impression.name#" == "Commissionep"',
 						'condition_group' => 'created',
+						'class' => 'sortable date filter_date date-au',
 					),
 					'Contratinsertion.created' => array(
 						'label' => 'Créé le',
-						'condition' => '"#Action.module#" == "Contratinsertion"',
+						'condition' => '"#Impression.name#" == "Contratinsertion"',
 						'condition_group' => 'created',
+						'class' => 'sortable date filter_date date-au',
 					),
 					'Ficheprescription93.created' => array(
 						'label' => 'Créé le',
-						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition' => '"#Impression.name#" == "Ficheprescription93"',
 						'condition_group' => 'created',
+						'class' => 'sortable date filter_date date-au',
 					),
 					'Orientstruct.date_valid' => array(
 						'label' => 'Créé le',
-						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition' => '"#Impression.name#" == "Orientstruct"',
 						'condition_group' => 'created',
+						'class' => 'sortable date filter_date date-au',
 					),
 					'Relancenonrespectsanctionep93.daterelance' => array(
 						'label' => 'Créé le',
-						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
 						'condition_group' => 'created',
+						'class' => 'sortable date filter_date date-au',
 					),
 					'Rendezvous.created' => array(
 						'label' => 'Créé le',
-						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition' => '"#Impression.name#" == "Rendezvous"',
 						'condition_group' => 'created',
+						'class' => 'sortable date filter_date date-au',
 					),
 					// ---------------------------------------------------------
 					// Lien impression
@@ -549,49 +588,55 @@
 					'/Apres/impression/#Apre.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Apre"',
+						'condition' => '"#Impression.name#" == "Apre"',
 						'condition_group' => 'impression',
 					),
 					'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Décision"',
+						'condition_group' => 'impression',
+					),
+					'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
+						'msgid' => 'Imprimer',
+						'class' => 'impression',
+						'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Convocation"',
 						'condition_group' => 'impression',
 					),
 					'/Cers93/impression/#Contratinsertion.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Contratinsertion" && "#Action.impression#" == "impression"',
+						'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impression"',
 						'condition_group' => 'impression',
 					),
 					'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Contratinsertion" && "#Action.impression#" == "impressionDecision"',
+						'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impressionDecision"',
 						'condition_group' => 'impression',
 					),
 					'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition' => '"#Impression.name#" == "Ficheprescription93"',
 						'condition_group' => 'impression',
 					),
 					'/Orientsstructs/impression/#Orientstruct.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition' => '"#Impression.name#" == "Orientstruct"',
 						'condition_group' => 'impression',
 					),
 					'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
 						'condition_group' => 'impression',
 					),
 					'/Rendezvous/impression/#Rendezvous.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
-						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition' => '"#Impression.name#" == "Rendezvous"',
 						'condition_group' => 'impression',
 					),
 					// ---------------------------------------------------------
@@ -600,45 +645,45 @@
 					'/Apres/view/#Apre.id#' => array(
 						'msgid' => 'Voir',
 						'class' => 'view',
-						'condition' => '"#Action.module#" == "Apre"',
+						'condition' => '"#Impression.name#" == "Apre"',
 						'condition_group' => 'view',
 					),
-					'/Commissionseps/viewDecision/#Passagecommissionep.id#' => array(
+					'/Historiqueseps/view_passage/#Passagecommissionep.id#' => array(
 						'msgid' => 'Voir',
 						'class' => 'view',
-						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition' => '"#Impression.name#" == "Commissionep"',
 						'condition_group' => 'view',
 					),
 					'/Cers93/view/#Contratinsertion.id#' => array(
 						'msgid' => 'Voir',
 						'class' => 'view',
-						'condition' => '"#Action.module#" == "Contratinsertion"',
+						'condition' => '"#Impression.name#" == "Contratinsertion"',
 						'condition_group' => 'view',
 					),
 					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
 						'msgid' => 'Voir',
 						'class' => 'view',
 						'disabled' => true,
-						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition' => '"#Impression.name#" == "Ficheprescription93"',
 						'condition_group' => 'view',
 					),
 					'/Orientsstructs/view/#Orientstruct.id#' => array(
 						'msgid' => 'Voir',
 						'class' => 'view',
 						'disabled' => true,
-						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition' => '"#Impression.name#" == "Orientstruct"',
 						'condition_group' => 'view',
 					),
 					'/Relancesnonrespectssanctionseps93/view/#Relancenonrespectsanctionep93.id#' => array(
 						'msgid' => 'Voir',
 						'class' => 'view',
-						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
 						'condition_group' => 'view',
 					),
 					'/Rendezvous/view/#Rendezvous.id#' => array(
 						'msgid' => 'Voir',
 						'class' => 'view',
-						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition' => '"#Impression.name#" == "Rendezvous"',
 						'condition_group' => 'view',
 					),
 					// ---------------------------------------------------------
@@ -647,49 +692,50 @@
 					'/Apres/index/#Apre.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index',
-						'condition' => '"#Action.module#" == "Apre"',
+						'condition' => '"#Impression.name#" == "Apre"',
 						'condition_group' => 'index',
 					),
-					'/Commissionseps/indexDecision/#Passagecommissionep.personne_id#' => array(
+					'/Historiqueseps/index/#Dossierep.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index',
-						'condition' => '"#Action.module#" == "Commissionseps"',
+						'condition' => '"#Impression.name#" == "Commissionep"',
 						'condition_group' => 'index',
 					),
 					'/Cers93/index/#Contratinsertion.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index',
-						'condition' => '"#Action.module#" == "Contratinsertion"',
+						'condition' => '"#Impression.name#" == "Contratinsertion"',
 						'condition_group' => 'index',
 					),
 					'/Fichesprescriptions93/index/#Ficheprescription93.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index',
-						'condition' => '"#Action.module#" == "Ficheprescription93"',
+						'condition' => '"#Impression.name#" == "Ficheprescription93"',
 						'condition_group' => 'index',
 					),
 					'/Orientsstructs/index/#Orientstruct.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index',
-						'condition' => '"#Action.module#" == "Orientstruct"',
+						'condition' => '"#Impression.name#" == "Orientstruct"',
 						'condition_group' => 'index',
 					),
 					'/Relancesnonrespectssanctionseps93/index/#Relancenonrespectsanctionep93.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index',
-						'condition' => '"#Action.module#" == "Relancenonrespectsanctionep93"',
+						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
 						'condition_group' => 'index',
 					),
 					'/Rendezvous/index/#Rendezvous.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index',
-						'condition' => '"#Action.module#" == "Rendezvous"',
+						'condition' => '"#Impression.name#" == "Rendezvous"',
 						'condition_group' => 'index',
 					)
 				),
 				array(
-					'class' => 'search',
+					'class' => 'search sortable',
 					'paginate' => false,
+					'options' => $options,
 					'id' => 'TableAccompagnementsbeneficiairesIndexImpressions'
 				)
 			);
@@ -879,10 +925,97 @@
 
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Filtre des lignes de la table d'actions par type d'action suivant la valeur
+	 * du champ de liste déroulante (et de la plage de dates le cas échéant).
+	 *
+	 * @param {String} table L'id de la table à traiter
+	 * @returns {undefined}
+	 */
+	function filterImpressionsTableByImpression( table ) {
+		var rows, show;
+
+		// Si la table existe
+		if( null !== $(table) ) {
+			rows = $(table).select( 'tbody tr' );
+
+			$(rows).each( function( row ) {
+				if( false === $(row).up('table').hasClassName('innerTable') ) {
+					show = conditionAction( 'SearchImpressionName', row )
+						&& conditionDateRange( 'SearchImpressionDate', 'SearchImpressionDateFrom', 'SearchImpressionDateTo', row );
+
+					if( show ) {
+						$(row).show();
+					}
+					else {
+						$(row).hide();
+					}
+				}
+			} );
+
+			computeTableVisibility( table );
+		}
+	}
+
+	/**
+	 * Filtre des lignes de la table d'actions par plage de dates (et par type
+	 * d'action suivant la valeur du champ de liste déroulante le cas échéant).
+	 *
+	 * @param {String} table L'id de la table à traiter
+	 * @returns {undefined}
+	 */
+	function filterImpressionsTableByDateRange( table ) {
+		var rows, show;
+
+		// Si la table existe
+		if( null !== $(table) ) {
+			rows = $(table).select( 'tbody tr' );
+
+			$(rows).each( function( row ) {
+				if( false === $(row).up('table').hasClassName('innerTable') ) {
+					show = conditionAction( 'SearchImpressionName', row )
+						&& conditionDateRange( 'SearchImpressionDate', 'SearchImpressionDateFrom', 'SearchImpressionDateTo', row );
+
+					if( show ) {
+						$(row).show();
+					}
+					else {
+						$(row).hide();
+					}
+				}
+			} );
+
+			computeTableVisibility( table );
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Initialisation des filtres à appliquer sur la table d'impressions, observation
+	// des champs de formulaire.
+	// @fixme
+	//	- filtre par date
+	// -------------------------------------------------------------------------
+	$('SearchImpressionName').observe( 'change', function() {
+		filterImpressionsTableByImpression( 'TableAccompagnementsbeneficiairesIndexImpressions' );
+		return false;
+	} );
+
+	[ 'SearchImpressionDate', 'SearchImpressionDateFromYear', 'SearchImpressionDateFromMonth', 'SearchImpressionDateFromDay', 'SearchImpressionDateToYear', 'SearchImpressionDateToMonth', 'SearchImpressionDateToDay'].each(
+		function( field ) {
+			$(field).observe( 'change', function() {
+				filterImpressionsTableByDateRange( 'TableAccompagnementsbeneficiairesIndexImpressions' );
+				return false;
+			} );
+		}
+	);
+
+	// -------------------------------------------------------------------------
+
 	initSortableTables();
 
 	makeTabbed( 'tabbedWrapper', 2 );
 
+	// FIXME
 	document.observe( "dom:loaded", function() {
 		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexActions', 3, -1 );
 	} );
