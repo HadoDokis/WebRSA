@@ -1,4 +1,8 @@
-<?php $this->pageTitle = 'Adresses du foyer';?>
+<?php 
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+	$this->pageTitle = 'Adresses du foyer';
+?>
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php if( $this->Permissions->checkDossier( 'adressesfoyers', 'add', $dossierMenu ) ):?>
@@ -6,7 +10,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter une adresse au foyer',
-				array( 'controller' => 'adressesfoyers', 'action' => 'add', $foyer_id )
+				array( 'controller' => 'adressesfoyers', 'action' => 'add', $foyer_id ),
+				WebrsaAccess::addIsEnabled('/adressesfoyers/add', $ajoutPossible)
 			).' </li>';
 		?>
 	</ul>
@@ -52,12 +57,12 @@
 							$this->Xhtml->viewLink(
 								'Voir l\'adresse « '.$title.' »',
 								array( 'controller' => 'adressesfoyers', 'action' => 'view', $adresse['Adressefoyer']['id'] ),
-								$this->Permissions->checkDossier( 'adressesfoyers', 'view', $dossierMenu )
+								WebrsaAccess::isEnabled($adresse, '/adressesfoyers/view')
 							),
 							$this->Xhtml->editLink(
 								'Éditer l\'adresse « '.$title.' »',
 								array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] ),
-								$this->Permissions->checkDossier( 'adressesfoyers', 'edit', $dossierMenu )
+								WebrsaAccess::isEnabled($adresse, '/adressesfoyers/edit')
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) ),
 						),

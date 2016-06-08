@@ -1,4 +1,7 @@
 <?php
+	App::uses('WebrsaAccess', 'Utility');
+	WebrsaAccess::init($dossierMenu);
+	
 	$title = implode(
 		' ',
 		array(
@@ -17,7 +20,8 @@
 		if( $this->Permissions->checkDossier( 'adressesfoyers', 'edit', $dossierMenu ) ) {
 			echo '<li>'.$this->Xhtml->editLink(
 				'Éditer l\'adresse « '.$title.' »',
-				array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] )
+				array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] ),
+				WebrsaAccess::isEnabled($adresse, '/adressesfoyers/edit')
 			).' </li>';
 		}
 	?>
