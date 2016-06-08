@@ -44,6 +44,14 @@
 		public $WebrsaModel = null;
 		
 		/**
+		 * Modèle supérieur au modèle principal
+		 * ex: Personne ou Foyer
+		 * 
+		 * @var Object
+		 */
+		public $parentModelName = null;
+		
+		/**
 		 * Nom de la classe de logique d'accès métier à une action
 		 * 
 		 * @var String - WebrsaAccess<i>Nomducontroller</i>
@@ -68,13 +76,19 @@
 		 * Assure le chargement des modèles et Utilitaires liés
 		 * 
 		 * @param Controller $controller
-		 * @param String $mainModelName
-		 * @param String $webrsaModelName
-		 * @param String $webrsaAccessName
+		 * @param array $modelNames
 		 * @return void
 		 */
-		public function initialize(Controller $controller, $mainModelName = null, $webrsaModelName = null, $webrsaAccessName = null) {
+		public function initialize(Controller $controller, array $modelNames = array()) {
+			$modelNames += array(
+				'mainModelName' => null,
+				'webrsaModelName' => null,
+				'webrsaAccessName' => null,
+				'parentModelName' => null,
+			);
+			extract($modelNames);
 			extract($this->settings);
+			
 			$MainModelName = $mainModelName ?: self::controllerNameToModelName($controller->name);
 			$WebrsaModelClassName = $webrsaModelName ?: 'Webrsa'.$MainModelName;
 			$WebrsaAccessClassName = $webrsaAccessName ?: 'WebrsaAccess'.$controller->name;
@@ -98,6 +112,9 @@
 			$this->MainModel =& $this->Controller->{$MainModelName};
 			$this->WebrsaModel =& $this->Controller->{$WebrsaModelClassName};
 			$this->WebrsaAccessClassName = $WebrsaAccessClassName;
+			$this->parentModelName = $parentModelName ?: (
+				!isset($this->MainModel->belongsTo['Personne']) && isset($this->MainModel->belongsTo['Foyer']) ? 'Foyer' : 'Personne'
+			);
 			
 			// Vérifications
 			$interfaces = class_implements($WebrsaModelClassName);
@@ -154,18 +171,11 @@
 		/**
 		 * Assure l'initialisation du component
 		 * 
-		 * @param String $mainModelName
-		 * @param String $webrsaModelName
-		 * @param String $webrsaAccessName
+		 * @param array $modelNames
 		 * @return void
 		 */
-		public function init($mainModelName = null, $webrsaModelName = null, $webrsaAccessName = null) {
-			return $this->_initialized ?: $this->initialize(
-				$this->_Collection->getController(),
-				$mainModelName,
-				$webrsaModelName,
-				$webrsaAccessName
-			);
+		public function init(array $modelNames = array()) {
+			return $this->_initialized ?: $this->initialize($this->_Collection->getController(), $modelNames);
 		}
 
 		/**
@@ -175,7 +185,7 @@
 		 * @param integer $id			- Id de l'enregistrement si il existe
 		 *								  Sera envoyé à Webrsa<i>Nomdumodel</i>::getDataForAccess
 		 * 
-		 * @param integer $personne_id	- Id de la personne si disponnible (nécéssaire si $id = null)
+		 * @param integer $parent_id		- Le plus souvent : personne_id ou foyer_id	si disponnible (nécéssaire si $id = null)
 		 *								  Sera envoyé à Webrsa<i>Nomdumodel</i>::getParamsForAccess
 		 * 
 		 * @param String $alias			- Par défaut, Nom du controller au singulier
@@ -186,8 +196,8 @@
 		 * @throws Error403Exception
 		 * @throws Error404Exception
 		 */
-		public function check($id = null, $personne_id = null, $alias = null, array $params = array()) {
-			if (($id !== null && !self::_validId($id)) || ($personne_id !== null && !self::_validId($personne_id))) {
+		public function check($id = null, $parent_id = null, $alias = null, array $params = array()) {
+			if (($id !== null && !self::_validId($id)) || ($parent_id !== null && !self::_validId($parent_id))) {
 				throw new Error404Exception();
 			}
 			
@@ -207,7 +217,7 @@
 				$params
 			);
 			$paramsAccess = $this->WebrsaModel->getParamsForAccess(
-				$this->_personneId($id, $record, $personne_id), $actionsParams
+				$this->_parentId($id, $record, $parent_id), $actionsParams
 			);
 			
 			if ($this->_haveAccess($record, $paramsAccess) === false) {
@@ -268,21 +278,28 @@
 		}
 		
 		/**
-		 * Permet d'obtenir un personne_id à partir de différentes sources
+		 * Permet d'obtenir un id à partir de différentes sources
 		 * 
 		 * @param integer $id
 		 * @param array $record
-		 * @param integer $personne_id
+		 * @param integer $parent_id - Le plus souvent : personne_id ou foyer_id
 		 * @return integer
 		 */
-		protected function _personneId($id, array $record, $personne_id = null) {
-			$result = $personne_id ?: (Hash::get($record, $this->alias.'.personne_id') ?: Hash::get($record, 'Personne.id'));
+		protected function _parentId($id, array $record, $parent_id = null) {
+			$foreignKey = $this->MainModel->belongsTo[$this->parentModelName]['foreignKey'];
+			$parentPrimarykey = $this->MainModel->{$this->parentModelName}->primaryKey;
+			$methodName = Inflector::underscore($this->parentModelName).'Id';
+			
+			$result = $parent_id ?: (
+				Hash::get($record, $this->alias.'.'.$foreignKey) ?: Hash::get($record, $this->parentModelName.'.'.$parentPrimarykey)
+			);
 			
 			if ($result === null) {
-				if ($this->MainModel->Behaviors->attached('Allocatairelie') || method_exists($this->MainModel, 'personneId')) {
-					$result = $this->MainModel->personneId($id);
+				if ($this->MainModel->Behaviors->attached('Allocatairelie') || method_exists($this->MainModel, $methodName)) {
+					$result = $this->MainModel->{$methodName}($id);
 				} else {
-					trigger_error(sprintf("Field: Personne.id n'existe pas dans %s::getDataForAccess", $this->WebrsaModel->name));
+					trigger_error(sprintf("Field: %s.%s n'existe pas dans %s::getDataForAccess",
+						$this->parentModelName, $parentPrimarykey, $this->WebrsaModel->name));
 					exit;
 				}
 			}
