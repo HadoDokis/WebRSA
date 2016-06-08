@@ -297,8 +297,6 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Bilanparcours66' );
 
-			//$temp=array(111212,75994,110472,15391,46371,47728,128369,54232,46452,40434,155068,31292);
-
 			$cacheKey = Inflector::underscore( $this->Bilanparcours66->useDbConfig ).'_Bilanparcours66_'.Inflector::underscore( __METHOD__ );
 			$query = Cache::read( $cacheKey );
 
@@ -481,15 +479,8 @@
 			}
 
 			$query['conditions']['Bilanparcours66.personne_id'] = $personne_id;
-
-			$actionsParams = WebrsaAccessBilansparcours66::getParamsList();
-			$paramsAccess = $this->WebrsaBilanparcours66->getParamsForAccess($personne_id, $actionsParams);
-			$ajoutPossible = Hash::get($paramsAccess, 'ajoutPossible') !== false;
 			
-			$bilansparcours66 = WebrsaAccessBilansparcours66::accesses(
-				$this->Bilanparcours66->find('all', $this->WebrsaBilanparcours66->completeVirtualFieldsForAccess($query)),
-				$paramsAccess
-			);
+			$bilansparcours66 = $this->WebrsaAccesses->getIndexRecords($personne_id, $query);
 			
 			$this->_setOptions( array(), array( 'find' => false ) );
 			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct', 'ajoutPossible' )  );

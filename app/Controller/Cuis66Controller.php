@@ -139,11 +139,11 @@
 		 */
 		public function filelink( $cui_id ) {
 			$personne_id = $this->Cui->personneId( $cui_id );
-			$this->WebrsaAccesses->check($cui_id, $personne_id, 'Cui');
+			$this->WebrsaAccesses->setMainModel('Cui')->check($cui_id, $personne_id);
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
 
-			$this->Fileuploader->filelink( $cui_id, array( 'action' => 'index', $personne_id ) );
+			$this->Fileuploader->filelink( $cui_id, array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 			$this->set( 'urlmenu', "/cuis/index/{$personne_id}" );
 
 			$options = $this->Cui->enums();
@@ -389,7 +389,7 @@
 		 * @param type $cui_id
 		 */
 		public function delete( $cui_id ){
-			$this->WebrsaAccesses->check($cui_id, null, 'Cui');
+			$this->WebrsaAccesses->setMainModel('Cui')->check($cui_id);
 			$this->Cui->begin();
 			$success = $this->Cui->delete($cui_id);
 			$this->_setFlashResult('Delete', $success);
@@ -408,8 +408,8 @@
 		 * @param type $id
 		 */
 		public function email_delete( $id ){
-			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
-					->check($id, null, 'Emailcui', array('isModuleEmail' => true));
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')->setMainModel('Emailcui')
+					->check($id, null, array('isModuleEmail' => true));
 			$this->Cui->Emailcui->begin();
 			$success = $this->Cui->Emailcui->delete($id);
 			$this->_setFlashResult('Delete', $success);
@@ -446,7 +446,7 @@
 		 * @param integer $personne_id
 		 */
 		public function email( $personne_id = null, $cui_id = null ) {
-			$this->WebrsaAccesses->check($cui_id, $personne_id, 'Cui');
+			$this->WebrsaAccesses->setMainModel('Cui')->check($cui_id, $personne_id);
 			if ( empty($personne_id) || empty($cui_id) || !is_numeric($personne_id) || !is_numeric($cui_id) ){
 				throw new NotFoundException();
 			}
@@ -492,8 +492,8 @@
 		 * @param integer $cui_id L'id du cui visé
 		 */
 		public function email_add( $personne_id, $cui_id ) {
-			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
-				->check($cui_id, $personne_id, 'Cui', array('isModuleEmail' => true));
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')->setMainModel('Cui')
+				->check($cui_id, $personne_id, array('isModuleEmail' => true));
 			$args = func_get_args();
 			call_user_func_array( array( $this, 'email_edit' ), $args );
 		}
@@ -505,9 +505,6 @@
 		 * @param integer $id L'id du cui visé (add) ou l'id du l'Emailcui
 		 */
 		public function email_edit( $personne_id = null, $id = null ) {
-			if ( ($personne_id === null && $id === null) || ($this->action === 'email_add' && $id === null) || ($personne_id !== null && !is_numeric($personne_id)) || ($id !== null && !is_numeric($id)) ){
-				throw new NotFoundException();
-			}
 			if( $this->action === 'email_add' ) {
 				$cui_id = $id;
 				$email_id = null;
@@ -515,8 +512,8 @@
 			else {
 				$cui_id = isset( $this->request->data['Emailcui']['cui_id'] ) ? $this->request->data['Emailcui']['cui_id'] : null;
 				$email_id = $id;
-				$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
-					->check($email_id, $personne_id, 'Emailcui', array('isModuleEmail' => true));
+				$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')->setMainModel('Emailcui')
+					->check($email_id, $personne_id, array('isModuleEmail' => true));
 			}
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -562,8 +559,8 @@
 		 * @throws NotFoundException
 		 */
 		public function email_view( $personne_id = null, $id = null ) {
-			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
-					->check($id, $personne_id, 'Emailcui', array('isModuleEmail' => true));
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')->setMainModel('Emailcui')
+					->check($id, $personne_id, array('isModuleEmail' => true));
 			if ( ($personne_id === null && $id === null) || ($this->action === 'email_add' && $id === null) || ($personne_id !== null && !is_numeric($personne_id)) || ($id !== null && !is_numeric($id)) ){
 				throw new NotFoundException();
 			}
@@ -595,8 +592,8 @@
 		 * @throws Exception
 		 */
 		public function email_send( $personne_id, $cui_id, $email_id ){
-			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')
-					->check($email_id, $personne_id, 'Emailcui', array('isModuleEmail' => true));
+			$this->WebrsaAccesses->setWebrsaModel('WebrsaEmailcui')->setMainModel('Emailcui')
+					->check($email_id, $personne_id, array('isModuleEmail' => true));
 			$datas = $this->Cui->Emailcui->find('first', array( 'conditions' => array( 'Emailcui.id' => $email_id ) ) );
 			$data = $datas['Emailcui'];
 			
@@ -779,7 +776,7 @@
 		 * @param string $modeleOdt
 		 */
 		protected function _impression( $cui_id, $modeleOdt = null ){
-			$this->WebrsaAccesses->check($cui_id, null, 'Cui');
+			$this->WebrsaAccesses->setMainModel('Cui')->check($cui_id);
 			$personne_id = $this->Cui->personneId( $cui_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 

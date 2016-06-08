@@ -110,13 +110,10 @@
 					'view_revs', 
 					'view_diff', 
 					'edit', 
-					'filelink'
+					'filelink',
+					'revertTo',
 				)
 			);
-
-			if ($params['departement'] !== 66) {
-				$result = self::merge_actions($result, array('revertTo'));
-			}
 			
 			return $result;
 		}

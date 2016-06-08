@@ -64,25 +64,10 @@
 			$params = self::params($params);
 			$result = self::normalize_actions(
 				array(
-					
+					'decisionep',
+					'decisioncg',
 				)
 			);
-			
-			switch ($params['departement']) {
-				case 58: 
-					$result = self::merge_actions(
-						$result, array(
-							'decisionep',
-						)
-					);
-					break;
-				default:
-					$result = self::merge_actions(
-						$result, array(
-							'decisioncg',
-						)
-					);
-			}
 			
 			return $result;
 		}

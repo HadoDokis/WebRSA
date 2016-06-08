@@ -300,8 +300,8 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Apre' );
 			
-			$query = $this->WebrsaApre66->completeVirtualFieldsForAccess(
-				array(
+			$apres = $this->WebrsaAccesses->getIndexRecords(
+				$personne_id, array(
 					'fields' => array_merge(
 						$this->{$this->modelClass}->fields(),
 						$this->{$this->modelClass}->Personne->fields(),
@@ -320,11 +320,6 @@
                     'order' => array( "Aideapre66.datedemande DESC"  )
                 )
 			);
-			
-			$paramsAccess = $this->WebrsaApre66->getParamsForAccess($personne_id, WebrsaAccessApres66::getParamsList());
-			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
-			
-			$apres = WebrsaAccessApres66::accesses($this->{$this->modelClass}->find('all', $query), $paramsAccess);
 			$this->set( 'apres', $apres );
 
 			$referents = $this->Referent->find( 'list' );

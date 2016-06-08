@@ -75,19 +75,14 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 			
-			$query = $this->WebrsaModecontact->completeVirtualFieldsForAccess(
-				array(
+			// Recherche des personnes du foyer
+			$modescontact = $this->WebrsaAccesses->getIndexRecords(
+				$foyer_id, array(
 					'fields' => $this->Modecontact->fields(),
 					'conditions' => array('Modecontact.foyer_id' => $foyer_id),
 					'contain' => false
 				)
 			);
-			
-			$paramsAccess = $this->WebrsaModecontact->getParamsForAccess($foyer_id, WebrsaAccessModescontact::getParamsList());
-			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
-
-			// Recherche des personnes du foyer
-			$modescontact = WebrsaAccessModescontact::accesses($this->Modecontact->find('all', $query), $paramsAccess);
 
 			// Assignations à la vue
 			$this->set( 'foyer_id', $foyer_id );

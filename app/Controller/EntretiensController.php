@@ -268,9 +268,9 @@
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Entretien' );
-
-			$query = $this->WebrsaEntretien->completeVirtualFieldsForAccess(
-				array(
+			
+			$entretiens = $this->WebrsaAccesses->getIndexRecords(
+				$personne_id, array(
 					'fields' => array(
 						'Entretien.id',
 						'Entretien.personne_id',
@@ -295,15 +295,11 @@
 					)
 				)
 			);
-			
-			$paramsAccess = $this->WebrsaEntretien->getParamsForAccess($personne_id, WebrsaAccessEntretiens::getParamsList());
-			$entretiens = WebrsaAccessEntretiens::accesses($this->Entretien->find('all', $query), $paramsAccess);
 
 			$this->_setOptions();
 
 			$this->set( compact( 'entretiens', 'nbFichiersLies' ) );
 			$this->set( 'personne_id', $personne_id );
-			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
 		}
 
 		/**

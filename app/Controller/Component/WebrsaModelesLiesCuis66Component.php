@@ -187,7 +187,7 @@
 				);
 				$personne_id = Hash::get( $data, 'Cui.personne_id' );
 				$cui66_id = Hash::get( $data, 'Cui66.id' );
-				$this->WebrsaAccesses->check(null, $cui_id, 'Cui');
+				$this->WebrsaAccesses->setMainModel('Cui')->check(null, $personne_id);
 			}
 			else {
 				$data = $Model->find( 'first', 
@@ -203,7 +203,7 @@
 				$personne_id = Hash::get( $data, 'Cui.personne_id' );
 				$cui66_id = Hash::get( $data, 'Cui66.id' );
 				$cui_id = Hash::get( $data, 'Cui.id' );
-				$this->WebrsaAccesses->check($id, $personne_id, $params['modelClass']);
+				$this->WebrsaAccesses->setMainModel($params['modelClass'])->check($id, $personne_id);
 			}
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -267,7 +267,7 @@
 			
 			$personne_id = Hash::get( $data, 'Cui.personne_id' );
 			$cui_id = Hash::get( $data, 'Cui.id' );
-			$this->WebrsaAccesses->check($id, $personne_id, $params['modelClass']);
+			$this->WebrsaAccesses->setMainModel($params['modelClass'])->check($id, $personne_id);
 			
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
@@ -376,7 +376,7 @@
 			
 			$personne_id = Hash::get( $result, 'Cui.personne_id' );
 			$cui_id = Hash::get( $result, 'Cui.id' );
-			$this->WebrsaAccesses->check($id, $personne_id, $Controller->modelClass);
+			$this->WebrsaAccesses->setMainModel($Controller->modelClass)->check($id, $personne_id);
 			
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 

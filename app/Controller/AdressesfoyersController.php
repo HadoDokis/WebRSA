@@ -66,21 +66,20 @@
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
-			
-			$query = $this->WebrsaAdressefoyer->completeVirtualFieldsForAccess(
-				array(
+
+			// Recherche des adresses du foyer
+			$adresses = $this->WebrsaAccesses->getIndexRecords(
+				$foyer_id, array(
+					'fields' => array_merge(
+						$this->Adressefoyer->fields(),
+						$this->Adressefoyer->Adresse->fields()
+					),
 					'conditions' => array( 'Adressefoyer.foyer_id' => $foyer_id ),
 					'contain' => array(
 						'Adresse'
 					)
 				)
 			);
-			
-			$paramsAccess = $this->WebrsaAdressefoyer->getParamsForAccess($foyer_id, WebrsaAccessAdressesfoyers::getParamsList());
-			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
-
-			// Recherche des adresses du foyer
-			$adresses = WebrsaAccessAdressesfoyers::accesses($this->Adressefoyer->find('all', $query), $paramsAccess);
 			
 			// Assignations à la vue
 			$this->set( 'foyer_id', $foyer_id );

@@ -46,7 +46,7 @@
 				'actions' => array( 'index', 'search' )
 			),
 			'DossiersMenus',
-			'WebrsaAccesses'
+			'WebrsaAccesses' => array('mainModelName' => 'DspRev', 'webrsaModelName' => 'WebrsaDsp')
 		);
 
 		public $paginate = array(
@@ -169,7 +169,7 @@
 		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
 		 */
 		public function filelink( $id ) {
-			$this->WebrsaAccesses->check($id, null, 'DspRev');
+			$this->WebrsaAccesses->check($id);
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
@@ -251,8 +251,8 @@
 		/**
 		 *
 		 */
-		public function edit($personne_id, $id) {
-			$this->WebrsaAccesses->check($id, $personne_id, 'DspRev');
+		public function edit($personne_id, $id = null) {
+			$this->WebrsaAccesses->check($id, $personne_id);
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -264,9 +264,8 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
 
 			$this->_setEntriesAncienDossier( $id, 'Dsp' );
-
-			$dsp = $this->Dsp->find(
-				'first',
+			
+			$query = $this->WebrsaDsp->completeVirtualFieldsForAccess(
 				array(
 					'conditions' => array(
 						'Dsp.personne_id' => $id
@@ -293,6 +292,11 @@
 					)
 				)
 			);
+			
+			$paramsAccess = $this->WebrsaDsp->getParamsForAccess($this->Dsp->personneId($id), WebrsaAccessDsps::getParamsList());
+			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
+
+			$dsp = WebrsaAccessDsps::access($this->Dsp->find('first', $query), $paramsAccess);
 
 			$qd_personne = array(
 				'conditions' => array(
@@ -393,7 +397,7 @@
 		 * @throws NotFoundException
 		 */
 		public function revertTo( $id = null ) {
-			$this->WebrsaAccesses->check($id, null, 'DspRev');
+			$this->WebrsaAccesses->check($id);
 			$belongsToRomev3 = $this->DspRev->belongsTo;
 			foreach( $belongsToRomev3 as $alias => $params ) {
 				if( strpos( $alias, 'romev3Rev' ) === false ) {
@@ -470,11 +474,12 @@
 		 * Visualisation d'une version particulière des DspRev.
 		 */
 		public function view_revs( $id = null ) {
-			$this->WebrsaAccesses->check($id, null, 'DspRev');
-			$query = $this->WebrsaDsp->getViewQuery();
+			$this->WebrsaAccesses->check($id);
+			$query = $this->WebrsaDsp->completeVirtualFieldsForAccess($this->WebrsaDsp->getViewQuery());
 			$query['conditions'] = array( 'DspRev.id' => $id );
 
-			$dsprevs = $this->DspRev->find( 'first', $query );
+			$paramAccess = $this->WebrsaDsp->getParamsForAccess($this->Dsp->personneId($id), WebrsaAccessDsps::getParamsList());
+			$dsprevs = WebrsaAccessDsps::access($this->DspRev->find('first', $query), $paramAccess);
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevs['DspRev']['personne_id'] ) ) );
 
@@ -509,7 +514,7 @@
 		 *
 		 */
 		public function view_diff( $id = null ) {
-			$this->WebrsaAccesses->check($id, null, 'DspRev');
+			$this->WebrsaAccesses->check($id);
 			$base = $this->WebrsaDsp->getViewQuery();
 
 			$query = $base;

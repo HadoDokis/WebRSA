@@ -50,7 +50,7 @@
 		 * @return boolean
 		 */
 		protected static function _view(array $record, array $params) {
-			return false;
+			return true;
 		}
 
 		/**
@@ -61,7 +61,7 @@
 		 * @return boolean
 		 */
 		protected static function _edit(array $record, array $params) {
-			return false;
+			return true;
 		}
 		
 		/**

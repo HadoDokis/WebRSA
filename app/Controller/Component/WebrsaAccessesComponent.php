@@ -188,25 +188,22 @@
 		 * @param integer $parent_id		- Le plus souvent : personne_id ou foyer_id	si disponnible (nécéssaire si $id = null)
 		 *								  Sera envoyé à Webrsa<i>Nomdumodel</i>::getParamsForAccess
 		 * 
-		 * @param String $alias			- Par défaut, Nom du controller au singulier
-		 * 
 		 * @param array $params			- Paramètres à envoyer à WebrsaAccess<i>Nomducontroller</i>
 		 * 
 		 * @return void
 		 * @throws Error403Exception
 		 * @throws Error404Exception
 		 */
-		public function check($id = null, $parent_id = null, $alias = null, array $params = array()) {
+		public function check($id = null, $parent_id = null, array $params = array()) {
 			if (($id !== null && !self::_validId($id)) || ($parent_id !== null && !self::_validId($parent_id))) {
 				throw new Error404Exception();
 			}
 			
 			$this->init();
-			$this->alias = $alias ?: $this->MainModel->alias;
 			
-			if (!isset($this->Controller->{$this->alias})) {
+			if (!isset($this->Controller->{$this->MainModel->alias})) {
 				trigger_error(sprintf("Le controller '%s' doit avoir la valeur '%s' dans l'attribut 'uses'", 
-					$this->Controller->name, $this->alias)
+					$this->Controller->name, $this->MainModel->alias)
 				);
 			}
 			
@@ -229,6 +226,32 @@
 					)
 				);
 			}
+		}
+		
+		/**
+		 * Permet d'obtenir le nécéssaire pour l'index d'un module (données + accès)
+		 * <strong>Attention</strong> : fait un set de la variable <i>ajoutPossible</i>
+		 * 
+		 * @param type $parent_id - personne_id ou foyer_id selon le cas
+		 * @param array $query - Query utilisé pour obtenir l'index
+		 * @return array - Liste des enregistrements pour un index avec règles d'accès métier
+		 * @throws Error404Exception
+		 */
+		public function getIndexRecords($parent_id, array $query = array()) {
+			if (!self::_validId($parent_id)) {
+				throw new Error404Exception();
+			}
+			
+			$queryCompleted = $this->WebrsaModel->completeVirtualFieldsForAccess($query);
+			$paramsActions = call_user_func(array($this->WebrsaAccessClassName, 'getParamsList'));
+			$paramsAccess = $this->WebrsaModel->getParamsForAccess($parent_id, $paramsActions);
+			$this->Controller->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible') !== false);
+
+			return call_user_func(
+				array($this->WebrsaAccessClassName, 'accesses'),
+				$this->MainModel->find('all', $queryCompleted),
+				$paramsAccess
+			);
 		}
 		
 		/**
@@ -268,13 +291,13 @@
 			$record = array();
 			if ($id !== null) {
 				$records = $this->WebrsaModel->getDataForAccess(
-					array($this->alias.'.'.$this->Controller->{$this->alias}->primaryKey => $id),
+					array($this->MainModel->alias.'.'.$this->Controller->{$this->MainModel->alias}->primaryKey => $id),
 					array('controller' => $this->Controller->name, 'action' => $this->Controller->action)
 				);
 				$record = end($records);
 			}
 			
-			return $record;
+			return (array)$record;
 		}
 		
 		/**
@@ -286,21 +309,33 @@
 		 * @return integer
 		 */
 		protected function _parentId($id, array $record, $parent_id = null) {
-			$foreignKey = $this->MainModel->belongsTo[$this->parentModelName]['foreignKey'];
-			$parentPrimarykey = $this->MainModel->{$this->parentModelName}->primaryKey;
-			$methodName = Inflector::underscore($this->parentModelName).'Id';
-			
-			$result = $parent_id ?: (
-				Hash::get($record, $this->alias.'.'.$foreignKey) ?: Hash::get($record, $this->parentModelName.'.'.$parentPrimarykey)
-			);
-			
-			if ($result === null) {
-				if ($this->MainModel->Behaviors->attached('Allocatairelie') || method_exists($this->MainModel, $methodName)) {
-					$result = $this->MainModel->{$methodName}($id);
-				} else {
-					trigger_error(sprintf("Field: %s.%s n'existe pas dans %s::getDataForAccess",
-						$this->parentModelName, $parentPrimarykey, $this->WebrsaModel->name));
-					exit;
+			if ($parent_id !== null) {
+				$result = $parent_id;
+			} else {
+				$isLinkedToParent = property_exists($this->MainModel, 'belongsTo') 
+					&& isset($this->MainModel->belongsTo[$this->parentModelName]);
+				$foreignKey = $isLinkedToParent 
+					? $this->MainModel->belongsTo[$this->parentModelName]['foreignKey'] 
+					: Inflector::underscore($this->parentModelName).'_id'
+				;
+				$parentPrimarykey = $isLinkedToParent
+					? $this->MainModel->{$this->parentModelName}->primaryKey
+					: 'id'
+				;
+				$methodName = Inflector::underscore($this->parentModelName).'Id';
+
+				$result = Hash::get($record, $this->MainModel->alias.'.'.$foreignKey)
+					?: Hash::get($record, $this->parentModelName.'.'.$parentPrimarykey
+				);
+
+				if ($result === null) {
+					if ($this->MainModel->Behaviors->attached('Allocatairelie') || method_exists($this->MainModel, $methodName)) {
+						$result = $this->MainModel->{$methodName}($id);
+					} else {
+						trigger_error(sprintf("Field: %s.%s n'existe pas dans %s::getDataForAccess",
+							$this->parentModelName, $parentPrimarykey, $this->WebrsaModel->name));
+						exit;
+					}
 				}
 			}
 			

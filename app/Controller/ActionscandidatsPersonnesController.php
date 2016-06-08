@@ -287,9 +287,9 @@
                 )
 			);
 			$this->set( compact( 'orientationLiee' ) );
-
-			$queryData = $this->WebrsaActioncandidatPersonne->completeVirtualFieldsForAccess(
-				array(
+			
+			$actionscandidats_personnes = $this->WebrsaAccesses->getIndexRecords(
+				$personne_id, array(
 					'fields' => array_merge(
 						$this->ActioncandidatPersonne->Actioncandidat->fields(),
 						$this->ActioncandidatPersonne->Motifsortie->fields(),
@@ -315,18 +315,10 @@
 					'order' => array( 'ActioncandidatPersonne.datesignature DESC' )
 				)
 			);
-			
-			$paramsAccess = $this->WebrsaActioncandidatPersonne->getParamsForAccess(
-				$personne_id, WebrsaAccessActionscandidatsPersonnes::getParamsList()
-			);
-			$actionscandidats_personnes = WebrsaAccessActionscandidatsPersonnes::accesses(
-				$this->ActioncandidatPersonne->find('all', $queryData), $paramsAccess
-			);
 			$this->set( 'actionscandidats_personnes', $actionscandidats_personnes );
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
-			$this->set('ajoutPossible', $paramsAccess['ajoutPossible']);
 		}
 
 		/**

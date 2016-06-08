@@ -21,7 +21,11 @@ class Proposdecisionscers66Controller extends AppController {
     public $name = 'Proposdecisionscers66';
     public $uses = array('Propodecisioncer66', 'Option', 'WebrsaContratinsertion');
     public $helpers = array('Default2');
-    public $components = array('Jetons2', 'DossiersMenus');
+    public $components = array(
+		'Jetons2',
+		'DossiersMenus',
+		'WebrsaAccesses' => array('webrsaModelName' => 'WebrsaContratinsertion', 'mainModelName' => 'Contratinsertion')
+	);
 
     /**
      * Correspondances entre les méthodes publiques correspondant à des
@@ -194,11 +198,7 @@ class Proposdecisionscers66Controller extends AppController {
      * @param integer $contratinsertion_id
      */
     public function propositionsimple($contratinsertion_id = null) {
-        $this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;
-        $forme_ci = $this->Propodecisioncer66->Contratinsertion->field('forme_ci');
-        $this->assert(( $forme_ci == 'S'), 'error500');
-		$this->_checkAccess($contratinsertion_id);
-
+		$this->WebrsaAccesses->check($contratinsertion_id);
         $this->proposition($contratinsertion_id);
     }
 
@@ -208,32 +208,9 @@ class Proposdecisionscers66Controller extends AppController {
      * @param integer $contratinsertion_id
      */
     public function propositionparticulier($contratinsertion_id = null) {
-        $this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;
-        $forme_ci = $this->Propodecisioncer66->Contratinsertion->field('forme_ci');
-        $this->assert(( $forme_ci == 'C'), 'error500');
-		$this->_checkAccess($contratinsertion_id);
-
+		$this->WebrsaAccesses->check($contratinsertion_id);
         $this->proposition($contratinsertion_id);
     }
-
-	/**
-	 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès 
-	 * à une action en fonction d'un enregistrement
-	 * 
-	 * @see ContratsinsertionController::_checkAccess
-	 * @param integer $contratinsertion_id
-	 */
-	protected function _checkAccess($contratinsertion_id) {
-		$records = $this->WebrsaContratinsertion->getDataForAccess(array('Contratinsertion.id' => $contratinsertion_id));
-		$record = end($records);
-		$redirectUrl = array('controller' => 'Contratsinsertion', 'action' => 'index', Hash::get($record, 'Contratinsertion.personne_id'));
-		$msgstr = 'Impossible d\'effectuer cette action.';
-
-		if (!WebrsaAccessContratsinsertion::check($this->name, $this->action, $record)) {
-			$this->Session->setFlash($msgstr, 'flash/error');
-			$this->redirect($redirectUrl);
-		}
-	}
 }
 
 ?>
