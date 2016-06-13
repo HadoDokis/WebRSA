@@ -17,6 +17,13 @@
 	class WebrsaRecherchesRendezvousComponent extends WebrsaAbstractRecherchesComponent
 	{
 		/**
+		 * Components utilisés par ce component.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Allocataires', 'InsertionsBeneficiaires' );
+
+		/**
 		 * Surcharge de la méthode params pour limiter les utilisateurs externes
 		 * au code INSEE ou à la valeur de structurereferente_id du Rendezvous.
 		 *
@@ -117,6 +124,42 @@
 			}
 
 			return $result;
+		}
+
+
+		/**
+		 * Surcharge afin de permettre, pour le CD 93, que les RDV ne soient plus
+		 * filtrés automatiquement suivant le code INSEE de l'adresse actuelle du
+		 * bénéficiaire par-rapport aux zones géographiques auxquelles l'utilisateur
+		 * a accès, mais par-rapport aux structures référentes auxquelles
+		 * l'utilisateur a accès (celles qui se trouvent dans la liste déroulante
+		 * "Structure proposant le RDV").
+		 *
+		 * @param array $query
+		 * @param array $filters
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _queryConditions( array $query, array $filters, array $params ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			if( 93 === $departement ) {
+				$params['completequery_zonesgeos_disabled'] = true;
+				$query = parent::_queryConditions( $query, $filters, $params );
+				$query['conditions'][] = array(
+					'Rendezvous.structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+						array(
+							'type' => 'ids',
+							'prefix' => false
+						)
+					)
+				);
+			}
+			else {
+				$query = parent::_queryConditions( $query, $filters, $params );
+			}
+
+			return $query;
 		}
 	}
 ?>
