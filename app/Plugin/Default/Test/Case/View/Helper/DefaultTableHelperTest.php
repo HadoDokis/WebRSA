@@ -639,10 +639,12 @@
 			);
 			$params = array();
 
+			// 1. Avec un tableau de details vide
 			$result = $this->DefaultTable->details( array(), $this->fields, $params );
 			$expected = null;
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
+			// 2. Avec un tableau de details "classique"
 			$result = $this->DefaultTable->details( $this->data[0], $fields, $params );
 			$expected = '<table id="TableApplesIndex" class="apples index">
 							<tbody>
@@ -656,6 +658,22 @@
 								</tr>
 							</tbody>
 						</table>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 3. Avec un tableau de détails vide à cause des conditions
+			$result = $this->DefaultTable->details(
+				$this->data[0],
+				array(
+					'Apple.id' => array(
+						'condition' => false
+					),
+					'Apple.color' => array(
+						'condition' => false
+					),
+				),
+				$params
+			);
+			$expected = null;
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 

@@ -412,7 +412,12 @@
 
 			$tbody = $this->detailsTbody( $data, $fields, $tableParams + $params );
 
-			return $this->DefaultHtml->tag( 'table', $caption.$tbody, array( 'id' => $tableParams['id'], 'class' => $tableParams['class'] ) );
+			if( !empty( $tbody ) ) {
+				return $this->DefaultHtml->tag( 'table', $caption.$tbody, array( 'id' => $tableParams['id'], 'class' => $tableParams['class'] ) );
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>
