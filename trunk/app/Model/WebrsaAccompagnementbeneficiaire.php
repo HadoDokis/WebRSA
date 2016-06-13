@@ -524,6 +524,20 @@
 				'Ficheprescription93' => array(
 					'statut' => $this->Personne->Ficheprescription93->enum( 'statut' )
 				),
+				// Tableau "Fichiers liés"
+				'Fichiermodule' => array(
+					'modele' => array(
+						'Apre' => 'APRE',
+						'Personne' => 'Bénéficiaire',
+						'Contratinsertion' => 'CER',
+						'Entretien' => 'Entretien',
+						'DspRev' => 'MAJ DSP',
+						'Memo' => 'Mémo',
+						'Orientstruct' => 'Orientation',
+						'PersonneReferent' => 'Référent du parcours',
+						'Rendezvous' => 'Rendez-vous'
+					)
+				),
 				// Tableau "Actions"
 				'Impression' => array(
 					// Tableau "Impressions"
@@ -552,6 +566,67 @@
 		}
 
 		/**
+		 * Retourne la "configuration" (composée de query) normalisée du tableau
+		 * "Fichiers liés" de l'accompagnement du bénéficiaire.
+		 *
+		 * @return array
+		 */
+		protected function _queryFichiersmodules() {
+			$cacheKey = $this->useDbConfig.'_'.$this->alias.'_'.__FUNCTION__;
+			$config = Cache::read( $cacheKey );
+
+			if( false === $config ) {
+				$query = array(
+					'fields' => $this->Personne->Fichiermodule->fields(),
+					'joins' => array(
+						$this->Personne->join( 'Fichiermodule', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'conditions' => array( 'OR' => array() ),
+					'contain' => false,
+					//'order' => array()
+				);
+
+				array_remove( $query['fields'], 'Fichiermodule.document' );
+				array_remove( $query['fields'], 'Fichiermodule.cmspath' );
+
+				// TODO: primaryKey -> plus nécessaire après avoir réparé les relations
+				$query['conditions']['OR'][] = str_replace( '{$__cakeID__$}', "\"Personne\".\"id\"", $query['joins'][0]['conditions'] );
+				$query['joins'][0]['conditions'] = '1 = 1';
+
+				// TODO: une méthode __configFichiersmodules
+				$config = array(
+					'Apre',
+					'Contratinsertion',
+					'DspRev',
+					'Entretien',
+					'Memo',
+					'Orientstruct',
+					'PersonneReferent',
+					'Rendezvous',
+				);
+
+				$config = Hash::normalize( $config );
+				foreach( $config as $module => $params ) {
+					$params = (array)$params;
+					$params['modelClass'] = isset( $params['modelClass'] ) ? $params['modelClass'] : $module;
+
+					$query['joins'][] = $this->Personne->join( $params['modelClass'], array( 'type' => 'LEFT OUTER' ) );
+
+					$join = $this->Personne->{$params['modelClass']}->join( 'Fichiermodule', array( 'type' => 'LEFT OUTER' ) );
+					$query['conditions']['OR'][] = str_replace( '{$__cakeID__$}', "\"{$params['modelClass']}\".\"id\"", $join['conditions'] ); // FIXME: primaryKey*/
+				}
+
+				$query['group'] = $query['fields'];
+
+				Configure::write( $cacheKey, $query );
+			}
+
+			// TODO: Normalisation
+
+			return $query;
+		}
+
+		/**
 		 * Récupère la liste des fichiers liés aux enregistrements d'un
 		 * bénéficiaire.
 		 *
@@ -564,7 +639,12 @@
 		 * @return array
 		 */
 		public function fichiersmodules( $personne_id ) {
-			// FIXME: "Fichiermodule"."modele" = 'Dsp' AND "Fichiermodule"."fk_value" = "DspRev"."id"
+			$query = $this->_queryFichiersmodules();
+			$query['conditions']['Personne.id'] = $personne_id;
+			$fichiersmodules = $this->Personne->find( 'all', $query );
+			return $fichiersmodules;
+
+			/*// FIXME: "Fichiermodule"."modele" = 'Dsp' AND "Fichiermodule"."fk_value" = "DspRev"."id"
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			$join = $this->Personne->join( 'Fichiermodule', array( 'type' => 'LEFT OUTER' ) );
@@ -637,7 +717,7 @@
 				$fichiersmodules[$key]['Fichiermodule']['controller'] = Inflector::tableize( $fichiersmodules[$key]['Fichiermodule']['modele'] );
 			}
 
-			return $fichiersmodules;
+			return $fichiersmodules;*/
 		}
 
 		/**

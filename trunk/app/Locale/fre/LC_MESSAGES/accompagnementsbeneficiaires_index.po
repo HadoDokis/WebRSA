@@ -120,3 +120,11 @@ msgstr "Module"
 
 msgid "Search.Impression.date"
 msgstr "Date"
+
+# ------------------------------------------------------------------------------
+
+msgid "Search.Fichiermodule.modele"
+msgstr "Module"
+
+msgid "Search.Fichiermodule.date"
+msgstr "Date"
