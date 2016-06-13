@@ -136,7 +136,7 @@
 			// Tableau d'actions
 			echo $this->Html->tag( 'h3', 'Actions' );
 
-			echo $this->Default3->DefaultForm->create( null, array( 'AccompagnementsbeneficiairesActionsSearchForm' ) );
+			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'AccompagnementsbeneficiairesActionsSearchForm' ) );
 			$this->request->data = array(
 				'Search' => array(
 					'Action' => array(
@@ -455,21 +455,55 @@
 		<?php
 			// TODO: les mettre dans leurs propres vues (appelées en ajax à la demande)
 			echo $this->Html->tag( 'h2', 'Fichiers liés', array( 'class' => 'title' ) );
+
+			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'AccompagnementsbeneficiairesFichiersmodulesSearchForm' ) );
+			$this->request->data = array(
+				'Search' => array(
+					'Fichiermodule' => array(
+						'date_from' => date_sql_to_cakephp( '2009-01-01' )
+					)
+				)
+			);
+			echo $this->SearchForm->dateRange(
+				'Search.Fichiermodule.date',
+				array(
+					'prefix' => 'Search',
+					'legend' => __m( 'Search.Fichiermodule.date' ),
+					'minYear_from' => 2009,
+					'minYear_to' => 2009,
+					'maxYear_from' => date( 'Y' ) + 1,
+					'maxYear_to' => date( 'Y' ) + 1
+				)
+			);
+			echo $this->Default3->DefaultForm->input(
+				'Search.Fichiermodule.modele',
+				array(
+					'label' => __m( 'Search.Fichiermodule.modele' ),
+					'options' => $options['Fichiermodule']['modele'],
+					'required' => false,
+					'empty' => true
+				)
+			);
+			echo $this->Default3->DefaultForm->end();
+
 			echo $this->Default3->index(
 				$fichiersmodules,
 				array(
 					'Fichiermodule.modele' => array(
 						'label' => 'Module',
-						//'sort' => true // TODO
+						'class' => '#Fichiermodule.modele#'
 					),
 					'Fichiermodule.name' => array(
-						'label' => 'Nom'
+						'label' => 'Nom',
+						'class' => 'sortable',
 					),
 					'Fichiermodule.mime' => array(
-						'label' => 'Type'
+						'label' => 'Type',
+						'class' => 'sortable',
 					),
 					'Fichiermodule.created' => array(
-						'label' => 'Créé le'
+						'label' => 'Créé le',
+						'class' => 'sortable date filter_date date-au',
 					),
 					'/#Fichiermodule.controller#/download/#Fichiermodule.id#' => array(
 						'msgid' => 'Télécharger',
@@ -485,8 +519,9 @@
 					)
 				),
 				array(
-					'class' => 'search',
+					'class' => 'search sortable',
 					'paginate' => false,
+					'options' => $options,
 					'id' => 'TableAccompagnementsbeneficiairesIndexFichiersmodules'
 				)
 			);
@@ -496,7 +531,7 @@
 		<?php
 			echo $this->Html->tag( 'h2', 'Impressions', array( 'class' => 'title' ) );
 
-			echo $this->Default3->DefaultForm->create( null, array( 'AccompagnementsbeneficiairesImpressionsSearchForm' ) );
+			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'AccompagnementsbeneficiairesImpressionsSearchForm' ) );
 			$this->request->data = array(
 				'Search' => array(
 					'Impression' => array(
@@ -1004,6 +1039,94 @@
 		function( field ) {
 			$(field).observe( 'change', function() {
 				filterImpressionsTableByDateRange( 'TableAccompagnementsbeneficiairesIndexImpressions' );
+				return false;
+			} );
+		}
+	);
+
+	// -------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Filtre des lignes de la table d'actions par type d'action suivant la valeur
+	 * du champ de liste déroulante (et de la plage de dates le cas échéant).
+	 *
+	 * @param {String} table L'id de la table à traiter
+	 * @returns {undefined}
+	 */
+	function filterFichiersmodulesTableByFichiermodule( table ) {
+		var rows, show;
+
+		// Si la table existe
+		if( null !== $(table) ) {
+			rows = $(table).select( 'tbody tr' );
+
+			$(rows).each( function( row ) {
+				if( false === $(row).up('table').hasClassName('innerTable') ) {
+					show = conditionAction( 'SearchFichiermoduleModele', row )
+						&& conditionDateRange( 'SearchFichiermoduleDate', 'SearchFichiermoduleDateFrom', 'SearchFichiermoduleDateTo', row );
+
+					if( show ) {
+						$(row).show();
+					}
+					else {
+						$(row).hide();
+					}
+				}
+			} );
+
+			computeTableVisibility( table );
+		}
+	}
+
+	/**
+	 * Filtre des lignes de la table d'actions par plage de dates (et par type
+	 * d'action suivant la valeur du champ de liste déroulante le cas échéant).
+	 *
+	 * @param {String} table L'id de la table à traiter
+	 * @returns {undefined}
+	 */
+	function filterFichiersmodulesTableByDateRange( table ) {
+		var rows, show;
+
+		// Si la table existe
+		if( null !== $(table) ) {
+			rows = $(table).select( 'tbody tr' );
+
+			$(rows).each( function( row ) {
+				if( false === $(row).up('table').hasClassName('innerTable') ) {
+					show = conditionAction( 'SearchFichiermoduleModele', row )
+						&& conditionDateRange( 'SearchFichiermoduleDate', 'SearchFichiermoduleDateFrom', 'SearchFichiermoduleDateTo', row );
+
+					if( show ) {
+						$(row).show();
+					}
+					else {
+						$(row).hide();
+					}
+				}
+			} );
+
+			computeTableVisibility( table );
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Initialisation des filtres à appliquer sur la table d'impressions, observation
+	// des champs de formulaire.
+	// @fixme
+	//	- filtre par date
+	// -------------------------------------------------------------------------
+	$('SearchFichiermoduleModele').observe( 'change', function() {
+		filterFichiersmodulesTableByFichiermodule( 'TableAccompagnementsbeneficiairesIndexFichiersmodules' );
+		return false;
+	} );
+
+	[ 'SearchFichiermoduleDate', 'SearchFichiermoduleDateFromYear', 'SearchFichiermoduleDateFromMonth', 'SearchFichiermoduleDateFromDay', 'SearchFichiermoduleDateToYear', 'SearchFichiermoduleDateToMonth', 'SearchFichiermoduleDateToDay'].each(
+		function( field ) {
+			$(field).observe( 'change', function() {
+				filterFichiersmodulesTableByDateRange( 'TableAccompagnementsbeneficiairesIndexFichiersmodules' );
 				return false;
 			} );
 		}
