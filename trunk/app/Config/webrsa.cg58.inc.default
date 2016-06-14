@@ -44,7 +44,8 @@
 			'method' => 'cloudooo',
 			'wsdl' => 'http://127.0.0.1:8080/ODFgedooo/OfficeService?wsdl',
 			'cloudooo_host' => '172.31.76.12',
-			'cloudooo_port' => '8011'
+			'cloudooo_port' => '8011',
+			'debug_export_data' => true
 		)
 	);
 
@@ -833,15 +834,21 @@
 	Configure::write( 'Nonorientationprocov58.delaiCreationContrat', 60 );
 
 	/**
-	 * Ordre d'affichage des dossiers EP selon différentes actions
-	 * $queryData['order'] prendra la valeur de la config.
-	 * Le nom est dynamique, si une action est manquante ici, ajoutez la comme suit : 'Order.' . $this->action
+	 * Ordre d'affichage des dossiers EP selon différentes actions (voir l'URL,
+	 * ajouter le suffixe .order).
+	 *
+	 * Les clés de configuration sont les suivantes (CG 58, 66 et 93):
+	 * 	- Dossierseps.choose.order
+	 * 	- Commissionseps.decisionep.order
+	 * 	- Commissionseps.decisioncg.order (CG 66 et 93 uniquement)
+	 * 	- Commissionseps.printOrdresDuJour.order
+	 * 	- Commissionseps.traiterep.order
+	 * 	- Commissionseps.traitercg.order (CG 66 et 93 uniquement)
 	 */
-	$order = array( 'Personne.nom', 'Personne.prenom' );
-	Configure::write( 'Dossierseps.choose.order', $order );
-	Configure::write( 'Commissionseps.decisionep.order',  $order );
-	Configure::write( 'Commissionseps.decisioncg.order',  $order );
-	Configure::write( 'Commissionseps.traiterep.order', $order );
+	Configure::write( 'Dossierseps.choose.order', array( 'Personne.nom', 'Personne.prenom' ) );
+	Configure::write( 'Commissionseps.decisionep.order', array( 'Personne.nom', 'Personne.prenom' ) );
+	Configure::write( 'Commissionseps.printOrdresDuJour.order', array( 'Adresse.nomcom' ) );
+	Configure::write( 'Commissionseps.traiterep.order', array( 'Personne.nom', 'Personne.prenom' ) );
 
 	/**
 	 * Validation parametrable pour l'allowEmpty
