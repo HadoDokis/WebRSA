@@ -1743,7 +1743,8 @@
 
 				$entries = $Dossier->find( 'all', $query );
 				foreach( $entries as $entry ) {
-					$results[$entry['Contratinsertion']['organisme']][$entry['Contratinsertion']['nature_cer']] += $entry['Contratinsertion']['count'];
+					$nature_cer = str_replace( '("IAE")', '(IAE)', $entry['Contratinsertion']['nature_cer'] );
+					$results[$entry['Contratinsertion']['organisme']][$nature_cer] += $entry['Contratinsertion']['count'];
 				}
 				foreach( array_keys( $results ) as $organisme ) {
 					ksort( $results[$organisme] );
