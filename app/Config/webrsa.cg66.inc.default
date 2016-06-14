@@ -959,16 +959,24 @@
 	);
 
 	/**
-	 * Ordre d'affichage des dossiers EP selon différentes actions
-	 * $queryData['order'] prendra la valeur de la config.
-	 * Le nom est dynamique, si une action est manquante ici, ajoutez la comme suit : 'Order.' . $this->action
+	 * Ordre d'affichage des dossiers EP selon différentes actions (voir l'URL,
+	 * ajouter le suffixe .order).
+	 *
+	 * Les clés de configuration sont les suivantes (CG 58, 66 et 93):
+	 * 	- Dossierseps.choose.order
+	 * 	- Commissionseps.decisionep.order
+	 * 	- Commissionseps.decisioncg.order (CG 66 et 93 uniquement)
+	 * 	- Commissionseps.printOrdresDuJour.order
+	 * 	- Commissionseps.traiterep.order
+	 * 	- Commissionseps.traitercg.order (CG 66 et 93 uniquement)
 	 */
 	$order = array( 'Personne.nom', 'Personne.prenom' );
 	Configure::write( 'Dossierseps.choose.order', $order );
-	Configure::write( 'Commissionseps.decisionep.order',  $order );
-	Configure::write( 'Commissionseps.decisioncg.order',  $order );
-	Configure::write( 'Commissionseps.printOrdresDuJour.order',  $order );
+	Configure::write( 'Commissionseps.decisionep.order', $order );
+	Configure::write( 'Commissionseps.decisioncg.order', $order );
+	Configure::write( 'Commissionseps.printOrdresDuJour.order', $order );
 	Configure::write( 'Commissionseps.traiterep.order', $order );
+	Configure::write( 'Commissionseps.traitercg.order', $order );
 
 	/**
 	 * Validation parametrable pour l'allowEmpty
@@ -1117,7 +1125,7 @@
 			'multiple_larger_1' => false
 		)
 	);
-	
+
 	/**
 	 * Affichage de Fleches pour effectuer un order sur les colonnes de résultat
 	 */

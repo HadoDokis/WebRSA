@@ -386,22 +386,46 @@
 			// Pour tous les départements sauf le 976
 			$departement = (int)Configure::read( 'Cg.departement' );
 			if( $departement !== 976 ) {
+				// Pour les thématiques traitées, on cherche à savoir à quel niveau maximum
+				$Commissionep = ClassRegistry::init( 'Commissionep' );
+				$themes = $Commissionep->Ep->themes();
+
+				$niveaux = array();
+				$rule = array( array( 'rule' => 'isarray', 'allowEmpty' => true ) );
+				$paths = array();
+
+				$regroupementseps = $Commissionep->Ep->Regroupementep->find( 'all', array( 'contain' => false ) );
+				foreach( $regroupementseps as $regroupementep ) {
+					foreach( $themes as $theme ) {
+						$niveau = $regroupementep['Regroupementep'][$theme];
+						if( 'nontraite' !== $niveau ) {
+							$niveaux[] = $regroupementep['Regroupementep'][$theme];
+						}
+					}
+				}
+
+				if( in_array( 'decisioncg', $niveaux, true ) ) {
+					$paths = array(
+						'Dossierseps.choose.order',
+						'Commissionseps.decisionep.order',
+						'Commissionseps.decisioncg.order',
+						'Commissionseps.printOrdresDuJour.order',
+						'Commissionseps.traiterep.order',
+						'Commissionseps.traitercg.order'
+					);
+				}
+				else if( in_array( 'decisionep', $niveaux, true ) ) {
+					$paths = array(
+						'Dossierseps.choose.order',
+						'Commissionseps.decisionep.order',
+						'Commissionseps.printOrdresDuJour.order',
+						'Commissionseps.traiterep.order'
+					);
+				}
+
 				$result = array_merge(
 					$result,
-					array(
-						'Dossierseps.choose.order' => array(
-							array( 'rule' => 'isarray', 'allowEmpty' => true ),
-						),
-						'Commissionseps.decisionep.order' => array(
-							array( 'rule' => 'isarray', 'allowEmpty' => true ),
-						),
-						'Commissionseps.decisioncg.order' => array(
-							array( 'rule' => 'isarray', 'allowEmpty' => true ),
-						),
-						'Commissionseps.traiterep.order' => array(
-							array( 'rule' => 'isarray', 'allowEmpty' => true ),
-						),
-					)
+					array_fill_keys( $paths, $rule )
 				);
 			}
 
@@ -514,9 +538,6 @@
 				'Cui.taux.fixe' => 'numeric',
 				'Cui.taux.prisencharge' => 'numeric',
                 'Cui.Numeroconvention' => 'string',
-				'Commissionseps.printOrdresDuJour.order' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true ),
-				),
 				'Dossierspcgs66.imprimer.Impression.RectoVerso' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
