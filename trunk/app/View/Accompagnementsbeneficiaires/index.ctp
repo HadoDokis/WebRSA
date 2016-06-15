@@ -8,15 +8,9 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
-	$personne_id = Hash::get( $dossierMenu, 'personne_id' );
-	$personneDossier = null;
-	foreach( (array)Hash::get( $dossierMenu, 'Foyer.Personne' ) as $personne ) {
-		if( (int)$personne_id === (int)$personne['id'] ) {
-			$personneDossier = $personne;
-		}
-	}
-	$this->pageTitle = DefaultUtility::evaluateString( (array)$personneDossier, 'Synthèse de l\'accompagnement de #qual# #nom# #prenom#' );
+	$this->pageTitle = DefaultUtility::evaluateString( $details, 'Synthèse de l\'accompagnement<br/>#Personne.qual# #Personne.nom# #Personne.prenom#' );
 	echo $this->Html->tag( 'h1', $this->pageTitle );
+	$this->pageTitle = str_replace( '<br/>', ' de ', $this->pageTitle );
 ?>
 <div id="tabbedWrapper" class="tabs">
 	<div id="accompagnement">
@@ -35,29 +29,27 @@
 					'Dossier.dtdemrsa' => array(
 						'label' => __m( 'Dossier.dtdemrsa' ),
 					),
-					'Detailcalculdroitrsa.natpf_activite' => array(
-						'label' => __m( 'Detailcalculdroitrsa.natpf_activite' ),
-					),
-					'Detailcalculdroitrsa.natpf_majore' => array(
-						'label' => __m( 'Detailcalculdroitrsa.natpf_majore' ),
-					),
-					'Detailcalculdroitrsa.natpf_socle' => array(
-						'label' => __m( 'Detailcalculdroitrsa.natpf_socle' ),
+					'Detaildroitrsa.natpf' => array(
+						'label' => __m( 'Detaildroitrsa.natpf' ),
+						'value' => '#Detaildroitrsa.natpf,ucfirst#'
 					),
 					'Situationdossierrsa.etatdosrsa' => array(
 						'label' => __m( 'Situationdossierrsa.etatdosrsa' ),
 					),
 					'Cer93.cmu' => array(
 						'label' => __m( 'Cer93.cmu' ),
+						'class' => 'boolean #Cer93.cmu#',
 					),
 					'Cer93.cmuc' => array(
 						'label' => __m( 'Cer93.cmuc' ),
+						'class' => 'boolean #Cer93.cmuc#',
 					),
 					'Historiqueetatpe.identifiantpe' => array(
 						'label' => __m( 'Historiqueetatpe.identifiantpe' ),
 					),
 					'Calculdroitrsa.toppersdrodevorsa' => array(
 						'label' => __m( 'Calculdroitrsa.toppersdrodevorsa' ),
+						'type' => 'boolean'
 					),
 					'Typeorient.lib_type_orient' => array(
 						'label' => __m( 'Typeorient.lib_type_orient' ),
@@ -1141,27 +1133,20 @@
 	// -------------------------------------------------------------------------
 
 	initSortableTables();
-// TODO: début factoriser
-TableKit.Sortable.addSortType(
-	new TableKit.Sortable.Type(
-		'date-fr',
-		{
-			'pattern': /^([0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4})( à [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}){0,1}$/,
-			'normal': function(v) {
-				return Webrsa.Date.fromText(v);
-			}
-		}
-	)
-);
-TableKit.Sortable.detectors = $A($w('date-fr date-iso date date-eu date-au time currency datasize number casesensitivetext text'));
-// TODO: fin factoriser
+
 	makeTabbed( 'tabbedWrapper', 2 );
 
 	// Au chargement de la page, on trie les tableaux par date décroissant
 	document.observe( "dom:loaded", function() {
-		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexActions', 3, -1 );
-		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexFichiersmodules', 4, -1 );
-		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexImpressions', 3, -1 );
+		if( null !== $( 'TableAccompagnementsbeneficiairesIndexActions' ) ) {
+			TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexActions', 3, -1 );
+		}
+		if( null !== $( 'TableAccompagnementsbeneficiairesIndexFichiersmodules' ) ) {
+			TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexFichiersmodules', 4, -1 );
+		}
+		if( null !== $( 'TableAccompagnementsbeneficiairesIndexImpressions' ) ) {
+			TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexImpressions', 3, -1 );
+		}
 	} );
 	//]]>
 </script>

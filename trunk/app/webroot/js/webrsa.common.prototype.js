@@ -2405,6 +2405,20 @@ function initSortableTables( className ) {
 	TableKit.options.ascendingClass = 'asc';
 	TableKit.options.sortableSelector = ['table.' + className];
 
+	TableKit.Sortable.addSortType(
+		new TableKit.Sortable.Type(
+			'date-fr',
+			{
+				'pattern': Webrsa.Regexps.datetime(),
+				'normal': function(v) {
+					return Webrsa.Date.fromText(v);
+				}
+			}
+		)
+	);
+
+	TableKit.Sortable.detectors = $A($w('date-fr date-iso date date-eu date-au time currency datasize number casesensitivetext text'));
+
 	$$( 'table.' + className + ' thead th' ).each( function ( th ) {
 		if( $(th).hasClassName( 'actions' ) ) {
 			$(th).addClassName( 'nosort' );

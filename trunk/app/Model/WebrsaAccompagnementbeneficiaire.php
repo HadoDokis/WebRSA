@@ -56,16 +56,17 @@
 				$query = array(
 					'fields' => array(
 						// -----------------------------------------------------
+						// 0. Titre de la page
+						'Personne.qual',
+						'Personne.nom',
+						'INITCAP( "Personne"."prenom" ) AS "Personne__prenom"',
 						// I. Bloc "Droits"
 						// Date de demande RMI
 						'Dossier.dtdemrmi',
 						// Date de demande RSA
 						'Dossier.dtdemrsa',
-						// Type de RSA (champ composé)
-						'Detailcalculdroitrsa.natpf_activite',
-						'Detailcalculdroitrsa.natpf_majore',
-						'Detailcalculdroitrsa.natpf_socle',
-						//'Detailcalculdroitrsa.natpf_jeune', // TODO ?
+						// Nature de prestations
+						$this->Personne->Foyer->Dossier->Detaildroitrsa->vfNatpf().' AS "Detaildroitrsa__natpf"',
 						//Etat du droit
 						'Situationdossierrsa.etatdosrsa',
 						// CMU: Oui/Non/Inconnu
@@ -124,8 +125,20 @@
 						'( CASE WHEN "DspRev"."id" IS NOT NULL THEN "DspRev"."topmoyloco" = \'1\' WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."topmoyloco" = \'1\' ELSE NULL END ) AS "Accompagnement__topmoyloco"',
 						// Permis (Permis B ou autre à partir de la DSP)
 						'( CASE
-							WHEN "DspRev"."id" IS NOT NULL THEN ( ( "DspRev"."toppermicondub" IS NOT NULL AND "DspRev"."toppermicondub" = \'1\' ) OR ( "DspRev"."topautrpermicondu" IS NOT NULL AND "DspRev"."topautrpermicondu" = \'1\' ) )
-							WHEN "Dsp"."id" IS NOT NULL THEN ( ( "Dsp"."toppermicondub" IS NOT NULL AND "Dsp"."toppermicondub" = \'1\' ) OR ( "Dsp"."topautrpermicondu" IS NOT NULL AND "Dsp"."topautrpermicondu" = \'1\' ) )
+							WHEN "DspRev"."id" IS NOT NULL THEN (
+								ARRAY_TO_STRING( ARRAY[
+									( CASE WHEN "DspRev"."toppermicondub" = \'1\' THEN \'Permis B\' ELSE NULL END ),
+									( CASE WHEN "DspRev"."topautrpermicondu" = \'1\' AND "DspRev"."libautrpermicondu" IS NULL THEN \'Permis autre catégorie\' ELSE NULL END ),
+									( CASE WHEN "DspRev"."topautrpermicondu" = \'1\' AND "DspRev"."libautrpermicondu" IS NOT NULL THEN \'Permis \' || "DspRev"."libautrpermicondu" ELSE NULL END )
+								], \', \' )
+							)
+							WHEN "Dsp"."id" IS NOT NULL THEN (
+								ARRAY_TO_STRING( ARRAY[
+									( CASE WHEN "Dsp"."toppermicondub" = \'1\' THEN \'Permis B\' ELSE NULL END ),
+									( CASE WHEN "Dsp"."topautrpermicondu" = \'1\' AND "Dsp"."libautrpermicondu" IS NULL THEN \'Permis autre catégorie\' ELSE NULL END ),
+									( CASE WHEN "Dsp"."topautrpermicondu" = \'1\' AND "Dsp"."libautrpermicondu" IS NOT NULL THEN \'Permis \' || "Dsp"."libautrpermicondu" ELSE NULL END )
+								], \', \' )
+							)
 							ELSE NULL
 						END ) AS "Accompagnement__toppermicondu"',
 						// -----------------------------------------------------
@@ -487,8 +500,7 @@
 		public function options() {
 			$result = array(
 				'Accompagnement' => array(
-					'topmoyloco' => $this->Personne->Dsp->enum( 'topmoyloco' ),
-					'toppermicondu' => $this->Personne->Dsp->enum( 'toppermicondu' )
+					'topmoyloco' => $this->Personne->Dsp->enum( 'topmoyloco' )
 				),
 				// Tableau "Actions"
 				'Action' => array(
@@ -509,11 +521,8 @@
 				'Cer93' => array(
 					'nivetu' => $this->Personne->Contratinsertion->Cer93->enum( 'nivetu' ),
 					'positioncer' => $this->Personne->Contratinsertion->Cer93->enum( 'positioncer' ),
-				),
-				'Detailcalculdroitrsa' => array(
-					'natpf_activite' => array( 0 => 'Non', 1 => 'Oui' ),
-					'natpf_majore' => array( 0 => 'Non', 1 => 'Oui' ),
-					'natpf_socle' => array( 0 => 'Non', 1 => 'Oui' )
+					'cmu' => $this->Personne->Contratinsertion->Cer93->enum( 'cmu' ),
+					'cmuc' => $this->Personne->Contratinsertion->Cer93->enum( 'cmuc' )
 				),
 				'Dsp' => array(
 					'nivetu' => $this->Personne->Dsp->enum( 'nivetu' )

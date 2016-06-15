@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Detaildroitrsa.
 	 *
@@ -113,7 +113,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		/**
 		*	Vérfication et envoi d'un booleen si le dossier est un RSA majoré ou non
 		*	On passe en paramètre l'alias du modèle et du champ
@@ -129,7 +129,7 @@
 			)';
 		}
 
-				
+
 		/**
 		*	Vérfication et envoi d'un booleen si le dossier est un RSA socle ou non
 		*	On passe en paramètre l'alias du modèle et du champ
@@ -143,6 +143,35 @@
 						detailsdroitsrsa.dossier_id = '.$aliasDossierId.'
 						AND detailscalculsdroitsrsa.natpf IN ( \'RSB\', \'RSD\', \'RSI\', \'RSU\' )
 			)';
+		}
+
+		/**
+		 * Retourne une sous-requête permettant d'obtenir en une seule chaîne de
+		 * caractères la liste des différentes natures de prestations.
+		 *
+		 * @see Detailcalculdroitrsa::$natspfs
+		 *
+		 * @return string
+		 */
+		public function vfNatpf() {
+			$return = array();
+
+			foreach( $this->Detailcalculdroitrsa->natspfs as $categorie => $natspfs ) {
+				$query = array(
+					'fields' => array(
+						"{$this->Detailcalculdroitrsa->alias}.{$this->Detailcalculdroitrsa->primaryKey}"
+					),
+					'conditions' => array(
+						'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id',
+						"Detailcalculdroitrsa.natpf" => $natspfs
+					)
+				);
+				$sql = $this->sq( $query );
+				$return[] = "( CASE WHEN EXISTS( {$sql} ) THEN '{$categorie}' ELSE NULL END )";
+			}
+
+			return "ARRAY_TO_STRING( ARRAY[".implode( ', ', $return )."], ', ' )";
+
 		}
 	}
 ?>
