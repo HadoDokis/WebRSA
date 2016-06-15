@@ -16,14 +16,8 @@ msgstr "Date de demande RMI"
 msgid "Dossier.dtdemrsa"
 msgstr "Date de demande RSA"
 
-msgid "Detailcalculdroitrsa.natpf_activite"
-msgstr "Type de RSA (RSA activité)"
-
-msgid "Detailcalculdroitrsa.natpf_majore"
-msgstr "Type de RSA (RSA majoré)"
-
-msgid "Detailcalculdroitrsa.natpf_socle"
-msgstr "Type de RSA (RSA socle)"
+msgid "Detaildroitrsa.natpf"
+msgstr "Nature de prestations"
 
 msgid "Situationdossierrsa.etatdosrsa"
 msgstr "Etat du droit"
@@ -47,16 +41,16 @@ msgid "Structurereferente.lib_struc"
 msgstr "Structure référente"
 
 msgid "Cer93.nivetu"
-msgstr "Niveau de formation (à partir du CER)"
+msgstr "Niveau de formation"
 
 msgid "DspRev.nivetu"
-msgstr "Niveau de formation (à partir des DSP MAJ)"
+msgstr "Niveau de formation"
 
 msgid "Questionnaired1pdv93.nivetu"
-msgstr "Niveau de formation (à partir du D1)"
+msgstr "Niveau de formation"
 
 msgid "Dsp.nivetu"
-msgstr "Niveau de formation (à partir des DSP)"
+msgstr "Niveau de formation"
 
 msgid "Diplomecer93.name"
 msgstr "Diplôme"

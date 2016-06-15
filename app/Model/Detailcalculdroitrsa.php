@@ -52,6 +52,20 @@
 		);
 
 		/**
+		 * Liste complète des catégories de natures de prestations.
+		 *
+		 * @see Detaildroitrsa::vfNatpf()
+		 *
+		 * @var array
+		 */
+		public $natspfs = array(
+			'socle' => array( 'RSD', 'RSI', 'RSU', 'RSB', 'RSJ' ),
+			'activité' => array( 'RCD', 'RCI', 'RCU', 'RCB', 'RCJ' ),
+			'majoré' => array( 'RSI', 'RCI' ),
+			'jeune' => array( 'RCJ', 'RSJ' ),
+		);
+
+		/**
 		 * Surcharge du constructeur permettant de remplir les champs virtuels
 		 * natpf_{$categorie} qui sont des catégories de natures de prestations.
 		 *
