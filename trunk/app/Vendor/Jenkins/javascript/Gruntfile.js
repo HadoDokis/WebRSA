@@ -4,12 +4,22 @@ module.exports = function( grunt ) {
 
 	var pkg = grunt.file.readJSON( 'package.json' ),
 		initConfig = { pkg: pkg },
-		webrsa_app = '/home/atma/workspace/webrsa/app/',
+		//webrsa_app = '/home/atma/workspace/webrsa/app/', // FIXME
+		webrsa_app = '/home/cbuffin/www/webrsa/WebRSA-trunk/app/', // FIXME
 		src = {
 			validate: webrsa_app + 'webroot/js/webrsa.validate*.js',
+			webrsa: webrsa_app + 'webroot/js/webrsa.custom.prototype.js',
 			specs: webrsa_app + 'Vendor/javascript/Test/*.js',
-			all: [ webrsa_app + 'webroot/js/webrsa.validate*.js', webrsa_app + 'Vendor/javascript/Test/*.js' ],
-			nospec: [ webrsa_app + 'webroot/js/webrsa.validate*.js' ]
+			specs_webrsa: webrsa_app + 'Vendor/Jenkins/javascript/Test/webrsaSpec.js',
+			all: [
+				webrsa_app + 'webroot/js/webrsa.custom.prototype.js',
+				webrsa_app + 'webroot/js/webrsa.validate*.js',
+				webrsa_app + 'Vendor/javascript/Test/*.js'
+			],
+			nospec: [
+				webrsa_app + 'webroot/js/webrsa.custom.prototype.js',
+				webrsa_app + 'webroot/js/webrsa.validate*.js'
+			]
 		};
 
 	// -------------------------------------------------------------------------
@@ -44,7 +54,12 @@ module.exports = function( grunt ) {
 			files: {
 				src: src.all
 			}
-		}
+		},
+		webrsa: {
+			files: {
+				src: src.webrsa
+			}
+		},
 	};
 
 	initConfig.jasmine = {
@@ -52,6 +67,12 @@ module.exports = function( grunt ) {
 			src: src.all,
 			options: {
 				specs: src.specs
+			}
+		},
+		webrsa: {
+			src: src.webrsa,
+			options: {
+				specs: src.specs_webrsa
 			}
 		},
 		quality: {
@@ -79,6 +100,9 @@ module.exports = function( grunt ) {
 		all: {
 			src: src.all
 		},
+		webrsa: {
+			src: src.webrsa
+		},
 		quality: {
 			src: src.all,
 			options: {
@@ -92,6 +116,23 @@ module.exports = function( grunt ) {
 	initConfig.jslint = {
 		all: {
 			src: src.all,
+			directives: {
+				white: true,
+				browser: true,
+				plusplus: true,
+				nomen: true,
+				regexp: true,
+				continue: true,
+				sloppy: false
+			},
+			options: {
+				edition: 'latest',
+				errorsOnly: true,
+				failOnError: true
+			}
+		},
+		webrsa: {
+			src: src.webrsa,
 			directives: {
 				white: true,
 				browser: true,
@@ -140,6 +181,9 @@ module.exports = function( grunt ) {
 		},
 		all: {
 			src: [ src.all ]
+		},
+		webrsa: {
+			src: [ src.webrsa ]
 		},
 		quality: {
 			src: [ src.all ],

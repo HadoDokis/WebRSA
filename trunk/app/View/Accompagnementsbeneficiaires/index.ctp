@@ -4,6 +4,7 @@
 		echo $this->Html->script( 'prototype.tabs.js' );
 		echo $this->Html->script( 'prototype.fabtabulous.js' );
 		echo $this->Html->script( 'prototype.tablekit.js' );
+		echo $this->Html->script( 'webrsa.custom.prototype.js' );
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
@@ -185,49 +186,49 @@
 					//----------------------------------------------------------
 					'Action.date' => array( // Lorsqu'on n'a pas de date
 						'label' => __m( 'Action.date' ),
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => '!in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel", "Contratinsertion", "Ficheprescription93", "Questionnaired1pdv93", "Questionnaired2pdv93", "Entretien", "DspRev" ) )', // FIXME
 						'condition_group' => 'date',
 					),
 					'Rendezvous.daterdv' => array(
 						'type' => 'date',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => 'in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel" ) )',
 						'condition_group' => 'date',
 					),
 					'Contratinsertion.created' => array(
 						'type' => 'date',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => '"#Action.name#" == "Contratinsertion"',
 						'condition_group' => 'date',
 					),
 					'Ficheprescription93.created' => array(
 						'type' => 'date',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => '"#Action.name#" == "Ficheprescription93"',
 						'condition_group' => 'date',
 					),
 					'Questionnaired1pdv93.created' => array(
 						'type' => 'date',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => '"#Action.name#" == "Questionnaired1pdv93"',
 						'condition_group' => 'date',
 					),
 					'Questionnaired2pdv93.created' => array(
 						'type' => 'date',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => '"#Action.name#" == "Questionnaired2pdv93"',
 						'condition_group' => 'date',
 					),
 					'Entretien.dateentretien' => array(
 						'type' => 'date',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => '"#Action.name#" == "Entretien"',
 						'condition_group' => 'date',
 					),
 					'DspRev.created' => array(
 						'type' => 'date',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 						'condition' => '"#Action.name#" == "DspRev"',
 						'condition_group' => 'date',
 					),
@@ -503,7 +504,7 @@
 					),
 					'Fichiermodule.created' => array(
 						'label' => 'Créé le',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					'/#Fichiermodule.controller#/download/#Fichiermodule.id#' => array(
 						'msgid' => 'Télécharger',
@@ -565,8 +566,7 @@
 				array(
 					'Impression.name' => array(
 						'label' => 'Module',
-						'class' => '#Impression.name#',
-						'class' => 'sortable',
+						'class' => 'sortable #Impression.name#',
 					),
 					'Impression.type' => array(
 						'label' => 'Type',
@@ -579,43 +579,43 @@
 						'label' => 'Créé le',
 						'condition' => '"#Impression.name#" == "Apre"',
 						'condition_group' => 'created',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					'Commissionep.dateseance' => array(
 						'label' => 'Créé le',
 						'condition' => '"#Impression.name#" == "Commissionep"',
 						'condition_group' => 'created',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					'Contratinsertion.created' => array(
 						'label' => 'Créé le',
 						'condition' => '"#Impression.name#" == "Contratinsertion"',
 						'condition_group' => 'created',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					'Ficheprescription93.created' => array(
 						'label' => 'Créé le',
 						'condition' => '"#Impression.name#" == "Ficheprescription93"',
 						'condition_group' => 'created',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					'Orientstruct.date_valid' => array(
 						'label' => 'Créé le',
 						'condition' => '"#Impression.name#" == "Orientstruct"',
 						'condition_group' => 'created',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					'Relancenonrespectsanctionep93.daterelance' => array(
 						'label' => 'Créé le',
 						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
 						'condition_group' => 'created',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					'Rendezvous.created' => array(
 						'label' => 'Créé le',
 						'condition' => '"#Impression.name#" == "Rendezvous"',
 						'condition_group' => 'created',
-						'class' => 'sortable date filter_date date-au',
+						'class' => 'sortable date-fr filter_date date',
 					),
 					// ---------------------------------------------------------
 					// Lien impression
@@ -810,12 +810,18 @@
 	function conditionDateRange( checkbox, from, to, row ) {
 		var checked = $(checkbox).checked, text, value;
 
-		from = dateFromCakeSelects(from);
-		to = dateFromCakeSelects(to);
+		// ... à 00:00:00
+		from = Webrsa.Date.fromCakeSelects(from);
+
+		// ... à 23:59:59
+		to = Webrsa.Date.fromCakeSelects(to);
+		to.setHours( 23 );
+		to.setMinutes( 59 );
+		to.setSeconds( 59 );
 
 		try {
 			text = $(row).select( 'td.date.filter_date' )[0].innerHTML;
-			value = dateFromText(text);
+			value = Webrsa.Date.fromText(text);
 
 		return checked === false
 			|| value === null
@@ -1135,12 +1141,27 @@
 	// -------------------------------------------------------------------------
 
 	initSortableTables();
-
+// TODO: début factoriser
+TableKit.Sortable.addSortType(
+	new TableKit.Sortable.Type(
+		'date-fr',
+		{
+			'pattern': /^([0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4})( à [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}){0,1}$/,
+			'normal': function(v) {
+				return Webrsa.Date.fromText(v);
+			}
+		}
+	)
+);
+TableKit.Sortable.detectors = $A($w('date-fr date-iso date date-eu date-au time currency datasize number casesensitivetext text'));
+// TODO: fin factoriser
 	makeTabbed( 'tabbedWrapper', 2 );
 
-	// FIXME
+	// Au chargement de la page, on trie les tableaux par date décroissant
 	document.observe( "dom:loaded", function() {
 		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexActions', 3, -1 );
+		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexFichiersmodules', 4, -1 );
+		TableKit.Sortable.sort( 'TableAccompagnementsbeneficiairesIndexImpressions', 3, -1 );
 	} );
 	//]]>
 </script>
