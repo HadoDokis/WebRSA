@@ -220,6 +220,7 @@ function __minify() {
 	"$JSDIR/prototype.livepipe.js" \
 	"$JSDIR/prototype.tabs.js" \
 	"$JSDIR/tooltip.prototype.js" \
+	"$JSDIR/webrsa.custom.prototype.js" \
 	"$JSDIR/webrsa.common.prototype.js" \
 	"$JSDIR/prototype.event.simulate.js" \
 	"$JSDIR/dependantselect.js" \
