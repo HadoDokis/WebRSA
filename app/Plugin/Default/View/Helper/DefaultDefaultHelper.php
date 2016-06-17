@@ -224,7 +224,7 @@
 			$tag = ( isset( $params['tag'] ) ? $params['tag'] : 'h1' );
 			$msgid = ( isset( $params['msgid'] ) ? $params['msgid'] : '/'.Inflector::camelize( $this->request->params['controller'] ).'/'.$this->request->params['action'].'/:heading' );
 			unset( $params['tag'], $params['msgid'] );
-			
+
 			if( isset( $params['domain'] ) ) {
 				$title_for_layout = DefaultUtility::evaluate( $data, __d( $params['domain'], $msgid ) );
 				unset( $params['domain'] );
@@ -347,6 +347,38 @@
 		 */
 		public function csv( array $data, array $fields, array $params = array() ) {
 			return $this->DefaultCsv->render( $data, $fields, $params );
+		}
+
+		/**
+		 * Retourne une liste de messages, traduits sur un domaine au sein d'une
+		 * balise HTML comportant une classe paramétrable.
+		 *
+		 * @param array $messages En clé le message à traduire, en valeur la classe
+		 *	CSS à ajouter en plus de la classe message.
+		 * @param array $params Des paramètres supplémentaires. La clé "domain"
+		 *	permet de spécifier le domaine de traduction des messages (par défaut,
+		 *	c'est le nom du contrôleur), la clé tag permet de spécifier la balise
+		 *  employée pour le message (par défaut, "p").
+		 * @return string
+		 */
+		public function messages( array $messages, array $params = array() ) {
+			$params += array(
+				'domain' => $this->request->params['controller'],
+				'tag' => 'p'
+			);
+			$result = null;
+
+			if( !empty( $messages ) ) {
+				foreach( $messages as $message => $class ) {
+					$result .= $this->DefaultHtml->tag(
+						$params['tag'],
+						__d( $params['domain'], $message ),
+						array( 'class' => "message {$class}" )
+					);
+				}
+			}
+
+			return $result;
 		}
 	}
 ?>
