@@ -52,13 +52,8 @@
     <?php endif;?>
 
 <?php
-
 	// A-t'on des messages à afficher à l'utilisateur ?
-	if( !empty( $messages ) ) {
-		foreach( $messages as $message => $class ) {
-			echo $this->Html->tag( 'p', __d( 'questionnairesd1pdvs93', $message ), array( 'class' => "message {$class}" ) );
-		}
-	}
+	echo $this->Default3->messages( $messages );
 
 	echo $this->Default2->index(
 		$questionnairesd1pdvs93,
