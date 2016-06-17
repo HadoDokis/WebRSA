@@ -516,5 +516,34 @@
 ';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la méthode DefaultDefaultHelper::messages()
+		 */
+		public function testMessages() {
+			// 1. S'il n'y a aucun message
+			$result = $this->DefaultDefault->messages( array() );
+			$this->assertNull( $result );
+
+			// 2. S'il y a un message (une notice)
+			$result = $this->DefaultDefault->messages( array( 'Foo' => 'notice' ) );
+			$expected = '<p class="message notice">Foo</p>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 2. S'il y a plusieurs messages
+			$result = $this->DefaultDefault->messages( array( 'Foo' => 'notice', 'Bar' => 'error', 'Baz' => 'warning' ) );
+			$expected = '<p class="message notice">Foo</p><p class="message error">Bar</p><p class="message warning">Baz</p>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 3. En spécifiant le tag
+			$result = $this->DefaultDefault->messages( array( 'Foo' => 'notice', 'Bar' => 'error' ), array( 'tag' => 'div' ) );
+			$expected = '<div class="message notice">Foo</div><div class="message error">Bar</div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 4. En spécifiant le domaine
+			$result = $this->DefaultDefault->messages( array( 'Instantanedonneesfp93.benef_etatdosrsa_ouverts' => 'notice' ), array( 'domain' => 'fichesprescriptions93' ) );
+			$expected = '<p class="message notice">Cet allocataire n\'est actuellement pas dans un dossier en état ouvert.</p>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
 	}
 ?>
