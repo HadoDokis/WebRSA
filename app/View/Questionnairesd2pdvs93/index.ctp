@@ -15,11 +15,7 @@
 	);
 
 	// A-t'on des messages à afficher à l'utilisateur ?
-	if( !empty( $messages ) ) {
-		foreach( $messages as $message => $class ) {
-			echo $this->Html->tag( 'p', __d( 'questionnairesd2pdvs93', $message ), array( 'class' => "message {$class}" ) );
-		}
-	}
+	echo $this->Default3->messages( $messages );
 
 	echo $this->Default3->index(
 		$questionnairesd2pdvs93,
