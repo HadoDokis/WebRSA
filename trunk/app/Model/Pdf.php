@@ -129,17 +129,18 @@
 			$alias = Inflector::underscore( $this->alias );
 
 			$sq = $this->sq(
-					array(
-						'fields' => array(
-							"COUNT( {$alias}.id )"
-						),
-						'alias' => $alias,
-						'conditions' => array(
-							"{$alias}.modele" => $Model->alias,
-							"{$alias}.fk_value = {$Model->alias}.{$Model->primaryKey}"
-						)
+				array(
+					'fields' => array(
+						"{$alias}.id"
+					),
+					'alias' => $alias,
+					'conditions' => array(
+						"{$alias}.modele" => $Model->alias,
+						"{$alias}.fk_value = {$Model->alias}.{$Model->primaryKey}"
 					)
+				)
 			);
+			$sq = "EXISTS( {$sq} )";
 
 			if( !is_null( $fieldName ) ) {
 				$sq = "( {$sq} ) AS \"{$Model->alias}__{$fieldName}\"";
