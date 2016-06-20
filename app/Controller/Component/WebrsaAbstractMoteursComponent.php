@@ -402,26 +402,51 @@
 
 		protected function _queryOrder( array $query, array $params ) {
 			$Controller = $this->_Collection->getController();
-
-			// Si le tri est configuré pour mon action
-			// FIXME: n'a pas l'air de fonctionner...
-			$key = $this->_configureKey( 'query.order', $params);
-			$order = Configure::read( $key );
-			if( !empty( $order ) ) {
-				$query['order'] = $order;
+			
+			// Met les clefs sort et direction dans le query['order'] et les rends invisible pour le paginateur
+			$sortCol = false;
+			$toSave = array('sort', 'direction');
+			foreach ($toSave as $saveName) {
+				$$saveName = Hash::get($Controller->request->params, 'named.'.$saveName);
+				$Controller->request->params = Hash::remove(
+					$Controller->request->params,
+					'named.'.$saveName
+				);
+				
+				if ($$saveName !== null) {
+					$sortCol = true;
+					$Controller->request->params['named']['saved_'.$saveName] = $$saveName;
+				}
 			}
-			else if( $order === array() ) {
-				unset( $query['order'] );
-			}
-
-			// INFO: propre à l'export CSV et aux pages en GET
-			$sort = Hash::get( $Controller->request->params, 'named.sort' );
-			$direction = Hash::get( $Controller->request->params, 'named.direction' );
-			if( !empty( $sort ) && !empty( $direction ) ) {
-				$query['order'] = "{$sort} {$direction}";
+			$Controller->request->params['named']['saved_modelName'] = $params['modelName'];
+			
+			// Si un order existe dans l'url, on l'utilise, sinon on regarde dans la conf
+			$query['order'] = $sortCol ? array($sort => $direction) : (array)Configure::read($this->_configureKey('query.order', $params));
+			if (!isset($query['order'][$params['modelName'].'.id'])) {
+				$query['order'][$params['modelName'].'.id'] = 'DESC';
 			}
 
 			return $query;
+		}
+		
+		/**
+		 * Restitution de l'order sauvegardé
+		 * 
+		 * @param Controller $controller
+		 */
+		public function beforeRender(Controller $controller) {
+			if (isset($controller->request->params['named']['saved_sort'])) {
+				$sort = $controller->request->params['named']['saved_sort'];
+				$direction = $controller->request->params['named']['saved_direction'];
+				$order = array($sort => $direction);
+				
+				$controller->request->params['paging'][$controller->request->params['named']['saved_modelName']]['order'] = $order;
+				$controller->request->params['paging'][$controller->request->params['named']['saved_modelName']]['options'] = compact(
+					'sort', 'direction', 'order'
+				);
+			}
+			
+			return parent::beforeRender($controller);
 		}
 
 		protected function _query( array $filters, array $params ) {
