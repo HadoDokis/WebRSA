@@ -309,7 +309,8 @@
 						'class' => 'view',
 						'msgid' => 'Voir',
 						'condition' => 'in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ) )',
-						'condition_group' => 'view'
+						'condition_group' => 'view',
+						'disabled' => '"#/Rendezvous/view#" != true'
 					),
 					'/Cers93/view/#Contratinsertion.id#' => array(
 						'class' => 'view',
@@ -349,7 +350,8 @@
 						'class' => 'view',
 						'msgid' => 'Voir',
 						'condition' => '"#Action.name#" == "Entretien"',
-						'condition_group' => 'view'
+						'condition_group' => 'view',
+						'disabled' => '"#/Entretiens/view#" != true'
 					),
 					'/#Action.view#' => array(
 						'class' => 'view',
@@ -365,7 +367,8 @@
 						'class' => 'edit',
 						'msgid' => 'Modifier',
 						'condition' => 'in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ) )',
-						'condition_group' => 'edit'
+						'condition_group' => 'edit',
+						'disabled' => '"#/Rendezvous/edit#" != true'
 					),
 					'/Cers93/edit/#Contratinsertion.id#' => array(
 						'class' => 'edit',
@@ -377,9 +380,10 @@
 						'class' => 'edit',
 						'msgid' => 'Modifier',
 						'condition' => '"#Action.name#" == "Ficheprescription93"',
-						'condition_group' => 'edit'
+						'condition_group' => 'edit',
+						'disabled' => '"#/Fichesprescriptions93/edit#" != true'
 					),
-					// FIXME: pas de modification pour le questionnaire D1
+					// INFO: pas de modification pour le questionnaire D1
 					'/Questionnairesd1pdvs93/edit/#Questionnaired1pdv93.id#' => array(
 						'class' => 'edit',
 						'msgid' => 'Modifier',
@@ -403,7 +407,8 @@
 						'class' => 'edit',
 						'msgid' => 'Modifier',
 						'condition' => '"#Action.name#" == "Entretien"',
-						'condition_group' => 'edit'
+						'condition_group' => 'edit',
+						'disabled' => '"#/Entretiens/edit#" != true'
 					),
 					'/#Action.edit#' => array(
 						'class' => 'edit',
@@ -442,6 +447,7 @@
 					)
 				)
 			);
+			debug( $actions );
 		?>
 	</div>
 	<div id="fichiersmodules">
@@ -518,6 +524,7 @@
 					'id' => 'TableAccompagnementsbeneficiairesIndexFichiersmodules'
 				)
 			);
+			debug($fichiersmodules);
 		?>
 	</div>
 	<div id="impressions">
@@ -647,6 +654,7 @@
 						'class' => 'impression',
 						'condition' => '"#Impression.name#" == "Ficheprescription93"',
 						'condition_group' => 'impression',
+						'disabled' => '"#/Fichesprescriptions93/impression#" != true'
 					),
 					'/Orientsstructs/impression/#Orientstruct.id#' => array(
 						'msgid' => 'Imprimer',
@@ -693,6 +701,7 @@
 						'disabled' => true,
 						'condition' => '"#Impression.name#" == "Ficheprescription93"',
 						'condition_group' => 'view',
+						'disabled' => '"#/Fichesprescriptions93/view#" != true'
 					),
 					'/Orientsstructs/view/#Orientstruct.id#' => array(
 						'msgid' => 'Voir',
@@ -766,6 +775,7 @@
 					'id' => 'TableAccompagnementsbeneficiairesIndexImpressions'
 				)
 			);
+			debug($impressions);
 		?>
 </div>
 <script type="text/javascript">

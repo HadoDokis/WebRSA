@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AppController', 'Controller' );
+
 	/**
 	 * La classe AccompagnementsbeneficiairesController ...
 	 *
@@ -64,6 +65,18 @@
 		public $commeDroit = array(
 			'fichiersmodules' => 'Accompagnementsbeneficiaires:index',
 			'impressions' => 'Accompagnementsbeneficiaires:index'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'fichiersmodules' => 'read',
+			'index' => 'read',
+			'impressions' => 'read'
 		);
 
 		/**
