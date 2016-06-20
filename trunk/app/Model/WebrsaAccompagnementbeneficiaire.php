@@ -7,6 +7,8 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'WebrsaLogicAccessInterface', 'Model/Interface' );
+
 	/**
 	 * La classe WebrsaAccompagnementbeneficiaire ...
 	 *
@@ -48,6 +50,12 @@
 			'Personne'
 		);
 
+		/**
+		 * Retourne le querydata contenant les détails du bénéficiaire.
+		 *
+		 * @param array $conditions
+		 * @return array
+		 */
 		public function qdDetails( array $conditions = array() ) {
 			$cacheKey = $this->useDbConfig.'_'.$this->alias.'_'.__FUNCTION__;
 			$query = Cache::read( $cacheKey );
@@ -253,8 +261,211 @@
 		}
 
 		/**
-		 * Retourne la "configuration" (composée de query) normalisée du tableau
-		 * "Actions" de l'accompagnement du bénéficiaire.
+		 * Complète les résultats au moyen des classes de logique d'accès métier
+		 * (voir les clés webrsaModelName et webrsaAccessName).
+		 *
+		 * @param array $query
+		 * @return array
+		 */
+		protected function _completeConfigAccess( array $query ) {
+			$query['webrsaModelName'] = $query['webrsaAccessName'] = false;
+
+			$webrsaModelName = 'Webrsa'.$query['modelName'];
+			// INFO: c'est compliqué, mais sinon on n'a pas la bonne mise au pluriel de PersonneReferent
+			$webrsaAccessName = 'WebrsaAccess'.Inflector::camelize( Inflector::pluralize( Inflector::underscore( $query['modelName'] ) ) );
+
+			App::uses( $webrsaModelName, 'Model' );
+			$WebrsaModel = ClassRegistry::init( $webrsaModelName );
+
+			if( $WebrsaModel instanceof WebrsaLogicAccessInterface ) {
+				$query['webrsaModelName'] = $webrsaModelName;
+				$query['webrsaAccessName'] = $webrsaAccessName;
+
+				$query = $WebrsaModel->completeVirtualFieldsForAccess( $query );
+			}
+
+			return $query;
+		}
+
+		/**
+		 * Lecture de la "configuration" pour le tableau d'actions.
+		 *
+		 * @return array
+		 */
+		protected function _readConfigActions() {
+			$config = array(
+				'Rendezvouscollectif' => array(
+					'modelName' => 'Rendezvous',
+					'fields' => array(
+						'Rendezvous.id',
+						'Rendezvous.daterdv',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Statutrdv.libelle',
+						'Rendezvous.thematiques_virgules',
+						'Rendezvous.commentairerdv'
+					),
+					'joins' => array(
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' ),
+						'Statutrdv' => array( 'type' => 'INNER' )
+					),
+					'conditions' => array(
+						'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.collectif_id' )
+					)
+				),
+				'Rendezvousindividuel' => array(
+					'modelName' => 'Rendezvous',
+					'fields' => array(
+						'Rendezvous.id',
+						'Rendezvous.daterdv',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Statutrdv.libelle',
+						'Rendezvous.thematiques_virgules',
+						'Rendezvous.commentairerdv'
+					),
+					'joins' => array(
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' ),
+						'Statutrdv' => array( 'type' => 'INNER' )
+					),
+					'conditions' => array(
+						'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.individuel_id' )
+					)
+				),
+				'Contratinsertion' => array(
+					'fields' => array(
+						'Contratinsertion.id',
+						'Contratinsertion.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Cer93.positioncer',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
+						'Cer93.duree',
+						'Cer93.sujets_virgules',
+						'Cer93.prevu'
+					),
+					'joins' => array(
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' ),
+						'Cer93' => array( 'type' => 'INNER' )
+					)
+				),
+				'Ficheprescription93' => array(
+					'fields' => array(
+						'Ficheprescription93.id',
+						'Ficheprescription93.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Ficheprescription93.statut',
+						'Categoriefp93.name',
+						'Thematiquefp93.name',
+						'Prestatairehorspdifp93.name',
+						'Prestatairefp93.name',
+					),
+					'joins' => array(
+						'Adresseprestatairefp93' => array(
+							'type' => 'LEFT OUTER',
+							'joins' => array(
+								'Prestatairefp93' => array(
+									'type' => 'LEFT OUTER',
+								)
+							)
+						),
+						'Filierefp93' => array(
+							'type' => 'LEFT OUTER',
+							'joins' => array(
+								'Categoriefp93' => array(
+									'type' => 'LEFT OUTER',
+									'joins' => array(
+										'Thematiquefp93' => array( 'type' => 'LEFT OUTER' )
+									)
+								),
+							)
+						),
+						'Prestatairehorspdifp93' => array(
+							'type' => 'LEFT OUTER'
+						),
+						'Referent' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Structurereferente' => array(
+									'type' => 'INNER'
+								)
+							)
+						),
+					),
+				),
+				'Questionnaired1pdv93' => array(
+					'fields' => array(
+						'Questionnaired1pdv93.id',
+						'Questionnaired1pdv93.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet'
+					),
+					'joins' => array(
+						'Rendezvous' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Structurereferente' => array( 'type' => 'INNER' ),
+								'Referent' => array( 'type' => 'LEFT OUTER' )
+							)
+						)
+					),
+				),
+				'Questionnaired2pdv93' => array(
+					'fields' => array(
+						'Questionnaired2pdv93.id',
+						'Questionnaired2pdv93.created',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Questionnaired2pdv93.situationaccompagnement',
+					),
+					'joins' => array(
+						'Questionnaired1pdv93' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Rendezvous' => array(
+									'type' => 'INNER',
+									'joins' => array(
+										'Structurereferente' => array( 'type' => 'INNER' ),
+										'Referent' => array( 'type' => 'LEFT OUTER' )
+									)
+								)
+							)
+						)
+					),
+				),
+				'DspRev' => array(
+					'fields' => array(
+						'DspRev.id',
+						'DspRev.personne_id',
+						'DspRev.created'
+					)
+				),
+				'Entretien' => array(
+					'fields' => array(
+						'Entretien.id',
+						'Entretien.dateentretien',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Objetentretien.name',
+					),
+					'joins' => array(
+						'Objetentretien' => array( 'type' => 'INNER' ),
+						'Structurereferente' => array( 'type' => 'INNER' ),
+						'Referent' => array( 'type' => 'LEFT OUTER' )
+					)
+				)
+			);
+
+			return $config;
+		}
+
+		/**
+		 * Retourne les queries normalisées utilisées pour le tableau "Actions".
 		 *
 		 * @return array
 		 */
@@ -263,175 +474,8 @@
 			$config = Cache::read( $cacheKey );
 
 			if( false === $config ) {
-				$config = array(
-					'Rendezvouscollectif' => array(
-						'modelName' => 'Rendezvous',
-						'fields' => array(
-							'Rendezvous.id',
-							'Rendezvous.daterdv',
-							'Structurereferente.lib_struc',
-							'Referent.nom_complet',
-							'Statutrdv.libelle',
-							'Rendezvous.thematiques_virgules',
-							'Rendezvous.commentairerdv'
-						),
-						'joins' => array(
-							'Structurereferente' => array( 'type' => 'INNER' ),
-							'Referent' => array( 'type' => 'LEFT OUTER' ),
-							'Statutrdv' => array( 'type' => 'INNER' )
-						),
-						'conditions' => array(
-							'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.collectif_id' )
-						)
-					),
-					'Rendezvousindividuel' => array(
-						'modelName' => 'Rendezvous',
-						'fields' => array(
-							'Rendezvous.id',
-							'Rendezvous.daterdv',
-							'Structurereferente.lib_struc',
-							'Referent.nom_complet',
-							'Statutrdv.libelle',
-							'Rendezvous.thematiques_virgules',
-							'Rendezvous.commentairerdv'
-						),
-						'joins' => array(
-							'Structurereferente' => array( 'type' => 'INNER' ),
-							'Referent' => array( 'type' => 'LEFT OUTER' ),
-							'Statutrdv' => array( 'type' => 'INNER' )
-						),
-						'conditions' => array(
-							'Rendezvous.typerdv_id' => Configure::read( 'Rendezvous.Typerdv.individuel_id' )
-						)
-					),
-					'Contratinsertion' => array(
-						'fields' => array(
-							'Contratinsertion.id',
-							'Contratinsertion.created',
-							'Structurereferente.lib_struc',
-							'Referent.nom_complet',
-							'Cer93.positioncer',
-							'Contratinsertion.dd_ci',
-							'Contratinsertion.df_ci',
-							'Cer93.duree',
-							'Cer93.sujets_virgules',
-							'Cer93.prevu'
-						),
-						'joins' => array(
-							'Structurereferente' => array( 'type' => 'INNER' ),
-							'Referent' => array( 'type' => 'LEFT OUTER' ),
-							'Cer93' => array( 'type' => 'INNER' )
-						)
-					),
-					'Ficheprescription93' => array(
-						'fields' => array(
-							'Ficheprescription93.id',
-							'Ficheprescription93.created',
-							'Structurereferente.lib_struc',
-							'Referent.nom_complet',
-							'Ficheprescription93.statut',
-							'Categoriefp93.name',
-							'Thematiquefp93.name',
-							'Prestatairehorspdifp93.name',
-							'Prestatairefp93.name',
-						),
-						'joins' => array(
-							'Adresseprestatairefp93' => array(
-								'type' => 'LEFT OUTER',
-								'joins' => array(
-									'Prestatairefp93' => array(
-										'type' => 'LEFT OUTER',
-									)
-								)
-							),
-							'Filierefp93' => array(
-								'type' => 'LEFT OUTER',
-								'joins' => array(
-									'Categoriefp93' => array(
-										'type' => 'LEFT OUTER',
-										'joins' => array(
-											'Thematiquefp93' => array( 'type' => 'LEFT OUTER' )
-										)
-									),
-								)
-							),
-							'Prestatairehorspdifp93' => array(
-								'type' => 'LEFT OUTER'
-							),
-							'Referent' => array(
-								'type' => 'INNER',
-								'joins' => array(
-									'Structurereferente' => array(
-										'type' => 'INNER'
-									)
-								)
-							),
-						),
-					),
-					'Questionnaired1pdv93' => array(
-						'fields' => array(
-							'Questionnaired1pdv93.id',
-							'Questionnaired1pdv93.created',
-							'Structurereferente.lib_struc',
-							'Referent.nom_complet'
-						),
-						'joins' => array(
-							'Rendezvous' => array(
-								'type' => 'INNER',
-								'joins' => array(
-									'Structurereferente' => array( 'type' => 'INNER' ),
-									'Referent' => array( 'type' => 'LEFT OUTER' )
-								)
-							)
-						),
-					),
-					'Questionnaired2pdv93' => array(
-						'fields' => array(
-							'Questionnaired2pdv93.id',
-							'Questionnaired2pdv93.created',
-							'Structurereferente.lib_struc',
-							'Referent.nom_complet',
-							'Questionnaired2pdv93.situationaccompagnement',
-						),
-						'joins' => array(
-							'Questionnaired1pdv93' => array(
-								'type' => 'INNER',
-								'joins' => array(
-									'Rendezvous' => array(
-										'type' => 'INNER',
-										'joins' => array(
-											'Structurereferente' => array( 'type' => 'INNER' ),
-											'Referent' => array( 'type' => 'LEFT OUTER' )
-										)
-									)
-								)
-							)
-						),
-					),
-					'DspRev' => array(
-						'fields' => array(
-							'DspRev.id',
-							'DspRev.personne_id',
-							'DspRev.created'
-						)
-					),
-					'Entretien' => array(
-						'fields' => array(
-							'Entretien.id',
-							'Entretien.dateentretien',
-							'Structurereferente.lib_struc',
-							'Referent.nom_complet',
-							'Objetentretien.name',
-						),
-						'joins' => array(
-							'Objetentretien' => array( 'type' => 'INNER' ),
-							'Structurereferente' => array( 'type' => 'INNER' ),
-							'Referent' => array( 'type' => 'LEFT OUTER' )
-						)
-					)
-				);
+				$config = $this->_readConfigActions();
 
-				// Normalisation
 				foreach( $config as $alias => $query ) {
 					$query = (array)$query;
 
@@ -444,8 +488,9 @@
 					}
 					$query['joins'] = $joins;
 
-					// Contain à false
 					$query['contain'] = false;
+
+					$query = $this->_completeConfigAccess( $query );
 
 					$config[$alias] = $query;
 				}
@@ -457,10 +502,39 @@
 		}
 
 		/**
-		 * Récupère la liste des actions liées au bénéficiaire.
+		 * Retourne les résultats complétés avec les accès des différentes actions
+		 * en fonction du module concerné.
 		 *
-		 * @fixme
-		 *	- droits d'accès (contrôleur / component)
+		 * @param array $results Les résultats à compléter
+		 * @param integer $personne_id L'id du bénéficiaire auquel les résultats
+		 *	appartiennent
+		 * @param string|false $webrsaModelName Le nom du modèle contenant la
+		 *  logique métier permettant de calculer les accès (implémentant
+		 *	WebrsaLogicAccessInterface).
+		 * @param string|false $webrsaAccessName Le nom de la classe utilitaire
+		 *  permettant de calculer les accès (implémentant WebrsaAccessInterface).
+		 * @return array
+		 */
+		protected function _computeAccesses( array $results, $personne_id, $webrsaModelName, $webrsaAccessName ) {
+			if( false !== $webrsaModelName && false !== $webrsaAccessName ) {
+				$WebrsaModel = ClassRegistry::init( $webrsaModelName );
+				App::uses( $webrsaAccessName, 'Utility' );
+
+				$paramsActions = call_user_func( array( $webrsaAccessName, 'getParamsList' ) );
+				$paramsAccess = $WebrsaModel->getParamsForAccess( $personne_id, $paramsActions );
+
+				$results = call_user_func(
+					array( $webrsaAccessName, 'accesses' ),
+					$results,
+					$paramsAccess
+				);
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Récupère la liste des actions liées au bénéficiaire.
 		 *
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
@@ -470,20 +544,22 @@
 			$results = array();
 
 			foreach( $config as $alias => $query ) {
-				$modelName = isset( $query['modelName'] ) ? $query['modelName'] : $alias;
-				unset( $query['modelName'] );
+				$modelName = $query['modelName'];
+				$webrsaModelName = $query['webrsaModelName'];
+				$webrsaAccessName = $query['webrsaAccessName'];
+				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'] );
 
 				// Conditions
 				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
 				$this->Personne->{$modelName}->forceVirtualFields = true;
+				$records = $this->Personne->{$modelName}->find( 'all', $query );
+
+				$records = $this->_computeAccesses( $records, $personne_id, $webrsaModelName, $webrsaAccessName );
+
 				$results = array_merge(
 					$results,
-					Hash::insert(
-						$this->Personne->{$modelName}->find( 'all', $query ),
-						'{n}.Action.name',
-						$alias
-					)
+					Hash::insert( $records, '{n}.Action.name', $alias )
 				);
 			}
 
@@ -491,148 +567,89 @@
 		}
 
 		/**
-		 * Retourne les options à utiliser dans la vue.
-		 *
-		 * @todo Nom de la méthode en paramètre + cache
+		 * Lecture de la "configuration" pour le tableau de fichiers liés.
 		 *
 		 * @return array
 		 */
-		public function options() {
-			$result = array(
-				'Accompagnement' => array(
-					'topmoyloco' => $this->Personne->Dsp->enum( 'topmoyloco' )
-				),
-				// Tableau "Actions"
-				'Action' => array(
-					'name' => array(
-						'Contratinsertion' => 'CER',
-						'Questionnaired1pdv93' => 'D1',
-						'Questionnaired2pdv93' => 'D2',
-						'Entretien' => 'Entretien',
-						'DspRev' => 'MAJ DSP',
-						'Ficheprescription93' => 'Prescription',
-						'Rendezvouscollectif' => 'RDV collectif',
-						'Rendezvousindividuel' => 'RDV individuel',
-					)
-				),
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
-				),
-				'Cer93' => array(
-					'nivetu' => $this->Personne->Contratinsertion->Cer93->enum( 'nivetu' ),
-					'positioncer' => $this->Personne->Contratinsertion->Cer93->enum( 'positioncer' ),
-					'cmu' => $this->Personne->Contratinsertion->Cer93->enum( 'cmu' ),
-					'cmuc' => $this->Personne->Contratinsertion->Cer93->enum( 'cmuc' )
-				),
-				'Dsp' => array(
-					'nivetu' => $this->Personne->Dsp->enum( 'nivetu' )
-				),
-				'DspRev' => array(
-					'nivetu' => $this->Personne->Dsp->enum( 'nivetu' )
-				),
-				'Ficheprescription93' => array(
-					'statut' => $this->Personne->Ficheprescription93->enum( 'statut' )
-				),
-				// Tableau "Fichiers liés"
-				'Fichiermodule' => array(
-					'modele' => array(
-						'Apre' => 'APRE',
-						'Personne' => 'Bénéficiaire',
-						'Contratinsertion' => 'CER',
-						'Entretien' => 'Entretien',
-						'DspRev' => 'MAJ DSP',
-						'Memo' => 'Mémo',
-						'Orientstruct' => 'Orientation',
-						'PersonneReferent' => 'Référent du parcours',
-						'Rendezvous' => 'Rendez-vous'
-					)
-				),
-				// Tableau "Actions"
-				'Impression' => array(
-					// Tableau "Impressions"
-					'name' => array(
-						'Commissionep' => 'EP',
-						'Contratinsertion' => 'CER',
-						'Ficheprescription93' => 'Prescription',
-						'Orientstruct' => 'Orientation',
-						'Rendezvous' => 'Rendez-vous',
-					)
-				),
-				'Questionnaired1pdv93' => array(
-					'nivetu' => $this->Personne->Questionnaired1pdv93->enum( 'nivetu' )
-				),
-				'Questionnaired2pdv93' => array(
-					'situationaccompagnement' => $this->Personne->Questionnaired2pdv93->enum( 'situationaccompagnement' )
-				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa' => $this->Option->etatdosrsa()
-				)
+		protected function _readConfigFichiersmodules() {
+			$config = array(
+				'Apre',
+				'Contratinsertion',
+				'DspRev',
+				'Entretien',
+				'Memo',
+				'Orientstruct',
+				'Personne',
+				'PersonneReferent',
+				'Rendezvous',
 			);
 
-			// 666
-
-			return $result;
+			return $config;
 		}
 
 		/**
-		 * Retourne la "configuration" (composée de query) normalisée du tableau
-		 * "Fichiers liés" de l'accompagnement du bénéficiaire.
+		 * Retourne les queries normalisées utilisées pour le tableau "Fichiers
+		 * liés".
 		 *
 		 * @return array
 		 */
-		protected function _queryFichiersmodules() {
+		protected function _configFichiersmodules() {
 			$cacheKey = $this->useDbConfig.'_'.$this->alias.'_'.__FUNCTION__;
 			$config = Cache::read( $cacheKey );
 
 			if( false === $config ) {
-				$query = array(
-					'fields' => $this->Personne->Fichiermodule->fields(),
-					'joins' => array(
-						$this->Personne->join( 'Fichiermodule', array( 'type' => 'LEFT OUTER' ) )
-					),
-					'conditions' => array( 'OR' => array() ),
-					'contain' => false,
-					//'order' => array()
-				);
+				$fichierModuleFields = $this->Personne->Fichiermodule->fields();
+				array_remove( $fichierModuleFields, 'Fichiermodule.document' );
+				array_remove( $fichierModuleFields, 'Fichiermodule.cmspath' );
 
-				array_remove( $query['fields'], 'Fichiermodule.document' );
-				array_remove( $query['fields'], 'Fichiermodule.cmspath' );
+				$config = Hash::normalize( $this->_readConfigFichiersmodules() );
+				foreach( $config as $alias => $query ) {
+					$query = (array)$query;
 
-				// TODO: primaryKey -> plus nécessaire après avoir réparé les relations
-				$query['conditions']['OR'][] = str_replace( '{$__cakeID__$}', "\"Personne\".\"id\"", $query['joins'][0]['conditions'] );
-				$query['joins'][0]['conditions'] = '1 = 1';
+					$query['modelName'] = isset( $query['modelName'] ) ? $query['modelName'] : $alias;
 
-				// TODO: une méthode __configFichiersmodules
-				$config = array(
-					'Apre',
-					'Contratinsertion',
-					'DspRev',
-					'Entretien',
-					'Memo',
-					'Orientstruct',
-					'PersonneReferent',
-					'Rendezvous',
-				);
+					// Champs
+					$fields = (array)Hash::get( $query, 'fields' );
+					$fields = array_merge( $fichierModuleFields, $fields );
+					$query['fields'] = $fields;
 
-				$config = Hash::normalize( $config );
-				foreach( $config as $module => $params ) {
-					$params = (array)$params;
-					$params['modelClass'] = isset( $params['modelClass'] ) ? $params['modelClass'] : $module;
+					// Jointures
+					$joins = (array)Hash::get( $query, 'joins' );
 
-					$query['joins'][] = $this->Personne->join( $params['modelClass'], array( 'type' => 'LEFT OUTER' ) );
+					if( 'Personne' !== $query['modelName'] ) {
+						$joinFichierModule = $this->Personne->{$query['modelName']}->join( 'Fichiermodule', array( 'type' => 'INNER' ) );
+						$primaryKey = $this->Personne->{$query['modelName']}->primaryKey;
+						if( !empty( $joins ) ) {
+							$joins = $this->Personne->{$query['modelName']}->joins( $joins );
+						}
+					}
+					else {
+						$joinFichierModule = $this->Personne->join( 'Fichiermodule', array( 'type' => 'INNER' ) );
+						$primaryKey = $this->Personne->primaryKey;
+						if( !empty( $joins ) ) {
+							$joins = $this->Personne->joins( $joins );
+						}
+					}
 
-					$join = $this->Personne->{$params['modelClass']}->join( 'Fichiermodule', array( 'type' => 'LEFT OUTER' ) );
-					$query['conditions']['OR'][] = str_replace( '{$__cakeID__$}', "\"{$params['modelClass']}\".\"id\"", $join['conditions'] ); // FIXME: primaryKey*/
+					$joinFichierModule['conditions'] = str_replace(
+						'{$__cakeID__$}',
+						"\"{$alias}\".\"{$primaryKey}\"",
+						$joinFichierModule['conditions']
+					);
+
+					$query['joins'] = array_merge( array( $joinFichierModule ), $joins );
+
+					$query['contain'] = false;
+
+					$query = $this->_completeConfigAccess( $query );
+
+					$config[$alias] = $query;
 				}
 
-				$query['group'] = $query['fields'];
-
-				Configure::write( $cacheKey, $query );
+				Configure::write( $cacheKey, $config );
 			}
 
-			// TODO: Normalisation
-
-			return $query;
+			return $config;
 		}
 
 		/**
@@ -648,90 +665,183 @@
 		 * @return array
 		 */
 		public function fichiersmodules( $personne_id ) {
-			$query = $this->_queryFichiersmodules();
-			$query['conditions']['Personne.id'] = $personne_id;
-			$fichiersmodules = $this->Personne->find( 'all', $query );
-			return $fichiersmodules;
+			$results = array();
+			$config = $this->_configFichiersmodules();
 
-			/*// FIXME: "Fichiermodule"."modele" = 'Dsp' AND "Fichiermodule"."fk_value" = "DspRev"."id"
-			$departement = (int)Configure::read( 'Cg.departement' );
+			foreach( $config as $alias => $query ) {
+				$modelName = $query['modelName'];
+				$webrsaModelName = $query['webrsaModelName'];
+				$webrsaAccessName = $query['webrsaAccessName'];
+				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'] );
 
-			$join = $this->Personne->join( 'Fichiermodule', array( 'type' => 'LEFT OUTER' ) );
-			// FIXME: primaryKey -> plus nécessaire après avoir réparé les relations .
-			$condition = str_replace( '{$__cakeID__$}', "\"Personne\".\"id\"", $join['conditions'] );
+				if( 'Personne' !== $modelName ) {
+					// Conditions
+					$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
-			$fields = $this->Personne->Fichiermodule->fields();
-			array_remove( $fields, 'Fichiermodule.document' );
-			array_remove( $fields, 'Fichiermodule.cmspath' );
-
-			$query = array(
-				'fields' => $fields,
-				'contain' => false,
-				'joins' => array(),
-				'conditions' => array(
-					'Personne.id' => $personne_id,
-					'OR' => array(
-						$condition
-					)
-				),
-				'order' => array(
-					'Fichiermodule.modified DESC'
-				),
-				'group' => $fields
-			);
-
-			// TODO: fix Module / Fichiermodule relations
-			// @see app/Model/Cui.php, app/Model/Fichiermodule.php
-
-			foreach( array( 'hasMany', 'hasOne', 'hasAndBelongsToMany' ) as $relation ) {
-				foreach( array_keys( $this->Personne->{$relation} ) as $alias ) {
-					if( $relation === 'hasAndBelongsToMany' ) {
-						if( isset( $this->Personne->{$relation}[$alias]['with'] ) ) {
-							$alias = $this->Personne->{$relation}[$alias]['with'];
-						}
-						else { // FIXME
-							debug( array( $alias => $this->Personne->{$relation}[$alias] ) );
-						}
-					}
-
-					try {
-						if(
-							// TODO: config
-							// FIXME: Dsp, DspRev
-							( !preg_match( '/[0-9]{2,3}$/', $alias ) || preg_match( "/[^0-9]{$departement}\$/", $alias ) )
-							&& isset( $this->Personne->{$alias}->Fichiermodule )
-						) {
-							$query['joins'][] = $this->Personne->join( $alias, array( 'type' => 'LEFT OUTER' ) );
-							$join = $this->Personne->{$alias}->join( 'Fichiermodule', array( 'type' => 'INNER' ) );
-							$query['conditions']['OR'][] = str_replace( '{$__cakeID__$}', "\"{$alias}\".\"id\"", $join['conditions'] ); // FIXME: primaryKey
-						}
-					} catch( Exception $e ) {
-						debug($alias);
-						debug($e);
-					}
+					$this->Personne->{$modelName}->forceVirtualFields = true;
+					$records = $this->Personne->{$modelName}->find( 'all', $query );
 				}
+				else {
+					// Conditions
+					$query['conditions'][] = array( "{$modelName}.id" => $personne_id );
+
+					$this->Personne->forceVirtualFields = true;
+					$records = $this->Personne->find( 'all', $query );
+				}
+
+				$records = $this->_computeAccesses( $records, $personne_id, $webrsaModelName, $webrsaAccessName );
+
+				$results = array_merge(
+					$results,
+					Hash::insert( $records, '{n}.Action.name', $alias )
+				);
 			}
 
-			// Jointure spéciale sur Fichiermodule
-			$join = $this->Personne->join( 'Fichiermodule', array( 'type' => 'INNER' ) );
-			$join['conditions'] = array( 'OR' => $query['conditions']['OR'] );
-			unset( $query['conditions']['OR'] );
-			$query['joins'][] = $join;
-
-//			debug( $query );
-
-			$fichiersmodules = $this->Personne->find( 'all', $query );
-			// TODO: afterFind de Fichiermodule ?
-			foreach( array_keys( $fichiersmodules ) as $key ) {
-				$fichiersmodules[$key]['Fichiermodule']['controller'] = Inflector::tableize( $fichiersmodules[$key]['Fichiermodule']['modele'] );
-			}
-
-			return $fichiersmodules;*/
+			return $results;
 		}
 
 		/**
-		 * Retourne la "configuration" (composée de query) normalisée du tableau
-		 * "Impressions" de l'accompagnement du bénéficiaire.
+		 * Lecture de la "configuration" pour le tableau d'impressions.
+		 *
+		 * @return array
+		 */
+		protected function _readConfigImpressions() {
+			$config = array(
+				'/Apres/impression/#Apre.id#' => array(
+					'modelName' => 'Apre',
+					'name' => 'Apre',
+					'fields' => array(
+						'Apre.id',
+						'Apre.personne_id',
+						'Apre.datedemandeapre'
+					),
+					'conditions' => array(
+						'Apre.statutapre' => 'C'
+					)
+				),
+				'/Cers93/impression/#Contratinsertion.id#' => array(
+					'modelName' => 'Contratinsertion',
+					'fields' => array(
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.created',
+						'\'impression\' AS "Impression__impression"',
+						'\'Contrat\' AS "Impression__type"',
+					),
+					'joins' => array(
+						'Cer93' => array( 'type' => 'INNER' )
+					)
+				),
+				'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
+					'modelName' => 'Contratinsertion',
+					'fields' => array(
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.created',
+						'\'impressionDecision\' AS "Impression__impression"',
+						'\'Décision\' AS "Impression__type"',
+					),
+					'joins' => array(
+						'Cer93' => array( 'type' => 'INNER' )
+					)
+				),
+				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
+					'modelName' => 'Dossierep',
+					'name' => 'Commissionep',
+					'fields' => array(
+						'Passagecommissionep.id',
+						'Dossierep.id',
+						'Dossierep.personne_id',
+						'Dossierep.created',
+						'Commissionep.dateseance',
+						'\'Décision\' AS "Impression__type"',
+					),
+					'joins' => array(
+						'Passagecommissionep' => array(
+							'type' => 'INNER', // FIXME: ajout de conditions
+							'joins' => array(
+								'Commissionep' => array(
+									'type' => 'INNER'
+								)
+							)
+						)
+					)
+				),
+				'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
+					'modelName' => 'Dossierep',
+					'name' => 'Commissionep',
+					'fields' => array(
+						'Passagecommissionep.id',
+						'Dossierep.id',
+						'Dossierep.personne_id',
+						'Dossierep.created',
+						'Commissionep.dateseance',
+						'\'Convocation\' AS "Impression__type"',
+					),
+					'joins' => array(
+						'Passagecommissionep' => array(
+							'type' => 'INNER', // FIXME: ajout de conditions
+							'joins' => array(
+								'Commissionep' => array(
+									'type' => 'INNER'
+								)
+							)
+						)
+					)
+				),
+				'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
+					'modelName' => 'Ficheprescription93',
+					'fields' => array(
+						'Ficheprescription93.id',
+						'Ficheprescription93.personne_id',
+						'Ficheprescription93.created',
+						'\'Fiche\' AS "Impression__type"',
+					)
+				),
+				'/Orientsstructs/impression/#Orientstruct.id#' => array(
+					'pdf' => true, // Stocké dans la table PDF pour le 93
+					'modelName' => 'Orientstruct',
+					'fields' => array(
+						'Orientstruct.id',
+						'Orientstruct.personne_id',
+						'Orientstruct.date_valid',
+						'\'Orientation\' AS "Impression__type"',
+					)
+				),
+				'/Rendezvous/impression/#Rendezvous.id#' => array(
+					'modelName' => 'Rendezvous',
+					'fields' => array(
+						'Rendezvous.id',
+						'Rendezvous.personne_id',
+						'Rendezvous.created',
+						'\'Rendez-vous\' AS "Impression__type"',
+					)
+				),
+				'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
+					'modelName' => 'Orientstruct',
+					'name' => 'Relancenonrespectsanctionep93',
+					'fields' => array(
+						'Relancenonrespectsanctionep93.id',
+						'Relancenonrespectsanctionep93.daterelance',
+						'Orientstruct.id',
+						'Orientstruct.personne_id'
+					),
+					'joins' => array(
+						'Nonrespectsanctionep93' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Relancenonrespectsanctionep93' => array( 'type' => 'INNER' )
+							)
+						)
+					)
+				)
+			);
+
+			return $config;
+		}
+
+		/**
+		 * Retourne les queries normalisées utilisées pour le tableau "Impressions".
 		 *
 		 * @todo
 		 *	- Transfert PDV
@@ -743,136 +853,7 @@
 			$config = Cache::read( $cacheKey );
 
 			if( false === $config ) {
-				$config = array(
-					'/Apres/impression/#Apre.id#' => array(
-						'modelName' => 'Apre',
-						'name' => 'Apre',
-						'fields' => array(
-							'Apre.id',
-							'Apre.personne_id',
-							'Apre.datedemandeapre'
-						),
-						'conditions' => array(
-							'Apre.statutapre' => 'C'
-						)
-					),
-					'/Cers93/impression/#Contratinsertion.id#' => array(
-						'modelName' => 'Contratinsertion',
-						'fields' => array(
-							'Contratinsertion.id',
-							'Contratinsertion.personne_id',
-							'Contratinsertion.created',
-							'\'impression\' AS "Impression__impression"',
-							'\'Contrat\' AS "Impression__type"',
-						),
-						'joins' => array(
-							'Cer93' => array( 'type' => 'INNER' )
-						)
-					),
-					'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
-						'modelName' => 'Contratinsertion',
-						'fields' => array(
-							'Contratinsertion.id',
-							'Contratinsertion.personne_id',
-							'Contratinsertion.created',
-							'\'impressionDecision\' AS "Impression__impression"',
-							'\'Décision\' AS "Impression__type"',
-						),
-						'joins' => array(
-							'Cer93' => array( 'type' => 'INNER' )
-						)
-					),
-					'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
-						'modelName' => 'Dossierep',
-						'name' => 'Commissionep',
-						'fields' => array(
-							'Passagecommissionep.id',
-							'Dossierep.id',
-							'Dossierep.personne_id',
-							'Dossierep.created',
-							'Commissionep.dateseance',
-							'\'Décision\' AS "Impression__type"',
-						),
-						'joins' => array(
-							'Passagecommissionep' => array(
-								'type' => 'INNER', // FIXME: ajout de conditions
-								'joins' => array(
-									'Commissionep' => array(
-										'type' => 'INNER'
-									)
-								)
-							)
-						)
-					),
-					'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
-						'modelName' => 'Dossierep',
-						'name' => 'Commissionep',
-						'fields' => array(
-							'Passagecommissionep.id',
-							'Dossierep.id',
-							'Dossierep.personne_id',
-							'Dossierep.created',
-							'Commissionep.dateseance',
-							'\'Convocation\' AS "Impression__type"',
-						),
-						'joins' => array(
-							'Passagecommissionep' => array(
-								'type' => 'INNER', // FIXME: ajout de conditions
-								'joins' => array(
-									'Commissionep' => array(
-										'type' => 'INNER'
-									)
-								)
-							)
-						)
-					),
-					'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
-						'modelName' => 'Ficheprescription93',
-						'fields' => array(
-							'Ficheprescription93.id',
-							'Ficheprescription93.personne_id',
-							'Ficheprescription93.created',
-							'\'Fiche\' AS "Impression__type"',
-						)
-					),
-					'/Orientsstructs/impression/#Orientstruct.id#' => array(
-						'pdf' => true, // Stocké dans la table PDF pour le 93
-						'modelName' => 'Orientstruct',
-						'fields' => array(
-							'Orientstruct.id',
-							'Orientstruct.personne_id',
-							'Orientstruct.date_valid',
-							'\'Orientation\' AS "Impression__type"',
-						)
-					),
-					'/Rendezvous/impression/#Rendezvous.id#' => array(
-						'modelName' => 'Rendezvous',
-						'fields' => array(
-							'Rendezvous.id',
-							'Rendezvous.personne_id',
-							'Rendezvous.created',
-							'\'Rendez-vous\' AS "Impression__type"',
-						)
-					),
-					'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
-						'modelName' => 'Orientstruct',
-						'name' => 'Relancenonrespectsanctionep93',
-						'fields' => array(
-							'Relancenonrespectsanctionep93.id',
-							'Relancenonrespectsanctionep93.daterelance',
-							'Orientstruct.id',
-							'Orientstruct.personne_id'
-						),
-						'joins' => array(
-							'Nonrespectsanctionep93' => array(
-								'type' => 'INNER',
-								'joins' => array(
-									'Relancenonrespectsanctionep93' => array( 'type' => 'INNER' )
-								)
-							)
-						)
-					)
-				);
+				$config = $this->_readConfigImpressions();
 
 				// Normalisation
 				$config = Hash::normalize( $config );
@@ -894,6 +875,8 @@
 					}
 					$query['joins'] = $joins;
 
+					$query = $this->_completeConfigAccess( $query );
+
 					$config[$path] = $query;
 				}
 
@@ -906,7 +889,7 @@
 		/**
 		 * Retourne la liste des impression possibles
 		 *
-		 * @param integer $personne_id
+		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
 		public function impressions( $personne_id ) {
@@ -915,101 +898,121 @@
 
 			foreach( $config as $path => $query ) {
 				$modelName = $query['modelName'];
+				$webrsaModelName = $query['webrsaModelName'];
+				$webrsaAccessName = $query['webrsaAccessName'];
 				$name = $query['name'];
-				$pdf = Hash::get( $query, 'pdf' ); // TODO: on peut imprimer ou non...
+				$pdf = $query['pdf'];
 
-				unset( $query['modelName'], $query['pdf'], $query['name'] );
+				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['pdf'], $query['name'] );
 
 				// Conditions
 				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+				if( true === $pdf ) {
+					$query['conditions'][] = $this->Pdf->sqImprime( $this->Personne->{$modelName} );
+				}
 
 				$this->Personne->{$modelName}->forceVirtualFields = true;
+				$records = $this->Personne->{$modelName}->find( 'all', $query );
+
+				$records = $this->_computeAccesses( $records, $personne_id, $webrsaModelName, $webrsaAccessName );
+
 				$results = array_merge(
 					$results,
-					Hash::insert(
-						$this->Personne->{$modelName}->find( 'all', $query ),
-						'{n}.Impression.name',
-						$name
-					)
+					 Hash::insert( $records, '{n}.Impression.name', $name )
 				);
 			}
 
 			return $results;
 		}
 
+
 		/**
-		 * Récupère la liste des impressions liées aux enregistrements d'un
-		 * bénéficiaire.
+		 * Retourne les options à utiliser dans la vue.
 		 *
-		 * @deprecated
+		 * @todo Nom de la méthode en paramètre
 		 *
-		 * @fixme
-		 *	- ici, on ne prend que les PDF stockés
-		 *	- parfois, le PDF est lié à un enregistrement lié (ex. Passagecommissionep, <Thematiqueep>, ...)
-		 *	- droits d'accès (contrôleur / component)
-		 *	- mise en cache
-		 *
-		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
-		public function fixme_impressions( $personne_id ) {
-			$departement = (int)Configure::read( 'Cg.departement' );
+		public function options() {
+			$cacheKey = $this->useDbConfig.'_'.$this->alias.'_'.__FUNCTION__;
+			$options = Cache::read( $cacheKey );
 
-			$fields = $this->Pdf->fields();
-			array_remove( $fields, 'Pdf.document' );
-			array_remove( $fields, 'Pdf.cmspath' );
+			if( false === $options ) {
+				$options = array(
+					'Accompagnement' => array(
+						'topmoyloco' => $this->Personne->Dsp->enum( 'topmoyloco' )
+					),
+					// Tableau "Actions"
+					'Action' => array(
+						'name' => array(
+							'Contratinsertion' => 'CER',
+							'Questionnaired1pdv93' => 'D1',
+							'Questionnaired2pdv93' => 'D2',
+							'Entretien' => 'Entretien',
+							'DspRev' => 'MAJ DSP',
+							'Ficheprescription93' => 'Prescription',
+							'Rendezvouscollectif' => 'RDV collectif',
+							'Rendezvousindividuel' => 'RDV individuel',
+						)
+					),
+					'Calculdroitrsa' => array(
+						'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
+					),
+					'Cer93' => array(
+						'nivetu' => $this->Personne->Contratinsertion->Cer93->enum( 'nivetu' ),
+						'positioncer' => $this->Personne->Contratinsertion->Cer93->enum( 'positioncer' ),
+						'cmu' => $this->Personne->Contratinsertion->Cer93->enum( 'cmu' ),
+						'cmuc' => $this->Personne->Contratinsertion->Cer93->enum( 'cmuc' )
+					),
+					'Dsp' => array(
+						'nivetu' => $this->Personne->Dsp->enum( 'nivetu' )
+					),
+					'DspRev' => array(
+						'nivetu' => $this->Personne->Dsp->enum( 'nivetu' )
+					),
+					'Ficheprescription93' => array(
+						'statut' => $this->Personne->Ficheprescription93->enum( 'statut' )
+					),
+					// Tableau "Fichiers liés"
+					'Fichiermodule' => array(
+						'modele' => array(
+							'Apre' => 'APRE',
+							'Personne' => 'Bénéficiaire',
+							'Contratinsertion' => 'CER',
+							'Entretien' => 'Entretien',
+							'DspRev' => 'MAJ DSP',
+							'Memo' => 'Mémo',
+							'Orientstruct' => 'Orientation',
+							'PersonneReferent' => 'Référent du parcours',
+							'Rendezvous' => 'Rendez-vous'
+						)
+					),
+					// Tableau "Actions"
+					'Impression' => array(
+						// Tableau "Impressions"
+						'name' => array(
+							'Commissionep' => 'EP',
+							'Contratinsertion' => 'CER',
+							'Ficheprescription93' => 'Prescription',
+							'Orientstruct' => 'Orientation',
+							'Rendezvous' => 'Rendez-vous',
+						)
+					),
+					'Questionnaired1pdv93' => array(
+						'nivetu' => $this->Personne->Questionnaired1pdv93->enum( 'nivetu' )
+					),
+					'Questionnaired2pdv93' => array(
+						'situationaccompagnement' => $this->Personne->Questionnaired2pdv93->enum( 'situationaccompagnement' )
+					),
+					'Situationdossierrsa' => array(
+						'etatdosrsa' => $this->Option->etatdosrsa()
+					)
+				);
 
-			$query = array(
-				'fields' => $fields,
-				'contain' => false,
-				'joins' => array(),
-				'conditions' => array(
-					'OR' => array()
-				),
-				'order' => array(
-					'Pdf.modified DESC'
-				),
-				'group' => $fields
-			);
-
-			foreach( array( 'hasMany', 'hasOne', 'hasAndBelongsToMany' ) as $relation ) {
-				foreach( array_keys( $this->Personne->{$relation} ) as $alias ) {
-					if( $relation === 'hasAndBelongsToMany' ) {
-						if( isset( $this->Personne->{$relation}[$alias]['with'] ) ) {
-							$alias = $this->Personne->{$relation}[$alias]['with'];
-						}
-						else { // FIXME
-							debug( array( $alias => $this->Personne->{$relation}[$alias] ) );
-						}
-					}
-
-					try {
-						if(
-							( !preg_match( '/[0-9]{2,3}$/', $alias ) || preg_match( "/[^0-9]{$departement}\$/", $alias ) )
-							&& $this->Personne->{$alias}->Behaviors->attached( 'StorablePdf' )
-						) {
-							$join = $this->Personne->join( $alias, array( 'type' => 'LEFT OUTER' ) );
-							$join['conditions'] = str_replace( '"Personne"."id"', $personne_id, $join['conditions'] );
-							$query['joins'][] = $join;
-							$query['conditions']['OR'][] = array(
-								"\"Pdf\".\"fk_value\" = \"{$alias}\".\"id\" AND \"Pdf\".\"modele\" = '{$alias}'",
-								"{$alias}.personne_id" => $personne_id
-							);
-						}
-					} catch( Exception $e ) {
-						debug($alias);
-						debug($e);
-					}
-				}
+				Cache::write( $cacheKey, $options );
 			}
 
-			$pdfs = $this->Pdf->find( 'all', $query );
-			// TODO: afterFind de Pdf ?
-			foreach( array_keys( $pdfs ) as $key ) {
-				$pdfs[$key]['Pdf']['controller'] = Inflector::tableize( $pdfs[$key]['Pdf']['modele'] );
-			}
-
-			return $pdfs;
+			return $options;
 		}
 
 		/**
@@ -1024,7 +1027,7 @@
 
 			if( 93 === $departement ) {
 				$success = true;
-				$methods = array( 'qdDetails', '_configActions', '_configImpressions' );
+				$methods = array( 'qdDetails', '_configActions', '_configImpressions', 'options' );
 				foreach( $methods as $method ) {
 					$data = $this->{$method}();
 					$success = !empty( $data ) && $success;
