@@ -547,6 +547,11 @@
 					'url' => array( 'controller' => 'users', 'action' => 'index' ),
 					'title' => 'Gestion des utilisateurs',
 				),
+				'Par Controllers' => array(
+					'disabled' => !Configure::read('Module.Attributiondroits.enabled'),
+					'url' => array('controller' => 'accesses', 'action' => 'setbygroups'),
+					'title' => 'Attribution des droits par controller (multi groupes)',
+				),
 				'Synthese' => array(
 					'disabled' => !Configure::read('Module.Synthesedroits.enabled'),
 					'url' => array( 'controller' => 'synthesedroits', 'action' => 'index' ),
