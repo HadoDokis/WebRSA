@@ -26,7 +26,7 @@
 	 * @package app.Controller.Component
 	 * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
 	 */
-	abstract class WebrsaAbstractMoteursComponent extends Component
+	abstract class WebrsaAbstractMoteursComponent extends Component implements CakeEventListener
 	{
 		/**
 		 * Components utilisés par ce component.
@@ -483,6 +483,49 @@
 			}
 		}
 
+		// ---------------------------------------------------------------------
+
+		public function implementedEvents() {
+			return array(
+				'Component.beforeSearch' => array( 'callable' => 'beforeSearch', 'passParams' => true ),
+				'Component.afterSearch' => array( 'callable' => 'afterSearch', 'passParams' => true ),
+			);
+		}
+
+		protected $_eventManager = null;
+
+		public function getEventManager() {
+			if( empty( $this->_eventManager ) ) {
+				$this->_eventManager = new CakeEventManager();
+				$this->_eventManager->attach( $this->_Collection );
+				$this->_eventManager->attach( $this );
+			}
+			return $this->_eventManager;
+		}
+
+		final protected function _fireBeforeSearch( array $params, array $query ) {
+			$Event = new CakeEvent( 'Component.beforeSearch', $this, array( $params, $query ) );
+			$this->getEventManager()->dispatch( $Event );
+			return $Event->result;
+		}
+
+		final protected function _fireAfterSearch( array $params, array $results ) {
+			$Event = new CakeEvent( 'Component.afterSearch', $this, array( $params, $results ) );
+			$this->getEventManager()->dispatch( $Event );
+			return $Event->result;
+		}
+
+		public function beforeSearch( array $params, array $query ) {
+			return $query;
+		}
+
+
+		public function afterSearch( array $params, array $results ) {
+			return $results;
+		}
+
+		// ---------------------------------------------------------------------
+
 		/**
 		 *
 		 * @param array $params
@@ -503,7 +546,9 @@
 
 			// Exécution du query et assignation des résultats
 			$Controller->{$params['modelName']}->forceVirtualFields = true;
+			$query = $this->_fireBeforeSearch( $params, $query );
 			$results = $Controller->{$params['modelName']}->find( 'all', $query );
+			$results = $this->_fireAfterSearch( $params, $results );
 
 			// Récupération des options
 			$options = $this->_options( $params );

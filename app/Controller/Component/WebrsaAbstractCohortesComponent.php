@@ -157,7 +157,9 @@
 
 				// Exécution du query et assignation des résultats
 				$Controller->{$params['modelName']}->forceVirtualFields = true;
+				$query = $this->_fireBeforeSearch( $params, $query );
 				$results = $this->Allocataires->paginate( $query, $params['modelName'] );
+				$results = $this->_fireAfterSearch( $params, $results );
 
 				//--------------------------------------------------------------
 				// TODO: début factoriser

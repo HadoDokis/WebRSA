@@ -42,7 +42,7 @@
 		}
 
 		/**
-		 * Retourne un array de PDF, sous la clé $params['documentPath'] (par défaut : Pdf.document) 
+		 * Retourne un array de PDF, sous la clé $params['documentPath'] (par défaut : Pdf.document)
 		 * à partir du query, ou le nombre de documents n'ayant pas pu être imprimés.
 		 *
 		 * @param array $query
@@ -133,10 +133,12 @@
 			// Récupération du query
 			$query = $this->_query( $filters, $params );
 
+			$query = $this->_fireBeforeSearch( $params, $query );
 			$results = $this->_pdfs( $query, $params );
-			
+			$results = $this->_fireAfterSearch( $params, $results );
+
 			$content = $this->_concat( $results, $params );
-			
+
 			$success = ( $content !== false ) && $this->_postProcess( $results, $params );
 
 			$this->_send( $success, $content, $params );
