@@ -16,6 +16,8 @@
 	 */
 	class WebrsaRecherchesFichesprescriptions93Component extends WebrsaAbstractRecherchesComponent
 	{
+		public $components = array( 'Allocataires', 'WebrsaSearchesAccesses' );
+
 		/**
 		 * Retourne la valeur de modelName sur lequel faire la pagination,
 		 * Ficheprescription93 ou Personne suivant la valeur du filtre
@@ -39,7 +41,7 @@
 				'structurereferente_id' => 'Referent.structurereferente_id'
 			);
 
-			return parent::_params( $params + $defaults );
+			return $this->WebrsaSearchesAccesses->completeParams( parent::_params( $params + $defaults ) );
 		}
 
 		protected function _queryBase( $keys, array $params ) {
@@ -84,6 +86,29 @@
 				parent::_optionsRecordsModels( $params ),
 				array( 'Thematiquefp93', 'Modtransmfp93', 'Documentbeneffp93', 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93', 'Documentbeneffp93' )
 			);
+		}
+
+		/**
+		 * Complète le querydata afin de pouvoir calculer les droits d'accès aux
+		 * enregistrements.
+		 *
+		 * @param array $params Les paramètres de la recherche
+		 * @param array $query Le querydata à compléter
+		 * @return array
+		 */
+		public function beforeSearch( array $params, array $query ) {
+			return $this->WebrsaSearchesAccesses->completeQuery( $params, $query );
+		}
+
+		/**
+		 * Complète les results avec les droits d'accès aux enregistrements.
+		 *
+		 * @param array $params Les paramètres de la recherche
+		 * @param array $results Les enregistrements à compléter
+		 * @return array
+		 */
+		public function afterSearch( array $params, array $results ) {
+			return $this->WebrsaSearchesAccesses->completeResults( $params, $results );
 		}
 	}
 ?>

@@ -64,7 +64,7 @@
 					'Ficheprescription93.id' => array( 'hidden' => true ),
 					// Fin: données nécessaires pour les permissions sur les liens, sans affichage
 					'/Fichesprescriptions93/edit/#Ficheprescription93.id#' => array(
-						'disabled' => "( '#Referent.horszone#' == true || '#Ficheprescription93.id#' == '' )",
+						'disabled' => "( '#Referent.horszone#' == true || '#Ficheprescription93.id#' == '' || '#/Fichesprescriptions93/edit#' == false )",
 						'class' => 'external'
 					),
 					'/Fichesprescriptions93/index/#Personne.id#' => array(
