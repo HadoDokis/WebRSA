@@ -41,6 +41,7 @@
 					'search1' => array( 'filter' => 'Search' ),
 				)
 			),
+			'WebrsaAccesses'
 		);
 
 		/**
@@ -569,22 +570,7 @@
 				)
 			);
 
-			$results = $this->Ficheprescription93->find( 'all', $query );
-
-			// TODO: début dans le modèle (?), ajout des permissions sur les différentes actions
-			// champs virtuels "disabled" pour les actions...
-			if( !empty( $results ) ) {
-				foreach( $results as $i => $result ) {
-					$results[$i]['/Fichesprescriptions93/impression'] = true;
-
-					$edit = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) != 99 );
-					$results[$i]['/Fichesprescriptions93/edit'] = $edit;
-
-					$cancel = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) != 99 );
-					$results[$i]['/Fichesprescriptions93/cancel'] = $cancel;
-				}
-			}
-			// Fin dans le modèle (?), ajout des permissions sur les différentes actions
+			$results = $this->WebrsaAccesses->getIndexRecords( $personne_id,  $query );
 
 			$options = $this->Ficheprescription93->options();
 
@@ -597,6 +583,8 @@
 		 * @param integer $personne_id L'id de la Personne à laquelle on veut ajouter une fiche
 		 */
 		public function add( $personne_id ) {
+			$this->WebrsaAccesses->check( null, $personne_id );
+
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -607,6 +595,8 @@
 		 * @param integer $id L'id de la fiche que l'on veut modifier
 		 */
 		public function edit( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
@@ -772,6 +762,8 @@
 		 * @return void
 		 */
 		public function impression( $ficheprescription93_id = null ) {
+			$this->WebrsaAccesses->check( $ficheprescription93_id );
+
 			$personne_id = $this->Ficheprescription93->personneId( $ficheprescription93_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
@@ -792,6 +784,8 @@
 		 * @param integer $id
 		 */
 		public function cancel( $id = null ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$query = array(
 				'conditions' => array(
 					'Ficheprescription93.id' => $id
