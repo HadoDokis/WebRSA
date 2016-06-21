@@ -311,6 +311,11 @@
 			$content .= $this->_input( "{$params['prefix']}Personne.prenom", $params );
 			$content .= $this->_input( "{$params['prefix']}Personne.nir", $params, array( 'maxlength' => 15 ) );
 			$content .= $this->_input( "{$params['prefix']}Personne.sexe", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.sexe' ), 'empty' => true ) );
+			
+			if ($trancheage = Configure::read('Search.Options.enums.Personne.trancheage')) {
+				$params['options']['Personne']['trancheage'] = $trancheage;
+			}
+			
 			if( Hash::check( $params, 'options.Personne.trancheage' ) ) {
 				$content .= $this->_input( "{$params['prefix']}Personne.trancheage", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.trancheage' ), 'empty' => true ) );
 			}
