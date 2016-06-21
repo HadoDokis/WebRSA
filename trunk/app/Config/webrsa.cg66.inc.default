@@ -755,10 +755,11 @@
 					'Typeorient.parentid' => array( 6 ),
 					'NOT' => array( 'Typeorient.id' => array( 3, 8 ) )
 				),
-				'Caf (2)' => array(),
+				'Caf/Établissement des allocations familiales (2) (4)' => array(),
 				'Msa (2)' => array(
 					'Typeorient.id' => array( 3, 8 )
 				),
+				'Caisse de prévoyance sociale (2) (4)' => array(),
 				'CCAS, CIAS (2)' => array(),
 				'Associations d\'insertion (2)' => array(),
 				'Autres organismes d\'insertion (2)' => array(),
@@ -1130,12 +1131,12 @@
 	 * Affichage de Fleches pour effectuer un order sur les colonnes de résultat
 	 */
 	Configure::write('ConfigurableQuery.common.two_ways_order.enabled', true);
-	
+
 	/**
 	 * Nouveau système d'attribution des droits (par Controllers)
 	 */
 	Configure::write('Module.Attributiondroits.enabled', true);
-	
+
 	/**
 	 * Options modifiable des moteurs de recherche et de cohorte
 	 */

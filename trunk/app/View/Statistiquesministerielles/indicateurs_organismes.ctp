@@ -32,24 +32,28 @@
 				<?php endif;?>
 			<?php endforeach;?>
 			<tr>
-				<th><strong>Nombre de personnes dans le champ des Droits et Devoirs non-orientées au 31 décembre</strong></th>
+				<th><strong>Nombre de personnes dans le champ des Droits et Devoirs <u>orientées au 31 décembre dont le référent unique n'avait pas encore été désigné ou n'était pas connu au 31 décembre</u> (2) :</strong></th>
+				<td><strong>0</strong></td>
+			</tr>
+			<tr>
+				<th><strong>Nombre de personnes dans le champ des Droits et Devoirs <u>non-orientées au 31 décembre</u></strong></th>
 				<td><strong><?php echo $this->Locale->number( Hash::get( $results, 'Indicateurorganisme.attente_orient' ) );?></strong></td>
 			</tr>
 		</tbody>
 	</table>
-	<p>(1) Les <strong>personnes</strong> sont définies comme les adultes du foyer, c'est-à-dire les allocataires et conjoints appartenant à un foyer ayant
-		un droit ouvert au RSA. Selon la loi, une personne relève du périmètre des droits et devoirs (L262-28) lorsqu'elle appartient à un
-		foyer ayant un droit ouvert au RSA socle et si elle est sans emploi ou a un revenu d'activité professionnelle inférieur à 500 euros
-		par mois. La définition des droits et devoirs à retenir est celle des organismes payeurs.</p>
+	<p>(1) Les <strong>personnes</strong> sont définies comme les adultes du foyer, c'est-à-dire les allocataires et conjoints appartenant à un foyer ayant un droit
+		ouvert au RSA. La définition des droits et devoirs à retenir est celle des organismes payeurs. Pour mémoire, selon la loi, une personne
+		relève du périmètre des <strong>droits et devoirs</strong> (L262-28) lorsqu'elle appartient à un foyer ayant un droit <u>ouvert</u> au RSA socle et si elle est sans
+		emploi ou a un revenu d'activité professionnelle inférieur à 500 euros par mois.</p>
 	<p>(2) Le <strong>référent unique</strong> accompagne la personne dans son parcours d'insertion. Il est notamment chargé d'élaborer le Contrat
 		d'Engagement Réciproque (ou le PPAE en cas d'orientation vers Pôle emploi) et de coordonner sa mise en œuvre.<br/>
 		Si plusieurs organismes interviennent dans le parcours d'insertion, le référent unique est la personne chargée de contractualiser.<br/>
 		Selon la loi, le référent unique suit une personne, et non un foyer.</p>
-	<p>(3) Le <strong>référent unique</strong> accompagne la personne dans son parcours d'insertion. Il est notamment chargé d'élaborer le Contrat
-		d'Engagement Réciproque (ou le PPAE en cas d'orientation vers Pôle emploi) et de coordonner sa mise en œuvre.<br/>
-		Si plusieurs organismes interviennent dans le parcours d'insertion, le référent unique est la personne chargée de contractualiser.<br/>
-		Les personnes suivies par un organisme financé par le conseil général ont pour référent unique la personne chargée de
-		contractualiser, indépendamment du financement.<br/>
-		Selon la loi, le référent unique suit une personne, et non un foyer.<br/>
-		L'ADI existe dans les DOM uniquement.</p>
+	<p>(3) Les personnes suivies par un organisme financé par le conseil départemental/territorial ont pour référent unique la personne chargée
+		de contractualiser, indépendamment du financement.<br/>
+		Pour la Métropole de Lyon, « service du département » est à comprendre comme « service de la métropole de Lyon ».<br/>
+		L'ADI existe dans certains DOM uniquement.<br/>
+		Pour les COM, « service du département » est à comprendre comme « service de la collectivité ».</p>
+	<p>(4) Msa uniquement en France métropolitaine. Caisse de prévoyance sociale (CPS) à Saint-Pierre-et-Miquelon uniquement.<br/>
+		Établissement des allocations familiales à Mayotte uniquement. Pas de CCAS, CIAS à Mayotte.</p>
 <?php endif;?>
