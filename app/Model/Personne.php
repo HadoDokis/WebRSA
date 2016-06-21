@@ -740,7 +740,15 @@
 			'age' => array(
 				'type' => 'integer',
 				'postgres' => '( EXTRACT ( YEAR FROM AGE( "%s"."dtnai" ) ) )'
-			)
+			),
+			'dtnai_year' => array(
+				'type' => 'integer',
+				'postgres' => 'EXTRACT(YEAR FROM "%s"."dtnai")'
+			),
+			'dtnai_month' => array(
+				'type' => 'integer',
+				'postgres' => 'EXTRACT(MONTH FROM "%s"."dtnai")'
+			),
 		);
 
 		/**

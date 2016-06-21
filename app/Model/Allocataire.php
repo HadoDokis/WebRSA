@@ -233,6 +233,13 @@
 			$departement = (int)Configure::read( 'Cg.departement' );
 			if( $departement === 58 ) {
 				$query = $this->Personne->completeQueryVfEtapeDossierOrientation58( $query, $search );
+			} elseif ($departement === 66) {
+				if (hash::get($search, 'Personne.dtnai_month')) {
+					$query['conditions'][] = array('Personne.dtnai_month' => hash::get($search, 'Personne.dtnai_month'));
+				}
+				if (hash::get($search, 'Personne.dtnai_year')) {
+					$query['conditions'][] = array('Personne.dtnai_year' => hash::get($search, 'Personne.dtnai_year'));
+				}
 			}
 
 			return $query;

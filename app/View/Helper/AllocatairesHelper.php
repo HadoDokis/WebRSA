@@ -296,7 +296,16 @@
 			$params = $params + $this->default;
 			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-			$content = $this->_input( "{$params['prefix']}Personne.dtnai", $params, array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
+			$dateParams = array(
+				'type' => 'date', 'maxYear' => date('Y'), 'minYear' => date('Y') - 120, 'empty' => true
+			);
+			$content = $this->_input( "{$params['prefix']}Personne.dtnai", $params, $dateParams + array('dateFormat' => 'DMY') );
+			
+			if ((integer)Configure::read('Cg.departement') === 66) {
+				$content .= $this->_input("{$params['prefix']}Personne.dtnai_month", $params, $dateParams + array('dateFormat' => 'M'));
+				$content .= $this->_input("{$params['prefix']}Personne.dtnai_year", $params, $dateParams + array('dateFormat' => 'Y'));
+			}
+			
 			$content .= $this->_input( "{$params['prefix']}Personne.nom", $params );
 			$content .= $this->_input( "{$params['prefix']}Personne.nomnai", $params );
 			$content .= $this->_input( "{$params['prefix']}Personne.prenom", $params );

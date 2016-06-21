@@ -151,6 +151,12 @@ msgstr "Filtrer par date de naissance"
 msgid "Search.Personne.dtnai"
 msgstr "Date de naissance"
 
+msgid "Search.Personne.dtnai_month"
+msgstr "Mois de naissance"
+
+msgid "Search.Personne.dtnai_year"
+msgstr "Année de naissance"
+
 msgid "Search.Personne.dtnai_from"
 msgstr "Du (inclus)"
 
