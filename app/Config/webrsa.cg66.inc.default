@@ -1135,4 +1135,23 @@
 	 * Nouveau système d'attribution des droits (par Controllers)
 	 */
 	Configure::write('Module.Attributiondroits.enabled', true);
+	
+	/**
+	 * Options modifiable des moteurs de recherche et de cohorte
+	 */
+	Configure::write('Search.Options.enums',
+		array(
+			'Personne' => array(
+				// Tranche d'age des personnes (25_30 sera entre 25 et 30 ans)
+				'trancheage' => array(
+					'0_24' => '< 25',
+					'0_25' => '< 26',
+					'25_30' => '25 - 30',
+					'31_55' => '31 - 55',
+					'56_65' => '56 - 65',
+					'66_999' => '> 65',
+				),
+			),
+		)
+	);
 ?>

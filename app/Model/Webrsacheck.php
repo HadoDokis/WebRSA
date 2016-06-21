@@ -374,6 +374,9 @@
 				'Module.Attributiondroits.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'Search.Options.enums' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
