@@ -692,12 +692,13 @@
 				'dont orientation sociale' => array(
 					'Structurereferente.id' => array( 1, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15 )
 				),
-				'Caf (2)' => array(
+				'Caf/Établissement des allocations familiales (2) (4)' => array(
 					'Structurereferente.id' => array( 27 )
 				),
 				'Msa (2)' => array(
 					'Structurereferente.id' => array( 3, 26 )
 				),
+				'Caisse de prévoyance sociale (2) (4)' => array(),
 				'CCAS, CIAS (2)' => array(
 					'Structurereferente.id' => array( 6 )
 				),
@@ -919,7 +920,7 @@
 	 * Affichage de Fleches pour effectuer un order sur les colonnes de résultat
 	 */
 	Configure::write('ConfigurableQuery.common.two_ways_order.enabled', false);
-	
+
 	/**
 	 * Nouveau système d'attribution des droits (par Controllers)
 	 */
