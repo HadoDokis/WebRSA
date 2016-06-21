@@ -72,7 +72,15 @@
 
 				// INFO: on se base sur la SR du RDV plutôt que sur la zone géographique pour limiter les résultats
 				$querydata['conditions'][] = array(
-					'Rendezvous.structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'ids', 'prefix' => false ) )
+					'Rendezvous.structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+						array(
+							'type' => 'ids',
+							'prefix' => false,
+							'conditions' => array(
+								'Structurereferente.id' => array_keys( $this->WebrsaTableausuivipdv93->listePdvs() )
+							)
+						)
+					)
 				);
 
 				$this->paginate = array( 'Personne' => $querydata );
