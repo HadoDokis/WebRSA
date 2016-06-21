@@ -56,6 +56,36 @@ var json = request.responseText.evalJSON(true);
 catch(e) {
 	console.log( e );
 }';
+		/**
+		 * Ajout d'un champ caché avec le name et la value du bouton ayant été
+		 * activé avant de désactiver les boutons d'envoi de formulaire.
+		 *
+		 * @see https://prototype.lighthouseapp.com/projects/8886/tickets/672-formserialize-and-multiple-submit-buttons
+		 *
+		 * @param string $name Le name du bouton ayant été activé
+		 * @return string
+		 */
+		function beforeAjaxSendQuestionnairesd2pdvs93( $name ) {
+			return 'try {
+			var form = null, hidden = null;
+			$$( "input[name='.$name.']" ).each( function( button ) {
+				if( null === form ) {
+					form = $(button).up( "form" );
+					hidden = new Element( "input", { "type": "hidden", "name": $(button).readAttribute( "name" ), "value": $(button).readAttribute( "value" ) } );
+				}
+			} );
+
+			$(form).insert( { "top" : hidden } );
+
+			$$( "div.submit input" ).each( function( button ) {
+				$(button).disable();
+			} );
+}
+catch(e) {
+	console.log( e );
+}';
+		}
+
 		$submit = $this->Ajax->submit(
 				__( 'Validate' ),
 				array(
@@ -63,8 +93,7 @@ catch(e) {
 					'update' => 'popup-content1',
 					'div' => false,
 					'name' => 'Validate',
-					// INFO: sinon, le premier bouton submit est utilisé, @see https://prototype.lighthouseapp.com/projects/8886/tickets/672-formserialize-and-multiple-submit-buttons
-					'before' => '$$( "input[name=Cancel]" ).each( function( button ) { $(button).disable(); $(button).hide(); } );',
+					'before' => beforeAjaxSendQuestionnairesd2pdvs93( 'Validate' ),
 					'complete' => $onComplete,
 				)
 			)
@@ -76,8 +105,7 @@ catch(e) {
 					'update' => 'popup-content1',
 					'div' => false,
 					'name' => 'Cancel',
-					// INFO: sinon, le premier bouton submit est utilisé, @see https://prototype.lighthouseapp.com/projects/8886/tickets/672-formserialize-and-multiple-submit-buttons
-					'before' => '$$( "input[name=Validate]" ).each( function( button ) { $(button).disable(); $(button).hide(); } );',
+					'before' => beforeAjaxSendQuestionnairesd2pdvs93( 'Cancel' ),
 					'complete' => $onComplete,
 				)
 		);
