@@ -3,11 +3,13 @@
 
 	echo $this->element( 'ancien_dossier' );
 
+	App::uses( 'WebrsaAccess', 'Utility' );
+	WebrsaAccess::init( $dossierMenu );
+
 	echo $this->Default3->actions(
 		array(
 			"/Questionnairesd1pdvs93/add/{$personne_id}" => array(
-				'disabled' => !$this->Permissions->checkDossier( 'Questionnairesd1pdvs93', 'add', $dossierMenu )
-						|| !$add_enabled
+				'disabled' => false === WebrsaAccess::addIsEnabled( "/Questionnairesd1pdvs93/add/{$personne_id}", $ajoutPossible )
 			),
 		)
 	);
@@ -55,32 +57,35 @@
 	// A-t'on des messages à afficher à l'utilisateur ?
 	echo $this->Default3->messages( $messages );
 
-	echo $this->Default2->index(
+	echo $this->Default3->index(
 		$questionnairesd1pdvs93,
 		array(
-			'Structurereferente.lib_struc' => array( 'domain' => 'questionnairesd1pdvs93' ),
+			'Structurereferente.lib_struc',
 			'Rendezvous.daterdv',
 			'Statutrdv.libelle',
-			'Questionnaired1pdv93.date_validation' => array( 'domain' => 'questionnairesd1pdvs93' ),
-            'Historiquedroit.etatdosrsa' => array( 'domain' => 'historiquedroit' ),
-            'Historiquedroit.toppersdrodevorsa' => array( 'domain' => 'historiquedroit', 'type' => 'boolean' ),
-            'Historiquedroit.modified' => array(  'domain' => 'historiquedroit' )
+			'Questionnaired1pdv93.date_validation',
+            'Historiquedroit.etatdosrsa' => array(
+				'label' => __d( 'historiquedroit', 'Historiquedroit.etatdosrsa' )
+			),
+            'Historiquedroit.toppersdrodevorsa' => array(
+				'label' => __d( 'historiquedroit', 'Historiquedroit.toppersdrodevorsa' ),
+				'type' => 'boolean'
+			),
+            'Historiquedroit.modified' => array(
+				'label' => __d( 'historiquedroit', 'Historiquedroit.modified' ),
+			)
+		)
+		+ WebrsaAccess::links(
+			array(
+				'/Questionnairesd1pdvs93/view/#Questionnaired1pdv93.id#',
+				'/Questionnairesd1pdvs93/delete/#Questionnaired1pdv93.id#' => array(
+					'confirm' => true
+				)
+			)
 		),
-        array(
-            'actions' => array(
-                'Questionnairesd1pdvs93::view' => array(
-                    'disabled' => !$this->Permissions->check( 'Questionnairesd1pdvs93', 'view' )
-                ),
-                'Questionnairesd1pdvs93::delete' => array(
-                    'confirm' => true,
-                    'disabled' => '!'.WebrsaPermissions::checkD1D2(
-						'#Structurereferente.id#',
-						$this->Permissions->check( 'Questionnairesd1pdvs93', 'delete' ),
-						true
-					)
-                )
-            ),
-            'options' => $options
-        )
+		array(
+			'options' => $options,
+			'paginate' => false
+		)
 	);
 ?>
