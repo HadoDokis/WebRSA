@@ -373,7 +373,13 @@
 					'/Cers93/edit/#Contratinsertion.id#' => array(
 						'class' => 'edit',
 						'msgid' => 'Modifier',
-						'condition' => '"#Action.name#" == "Contratinsertion"',
+						'condition' => '"#Action.name#" == "Contratinsertion" && (int)substr( "#Cer93.positioncer#", 0, 2 ) <= 1',
+						'condition_group' => 'edit'
+					),
+					'/Cers93/edit_apres_signature/#Contratinsertion.id#' => array(
+						'class' => 'edit',
+						'msgid' => 'Modifier',
+						'condition' => '"#Action.name#" == "Contratinsertion" && (int)substr( "#Cer93.positioncer#", 0, 2 ) > 1',
 						'condition_group' => 'edit'
 					),
 					'/Fichesprescriptions93/edit/#Ficheprescription93.id#' => array(

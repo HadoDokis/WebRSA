@@ -30,7 +30,8 @@
 		 */
 		public $components = array(
 			'DossiersMenus',
-			'Jetons2'
+			'Jetons2',
+			'WebrsaAccesses'
 		);
 
 		/**
@@ -77,8 +78,8 @@
 
 			// Remplit-on les conditions initiales ? / Messages à envoyer à l'utilisateur
 			$messages = $this->Questionnaired1pdv93->messages( $personne_id );
-			$add_enabled = $this->Questionnaired1pdv93->addEnabled( $messages );
-			$this->set( compact( 'messages', 'add_enabled' ) );
+			$ajoutPossible = $this->Questionnaired1pdv93->addEnabled( $messages );
+			$this->set( compact( 'messages', 'ajoutPossible' ) );
 
 			$subQuery = array(
 				'alias' => 'historiquesdroits',
@@ -154,7 +155,7 @@
 				)
 			);
 
-			$questionnairesd1pdvs93 = $this->Questionnaired1pdv93->find( 'all', $querydata );
+			$questionnairesd1pdvs93 = $this->WebrsaAccesses->getIndexRecords( $personne_id, $querydata );
 
             $options = Hash::merge(
 				$this->Questionnaired1pdv93->enums(),
@@ -180,6 +181,8 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$personne_id = $this->Questionnaired1pdv93->personneId( $id );
 
 			$querydata = array(
@@ -201,6 +204,7 @@
 				throw new NotFoundException();
 			}
 
+			// @deprecated
 			$permission = WebrsaPermissions::checkD1D2( Hash::get( $questionnaired1pdv93, 'Rendezvous.structurereferente_id' ) );
 			if( !$permission ) {
 				throw new Error403Exception( null );
@@ -226,6 +230,8 @@
 		 * @return void
 		 */
 		public function add( $personne_id ) {
+			$this->WebrsaAccesses->check( null, $personne_id );
+
 			$messages = $this->Questionnaired1pdv93->messages( $personne_id );
 			$add_enabled = $this->Questionnaired1pdv93->addEnabled( $messages );
 			if( !$add_enabled ) {
@@ -287,6 +293,8 @@
 		 * @throws error404Exception
 		 */
 		public function view( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$questionnaired1pdv93 = $this->Questionnaired1pdv93->find(
 				'first',
 				array(

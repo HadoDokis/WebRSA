@@ -30,7 +30,8 @@
 		 */
 		public $components = array(
 			'DossiersMenus',
-			'Jetons2'
+			'Jetons2',
+			'WebrsaAccesses'
 		);
 
 		/**
@@ -74,9 +75,9 @@
 
 			// Remplit-on les conditions initiales ? / Messages à envoyer à l'utilisateur
 			$messages = $this->Questionnaired2pdv93->messages( $personne_id );
-			$add_enabled = $this->Questionnaired2pdv93->addEnabled( $messages );
+			$ajoutPossible = $this->Questionnaired2pdv93->addEnabled( $messages );
 			$options = $this->Questionnaired2pdv93->enums();
-			$this->set( compact( 'messages', 'add_enabled', 'options' ) );
+			$this->set( compact( 'messages', 'ajoutPossible', 'options' ) );
 
 			// Recherche de l'allocataire
 			$personne = $this->Questionnaired2pdv93->Personne->find(
@@ -117,7 +118,7 @@
 				)
 			);
 
-			$questionnairesd2pdvs93 = $this->Questionnaired2pdv93->find( 'all', $querydata );
+			$questionnairesd2pdvs93 = $this->WebrsaAccesses->getIndexRecords( $personne_id, $querydata );
 			$this->set( compact( 'questionnairesd2pdvs93', 'personne' ) );
 		}
 
@@ -137,8 +138,10 @@
 		public function edit( $id = null ) {
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
+				$this->WebrsaAccesses->check( null, $personne_id );
 			}
 			else {
+				$this->WebrsaAccesses->check( $id );
 				$personne_id = $this->Questionnaired2pdv93->personneId( $id );
 			}
 
@@ -162,6 +165,7 @@
 						)
 					)
 				);
+				// @deprecated
 				$permission = WebrsaPermissions::checkD1D2( Hash::get( (array)$questionnaired2pdv93, 'Rendezvous.structurereferente_id' ) );
 
 				if( !$permission ) {
@@ -262,6 +266,8 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$personne_id = $this->Questionnaired2pdv93->personneId( $id );
 
 			$querydata = array(
@@ -284,6 +290,7 @@
 				throw new NotFoundException();
 			}
 
+			// @deprecated
 			$permission = WebrsaPermissions::checkD1D2( Hash::get( $questionnaired2pdv93, 'Rendezvous.structurereferente_id' ) );
 			if( !$permission ) {
 				throw new Error403Exception( null );

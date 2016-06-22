@@ -51,6 +51,19 @@
 		);
 
 		/**
+		 * Le nom des méthodes à précharger.
+		 *
+		 * @var array
+		 */
+		public $prechargementMethods  =array(
+			'qdDetails',
+			'_configActions',
+			'_configFichiersmodules',
+			'_configImpressions',
+			'options'
+		);
+
+		/**
 		 * Retourne le querydata contenant les détails du bénéficiaire.
 		 *
 		 * @param array $conditions
@@ -508,20 +521,24 @@
 		 * @param array $results Les résultats à compléter
 		 * @param integer $personne_id L'id du bénéficiaire auquel les résultats
 		 *	appartiennent
-		 * @param string|false $webrsaModelName Le nom du modèle contenant la
+		 * @param array $params
+		 *	- webrsaModelName Le nom du modèle contenant la
 		 *  logique métier permettant de calculer les accès (implémentant
 		 *	WebrsaLogicAccessInterface).
-		 * @param string|false $webrsaAccessName Le nom de la classe utilitaire
+		 *	- webrsaAccessName Le nom de la classe utilitaire
 		 *  permettant de calculer les accès (implémentant WebrsaAccessInterface).
 		 * @return array
 		 */
-		protected function _computeAccesses( array $results, $personne_id, $webrsaModelName, $webrsaAccessName ) {
-			if( false !== $webrsaModelName && false !== $webrsaAccessName ) {
+		protected function _computeAccesses( array $results, $personne_id, array $params = array() ) {
+			$webrsaModelName = Hash::get( $params, 'webrsaModelName' );
+			$webrsaAccessName = Hash::get( $params, 'webrsaAccessName' );
+
+			if( !empty( $webrsaModelName ) && !empty( $webrsaAccessName ) ) {
 				$WebrsaModel = ClassRegistry::init( $webrsaModelName );
 				App::uses( $webrsaAccessName, 'Utility' );
 
 				$paramsActions = call_user_func( array( $webrsaAccessName, 'getParamsList' ) );
-				$paramsAccess = $WebrsaModel->getParamsForAccess( $personne_id, $paramsActions );
+				$paramsAccess = $WebrsaModel->getParamsForAccess( $personne_id, $paramsActions + $params );
 
 				$results = call_user_func(
 					array( $webrsaAccessName, 'accesses' ),
@@ -539,7 +556,7 @@
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
-		public function actions( $personne_id ) {
+		public function actions( $personne_id, array $params = array() ) {
 			$config = Hash::normalize( $this->_configActions() );
 			$results = array();
 
@@ -555,7 +572,7 @@
 				$this->Personne->{$modelName}->forceVirtualFields = true;
 				$records = $this->Personne->{$modelName}->find( 'all', $query );
 
-				$records = $this->_computeAccesses( $records, $personne_id, $webrsaModelName, $webrsaAccessName );
+				$records = $this->_computeAccesses( $records, $personne_id, $params + compact( 'webrsaModelName', 'webrsaAccessName' ) );
 
 				$results = array_merge(
 					$results,
@@ -689,7 +706,7 @@
 					$records = $this->Personne->find( 'all', $query );
 				}
 
-				$records = $this->_computeAccesses( $records, $personne_id, $webrsaModelName, $webrsaAccessName );
+				$records = $this->_computeAccesses( $records, $personne_id, compact( 'webrsaModelName', 'webrsaAccessName' ) );
 
 				$results = array_merge(
 					$results,
@@ -914,7 +931,7 @@
 				$this->Personne->{$modelName}->forceVirtualFields = true;
 				$records = $this->Personne->{$modelName}->find( 'all', $query );
 
-				$records = $this->_computeAccesses( $records, $personne_id, $webrsaModelName, $webrsaAccessName );
+				$records = $this->_computeAccesses( $records, $personne_id, compact( 'webrsaModelName', 'webrsaAccessName' ) );
 
 				$results = array_merge(
 					$results,
@@ -1027,8 +1044,8 @@
 
 			if( 93 === $departement ) {
 				$success = true;
-				$methods = array( 'qdDetails', '_configActions', '_configImpressions', 'options' );
-				foreach( $methods as $method ) {
+
+				foreach( $this->prechargementMethods as $method ) {
 					$data = $this->{$method}();
 					$success = !empty( $data ) && $success;
 				}
