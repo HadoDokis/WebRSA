@@ -83,8 +83,20 @@
 					'Rendezvous.daterdv',
 					'Structurereferente.lib_struc',
 					'Questionnaired2pdv93.created' => array( 'type' => 'date' ),
-					// 'Dossier.locked' => array( 'type' => 'boolean', 'sort' => false ),
-					'/Cohortesd2pdvs93/ajaxadd/#Personne.id#' => array( 'onclick' => 'try { ajaxAddEdit("#Personne.id#", "#Questionnaired2pdv93.id#"); } catch(err) { console.log(err); } return false;', 'class' => 'ajax' ),
+					// Lien ajax actif
+					'/Cohortesd2pdvs93/ajaxadd/#Personne.id#/enabled' => array(
+						'onclick' => 'try { ajaxAddEdit( "#Personne.id#", "#Questionnaired2pdv93.id#"); } catch(err) { console.log(err); } return false;',
+						'class' => 'ajax',
+						'condition' => 'true == "#/Questionnaired2pdv93/ajaxadd#"',
+						'title' => __m( '/Cohortesd2pdvs93/ajaxadd' )
+					),
+					// Lien ajax inactif
+					'/Cohortesd2pdvs93/ajaxadd/#Personne.id#/disabled' => array(
+						'disabled' => true,
+						'class' => 'ajax',
+						'condition' => 'false == "#/Questionnaired2pdv93/ajaxadd#"',
+						'title' => __m( '/Cohortesd2pdvs93/ajaxadd' )
+					),
 					'/Questionnairesd2pdvs93/index/#Personne.id#' => array( 'class' => 'external' ),
 				),
 				array(

@@ -93,6 +93,23 @@
 
 				$this->Cohortes->get( Hash::extract( $results, '{n}.Dossier.id' ) );
 
+				// On désactive le lien vers le formulaire Ajax lorsque l'on est en ajout,
+				// que l'utilisateur est limité au niveau des codes INSEE et que le foyer
+				// n'est plus sur un code INSEE auquel l'utilisateur a droit
+				$restrict = (
+					'0' == Hash::get( $this->request->data, 'Search.Questionnaired2pdv93.exists' )
+					&& '1' == $this->Session->read( 'Auth.User.filtre_zone_geo' )
+				);
+				$zonesgeographiques = (array)$this->Session->read( 'Auth.Zonegeographique' );
+
+				foreach( $results as $i => $result ) {
+					$numcom = Hash::get( $result, 'Adresse.numcom' );
+					$results[$i]['/Questionnaired2pdv93/ajaxadd'] = (
+						false === $restrict
+						|| true === in_array( $numcom, $zonesgeographiques )
+					);
+				}
+
 				$this->set( compact( 'results' ) );
 			}
 

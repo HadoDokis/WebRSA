@@ -1639,7 +1639,7 @@ table#Cers93Index span.button.aviscadre.disabled { background-image: url( ../img
 
 table#Cers93Index a.button.add,
 table#TableContratsinsertionIndex a.nonrespectcer {
-	background-image: url( ../img/icons/folder_table.png ); 
+	background-image: url( ../img/icons/folder_table.png );
 }
 table#Cers93Index span.button.add.disabled,
 table#TableContratsinsertionIndex span.nonrespectcer.disabled {
@@ -1739,6 +1739,10 @@ ul.actions li.action a.cohortesd2pdvs93.index, ul.actions li.action .searchForm 
 
 a.cohortesd2pdvs93.ajaxadd {
 	background-image: url( ../img/icons/application_form.png );
+}
+
+span.cohortesd2pdvs93.ajaxadd.disabled {
+	background-image: url( ../img/icons/application_form_disabled.png );
 }
 
 ul.actions li.action a.exportcsv, ul.actions li.action a.exportcsvcorpus, ul.actions li.action a.exportcsvdonnees {
@@ -2196,7 +2200,7 @@ body table thead th a.desc:hover + div.container div.img-desc {
 }
 
 body table thead th a:hover>div.img-desc,
-body table thead th div.img-desc.active, 
+body table thead th div.img-desc.active,
 body table thead th a.asc:hover + div.container div.img-desc {
 	background-image: url("../img/desc_alt.png");
 }
