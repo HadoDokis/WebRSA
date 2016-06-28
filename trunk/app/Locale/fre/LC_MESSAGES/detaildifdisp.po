@@ -19,6 +19,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Detaildifdisp.difdisp"
+msgstr "Difficulté de disponibilité"
+
 msgid "ENUM::DIFDISP::0501"
 msgstr "Aucun obstacle"
 

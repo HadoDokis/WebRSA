@@ -46,3 +46,42 @@ msgstr "Numéro de la commune du service instructeur"
 
 msgid "Suiviinstruction.numagrins"
 msgstr "Numero d'agréement du service instructeur"
+
+msgid "ENUM::SUIIRSA::01"
+msgstr "Données administratives"
+
+msgid "ENUM::SUIIRSA::11"
+msgstr "Données socio-profesionnelles du demandeur"
+
+msgid "ENUM::SUIIRSA::12"
+msgstr "Données socio-profesionnelles du conjoint"
+
+msgid "ENUM::SUIIRSA::13"
+msgstr "Nouvelles Données socio-professionnelles du demandeur"
+
+msgid "ENUM::SUIIRSA::14"
+msgstr "Nouvelles Données socio-professionnelles du conjoint"
+
+msgid "ENUM::SUIIRSA::21"
+msgstr "Données parcours du demandeur"
+
+msgid "ENUM::SUIIRSA::22"
+msgstr "Données parcours du conjoint"
+
+msgid "ENUM::SUIIRSA::23"
+msgstr "Nouvelles Données parcours du demandeur"
+
+msgid "ENUM::SUIIRSA::24"
+msgstr "Nouvelles Données parcours du conjoint"
+
+msgid "ENUM::SUIIRSA::31"
+msgstr "Données orientation du demandeur"
+
+msgid "ENUM::SUIIRSA::32"
+msgstr "Données orientation du conjoint"
+
+msgid "ENUM::SUIIRSA::33"
+msgstr "Nouvelles Données orientation du demandeur"
+
+msgid "ENUM::SUIIRSA::34"
+msgstr "Nouvelles Données orientation du conjoint"

@@ -20,23 +20,26 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Avispcgpersonne.id"
+msgstr "Avis n°:"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Avispcgpersonne.excl"
+msgstr "Exclusion"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
+msgid "Avispcgpersonne.avisevaressnonsal"
+msgstr "Avis évaluation ressources non salarié"
 
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
+msgid "Avispcgpersonne.ddexcl"
+msgstr "Date début"
 
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
+msgid "Avispcgpersonne.dfexcl"
+msgstr "Date fin"
 
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
+msgid "Avispcgpersonne.dtsouressnonsal"
+msgstr "Date soumission ressource non salarié"
 
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Avispcgpersonne.dtevaressnonsal"
+msgstr "Date évaluation ressource non salarié"
+
+msgid "Avispcgpersonne.mtevalressnonsal"
+msgstr "Montant évaluation ressource non salarié"

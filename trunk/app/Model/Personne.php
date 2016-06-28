@@ -86,7 +86,11 @@
 					'allowEmpty' => true
 				)
 			),
-
+			'nati' => array(
+				'inList' => array(
+					'rule' => array('inList', array('A', 'C', 'F'))
+				)
+			)
 		);
 		public $belongsTo = array(
 			'Foyer' => array(

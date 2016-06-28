@@ -1,0 +1,75 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+
+###############################################################################
+
+msgid "Informationeti.topcreaentre"
+msgstr "Créateur d'entreprise"
+
+msgid "Informationeti.topaccre"
+msgstr "Bénéficiaire de l'ACCRE"
+
+msgid "Informationeti.acteti"
+msgstr "Activité ETI"
+
+msgid "Informationeti.topempl1ax"
+msgstr "Employe de 1 ou plus salariés"
+
+msgid "Informationeti.topstag1ax"
+msgstr "Employe de 1 stagiaire ou plus"
+
+msgid "Informationeti.topsansempl"
+msgstr "Sans employé"
+
+msgid "Informationeti.ddchiaffaeti"
+msgstr "Date de début du chiffre d'affaire ETI"
+
+msgid "Informationeti.dfchiaffaeti"
+msgstr "Date de fin du chiffre d'affaire ETI"
+
+msgid "Informationeti.mtchiaffaeti"
+msgstr "Montant du chiffre d'affaire "
+
+msgid "Informationeti.regfiseti"
+msgstr "Régime fiscal ETI"
+
+msgid "Informationeti.topbeneti"
+msgstr "Bénéfice ETI "
+
+msgid "Informationeti.regfisetia1"
+msgstr "Régime fiscal ETI de l'année précédente"
+
+msgid "Informationeti.mtbenetia1"
+msgstr "Montant des bénéfices de l'année précédente"
+
+msgid "Informationeti.mtamoeti"
+msgstr "Montant des amortissements"
+
+msgid "Informationeti.mtplusvalueti"
+msgstr "Montant des plus values professionnelles"
+
+msgid "Informationeti.topevoreveti"
+msgstr "Evolutions des revenus"
+
+msgid "Informationeti.libevoreveti"
+msgstr "Libellé évolution des revenus"
+
+msgid "Informationeti.topressevaeti"
+msgstr "Ressources à évaluer"

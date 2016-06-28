@@ -1,0 +1,60 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+
+###############################################################################
+
+msgid "Controleadministratif.dteffcibcontro"
+msgstr "Date effet"
+
+msgid "Controleadministratif.cibcontro"
+msgstr "Cible contrôle administratif"
+
+msgid "Controleadministratif.cibcontromsa"
+msgstr "Cible contrôle administratif MSA"
+
+msgid "Controleadministratif.dtdeteccontro"
+msgstr "Date de détection"
+
+msgid "Controleadministratif.dtclocontro"
+msgstr "Date cloture"
+
+msgid "Controleadministratif.libcibcontro"
+msgstr "Libellé"
+
+msgid "Controleadministratif.famcibcontro"
+msgstr "Famille"
+
+msgid "Controleadministratif.natcibcontro"
+msgstr "Nature"
+
+msgid "Controleadministratif.commacontro"
+msgstr "Commande"
+
+msgid "Controleadministratif.typecontro"
+msgstr "Type"
+
+msgid "Controleadministratif.typeimpaccontro"
+msgstr "Type impact"
+
+msgid "Controleadministratif.mtindursacgcontro"
+msgstr "Montant indus RSA fond CG controle"
+
+msgid "Controleadministratif.mtraprsacgcontro"
+msgstr "Montant rappel RSA fond CG controle"

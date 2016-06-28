@@ -23,6 +23,11 @@
 					'rule' => array('numeric'),
 				),
 			),
+			'motisusversrsa' => array(
+				'inList' => array(
+					'rule' => array( 'inList', array('01','02','03','04','05','06','09','19','31','34','35','36','44','70','78','84','85','97','AB','CV','CG','CZ','DA','DB','DC') ),
+				)
+			)
 		);
 
 		public $belongsTo = array(

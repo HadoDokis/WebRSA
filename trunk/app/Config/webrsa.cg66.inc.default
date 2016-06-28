@@ -1155,4 +1155,9 @@
 			),
 		)
 	);
+	
+	/**
+	 * Visualisation des données CAF d'une personne
+	 */
+	Configure::write('Module.Donneescaf.enabled', true);
 ?>

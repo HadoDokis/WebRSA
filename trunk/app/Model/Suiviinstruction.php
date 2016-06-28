@@ -94,6 +94,11 @@
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
+			),
+			'suiirsa' => array(
+				'inList' => array(
+					'rule' => array('inList', array('01', '11', '12', '13', '14', '21', '22', '23', '24', '31', '32', '33', '34'))
+				)
 			)
 		);
 

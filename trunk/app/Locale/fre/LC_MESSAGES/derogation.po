@@ -20,6 +20,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Derogation.avispcgpersonne_id"
+msgstr "Lien vers avis n°:"
+
 msgid "Derogation.typedero"
 msgstr "Type de dérogation"
 

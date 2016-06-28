@@ -92,6 +92,12 @@ msgstr "N° de téléphone portable"
 msgid "Personne.email"
 msgstr "Adresse mail"
 
+msgid "Personne.numagenpoleemploi"
+msgstr "Numéro agence Pole emploi"
+
+msgid "Personne.dtinscpoleemploi"
+msgstr "Date inscription Pole emploi"
+
 msgid "Personne.etat_dossier_orientation"
 msgstr "Étape du dossier d'orientation"
 
@@ -130,3 +136,12 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "ENUM::NATI::A"
+msgstr "Autre nationalité"
+
+msgid "ENUM::NATI::C"
+msgstr "Ressortissant CEE ou Suisse"
+
+msgid "ENUM::NATI::F"
+msgstr "Française"

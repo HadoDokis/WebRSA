@@ -20,23 +20,20 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Detailcalculdroitrsa.natpf"
+msgstr "Nature de la prestation"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Detailcalculdroitrsa.sousnatpf"
+msgstr "Sous Nature de la prestation"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
+msgid "Detailcalculdroitrsa.ddnatdro"
+msgstr "Date de début d'application de la sous nature de prestation"
 
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
+msgid "Detailcalculdroitrsa.dfnatdro"
+msgstr "Date de fin d'application de la sous nature de prestation"
 
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
+msgid "Detailcalculdroitrsa.mtrsavers"
+msgstr "Montant RSA pour la sous nature traitée"
 
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
-
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Detailcalculdroitrsa.dtderrsavers"
+msgstr "Date dernier mois RSA versable"

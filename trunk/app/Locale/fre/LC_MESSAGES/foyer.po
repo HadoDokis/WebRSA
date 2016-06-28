@@ -31,6 +31,18 @@ msgstr "Situation familiale"
 msgid "Foyer.typeocclog"
 msgstr "Conditions de logement"
 
+msgid "Foyer.mtvallocterr"
+msgstr "Montant de la valeur locative du terrain non loué"
+
+msgid "Foyer.mtvalloclog"
+msgstr "Montant de la valeur locative du logement non loué"
+
+msgid "Foyer.contefichliairsa"
+msgstr "Contenu de la fiche de liaison"
+
+msgid "Foyer.mtestrsa"
+msgstr "Montant estimé du droit rSa"
+
 msgid "Foyer.enerreur"
 msgstr "Alerte composition du foyer ?"
 
@@ -51,6 +63,15 @@ msgstr "Accueil de la corbeille PCG"
 
 msgid "Foyer.haspiecejointe"
 msgstr "Ajout d'une pièce supplémentaire"
+
+msgid "Foyer.ddsitfam"
+msgstr "Date début situation familiale"
+
+msgid "Foyer.regagrifam"
+msgstr "Régime agricole familial"
+
+msgid "Foyer.raisoctieelectdom"
+msgstr "Nom de la raison sociale du Tiers ou nom d'usage de la personne"
 
 ###############################################################################
 # Enums

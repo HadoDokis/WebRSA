@@ -19,6 +19,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Detaildiflog.diflog"
+msgstr "Difficulté logement"
+
 msgid "ENUM::DIFLOG::1001"
 msgstr "Aucune difficulté de logement"
 
@@ -45,3 +48,6 @@ msgstr "Eloignement entre le lieu de résidence et le lieu de travail"
 
 msgid "ENUM::DIFLOG::1009"
 msgstr "Autres situations particulières"
+
+msgid "Detaildiflog.libautrdiflog"
+msgstr "Libellé autre difficulté de logement"

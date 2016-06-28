@@ -17,26 +17,19 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Condadmin.aviscondadmrsa"
+msgstr "Avis conditions administratives RSA"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Condadmin.moticondadmrsa"
+msgstr "Motif avis Conditions administratives RSA"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
+msgid "Condadmin.comm1condadmrsa"
+msgstr "Commentaires cond. administratives générales RSA"
 
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
+msgid "Condadmin.comm2condadmrsa"
+msgstr "Commentaires (suite) cond. administratives générales RSA"
 
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
-
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
-
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Condadmin.dteffaviscondadmrsa"
+msgstr "Date effet avis cond. administartives RSA"

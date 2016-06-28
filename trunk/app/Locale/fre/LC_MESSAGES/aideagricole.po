@@ -20,23 +20,11 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Aideagricole.annrefaideagri"
+msgstr "Année de référence de l'aide agricole"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Aideagricole.libnataideagri"
+msgstr "Libellé de l'aide agricole"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
-
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
-
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
-
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
-
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Aideagricole.mtaideagri"
+msgstr "Montant de l'aide agricole"

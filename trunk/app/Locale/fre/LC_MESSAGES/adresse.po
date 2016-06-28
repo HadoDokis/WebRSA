@@ -55,3 +55,27 @@ msgstr "Code Pays"
 
 msgid "Adresse.canton"
 msgstr "Code Canton"
+
+msgid "Adresse.liblig2adr"
+msgstr "Ligne 2 - complément d'identification du destinataire"
+
+msgid "Adresse.liblig3adr"
+msgstr "Ligne 3 - saisie libre"
+
+msgid "Adresse.liblig4adr"
+msgstr "Ligne 4 - saisie libre"
+
+msgid "Adresse.liblig5adr"
+msgstr "Ligne 5 - saisie libre"
+
+msgid "Adresse.liblig6adr"
+msgstr "Ligne 6 - saisie libre"
+
+msgid "Adresse.liblig7adr"
+msgstr "Ligne 7 - pays de destination"
+
+msgid "Adresse.typeres"
+msgstr "Type de résidence"
+
+msgid "Adresse.topresetr"
+msgstr "Résidence étranger"

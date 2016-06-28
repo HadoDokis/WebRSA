@@ -19,6 +19,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Detailaccosocfam.nataccosocfam"
+msgstr "Nature accompagnement familial"
+
 msgid "ENUM::NATACCOSOCFAM::0410"
 msgstr "Logement"
 
@@ -30,3 +33,6 @@ msgstr "Familiale"
 
 msgid "ENUM::NATACCOSOCFAM::0413"
 msgstr "Autres"
+
+msgid "Detailaccosocfam.libautraccosocfam"
+msgstr "Libellé autre accompagnement familial"

@@ -493,4 +493,9 @@
 	 * Nouveau système d'attribution des droits (par Controllers)
 	 */
 	Configure::write('Module.Attributiondroits.enabled', false);
+	
+	/**
+	 * Visualisation des données CAF d'une personne
+	 */
+	Configure::write('Module.Donneescaf.enabled', false);
 ?>
