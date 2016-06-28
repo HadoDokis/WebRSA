@@ -17,26 +17,13 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Reducrsa.mtredrsa"
+msgstr "Montant de la réduction"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Reducrsa.ddredrsa"
+msgstr "Date début de la réduction"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
-
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
-
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
-
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
-
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Reducrsa.dfredrsa"
+msgstr "Date fin de la réduction"

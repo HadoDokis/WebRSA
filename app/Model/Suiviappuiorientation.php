@@ -25,6 +25,11 @@
 					'rule' => array('numeric'),
 				),
 			),
+			'sitperssocpro' => array(
+				'inList' => array(
+					'rule' => array('inList', array('AF', 'EF', 'RE'))
+				)
+			)
 		);
 
 		public $belongsTo = array(

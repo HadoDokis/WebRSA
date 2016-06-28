@@ -34,3 +34,30 @@ msgstr "Date de début de l'activité"
 
 msgid "Activite.dfact"
 msgstr "Date de fin de l'activité"
+
+msgid "Activite.natcontrtra"
+msgstr "Nature contrat travail"
+
+msgid "Activite.topcondadmeti"
+msgstr "Conditions administratives ETI"
+
+msgid "Activite.hauremusmic"
+msgstr "Hauteur rémunération SMIC"
+
+msgid "ENUM::PAYSACT::FRA"
+msgstr "France"
+
+msgid "ENUM::PAYSACT::LUX"
+msgstr "Luxembourg"
+
+msgid "ENUM::PAYSACT::CEE"
+msgstr "Communauté Européenne (sauf France, et  Luxembourg)"
+
+msgid "ENUM::PAYSACT::ACE"
+msgstr "Assimilé à la Communauté Européenne"
+
+msgid "ENUM::PAYSACT::CNV"
+msgstr "Pays avec convention sauf CEE"
+
+msgid "ENUM::PAYSACT::AUT"
+msgstr "Autres pays"

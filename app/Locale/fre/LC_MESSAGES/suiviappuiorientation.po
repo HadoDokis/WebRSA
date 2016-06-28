@@ -21,6 +21,9 @@ msgstr ""
 # Enum Suiviappuiorientation.sitperssocpro
 ###############################################################################
 
+msgid "Suiviappuiorientation.sitperssocpro"
+msgstr "Situation Personne recueil données socio professionnelles"
+
 msgid "ENUM::SITPERSSOCPRO::AF"
 msgstr "Recueil des données socio-professionnelles à faire"
 
@@ -29,3 +32,18 @@ msgstr "Recueil des données socio-professionnelles effectué"
 
 msgid "ENUM::SITPERSSOCPRO::RE"
 msgstr "Recueil des données socio-professionnelles refusé"
+
+msgid "Suiviappuiorientation.dtenrsocpro"
+msgstr "Date enregistrement des données socio professionnelles"
+
+msgid "Suiviappuiorientation.dtenrparco"
+msgstr "Date enregistrement données Parcours"
+
+msgid "Suiviappuiorientation.dtenrorie"
+msgstr "Date enregistrement données Orientation"
+
+msgid "Suiviappuiorientation.topoblsocpro"
+msgstr "Obligation recueil données socio professionnelles"
+
+msgid "Suiviappuiorientation.topsouhsocpro"
+msgstr "Souhait recueil données socio professionnelles"

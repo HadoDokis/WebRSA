@@ -31,3 +31,12 @@ msgstr "Date de début de la situation ASF"
 
 msgid "Allocationsoutienfamilial.dfasf"
 msgstr "Date de fin de la situation ASF"
+
+msgid "Allocationsoutienfamilial.topasf"
+msgstr "ASF perçue"
+
+msgid "Allocationsoutienfamilial.topdemasf"
+msgstr "Demande d'ASF"
+
+msgid "Allocationsoutienfamilial.topenfreconn"
+msgstr "Enfant reconnu"

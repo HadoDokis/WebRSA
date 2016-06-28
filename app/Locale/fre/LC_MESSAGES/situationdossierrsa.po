@@ -32,3 +32,6 @@ msgstr "Date de fin des droits"
 
 msgid "Situationdossierrsa.moticlorsa"
 msgstr "Motif de fin des droits"
+
+msgid "Situationdossierrsa.motirefursa"
+msgstr "Motif de refus du RSA"

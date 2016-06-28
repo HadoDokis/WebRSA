@@ -20,23 +20,11 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Liberalite.avispcgpersonne_id"
+msgstr "Lien vers avis n°:"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Liberalite.mtlibernondecl"
+msgstr "Montant mensuel que la personne traitée n'a pas déclarée dans ses ressources"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
-
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
-
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
-
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
-
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Liberalite.dtabsdeclliber"
+msgstr "Date à partir de laquelle la personne traitée n'a pas déclarées les libéralités perçues"

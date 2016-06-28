@@ -232,7 +232,8 @@
 			return array(
 				'D' => 'Avis demandé au CG',
 				'A' => 'Accord du CG',
-				'R' => 'Refus du CG'
+				'R' => 'Refus du CG',
+				"S" => 'Si avis demandé au CG sans suspension'
 			);
 		}
 
@@ -703,10 +704,16 @@
 				'01' => 'Données administratives',
 				'11' => 'Données socio-profesionnelles du demandeur',
 				'12' => 'Données socio-profesionnelles du conjoint',
+				'13' => 'Nouvelles Données socio-professionnelles du demandeur',
+				'14' => 'Nouvelles Données socio-professionnelles du conjoint',
 				'21' => 'Données parcours du demandeur',
 				'22' => 'Données parcours du conjoint',
+				'23' => 'Nouvelles Données parcours du demandeur',
+				'24' => 'Nouvelles Données parcours du conjoint',
 				'31' => 'Données orientation du demandeur',
-				'32' => 'Données orientation du conjoint'
+				'32' => 'Données orientation du conjoint',
+				'33' => 'Nouvelles Données orientation du demandeur',
+				'34' => 'Nouvelles Données orientation du conjoint',
 			);
 		}
 
@@ -743,8 +750,11 @@
 				'ADR' => 'Adresse',
 				'RAD' => 'Radiation du dossier',
 				'MUT' => 'Mutation du dossier',
-				//Ajout suite à l'arrivée du RSAJeune
-				'JUSRSAJEU' => 'Justificatif RSA Jeune'
+				'JUSRSAJEU' => 'Justificatif RSA Jeune',
+				'AIDFAM' => 'Aide familiale (DOM)',
+				'ENTDED' => 'Entrant en droits et devoirs',
+				'JUSACT' => 'Justification de l\'activité (DOM)',
+				'SURPONEXP' => 'Surface pondérée exploitation (DOM)',
 			);
 		}
 
@@ -844,7 +854,11 @@
 				'ECH' => 'Cloture suite à échéance (4 mois sans droits) ',
 				'EFF' => 'Cloture suite à l\'annulation de la bascule RMI/API',
 				'MUT' => 'Cloture suite à mutation du dossier dans un autre organisme',
-				'RGD' => 'Cloture pour regroupement de dossier'
+				'RGD' => 'Cloture pour regroupement de dossier',
+				'RFD' => 'radié fin de droit',
+				'RAU' => 'radié autre motif',
+				'RST' => 'radié option RSTA Dom',
+				'RSO' => 'radié option RSO Dom',
 			);
 		}
 
@@ -859,6 +873,7 @@
 				'LOG' => 'Logement fourni par les parents',
 				'PAM' => 'Pension à l\'amiable',
 				'PHE' => 'Parent hors d\'état ou décédé',
+				'DCG' => 'Dispense CG',
 				'AUT' => 'Autre motif de dispense'
 			);
 		}
@@ -1842,28 +1857,46 @@
 				'RSDN2' => 'RSA Socle +25 ans',
 				'RSIN1' => 'RSA Socle majoré',
 				'RSUN1' => 'RSA Socle Etat Contrat aidé majoré',
-				'RSUN2' => 'RSA Socle Etat Contrat aidé - 25 ans',
-				'RSUN3' => 'RSA Socle Etat Contrat aidé + 25 ans',
-				//ajout suite à l'arrivée du RSAJeune
+				'RSUN2' => 'RSA Socle Etat Contrat aidé -25ans',
+				'RSUN3' => 'RSA Socle Etat Contrat aidé +25ans',
 				'RSUN4' => 'RSA Socle Etat Jeune',
 				'RSBN1' => 'RSA Socle Local majoré',
 				'RSBN2' => 'RSA Socle Local -25 ans',
-				'RSBN3' => 'RSA Socle Local + 25 ans',
-				//ajout suite à l'arrivée du RSAJeune
+				'RSBN3' => 'RSA Socle Local +25ans',
 				'RSJN1' => 'RSA Socle Jeune',
 				'RCDN1' => 'RSA Activité -25 avec enfants à charge ou grossesse',
 				'RCDN2' => 'RSA Activité +25 ans',
 				'RCIN1' => 'RSA Activité majoré',
-				'RCUN1' => 'RSA Activité Etat Contrat aidé N1',
-				'RCUN2' => 'RSA Activité Etat Contrat aidé N2',
-				'RCUN3' => 'RSA Activité Etat Contrat aidé N3',
-				//ajout suite à l'arrivée du RSAJeune
+				'RCUN1' => 'RSA Activité Etat Contrat aidé majoré',
+				'RCUN2' => 'RSA Activité Etat Contrat aidé -25ans',
+				'RCUN3' => 'RSA Activité Etat Contrat aidé +25ans',
 				'RCUN4' => 'RSA Activité Etat Jeune',
 				'RCBN1' => 'RSA Activité Local majoré',
 				'RCBN2' => 'RSA Activité Local -25 ans',
-				'RCBN3' => 'RSA Activité Local + 25 ans',
-				//ajout suite à l'arrivée du RSAJeune
-				'RCJN1' => 'RSA activité Jeune'
+				'RCBN3' => 'RSA Activité Local +25ans',
+				'RCJN1' => 'RSA activité Jeune',
+				'RSID1' => 'RSA socle majoré DOM',
+				'RCID1' => 'RSA activité majoré DOM',
+				'RSDD1' => 'RSA socle -25ans DOM avec enfants à charge ou grossesse',
+				'RSDD2' => 'RSA socle +25ans DOM',
+				'RCDD1' => 'RSA activité -25ans DOM avec enfants à charge ou grossesse',
+				'RCDD2' => 'RSA activ.+25ans DOM',
+				'RSUD1' => 'RSA socle Contrat Aidé majoré DOM',
+				'RSUD2' => 'RSA socle Contrat Aidé  -25ans DOM',
+				'RSUD3' => 'RSA socle Contrat Aidé +25ans DOM',
+				'RSUD4' => 'RSA socle Contrat Aidé jeune DOM',
+				'RCUD1' => 'RSA activité Contrat Aidé majoré DOM',
+				'RCUD2' => 'RSA activité Contrat Aidé -25ans DOM',
+				'RCUD3' => 'RSA activité Contrat Aidé +25ans DOM',
+				'RCUD4' => 'RSA activité Contrat Aidé jeune DOM',
+				'RSBD1' => 'RSA socle local majoré DOM',
+				'RSBD2' => 'RSA socle local -25ans DOM',
+				'RSBD3' => 'RSA socle local +25ans DOM',
+				'RCBD1' => 'RSA activité local majoré DOM',
+				'RCBD2' => 'RSA activtié local -25ans DOM',
+				'RCBD3' => 'RSA activité local +25ans DOM',
+				'RSJD1' => 'RSA socle jeune DOM',
+				'RCJD2' => 'RSA activité jeune DOM',
 			);
 		}
 

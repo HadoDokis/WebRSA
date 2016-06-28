@@ -247,15 +247,28 @@
 					'url' => '#',
 					'Ressources' => array( 'url' => array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] ) ),
 				);
-
-				// Informations personne
-				if( $departement === 66 ) {
-					$subAllocataire['Informations personne'] = array(
-						'url' => '#',
-						'Tags allocataire' => array( 'url' => array( 'controller' => 'tags', 'action' => 'index', 'Personne', $personne['id'] ) ),
-					);
-				}
 			}
+			
+			// Informations personne
+			$subAllocataire['Informations personne'] = array(
+				'url' => '#',
+				'Tags allocataire' => array(
+					'disabled' => $departement !== 66,
+					'url' => array(
+						'controller' => 'tags',
+						'action' => 'index',
+						'Personne', $personne['id']
+					)
+				),
+				'Données CAF' => array(
+					'disabled' => !Configure::read('Module.Donneescaf.enabled'),
+					'url' => array(
+						'controller' => 'donneescaf',
+						'action' => 'personne',
+						$personne['id'],
+					)
+				)
+			);
 
 			// INFO: on ajoute des espaces à la clé pour éviter d'écraser avec les doublons
 			$key = implode( ' ', array( '(', $personne['Prestation']['rolepers'], ')', $personne['qual'], $personne['nom'], $personne['prenom'] ) );
@@ -290,6 +303,17 @@
 				'Tags du foyer' => array( 'url' => array( 'controller' => 'tags', 'action' => 'index', 'Foyer', $dossier['Foyer']['id'] ) ),
 			);
 		}
+		
+		$items['Informations foyer'] += array(
+			'Données CAF' => array(
+				'disabled' => !Configure::read('Module.Donneescaf.enabled'),
+				'url' => array(
+					'controller' => 'donneescaf',
+					'action' => 'foyer',
+					$dossier['Foyer']['id'],
+				)
+			)
+		);
 
 		// Dossier PCG (CG 66)
 		if( $departement == 66 ) {

@@ -377,6 +377,9 @@
 				'Search.Options.enums' => array(
 					array( 'rule' => 'isarray', 'allowEmpty' => true )
 				),
+				'Module.Donneescaf.enabled' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

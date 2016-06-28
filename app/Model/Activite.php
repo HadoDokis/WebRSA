@@ -32,6 +32,11 @@
 					'rule' => array('numeric')
 				),
 			),
+			'paysact' => array(
+				'inList' => array(
+					'rule' => array('inList', array('FRA', 'LUX', 'CEE', 'ACE', 'CNV', 'AUT'))
+				)
+			)
 		);
 
 		public $belongsTo = array(

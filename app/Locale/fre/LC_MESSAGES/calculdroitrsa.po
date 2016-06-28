@@ -22,6 +22,15 @@ msgstr ""
 msgid "Calculdroitrsa.toppersdrodevorsa"
 msgstr "Personne soumise à droits et devoirs ?"
 
+msgid "Calculdroitrsa.toppersentdrodevorsa"
+msgstr "Personne entrante soumise à droits et devoirs ?"
+
+msgid "Calculdroitrsa.mtpersressmenrsa"
+msgstr "Montant ressource mensuelle"
+
+msgid "Calculdroitrsa.mtpersabaneursa"
+msgstr "Montant Abattement / Neutralisation"
+
 msgid "ENUM::TOPPERSDRODEVORSA::0"
 msgstr "Non"
 

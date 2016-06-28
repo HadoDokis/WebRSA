@@ -20,23 +20,23 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Infoagricole.mtbenagri"
+msgstr "Montant bénéfice agricole"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Infoagricole.regfisagri"
+msgstr "Régime fiscal agricole"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
+msgid "Infoagricole.dtbenagri"
+msgstr "Date bénéfice agricole"
 
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
+msgid "Infoagricole.mtbenagria1"
+msgstr "Montant bénéficie agricole année-1"
 
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
+msgid "Infoagricole.dtbenagria1"
+msgstr "Date du bénéfice agricole année-1"
 
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
+msgid "Infoagricole.dtcloexecompta"
+msgstr "Date de cloture de l'exercice comptable"
 
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Infoagricole.topressevaagri"
+msgstr "Ressources à évaluer"

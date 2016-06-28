@@ -20,23 +20,17 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Detailaccosocindi.nataccosocindi"
-msgstr "Code accompagnement individuel"
+msgid "Rattachement.nomnai"
+msgstr "Nom naissance"
 
-msgid "ENUM::NATACCOSOCINDI::0416"
-msgstr "Santé"
+msgid "Rattachement.prenom"
+msgstr "Prenom"
 
-msgid "ENUM::NATACCOSOCINDI::0417"
-msgstr "Emploi"
+msgid "Rattachement.dtnai"
+msgstr "Date naissance"
 
-msgid "ENUM::NATACCOSOCINDI::0418"
-msgstr "Insertion professionnelle"
+msgid "Rattachement.nir"
+msgstr "NIR"
 
-msgid "ENUM::NATACCOSOCINDI::0419"
-msgstr "Formation"
-
-msgid "ENUM::NATACCOSOCINDI::0420"
-msgstr "Autres"
-
-msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Libellé Autre nature d'accompagnement individuel"
+msgid "Rattachement.typepar"
+msgstr "Type parenté"

@@ -19,6 +19,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Detailnatmob.natmob"
+msgstr "Mobilité"
+
 msgid "ENUM::NATMOB::2504"
 msgstr "Non"
 

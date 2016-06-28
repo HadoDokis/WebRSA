@@ -28,3 +28,9 @@ msgstr "Date emménagement"
 
 msgid "Adressefoyer.typeadr"
 msgstr "Code nature adresse"
+
+msgid "Adressefoyer.etatadr"
+msgstr "Etat adresse"
+
+msgid "Adressefoyer.id"
+msgstr "Adresse n°"

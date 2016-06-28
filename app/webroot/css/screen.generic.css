@@ -2204,3 +2204,31 @@ body table thead th div.img-desc.active,
 body table thead th a.asc:hover + div.container div.img-desc {
 	background-image: url("../img/desc_alt.png");
 }
+
+div.information {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-image: url("../img/icons/information.png");
+	background-position: center center;
+	background-repeat: no-repeat;
+	
+}
+
+div.information:hover {
+	cursor: pointer;
+	opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+
+table tbody tr.highlighted td {
+	background-color: #C6CED2;
+}
+
+table tbody tr.highlighted.odd td {
+	background-color: #E6EEF2;
+}
+
+table tbody tr.highlighted td.highlight {
+	color: #FF8022;
+}
