@@ -801,7 +801,7 @@
 	}
 	
 	echo '<br/><br/><h2>Nationalité</h2>';
-	if (!empty($personnes[0]['Personne']['id'])) {
+	if (!empty($personnes[0]['Personne']['have_nati'])) {
 		echo $this->Default3->index(
 			$personnes,
 			array(

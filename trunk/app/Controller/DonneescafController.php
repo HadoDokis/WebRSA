@@ -74,6 +74,13 @@
 			
 			$this->set('personnes', $personnes = $this->Personne->find(
 				'all', array(
+					'fields' => Hash::merge($this->Personne->fields(),
+						array(
+							'("Personne"."nati" IS NOT NULL OR '
+							.'"Personne"."dtnati" IS NOT NULL OR '
+							.'"Personne"."pieecpres" IS NOT NULL) AS "Personne__have_nati"'
+						)
+					),
 					'contain' => array(
 						'Dossiercaf',
 						'Prestation',

@@ -378,7 +378,7 @@
 					array( 'rule' => 'isarray', 'allowEmpty' => true )
 				),
 				'Module.Donneescaf.enabled' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true )
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
 			);
 
