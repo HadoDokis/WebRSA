@@ -150,7 +150,7 @@
 	<?php endif; ?>
 	<?php
 		if( $isAjax ) {
-			$out = "\$('Cohortesd2pdvs93IndexForm').hide();";
+			$out = "\$('Cohortesd2pdvs93IndexForm').hide();document.fire('dom:loaded');";
 			echo $this->Html->scriptBlock( $out );
 		}
 		else {
