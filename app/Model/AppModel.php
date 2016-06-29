@@ -67,6 +67,10 @@
 			'group' => null,
 			'offset' => null
 		);
+		
+		protected $_appModelCache = array(
+			'enums' => array()
+		);
 
 		/**
 		 * Surcharge du constructeur pour les champs virtuels.
@@ -502,40 +506,46 @@
 		 */
 		public function enums() {
 			$cacheKey = $this->useDbConfig.'_'.__CLASS__.'_enums_'.$this->alias;
-			$options = Cache::read( $cacheKey );
 
-			if( $options === false ) {
-				// Dans enumerable ?
-				if( $this->Behaviors->attached( 'Enumerable' ) ) {
-					$options = $this->Behaviors->Enumerable->enums( $this );
-				}
-				else {
-					$options = array();
-				}
+			// Dans le cache "live" ?
+			if( false === isset( $this->_appModelCache[$cacheKey] ) ) {
+				$this->_appModelCache[$cacheKey] = Cache::read( $cacheKey );
 
-				// D'autres champs avec la règle inList ?
-				$domain = Inflector::underscore( $this->alias );
-				foreach( $this->validate as $field => $validate ) {
-					foreach( $validate as $ruleName => $rule ) {
-						if( ( $ruleName === 'inList' ) && !isset( $options[$this->alias][$field] ) ) {
-							$fieldNameUpper = strtoupper( $field );
+				// Dans le cache CakePHP ?
+				if( false === $this->_appModelCache[$cacheKey] ) {
+					
+					// Dans enumerable ?
+					if( $this->Behaviors->attached( 'Enumerable' ) ) {
+						$this->_appModelCache[$cacheKey] = $this->Behaviors->Enumerable->enums( $this );
+					}
+					else {
+						$this->_appModelCache[$cacheKey] = array();
+					}
 
-							$tmp = $rule['rule'][1];
-							$list = array();
+					// D'autres champs avec la règle inList ?
+					$domain = Inflector::underscore( $this->alias );
+					foreach( $this->validate as $field => $validate ) {
+						foreach( $validate as $ruleName => $rule ) {
+							if( ( $ruleName === 'inList' ) && !isset( $this->_appModelCache[$cacheKey][$this->alias][$field] ) ) {
+								$fieldNameUpper = strtoupper( $field );
 
-							foreach( $tmp as $value ) {
-								$list[$value] = __d( $domain, "ENUM::{$fieldNameUpper}::{$value}" );
+								$tmp = $rule['rule'][1];
+								$list = array();
+
+								foreach( $tmp as $value ) {
+									$list[$value] = __d( $domain, "ENUM::{$fieldNameUpper}::{$value}" );
+								}
+
+								$this->_appModelCache[$cacheKey][$this->alias][$field] = $list;
 							}
-
-							$options[$this->alias][$field] = $list;
 						}
 					}
-				}
 
-				Cache::write( $cacheKey, $options );
+					Cache::write( $cacheKey, $this->_appModelCache[$cacheKey] );
+				}
 			}
 
-			return $options;
+			return $this->_appModelCache[$cacheKey];
 		}
 
 		/**
