@@ -67,7 +67,7 @@
 			'group' => null,
 			'offset' => null
 		);
-		
+
 		protected $_appModelCache = array(
 			'enums' => array()
 		);
@@ -513,7 +513,7 @@
 
 				// Dans le cache CakePHP ?
 				if( false === $this->_appModelCache[$cacheKey] ) {
-					
+
 					// Dans enumerable ?
 					if( $this->Behaviors->attached( 'Enumerable' ) ) {
 						$this->_appModelCache[$cacheKey] = $this->Behaviors->Enumerable->enums( $this );
@@ -553,14 +553,29 @@
 		 * de tri sur les intitulés.
 		 *
 		 * @param string $field
-		 * @param boolean $sort
+		 * @param array $params Les clés disponibles sont: sort (false par défaut,
+		 * permet de trier par libellé) et filter (array vide par défaut) qui
+		 * permet de ne récupérer que certaines options en fonction de leur clé.
 		 * @return array
 		 */
-		public function enum( $field, $sort = false ) {
+		public function enum( $field, array $params = array() ) {
+			$params += array( 'sort' => false, 'filter' => array() );
+
 			$enums = $this->enums();
 			$values = Hash::get( $enums, "{$this->alias}.{$field}" );
 
-			if( $sort ) {
+			// Filtre-t-on les clés ?
+			$accepted = (array)$params['filter'];
+			if( !empty( $accepted ) ) {
+				foreach( array_keys( $values ) as $key ) {
+					if( false === in_array_strings( $key, $accepted ) ) {
+						unset( $values[$key] );
+					}
+				}
+			}
+
+			// Trie-t-on les options par valeur ?
+			if( $params['sort'] ) {
 				asort( $values );
 			}
 

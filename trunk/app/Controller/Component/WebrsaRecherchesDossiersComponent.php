@@ -32,7 +32,7 @@
 				parent::_optionsEnums( $params ),
 				array(
 					'Dsp' => array(
-						'natlog' => $Controller->Dossier->Foyer->Personne->Dsp->enum( 'natlog', true )
+						'natlog' => $Controller->Dossier->Foyer->Personne->Dsp->enum( 'natlog', array( 'sort' => true ) )
 					),
 					'Personne' => array(
 						'has_contratinsertion' => $exists,
