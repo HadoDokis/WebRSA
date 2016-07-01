@@ -172,12 +172,3 @@ msgstr "Jour et mois connus"
 
 msgid "ENUM::TYPEDTNAI::O"
 msgstr "Jour et mois inconnus"
-
-msgid "ENUM::NATI::A"
-msgstr "Autre nationalité"
-
-msgid "ENUM::NATI::C"
-msgstr "Ressortissant CEE ou Suisse"
-
-msgid "ENUM::NATI::F"
-msgstr "Française"
