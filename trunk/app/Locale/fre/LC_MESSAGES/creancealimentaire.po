@@ -52,3 +52,105 @@ msgstr "Versement d'une pension alimentaire"
 
 msgid "Creancealimentaire.topjugpa"
 msgstr "Jugement pension alimentaire"
+
+msgid "ENUM::ETATCREALIM::SA"
+msgstr "Sanction appliquée"
+
+msgid "ENUM::ETATCREALIM::DD"
+msgstr "Dispense demande"
+
+msgid "ENUM::ETATCREALIM::AT"
+msgstr "Attente décision allocataire"
+
+msgid "ENUM::ETATCREALIM::DS"
+msgstr "Dispense avec sanction"
+
+msgid "ENUM::ETATCREALIM::SF"
+msgstr "Présence d\'ASF"
+
+msgid "ENUM::ETATCREALIM::PS"
+msgstr "Pas de sanction"
+
+msgid "ENUM::ETATCREALIM::DA"
+msgstr "Dispense accord"
+
+msgid "ENUM::ETATCREALIM::PE"
+msgstr "Procédure engagée"
+
+msgid "ENUM::ETATCREALIM::DR"
+msgstr "Dispense refus"
+
+msgid "ENUM::ETATCREALIM::RM"
+msgstr "Ex-RMI"
+
+msgid "ENUM::ETATCREALIM::MS"
+msgstr "Maintien sanction"
+
+msgid "ENUM::ETATCREALIM::SI"
+msgstr "Sanction immédiate"
+
+msgid "ENUM::ETATCREALIM::RE"
+msgstr "Refus engagement"
+
+msgid "ENUM::ETATCREALIM::TR"
+msgstr "Tiers recueillant"
+
+msgid "ENUM::ETATCREALIM::AA"
+msgstr "Aucune décision allocataire"
+
+msgid "ENUM::ETATCREALIM::AC"
+msgstr "Attente décision CG"
+
+msgid "ENUM::ORIOBLALIM::CJT"
+msgstr "Obligation ex-conjoint"
+
+msgid "ENUM::ORIOBLALIM::PAR"
+msgstr "Obligation parent(s)"
+
+msgid "ENUM::MOTIDISCREALIM::AVA"
+msgstr "Avantage en nature autre que le logement"
+
+msgid "ENUM::MOTIDISCREALIM::LOG"
+msgstr "Logement fourni par les parents"
+
+msgid "ENUM::MOTIDISCREALIM::PAM"
+msgstr "Pension à l\'amiable"
+
+msgid "ENUM::MOTIDISCREALIM::PHE"
+msgstr "Parent hors d\'état ou décédé"
+
+msgid "ENUM::MOTIDISCREALIM::DCG"
+msgstr "Dispense CG"
+
+msgid "ENUM::MOTIDISCREALIM::AUT"
+msgstr "Autre motif de dispense"
+
+msgid "ENUM::ENGPROCCREALIM::O"
+msgstr "Procédure engagée"
+
+msgid "ENUM::ENGPROCCREALIM::N"
+msgstr "Pas de procédure engagée"
+
+msgid "ENUM::ENGPROCCREALIM::R"
+msgstr "Refus d'engagement de procédure"
+
+msgid "ENUM::TOPDEMDISPROCCREALIM::1"
+msgstr "Demande de dispense"
+
+msgid "ENUM::TOPDEMDISPROCCREALIM::0"
+msgstr "Pas de demande de dispense"
+
+msgid "ENUM::TOPJUGPA::1"
+msgstr "Jugement fixant une pension alimentaire"
+
+msgid "ENUM::TOPJUGPA::0"
+msgstr "Pas de jugement fixant une pension alimentaire"
+
+msgid "ENUM::VERSPA::N"
+msgstr "Pas de versement d'une PA"
+
+msgid "ENUM::VERSPA::O"
+msgstr "Versement d'une PA"
+
+msgid "ENUM::VERSPA::P"
+msgstr "Versement partiel d'une PA"

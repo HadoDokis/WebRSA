@@ -33,3 +33,27 @@ msgstr "Commentaires (suite) cond. administratives générales RSA"
 
 msgid "Condadmin.dteffaviscondadmrsa"
 msgstr "Date effet avis cond. administartives RSA"
+
+msgid "ENUM::AVISCONDADMRSA::D"
+msgstr "Avis demandé au CG"
+
+msgid "ENUM::AVISCONDADMRSA::A"
+msgstr "Accord du CG"
+
+msgid "ENUM::AVISCONDADMRSA::R"
+msgstr "Refus du CG"
+
+msgid "ENUM::AVISCONDADMRSA::S"
+msgstr "Si avis demandé au CG sans suspension"
+
+msgid "ENUM::MOTICONDADMRSA::NR"
+msgstr "Non respect contrat insertion"
+
+msgid "ENUM::MOTICONDADMRSA::NS"
+msgstr "Demande d'avis au Cg sans suspension administrative du droit"
+
+msgid "ENUM::MOTICONDADMRSA::EU"
+msgstr "Dossier européen"
+
+msgid "ENUM::MOTICONDADMRSA::AU"
+msgstr "Autre motif"

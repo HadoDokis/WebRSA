@@ -64,13 +64,13 @@
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa( true ) );
 
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
+			$this->set('etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $etats)));
 
 			$hasDsp = array( 'O' => 'Oui', 'N' => 'Non' );
 			$this->set( 'hasDsp', $hasDsp );
 
 			$natpfsSocle = Configure::read( 'Detailcalculdroitrsa.natpf.socle' );
-			$this->set( 'natpf', $this->Option->natpf( $natpfsSocle ) );
+			$this->set('natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf', array('filter' => $natpfsSocle)));
 		}
 
 		/**
@@ -115,7 +115,7 @@
 			if( in_array( $this->action, array( 'orientees'/*, 'exportcsv', 'statistiques'*/ ) ) ) {
 				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
-			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
+			$this->set( 'moticlorsa', ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa') );
 		}
 
 		/**

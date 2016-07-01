@@ -41,7 +41,7 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'suiirsa', $this->Option->suiirsa() );
+			$this->set( 'suiirsa', ClassRegistry::init('Suiviinstruction')->enum('suiirsa') );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 		}
 

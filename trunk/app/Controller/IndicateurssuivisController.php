@@ -65,7 +65,7 @@
 
 		protected function _setOptions() {
 			$natpfsSocle = Configure::read( 'Detailcalculdroitrsa.natpf.socle' );
-			$this->set( 'natpf', $this->Option->natpf( $natpfsSocle ) );
+			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf', array('filter' => $natpfsSocle ) ));
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->set( 'structs', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );

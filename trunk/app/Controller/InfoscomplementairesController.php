@@ -41,15 +41,15 @@
 
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
-			$this->set( 'act', $this->Option->act() );
+			$this->set( 'act', ClassRegistry::init('Activite')->enum('act') );
 			$this->set( 'reg', $this->Option->reg() );
 			$this->set( 'paysact', $this->Option->paysact() );
 			$this->set( 'orioblalim', $this->Option->orioblalim() );
-			$this->set( 'etatcrealim', $this->Option->etatcrealim() );
+			$this->set( 'etatcrealim', ClassRegistry::init('Creancealimentaire')->enum('etatcrealim') );
 			$this->set( 'verspa', $this->Option->verspa() );
 			$this->set( 'topjugpa', $this->Option->topjugpa() );
-			$this->set( 'motidiscrealim', $this->Option->motidiscrealim() );
-			$this->set( 'engproccrealim', $this->Option->engproccrealim() );
+			$this->set( 'motidiscrealim', ClassRegistry::init('Creancealimentaire')->enum('motidiscrealim') );
+			$this->set( 'engproccrealim', ClassRegistry::init('Creancealimentaire')->enum('engproccrealim') );
 			$this->set( 'topdemdisproccrealim', $this->Option->topdemdisproccrealim() );
 			$this->set( 'sitasf', $this->Option->sitasf() );
 			$this->set( 'parassoasf', $this->Option->parassoasf() );

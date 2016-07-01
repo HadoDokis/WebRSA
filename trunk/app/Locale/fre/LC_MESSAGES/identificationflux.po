@@ -41,3 +41,33 @@ msgstr "Heure de création du flux Xml"
 
 msgid "Identificationflux.dtref"
 msgstr "Mois de référence du flux Xml"
+
+msgid "ENUM::APPLIEME::CRI"
+msgstr "Cristal Cnaf"
+
+msgid "ENUM::APPLIEME::AGO"
+msgstr "Agora Ccmsa"
+
+msgid "ENUM::APPLIEME::NRI"
+msgstr "@IRMI Cnaf"
+
+msgid "ENUM::APPLIEME::NRS"
+msgstr "@RSA Cnaf"
+
+msgid "ENUM::APPLIEME::IOD"
+msgstr "IODAS GFI"
+
+msgid "ENUM::APPLIEME::GEN"
+msgstr "GENESIS SIRUS-BULL"
+
+msgid "ENUM::APPLIEME::IAS"
+msgstr "IAS JVS implicit"
+
+msgid "ENUM::APPLIEME::PER"
+msgstr "Peceaveal INFODB"
+
+msgid "ENUM::APPLIEME::54"
+msgstr " Logiciel du CG 54"
+
+msgid "ENUM::APPLIEME::NRA"
+msgstr "@RSA Cnaf"

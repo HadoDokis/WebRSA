@@ -26,7 +26,7 @@
 
 		protected function _setOptions() {
 			$options = $this->Decisionpdo->enums();
-			$this->set( 'decision_ci', $this->Option->decision_ci() );
+			$this->set( 'decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
 			$this->set( compact( 'options' ) );
 		}
 

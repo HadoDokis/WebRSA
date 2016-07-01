@@ -34,7 +34,7 @@
 					),
 					'Infofinanciere' => array(
 						'compare' => array('<' => '<','>' => '>','<=' => '<=','>=' => '>='),
-						'natpfcre' => $this->Option->natpfcre( 'autreannulation' )
+						'natpfcre' => ClassRegistry::init('Infofinanciere')->enum('natpfcre', array('type' => 'autreannulation'))
 					),
 				)
 			);

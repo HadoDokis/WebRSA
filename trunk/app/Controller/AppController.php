@@ -284,7 +284,7 @@
 			$this->Auth->loginRedirect = Router::parse( '/' );
 			$this->Auth->authorize = array( 'Actions' => array( 'actionPath' => 'controllers' ) );
 
-			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
+			$this->set( 'etatdosrsa', ClassRegistry::init( 'Situationdossierrsa' )->etatdosrsa() );
 			$return = parent::beforeFilter();
 
 			$this->Auth->allow( '*' );

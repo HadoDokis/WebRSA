@@ -24,6 +24,33 @@
 				),
 			),
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'sousnatpf' => array(
+				'RSDN1', 'RSDN2', 'RSIN1', 'RSUN1', 'RSUN2', 'RSUN3',
+				'RSUN4', 'RSBN1', 'RSBN2', 'RSBN3', 'RSJN1', 'RCDN1',
+				'RCDN2', 'RCIN1', 'RCUN1', 'RCUN2', 'RCUN3', 'RCUN4',
+				'RCBN1', 'RCBN2', 'RCBN3', 'RCJN1', 'RSID1', 'RCID1',
+				'RSDD1', 'RSDD2', 'RCDD1', 'RCDD2', 'RSUD1', 'RSUD2',
+				'RSUD3', 'RSUD4', 'RCUD1', 'RCUD2', 'RCUD3', 'RCUD4',
+				'RSBD1', 'RSBD2', 'RSBD3', 'RCBD1', 'RCBD2', 'RCBD3',
+				'RSJD1', 'RCJD2'
+			),
+			'natpf' => array(
+				'RSD', 'RSI', 'RSU', 'RSB', 'RCD', 'RCI', 'RCU', 'RCB',
+				'RSJ', 'RCJ', 'RSD,RCD', 'RSD-RCD', 'RCD-RSD'
+			),
+		);
 
 		public $belongsTo = array(
 			'Detaildroitrsa' => array(

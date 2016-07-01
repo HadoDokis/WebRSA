@@ -32,7 +32,6 @@
 		protected function _setOptions() {
 
 			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'fonction_pers', $this->Option->fonction_pers() );
 			$this->set( 'referent', $referent = $this->Referent->find( 'list' ) );
 
 			$options = array();

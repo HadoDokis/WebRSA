@@ -136,7 +136,7 @@
 				),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
 			);
 			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
 			$options['Adresse']['canton'] = $options['cantons'];

@@ -79,3 +79,18 @@ msgstr "Type de résidence"
 
 msgid "Adresse.topresetr"
 msgstr "Résidence étranger"
+
+msgid "ENUM::PAYS::FRA"
+msgstr "France"
+
+msgid "ENUM::PAYS::HOR"
+msgstr "Hors de France"
+
+msgid "ENUM::TYPERES::E"
+msgstr "Election de domicile"
+
+msgid "ENUM::TYPERES::S"
+msgstr "Stable"
+
+msgid "ENUM::TYPERES::O"
+msgstr "Election de domicile organisme non référencé"

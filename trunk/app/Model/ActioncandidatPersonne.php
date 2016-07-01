@@ -682,7 +682,7 @@
 				$Informationpe->Historiqueetatpe->enums(), // Informationpe.etat
 				array(
 					'Historiqueetatpe' => array(
-						'code' => ClassRegistry::init( 'Option' )->categorie()
+						'code' => ClassRegistry::init('Historiqueetatpe')->enum('code')
 					)
 				)
 			);

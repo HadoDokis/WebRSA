@@ -42,7 +42,7 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'topressevaeti', $this->Option->topressevaeti() );
-			$this->set( 'natfingro', $this->Option->natfingro() );
+			$this->set( 'natfingro', ClassRegistry::init('Grossesse')->enum('natfingro') );
 		}
 
 		/**

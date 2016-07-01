@@ -56,11 +56,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = array();
-			$options['Modecontact']['nattel'] = $this->Option->nattel();
-			$options['Modecontact']['matetel'] = $this->Option->matetel();
-			$options['Modecontact']['autorutitel'] = $this->Option->autorutitel();
-			$options['Modecontact']['autorutiadrelec'] = $this->Option->autorutiadrelec();
+			$options = $this->Modecontact->enums();
 			$this->set( compact( 'options' ) );
 		}
 

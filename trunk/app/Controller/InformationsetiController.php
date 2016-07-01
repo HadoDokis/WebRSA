@@ -42,7 +42,7 @@
 			parent::beforeFilter();
 			$this->set( 'topcreaentre', $this->Option->topcreaentre() );
 			$this->set( 'topaccre', $this->Option->topaccre() );
-			$this->set( 'acteti', $this->Option->acteti() );
+			$this->set( 'acteti', ClassRegistry::init('Informationeti')->enum('acteti') );
 			$this->set( 'topempl1ax', $this->Option->topempl1ax() );
 			$this->set( 'topstag1ax', $this->Option->topstag1ax() );
 			$this->set( 'topsansempl', $this->Option->topsansempl() );

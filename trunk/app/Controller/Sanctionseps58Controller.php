@@ -180,7 +180,7 @@
 			}
 
 			$this->set( 'options', $this->Allocataires->options() );
-			$this->set( 'etatdosrsa', ClassRegistry::init('Option')->etatdosrsa( ClassRegistry::init('Situationdossierrsa')->etatOuvert()) );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  ClassRegistry::init('Situationdossierrsa')->etatOuvert())) );
 			$this->set( compact( 'personnes' ) );
 			$this->render( $origine );
 		}

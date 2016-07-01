@@ -41,10 +41,8 @@
 		protected function _setOptions() {
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'pieecpres', $this->Option->pieecpres() );
-			$this->set( 'commission', $this->Option->commission() );
-			$this->set( 'motidempdo', $this->Option->motidempdo() );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-			$this->set( 'motifpdo', $this->Option->motifpdo() );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
+			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
@@ -139,7 +137,7 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			// Précise les options des états de dossiers :
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente()) );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $this->Situationdossierrsa->etatAttente())) );
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );

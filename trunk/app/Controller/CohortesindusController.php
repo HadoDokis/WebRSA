@@ -52,13 +52,12 @@
 			);
 			$this->set( 'sr', $sr );
 
-			$this->set( 'natpfcre', $this->Option->natpfcre( 'autreannulation' ) );
+			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre', array('type' => 'autreannulation')) );
 			$this->set( 'typeparte', $this->Option->typeparte() );
-			//$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
-			$this->set( 'natpf', $this->Option->natpf() );
+			//$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $this->Situationdossierrsa->etatOuvert())) );
+			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
-			$this->set( 'dif', $this->Option->dif() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'qual', $this->Option->qual() );
 		}

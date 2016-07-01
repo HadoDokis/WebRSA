@@ -58,7 +58,7 @@
 			$this->set( 'permanences', $this->Rendezvous->Permanence->find( 'list' ) );
 			$this->set( 'referents', $this->Rendezvous->Referent->listOptions() );
 
-			$this->set( 'natpf', $this->Option->natpf() );
+			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
 

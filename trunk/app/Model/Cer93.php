@@ -1617,10 +1617,10 @@
 					'sitfam' => ClassRegistry::init( 'Option' )->sitfam()
 				),
 				'Dsp' => array(
-					'natlog' => ClassRegistry::init( 'Option' )->natlog()
+					'natlog' => ClassRegistry::init('Dsp')->enum('natlog')
 				),
 				'dureehebdo' => array_range( '0', '39' ),
-				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd(),
+				'dureecdd' => ClassRegistry::init('Contratinsertion')->enum('duree_cdd'),
 				'Structurereferente' => array(
 					'type_voie' => ClassRegistry::init( 'Option' )->typevoie()
 				),

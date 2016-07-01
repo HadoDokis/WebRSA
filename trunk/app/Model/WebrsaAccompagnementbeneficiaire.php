@@ -1022,7 +1022,7 @@
 						'situationaccompagnement' => $this->Personne->Questionnaired2pdv93->enum( 'situationaccompagnement' )
 					),
 					'Situationdossierrsa' => array(
-						'etatdosrsa' => $this->Option->etatdosrsa()
+						'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa')
 					)
 				);
 

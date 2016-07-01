@@ -97,10 +97,10 @@
 					'toppersdrodevorsa' => $this->Option->toppersdrodevorsa(true)
 				),
 				'Situationdossierrsa' => array(
-					'etatdosrsa' => $this->Option->etatdosrsa()
+					'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa')
 				),
 				'Situationdossierrsa2' => array(
-					'etatdosrsa' => $this->Option->etatdosrsa()
+					'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa')
 				),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),

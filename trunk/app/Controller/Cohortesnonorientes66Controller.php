@@ -62,7 +62,7 @@
 			$this->set( 'qual',  $this->Option->qual() );
 
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' => $etats)) );
 
 			$this->set( 'users', $this->User->find(
 					'list',

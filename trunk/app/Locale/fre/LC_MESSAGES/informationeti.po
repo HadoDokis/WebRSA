@@ -73,3 +73,81 @@ msgstr "Libellé évolution des revenus"
 
 msgid "Informationeti.topressevaeti"
 msgstr "Ressources à évaluer"
+
+msgid "ENUM::ACTETI::C"
+msgstr "Commerçant"
+
+msgid "ENUM::ACTETI::A"
+msgstr "Artisan"
+
+msgid "ENUM::ACTETI::L"
+msgstr "Profession libérale"
+
+msgid "ENUM::ACTETI::E"
+msgstr "Entrepreneur"
+
+msgid "ENUM::REGFISETI::R"
+msgstr "Réel"
+
+msgid "ENUM::REGFISETI::S"
+msgstr "Simple"
+
+msgid "ENUM::REGFISETI::M"
+msgstr "Micro"
+
+msgid "ENUM::REGFISETIA1::R"
+msgstr "Réel"
+
+msgid "ENUM::REGFISETIA1::S"
+msgstr "Simple"
+
+msgid "ENUM::REGFISETIA1::M"
+msgstr "Micro"
+
+msgid "ENUM::TOPACCRE::1"
+msgstr "Bénéficiaire de l`ACCRE"
+
+msgid "ENUM::TOPACCRE::0"
+msgstr "Non bénéficiaire de l`ACCRE"
+
+msgid "ENUM::TOPBENETI::1"
+msgstr "Présence d'un bénéfice"
+
+msgid "ENUM::TOPBENETI::0"
+msgstr "Pas de bénéfices"
+
+msgid "ENUM::TOPCREAENTRE::1"
+msgstr "Créateur d'entreprise"
+
+msgid "ENUM::TOPCREAENTRE::0"
+msgstr "Non créateur d'entreprise"
+
+msgid "ENUM::TOPEMPL1AX::1"
+msgstr "Emploie 1 ou plusieurs salariés"
+
+msgid "ENUM::TOPEMPL1AX::0"
+msgstr "N'emploie pas 1 ou plusieurs salariés"
+
+msgid "ENUM::TOPEVOREVETI::1"
+msgstr "Evolution des revenus"
+
+msgid "ENUM::TOPEVOREVETI::0"
+msgstr "Pas d'évolution des revenus"
+
+msgid "ENUM::TOPRESSEVAETI::1"
+msgstr "Ressources à évaluer"
+
+msgid "ENUM::TOPRESSEVAETI::0"
+msgstr "Pas de ressources à évaluer"
+
+msgid "ENUM::TOPSANSEMPL::1"
+msgstr "Sans employés"
+
+msgid "ENUM::TOPSANSEMPL::0"
+msgstr "Avec employés"
+
+msgid "ENUM::TOPSTAG1AX::1"
+msgstr "Emploie 1 ou plusieurs stagiaires"
+
+msgid "ENUM::TOPSTAG1AX::0"
+msgstr "N'emploie pas 1 ou plusieurs stagiaires"

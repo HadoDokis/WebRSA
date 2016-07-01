@@ -195,3 +195,27 @@ msgstr "Libellé de l'adresse de rendez-vous de l'organisme d'orientation"
 
 msgid "Orientation.numtelrvorgorie"
 msgstr "Numéro de téléphone pour le rendez-vous de l'organisme d'orientation"
+
+msgid "ENUM::NATPARCOCAL::AS"
+msgstr "Parcours professionnel et appui social"
+
+msgid "ENUM::NATPARCOCAL::PP"
+msgstr "Parcours professionnel "
+
+msgid "ENUM::NATPARCOCAL::PS"
+msgstr "Parcours social"
+
+msgid "ENUM::NATPARCOMOD::AS"
+msgstr "Parcours professionnel et appui social"
+
+msgid "ENUM::NATPARCOMOD::PP"
+msgstr "Parcours professionnel "
+
+msgid "ENUM::NATPARCOMOD::PS"
+msgstr "Parcours social"
+
+msgid "ENUM::MOTIMODPARCO::CL"
+msgstr "Critère local"
+
+msgid "ENUM::MOTIMODPARCO::EA"
+msgstr "Entretien approfondi"

@@ -54,3 +54,36 @@ msgstr "Adresse électronique"
 
 msgid "Modecontact.autorutiadrelec"
 msgstr "Autorisation d'utiliser l'adresse électronique pour contacter le demandeur"
+
+msgid "ENUM::NATTEL::D"
+msgstr "Domicile"
+
+msgid "ENUM::NATTEL::T"
+msgstr "Travail"
+
+msgid "ENUM::MATETEL::FAX"
+msgstr "Fax seul"
+
+msgid "ENUM::MATETEL::TEL"
+msgstr "Téléphone seul"
+
+msgid "ENUM::MATETEL::TFA"
+msgstr "Téléphone/Fax"
+
+msgid "ENUM::AUTORUTITEL::A"
+msgstr "Accord d'utilisation"
+
+msgid "ENUM::AUTORUTITEL::I"
+msgstr "Inconnu"
+
+msgid "ENUM::AUTORUTITEL::R"
+msgstr "Refus d'utilisation"
+
+msgid "ENUM::AUTORUTIADRELEC::A"
+msgstr "Accord d'utilisation"
+
+msgid "ENUM::AUTORUTIADRELEC::I"
+msgstr "Inconnu"
+
+msgid "ENUM::AUTORUTIADRELEC::R"
+msgstr "Refus d'utilisation"

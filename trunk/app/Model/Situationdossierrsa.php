@@ -42,6 +42,23 @@
 				)
 			)
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'etatdosrsa' => array('Z', '0', '1', '2', '3', '4', '5', '6'),
+			'motirefursa' => array('F02', 'F04', 'F09', 'F85', 'F97', 'FDD', 'DSD', 'FDB', 'PCG'),
+			'moticlorsa' => array('PCG', 'ECH', 'EFF', 'MUT', 'RGD', 'RFD', 'RAU', 'RST', 'RSO'),
+		);
+		
 		public $belongsTo = array(
 			'Dossier' => array(
 				'className' => 'Dossier',
@@ -92,6 +109,48 @@
 		 */
 		public function etatAttente() {
 			return array( '0', 'Z' );
+		}
+
+		/**
+		 * Import de Option::etatdosrsa
+		 * 
+		 * Enums pour les champs
+		 *	- historiquesdroits.etatdosrsa
+		 *	- situationsallocataires.etatdosrsa
+		 *	- situationsdossiersrsa.etatdosrsa
+		 *
+		 * Retourne la liste des états de dossier.
+		 * Peut-être filtré par une liste de clés d'états de dossier.
+		 *
+		 * @param array $etatsDemandes
+		 * @return array liste des états à afficher.
+		 * @example ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' => $this->Situationdossierrsa->etatAttente()))
+		 */
+		public function etatdosrsa($etatsDemandes=array()) {
+
+			$etats = array(
+				'Z' => 'Non défini',
+				'0'  => 'Nouvelle demande en attente de décision CG pour ouverture du droit',
+				'1'  => 'Droit refusé',
+				'2'  => 'Droit ouvert et versable',
+				'3'  => 'Droit ouvert et suspendu (le montant du droit est calculable, mais l\'existence du droit est remis en cause)',
+				'4'  => 'Droit ouvert mais versement suspendu (le montant du droit n\'est pas calculable)',
+				'5'  => 'Droit clos',
+				'6'  => 'Droit clos sur mois antérieur ayant eu des créances transferées ou une régularisation dans le mois de référence pour une période antérieure.'
+			);
+
+			if( empty($etatsDemandes) ) {
+				return $etats;
+			}
+			else {
+				$return = array();
+				foreach( $etatsDemandes as $etatDemande ) {
+					if( isset( $etats[$etatDemande] ) ) {
+						$return[$etatDemande] = $etats[$etatDemande];
+					}
+				}
+				return $return;
+			}
 		}
 
 		/**

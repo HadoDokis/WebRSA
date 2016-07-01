@@ -56,9 +56,9 @@
 				)
 			);
 			$this->set( 'personne_suivi', $personne_suivi );
-			$this->set( 'natpf', $this->Option->natpf() );
+			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 
-			$this->set( 'decision_ci', $this->Option->decision_ci() );
+			$this->set( 'decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
 			$this->set( 'duree_engag', $this->Option->duree_engag() );
 			$this->set( 'numcontrat', (array)Hash::get( $this->Contratinsertion->enums(), 'Contratinsertion' ) );
 
@@ -73,7 +73,7 @@
 			}
 			$this->set( 'forme_ci', $forme_ci );
 
- 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( ) );
+ 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			$this->set( 'qual', $this->Option->qual() );
 
 			$this->set(

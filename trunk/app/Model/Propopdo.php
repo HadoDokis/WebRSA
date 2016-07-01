@@ -68,6 +68,20 @@
 				'message' => 'Champ obligatoire'
             )
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'motifpdo' => array('E', 'A', 'N'),
+		);
 
 		public $belongsTo = array(
 			'Typepdo' => array(
@@ -634,9 +648,8 @@
 				$result,
 				array(
 					$this->alias => array(
-						'motifpdo' => $this->Option->motifpdo(),
 						'categoriegeneral' => $this->Option->sect_acti_emp(),
-						'categoriedetail' => $this->Option->emp_occupe(),
+						'categoriedetail' => ClassRegistry::init('Contratinsertion')->enum('emp_occupe'),
 						'orgpayeur' => array( 'CAF' => 'CAF', 'MSA' => 'MSA' )
 					)
 				)

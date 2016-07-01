@@ -20,29 +20,8 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Avispcgdroitrsa.avisdestpairsa"
-msgstr "Code avis destination paiement à tiers"
+msgid "ENUM::LIB_ACTION::A"
+msgstr "Aide"
 
-msgid "Avispcgdroitrsa.dtavisdestpairsa"
-msgstr "Date avis destination paiement à tiers"
-
-msgid "Avispcgdroitrsa.nomtie"
-msgstr "Nom  du tiers"
-
-msgid "Avispcgdroitrsa.typeperstie"
-msgstr "Type de personne tiers"
-
-msgid "ENUM::AVISDESTPAIRSA::D"
-msgstr "Avis demandé au CG"
-
-msgid "ENUM::AVISDESTPAIRSA::A"
-msgstr "Accord du CG"
-
-msgid "ENUM::AVISDESTPAIRSA::R"
-msgstr "Refus du CG"
-
-msgid "ENUM::TYPEPERSTIE::P"
-msgstr "S'il s'agit d'un tiers personne physique"
-
-msgid "ENUM::TYPEPERSTIE::M"
-msgstr "S'il s'agit d'un tiers personne morale"
+msgid "ENUM::LIB_ACTION::P"
+msgstr "Prestation"

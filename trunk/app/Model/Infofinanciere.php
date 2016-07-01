@@ -69,6 +69,36 @@
 				)
 			)
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'type_allocation' => array(
+				'AllocationsComptabilisees', 'IndusConstates', 'IndusTransferesCG',
+				'RemisesIndus', 'AnnulationsFaibleMontant', 'AutresAnnulations'
+			),
+			'natpfcre' => array(
+				'ACB', 'ASB', 'ASD', 'ASI', 'INK', 'INL', 'INM', 'INN',
+				'INP', 'INS', 'INT', 'ISK', 'ISL', 'ISM', 'ISS', 'ITK',
+				'ITL', 'ITM', 'ITN', 'ITP', 'ITS', 'ITT', 'RCB', 'RSB',
+				'RSD', 'RSI', 'VCB', 'VSB', 'VSD', 'VSI', 'ACD'
+			),
+			'typeopecompta' => array(
+				'PME', 'PRA', 'RAI', 'RMU', 'RTR', 'CIC', 'CAI', 'CDC',
+				'CCP', 'CRC', 'CRG', 'CAF', 'CFC', 'CEX', 'CES', 'CRN'
+			),
+			'sensopecompta' => array('AJ', 'DE'),
+		);
+		
+
 
 		public $belongsTo = array(
 			'Dossier' => array(
@@ -269,6 +299,51 @@
 			else {
 				return null;
 			}
+		}
+		
+		public function enum($field, array $params = array()) {
+			if ($field === 'natpfcre') {
+				$params += array('type' => null);
+				switch ($params['type']) {
+					case 'totsocl':
+						$filter = array('RSD', 'INK', 'ITK', 'ISK', 'ACD', 'ASD'); 
+						break;
+					case 'soclmaj':
+						$filter = array('RSI', 'INL', 'ITL'); 
+						break;
+					case 'localrsa':
+						$filter = array('RSB', 'RCB', 'INM', 'ITM'); 
+						break;
+					case 'indutotsocl':
+						$filter = array('INK', 'ITK', 'ISK'); 
+						break;
+					case 'alloccompta':
+						$filter = array('RSD', 'RSI', 'RSB', 'RCB', 'ASD', 'VSD', 'INK', 'INL', 'INM', 'ITK', 'ITL', 'ITM', 'ISK'); 
+						break;
+					case 'indutransferecg':
+						$filter = array('INK', 'INL', 'INM', 'ITK', 'ITL', 'ITM'); 
+						break;
+					case 'annulationfaible':
+						$filter = array('INK', 'INL', 'INM', 'ITK', 'ITL', 'ITM', 'ISK', 'INN', 'ITN', 'INP', 'ITP'); 
+						break;
+					case 'autreannulation':
+						$filter = array('INK', 'INL', 'INM', 'ITK', 'ITL', 'ITM', 'ISK'); 
+						break;
+					case 'none':
+					case 'all':
+						$filter = array();
+						break;
+					default:
+						$filter = array('RSD', 'RSI', 'RSB', 'RCB', 'ASD', 'VSD', 'INK',
+							'INL', 'INM', 'ITK', 'ITL', 'ITM', 'INN', 'ITN', 'INP', 'ITP');
+				}
+				
+				$result = parent::enum($field, compact('filter') + $params);
+			} else {
+				$result = parent::enum($field, $params);
+			}
+			
+			return $result;
 		}
 	}
 ?>

@@ -58,3 +58,54 @@ msgstr "Localité de l'agence bancaire"
 
 msgid "Paiementfoyer.bic"
 msgstr "BIC (Bank Identifier Code)"
+
+msgid "ENUM::MODEPAI::CB"
+msgstr "Cheques"
+
+msgid "ENUM::MODEPAI::CE"
+msgstr "Caisse nationale d'epargne ptt"
+
+msgid "ENUM::MODEPAI::CP"
+msgstr "Caisse d'epargne ecureuil"
+
+msgid "ENUM::MODEPAI::ES"
+msgstr "Especes caisse"
+
+msgid "ENUM::MODEPAI::LB"
+msgstr "Lettre cheque bancaire"
+
+msgid "ENUM::MODEPAI::LP"
+msgstr "Lettre cheque ptt"
+
+msgid "ENUM::MODEPAI::PI"
+msgstr "Paiement interne"
+
+msgid "ENUM::MODEPAI::VB"
+msgstr "Virement bancaire"
+
+msgid "ENUM::MODEPAI::VP"
+msgstr "Virement postal"
+
+msgid "ENUM::TITURIB::MEL"
+msgstr "Monsieur et mademoiselle"
+
+msgid "ENUM::TITURIB::MEM"
+msgstr "Monsieur et madame"
+
+msgid "ENUM::TITURIB::MLE"
+msgstr "Mademoiselle"
+
+msgid "ENUM::TITURIB::MME"
+msgstr "Madame"
+
+msgid "ENUM::TITURIB::MOL"
+msgstr "Monsieur ou mademoiselle"
+
+msgid "ENUM::TITURIB::MOM"
+msgstr "Monsieur ou madame"
+
+msgid "ENUM::TITURIB::MON"
+msgstr "Monsieur"
+
+msgid "ENUM::TITURIB::RSO"
+msgstr "Raison sociale"

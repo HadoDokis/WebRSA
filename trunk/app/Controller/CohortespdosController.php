@@ -58,9 +58,7 @@
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
 			$this->set( 'traitementtypepdo', $this->Traitementtypepdo->find( 'list' ) );
 			$this->set( 'pieecpres', $this->Option->pieecpres() );
-			$this->set( 'commission', $this->Option->commission() );
-			$this->set( 'motidempdo', $this->Option->motidempdo() );
-			$this->set( 'motifpdo', $this->Option->motifpdo() );
+			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
 			$this->set( 'gestionnaire', $this->User->find(
 					'list',
 					array(
@@ -76,7 +74,7 @@
 
 			$options = array(
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
-				'etatdosrsa' => $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente()),
+				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $this->Situationdossierrsa->etatAttente())),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),

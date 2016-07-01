@@ -105,7 +105,7 @@
 
 <p class="etatDossier">
 <?php
-    $etatdosrsa = ClassRegistry::init( 'Option' )->etatdosrsa();
+    $etatdosrsa = ClassRegistry::init('Dossier')->enum('etatdosrsa');
 //     debug($this->viewVars);
     echo ( isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini' );?>
 </p>

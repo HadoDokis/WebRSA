@@ -238,6 +238,38 @@
 				)
 			)
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'aviseqpluri' => array('R', 'M'),
+            'avisraison_ci' => array('D', 'N', 'A'),
+			'raison_ci' => array('S', 'R'),
+			'sect_acti_emp' => array(
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+				'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'
+			),
+			'emp_occupe' => array(
+				'10', '21', '22', '23', '31', '33', '34', '35', '37',
+				'38', '42', '43', '44', '45', '46', '47', '48', '52',
+				'53', '54', '55', '56', '62', '63', '64', '65', '67',
+				'68', '69'
+			),
+			'duree_hebdo_emp' => array('DHT1', 'DHT2', 'DHT3'),
+			'nat_cont_trav' => array('TCT1', 'TCT2', 'TCT3', 'TCT4', 'TCT5', 'TCT6', 'TCT7', 'TCT8', 'TCT9'),
+			'duree_cdd' => array('DT1', 'DT2', 'DT3'),
+			'decision_ci' => array('E', 'V', 'N', 'A'),
+			'forme_ci' => array('S', 'C'),
+		);
+		
 		public $belongsTo = array(
 			'Action' => array(
 				'className' => 'Action',
@@ -2522,24 +2554,29 @@
 		 * @return array
 		 */
 		public function enums() {
-			$options = Hash::merge(
-				parent::enums(),
-				array(
-					$this->alias => array(
-						'decision_ci' => $this->Option->decision_ci(),
-						'forme_ci' => $this->Option->forme_ci(),
-						'duree_engag' => $this->Option->duree_engag()
-					)
-				)
-			);
+			$options = parent::enums();
+			$departement = (integer)Configure::read('Cg.departement');
+			
+			if ($departement === 93) {
+				$options[$this->alias]['decision_ci'] = array(
+					'E' => 'En attente de décision',
+					'V' => 'Validation à compter du',
+					'A' => 'Annulé',
+					'R' => 'Rejet'
+				);
+			}
 
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
+			if ($departement === 66) {
 				$options[$this->alias]['num_contrat_66'] = $options[$this->alias]['num_contrat'];
 
 				$options[$this->alias]['num_contrat_66']['REN_TACITE'] = __d(
 					Inflector::underscore( $this->name ),
 					'ENUM::NUM_CONTRAT_66::REN_TACITE'
 				);
+			}
+			
+			if (Configure::read( 'nom_form_ci_cg' ) === 'cg66') {
+				$options[$this->alias]['forme_ci'] = array('S' => 'Simple', 'C' => 'Particulier');
 			}
 
 			return $options;

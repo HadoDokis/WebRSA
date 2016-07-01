@@ -107,7 +107,7 @@
 			$options = $this->{$this->modelClass}->enums();
 
 			$options = Hash::insert( $options, 'Personne.qual', $this->Option->qual() );
-			$options = Hash::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
+			$options = Hash::insert( $options, 'Contratinsertion.decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
 			$options = Hash::merge( $options, $this->ActioncandidatPersonne->Personne->Dsp->enums() );
 
 			foreach( array( 'Referent' ) as $linkedModel ) {
@@ -768,7 +768,7 @@
 
 				$this->loadModel( 'Option' );
                 $options['Personne'] = array( 'qual' => $this->Option->qual() );
-                $options['Contratinsertion'] = array( 'decision_ci' => $this->Option->decision_ci() );
+                $options['Contratinsertion'] = array( 'decision_ci' => ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
                 $options['Prestation'] = array( 'rolepers' => $this->Option->rolepers() );
                 $options['Suiviinstruction'] = array( 'typeserins' => $this->Option->typeserins() );
 				$options = Hash::merge( $options, $this->{$this->modelClass}->Personne->Contratinsertion->Cer93->enums() );

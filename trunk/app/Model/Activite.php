@@ -32,11 +32,34 @@
 					'rule' => array('numeric')
 				),
 			),
+		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
 			'paysact' => array(
-				'inList' => array(
-					'rule' => array('inList', array('FRA', 'LUX', 'CEE', 'ACE', 'CNV', 'AUT'))
-				)
-			)
+				'FRA', 'LUX', 'CEE', 'ACE', 'CNV', 'AUT'
+			),
+			'reg' => array(
+				'AA', 'AD', 'AG', 'AL', 'AM', 'CL', 'EF', 'EN', 'FP',
+				'FT', 'GE', 'MC', 'MI', 'MO', 'NI', 'PM', 'PT', 'RE',
+				'RL', 'RP', 'SN', 'TG'
+			),
+			'act' => array(
+				'O', 'N', 'P'
+			),
+			'natcontrtra' => array(
+				'CA', 'CDD', 'CDI', 'CUI', 'CU1', 'CU2', 'CU3', 'CU4',
+				'INT', 'AUT', 'AEN', 'VDI'
+			),
 		);
 
 		public $belongsTo = array(
@@ -70,20 +93,6 @@
 					'limit' => 1
 				)
 			);
-		}
-
-		/**
-		 * Surcharge de la méthode enums pour obtenir les valeurs possibles
-		 * du champ act.
-		 *
-		 * @return array
-		 */
-		public function enums() {
-			$enums = parent::enums();
-
-			$enums[$this->alias]['act'] = $this->Option->act();
-
-			return $enums;
 		}
 	}
 ?>

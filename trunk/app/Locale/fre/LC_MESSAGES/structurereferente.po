@@ -93,3 +93,9 @@ msgstr "Non"
 
 msgid "ENUM::ACTIF::O"
 msgstr "Oui"
+
+msgid "ENUM::LIB_STRUC::1"
+msgstr "Pole emploi"
+
+msgid "ENUM::LIB_STRUC::2"
+msgstr "Assedic"

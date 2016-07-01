@@ -144,7 +144,7 @@
 			$options = array(
 				'Foyer' => array( 'sitfam' => $this->Option->sitfam() ),
 // 				'Prestation' => array( 'rolepers' => $this->Option->rolepers() ),
-				'Situationdossierrsa' => array( 'etatdosrsa' => $this->Option->etatdosrsa() ),
+				'Situationdossierrsa' => array( 'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa') ),
 				'Adresse' => array( 'numcom' => $this->Gestionzonesgeos->listeCodesInsee() ),
 				'Gestionanomaliebdd' => array(
 					'methode' => $methodes,

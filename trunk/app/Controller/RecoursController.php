@@ -37,7 +37,7 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'commission', $this->Option->commission() );
+			$this->set( 'commission', ClassRegistry::init('Recours')->enum('typecommission') );
 			$this->set( 'decisionrecours', $this->Option->decisionrecours() );
 			$this->set( 'motifrecours', $this->Option->motifrecours() );
 		}
@@ -65,7 +65,7 @@
 				)
 			);
 			$avispcg = $this->Avispcgdroitrsa->find( 'first', $qd_avispcg );
-
+debug($avispcg);
 
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'urlmenu', '/indus/index/'.$dossier_id );

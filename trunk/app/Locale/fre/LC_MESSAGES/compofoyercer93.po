@@ -17,32 +17,18 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+###############################################################################
 
 ###############################################################################
 
-msgid "Avispcgdroitrsa.avisdestpairsa"
-msgstr "Code avis destination paiement à tiers"
+msgid "Compofoyerpcg66.name"
+msgstr "Composition"
 
-msgid "Avispcgdroitrsa.dtavisdestpairsa"
-msgstr "Date avis destination paiement à tiers"
+msgid "Composfoyerspcgs66::add"
+msgstr "Ajouter une composition"
 
-msgid "Avispcgdroitrsa.nomtie"
-msgstr "Nom  du tiers"
+msgid "Compofoyerpcg66::index::empty"
+msgstr "Aucune composition enregistrée"
 
-msgid "Avispcgdroitrsa.typeperstie"
-msgstr "Type de personne tiers"
-
-msgid "ENUM::AVISDESTPAIRSA::D"
-msgstr "Avis demandé au CG"
-
-msgid "ENUM::AVISDESTPAIRSA::A"
-msgstr "Accord du CG"
-
-msgid "ENUM::AVISDESTPAIRSA::R"
-msgstr "Refus du CG"
-
-msgid "ENUM::TYPEPERSTIE::P"
-msgstr "S'il s'agit d'un tiers personne physique"
-
-msgid "ENUM::TYPEPERSTIE::M"
-msgstr "S'il s'agit d'un tiers personne morale"
+msgid "Composfoyerspcgs66::delete::confirm"
+msgstr "Confirmer la suppression ?"

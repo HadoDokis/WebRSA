@@ -92,6 +92,24 @@
 				)
 			)
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'qual' => array('MME', 'MR'),
+			'pieecpres' => array('E', 'P'),
+            'sexe' => array('1', '2'),
+            'typedtnai' => array('J', 'N', 'O'),
+		);
+		
 		public $belongsTo = array(
 			'Foyer' => array(
 				'className' => 'Foyer',

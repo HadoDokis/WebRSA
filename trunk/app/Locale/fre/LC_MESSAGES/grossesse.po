@@ -31,3 +31,22 @@ msgstr "Date de déclaration de grossesse"
 
 msgid "Grossesse.natfingro"
 msgstr "Motif de fin de grossesse"
+
+msgid "ENUM::NATFINGRO::D"
+msgstr "Départ de madame du foyer"
+
+msgid "ENUM::NATFINGRO::I"
+msgstr "Interruption de grossesse"
+
+msgid "ENUM::NATFINGRO::M"
+msgstr "Enfant mort -né sans déclaration à l\'état civil"
+
+msgid "ENUM::NATFINGRO::N"
+msgstr "Naissance"
+
+msgid "ENUM::NATFINGRO::R"
+msgstr "Dossier radié sans connaissance des suites de la grossesse"
+
+msgid "ENUM::NATFINGRO::F"
+msgstr "Fin de grossesse non justifiée"
+

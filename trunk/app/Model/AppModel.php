@@ -67,10 +67,27 @@
 			'group' => null,
 			'offset' => null
 		);
-
+		
+		/**
+		 * Cache "live", notamment utilisé par la méthode enums.
+		 *
+		 * @var array
+		 */
 		protected $_appModelCache = array(
 			'enums' => array()
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array();
 
 		/**
 		 * Surcharge du constructeur pour les champs virtuels.
@@ -522,8 +539,9 @@
 						$this->_appModelCache[$cacheKey] = array();
 					}
 
-					// D'autres champs avec la règle inList ?
 					$domain = Inflector::underscore( $this->alias );
+
+					// D'autres champs avec la règle inList ?
 					foreach( $this->validate as $field => $validate ) {
 						foreach( $validate as $ruleName => $rule ) {
 							if( ( $ruleName === 'inList' ) && !isset( $this->_appModelCache[$cacheKey][$this->alias][$field] ) ) {
@@ -538,6 +556,20 @@
 
 								$this->_appModelCache[$cacheKey][$this->alias][$field] = $list;
 							}
+						}
+					}
+
+					// D'autres champs avec $fakeInLists
+					foreach( $this->fakeInLists as $field => $values ) {
+						if( !isset( $this->_appModelCache[$cacheKey][$this->alias][$field] ) ) {
+							$fieldNameUpper = strtoupper( $field );
+
+							$list = array();
+							foreach( $values as $value ) {
+								$list[$value] = __d( $domain, "ENUM::{$fieldNameUpper}::{$value}" );
+							}
+							
+							$this->_appModelCache[$cacheKey][$this->alias][$field] = $list;
 						}
 					}
 

@@ -50,18 +50,18 @@
 			ini_set('max_execution_time', 0);
 			parent::beforeFilter();
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
-			$this->set( 'natpfcre', $this->Option->natpfcre() );
+			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre') );
 			$this->set( 'typeopecompta', $this->Option->typeopecompta() );
 			$this->set( 'sensopecompta', $this->Option->sensopecompta() );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 		}*/
 
         protected function _setOptions() {
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
-			$this->set( 'natpfcre', $this->Option->natpfcre() );
+			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre') );
 			$this->set( 'typeopecompta', $this->Option->typeopecompta() );
 			$this->set( 'sensopecompta', $this->Option->sensopecompta() );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 		}
 
 		/**

@@ -119,7 +119,7 @@
 
 			$options = array(
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
-				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
