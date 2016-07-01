@@ -147,7 +147,7 @@ msgid "ENUM::NATCONTRTRA::CDI"
 msgstr "Contrat à durée indéterminé"
 
 msgid "ENUM::NATCONTRTRA::CUI"
-msgstr "Contrat unique d\'insertion"
+msgstr "Contrat unique d'insertion"
 
 msgid "ENUM::NATCONTRTRA::CU1"
 msgstr "CUI non marchand (CAE) Etat"

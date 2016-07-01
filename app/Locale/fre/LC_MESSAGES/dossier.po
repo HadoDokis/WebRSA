@@ -562,10 +562,10 @@ msgid "ENUM::ETATDOSRSA::2"
 msgstr "Droit ouvert et versable"
 
 msgid "ENUM::ETATDOSRSA::3"
-msgstr "Droit ouvert et suspendu (le montant du droit est calculable, mais l\'existence du droit est remis en cause)"
+msgstr "Droit ouvert et suspendu (le montant du droit est calculable, mais l'existence du droit est remis en cause)"
 
 msgid "ENUM::ETATDOSRSA::4"
-msgstr "Droit ouvert mais versement suspendu (le montant du droit n\'est pas calculable)"
+msgstr "Droit ouvert mais versement suspendu (le montant du droit n'est pas calculable)"
 
 msgid "ENUM::ETATDOSRSA::5"
 msgstr "Droit clos"

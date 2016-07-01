@@ -42,13 +42,13 @@ msgid "Allocationsoutienfamilial.topenfreconn"
 msgstr "Enfant reconnu"
 
 msgid "ENUM::SITASF::DC"
-msgstr "HORS D\'ETAT"
+msgstr "HORS D'ETAT"
 
 msgid "ENUM::SITASF::NR"
 msgstr "ENFANT NON RECONNU"
 
 msgid "ENUM::SITASF::HB"
-msgstr "HORS D\'ETAT"
+msgstr "HORS D'ETAT"
 
 msgid "ENUM::SITASF::OE"
 msgstr "ABANDON - SANS JUGEMENT"
