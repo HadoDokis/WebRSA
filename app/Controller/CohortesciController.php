@@ -56,7 +56,7 @@
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'printed', $this->Option->printed() );
-			$this->set( 'decision_ci', $this->Option->decision_ci() );
+			$this->set( 'decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
 			$struct = $this->Dossier->Foyer->Personne->Contratinsertion->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 			$this->set( 'struct', $struct );
 			$this->set( 'duree_engag', $this->Option->duree_engag() );
@@ -75,10 +75,10 @@
 			$this->set( 'forme_ci', $forme_ci );
 
 			if( $this->action == 'valides' ) {
-				$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+				$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			}
 			else {
-				$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Dossier->Situationdossierrsa->etatOuvert() ) );
+				$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $this->Dossier->Situationdossierrsa->etatOuvert())) );
 			}
 		}
 

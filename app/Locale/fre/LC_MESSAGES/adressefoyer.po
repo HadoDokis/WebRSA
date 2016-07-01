@@ -34,3 +34,37 @@ msgstr "Etat adresse"
 
 msgid "Adressefoyer.id"
 msgstr "Adresse n°"
+
+msgid "ENUM::ETATADR::CO"
+msgstr "Adresse vérifiée au regard du contrat Médiapost de la Cnaf"
+
+msgid "ENUM::ETATADR::VO"
+msgstr "Forcage du nom de la voie"
+
+msgid "ENUM::ETATADR::VC"
+msgstr "Forçage du nom de la voie et du nom de la commune"
+
+msgid "ENUM::ETATADR::NC"
+msgstr "Adresse non contrôlée"
+
+msgid "ENUM::ETATADR::AU"
+msgstr "Autre situation non répertoriée"
+
+msgid "ENUM::RGADR::01"
+msgstr "Dernière adresse"
+
+msgid "ENUM::RGADR::02"
+msgstr "Avant-dernière adresse"
+
+msgid "ENUM::RGADR::03"
+msgstr "Avant-avant-dernière adresse"
+
+msgid "ENUM::TYPEADR::D"
+msgstr "Définitive"
+
+msgid "ENUM::TYPEADR::P"
+msgstr "Provisoire"
+
+msgid "ENUM::TYPEADR::R"
+msgstr "Retour foyer principal"
+

@@ -43,3 +43,19 @@ msgstr "Date évaluation ressource non salarié"
 
 msgid "Avispcgpersonne.mtevalressnonsal"
 msgstr "Montant évaluation ressource non salarié"
+
+msgid "ENUM::AVISEVARESSNONSAL::D"
+msgstr "Avis demandé au CG"
+
+msgid "ENUM::AVISEVARESSNONSAL::A"
+msgstr "Accord du CG"
+
+msgid "ENUM::AVISEVARESSNONSAL::R"
+msgstr "Refus du CG"
+
+msgid "ENUM::EXCL::T"
+msgstr "Exclusion totale portant sur la personne et sur ses ressources"
+
+msgid "ENUM::EXCL::P"
+msgstr "Exclusion partielle portant uniquement sur la personne"
+

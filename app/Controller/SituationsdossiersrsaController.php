@@ -41,10 +41,10 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
-			$this->set( 'motisusdrorsa', $this->Option->motisusdrorsa() );
-			$this->set( 'motisusversrsa', $this->Option->motisusversrsa() );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
+			$this->set( 'moticlorsa', ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa') );
+			$this->set( 'motisusdrorsa', ClassRegistry::init('Suspensiondroit')->enum('motisusdrorsa') );
+			$this->set( 'motisusversrsa', ClassRegistry::init('Suspensionversement')->enum('motisusversrsa') );
 		}
 
 		/**

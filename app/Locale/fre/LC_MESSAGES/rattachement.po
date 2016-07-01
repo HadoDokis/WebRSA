@@ -34,3 +34,42 @@ msgstr "NIR"
 
 msgid "Rattachement.typepar"
 msgstr "Type parenté"
+
+msgid "ENUM::TYPEPAR::ADP"
+msgstr "Adoption simple"
+
+msgid "ENUM::TYPEPAR::ASC"
+msgstr "Ascendant"
+
+msgid "ENUM::TYPEPAR::AUT"
+msgstr "Autre"
+
+msgid "ENUM::TYPEPAR::BFI"
+msgstr "Gendre ou bru"
+
+msgid "ENUM::TYPEPAR::COL"
+msgstr "Coll degré 4"
+
+msgid "ENUM::TYPEPAR::DES"
+msgstr "Descendant"
+
+msgid "ENUM::TYPEPAR::FRE"
+msgstr "Frère ou soeur"
+
+msgid "ENUM::TYPEPAR::LEG"
+msgstr "Légitime"
+
+msgid "ENUM::TYPEPAR::NAT"
+msgstr "Naturel"
+
+msgid "ENUM::TYPEPAR::NEV"
+msgstr "Neveu ou nièce"
+
+msgid "ENUM::TYPEPAR::ONC"
+msgstr "Oncle ou tante"
+
+msgid "ENUM::TYPEPAR::REA"
+msgstr "Recueilli en vue adoption"
+
+msgid "ENUM::TYPEPAR::REC"
+msgstr "Recueilli"

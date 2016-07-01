@@ -37,7 +37,7 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'lib_action', $this->Option->lib_action() );
+			$this->set( 'lib_action', ClassRegistry::init('Actioninsertion')->enum('lib_action') );
 			$this->set( 'actions', $this->Action->grouplist( 'aide' ) );
 			$this->set( 'actions', $this->Action->grouplist( 'prest' ) );
 			$this->set( 'typo_aide', $this->Option->typo_aide() );

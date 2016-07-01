@@ -163,3 +163,9 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
 msgstr "Oui"
+
+msgid "ENUM::REGAGRIFAM::NSA"
+msgstr "NON SALARIE AGRICOLE"
+
+msgid "ENUM::REGAGRIFAM::SA"
+msgstr "SALARIE AGRICOLE"

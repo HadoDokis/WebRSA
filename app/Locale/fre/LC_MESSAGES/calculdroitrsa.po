@@ -42,3 +42,10 @@ msgstr "Non"
 
 msgid "ENUM::toppersdrodevorsa::1"
 msgstr "Oui"
+
+msgid "ENUM::TOPPERSDRODEVORSA::"
+msgstr "Non défini"
+
+msgid "ENUM::TOPPERSDRODEVORSA::NULL"
+msgstr "Non défini"
+

@@ -516,3 +516,54 @@ msgstr "Maintien de l'orientation SOCIALE"
 
 msgid "ENUM::CHOIXSANSPASSAGEEP::reorientation"
 msgstr "Réorientation Pôle Emploi"
+
+msgid "ENUM::DUREE_ENGAG::3"
+msgstr "3 mois"
+
+msgid "ENUM::DUREE_ENGAG::6"
+msgstr "6 mois"
+
+msgid "ENUM::DUREE_ENGAG::9"
+msgstr "9 mois"
+
+msgid "ENUM::DUREE_ENGAG::12"
+msgstr "12 mois"
+
+msgid "ENUM::SITFAM::ABA"
+msgstr "Disparu (jugement d'absence)"
+
+msgid "ENUM::SITFAM::CEL"
+msgstr "Célibataire"
+
+msgid "ENUM::SITFAM::DIV"
+msgstr "Divorcé(e)"
+
+msgid "ENUM::SITFAM::ISO"
+msgstr "Isolement après vie maritale ou PACS"
+
+msgid "ENUM::SITFAM::MAR"
+msgstr "Mariage"
+
+msgid "ENUM::SITFAM::PAC"
+msgstr "PACS"
+
+msgid "ENUM::SITFAM::RPA"
+msgstr "Reprise vie commune sur PACS"
+
+msgid "ENUM::SITFAM::RVC"
+msgstr "Reprise vie maritale"
+
+msgid "ENUM::SITFAM::RVM"
+msgstr "Reprise mariage"
+
+msgid "ENUM::SITFAM::SEF"
+msgstr "Séparation de fait"
+
+msgid "ENUM::SITFAM::SEL"
+msgstr "Séparation légale"
+
+msgid "ENUM::SITFAM::VEU"
+msgstr "Veuvage"
+
+msgid "ENUM::SITFAM::VIM"
+msgstr "Vie maritale"

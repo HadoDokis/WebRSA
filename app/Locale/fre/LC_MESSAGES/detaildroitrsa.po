@@ -91,3 +91,25 @@ msgstr "Nombre total d'aides familiaux externes au foyer travaillant sur la surf
 
 msgid "Detaildroitrsa.nbtotpersmajosurfdom"
 msgstr "Nombre total de personnes liées aux aides familiaux externe au foyer  "
+
+msgid "ENUM::ORIDEMRSA::DEM"
+msgstr "Le droit au Rsa fait suite à une demande de RSA"
+
+msgid "ENUM::ORIDEMRSA::RMI"
+msgstr "Le droit au rSa est issu de la conversion d'un droit RMI"
+
+msgid "ENUM::ORIDEMRSA::API"
+msgstr "Le droit au rSa est issu de la conversion d'un droit API"
+
+msgid "ENUM::TOPFOYDRODEVORSA::1"
+msgstr "le foyer est soumis à Droits et devoirs (le montant des ressources d'acitivtés (MTRESSMENRSA) pris en compte pour le rSa est inférieur au montant du revenu minimum garanti rSa (MTREVMINGARASA)"
+
+msgid "ENUM::TOPFOYDRODEVORSA::0"
+msgstr "le foyer n'est pas soumis à Droits et devoirs (le montant des ressources d'acitivtés (MTRESSMENRSA) pris en compte pour le rSa est supérieur ou égale au montant du revenu minimum garanti rSa (MTREVMINGARASA)"
+
+msgid "ENUM::TOPSANSDOMFIXE::0"
+msgstr "Domicile fixe"
+
+msgid "ENUM::TOPSANSDOMFIXE::1"
+msgstr "Sans domicile fixe"
+

@@ -82,13 +82,11 @@
 		);
 
 		protected function _setOptions() {
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			$this->set( 'pieecpres', $this->Option->pieecpres() );
-			$this->set( 'commission', $this->Option->commission() );
-			$this->set( 'motidempdo', $this->Option->motidempdo() );
-			$this->set( 'motifpdo', $this->Option->motifpdo() );
+			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
 			$this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
-			$this->set( 'categoriedetail', $this->Option->emp_occupe() );
+			$this->set( 'categoriedetail', ClassRegistry::init('Contratinsertion')->enum('emp_occupe') );
 
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'typepdo', $this->Typepdo->find( 'list' ) );

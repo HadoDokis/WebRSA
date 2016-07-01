@@ -271,7 +271,7 @@
 						'toppersdrodevorsa' => $Option->toppersdrodevorsa(true),
 					),
 					'Detailcalculdroitrsa' => array(
-						'natpf' => $Option->natpf(),
+						'natpf' => $this->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->enum('natpf'),
 					),
 					'Detaildroitrsa' => array(
 						'oridemrsa' => $Option->oridemrsa(),
@@ -280,7 +280,7 @@
 					),
 					// FIXME: dans les enums du dossier
 					'Dossier' => array(
-						'numorg' => $Option->numorg(),
+						'numorg' => $this->Personne->Foyer->Dossier->enum( 'numorg' ),
 						'typeparte' => $Option->typeparte(),
 					),
 					'Personne' => array(
@@ -299,8 +299,8 @@
 						'type_voie' => $Option->typevoie(),
 					),
 					'Situationdossierrsa' => array(
-						'etatdosrsa' => $Option->etatdosrsa(),
-						'moticlorsa' => $Option->moticlorsa(),
+						'etatdosrsa' => $this->Personne->Foyer->Dossier->Situationdossierrsa->enum( 'etatdosrsa' ),
+						'moticlorsa' => $this->Personne->Foyer->Dossier->Situationdossierrsa->enum( 'moticlorsa' ),
 					),
 				)
 			);

@@ -71,6 +71,22 @@
 				)
 			)
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'typeinsrmi' => array('A', 'C', 'F', 'S'),
+			'typeparte' => array('CG', 'CT', 'CCAS', 'CIAS', 'PE', 'MDPH'),
+			'etatdosrsa' => array('Z', '0', '1', '2', '3', '4', '5', '6')
+		);
 
 		public $hasOne = array(
 			'Avispcgdroitrsa' => array(
@@ -617,19 +633,56 @@
 		 * @return array
 		 */
 		public function enums() {
-			$return = parent::enums();
+			$cacheKey = $this->useDbConfig.'_'.__CLASS__.'_enums_'.$this->alias;
 
-			// FIXME: seulement pour le 93 ?
-			// @see Tableausuivipdv93
-			$return[$this->alias]['anciennete_dispositif'] = array(
-				'0_0' => 'Moins de 1 an',
-				'1_2' => 'De 1 an à moins de 3 ans',
-				'3_5' => 'De 3 ans à moins de 6 ans',
-				'6_8' => 'De 6 ans à moins de 9 ans',
-				'9_999' => 'Plus de 9 ans',
-			);
+			// Dans le cache "live" ?
+			if( false === isset( $this->_appModelCache[$cacheKey] ) ) {
+				$this->_appModelCache[$cacheKey] = Cache::read( $cacheKey );
 
-			return $return;
+				// Dans le cache CakePHP ?
+				if( false === $this->_appModelCache[$cacheKey] ) {			
+					$this->_appModelCache[$cacheKey] = parent::enums();
+
+					// FIXME: seulement pour le 93 ?
+					// @see Tableausuivipdv93
+					$this->_appModelCache[$cacheKey][$this->alias]['anciennete_dispositif'] = array(
+						'0_0' => 'Moins de 1 an',
+						'1_2' => 'De 1 an à moins de 3 ans',
+						'3_5' => 'De 3 ans à moins de 6 ans',
+						'6_8' => 'De 6 ans à moins de 9 ans',
+						'9_999' => 'Plus de 9 ans',
+					);
+					
+					$this->_cacheOptionsNumorg($cacheKey);
+
+					Cache::write( $cacheKey, $this->_appModelCache[$cacheKey] );
+				}
+			}
+
+			return $this->_appModelCache[$cacheKey];
+		}
+		
+		/**
+		 * On enregistre la liste des traductions connues, mais on ne met pas en inList,
+		 * sinon on aura des soucis à l'enregistrement d'un nouveau numorg
+		 */
+		protected function _cacheOptionsNumorg($cacheKey) {
+			$domain = Inflector::underscore( $this->alias );
+			$this->_appModelCache[$cacheKey][$this->alias]['numorg'] = array();
+			for ($i = 1 ; $i <= 999 + 9*2 ; $i++) {
+				// Cas corse
+				if ($i > 999) {
+					$departement = $i - 999 > 9 ? '2B' : '2A';
+					$numorg = $departement . ($i - 999 > 9 ? $i - 999 - 9 : $i - 999); // 2A[1-9] | 2B[1-9]
+				} else {
+					$numorg = sprintf('%03d', $i);
+				}
+				
+				$label = __d( $domain, "ENUM::NUMORG::{$numorg}" );
+				if ($label !== "ENUM::NUMORG::{$numorg}") {
+					$this->_appModelCache[$cacheKey][$this->alias]['numorg'][(string)$numorg] = $label;
+				}
+			}
 		}
 	}
 ?>

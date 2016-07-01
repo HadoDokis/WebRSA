@@ -60,7 +60,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
 
 
         $this->set('qual', $this->Option->qual());
-        $this->set('etatdosrsa', $this->Option->etatdosrsa());
+        $this->set('etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa'));
 
         $gestionnaires = $this->User->find(
                 'all', array(

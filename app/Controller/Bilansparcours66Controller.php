@@ -88,7 +88,7 @@
 			$typevoie = $this->Option->typevoie();
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'nationalite', $this->Option->nationalite() );
+			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 
 			$options = Hash::insert( $options, 'typevoie', $typevoie );
 
@@ -100,7 +100,7 @@
 				$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 			}
 
-			$this->set( 'rsaSocle', $this->Option->natpf() );
+			$this->set( 'rsaSocle', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag();
 
@@ -1060,7 +1060,7 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'nationalite', $this->Option->nationalite() );
+			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 			$this->set( 'typeformulaire', $typeformulaire );
 			$this->set( compact( 'dossiersepsencours' ) );
 			$this->set( 'urlmenu', '/bilanspourcours66/index/'.$personne_id );

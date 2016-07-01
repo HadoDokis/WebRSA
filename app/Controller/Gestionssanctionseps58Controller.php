@@ -35,7 +35,7 @@
 		 * @return void
 		 */
 		protected function _setOptions() {
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 
 			$options = Set::merge(
 				$this->Commissionep->Passagecommissionep->Dossierep->enums(),

@@ -321,8 +321,8 @@
 			$options = array(
 				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
-				'etatdosrsa' => $this->Option->etatdosrsa(),
-				'moticlorsa' => $this->Option->moticlorsa(),
+				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
+				'moticlorsa' => ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa'),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->InsertionsBeneficiaires->referents(
@@ -840,8 +840,8 @@
 			$options = array(
 				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
-				'etatdosrsa' => $this->Option->etatdosrsa(),
-				'moticlorsa' => $this->Option->moticlorsa(),
+				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
+				'moticlorsa' => ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa'),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->InsertionsBeneficiaires->referents(
@@ -944,8 +944,8 @@
 			$options = array(
 				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
-				'etatdosrsa' => $this->Option->etatdosrsa(),
-				'moticlorsa' => $this->Option->moticlorsa(),
+				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
+				'moticlorsa' => ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa'),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->InsertionsBeneficiaires->referents(

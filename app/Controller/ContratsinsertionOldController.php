@@ -127,7 +127,7 @@ class ContratsinsertionOldController extends AppController
         if (in_array($this->action, array('index', 'add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier'))) {
             $this->set( 'duree_engag', $this->Option->duree_engag() );
             $options = array_merge($options, $this->Contratinsertion->Propodecisioncer66->enums());
-            $this->set('decision_ci', $this->Option->decision_ci());
+            $this->set('decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci'));
             $forme_ci = array();
             if (Configure::read('nom_form_ci_cg') == 'cg93') {
                 $forme_ci = array('S' => 'Simple', 'C' => 'Complexe');
@@ -138,33 +138,32 @@ class ContratsinsertionOldController extends AppController
         }
 
         if (in_array($this->action, array('add', 'edit', 'view', 'valider'))) {
-            $this->set('formeci', $this->Option->formeci());
+            $this->set('formeci', ClassRegistry::init('Cer93')->enum('formeci'));
         }
 
         if (in_array($this->action, array('add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier'))) {
             $this->set('qual', $this->Option->qual());
             $this->set('raison_ci', $this->Option->raison_ci());
             if (Configure::read('Cg.departement') == 66) {
-                $this->set('avisraison_ci', $this->Option->avisraison_ci());
+                $this->set('avisraison_ci', ClassRegistry::init('Contratinsertion')->enum('avisraison_ci'));
             } else if (Configure::read('Cg.departement') == 93) {
                 $this->set('avisraison_ci', array('D' => 'Defaut de conclusion', 'N' => 'Non respect du contrat'));
             }
-            $this->set('aviseqpluri', $this->Option->aviseqpluri());
+            $this->set('aviseqpluri', ClassRegistry::init('Contratinsertion')->enum('aviseqpluri'));
             $this->set('sect_acti_emp', $this->Option->sect_acti_emp());
-            $this->set('emp_occupe', $this->Option->emp_occupe());
-            $this->set('duree_hebdo_emp', $this->Option->duree_hebdo_emp());
-            $this->set('nat_cont_trav', $this->Option->nat_cont_trav());
-            $this->set('duree_cdd', $this->Option->duree_cdd());
+            $this->set('emp_occupe', ClassRegistry::init('Contratinsertion')->enum('emp_occupe'));
+            $this->set('duree_hebdo_emp', ClassRegistry::init('Contratinsertion')->enum('duree_hebdo_emp'));
+            $this->set('nat_cont_trav', ClassRegistry::init('Contratinsertion')->enum('nat_cont_trav'));
+            $this->set('duree_cdd', ClassRegistry::init('Contratinsertion')->enum('duree_cdd'));
             $this->set( 'duree_engag', $this->Option->duree_engag() );
 
-            $this->set('fonction_pers', $this->Option->fonction_pers());
             $this->set('nivetus', $this->Contratinsertion->Personne->Dsp->enum('nivetu'));
             $this->set('nivdipmaxobt', $this->Contratinsertion->Personne->Dsp->enum('nivdipmaxobt'));
             $this->set('typeserins', $this->Option->typeserins());
 
-            $this->set('lib_action', $this->Option->lib_action());
+            $this->set('lib_action', ClassRegistry::init('Actioninsertion')->enum('lib_action'));
             $this->set('typo_aide', $this->Option->typo_aide());
-            $this->set('soclmaj', $this->Option->natpfcre('soclmaj'));
+            $this->set('soclmaj', ClassRegistry::init('Infofinanciere')->enum('natpfcre', array('type' => 'soclmaj')));
             $this->set('rolepers', $this->Option->rolepers());
             $this->set('sitfam', $this->Option->sitfam());
             $this->set('typeocclog', $this->Option->typeocclog());

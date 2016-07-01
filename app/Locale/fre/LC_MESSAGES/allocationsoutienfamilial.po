@@ -40,3 +40,37 @@ msgstr "Demande d'ASF"
 
 msgid "Allocationsoutienfamilial.topenfreconn"
 msgstr "Enfant reconnu"
+
+msgid "ENUM::SITASF::DC"
+msgstr "HORS D\'ETAT"
+
+msgid "ENUM::SITASF::NR"
+msgstr "ENFANT NON RECONNU"
+
+msgid "ENUM::SITASF::HB"
+msgstr "HORS D\'ETAT"
+
+msgid "ENUM::SITASF::OE"
+msgstr "ABANDON - SANS JUGEMENT"
+
+msgid "ENUM::SITASF::PA"
+msgstr "ABANDON - JUGEMENT SANS PENSION"
+
+msgid "ENUM::SITASF::TP"
+msgstr "ABANDON - PENSION FIXEE"
+
+msgid "ENUM::SITASF::AS"
+msgstr "SITUATION NON DROIT"
+
+msgid "ENUM::SITASF::AD"
+msgstr "ALLOCATION ADOPTION"
+
+msgid "ENUM::SITASF::RS"
+msgstr "ASF SUITE A RSA"
+
+msgid "ENUM::PARASSOASF::P"
+msgstr "Père"
+
+msgid "ENUM::PARASSOASF::M"
+msgstr "Mère"
+

@@ -57,7 +57,7 @@
 			$typevoie = $this->Option->typevoie();
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'nationalite', $this->Option->nationalite() );
+			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 
 
 			$typevoie = $this->Option->typevoie();

@@ -34,3 +34,28 @@ msgstr "Date soumission CAF"
 
 msgid "Derogation.dfavisdero"
 msgstr "Date de fin dérogation"
+
+msgid "ENUM::TYPEDERO::AGE"
+msgstr "Dérogation sur les conditions d\'age"
+
+msgid "ENUM::TYPEDERO::ACT"
+msgstr "Dérogation sur les conditions d\'activité"
+
+msgid "ENUM::TYPEDERO::RES"
+msgstr "Dérogation sur les conditions de résidence"
+
+msgid "ENUM::TYPEDERO::NAT"
+msgstr "Dérogation sur les conditions de nationnalité"
+
+msgid "ENUM::AVISDERO::D"
+msgstr "Avis demandé au CG"
+
+msgid "ENUM::AVISDERO::O"
+msgstr "Accord du CG"
+
+msgid "ENUM::AVISDERO::N"
+msgstr "Refus du CG"
+
+msgid "ENUM::AVISDERO::A"
+msgstr "Ajourné"
+

@@ -25,11 +25,20 @@
 					'rule' => array('numeric'),
 				),
 			),
-			'sitperssocpro' => array(
-				'inList' => array(
-					'rule' => array('inList', array('AF', 'EF', 'RE'))
-				)
-			)
+		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'sitperssocpro' => array('AF', 'EF', 'RE')
 		);
 
 		public $belongsTo = array(

@@ -28,5 +28,28 @@
 				'order' => ''
 			)
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'etatcrealim' => array(
+				'SA', 'DD', 'AT', 'DS', 'SF', 'PS', 'DA', 'PE', 'DR',
+				'RM', 'MS', 'SI', 'RE', 'TR', 'AA', 'AC'
+			),
+			'orioblalim' => array('CJT', 'PAR'),
+			'motidiscrealim' => array('AVA', 'LOG', 'PAM', 'PHE', 'DCG', 'AUT'),
+			'engproccrealim' => array('O', 'N', 'R'),
+            'topdemdisproccrealim' => array('1', '0'),
+            'topjugpa' => array('1', '0'),
+            'verspa' => array('N', 'O', 'P'),
+		);
 	}
 ?>

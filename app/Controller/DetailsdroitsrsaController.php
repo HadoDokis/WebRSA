@@ -43,7 +43,7 @@
 			$this->set( 'topsansdomfixe', $this->Option->topsansdomfixe() );
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
 			$this->set( 'topfoydrodevorsa', $this->Option->topfoydrodevorsa() );
-			$this->set( 'natpf', $this->Option->natpf() );
+			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'sousnatpf', $this->Option->sousnatpf() );
 		}
 

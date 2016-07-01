@@ -61,7 +61,7 @@
 
 			$this->set( 'statuts', $this->Orientstruct->enum( 'statut_orient' ) );
 			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
-			$this->set( 'natpf', $this->Option->natpf() );
+			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'qual', $this->Option->qual() );
 
 			$this->set( 'referents', ClassRegistry::init( 'Referent' )->listOptions( ) );
@@ -81,7 +81,7 @@
 				$this->set( compact( 'enums' ) );
 			}
 
-			$this->set( 'act', $this->Option->act() );
+			$this->set( 'act', ClassRegistry::init('Activite')->enum('act') );
 		}
 
 		/**

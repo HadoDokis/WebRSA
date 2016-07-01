@@ -30,7 +30,7 @@ class Criteresdossierspcgs66Controller extends AppController {
     protected function _setOptions() {
 
         $this->set('qual', $this->Option->qual());
-        $this->set('etatdosrsa', $this->Option->etatdosrsa());
+        $this->set('etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa'));
         $this->set('typepdo', $this->Dossierpcg66->Typepdo->find('list'));
         $this->set('originepdo', $this->Dossierpcg66->Originepdo->find('list'));
         $this->set('descriptionpdo', $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Descriptionpdo->find('list'));
@@ -69,7 +69,7 @@ class Criteresdossierspcgs66Controller extends AppController {
 
         $options = $this->Dossierpcg66->enums();
 
-        $this->set('natpf', $this->Option->natpf());
+        $this->set('natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf'));
 
         $this->set('listorganismes', $this->Dossierpcg66->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
                         'list', array(

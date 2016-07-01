@@ -26,6 +26,26 @@
 				'order' => ''
 			)
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'motisusdrorsa' => array(
+				'DA', 'DB', 'DC', 'DD', 'DE', 'DF', 'DG', 'DH', 'DI',
+				'DJ', 'DK', 'DL', 'DM', 'DN', 'DO', 'DP', 'DQ', 'DR',
+				'GF', 'GR', 'GA', 'GS', 'GC', 'GI', 'GX', 'GE', 'GJ',
+				'GK', 'GL'
+			),
+            'natgroupfsus' => array('RSA', 'RSX', 'RCX', 'DIF', 'HOS', 'ISO'),
+		);
 
 		/**
 		 * Retourne une sous-requête permettant d'avoir la dernière entrée de la table (avec un tri

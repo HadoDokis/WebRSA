@@ -164,7 +164,7 @@
 
             $optionsHisto = array(
 				'Historiquedroit' => array(
-					'etatdosrsa' => ClassRegistry::init( 'Option' )->etatdosrsa()
+					'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa')
 				)
 			);
 			$options = Set::merge( $options, $optionsHisto );

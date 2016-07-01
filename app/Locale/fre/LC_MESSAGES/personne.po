@@ -145,3 +145,39 @@ msgstr "Ressortissant CEE ou Suisse"
 
 msgid "ENUM::NATI::F"
 msgstr "Française"
+
+msgid "ENUM::PIEECPRES::E"
+msgstr "Pièce d'état civil"
+
+msgid "ENUM::PIEECPRES::P"
+msgstr "Certificat de perte"
+
+msgid "ENUM::QUAL::MME"
+msgstr "Madame"
+
+msgid "ENUM::QUAL::MR"
+msgstr "Monsieur"
+
+msgid "ENUM::SEXE::1"
+msgstr "Homme"
+
+msgid "ENUM::SEXE::2"
+msgstr "Femme"
+
+msgid "ENUM::TYPEDTNAI::J"
+msgstr "Jour inconnu"
+
+msgid "ENUM::TYPEDTNAI::N"
+msgstr "Jour et mois connus"
+
+msgid "ENUM::TYPEDTNAI::O"
+msgstr "Jour et mois inconnus"
+
+msgid "ENUM::NATI::A"
+msgstr "Autre nationalité"
+
+msgid "ENUM::NATI::C"
+msgstr "Ressortissant CEE ou Suisse"
+
+msgid "ENUM::NATI::F"
+msgstr "Française"

@@ -106,18 +106,16 @@
 		/**
 		 *
 		 */
-		protected function _setOptions() {
+		protected function _setOptions() {debug(ClassRegistry::init('Recours')->enum('typecommission'));
 			$options = $this->Dossierpcg66->enums();
 
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			$this->set( 'pieecpres', $this->Option->pieecpres() );
-			$this->set( 'commission', $this->Option->commission() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'motidempdo', $this->Option->motidempdo() );
-			$this->set( 'motifpdo', $this->Option->motifpdo() );
+			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
 			$this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
-			$this->set( 'categoriedetail', $this->Option->emp_occupe() );
+			$this->set( 'categoriedetail', ClassRegistry::init('Contratinsertion')->enum('emp_occupe') );
 
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'typepdo', $this->Dossierpcg66->Typepdo->find( 'list' ) );

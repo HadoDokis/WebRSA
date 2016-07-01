@@ -166,3 +166,12 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECE::1"
 msgstr "Oui"
+
+msgid "ENUM::MOTIFPDO::E"
+msgstr "En attente de justificatif"
+
+msgid "ENUM::MOTIFPDO::A"
+msgstr "Admissible"
+
+msgid "ENUM::MOTIFPDO::N"
+msgstr "Non admissible"

@@ -95,11 +95,20 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'suiirsa' => array(
-				'inList' => array(
-					'rule' => array('inList', array('01', '11', '12', '13', '14', '21', '22', '23', '24', '31', '32', '33', '34'))
-				)
-			)
+		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'suiirsa' => array('01', '11', '12', '13', '14', '21', '22', '23', '24', '31', '32', '33', '34'),
 		);
 
 		/**

@@ -167,7 +167,7 @@
 			$options = array(
 				'action' => array( '1' => 'Valider', '0' => 'En attente' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
-				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),

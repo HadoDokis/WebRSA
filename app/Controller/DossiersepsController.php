@@ -50,7 +50,7 @@
 		 * FIXME: evite les droits
 		 */
 		protected function _setOptions() {
-			$this->set( 'motifpdo', $this->Option->motifpdo() );
+			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 
 			$options = (array)Hash::get( $this->Propopdo->enums(), 'Propopdo' );

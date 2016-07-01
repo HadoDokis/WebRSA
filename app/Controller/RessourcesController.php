@@ -46,8 +46,8 @@
 		 */
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
-			$this->set( 'natress', $this->Option->natress() );
-			$this->set( 'abaneu', $this->Option->abaneu() );
+			$this->set( 'natress', ClassRegistry::init('Detailressourcemensuelle')->enum('natress') );
+			$this->set( 'abaneu', ClassRegistry::init('Detailressourcemensuelle')->enum('abaneu') );
 			return $return;
 		}
 

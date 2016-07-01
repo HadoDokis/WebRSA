@@ -40,3 +40,9 @@ msgstr "Date de cloture de l'exercice comptable"
 
 msgid "Infoagricole.topressevaagri"
 msgstr "Ressources à évaluer"
+
+msgid "ENUM::REGFISAGRI::F"
+msgstr "Montant forfaitaire"
+
+msgid "ENUM::REGFISAGRI::R"
+msgstr "Montant réél"

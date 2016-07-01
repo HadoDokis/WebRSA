@@ -24,6 +24,24 @@
 				),
 			),
 		);
+		
+		/**
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
+		 *
+		 * @var array
+		 */
+		public $fakeInLists = array(
+			'famcibcontro' => array('01', '02', '03', '04', '05', '06', '07'),
+            'natcibcontro' => array('RSA', 'AUR', 'SIT'),
+            'commacontro' => array('CAF', 'CGA', 'NAT', 'API', 'DEM', 'RMI'),
+            'typecontro' => array('AG', 'EE', 'PI'),
+            'typeimpaccontro' => array('0', '1', '2'),
+		);
 
 		public $belongsTo = array(
 			'Foyer' => array(

@@ -31,3 +31,21 @@ msgstr "Montant total pour le Rsa local"
 
 msgid "Totalisationacompte.mttotrsa"
 msgstr "Montant total pour le Rsa"
+
+msgid "ENUM::TYPE_TOTALISATION::TotalAllocationsComptabilisees"
+msgstr "Total des allocations comptabilisees"
+
+msgid "ENUM::TYPE_TOTALISATION::TotalIndusConstates"
+msgstr "Total des indus constates"
+
+msgid "ENUM::TYPE_TOTALISATION::TotalIndusTransferesCG"
+msgstr "Total des indus transferés au CG"
+
+msgid "ENUM::TYPE_TOTALISATION::TotalRemisesIndus"
+msgstr "Total des remises des indus"
+
+msgid "ENUM::TYPE_TOTALISATION::TotalAnnulationsIndus"
+msgstr "Total des annulations des indus"
+
+msgid "ENUM::TYPE_TOTALISATION::MontantTotalAcompte"
+msgstr "Montant total de l'acompte"

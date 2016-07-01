@@ -39,9 +39,9 @@
 		 */
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
-			$this->set( 'avisdestpairsa', $this->Option->avisdestpairsa() );
+			$this->set( 'avisdestpairsa', ClassRegistry::init('Avispcgdroitrsa')->enum('avisdestpairsa') );
 			$this->set( 'typeperstie', $this->Option->typeperstie() );
-			$this->set( 'aviscondadmrsa', $this->Option->aviscondadmrsa() );
+			$this->set( 'aviscondadmrsa', ClassRegistry::init('Condadmin')->enum('aviscondadmrsa') );
 			return $return;
 		}
 

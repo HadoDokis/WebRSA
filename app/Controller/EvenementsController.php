@@ -38,7 +38,7 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'fg', $this->Option->fg() );
+			$this->set( 'fg', ClassRegistry::init('Evenement')->enum('fg') );
 		}
 
 		/**

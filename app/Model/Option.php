@@ -13,6 +13,7 @@
 	 * c'est-à-dire un array avec en clé la valeur stockée en base et en valeur
 	 * une traduction, pour différents champs de la base de données.
 	 *
+	 * @deprecated since version 3.1
 	 * @package app.Model
 	 */
 	class Option extends AppModel
@@ -30,13 +31,16 @@
 		 * @var boolean
 		 */
 		public $useTable = false;
-
+		
 		/**
 		 * Enums pour le champ detailsressourcesmensuelles.abaneu
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function abaneu() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Detailressourcemensuelle')->enum('abaneu')
 			return array(
 				'A' => 'Abattement',
 				'N' => 'Neutralisation'
@@ -49,8 +53,11 @@
 		 *	- dsps_revs.accosocfam
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function accosocfam() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dsp')->enum('accosocfam')
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -62,8 +69,11 @@
 		 * Enums pour le champ activites.act
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function act() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Activite')->enum('act')
 			$acts = array(
 				'AAP' => 'Activité en atelier protégé',
 				'ABA' => 'Chômeur-alloc de base',
@@ -168,8 +178,11 @@
 		 * Enums pour le champ informationseti.acteti
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function acteti() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('acteti')
 			return array(
 				'C' => 'Commerçant',
 				'A' => 'Artisan',
@@ -182,18 +195,21 @@
 		 * Enums pour le champ identificationsflux.applieme
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function applieme() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Identificationflux')->enum('applieme')
 			return array(
 				'CRI' => 'Cristal Cnaf',
 				'AGO' => 'Agora Ccmsa',
 				'NRI' => '@IRMI Cnaf',
-				'NRS' => '@RSA Cnaf',
+				'NRA' => '@RSA Cnaf',
 				'IOD' => 'IODAS GFI',
 				'GEN' => 'GENESIS SIRUS-BULL',
 				'IAS' => 'IAS JVS implicit',
 				'PER' => 'Peceaveal INFODB',
-				'54' => ' Logiciel du CG 54'
+				'54' => ' Logiciel du CG 54'				
 			);
 		}
 
@@ -201,8 +217,11 @@
 		 * Enums pour le champ modescontact.autorutiadrelec
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function autorutiadrelec() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Modecontact')->enum('autorutiadrelec')
 			return array(
 				'A' => 'Accord d\'utilisation',
 				'I' => 'Inconnu',
@@ -214,8 +233,11 @@
 		 * Enums pour le champ modescontact.autorutitel
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function autorutitel() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Modecontact')->enum('autorutitel')
 			return array(
 				'A' => 'Accord d\'utilisation',
 				'I' => 'Inconnu',
@@ -227,8 +249,11 @@
 		 * Enums pour le champ condsadmins.aviscondadmrsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function aviscondadmrsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Condadmin')->enum('aviscondadmrsa')
 			return array(
 				'D' => 'Avis demandé au CG',
 				'A' => 'Accord du CG',
@@ -241,8 +266,11 @@
 		 * Enums pour le champ derogations.avisdero
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function avisdero() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Derogation')->enum('avisdero')
 			return array(
 				'D' => 'Avis demandé au CG',
 				'O' => 'Accord du CG',
@@ -255,8 +283,11 @@
 		 * Enums pour le champ avispcgdroitsrsa.avisdestpairsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function avisdestpairsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Avispcgdroitrsa')->enum('avisdestpairsa')
 			return array(
 				'D' => 'Avis demandé au CG',
 				'A' => 'Accord du CG',
@@ -268,8 +299,11 @@
 		 * Enums pour le champ contratsinsertion.aviseqpluri
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function aviseqpluri() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('aviseqpluri')
 			return array(
 				'R' => 'Réorientation',
 				'M' => 'Maintien de l\'orientation'
@@ -280,8 +314,11 @@
 		 * Enums pour le champ contratsinsertion.avisraison_ci
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function avisraison_ci() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('avisraison_ci')
 			return array(
 				'D' => 'Défaut de conclusion',
 				'N' => 'Non respect du contrat',
@@ -289,7 +326,13 @@
 			);
 		}
 
-		public function categorie(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function categorie() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Historiqueetatpe')->enum('code')
 			return array(
 				'1' => 'Personnes sans emploi, immédiatement disponibles, tenues d\'accomplir des actes positifs de recherche d\'emploi, à la recherche d\'un emploi en CDI à plein temps.',
 				'2' => 'Personnes sans emploi, tenues d\'accomplir des actes positifs de recherche d\'emploi, à la recherche d\'un emploi en CDI à temps partiel.',
@@ -302,7 +345,13 @@
 			);
 		}
 
-		public function commission() { ///FIXME: ajout pour les PDO mais à voir
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function commission() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'V' => 'Commission de validation',
 				'D' => 'Commission de décision',
@@ -310,7 +359,13 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function couvsoc() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Dsp.topcouvsoc -> valeurs possible : 0 || 1
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -318,7 +373,13 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function creareprisentrrech() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -326,7 +387,13 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function decisionpdo() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'P' => 'En attente d\'ouverture',
 				'I' => 'Instruction en cours',
@@ -337,7 +404,13 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function decisionrecours() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'P' => 'Pas de décision',
 				'A' => 'Accord',
@@ -350,8 +423,11 @@
 		 * Enums pour le champ contratsinsertion.decision_ci
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function decision_ci() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('decision_ci')
 			if( Configure::read( 'Cg.departement' ) != 93 ){
 				return array(
 					'E' => 'En attente de décision',
@@ -376,8 +452,11 @@
 		 *	- dsps_revs.demarlog
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function demarlog() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dsp')->enum('demarlog')
 			return array(
 				'1101' => 'Accès à un logement',
 				'1102' => 'Maintien dans le logement',
@@ -385,14 +464,26 @@
 			);
 		}
 
-		public function dipfra(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function dipfra() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'F' => 'Français',
 				'E' => 'Etranger'
 			);
 		}
 
-		public function dif(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function dif() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'<=' => '<=',
 				'=>' => '=>',
@@ -401,7 +492,13 @@
 			);
 		}
 
-		public function domideract(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function domideract() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Dsp.topdomideract -> valeurs possible : 0 || 1
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -409,7 +506,14 @@
 			);
 		}
 
-		public function drorsarmiant(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function drorsarmiant() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Dsp.topdrorsarmiant -> valeurs possible : 0 || 1
+			
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -417,7 +521,13 @@
 			);
 		}
 
-		public function drorsarmianta2(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function drorsarmianta2() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Dsp.drorsarmianta2 -> valeurs possible : O || N || S
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -431,8 +541,11 @@
 		 *	- dsps_revs.duractdomi
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function duractdomi() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dsp')->enum('duractdomi')
 			return array(
 				'2104' => 'Moins d\'un an',
 				'2105' => 'De 1 à 3 ans',
@@ -547,8 +660,11 @@
 		 * Enums pour le champ contratsinsertion.duree_cdd
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function duree_cdd(){
+		public function duree_cdd() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('duree_cdd')
 			return array(
 				'DT1' => 'Temps plein',
 				'DT2' => 'Temps partiel',
@@ -560,8 +676,11 @@
 		 * Enums pour le champ contratsinsertion.duree_hebdo_emp
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function duree_hebdo_emp(){
+		public function duree_hebdo_emp() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('duree_hebdo_emp')
 			return array(
 				'DHT1' => 'Moins de 35h',
 				'DHT2' => '35h',
@@ -569,7 +688,13 @@
 			);
 		}
 
-		public function elopersdifdisp(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function elopersdifdisp() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -581,8 +706,11 @@
 		 * Enums pour le champ creancesalimentaires.engproccrealim
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function engproccrealim(){
+		public function engproccrealim() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Creancealimentaire')->enum('engproccrealim')
 			return array(
 				'O' => 'Procédure engagée',
 				'N' => 'Pas de procédure engagée',
@@ -594,8 +722,11 @@
 		 * Enums pour le champ contratsinsertion.emp_occupe
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function emp_occupe(){
+		public function emp_occupe() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('emp_occupe')
 			return array(
 				'10' => 'Agriculteurs (salariés de leur exploitation)',
 				'21' => 'Artisans (salariés de leur entreprise)',
@@ -633,8 +764,11 @@
 		 * Enums pour le champ creancesalimentaires.etatcrealim
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function etatcrealim() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Creancealimentaire')->enum('etatcrealim')
 			return array(
 				'SA' => 'Sanction appliquée',
 				'DD' => 'Dispense demande',
@@ -665,9 +799,12 @@
 		 *
 		 * @param array $etatsDemandes
 		 * @return array liste des états à afficher.
+		 * @deprecated since version 3.1
 		 * @example $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente() )
 		 */
 		public function etatdosrsa($etatsDemandes=array()) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' => $etatsDemandes))
 
 			$etats = array(
 				'Z' => 'Non défini',
@@ -698,8 +835,11 @@
 		 * Enums pour le champ suivisinstruction.suiirsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function suiirsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Suiviinstruction')->enum('suiirsa')
 			return array(
 				'01' => 'Données administratives',
 				'11' => 'Données socio-profesionnelles du demandeur',
@@ -721,8 +861,11 @@
 		 * Enums pour le champ evenements.fg
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function fg() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Evenement')->enum('fg')
 			return array(
 				'SUS' => 'suspension',
 				'DESALL' => 'désignation allocataire',
@@ -758,7 +901,13 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function fonction_pers() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'ADM' => 'Administrateur',
 				'VAL' => 'Validateur',
@@ -772,8 +921,11 @@
 		 *	- histoschoixcers93.formeci
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function formeci() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Cer93')->enum('formeci')
 			return array(
 				'S' => 'Simple',
 				'C' => 'Complexe'
@@ -786,8 +938,12 @@
 		 *	- proposcontratsinsertioncovs58.forme_ci
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function forme_ci() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('forme_ci')
+			
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
 				return array( 'S' => 'Simple', 'C' => 'Particulier' );
 			}
@@ -801,8 +957,11 @@
 		 *	- dsps_revs.hispro
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function hispro() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dsp')->enum('hispro')
 			return array(
 				'1901' => 'Vous avez toujours travaillé',
 				'1902' => 'Vous travaillez par intermittence',
@@ -815,15 +974,24 @@
 		 * Enums pour le champ actionsinsertion.lib_action
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function lib_action() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Actioninsertion')->enum('lib_action')
 			return array(
 				'A' => 'Aide',
 				'P' => 'Prestation'
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function lib_struc() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Structurereferente')->enum('lib_struc')
 			return array(
 				'1' => 'Pole emploi',
 				'2' => 'Assedic'
@@ -834,8 +1002,11 @@
 		 * Enums pour le champ modescontact.matetel
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function matetel() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Modecontact')->enum('matetel');
 			return array(
 				'FAX' => 'Fax seul',
 				'TEL' => 'Téléphone seul',
@@ -847,8 +1018,11 @@
 		 * Enums pour le champ situationsdossiersrsa.moticlorsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function moticlorsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa')
 			return array(
 				'PCG' => 'Cloture suite décision '.__d('default'.Configure::read('Cg.departement'), 'du Président du Conseil Général'),
 				'ECH' => 'Cloture suite à échéance (4 mois sans droits) ',
@@ -866,8 +1040,11 @@
 		 * Enums pour le champ creancesalimentaires.motidiscrealim
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function motidiscrealim() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Creancealimentaire')->enum('motidiscrealim')
 			return array(
 				'AVA' => 'Avantage en nature autre que le logement',
 				'LOG' => 'Logement fourni par les parents',
@@ -884,8 +1061,11 @@
 		 *	- propospdos.motifpdo
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function motifpdo() { ///FIXME: ajout pour les PDO mais à voir
+		public function motifpdo() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED); ///FIXME: ajout pour les PDO mais à voir
+			// ClassRegistry::init('Propopdo')->enum('motifpdo')
 			return array(
 				'E' => 'En attente de justificatif',
 				'A' => 'Admissible',
@@ -893,14 +1073,26 @@
 			);
 		}
 
-		public function motidempdo() { ///FIXME: ajout pour les PDO mais à voir
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function motidempdo() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED); ///FIXME: ajout pour les PDO mais à voir
+			// Origine inconnue
 			return array(
 				'C' => 'Changement de situation',
 				'P' => 'Perte d\'emploi'
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function motidemrsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'0101' => 'Fin de droits ASSEDIC',
 				'0102' => 'Fin de droits AAH',
@@ -918,8 +1110,11 @@
 		 * Enums pour le champ suspensionsdroits.motisusdrorsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function motisusdrorsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Suspensiondroit')->enum('motisusdrorsa')
 			return array(
 				'DA' => 'Suspension Dossier => Situation de famille',
 				'DB' => 'Suspension Dossier => Ressources',
@@ -955,8 +1150,11 @@
 		 * Enums pour le champ suspensionsversements.motisusversrsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function motisusversrsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Suspensionversement')->enum('motisusversrsa')
 			return array(
 				'01' => 'Ressources trop élévées',
 				'02' => 'Moins de 25 ans et personne à charge',
@@ -986,8 +1184,11 @@
 		 * Enums pour le champ contratsinsertion.nat_cont_trav
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function nat_cont_trav(){
+		public function nat_cont_trav() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('nat_cont_trav')
 			return array(
 				'TCT1' => 'Travailleur indépendant',
 				'TCT2' => 'CDI',
@@ -1001,7 +1202,13 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function nationalite() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Personne')->enum('nati')
 			return array(
 				'A' => 'Autre nationalité',
 				'C' => 'Ressortissant CEE ou Suisse',
@@ -1016,8 +1223,11 @@
 		 *	- dsps_revs.natlog
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function natlog() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dsp')->enum('natlog')
 			return array(
 				'0901' => 'Logement autonome : habitat individuel',
 				'0902' => 'Logement autonome : habitat collectif',
@@ -1039,8 +1249,11 @@
 		 * Enums pour le champ infosfinancieres.natpfcre
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function natpfcre( $type = null ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Infofinanciere')->enum('natpfcre', array('type' => $type))
 			$natindu = array(
 				'totsocl' => array(
 					'RSD' => 'Rsa socle',
@@ -1163,8 +1376,11 @@
 		 * Enums pour le champ detailsressourcesmensuelles.natress
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function natress() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Detailressourcemensuelle')->enum('natress')
 			return array(
 				'000' => 'Ressources nulles',
 				'001' => 'Salaires sans abattement supplementaire frais p',
@@ -1263,8 +1479,11 @@
 		 * Enums pour le champ grossesses.natfingro
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function natfingro() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Grossesse')->enum('natfingro')
 			return array(
 				'D' => 'Départ de madame du foyer',
 				'I' => 'Interruption de grossesse',
@@ -1281,8 +1500,11 @@
 		 * Ajout suite à l'arrivée du RSAJeune
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function natgroupfsus() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Suspensiondroit')->enum('natgroupfsus')
 			return array(
 				'RSA' => 'RSA socle+activité',
 				'RSX' => 'RSA socle uniquement',
@@ -1293,28 +1515,15 @@
 			);
 		}
 
-// 		public function natpf() {
-// 			return array(
-// 				'RSD' => 'RSA Socle (Financement sur fonds Conseil général)',
-// 				'RSI' => 'RSA Socle majoré (Financement sur fonds Conseil général)',
-// 				'RSU' => 'RSA Socle Etat Contrat aidé  (Financement sur fonds Etat)',
-// 				'RSB' => 'RSA Socle Local (Financement sur fonds Conseil général)',
-// 				'RCD' => 'RSA Activité (Financement sur fonds Etat)',
-// 				'RCI' => 'RSA Activité majoré (Financement sur fonds Etat)',
-// 				'RCU' => 'RSA Activité Etat Contrat aidé (Financement sur fonds Etat)',
-// 				'RCB' => 'RSA Activité Local (Financement sur fonds Conseil général)',
-// 				//ajout suite à l'arrivée du RSAJeune
-// 				'RSJ' => 'RSA socle Jeune (Financement sur fonds Etat)',
-// 				'RCJ' => 'RSA activité Jeune (Financement sur fonds Etat)'
-// 			);
-// 		}
-
 		/**
 		 * Enums pour le champ detailscalculsdroitsrsa.natpf
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function natpf( $natpfDemandees =array() ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf')
 			$natpfs = array(
 				'RSD' => 'RSA Socle (Financement sur fonds Conseil général)',
 				'RSI' => 'RSA Socle majoré (Financement sur fonds Conseil général)',
@@ -1352,8 +1561,11 @@
 		 * Enums pour le champ modescontact.nattel
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function nattel(){
+		public function nattel() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Modecontact')->enum('nattel');
 			return array(
 				'D' => 'Domicile',
 				'T' => 'Travail'
@@ -1377,8 +1589,11 @@
 		 * Enums pour le champ dossiers.numorg
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function numorg() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dossier')->enum('numorg')
 			return array(
 			'011' => 'CAF DE BOURG EN BRESSE',
 			'021' => 'CAF DE SAINT QUENTIN',
@@ -1509,7 +1724,11 @@
 			);
 		}
 
-		public function obstemploidifdisp(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function obstemploidifdisp() {
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -1521,6 +1740,7 @@
 		 * Enums pour le champ detailsdroitsrsa.oridemrsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function oridemrsa() {
 			return array(
@@ -1534,6 +1754,7 @@
 		 * Enums pour le champ creancesalimentaires.orioblalim
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function orioblalim() {
 			return array(
@@ -1546,6 +1767,7 @@
 		 * Enums pour le champ allocationssoutienfamilial.parassoasf
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function parassoasf() {
 			return array(
@@ -1558,6 +1780,7 @@
 		 * Enums pour le champ adresses.pays
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function pays() {
 			return array(
@@ -1570,6 +1793,7 @@
 		 * Enums pour le champ activites.paysact
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function paysact() {
 			return array(
@@ -1586,6 +1810,7 @@
 		 * Enums pour le champ personnes.pieecpres
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function pieecpres() {
 			return array(
@@ -1594,6 +1819,10 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function printed() {
 			return array(
 				'' => 'Imprimé/Non imprimé',
@@ -1616,6 +1845,7 @@
 		 *	- suivisaidesapres.qual
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function qual() {
 			return array(
@@ -1624,7 +1854,10 @@
 			);
 		}
 
-		///FIXME: voir si on peut mieux faire, vu que pour les mois de 30 jours ou Fevrier ça pose problème
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function quinzaine() {
 			return array(
 				'1' => 'Première quinzaine',
@@ -1636,6 +1869,7 @@
 		 * Enums pour le champ contratsinsertion.raison_ci
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function raison_ci() {
 			return array(
@@ -1648,6 +1882,7 @@
 		 * Enums pour le champ activites.reg
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function reg() {
 			return array(
@@ -1679,6 +1914,7 @@
 		 * Enums pour le champ infosagricoles.regfisagri
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function regfisagri() {
 			return array(
@@ -1691,6 +1927,7 @@
 		 * Enums pour le champ informationseti.regfiseti
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function regfiseti() {
 			return array(
@@ -1704,6 +1941,7 @@
 		 * Enums pour le champ informationseti.regfisetia1
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function regfisetia1() {
 			return array(
@@ -1717,6 +1955,7 @@
 		 * Enums pour le champ adressesfoyers.rgadr
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function rgadr() {
 			return array(
@@ -1730,6 +1969,7 @@
 		 * Enums pour le champ prestations.rolepers
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function rolepers( ) {
 			return array(
@@ -1745,6 +1985,7 @@
 		 * Enums pour le champ contratsinsertion.sect_acti_emp
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function sect_acti_emp() {
 			return array(
@@ -1776,6 +2017,7 @@
 		 * Enums pour le champ infosfinancieres.sensopecompta
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function sensopecompta() {
 			return array(
@@ -1791,6 +2033,7 @@
 		 *	- situationsallocataires.sexe
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function sexe() {
 			return array(
@@ -1803,8 +2046,9 @@
 		 * Enums pour le champ allocationssoutienfamilial.sitasf
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function sitasf(){
+		public function sitasf() {
 			return array(
 				'DC' => 'HORS D\'ETAT',
 				'NR' => 'ENFANT NON RECONNU',
@@ -1823,12 +2067,13 @@
 		 *	- bilansparcours66.sitfam
 		 *	- cers93.sitfam
 		 *	- contratsinsertion.sitfam
-		 *	- foyers.sitfam @todo/@deprecated
+		 *	- foyers.sitfam
 		 *	- situationsallocataires.sitfam
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function sitfam(){
+		public function sitfam() {
 			return array(
 				'ABA' => 'Disparu (jugement d\'absence)',
 				'CEL' => 'Célibataire',
@@ -1850,6 +2095,7 @@
 		 * Enums pour le champ detailscalculsdroitsrsa.sousnatpf
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function sousnatpf() {
 			return array(
@@ -1906,6 +2152,7 @@
 		 *	- dsps_revs.soutdemarsoc
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function soutdemarsoc() {
 			return array(
@@ -1920,9 +2167,8 @@
 		 *	- dossiers.statudemrsa
 		 *	- situationsallocataires.statudemrsa
 		 *
-		 * @deprecated
-		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function statudemrsa() {
 			return array(
@@ -1934,6 +2180,10 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function statut_contrat_insertion() {
 			return array(
 				'1' => 'Validé',
@@ -1945,20 +2195,9 @@
 		}
 
 		/**
-		 * Enums pour le champ orientsstructs.statut_orient
-		 *
-		 * @deprecated
-		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		/*public function statut_orient() {
-			return array(
-				'Non orienté' => 'Non orienté',
-				'Orienté' => 'Orienté',
-				'En attente' => 'En attente'
-			);
-		}*/
-
 		public function statutrdv() {
 			return array(
 				'P' => 'Prévu',
@@ -1969,23 +2208,10 @@
 		}
 
 		/**
-		 * Enums pour le champ orientsstructs.statutrelance
-		 *
-		 * @deprecated
-		 *
-		 * @return array
-		 */
-		/*public function statutrelance() {
-			return array(
-				'R' => 'Relancé',
-				'E' => 'En attente'
-			);
-		}*/
-
-		/**
 		 * Enums pour le champ informationseti.topaccre
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topaccre() {
 			return array(
@@ -1998,6 +2224,7 @@
 		 * Enums pour le champ informationseti.topbeneti
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topbeneti() {
 			return array(
@@ -2010,6 +2237,7 @@
 		 * Enums pour le champ creancesalimentaires.topdemdisproccrealim
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topdemdisproccrealim() {
 			return array(
@@ -2022,6 +2250,7 @@
 		 * Enums pour le champ informationseti.topcreaentre
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topcreaentre() {
 			return array(
@@ -2034,6 +2263,7 @@
 		 * Enums pour le champ informationseti.topempl1ax
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topempl1ax() {
 			return array(
@@ -2046,6 +2276,7 @@
 		 * Enums pour le champ informationseti.topevoreveti
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topevoreveti() {
 			return array(
@@ -2058,6 +2289,7 @@
 		 * Enums pour le champ detailsdroitsrsa.topfoydrodevorsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topfoydrodevorsa() {
 			return array(
@@ -2070,6 +2302,7 @@
 		 * Enums pour le champ creancesalimentaires.topjugpa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topjugpa() {
 			return array(
@@ -2085,6 +2318,7 @@
 		 *	- situationsallocataires.toppersdrodevorsa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function toppersdrodevorsa( $nullEnLettre = false ) {
 			return array(
@@ -2098,6 +2332,7 @@
 		 * Enums pour le champ informationseti.topressevaeti
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topressevaeti() {
 			return array(
@@ -2110,6 +2345,7 @@
 		 * Enums pour le champ detailsdroitsrsa.topsansdomfixe
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topsansdomfixe() {
 			return array(
@@ -2122,6 +2358,7 @@
 		 * Enums pour le champ informationseti.topsansempl
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topsansempl() {
 			return array(
@@ -2134,6 +2371,7 @@
 		 * Enums pour le champ informationseti.topstag1ax
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function topstag1ax() {
 			return array(
@@ -2146,6 +2384,7 @@
 		 * Enums pour le champ infosfinancieres.type_allocation
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function type_allocation() {
 			return array(
@@ -2162,6 +2401,7 @@
 		 * Enums pour le champ derogations.typedero
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typedero() {
 			return array(
@@ -2176,6 +2416,7 @@
 		 * Enums pour le champ adressesfoyers.typeadr
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typeadr() {
 			return array(
@@ -2189,6 +2430,7 @@
 		 * Enums pour le champ personnes.typedtnai
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typedtnai() {
 			return array(
@@ -2198,6 +2440,10 @@
 			);
 		}
 
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
 		public function typenotifpdo() {
 			return array(
 				'RE' => 'Ressortissant européen',
@@ -2218,9 +2464,10 @@
 		/**
 		 * Enums pour les champs
 		 *	- contratsinsertion.typeocclog
-		 *	- foyers.typeocclog @todo/@deprecated
+		 *	- foyers.typeocclog
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typeocclog() {
 			return array(
@@ -2239,7 +2486,11 @@
 			);
 		}
 
-		public function typepdo(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function typepdo() {
 			return array(
 				'N' => 'Non défini',
 				'C' => 'PDO de contrôle',
@@ -2252,6 +2503,7 @@
 		 * Enums pour le champ infosfinancieres.typeopecompta
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typeopecompta() {
 			return array(
@@ -2290,8 +2542,9 @@
 		 * Enums pour le champ rattachements.typepar
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
-		public function typepar(){
+		public function typepar() {
 			return array(
 				'ADP' => 'Adoption simple',
 				'ASC' => 'Ascendant',
@@ -2313,10 +2566,12 @@
 		 * Enums pour le champ dossiers.typeparte
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typeparte() {
 			return array(
 				'CG' => 'Conseil Général', // Code identification partenaire = n° de département sur 3 positions
+				'CT' => 'Collectivité Territoriale',
 				'CCAS' => 'Centre Communal d\'Action Sociale', // Code identification partenaire = N° de commune Insee sur 5 positions
 				'CIAS' => 'Centre Intercommunal d\'Action Sociale', // Code identification partenaire = N° de commune Insee du siège de l'intercommunalité sur 5 positions
 				'PE' => 'Pole Emploi', // Code identification partenaire = a préciser avec PE
@@ -2328,6 +2583,7 @@
 		 * Enums pour le champ avispcgdroitsrsa.typeperstie
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typeperstie() {
 			return array(
@@ -2340,10 +2596,12 @@
 		 * Enums pour le champ adresses.typeres
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typeres() {
 			return array(
 				'E' => 'Election de domicile',
+				'O' => 'Election de domicile organisme non référencé',
 				'S' => 'Stable'
 			);
 		}
@@ -2355,6 +2613,7 @@
 		 *	- suivisinstruction.typeserins
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typeserins() {
 			return array(
@@ -2374,6 +2633,7 @@
 		 * Enums pour le champ totalisationsacomptes.type_totalisation
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function type_totalisation() {
 			return array(
@@ -2396,7 +2656,7 @@
 		 *
 		 * @return array
 		 */
-		public function typevoie(){
+		public function typevoie() {
 			return array(
 				'ABE' => 'Abbaye',
 				'ACH' => 'Ancien chemin',
@@ -2583,6 +2843,7 @@
 		 * Enums pour le champ aidesdirectes.typo_aide
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function typo_aide() {
 			return array(
@@ -2596,6 +2857,7 @@
 		 * Enums pour le champ creancesalimentaires.verspa
 		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function verspa() {
 			return array(
@@ -2608,9 +2870,8 @@
 		/**
 		 * Enums pour le champ dossiers.fonorgcedmut
 		 *
-		 * @deprecated
-		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function fonorgcedmut() {
 			return array(
@@ -2623,18 +2884,18 @@
 		/**
 		 * Enums pour le champ dossiers.fonorgprenmut
 		 *
-		 * @deprecated
-		 *
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function fonorgprenmut() {
 			return $this->fonorgcedmut();
 		}
 
-		/********************TEST pour les Recours
-		*********************/
-
-		public function motifrecours(){
+		/**
+		 * @return array
+		 * @deprecated since version 3.1
+		 */
+		public function motifrecours() {
 			return array(
 				'N' => 'Non admissible',
 				'A' => 'Admissible',
@@ -2642,4 +2903,6 @@
 			);
 		}
 	}
+	
+	// (ClassRegistry::init\([ '"]*Option[ '"]*\)|\$this\->Option)\->duree_hebdo_emp\(\)
 ?>

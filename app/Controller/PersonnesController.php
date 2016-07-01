@@ -59,12 +59,12 @@
 		protected function _setOptions() {
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'nationalite', $this->Option->nationalite() );
+			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 			$this->set( 'typedtnai', $this->Option->typedtnai() );
 			$this->set( 'pieecpres', $this->Option->pieecpres() );
 			$this->set( 'sexe', $this->Option->sexe() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
-			$this->set( 'natfingro', $this->Option->natfingro() );
+			$this->set( 'natfingro', ClassRegistry::init('Grossesse')->enum('natfingro') );
 			$this->set( 'options', (array)Hash::get( $this->Personne->enums(), 'Personne' ) );
 		}
 

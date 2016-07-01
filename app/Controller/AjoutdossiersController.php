@@ -58,7 +58,7 @@
 				case 'allocataire':
 				case 'conjoint':
 					$this->set( 'qual', $this->Option->qual() );
-					$this->set( 'nationalite', $this->Option->nationalite() );
+					$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 					$this->set( 'typedtnai', $this->Option->typedtnai() );
 					$this->set( 'pieecpres', $this->Option->pieecpres() );
 					$this->set( 'rolepers', $this->Option->rolepers() );
@@ -78,8 +78,8 @@
 						$this->Wizard->branch( 'noConjoint' );
 					}
 				case 'ressourcesconjoint':
-					$this->set( 'natress', $this->Option->natress() );
-					$this->set( 'abaneu', $this->Option->abaneu() );
+					$this->set( 'natress', ClassRegistry::init('Detailressourcemensuelle')->enum('natress') );
+					$this->set( 'abaneu', ClassRegistry::init('Detailressourcemensuelle')->enum('abaneu') );
 					break;
 				case 'dossier':
 					$this->set( 'oridemrsa', $this->Option->oridemrsa() );

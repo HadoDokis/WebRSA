@@ -26,17 +26,17 @@ class Decisiondossierpcg66 extends AppModel {
             )
         ),
         'Enumerable' => array(
-            'fields' => array(
-                'avistechnique',
-                'validationproposition',
-                'etatop',
-                'typersa',
-                'recidive',
-                'phase',
-                'defautinsertion',
-                'haspiecejointe',
-                'instrencours'
-            )
+//            'fields' => array(
+//                'avistechnique',
+//                'validationproposition',
+//                'etatop',
+//                'typersa',
+//                'recidive',
+//                'phase',
+//                'defautinsertion',
+//                'haspiecejointe',
+//                'instrencours'
+//            )
         ),
         'Gedooo.Gedooo',
         'ModelesodtConditionnables' => array(

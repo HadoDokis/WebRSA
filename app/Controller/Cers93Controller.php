@@ -420,7 +420,7 @@
 
 			$options = array(
 				'Contratinsertion' => array(
-					'decision_ci' => ClassRegistry::init( 'Option' )->decision_ci()
+					'decision_ci' => ClassRegistry::init('Contratinsertion')->enum('decision_ci')
 				)
 			);
 			$options = Set::merge( $options, $this->Cer93->enums() );
@@ -712,7 +712,7 @@
 					'sitfam' => ClassRegistry::init( 'Option' )->sitfam()
 				),
 				'Dsp' => array(
-					'natlog' => ClassRegistry::init( 'Option' )->natlog()
+					'natlog' => ClassRegistry::init('Dsp')->enum('natlog')
 				),
 				'Naturecontrat' => array(
 					'naturecontrat_id' => Set::combine( $naturescontrats, '{n}.Naturecontrat.id', '{n}.Naturecontrat.name' )
@@ -724,7 +724,7 @@
 					'soussujetcer93_id' => Set::combine( $valeursAutre, '{n}.Valeurparsoussujetcer93.id', '{n}.Valeurparsoussujetcer93.name' )
 				),
 				'dureehebdo' => array_range( '0', '39' ),
-				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd()
+				'dureecdd' => ClassRegistry::init('Contratinsertion')->enum('duree_cdd')
 			);
 
 			$options = Set::merge(

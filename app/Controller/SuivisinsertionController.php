@@ -36,7 +36,7 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'decision_ci', $this->Option->decision_ci() );
+			$this->set( 'decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
 			$this->set( 'relance', (array)Hash::get( $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->enums(), 'Nonrespectsanctionep93' ) );
 			$this->set( 'dossierep', (array)Hash::get( $this->Dossier->Foyer->Personne->Dossierep->enums(), 'Dossierep' ) );
 			$this->set( 'typeserins', $this->Option->typeserins() );

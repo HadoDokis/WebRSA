@@ -28,7 +28,7 @@
 			parent::beforeFilter();
 			// Type_totalisation
 			$this->set( 'type_totalisation', $this->Option->type_totalisation() );
-			$this->set( 'natpfcre', $this->Option->natpfcre(  ) );
+			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre'));
 		}
 
 		/** ********************************************************************
