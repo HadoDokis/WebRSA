@@ -70,6 +70,14 @@
 						'on' => 'create',
 						'message' => null
 					)
+				),
+				'color' => array(
+					'inList' => array(
+						'rule' => array( 'inList', array( 'red', 'blue', 'green' ) ),
+						'required' => null,
+						'on' => null,
+						'message' => null
+					)
 				)
 			);
 		}
@@ -238,6 +246,54 @@
 		public function testLoadModelInexistant() {
 			$AppUses = ClassRegistry::init( 'AppUses' );
 			$AppUses->loadModel( 'FooBarBaz' );
+		}
+
+		/**
+		 * Test de la méthode AppModel::enums()
+		 */
+		public function testEnums() {
+			$result = $this->Apple->enums();
+			$expected = array(
+				'Apple' => array(
+					'color' => array(
+						'red' => 'ENUM::COLOR::red',
+						'blue' => 'ENUM::COLOR::blue',
+						'green' => 'ENUM::COLOR::green',
+					)
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode AppModel::enum()
+		 */
+		public function testEnum() {
+			// 1. Utilisation simple
+			$result = $this->Apple->enum( 'color' );
+			$expected = array(
+				'red' => 'ENUM::COLOR::red',
+				'blue' => 'ENUM::COLOR::blue',
+				'green' => 'ENUM::COLOR::green',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Utilisation du tri
+			$result = $this->Apple->enum( 'color', array( 'sort' => true ) );
+			$expected = array(
+				'blue' => 'ENUM::COLOR::blue',
+				'green' => 'ENUM::COLOR::green',
+				'red' => 'ENUM::COLOR::red',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 3. Utilisation de filter
+			$result = $this->Apple->enum( 'color', array( 'filter' => array( 'blue', 'red' ) ) );
+			$expected = array(
+				'blue' => 'ENUM::COLOR::blue',
+				'red' => 'ENUM::COLOR::red',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
 ?>
