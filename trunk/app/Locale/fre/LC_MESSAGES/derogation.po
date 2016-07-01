@@ -36,10 +36,10 @@ msgid "Derogation.dfavisdero"
 msgstr "Date de fin dérogation"
 
 msgid "ENUM::TYPEDERO::AGE"
-msgstr "Dérogation sur les conditions d\'age"
+msgstr "Dérogation sur les conditions d'age"
 
 msgid "ENUM::TYPEDERO::ACT"
-msgstr "Dérogation sur les conditions d\'activité"
+msgstr "Dérogation sur les conditions d'activité"
 
 msgid "ENUM::TYPEDERO::RES"
 msgstr "Dérogation sur les conditions de résidence"

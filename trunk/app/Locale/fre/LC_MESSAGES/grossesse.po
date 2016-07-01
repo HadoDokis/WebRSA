@@ -39,7 +39,7 @@ msgid "ENUM::NATFINGRO::I"
 msgstr "Interruption de grossesse"
 
 msgid "ENUM::NATFINGRO::M"
-msgstr "Enfant mort -né sans déclaration à l\'état civil"
+msgstr "Enfant mort -né sans déclaration à l'état civil"
 
 msgid "ENUM::NATFINGRO::N"
 msgstr "Naissance"
