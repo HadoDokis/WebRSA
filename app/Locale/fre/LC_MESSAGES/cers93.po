@@ -78,3 +78,101 @@ msgstr "Personne établissant le CER"
 
 msgid "Cer93.structureutilisateur"
 msgstr "Structure référente"
+
+# ------------------------------------------------------------------------------
+
+msgid "/Cers93/add"
+msgstr "Ajouter"
+
+msgid "/Cers93/add/:title"
+msgstr "Ajouter un CER"
+
+msgid "/Cers93/view"
+msgstr "Voir"
+
+msgid "/Cers93/view/#Contratinsertion.id#"
+msgstr "Voir le CER"
+
+msgid "/Cers93/edit"
+msgstr "Modifier"
+
+msgid "/Cers93/edit/#Contratinsertion.id#"
+msgstr "Modifier le CER"
+
+msgid "/Cers93/edit_apres_signature"
+msgstr "Modifier"
+
+msgid "/Cers93/edit_apres_signature/#Contratinsertion.id#"
+msgstr "Modifier le CER"
+
+msgid "/Cers93/signature"
+msgstr "Signer"
+
+msgid "/Cers93/signature/#Contratinsertion.id#"
+msgstr "Signer le CER"
+
+msgid "/Histoschoixcers93/attdecisioncpdv"
+msgstr "Envoi responsable"
+
+msgid "/Histoschoixcers93/attdecisioncpdv/#Contratinsertion.id#"
+msgstr "Envoyer au responsable"
+
+msgid "/Histoschoixcers93/attdecisioncg"
+msgstr "Envoi CG"
+
+msgid "/Histoschoixcers93/attdecisioncg/#Contratinsertion.id#"
+msgstr "Envoyer au CG"
+
+msgid "/Histoschoixcers93/premierelecture"
+msgstr "Première lecture"
+
+msgid "/Histoschoixcers93/premierelecture/#Contratinsertion.id#"
+msgstr "Première lecture"
+
+msgid "/Histoschoixcers93/secondelecture"
+msgstr "Valider CS"
+
+msgid "/Histoschoixcers93/secondelecture/#Contratinsertion.id#"
+msgstr "Valider CS"
+
+msgid "/Histoschoixcers93/aviscadre"
+msgstr "Valider cadre"
+
+msgid "/Histoschoixcers93/aviscadre/#Contratinsertion.id#"
+msgstr "Valider cadre"
+
+msgid "/Cers93/impression"
+msgstr "Imprimer"
+
+msgid "/Cers93/impression/#Contratinsertion.id#"
+msgstr "Imprimer le CER"
+
+msgid "/Cers93/impressionDecision"
+msgstr "Décision"
+
+msgid "/Cers93/impressionDecision/#Contratinsertion.id#"
+msgstr "Imprimer la décision"
+
+msgid "/Cers93/delete"
+msgstr "Supprimer"
+
+msgid "/Cers93/delete/#Contratinsertion.id#"
+msgstr "Supprimer le CER"
+
+msgid "/Cers93/cancel"
+msgstr "Annuler"
+
+msgid "/Cers93/cancel/#Contratinsertion.id#"
+msgstr "Annuler le CER"
+
+msgid "/Signalementseps/add"
+msgstr "Signalement"
+
+msgid "/Signalementseps/add/#Contratinsertion.id#"
+msgstr "Signaler le CER"
+
+msgid "/Contratsinsertion/filelink"
+msgstr "Fichiers liés"
+
+msgid "/Contratsinsertion/filelink/#Contratinsertion.id#"
+msgstr "Liste des fichiers liés au CER"

@@ -1,10 +1,13 @@
 <?php
 	$title_for_layout = 'Contrats d\'engagement réciproque';
 	$this->set( 'title_for_layout', $title_for_layout );
-?>
-<?php echo $this->Html->tag( 'h1', $title_for_layout );?>
-<?php echo $this->element( 'ancien_dossier' );?>
 
+	App::uses( 'WebrsaAccess', 'Utility' );
+	WebrsaAccess::init( $dossierMenu );
+
+	echo $this->Html->tag( 'h1', $title_for_layout );
+	echo $this->element( 'ancien_dossier' );
+?>
 <?php if( !empty( $signalementseps93 ) ):?>
 	<h2>Signalements pour non respect du contrat</h2>
 	<table class="tooltips">
@@ -70,19 +73,15 @@
 	</table>
 <?php endif;?>
 
-<ul class="actionMenu">
-	<li><?php
-			echo $this->Xhtml->addLink(
-				'Ajouter',
-				array(
-					'action' => 'add',
-					$personne_id
-				),
-				!eval( 'return '.str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'signature', $dossierMenu ), $disabledLinks['Cers93::add'] ).';' )
-			);
-		?>
-	</li>
-</ul>
+<?php
+	echo $this->Default3->actions(
+		array(
+			"/Cers93/add/{$personne_id}" => array(
+				'disabled' => false === WebrsaAccess::addIsEnabled( "/Cers93/add/{$personne_id}", $ajoutPossible )
+			)
+		)
+	);
+?>
 
 <?php if( !empty( $cers93 ) && !empty( $erreursCandidatePassage ) ):?>
 	<h2>Raisons pour lesquelles le contrat ne peut pas être signalé</h2>
@@ -100,86 +99,91 @@
 <?php endif;?>
 
 <?php
-	$conditionEdit = str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'edit', $dossierMenu ), $disabledLinks['Cers93::edit'] );
-	$conditionEditApresSignature = str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'edit_apres_signature', $dossierMenu ), $disabledLinks['Cers93::edit_apres_signature'] );
-
-	echo $this->Default2->index(
+	echo $this->Default3->index(
 		$cers93,
 		array(
-			'Cer93.positioncer' => array( 'domain' => 'cer93' ),
-			'Cer93.formeci' => array( 'domain' => 'cer93' ),
-			'Contratinsertion.dd_ci',
-			'Contratinsertion.df_ci',
-			'Contratinsertion.rg_ci',
-			'Contratinsertion.decision_ci',
-			'Contratinsertion.datedecision',
-			'Fichiermodule.nb_fichiers_lies' => array( 'label' => 'Nb fichiers liés', 'type' => 'text' )
+			'Cer93.positioncer' => array(
+				'label' => __d( 'cer93', 'Cer93.positioncer' )
+			),
+			'Cer93.formeci' => array(
+				'label' => __d( 'cer93', 'Cer93.formeci' )
+			),
+			'Contratinsertion.dd_ci' => array(
+				'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci' )
+			),
+			'Contratinsertion.df_ci' => array(
+				'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci' )
+			),
+			'Contratinsertion.rg_ci' => array(
+				'label' => __d( 'contratinsertion', 'Contratinsertion.rg_ci' )
+			),
+			'Contratinsertion.decision_ci' => array(
+				'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci' )
+			),
+			'Contratinsertion.datedecision' => array(
+				'label' => __d( 'contratinsertion', 'Contratinsertion.datedecision' )
+			),
+			'Fichiermodule.nb_fichiers_lies' => array(
+				'label' => 'Nb fichiers liés', 'type' => 'text'
+			)
+		)
+		+ WebrsaAccess::links(
+			array(
+				'/Cers93/view/#Contratinsertion.id#' => array(
+					'class' => 'button'
+				),
+				'/Cers93/edit/#Contratinsertion.id#' => array(
+					'condition' => '"#Cer93.positioncer#" == "00enregistre"',
+					'conditionGroup' => 'edit',
+					'class' => 'button'
+				),
+				'/Cers93/edit_apres_signature/#Contratinsertion.id#' => array(
+					'condition' => '"#Cer93.positioncer#" != "00enregistre"',
+					'conditionGroup' => 'edit',
+					'class' => 'button edit'
+				),
+				'/Cers93/signature/#Contratinsertion.id#' => array(
+					'class' => 'button signature'
+				),
+				'/Histoschoixcers93/attdecisioncpdv/#Contratinsertion.id#' => array(
+					'class' => 'button attdecisioncpdv'
+				),
+				'/Histoschoixcers93/attdecisioncg/#Contratinsertion.id#' => array(
+					'class' => 'button attdecisioncg'
+				),
+				'/Histoschoixcers93/premierelecture/#Contratinsertion.id#' => array(
+					'class' => 'button premierelecture'
+				),
+				'/Histoschoixcers93/secondelecture/#Contratinsertion.id#' => array(
+					'class' => 'button secondelecture'
+				),
+				'/Histoschoixcers93/aviscadre/#Contratinsertion.id#' => array(
+					'class' => 'button aviscadre'
+				),
+				'/Cers93/impression/#Contratinsertion.id#' => array(
+					'class' => 'button'
+				),
+				'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
+					'class' => 'button impression'
+				),
+				'/Cers93/delete/#Contratinsertion.id#' => array(
+					'class' => 'button'
+				),
+				'/Cers93/cancel/#Contratinsertion.id#' => array(
+					'class' => 'button'
+				),
+				'/Signalementseps/add/#Contratinsertion.id#' => array(
+					'class' => 'button signalementseps add'
+				),
+				'/Contratsinsertion/filelink/#Contratinsertion.id#' => array(
+					'class' => 'button filelink'
+				),
+			)
 		),
 		array(
-			'actions' => array(
-				'Cers93::view' => array( 'url' => array( 'action' => 'view', '#Contratinsertion.id#' ) ),
-				'Cers93::edit' => array(
-					'url' => array( 'action' => 'edit', '#Contratinsertion.id#' ),
-					'disabled' => $conditionEdit,
-					'condition' => "!( {$conditionEdit} )"
-				),
-				'Cers93::edit_apres_signature' => array(
-					'url' => array( 'action' => 'edit_apres_signature', '#Contratinsertion.id#' ),
-					'disabled' => $conditionEditApresSignature,
-					'condition' => $conditionEdit,
-					'class' => 'edit'
-				),
-				'Cers93::signature' => array(
-					'url' => array( 'action' => 'signature', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'signature', $dossierMenu ), $disabledLinks['Cers93::signature'] )
-				),
-				'Histoschoixcers93::attdecisioncpdv' => array(
-					'url' => array( 'action' => 'attdecisioncpdv', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'histoschoixcers93', 'attdecisioncpdv', $dossierMenu ), $disabledLinks['Histoschoixcers93::attdecisioncpdv'] )
-				),
-				'Histoschoixcers93::attdecisioncg' => array(
-					'url' => array( 'action' => 'attdecisioncg', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'histoschoixcers93', 'attdecisioncg', $dossierMenu ), $disabledLinks['Histoschoixcers93::attdecisioncg'] )
-				),
-				'Histoschoixcers93::premierelecture' => array(
-					'url' => array( 'action' => 'premierelecture', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'histoschoixcers93', 'premierelecture', $dossierMenu ), $disabledLinks['Histoschoixcers93::premierelecture'] )
-				),
-				'Histoschoixcers93::secondelecture' => array(
-					'url' => array( 'action' => 'secondelecture', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'histoschoixcers93', 'secondelecture', $dossierMenu ), $disabledLinks['Histoschoixcers93::secondelecture'] )
-				),
-				'Histoschoixcers93::aviscadre' => array(
-					'url' => array( 'action' => 'aviscadre', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'histoschoixcers93', 'aviscadre', $dossierMenu ), $disabledLinks['Histoschoixcers93::aviscadre'] )
-				),
-				'Cers93::impression' => array(
-					'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'impression', $dossierMenu ), $disabledLinks['Cers93::impression'] )
-				),
-				'Cers93::impressionDecision' => array(
-					'url' => array( 'action' => 'impressionDecision', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'impressionDecision', $dossierMenu ), $disabledLinks['Cers93::impressionDecision'] )
-				),
-				'Cers93::delete' => array(
-					'url' => array( 'action' => 'delete', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'delete', $dossierMenu ), $disabledLinks['Cers93::delete'] )
-				),
-				'Cers93::cancel' => array(
-					'url' => array( 'action' => 'cancel', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'cancel', $dossierMenu ), $disabledLinks['Cers93::cancel'] )
-				),
-				'Signalementseps::add' => array(
-					'label' => 'Signalement',
-					'url' => array( 'controller' => 'signalementseps', 'action' => 'add', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'signalementseps', 'add', $dossierMenu ), $disabledLinks['Signalementseps::add'] ),
-					'class' => 'signalementseps add'
-				),
-				'Contratsinsertion::filelink' => array(
-					'url' => array( 'action' => 'filelink', '#Contratinsertion.id#' )
-				)
-			),
-			'options' => $options
+			'paginate' => false,
+			'options' => $options,
+			'id' => 'Cers93Index'
 		)
 	);
 ?>

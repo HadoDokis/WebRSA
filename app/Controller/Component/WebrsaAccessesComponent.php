@@ -21,117 +21,121 @@
 		 * @var string
 		 */
 		public $name = 'WebrsaAccesses';
-		
+
 		/**
 		 * Controller lié au component
-		 * 
+		 *
 		 * @var Object
 		 */
 		public $Controller = null;
-		
+
 		/**
 		 * Modèle principal
-		 * 
+		 *
 		 * @var Object
 		 */
 		public $MainModel = null;
-		
+
 		/**
 		 * Modèle de logique
-		 * 
+		 *
 		 * @var Object
 		 */
 		public $WebrsaModel = null;
-		
+
 		/**
 		 * Modèle supérieur au modèle principal
 		 * ex: Personne ou Foyer
-		 * 
+		 *
 		 * @var Object
 		 */
 		public $parentModelName = null;
-		
+
 		/**
 		 * Nom de la classe de logique d'accès métier à une action
-		 * 
+		 *
 		 * @var String - WebrsaAccess<i>Nomducontroller</i>
 		 */
 		public $WebrsaAccessClassName = '';
-		
+
 		/**
 		 * Funcion init() appelé ?
-		 * 
+		 *
 		 * @var boolean
 		 */
 		protected $_initialized = false;
-		
+
 		/**
 		 * Alias du modèle lié au Controller
-		 * 
+		 *
 		 * @var String
 		 */
 		protected $_alias = '';
-		
+
 		/**
 		 * Assure le chargement des modèles et Utilitaires liés
-		 * 
+		 *
 		 * @param Controller $controller
 		 * @param array $modelNames
 		 * @return void
 		 */
 		public function initialize(Controller $controller, array $modelNames = array()) {
-			$modelNames += array(
+			$this->settings += array(
 				'mainModelName' => null,
 				'webrsaModelName' => null,
 				'webrsaAccessName' => null,
 				'parentModelName' => null,
 			);
-			extract($modelNames);
-			extract($this->settings);
-			
-			$MainModelName = $mainModelName ?: self::controllerNameToModelName($controller->name);
-			$WebrsaModelClassName = $webrsaModelName ?: 'Webrsa'.$MainModelName;
-			$WebrsaAccessClassName = $webrsaAccessName ?: 'WebrsaAccess'.$controller->name;
-			
+
+//			extract($modelNames);
+//			extract($this->settings);
+
+			$this->settings['mainModelName'] = $this->settings['mainModelName'] ?: self::controllerNameToModelName($controller->name);
+			$this->settings['webrsaModelName'] = $this->settings['webrsaModelName'] ?: 'Webrsa'.$this->settings['mainModelName'];
+			$this->settings['webrsaAccessName'] = $this->settings['webrsaAccessName'] ?: 'WebrsaAccess'.$controller->name;
+
 			// Si le modèle principal n'est pas chargé
-			if (!isset($controller->{$MainModelName})) {
-				$controller->{$MainModelName} = ClassRegistry::init($MainModelName);
+			if (!isset($controller->{$this->settings['mainModelName']})) {
+				//$controller->{$this->settings['mainModelName']} = ClassRegistry::init($this->settings['mainModelName']);
+				$controller->uses[] = $this->settings['mainModelName'];
 			}
-			
+
 			// Si le modèle de logique n'est pas chargé
-			if (!isset($controller->{$WebrsaModelClassName})) {
-				$controller->{$WebrsaModelClassName} = ClassRegistry::init($WebrsaModelClassName);
+			if (!isset($controller->{$this->settings['webrsaModelName']})) {
+				//$controller->{$this->settings['webrsaModelName']} = ClassRegistry::init($this->settings['webrsaModelName']);
+				$controller->uses[] = $this->settings['webrsaModelName'];
 			}
-			
+
 			// Si l'utilitaire n'est pas chargé...
-			if (!class_exists($WebrsaAccessClassName)) {
-				App::uses($WebrsaAccessClassName, 'Utility');
+			if (!class_exists($this->settings['webrsaAccessName'])) {
+				App::uses($this->settings['webrsaAccessName'], 'Utility');
 			}
-			
-			$this->Controller = $controller;
-			$this->MainModel =& $this->Controller->{$MainModelName};
-			$this->WebrsaModel =& $this->Controller->{$WebrsaModelClassName};
-			$this->WebrsaAccessClassName = $WebrsaAccessClassName;
-			$this->parentModelName = $parentModelName ?: (
-				!isset($this->MainModel->belongsTo['Personne']) && isset($this->MainModel->belongsTo['Foyer']) ? 'Foyer' : 'Personne'
+
+//			$Controller = $controller;
+//			$this->MainModel =& $Controller->{$this->settings['mainModelName']};
+//			$this->WebrsaModel =& $Controller->{$this->settings['webrsaModelName']};
+//			$this->WebrsaAccessClassName = $this->settings['webrsaAccessName'];
+
+			$this->parentModelName = $this->settings['parentModelName'] = $this->settings['parentModelName'] ?: (
+				!isset($Controller->{$this->settings['mainModelName']}->belongsTo['Personne']) && isset($Controller->{$this->settings['mainModelName']}->belongsTo['Foyer']) ? 'Foyer' : 'Personne'
 			);
-			
+
 			// Vérifications
-			$interfaces = class_implements($WebrsaModelClassName);
+			$interfaces = class_implements($controller->{$this->settings['webrsaModelName']});
 			if (!in_array('WebrsaLogicAccessInterface', $interfaces)) {
 				trigger_error(
-					sprintf("La classe %s doit impl&eacute;menter l'interface %s", $WebrsaModelClassName, 'WebrsaLogicAccessInterface')
+					sprintf("La classe %s doit impl&eacute;menter l'interface %s", $this->settings['webrsaModelName'], 'WebrsaLogicAccessInterface')
 				);
 			}
-			
+
 			$this->_initialized = true;
-			
+//debug( $this->settings );
 			return parent::initialize($controller);
 		}
-		
+
 		/**
 		 * Permet de modifier les modèles liés au component
-		 * 
+		 *
 		 * @param String $attr - Nom de l'attribut
 		 * @param mixed $name - Model ou String
 		 * @return \WebrsaAccessesComponent
@@ -139,38 +143,38 @@
 		protected function _setAttr($attr, $name) {
 			if ($name instanceof Model) {
 				$this->{$attr} = $name;
-			} elseif (isset($this->Controller->{$name})) {
-				$this->{$attr} =& $this->Controller->{$name};
+			} elseif (isset($Controller->{$name})) {
+				$this->{$attr} =& $Controller->{$name};
 			} else {
-				$this->Controller->{$name} = ClassRegistry::init($name);
-				$this->{$attr} =& $this->Controller->{$name};
+				$Controller->{$name} = ClassRegistry::init($name);
+				$this->{$attr} =& $Controller->{$name};
 			}
 			return $this;
 		}
-		
+
 		/**
 		 * Permet le changement du modèle principal (singulier du nom du controller)
-		 * 
+		 *
 		 * @param mixed $modelName
 		 * @return \WebrsaAccessesComponent
 		 */
 		public function setWebrsaModel($modelName) {
 			return $this->_setAttr('WebrsaModel', $modelName);
 		}
-		
+
 		/**
 		 * Permet le changement du modèle principal (singulier du nom du controller)
-		 * 
+		 *
 		 * @param mixed $modelName
 		 * @return \WebrsaAccessesComponent
 		 */
 		public function setMainModel($modelName) {
 			return $this->_setAttr('MainModel', $modelName);
 		}
-		
+
 		/**
 		 * Assure l'initialisation du component
-		 * 
+		 *
 		 * @param array $modelNames
 		 * @return void
 		 */
@@ -179,17 +183,17 @@
 		}
 
 		/**
-		 * Fait appel à WebrsaAccess<i>Nomducontroller</i> pour vérifier les droits 
+		 * Fait appel à WebrsaAccess<i>Nomducontroller</i> pour vérifier les droits
 		 * d'accès à une action en fonction d'un enregistrement
-		 * 
+		 *
 		 * @param integer $id			- Id de l'enregistrement si il existe
 		 *								  Sera envoyé à Webrsa<i>Nomdumodel</i>::getDataForAccess
-		 * 
+		 *
 		 * @param integer $parent_id		- Le plus souvent : personne_id ou foyer_id	si disponnible (nécéssaire si $id = null)
 		 *								  Sera envoyé à Webrsa<i>Nomdumodel</i>::getParamsForAccess
-		 * 
+		 *
 		 * @param array $params			- Paramètres à envoyer à WebrsaAccess<i>Nomducontroller</i>
-		 * 
+		 *
 		 * @return void
 		 * @throws Error403Exception
 		 * @throws Error404Exception
@@ -198,40 +202,42 @@
 			if (($id !== null && !self::_validId($id)) || ($parent_id !== null && !self::_validId($parent_id))) {
 				throw new Error404Exception();
 			}
-			
+
+			$Controller = $this->_Collection->getController();
+
 			$this->init();
-			
-			if (!isset($this->Controller->{$this->MainModel->alias})) {
-				trigger_error(sprintf("Le controller '%s' doit avoir la valeur '%s' dans l'attribut 'uses'", 
-					$this->Controller->name, $this->MainModel->alias)
+
+			if (!isset($Controller->{$Controller->{$this->settings['mainModelName']}->alias})) {
+				trigger_error(sprintf("Le controller '%s' doit avoir la valeur '%s' dans l'attribut 'uses'",
+					$Controller->name, $Controller->{$this->settings['mainModelName']}->alias)
 				);
 			}
-			
+
 			$record = $this->_getRecord($id);
 			$actionsParams = call_user_func(
-				array($this->WebrsaAccessClassName, 'getActionParamsList'), 
-				$this->Controller->action, 
+				array($this->settings['webrsaAccessName'], 'getActionParamsList'),
+				$Controller->action,
 				$params
 			);
-			$paramsAccess = $this->WebrsaModel->getParamsForAccess(
+			$paramsAccess = $Controller->{$this->settings['webrsaModelName']}->getParamsForAccess(
 				$this->_parentId($id, $record, $parent_id), $actionsParams
 			);
-			
+
 			if ($this->_haveAccess($record, $paramsAccess) === false) {
 				throw new Error403Exception(
-					__("Exception::access_denied", 
-						$this->Controller->name, 
-						$this->Controller->action, 
-						$this->Controller->Session->read('Auth.User.username')
+					__("Exception::access_denied",
+						$Controller->name,
+						$Controller->action,
+						$Controller->Session->read('Auth.User.username')
 					)
 				);
 			}
 		}
-		
+
 		/**
 		 * Permet d'obtenir le nécéssaire pour l'index d'un module (données + accès)
 		 * <strong>Attention</strong> : fait un set de la variable <i>ajoutPossible</i>
-		 * 
+		 *
 		 * @param type $parent_id - personne_id ou foyer_id selon le cas
 		 * @param array $query - Query utilisé pour obtenir l'index
 		 * @return array - Liste des enregistrements pour un index avec règles d'accès métier
@@ -241,110 +247,119 @@
 			if (!self::_validId($parent_id)) {
 				throw new Error404Exception();
 			}
-			
-			$queryCompleted = $this->WebrsaModel->completeVirtualFieldsForAccess($query);
-			$paramsActions = call_user_func(array($this->WebrsaAccessClassName, 'getParamsList'));
-			$paramsAccess = $this->WebrsaModel->getParamsForAccess($parent_id, $paramsActions);
-			$this->Controller->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible') !== false);
+
+			$Controller = $this->_Collection->getController();
+
+			$queryCompleted = $Controller->{$this->settings['webrsaModelName']}->completeVirtualFieldsForAccess($query);
+			$paramsActions = call_user_func(array($this->settings['webrsaAccessName'], 'getParamsList'));
+			$paramsAccess = $Controller->{$this->settings['webrsaModelName']}->getParamsForAccess($parent_id, $paramsActions);
+
+			$Controller->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible') !== false);
 
 			return call_user_func(
-				array($this->WebrsaAccessClassName, 'accesses'),
-				$this->MainModel->find('all', $queryCompleted),
+				array($this->settings['webrsaAccessName'], 'accesses'),
+				$Controller->{$this->settings['mainModelName']}->find('all', $queryCompleted),
 				$paramsAccess
 			);
 		}
-		
+
 		/**
 		 * Vérifi qu'un ID est un entier positif de base 10
-		 * 
+		 *
 		 * @param integer $id
 		 * @return boolean
 		 */
 		protected static function _validId($id) {
 			return is_numeric($id) && (integer)$id > 0 && preg_match('/^[\d]+$/', (string)$id);
 		}
-		
+
 		/**
 		 * Appel de la fonction check sur l'utilitaire de logique d'accès métier lié au Controller
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $paramsAccess
 		 * @return boolean
 		 */
 		protected function _haveAccess(array $record, array $paramsAccess) {
+			$Controller = $this->_Collection->getController();
+
 			return call_user_func(
-				array($this->WebrsaAccessClassName, 'check'), 
-				$this->Controller->name, 
-				$this->Controller->action, 
-				$record, 
+				array($this->settings['webrsaAccessName'], 'check'),
+				$Controller->name,
+				$Controller->action,
+				$record,
 				$paramsAccess
 			);
 		}
-		
+
 		/**
 		 * Permet d'obtenir l'enregistrement lié à l'id donné
-		 * 
+		 *
 		 * @param integer $id
 		 * @return array
 		 */
 		protected function _getRecord($id) {
+			$Controller = $this->_Collection->getController();
+
 			$record = array();
 			if ($id !== null) {
-				$records = $this->WebrsaModel->getDataForAccess(
-					array($this->MainModel->alias.'.'.$this->Controller->{$this->MainModel->alias}->primaryKey => $id),
-					array('controller' => $this->Controller->name, 'action' => $this->Controller->action)
+				$records = $Controller->{$this->settings['webrsaModelName']}->getDataForAccess(
+					array($Controller->{$this->settings['mainModelName']}->alias.'.'.$Controller->{$Controller->{$this->settings['mainModelName']}->alias}->primaryKey => $id),
+					array('controller' => $Controller->name, 'action' => $Controller->action)
 				);
 				$record = end($records);
 			}
-			
+
 			return (array)$record;
 		}
-		
+
 		/**
 		 * Permet d'obtenir un id à partir de différentes sources
-		 * 
+		 *
 		 * @param integer $id
 		 * @param array $record
 		 * @param integer $parent_id - Le plus souvent : personne_id ou foyer_id
 		 * @return integer
 		 */
 		protected function _parentId($id, array $record, $parent_id = null) {
+			$Controller = $this->_Collection->getController();
+
 			if ($parent_id !== null) {
 				$result = $parent_id;
 			} else {
-				$isLinkedToParent = property_exists($this->MainModel, 'belongsTo') 
-					&& isset($this->MainModel->belongsTo[$this->parentModelName]);
-				$foreignKey = $isLinkedToParent 
-					? $this->MainModel->belongsTo[$this->parentModelName]['foreignKey'] 
+				$isLinkedToParent = property_exists($Controller->{$this->settings['mainModelName']}, 'belongsTo')
+					&& isset($Controller->{$this->settings['mainModelName']}->belongsTo[$this->parentModelName]);
+				$foreignKey = $isLinkedToParent
+					? $Controller->{$this->settings['mainModelName']}->belongsTo[$this->parentModelName]['foreignKey']
 					: Inflector::underscore($this->parentModelName).'_id'
 				;
 				$parentPrimarykey = $isLinkedToParent
-					? $this->MainModel->{$this->parentModelName}->primaryKey
+					? $Controller->{$this->settings['mainModelName']}->{$this->parentModelName}->primaryKey
 					: 'id'
 				;
 				$methodName = Inflector::underscore($this->parentModelName).'Id';
 
-				$result = Hash::get($record, $this->MainModel->alias.'.'.$foreignKey)
+				$result = Hash::get($record, $Controller->{$this->settings['mainModelName']}->alias.'.'.$foreignKey)
 					?: Hash::get($record, $this->parentModelName.'.'.$parentPrimarykey
 				);
 
 				if ($result === null) {
-					if ($this->MainModel->Behaviors->attached('Allocatairelie') || method_exists($this->MainModel, $methodName)) {
-						$result = $this->MainModel->{$methodName}($id);
+					if ($Controller->{$this->settings['mainModelName']}->Behaviors->attached('Allocatairelie') || method_exists($Controller->{$this->settings['mainModelName']}, $methodName)) {
+						$result = $Controller->{$this->settings['mainModelName']}->{$methodName}($id);
 					} else {
 						trigger_error(sprintf("Field: %s.%s n'existe pas dans %s::getDataForAccess",
-							$this->parentModelName, $parentPrimarykey, $this->WebrsaModel->name));
+							$this->parentModelName, $parentPrimarykey, $Controller->{$this->settings['webrsaModelName']}->name));
 						exit;
 					}
 				}
 			}
-			
+
 			return $result;
 		}
-		
+
 		/**
 		 * Renvoi une chaine en Camelcase pluriel en Camelcase singulier
-		 * 
+		 *
 		 * @param String $controllerName
 		 * @return String
 		 */

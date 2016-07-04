@@ -435,6 +435,39 @@
 			return $errors;
 		}
 
+		// TODO: (live) cache ?
+		public function vfDossierepPossible( $personneIdField, array $aliases = array() ) {
+			$aliases += array(
+				'Personne' => 'personnes',
+				'Foyer' => 'foyers',
+				'Dossier' => 'dossiers',
+				'Situationdossierrsa' => 'situationsdossiersrsa',
+				'Prestation' => 'prestations',
+				'Calculdroitrsa' => 'calculsdroitsrsa',
+			);
+
+			$query = array(
+				'fields' => array( "{$this->Personne->alias}.{$this->Personne->primaryKey}" ),
+				'contain' => false,
+				'joins' => array(
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'conditions' => array(
+					"Personne.id = {$personneIdField}",
+					'Situationdossierrsa.etatdosrsa' => $this->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert(),
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					'Calculdroitrsa.toppersdrodevorsa' => '1'
+				)
+			);
+
+			$sql = words_replace( $this->Personne->sq( $query ), $aliases );
+			return "EXISTS( {$sql} )";
+		}
+
 		/**
 		* Récupération des informations propres au dossier devant passer en EP
 		* après liaison avec la commission d'EP
@@ -878,6 +911,48 @@
 			}
 
 			return $thematiques;
+		}
+
+		// TODO: (live) cache ?
+		public function vfDossierepEnCours( $personneIdField = 'Personne.id', array $thematiques = array() ) {
+			$thematiques = ( array() === $thematiques ? array_keys( $this->themesCg() ) : $thematiques );
+			$Commissionep = $this->Passagecommissionep->Commissionep;
+
+			$query = array(
+				'fields' => array(
+					"{$this->alias}.{$this->primaryKey}"
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					"Dossierep.personne_id = {$personneIdField}",
+					array(
+						'OR' => array(
+							'Passagecommissionep.id IS NULL',
+							'Passagecommissionep.id IN ( '.$this->Passagecommissionep->sqDernier().' )'
+						)
+					),
+					'Dossierep.actif' => '1',
+					'Dossierep.themeep' => $thematiques,
+					array(
+						'OR' => array(
+							'Commissionep.id IS NULL',
+							'Commissionep.etatcommissionep' => $Commissionep::$etatsEnCours,
+							array(
+								'NOT' => array(
+									'Passagecommissionep.etatdossierep' => array( 'traite', 'annule' )
+								)
+							)
+						)
+					)
+				)
+			);
+
+			$sql = $this->sq( $query );
+			return "EXISTS( {$sql} )";
 		}
 
 		/**

@@ -26,15 +26,22 @@
 
 		public $validate = array(
 			'mtpersressmenrsa' => array(
-				array(
+				'numeric' => array(
 					// FIXME INFO ailleurs aussi => 123,25 ne passe pas
 					'rule' => 'numeric',
 					'message' => 'Veuillez entrer une valeur numérique.'
 				),
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
+			),
+			'toppersdrodevorsa' => array(
+				'inList' => array(
+					'rule' => array( 'inList', array( '1', '0' ) ),
+					'message' => null,
+					'allowEmpty' => true
+				)
 			)
 		);
 		

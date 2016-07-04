@@ -27,7 +27,16 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		public $components = array(
+			'Jetons2',
+			'DossiersMenus',
+			'WebrsaAccesses' => array(
+				'mainModelName' => 'Contratinsertion',
+				'webrsaModelName' => 'WebrsaHistochoixcer93',
+				'webrsaAccessName' => 'WebrsaAccessHistoschoixcers93',
+				'parentModelName' => 'Personne',
+			)
+		);
 
 		/**
 		 * Modèles utilisés.
@@ -64,6 +73,7 @@
 		 * @return void
 		 */
 		public function attdecisioncpdv( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '02attdecisioncpdv' );
 		}
 
@@ -73,6 +83,7 @@
 		 * @return void
 		 */
 		public function attdecisioncg( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '03attdecisioncg' );
 		}
 
@@ -82,9 +93,9 @@
 		 * @return void
 		 */
 		public function premierelecture( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '04premierelecture' );
 		}
-		
 
 		/**
 		 *
@@ -92,6 +103,7 @@
 		 * @return void
 		 */
 		public function premierelecture_consultation( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '04premierelecture', true );
 		}
 
@@ -102,6 +114,7 @@
 		 * @return void
 		 */
 		public function secondelecture( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '05secondelecture' );
 		}
 		/**
@@ -110,27 +123,30 @@
 		 * @return void
 		 */
 		public function secondelecture_consultation( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '05secondelecture', true );
 		}
-		
+
 		/**
 		 *
 		 * @param integer $contratinsertion_id
 		 * @return void
 		 */
 		public function aviscadre( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '06attaviscadre' );
 		}
-		
+
 		/**
 		 *
 		 * @param integer $contratinsertion_id
 		 * @return void
 		 */
 		public function aviscadre_consultation( $contratinsertion_id ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 			return $this->_decision( $contratinsertion_id, '06attaviscadre', true );
 		}
-		
+
 		/**
 		 * FIXME: decision()
 		 *
@@ -186,7 +202,7 @@
 				}
 			}
 
-			$contratinsertion = $this->Histochoixcer93->Cer93->dataView( $contratinsertion_id );
+			$contratinsertion = $this->Histochoixcer93->Cer93->WebrsaCer93->dataView( $contratinsertion_id );
 
 			if( !$consultation ) {
 				if( empty( $this->request->data ) ) {
@@ -219,9 +235,9 @@
 				)
 			);
 
-			$options = Set::merge(
+			$options = Hash::merge(
 				$options,
-				$this->Histochoixcer93->Cer93->optionsView()
+				$this->Histochoixcer93->Cer93->WebrsaCer93->optionsView()
 			);
 
 			$this->set( 'consultation', $consultation );
@@ -231,7 +247,7 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'contratinsertion', $contratinsertion );
 			$this->set( 'userConnected', $this->Session->read( 'Auth.User.id' ) );
-
+			$this->set( 'urlmenu', "/cers93/index/{$personne_id}" );
 
 			if( in_array( $this->action, array( 'attdecisioncpdv', 'attdecisioncg' ) ) ) {
 				$this->render( 'decision' );
