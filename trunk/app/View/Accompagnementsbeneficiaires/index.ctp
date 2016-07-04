@@ -316,7 +316,8 @@
 						'class' => 'view',
 						'msgid' => 'Voir',
 						'condition' => '"#Action.name#" == "Contratinsertion"',
-						'condition_group' => 'view'
+						'condition_group' => 'view',
+						'disabled' => '"#/Cers93/view#" != true'
 					),
 					// FIXME: pas de visualisation pour la fiche de prescription
 					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
@@ -330,7 +331,8 @@
 						'class' => 'view',
 						'msgid' => 'Voir',
 						'condition' => '"#Action.name#" == "Questionnaired1pdv93"',
-						'condition_group' => 'view'
+						'condition_group' => 'view',
+						'disabled' => '"#/Questionnairesd1pdvs93/view#" != true'
 					),
 					// FIXME: pas de visualisation pour le questionnaire D2
 					'/Questionnairesd2pdvs93/view/#Questionnaired2pdv93.id#' => array(
@@ -374,13 +376,15 @@
 						'class' => 'edit',
 						'msgid' => 'Modifier',
 						'condition' => '"#Action.name#" == "Contratinsertion" && (int)substr( "#Cer93.positioncer#", 0, 2 ) <= 1',
-						'condition_group' => 'edit'
+						'condition_group' => 'edit',
+						'disabled' => '"#/Cers93/edit#" != true'
 					),
 					'/Cers93/edit_apres_signature/#Contratinsertion.id#' => array(
 						'class' => 'edit',
 						'msgid' => 'Modifier',
 						'condition' => '"#Action.name#" == "Contratinsertion" && (int)substr( "#Cer93.positioncer#", 0, 2 ) > 1',
-						'condition_group' => 'edit'
+						'condition_group' => 'edit',
+						'disabled' => '"#/Cers93/edit_apres_signature#" != true'
 					),
 					'/Fichesprescriptions93/edit/#Ficheprescription93.id#' => array(
 						'class' => 'edit',
@@ -648,12 +652,14 @@
 						'class' => 'impression',
 						'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impression"',
 						'condition_group' => 'impression',
+						'disabled' => '"#/Cers93/impression#" != true'
 					),
 					'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
 						'msgid' => 'Imprimer',
 						'class' => 'impression',
 						'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impressionDecision"',
 						'condition_group' => 'impression',
+						'disabled' => '"#/Cers93/impressionDecision#" != true'
 					),
 					'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
 						'msgid' => 'Imprimer',
@@ -700,6 +706,7 @@
 						'class' => 'view external',
 						'condition' => '"#Impression.name#" == "Contratinsertion"',
 						'condition_group' => 'view',
+						'disabled' => '"#/Cers93/view#" != true'
 					),
 					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
 						'msgid' => 'Voir',

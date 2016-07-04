@@ -15,10 +15,28 @@
 	 */
 	class SignalementsepsController extends AppController
 	{
-
+		/**
+		 * Modèles utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
 		public $uses = array( 'Signalementep93' );
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Jetons2',
+			'DossiersMenus',
+			'WebrsaAccesses' => array(
+				'mainModelName' => 'Signalementep93',
+				'webrsaModelName' => 'WebrsaSignalementep',
+				'webrsaAccessName' => 'WebrsaAccessSignalementseps',
+				'parentModelName' => 'Contratinsertion',
+			)
+		);
 
 		public $commeDroit = array(
 			'add' => 'Signalementseps:edit'
@@ -69,49 +87,11 @@
 		protected function _add_edit( $id = null ) {
 			if( $this->action == 'add' ) {
 				$contratinsertion_id = $id;
-
-				// Il n'existe pas d'autre signalement en cours de traitement pour ce contrat
-				$count = $this->{$this->modelClass}->Dossierep->find(
-					'count',
-					array(
-						'conditions' => array(
-							$this->modelClass.'.contratinsertion_id' => $contratinsertion_id,
-							'Dossierep.actif' => '1',
-							'Dossierep.themeep' => Inflector::tableize( $this->modelClass ),
-							'Dossierep.id NOT IN ( '.$this->{$this->modelClass}->Dossierep->Passagecommissionep->sq(
-								array(
-									'alias' => 'passagescommissionseps',
-									'fields' => array(
-										'passagescommissionseps.dossierep_id'
-									),
-									'conditions' => array(
-										'passagescommissionseps.dossierep_id = Dossierep.id',
-										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
-									)
-								)
-							).' )'
-						),
-						'joins' => array(
-							array(
-								'table'      => Inflector::tableize( $this->modelClass ),
-								'alias'      => $this->modelClass,
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( "Dossierep.id = {$this->modelClass}.dossierep_id" )
-							),
-							array(
-								'table'      => 'contratsinsertion',
-								'alias'      => 'Contratinsertion',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( "Contratinsertion.id = {$this->modelClass}.contratinsertion_id" )
-							),
-						),
-					)
-				);
-				$this->assert( empty( $count ), 'error500' );
+				$this->WebrsaAccesses->check( null, $contratinsertion_id );
 			}
 			else {
+				$this->WebrsaAccesses->check( $id );
+
 				$signalementep_id = $id;
 				$signalementep = $this->{$this->modelClass}->find(
 					'first',
@@ -196,6 +176,7 @@
 			}
 
 			$this->set( 'personne_id', $personne_id );
+			$this->set( 'urlmenu', '/cers93/index/'.$personne_id );
 			$this->render( 'add_edit' );
 		}
 
@@ -203,9 +184,12 @@
 		* Permet de supprimer un signalement SSI celui-ci:
 		*	- existe
 		*	- n'est pas associé à une commission d'EP
-		*/
-
+		 *
+		 * @param integer $id L'id du signalement
+		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
 
 			$signalementep = $this->{$this->modelClass}->Dossierep->find(

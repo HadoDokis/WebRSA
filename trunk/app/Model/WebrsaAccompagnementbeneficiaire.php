@@ -281,11 +281,19 @@
 		 * @return array
 		 */
 		protected function _completeConfigAccess( array $query ) {
-			$query['webrsaModelName'] = $query['webrsaAccessName'] = false;
+			$query += array(
+				'webrsaModelName' => null,
+				'webrsaAccessName' => null
+			);
 
-			$webrsaModelName = 'Webrsa'.$query['modelName'];
+			$webrsaModelName = ( null === $query['webrsaModelName'] )
+				? 'Webrsa'.$query['modelName']
+				: $query['webrsaModelName'];
+
 			// INFO: c'est compliqué, mais sinon on n'a pas la bonne mise au pluriel de PersonneReferent
-			$webrsaAccessName = 'WebrsaAccess'.Inflector::camelize( Inflector::pluralize( Inflector::underscore( $query['modelName'] ) ) );
+			$webrsaAccessName = ( null === $query['webrsaAccessName'] )
+				? 'WebrsaAccess'.Inflector::camelize( Inflector::pluralize( Inflector::underscore( $query['modelName'] ) ) )
+				: $query['webrsaAccessName'];
 
 			App::uses( $webrsaModelName, 'Model' );
 			$WebrsaModel = ClassRegistry::init( $webrsaModelName );
@@ -295,6 +303,9 @@
 				$query['webrsaAccessName'] = $webrsaAccessName;
 
 				$query = $WebrsaModel->completeVirtualFieldsForAccess( $query );
+			}
+			else {
+				$query['webrsaModelName'] = $query['webrsaAccessName'] = false;
 			}
 
 			return $query;
@@ -348,6 +359,8 @@
 					)
 				),
 				'Contratinsertion' => array(
+					'webrsaModelName' => 'WebrsaCer93',
+					'webrsaAccessName' => 'WebrsaAccessCers93',
 					'fields' => array(
 						'Contratinsertion.id',
 						'Contratinsertion.created',
@@ -591,7 +604,14 @@
 		protected function _readConfigFichiersmodules() {
 			$config = array(
 				'Apre',
-				'Contratinsertion',
+				'Contratinsertion' => array(
+					'modelName' => 'Contratinsertion',
+					'webrsaModelName' => 'WebrsaCer93',
+					'webrsaAccessName' => 'WebrsaAccessCers93',
+					'joins' => array(
+						'Cer93'
+					)
+				),
 				'DspRev',
 				'Entretien',
 				'Memo',
@@ -738,6 +758,8 @@
 				),
 				'/Cers93/impression/#Contratinsertion.id#' => array(
 					'modelName' => 'Contratinsertion',
+					'webrsaModelName' => 'WebrsaCer93',
+					'webrsaAccessName' => 'WebrsaAccessCers93',
 					'fields' => array(
 						'Contratinsertion.id',
 						'Contratinsertion.personne_id',
@@ -751,6 +773,8 @@
 				),
 				'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
 					'modelName' => 'Contratinsertion',
+					'webrsaModelName' => 'WebrsaCer93',
+					'webrsaAccessName' => 'WebrsaAccessCers93',
 					'fields' => array(
 						'Contratinsertion.id',
 						'Contratinsertion.personne_id',
@@ -760,6 +784,9 @@
 					),
 					'joins' => array(
 						'Cer93' => array( 'type' => 'INNER' )
+					),
+					'conditions' => array(
+						'Cer93.positioncer' => array( '99rejete', '99valide' )
 					)
 				),
 				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
@@ -973,7 +1000,8 @@
 						)
 					),
 					'Calculdroitrsa' => array(
-						'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
+						'toppersdrodevorsa' => array( '' => __d( 'calculdroitrsa', 'ENUM::TOPPERSDRODEVORSA::NULL' ) )
+							+ $this->Personne->Calculdroitrsa->enum( 'toppersdrodevorsa' )
 					),
 					'Cer93' => array(
 						'nivetu' => $this->Personne->Contratinsertion->Cer93->enum( 'nivetu' ),

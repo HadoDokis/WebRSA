@@ -32,7 +32,13 @@
 			'Gedooo.Gedooo',
 			'Jetons2',
 			'DossiersMenus',
-			'InsertionsBeneficiaires'
+			'InsertionsBeneficiaires',
+			'WebrsaAccesses' => array(
+				'mainModelName' => 'Contratinsertion',
+				'webrsaModelName' => 'WebrsaCer93',
+				'webrsaAccessName' => 'WebrsaAccessCers93',
+				'parentModelName' => 'Personne',
+			)
 		);
 
 		/**
@@ -60,7 +66,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cer93', 'Catalogueromev3' );
+		public $uses = array( 'Cer93', 'Catalogueromev3', 'WebrsaCer93' );
 
 		/**
 		 * Actions non soumises aux droits.
@@ -165,210 +171,6 @@
 		}
 
 		/**
-		 * FIXME: à bouger dans le modèle Contratinsertion + remplacer celui du ContratsinsertionController
-		 * (CG 58, 93)
-		 *
-		 * @param type $modele
-		 * @param type $personne_id
-		 * @return type
-		 */
-		protected function _qdThematiqueEp( $modele, $personne_id ) {
-			$fields = array(
-				'Dossierep.id',
-				'Dossierep.personne_id',
-				'Dossierep.themeep',
-				'Dossierep.created',
-				'Dossierep.modified',
-				'Passagecommissionep.etatdossierep',
-				'Contratinsertion.dd_ci',
-				'Contratinsertion.df_ci',
-				"{$modele}.id",
-			);
-
-			// FIXME: d'autres champs pour le CG 58 ?
-			if( $modele == 'Signalementep93' ) {
-				$fields[] = 'Signalementep93.date';
-				$fields[] = 'Signalementep93.rang';
-			}
-			else if( $modele == 'Contratcomplexeep93' ) {
-				$fields[] = 'Contratcomplexeep93.created';
-			}
-
-			return array(
-				'fields' => $fields,
-				'conditions' => array(
-					'Dossierep.actif' => '1',
-					'Dossierep.personne_id' => $personne_id,
-					'Dossierep.themeep' => Inflector::tableize( $modele ),
-					'Dossierep.id NOT IN ( '.$this->Cer93->Contratinsertion->{$modele}->Dossierep->Passagecommissionep->sq(
-						array(
-							'alias' => 'passagescommissionseps',
-							'fields' => array(
-								'passagescommissionseps.dossierep_id'
-							),
-							'conditions' => array(
-								'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
-							)
-						)
-					).' )'
-				),
-				'joins' => array(
-					$this->Cer93->Contratinsertion->{$modele}->Dossierep->join( $modele, array( 'type' => 'INNER' ) ),
-					$this->Cer93->Contratinsertion->{$modele}->join( 'Contratinsertion', array( 'type' => 'INNER' ) ),
-					$this->Cer93->Contratinsertion->{$modele}->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
-				),
-			);
-		}
-
-		/**
-		 * Retourne les permissions concernant les différentes action liées à un
-		 * CER pour la logique d'activation / désactiviation des liens dans la
-		 * vue et de vérification de l'accès aux actions dans le contrôleur (
-		 * en-dehors de la gestion des droits "classique").
-		 *
-		 * Les champs suivants de l'enregistrement seront utilisés pour le calcul
-		 * des permissions:
-		 *	- Contratinsertion.decision_ci
-		 *	- Contratinsertion.dd_ci
-		 *	- Contratinsertion.df_ci
-		 *	- Cer93.positioncer
-		 *
-		 * @param integer $personne_id
-		 * @return array
-		 */
-		protected function _getDisabledLinksMasks( $personne_id ) {
-			// 1°) L'allocataire possède-t'il un dossier d'EP en cours
-			$qdSignalementseps93 = $this->_qdThematiqueEp( 'Signalementep93', $personne_id );
-			$qdContratscomplexeseps93 = $this->_qdThematiqueEp( 'Contratcomplexeep93', $personne_id );
-
-			$qdSignalementseps93['fields'] = $qdContratscomplexeseps93['fields'] = array( 'Dossierep.id' );
-			$sqlSignalementseps93 = $this->Cer93->Contratinsertion->Personne->Dossierep->sq( $qdSignalementseps93 );
-			$sqlContratscomplexeseps93 = $this->Cer93->Contratinsertion->Personne->Dossierep->sq( $qdContratscomplexeseps93 );
-
-			// 2°) L'allocataire possède-t-il un CER en cours de traitement ?
-			$query = array(
-				'fields' => array(
-					'Contratinsertion.id'
-				),
-				'contain' => false,
-				'joins' => array(
-					$this->Cer93->join( 'Contratinsertion', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'Contratinsertion.personne_id' => $personne_id,
-					'Cer93.positioncer NOT LIKE' => '99%'
-				)
-			);
-			$sqlCerEntraitement = $this->Cer93->sq( $query );
-
-			// 3. L'allocataire peut-il passer en EP ?
-			$passageEpPossible = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage( $personne_id );
-
-			// Obtention des informations
-			$sql = "SELECT
-						( CASE WHEN EXISTS( {$sqlSignalementseps93} UNION {$sqlContratscomplexeseps93} ) THEN '1' ELSE '0' END )  AS \"dossierep_encours\",
-						( CASE WHEN EXISTS( {$sqlCerEntraitement} ) THEN '1' ELSE '0' END ) AS \"cer93_encours_traitement\"";
-
-			$data = (array)$this->Cer93->getDataSource()->query( $sql );
-
-			$user_type = $this->Session->read( 'Auth.User.type' );
-
-			// -----------------------------------------------------------------
-			// Variables de remplacement: %permission%, données de l'enregistrement #Xxxx.yyyy#
-			// -----------------------------------------------------------------
-			$disabledLinks = array(
-				//On bloque l'ajout tant qu'il existe un CER non validé, rejeté ou annulé
-				'Cers93::add' => '!(
-					( \''.$data[0][0]['cer93_encours_traitement'].'\' == \'0\' )
-					&& ( \'%permission%\' == \'1\' )
-				)',
-				'Cers93::edit' => '!(
-					in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) )
-					&& ( \'%permission%\' == \'1\' )
-				)',
-				'Cers93::edit_apres_signature' => '!(
-					(
-						( \'externe_cpdv\' === \''.$user_type.'\' && in_array( \'#Cer93.positioncer#\', array( \'01signe\', \'02attdecisioncpdv\' ) ) )
-						|| ( \'cg\' === \''.$user_type.'\' && !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'99annule\' ) ) )
-					)
-					&& ( \'%permission%\' == \'1\' )
-				)',
-				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
-				'Histoschoixcers93::attdecisioncpdv' => '!( in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Histoschoixcers93::attdecisioncg' => '!( in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Histoschoixcers93::premierelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Histoschoixcers93::secondelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Histoschoixcers93::aviscadre' => '!( in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Signalementseps::add' => '!(
-					(
-						// Contrat validé
-						\'#Contratinsertion.decision_ci#\' == \'V\'
-						// En cours, avec une durée de tolérance
-						&& (
-							( strtotime( \'#Contratinsertion.dd_ci#\' ) <= time() )
-							&& ( strtotime( \'#Contratinsertion.df_ci#\' ) + ( Configure::read( \'Signalementep93.dureeTolerance\' ) * 24 * 60 * 60 ) >= time() )
-						)
-						// Aucun contrat de la personne n\'est en cours de passage en EP actuellement
-						&& ( \''.$data[0][0]['dossierep_encours'].'\' == \'0\' )
-						//
-						&& ( \''.count( $passageEpPossible ).'\' == \'0\' )
-					)
-					&& ( \'%permission%\' == \'1\' )
-				)',
-				'Cers93::impression' => '!( \'%permission%\' == \'1\' )' ,
-				'Cers93::delete' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Cers93::cancel' => '!(
-					\'cg\' === \''.$user_type.'\'
-					&& !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\', \'07attavisep\', \'99annule\' ) )
-					&& ( \'%permission%\' == \'1\' )
-				)',
-				'Cers93::impressionDecision' => '!( in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) && ( \'%permission%\' == \'1\' ) )'
-			);
-
-			return $disabledLinks;
-		}
-
-		/**
-		 * Retourne l'impossibilité au niveau logique métier d'effectuer une action
-		 * donnée pour un allocataire et éventuellement un CER.
-		 *
-		 * @param integer $personne_id
-		 * @param integer $contratinsertion_id
-		 * @return boolean
-		 */
-		protected function _isDisabledAction( $personne_id, $contratinsertion_id = null ) {
-			$disabledLinks = $this->_getDisabledLinksMasks( $personne_id );
-			$php = str_replace( '%permission%', '1', $disabledLinks["{$this->name}::{$this->action}"] );
-
-			if( !empty( $contratinsertion_id ) ) {
-				$query = array(
-					'fields' => array(
-						'Contratinsertion.decision_ci',
-						'Contratinsertion.dd_ci',
-						'Contratinsertion.df_ci',
-						'Cer93.positioncer'
-					),
-					'conditions' => array(
-						'Contratinsertion.id' => $contratinsertion_id
-					),
-					'contain' => false,
-					'joins' => array(
-						$this->Cer93->join( 'Contratinsertion', array( 'type' => 'INNER' ) )
-					),
-				);
-
-				$record = $this->Cer93->find( 'first', $query );
-				$php = DefaultUtility::evaluate( $record, $php );
-			}
-
-			try {
-				return eval( "return {$php};" );
-			} catch( Exception $e ) {
-				return true;
-			}
-		}
-
-		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
 		 * @param integer $personne_id L'id technique de l'allocataire auquel le CER est attaché.
@@ -383,6 +185,34 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Contratinsertion' );
+
+			//------------------------------------------------------------------
+			// Partie passage en EP
+			//------------------------------------------------------------------
+			// Signalements en EP
+			$qdSignalementep93 = $this->WebrsaCer93->qdSignalementseps93( array( 'Dossierep.personne_id' => $personne_id ) );
+			$signalementseps93 = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->find( 'all', $qdSignalementep93 );
+			$this->WebrsaAccesses->settings = array(
+				'mainModelName' => 'Dossierep',
+				'webrsaModelName' => 'WebrsaSignalementep',
+				'webrsaAccessName' => 'WebrsaAccessSignalementseps',
+				'parentModelName' => 'Personne',
+			);
+			$this->WebrsaAccesses->initialize( $this );
+			$signalementseps93 = $this->WebrsaAccesses->getIndexRecords( $personne_id, $qdSignalementep93 );
+
+			// CER complexes; il n'y a pas moyen de modifier ou de supprimer le dossier d'EP
+			$qdContratcomplexeep93 = $this->WebrsaCer93->qdContratscomplexes( array( 'Dossierep.personne_id' => $personne_id ) );
+			$contratscomplexeseps93 = $this->Cer93->Contratinsertion->Contratcomplexeep93->Dossierep->find( 'all', $qdContratcomplexeep93 );
+
+			// L'allocataire peut-il passer en EP ?
+			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage( $personne_id );
+
+			//------------------------------------------------------------------
+			// Partie CER
+			//------------------------------------------------------------------
+			$this->WebrsaAccesses->settings = $this->components['WebrsaAccesses'];
+			$this->WebrsaAccesses->initialize( $this );
 
 			$querydata = array(
 				'fields' => array(
@@ -416,35 +246,30 @@
 				'order' => array( 'Contratinsertion.dd_ci DESC', 'Contratinsertion.rg_ci DESC' )
 			);
 
-			$results = $this->Cer93->Contratinsertion->find( 'all', $querydata );
+			$results = $this->WebrsaAccesses->getIndexRecords( $personne_id,  $querydata );
 
-			$options = array(
-				'Contratinsertion' => array(
-					'decision_ci' => ClassRegistry::init('Contratinsertion')->enum('decision_ci')
+			$options = array_merge(
+				array(
+					'Contratinsertion' => array(
+						'decision_ci' => $this->Cer93->Contratinsertion->enum('decision_ci')
+					)
+				),
+				$this->Cer93->enums()
+			);
+
+			$this->set(
+				compact(
+					array(
+						'erreursCandidatePassage',
+						'signalementseps93',
+						'contratscomplexeseps93',
+						'options',
+						'personne_id',
+					)
 				)
 			);
-			$options = Set::merge( $options, $this->Cer93->enums() );
-
-			// Partie passage en EP
-			// Liste des dossiers d'EP en cours pour la thématique Signalementep93
-			$qdSignalementseps93 = $this->_qdThematiqueEp( 'Signalementep93', $personne_id );
-			$signalementseps93 = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->find( 'all', $qdSignalementseps93 );
-
-			// Liste des dossiers d'EP en cours pour la thématique Contratcomplexeep93
-			$qdContratscomplexeseps93 = $this->_qdThematiqueEp( 'Contratcomplexeep93', $personne_id );
-			$contratscomplexeseps93 = $this->Cer93->Contratinsertion->Contratcomplexeep93->Dossierep->find( 'all', $qdContratscomplexeseps93 );
-
-			// L'allocataire peut-il passer en EP ?
-			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage( $personne_id );
-
-			$this->set( 'erreursCandidatePassage', $erreursCandidatePassage );
-			$this->set( 'signalementseps93', $signalementseps93 );
-			$this->set( 'contratscomplexeseps93', $contratscomplexeseps93 );
-			$this->set( 'options', $options);
 			$this->set( 'optionsdossierseps', $this->Cer93->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums() );
 			$this->set( 'cers93', $results );
-			$this->set( 'personne_id', $personne_id );
-			$this->set( 'disabledLinks', $this->_getDisabledLinksMasks( $personne_id ) );
 		}
 
 		/**
@@ -452,7 +277,7 @@
 		 *
 		 * @return void
 		 */
-		public function add() {
+		public function add( $personne_id = null ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, 'edit' ), $args );
 		}
@@ -466,8 +291,11 @@
 		public function edit( $id = null ) {
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
+				$this->WebrsaAccesses->check( null, $personne_id );
 			}
 			else {
+				$this->WebrsaAccesses->check( $id );
+
 				$this->Cer93->Contratinsertion->id = $id;
 				$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
 			}
@@ -495,7 +323,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
 
-				if( $this->Cer93->saveFormulaire( $this->request->data, $this->Session->read( 'Auth.User.type' ) ) ) {
+				if( $this->Cer93->WebrsaCer93->saveFormulaire( $this->request->data, $this->Session->read( 'Auth.User.type' ) ) ) {
 					$this->Cer93->Contratinsertion->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -509,7 +337,7 @@
 
 			if( empty( $this->request->data ) ) {
 				try {
-					$this->request->data = $this->Cer93->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
+					$this->request->data = $this->Cer93->WebrsaCer93->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
 				}
 				catch( Exception $e ) {
 					$this->Jetons2->release( $dossier_id );
@@ -547,7 +375,7 @@
 					'order' => array( 'Sujetcer93.isautre DESC', 'Sujetcer93.name ASC' )
 				)
 			);
-//debug( $listeSujets );
+
 			$sujets_ids_valeurs_autres = array();
 			$sujets_ids_soussujets_autres = array();
 			foreach( $listeSujets as $sujetcer93 ) {
@@ -748,6 +576,8 @@
 		 * @throws NotFoundException
 		 */
 		public function edit_apres_signature( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$query = array(
 				'fields' => array(
 					'Contratinsertion.id',
@@ -776,13 +606,6 @@
 			$personne_id = Hash::get( $contratinsertion, 'Contratinsertion.personne_id' );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
-
-			// On vérifie que l'action puisse être exécutée
-			if( $this->_isDisabledAction( $personne_id, $id ) ) {
-				$msgid = 'Impossible de modifier un CER après signature';
-				$this->Session->setFlash( $msgid, 'flash/error' );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
 
 			// Début du traitement
 			$this->Jetons2->get( $dossier_id );
@@ -825,8 +648,8 @@
 				$this->request->data = $contratinsertion;
 			}
 
-			$contratinsertion = $this->Cer93->dataView( $id );
-			$options = $this->Cer93->optionsView();
+			$contratinsertion = $this->Cer93->WebrsaCer93->dataView( $id );
+			$options = $this->WebrsaCer93->optionsView();
 			$urlmenu = "/cers93/index/{$personne_id}";
 
 			$this->set( compact( 'dossierMenu', 'options', 'urlmenu', 'contratinsertion' ) );
@@ -840,6 +663,8 @@
 		 * @return void
 		 */
 		public function signature( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			// On s'assure que l'id passé en paramètre existe bien
 			if( empty( $id ) ) {
 				throw new NotFoundException();
@@ -883,7 +708,7 @@
 			}
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Cer93->prepareFormDataAddEdit( $personne_id, $id, $this->Session->read( 'Auth.User.id' ) );
+				$this->request->data = $this->Cer93->WebrsaCer93->prepareFormDataAddEdit( $personne_id, $id, $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$this->set( 'personne_id', $personne_id );
@@ -898,6 +723,8 @@
 		 * @return void
 		 */
 		public function impression( $contratinsertion_id = null ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$personne_id = $this->Cer93->Contratinsertion->personneId( $contratinsertion_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
@@ -918,15 +745,17 @@
 		 * @param integer $contratinsertion_id
 		 * @return void
 		 */
-		public function view( $contratinsertion_id ) {
-			$this->Cer93->Contratinsertion->id = $contratinsertion_id;
+		public function view( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
+			$this->Cer93->Contratinsertion->id = $id;
 			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
 			$this->set( 'personne_id', $personne_id );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
-			$this->set( 'options', $this->Cer93->optionsView() );
-			$this->set( 'contratinsertion', $this->Cer93->dataView( $contratinsertion_id ) );
+			$this->set( 'options', $this->WebrsaCer93->optionsView() );
+			$this->set( 'contratinsertion', $this->Cer93->WebrsaCer93->dataView( $id ) );
 			$this->set( 'urlmenu', '/cers93/index/'.$personne_id );
 		}
 
@@ -936,16 +765,11 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$personne_id = $this->Cer93->Contratinsertion->personneId( $id );
 			$dossier_id = $this->Cer93->Contratinsertion->dossierId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'id' => $dossier_id ) );
-
-			// On vérifie que l'action puisse être exécutée
-			if( $this->_isDisabledAction( $personne_id, $id ) ) {
-				$msgid = 'Impossible de supprimer le CER';
-				$this->Session->setFlash( $msgid, 'flash/error' );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -973,6 +797,8 @@
 		 * @return void
 		 */
 		public function impressionDecision( $contratinsertion_id = null ) {
+			$this->WebrsaAccesses->check( $contratinsertion_id );
+
 			$personne_id = $this->Cer93->Contratinsertion->personneId( $contratinsertion_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
@@ -994,6 +820,8 @@
 		 * @throws NotFoundException
 		 */
 		public function cancel( $id ) {
+			$this->WebrsaAccesses->check( $id );
+
 			$query = array(
 				'fields' => array(
 					'Contratinsertion.id',
@@ -1020,13 +848,6 @@
 			$personne_id = Hash::get( $contratinsertion, 'Contratinsertion.personne_id' );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
-
-			// On vérifie que l'action puisse être exécutée
-			if( $this->_isDisabledAction( $personne_id, $id ) ) {
-				$msgid = 'Impossible d\'annuler le CER';
-				$this->Session->setFlash( $msgid, 'flash/error' );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -1092,8 +913,8 @@
 				$this->request->data = $contratinsertion;
 			}
 
-			$contratinsertion = $this->Cer93->dataView( $id );
-			$options = $this->Cer93->optionsView();
+			$contratinsertion = $this->Cer93->WebrsaCer93->dataView( $id );
+			$options = $this->WebrsaCer93->optionsView();
 			$urlmenu = "/cers93/index/{$personne_id}";
 
 			$this->set( compact( 'dossierMenu', 'options', 'urlmenu', 'contratinsertion' ) );
