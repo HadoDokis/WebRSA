@@ -25,7 +25,7 @@
 	echo $this->Default->subform(
 		array(
 			"{$modelClassName}.id" => array( 'type' => 'hidden' ),
-			"{$modelClassName}.date" => array( 'selected' => $defaultDate, 'type' => 'date' ),
+			"{$modelClassName}.date" => array( 'selected' => $defaultDate, 'type' => 'date', 'dateFormat' => 'DMY' ),
 			"{$modelClassName}.motif" => array( 'type' => 'textarea' ),
 		)
 	);
