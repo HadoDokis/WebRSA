@@ -1590,21 +1590,21 @@
 		 * 	@return array
 		 */
 		public function optionsView() {
-			// Options
+			$qual = $this->Contratinsertion->Personne->enum( 'qual' );
+
 			$options = array(
 				'Cer93' => array(
-					'formeci' => ClassRegistry::init( 'Option' )->forme_ci(),
-					'qual' => ClassRegistry::init( 'Option' )->qual()
+					'qual' => $qual
 				),
 				'Contratinsertion' => array(
 					'structurereferente_id' => $this->Contratinsertion->Structurereferente->listOptions(),
 					'referent_id' => $this->Contratinsertion->Referent->listOptions()
 				),
 				'Prestation' => array(
-					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
+					'rolepers' => $this->Contratinsertion->Personne->Prestation->enum( 'rolepers' )
 				),
 				'Personne' => array(
-					'qual' => ClassRegistry::init( 'Option' )->qual()
+					'qual' => $qual
 				),
 				'Serviceinstructeur' => array(
 					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()
@@ -1614,13 +1614,10 @@
 					'secteuracti_id' => $this->Expprocer93->Secteuracti->find( 'list' )
 				),
 				'Foyer' => array(
-					'sitfam' => ClassRegistry::init( 'Option' )->sitfam()
-				),
-				'Dsp' => array(
-					'natlog' => ClassRegistry::init('Dsp')->enum('natlog')
+					'sitfam' => $this->Contratinsertion->Personne->Foyer->enum('sitfam')
 				),
 				'dureehebdo' => array_range( '0', '39' ),
-				'dureecdd' => ClassRegistry::init('Contratinsertion')->enum('duree_cdd'),
+				'dureecdd' => $this->Contratinsertion->enum('duree_cdd'),
 				'Structurereferente' => array(
 					'type_voie' => ClassRegistry::init( 'Option' )->typevoie()
 				),
@@ -1628,13 +1625,15 @@
 					'naturecontrat_id' => $this->Naturecontrat->find( 'list' )
 				)
 			);
-			$options = Set::merge(
+
+			$options = Hash::merge(
 				$this->Contratinsertion->Personne->Dsp->enums(),
 				$this->enums(),
 				$this->Histochoixcer93->enums(),
 				$this->Expprocer93->enums(),
 				$options
 			);
+
 			return $options;
 
 		}
