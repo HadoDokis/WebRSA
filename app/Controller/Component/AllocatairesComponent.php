@@ -160,7 +160,10 @@
 		 * @return array
 		 */
 		public function optionsSession() {
-			return array(
+			$Controller = $this->_Collection->getController();
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			$options = array(
 				'Adresse' => array(
 					'numcom' => $this->Gestionzonesgeos->listeCodesInsee()
 				),
@@ -175,6 +178,18 @@
 					'referent_id' => $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) )
 				)
 			);
+
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( 93 === $departement ) {
+				$communautessrs = $this->InsertionsBeneficiaires->communautessrs( array( 'type' => 'list' ) );
+				$links = $this->InsertionsBeneficiaires->communautessrs( array( 'type' => 'links' ) );
+				if( !empty( $communautessrs ) && !empty( $links ) ) {
+					$options['PersonneReferent']['communautesr_id'] = $communautessrs;
+					$options['PersonneReferent']['links'] = $links;
+				}
+			}
+
+			return $options;
 		}
 
 		/**

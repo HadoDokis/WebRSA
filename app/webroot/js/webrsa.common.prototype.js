@@ -1109,10 +1109,23 @@ function fireEvent(element,event) {
 	}
 }
 
-// http://snippets.dzone.com/posts/show/4653
-function in_array(p_val, p_array) {
+/**
+ * Vérifie si une valeur existe dans un array.
+ *
+ * @url http://snippets.dzone.com/posts/show/4653
+ *
+ * @param {String|Number} p_val La valeur à rechercher
+ * @param {Array} p_array L'array dans laquelle rechercher la valeur
+ * @param {Boolean} p_suffix true s'il faut rechercher en tant que suffixe
+ *	(false par défaut)
+ * @returns {Boolean}
+ */
+function in_array(p_val, p_array, p_suffix) {
+	var re = new RegExp( '_' + p_val + '$' );
+	p_suffix = ( typeof p_suffix != 'undefined' ) ? p_suffix : false;
+
 	for(var i = 0, l = p_array.length; i < l; i++) {
-		if(p_array[i] == p_val) {
+		if(p_array[i] == p_val || ( p_suffix && String(p_array[i]).match(re) ) ) {
 			return true;
 		}
 	}
@@ -2428,4 +2441,74 @@ function initSortableTables( className ) {
 			$(th).addClassName( 'date-au' );
 		}
 	} );
+}
+
+//------------------------------------------------------------------------------
+// Partie "Listes déroulantes liées" pour les projets de villes territoriaux (CG 93)
+//------------------------------------------------------------------------------
+
+/**
+ * Limite la liste des structures référentes en fonction de la valeur sélectionnée
+ * dans la liste des PDVCOM.
+ *
+ * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
+ * @param {String} structurereferenteId L'id du select contenant les structures référentes
+ * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
+ * @param {Object} selects Le code HTML original du contenu de chacune des listes déroulantes de structures référentes
+ * @returns {void}
+ */
+function dependantSelectsCommunautesr( communautesrId, structurereferenteId, links, selects ) {
+	try {
+		var value = $F(communautesrId);
+
+		// On "reset"
+		$(structurereferenteId).update( selects[structurereferenteId].innerHTML );
+
+		if( '' != value ) {
+			// Suppression des options non présentes dans le projet de ville territorial
+			$(structurereferenteId).select( 'option' ).each( function( option ) {
+				if( '' != $(option).value && false === in_array( $(option).value, links[value], true ) ) {
+					$(option).remove();
+				}
+			} );
+
+			// Suppression des optgroup vides
+			$(structurereferenteId).select( 'optgroup' ).each( function( optgroup ) {
+				if( 0 === $(optgroup).childElements().length ) {
+					$(optgroup).remove();
+				}
+			} );
+		}
+
+		// On prévient la liste des structures référentes qu'elle a changé
+		$( structurereferenteId ).simulate( 'change' );
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+/**
+ * Observe le select de projets de villes communautaires afin de limiter la liste
+ * des structures référentes à celles se trouvant dans le PDVCOM.
+ *
+ * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
+ * @param {String} structurereferenteId L'id du select contenant les structures référentes
+ * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
+ * @returns {void}
+ */
+function observeDependantSelectsCommunautesr( communautesrId, structurereferenteId, links ) {
+	try {
+		if( null !== $(communautesrId) ) {
+			var selects = {};
+			selects[structurereferenteId] = $(structurereferenteId).clone(true);
+
+			dependantSelectsCommunautesr( communautesrId, structurereferenteId, links, selects );
+
+			$(communautesrId).observe( 'change', function() {
+				dependantSelectsCommunautesr( communautesrId, structurereferenteId, links, selects )
+			} );
+		}
+	} catch(e) {
+		console.log(e);
+	}
 }

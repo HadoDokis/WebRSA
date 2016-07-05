@@ -142,20 +142,17 @@
 				'fields' => array(
 					'CommunautesrStructurereferente.structurereferente_id'
 				),
-				'joins' => array(
-					$this->join( 'CommunautesrStructurereferente', array( 'type' => 'INNER' ) )
-				),
+				'contain' => false,
 				'conditions' => array(
-					"{$this->alias}.{$this->primaryKey}" => $id
+					'CommunautesrStructurereferente.communautesr_id' => $id
 				)
 			);
 
 			$replacements = array(
-				'Communautesr' => 'communautessrs',
 				'CommunautesrStructurereferente' => 'communautessrs_structuresreferentes'
 			);
 
-			return Hash::get( array_words_replace( array( $this->sq( $query ) ), $replacements ), '0' );
+			return words_replace( $this->CommunautesrStructurereferente->sq( $query ), $replacements );
 		}
 	}
 ?>
