@@ -29,8 +29,8 @@
 		const TYPE_IDS = 'ids';
 
 		/**
-		 * Type de liste "list" retourné par les méthodes structuresreferentes et
-		 * referents
+		 * Type de liste "list" retourné par les méthodes communautessrs,
+		 * structuresreferentes et referents
 		 */
 		const TYPE_LIST = 'list';
 
@@ -39,6 +39,11 @@
 		 * et referents
 		 */
 		const TYPE_OPTGROUP = 'optgroup';
+
+		/**
+		 * Type de liste "links" retourné par la méthode communautessrs
+		 */
+		const TYPE_LINKS = 'links';
 
 		/**
 		 * Nom du component
@@ -74,6 +79,9 @@
 				'Typeorient.actif' => 'O',
 				'Structurereferente.actif' => 'O',
 				'Referent.actif' => 'O'
+			),
+			'communautessrs' => array(
+				'Communautesr.actif' => '1'
 			)
 		);
 
@@ -120,6 +128,13 @@
 					$options += array(
 						'conditions' => $this->conditions['referents'],
 						'prefix' => true,
+						'type' => self::TYPE_LIST,
+						'cache' => true
+					);
+					break;
+				case 'communautessrs':
+					$options += array(
+						'conditions' => $this->conditions['communautessrs'],
 						'type' => self::TYPE_LIST,
 						'cache' => true
 					);
@@ -594,6 +609,106 @@
 			}
 
 			return $options;
+		}
+
+        /**
+		 * @fixme docs
+		 *
+		 * Retourne la liste des projets de villes territoriaux, utilisée par les
+		 * utilisateurs de type "cg" et "cpdvcom" du CG 93.
+		 * Mise en cache dans la session de l'utilisateur.
+		 *
+		 * Options par défaut
+		 * <pre>
+		 * array(
+		 * 	'conditions' => array(
+		 *		'Communautesr.actif' => '1'
+		 *	),
+		 * 	'type' => 'list,
+		 * 	'cache' => true
+		 * );
+		 * </pre>
+		 *
+		 * @see options()
+		 *
+		 * @param array $options La clé conditions permet de spécifier ou
+		 *	de surcharger les conditions, la clé "type" permet d'obtenir une liste
+		 *	(valeur "list") ou les liens entre les ids des projets de villes
+		 *	territoriaux et les structures référentes liées (type "links").
+		 * @return array
+		 */
+		public function communautessrs( array $options = array() ) {
+			$Controller = $this->_Collection->getController();
+			$Controller->loadModel( 'Communautesr' );
+
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$options = $this->options( __FUNCTION__, $options );
+
+			$sessionKey = $this->sessionKey( __FUNCTION__, $options['conditions'] );
+			$results = $this->Session->read( $sessionKey );
+
+			if( $results === null || false == $options['cache'] ) {
+				$results = array(
+					'list' => array(),
+					'links' => array()
+				);
+
+				$user_type = $Controller->Session->read( 'Auth.User.type' );
+				if( 93 === $departement && in_array( $user_type, array( 'cg', 'externe_cpdvcom' ) ) ) {
+					// Liste des projets de villes communautaires
+					$query = array(
+						'fields' => array(
+							'Communautesr.id',
+							'Communautesr.name'
+						),
+						'conditions' => $options['conditions'],
+						'contain' => false,
+						'order' => array(
+							'Communautesr.name ASC'
+						)
+					);
+
+					$results['list'] = $Controller->Communautesr->find( 'list', $query );
+
+					// Liens entre les projets de villes comunautaires et les structures référentes
+					$query = array(
+						'fields' => array(
+							'CommunautesrStructurereferente.communautesr_id',
+							'CommunautesrStructurereferente.structurereferente_id'
+						),
+						'contain' => false
+					);
+
+					$links = $Controller->Communautesr->CommunautesrStructurereferente->find( 'all', $query );
+
+					foreach( $links as $link ) {
+						$communautesr_id = $link['CommunautesrStructurereferente']['communautesr_id'];
+						if( !isset( $results['links'][$communautesr_id] ) ) {
+							$results['links'][$communautesr_id] = array();
+						}
+						$results['links'][$communautesr_id][] = $link['CommunautesrStructurereferente']['structurereferente_id'];
+					}
+				}
+
+				if( true == $options['cache'] ) {
+					$this->Session->write( $sessionKey, $results );
+				}
+			}
+
+			if( !empty( $results ) ) {
+				if( $options['type'] === self::TYPE_LINKS ) {
+					$results = $results['links'];
+				}
+				else if( $options['type'] === self::TYPE_LIST ) {
+					$results = $results['list'];
+				}
+				else {
+					$msgstr = sprintf( 'La valeur du paramètre "type" "%s" n\'est pas acceptée dans la méthode %s::%s', $options['type'], __CLASS__, __FUNCTION__ );
+					throw new RuntimeException( $msgstr, 500 );
+				}
+			}
+
+			return $results;
 		}
 	}
 ?>

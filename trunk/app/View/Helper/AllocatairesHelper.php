@@ -300,22 +300,22 @@
 				'type' => 'date', 'maxYear' => date('Y'), 'minYear' => date('Y') - 120, 'empty' => true
 			);
 			$content = $this->_input( "{$params['prefix']}Personne.dtnai", $params, $dateParams + array('dateFormat' => 'DMY') );
-			
+
 			if ((integer)Configure::read('Cg.departement') === 66) {
 				$content .= $this->_input("{$params['prefix']}Personne.dtnai_month", $params, $dateParams + array('dateFormat' => 'M'));
 				$content .= $this->_input("{$params['prefix']}Personne.dtnai_year", $params, $dateParams + array('dateFormat' => 'Y'));
 			}
-			
+
 			$content .= $this->_input( "{$params['prefix']}Personne.nom", $params );
 			$content .= $this->_input( "{$params['prefix']}Personne.nomnai", $params );
 			$content .= $this->_input( "{$params['prefix']}Personne.prenom", $params );
 			$content .= $this->_input( "{$params['prefix']}Personne.nir", $params, array( 'maxlength' => 15 ) );
 			$content .= $this->_input( "{$params['prefix']}Personne.sexe", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.sexe' ), 'empty' => true ) );
-			
+
 			if ($trancheage = Configure::read('Search.Options.enums.Personne.trancheage')) {
 				$params['options']['Personne']['trancheage'] = $trancheage;
 			}
-			
+
 			if( Hash::check( $params, 'options.Personne.trancheage' ) ) {
 				$content .= $this->_input( "{$params['prefix']}Personne.trancheage", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.trancheage' ), 'empty' => true ) );
 			}
@@ -370,6 +370,7 @@
 		 * @return string
 		 */
 		public function blocReferentparcours( array $params = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
 			$params = $params + $this->default;
 			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
@@ -405,6 +406,32 @@
 			);
 
 			if( !empty( $content ) ) {
+				// Si on a les options (pour les CG et CPDVCOM au CG 93)
+				if( 93 === $departement && Hash::check( $params, 'options.PersonneReferent.communautesr_id' ) ) {
+				   $content = $this->_input(
+					   "{$params['prefix']}PersonneReferent.communautesr_id",
+					   $params,
+					   array(
+						   'label' => __d( $domain_search_plugin, 'Communautesrparcours.lib_struc' ),
+						   'type' => 'select',
+						   'options' => (array)Hash::get( $params, 'options.PersonneReferent.communautesr_id' ),
+						   'empty' => true
+					   )
+				   ) . $content;
+
+				   $script = "document.observe( 'dom:loaded', function() {
+					   try {
+						   observeDependantSelectsCommunautesr(
+							   '".$this->domId( "{$params['prefix']}PersonneReferent.communautesr_id" )."',
+							   '".$this->domId( "{$params['prefix']}PersonneReferent.structurereferente_id" )."',
+							   ".json_encode( Hash::get( $params, 'options.PersonneReferent.links' ) )."
+						   );
+					   } catch(e) {
+						   console.log(e);
+					   }
+				   } );\n" . $script;
+				}
+
 				$content .= $this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) ); // FIXME: throw ?
 			}
 

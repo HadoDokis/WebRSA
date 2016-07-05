@@ -10,6 +10,9 @@ msgstr ""
 
 # ==============================================================================
 
+msgid "Communautesrparcours.lib_struc"
+msgstr "Projet de ville territorial de suivi"
+
 msgid "Structurereferenteparcours.lib_struc"
 msgstr "Structure de suivi"
 

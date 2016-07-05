@@ -334,6 +334,8 @@
 		 * @return array
 		 */
 		public function completeSearchConditionsReferentParcours( array $query, array $search = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+
 			// Condition sur le référent du parcours
 			$referent_id = suffix( Hash::get( $search, 'PersonneReferent.referent_id' ) );
 			if( !empty( $referent_id ) ) {
@@ -344,6 +346,13 @@
 			$structurereferente_id = suffix( Hash::get( $search, 'PersonneReferent.structurereferente_id' ) );
 			if( !empty( $structurereferente_id ) ) {
 				$query['conditions'][] = array( 'Referentparcours.structurereferente_id' => $structurereferente_id );
+			}
+
+			// Condition sur le projet de ville territorial du référent du parcours
+			$communautesr_id = suffix( Hash::get( $search, 'PersonneReferent.communautesr_id' ) );
+			if( 93 === $departement && !empty( $communautesr_id ) ) {
+				$sql = $this->Referent->Structurereferente->Communautesr->sqStructuresreferentes( $communautesr_id );
+				$query['conditions'][] = array( "Referentparcours.structurereferente_id IN ({$sql})" );
 			}
 
 			return $query;
@@ -367,6 +376,7 @@
 		public function completeQdReferentParcours( array $query, array $search ) {
 			$query = $this->completeSearchQueryReferentParcours( $query );
 			$query = $this->completeSearchConditionsReferentParcours( $query, $search );
+			// TODO: communautesr
 
 			return $query;
 		}
