@@ -414,19 +414,9 @@
 		 * @param integer $session_id
 		 */
 		protected function _deleteDbEntries( $user_id, $session_id ) {
-			$this->Jetons2->deleteJetons();
+			$this->WebrsaUsers->clearJetons( $user_id, $session_id );
 
-			// TODO: dans Jetonsfonctions2Component ou dans le modèle Jeton
-			if( !Configure::read( 'Jetonsfonctions2.disabled' ) ) {
-				$this->User->Jetonfonction->deleteAll(
-					array(
-						'Jetonfonction.user_id' => $user_id,
-						'Jetonfonction.php_sid' => $session_id
-					)
-				);
-			}
-
-			$this->User->Connection->deleteAll(
+			$this->User->Connection->deleteAllUnbound(
 				array(
 					'Connection.user_id' => $user_id,
 					'Connection.php_sid' => $session_id

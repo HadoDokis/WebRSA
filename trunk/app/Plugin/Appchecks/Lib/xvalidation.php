@@ -102,6 +102,26 @@
 		}
 
 		/**
+		 * Vérifie que la ou les valeurs fassent toutes partie de la liste des
+		 * valeurs acceptées.
+		 *
+		 * @param mixed $check Une valeur ou un ensemble de valeurs
+		 * @param array $accepted La liste des valeurs acceptées
+		 * @return boolean
+		 */
+		public function inListArray( $check, array $accepted ) {
+			$check = (array)$check;
+
+			foreach( $check as $value ) {
+				if( false === in_array( $value, $accepted ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/**
 		 *
 		 * @param type $check
 		 * @return type

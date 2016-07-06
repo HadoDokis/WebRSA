@@ -155,11 +155,68 @@
 		}
 
 		/**
+		 * Vérification des plages horaires d'habilitation.
+		 *
+		 * @throws PlageHoraireUserException
+		 */
+		protected function _checkHabilitationsPlagesHoraires() {
+			if( Configure::read( 'PlagesHoraires.enabled' ) ) {
+				// TODO: vérifier la configuration
+				$config = (array)Configure::read( 'PlagesHoraires' );
+				$config += array(
+					'heure_debut' => 1,
+					'heure_fin' => 23,
+					'jours_weekend' => array( 'Sat', 'Sun' ),
+					'groupes_acceptes' => array( 1 ),
+				);
+				$config['groupes_acceptes'] = (array)$config['groupes_acceptes'];
+				$config['jours_weekend'] = (array)$config['jours_weekend'];
+
+				$plage_debut = mktime( $config['heure_debut'], 0, 0, date( 'm' ), date( 'd' ), date( 'Y' ) );
+				$plage_fin = mktime( $config['heure_fin'], 0, 0, date( 'm' ), date( 'd' ), date( 'Y' ) );
+
+				// Plage horaire
+				$error = (
+					// Exception faite pour certains groupes
+					false === in_array( $this->Session->read( 'Auth.User.group_id' ), $config['groupes_acceptes'] )
+					&& (
+						// Sommes-nous en-dehors de la plage horaire autorisée ?
+						( $plage_debut > time() || $plage_fin < time() )
+						// Sommes-nous un jour de week-end ?
+						|| in_array( date( 'D', mktime( 0, 0, 0 ) ), $config['jours_weekend'] )
+					)
+				);
+
+				if( $error ) {
+					// On relâche les jetons s'il y a lieu
+					if( false === isset( $this->WebrsaUsers ) ) {
+						$this->WebrsaUsers = $this->Components->load( 'WebrsaUsers' );
+					}
+					$this->WebrsaUsers->clearJetons();
+
+					// Message d'erreur
+					$message = sprintf(
+						'Tentative d\'accès en-dehors des plages horaires pour l\'utilisateur %s (id %d)',
+						$this->Session->read( 'Auth.User.username' ),
+						$this->Session->read( 'Auth.User.id' )
+					);
+
+					throw new PlageHoraireUserException(
+						$message,
+						401,
+						 array( 'plagehoraire' => array( 'debut' => $plage_debut, 'fin' => $plage_fin ) )
+					);
+				}
+			}
+		}
+
+		/**
 		 * Vérification des habilitations de l'utilisateur connecté.
 		 *
 		 * @return void
 		 */
 		protected function _checkHabilitations() {
+			// Vérification des dates de début et de fin d'habilitation
 			$habilitations = array(
 				'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
 				'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' )
@@ -178,6 +235,8 @@
 					array( 'habilitations' => $habilitations )
 				);
 			}
+
+			$this->_checkHabilitationsPlagesHoraires();
 		}
 
 		/**

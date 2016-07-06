@@ -260,7 +260,7 @@
 				'FULL_BASE_URL' => 'url',
 				'Gestiondoublon.Situationdossierrsa2.etatdosrsa' => array(
 					array( 'rule' => 'isarray' ),
-					// array( 'rule' => 'inList', array( 'Z', 1, 2, 3, 4, 5, 6 ) ), // TODO: inList
+					array( 'rule' => 'inListArray', array( 'Z', 1, 2, 3, 4, 5, 6 ) ),
 				),
 				'Jetons2.disabled' => 'boolean',
 				'Optimisations.progressivePaginate' => 'boolean',
@@ -473,6 +473,33 @@
 					)
 				);
 			}
+
+			// Utilise-t-on les plages horaires ?
+			$plagesHorairesEnabled = ( true === Configure::read( 'PlagesHoraires.enabled' ) );
+			$allowEmpty = ( false === $plagesHorairesEnabled );
+			$this->loadModel( 'User' );
+			$groups_ids = array_keys( $this->User->Group->find( 'list', array( 'contain' => false ) ) );
+
+			$result = array_merge(
+				$result,
+				array(
+					'PlagesHoraires.enabled' =>  array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true ),
+					),
+					'PlagesHoraires.heure_debut' =>  array(
+						array( 'rule' => 'inList', range( 0, 23 ), 'allowEmpty' => $allowEmpty ),
+					),
+					'PlagesHoraires.heure_fin' =>  array(
+						array( 'rule' => 'inList', range( 0, 23 ), 'allowEmpty' => $allowEmpty ),
+					),
+					'PlagesHoraires.jours_weekend' =>  array(
+						array( 'rule' => 'inListArray', array( 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ), 'allowEmpty' => $allowEmpty ),
+					),
+					'PlagesHoraires.groupes_acceptes' =>  array(
+						array( 'rule' => 'inListArray', $groups_ids, 'allowEmpty' => true ),
+					)
+				)
+			);
 
 			return $result;
 		}
