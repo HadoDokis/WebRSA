@@ -187,5 +187,49 @@
 			$results = $this->Session->read( 'Auth.Zonegeographique' );
 			return (array)( empty( $results ) ? array() : array_keys( $results ) );
 		}
+
+		/**
+		 *
+		 * @see Jetons2Component::deleteJetons()
+		 *
+		 * @param integer $user_id
+		 * @param string $session_id
+		 */
+		public function clearJetons( $user_id = null, $session_id = null ) {
+			$Controller = $this->_Collection->getController();
+
+			$user_id = ( null === $user_id )
+				? $this->Session->read( 'Auth.User.id' )
+				: $user_id;
+
+			$session_id = ( null === $session_id )
+				? $this->Session->id()
+				: $session_id;
+
+			// Conditions pour la suppression
+			$conditions = array( 'user_id' => $user_id );
+			if ( Configure::read( 'Utilisateurs.multilogin' ) ) {
+				$conditions['php_sid'] = $session_id;
+			}
+
+			// Suppression des jetons sur les dossiers
+			if( !Configure::read( 'Jetons2.disabled' ) ) {
+				if( false === isset( $Controller->Jeton ) ) {
+					$Controller->loadModel( 'Jeton' );
+				}
+
+				$Controller->Jeton->deleteAllUnbound( $conditions );
+			}
+
+			// Suppression des jetons sur les fonctions
+			// TODO: dans Jetonsfonctions2Component ou dans le modèle Jeton
+			if( !Configure::read( 'Jetonsfonctions2.disabled' ) ) {
+				if( false === isset( $Controller->User ) ) {
+					$Controller->loadModel( 'User' );
+				}
+
+				$Controller->User->Jetonfonction->deleteAll( $conditions );
+			}
+		}
 	}
 ?>

@@ -173,6 +173,9 @@ msgstr "Veuillez entrer un répertoire existant et inscriptible"
 msgid "Validate::inList"
 msgstr "Veuillez entrer une valeur parmi %s"
 
+msgid "Validate::inListArray"
+msgstr "Veuillez entrer des valeurs parmi %s"
+
 msgid "Validate::string"
 msgstr "Veuillez entrer une chaîne de caractères"
 

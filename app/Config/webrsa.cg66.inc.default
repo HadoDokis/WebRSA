@@ -1155,9 +1155,45 @@
 			),
 		)
 	);
-	
+
 	/**
 	 * Visualisation des données CAF d'une personne
 	 */
 	Configure::write('Module.Donneescaf.enabled', true);
+
+	/**
+	 * Configuration des plages horaires d'accès à l'application.
+	 *
+	 * Lorsque cette fonctionnalité est activée, il n'est possible d'être connecté
+	 * que dans une plage horaire et hormis certains jours de la semaine.
+	 * Il est possible de spécifier certains groupes d'utilisateurs qui ne seront
+	 * pas affectés par cette limitation.
+	 *
+	 * Les clés de configuration sont les suivantes:
+	 *	- enabled: mettre à true pour utiliser cette fonctionnalité; booléen, null
+	 *	  (false) par défaut
+	 *	- heure_debut: l'heure à partir de laquelle (incluse) les utilisateurs
+	 *	  peuvent se connecter, integer entre 0 et 23; 1 par défaut
+	 *	- heure_fin: l'heure jusqu'à laquelle (incluse) les utilisateurs peuvent
+	 *	  se connecter; integer entre 0 et 23; 23 par défaut
+	 *	- jours_weekend: les jours de la semaine qui constituent le week-end;
+	 *	  array de string parmi 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun';
+	 *	  array( 'Sat', 'Sun' ) par défaut
+	 *	- groupes_acceptes: ids techniques des groupes d'utilisateurs non soumis
+	 *	  à ces restrictions (ex. les Administrateurs); array d'integers; array()
+	 *	  par défaut
+	 *
+	 * La configuration est vérifiée dans la partie "Administration" > "Vérification
+	 * de l'application".
+	 */
+	Configure::write(
+		'PlagesHoraires',
+		array(
+			'enabled' => false,
+			'heure_debut' => 8,
+			'heure_fin' => 19,
+			'jours_weekend' => array( 'Sat', 'Sun' ),
+			'groupes_acceptes' => array( 1 )
+		)
+	);
 ?>

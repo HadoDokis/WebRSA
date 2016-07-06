@@ -203,4 +203,26 @@
 			parent::__construct( $message, $code, $params );
 		}
 	}
+
+	/**
+	 * Exception lancée lorsque les plages horaires ne permettent pas à
+	 * l'utilisateur de se connecter à l'application.
+	 *
+	 * @package app.Lib.Error
+	 */
+	class PlageHoraireUserException extends RsaException
+	{
+
+		/**
+		 * Constructor
+		 *
+		 * @param type $message
+		 * @param type $code
+		 * @param type $params
+		 */
+		public function __construct( $message, $code = 401, $params = array( ) ) {
+			parent::__construct( $message, $code, $params );
+		}
+
+	}
 ?>
