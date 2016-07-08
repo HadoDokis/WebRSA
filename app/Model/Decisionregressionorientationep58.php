@@ -106,7 +106,7 @@
 			'referent_id' => array(
 				'dependentForeignKeys' => array(
 					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
-					'message' => 'La référent n\'appartient pas à la structure référente',
+					'message' => 'Le référent n\'appartient pas à la structure référente',
 				),
 			),
 		);
