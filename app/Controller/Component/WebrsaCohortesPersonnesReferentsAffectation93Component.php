@@ -101,10 +101,29 @@
 			$result = parent::_optionsSession( $params );
 			$Controller = $this->_Collection->getController();
 
+			if( false === isset( $Controller->WebrsaTableausuivipdv93 ) ) {
+				$Controller->loadModel( 'WebrsaTableausuivipdv93' );
+			}
+
+			$pdvs_ids = array_keys($Controller->WebrsaTableausuivipdv93->listePdvs());
+
+			// Moteur de recherche -> TODO: faire apparaître les inactifs ?
+			$result['Referent']['id'] = $Controller->InsertionsBeneficiaires->referents(
+				array(
+					'type' => 'optgroup',
+					'prefix' => true,
+					'conditions' => $Controller->InsertionsBeneficiaires->conditions['referents']
+						+ array( 'Structurereferente.id' => $pdvs_ids )
+				)
+			);
+
+			// Cohorte
 			$result['PersonneReferent']['referent_id'] = $Controller->InsertionsBeneficiaires->referents(
 				array(
 					'type' => 'optgroup',
-					'prefix' => true
+					'prefix' => true,
+					'conditions' => $Controller->InsertionsBeneficiaires->conditions['referents']
+						+ array( 'Structurereferente.id' => $pdvs_ids )
 				)
 			);
 
