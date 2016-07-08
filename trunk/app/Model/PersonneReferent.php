@@ -19,6 +19,7 @@
 
 		public $actsAs = array(
 			'Allocatairelie',
+			'Dependencies',
 			'Formattable' => array(
 				'suffix' => array( 'referent_id' )
 			),
@@ -29,35 +30,44 @@
 			)
 		);
 
+		/**
+		 * Règles de validation.
+		 *
+		 * @var array
+		 */
 		public $validate = array(
 			'referent_id' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-				array(
+				'checkReferentUnique' => array(
 					'rule' => 'checkReferentUnique',
 					'message' => 'Le bénéficiaire possède déjà un référent unique, merci de le clôturer avant d\'en ajouter un nouveau',
 					'allowEmpty' => true,
+				),
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'Le référent n\'appartient pas à la structure référente',
 				)
 			),
 			'dddesignation' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-				array(
+				'date' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.'
 				)
 			),
 			'dfdesignation' => array(
-				array(
+				'date' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.',
 					'allowEmpty' => true,
 				),
-				array(
+				'compareDates' => array(
 					'rule' => array( 'compareDates', 'dddesignation', '>=' ),
 					'message' => 'La date de fin de désignation doit être au moins la même que la date de début de désignation'
 				)

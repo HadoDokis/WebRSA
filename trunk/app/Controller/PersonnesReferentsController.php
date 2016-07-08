@@ -50,7 +50,9 @@
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'cohorte_affectation93' )
+				'actions' => array(
+					'cohorte_affectation93' => array( 'filter' => 'Search' )
+				)
 			),
 			'Workflowscers93',
 			'WebrsaAccesses'
@@ -209,7 +211,7 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'PersonneReferent' );
-			
+
 			$personnes_referents = $this->WebrsaAccesses->getIndexRecords(
 				$personne_id, array(
 					'fields' => array_merge(
@@ -285,7 +287,7 @@
 						),
 						'contain' => array(
 							'Referent'
-						),
+						)
 					)
 				);
 
@@ -323,7 +325,6 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
-				$personne_referent['PersonneReferent']['structurereferente_id'] = $personne_referent['Referent']['structurereferente_id'];
 				$personne_referent['PersonneReferent']['referent_id'] = $personne_referent['Referent']['structurereferente_id'].'_'.$personne_referent['PersonneReferent']['referent_id'];
 				$this->request->data = $personne_referent;
 			}
@@ -353,13 +354,42 @@
 				}
 			}
 
-			// Cache géré dans les modèles
 			$options = array(
-				'referents' => $this->set( 'referents', $this->PersonneReferent->Referent->listOptions() ),
-				'structuresreferentes' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) )
+				'PersonneReferent' => array(
+					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+						array(
+							'type' => 'optgroup',
+							'prefix' => false
+						)
+					),
+					'referent_id' => $this->InsertionsBeneficiaires->referents(
+						array(
+							'type' => 'list',
+							'prefix' => true
+						)
+					)
+				)
 			);
-			$this->set( 'options', $options );
 
+			// INFO: si la structure ou le référent enregistrés ne se trouvent pas dans les options, on les ajoute
+			if( !empty( $this->request->data ) ) {
+				$options['PersonneReferent'] = $this->InsertionsBeneficiaires->completeOptions(
+					$options['PersonneReferent'],
+					$this->request->data['PersonneReferent'],
+					array(
+						'structuresreferentes' => array(
+							'type' => 'optgroup',
+							'prefix' => false
+						),
+						'referents' => array(
+							'type' => 'list',
+							'prefix' => true
+						)
+					)
+				);
+			}
+
+			$this->set( 'options', $options );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/personnes_referents/index/'.$personne_id );
 			$this->render( 'add_edit' );

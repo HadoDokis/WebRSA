@@ -80,7 +80,7 @@
 			'referent_id' => array(
 				'dependentForeignKeys' => array(
 					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
-					'message' => 'La référent n\'appartient pas à la structure référente',
+					'message' => 'Le référent n\'appartient pas à la structure référente',
 				),
 			),
 			'date_valid' => array(
@@ -578,7 +578,7 @@
 
 				$this->validate['referentorientant_id']['dependentForeignKeys'] = array(
 					'rule' => array( 'dependentForeignKeys', 'Referentorientant', 'Structureorientante', 'Structurereferente' ),
-					'message' => 'La référent n\'appartient pas à la structure référente'
+					'message' => 'Le référent n\'appartient pas à la structure référente'
 				);
 			}
 			else if( $departement === 976 ) {
