@@ -318,9 +318,11 @@ function mkTooltipTables() {
 //*****************************************************************************
 
 function disableFieldsOnCheckbox( cbId, fieldsIds, condition, toggleVisibility ) {
-        toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
 	var cb = $( cbId );
 	var checked = ( ( $F( cb ) == null ) ? false : true );
+
 	fieldsIds.each( function ( fieldId ) {
 		var field = $( fieldId );
 		if( field != null ) {
@@ -2473,6 +2475,7 @@ function dependantSelectsCommunautesr( communautesrId, structurereferenteId, lin
 			} );
 
 			// Suppression des optgroup vides
+			// @todo utiliser cleanSelectOptgroups
 			$(structurereferenteId).select( 'optgroup' ).each( function( optgroup ) {
 				if( 0 === $(optgroup).childElements().length ) {
 					$(optgroup).remove();
@@ -2510,5 +2513,94 @@ function observeDependantSelectsCommunautesr( communautesrId, structurereferente
 		}
 	} catch(e) {
 		console.log(e);
+	}
+}
+
+// -----------------------------------------------------------------------------
+
+/**
+ * Suppression des optgroups vides d'une list déroulante; s'il n'existe plus qu'un
+ * seul optgroup, on fera remonter les options d'un niveau.
+ *
+ * @param {String} selectId L'id de la liste déroulante
+ * @returns {void}
+ */
+function cleanSelectOptgroups( selectId ) {
+	var optgroups, selected;
+
+	try {
+		// On sauvegarde la valeur sélectionnée
+		selected = $F(selectId);
+
+		// Suppression des optgroup vides
+		optgroups = $(selectId).select( 'optgroup' );
+		$(optgroups).each( function( optgroup ) {
+			if( 0 === $(optgroup).childElements().length ) {
+				$(optgroup).remove();
+			}
+		} );
+
+		// Si c'est le seul optgroup, on remonte les options d'un niveau
+		optgroups = $(selectId).select( 'optgroup' );
+		if( 1 === optgroups.length ) {
+			$(optgroups[0]).replace( optgroups[0].innerHTML );
+		}
+
+		// On remet la valeur sélectionnée
+		$(selectId).value = selected;
+	} catch( exception ) {
+		console.log( exception );
+	}
+}
+
+/**
+ * Permet de limiter une liste déroulante d'options en fonction du préfixe
+ * (avec "_" comme séparateur) des valeurs des options ou du préfixe de la
+ * valeur sélectionnée.
+ *
+ * Si le select comporte des optgroups, après limitation des options, les
+ * optgroups vides seront supprimés et s'il n'existe plus qu'un seul optgroup,
+ * on fera remonter les options d'un niveau.
+ *
+ * @param {String} selectId L'id de la liste déroulante
+ * @param {String} prefix Le préfixe (sans séparateur)
+ * @returns {void}
+ */
+function limitSelectOptionsByPrefix( selectId, prefix ) {
+	try {
+		var options = $(selectId).select( 'option' ),
+			selected = $F(selectId),
+			re = new RegExp( '^(' + prefix + '|' + selected.replace( /_.*$/, '' ) + ')_' ),
+			value/*,
+			optgroups*/;
+
+		// Restriction de la liste des options
+		$(options).each( function( option ) {
+			value = $(option).value;
+			if( '' != value && null === value.match( re ) ) {
+				$(option).remove();
+			}
+		} );
+
+		cleanSelectOptgroups( selectId );
+
+		/*// Suppression des optgroup vides
+		optgroups = $(selectId).select( 'optgroup' );
+		$(optgroups).each( function( optgroup ) {
+			if( 0 === $(optgroup).childElements().length ) {
+				$(optgroup).remove();
+			}
+		} );
+
+		// Si c'est le seul optgroup, on descend d'un niveau
+		optgroups = $(selectId).select( 'optgroup' );
+		if( 1 === optgroups.length ) {
+			$(optgroups[0]).replace( optgroups[0].innerHTML );
+		}
+
+		// On remet la valeur sélectionnée
+		$(selectId).value = selected;*/
+	} catch( exception ) {
+		console.log( exception );
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+	$searchFormId = Inflector::camelize( "{$this->request->params['controller']}_{$this->request->params['action']}_form" );
 	$cohorteFormId = Inflector::camelize( "{$this->request->params['controller']}_{$this->request->params['action']}_cohorte" );
 	$paramDate = array(
 		'domain' => null,
@@ -15,7 +16,7 @@
 		<fieldset class="invisible" id="SearchFiltreReferent">
 			<?php
 				echo $this->Form->input( 'Search.Referent.designe', array( 'type' => 'radio', 'options' => $options['Referent']['designe'], 'legend' => false, 'separator' => '<br/>' ) );
-				echo $this->Form->input( 'Search.Referent.id', array( 'label' => 'Nom du référent', 'type' => 'select', 'options' => $options['PersonneReferent']['referent_id'], 'empty' => true ) );
+				echo $this->Form->input( 'Search.Referent.id', array( 'label' => 'Nom du référent', 'type' => 'select', 'options' => $options['Referent']['id'], 'empty' => true ) );
 				echo $this->Allocataires->SearchForm->dateRange( 'Search.PersonneReferent.dddesignation', $paramDate );
 			?>
 		</fieldset>
@@ -48,19 +49,23 @@
 	);
 ?>
 <?php
+	// Moteur de recherche
+	echo $this->Observer->disableFieldsetOnCheckbox(
+		'Search.Referent.filtrer',
+		'SearchFiltreReferent',
+		false
+	);
+
+	echo $this->Observer->disableFieldsOnRadioValue(
+		$searchFormId,
+		'Search.Referent.designe',
+		array( 'Search.Referent.id', 'Search.PersonneReferent.dddesignation' ),
+		array( '1' ),
+		true
+	);
+
+	// Résultats
 	if( isset( $results ) && !empty( $results ) ) {
-		echo $this->Observer->disableFieldsetOnCheckbox(
-			'Search.Referent.filtrer',
-			'SearchFiltreReferent',
-			false
-		);
-		echo $this->Observer->disableFieldsOnRadioValue(
-			$cohorteFormId,
-			'Search.Referent.designe',
-			array( 'Search.Referent.id', 'Search.PersonneReferent.dddesignation' ),
-			array( '1' ),
-			true
-		);
 		// On désactive le select du référent si on ne choisit pas de valider
 		foreach( array_keys( $results ) as $index ) {
 			echo $this->Observer->disableFieldsOnRadioValue(
@@ -73,3 +78,14 @@
 		}
 	}
 ?>
+<script type="text/javascript">
+//<![CDATA[
+	Event.observe( window, 'load', function() {
+		cleanSelectOptgroups( '<?php echo $this->Html->domId( 'Search.Referent.id' );?>' );
+
+		<?php foreach( $results as $index => $result ): ?>
+			limitSelectOptionsByPrefix( '<?php echo $this->Html->domId( "Cohorte.{$index}.PersonneReferent.referent_id" );?>', '<?php echo $result['Orientstruct']['structurereferente_id']?>' );
+		<?php endforeach; ?>
+	} );
+//]]>
+</script>

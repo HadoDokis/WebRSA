@@ -153,7 +153,8 @@
 						'Dsp.exists' => "( {$sqDspExists} ) AS \"Dsp__exists\"",
 						'Contratinsertion.interne' => '( "Contratinsertion"."structurereferente_id" = "Referent"."structurereferente_id" ) AS "Contratinsertion__interne"',
 						'Personne.situation' => $this->Personne->sqVirtualField( 'situation', true ),
-						'Personne.has_dsp' => $this->Personne->sqVirtualField( 'has_dsp', true )
+						'Personne.has_dsp' => $this->Personne->sqVirtualField( 'has_dsp', true ),
+						'Orientstruct.structurereferente_id',
 					),
 					ConfigurableQueryFields::getModelsFields(
 						array(
