@@ -25,9 +25,8 @@
 				'actions' => array(
 					'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions'
 				)
-			), 
-			'Gedooo.Gedooo', 
-			'WebrsaAccesses' => array('webrsaModelName' => 'WebrsaHistoriqueep')
+			),
+			'Gedooo.Gedooo'
 		);
 		public $commeDroit = array(
 			'edit' => 'Commissionseps:add',
@@ -1180,7 +1179,6 @@
 		 * Affichage des décisions de la commission d'EP
 		 */
 		protected function _decision( $commissionep_id, $niveauDecision ) {
-			$this->WebrsaAccesses->check($commissionep_id);
 			$commissionep = $this->Commissionep->find(
 					'first', array(
 				'conditions' => array(
