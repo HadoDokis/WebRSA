@@ -23,7 +23,16 @@
 
 		public $helpers = array( 'Default2', 'Xpaginator2' );
 
-		public $components = array( 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
+		public $components = array(
+			'Jetons2',
+			'DossiersMenus',
+			'WebrsaAccesses' => array(
+				'mainModelName' => 'Passagecommissionep',
+				'webrsaModelName' => 'WebrsaHistoriqueep',
+				'webrsaAccessName' => 'WebrsaAccessHistoriqueseps',
+				'parentModelName' => 'Personne'
+			)
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -114,7 +123,7 @@
 		 * @param integer $passagecommssionep_id
 		 */
 		public function view_passage( $passagecommssionep_id ) {
-			$this->WebrsaAccesses->setMainModel('Passagecommissionep')->check($passagecommssionep_id);
+			$this->WebrsaAccesses->check($passagecommssionep_id);
 
 			$personne_id = $this->Dossierep->Passagecommissionep->personneId( $passagecommssionep_id );
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
