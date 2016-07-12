@@ -5,7 +5,7 @@
 		$annee = Hash::get( $this->request->data, 'Search.annee' );
 	?>
 	<table>
-		<caption>2 - Nature des actions d'insertion inscrites dans les contrats d'engagement réciproque en cours de validité au cours de l'année <?php echo $annee;?></caption>
+		<caption>2 - Nature des actions d'insertion inscrites dans les contrats d'engagement réciproque en cours de validité au 31 décembre de l'année <?php echo $annee;?> (voir notice)</caption>
 		<tbody>
 			<tr>
 				<th><strong>a. Actions des contrats d'engagement réciproque en cours de validité <u>au 31 décembre</u> pour les personnes dont le référent unique <u>au 31 décembre</u> appartenait à un <u>organisme appartenant ou participant au SPE autre que Pôle emploi (1)</u></strong></th>
