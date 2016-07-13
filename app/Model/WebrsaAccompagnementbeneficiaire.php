@@ -792,6 +792,9 @@
 				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
 					'modelName' => 'Dossierep',
 					'name' => 'Commissionep',
+					// TODO
+//					'webrsaModelName' => 'WebrsaCer93',
+//					'webrsaAccessName' => 'WebrsaAccessCers93',
 					'fields' => array(
 						'Passagecommissionep.id',
 						'Dossierep.id',
@@ -814,6 +817,9 @@
 				'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
 					'modelName' => 'Dossierep',
 					'name' => 'Commissionep',
+					// TODO
+//					'webrsaModelName' => 'WebrsaCer93',
+//					'webrsaAccessName' => 'WebrsaAccessCers93',
 					'fields' => array(
 						'Passagecommissionep.id',
 						'Dossierep.id',
@@ -862,21 +868,50 @@
 					)
 				),
 				'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
-					'modelName' => 'Orientstruct',
-					'name' => 'Relancenonrespectsanctionep93',
+					'pdf' => true, // Stocké dans la table PDF pour le 93
+					'modelName' => 'Relancenonrespectsanctionep93',
 					'fields' => array(
+						'Nonrespectsanctionep93.id',
 						'Relancenonrespectsanctionep93.id',
 						'Relancenonrespectsanctionep93.daterelance',
+						'Relancenonrespectsanctionep93.numrelance',
 						'Orientstruct.id',
-						'Orientstruct.personne_id'
+						'Orientstruct.personne_id',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Pdf.id',
+						'Personne.id',
+						'( CASE WHEN "Relancenonrespectsanctionep93"."numrelance" = 1 THEN "Relancenonrespectsanctionep93"."numrelance" || \'ère relance\' ELSE "Relancenonrespectsanctionep93"."numrelance" || \'ème relance\' END ) AS "Impression__type"',
 					),
 					'joins' => array(
 						'Nonrespectsanctionep93' => array(
 							'type' => 'INNER',
 							'joins' => array(
-								'Relancenonrespectsanctionep93' => array( 'type' => 'INNER' )
+								'Contratinsertion' => array(
+									'type' => 'LEFT OUTER'
+								),
+								'Orientstruct' => array(
+									'type' => 'LEFT OUTER'
+								)
 							)
-						)
+						),
+						'Pdf' => array(
+							'type' => 'LEFT OUTER'
+						),
+						array(
+							'table' => '"personnes"',
+							'alias' => 'Personne',
+							'type' => 'INNER',
+							'conditions' => array(
+								'OR' => array(
+									'Contratinsertion.personne_id = Personne.id',
+									'Orientstruct.personne_id = Personne.id',
+								)
+							)
+						),
+					),
+					'conditions' => array(
+						'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' )
 					)
 				)
 			);
@@ -915,7 +950,18 @@
 					// Jointures
 					$joins = (array)Hash::get( $query, 'joins' );
 					if( !empty( $joins ) ) {
-						$joins = $this->Personne->{$query['modelName']}->joins( $joins );
+						if( 'Personne' !== $query['modelName'] ) {
+							if( isset( $this->Personne->{$query['modelName']} ) ) {
+								$joins = $this->Personne->{$query['modelName']}->joins( $joins );
+							}
+							else {
+								$this->loadModel( $query['modelName'] );
+								$joins = $this->{$query['modelName']}->joins( $joins );
+							}
+						}
+						else {
+							$joins = $this->Personne->joins( $joins );
+						}
 					}
 					$query['joins'] = $joins;
 
@@ -949,14 +995,40 @@
 
 				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['pdf'], $query['name'] );
 
-				// Conditions
-				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
-				if( true === $pdf ) {
-					$query['conditions'][] = $this->Pdf->sqImprime( $this->Personne->{$modelName} );
-				}
+				if( 'Personne' !== $modelName ) {
+					if( isset( $this->Personne->{$modelName} ) ) {
+						$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+						if( true === $pdf ) {
+							$query['conditions'][] = $this->Pdf->sqImprime( $this->Personne->{$modelName} );
+						}
 
-				$this->Personne->{$modelName}->forceVirtualFields = true;
-				$records = $this->Personne->{$modelName}->find( 'all', $query );
+						$this->Personne->{$modelName}->forceVirtualFields = true;
+						$records = $this->Personne->{$modelName}->find( 'all', $query );
+					}
+					else {
+						$this->loadModel( $modelName );
+						$query['conditions'][] = array( 'Personne.id' => $personne_id );
+						if( true === $pdf ) {
+							$query['conditions'][] = $this->Pdf->sqImprime( $this->{$modelName} );
+						}
+
+						$this->{$modelName}->forceVirtualFields = true;
+						$records = $this->{$modelName}->find( 'all', $query );
+					}
+				}
+				else {
+					$query['conditions'][] = array( 'Personne.id' => $personne_id );
+					if( true === $pdf ) {
+						//$query['conditions'][] = $this->Pdf->sqImprime( $this->Personne->{$modelName} );// FIXME
+					}
+
+					$this->Personne->forceVirtualFields = true;
+					$records = $this->Personne->find( 'all', $query );
+					// FIXME
+//					debug( $query );
+					debug( $this->Personne->sq( $query ) );
+//					$records = [];
+				}
 
 				$records = $this->_computeAccesses( $records, $personne_id, compact( 'webrsaModelName', 'webrsaAccessName' ) );
 
@@ -1041,6 +1113,7 @@
 							'Ficheprescription93' => 'Prescription',
 							'Orientstruct' => 'Orientation',
 							'Rendezvous' => 'Rendez-vous',
+							'Relancenonrespectsanctionep93' => 'Relance',
 						)
 					),
 					'Questionnaired1pdv93' => array(

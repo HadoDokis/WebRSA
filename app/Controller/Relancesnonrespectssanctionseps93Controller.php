@@ -16,8 +16,27 @@
 	 */
 	class Relancesnonrespectssanctionseps93Controller extends AppController
 	{
-		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
+		/**
+		 * Modèles utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Relancenonrespectsanctionep93',
+			'Nonrespectsanctionep93',
+			'Orientstruct',
+			'Contratinsertion',
+			'Dossierep',
+			'Dossier',
+			'Pdf',
+			'WebrsaRelancenonrespectsanctionep93'
+		);
 
+		/**
+		 * Composants ,utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Search.SearchPrg' => array(
 				'actions' => array(
@@ -29,10 +48,27 @@
 			'InsertionsBeneficiaires',
 			'Cohortes' => array( 'cohorte' ),
 			'Jetons2',
-			'DossiersMenus'
+			'DossiersMenus',
+			'WebrsaAccesses' => array(
+				'mainModelName' => 'Nonrespectsanctionep93',
+				'webrsaModelName' => 'WebrsaRelancenonrespectsanctionep93',
+				'webrsaAccessName' => 'WebrsaAccessRelancesnonrespectssanctionseps93',
+				'parentModelName' => 'Personne',
+			)
 		);
 
-		public $helpers = array( 'Default2', 'Csv' );
+		/**
+		 * Helpers utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+			'Csv',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			)
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -98,125 +134,73 @@
 
 			$erreurs = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
 
-			$conditions = array( 'OR' => array(), 'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ) );
+			// INFO: on fera une jointure spéciale sur Personne car l'on vient soit d'une orientation, soit d'un CER
+			$joinOrientstruct = $this->Nonrespectsanctionep93->Orientstruct->join( 'Personne', array( 'type' => 'LEFT OUTER' ) );
+			$joinContratinsertion = $this->Nonrespectsanctionep93->Contratinsertion->join( 'Personne', array( 'type' => 'LEFT OUTER' ) );
 
-			$orientsstructs = $this->Orientstruct->find(
-				'list',
-				array(
-					'conditions' => array(
-						'Orientstruct.personne_id' => $personne_id
-					)
-				)
-			);
-			if( !empty( $orientsstructs ) ) {
-				$conditions['OR']['Nonrespectsanctionep93.orientstruct_id'] = $orientsstructs;
-			}
-
-			$contratsinsertion = $this->Contratinsertion->find(
-				'list',
-				array(
-					'conditions' => array(
+			$query = array(
+				'fields' => array(
+					'Dossier.matricule',
+					'Personne.nom',
+					'Personne.prenom',
+					'Adresse.localite',
+					'Orientstruct.id',
+					'Orientstruct.date_valid',
+					'Contratinsertion.id',
+					'Contratinsertion.df_ci',
+					'Relancenonrespectsanctionep93.id',
+					'Relancenonrespectsanctionep93.numrelance',
+					'Relancenonrespectsanctionep93.daterelance',
+					'Pdf.id',
+					'Nonrespectsanctionep93.origine',
+					'( CASE WHEN "Orientstruct"."id" IS NOT NULL THEN \'Non contractualisation\' ELSE \'Non renouvellement\' END ) AS "Nonrespectsanctionep93__origine_label"',
+					'( CASE WHEN "Orientstruct"."id" IS NOT NULL THEN "Orientstruct"."date_valid" ELSE "Contratinsertion"."df_ci" END ) AS "Nonrespectsanctionep93__date_pivot"',
+					'DATE_PART( \'day\', CASE WHEN "Orientstruct"."id" IS NOT NULL THEN NOW() + interval \'12 hours\' - "Orientstruct"."date_valid" ELSE NOW() + interval \'12 hours\' - "Contratinsertion"."df_ci" END ) AS "Nonrespectsanctionep93__nb_jours"'
+				),
+				'conditions' => array(
+					'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ),
+					'OR' => array(
+						'Orientstruct.personne_id' => $personne_id,
 						'Contratinsertion.personne_id' => $personne_id
 					)
-				)
-			);
-			if( !empty( $contratsinsertion ) ) {
-				$conditions['OR']['Nonrespectsanctionep93.contratinsertion_id'] = $contratsinsertion;
-			}
-
-			$relances = array();
-			if( !empty( $conditions['OR'] ) ) {
-				$personne = $this->Nonrespectsanctionep93->Orientstruct->Personne->find(
-					'first',
+				),
+				'joins' => array(
+					$this->Nonrespectsanctionep93->join( 'Relancenonrespectsanctionep93', array( 'type' => 'INNER' ) ),
+					$this->Nonrespectsanctionep93->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Nonrespectsanctionep93->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Nonrespectsanctionep93->Relancenonrespectsanctionep93->join( 'Pdf', array( 'type' => 'LEFT OUTER' ) ),
 					array(
+						'table' => $joinOrientstruct['table'],
+						'alias' => 'Personne',
+						'type' => 'INNER',
 						'conditions' => array(
-							'Personne.id' => $personne_id
-						),
-						'contain' => array(
-							'Foyer' => array(
-								'Dossier',
-								'Adressefoyer' => array(
-									'conditions' => array(
-										'Adressefoyer.rgadr' => '01'
-									),
-									'Adresse'
-								)
+							'OR' => array(
+								$joinOrientstruct['conditions'],
+								$joinContratinsertion['conditions']
 							)
-						),
-					)
-				);
-				$relances = $this->Nonrespectsanctionep93->find(
-					'all',
-					array(
-						'fields' => array(
-							'Orientstruct.id',
-							'Orientstruct.date_valid',
-							'Contratinsertion.id',
-							'Contratinsertion.df_ci',
-							'Relancenonrespectsanctionep93.id',
-							'Relancenonrespectsanctionep93.numrelance',
-							'Relancenonrespectsanctionep93.daterelance',
-							'Pdf.id',
-						),
-						'conditions' => $conditions,
-						'joins' => array(
-							array(
-								'table'      => 'relancesnonrespectssanctionseps93',
-								'alias'      => 'Relancenonrespectsanctionep93',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id'
-								)
-							),
-							array(
-								'table'      => 'orientsstructs',
-								'alias'      => 'Orientstruct',
-								'type'       => 'LEFT OUTER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id'
-								)
-							),
-							array(
-								'table'      => 'contratsinsertion',
-								'alias'      => 'Contratinsertion',
-								'type'       => 'LEFT OUTER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id'
-								)
-							),
-							array(
-								'table'      => 'pdfs',
-								'alias'      => 'Pdf',
-								'type'       => 'LEFT OUTER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Relancenonrespectsanctionep93.id = Pdf.fk_value',
-									'Pdf.modele' => 'Relancenonrespectsanctionep93',
-								)
-							),
-						),
-						'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC', 'Relancenonrespectsanctionep93.numrelance DESC' )
-					)
-				);
-			}
+						)
+					),
+					$this->Nonrespectsanctionep93->Orientstruct->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->join(
+						'Adressefoyer',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Adressefoyer.id IN ( '.$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+							)
+						)
+					),
+					$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC', 'Relancenonrespectsanctionep93.numrelance DESC' )
+			);
 
-            // On s'assure qu'il soit possible de relancer l'allocataire (add)
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-            $results = $this->Relancenonrespectsanctionep93->getRelance(
-                $personne_id,
-                $mesCodesInsee,
-                $this->Session->read( 'Auth.User.filtre_zone_geo' ),
-                $this->Cohortes->sqLocked( 'Dossier' ),
-                $this->Session->read( 'Auth.user.id' )
-            );
+			$this->Nonrespectsanctionep93->forceVirtualFields = true;
+			$relances = $this->WebrsaAccesses->getIndexRecords( $personne_id, $query );
 
-            $this->set( 'ajoutPossible', !empty( $results ) );
-			$this->set( compact( 'relances', 'erreurs', 'personne' ) );
-			$this->set( 'personne_id', $personne_id );
+			$ajoutPossible = $this->WebrsaRelancenonrespectsanctionep93->ajoutPossible( $personne_id, $erreurs );
+			$this->set( compact( 'relances', 'erreurs', 'personne', 'ajoutPossible', 'personne_id' ) );
 		}
 
 		/**
@@ -340,10 +324,7 @@
 				throw new NotFoundException();
 			}
 
-			$erreursAjout = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
-			if( !empty( $erreursAjout ) ) {
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
+			$this->WebrsaAccesses->check( null, $personne_id );
 
 			// Tentative d'acquisition du jeton sur le dossier
 			$this->Jetons2->get( $dossier_id );
@@ -491,6 +472,8 @@
 			$this->assert( is_numeric( $id ), 'invalidParameter' );
 
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Relancenonrespectsanctionep93->personneId( $id ) ) );
+
+//			$this->WebrsaAccesses->check( $id ); // FIXME
 
 			$this->Relancenonrespectsanctionep93->begin();
 
