@@ -1,17 +1,21 @@
-<h1><?php echo $this->pageTitle = 'Relances de la personne';?></h1>
+<?php
+	$title_for_layout = 'Relances de la personne';
+	$this->set( 'title_for_layout', $title_for_layout );
 
-<?php if( $this->Permissions->check( 'orientsstructs', 'add' ) ):?>
-	<ul class="actionMenu">
-		<?php
-			echo '<li>'.$this->Xhtml->addLink(
-				'Ajouter',
-				array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'add', $personne_id ),
-				( $this->Permissions->checkDossier( 'relancesnonrespectssanctionseps93', 'add', $dossierMenu ) && empty( $erreurs ) && $ajoutPossible )
-			).' </li>';
-		?>
-	</ul>
-<?php endif;?>
+	App::uses( 'WebrsaAccess', 'Utility' );
+	WebrsaAccess::init( $dossierMenu );
 
+	echo $this->Html->tag( 'h1', $title_for_layout );
+
+	echo $this->Default3->actions(
+		array(
+			"/Relancesnonrespectssanctionseps93/add/{$personne_id}" => array(
+				'disabled' => false === $this->Permissions->check( 'orientsstructs', 'add' )
+					|| false === WebrsaAccess::addIsEnabled( "/Relancesnonrespectssanctionseps93/add/{$personne_id}", $ajoutPossible )
+			)
+		)
+	);
+?>
 <?php if( !empty( $erreurs ) ):?>
 	<div class="error_message">
 		<?php if( count( $erreurs ) > 1 ):?>
@@ -25,64 +29,62 @@
 		<?php endif;?>
 	</div>
 <?php endif;?>
-
-<?php if( empty( $relances ) ):?>
-	<p class="notice">Cette personne ne possède pas de relance à l'heure actuelle.</p>
-<?php else:?>
-	<table>
-		<thead>
-			<tr>
-				<th>N° CAF</th>
-				<th>Nom</th>
-				<th>Prénom</th>
-				<th>Ville</th>
-				<th>Origine</th>
-				<th>Date pivot</th>
-				<th>Nombre de jours</th>
-				<th>Date de relance</th>
-				<th>Statut relance</th>
-				<th class="actions" colspan="2">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach( $relances as $i => $relance ):?>
-				<?php
-					if( isset( $relance['Orientstruct']['id'] ) && !empty( $relance['Orientstruct']['id'] ) ) {
-						$date = date_short( @$relance['Orientstruct']['date_valid'] );
-						$nbjours = round( ( time() - strtotime( @$relance['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 ) );
-						$origine = 'Non contractualisation';
-					}
-					else {
-						$date = date_short( @$relance['Contratinsertion']['df_ci'] );
-						$nbjours = round( ( time() - strtotime( @$relance['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 ) );
-						$origine = 'Non renouvellement';
-					}
-				?>
-				<tr class="<?php echo ( ( $i %2 ) ? 'even' : 'odd' );?>">
-					<td><?php echo h( @$personne['Foyer']['Dossier']['matricule'] );?></td>
-					<td><?php echo h( @$personne['Personne']['nom'] );?></td>
-					<td><?php echo h( @$personne['Personne']['prenom'] );?></td>
-					<td><?php echo h( @$personne['Foyer']['Adressefoyer'][0]['Adresse']['localite'] );?></td>
-					<td><?php echo h( $origine );?></td>
-					<td><?php echo h( $date );?></td>
-					<td><?php echo h( $nbjours );?></td>
-					<td><?php echo date_short( @$relance['Relancenonrespectsanctionep93']['daterelance'] );?></td>
-					<td><?php
-						if( @$relance['Relancenonrespectsanctionep93']['numrelance'] == 1 ) {
-							echo '1ère relance';
-						}
-						else {
-							echo "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance";
-						}
-					?></td>
-					<td><?php echo $this->Xhtml->viewLink( 'Voir', array( '#' ), false );?></td>
-					<td><?php echo $this->Xhtml->printLink(
-							'Imprimer',
-							array( 'controller' => $this->request->params['controller'], 'action' => 'impression', $relance['Relancenonrespectsanctionep93']['id'] ),
-							$this->Permissions->check( $this->request->params['controller'], 'impression', $dossierMenu ) && $relance['Pdf']['id']
-					);?></td>
-				</tr>
-			<?php endforeach;?>
-		</tbody>
-	</table>
-<?php endif;?>
+<?php
+	echo $this->Default3->index(
+		$relances,
+		array(
+			'Dossier.matricule' => array(
+				'label' => __m( 'Dossier.matricule' )
+			),
+			'Personne.nom' => array(
+				'label' => __m( 'Personne.nom' )
+			),
+			'Personne.prenom' => array(
+				'label' => __m( 'Personne.prenom' )
+			),
+			'Adresse.localite' => array(
+				'label' => __m( 'Adresse.localite' )
+			),
+			'Nonrespectsanctionep93.origine_label' => array(
+				'label' => __m( 'Nonrespectsanctionep93.origine' )
+			),
+			'Nonrespectsanctionep93.date_pivot' => array(
+				'label' => __m( 'Nonrespectsanctionep93.date_pivot' ),
+				'class' => 'date',
+				'type' => 'date'
+			),
+			'Nonrespectsanctionep93.nb_jours' => array(
+				'label' => __m( 'Nonrespectsanctionep93.nb_jours' ),
+				'class' => 'number',
+			),
+			'Relancenonrespectsanctionep93.daterelance' => array(
+				'label' => __m( 'Relancenonrespectsanctionep93.daterelance' )
+			),
+			'Relancenonrespectsanctionep93.numrelance_1' => array(
+				'label' => __m( 'Relancenonrespectsanctionep93.numrelance' ),
+				'value' => '#Relancenonrespectsanctionep93.numrelance#ère relance',
+				'condition' => '"#Relancenonrespectsanctionep93.numrelance#" <= 1',
+				'condition_group' => 'Relancenonrespectsanctionep93.numrelance'
+			),
+			'Relancenonrespectsanctionep93.numrelance_n' => array(
+				'label' => __m( 'Relancenonrespectsanctionep93.numrelance' ),
+				'value' => '#Relancenonrespectsanctionep93.numrelance#ème relance',
+				'condition' => '"#Relancenonrespectsanctionep93.numrelance#" > 1',
+				'condition_group' => 'Relancenonrespectsanctionep93.numrelance'
+			),
+		)
+		+ WebrsaAccess::links(
+			array(
+				'/Relancesnonrespectssanctionseps93/view/#Relancenonrespectsanctionep93.id#' => array(
+					'class' => 'button'
+				),
+				'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
+					'class' => 'button'
+				),
+			)
+		),
+		array(
+			'paginate' => false
+		)
+	);
+?>

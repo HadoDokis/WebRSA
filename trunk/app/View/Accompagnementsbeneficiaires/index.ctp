@@ -8,6 +8,9 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
+	App::uses( 'WebrsaAccess', 'Utility' );
+	WebrsaAccess::init( $dossierMenu );
+
 	$this->pageTitle = DefaultUtility::evaluateString( $details, 'Synthèse de l\'accompagnement<br/>#Personne.qual# #Personne.nom# #Personne.prenom#' );
 	echo $this->Html->tag( 'h1', $this->pageTitle );
 	$this->pageTitle = str_replace( '<br/>', ' de ', $this->pageTitle );
@@ -319,7 +322,7 @@
 						'condition_group' => 'view',
 						'disabled' => '"#/Cers93/view#" != true'
 					),
-					// FIXME: pas de visualisation pour la fiche de prescription
+					// INFO: pas de visualisation pour la fiche de prescription
 					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
 						'class' => 'view',
 						'msgid' => 'Voir',
@@ -334,7 +337,7 @@
 						'condition_group' => 'view',
 						'disabled' => '"#/Questionnairesd1pdvs93/view#" != true'
 					),
-					// FIXME: pas de visualisation pour le questionnaire D2
+					// INFO: pas de visualisation pour le questionnaire D2
 					'/Questionnairesd2pdvs93/view/#Questionnaired2pdv93.id#' => array(
 						'class' => 'view',
 						'msgid' => 'Voir',
@@ -626,129 +629,126 @@
 						'condition_group' => 'created',
 						'class' => 'sortable date-fr filter_date date',
 					),
+				) + WebrsaAccess::links(
+					array(
+						// ---------------------------------------------------------
+						// Lien impression
+						// ---------------------------------------------------------
+						'/Apres/impression/#Apre.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Apre"',
+							'condition_group' => 'impression',
+						),
+						'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Décision"',
+							'condition_group' => 'impression',
+						),
+						'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Convocation"',
+							'condition_group' => 'impression',
+						),
+						'/Cers93/impression/#Contratinsertion.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impression"',
+							'condition_group' => 'impression',
+						),
+						'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impressionDecision"',
+							'condition_group' => 'impression',
+						),
+						'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Ficheprescription93"',
+							'condition_group' => 'impression',
+						),
+						'/Orientsstructs/impression/#Orientstruct.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Orientstruct"',
+							'condition_group' => 'impression',
+						),
+						'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
+							'condition_group' => 'impression',
+						),
+						'/Rendezvous/impression/#Rendezvous.id#' => array(
+							'msgid' => 'Imprimer',
+							'class' => 'impression',
+							'condition' => '"#Impression.name#" == "Rendezvous"',
+							'condition_group' => 'impression',
+						),
+						// ---------------------------------------------------------
+						// Lien voir
+						// ---------------------------------------------------------
+						'/Apres/view/#Apre.id#' => array(
+							'msgid' => 'Voir',
+							'class' => 'view external',
+							'condition' => '"#Impression.name#" == "Apre"',
+							'condition_group' => 'view',
+						),
+						'/Historiqueseps/view_passage/#Passagecommissionep.id#' => array(
+							'msgid' => 'Voir',
+							'class' => 'view external',
+							'condition' => '"#Impression.name#" == "Commissionep"',
+							'condition_group' => 'view',
+						),
+						'/Cers93/view/#Contratinsertion.id#' => array(
+							'msgid' => 'Voir',
+							'class' => 'view external',
+							'condition' => '"#Impression.name#" == "Contratinsertion"',
+							'condition_group' => 'view',
+						),
+						'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
+							'msgid' => 'Voir',
+							'class' => 'view external',
+							'condition' => '"#Impression.name#" == "Ficheprescription93"',
+							'condition_group' => 'view',
+						),
+						'/Orientsstructs/view/#Orientstruct.id#' => array(
+							'msgid' => 'Voir',
+							'class' => 'view external',
+							'condition' => '"#Impression.name#" == "Orientstruct"',
+							'condition_group' => 'view',
+						),
+						'/Relancesnonrespectssanctionseps93/view/#Relancenonrespectsanctionep93.id#' => array(
+							'msgid' => 'Voir',
+							'class' => 'view external',
+							'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
+							'condition_group' => 'view',
+						),
+						'/Rendezvous/view/#Rendezvous.id#' => array(
+							'msgid' => 'Voir',
+							'class' => 'view external',
+							'condition' => '"#Impression.name#" == "Rendezvous"',
+							'condition_group' => 'view',
+						),
+					)
+				) + array(
 					// ---------------------------------------------------------
-					// Lien impression
-					// ---------------------------------------------------------
-					'/Apres/impression/#Apre.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Apre"',
-						'condition_group' => 'impression',
-					),
-					'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Décision"',
-						'condition_group' => 'impression',
-					),
-					'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Convocation"',
-						'condition_group' => 'impression',
-					),
-					'/Cers93/impression/#Contratinsertion.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impression"',
-						'condition_group' => 'impression',
-						'disabled' => '"#/Cers93/impression#" != true'
-					),
-					'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impressionDecision"',
-						'condition_group' => 'impression',
-						'disabled' => '"#/Cers93/impressionDecision#" != true'
-					),
-					'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Ficheprescription93"',
-						'condition_group' => 'impression',
-						'disabled' => '"#/Fichesprescriptions93/impression#" != true'
-					),
-					'/Orientsstructs/impression/#Orientstruct.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Orientstruct"',
-						'condition_group' => 'impression',
-					),
-					'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
-						'condition_group' => 'impression',
-					),
-					'/Rendezvous/impression/#Rendezvous.id#' => array(
-						'msgid' => 'Imprimer',
-						'class' => 'impression',
-						'condition' => '"#Impression.name#" == "Rendezvous"',
-						'condition_group' => 'impression',
-					),
-					// ---------------------------------------------------------
-					// Lien voir
-					// ---------------------------------------------------------
-					'/Apres/view/#Apre.id#' => array(
-						'msgid' => 'Voir',
-						'class' => 'view external',
-						'condition' => '"#Impression.name#" == "Apre"',
-						'condition_group' => 'view',
-					),
-					'/Historiqueseps/view_passage/#Passagecommissionep.id#' => array(
-						'msgid' => 'Voir',
-						'class' => 'view external',
-						'condition' => '"#Impression.name#" == "Commissionep"',
-						'condition_group' => 'view',
-					),
-					'/Cers93/view/#Contratinsertion.id#' => array(
-						'msgid' => 'Voir',
-						'class' => 'view external',
-						'condition' => '"#Impression.name#" == "Contratinsertion"',
-						'condition_group' => 'view',
-						'disabled' => '"#/Cers93/view#" != true'
-					),
-					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
-						'msgid' => 'Voir',
-						'class' => 'view external',
-						'disabled' => true,
-						'condition' => '"#Impression.name#" == "Ficheprescription93"',
-						'condition_group' => 'view',
-						'disabled' => '"#/Fichesprescriptions93/view#" != true'
-					),
-					'/Orientsstructs/view/#Orientstruct.id#' => array(
-						'msgid' => 'Voir',
-						'class' => 'view external',
-						'disabled' => true,
-						'condition' => '"#Impression.name#" == "Orientstruct"',
-						'condition_group' => 'view',
-					),
-					'/Relancesnonrespectssanctionseps93/view/#Relancenonrespectsanctionep93.id#' => array(
-						'msgid' => 'Voir',
-						'class' => 'view external',
-						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
-						'condition_group' => 'view',
-					),
-					'/Rendezvous/view/#Rendezvous.id#' => array(
-						'msgid' => 'Voir',
-						'class' => 'view external',
-						'condition' => '"#Impression.name#" == "Rendezvous"',
-						'condition_group' => 'view',
-					),
-					// ---------------------------------------------------------
-					// Lien liste
+					// Lien liste (les permissions ne figurent pas dans WebrsaAccess)
 					// ---------------------------------------------------------
 					'/Apres/index/#Apre.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index external',
 						'condition' => '"#Impression.name#" == "Apre"',
-						'condition_group' => 'index',
+						'condition_group' => 'index'
 					),
 					'/Historiqueseps/index/#Dossierep.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index external',
 						'condition' => '"#Impression.name#" == "Commissionep"',
-						'condition_group' => 'index',
+						'condition_group' => 'index'
 					),
 					'/Cers93/index/#Contratinsertion.personne_id#' => array(
 						'msgid' => 'Liste',
@@ -768,7 +768,7 @@
 						'condition' => '"#Impression.name#" == "Orientstruct"',
 						'condition_group' => 'index',
 					),
-					'/Relancesnonrespectssanctionseps93/index/#Relancenonrespectsanctionep93.personne_id#' => array(
+					'/Relancesnonrespectssanctionseps93/index/#Personne.id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index external',
 						'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',

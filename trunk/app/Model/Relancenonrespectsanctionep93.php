@@ -32,6 +32,11 @@
 			)
 		);
 
+		/**
+		 * Behaviors utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
 		public $actsAs = array(
 			'Pgsqlcake.PgsqlAutovalidate',
 			'Formattable',
@@ -40,6 +45,11 @@
 			'Conditionnable'
 		);
 
+		/**
+		 * Relations "belongsTo" du modèle.
+		 *
+		 * @var array
+		 */
 		public $belongsTo = array(
 			'Nonrespectsanctionep93' => array(
 				'className' => 'Nonrespectsanctionep93',
@@ -54,6 +64,24 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			)
+		);
+
+		/**
+		 * Relations "hasOne" du modèle.
+		 *
+		 * @var array
+		 */
+		public $hasOne = array(
+			'Pdf' => array(
+				'className' => 'Pdf',
+				'foreignKey' => 'fk_value',
+				'dependent' => true,
+				'conditions' => array(
+					'Pdf.modele' => 'Relancenonrespectsanctionep93'
+				),
+				'fields' => null,
+				'order' => null
 			)
 		);
 
