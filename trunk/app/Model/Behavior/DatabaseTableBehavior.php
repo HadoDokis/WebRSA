@@ -264,6 +264,20 @@
 			return $sq;
 		}
 
+		protected function _normalize( array $array ) {
+			$result = array();
+
+			foreach( $array as $key => $value ) {
+				if( is_int( $key ) && is_string( $value ) ) {
+					$result[$value] = null;
+				}
+				else {
+					$result[$key] = $value;
+				}
+			}
+
+			return $result;
+		}
 
 		/**
 		 * Permet de décrire les jointures à appliquer sur un modèle en spécifiant
@@ -275,26 +289,36 @@
 		 *	- params -> replacements (alias, de manière générale + dans chaque jointure)
 		 *	- conditions ?
 		 *
+		 * @fixem: si la jointure est déjà faite
+		 *
 		 * @param Model $model
 		 * @param array $joins
 		 * @return array
 		 */
 		public function joins( Model $model, array $joins = array() ) {
 			$results = array();
-			$joins = Hash::normalize( $joins );
+			$joins = $this->_normalize( $joins );
 
 			foreach( $joins as $joinModel => $joinParams ) {
-				$joinParams = (array)$joinParams;
+				if( false === is_int( $joinModel) ) {
+					$joinParams = (array)$joinParams;
 
-				$innerJoins = (array)Hash::get( $joinParams, 'joins' );
-				unset( $joinParams['joins'] );
+					$innerJoins = (array)Hash::get( $joinParams, 'joins' );
+					unset( $joinParams['joins'] );
 
-				$results[] = $model->join( $joinModel, $joinParams );
+					$results[] = $model->join( $joinModel, $joinParams );
 
-				if( !empty( $innerJoins ) ) {
+					if( !empty( $innerJoins ) ) {
+						$results = array_merge(
+							$results,
+							$model->{$joinModel}->joins( $innerJoins )
+						);
+					}
+				}
+				else {
 					$results = array_merge(
 						$results,
-						$model->{$joinModel}->joins( $innerJoins )
+						array( $joinParams )
 					);
 				}
 			}

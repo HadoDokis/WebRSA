@@ -270,6 +270,7 @@
 		 * à un seul niveau.
 		 *
 		 * @covers DatabaseTableBehavior::joins
+		 * @covers DatabaseTableBehavior::_normalize
 		 */
 		public function testJoins1Level() {
 			$result = $this->Apple->joins(
@@ -300,6 +301,7 @@
 		 * à plusieurs niveaux.
 		 *
 		 * @covers DatabaseTableBehavior::joins
+		 * @covers DatabaseTableBehavior::_normalize
 		 */
 		public function testJoins2Levels() {
 			$result = $this->Apple->joins(
@@ -334,6 +336,7 @@
 		 * à plusieurs niveaux, contenant des conditions.
 		 *
 		 * @covers DatabaseTableBehavior::joins
+		 * @covers DatabaseTableBehavior::_normalize
 		 */
 		public function testJoins2LevelsConditions() {
 			$result = $this->Apple->joins(
@@ -374,10 +377,58 @@
 		 * Test de la méthode DatabaseTableBehavior::joins() sans jointure.
 		 *
 		 * @covers DatabaseTableBehavior::joins
+		 * @covers DatabaseTableBehavior::_normalize
 		 */
 		public function testJoinsEmpty() {
 			$result = $this->Apple->joins( array() );
 			$expected = array();
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode DatabaseTableBehavior::joins() avec des jointures
+		 * de plusieurs types.
+		 *
+		 * @covers DatabaseTableBehavior::joins
+		 * @covers DatabaseTableBehavior::_normalize
+		 */
+		public function testJoinsMixed() {
+			$result = $this->Apple->joins(
+				array(
+					'Parentapple' => array(
+						'type' => 'INNER',
+						'joins' => array(
+							'Childapple2' => array( 'type' => 'LEFT OUTER' )
+						)
+					),
+					array(
+						'table' => '"apples"',
+						'alias' => 'Childapple1',
+						'type' => 'LEFT OUTER',
+						'conditions' => '"Childapple1"."parentapple_id" = "Parentapple"."id"',
+					)
+				)
+			);
+			$expected = array(
+				array(
+					'table' => '"apples"',
+					'alias' => 'Parentapple',
+					'type' => 'INNER',
+					'conditions' => '"Apple"."parentapple_id" = "Parentapple"."id"',
+				),
+				array(
+					'table' => '"apples"',
+					'alias' => 'Childapple2',
+					'type' => 'LEFT OUTER',
+					'conditions' => '"Childapple2"."apple_id" = "Parentapple"."id"',
+				),
+				array(
+					'table' => '"apples"',
+					'alias' => 'Childapple1',
+					'type' => 'LEFT OUTER',
+					'conditions' => '"Childapple1"."parentapple_id" = "Parentapple"."id"',
+				)
+			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
