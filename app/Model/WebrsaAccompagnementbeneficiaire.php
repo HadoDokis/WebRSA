@@ -812,9 +812,8 @@
 				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
 					'modelName' => 'Dossierep',
 					'name' => 'Commissionep',
-					// TODO
-//					'webrsaModelName' => 'WebrsaCer93',
-//					'webrsaAccessName' => 'WebrsaAccessCers93',
+					'webrsaModelName' => 'WebrsaCommissionep',
+					'webrsaAccessName' => 'WebrsaAccessCommissionseps',
 					'fields' => array(
 						'Passagecommissionep.id',
 						'Dossierep.id',
@@ -825,21 +824,23 @@
 					),
 					'joins' => array(
 						'Passagecommissionep' => array(
-							'type' => 'INNER', // FIXME: ajout de conditions
+							'type' => 'INNER',
 							'joins' => array(
 								'Commissionep' => array(
 									'type' => 'INNER'
 								)
 							)
 						)
+					),
+					'conditions' => array(
+						'Commissionep.etatcommissionep' => 'traite'
 					)
 				),
 				'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
 					'modelName' => 'Dossierep',
 					'name' => 'Commissionep',
-					// TODO
-//					'webrsaModelName' => 'WebrsaCer93',
-//					'webrsaAccessName' => 'WebrsaAccessCers93',
+					'webrsaModelName' => 'WebrsaCommissionep',
+					'webrsaAccessName' => 'WebrsaAccessCommissionseps',
 					'fields' => array(
 						'Passagecommissionep.id',
 						'Dossierep.id',

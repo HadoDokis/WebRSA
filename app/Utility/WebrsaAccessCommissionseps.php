@@ -7,11 +7,12 @@
 	 * @package app.Utility
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
 	App::uses('WebrsaAbstractAccess', 'Utility');
 
 	/**
 	 * La classe WebrsaAccessCommissionseps ...
+	 *
+	 * @see CommissionsepsController::$etatsActions
 	 *
 	 * @package app.Utility
 	 */
@@ -19,7 +20,7 @@
 	{
 		/**
 		 * Paramètres par défaut
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -32,31 +33,164 @@
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
 		 */
 		protected static function _decisionep(array $record, array $params) {
-			return true;
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return in_array( $etatcommissionep, array( 'traiteep', 'decisioncg', 'traite' ) );
 		}
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
 		 */
 		protected static function _decisioncg(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return in_array( $etatcommissionep, array( 'traite' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _delete(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return false === in_array( $etatcommissionep, array( 'traiteep', 'decisioncg', 'traite', 'annule' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _edit(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return false === in_array( $etatcommissionep, array( 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _fichesynthese(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return false === in_array( $etatcommissionep, array( 'cree', 'quorum' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _fichessynthese(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return false === in_array( $etatcommissionep, array( 'cree', 'quorum' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _impressionDecision(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return 'traite' === $etatcommissionep;
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function impressionsDecisions(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return 'traite' === $etatcommissionep;
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _impressionpv(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return in_array( $etatcommissionep, array( 'traiteep', 'decisioncg', 'traite' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _printConvocationBeneficiaire(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return false === in_array( $etatcommissionep, array( 'cree', 'quorum' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _traiterep(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return in_array( $etatcommissionep, array( 'presence', 'decisionep' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _traitercg(array $record, array $params) {
+			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
+			return in_array( $etatcommissionep, array( 'traiteep', 'decisioncg' ) );
+		}
+
+		/**
+		 * Permission d'accès
+		 *
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _view(array $record, array $params) {
 			return true;
 		}
-		
+
 		/**
 		 * Liste les actions disponnible
 		 * Si une action pointe sur un autre controler, il faut préciser son nom
 		 * ex : Moncontroller.monaction
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -66,9 +200,21 @@
 				array(
 					'decisionep',
 					'decisioncg',
+					'delete',
+					'edit',
+					'fichessynthese',
+					'fichesynthese',
+					'impressionDecision',
+					'impressionsDecisions',
+					'impressionpv',
+					'printConvocationBeneficiaire',
+					'traiterep',
+					'traitercg',
+					'view',
+					'Historiqueseps.view_passage',
 				)
 			);
-			
+
 			return $result;
 		}
 	}
