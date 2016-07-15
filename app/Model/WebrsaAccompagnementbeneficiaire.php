@@ -789,6 +789,26 @@
 						'Cer93.positioncer' => array( '99rejete', '99valide' )
 					)
 				),
+				'/Cohortestransfertspdvs93/impression/#NvOrientstruct.id#' => array(
+					'modelName' => 'Transfertpdv93',
+					'fields' => array(
+						'NvOrientstruct.id',
+						'NvOrientstruct.personne_id',
+						'Transfertpdv93.created',
+						'\'impression\' AS "Impression__impression"',
+						'\'Courrier transfert\' AS "Impression__type"',
+					),
+					'joins' => array(
+						'NvOrientstruct' => array(
+							'type' => 'INNER',
+							'joins' => array(
+								'Personne' => array(
+									'type' => 'INNER'
+								)
+							)
+						)
+					)
+				),
 				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
 					'modelName' => 'Dossierep',
 					'name' => 'Commissionep',
@@ -1114,6 +1134,7 @@
 							'Orientstruct' => 'Orientation',
 							'Rendezvous' => 'Rendez-vous',
 							'Relancenonrespectsanctionep93' => 'Relance',
+							'Transfertpdv93' => 'Transfert PDV',
 						)
 					),
 					'Questionnaired1pdv93' => array(
