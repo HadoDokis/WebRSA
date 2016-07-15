@@ -60,7 +60,8 @@
 		 * @return boolean
 		 */
 		protected static function _impression(array $record, array $params) {
-			return !empty( Hash::get( $record, 'Pdf.id' ) );
+			$id = Hash::get( $record, 'Pdf.id' );
+			return !empty( $id );
 		}
 
 		/**
