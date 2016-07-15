@@ -26,7 +26,10 @@
 					'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions'
 				)
 			),
-			'Gedooo.Gedooo'
+			'Gedooo.Gedooo',
+			'WebrsaAccesses' => array(
+				'parentModelName' => 'Commissionep'
+			)
 		);
 		public $commeDroit = array(
 			'edit' => 'Commissionseps:add',
@@ -407,11 +410,14 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
+				$this->WebrsaAccesses->check( $id );
+
 				$this->request->data = $this->Commissionep->find(
-						'first', array(
-					'contain' => false,
-					'conditions' => array( 'Commissionep.id' => $id )
-						)
+					'first',
+					array(
+						'contain' => false,
+						'conditions' => array( 'Commissionep.id' => $id )
+					)
 				);
 				$this->assert( !empty( $this->request->data ), 'error404' );
 
@@ -433,6 +439,8 @@
 		 * Passe tous ses dossiers liés dans l'état reporté et son état à annulé
 		 */
 		public function delete( $commissionep_id ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
+
 			if( !empty( $this->request->data ) ) {
 				$success = true;
 				$this->Commissionep->begin();
@@ -530,6 +538,7 @@
 		 * Traitement d'une séance au niveau de décision EP
 		 */
 		public function traiterep( $commissionep_id ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
 			$this->_traiter( $commissionep_id, 'ep' );
 		}
 
@@ -584,6 +593,7 @@
 		 * TODO: si tous les thèmes se décident niveau EP, plus besoin de passer par ici.
 		 */
 		public function traitercg( $commissionep_id ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
 			$this->_traiter( $commissionep_id, 'cg' );
 		}
 
@@ -592,6 +602,8 @@
 		 * @param integer $commissionep_id
 		 */
 		public function view( $commissionep_id = null ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
+
 			$commissionep = $this->Commissionep->find(
 					'first', array(
 				'conditions' => array( 'Commissionep.id' => $commissionep_id ),
@@ -856,6 +868,8 @@
 		 *
 		 */
 		public function impressionpv( $commissionep_id ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
+
 			$commissionep = $this->Commissionep->find(
 					'first', array(
 				'fields' => array(
@@ -1165,6 +1179,7 @@
 		 * Affichage des décisions de la commission d'EP niveau EP
 		 */
 		public function decisionep( $commissionep_id ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
 			$this->_decision( $commissionep_id, 'ep' );
 		}
 
@@ -1172,6 +1187,7 @@
 		 * Affichage des décisions de la commission d'EP niveau CG
 		 */
 		public function decisioncg( $commissionep_id ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
 			$this->_decision( $commissionep_id, 'cg' );
 		}
 
@@ -1262,6 +1278,8 @@
 		 * Génération des décisions pour tous les dossiers d'EP d'une commission.
 		 */
 		public function impressionsDecisions( $commissionep_id ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
+
 			$liste = $this->Commissionep->Passagecommissionep->find(
 					'list', array(
 				'fields' => array(
@@ -1300,6 +1318,8 @@
 		 * Génération de la fiche de synthèse des différents dossiers d'EP
 		 */
 		public function fichesynthese( $commissionep_id, $dossierep_id, $anonymiser = false ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
+
 			$pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
 
 			if( $pdf ) {
@@ -1315,6 +1335,8 @@
 		 * Génération de la cohorte des convocations de passage en commission d'EP aux allocataires.
 		 */
 		public function fichessynthese( $commissionep_id, $anonymiser = false ) {
+			$this->WebrsaAccesses->check( $commissionep_id );
+
 			$liste = $this->Commissionep->Passagecommissionep->find(
 					'list', array(
 				'fields' => array(
