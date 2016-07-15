@@ -40,7 +40,7 @@
 		 */
 		protected static function _decisionep(array $record, array $params) {
 			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
-			return in_array( $etatcommissionep, array( 'traiteep', 'decisioncg', 'traite' ) );
+			return in_array( $etatcommissionep, array( 'traiteep', 'decisioncg', 'traite', 'annule' ) );
 		}
 
 		/**
@@ -52,7 +52,7 @@
 		 */
 		protected static function _decisioncg(array $record, array $params) {
 			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
-			return in_array( $etatcommissionep, array( 'traite' ) );
+			return in_array( $etatcommissionep, array( 'traite', 'annule' ) );
 		}
 
 		/**
