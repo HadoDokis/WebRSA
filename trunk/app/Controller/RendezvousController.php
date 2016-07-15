@@ -351,7 +351,7 @@
 				}
 				$query = $this->Rendezvous->linkedRecordsCompleteQuerydata( $query, 'Questionnaired1pdv93' );
 			}
-			
+
 			$rdvs = $this->Rendezvous->find( 'all', $query );
 
 			if( Configure::read( 'Cg.departement' ) !== 58 ) {
@@ -469,7 +469,7 @@
 			);
 
 			$this->assert( !empty( $rendezvous ), 'invalidParameter' );
-			
+
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $rendezvous['Rendezvous']['personne_id'] ) ) );
 
 			$this->set( 'rendezvous', $rendezvous );
@@ -524,8 +524,8 @@
 			}
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-			
-			
+
+
 
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
@@ -682,9 +682,10 @@
 		 */
 		public function delete( $id ) {
 			$this->WebrsaAccesses->check($id);
-			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $rendezvous['Rendezvous']['personne_id'] ) );
 
 			$dossier_id = $this->Rendezvous->dossierId( $id );
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $dossier_id ) );
+
 			$this->Jetons2->get( $dossier_id );
 
 			$success = true;
@@ -725,7 +726,7 @@
 				$this->Rendezvous->rollback();
 			}
 
-			$this->redirect( array( 'controller' => 'rendezvous', 'action' => 'index', $rendezvous['Rendezvous']['personne_id'] ) );
+			$this->redirect( $this->referer() );
 		}
 
 		/**
