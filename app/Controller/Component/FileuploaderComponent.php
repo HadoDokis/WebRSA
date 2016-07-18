@@ -119,7 +119,7 @@
                         $record = Set::merge( $oldrecord, $record );
 
                         ClassRegistry::init( $this->_modeleStockage )->create( $record );
-
+						
                         if( $tmpSaved = ClassRegistry::init( $this->_modeleStockage )->save() ) {
                             $oFile = new File( $dir.DS.$file, true );
                             $tmpSaved = $oFile->delete() && $tmpSaved;
@@ -257,6 +257,13 @@
 
 			Configure::write( 'debug', 0 );
 			try {
+				$allowed = filesize2bytes(ini_get("post_max_size"));
+				if ($contentLength > $allowed) {
+					$humanReadable = byteSize($allowed);
+					$msgstr = "La taille du fichier excède la taille d'envoi maximum autorisé ($humanReadable)";
+					throw new RuntimeException($msgstr);
+				}
+				
 				// On annule si le nom de fichier existe déjà pour l'enregistrement
 				$existing = Hash::merge(
 					$this->_fichiersEnBase( $this->controller->request->query['primaryKey'] ),

@@ -201,7 +201,7 @@
 			$size .= ' KB';
 		}
 		else {
-			if( $size / 1024 < 1024 ) {
+			if( $size/  1024 < 1024 ) {
 				$size = number_format( $size / 1024, 2 );
 				$size .= ' MB';
 			}
@@ -211,6 +211,36 @@
 			}
 		}
 		return $size;
+	}
+	
+	/**
+	 * Converti les "human readable file size" (e.g. 10 MB, 200.20 GB, 8M) en bytes.
+	 *
+	 * @param string $str
+	 * @return int le resultat en bytes
+	 */
+	function filesize2bytes($str) {
+		$bytes_array = array(
+			'B' => 1,
+			'KB' => 1024,
+			'MB' => pow(1024, 2),
+			'GB' => pow(1024, 3),
+			'TB' => pow(1024, 4),
+			'PB' => pow(1024, 5),
+		);
+		// Ajout des valeurs sans le B et avec O
+		foreach ($bytes_array as $key => $value) {
+			$bytes_array[substr($key, 0, 1)] = $value;
+			$bytes_array[substr($key, 0, 1).'O'] = $value;
+		}
+
+		$bytes = floatval($str);
+		
+		if (preg_match('/([KMGTP]?[BO]{0,1})$/si', $str, $matches) && !empty($bytes_array[strtoupper($matches[1])])) {
+			$bytes *= $bytes_array[strtoupper($matches[1])];
+		}
+		
+		return intval(round($bytes, 2));
 	}
 
 	/**

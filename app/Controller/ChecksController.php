@@ -90,6 +90,7 @@
 					'inis' => $this->Check->phpInis(
 						array(
 							'date.timezone',
+							'post_max_size',
 							 // Pour PHP >= 5.3.9, le passer à au moins 2500
 							'max_input_vars' => array(
 								'comparison' => array(
