@@ -1729,6 +1729,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function obstemploidifdisp() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -1743,6 +1745,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function oridemrsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa')
 			return array(
 				'DEM' => 'Le droit au Rsa fait suite à une demande de RSA',
 				'RMI' => 'Le droit au rSa est issu de la conversion d\'un droit RMI',
@@ -1757,6 +1761,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function orioblalim() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Creancealimentaire')->enum('orioblalim')
 			return array(
 				'CJT' => 'Obligation ex-conjoint',
 				'PAR' => 'Obligation parent(s)'
@@ -1770,6 +1776,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function parassoasf() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Allocationsoutienfamilial')->enum('parassoasf')
 			return array(
 				'P' => 'Père',
 				'M' => 'Mère'
@@ -1783,6 +1791,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function pays() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Adresse')->enum('pays')
 			return array(
 				'FRA' => 'France',
 				'HOR' => 'Hors de France'
@@ -1796,6 +1806,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function paysact() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Activite')->enum('paysact')
 			return array(
 				'FRA' => 'France',
 				'LUX' => 'Luxembourg',
@@ -1813,6 +1825,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function pieecpres() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Personne')->enum('pieecpres')
 			return array(
 				'E' => 'Pièce d\'état civil',
 				'P' => 'Certificat de perte'
@@ -1821,7 +1835,6 @@
 
 		/**
 		 * @return array
-		 * @deprecated since version 3.1
 		 */
 		public function printed() {
 			return array(
@@ -1845,7 +1858,6 @@
 		 *	- suivisaidesapres.qual
 		 *
 		 * @return array
-		 * @deprecated since version 3.1
 		 */
 		public function qual() {
 			return array(
@@ -1856,7 +1868,6 @@
 
 		/**
 		 * @return array
-		 * @deprecated since version 3.1
 		 */
 		public function quinzaine() {
 			return array(
@@ -1872,6 +1883,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function raison_ci() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('raison_ci')
 			return array(
 				'S' => 'Suspension',
 				'R' => 'Radiation'
@@ -1885,6 +1898,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function reg() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Activite')->enum('reg')
 			return array(
 				'AA' => 'ARTISTE/AUTEUR/COMPOSITEUR',
 				'AD' => 'PF DUES PAR ADMINIS. (NON RETRAITE)',
@@ -1917,6 +1932,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function regfisagri() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Infoagricole')->enum('regfisagri')
 			return array(
 				'F' => 'Montant forfaitaire',
 				'R' => 'Montant réél'
@@ -1930,6 +1947,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function regfiseti() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('regfiseti')
 			return array(
 				'R' => 'Réel',
 				'S' => 'Simple',
@@ -1944,6 +1963,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function regfisetia1() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('regfisetia1')
 			return array(
 				'R' => 'Réel',
 				'S' => 'Simple',
@@ -1958,6 +1979,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function rgadr() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Adresse')->enum('rgadr')
 			return array(
 				'01' => 'Dernière adresse',
 				'02' => 'Avant-dernière adresse',
@@ -1971,7 +1994,9 @@
 		 * @return array
 		 * @deprecated since version 3.1
 		 */
-		public function rolepers( ) {
+		public function rolepers() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Prestation')->enum('rolepers')
 			return array(
 				'DEM' => 'Demandeur du RSA',
 				'CJT' => 'Conjoint du demandeur',
@@ -1988,6 +2013,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function sect_acti_emp() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp')
 			return array(
 				'A' => 'Agriculture, sylviculture et pêche',
 				'B' => 'Industries extractives',
@@ -2020,6 +2047,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function sensopecompta() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Infofinanciere')->enum('sensopecompta')
 			return array(
 				'AJ' => 'Ajout du montant dans l\'acompte',
 				'DE' => 'Déduction du montant dans l\'acompte'
@@ -2033,7 +2062,6 @@
 		 *	- situationsallocataires.sexe
 		 *
 		 * @return array
-		 * @deprecated since version 3.1
 		 */
 		public function sexe() {
 			return array(
@@ -2049,6 +2077,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function sitasf() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Allocationsoutienfamilial')->enum('sitasf')
 			return array(
 				'DC' => 'HORS D\'ETAT',
 				'NR' => 'ENFANT NON RECONNU',
@@ -2071,7 +2101,6 @@
 		 *	- situationsallocataires.sitfam
 		 *
 		 * @return array
-		 * @deprecated since version 3.1
 		 */
 		public function sitfam() {
 			return array(
@@ -2098,6 +2127,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function sousnatpf() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Detailcalculdroitrsa')->enum('sousnatpf')
 			return array(
 				'RSDN1' => 'RSA Socle -25 avec enfants à charge ou grossesse',
 				'RSDN2' => 'RSA Socle +25 ans',
@@ -2155,6 +2186,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function soutdemarsoc() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dsp')->enum('soutdemarsoc')
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -2171,6 +2204,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function statudemrsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dossier')->enum('statudemrsa')
 			return array(
 				'N' => 'Non allocataire',
 				'C' => 'Allocataire de la CAF',
@@ -2185,6 +2220,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function statut_contrat_insertion() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'1' => 'Validé',
 				'2' => 'En attente',
@@ -2199,6 +2236,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function statutrdv() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'P' => 'Prévu',
 				'T' => 'Honoré',
@@ -2214,6 +2253,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topaccre() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topaccre')
 			return array(
 				'1' => 'Bénéficiaire de l`ACCRE',
 				'0' => 'Non bénéficiaire de l`ACCRE'
@@ -2227,6 +2268,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topbeneti() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topbeneti')
 			return array(
 				'1' => 'Présence d\'un bénéfice',
 				'0' => 'Pas de bénéfices'
@@ -2240,6 +2283,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topdemdisproccrealim() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Creancealimentaire')->enum('topdemdisproccrealim')
 			return array(
 				'1' => 'Demande de dispense',
 				'0' => 'Pas de demande de dispense'
@@ -2253,6 +2298,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topcreaentre() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topcreaentre')
 			return array(
 				'1' => 'Créateur d\'entreprise',
 				'0' => 'Non créateur d\'entreprise'
@@ -2266,6 +2313,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topempl1ax() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topempl1ax')
 			return array(
 				'1' => 'Emploie 1 ou plusieurs salariés',
 				'0' => 'N\'emploie pas 1 ou plusieurs salariés'
@@ -2279,6 +2328,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topevoreveti() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topevoreveti')
 			return array(
 				'1' => 'Evolution des revenus',
 				'0' => 'Pas d\'évolution des revenus'
@@ -2292,6 +2343,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topfoydrodevorsa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Detaildroitrsa')->enum('topfoydrodevorsa')
 			return array(
 				'1' => 'le foyer est soumis à Droits et devoirs (le montant des ressources d\'acitivtés (MTRESSMENRSA) pris en compte pour le rSa est inférieur  au montant du revenu minimum garanti  rSa (MTREVMINGARASA)',
 				'0' =>  'le foyer n\'est pas soumis à Droits et devoirs (le montant des ressources d\'acitivtés (MTRESSMENRSA) pris en compte pour le rSa est supérieur ou égale au montant du revenu minimum garanti  rSa (MTREVMINGARASA)'
@@ -2305,6 +2358,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topjugpa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Creancealimentaire')->enum('topjugpa')
 			return array(
 				'1' => 'Jugement fixant une pension alimentaire',
 				'0' => 'Pas de jugement fixant une pension alimentaire'
@@ -2318,7 +2373,6 @@
 		 *	- situationsallocataires.toppersdrodevorsa
 		 *
 		 * @return array
-		 * @deprecated since version 3.1
 		 */
 		public function toppersdrodevorsa( $nullEnLettre = false ) {
 			return array(
@@ -2335,6 +2389,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topressevaeti() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topressevaeti')
 			return array(
 				'1' => 'Ressources à évaluer',
 				'0' => 'Pas de ressources à évaluer'
@@ -2348,6 +2404,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topsansdomfixe() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Detaildroitrsa')->enum('topsansdomfixe')
 			return array(
 				'0' => 'Domicile fixe',
 				'1' => 'Sans domicile fixe'
@@ -2361,6 +2419,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topsansempl() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topsansempl')
 			return array(
 				'1' => 'Sans employés',
 				'0' => 'Avec employés'
@@ -2374,6 +2434,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function topstag1ax() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Informationeti')->enum('topstag1ax')
 			return array(
 				'1' => 'Emploie 1 ou plusieurs stagiaires',
 				'0' => 'N\'emploie pas 1 ou plusieurs stagiaires'
@@ -2387,6 +2449,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function type_allocation() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Infofinanciere')->enum('type_allocation')
 			return array(
 				'AllocationsComptabilisees' => 'Allocations comptabilisées',
 				'IndusConstates' => 'Indu constaté',
@@ -2404,6 +2468,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typedero() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Derogation')->enum('typedero')
 			return array(
 				'AGE' => 'Dérogation sur les conditions d\'age',
 				'ACT' => 'Dérogation sur les conditions d\'activité',
@@ -2419,6 +2485,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typeadr() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Adressefoyer')->enum('typeadr')
 			return array(
 				'D' => 'Définitive',
 				'P' => 'Provisoire',
@@ -2433,6 +2501,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typedtnai() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Personne')->enum('typedtnai')
 			return array(
 				'J' => 'Jour inconnu',
 				'N' => 'Jour et mois connus',
@@ -2445,6 +2515,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typenotifpdo() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'RE' => 'Ressortissant européen',
 				'AN' => 'Activité non salariée',
@@ -2470,6 +2542,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typeocclog() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Foyer')->enum('typeocclog')
 			return array(
 				'ACC' => 'Proprietaire avec charges de remboursement',
 				'BAL' => 'Forfait logement a appliquer',
@@ -2491,6 +2565,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typepdo() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'N' => 'Non défini',
 				'C' => 'PDO de contrôle',
@@ -2506,6 +2582,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typeopecompta() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Infofinanciere')->enum('typeopecompta')
 			return array(
 				/*AllocCompta*/
 				'PME' => 'Pour le paiement mensuel',
@@ -2545,6 +2623,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typepar() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Rattachement')->enum('typepar')
 			return array(
 				'ADP' => 'Adoption simple',
 				'ASC' => 'Ascendant',
@@ -2569,6 +2649,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typeparte() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dossier')->enum('typeparte')
 			return array(
 				'CG' => 'Conseil Général', // Code identification partenaire = n° de département sur 3 positions
 				'CT' => 'Collectivité Territoriale',
@@ -2586,6 +2668,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typeperstie() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Avispcgdroitrsa')->enum('typeperstie')
 			return array(
 				'P' => 'S\'il s\'agit d\'un tiers personne physique',
 				'M' => 'S\'il s\'agit d\'un tiers personne morale'
@@ -2599,6 +2683,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typeres() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Adresse')->enum('typeres')
 			return array(
 				'E' => 'Election de domicile',
 				'O' => 'Election de domicile organisme non référencé',
@@ -2613,7 +2699,6 @@
 		 *	- suivisinstruction.typeserins
 		 *
 		 * @return array
-		 * @deprecated since version 3.1
 		 */
 		public function typeserins() {
 			return array(
@@ -2636,6 +2721,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function type_totalisation() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Totalisationacompte')->enum('type_totalisation')
 			return array(
 				'TotalAllocationsComptabilisees' => 'Total des allocations comptabilisees',
 				'TotalIndusConstates' => 'Total des indus constates',
@@ -2846,6 +2933,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function typo_aide() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Aidedirecte')->enum('typo_aide')
 			return array(
 				'1' => 'Insertion sociale',
 				'2' => 'Insertion professionnelle',
@@ -2860,6 +2949,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function verspa() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Creancealimentaire')->enum('verspa')
 			return array(
 				'N' => 'Pas de versement d\'une PA',
 				'O' => 'Versement d\'une PA',
@@ -2874,6 +2965,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function fonorgcedmut() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dossier')->enum('fonorgcedmut')
 			return array(
 				'CAF' => 'Demande gérée par la CAF',
 				'MSA' => 'Demande gérée par la MSA',
@@ -2888,6 +2981,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function fonorgprenmut() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// ClassRegistry::init('Dossier')->enum('fonorgprenmut')
 			return $this->fonorgcedmut();
 		}
 
@@ -2896,6 +2991,8 @@
 		 * @deprecated since version 3.1
 		 */
 		public function motifrecours() {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
+			// Origine inconnue
 			return array(
 				'N' => 'Non admissible',
 				'A' => 'Admissible',
@@ -2903,6 +3000,4 @@
 			);
 		}
 	}
-	
-	// (ClassRegistry::init\([ '"]*Option[ '"]*\)|\$this\->Option)\->duree_hebdo_emp\(\)
 ?>

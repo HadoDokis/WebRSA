@@ -83,9 +83,9 @@
 
 		protected function _setOptions() {
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
-			$this->set( 'pieecpres', $this->Option->pieecpres() );
+			$this->set( 'pieecpres', ClassRegistry::init('Personne')->enum('pieecpres') );
 			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
-			$this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
+			$this->set( 'categoriegeneral', ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp') );
 			$this->set( 'categoriedetail', ClassRegistry::init('Contratinsertion')->enum('emp_occupe') );
 
 			$this->set( 'typeserins', $this->Option->typeserins() );

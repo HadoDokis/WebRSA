@@ -337,8 +337,8 @@
 					)
 				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
-				'rolepers' => $this->Option->rolepers(),
-				'formeci' => $this->Option->forme_ci(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
+				'formeci' => ClassRegistry::init('Contratinsertion')->enum('forme_ci'),
 				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
 			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
@@ -856,8 +856,8 @@
 					)
 				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
-				'rolepers' => $this->Option->rolepers(),
-				'formeci' => $this->Option->forme_ci(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
+				'formeci' => ClassRegistry::init('Contratinsertion')->enum('forme_ci'),
 				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
 			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
@@ -960,8 +960,8 @@
 					)
 				),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
-				'rolepers' => $this->Option->rolepers(),
-				'formeci' => $this->Option->forme_ci()
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
+				'formeci' => ClassRegistry::init('Contratinsertion')->enum('forme_ci')
 			);
 
 			$options = Set::merge(

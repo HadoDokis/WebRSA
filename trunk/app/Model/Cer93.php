@@ -773,7 +773,7 @@
 						'qual' => $Option->qual()
 					),
 					'Cer93' => array(
-						'dureecdd' => $Option->duree_cdd()
+						'dureecdd' => ClassRegistry::init('Contratinsertion')->enum('duree_cdd')
 					)
 				),
 				$this->enums()

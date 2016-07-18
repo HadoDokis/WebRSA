@@ -228,7 +228,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 38342
 	echo '<br/><br/><h2>Adresse hors France<div class="information" for="liblig2adr"></div></h2>';
 	echo '<div class="info-data remarque" id="liblig2adr" style="display: none;">'
 		."<p>Restitution des adresses hors de France</p>"
@@ -266,7 +265,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 92126
 	if (!empty($foyers[0]['Dossier']['Situationdossierrsa']['dtrefursa'])) {
 		echo $this->Default3->index(
 			$foyers,
@@ -278,7 +276,6 @@
 		);
 	}
 	
-	// ID test : 77094
 	if (!empty($suspensionsdroits[0]['Suspensiondroit']['ddsusdrorsa'])) {
 		echo $this->Default3->index(
 			$suspensionsdroits,
@@ -291,7 +288,6 @@
 		);
 	}
 	
-	// ID test : 42724
 	if (!empty($suspensionsversements[0]['Suspensionversement']['ddsusversrsa'])) {
 		echo $this->Default3->index(
 			$suspensionsversements,
@@ -303,7 +299,6 @@
 		);
 	}
 	
-	// ID test : 5635
 	if (!empty($foyers[0]['Dossier']['Situationdossierrsa']['dtclorsa'])) {
 		echo $this->Default3->index(
 			$foyers,
@@ -315,7 +310,6 @@
 		);
 	}
 	
-	// ID test : 99061
 	echo '<br/><br/><h2>Droits RSA</h2>';
 	if (!empty($foyers[0]['Dossier']['Detaildroitrsa']['have_tronccommun'])) {
 		echo $this->Default3->index(
@@ -333,7 +327,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 99331
 	echo '<br/><br/><h2>Montant calcul droit RSA<div class="information" for="detaildroitrsa"></div></h2>';
 	echo '<div class="info-data remarque" id="detaildroitrsa" style="display: none;">'
 		."<p>Bloc absent si aucun droit calculé. Si bloc présent correspond au dernier droit calculé</p>"
@@ -365,7 +358,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 99331
 	echo '<br/><br/><h2>Droits RSA<div class="information" for="detailcalculdroitrsa"></div></h2>';
 	echo '<div class="info-data remarque" id="detailcalculdroitrsa" style="display: none;">'
 		."<p>Détail du calcul du versement du rSa</p>"
@@ -392,7 +384,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 99305
 	echo '<br/><br/><h2>Avis PCG Droit RSA<div class="information" for="avispcg"></div></h2>';
 	echo '<div class="info-data remarque" id="avispcg" style="display: none;">'
 		."<p>Regroupement des décisions du CG liées à au dossier RSA</p>"
@@ -420,7 +411,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 87151
 	echo '<br/><br/><h2>Avis PCG Droit RSA - Réduction RSA<div class="information" for="reducrsa"></div></h2>';
 	echo '<div class="info-data remarque" id="reducrsa" style="display: none;">'
 		."<p>Pénalité sur l'ensemble du droit</p>"
@@ -441,7 +431,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 96476
 	echo '<br/><br/><h2>Avis PCG Droit RSA - Avis pour paiement du RSA à un tiers<div class="information" for="avispcgdroitrsa"></div></h2>';
 	echo '<div class="info-data remarque" id="avispcgdroitrsa" style="display: none;">'
 		."<p>Avis pour paiement du RSA à un tiers</p>"
@@ -463,7 +452,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 99331
 	echo '<br/><br/><h2>Evenements<div class="information" for="evenement"></div></h2>';
 	echo '<div class="info-data remarque" id="evenement" style="display: none;">'
 		."<p>Ce bloc est uniquement alimenté s'il s'agit d'un échange infra-mensuel.<br/>"
@@ -485,7 +473,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 98911
 	echo '<br/><br/><h2>Contrôles administratifs<div class="information" for="controleadministratif"></div></h2>';
 	echo '<div class="info-data remarque" id="controleadministratif" style="display: none;">'
 		."<p>Regroupement des contrôles clôturés sur le mois de référence pour le dossier RSA</p>"
@@ -517,7 +504,6 @@
 		echo $noData;
 	}
 	
-	// ID test : 32930
 	echo '<br/><br/><h2>Créances<div class="information" for="creance"></div></h2>';
 	echo '<div class="info-data remarque" id="creance" style="display: none;">'
 		."<p>Liste des créances communiquées au Conseil général</p>"
@@ -777,26 +763,6 @@
 	} else {
 		echo $noData;
 	}
-	
-	
-	/*
-
-SELECT a.table_name, b.column_name, upper(b.column_name)
-FROM information_schema.columns as a
-JOIN information_schema.columns as b on a.table_name = b.table_name and a.table_schema = b.table_schema
-WHERE a.table_schema = 'public'
-  AND a.column_name ILIKE 'MTESTRSA'
-
-
-select c.id from avispcgdroitsrsa as a
-
-join condsadmins as b on b.avispcgdroitrsa_id = a.id
-join foyers as c on a.dossier_id = c.dossier_id
-
-order by c.id desc
-
-
-	 */
 ?>
 	</div>
 </div>

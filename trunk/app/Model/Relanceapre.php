@@ -224,11 +224,11 @@
 							'qual' => $Option->qual(),
 						),
 						'Prestation' => array(
-							'rolepers' => $Option->rolepers(),
+							'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 						),
 						'Foyer' => array(
 							'sitfam' => $Option->sitfam(),
-							'typeocclog' => $Option->typeocclog(),
+							'typeocclog' => ClassRegistry::init('Foyer')->enum('typeocclog'),
 						),
 						'Type' => array(
 							'voie' =>  $Option->typevoie(),

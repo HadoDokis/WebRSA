@@ -1797,7 +1797,7 @@
 			// Options
 			$options = array(
 				'Prestation' => array(
-					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
+					'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers')
 				),
 				'Personne' => array(
 					'qual' => ClassRegistry::init( 'Option' )->qual()

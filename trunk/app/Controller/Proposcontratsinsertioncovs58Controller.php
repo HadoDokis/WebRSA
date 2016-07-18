@@ -69,10 +69,10 @@
 
 			if( in_array( $this->action, array( 'add', 'edit'/* , 'view' */ ) ) ) {
 				$this->set( 'qual', $this->Option->qual() );
-				$this->set( 'raison_ci', $this->Option->raison_ci() );
+				$this->set( 'raison_ci', ClassRegistry::init('Contratinsertion')->enum('raison_ci') );
 				$this->set( 'avisraison_ci', ClassRegistry::init('Contratinsertion')->enum('avisraison_ci') );
 				$this->set( 'aviseqpluri', ClassRegistry::init('Contratinsertion')->enum('aviseqpluri') );
-				$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
+				$this->set( 'sect_acti_emp', ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp') );
 				$this->set( 'emp_occupe', ClassRegistry::init('Contratinsertion')->enum('emp_occupe') );
 				$this->set( 'duree_hebdo_emp', ClassRegistry::init('Contratinsertion')->enum('duree_hebdo_emp') );
 				$this->set( 'nat_cont_trav', ClassRegistry::init('Contratinsertion')->enum('nat_cont_trav') );
@@ -81,9 +81,9 @@
 				$this->set( 'typevoie', $this->Option->typevoie() );
 
 				$this->set( 'lib_action', ClassRegistry::init('Actioninsertion')->enum('lib_action') );
-				$this->set( 'typo_aide', $this->Option->typo_aide() );
+				$this->set( 'typo_aide', ClassRegistry::init('Aidedirecte')->enum('typo_aide') );
 				$this->set( 'soclmaj', ClassRegistry::init('Infofinanciere')->enum('natpfcre', array('type' => 'soclmaj')));
-				$this->set( 'rolepers', $this->Option->rolepers() );
+				$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 				$this->set( 'zoneprivilegie', ClassRegistry::init( 'Zonegeographique' )->find( 'list' ) );
 				$this->set( 'actions', $this->Action->grouplist( 'prest' ) );
 			}

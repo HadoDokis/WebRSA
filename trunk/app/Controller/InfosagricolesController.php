@@ -41,7 +41,7 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'regfisagri', $this->Option->regfisagri() );
+			$this->set( 'regfisagri', ClassRegistry::init('Infoagricole')->enum('regfisagri') );
 		}
 
 		/**

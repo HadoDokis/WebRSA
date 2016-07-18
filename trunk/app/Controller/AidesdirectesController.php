@@ -42,7 +42,7 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'actions', $this->Action->grouplist( 'aide' ) );
-			$this->set( 'typo_aide', $this->Option->typo_aide() );
+			$this->set( 'typo_aide', ClassRegistry::init('Aidedirecte')->enum('typo_aide') );
 		}
 
 		/**

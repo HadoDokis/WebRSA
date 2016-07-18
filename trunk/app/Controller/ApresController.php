@@ -97,8 +97,8 @@
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
-			$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'sect_acti_emp', ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp') );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'typeservice', ClassRegistry::init( 'Serviceinstructeur' )->find( 'first' ) );
 
 			$this->set( 'optionsaprecomite', (array)Hash::get( $this->ApreComiteapre->enums(), 'ApreComiteapre' ) );

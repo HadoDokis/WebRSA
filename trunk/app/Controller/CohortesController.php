@@ -59,7 +59,7 @@
 				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
 
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa( true ) );
 
@@ -92,7 +92,7 @@
 			);
 			$this->set( 'typesOrient', $typesOrient );
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options() );
-			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
+			$this->set( 'oridemrsa', ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa') );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'printed', $this->Option->printed() );
 			$this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
@@ -276,7 +276,7 @@
 			$this->set( 'typesOrient', $this->Personne->Orientstruct->Typeorient->listOptionsCohortes93() );
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options() );
 
-			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
+			$this->set( 'oridemrsa', ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa') );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'printed', $this->Option->printed() );
 

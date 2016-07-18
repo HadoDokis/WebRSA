@@ -27,7 +27,7 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			// Type_totalisation
-			$this->set( 'type_totalisation', $this->Option->type_totalisation() );
+			$this->set( 'type_totalisation', ClassRegistry::init('Totalisationacompte')->enum('type_totalisation') );
 			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre'));
 		}
 

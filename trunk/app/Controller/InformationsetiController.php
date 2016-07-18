@@ -40,17 +40,17 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'topcreaentre', $this->Option->topcreaentre() );
-			$this->set( 'topaccre', $this->Option->topaccre() );
+			$this->set( 'topcreaentre', ClassRegistry::init('Informationeti')->enum('topcreaentre') );
+			$this->set( 'topaccre', ClassRegistry::init('Informationeti')->enum('topaccre') );
 			$this->set( 'acteti', ClassRegistry::init('Informationeti')->enum('acteti') );
-			$this->set( 'topempl1ax', $this->Option->topempl1ax() );
-			$this->set( 'topstag1ax', $this->Option->topstag1ax() );
-			$this->set( 'topsansempl', $this->Option->topsansempl() );
-			$this->set( 'regfiseti', $this->Option->regfiseti() );
-			$this->set( 'topbeneti', $this->Option->topbeneti() );
-			$this->set( 'regfisetia1', $this->Option->regfisetia1() );
-			$this->set( 'topevoreveti', $this->Option->topevoreveti() );
-			$this->set( 'topressevaeti', $this->Option->topressevaeti() );
+			$this->set( 'topempl1ax', ClassRegistry::init('Informationeti')->enum('topempl1ax') );
+			$this->set( 'topstag1ax', ClassRegistry::init('Informationeti')->enum('topstag1ax') );
+			$this->set( 'topsansempl', ClassRegistry::init('Informationeti')->enum('topsansempl') );
+			$this->set( 'regfiseti', ClassRegistry::init('Informationeti')->enum('regfiseti') );
+			$this->set( 'topbeneti', ClassRegistry::init('Informationeti')->enum('topbeneti') );
+			$this->set( 'regfisetia1', ClassRegistry::init('Informationeti')->enum('regfisetia1') );
+			$this->set( 'topevoreveti', ClassRegistry::init('Informationeti')->enum('topevoreveti') );
+			$this->set( 'topressevaeti', ClassRegistry::init('Informationeti')->enum('topressevaeti') );
 		}
 
 		/**

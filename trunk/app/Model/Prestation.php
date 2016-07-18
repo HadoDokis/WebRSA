@@ -44,16 +44,19 @@
 		);
 		
 		/**
-		 * Surcharge de la méthode enums pour obtenir les valeurs possibles
+		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
+		 * règle de validation inList ou en contrainte dans la base de données en
+		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
+		 * fini de valeurs existe.
+		 * 
+		 * @see AppModel::enums
 		 *
-		 * @return array
+		 * @var array
 		 */
-		public function enums() {
-			$enums = parent::enums();
-
-			$enums[$this->alias]['rolepers'] = $this->Option->rolepers();
-
-			return $enums;
-		}
+		public $fakeInLists = array(
+			'rolepers' => array(
+				'DEM', 'CJT', 'ENF', 'AUT', 'RDO'
+			),
+		);
 	}
 ?>

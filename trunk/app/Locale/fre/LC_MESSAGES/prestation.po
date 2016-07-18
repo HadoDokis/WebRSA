@@ -25,3 +25,19 @@ msgstr "Rôle personne"
 
 msgid "Prestation.natprest"
 msgstr "Nature de la prestation"
+
+msgid "ENUM::ROLEPERS::DEM"
+msgstr "Demandeur du RSA"
+
+msgid "ENUM::ROLEPERS::CJT"
+msgstr "Conjoint du demandeur"
+
+msgid "ENUM::ROLEPERS::ENF"
+msgstr "Enfant"
+
+msgid "ENUM::ROLEPERS::AUT"
+msgstr "Autre personne"
+
+msgid "ENUM::ROLEPERS::RDO"
+msgstr "Responsable du dossier"
+

@@ -72,6 +72,7 @@
 		public $fakeInLists = array(
 			'pays' => array('FRA', 'HOR'),
 			'typeres' => array('E', 'O', 'S'),
+			'rgadr' => array('01', '02', '03'),
 		);
 
         public $belongsTo = array(

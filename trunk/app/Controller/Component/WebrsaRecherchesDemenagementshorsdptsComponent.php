@@ -79,20 +79,20 @@
 				parent::_optionsEnums( $params ),
 				array(
 					'Adresse2' => array(
-						'pays' => $this->Option->pays(),
-						'typeres' => $this->Option->typeres()
+						'pays' => ClassRegistry::init('Adresse')->enum('pays'),
+						'typeres' => ClassRegistry::init('Adresse')->enum('typeres')
 					),
 					'Adressefoyer2' => array(
-						'rgadr' => $this->Option->rgadr(),
-						'typeadr' => $this->Option->typeadr(),
+						'rgadr' => ClassRegistry::init('Adresse')->enum('rgadr'),
+						'typeadr' => ClassRegistry::init('Adressefoyer')->enum('typeadr'),
 					),
 					'Adresse3' => array(
-						'pays' => $this->Option->pays(),
-						'typeres' => $this->Option->typeres()
+						'pays' => ClassRegistry::init('Adresse')->enum('pays'),
+						'typeres' => ClassRegistry::init('Adresse')->enum('typeres')
 					),
 					'Adressefoyer3' => array(
-						'rgadr' => $this->Option->rgadr(),
-						'typeadr' => $this->Option->typeadr(),
+						'rgadr' => ClassRegistry::init('Adresse')->enum('rgadr'),
+						'typeadr' => ClassRegistry::init('Adressefoyer')->enum('typeadr'),
 					),
 				)
 			);

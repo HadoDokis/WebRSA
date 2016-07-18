@@ -115,8 +115,8 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
-			$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'sect_acti_emp', ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp') );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'typeservice', ClassRegistry::init( 'Serviceinstructeur' )->find( 'first' ) );
 
 			$this->set( 'themes', $this->Themeapre66->find( 'list' ) );

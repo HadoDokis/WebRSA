@@ -86,7 +86,7 @@
 
 			$options = Hash::merge( $options, $this->Bilanparcours66->enums() );
 			$typevoie = $this->Option->typevoie();
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 
@@ -1058,7 +1058,7 @@
 			);
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 			$this->set( 'typeformulaire', $typeformulaire );

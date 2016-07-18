@@ -524,7 +524,7 @@
 					'referent_id' => $this->Cer93->Contratinsertion->Referent->listOptions()
 				),
 				'Prestation' => array(
-					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
+					'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers')
 				),
 				'Personne' => array(
 					'qual' => ClassRegistry::init( 'Option' )->qual()

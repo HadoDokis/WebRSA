@@ -456,7 +456,6 @@
 		echo $noData;
 	}
 	
-	// ID test 235390
 	echo '<br/><br/><h3>Suivi appui orientation<div class="information" for="suiviappuiorientation"></div></h3>';
 	echo '<div class="info-data remarque" id="suiviappuiorientation" style="display: none;">'
 		.'<p>Présent seulement<br/>'
@@ -481,7 +480,6 @@
 		echo $noData;
 	}
 	
-	// ID test 238594
 	echo '<br/><br/><h2>DSPs<div class="information" for="dsp"></div></h2>';
 	echo '<div class="info-data remarque" id="dsp" style="display: none;">'
 		.'<p>Présent seulement<br/>'

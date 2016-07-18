@@ -43,7 +43,7 @@
 			$this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referents', $this->Contratinsertion->Referent->listOptions() );
 
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$personne_suivi = $this->Contratinsertion->find(
 				'list',
 				array(

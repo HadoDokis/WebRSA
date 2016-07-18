@@ -41,10 +41,10 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$this->set( 'pays', $this->Option->pays() );
+			$this->set( 'pays', ClassRegistry::init('Adresse')->enum('pays') );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'fonorg', array( 'CAF' => 'CAF', 'MSA' => 'MSA' ) );
-			$this->set( 'rolepers', array_filter_keys( $this->Option->rolepers(), array( 'DEM', 'CJT' ) ) );
+			$this->set( 'rolepers', array_filter_keys( ClassRegistry::init('Prestation')->enum('rolepers'), array( 'DEM', 'CJT' ) ) );
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
 			// Statut de l'orientation. Au CG 66, on ne veut que "Orienté" ou vide.
 			if( Configure::read( 'Cg.departement' ) == 66 ) {

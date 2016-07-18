@@ -40,7 +40,7 @@
 			$this->set( 'lib_action', ClassRegistry::init('Actioninsertion')->enum('lib_action') );
 			$this->set( 'actions', $this->Action->grouplist( 'aide' ) );
 			$this->set( 'actions', $this->Action->grouplist( 'prest' ) );
-			$this->set( 'typo_aide', $this->Option->typo_aide() );
+			$this->set( 'typo_aide', ClassRegistry::init('Aidedirecte')->enum('typo_aide') );
 		}
 
 		/**

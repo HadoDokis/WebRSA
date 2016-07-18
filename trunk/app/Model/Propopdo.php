@@ -648,7 +648,7 @@
 				$result,
 				array(
 					$this->alias => array(
-						'categoriegeneral' => $this->Option->sect_acti_emp(),
+						'categoriegeneral' => ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp'),
 						'categoriedetail' => ClassRegistry::init('Contratinsertion')->enum('emp_occupe'),
 						'orgpayeur' => array( 'CAF' => 'CAF', 'MSA' => 'MSA' )
 					)

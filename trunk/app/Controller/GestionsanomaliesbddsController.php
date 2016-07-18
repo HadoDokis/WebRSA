@@ -143,7 +143,7 @@
 			// Options du formulaire de recherche
 			$options = array(
 				'Foyer' => array( 'sitfam' => $this->Option->sitfam() ),
-// 				'Prestation' => array( 'rolepers' => $this->Option->rolepers() ),
+// 				'Prestation' => array( 'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers') ),
 				'Situationdossierrsa' => array( 'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa') ),
 				'Adresse' => array( 'numcom' => $this->Gestionzonesgeos->listeCodesInsee() ),
 				'Gestionanomaliebdd' => array(
@@ -225,7 +225,7 @@
 			$methode = Set::classicExtract( $named, 'Gestionanomaliebdd.methode' );
 			$methode = ( empty( $methode ) ? 'normale' : $methode );
 
-			$options = array( 'Prestation' => array( 'rolepers' => ClassRegistry::init( 'Option' )->rolepers() ) );
+			$options = array( 'Prestation' => array( 'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers') ) );
 			$methodes = $this->_methodes();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
