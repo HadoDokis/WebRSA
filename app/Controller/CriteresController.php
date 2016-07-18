@@ -44,7 +44,7 @@
 		protected function _setOptions() {
 			$typeservice = ClassRegistry::init( 'Serviceinstructeur' )->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
 			$this->set( 'typeservice', $typeservice );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			// Structures référentes
 			$datas = Set::merge( $this->request->data, Hash::expand( $this->request->params['named'], '__' ) );
 			$typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
@@ -60,7 +60,6 @@
 			$this->set( 'typeorient', $this->InsertionsBeneficiaires->typesorients() );
 
 			$this->set( 'statuts', $this->Orientstruct->enum( 'statut_orient' ) );
-			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
 			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'qual', $this->Option->qual() );
 

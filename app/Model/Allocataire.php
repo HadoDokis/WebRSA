@@ -260,12 +260,12 @@
 				$this->Personne->Foyer->enums(),
 				array(
 					'Adresse' => array(
-						'pays' => $Option->pays(),
-						'typeres' => $Option->typeres()
+						'pays' => ClassRegistry::init('Adresse')->enum('pays'),
+						'typeres' => ClassRegistry::init('Adresse')->enum('typeres')
 					),
 					'Adressefoyer' => array(
-						'rgadr' => $Option->rgadr(),
-						'typeadr' => $Option->typeadr(),
+						'rgadr' => ClassRegistry::init('Adresse')->enum('rgadr'),
+						'typeadr' => ClassRegistry::init('Adressefoyer')->enum('typeadr'),
 					),
 					'Calculdroitrsa' => array(
 						'toppersdrodevorsa' => $Option->toppersdrodevorsa(true),
@@ -274,23 +274,23 @@
 						'natpf' => $this->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->enum('natpf'),
 					),
 					'Detaildroitrsa' => array(
-						'oridemrsa' => $Option->oridemrsa(),
-						'topfoydrodevorsa' => $Option->topfoydrodevorsa(),
-						'topsansdomfixe' => $Option->topsansdomfixe(),
+						'oridemrsa' => ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa'),
+						'topfoydrodevorsa' => ClassRegistry::init('Detaildroitrsa')->enum('topfoydrodevorsa'),
+						'topsansdomfixe' => ClassRegistry::init('Detaildroitrsa')->enum('topsansdomfixe'),
 					),
 					// FIXME: dans les enums du dossier
 					'Dossier' => array(
 						'numorg' => $this->Personne->Foyer->Dossier->enum( 'numorg' ),
-						'typeparte' => $Option->typeparte(),
+						'typeparte' => ClassRegistry::init('Dossier')->enum('typeparte'),
 					),
 					'Personne' => array(
-						'pieecpres' => $Option->pieecpres(),
+						'pieecpres' => ClassRegistry::init('Personne')->enum('pieecpres'),
 						'qual' => $Option->qual(),
 						'sexe' => $Option->sexe(),
-						'typedtnai' => $Option->typedtnai(),
+						'typedtnai' => ClassRegistry::init('Personne')->enum('typedtnai'),
 					),
 					'Prestation' => array(
-						'rolepers' => $Option->rolepers(),
+						'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 					),
 					'Referentparcours' => array(
 						'qual' => $Option->qual(),

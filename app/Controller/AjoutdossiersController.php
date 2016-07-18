@@ -59,14 +59,14 @@
 				case 'conjoint':
 					$this->set( 'qual', $this->Option->qual() );
 					$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
-					$this->set( 'typedtnai', $this->Option->typedtnai() );
-					$this->set( 'pieecpres', $this->Option->pieecpres() );
-					$this->set( 'rolepers', $this->Option->rolepers() );
+					$this->set( 'typedtnai', ClassRegistry::init('Personne')->enum('typedtnai') );
+					$this->set( 'pieecpres', ClassRegistry::init('Personne')->enum('pieecpres') );
+					$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 					break;
 				case 'adresse':
-					$this->set( 'pays', $this->Option->pays() );
-					$this->set( 'rgadr', $this->Option->rgadr() );
-					$this->set( 'typeadr', $this->Option->typeadr() );
+					$this->set( 'pays', ClassRegistry::init('Adresse')->enum('pays') );
+					$this->set( 'rgadr', ClassRegistry::init('Adresse')->enum('rgadr') );
+					$this->set( 'typeadr', ClassRegistry::init('Adressefoyer')->enum('typeadr') );
 					$this->set( 'libtypevoie', $this->Adresse->enum( 'libtypevoie' ) );
 					break;
 				case 'ressourcesallocataire':
@@ -82,7 +82,7 @@
 					$this->set( 'abaneu', ClassRegistry::init('Detailressourcemensuelle')->enum('abaneu') );
 					break;
 				case 'dossier':
-					$this->set( 'oridemrsa', $this->Option->oridemrsa() );
+					$this->set( 'oridemrsa', ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa') );
 					$this->set( 'fonorg', array( 'CAF' => 'CAF', 'MSA' => 'MSA' ) );
 			}
 

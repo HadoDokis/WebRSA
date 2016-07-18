@@ -40,11 +40,11 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->set( 'topsansdomfixe', $this->Option->topsansdomfixe() );
-			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
-			$this->set( 'topfoydrodevorsa', $this->Option->topfoydrodevorsa() );
+			$this->set( 'topsansdomfixe', ClassRegistry::init('Detaildroitrsa')->enum('topsansdomfixe') );
+			$this->set( 'oridemrsa', ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa') );
+			$this->set( 'topfoydrodevorsa', ClassRegistry::init('Detaildroitrsa')->enum('topfoydrodevorsa') );
 			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
-			$this->set( 'sousnatpf', $this->Option->sousnatpf() );
+			$this->set( 'sousnatpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('sousnatpf') );
 		}
 
 		/**

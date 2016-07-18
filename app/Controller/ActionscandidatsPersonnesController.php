@@ -121,8 +121,8 @@
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
-			$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'sect_acti_emp', ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp') );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'typeservice', $this->ActioncandidatPersonne->Personne->Orientstruct->Serviceinstructeur->find( 'first' ) );
 			$this->set( compact( 'options' ) );
@@ -769,7 +769,7 @@
 				$this->loadModel( 'Option' );
                 $options['Personne'] = array( 'qual' => $this->Option->qual() );
                 $options['Contratinsertion'] = array( 'decision_ci' => ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
-                $options['Prestation'] = array( 'rolepers' => $this->Option->rolepers() );
+                $options['Prestation'] = array( 'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers') );
                 $options['Suiviinstruction'] = array( 'typeserins' => $this->Option->typeserins() );
 				$options = Hash::merge( $options, $this->{$this->modelClass}->Personne->Contratinsertion->Cer93->enums() );
 				$options[$this->modelClass]['valprogfichecandidature66_id'] = ClassRegistry::init('Valprogfichecandidature66')->dependantSelectOptions();

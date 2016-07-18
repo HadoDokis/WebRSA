@@ -131,7 +131,7 @@
 			$this->set( 'secteurscuis', $secteurscuis );
 
 			$typevoie = $this->Option->typevoie();
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
 

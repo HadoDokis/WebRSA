@@ -53,7 +53,7 @@
 			ini_set('memory_limit', '512M');
 			parent::beforeFilter();
 
-			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
+			$this->set( 'oridemrsa', ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa') );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'printed', $this->Option->printed() );
 			$this->set( 'decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
@@ -63,7 +63,7 @@
 
 			$this->set( 'numcontrat', (array)Hash::get( $this->Dossier->Foyer->Personne->Contratinsertion->enums(), 'Contratinsertion' ) );
 
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 
 			$forme_ci = array();
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {

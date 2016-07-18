@@ -167,7 +167,7 @@
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
 				'moticlorsa' => ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa'),
-				'rolepers' => $this->Option->rolepers(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->InsertionsBeneficiaires->referents(
@@ -234,7 +234,7 @@
 			// Options
 			$options = array(
 				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
-				'rolepers' => $this->Option->rolepers(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 				'referents' => $this->InsertionsBeneficiaires->referents(
 					array(
 						'type' => 'optgroup',

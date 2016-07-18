@@ -59,8 +59,8 @@
 			parent::beforeFilter();
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
 			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre') );
-			$this->set( 'typeopecompta', $this->Option->typeopecompta() );
-			$this->set( 'sensopecompta', $this->Option->sensopecompta() );
+			$this->set( 'typeopecompta', ClassRegistry::init('Infofinanciere')->enum('typeopecompta') );
+			$this->set( 'sensopecompta', ClassRegistry::init('Infofinanciere')->enum('sensopecompta') );
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 		}
 

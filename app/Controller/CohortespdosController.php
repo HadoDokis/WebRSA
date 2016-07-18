@@ -57,7 +57,7 @@
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
 			$this->set( 'traitementtypepdo', $this->Traitementtypepdo->find( 'list' ) );
-			$this->set( 'pieecpres', $this->Option->pieecpres() );
+			$this->set( 'pieecpres', ClassRegistry::init('Personne')->enum('pieecpres') );
 			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
 			$this->set( 'gestionnaire', $this->User->find(
 					'list',
@@ -77,7 +77,7 @@
 				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $this->Situationdossierrsa->etatAttente())),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
-				'rolepers' => $this->Option->rolepers(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 				'qual' => $this->Option->qual()
 			);
 			$this->set( 'options', $options );

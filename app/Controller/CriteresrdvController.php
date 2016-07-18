@@ -59,7 +59,7 @@
 			$this->set( 'referents', $this->Rendezvous->Referent->listOptions() );
 
 			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'qual', $this->Option->qual() );
 
             if( Configure::read( 'Rendezvous.useThematique' ) ) {

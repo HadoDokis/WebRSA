@@ -170,7 +170,7 @@
 				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
-				'rolepers' => $this->Option->rolepers(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 				'qual' => $this->Option->qual(),
 				'structuresreferentes' => $structuresParZonesGeographiques,
 				'departementsnvadresses' => array( '1' => 'Dans le département', '0' => 'Hors du départment' ),
@@ -209,7 +209,7 @@
 			);
 
 			$options = array(
-				'rolepers' => $this->Option->rolepers(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 				'qual' => $this->Option->qual(),
 			);
 

@@ -1015,7 +1015,7 @@
 				$this->Personne->Foyer->enums(),
 				array(
 					'Prestation' => array(
-						'rolepers' => $this->Option->rolepers(),
+						'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 					),
 					'Type' => array(
 						'voie' => $this->Option->typevoie(),
@@ -1024,7 +1024,7 @@
 						'voie' => $this->Option->typevoie()
 					),
 					'Detaildroitrsa' => array(
-						'oridemrsa' => $this->Option->oridemrsa(),
+						'oridemrsa' => ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa'),
 					),
 				),
 				$this->enums()

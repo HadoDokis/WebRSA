@@ -110,11 +110,11 @@
 			$options = $this->Dossierpcg66->enums();
 
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
-			$this->set( 'pieecpres', $this->Option->pieecpres() );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'pieecpres', ClassRegistry::init('Personne')->enum('pieecpres') );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
-			$this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
+			$this->set( 'categoriegeneral', ClassRegistry::init('Contratinsertion')->enum('sect_acti_emp') );
 			$this->set( 'categoriedetail', ClassRegistry::init('Contratinsertion')->enum('emp_occupe') );
 
 			$this->set( 'typeserins', $this->Option->typeserins() );

@@ -49,9 +49,9 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 
-			$this->set( 'pays', $this->Option->pays() );
-			$this->set( 'rgadr', $this->Option->rgadr() );
-			$this->set( 'typeadr', $this->Option->typeadr() );
+			$this->set( 'pays', ClassRegistry::init('Adresse')->enum('pays') );
+			$this->set( 'rgadr', ClassRegistry::init('Adresse')->enum('rgadr') );
+			$this->set( 'typeadr', ClassRegistry::init('Adressefoyer')->enum('typeadr') );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'options', $this->Adressefoyer->Adresse->enums() );
 		}

@@ -94,3 +94,12 @@ msgstr "Stable"
 
 msgid "ENUM::TYPERES::O"
 msgstr "Election de domicile organisme non référencé"
+
+msgid "ENUM::RGADR::01"
+msgstr "Dernière adresse"
+
+msgid "ENUM::RGADR::02"
+msgstr "Avant-dernière adresse"
+
+msgid "ENUM::RGADR::03"
+msgstr "Avant-avant-dernière adresse"

@@ -122,7 +122,7 @@
 				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
-				'rolepers' => $this->Option->rolepers(),
+				'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 				'qual' => $this->Option->qual(),
 				'structuresreferentes' => $this->Dossier->Foyer->Personne->Orientstruct->Structurereferente->listOptions(),
 				'typesorients' => $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->listOptions(),

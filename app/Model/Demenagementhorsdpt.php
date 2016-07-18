@@ -216,20 +216,20 @@
 				$options,
 				array(
 					'Adresse2' => array(
-						'pays' => $Option->pays(),
-						'typeres' => $Option->typeres()
+						'pays' => ClassRegistry::init('Adresse')->enum('pays'),
+						'typeres' => ClassRegistry::init('Adresse')->enum('typeres')
 					),
 					'Adressefoyer2' => array(
-						'rgadr' => $Option->rgadr(),
-						'typeadr' => $Option->typeadr(),
+						'rgadr' => ClassRegistry::init('Adresse')->enum('rgadr'),
+						'typeadr' => ClassRegistry::init('Adressefoyer')->enum('typeadr'),
 					),
 					'Adresse3' => array(
-						'pays' => $Option->pays(),
-						'typeres' => $Option->typeres()
+						'pays' => ClassRegistry::init('Adresse')->enum('pays'),
+						'typeres' => ClassRegistry::init('Adresse')->enum('typeres')
 					),
 					'Adressefoyer3' => array(
-						'rgadr' => $Option->rgadr(),
-						'typeadr' => $Option->typeadr(),
+						'rgadr' => ClassRegistry::init('Adresse')->enum('rgadr'),
+						'typeadr' => ClassRegistry::init('Adressefoyer')->enum('typeadr'),
 					),
 				)
 			);

@@ -73,7 +73,7 @@
 			$this->set( 'decision_ci', ClassRegistry::init('Contratinsertion')->enum('decision_ci') );
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			$this->set( 'natfingro', ClassRegistry::init('Grossesse')->enum('natfingro') );
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'statudemrsa', $this->Dossier->enum( 'statudemrsa' ) );
 			$this->set( 'moticlorsa', ClassRegistry::init('Situationdossierrsa')->enum('moticlorsa') );
 			$this->set( 'typeserins', $this->Option->typeserins() );

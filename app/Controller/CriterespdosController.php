@@ -40,7 +40,7 @@
 		 */
 		protected function _setOptions() {
 			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'pieecpres', $this->Option->pieecpres() );
+			$this->set( 'pieecpres', ClassRegistry::init('Personne')->enum('pieecpres') );
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			$this->set( 'motifpdo', ClassRegistry::init('Propopdo')->enum('motifpdo') );
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
@@ -53,7 +53,7 @@
 			$this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
 			$this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 

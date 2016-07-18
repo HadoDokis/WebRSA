@@ -359,7 +359,7 @@
 					'qual' => $Option->qual()
 				),
 				'Prestation' => array(
-					'rolepers' => $Option->rolepers()
+					'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers')
 				),
 				'Referent' => array(
 					'qual' => $Option->qual()

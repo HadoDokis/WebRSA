@@ -1891,11 +1891,7 @@
 
 			$Option = ClassRegistry::init( 'Option' );
 			$options = Set::merge(
-				array(
-					'Contratinsertion' => array(
-						'decision_ci' => $Option->decision_ci(),
-					)
-				),
+				$this->enums(),
 				$this->Autreavisradiation->enums(),
 				$this->Autreavissuspension->enums()
 			);
@@ -2087,23 +2083,19 @@
 				$options = Hash::merge(
 					array(
 						'Contratinsertion' => array(
-							'sect_acti_emp' => $Option->sect_acti_emp(),
-							'emp_occupe' => $Option->emp_occupe(),
-							'duree_hebdo_emp' => $Option->duree_hebdo_emp(),
-							'nat_cont_trav' => $Option->nat_cont_trav(),
-							'typeocclog' => $Option->typeocclog(),
+							'typeocclog' => ClassRegistry::init('Foyer')->enum('typeocclog'),
 						),
 						'avisraison' => array(
-							'ci' => $Option->avisraison_ci()
+							'ci' => $this->enum('avisraison_ci')
 						),
 						'duree' => array(
-							'cdd' => $Option->duree_cdd()
+							'cdd' => $this->enum('duree_cdd')
 						),
 						'decision' => array(
-							'ci' => $Option->decision_ci()
+							'ci' => $this->enum('decision_ci')
 						),
 						'raison' => array(
-							'ci' => $Option->raison_ci()
+							'ci' => $this->enum('raison_ci')
 						),
 						'forme' => array(
 							'ci' => array( 'S' => 'Simple', 'C' => 'Complexe' )
@@ -2112,11 +2104,11 @@
 							'qual' => $Option->qual(),
 						),
 						'Prestation' => array(
-							'rolepers' => $Option->rolepers(),
+							'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
 						),
 						'Foyer' => array(
 							'sitfam' => $Option->sitfam(),
-							'typeocclog' => $Option->typeocclog(),
+							'typeocclog' => ClassRegistry::init('Foyer')->enum('typeocclog'),
 						),
 						'Type' => array(
 							'voie' => $Option->typevoie(),
@@ -2125,7 +2117,7 @@
 							'voie' => $Option->typevoie()
 						),
 						'Detaildroitrsa' => array(
-							'oridemrsa' => $Option->oridemrsa(),
+							'oridemrsa' => ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa'),
 						),
 					),
 					$this->enums(),

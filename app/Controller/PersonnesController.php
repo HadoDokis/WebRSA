@@ -57,11 +57,11 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', ClassRegistry::init('Personne')->enum('nati') );
-			$this->set( 'typedtnai', $this->Option->typedtnai() );
-			$this->set( 'pieecpres', $this->Option->pieecpres() );
+			$this->set( 'typedtnai', ClassRegistry::init('Personne')->enum('typedtnai') );
+			$this->set( 'pieecpres', ClassRegistry::init('Personne')->enum('pieecpres') );
 			$this->set( 'sexe', $this->Option->sexe() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
 			$this->set( 'natfingro', ClassRegistry::init('Grossesse')->enum('natfingro') );
@@ -370,7 +370,7 @@
 
 				// On ne fait apparaître les roles de demandeur et de conjoint que
 				// si ceux-ci n'existent pas encore dans le foyer
-				$rolepersPermis = $this->Option->rolepers();
+				$rolepersPermis = ClassRegistry::init('Prestation')->enum('rolepers');
 				foreach( $rolepersPermis as $key => $rPP ) {
 					if( in_array( $key, $roles ) ) {
 						unset( $rolepersPermis[$key] );

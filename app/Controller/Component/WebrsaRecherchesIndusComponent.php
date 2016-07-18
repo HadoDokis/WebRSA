@@ -30,7 +30,7 @@
 				parent::_optionsEnums( $params ),
 				array(
 					'Dossier' => array(
-						'typeparte' => $this->Option->typeparte()
+						'typeparte' => ClassRegistry::init('Dossier')->enum('typeparte')
 					),
 					'Infofinanciere' => array(
 						'compare' => array('<' => '<','>' => '>','<=' => '<=','>=' => '>='),
