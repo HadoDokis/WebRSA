@@ -983,5 +983,18 @@
 			$result = hash_filter_keys( $data, $filters );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+		
+		/**
+		 * Test de la fonction filesize2bytes
+		 */
+		public function testFilesize2bytes() {
+			$this->assertEqual(filesize2bytes('123456'), 123456, 'Juste des chiffres');
+			$this->assertEqual(filesize2bytes('123456B'), 123456, 'Test "B"');
+			$this->assertEqual(filesize2bytes('1K'), 1024, 'Test "K"');
+			$this->assertEqual(filesize2bytes('1M'), pow(1024, 2), 'Test "M"');
+			$this->assertEqual(filesize2bytes('1 Go'), pow(1024, 3), 'Test "G" avec "o"');
+			$this->assertEqual(filesize2bytes('25 TB'), 25 * pow(1024, 4), 'Test "T" avec "B"');
+			$this->assertEqual(filesize2bytes('1.25P'), 1.25 * pow(1024, 5), 'Test "P" avec float');
+		}
 	}
 ?>
