@@ -106,7 +106,7 @@
 		/**
 		 *
 		 */
-		protected function _setOptions() {debug(ClassRegistry::init('Recours')->enum('typecommission'));
+		protected function _setOptions() {
 			$options = $this->Dossierpcg66->enums();
 
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
