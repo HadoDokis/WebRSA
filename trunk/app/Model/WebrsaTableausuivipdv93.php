@@ -2986,6 +2986,36 @@
 						$models[$model] = ClassRegistry::init( $model )->schema();
 					}
 
+					// Pour les tableaux D1 et D2 sur Plaine Commune, on ajoute un champ virtuel (Demenagement.interne)
+					// s'il existe un D1 précédent le D1 comptabilisé, la même année, sur une autre structure de Plaine Co ?
+					if( in_array( $action, array( 'tableaud1', 'tableaud2' ) ) && 'communaute' === Hash::get( $search, 'Search.type' ) ) {
+						$communautesr_id = Hash::get( $search, 'Search.communautesr_id' );
+						$sqlCommunautesr = $this->Tableausuivipdv93->Communautesr->sqStructuresreferentes( $communautesr_id );
+
+						$Rendezvous = ClassRegistry::init( 'Rendezvous' );
+						$sqRendezvous = array(
+							'alias' => 'rendezvouspcd',
+							'fields' => array( 'rendezvouspcd.structurereferente_id' ),
+							'contain' => false,
+							'joins' => array(
+								array_words_replace(
+									$Rendezvous->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+									array( 'Questionnaired1pdv93' => 'questionnairesd1pdvs93pcd', 'Rendezvous' => 'rendezvouspcd' )
+								)
+							),
+							'conditions' => array(
+								'rendezvouspcd.personne_id = Rendezvous.personne_id',
+								'EXTRACT( \'YEAR\' FROM questionnairesd1pdvs93pcd.date_validation ) = EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )',
+								'questionnairesd1pdvs93pcd.date_validation < Questionnaired1pdv93.date_validation'
+							),
+							'order' => array( 'questionnairesd1pdvs93pcd.date_validation DESC' ),
+							'limit' => 1
+						);
+						$sqlRendezvous =  $Rendezvous->sq( $sqRendezvous );
+
+						$query['fields']['Demenagement.interne'] = "( CASE WHEN ( {$sqlRendezvous} ) IN ( {$sqlCommunautesr} ) = TRUE THEN TRUE ELSE FALSE END ) AS \"Demenagement__interne\"";
+					}
+
 					$modelClass = ClassRegistry::init( $modelClass );
 					$modelClass->forceVirtualFields = true;
 

@@ -612,8 +612,9 @@
 			}
 
 			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
+			$search = unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] );
 
-			$this->set( compact( 'results', 'options', 'csvfile', 'action' ) );
+			$this->set( compact( 'results', 'options', 'csvfile', 'action', 'search' ) );
 			$this->layout = null;
 
 			if( in_array( $action, array( 'tableaud1', 'tableaud2' ) )  ) {

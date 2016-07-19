@@ -1,43 +1,50 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	// TODO
-	$this->Csv->addRow(
-		array(
-			// Suivi
-			__d( 'cohortesd2pdvs93', 'Rendezvous.daterdv' ),
-			__d( 'cohortesd2pdvs93', 'Questionnaired2pdv93.date_validation' ),
-			__d( 'cohortesd2pdvs93', 'Structurereferente.lib_struc' ),
-			__d( 'cohortesd2pdvs93', 'Referent.nom_complet' ),
-			// Allocataire
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.nom' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.prenom' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.dtnai' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.sexe' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.rolepers' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.codepos' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.nomcom' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.sitfam' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.matricule' ),
-			// Détails du suivi, D1
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.inscritpe' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.marche_travail' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.vulnerable' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.diplomes_etrangers' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.categorie_sociopro' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.nivetu' ),
-			'Non scolarisé ?',
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.autre_caracteristique' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.autre_caracteristique_autre' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.conditions_logement' ),
-			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.conditions_logement_autre' ),
-			// Détails du suivi, D2
-			__d( 'questionnairesd2pdvs93', 'Questionnaired2pdv93.situationaccompagnement' ),
-			__d( 'questionnairesd2pdvs93', 'Sortieaccompagnementd2pdv93.name' ),
-			__d( 'questionnairesd2pdvs93', 'Questionnaired2pdv93.chgmentsituationadmin' ),
-		)
+	$type = Hash::get( $search, 'Search.type' );
+
+	// 1. Ligne d'en-tetes
+	$row = array(
+		// Suivi
+		__d( 'cohortesd2pdvs93', 'Rendezvous.daterdv' ),
+		__d( 'cohortesd2pdvs93', 'Questionnaired2pdv93.date_validation' ),
+		__d( 'cohortesd2pdvs93', 'Structurereferente.lib_struc' ),
+		__d( 'cohortesd2pdvs93', 'Referent.nom_complet' ),
+		// Allocataire
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.nom' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.prenom' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.dtnai' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.sexe' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.rolepers' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.codepos' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.nomcom' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.sitfam' ),
+		__d( 'questionnairesd1pdvs93', 'Situationallocataire.matricule' ),
+		// Détails du suivi, D1
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.inscritpe' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.marche_travail' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.vulnerable' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.diplomes_etrangers' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.categorie_sociopro' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.nivetu' ),
+		'Non scolarisé ?',
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.autre_caracteristique' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.autre_caracteristique_autre' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.conditions_logement' ),
+		__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.conditions_logement_autre' ),
+		// Détails du suivi, D2
+		__d( 'questionnairesd2pdvs93', 'Questionnaired2pdv93.situationaccompagnement' ),
+		__d( 'questionnairesd2pdvs93', 'Sortieaccompagnementd2pdv93.name' ),
+		__d( 'questionnairesd2pdvs93', 'Questionnaired2pdv93.chgmentsituationadmin' ),
 	);
 
+	if( 'communaute' === $type ) {
+		$row[] = 'Déménagement interne';
+	}
+
+	$this->Csv->addRow( $row );
+
+	// 2. Résultats
 	if( !empty( $results ) ) {
 		foreach( $results as $result ) {
 			// TODO: traductions
@@ -74,6 +81,10 @@
 				Hash::get( $result, 'Sortieaccompagnementd2pdv93.name' ),
 				value( $options['Questionnaired2pdv93']['chgmentsituationadmin'], Hash::get( $result, 'Questionnaired2pdv93.chgmentsituationadmin' ) ),
 			);
+
+			if( 'communaute' === $type ) {
+				$row[] = ( Hash::get( $result, 'Demenagement.interne' ) ? 'Oui' : 'Non' );
+			}
 
 			$this->Csv->addRow( $row );
 		}
