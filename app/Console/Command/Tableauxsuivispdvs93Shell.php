@@ -158,6 +158,7 @@
 				$this->_filters( $tableau, $search ),
 				$extra
 			);
+
 			return $this->WebrsaTableausuivipdv93->historiser(
 				$tableau,
 				$filters
@@ -180,7 +181,7 @@
 
 			$this->out( "\t{$labels[$extra['Search']['type']]}" . ( $label === null ? '' : ": {$label}" ) );
 			foreach( $tableaux as $tableau ) {
-				$success = $success && $this->_historiserTableau( $tableau, $search, array( 'Search' => array( 'type' => 'cg' ) ) );
+				$success = $success && $this->_historiserTableau( $tableau, $search, $extra );
 			}
 
 			return $success;
