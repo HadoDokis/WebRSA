@@ -1,7 +1,4 @@
 <?php
-	// Donne le domain du plus haut niveau de précision (prefix, action puis controller)
-	$domain = current(MultiDomainsTranslator::urlDomains());
-	$defaultParams = compact('options', 'domain');
 	App::uses('WebrsaAccess', 'Utility');
 	WebrsaAccess::init($dossierMenu);
 
@@ -42,40 +39,43 @@
 	
 	echo $this->Default3->index(
 		$results,
-		array(
-			'Cui.faitle',
-			'Cui66.positioncui66',
-			'Historiquepositioncui66.created',
-			'Cui66.positioncui66',
-			'Cui.secteurmarchand' => array( 'type' => 'select' ),
-			'Partenairecui.raisonsociale',
-			'Cui.effetpriseencharge',
-			'Cui.finpriseencharge',
-			'Decisioncui66.decision',
-			'Decisioncui66.datedecision',
-			'Cui66.notifie' => array( 'type' => 'select' ),
-			'Cui66.raisonannulation',
-		) + WebrsaAccess::links(
+		$this->Translator->normalize(
 			array(
-				'/Cuis/view/#Cui.id#',
-				'/Cuis/edit/#Cui.id#',
-				'/Cuis66/impression_fichedeliaison/#Cui.id#' => array('class' => 'impression'),
-				'/Cuis66/impression/#Cui.id#',
-				'/Cuis66/email/#Cui.personne_id#/#Cui.id#',
-				'/Propositionscuis66/index/#Cui.id#' => array('class' => 'proposition'),
-				'/Decisionscuis66/index/#Cui.id#' => array('class' => 'valider'),
-				'/Cuis66/notification/#Cui66.id#' => array('class' => 'alert'),
-				'/Accompagnementscuis66/index/#Cui.id#' => array('class' => 'accompagnement'),
-				'/Suspensionscuis66/index/#Cui.id#' => array('class' => 'suspension'),
-				'/Rupturescuis66/index/#Cui.id#' => array('class' => 'rupture'),
-				'/Cuis66/annule/#Cui66.id#' => array('class' => 'cancel'),
-				'/Cuis66/delete/#Cui.id#',
-				'/Cuis66/filelink/#Cui.id#' => array(
-					'msgid' => __m('/Cuis66/filelink')." (#Fichiermodule.nombre#)",
-				),
+				'Cui.faitle',
+				'Cui66.positioncui66',
+				'Historiquepositioncui66.created',
+				'Cui66.positioncui66',
+				'Cui.secteurmarchand' => array( 'type' => 'select' ),
+				'Partenairecui.raisonsociale',
+				'Cui.effetpriseencharge',
+				'Cui.finpriseencharge',
+				'Decisioncui66.decision',
+				'Decisioncui66.datedecision',
+				'Cui66.notifie' => array( 'type' => 'select' ),
+				'Cui66.raisonannulation',
+			) + WebrsaAccess::links(
+				array(
+					'/Cuis/view/#Cui.id#',
+					'/Cuis/edit/#Cui.id#',
+					'/Cuis66/impression_fichedeliaison/#Cui.id#' => array('class' => 'impression'),
+					'/Cuis66/impression/#Cui.id#',
+					'/Cuis66/email/#Cui.personne_id#/#Cui.id#',
+					'/Propositionscuis66/index/#Cui.id#' => array('class' => 'proposition'),
+					'/Decisionscuis66/index/#Cui.id#' => array('class' => 'valider'),
+					'/Cuis66/notification/#Cui66.id#' => array('class' => 'alert'),
+					'/Accompagnementscuis66/index/#Cui.id#' => array('class' => 'accompagnement'),
+					'/Suspensionscuis66/index/#Cui.id#' => array('class' => 'suspension'),
+					'/Rupturescuis66/index/#Cui.id#' => array('class' => 'rupture'),
+					'/Cuis66/annule/#Cui66.id#' => array('class' => 'cancel'),
+					'/Cuis66/delete/#Cui.id#',
+					'/Cuis66/filelink/#Cui.id#' => array(
+						'msgid' => __m('/Cuis66/filelink')." (#Fichiermodule.nombre#)",
+					),
+				)
 			)
 		),
-		$defaultParams + array(
+		array(
+			'options' => $options,
 			'paginate' => false,
 		)
 	);

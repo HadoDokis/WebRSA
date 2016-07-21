@@ -2,7 +2,7 @@
 	App::uses('WebrsaAccess', 'Utility');
 	WebrsaAccess::init($dossierMenu);
 	
-	$domain = current(MultiDomainsTranslator::urlDomains());
+	$domain = current(WebrsaTranslator::domains());
 	$defaultParams = compact('options', 'domain');
 ?>
 

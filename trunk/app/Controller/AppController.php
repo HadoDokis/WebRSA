@@ -21,7 +21,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Session', 'Auth', 'Acl' );
+		public $components = array( 'Session', 'Auth', 'Acl', 'WebrsaTranslatorAutoload' );
 
 		/**
 		 * Helpers utilisés
@@ -40,7 +40,8 @@
 			'Observer' => array(
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => false
-			)
+			),
+			'Translator',
 		);
 
 		/**

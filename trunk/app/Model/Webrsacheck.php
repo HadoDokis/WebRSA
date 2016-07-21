@@ -380,6 +380,7 @@
 				'Module.Donneescaf.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'WebrsaTranslator.suffix' => 'string',
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

@@ -2,7 +2,7 @@
 	$departement = (integer)Configure::read( 'Cg.departement' );
 	$controller = $this->params->controller;
 	$action = $this->action;
-	$availableDomains = MultiDomainsTranslator::urlDomains();
+	$availableDomains = WebrsaTranslator::domains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
 	$paramDate = array(
 		'domain' => null,
