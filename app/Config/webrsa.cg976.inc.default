@@ -534,4 +534,10 @@
 			'groupes_acceptes' => array( 1 )
 		)
 	);
+	
+	/**
+	 * Suffix des fichiers de traductions spécialisés pour le CG
+	 * ex: controller_action_suffix.po -> dossiers_index_cg01.po
+	 */
+	Configure::write('WebrsaTranslator.suffix', 'cg'.Configure::read('Cg.departement'));
 ?>

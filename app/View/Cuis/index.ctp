@@ -1,6 +1,6 @@
 <?php
 	// Donne le domain du plus haut niveau de précision (prefix, action puis controller)
-	$domain = current(MultiDomainsTranslator::urlDomains());
+	$domain = current(WebrsaTranslator::domains());
 	$defaultParams = compact('options', 'domain');
 	App::uses('WebrsaAccess', 'Utility');
 	WebrsaAccess::init($dossierMenu);

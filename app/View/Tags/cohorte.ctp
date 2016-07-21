@@ -1,6 +1,6 @@
 <?php
 	$controller = $this->params->controller;
-	$availableDomains = MultiDomainsTranslator::urlDomains();
+	$availableDomains = WebrsaTranslator::domains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
 	$paramDate = array(
 		'domain' => null,

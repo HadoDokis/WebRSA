@@ -2,7 +2,7 @@
 	$controller = $this->params->controller;
 	$action = $this->action;
 	$modelName = Inflector::singularize(Inflector::camelize($controller));
-	$domain = current(MultiDomainsTranslator::urlDomains());
+	$domain = current(WebrsaTranslator::domains());
 	$defaultParams = compact('options', 'domain');
 
 	echo $this->Default3->titleForLayout($this->request->data, compact('domain'));

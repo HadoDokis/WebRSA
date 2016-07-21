@@ -1,5 +1,5 @@
 <?php
-	$availableDomains = MultiDomainsTranslator::urlDomains();
+	$availableDomains = WebrsaTranslator::domains();
 	$domain = isset( $availableDomains[0] ) ? $availableDomains[0] : $controller;
 ?>
 <?php $this->start( 'custom_search_filters' );?>
