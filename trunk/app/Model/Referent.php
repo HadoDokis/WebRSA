@@ -399,13 +399,17 @@
 				$conditions[] = array( 'Referent.structurereferente_id' => $criteres['Referent']['structurereferente_id'] );
 			}
 
+			if( false === $this->Behaviors->attached( 'Occurences' ) ) {
+				$this->Behaviors->attach( 'Occurences' );
+			}
 
 			$query = array(
 				'fields' => array_merge(
 					$this->fields(),
 					$this->Structurereferente->fields(),
 					array(
-						$this->PersonneReferent->sqNbLiesActifs( $this, 'Referent.id', 'nb_referents_lies' )
+						$this->PersonneReferent->sqNbLiesActifs( $this, 'Referent.id', 'nb_referents_lies' ),
+						$this->sqHasLinkedRecords()
 					)
 				),
 				'order' => array( 'Referent.nom ASC', 'Referent.prenom ASC' ),
@@ -627,15 +631,15 @@
 			$success = $this->_regenerateCache();
 			return $success;
 		}
-		
+
 		/**
 		 * Après la sauvegarde, on met à jour la table Dernierreferent
-		 * 
+		 *
 		 * @param boolean $created True if this save created a new record
 		 */
 		public function afterSave($created) {
 			parent::afterSave($created);
-			
+
 			if ((integer)Configure::read('Cg.departement') === 66) {
 				$id = Hash::get($this->data, 'Referent.id');
 				$prevreferent_id = Hash::get($this->data, 'Dernierreferent.prevreferent_id');

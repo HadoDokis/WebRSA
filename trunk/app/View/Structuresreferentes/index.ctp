@@ -84,8 +84,6 @@
 		<tbody>
 			<?php foreach( $structuresreferentes as $structurereferente ):?>
 				<?php
-					$occurenceExists = Set::enum( $structurereferente['Structurereferente']['id'], $occurences );
-
 					echo $this->Xhtml->tableCells(
 						array(
 							h( $structurereferente['Structurereferente']['lib_struc'] ),
@@ -107,7 +105,7 @@
 							$this->Xhtml->deleteLink(
 								'Supprimer la structure référente ',
 								array( 'controller' => 'structuresreferentes', 'action' => 'delete', $structurereferente['Structurereferente']['id'] ),
-								( $this->Permissions->check( 'structuresreferentes', 'delete' ) && !$occurenceExists )
+								( $this->Permissions->check( 'structuresreferentes', 'delete' ) && !( $structurereferente['Structurereferente']['has_linkedrecords'] ) )
 							)
 						),
 						array( 'class' => 'odd' ),
