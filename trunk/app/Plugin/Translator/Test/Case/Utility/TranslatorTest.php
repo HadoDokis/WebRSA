@@ -38,15 +38,15 @@
 			$result = Translator::translate('pas de traduction');
 			$expected = 'pas de traduction';
 			$this->assertEquals($result, $expected, $expected);
-			
+
 			$result = Translator::translate('test1');
 			$expected = 'traduction domain1/test1';
 			$this->assertEquals($result, $expected, $expected);
-			
+
 			$result = Translator::translate('test2');
 			$expected = 'traduction domain2/test2';
 			$this->assertEquals($result, $expected, $expected);
-			
+
 			$result = Translator::translate('test3');
 			$expected = 'traduction domain2/test3';
 			$this->assertEquals($result, $expected, $expected.' avec présence dans domain3');
@@ -57,7 +57,7 @@
 		 */
 		public function testTranslateEnglish() {
 			Configure::write('Config.language', 'eng');
-			
+
 			$result = Translator::translate('test4');
 			$expected = 'English traduction\'s file';
 			$this->assertEquals($result, $expected, $expected);
@@ -70,7 +70,7 @@
 			$result = Translator::translate('test5', 'tests5', 6, $nb = 1);
 			$expected = 'traduction domain1/test5';
 			$this->assertEquals($result, $expected, $expected.' singulier');
-			
+
 			$result = Translator::translate('test5', 'tests5', 6, $nb = 2);
 			$expected = 'traduction domain1/test5 pluriel';
 			$this->assertEquals($result, $expected, $expected);
@@ -84,35 +84,35 @@
 			Translator::domains(array());
 			Translator::translate('test6');
 		}
-		
+
 		/**
 		 * @covers Translator::lang
 		 */
 		public function testLang() {
 			$_SESSION['Config']['language'] = 'eng';
-			
+
 			$result = Translator::lang();
 			$expected = 'eng';
-			
+
 			$this->assertEqual($result, $expected, "Language changé par variable \$_SESSION");
-			
+
 			$_SESSION = null;
 			$result = Translator::lang();
 			$expected = 'fre';
-			
+
 			$this->assertEqual($result, $expected, "Language changé par Config");
 		}
-		
+
 		/**
 		 * @covers Translator::domainsKey
 		 */
 		public function testDomainsKey() {
 			$result = Translator::domainsKey();
 			$expected = '["domain1","domain2","domain3"]';
-			
+
 			$this->assertEqual($result, $expected, "Domains key");
 		}
-		
+
 		/**
 		 * @covers Translator::import
 		 */
@@ -132,7 +132,7 @@
 			$expected = 'Nom';
 			$this->assertEquals($expected, $result, "Import data");
 		}
-		
+
 		/**
 		 * @covers Translator::import
 		 */
@@ -171,7 +171,7 @@
 			);
 			$this->assertEquals($expected, $result);
 		}
-		
+
 		/**
 		 * @covers Translator::export
 		 */
@@ -189,7 +189,7 @@
 			);
 			$this->assertEquals($expected, $result);
 		}
-		
+
 		/**
 		 * @covers Translator::reset
 		 */
@@ -197,10 +197,10 @@
 			Translator::reset();
 			$result = Translator::domains();
 			$expected = array(0 => 'default');
-			
+
 			$this->assertEqual($result, $expected, "Reset");
 		}
-		
+
 		/**
 		 * Test of the Translator::tainted() method.
 		 *
@@ -208,12 +208,12 @@
 		 */
 		public function testTainted()
 		{
-			Translator::domains(['groups_index', 'groups']);
+			Translator::domains( array('groups_index', 'groups') );
 			$this->assertFalse(Translator::tainted());
 			Translator::translate('name');
 			$this->assertTrue(Translator::tainted());
 		}
-		
+
 		/**
 		 * __m
 		 */
@@ -228,7 +228,7 @@
 				__m('test6', 2, 'arguments'), "Remplacement vsprintf avec traduction"
 			);
 		}
-		
+
 		/**
 		 * __mn
 		 */
