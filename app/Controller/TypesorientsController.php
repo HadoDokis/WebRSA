@@ -37,16 +37,21 @@
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
 
-			$typesorients = $this->Typeorient->find(
-				'all',
-				array(
-					'recursive' => -1
-				)
-			);
+			if( false === $this->Typeorient->Behaviors->attached( 'Occurences' ) ) {
+				$this->Typeorient->Behaviors->attach( 'Occurences' );
+			}
 
-			App::import( 'Behaviors', 'Occurences' );
-			$this->Typeorient->Behaviors->attach( 'Occurences' );
-			$this->set( 'occurences', $this->Typeorient->occurencesExists() );
+			$query = array(
+				'fields' => array_merge(
+					$this->Typeorient->fields(),
+					array(
+						$this->Typeorient->sqHasLinkedRecords()
+					)
+				),
+				'recursive' => -1
+			);
+			$typesorients = $this->Typeorient->find( 'all', $query );
+
 			$this->_setOptions();
 
 			$this->set( 'typesorients', $typesorients );
@@ -167,37 +172,49 @@
 				$this->cakeError( 'error404' );
 			}
 
-			// Recherche de la personne
-			$typeorient = $this->Typeorient->find(
-				'first',
-				array( 'conditions' => array( 'Typeorient.id' => $typeorient_id )
+			// Recherche de l'enregistrement
+			if( false === $this->Typeorient->Behaviors->attached( 'Occurences' ) ) {
+				$this->Typeorient->Behaviors->attach( 'Occurences' );
+			}
+
+			$query = array(
+				'fields' => array_merge(
+					$this->Typeorient->fields(),
+					array(
+						$this->Typeorient->sqHasLinkedRecords()
+					)
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Typeorient.id' => $typeorient_id
 				)
 			);
+			$typeorient = $this->Typeorient->find( 'first', $query );
 
 			// Mauvais paramètre
-			if( empty( $typeorient_id ) ) {
+			if( empty( $typeorient ) ) {
 				$this->cakeError( 'error404' );
 			}
 
-			App::import( 'Behaviors', 'Occurences' );
-			$this->Typeorient->Behaviors->attach( 'Occurences' );
-
-			$occurences = $this->Typeorient->occurences();
-			$nbOccurences = Set::enum( $typeorient['Typeorient']['id'], $occurences );
-			$nbOccurences = ( is_numeric( $nbOccurences ) ? $nbOccurences : 0 );
-
-			// Tentative de suppression ... FIXME
-			if( $nbOccurences != 0 ) {
-				$this->Session->setFlash( 'Impossible de supprimer un type d\'orientation utilisé dans l\'application', 'flash/error' );
-				$this->redirect( array( 'controller' => 'typesorients', 'action' => 'index' ) );
+			// Structure référente encore liée à d'autres enregistrements ?
+			if( true === $typeorient['Typeorient']['has_linkedrecords'] ) {
+				$msgid = 'Tentative de suppression du type d\'orientation d\'id %d par l\'utilisateur %s alors que celui-ci est encore lié à des enregistrements';
+				$msgstr = sprintf( $msgid, $typeorient_id, $this->Session->read( 'Auth.User.username' ) );
+				throw new RuntimeException( $msgstr, 500 );
 			}
 
-			// Tentative de suppression ... FIXME
+			// Tentative de suppression
+			$this->Typeorient->begin();
 			if( $this->Typeorient->delete( array( 'Typeorient.id' => $typeorient_id ) ) ) {
+				$this->Typeorient->commit();
 				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-				$this->redirect( array( 'controller' => 'typesorients', 'action' => 'index' ) );
 			}
+			else {
+				$this->Typeorient->rollback();
+				$this->Session->setFlash( 'Impossible de supprimer l\'enregistrement', 'flash/error' );
+			}
+
+			$this->redirect( array( 'controller' => 'typesorients', 'action' => 'index' ) );
 		}
 	}
-
 ?>

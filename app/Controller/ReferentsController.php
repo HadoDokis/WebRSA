@@ -37,14 +37,14 @@
 			$options = array();
 			$options = $this->Referent->enums();
 			$options['Referent']['id'] = $referent;
-			$options['Dernierreferent']['prevreferent_id'] = $this->Referent->find('list', 
+			$options['Dernierreferent']['prevreferent_id'] = $this->Referent->find('list',
 				array(
 					'joins' => array($this->Referent->join('Dernierreferent')),
 					'conditions' => array('Dernierreferent.referent_id = Dernierreferent.dernierreferent_id'),
 					'order' => array('Referent.nom', 'Referent.prenom')
 				)
 			);
-			
+
 			foreach( array( 'Structurereferente' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
 				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
@@ -70,10 +70,6 @@
 
 			}
 			$this->_setOptions();
-
-			App::import( 'Behaviors', 'Occurences' );
-			$this->Referent->Behaviors->attach( 'Occurences' );
-			$this->set( 'occurences', $this->Referent->occurencesExists() );
 		}
 
 		/**
@@ -115,7 +111,7 @@
 
 			$this->_setOptions();
 			$args = func_get_args();
-			
+
 			call_user_func_array( array( $this->Default, $this->action ), $args );
 		}
 
@@ -125,23 +121,50 @@
 				$this->cakeError( 'error404' );
 			}
 
-			// Recherche de la personne
-			$referent = $this->Referent->find(
-				'first',
-				array( 'conditions' => array( 'Referent.id' => $referent_id )
+			// Recherche de l'enregistrement
+			if( false === $this->Referent->Behaviors->attached( 'Occurences' ) ) {
+				$this->Referent->Behaviors->attach( 'Occurences' );
+			}
+
+			$query = array(
+				'fields' => array_merge(
+					$this->Referent->fields(),
+					array(
+						$this->Referent->sqHasLinkedRecords()
+					)
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Referent.id' => $referent_id
 				)
 			);
+			$referent = $this->Referent->find( 'first', $query );
+
 
 			// Mauvais paramètre
-			if( empty( $referent_id ) ) {
+			if( empty( $referent ) ) {
 				$this->cakeError( 'error404' );
 			}
 
-			// Tentative de suppression ... FIXME
-			if( $this->Referent->delete( array( 'Referent.id' => $referent_id ) ) ) {
-				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-				$this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
+			// Référent encore lié à d'autres enregistrements ?
+			if( true === $referent['Referent']['has_linkedrecords'] ) {
+				$msgid = 'Tentative de suppression du référent d\'id %d par l\'utilisateur %s alors que celui-ci est encore lié à des enregistrements';
+				$msgstr = sprintf( $msgid, $referent_id, $this->Session->read( 'Auth.User.username' ) );
+				throw new RuntimeException( $msgstr, 500 );
 			}
+
+			// Tentative de suppression
+			$this->Referent->begin();
+			if( $this->Referent->delete( array( 'Referent.id' => $referent_id ) ) ) {
+				$this->Referent->commit();
+				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+			}
+			else {
+				$this->Referent->rollback();
+				$this->Session->setFlash( 'Impossible de supprimer l\'enregistrement', 'flash/error' );
+			}
+
+			$this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
 		}
 
 		/**
@@ -251,7 +274,7 @@
 		public function ajax_getreferent() {
 			$id = Hash::get($this->request->data, 'id');
 			$json = false;
-			
+
 			if (!empty($id) && preg_match('/^[\d]+$/', (string)$id)) {
 				$json = $this->Referent->find('first', array(
 					'fields' => array_merge(
@@ -265,7 +288,7 @@
 					'conditions' => array('Referent.id' => $id),
 				));
 			}
-			
+
 			$this->set('json', Hash::flatten($json, '__'));
 			$this->layout = 'ajax';
 			$this->view = '/Elements/json';

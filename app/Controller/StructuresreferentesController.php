@@ -19,7 +19,7 @@
 		public $name = 'Structuresreferentes';
 		public $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique', 'Apre', 'Option' );
 		public $helpers = array( 'Xform' );
-		
+
 		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
@@ -35,7 +35,7 @@
 				$options['Structurereferente']['typestructure']['oa'] = 'Structure liée à un PPAE';
 				$options['Structurereferente']['typestructure']['msp'] = 'Structure débouchant sur CER pro';
 			}
-			
+
 			foreach( array( 'Typeorient' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
 				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
@@ -58,10 +58,6 @@
 				$this->set( 'structuresreferentes', $structuresreferentes);
 			}
 			$this->_setOptions();
-
-			App::import( 'Behaviors', 'Occurences' );
-			$this->Structurereferente->Behaviors->attach( 'Occurences' );
-			$this->set( 'occurences', $this->Structurereferente->occurencesExists() );
 		}
 
 		public function add() {
@@ -163,23 +159,50 @@
 				$this->cakeError( 'error404' );
 			}
 
-			// Recherche de la personne
-			$structurereferente = $this->Structurereferente->find(
-				'first',
-				array( 'conditions' => array( 'Structurereferente.id' => $structurereferente_id )
+			// Recherche de l'enregistrement
+			if( false === $this->Structurereferente->Behaviors->attached( 'Occurences' ) ) {
+				$this->Structurereferente->Behaviors->attach( 'Occurences' );
+			}
+
+			$query = array(
+				'fields' => array_merge(
+					$this->Structurereferente->fields(),
+					array(
+						$this->Structurereferente->sqHasLinkedRecords()
+					)
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Structurereferente.id' => $structurereferente_id
 				)
 			);
+			$structurereferente = $this->Structurereferente->find( 'first', $query );
+
 
 			// Mauvais paramètre
-			if( empty( $structurereferente_id ) ) {
+			if( empty( $structurereferente ) ) {
 				$this->cakeError( 'error404' );
 			}
 
-			// Tentative de suppression ... FIXME
-			if( $this->Structurereferente->delete( array( 'Structurereferente.id' => $structurereferente_id ) ) ) {
-				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-				$this->redirect( array( 'controller' => 'structuresreferentes', 'action' => 'index' ) );
+			// Structure référente encore liée à d'autres enregistrements ?
+			if( true === $structurereferente['Structurereferente']['has_linkedrecords'] ) {
+				$msgid = 'Tentative de suppression de la structure référente d\'id %d par l\'utilisateur %s alors que celle-ci est encore liée à des enregistrements';
+				$msgstr = sprintf( $msgid, $structurereferente_id, $this->Session->read( 'Auth.User.username' ) );
+				throw new RuntimeException( $msgstr, 500 );
 			}
+
+			// Tentative de suppression
+			$this->Structurereferente->begin();
+			if( $this->Structurereferente->delete( array( 'Structurereferente.id' => $structurereferente_id ) ) ) {
+				$this->Structurereferente->commit();
+				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+			}
+			else {
+				$this->Structurereferente->rollback();
+				$this->Session->setFlash( 'Impossible de supprimer l\'enregistrement', 'flash/error' );
+			}
+
+			$this->redirect( array( 'controller' => 'structuresreferentes', 'action' => 'index' ) );
 		}
 	}
 

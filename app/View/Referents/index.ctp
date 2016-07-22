@@ -87,7 +87,6 @@
 			<?php foreach( $referents as $referent ):?>
 				<?php
 					$cloturable = ( empty( $referent['Referent']['datecloture'] ) || ( $referent['PersonneReferent']['nb_referents_lies'] > 0 ) );
-					$occurenceExists = Set::enum( $referent['Referent']['id'], $occurences );
 
 					echo $this->Xhtml->tableCells(
 						array(
@@ -113,7 +112,7 @@
 							$this->Xhtml->deleteLink(
 								'Supprimer le référent',
 								array( 'controller' => 'referents', 'action' => 'delete', $referent['Referent']['id'] ),
-								( $this->Permissions->check( 'referents', 'delete' ) && !$occurenceExists )
+								( $this->Permissions->check( 'referents', 'delete' ) && !( $referent['Referent']['has_linkedrecords'] ) )
 							)
 						),
 						array( 'class' => 'odd' ),

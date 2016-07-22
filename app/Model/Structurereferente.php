@@ -43,13 +43,13 @@
 				)
 			),
 		);
-		
+
 		/**
 		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
 		 * règle de validation inList ou en contrainte dans la base de données en
 		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
 		 * fini de valeurs existe.
-		 * 
+		 *
 		 * @see AppModel::enums
 		 *
 		 * @var array
@@ -563,11 +563,17 @@
 				$conditions[] = array( 'Structurereferente.typeorient_id' => $criteres['Structurereferente']['typeorient_id'] );
 			}
 
+			if( false === $this->Behaviors->attached( 'Occurences' ) ) {
+				$this->Behaviors->attach( 'Occurences' );
+			}
 
 			$query = array(
 				'fields' => array_merge(
 					$this->fields(),
-					$this->Typeorient->fields()
+					$this->Typeorient->fields(),
+					array(
+						$this->sqHasLinkedRecords()
+					)
 				),
 				'order' => array( 'Structurereferente.lib_struc ASC' ),
 				'joins' => array(

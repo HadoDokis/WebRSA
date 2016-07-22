@@ -141,16 +141,16 @@
             if( $returnQuerydata ){
                 return $queryData;
             }
-            
+
 			$results = $model->find( 'all', $queryData );
 
 			return Set::combine( $results, "{n}.{$model->alias}.{$model->primaryKey}", "{n}.{$model->alias}.occurences" );
 		}
-        
+
         /**
          * Complète le querydata passé en paramètre avec un champ virtuel de type
          * booléen, de nom occurences, et un group by.
-         * 
+         *
          * @param Model $model
          * @param array $querydata
          * @param array $blacklist La liste des modèles ne devant pas être pris en compte
@@ -170,8 +170,47 @@
                     ( isset( $qdOccurences[$part] ) ? $qdOccurences[$part] : array() )
                 );
             }
-            
+
             return $querydata;
         }
+
+		/**
+		 * Retourne une sous-requête permettant de savoir si un enregistrement du
+		 * modèle est référencé par une autre table (au niveau des foreign keys
+		 * définies dans la base de données).
+		 *
+		 * @param Model $model Le modèle
+		 * @param boolean|string $alias L'alias éventuel du champ (par défaut:
+		 *	<alias du modèle>.has_linkedrecords )
+		 * @return string
+		 */
+		public function sqHasLinkedRecords( Model $model, $alias = true ) {
+			if( false === $model->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+				$model->Behaviors->attach( 'Postgres.PostgresTable' );
+			}
+
+			$sql = array();
+			$foreignKeys = $model->getPostgresForeignKeys();
+			if( false === empty( $foreignKeys ) ) {
+				foreach( $foreignKeys['to'] as $foreignKey ) {
+					$sql[] = "EXISTS( SELECT * FROM \"{$foreignKey['From']['schema']}\".\"{$foreignKey['From']['table']}\" AS \"{$foreignKey['From']['table']}\" WHERE \"{$foreignKey['From']['table']}\".\"{$foreignKey['From']['column']}\" = \"{$model->alias}\".\"{$foreignKey['To']['column']}\" )";
+				}
+				$sql = implode( ' OR ', $sql );
+			}
+			else {
+				$sql = 'FALSE';
+			}
+
+			if( true === $alias ) {
+				$alias = "{$model->alias}.has_linkedrecords";
+			}
+
+			if( is_string( $alias ) ) {
+				return "( {$sql} ) AS \"".str_replace( '.', '__', $alias )."\"";
+			}
+			else {
+				return $sql;
+			}
+		}
 	}
 ?>

@@ -29,8 +29,6 @@
 		<tbody>
 			<?php foreach( $typesorients as $typeorient ):?>
 				<?php
-					$occurenceExists = Set::enum( $typeorient['Typeorient']['id'], $occurences );
-
 					echo $this->Xhtml->tableCells(
 							array(
 								h( $typeorient['Typeorient']['id'] ),
@@ -47,7 +45,7 @@
 								$this->Xhtml->deleteLink(
 									'Supprimer le type d\'orientation',
 									array( 'controller' => 'typesorients', 'action' => 'delete', $typeorient['Typeorient']['id'] ),
-									( $this->Permissions->check( 'typesorients', 'delete' ) && !$occurenceExists )
+									( $this->Permissions->check( 'typesorients', 'delete' ) && !( $typeorient['Typeorient']['has_linkedrecords'] ) )
 								)
 							),
 							array( 'class' => 'odd' ),
