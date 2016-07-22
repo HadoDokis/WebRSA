@@ -122,7 +122,7 @@
 		 * @param array $params
 		 * @return boolean
 		 */
-		protected static function impressionsDecisions(array $record, array $params) {
+		protected static function _impressionsDecisions(array $record, array $params) {
 			$etatcommissionep = Hash::get( $record, 'Commissionep.etatcommissionep' );
 			return 'traite' === $etatcommissionep;
 		}
