@@ -146,9 +146,9 @@
 					)
 				);
 			}
-			
+
 			if ($departement === 66) {
-				$options['Dernierreferent']['dernierreferent_id'] = 
+				$options['Dernierreferent']['dernierreferent_id'] =
 					$Controller->Contratinsertion->Structurereferente->Referent->Dernierreferent->listOptions();
 			}
 
@@ -203,7 +203,8 @@
 								)
 							)
 						)
-					)
+					),
+					$this->Allocataires->optionsSessionCommunautesr( 'Contratinsertion' )
 				);
 			}
 

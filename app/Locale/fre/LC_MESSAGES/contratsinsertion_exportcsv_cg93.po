@@ -9,7 +9,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 # ==============================================================================
-# A dupliquer dans cg93_contratsinsertion_search
+# A dupliquer dans contratsinsertion_search_cg93
 # ==============================================================================
 
 msgid "Secteuractiexppro.name"

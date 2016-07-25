@@ -58,6 +58,7 @@
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
 		. $this->SearchForm->dateRange( 'Search.Contratinsertion.created', $paramDate )
+		. $this->Allocataires->communautesr( 'Contratinsertion', array( 'options' => array( 'Search' => $options ), 'hide' => false ) )
 		. $this->Default3->subform(
 			array_merge(
 				array(
@@ -103,9 +104,9 @@
 				.$this->Romev3->fieldset( 'Expprocer93', array( 'options' => array( 'Expprocer93' => $options['Catalogueromev3'] ), 'multi_domain_translator' => true, 'prefix' => 'Search' ) )
 				.$this->Html->tag(
 					'fieldset',
-					$this->Html->tag( 'legend', __d( 'cg93_contratsinsertion_search', 'Expprocer93Insee' ) )
-					.$this->Xform->input( 'Search.Expprocer93.secteuracti_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true, 'domain' => 'cg93_contratsinsertion_search' ) )
-					.$this->Xform->input( 'Search.Expprocer93.metierexerce_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true, 'domain' => 'cg93_contratsinsertion_search' ) )
+					$this->Html->tag( 'legend', __m( 'Expprocer93Insee' ) )
+					.$this->Xform->input( 'Search.Expprocer93.secteuracti_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true, 'label' => __m( 'Search.Expprocer93.secteuracti_id' ) ) )
+					.$this->Xform->input( 'Search.Expprocer93.metierexerce_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true, 'label' => __m( 'Search.Expprocer93.metierexerce_id' ) ) )
 				)
 			);
 
@@ -113,12 +114,12 @@
 			echo $this->Html->tag(
 				'fieldset',
 				$this->Html->tag( 'legend', __m( 'Emptrouvromev3Emptrouvromev3' ) )
-				.$this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ), 'domain' => 'cg93_contratsinsertion_search', 'prefix' => 'Search', 'multi_domain_translator' => true  ) )
+				.$this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ), 'domain' => 'contratsinsertion_search_cg93', 'prefix' => 'Search', 'multi_domain_translator' => true  ) )
 				.$this->Html->tag(
 					'fieldset',
-					$this->Html->tag( 'legend', __d( 'cg93_contratsinsertion_search', 'Emptrouvromev3Insee' ) )
-					.$this->Xform->input( 'Search.Cer93.secteuracti_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true, 'domain' => 'cg93_contratsinsertion_search' ) )
-					.$this->Xform->input( 'Search.Cer93.metierexerce_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true, 'domain' => 'cg93_contratsinsertion_search' ) )
+					$this->Html->tag( 'legend', __m( 'Emptrouvromev3Insee' ) )
+					.$this->Xform->input( 'Search.Cer93.secteuracti_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true, 'label' => __m( 'Search.Cer93.secteuracti_id' ) ) )
+					.$this->Xform->input( 'Search.Cer93.metierexerce_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true, 'label' => __m( 'Search.Cer93.metierexerce_id' ) ) )
 				)
 			);
 
@@ -238,11 +239,11 @@
 		<?php if( $departement == 58 ): ?>
 			new MaskedInput( '#SearchContratinsertionDureeEngag', '9?9' );
 		<?php endif;?>
-			
+
 		<?php if( $departement == 66 ): ?>
 		/**
 		 * Remplissage auto Dernierreferent
-		 * 
+		 *
 		 * @see View/Referents/add_edit.ctp
 		 */
 		var index = [];
@@ -264,7 +265,7 @@
 			'use strict';
 			var value = $('SearchDernierreferentRecherche').getValue(),
 				regex = /^[a-zA-Z éèï\-ç]$/,
-				i, 
+				i,
 				newValue = ''
 			;
 
@@ -289,7 +290,7 @@
 			$('SearchDernierreferentDernierreferentId').setValue(newValue);
 		});
 		<?php endif;?>
-		
+
 		dependantSelect( 'SearchContratinsertionReferentId', 'SearchContratinsertionStructurereferenteId' );
 	});
 </script>
