@@ -87,6 +87,14 @@
 	echo $this->Default3->subform(
 			array(
 				'Search.Orientstruct.typeorient_id' => array('empty' => true, 'required' => false),
+			),
+			array( 'options' => array( 'Search' => $options ) )
+		);
+
+	echo $this->Allocataires->communautesrSelect( 'Orientstruct', array( 'options' => array( 'Search' => $options ) ) );
+
+	echo $this->Default3->subform(
+			array(
 				'Search.Orientstruct.structurereferente_id' => array('empty' => true, 'required' => false),
 				'Search.Orientstruct.statut_orient' => array('empty' => true, 'required' => false)
 			),
@@ -107,13 +115,39 @@
 	);
 ?>
 <?php
-	if( $departement === 66 ) {
+	// Si l'utilisateur connecté a accès aux projets de villes communautaires
+	if( true === Hash::check($options, 'Orientstruct.communautesr_id') ) {
+		echo $this->Observer->disableFieldsOnValue(
+			'Search.Orientstruct.typeorient_id',
+			'Search.Orientstruct.communautesr_id',
+			array( '', null ),
+			false
+		);
+
+		echo $this->Observer->disableFieldsOnValue(
+			'Search.Orientstruct.communautesr_id',
+			'Search.Orientstruct.typeorient_id',
+			array( '', null ),
+			false
+		);
+	}
+
+	if( 66 === $departement ) {
 		echo $this->Observer->dependantSelect(
 			array(
 				'Search.Orientstruct.structureorientante_id' => 'Search.Orientstruct.referentorientant_id'
 			)
 		);
 	}
+	else if( 93 === $departement ) {
+		echo $this->Allocataires->communautesrScript(
+			'Orientstruct',
+			array(
+				'options' => array( 'Search' => $options )
+			)
+		);
+	}
+
 
 	echo $this->Observer->dependantSelect(
 		array(

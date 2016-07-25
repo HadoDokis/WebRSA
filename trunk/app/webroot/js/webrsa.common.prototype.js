@@ -2450,75 +2450,6 @@ function initSortableTables( className ) {
 //------------------------------------------------------------------------------
 
 /**
- * Limite la liste des structures référentes en fonction de la valeur sélectionnée
- * dans la liste des PDVCOM.
- *
- * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
- * @param {String} structurereferenteId L'id du select contenant les structures référentes
- * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
- * @param {Object} selects Le code HTML original du contenu de chacune des listes déroulantes de structures référentes
- * @returns {void}
- */
-function dependantSelectsCommunautesr( communautesrId, structurereferenteId, links, selects ) {
-	try {
-		var value = $F(communautesrId);
-
-		// On "reset"
-		$(structurereferenteId).update( selects[structurereferenteId].innerHTML );
-
-		if( '' != value ) {
-			// Suppression des options non présentes dans le projet de ville territorial
-			$(structurereferenteId).select( 'option' ).each( function( option ) {
-				if( '' != $(option).value && false === in_array( $(option).value, links[value], true ) ) {
-					$(option).remove();
-				}
-			} );
-
-			// Suppression des optgroup vides
-			// @todo utiliser cleanSelectOptgroups
-			$(structurereferenteId).select( 'optgroup' ).each( function( optgroup ) {
-				if( 0 === $(optgroup).childElements().length ) {
-					$(optgroup).remove();
-				}
-			} );
-		}
-
-		// On prévient la liste des structures référentes qu'elle a changé
-		$( structurereferenteId ).simulate( 'change' );
-	} catch(e) {
-		console.log(e);
-	}
-}
-
-/**
- * Observe le select de projets de villes communautaires afin de limiter la liste
- * des structures référentes à celles se trouvant dans le PDVCOM.
- *
- * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
- * @param {String} structurereferenteId L'id du select contenant les structures référentes
- * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
- * @returns {void}
- */
-function observeDependantSelectsCommunautesr( communautesrId, structurereferenteId, links ) {
-	try {
-		if( null !== $(communautesrId) ) {
-			var selects = {};
-			selects[structurereferenteId] = $(structurereferenteId).clone(true);
-
-			dependantSelectsCommunautesr( communautesrId, structurereferenteId, links, selects );
-
-			$(communautesrId).observe( 'change', function() {
-				dependantSelectsCommunautesr( communautesrId, structurereferenteId, links, selects )
-			} );
-		}
-	} catch(e) {
-		console.log(e);
-	}
-}
-
-// -----------------------------------------------------------------------------
-
-/**
  * Suppression des optgroups vides d'une list déroulante; s'il n'existe plus qu'un
  * seul optgroup, on fera remonter les options d'un niveau.
  *
@@ -2602,5 +2533,195 @@ function limitSelectOptionsByPrefix( selectId, prefix ) {
 		$(selectId).value = selected;*/
 	} catch( exception ) {
 		console.log( exception );
+	}
+}
+
+//------------------------------------------------------------------------------
+
+/**
+ * Suppression des optgroups vides d'une list déroulante; s'il n'existe plus qu'un
+ * seul optgroup, on fera remonter les options d'un niveau.
+ *
+ * @param {String} selectId L'id de la liste déroulante
+ * @returns {void}
+ */
+function cleanSelectOptgroups2( selectId ) {
+	var optgroups, selected, visible = 0;
+
+	try {
+		// On sauvegarde la valeur sélectionnée
+		selected = $F(selectId);
+
+		// On cache les optgroup vides
+		optgroups = $(selectId).select( 'optgroup' );
+		$(optgroups).each( function( optgroup ) {
+			$(optgroup).select( 'option' ).each( function( option ) {
+				visible += ( $(option).visible() ? 1 : 0 );
+			} );
+
+			if( 0 === visible ) {
+				$(optgroup).hide();
+			}
+		} );
+	} catch( exception ) {
+		console.log( exception );
+	}
+}
+
+//------------------------------------------------------------------------------
+
+function onChangeDependantSelect( slaveId, masterId ) {
+	try {
+		var masterValue = $F(masterId).replace( /^.*_([^_]+)$/, '$1' ),
+			slaveValue = $F(slaveId);
+
+		if( false === $(masterId).enabled() ) {
+			return;
+		}
+
+		// On "reset"
+		$(slaveId).select( 'optgroup', 'option' ).each( function( option ) {
+			$(option).show();
+		} );
+
+		if( '' != masterValue ) {
+			$(slaveId).select( 'option' ).each( function( option ) {
+				if( '' != $(option).value && $(option).value.replace( /^([^_]+)_.*$/, '$1' ) !== masterValue ) {
+					$(option).hide();
+				}
+			} );
+		} else {
+			$(slaveId).select( 'option' ).each( function( option ) {
+				if( '' != $(option).value ) {
+					$(option).hide();
+				}
+			} );
+		}
+
+		// Si la valeur de la liste déroulante esclave n'est pas visible, on change la valeur du champ
+		if( false === selectOptionVisible(slaveId, slaveValue) ) {
+			$(slaveId).value = '';
+		}
+
+		cleanSelectOptgroups2(slaveId);
+
+		$(slaveId).simulate( 'change' );
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+function dependantSelect( slaveId, masterId ) {
+	try {
+		if( null !== $(slaveId) ) {
+			onChangeDependantSelect( slaveId, masterId );
+
+			$(masterId).observe( 'change', function() {
+				onChangeDependantSelect( slaveId, masterId );
+			} );
+		}
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+//------------------------------------------------------------------------------
+
+/**
+ * Vérifie si la première option d'un SELECT possédant une valeur donnée est
+ * visible.
+ *
+ * @param {String} selectId
+ * @param {String} value
+ * @returns {Boolean}
+ */
+function selectOptionVisible( selectId, value ) {
+	var option;
+
+	try {
+		option = $(selectId).select( 'option[value="' + value + '"]' );
+		return option[0].visible();
+	} catch(e) {
+		return false;
+	}
+}
+
+//------------------------------------------------------------------------------
+
+/**
+ * Limite la liste des structures référentes en fonction de la valeur sélectionnée
+ * dans la liste des PDVCOM.
+ *
+ * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
+ * @param {String} structurereferenteId L'id du select contenant les structures référentes
+ * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
+ * @param {Boolean} hide Doit-on cacher la liste des valeurs de la structure si la valeur de la communaute est vide
+ * @returns {void}
+ */
+function onChangeDependantSelectsCommunautesr( communautesrId, structurereferenteId, links, hide ) {
+	try {
+		var communautesrValue = $F(communautesrId),
+			structurereferenteValue = $F(structurereferenteId);
+
+		if( false === $(communautesrId).enabled() ) {
+			return;
+		}
+
+		// On "reset"
+		$(structurereferenteId).select( 'optgroup', 'option' ).each( function( option ) {
+			$(option).show();
+		} );
+
+		if( '' != communautesrValue ) {
+			// Suppression des options non présentes dans le projet de ville territorial
+			$(structurereferenteId).select( 'option' ).each( function( option ) {
+				if( '' != $(option).value && false === in_array( $(option).value.replace( /^.*_([^_]+)$/, '$1' ), links[communautesrValue], true ) ) {
+					$(option).hide();
+				}
+			} );
+
+		} else if( true === hide ) {
+			$(structurereferenteId).select( 'option' ).each( function( option ) {
+				if( '' != $(option).value ) {
+					$(option).hide();
+				}
+			} );
+		}
+
+		// Si la valeur de la liste déroulante esclave n'est pas visible, on change la valeur du champ
+		if( false === selectOptionVisible(structurereferenteId, structurereferenteValue) ) {
+			$(structurereferenteId).value = '';
+		}
+
+		cleanSelectOptgroups2(structurereferenteId);
+
+		// On prévient la liste des structures référentes qu'elle a changé
+		$( structurereferenteId ).simulate( 'change' );
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+/**
+ * Observe le select de projets de villes communautaires afin de limiter la liste
+ * des structures référentes à celles se trouvant dans le PDVCOM.
+ *
+ * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
+ * @param {String} structurereferenteId L'id du select contenant les structures référentes
+ * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
+ * @param {Boolean} hide Doit-on cacher la liste des valeurs de la structure si la valeur de la communaute est vide
+ * @returns {void}
+ */
+function dependantSelectsCommunautesr( communautesrId, structurereferenteId, links, hide ) {
+	try {
+		if( null !== $(communautesrId) ) {
+			onChangeDependantSelectsCommunautesr( communautesrId, structurereferenteId, links, hide );
+
+			$(communautesrId).observe( 'change', function() {
+				onChangeDependantSelectsCommunautesr( communautesrId, structurereferenteId, links, hide )
+			} );
+		}
+	} catch(e) {
+		console.log(e);
 	}
 }

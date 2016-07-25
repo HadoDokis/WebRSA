@@ -217,6 +217,7 @@ function __minify() {
 	# "$JSDIR/jquery.js"
 	# "$JSDIR/webrsa.common.jquery.js"
 	cat "$JSDIR/prototype.js" \
+	"$JSDIR/webrsa.extended.prototype.js" \
 	"$JSDIR/prototype.livepipe.js" \
 	"$JSDIR/prototype.tabs.js" \
 	"$JSDIR/tooltip.prototype.js" \

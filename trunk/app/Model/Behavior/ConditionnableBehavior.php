@@ -646,5 +646,47 @@
 
 			return $conditions;
 		}
+
+		/**
+		 * Ajoute des conditions sur la communauté de structures référentes s'il
+		 * y a lieu (pour le CG 93 uniquement).
+		 *
+		 * Exemple:
+		 * <pre>$this->conditionCommunautesr(
+		 *	$model,
+		 *	array(),
+		 *	array(
+		 *		'Orientstruct' => array(
+		 *			'communautesr_id' => '1'
+		 *		)
+		 *	),
+		 *	array( 'Orientstruct.communautesr_id' => 'Orientstruct.structurereferente_id' )
+		 * );</pre>
+		 * retournera
+		 * <pre>array( Orientstruct.structurereferente_id IN (SELECT "communautessrs_structuresreferentes"."structurereferente_id" AS "CommunautesrStructurereferente__structurereferente_id" FROM "communautessrs_structuresreferentes" AS "communautessrs_structuresreferentes"   WHERE "communautessrs_structuresreferentes"."communautesr_id" = 1   ))</pre>
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @param array $paths
+		 * @return array
+		 */
+		public function conditionCommunautesr( Model $model, array $conditions, array $search, array $paths ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$Communautesr = ClassRegistry::init( 'Communautesr' );
+
+			if( 93 === $departement && !empty( $paths ) ) {
+				foreach( $paths as $filterPath => $conditionPath ) {
+					$communautesr_id = suffix( Hash::get( $search, $filterPath ) );
+
+					if( !empty( $communautesr_id ) ) {
+						$sql = $Communautesr->sqStructuresreferentes( $communautesr_id );
+						$conditions[] = array( "{$conditionPath} IN ({$sql})" );
+					}
+				}
+			}
+
+			return $conditions;
+		}
 	}
 ?>

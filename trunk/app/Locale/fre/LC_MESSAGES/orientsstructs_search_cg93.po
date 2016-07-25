@@ -26,3 +26,6 @@ msgstr "Personne chargée du suivi"
 
 msgid "Orientstruct.propo_algo"
 msgstr "Préconisation d'orientation"
+
+msgid "Search.Orientstruct.communautesr_id"
+msgstr "Projet de ville territorial de la structure"
