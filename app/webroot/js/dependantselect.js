@@ -13,7 +13,8 @@
 
 //*****************************************************************
 
-function dependantSelect( select2Id, select1Id ) {
+function dependantSelectOld( select2Id, select1Id ) {
+console.log('vieux');
 	var isSelect1 = ( $( select1Id ) !== undefined && $( select1Id ).tagName.toUpperCase() == 'SELECT' );
 	var isSelect2 = ( $( select2Id ) !== undefined && $( select2Id ).tagName.toUpperCase() == 'SELECT' );
 

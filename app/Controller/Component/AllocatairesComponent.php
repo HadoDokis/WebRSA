@@ -155,6 +155,40 @@
 		}
 
 		/**
+		 * Méthode utilitaire permettant de obtenir la liste des projets de villes
+		 * territoriaux pour un nom de modèle donné.
+		 * Cette méthode retourne un array comprenant, pour l'alias du modèle
+		 * donné les clés communautesr_id (les ids des PDV communautaires) et
+		 * links (un array associatif avec, pour chaque id de PDVCOM, une liste
+		 * d'ids de structures référentes qui en dépendent).
+		 * Utilisé par les utilisateurs type CG et CPDVCOM du CG 93.
+		 *
+		 * @param string $modelName L'alias du modèle pour lequel ajouter des
+		 *	options
+		 * @return array
+		 */
+		public function optionsSessionCommunautesr( $modelName ) {
+			$Controller = $this->_Collection->getController();
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$options = array();
+
+			if( !isset( $this->InsertionsBeneficiaires ) ) {
+				$this->InsertionsBeneficiaires = $Controller->Components->load( 'InsertionsBeneficiaires' );
+			}
+
+			if( 93 === $departement ) {
+				$communautessrs = $this->InsertionsBeneficiaires->communautessrs( array( 'type' => 'list' ) );
+				$links = $this->InsertionsBeneficiaires->communautessrs( array( 'type' => 'links' ) );
+				if( !empty( $communautessrs ) && !empty( $links ) ) {
+					$options[$modelName]['communautesr_id'] = $communautessrs;
+					$options[$modelName]['links'] = $links;
+				}
+			}
+
+			return $options;
+		}
+
+		/**
 		 * Retourne les options stockées en session, liées à l'utilisateur connecté.
 		 *
 		 * @return array
@@ -179,15 +213,10 @@
 				)
 			);
 
-			$departement = (int)Configure::read( 'Cg.departement' );
-			if( 93 === $departement ) {
-				$communautessrs = $this->InsertionsBeneficiaires->communautessrs( array( 'type' => 'list' ) );
-				$links = $this->InsertionsBeneficiaires->communautessrs( array( 'type' => 'links' ) );
-				if( !empty( $communautessrs ) && !empty( $links ) ) {
-					$options['PersonneReferent']['communautesr_id'] = $communautessrs;
-					$options['PersonneReferent']['links'] = $links;
-				}
-			}
+			$options = Hash::merge(
+				$options,
+				$this->optionsSessionCommunautesr( 'PersonneReferent' )
+			);
 
 			return $options;
 		}

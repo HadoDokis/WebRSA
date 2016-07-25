@@ -41,6 +41,7 @@
 				echo $this->Xhtml->css( array( 'popup' ), 'stylesheet', array( 'media' => 'all' ) );
 
 				echo $this->Html->script( 'prototype' );
+				echo $this->Html->script( 'webrsa.extended.prototype' );
 				echo $this->Html->script( 'tooltip.prototype' );
 				echo $this->Html->script( 'webrsa.common.prototype' );
 				echo $this->html->script( 'webrsa.additional' );

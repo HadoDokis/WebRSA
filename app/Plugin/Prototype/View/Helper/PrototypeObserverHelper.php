@@ -142,13 +142,13 @@
 		 * @param array $fields En clé le champ maître au sens CakePHP, en valeur le champ esclave au sens CakePHP.
 		 * @return string
 		 */
-		public function dependantSelect( array $fields ) {
+		public function dependantSelectOld( array $fields ) {
 			$script = '';
 
 			foreach( $fields as $masterField => $slaveField ) {
 				$masterField = $this->domId( $masterField );
 				$slaveField = $this->domId( $slaveField );
-				$script .= "dependantSelect( '{$slaveField}', '{$masterField}' );\n";
+				$script .= "dependantSelectOld( '{$slaveField}', '{$masterField}' );\n";
 			}
 
 			return $this->render( $script );
@@ -335,6 +335,27 @@
 			}
 
 			return "[ '".implode( "', '", $values )."' ]";
+		}
+
+		/**
+		 * Retourne le code javascript permettant de faire dépendre des input
+		 * select non-multiples entre eux, suivant le principe suivant: on prend
+		 * le suffixe de la valeur du maître et elle doit correspondre au préfixe
+		 * de la valeur de l'esclave.
+		 *
+		 * @param array $fields En clé le champ maître au sens CakePHP, en valeur le champ esclave au sens CakePHP.
+		 * @return string
+		 */
+		public function dependantSelect( array $fields ) {
+			$script = '';
+
+			foreach( $fields as $masterField => $slaveField ) {
+				$masterField = $this->domId( $masterField );
+				$slaveField = $this->domId( $slaveField );
+				$script .= "dependantSelect( '{$slaveField}', '{$masterField}' );\n";
+			}
+
+			return $this->render( $script );
 		}
 	}
 ?>

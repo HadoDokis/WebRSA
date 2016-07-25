@@ -362,7 +362,103 @@
 		}
 
 		/**
+		 * Retourne une liste déroulante de projets de villes communautaires
+		 * permettant de lier ce filtre à un filtre de structures référentes.
+		 * Uniquement au CG 93, pour les utilisateurs de type CG et CPDVCOM.
+		 *
+		 * @param string $modelName Le nom du modèle à utiliser (ex. Orientstruct)
+		 * @param array $params
+		 * @return string
+		 */
+		public function communautesrSelect( $modelName, array $params = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$params = $params + $this->default;
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? rtrim($params['prefix'], '.')."." : null );
+			$communautesrPrefix = array_key_exists( 'communautesr_prefix', $params ) ? $params['communautesr_prefix'] : $params['prefix'];
+			$result = null;
+
+			if( 93 === $departement && Hash::check( $params, "options.{$communautesrPrefix}{$modelName}.communautesr_id" ) ) {
+				$label = Hash::get( $params, 'label' );
+				$result = $this->_input(
+				   "{$params['prefix']}{$modelName}.communautesr_id",
+				   $params,
+				   array(
+					   'label' => empty( $label ) ? __m( "{$params['prefix']}{$modelName}.communautesr_id" ) : $label,
+					   'type' => 'select',
+					   'options' => (array)Hash::get( $params, "options.{$communautesrPrefix}{$modelName}.communautesr_id" ),
+					   'empty' => true
+				   )
+				);
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Retourne le code javascript permettant de lier un filtre de projets de
+		 * villes communautaires à un filtre de structures référentes.
+		 * Uniquement au CG 93, pour les utilisateurs de type CG et CPDVCOM.
+		 *
+		 * @param string $modelName Le nom du modèle à utiliser (ex. Orientstruct)
+		 * @param array $params
+		 * @return string
+		 */
+		public function communautesrScript( $modelName, array $params = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$params = $params + $this->default;
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? rtrim($params['prefix'], '.')."." : null );
+			$communautesrPrefix = array_key_exists( 'communautesr_prefix', $params ) ? $params['communautesr_prefix'] : $params['prefix'];
+			$params['hide'] = isset( $params['hide'] ) ? $params['hide'] : true;
+			$result = null;
+
+			if( 93 === $departement && Hash::check( $params, "options.{$communautesrPrefix}{$modelName}.communautesr_id" ) ) {
+			   $result = "document.observe( 'dom:loaded', function() {
+							try {
+								dependantSelectsCommunautesr(
+									'".$this->domId( "{$params['prefix']}{$modelName}.communautesr_id" )."',
+									'".$this->domId( "{$params['prefix']}{$modelName}.structurereferente_id" )."',
+									".json_encode( Hash::get( $params, "options.{$communautesrPrefix}{$modelName}.links" ) ).",
+									".json_encode($params['hide'])."
+								);
+							} catch(e) {
+								console.log(e);
+							}
+						} );\n";
+				$result = $this->Xhtml->scriptBlock( $result, array( 'inline' => true, 'safe' => true ) );
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Retourne une liste déroulante de projets de villes communautaires et
+		 * le code javascript permettant de lier ce filtre à un filtre de
+		 * structures référentes.
+		 * Uniquement au CG 93, pour les utilisateurs de type CG et CPDVCOM.
+		 *
+		 * @param string $modelName Le nom du modèle à utiliser (ex. Orientstruct)
+		 * @param array $params
+		 * @return string
+		 */
+		public function communautesr( $modelName, array $params = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$params = $params + $this->default;
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
+			$params['communautesr_prefix'] = $params['prefix'];
+			$params['hide'] = isset( $params['hide'] ) ? $params['hide'] : true;
+			$result = null;
+
+			if( 93 === $departement ) {
+				$result = $this->communautesrSelect( $modelName, $params )
+					.$this->communautesrScript( $modelName, $params );
+			}
+
+			return $result;
+		}
+
+		/**
 		 * Retourne une groupe de filtres par référent du parcours contenant les champs:
+		 *	- PersonneReferent.communautesr_id: au CD 93 pour les utilisateurs CG et CPDVCOM
 		 *	- PersonneReferent.structurereferente_id
 		 *	- PersonneReferent.referent_id
 		 *
@@ -381,6 +477,7 @@
 					console.log(e);
 				}
 			} );";
+			$script = $this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => true ) );
 
 			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 
@@ -408,31 +505,12 @@
 			if( !empty( $content ) ) {
 				// Si on a les options (pour les CG et CPDVCOM au CG 93)
 				if( 93 === $departement && Hash::check( $params, 'options.PersonneReferent.communautesr_id' ) ) {
-				   $content = $this->_input(
-					   "{$params['prefix']}PersonneReferent.communautesr_id",
-					   $params,
-					   array(
-						   'label' => __d( $domain_search_plugin, 'Communautesrparcours.lib_struc' ),
-						   'type' => 'select',
-						   'options' => (array)Hash::get( $params, 'options.PersonneReferent.communautesr_id' ),
-						   'empty' => true
-					   )
-				   ) . $content;
-
-				   $script = "document.observe( 'dom:loaded', function() {
-					   try {
-						   observeDependantSelectsCommunautesr(
-							   '".$this->domId( "{$params['prefix']}PersonneReferent.communautesr_id" )."',
-							   '".$this->domId( "{$params['prefix']}PersonneReferent.structurereferente_id" )."',
-							   ".json_encode( Hash::get( $params, 'options.PersonneReferent.links' ) )."
-						   );
-					   } catch(e) {
-						   console.log(e);
-					   }
-				   } );\n" . $script;
+					$label = __d( 'search_plugin_93', 'Communautesrparcours.lib_struc' );
+					$content = $this->communautesrSelect( 'PersonneReferent', array( 'label' => $label ) + $params + array( 'communautesr_prefix' => null ) ) . $content;
+					$script .= $this->communautesrScript( 'PersonneReferent', array( 'hide' => false ) + $params + array( 'communautesr_prefix' => null ) ) . $script;
 				}
 
-				$content .= $this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) ); // FIXME: throw ?
+				$content .= $script;
 			}
 
 			return $this->_fieldset( 'Search.Referentparcours', $content, $params );

@@ -185,6 +185,7 @@
 				'Orientstruct.typeorient_id',
 				'Orientstruct.statut_orient',
 				'Orientstruct.serviceinstructeur_id',
+				// INFO: plus nécessaire depuis l'utilisation de la méthode PersonneReferent::completeSearchConditionsReferentParcours
 				'PersonneReferent.structurereferente_id',
 				'PersonneReferent.referent_id',
 			);
@@ -215,7 +216,7 @@
 			}
 
 			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
+				$value = suffix( Hash::get( $search, $path ) );
 				if( $value !== null && $value !== '' ) {
 					$query['conditions'][$path] = $value;
 				}
@@ -261,6 +262,13 @@
 					$query['conditions']['Historiqueetatpe.etat <>'] = 'inscription';
 				}
 			}
+
+			// Condition sur le projet de ville territorial de la structure de l'orientation
+			$query['conditions'] = $this->conditionCommunautesr(
+				$query['conditions'],
+				$search,
+				array( 'Orientstruct.communautesr_id' => 'Orientstruct.structurereferente_id' )
+			);
 
 			return $query;
 		}
