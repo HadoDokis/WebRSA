@@ -468,6 +468,13 @@
 				}
 			}
 
+			// Condition sur le projet de ville territorial de la structure de l'orientation
+			$query['conditions'] = $this->conditionCommunautesr(
+				$query['conditions'],
+				$search,
+				array( 'Contratinsertion.communautesr_id' => 'Contratinsertion.structurereferente_id' )
+			);
+
 			return $query;
 		}
 

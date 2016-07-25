@@ -238,13 +238,13 @@
 				)
 			)
 		);
-		
+
 		/**
 		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
 		 * règle de validation inList ou en contrainte dans la base de données en
 		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
 		 * fini de valeurs existe.
-		 * 
+		 *
 		 * @see AppModel::enums
 		 *
 		 * @var array
@@ -269,7 +269,7 @@
 			'decision_ci' => array('E', 'V', 'N', 'A'),
 			'forme_ci' => array('S', 'C'),
 		);
-		
+
 		public $belongsTo = array(
 			'Action' => array(
 				'className' => 'Action',
@@ -2546,9 +2546,16 @@
 		 * @return array
 		 */
 		public function enums() {
-			$options = parent::enums();
 			$departement = (integer)Configure::read('Cg.departement');
-			
+			$options = Hash::merge(
+				parent::enums(),
+				array(
+					$this->alias => array(
+						'duree_engag' => $this->Option->duree_engag()
+					)
+				)
+			);
+
 			if ($departement === 93) {
 				$options[$this->alias]['decision_ci'] = array(
 					'E' => 'En attente de décision',
@@ -2566,7 +2573,7 @@
 					'ENUM::NUM_CONTRAT_66::REN_TACITE'
 				);
 			}
-			
+
 			if (Configure::read( 'nom_form_ci_cg' ) === 'cg66') {
 				$options[$this->alias]['forme_ci'] = array('S' => 'Simple', 'C' => 'Particulier');
 			}
