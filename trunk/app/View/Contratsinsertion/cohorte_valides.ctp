@@ -12,6 +12,7 @@
 		);
 		echo $this->Allocataires->SearchForm->dateRange( 'Search.Contratinsertion.created', $paramDate );
 
+		echo $this->Allocataires->communautesr( 'Contratinsertion', array( 'options' => array( 'Search' => $options ), 'hide' => false ) );
 		echo $this->Default3->subform(
 			array(
 				'Search.Contratinsertion.structurereferente_id' => array( 'empty' => true, 'required' => false ),
@@ -33,6 +34,12 @@
 			'modelName' => 'Contratinsertion',
 			'customSearch' => $this->fetch( 'custom_search_filters' ),
 			'exportcsv' => array( 'action' => 'exportcsv_valides' )
+		)
+	);
+
+	echo $this->Observer->dependantSelect(
+		array(
+			'Search.Contratinsertion.structurereferente_id' => 'Search.Contratinsertion.referent_id'
 		)
 	);
 ?>
