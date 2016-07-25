@@ -126,6 +126,27 @@
 			return $result;
 		}
 
+		/**
+		 * Retourne les options stockées en session, liées à l'utilisateur connecté.
+		 *
+		 * @return array
+		 */
+		protected function _optionsSession( array $params ) {
+			$Controller = $this->_Collection->getController();
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			$options = parent::_optionsSession( $params );
+
+			if( $departement === 93 ) {
+				$options = Hash::merge(
+					$options,
+					$this->Allocataires->optionsSessionCommunautesr( 'Rendezvous' )
+				);
+			}
+
+			return $options;
+		}
+
 
 		/**
 		 * Surcharge afin de permettre, pour le CD 93, que les RDV ne soient plus
