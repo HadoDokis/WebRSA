@@ -20,7 +20,8 @@ echo $this->Default2->view(
 		'User.nom_complet' => array('type' => 'text', 'label' => 'Gestionnaire du dossier (technicien en charge du dossier)'),
 		'Dossierpcg66.etatdossierpcg',
 		'Notificationdecisiondossierpcg66.name' => array('label' => 'Transmission à', 'value' => @$orgs),
-		'Decisiondossierpcg66.0.datetransmissionop'
+		'Decisiondossierpcg66.0.datetransmissionop',
+		'Dossierpcg66.motifannulation',
 	),
 	array(
 		'class' => 'aere',
