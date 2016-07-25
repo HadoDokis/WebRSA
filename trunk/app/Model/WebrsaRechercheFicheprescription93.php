@@ -220,6 +220,13 @@
 				}
 			}
 
+			// Condition sur le projet de ville territorial de la structure de la fiche de prescription
+			$query['conditions'] = $this->conditionCommunautesr(
+				$query['conditions'],
+				$search,
+				array( 'Ficheprescription93.communautesr_id' => 'Referent.structurereferente_id' )
+			);
+
 			return $query;
 		}
 	}
