@@ -24,13 +24,20 @@
 			'Decisionpdo.libelle',
 			'Dossierpcg66.bilan_de',
 			'/dossierspcgs66/view/#Dossierpcg66.id#' => array( 'disabled' => !$perm['view'] ),
-			'/dossierspcgs66/edit/#Dossierpcg66.id#' => array( 'disabled' => !$perm['edit'] ),
-			'/dossierspcgs66/cancel/#Dossierpcg66.id#' => array( 'disabled' => !$perm['cancel'] ),
+			'/dossierspcgs66/edit/#Dossierpcg66.id#' => array(
+				'disabled' => (!$perm['edit'] ? 'true' : 'false').' || "#Dossierpcg66.etatdossierpcg#" === "annule"'
+			),
+			'/dossierspcgs66/cancel/#Dossierpcg66.id#' => array(
+				'disabled' => (!$perm['cancel'] ? 'true' : 'false').' || "#Dossierpcg66.etatdossierpcg#" === "annule"'
+			),
 			'/dossierspcgs66/delete/#Dossierpcg66.id#' => array( 'disabled' => !$perm['delete'] ),
 		), 
 		array(
 			'options' => $options,
-			'paginate' => false
+			'paginate' => false,
+			'innerTable' => array(
+				'Dossierpcg66.motifannulation'
+			)
 		)
 	);
 	

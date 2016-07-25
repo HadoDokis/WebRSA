@@ -149,6 +149,7 @@
 			$query = array(
 				'fields' => array(
 					'Dossierpcg66.id',
+					'Dossierpcg66.motifannulation',
 					'Typepdo.libelle',
 					'Dossierpcg66.datereceptionpdo',
 					'Dossierpcg66.etatdossierpcg',
