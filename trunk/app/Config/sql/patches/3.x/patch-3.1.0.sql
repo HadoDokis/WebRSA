@@ -329,20 +329,6 @@ CREATE UNIQUE INDEX actionroles_role_name_unique ON actionroles (role_id, name);
 UPDATE acos SET alias = 'Contratsinsertion:reconduction_cer_plus_55_ans' WHERE alias = 'Contratsinsertion:reconductionCERPlus55Ans';
 
 
---------------------------------------------------------------------------------
--- Liens entre referents
---------------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS derniersreferents;
-
-CREATE TABLE derniersreferents (
-	id SERIAL NOT NULL PRIMARY KEY,
-	referent_id	INTEGER NOT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	prevreferent_id INTEGER REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	dernierreferent_id INTEGER REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
