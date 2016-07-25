@@ -32,6 +32,12 @@
 			'exportcsv' => false
 		)
 	);
+
+	echo $this->Observer->dependantSelect(
+		array(
+			'Search.Contratinsertion.structurereferente_id' => 'Search.Contratinsertion.referent_id'
+		)
+	);
 ?>
 <?php if( isset( $results ) ): ?>
 <script type="text/javascript">
