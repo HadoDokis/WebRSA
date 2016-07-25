@@ -16,6 +16,15 @@ BEGIN;
 -- Liens entre referents
 --------------------------------------------------------------------------------
 
+DROP TABLE IF EXISTS derniersreferents;
+
+CREATE TABLE derniersreferents (
+	id SERIAL NOT NULL PRIMARY KEY,
+	referent_id	INTEGER NOT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	prevreferent_id INTEGER REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	dernierreferent_id INTEGER REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 -- Ajoute une ligne pour chaque nom / prenom identique
 CREATE OR REPLACE FUNCTION public.garnissagederniersreferents() RETURNS VOID AS
 $$
