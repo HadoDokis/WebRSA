@@ -37,6 +37,9 @@ msgstr "Personne chargée du suivi"
 # 2°) Champs spécifiques au moteur de recherche par rendez-vous
 # ==============================================================================
 
+msgid "Search.Rendezvous.communautesr_id"
+msgstr "Projet de ville communautaire proposant le RDV"
+
 msgid "Search.Rendezvous.structurereferente_id"
 msgstr "Structure proposant le RDV"
 

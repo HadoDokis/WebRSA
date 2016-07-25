@@ -4,6 +4,7 @@
 	<?php
 		// FIXME: fieldset
 		echo $this->Form->input( 'Search.Rendezvous.statutrdv_id', array( 'label' => __m( 'Search.Rendezvous.statutrdv_id' ), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Rendezvous']['statutrdv_id'], 'empty' => false ) );
+		echo $this->Allocataires->communautesr( 'Rendezvous', array( 'options' => array( 'Search' => $options ), 'hide' => false ) );
 		echo $this->Form->input( 'Search.Rendezvous.structurereferente_id', array( 'label' => __m( 'Search.Rendezvous.structurereferente_id' ), 'type' => 'select', 'options' => $options['PersonneReferent']['structurereferente_id'], 'empty' => true ) );
 		echo $this->Form->input( 'Search.Rendezvous.referent_id', array( 'label' => __m( 'Search.Rendezvous.referent_id' ), 'type' => 'select', 'options' => $options['PersonneReferent']['referent_id'], 'empty' => true ) );
 		echo $this->Form->input( 'Search.Rendezvous.permanence_id', array( 'label' => __m( 'Search.Rendezvous.permanence_id' ), 'type' => 'select', 'options' => $options['Rendezvous']['permanence_id'], 'empty' => true ) );
