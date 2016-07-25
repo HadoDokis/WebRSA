@@ -177,6 +177,9 @@ msgstr "Date de validation"
 msgid "Search.Contratinsertion.created"
 msgstr "Date de saisie du contrat"
 
+msgid "Search.Contratinsertion.communautesr_id"
+msgstr "Projet de ville territorial"
+
 msgid "Search.Contratinsertion.structurereferente_id"
 msgstr "Structure référente"
 

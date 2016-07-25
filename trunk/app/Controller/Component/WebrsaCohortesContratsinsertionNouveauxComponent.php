@@ -31,7 +31,8 @@
 						'structurereferente_id' => $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup' ) ),
 						'referent_id' => $Controller->InsertionsBeneficiaires->referents()
 					)
-				)
+				),
+				$this->Allocataires->optionsSessionCommunautesr( 'Contratinsertion' )
 			);
 		}
 
