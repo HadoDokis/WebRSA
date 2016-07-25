@@ -11,6 +11,7 @@
 		);
 		echo $this->Allocataires->SearchForm->dateRange( 'Search.Contratinsertion.created', $paramDate );
 
+		echo $this->Allocataires->communautesr( 'Contratinsertion', array( 'options' => array( 'Search' => $options ), 'hide' => false ) );
 		echo $this->Default3->subform(
 			array(
 				'Search.Contratinsertion.structurereferente_id' => array( 'empty' => true, 'required' => false ),

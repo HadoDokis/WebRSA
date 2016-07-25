@@ -220,6 +220,13 @@
 			// Forme du CER
 			$query['conditions']['Contratinsertion.forme_ci'] = Hash::get( $search, 'Contratinsertion.forme_ci' );
 
+			// Condition sur le projet de ville territorial de la structure du CER
+			$query['conditions'] = $this->conditionCommunautesr(
+				$query['conditions'],
+				$search,
+				array( 'Contratinsertion.communautesr_id' => 'Contratinsertion.structurereferente_id' )
+			);
+
 			return $query;
 		}
 
