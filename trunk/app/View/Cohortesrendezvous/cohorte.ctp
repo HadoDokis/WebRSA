@@ -79,6 +79,7 @@
 			'fieldset',
 			$this->Xhtml->tag( 'legend', __d( 'cohortesrendezvous', 'Search.Rendezvous' ) )
 			.$this->Xform->input( 'Search.Rendezvous.statutrdv_id', array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Rendezvous']['statutrdv_id'], 'domain' => 'cohortesrendezvous' ) )
+			.$this->Allocataires->communautesr( 'Rendezvous', array( 'options' => array( 'Search' => $options ), 'hide' => false ) )
 			.$this->Xform->input( 'Search.Rendezvous.structurereferente_id', array( 'type' => 'select', 'empty' => true, 'options' => $options['PersonneReferent']['structurereferente_id'], 'domain' => 'cohortesrendezvous' ) )
 			.$this->Xform->input( 'Search.Rendezvous.referent_id', array( 'type' => 'select', 'empty' => true, 'options' => $options['PersonneReferent']['referent_id'], 'domain' => 'cohortesrendezvous' ) )
 			.$this->Xform->input( 'Search.Rendezvous.typerdv_id', array( 'type' => 'select', 'options' => $options['Rendezvous']['typerdv_id'], 'empty' => true, 'domain' => 'cohortesrendezvous' ) )

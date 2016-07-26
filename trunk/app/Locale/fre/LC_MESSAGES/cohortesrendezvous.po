@@ -24,6 +24,9 @@ msgstr "Recherche par rendez-vous"
 msgid "Search.Rendezvous.statutrdv_id"
 msgstr "Statut du rendez-vous"
 
+msgid "Search.Rendezvous.communautesr_id"
+msgstr "Projet de ville territorial"
+
 msgid "Search.Rendezvous.structurereferente_id"
 msgstr "Structure référente"
 

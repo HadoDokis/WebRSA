@@ -123,6 +123,11 @@
 				}
 			}
 
+			$result = Hash::merge(
+				$result,
+				$this->Allocataires->optionsSessionCommunautesr( 'Rendezvous' )
+			);
+
 			return $result;
 		}
 

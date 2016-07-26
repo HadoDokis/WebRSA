@@ -146,6 +146,13 @@
 			// 3. Thématique(s) du RDV
 			$query['conditions'] = $Rendezvous->conditionsThematique( $query['conditions'], $search, 'Rendezvous.thematiquerdv_id' );
 
+			// Condition sur le projet de ville territorial de la structure de rendez-vous
+			$query['conditions'] = $this->conditionCommunautesr(
+				$query['conditions'],
+				$search,
+				array( 'Rendezvous.communautesr_id' => 'Rendezvous.structurereferente_id' )
+			);
+
 			return $query;
 		}
 
