@@ -2546,7 +2546,7 @@ function limitSelectOptionsByPrefix( selectId, prefix ) {
  * @returns {void}
  */
 function cleanSelectOptgroups2( selectId ) {
-	var optgroups, selected, visible = 0;
+	var optgroups, selected, visible;
 
 	try {
 		// On sauvegarde la valeur sélectionnée
@@ -2555,6 +2555,7 @@ function cleanSelectOptgroups2( selectId ) {
 		// On cache les optgroup vides
 		optgroups = $(selectId).select( 'optgroup' );
 		$(optgroups).each( function( optgroup ) {
+			visible = 0;
 			$(optgroup).select( 'option' ).each( function( option ) {
 				visible += ( $(option).visible() ? 1 : 0 );
 			} );
@@ -2719,6 +2720,84 @@ function dependantSelectsCommunautesr( communautesrId, structurereferenteId, lin
 
 			$(communautesrId).observe( 'change', function() {
 				onChangeDependantSelectsCommunautesr( communautesrId, structurereferenteId, links, hide )
+			} );
+		}
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+/**
+ * Limite la liste des référents en fonction de la valeur sélectionnée dans la
+ * liste des PDVCOM.
+ *
+ * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
+ * @param {String} referentId L'id du select contenant les référents (et dont la valeur est préfixée par l'id de la structure référente)
+ * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
+ * @param {Boolean} hide Doit-on cacher la liste des valeurs de la structure si la valeur de la communaute est vide
+ * @returns {void}
+ */
+function onChangeDependantSelectsCommunautesrReferent( communautesrId, referentId, links, hide ) {
+	try {
+		var communautesrValue = $F(communautesrId),
+			referentValue = $F(referentId);
+
+		if( false === $(communautesrId).enabled() ) {
+			return;
+		}
+
+		// On "reset"
+		$(referentId).select( 'optgroup', 'option' ).each( function( option ) {
+			$(option).show();
+		} );
+
+		if( '' != communautesrValue ) {
+			// Suppression des options non présentes dans le projet de ville territorial
+			$(referentId).select( 'option' ).each( function( option ) {
+				if( '' != $(option).value && false === in_array( $(option).value.replace( /^([^_]+)_.*$/, '$1' ), links[communautesrValue], true ) ) {
+					$(option).hide();
+				}
+			} );
+
+		} else if( true === hide ) {
+			$(referentId).select( 'option' ).each( function( option ) {
+				if( '' != $(option).value ) {
+					$(option).hide();
+				}
+			} );
+		}
+
+		// Si la valeur de la liste déroulante esclave n'est pas visible, on change la valeur du champ
+		if( false === selectOptionVisible(referentId, referentValue) ) {
+			$(referentId).value = '';
+		}
+
+		cleanSelectOptgroups2(referentId);
+
+		// On prévient la liste des structures référentes qu'elle a changé
+		$( referentId ).simulate( 'change' );
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+/**
+ * Observe le select de projets de villes communautaires afin de limiter la liste
+ * des référents à celles se trouvant dans le PDVCOM.
+ *
+ * @param {String} communautesrId L'id du select contenant les projets de villes communautaires
+ * @param {String} referentId L'id du select contenant les référents (et dont la valeur est préfixée par l'id de la structure référente)
+ * @param {Object} links Pour chacun des id de PDVCOM configurés, un array d'ids de structures référentes
+ * @param {Boolean} hide Doit-on cacher la liste des valeurs de la structure si la valeur de la communaute est vide
+ * @returns {void}
+ */
+function dependantSelectsCommunautesrReferent( communautesrId, referentId, links, hide ) {
+	try {
+		if( null !== $(communautesrId) ) {
+			onChangeDependantSelectsCommunautesrReferent( communautesrId, referentId, links, hide );
+
+			$(communautesrId).observe( 'change', function() {
+				onChangeDependantSelectsCommunautesrReferent( communautesrId, referentId, links, hide )
 			} );
 		}
 	} catch(e) {

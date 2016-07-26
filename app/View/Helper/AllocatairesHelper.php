@@ -431,6 +431,40 @@
 		}
 
 		/**
+		 * ...
+		 *
+		 * @param string $modelName Le nom du modèle à utiliser (ex. Orientstruct)
+		 * @param array $params
+		 * @return string
+		 */
+		public function communautesrScriptReferent( $modelName, array $params = array() ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$params = $params + $this->default;
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? rtrim($params['prefix'], '.')."." : null );
+			$communautesrPrefix = array_key_exists( 'communautesr_prefix', $params ) ? $params['communautesr_prefix'] : $params['prefix'];
+			$params['hide'] = isset( $params['hide'] ) ? $params['hide'] : true;
+			$result = null;
+
+			if( 93 === $departement && Hash::check( $params, "options.{$communautesrPrefix}{$modelName}.communautesr_id" ) ) {
+			   $result = "document.observe( 'dom:loaded', function() {
+							try {
+								dependantSelectsCommunautesrReferent(
+									'".$this->domId( "{$params['prefix']}{$modelName}.communautesr_id" )."',
+									'".$this->domId( "{$params['prefix']}{$modelName}.referent_id" )."',
+									".json_encode( Hash::get( $params, "options.{$communautesrPrefix}{$modelName}.links" ) ).",
+									".json_encode($params['hide'])."
+								);
+							} catch(e) {
+								console.log(e);
+							}
+						} );\n";
+				$result = $this->Xhtml->scriptBlock( $result, array( 'inline' => true, 'safe' => true ) );
+			}
+
+			return $result;
+		}
+
+		/**
 		 * Retourne une liste déroulante de projets de villes communautaires et
 		 * le code javascript permettant de lier ce filtre à un filtre de
 		 * structures référentes.

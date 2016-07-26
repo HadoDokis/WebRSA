@@ -2,6 +2,10 @@
 	$this->pageTitle = '5. Tableau de suivi';
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
+	}
+
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
 
 	if( isset( $cers93 ) ) {
@@ -130,7 +134,7 @@
                         $emetteurResponsable[$etape] = ' (émis par '.$cer93[$etape]['User']['nom_complet'].' )';
                     }
                 }
-                
+
 				// TODO: on a le même genre de choses dans d'autres vues (secondelecture.ctp)
 				$etape03 = Hash::extract( $cer93, 'Histochoixcer93etape03' );
 				$commentairesEtape03 = '';
