@@ -28,6 +28,7 @@
 		 * @var array
 		 */
 		public $components = array(
+			'Allocataires',
 			'Cohortes' => array(
 				'saisie',
 				'avalidercpdv',
@@ -865,7 +866,8 @@
 			$options = Set::merge(
 				$options,
 				$this->Contratinsertion->Cer93->enums(),
-				$this->Contratinsertion->Cer93->Histochoixcer93->enums()
+				$this->Contratinsertion->Cer93->Histochoixcer93->enums(),
+				$this->Allocataires->optionsSessionCommunautesr( 'PersonneReferent' )
 			);
 			$options['Search']['Cer93']['hasdateimpression'] = array( 'I' => 'Imprimé', 'N' => 'Non imprimé' );
 			$options['Search']['Cer93']['limit'] = array_combine( array_range( 100, 1000, 100 ), array_range( 100, 1000, 100 ) );
