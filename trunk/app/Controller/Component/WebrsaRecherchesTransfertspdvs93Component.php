@@ -49,10 +49,16 @@
 		 */
 		protected function _optionsSession( array $params ) {
 			$Controller = $this->_Collection->getController();
-			$options = parent::_optionsSession( $params );
-
-			$options['Orientstruct']['typeorient_id'] = $Controller->InsertionsBeneficiaires->typesorients( array( 'conditions' => array() ) );
-			$options['Orientstruct']['structurereferente_id'] = $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'prefix' => true ) );
+			$options = Hash::merge(
+				parent::_optionsSession( $params ),
+				array(
+					'Orientstruct' => array(
+						'typeorient_id' => $Controller->InsertionsBeneficiaires->typesorients( array( 'conditions' => array() ) ),
+						'structurereferente_id' => $Controller->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'prefix' => true ) )
+					)
+				),
+				$this->Allocataires->optionsSessionCommunautesr( 'NvOrientstruct' )
+			);
 
 			return $options;
 		}

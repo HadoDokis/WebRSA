@@ -190,8 +190,12 @@
 				}
 			}
 
-//			debug($search);
-
+			// Condition sur le projet de ville territorial de la nouvelle structure d'orientation
+			$query['conditions'] = $this->conditionCommunautesr(
+				$query['conditions'],
+				$search,
+				array( 'NvOrientstruct.communautesr_id' => 'NvOrientstruct.structurereferente_id' )
+			);
 
 			return $query;
 		}
