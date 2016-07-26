@@ -29,6 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
+			'Allocataires',
 			'Cohortes' => array( 'index' ),
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
@@ -115,39 +116,45 @@
 
 			// Options à envoyer à la vue
 			$years = array_reverse( array_range( 2009, date( 'Y' ) ) );
-			$options = array(
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
-				),
-				'Questionnaired1' => array(
-					'annee' => array_combine( $years, $years )
-				),
-				'Rendezvous' => array(
-					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
-						array(
-							'type' => InsertionsBeneficiairesComponent::TYPE_LIST,
-							'prefix' => false,
-							'conditions' => array(
-								'Structurereferente.id' => array_keys( $this->WebrsaTableausuivipdv93->listePdvs() )
+			$options = Hash::merge(
+				array(
+					'Adresse' => array(
+						'numcom' => $this->Gestionzonesgeos->listeCodesInsee(),
+						'canton' => $this->Gestionzonesgeos->listeCantons()
+					),
+					'Calculdroitrsa' => array(
+						'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
+					),
+					'Questionnaired1' => array(
+						'annee' => array_combine( $years, $years )
+					),
+					'Rendezvous' => array(
+						'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes(
+							array(
+								'type' => InsertionsBeneficiairesComponent::TYPE_LIST,
+								'prefix' => false,
+								'conditions' => array(
+									'Structurereferente.id' => array_keys( $this->WebrsaTableausuivipdv93->listePdvs() )
+								)
 							)
 						)
-					)
 
+					),
+					'cantons' => $this->Gestionzonesgeos->listeCantons(),
+					'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
+					'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
 				),
-				'cantons' => $this->Gestionzonesgeos->listeCantons(),
-				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
-				'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa'),
-			);
-			$options['Adresse']['numcom'] = $options['mesCodesInsee'];
-			$options['Adresse']['canton'] = $options['cantons'];
-			$options = Hash::merge(
-				$options,
-				$this->Questionnaired2pdv93->options( array( 'find' => true ) )
+				$this->Questionnaired2pdv93->options( array( 'find' => true ) ),
+				$this->Allocataires->optionsSessionCommunautesr( 'Rendezvous' ),
+				array(
+					'PersonneReferent' => array(
+						'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ),
+						'referent_id' => $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) )
+					)
+				),
+				$this->Allocataires->optionsSessionCommunautesr( 'PersonneReferent' )
 			);
 			$this->set( compact( 'options' ) );
-
-			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( 'isAjax', $this->request->is( 'ajax' ) );
 

@@ -134,6 +134,13 @@
 				'limit' => 10
 			);
 
+			// Condition sur le projet de ville territorial de la structure de rendez-vous
+			$querydata['conditions'] = $this->conditionCommunautesr(
+				$querydata['conditions'],
+				$search,
+				array( 'Rendezvous.communautesr_id' => 'Rendezvous.structurereferente_id' )
+			);
+
 			$querydata = $Personne->PersonneReferent->completeQdReferentParcours( $querydata, $search );
 
 			return $querydata;

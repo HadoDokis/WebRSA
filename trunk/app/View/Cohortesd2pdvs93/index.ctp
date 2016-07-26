@@ -44,6 +44,7 @@
 		echo '<fieldset>';
 		echo sprintf( '<legend>%s</legend>', __d( 'cohortesd2pdvs93', 'Search.Questionnaired2pdv93' ) );
 		echo $this->Xform->input( 'Search.Questionnaired1pdv93.annee', array( 'options' => $options['Questionnaired1']['annee'], 'domain' => 'cohortesd2pdvs93' ) );
+		echo $this->Allocataires->communautesr( 'Rendezvous', array( 'options' => array( 'Search' => $options ), 'hide' => false ) );
 		echo $this->Xform->input( 'Search.Rendezvous.structurereferente_id', array( 'options' => $options['Rendezvous']['structurereferente_id'], 'empty' => true, 'domain' => 'cohortesd2pdvs93' ) );
 		echo $this->Xform->input( 'Search.Questionnaired2pdv93.exists', array( 'type' => 'checkbox', 'domain' => 'cohortesd2pdvs93' ) );
 
@@ -58,7 +59,7 @@
 		);
 		echo '</fieldset>';
 
-		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
+		echo $this->Allocataires->blocReferentparcours( array( 'prefix' => 'Search', 'options' => $options ) );
 		echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 		echo $this->Search->observeDisableFormOnSubmit( 'Cohortesd2pdvs93IndexForm' );
 
