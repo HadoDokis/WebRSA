@@ -45,6 +45,9 @@ msgstr "Recherche par D1/D2"
 msgid "Search.Questionnaired1pdv93.annee"
 msgstr "Année de suivi"
 
+msgid "Search.Rendezvous.communautesr_id"
+msgstr "Projet de ville territorial proposant le 1er RDV"
+
 msgid "Search.Rendezvous.structurereferente_id"
 msgstr "Structure proposant le 1er RDV"
 
