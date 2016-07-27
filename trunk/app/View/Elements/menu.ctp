@@ -574,6 +574,10 @@
 					'title' => 'Comparaison entre les flux VRSD0301 et VRSD0101',
 				),
 			),
+			'Log trace' => array(
+				'disabled' => !Configure::read('Module.Logtrace.enabled'),
+				'url' => array('controller' => 'logtraces', 'action' => 'index'),
+			)
 		),
 		'Déconnexion '.$this->Session->read( 'Auth.User.username' ) => array(
 			'url' => array( 'controller' => 'users', 'action' => 'logout' )

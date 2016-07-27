@@ -1202,4 +1202,12 @@
 	 * ex: controller_action_suffix.po -> dossiers_index_cg01.po
 	 */
 	Configure::write('WebrsaTranslator.suffix', 'cg'.Configure::read('Cg.departement'));
+	
+	/**
+	 * /!\ N'activer ce module que sur une période courte /!\
+	 * Permet de logger tous les appels de pages, active également l'accès au module de visualisation dans administration
+	 * Désactiver et supprimer app/tmp/logs/trace.log après utilisation
+	 */
+	Configure::write('Module.Logtrace.enabled', false);
+	Configure::write('Module.Logtrace.total_duration', 60 * 60 * 1); // Durée en secondes du graph (max 32746)
 ?>
