@@ -43,7 +43,7 @@
 			$query['conditions'] = array(
 				'OR' => array(
 					array(
-						'Decisiondossierpcg66.etatdossierpcg' => null,
+						'Decisiondossierpcg66.etatdossierpcg IS NULL',
 						'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
 						'Dossierpcg66.dateimpression' => null
 					),
@@ -59,6 +59,9 @@
 						. 'AND c.annule = \'N\''
 						. 'AND c.etattraitementpcg = \'imprimer\')'
 					)
+				),
+				array(
+					'Personne.id = Personnepcg66.personne_id'
 				)
 			);
 			
