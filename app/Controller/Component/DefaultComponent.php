@@ -161,6 +161,11 @@
 				$this->Controller->redirect( array( 'action' => 'index' ) );
 			}
 
+			// Retour à l'index en cas d'annulation
+			if( !empty( $this->Controller->request->data ) && isset( $this->Controller->request->data['Cancel'] ) ) {
+				$this->Controller->redirect( array( 'action' => 'index' ) );
+			}
+
 			if( $this->Controller->action == 'edit' ) {
 				$qd_item = array(
 					'conditions' => array(

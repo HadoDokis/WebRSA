@@ -91,28 +91,18 @@
 		}
 
 		/**
-		*
-		*/
+		 *
+		 * @param integer $id
+		 */
+		public function _add_edit( $id = null ) {
+			$options = $this->Referent->enums();
+			$options['Referent']['structurereferente_id'] = $this->Referent->Structurereferente->find( 'list' );
+			$this->set( compact( 'options' ) );
 
-		public function _add_edit() {
-			// Retour à l'index en cas d'annulation
-			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'index' ) );
-			}
-			$sr = $this->Structurereferente->find(
-				'list',
-				array(
-					'fields' => array(
-						'Structurereferente.lib_struc'
-					),
-				)
-			);
-			$this->set( 'sr', $sr );
-
-			$this->_setOptions();
-			$args = func_get_args();
-
-			call_user_func_array( array( $this->Default, $this->action ), $args );
+			$bindDernierreferent = $this->Referent->hasOne['Dernierreferent'];
+			$this->Referent->unbindModelAll();
+			$this->Referent->bindModel( array( 'hasOne' => array( 'Dernierreferent' => $bindDernierreferent ) ) );
+			call_user_func_array( array( $this->Default, $this->action ), array( $id ) );
 		}
 
 		public function delete( $referent_id = null ) {
