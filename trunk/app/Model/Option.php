@@ -31,7 +31,7 @@
 		 * @var boolean
 		 */
 		public $useTable = false;
-		
+
 		/**
 		 * Enums pour le champ detailsressourcesmensuelles.abaneu
 		 *
@@ -209,7 +209,7 @@
 				'GEN' => 'GENESIS SIRUS-BULL',
 				'IAS' => 'IAS JVS implicit',
 				'PER' => 'Peceaveal INFODB',
-				'54' => ' Logiciel du CG 54'				
+				'54' => ' Logiciel du CG 54'
 			);
 		}
 
@@ -513,7 +513,7 @@
 		public function drorsarmiant() {
 			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			// Dsp.topdrorsarmiant -> valeurs possible : 0 || 1
-			
+
 			return array(
 				'O' => 'Oui',
 				'N' => 'Non',
@@ -943,7 +943,7 @@
 		public function forme_ci() {
 			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			// ClassRegistry::init('Contratinsertion')->enum('forme_ci')
-			
+
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
 				return array( 'S' => 'Simple', 'C' => 'Particulier' );
 			}
@@ -982,19 +982,6 @@
 			return array(
 				'A' => 'Aide',
 				'P' => 'Prestation'
-			);
-		}
-
-		/**
-		 * @return array
-		 * @deprecated since version 3.1
-		 */
-		public function lib_struc() {
-			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
-			// ClassRegistry::init('Structurereferente')->enum('lib_struc')
-			return array(
-				'1' => 'Pole emploi',
-				'2' => 'Assedic'
 			);
 		}
 
