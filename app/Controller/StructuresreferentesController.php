@@ -15,12 +15,32 @@
 	 */
 	class StructuresreferentesController extends AppController
 	{
-
 		public $name = 'Structuresreferentes';
-		public $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique', 'Apre', 'Option' );
-		public $helpers = array( 'Xform' );
 
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
+		public $uses = array(
+			'Structurereferente',
+			'Referent',
+			'Orientstruct',
+			'Typeorient',
+			'Zonegeographique',
+			'Apre',
+			'Option',
+			'WebrsaStructurereferente'
+		);
+
+		public $helpers = array(
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Translator',
+			'Xform'
+		);
+
+		public $components = array(
+			'Search.SearchPrg' => array(
+				'actions' => array( 'index' )
+			)
+		);
 
 		public $commeDroit = array(
 			'add' => 'Structuresreferentes:edit'
@@ -44,20 +64,22 @@
 			$this->set( 'options', $options );
 		}
 
+		/**
+		 * Moteur de recherche par structures référentes
+		 */
 		public function index() {
-			// Retour à la liste en cas d'annulation
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+			$search = (array)Hash::get( $this->request->data, 'Search' );
+			if( !empty( $search ) ) {
+				$query = $this->WebrsaStructurereferente->search( $search );
+				$query['limit'] = 20;
+				$this->paginate = $query;
+				$results = $this->paginate( 'Structurereferente' );
+				$this->set( compact( 'results' ) );
 			}
 
-			if( !empty( $this->request->data ) ) {
-				$queryData = $this->Structurereferente->search( $this->request->data );
-				$queryData['limit'] = 20;
-				$this->paginate = $queryData;
-				$structuresreferentes = $this->paginate( 'Structurereferente' );
-				$this->set( 'structuresreferentes', $structuresreferentes);
-			}
-			$this->_setOptions();
+			$options = $this->Structurereferente->enums();
+			$options['Structurereferente']['typeorient_id'] = $this->Structurereferente->Typeorient->find( 'list' );
+			$this->set( compact( 'options' ) );
 		}
 
 		public function add() {

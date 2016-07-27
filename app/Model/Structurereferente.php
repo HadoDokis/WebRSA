@@ -29,6 +29,10 @@
 			'Validation.ExtraValidationRules',
 		);
 
+		public $uses = array(
+			'Option'
+		);
+
 		public $validate = array(
 			'numtel' => array(
 				'phoneFr' => array(
@@ -42,20 +46,6 @@
 					'allowEmpty' => true,
 				)
 			),
-		);
-
-		/**
-		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
-		 * règle de validation inList ou en contrainte dans la base de données en
-		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
-		 * fini de valeurs existe.
-		 *
-		 * @see AppModel::enums
-		 *
-		 * @var array
-		 */
-		public $fakeInLists = array(
-			'lib_struc' => array('1', '2'),
 		);
 
 		public $belongsTo = array(
@@ -539,54 +529,6 @@
 			return $success;
 		}
 
-
-
-
-		/**
-		*	Recherche des structures dans le paramétrage de l'application
-		*
-		*/
-		public function search( $criteres ) {
-			/// Conditions de base
-			$conditions = array();
-
-			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
-			$filtersStruct = array();
-			foreach( array( 'lib_struc', 'ville' ) as $critereStructure ) {
-				if( isset( $criteres['Structurereferente'][$critereStructure] ) && !empty( $criteres['Structurereferente'][$critereStructure] ) ) {
-					$conditions[] = 'Structurereferente.'.$critereStructure.' ILIKE \''.$this->wildcard( $criteres['Structurereferente'][$critereStructure] ).'\'';
-				}
-			}
-
-			// Critère sur la structure référente de l'utilisateur
-			if( isset( $criteres['Structurereferente']['typeorient_id'] ) && !empty( $criteres['Structurereferente']['typeorient_id'] ) ) {
-				$conditions[] = array( 'Structurereferente.typeorient_id' => $criteres['Structurereferente']['typeorient_id'] );
-			}
-
-			if( false === $this->Behaviors->attached( 'Occurences' ) ) {
-				$this->Behaviors->attach( 'Occurences' );
-			}
-
-			$query = array(
-				'fields' => array_merge(
-					$this->fields(),
-					$this->Typeorient->fields(),
-					array(
-						$this->sqHasLinkedRecords()
-					)
-				),
-				'order' => array( 'Structurereferente.lib_struc ASC' ),
-				'joins' => array(
-					$this->join( 'Typeorient', array( 'type' => 'INNER' ) )
-				),
-				'recursive' => -1,
-				'conditions' => $conditions
-			);
-
-			return $query;
-		}
-
-
 		/**
 		 * Retourne la clé de session pour une méthode et un querydata donnés.
 		 *
@@ -716,6 +658,31 @@
 				else {
 					$results = $results['normal'];
 				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Surcharge de la méthode enums pour ajouter le type de voie ainsi que
+		 * des traductions distinctes pour le CG 58.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$departement = (int)Configure::read( 'Cg.departement' );
+			$results = parent::enums();
+
+			$results[$this->alias]['type_voie'] = $this->Option->typevoie();
+
+			if( 58 === $departement ) {
+				$results[$this->alias]['typestructure'] = array_merge(
+					$results[$this->alias]['typestructure'],
+					array(
+						'oa' => 'Structure liée à un PPAE',
+						'msp' => 'Structure débouchant sur CER pro'
+					)
+				);
 			}
 
 			return $results;
