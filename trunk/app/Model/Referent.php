@@ -34,6 +34,15 @@
 			'Validation.ExtraValidationRules',
 		);
 
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Option'
+		);
+
 		public $order = array( 'Referent.nom ASC', 'Referent.prenom ASC' );
 
 		public $virtualFields = array(
@@ -675,6 +684,19 @@
 					);
 				}
 			}
+		}
+
+		/**
+		 * Surcharge de la méthode enums pour ajouter la qualité.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$results = parent::enums();
+
+			$results[$this->alias]['qual'] = $this->Option->qual();
+
+			return $results;
 		}
 	}
 ?>
