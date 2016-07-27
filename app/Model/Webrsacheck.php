@@ -381,6 +381,12 @@
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
 				'WebrsaTranslator.suffix' => 'string',
+				'Module.Logtrace.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
+				'Module.Logtrace.total_duration' => array(
+					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Module.Logtrace.enabled') )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

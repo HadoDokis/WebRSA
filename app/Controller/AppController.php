@@ -515,5 +515,32 @@
 
 			return $cache;
 		}
+		
+		//----------------------------------------------------------------------
+		
+		protected function _logTrace() {
+			$message = sprintf(
+				'Page "%s" construite pour "%s" (%s) en %s secondes. %s / %s. %s modèles',
+				$this->request->here,
+				$this->Session->read('Auth.User.username'),
+				$_SERVER['REMOTE_ADDR'],
+				number_format(microtime(true) - $_SERVER['REQUEST_TIME'] , 2, ',', ' '),
+				byteSize(memory_get_peak_usage(false)),
+				byteSize(memory_get_peak_usage(true)),
+				count(ClassRegistry::mapKeys())
+			);
+
+			$this->log($message, 'trace');		
+		}
+		
+		public function beforeRedirect($url, $status = null, $exit = true) {
+			$this->_logTrace();
+			return parent::beforeRedirect( $url, $status, $exit );
+		}
+		
+		public function afterFilter() {
+			$this->_logTrace();
+			return parent::afterFilter();
+		}
 	}
 ?>
