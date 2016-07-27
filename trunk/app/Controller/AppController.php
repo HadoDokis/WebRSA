@@ -516,21 +516,24 @@
 			return $cache;
 		}
 		
-		//----------------------------------------------------------------------
-		
+		/**
+		 * Log chaque appel de page
+		 */
 		protected function _logTrace() {
-			$message = sprintf(
-				'Page "%s" construite pour "%s" (%s) en %s secondes. %s / %s. %s modèles',
-				$this->request->here,
-				$this->Session->read('Auth.User.username'),
-				$_SERVER['REMOTE_ADDR'],
-				number_format(microtime(true) - $_SERVER['REQUEST_TIME'] , 2, ',', ' '),
-				byteSize(memory_get_peak_usage(false)),
-				byteSize(memory_get_peak_usage(true)),
-				count(ClassRegistry::mapKeys())
-			);
+			if (Configure::read('Module.Logtrace.enabled')) {
+				$message = sprintf(
+					'Page "%s" construite pour "%s" (%s) en %s secondes. %s / %s. %s modèles',
+					$this->request->here,
+					$this->Session->read('Auth.User.username'),
+					$_SERVER['REMOTE_ADDR'],
+					number_format(microtime(true) - $_SERVER['REQUEST_TIME'] , 2, ',', ' '),
+					byteSize(memory_get_peak_usage(false)),
+					byteSize(memory_get_peak_usage(true)),
+					count(ClassRegistry::mapKeys())
+				);
 
-			$this->log($message, 'trace');		
+				$this->log($message, 'trace');
+			}
 		}
 		
 		public function beforeRedirect($url, $status = null, $exit = true) {
