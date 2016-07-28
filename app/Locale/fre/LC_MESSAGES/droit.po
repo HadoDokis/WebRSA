@@ -2457,6 +2457,15 @@ msgstr "Suppression d'un utilisateur"
 msgid "Users:changepass"
 msgstr "Modification du mot de passe"
 
+msgid "Users:delete_jetons"
+msgstr "Suppression des jetons d'un utilisateur"
+
+msgid "Users:delete_jetonsfonctions"
+msgstr "Suppression des jetons sur les fonctions d'un utilisateur"
+
+msgid "Users:force_logout"
+msgstr "Déconnecter un utilisateur"
+
 ###############################################################################
 
 msgid "Module:Visionneuses"
