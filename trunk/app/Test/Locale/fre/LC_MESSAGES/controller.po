@@ -22,8 +22,23 @@ msgstr "test3 dans controller.po"
 msgid "Monmodel.field"
 msgstr "Monmodel.field dans controller.po"
 
-msgid "/controller/action/#Model.id#"
+msgid "/Controller/action"
 msgstr "Traduction path dans controller.po"
+
+msgid "/Controller/action/#Model.id#"
+msgstr "Traduction (titre) path dans controller.po"
+
+msgid "/Controller/action/#Model.id# ?"
+msgstr "Traduction (confirm) path dans controller.po"
+
+msgid "/Controller/action2"
+msgstr "Traduction path 2 dans controller.po"
+
+msgid "/Controller/action2/#Model.id#"
+msgstr "Traduction (titre) path 2 dans controller.po"
+
+msgid "/Controller/action2/#Model.id# ?"
+msgstr "Traduction (confirm) path 2 dans controller.po"
 
 msgid "data[Model][input]"
 msgstr "Traduction invisible"
