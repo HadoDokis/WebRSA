@@ -86,17 +86,44 @@ msgstr "Jetons"
 msgid "User.has_jetonsfonctions"
 msgstr "Jetons fonctions"
 
+msgid "/Users/edit"
+msgstr "Modifier"
+
 msgid "/Users/edit/#User.id#"
 msgstr "Modifier"
+
+msgid "/Users/delete_jetons"
+msgstr "Jetons"
 
 msgid "/Users/delete_jetons/#User.id#"
 msgstr "Jetons"
 
+msgid "/Users/delete_jetons/#User.id# ?"
+msgstr "Supprimer les jetons de l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?"
+
+msgid "/Users/delete_jetonsfonctions"
+msgstr "Jetons fonctions"
+
 msgid "/Users/delete_jetonsfonctions/#User.id#"
 msgstr "Jetons fonctions"
+
+msgid "/Users/delete_jetonsfonctions/#User.id# ?"
+msgstr "Supprimer les jetons sur les fonctions de l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?"
+
+msgid "/Users/force_logout"
+msgstr "Déconnecter"
 
 msgid "/Users/force_logout/#User.id#"
 msgstr "Déconnecter"
 
+msgid "/Users/force_logout/#User.id# ?"
+msgstr "Déconnecter l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?"
+
+msgid "/Users/delete"
+msgstr "Supprimer"
+
 msgid "/Users/delete/#User.id#"
 msgstr "Supprimer"
+
+msgid "/Users/delete/#User.id# ?"
+msgstr "Supprimer l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?"

@@ -86,8 +86,17 @@ msgstr "Active"
 msgid "Structurereferente.typestructure"
 msgstr "Type de structure"
 
+msgid "/Structuresreferentes/edit"
+msgstr "Modifier"
+
 msgid "/Structuresreferentes/edit/#Structurereferente.id#"
 msgstr "Modifier"
 
+msgid "/Structuresreferentes/delete"
+msgstr "Supprimer"
+
 msgid "/Structuresreferentes/delete/#Structurereferente.id#"
 msgstr "Supprimer"
+
+msgid "/Structuresreferentes/delete/#Structurereferente.id# ?"
+msgstr "Supprimer la structure référente « #Structurereferente.lib_struc# » ?"

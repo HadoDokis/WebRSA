@@ -41,12 +41,13 @@
 		 */
 		public function setUp() {
 			parent::setUp();
-			Translator::reset();
+			call_user_func(array(Translator::getInstance(), 'reset'));
 			App::build(array('locales' => CakePlugin::path('Translator').'Test'.DS.'Locale'.DS));
 			$request = new CakeRequest('domain1/index', false);
 			$request->addParams(array('controller' => 'domain1', 'action' => 'index'));
 			$this->Controller = new Domain1Controller($request);
 			$this->Controller->Components->init($this->Controller);
+			Cache::delete($this->Controller->TranslatorAutoload->cacheKey());
 			$this->Controller->TranslatorAutoload->initialize($this->Controller);
 			$this->testAction('/domain1/index', array('method' => 'GET'));
 		}

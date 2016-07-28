@@ -110,24 +110,24 @@
 						'condition' => $jetonsEnabled,
 						'condition_group' => 'jetons',
 						'title' => false,
-						'confirm' => 'Supprimer les jetons de l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'confirm' => true,
 						'disabled' => '0 == "#User.has_jetons#"'
 					),
 					'/Users/delete_jetonsfonctions/#User.id#' => array(
 						'condition' => $jetonsfonctionsEnabled,
 						'condition_group' => 'jetonsfonctions',
 						'title' => false,
-						'confirm' => 'Supprimer les jetons sur les fonctions de l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'confirm' => true,
 						'disabled' => '0 == "#User.has_jetonsfonctions#"'
 					),
 					'/Users/force_logout/#User.id#' => array(
 						'title' => false,
-						'confirm' => 'Déconnecter l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'confirm' => true,
 						'disabled' => '( 0 == "#User.has_connections#" || "'.$connectedUserId.'" == "#User.id#" )'
 					),
 					'/Users/delete/#User.id#' => array(
 						'title' => false,
-						'confirm' => 'Supprimer l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'confirm' => true,
 						'disabled' => '( 0 != "#User.has_linkedrecords#" || "'.$connectedUserId.'" == "#User.id#" )'
 					)
 				)

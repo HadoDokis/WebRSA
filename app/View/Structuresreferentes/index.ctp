@@ -64,7 +64,7 @@
 					),
 					'/Structuresreferentes/delete/#Structurereferente.id#' => array(
 						'title' => false,
-						'confirm' => 'Supprimer la structure référente « #Structurereferente.lib_struc# » ?',
+						'confirm' => true,
 						'disabled' => '0 != "#Structurereferente.has_linkedrecords#"'
 					)
 				)
