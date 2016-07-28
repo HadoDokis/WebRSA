@@ -17,7 +17,7 @@
 
 		if( Configure::read( 'User.adresse' ) ) {
 			echo $this->Form->input( 'User.numvoie', array( 'label' =>  __d( 'adresse', 'Adresse.numvoie' ), 'type' => 'text' ) );
-			echo $this->Form->input( 'User.typevoie', array( 'label' =>  __d( 'adresse', 'Adresse.typevoie' ), 'type' => 'select', 'options' => $typevoie, 'empty' => true  ) );
+			echo $this->Form->input( 'User.typevoie', array( 'label' =>  __d( 'adresse', 'Adresse.libtypevoie' ), 'type' => 'select', 'options' => $typevoie, 'empty' => true  ) );
 			echo $this->Form->input( 'User.nomvoie', array( 'label' =>  __d( 'adresse', 'Adresse.nomvoie' ), 'type' => 'text' ) );
 			echo $this->Form->input( 'User.compladr', array( 'label' =>  __d( 'adresse', 'Adresse.compladr' ), 'type' => 'text' ) );
 			echo $this->Form->input( 'User.codepos', array( 'label' =>  __d( 'adresse', 'Adresse.codepos' ), 'type' => 'text', 'maxlength' => 5 ) );

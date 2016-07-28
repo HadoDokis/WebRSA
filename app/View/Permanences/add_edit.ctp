@@ -24,7 +24,7 @@
 			echo $this->Form->input( 'Permanence.structurereferente_id', array( 'label' => required( __( 'Type de structure liée à la permanence' ) ), 'type' => 'select', 'options' => $sr, 'empty' => true ) );
 			echo $this->Form->input( 'Permanence.numtel', array( 'label' => required( __( 'N° téléphone de la permanence' ) ), 'type' => 'text', 'maxlength' => 15 ) );
 			echo $this->Form->input( 'Permanence.numvoie', array( 'label' =>  __d( 'adresse', 'Adresse.numvoie' ), 'type' => 'text', 'maxlength' => 15 ) );
-			echo $this->Form->input( 'Permanence.typevoie', array( 'label' => required( __d( 'adresse', 'Adresse.typevoie' ) ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );
+			echo $this->Form->input( 'Permanence.typevoie', array( 'label' => required( __d( 'adresse', 'Adresse.libtypevoie' ) ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );
 			echo $this->Form->input( 'Permanence.nomvoie', array( 'label' => required(  __d( 'adresse', 'Adresse.nomvoie' ) ), 'type' => 'text', 'maxlength' => 50 ) );
 			echo $this->Form->input( 'Permanence.compladr', array( 'label' =>  __d( 'adresse', 'Adresse.compladr' ), 'type' => 'text', 'maxlength' => 50 ) );
 			echo $this->Form->input( 'Permanence.codepos', array( 'label' => required( __d( 'adresse', 'Adresse.codepos' ) ), 'type' => 'text', 'maxlength' => 5 ) );
