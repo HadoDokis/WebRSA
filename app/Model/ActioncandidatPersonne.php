@@ -551,6 +551,7 @@
 						$this->Actioncandidat->Contactpartenaire->Partenaire->fields(),
 						$this->Personne->fields(),
 						$this->Referent->fields(),
+						$this->Referent->Structurereferente->fields(),
 						$this->Personne->Foyer->fields(),
 						$this->Personne->Foyer->Dossier->fields(),
 						$this->Personne->Foyer->Adressefoyer->fields(),
@@ -598,6 +599,7 @@
 							'foreignKey' => false,
 							'conditions' => array( 'Referent.id = ActioncandidatPersonne.referent_id' ),
 						),
+						$this->Referent->join('Structurereferente'),
 						array(
 							'table'      => 'foyers',
 							'alias'      => 'Foyer',
