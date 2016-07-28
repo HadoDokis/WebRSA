@@ -22,11 +22,15 @@
 	{
 		public $name = 'Users';
 
-		public $uses = array( 'User', 'Option' );
+		public $uses = array( 'User', 'Option', 'WebrsaUser' );
 
 		public $helpers = array(
-			'Xform',
 			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Translator',
+			'Xform'
 		);
 
 		public $components = array(
@@ -83,6 +87,63 @@
 					)
 				)
 			);
+
+			// INFO: pour index()
+			if( 'index' === $this->request->params['action'] ) {
+				$booleanEnums = array(
+					'0' => 'Non',
+					'1' => 'Oui'
+				);
+				$options = Hash::merge(
+					$options,
+					$this->User->enums(),
+					array(
+						'User' => array(
+							'serviceinstructeur_id' => $this->User->Serviceinstructeur->find( 'list' ),
+							'structurereferente_id' => $this->User->Structurereferente->find(
+								'list',
+								array(
+									'fields' => array(
+										'Structurereferente.id',
+										'Structurereferente.lib_struc',
+										'Typeorient.lib_type_orient'
+									),
+									'recursive' => -1,
+									'joins' => array(
+										$this->User->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
+									),
+									'order' => array(
+										'Typeorient.lib_type_orient ASC',
+										'Structurereferente.lib_struc ASC',
+									)
+								)
+							),
+							'referent_id' => Hash::combine(
+								$this->User->Referent->find(
+									'all',
+									array(
+										'fields' => array(
+											'Referent.id',
+											'Referent.structurereferente_id',
+											'Referent.nom_complet'
+										),
+										'recursive' => -1,
+										'order' => array(
+											'Referent.nom_complet ASC',
+										)
+									)
+								),
+								array( '%s_%s', '{n}.Referent.structurereferente_id', '{n}.Referent.id' ),
+								'{n}.Referent.nom_complet'
+							),
+							'has_connections' => $booleanEnums,
+							'has_jetons' => $booleanEnums,
+							'has_jetonsfonctions' => $booleanEnums
+						)
+					)
+				);
+			}
+
 			$this->set( compact( 'options' ) );
 		}
 
@@ -416,12 +477,16 @@
 		protected function _deleteDbEntries( $user_id, $session_id ) {
 			$this->WebrsaUsers->clearJetons( $user_id, $session_id );
 
-			$this->User->Connection->deleteAllUnbound(
-				array(
-					'Connection.user_id' => $user_id,
-					'Connection.php_sid' => $session_id
+			$success = $this->User->Jetonfonction->saveResultAsBool(
+				$this->User->Connection->deleteAllUnbound(
+					array(
+						'Connection.user_id' => $user_id,
+						'Connection.php_sid' => $session_id
+					)
 				)
 			);
+
+			return $success;
 		}
 
 		/**
@@ -601,29 +666,44 @@
 		 * Suppression des répertoires temporaires de l'utilisateur.
 		 *
 		 * @param string $session_id
-		 * @return void
+		 * @return boolean
 		 */
 		protected function _deleteTemporaryFiles( $session_id ) {
+			$success = true;
+
 			foreach( array( 'files', 'pdf' ) as $subdir ) {
-				$oFolder = new Folder( TMP.$subdir.DS.$session_id, true, 0777 );
-				$oFolder->delete();
+				$path = trim(TMP.$subdir.DS.$session_id);
+				if( file_exists( $path ) ) {
+					$oFolder = new Folder( $path, true, 0777 );
+					$success = $oFolder->delete() && $success;
+				}
 			}
+
+			return $success;
 		}
 
 		/**
-		 * Liste des utilisateurs, avec un moteur de recherche.
+		 * Moteur de recherche des utilisateurs.
 		 */
 		public function index() {
-			if( !empty( $this->request->data ) ) {
-				$querydata = $this->User->search( $this->request->data );
-				$this->User->Behaviors->attach( 'Occurences' );
-				$querydata = $this->User->qdOccurencesExists( $querydata, array( 'Zonegeographique' ) );
-				$querydata['limit'] = 10;
+			$search = (array)Hash::get( $this->request->data, 'Search' );
+			if( !empty( $search ) ) {
+				$query = $this->WebrsaUser->search( $search );
+				$query['limit'] = 10;
 
-				$this->paginate = $querydata;
-				$users = $this->paginate( 'User' );
+				$virtualFields = $query['virtualFields'];
+				unset( $query['virtualFields'] );
 
-				$this->set( compact( 'users' ) );
+				// Champs virtuels pour User
+				foreach( $virtualFields as $virtualFieldName => $virtualField ) {
+					$query['fields'][] = "User.{$virtualFieldName}";
+					$this->User->virtualFields[$virtualFieldName] = $virtualField;
+				}
+
+				$this->paginate = $query;
+				$results = $this->paginate( 'User' );
+
+				$this->set( compact( 'results' ) );
 			}
 
 			$this->_setOptions();
@@ -764,6 +844,9 @@
 				'contain' => false,
 				'conditions' => array( 'User.id' => $id )
 			);
+			// FIXME: + blacklist + colonne connecté (?)
+debug($querydata);
+die();
 			$this->User->Behaviors->attach( 'Occurences' );
 			$querydata = $this->User->qdOccurencesExists( $querydata, array( 'Zonegeographique' ) );
 			$user = $this->User->find( 'first', $querydata );
@@ -912,6 +995,112 @@
 					$this->Session->setFlash( 'Impossible de trouver ce couple identifiant/adresse de courriel, veuillez contacter votre administrateur.', 'flash/error' );
 				}
 			}
+		}
+
+		/**
+		 * Suppression des jetons d'un utilisateur, si l'utilisation des jetons
+		 * est activée dans la configuration.
+		 *
+		 * @param integer $user_id
+		 */
+		public function delete_jetons( $user_id ) {
+			if( Configure::read( 'Jetons2.disabled' ) ) {
+				$this->Session->setFlash( 'L\'utilisation des jetons (Jetons2.disabled) n\'est pas activée dans la configuration', 'flash/error' );
+			}
+
+			$this->User->Jeton->begin();
+
+			$success = $this->User->Jeton->saveResultAsBool(
+				$this->User->Jeton->deleteAllUnBound(
+					array( 'Jeton.user_id' => $user_id )
+				)
+			);
+
+			if( $success ) {
+				$this->User->Jeton->commit();
+				$this->Session->setFlash( 'Jetons de l\'utilisateur supprimés', 'flash/success' );
+			}
+			else {
+				$this->User->Jeton->rollback();
+				$this->Session->setFlash( 'Impossible de supprimer les jetons de l\'utilisateurs', 'flash/error' );
+			}
+
+			$this->redirect( $this->referer() );
+		}
+
+		/**
+		 * Suppression des jetons d'un utilisateur, si l'utilisation des jetons
+		 * est activée dans la configuration.
+		 *
+		 * @param integer $user_id
+		 */
+		public function delete_jetonsfonctions( $user_id ) {
+			if( Configure::read( 'Jetonfonctionsfonctions2.disabled' ) ) {
+				$this->Session->setFlash( 'L\'utilisation des jetons sur les fonctions (Jetonfonctionsfonctions2.disabled) n\'est pas activée dans la configuration', 'flash/error' );
+			}
+
+			$this->User->Jetonfonction->begin();
+
+			$success = $this->User->Jetonfonction->saveResultAsBool(
+				$this->User->Jetonfonction->deleteAllUnBound(
+					array( 'Jetonfonction.user_id' => $user_id )
+				)
+			);
+
+			if( $success ) {
+				$this->User->Jetonfonction->commit();
+				$this->Session->setFlash( 'Jetons sur les fonctions de l\'utilisateur supprimés', 'flash/success' );
+			}
+			else {
+				$this->User->Jetonfonction->rollback();
+				$this->Session->setFlash( 'Impossible de supprimer les jetons sur les fonctions de l\'utilisateurs', 'flash/error' );
+			}
+
+			$this->redirect( $this->referer() );
+		}
+
+		/**
+		 * Permet de forcer la déconnexion d'un utilisateur.
+		 *
+		 * @param integer $user_id
+		 */
+		public function force_logout( $user_id ) {
+			if( $user_id == $this->Session->read( 'Auth.User.id' ) ) {
+				$this->Session->setFlash( 'Impossible de forcer la déconnexion de l\'utilisateur qui lance la commande', 'flash/error' );
+			}
+			else {
+				$query = array(
+					'conditions' => array(
+						'Connection.user_id' => $user_id
+					),
+					'contain' => array(
+						'User'
+					)
+				);
+				$connections = $this->User->Connection->find( 'all', $query );
+
+				if( empty( $connections ) ) {
+					$this->Session->setFlash( 'Cet utilisateur n\'est actuellement pas connecté', 'flash/error' );
+				}
+				else {
+					$success = true;
+
+					foreach( $connections as $connection ) {
+						$success = $this->_deleteCachedElements( $connection ) && $success;
+						$success = $this->_deleteTemporaryFiles( $connection['Connection']['php_sid'] ) && $success;
+						$success = $this->_deleteDbEntries( $connection['Connection']['user_id'], $connection['Connection']['php_sid'] ) && $success;
+					}
+
+					if( $success ) {
+						$this->Session->setFlash( 'Déconnexion de l\'utilisateur effectuée', 'flash/success' );
+					}
+					else {
+						$this->Session->setFlash( 'Impossible de déconnecter l\'utilisateur', 'flash/error' );
+					}
+				}
+			}
+
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

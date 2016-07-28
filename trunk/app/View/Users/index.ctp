@@ -3,119 +3,160 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
-	$this->pageTitle = 'Paramétrage des utilisateurs';
-	$authUser = $this->Session->read( 'Auth.User.id' );
-?>
-<div>
-	<h1><?php echo $this->pageTitle;?></h1>
+	echo $this->Default3->titleForLayout( array(), array( 'msgid' => __m( '/Users/index/:heading' ) ) );
 
-		<ul class="actionMenu">
-			<?php
-				echo '<li>'.$this->Xhtml->addLink(
-					'Ajouter',
-					array( 'controller' => 'users', 'action' => 'add' ),
-					$this->Permissions->check( 'users', 'add' )
-				).' </li>';
-			?>
-		</ul>
-<?php
-	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
-		$this->Xhtml->image(
-			'icons/application_form_magnify.png',
-			array( 'alt' => '' )
-		).' Formulaire',
-		'#',
-		array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
-	).'</li></ul>';
-?>
+	$searchFormId = 'UserIndexForm';
+	$actions =  array(
+		'/Users/add' => array(
+		),
+		'/Users/index/#toggleform' => array(
+			'title' => 'Visibilité formulaire',
+			'text' => 'Formulaire',
+			'class' => 'search',
+			'onclick' => "$( '{$searchFormId}' ).toggle(); return false;"
+		)
+	);
+	echo $this->Default3->actions( $actions );
 
-<?php echo $this->Xform->create( 'User', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
-		<fieldset>
-			<?php echo $this->Xform->input( 'User.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	$jetonsEnabled = ( Configure::read( 'Jetons2.disabled' ) ? '0' : '1' );
+	$jetonsfonctionsEnabled = ( Configure::read( 'Jetonsfonctions2.disabled' ) ? '0' : '1' );
 
-			<legend>Filtrer par Utilisateur</legend>
-			<?php
-				echo $this->Default2->subform(
-					array(
-						'User.username' => array( 'label' => __d( 'user', 'User.username' ) ),
-						'User.nom' => array( 'label' => __d( 'user', 'User.nom' ) ),
-						'User.prenom' => array( 'label' => __d( 'user', 'User.prenom' ), 'type' => 'text' ),
-						'Group.name' => array( 'label' => __d( 'user', 'Group.name' ), 'options' => $options['Groups'] ),
-						'Serviceinstructeur.lib_service' => array( 'label' => __d( 'serviceinstructeur', 'Serviceinstructeur.lib_service' ), 'options' => $options['Serviceinstructeur'] ),
-						'User.communautesr_id' => array( 'label' => 'Projet de ville territorial (chef de projet de ville territorial)', 'options' => $options['communautessrs'] ),
-						'User.structurereferente_id' => array( 'label' => 'Structure référente (CPDV, secrétariat PDV)', 'options' => $options['structuresreferentes'] ),
-						'User.referent_id' => array( 'label' => 'Référent (chargé d\'insertion)', 'options' => $options['referents'] ),
+	$search = array(
+		'Search.User.search' => array( 'type' => 'hidden', 'value' => true, 'label' => false ),
+		'Search.User.username' => array( 'required' => false ),
+		'Search.User.nom' => array( 'required' => false ),
+		'Search.User.prenom' => array( 'type' => 'text', 'required' => false ),
+		'Search.User.group_id' => array( 'options' => $options['Groups'], 'empty' => true, 'required' => false ),
+		'Search.User.serviceinstructeur_id' => array( 'options' => $options['Serviceinstructeur'], 'empty' => true, 'required' => false ),
+		'Search.User.type' => array( 'options' => $options['User']['type'], 'empty' => true, 'required' => false ),
+		'Search.User.communautesr_id' => array( 'options' => $options['communautessrs'], 'empty' => true, 'required' => false ),
+		'Search.User.structurereferente_id' => array( 'empty' => true, 'required' => false ),
+		'Search.User.referent_id' => array( 'empty' => true, 'required' => false ),
+		'Search.User.has_connections' => array( 'empty' => true, 'required' => false )
+	);
+
+	if( $jetonsEnabled ) {
+		$search['Search.User.has_jetons'] = array( 'empty' => true, 'required' => false );
+	}
+
+	if( $jetonsfonctionsEnabled ) {
+		$search['Search.User.has_jetonsfonctions'] = array( 'empty' => true, 'required' => false );
+	}
+
+	echo $this->Default3->form(
+		$this->Translator->normalize(
+			$search
+		),
+		array(
+			'id' => $searchFormId,
+			'options' => array( 'Search' => $options ),
+			'buttons' => array( 'Search', 'Reset' => array( 'type' => 'reset' ) )
+		)
+	);
+	echo $this->Observer->disableFormOnSubmit( $searchFormId );
+	echo $this->Observer->dependantSelect(
+		array(
+			'Search.User.structurereferente_id' => 'Search.User.referent_id'
+		)
+	);
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.User.communautesr_id',
+		array( 'Search.User.structurereferente_id', 'Search.User.referent_id' ),
+		array( '', null ),
+		false
+	);
+
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.User.structurereferente_id',
+		'Search.User.communautesr_id',
+		array( '', null ),
+		false
+	);
+
+	if( isset( $results ) ) {
+		$this->Default3->DefaultPaginator->options(
+			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
+		);
+
+		$connectedUserId = $this->Session->read( 'Auth.User.id' );
+
+		echo $this->Default3->index(
+			$results,
+			$this->Translator->normalize(
+				array(
+					'User.nom',
+					'User.prenom',
+					'User.username',
+					'User.date_deb_hab',
+					'User.date_fin_hab',
+					'User.type',
+					'Group.name',
+					'Serviceinstructeur.lib_service',
+					'User.has_connections' => array( 'type' => 'boolean' ),
+					'User.has_jetons' => array(
+						'condition' => $jetonsEnabled,
+						'condition_group' => 'jetons',
+						'type' => 'boolean'
 					),
-					array(
-						'options' => $options
+					'User.has_jetonsfonctions' => array(
+						'condition' => $jetonsfonctionsEnabled,
+						'condition_group' => 'jetonsfonctions',
+						'type' => 'boolean'
+					),
+					'/Users/edit/#User.id#' => array(
+						'title' => false
+					),
+					'/Users/delete_jetons/#User.id#' => array(
+						'condition' => $jetonsEnabled,
+						'condition_group' => 'jetons',
+						'title' => false,
+						'confirm' => 'Supprimer les jetons de l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'disabled' => '0 == "#User.has_jetons#"'
+					),
+					'/Users/delete_jetonsfonctions/#User.id#' => array(
+						'condition' => $jetonsfonctionsEnabled,
+						'condition_group' => 'jetonsfonctions',
+						'title' => false,
+						'confirm' => 'Supprimer les jetons sur les fonctions de l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'disabled' => '0 == "#User.has_jetonsfonctions#"'
+					),
+					'/Users/force_logout/#User.id#' => array(
+						'title' => false,
+						'confirm' => 'Déconnecter l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'disabled' => '( 0 == "#User.has_connections#" || "'.$connectedUserId.'" == "#User.id#" )'
+					),
+					'/Users/delete/#User.id#' => array(
+						'title' => false,
+						'confirm' => 'Supprimer l\'utilisateur « #User.nom# #User.prenom# (#User.username#) » ?',
+						'disabled' => '( 0 != "#User.has_linkedrecords#" || "'.$connectedUserId.'" == "#User.id#" )'
 					)
-				);
-			?>
-		</fieldset>
-
-		<div class="submit noprint">
-			<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
-			<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
-		</div>
-
-<?php echo $this->Xform->end();?>
-
-<?php  if( isset( $users ) ): ?>
-	<?php if( empty( $users ) ):?>
-		<?php
-			$message = 'Aucune utilisateur ne correspond à votre recherche';
-		?>
-		<p class="notice"><?php echo $message;?></p>
-	<?php else:?>
-	<?php $pagination = $this->Xpaginator->paginationBlock( 'User', $this->passedArgs ); ?>
-	<?php echo $pagination;?>
-	<h2>Table Utilisateur</h2>
-	<table id="searchResults" class="tooltips">
-		<thead>
-			<tr>
-				<th><?php echo $this->Xpaginator->sort( 'Nom', 'User.nom' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'Prénom', 'User.prenom' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'Login', 'User.username' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'Date de naissance', 'User.date_naissance' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'N° téléphone', 'User.numtel' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'Date début habilitation', 'User.date_deb_hab' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'Date fin habilitation', 'User.date_fin_hab' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'Groupe d\'utilisateur', 'Group.name' );?></th>
-				<th><?php echo $this->Xpaginator->sort( 'Service instructeur', 'Serviceinstructeur.lib_service' );?></th>
-				<th colspan="2" class="action">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach( $users as $user ):?>
-				<?php echo $this->Xhtml->tableCells(
+				)
+			),
+			array(
+				'options' => $options,
+				'format' => $this->element( 'pagination_format', array( 'modelName' => 'User' ) ),
+				'innerTable' => $this->Translator->normalize(
 					array(
-						h( $user['User']['nom'] ),
-						h( $user['User']['prenom'] ),
-						h( $user['User']['username'] ),
-						h( date_short( $user['User']['date_naissance'] ) ),
-						h( $user['User']['numtel'] ),
-						h( date_short( $user['User']['date_deb_hab'] ) ),
-						h( date_short( $user['User']['date_fin_hab'] ) ),
-						h( $user['Group']['name'] ) ,
-						h( $user['Serviceinstructeur']['lib_service'] ),
-						$this->Xhtml->editLink(
-							'Éditer l\'utilisateur',
-							array( 'controller' => 'users', 'action' => 'edit', $user['User']['id'] ),
-							$this->Permissions->check( 'users', 'edit' )
-						),
-						$this->Xhtml->deleteLink(
-							'Supprimer l\'utilisateur',
-							array( 'controller' => 'users', 'action' => 'delete', $user['User']['id'] ),
-							$this->Permissions->check( 'users', 'delete' ) && !$user['User']['occurences'] && ( $user['User']['id'] != $authUser )
-						)
-					),
-					array( 'class' => 'odd' ),
-					array( 'class' => 'even' )
-				); ?>
-			<?php endforeach;?>
-		</tbody>
-	</table>
-	<?php echo $pagination;?>
-<?php endif;?>
-<?php endif;?>
-</div>
+						'User.date_naissance',
+						'User.numtel'
+					)
+				)
+			)
+		);
+	}
+
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'parametrages',
+			'action'     => 'index'
+		)
+	);
+?>
+<?php if( isset( $results ) ): ?>
+<script type="text/javascript">
+	//<![CDATA[
+	$('<?php echo $searchFormId;?>').toggle();
+	//]]>
+</script>
+<?php endif; ?>

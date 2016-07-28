@@ -2212,7 +2212,7 @@ div.information {
 	background-image: url("../img/icons/information.png");
 	background-position: center center;
 	background-repeat: no-repeat;
-	
+
 }
 
 div.information:hover {
@@ -2231,4 +2231,21 @@ table tbody tr.highlighted.odd td {
 
 table tbody tr.highlighted td.highlight {
 	color: #FF8022;
+}
+
+/* Paramétrage des utilisateurs */
+body table tbody td.action a.users.delete_jetons, body table tbody td.action a.users.delete_jetonsfonctions {
+	background-image: url( ../img/icons/lock.png );
+}
+
+body table tbody td.action span.users.delete_jetons.link.disabled, body table tbody td.action span.users.delete_jetonsfonctions.link.disabled {
+	background-image: url( ../img/icons/lock_disabled.png );
+}
+
+body table tbody td.action a.users.force_logout {
+	background-image: url( ../img/icons/disconnect.png );
+}
+
+body table tbody td.action span.users.force_logout.link.disabled {
+	background-image: url( ../img/icons/disconnect_disabled.png );
 }

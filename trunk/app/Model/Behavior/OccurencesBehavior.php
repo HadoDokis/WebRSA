@@ -182,9 +182,11 @@
 		 * @param Model $model Le modèle
 		 * @param boolean|string $alias L'alias éventuel du champ (par défaut:
 		 *	<alias du modèle>.has_linkedrecords )
+		 * @param array $blacklist La liste des tables ne devant pas être prises
+		 *	en compte
 		 * @return string
 		 */
-		public function sqHasLinkedRecords( Model $model, $alias = true ) {
+		public function sqHasLinkedRecords( Model $model, $alias = true, array $blacklist = array() ) {
 			if( false === $model->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
 				$model->Behaviors->attach( 'Postgres.PostgresTable' );
 			}
@@ -193,7 +195,9 @@
 			$foreignKeys = $model->getPostgresForeignKeys();
 			if( false === empty( $foreignKeys ) ) {
 				foreach( $foreignKeys['to'] as $foreignKey ) {
-					$sql[] = "EXISTS( SELECT * FROM \"{$foreignKey['From']['schema']}\".\"{$foreignKey['From']['table']}\" AS \"{$foreignKey['From']['table']}\" WHERE \"{$foreignKey['From']['table']}\".\"{$foreignKey['From']['column']}\" = \"{$model->alias}\".\"{$foreignKey['To']['column']}\" )";
+					if( false === in_array( $foreignKey['From']['table'], $blacklist ) ) {
+						$sql[] = "EXISTS( SELECT * FROM \"{$foreignKey['From']['schema']}\".\"{$foreignKey['From']['table']}\" AS \"{$foreignKey['From']['table']}\" WHERE \"{$foreignKey['From']['table']}\".\"{$foreignKey['From']['column']}\" = \"{$model->alias}\".\"{$foreignKey['To']['column']}\" )";
+					}
 				}
 				$sql = implode( ' OR ', $sql );
 			}
