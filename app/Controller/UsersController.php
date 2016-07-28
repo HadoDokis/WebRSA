@@ -831,47 +831,61 @@
 		 * Suppression d'un utilisateur.
 		 *
 		 * @param integer $id L'id de l'utilisateur à supprimer.
-		 * @throws error404Exception
-		 * @throws error500Exception
+		 * @throws NotFoundException
+		 * @throws RuntimeException
 		 */
 		public function delete( $id = null ) {
 			if( !valid_int( $id ) ) {
-				throw new error404Exception();
+				$message = "L'entrée d'id {$id} pour le modèle {$this->User->alias} n'existe pas";
+				throw new NotFoundException( $message );
 			}
 
-			$querydata = array(
-				'fields' => $this->User->fields(),
+			if( false === $this->User->Behaviors->attached( 'Occurences' ) ) {
+				$this->User->Behaviors->attach( 'Occurences' );
+			}
+
+			$blacklist = array(
+				'connections',
+				// 'jetons', // INFO: pas de foreignkey
+				// 'jetonsfonctions', // INFO: pas de foreignkey
+				'users_zonesgeographiques'
+			);
+
+			$query = array(
+				'fields' => array_merge(
+					$this->User->fields(),
+					array(
+						$this->User->sqHasLinkedRecords( true, $blacklist )
+					)
+				),
 				'contain' => false,
 				'conditions' => array( 'User.id' => $id )
 			);
-			// FIXME: + blacklist + colonne connecté (?)
-debug($querydata);
-die();
-			$this->User->Behaviors->attach( 'Occurences' );
-			$querydata = $this->User->qdOccurencesExists( $querydata, array( 'Zonegeographique' ) );
-			$user = $this->User->find( 'first', $querydata );
+
+			$user = $this->User->find( 'first', $query );
 
 			if( empty( $user ) ) {
-				throw new error404Exception();
+				$message = "L'entrée d'id {$id} pour le modèle {$this->User->alias} n'existe pas";
+				throw new NotFoundException( $message );
 			}
 
-			if( $user['User']['occurences'] ) {
+			if( true == $user['User']['has_linkedrecords'] ) {
 				$message = "Erreur lors de la tentative de suppression de l'entrée d'id {$id} pour le modèle {$this->User->alias}: cette entrée possède des enregistrements liés.";
-				throw new error500Exception( $message );
+				throw new RuntimeException( $message );
 			}
 
 			// Tentative de suppression
 			$this->User->begin();
 			$success = $this->User->delete( $id );
 
-			$querydata = array(
+			$query = array(
 				'fields' => array( 'id' ),
 				'conditions' => array(
 					'model' => 'Utilisateur',
 					'foreign_key' => $id
 				)
 			);
-			$aro = $this->Acl->Aro->find( 'first', $querydata );
+			$aro = $this->Acl->Aro->find( 'first', $query );
 
 			if( !empty( $aro ) ) {
 				$success = $success && $this->Acl->Aro->delete( $aro['Aro']['id'] );
