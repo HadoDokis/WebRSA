@@ -50,7 +50,13 @@
 		array(
 			'id' => $searchFormId,
 			'options' => array( 'Search' => $options ),
-			'buttons' => array( 'Search', 'Reset' => array( 'type' => 'reset' ) )
+			'buttons' => array( 'Search', 'Reset' => array( 'type' => 'reset' ) ),
+			// INFO: pour avoir une valeur vide pour les champs désactivés
+			'hidden_empty' => array(
+				'Search.User.communautesr_id',
+				'Search.User.structurereferente_id',
+				'Search.User.referent_id'
+			)
 		)
 	);
 	echo $this->Observer->disableFormOnSubmit( $searchFormId );
