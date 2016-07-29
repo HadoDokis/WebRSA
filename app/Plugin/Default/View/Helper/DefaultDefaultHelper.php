@@ -261,17 +261,12 @@
 		 * Retourne un formulaire complet, avec bouton 'Save' et 'Cancel' par
 		 * défaut.
 		 *
-		 * Clés utilisées dans params:
+		 * Clés utilisées dans params (voir la méthode subform pour les autres clés):
 		 *	- model: (par défaut: null)
 		 *	- buttons: liste des boutons à mettre en bas du formulaire (par
 		 *	défaut: array( 'Save', 'Cancel' ))
-		 *	- hidden_empty: liste de champs cachés placés en début de formulaire
-		 *	(par défaut: array())
-		 *	- options: liste d'options à envoyer aux champs concernés suivant
-		 *	leurs chemins (par défaut: array())
-		 *	- domain
-		 *	- legend
-		 *	- fieldset
+		 *
+		 * @see DefaultDefaultHelper::subform
 		 *
 		 * @param array $fields
 		 * @param array $params
@@ -284,20 +279,7 @@
 			$buttons = ( isset( $params['buttons'] ) ? $params['buttons'] : array( 'Save', 'Cancel' ) );
 			unset( $params['buttons'] );
 
-			$hidden_empty = ( isset( $params['hidden_empty'] ) ? $params['hidden_empty'] : array() );
-			unset( $params['hidden_empty'] );
-
 			$return = $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate' ) );
-			if( !empty( $hidden_empty ) ) {
-				$return .= $this->subform(
-					array_fill_keys(
-						array_keys(
-							Hash::normalize( $hidden_empty )
-						),
-						array( 'type' => 'hidden', 'value' => '', 'id' => false )
-					)
-				);
-			}
 			$return .= $this->subform( $fields, $params );
 			if( !empty( $buttons ) ) {
 				$return .= $this->DefaultForm->buttons( (array)$buttons );
@@ -310,6 +292,15 @@
 		/**
 		 * Retourne un sous-formulaire.
 		 *
+		 * Clés utilisées dans params:
+		 *	- hidden_empty: liste de champs cachés placés en début de sous-formulaire
+		 *	(par défaut: array())
+		 *	- options: liste d'options à envoyer aux champs concernés suivant
+		 *	leurs chemins (par défaut: array())
+		 *	- domain
+		 *	- legend
+		 *	- fieldset
+		 *
 		 * @param array $fields
 		 * @param array $params
 		 * @return string
@@ -319,8 +310,22 @@
 				'domain' => Inflector::underscore( $this->request->params['controller'] ),
 				'legend' => false,
 				'fieldset' => false,
-				'options' => array()
+				'options' => array(),
+				'hidden_empty' => array()
 			);
+
+			$result = '';
+			if( !empty( $params['hidden_empty'] ) ) {
+				$result .= $this->subform(
+					array_fill_keys(
+						array_keys(
+							Hash::normalize( $params['hidden_empty'] )
+						),
+						array( 'type' => 'hidden', 'value' => '', 'id' => false )
+					)
+				);
+			}
+			unset( $params['hidden_empty'] );
 
 			$inputs = array();
 			foreach( Hash::normalize( $fields ) as $field => $fieldParams ) {
@@ -337,7 +342,8 @@
 			$inputs['legend'] = $params['legend'];
 			$inputs['fieldset'] = $params['fieldset'];
 
-			return $this->DefaultForm->inputs( $inputs );
+			$result .= $this->DefaultForm->inputs( $inputs );
+			return $result;
 		}
 
 		/**
