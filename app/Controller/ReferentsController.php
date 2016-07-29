@@ -21,7 +21,12 @@
 
 		public $name = 'Referents';
 		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
-		public $helpers = array( 'Xform', 'Default2', 'Default' );
+		public $helpers = array(
+			'Xform',
+			'Default2',
+			'Default3' => array('className' => 'Default.DefaultDefault'),
+			'Default'
+		);
 
 		public $components = array( 'Default', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'Workflowscers93' );
 
@@ -61,10 +66,11 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
-				$queryData = $this->Referent->search( $this->request->data );
+				$search = $this->request->data['Search'];
+				$queryData = $this->Referent->search($search);
 				$queryData['limit'] = 20;
 				$this->paginate = $queryData;
-				$referents = $this->paginate( 'Referent' );
+				$referents = $this->paginate( 'Referent', array(), array(), !Hash::get($search, 'Pagination.nombre_total') );
 
 				$this->set( 'referents', $referents );
 
@@ -97,6 +103,13 @@
 		public function _add_edit( $id = null ) {
 			$options = $this->Referent->enums();
 			$options['Referent']['structurereferente_id'] = $this->Referent->Structurereferente->find( 'list' );
+			$options['Dernierreferent']['prevreferent_id'] = $this->Referent->find('list',
+				array(
+					'joins' => array($this->Referent->join('Dernierreferent')),
+					'conditions' => array('Dernierreferent.referent_id = Dernierreferent.dernierreferent_id'),
+					'order' => array('Referent.nom', 'Referent.prenom')
+				)
+			);
 			$this->set( compact( 'options' ) );
 
 			$bindDernierreferent = $this->Referent->hasOne['Dernierreferent'];
@@ -120,7 +133,7 @@
 				'fields' => array_merge(
 					$this->Referent->fields(),
 					array(
-						$this->Referent->sqHasLinkedRecords()
+						$this->Referent->sqHasLinkedRecords(true, array('derniersreferents'))
 					)
 				),
 				'contain' => false,
