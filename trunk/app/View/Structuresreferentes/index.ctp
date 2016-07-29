@@ -18,10 +18,10 @@
 	);
 	echo $this->Default3->actions( $actions );
 
-	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->action ), 'id' => $searchFormId, 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->action ), 'id' => $searchFormId ) );
 
 	$departement = (int)Configure::read( 'Cg.departement' );
-	
+
 	echo $this->Default3->subform(
 		$this->Translator->normalize(
 			array_merge(
@@ -56,9 +56,9 @@
 			)
 		)
 	);
-	
+
 	echo $this->Allocataires->blocPagination( array( 'prefix' => 'Search', 'options' => $options ) );
-	echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options ) );
+	echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options, 'id' => $searchFormId ) );
 ?>
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -66,8 +66,6 @@
 	</div>
 <?php
 	echo $this->Form->end();
-
-	echo $this->Observer->disableFormOnSubmit( $searchFormId );
 
 	if ($departement === 93) {
 		echo $this->Observer->disableFieldsOnValue(
@@ -130,10 +128,3 @@
 		)
 	);
 ?>
-<?php if( isset( $results ) ): ?>
-<script type="text/javascript">
-	//<![CDATA[
-	$('<?php echo $searchFormId;?>').toggle();
-	//]]>
-</script>
-<?php endif; ?>
