@@ -21,8 +21,11 @@ msgstr "Ajouter une structure référente"
 
 # ------------------------------------------------------------------------------
 
+msgid "Search.Structurereferente.Structurereferente"
+msgstr "Recherche par structure référente"
+
 msgid "Search.Structurereferente.lib_struc"
-msgstr "Type de structure"
+msgstr "Nom de la structure"
 
 msgid "Search.Structurereferente.ville"
 msgstr "Ville"
@@ -38,6 +41,9 @@ msgstr "Type de structure"
 
 msgid "Search.Structurereferente.actif"
 msgstr "Active"
+
+msgid "Search.Structurereferente.Gestion"
+msgstr "Recherche par ce qui est géré par la structure référente"
 
 msgid "Search.Structurereferente.contratengagement"
 msgstr "Gestion des CERs"

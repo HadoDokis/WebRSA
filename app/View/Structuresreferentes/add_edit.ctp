@@ -26,7 +26,7 @@
 ?>
 
 <fieldset>
-	<?php echo $this->Form->input( 'Structurereferente.lib_struc', array( 'label' => required( __d( 'structurereferente', 'Structurereferente.lib_struc' ) ), 'type' => 'text' ) );?>
+	<?php echo $this->Form->input( 'Structurereferente.lib_struc', array( 'label' => required( __m( 'Structurereferente.lib_struc' ) ), 'type' => 'text' ) );?>
 	<?php echo $this->Form->input( 'Structurereferente.num_voie', array( 'label' => required( __( 'num_voie' ) ), 'type' => 'text', 'maxlength' => 15 ) );?>
 	<?php echo $this->Form->input( 'Structurereferente.type_voie', array( 'label' => required( __( 'type_voie' ) ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );?>
 	<?php echo $this->Form->input( 'Structurereferente.nom_voie', array( 'label' => required(  __( 'nom_voie' ) ), 'type' => 'text', 'maxlength' => 50 ) );?>

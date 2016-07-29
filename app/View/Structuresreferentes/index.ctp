@@ -38,22 +38,35 @@
 				),
 				array(
 					'Search.Structurereferente.typestructure' => array( 'empty' => true, 'required' => false ),
-					'Search.Structurereferente.actif' => array( 'empty' => true, 'required' => false ),
-					'Search.Structurereferente.apre' => array( 'empty' => true, 'required' => false ),
-					'Search.Structurereferente.contratengagement' => array( 'empty' => true, 'required' => false ),
-					'Search.Structurereferente.cui' => array( 'empty' => true, 'required' => false ),
-					'Search.Structurereferente.orientation' => array( 'empty' => true, 'required' => false ),
-					'Search.Structurereferente.pdo' => array( 'empty' => true, 'required' => false )
+					'Search.Structurereferente.actif' => array( 'empty' => true, 'required' => false )
 				)
 			)
 		),
 		array(
 			'options' => array( 'Search' => $options ),
 			'fieldset' => true,
+			'legend' => __m( 'Search.Structurereferente.Structurereferente' ),
 			'hidden_empty' => array(
 				'Search.Structurereferente.typeorient_id',
 				'Search.Structurereferente.communautesr_id'
 			)
+		)
+	);
+
+	echo $this->Default3->subform(
+		$this->Translator->normalize(
+			array(
+				'Search.Structurereferente.apre' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.contratengagement' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.cui' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.orientation' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.pdo' => array( 'empty' => true, 'required' => false )
+			)
+		),
+		array(
+			'options' => array( 'Search' => $options ),
+			'fieldset' => true,
+			'legend' => __m( 'Search.Structurereferente.Gestion' )
 		)
 	);
 
