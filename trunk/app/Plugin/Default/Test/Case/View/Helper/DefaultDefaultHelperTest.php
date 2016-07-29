@@ -466,6 +466,32 @@
 			. '</div>';
 
 			$this->assertEqualsXhtml( $result, $expected );
+
+			// 3. Test avec 'hidden_empty'
+			$options = array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) );
+
+			$result = $this->DefaultDefault->subform(
+				array(
+					'Apple.id',
+					'Apple.color',
+				),
+				array(
+					'options' => $options,
+					'hidden_empty' => array(
+						'Apple.pip'
+					)
+				)
+			);
+			$expected = '<input type="hidden" name="data[Apple][pip]" value=""/>
+							<input type="hidden" name="data[Apple][id]" id="AppleId"/>
+							<div class="input select">
+								<label for="AppleColor">Apple.color</label>
+								<select name="data[Apple][color]" id="AppleColor">
+									<option value="red">Red</option>
+								</select>
+							</div>';
+
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 
 		/**
