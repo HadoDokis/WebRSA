@@ -2,139 +2,90 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
+
+	echo $this->Default3->titleForLayout();
+
+	$searchFormId = 'ReferentsIndexForm';
+	$actions =  array(
+		'/Referents/add' => array(),
+		'/Referents/index/#toggleform' => array(
+			'title' => 'Visibilité formulaire',
+			'text' => 'Formulaire',
+			'class' => 'search',
+			'onclick' => "$( '{$searchFormId}' ).toggle(); return false;"
+		)
+	);
+	echo $this->Default3->actions( $actions );
+
+	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->action ), 'id' => $searchFormId ) );
+
+	echo $this->Default3->subform(
+		$this->Translator->normalize(
+			array(
+				'Search.Referent.nom' => array('required' => false),
+				'Search.Referent.prenom' => array('required' => false),
+				'Search.Referent.fonction' => array('required' => false),
+				'Search.Referent.structurereferente_id' => array(
+					'label' => 'Structure référente liée',
+					'required' => false,
+					'type' => ( $this->action == 'index' ? 'select': 'hidden' ),
+					'empty' => true
+				)
+			)
+		),
+		array(
+			'options' => array( 'Search' => $options ),
+			'fieldset' => true,
+		)
+	);
+	
+	echo $this->Allocataires->blocPagination( array( 'prefix' => 'Search', 'options' => $options ) );
+	echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options ) );
 ?>
-<?php $this->pageTitle = 'Paramétrage des référents';?>
-
-<div>
-	<h1><?php echo 'Visualisation de la table référents ';?></h1>
-
-	<ul class="actionMenu">
-		<?php
-			echo '<li>'.$this->Xhtml->addLink(
-				'Ajouter',
-				array( 'controller' => 'referents', 'action' => 'add' ),
-				$this->Permissions->check( 'referents', 'add' )
-			).' </li>';
-		?>
-	</ul>
-
+	<div class="submit noprint">
+		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+	</div>
 <?php
-	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
-		$this->Xhtml->image(
-			'icons/application_form_magnify.png',
-			array( 'alt' => '' )
-		).' Formulaire',
-		'#',
-		array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
-	).'</li></ul>';
-?>
+	echo $this->Form->end();
 
-<?php echo $this->Xform->create( 'Referent', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
-		<fieldset>
-			<?php echo $this->Xform->input( 'Referent.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	if( isset( $referents ) ) {
+		$this->Default3->DefaultPaginator->options(
+			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
+		);
 
-			<legend>Filtrer par Référent</legend>
-			<?php
-				echo $this->Default2->subform(
-					array(
-						'Referent.nom',
-						'Referent.prenom',
-						'Referent.fonction',
-						'Referent.structurereferente_id' => array( 'label' => 'Structure référente liée', 'options' => $options['Referent']['structurereferente_id'], 'type' => ( $this->action == 'index' ? 'select': 'hidden' ) )
+		echo $this->Default3->index(
+			$referents,
+			$this->Translator->normalize(
+				array(
+					'Referent.qual',
+					'Referent.nom',
+					'Referent.prenom',
+					'Referent.fonction',
+					'Referent.numero_poste',
+					'Referent.email',
+					'Structurereferente.lib_struc',
+					'Referent.actif',
+					'/referents/cloturer/#Referent.id#' => array(
+						'disabled' => "('#Referent.datecloture#' == '' || '#PersonneReferent.nb_referents_lies#' > 0) === false"
 					),
-					array(
-						'options' => $options
-					)
-				);
-			?>
-		</fieldset>
-		<?php
-			echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
-			echo $this->Search->observeDisableFormOnSubmit( 'Search' );
-		?>
-		<div class="submit noprint">
-			<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
-			<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
-		</div>
+					'/referents/edit/#Referent.id#',
+					'/referents/delete/#Referent.id#' => array(
+						'disabled' => "('#Referent.has_linkedrecords#') == 1"
+					),
+				)
+			),
+			array(
+				'options' => $options,
+				'format' => $this->element( 'pagination_format', array( 'modelName' => 'Structurereferente' ) )
+			)
+		);
+	}
 
-<?php echo $this->Xform->end();?>
-
-<?php  if( isset( $referents ) ): ?>
-	<?php if( empty( $referents ) ):?>
-		<?php
-			$message = 'Aucune référent ne correspond à votre recherche';
-		?>
-		<p class="notice"><?php echo $message;?></p>
-	<?php else:?>
-	<?php $pagination = $this->Xpaginator->paginationBlock( 'Referent', $this->passedArgs ); ?>
-	<?php echo $pagination;?>
-		<h2>Table Référents</h2>
-		<table class="default2">
-		<thead>
-			<tr>
-				<th>Civilité</th>
-				<th>Nom</th>
-				<th>Prénom</th>
-				<th>Fonction</th>
-				<th>N° téléphone</th>
-				<th>Email</th>
-				<th>Structure référente liée</th>
-				<th>Actif</th>
-				<th colspan="3" class="action">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach( $referents as $referent ):?>
-				<?php
-					$cloturable = ( empty( $referent['Referent']['datecloture'] ) || ( $referent['PersonneReferent']['nb_referents_lies'] > 0 ) );
-
-					echo $this->Xhtml->tableCells(
-						array(
-							h( value( $qual, $referent['Referent']['qual'] ) ),
-							h( $referent['Referent']['nom'] ),
-							h( $referent['Referent']['prenom'] ),
-							h( $referent['Referent']['fonction'] ),
-							h( $referent['Referent']['numero_poste'] ),
-							h( $referent['Referent']['email'] ),
-							h( $referent['Structurereferente']['lib_struc'] ),
-							h( Set::enum( $referent['Referent']['actif'], $options['Referent']['actif'] ) ),
-							$this->Default2->button(
-								'cloture_referent',
-								array( 'controller' => 'referents', 'action' => 'cloturer',
-								$referent['Referent']['id'] ),
-								array( 'enabled' => ( $cloturable && $this->Permissions->check( 'referents', 'cloturer' ) ) )
-							),
-							$this->Xhtml->editLink(
-								'Modifier le référent',
-								array( 'controller' => 'referents', 'action' => 'edit', $referent['Referent']['id'] ),
-								$this->Permissions->check( 'referents', 'edit' )
-							),
-							$this->Xhtml->deleteLink(
-								'Supprimer le référent',
-								array( 'controller' => 'referents', 'action' => 'delete', $referent['Referent']['id'] ),
-								( $this->Permissions->check( 'referents', 'delete' ) && !( $referent['Referent']['has_linkedrecords'] ) )
-							)
-						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);
-				?>
-			<?php endforeach;?>
-			</tbody>
-		</table>
-		<?php echo $pagination;?>
-	<?php endif?>
-<?php endif?>
-</div>
-<?php
 	echo $this->Default->button(
 		'back',
 		array(
 			'controller' => 'parametrages',
 			'action'     => 'index'
-		),
-		array(
-			'id' => 'Back'
 		)
 	);
-?>

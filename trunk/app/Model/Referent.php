@@ -418,7 +418,7 @@
 					$this->Structurereferente->fields(),
 					array(
 						$this->PersonneReferent->sqNbLiesActifs( $this, 'Referent.id', 'nb_referents_lies' ),
-						$this->sqHasLinkedRecords()
+						$this->sqHasLinkedRecords(true, array('derniersreferents'))
 					)
 				),
 				'order' => array( 'Referent.nom ASC', 'Referent.prenom ASC' ),
