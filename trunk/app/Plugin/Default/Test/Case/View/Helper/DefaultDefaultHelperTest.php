@@ -355,18 +355,25 @@
 		 * @return void
 		 */
 		public function testForm() {
-			$fields = array(
-				'Apple.id',
-				'Apple.color',
+			$options = array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) );
+
+			$result = $this->DefaultDefault->form(
+				array(
+					'Apple.id',
+					'Apple.color',
+				),
+				array(
+					'options' => $options,
+					'hidden_empty' => array(
+						'Apple.pip'
+					)
+				)
 			);
-
-			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
-
-			$result = $this->DefaultDefault->form( $fields, $params );
 			$expected = '<form action="'.$this->base.'" novalidate="novalidate" id="Form" method="post" accept-charset="utf-8">
 							<div style="display:none;">
 								<input type="hidden" name="_method" value="POST"/>
 							</div>
+							<input type="hidden" name="data[Apple][pip]" value=""/>
 							<input type="hidden" name="data[Apple][id]" id="AppleId"/>
 							<div class="input select">
 								<label for="AppleColor">Apple.color</label>
