@@ -18,26 +18,57 @@
 	);
 	echo $this->Default3->actions( $actions );
 
+	$departement = (int)Configure::read( 'Cg.departement' );
+
 	echo $this->Default3->form(
-		array(
-			'Search.Structurereferente.search' => array( 'type' => 'hidden', 'value' => true ),
-			'Search.Structurereferente.lib_struc' => array( 'type' => 'text', 'required' => false ),
-			'Search.Structurereferente.ville' => array( 'required' => false ),
-			'Search.Structurereferente.typeorient_id' => array( 'empty' => true, 'required' => false ),
-			'Search.Structurereferente.typestructure' => array( 'empty' => true, 'required' => false ),
-			'Search.Structurereferente.actif' => array( 'empty' => true, 'required' => false ),
-			'Search.Structurereferente.apre' => array( 'empty' => true, 'required' => false ),
-			'Search.Structurereferente.contratengagement' => array( 'empty' => true, 'required' => false ),
-			'Search.Structurereferente.cui' => array( 'empty' => true, 'required' => false ),
-			'Search.Structurereferente.orientation' => array( 'empty' => true, 'required' => false ),
-			'Search.Structurereferente.pdo' => array( 'empty' => true, 'required' => false )
+		array_merge(
+			array(
+				'Search.Structurereferente.search' => array( 'type' => 'hidden', 'value' => true ),
+				'Search.Structurereferente.lib_struc' => array( 'type' => 'text', 'required' => false ),
+				'Search.Structurereferente.ville' => array( 'required' => false ),
+				'Search.Structurereferente.typeorient_id' => array( 'empty' => true, 'required' => false ),
+			),
+			(
+				( 93 === $departement )
+				? array( 'Search.Structurereferente.communautesr_id' => array( 'empty' => true, 'required' => false ) )
+				: array()
+			),
+			array(
+				'Search.Structurereferente.typestructure' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.actif' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.apre' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.contratengagement' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.cui' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.orientation' => array( 'empty' => true, 'required' => false ),
+				'Search.Structurereferente.pdo' => array( 'empty' => true, 'required' => false )
+			)
 		),
 		array(
+			'buttons' => array( 'Search', 'Reset' => array( 'type' => 'reset' ) ),
 			'options' => array( 'Search' => $options ),
-			'buttons' => array( 'Search', 'Reset' => array( 'type' => 'reset' ) )
+			// INFO: pour avoir une valeur vide pour les champs désactivés
+			'hidden_empty' => array(
+				'Search.Structurereferente.typeorient_id',
+				'Search.Structurereferente.communautesr_id'
+			)
 		)
 	);
+
 	echo $this->Observer->disableFormOnSubmit( $searchFormId );
+
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.Structurereferente.communautesr_id',
+		'Search.Structurereferente.typeorient_id',
+		array( '', null ),
+		false
+	);
+
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.Structurereferente.typeorient_id',
+		'Search.Structurereferente.communautesr_id',
+		array( '', null ),
+		false
+	);
 
 	if( isset( $results ) ) {
 		$this->Default3->DefaultPaginator->options(

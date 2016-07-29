@@ -77,8 +77,12 @@
 				$this->set( compact( 'results' ) );
 			}
 
+			$departement = (int)Configure::read( 'Cg.departement' );
 			$options = $this->Structurereferente->enums();
 			$options['Structurereferente']['typeorient_id'] = $this->Structurereferente->Typeorient->find( 'list' );
+			if( 93 === $departement ) {
+				$options['Structurereferente']['communautesr_id'] = $this->Structurereferente->Communautesr->find( 'list' );
+			}
 			$this->set( compact( 'options' ) );
 		}
 

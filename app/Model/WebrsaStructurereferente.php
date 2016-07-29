@@ -39,35 +39,54 @@
 		);
 
 		/**
-		 * Recherche des structures dans le paramétrage de l'application.
+		 * Retourne le querydata de base pour la recherche par structures
+		 * référentes.
+		 * Le querydata est mis en cache.
 		 *
+		 * @return array
+		 */
+		public function searchQuery() {
+			$cacheKey = implode( '_', array( $this->useDbConfig, $this->alias, __FUNCTION__ ) );
+			$query = Cache::read( $cacheKey );
+
+			if( false === $query ) {
+				if( false === $this->Structurereferente->Behaviors->attached( 'Occurences' ) ) {
+					$this->Structurereferente->Behaviors->attach( 'Occurences' );
+				}
+
+				$query = array(
+					'fields' => array_merge(
+						$this->Structurereferente->fields(),
+						$this->Structurereferente->Typeorient->fields(),
+						array(
+							$this->Structurereferente->sqHasLinkedRecords()
+						)
+					),
+					'order' => array( 'Structurereferente.lib_struc ASC' ),
+					'joins' => array(
+						$this->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
+					),
+					'recursive' => -1,
+					'conditions' => array()
+				);
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			return $query;
+		}
+
+		/**
+		 * Applique les conditions envoyées par le moteur de recherche au querydata.
+		 *
+		 * @param array $query
 		 * @param array $search
 		 * @return array
 		 */
-		public function search( array $search ) {
-			// 1. Query de base
-			if( false === $this->Structurereferente->Behaviors->attached( 'Occurences' ) ) {
-				$this->Structurereferente->Behaviors->attach( 'Occurences' );
-			}
+		public function searchConditions( array $query, array $search ) {
+			$departement = (int)Configure::read( 'Cg.departement' );
 
-			$query = array(
-				'fields' => array_merge(
-					$this->Structurereferente->fields(),
-					$this->Structurereferente->Typeorient->fields(),
-					array(
-						$this->Structurereferente->sqHasLinkedRecords()
-					)
-				),
-				'order' => array( 'Structurereferente.lib_struc ASC' ),
-				'joins' => array(
-					$this->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
-				),
-				'recursive' => -1,
-				'conditions' => array()
-			);
-
-			// 2. Conditions
-			// 2.1. Valeurs approchantes
+			// 1. Valeurs approchantes
 			foreach( array( 'lib_struc', 'ville' ) as $field ) {
 				$value = (string)Hash::get( $search, "Structurereferente.{$field}" );
 				if( '' !== $value ) {
@@ -75,7 +94,7 @@
 				}
 			}
 
-			// 2.1. Valeurs exactes
+			// 2. Valeurs exactes
 			foreach( array( 'typeorient_id', 'actif', 'typestructure', 'contratengagement', 'apre', 'orientation', 'pdo', 'cui' ) as $field ) {
 				$value = (string)Hash::get( $search, "Structurereferente.{$field}" );
 				if( '' !== $value ) {
@@ -83,7 +102,50 @@
 				}
 			}
 
+			// 3. Filtre par projet de ville communautaire
+			if( 93 === $departement ) {
+				$communautesr_id = (string)Hash::get( $search, 'Structurereferente.communautesr_id' );
+				if( '' !== $communautesr_id ) {
+					$subQuery = array(
+						'alias' => 'communautessrs_structuresreferentes',
+						'fields' => array( 'communautessrs_structuresreferentes.structurereferente_id' ),
+						'contain' => false,
+						'conditions' => array(
+							'Structurereferente.id = communautessrs_structuresreferentes.structurereferente_id',
+							'communautessrs_structuresreferentes.communautesr_id' => $communautesr_id
+						)
+					);
+					$sql = $this->Structurereferente->CommunautesrStructurereferente->sq( $subQuery );
+					$query['conditions'][] = "Structurereferente.id IN ( {$sql} )";
+				}
+			}
+
 			return $query;
+		}
+
+		/**
+		 * Moteur de recherche des structures référentes, retourne un querydata.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function search( $search ) {
+			$query = $this->searchQuery();
+			$query = $this->searchConditions( $query, $search );
+
+			return $query;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application.
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$query = $this->searchQuery();
+			return !empty( $query );
 		}
 	}
 ?>
