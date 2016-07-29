@@ -261,6 +261,18 @@
 		 * Retourne un formulaire complet, avec bouton 'Save' et 'Cancel' par
 		 * défaut.
 		 *
+		 * Clés utilisées dans params:
+		 *	- model: (par défaut: null)
+		 *	- buttons: liste des boutons à mettre en bas du formulaire (par
+		 *	défaut: array( 'Save', 'Cancel' ))
+		 *	- hidden_empty: liste de champs cachés placés en début de formulaire
+		 *	(par défaut: array())
+		 *	- options: liste d'options à envoyer aux champs concernés suivant
+		 *	leurs chemins (par défaut: array())
+		 *	- domain
+		 *	- legend
+		 *	- fieldset
+		 *
 		 * @param array $fields
 		 * @param array $params
 		 * @return string
@@ -272,7 +284,20 @@
 			$buttons = ( isset( $params['buttons'] ) ? $params['buttons'] : array( 'Save', 'Cancel' ) );
 			unset( $params['buttons'] );
 
+			$hidden_empty = ( isset( $params['hidden_empty'] ) ? $params['hidden_empty'] : array() );
+			unset( $params['hidden_empty'] );
+
 			$return = $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate' ) );
+			if( !empty( $hidden_empty ) ) {
+				$return .= $this->subform(
+					array_fill_keys(
+						array_keys(
+							Hash::normalize( $hidden_empty )
+						),
+						array( 'type' => 'hidden', 'value' => '', 'id' => false )
+					)
+				);
+			}
 			$return .= $this->subform( $fields, $params );
 			if( !empty( $buttons ) ) {
 				$return .= $this->DefaultForm->buttons( (array)$buttons );
