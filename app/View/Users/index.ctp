@@ -5,6 +5,7 @@
 
 	echo $this->Default3->titleForLayout( array(), array( 'msgid' => __m( '/Users/index/:heading' ) ) );
 
+	$departement = (int)Configure::read( 'Cg.departement' );
 	$searchFormId = 'UserIndexForm';
 	$actions =  array(
 		'/Users/add' => array(
@@ -21,18 +22,38 @@
 	$jetonsEnabled = ( Configure::read( 'Jetons2.disabled' ) ? '0' : '1' );
 	$jetonsfonctionsEnabled = ( Configure::read( 'Jetonsfonctions2.disabled' ) ? '0' : '1' );
 
-	$search = array(
-		'Search.User.search' => array( 'type' => 'hidden', 'value' => true, 'label' => false ),
-		'Search.User.username' => array( 'required' => false ),
-		'Search.User.nom' => array( 'required' => false ),
-		'Search.User.prenom' => array( 'type' => 'text', 'required' => false ),
-		'Search.User.group_id' => array( 'options' => $options['Groups'], 'empty' => true, 'required' => false ),
-		'Search.User.serviceinstructeur_id' => array( 'options' => $options['Serviceinstructeur'], 'empty' => true, 'required' => false ),
-		'Search.User.type' => array( 'options' => $options['User']['type'], 'empty' => true, 'required' => false ),
-		'Search.User.communautesr_id' => array( 'options' => $options['communautessrs'], 'empty' => true, 'required' => false ),
-		'Search.User.structurereferente_id' => array( 'empty' => true, 'required' => false ),
-		'Search.User.referent_id' => array( 'empty' => true, 'required' => false ),
-		'Search.User.has_connections' => array( 'empty' => true, 'required' => false )
+	$search = array_merge(
+		array(
+			'Search.User.search' => array( 'type' => 'hidden', 'value' => true, 'label' => false ),
+			'Search.User.username' => array( 'required' => false ),
+			'Search.User.nom' => array( 'required' => false ),
+			'Search.User.prenom' => array( 'type' => 'text', 'required' => false ),
+			'Search.User.group_id' => array( 'options' => $options['Groups'], 'empty' => true, 'required' => false ),
+			'Search.User.serviceinstructeur_id' => array( 'options' => $options['Serviceinstructeur'], 'empty' => true, 'required' => false ),
+		),
+		(
+			( true === in_array( $departement, array( 66, 93 ), true ) )
+			? array_merge(
+				array(
+					'Search.User.type' => array( 'options' => $options['User']['type'], 'empty' => true, 'required' => false )
+				),
+				(
+					( 93 === $departement )
+					? array(
+						'Search.User.communautesr_id' => array( 'options' => $options['communautessrs'], 'empty' => true, 'required' => false ),
+						'Search.User.structurereferente_id' => array( 'empty' => true, 'required' => false ),
+					)
+					: array()
+				),
+				array(
+					'Search.User.referent_id' => array( 'empty' => true, 'required' => false )
+				)
+			)
+			: array()
+		),
+		array(
+			'Search.User.has_connections' => array( 'empty' => true, 'required' => false )
+		)
 	);
 
 	if( $jetonsEnabled ) {
@@ -60,24 +81,30 @@
 		)
 	);
 	echo $this->Observer->disableFormOnSubmit( $searchFormId );
-	echo $this->Observer->dependantSelect(
-		array(
-			'Search.User.structurereferente_id' => 'Search.User.referent_id'
-		)
-	);
-	echo $this->Observer->disableFieldsOnValue(
-		'Search.User.communautesr_id',
-		array( 'Search.User.structurereferente_id', 'Search.User.referent_id' ),
-		array( '', null ),
-		false
-	);
 
-	echo $this->Observer->disableFieldsOnValue(
-		'Search.User.structurereferente_id',
-		'Search.User.communautesr_id',
-		array( '', null ),
-		false
-	);
+	if( in_array( $departement, array( 66, 93 ), true ) ) {
+		echo $this->Observer->dependantSelect(
+			array(
+				'Search.User.structurereferente_id' => 'Search.User.referent_id'
+			)
+		);
+	}
+
+	if( 93 === $departement ) {
+		echo $this->Observer->disableFieldsOnValue(
+			'Search.User.communautesr_id',
+			array( 'Search.User.structurereferente_id', 'Search.User.referent_id' ),
+			array( '', null ),
+			false
+		);
+
+		echo $this->Observer->disableFieldsOnValue(
+			'Search.User.structurereferente_id',
+			'Search.User.communautesr_id',
+			array( '', null ),
+			false
+		);
+	}
 
 	if( isset( $results ) ) {
 		$this->Default3->DefaultPaginator->options(
@@ -89,52 +116,60 @@
 		echo $this->Default3->index(
 			$results,
 			$this->Translator->normalize(
-				array(
-					'User.nom',
-					'User.prenom',
-					'User.username',
-					'User.date_deb_hab',
-					'User.date_fin_hab',
-					'User.type',
-					'Group.name',
-					'Serviceinstructeur.lib_service',
-					'User.has_connections' => array( 'type' => 'boolean' ),
-					'User.has_jetons' => array(
-						'condition' => $jetonsEnabled,
-						'condition_group' => 'jetons',
-						'type' => 'boolean'
+				array_merge(
+					array(
+						'User.nom',
+						'User.prenom',
+						'User.username',
+						'User.date_deb_hab',
+						'User.date_fin_hab'
 					),
-					'User.has_jetonsfonctions' => array(
-						'condition' => $jetonsfonctionsEnabled,
-						'condition_group' => 'jetonsfonctions',
-						'type' => 'boolean'
+					(
+						( in_array( $departement, array( 66, 93 ), true ) )
+						? array( 'User.type' )
+						: array()
 					),
-					'/Users/edit/#User.id#' => array(
-						'title' => false
-					),
-					'/Users/delete_jetons/#User.id#' => array(
-						'condition' => $jetonsEnabled,
-						'condition_group' => 'jetons',
-						'title' => false,
-						'confirm' => true,
-						'disabled' => '0 == "#User.has_jetons#"'
-					),
-					'/Users/delete_jetonsfonctions/#User.id#' => array(
-						'condition' => $jetonsfonctionsEnabled,
-						'condition_group' => 'jetonsfonctions',
-						'title' => false,
-						'confirm' => true,
-						'disabled' => '0 == "#User.has_jetonsfonctions#"'
-					),
-					'/Users/force_logout/#User.id#' => array(
-						'title' => false,
-						'confirm' => true,
-						'disabled' => '( 0 == "#User.has_connections#" || "'.$connectedUserId.'" == "#User.id#" )'
-					),
-					'/Users/delete/#User.id#' => array(
-						'title' => false,
-						'confirm' => true,
-						'disabled' => '( 0 != "#User.has_linkedrecords#" || "'.$connectedUserId.'" == "#User.id#" )'
+					array(
+						'Group.name',
+						'Serviceinstructeur.lib_service',
+						'User.has_connections' => array( 'type' => 'boolean' ),
+						'User.has_jetons' => array(
+							'condition' => $jetonsEnabled,
+							'condition_group' => 'jetons',
+							'type' => 'boolean'
+						),
+						'User.has_jetonsfonctions' => array(
+							'condition' => $jetonsfonctionsEnabled,
+							'condition_group' => 'jetonsfonctions',
+							'type' => 'boolean'
+						),
+						'/Users/edit/#User.id#' => array(
+							'title' => false
+						),
+						'/Users/delete_jetons/#User.id#' => array(
+							'condition' => $jetonsEnabled,
+							'condition_group' => 'jetons',
+							'title' => false,
+							'confirm' => true,
+							'disabled' => '0 == "#User.has_jetons#"'
+						),
+						'/Users/delete_jetonsfonctions/#User.id#' => array(
+							'condition' => $jetonsfonctionsEnabled,
+							'condition_group' => 'jetonsfonctions',
+							'title' => false,
+							'confirm' => true,
+							'disabled' => '0 == "#User.has_jetonsfonctions#"'
+						),
+						'/Users/force_logout/#User.id#' => array(
+							'title' => false,
+							'confirm' => true,
+							'disabled' => '( 0 == "#User.has_connections#" || "'.$connectedUserId.'" == "#User.id#" )'
+						),
+						'/Users/delete/#User.id#' => array(
+							'title' => false,
+							'confirm' => true,
+							'disabled' => '( 0 != "#User.has_linkedrecords#" || "'.$connectedUserId.'" == "#User.id#" )'
+						)
 					)
 				)
 			),
