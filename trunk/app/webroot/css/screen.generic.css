@@ -2178,6 +2178,7 @@ body table thead th div.order-container {
 	padding-right: 20px;
 	position: relative;
 	display: inline-block;
+	min-height: 30px;
 }
 
 body table thead th div.img-asc,
