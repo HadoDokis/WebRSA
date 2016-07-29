@@ -73,7 +73,7 @@
 				$query = $this->WebrsaStructurereferente->search( $search );
 				$query['limit'] = 20;
 				$this->paginate = $query;
-				$results = $this->paginate( 'Structurereferente' );
+				$results = $this->paginate( 'Structurereferente', array(), array(), !Hash::get($search, 'Pagination.nombre_total') );
 				$this->set( compact( 'results' ) );
 			}
 

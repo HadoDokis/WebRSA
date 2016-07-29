@@ -21,7 +21,11 @@
 
 		public $uses = array( 'Personne', 'Option', 'Grossesse', 'Foyer', 'WebrsaPersonne' );
 
-		public $helpers = array( 'Default2', 'Fileuploader' );
+		public $helpers = array(
+			'Default2',
+			'Default3' => array('className' => 'Default.DefaultDefault'),
+			'Fileuploader',
+		);
 
 		public $components = array(
 			'Fileuploader', 'Jetons2', 'DossiersMenus', 'WebrsaAccesses'
@@ -204,8 +208,20 @@
 			);
 
 			// Assignations à la vue
-			$this->_setOptions();
-			$this->set(compact('foyer_id', 'personnes'));
+//			$this->_setOptions();
+			$options = Hash::merge(
+				$this->Personne->enums(),
+				$this->Personne->Prestation->enums(),
+				$this->Personne->Calculdroitrsa->enums(),
+				array(
+					'Calculdroitrsa' => array(
+						'toppersdrodevorsa' => array(
+							'' => 'Non défini',
+						)
+					)
+				)
+			);
+			$this->set(compact('foyer_id', 'personnes', 'options'));
 		}
 
 		/**
