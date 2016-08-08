@@ -43,11 +43,13 @@
 			$query['conditions'] = array(
 				'OR' => array(
 					array(
+						// Décision à imprimer
 						'Decisiondossierpcg66.etatdossierpcg IS NULL',
 						'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
 						'Dossierpcg66.dateimpression' => null
 					),
 					array(
+						// Traitement de type courrier à imprimer sans décision
 						'Dossierpcg66.id IN ('
 						. 'SELECT a.id FROM dossierspcgs66 AS a '
 						. 'INNER JOIN personnespcgs66 AS b ON a.id = b.dossierpcg66_id '
@@ -57,7 +59,17 @@
 						. 'AND a.etatdossierpcg != \'annule\''
 						. 'AND c.imprimer = 1 '
 						. 'AND c.annule = \'N\''
-						. 'AND c.etattraitementpcg = \'imprimer\')'
+						. 'AND c.etattraitementpcg = \'imprimer\')',
+						
+						// Négation de la 1ère condition (Décision à imprimer) pour éviter les doublons
+						'NOT EXISTS ('
+						. 'SELECT a.id FROM dossierspcgs66 AS a '
+						. 'INNER JOIN decisionsdossierspcgs66 AS b ON a.id = b.dossierpcg66_id '
+						. 'WHERE a.foyer_id = "Dossierpcg66"."foyer_id" '
+						. 'AND a.id != "Dossierpcg66"."id" '
+						. 'AND b.etatdossierpcg IS NULL '
+						. 'AND a.etatdossierpcg = \'decisionvalid\' '
+						. 'AND a.dateimpression IS NULL)'
 					)
 				),
 				array(
