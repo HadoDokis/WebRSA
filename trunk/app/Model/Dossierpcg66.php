@@ -1385,7 +1385,19 @@ class Dossierpcg66 extends AppModel {
 				'Foyer.dossier_id'
 			),
 			'joins' => array(
-				$this->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Decisiondossierpcg66', 
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Decisiondossierpcg66.id IN ('
+							. 'SELECT a.id FROM decisionsdossierspcgs66 AS a '
+							. 'WHERE a.dossierpcg66_id = "Dossierpcg66"."id" '
+							. 'AND a.etatdossierpcg IS NULL ' // N'est pas annulé
+							. 'ORDER BY a.datevalidation DESC, a.created DESC '
+							. 'LIMIT 1)'
+						)
+					) 
+				),
 				$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
 				$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
 				$this->Foyer->Personne->join( 'Prestation', 
@@ -1398,7 +1410,6 @@ class Dossierpcg66 extends AppModel {
 			'contain' => false,
 			'conditions' => array(
 				'Dossierpcg66.id' => $dossierpcg66_id,
-				'Decisiondossierpcg66.etatdossierpcg IS NULL', // Soit NULL soit 'annule'
 			),
 			'order' => array(
 				'Dossierpcg66.id' => 'DESC'
