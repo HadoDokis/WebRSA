@@ -107,15 +107,14 @@
 			$pdfListWithBlankPages = array();
 			$pdfs = array_values($pdfList);
 
-			// On ne traite pas le dernier PDF
-			for ($i=0; $i<count($pdfs)-1; $i++) {
+			for ($i=0; $i<count($pdfs); $i++) {
 				if ( is_array($pdfs[$i]) ) {//debug("Exception");
 					throw new Exception('Nested array are not allowed');
 				}
-				
+
 				$nbPages = $this->getBinaryPageCount($pdfs[$i]);
 				$pdfListWithBlankPages[] = $pdfs[$i];
-				
+
 				if ( $nbPages % 2 ) {
 					$pdfListWithBlankPages[] = $this->binBlankPdf;
 				}
@@ -124,8 +123,6 @@
 					$pdfListWithBlankPages[] = $this->binBlankPdf;
 				}
 			}
-			
-			$pdfListWithBlankPages[] = end($pdfs);
 			
 			if ( $this->error > 0 ) {
 				return false;
