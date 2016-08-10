@@ -687,7 +687,7 @@
 			// Mise à jour de la position du bilan de parcours
 			if( !empty( $themeData ) ) {
 				$passagescommissionseps_ids = Hash::extract( $themeData, '{n}.Decisiondefautinsertionep66.passagecommissionep_id' );
-				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $etape, $passagescommissionseps_ids ) && $success;
+				$success = $this->Bilanparcours66->WebrsaBilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $etape, $passagescommissionseps_ids ) && $success;
 			}
 
 			return $success;
