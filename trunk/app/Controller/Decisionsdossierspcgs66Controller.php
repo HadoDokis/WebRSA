@@ -567,7 +567,7 @@
 
 
 					if( $saved ) {
-						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
+						$saved = $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
 					}
 					
 					/**
@@ -929,7 +929,7 @@
 
 			$success = $this->Decisiondossierpcg66->delete( $id );
 			if( $success ) {
-				$success = $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
+				$success = $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
 			}
 
 			$this->_setFlashResult( 'Delete', $success );
@@ -987,10 +987,10 @@
 				$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 				if( $saved ) {
 					
-					$saved = $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
+					$saved = $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
 					
                     if( $saved ) {
-                        $saved = $this->Decisiondossierpcg66->Dossierpcg66->generateDossierPCG66Transmis( $dossierpcg66_id ) && $saved;
+                        $saved = $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->generateDossierPCG66Transmis( $dossierpcg66_id ) && $saved;
                     }
 
 					$this->Decisiondossierpcg66->commit();
@@ -1113,7 +1113,7 @@
 					)
 				) && $saved;
 
-				if( $saved && $this->Decisiondossierpcg66->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id) ) {
+				if( $saved && $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($dossierpcg66_id) ) {
 					$this->Decisiondossierpcg66->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

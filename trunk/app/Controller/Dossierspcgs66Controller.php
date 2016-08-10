@@ -240,7 +240,7 @@
 				$this->render( 'ajaxetatpdo', 'ajax' );
 			}
 			
-			$this->Dossierpcg66->updatePositionsPcgsById($id);
+			$this->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($id);
 			
 			$sqOrgs = str_replace('Decisiondossierpcg66', 'decision', $this->Dossierpcg66->Decisiondossierpcg66->sq(
 				array(
@@ -439,7 +439,7 @@
 			 * Ne semble pas avoir de conséquences.
 			 */
 			if ( $saved && $etatFinal && $decisiondefautinsertionep66_id ) {
-				$saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $decisiondefautinsertionep66_id );
+				$saved = $this->Dossierpcg66->WebrsaDossierpcg66->updateEtatPassagecommissionep( $decisiondefautinsertionep66_id );
 			}
 
 			if( $saved && $this->_saveFichiers($id) ) {
@@ -692,7 +692,7 @@
 //                if( $saved ) {
 //                    if( isset( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ) {
 //                        if( in_array( $dossierpcg66['Dossierpcg66']['etatdossierpcg'], array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
-//                            $saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
+//                            $saved = $this->Dossierpcg66->WebrsaDossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
 //                        }
 //                    }
 //                }
@@ -741,7 +741,7 @@
                             }
 
                             if( in_array( $dossierpcg66['Dossierpcg66']['etatdossierpcg'], array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
-                                $saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
+                                $saved = $this->Dossierpcg66->WebrsaDossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
                             }
                         }
                     }
@@ -870,7 +870,7 @@
 				foreach( $dossierpcg66['Personnepcg66'] as $i => $personnepcg66 ) {
 					$personnesIds[] = $personnepcg66['personne_id'];
 				}
-				$traitementsCourriersEnvoyes = $this->Dossierpcg66->listeCourriersEnvoyes( $personnesIds, $dossierpcg66 );
+				$traitementsCourriersEnvoyes = $this->Dossierpcg66->WebrsaDossierpcg66->listeCourriersEnvoyes( $personnesIds, $dossierpcg66 );
 			}
 
             // Liste des organismes auxquels on transmet le dossier
@@ -1149,7 +1149,7 @@
 			$this->assert( !empty( $id ), 'error404' );
 			$this->DossiersMenus->checkDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) );
 			
-			$query = $this->Dossierpcg66->getImpressionBaseQuery( $id );
+			$query = $this->Dossierpcg66->WebrsaDossierpcg66->getImpressionBaseQuery( $id );
 			
 			// Cas n° 1 et 2 : Dans dossier pcg, on précise $decision_id (pas dans la cohorte qui inclue les traitements sans proposition)
 			// Note : Logiquement, il ne peut y avoir une proposition non validé 

@@ -1098,7 +1098,7 @@ class Traitementspcgs66Controller extends AppController {
 		$success = $success && $this->Traitementpcg66->delete($id);
 		
 		// On recalcule la position du dossier pcg
-		$success = $success && $this->Traitementpcg66->Personnepcg66->Dossierpcg66->updatePositionsPcgsById( $data['Personnepcg66']['dossierpcg66_id'] );
+		$success = $success && $this->Traitementpcg66->Personnepcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById( $data['Personnepcg66']['dossierpcg66_id'] );
 		
 		if ( $success ){
 			$this->Session->setFlash( __( 'Delete->success' ), 'flash/success' );

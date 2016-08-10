@@ -79,7 +79,7 @@
 			$query['limit'] = Configure::read($this->_configureKey('limit', $params));
 			
 			$dossierspcgs66_id = Hash::extract($Controller->{$params['modelName']}->find( 'all', $query ), '{n}.Dossierpcg66.id');
-			$query = $Controller->Dossierpcg66->getImpressionBaseQuery( $dossierspcgs66_id );
+			$query = $Controller->Dossierpcg66->WebrsaDossierpcg66->getImpressionBaseQuery( $dossierspcgs66_id );
 
 			return $query;
 		}

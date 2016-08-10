@@ -556,7 +556,7 @@
             $corbeillepcgDescriptionId = Configure::read( 'Corbeillepcg.descriptionpdoId' ); // Traiteement de description courrier à l'allocataire
             if( $success ) {
 				if( ( $data['Traitementpcg66']['typetraitement'] == 'documentarrive' ) || in_array( $data['Traitementpcg66']['descriptionpdo_id'], $corbeillepcgDescriptionId ) ) {
-					$success = $this->Personnepcg66->Dossierpcg66->updatePositionsPcgsById( $this->dossierpcg66Id($this->id) ) && $success;
+					$success = $this->Personnepcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById( $this->dossierpcg66Id($this->id) ) && $success;
 				}
             }
 
@@ -564,7 +564,7 @@
             /**/
             if( $success ) {
 				if( ( $data['Traitementpcg66']['typetraitement'] == 'dossierarevoir' ) ) {
-                    $success = $this->Personnepcg66->Dossierpcg66->updatePositionsPcgsById( $this->dossierpcg66Id($this->id) ) && $success;
+                    $success = $this->Personnepcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById( $this->dossierpcg66Id($this->id) ) && $success;
 				}
             }
 
