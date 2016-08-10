@@ -350,7 +350,7 @@
 
 						$this->Bilanparcours66->Referent->sqVirtualField( 'nom_complet' ),
 						$this->Bilanparcours66->Fichiermodule->sqNbFichiersLies( $this->Bilanparcours66, 'nb_fichiers' ),
-						$this->Bilanparcours66->sqNbManifestations( 'Bilanparcours66.id', 'nb_manifestations' )
+						$this->Bilanparcours66->WebrsaBilanparcours66->sqNbManifestations( 'Bilanparcours66.id', 'nb_manifestations' )
 					),
 					'joins' => array(
 						$this->Bilanparcours66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
@@ -786,7 +786,7 @@
 						$this->Dossierep->delete( $dossierepAudition['Defautinsertionep66']['dossierep_id'] );
 					}
 
-					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
+					$success = $this->Bilanparcours66->WebrsaBilanparcours66->sauvegardeBilan( $this->request->data );
 // debug($success);
 				}
 				// Sans passage en EP
@@ -801,7 +801,7 @@
 							$this->request->data['Bilanparcours66'][$field] = null;
 						}
 
-						$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data ) && $success;
+						$success = $this->Bilanparcours66->WebrsaBilanparcours66->sauvegardeBilan( $this->request->data ) && $success;
 					}
 					else {
 						$success = $this->Bilanparcours66->save( $this->request->data ) && $success;
@@ -816,14 +816,14 @@
 					}
 
 					if( !in_array( $propositionModifie, array( 'aucun' ) ) && ( $proposition != $propositionModifie) ) {
-						$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
+						$success = $this->Bilanparcours66->WebrsaBilanparcours66->sauvegardeBilan( $this->request->data );
 					}
 					else {
 						$success = $this->Bilanparcours66->save( $this->request->data );
 					}
 				}
 				elseif ( $this->action == 'add' ) {
-					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
+					$success = $this->Bilanparcours66->WebrsaBilanparcours66->sauvegardeBilan( $this->request->data );
 				}
 
 				$this->_setFlashResult( 'Save', $success );
@@ -1053,8 +1053,8 @@
 			/// Si le nombre de dossiers d'EP en cours est > 0,
 			/// alors on ne peut pas créer de bilan pour la thématique concernée par le dossier EP
 			$dossiersepsencours = array(
-				'defautsinsertionseps66' => !$this->Bilanparcours66->ajoutPossibleThematique66( 'defautsinsertionseps66', $personne_id ),
-				'saisinesbilansparcourseps66' => !$this->Bilanparcours66->ajoutPossibleThematique66( 'saisinesbilansparcourseps66', $personne_id )
+				'defautsinsertionseps66' => !$this->Bilanparcours66->WebrsaBilanparcours66->ajoutPossibleThematique66( 'defautsinsertionseps66', $personne_id ),
+				'saisinesbilansparcourseps66' => !$this->Bilanparcours66->WebrsaBilanparcours66->ajoutPossibleThematique66( 'saisinesbilansparcourseps66', $personne_id )
 			);
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
@@ -1171,7 +1171,7 @@
 
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $id ) ) );
 
-			$pdf = $this->Bilanparcours66->getDefaultPdf( $id );
+			$pdf = $this->Bilanparcours66->WebrsaBilanparcours66->getDefaultPdf( $id );
 
 			$this->Gedooo->sendPdfContentToClient( $pdf, "Bilanparcours-{$id}.pdf" );
 		}
@@ -1189,9 +1189,9 @@
 			$personne_id = $this->Bilanparcours66->field( 'personne_id' );
 			$this->set( 'personne_id', $personne_id );
 
-            $this->_setOptions($this->Bilanparcours66->optionsView());
-//            $this->set( 'options',$this->Bilanparcours66->optionsView() );
-			$this->set( 'bilanparcours66', $this->Bilanparcours66->dataView( $bilanparcours66_id ) );
+            $this->_setOptions($this->Bilanparcours66->WebrsaBilanparcours66->optionsView());
+//            $this->set( 'options',$this->Bilanparcours66->WebrsaBilanparcours66->optionsView() );
+			$this->set( 'bilanparcours66', $this->Bilanparcours66->WebrsaBilanparcours66->dataView( $bilanparcours66_id ) );
 			$this->set( 'urlmenu', "/bilansparcours66/index/{$personne_id}" );
 		}
 
