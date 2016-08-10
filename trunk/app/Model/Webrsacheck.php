@@ -387,6 +387,9 @@
 				'Module.Logtrace.total_duration' => array(
 					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Module.Logtrace.enabled') )
 				),
+				'Module.Datepicker.enabled' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

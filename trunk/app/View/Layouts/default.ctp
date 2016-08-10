@@ -204,6 +204,10 @@
 			if( Configure::read( 'debug' ) > 0 ) {
 				echo $this->Html->tag( 'div', $this->element( 'sql_dump' ), array( 'id' => 'sqldump', 'style' => 'display: none' ) );
 			}
+			
+			if (Configure::read('Module.Datepicker.enabled')) {
+				echo $this->element('Cake2Datepicker.datepicker_auto', array('lang' => 'fr'));
+			}
 		?>
 		<?php if( Configure::read( 'debug' ) > 0 ): ?>
 		<script type="text/javascript">
