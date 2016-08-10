@@ -1210,4 +1210,9 @@
 	 */
 	Configure::write('Module.Logtrace.enabled', false);
 	Configure::write('Module.Logtrace.total_duration', 60 * 60 * 1); // Durée en secondes du graph (max 32746)
+	
+	/**
+	 * Active le module date picker (calendrier javascript)
+	 */
+	Configure::write('Module.Datepicker.enabled', true);
 ?>

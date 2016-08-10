@@ -173,6 +173,7 @@
 			'AnalyseSql' => array( 'bootstrap' => true ),
 			'SaveSearch' => array( 'bootstrap' => true ),
 			'SuperFixture' => array( 'bootstrap' => true ),
+			'Cake2Datepicker' => array( 'bootstrap' => true ),
 			'Fluxcnaf'
 		)
 	);
