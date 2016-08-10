@@ -232,7 +232,7 @@
 				}
 				
 				// Mise à jour etat du Dossier PCG
-				$this->Dossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
+				$this->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
 			}
 			
 			return $success;

@@ -75,7 +75,7 @@
 			
 			$this->assertEqual($etat, $expected, "A la création, etat à NULL");
 			
-			$this->Dossierpcg66->updatePositionsPcgsById($this->Dossierpcg66->id);
+			$this->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($this->Dossierpcg66->id);
 			$etat = $this->_getLastEtat();
 			$expected = "attaffect";
 			
@@ -90,7 +90,7 @@
 			$Dossierpcg66Obj = new BSFObject('Dossierpcg66', $dataDossierpcg66);
 			$Baker->create(array($Dossierpcg66Obj), $save = true);
 			
-			$this->Dossierpcg66->updatePositionsPcgsById($this->Dossierpcg66->id);
+			$this->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($this->Dossierpcg66->id);
 			$etat = $this->_getLastEtat();
 			$expected = "attinstr";
 			
@@ -108,7 +108,7 @@
 			$Decisiondossierpcg66 = new BSFObject('Decisiondossierpcg66', $dataDecisiondossierpcg66);
 			$Baker->create(array($Decisiondossierpcg66), $save = true);
 			
-			$this->Dossierpcg66->updatePositionsPcgsById($this->Dossierpcg66->id);
+			$this->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($this->Dossierpcg66->id);
 			$etat = $this->_getLastEtat();
 			$expected = "decisionvalid";
 			

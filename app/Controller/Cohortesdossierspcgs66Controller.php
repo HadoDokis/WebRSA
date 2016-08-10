@@ -432,7 +432,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
 		 * On recherche tout les éléments dont on a besoin
 		 */
 		foreach( $this->request->params['pass'] as $key => $dossierpcg66_id ) {
-			$query = $this->Dossierpcg66->getImpressionBaseQuery( $dossierpcg66_id );
+			$query = $this->Dossierpcg66->WebrsaDossierpcg66->getImpressionBaseQuery( $dossierpcg66_id );
 			unset($query['order']); // Gain de temps vu qu'on a un id dans cette action
 			$datas[$key] = $this->Dossierpcg66->find( 'first', $query );
 

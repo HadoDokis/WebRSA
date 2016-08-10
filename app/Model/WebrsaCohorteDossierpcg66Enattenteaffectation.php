@@ -108,7 +108,7 @@
 			}
 			
 			$success = !empty($data) && $this->Dossierpcg66->saveAll( $data )
-				&& $this->Dossierpcg66->updatePositionsPcgsByConditions( 
+				&& $this->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsByConditions( 
 					array(
 						'Dossierpcg66.id' => Hash::extract($data, '{n}.Dossierpcg66.id')
 					)
