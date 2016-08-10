@@ -82,12 +82,14 @@
 	
 	echo '<fieldset id="CuiSecteur"><legend>' . __d('cuis66', 'Cui.secteur') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui.secteurmarchand' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.typecontrat' => array( 'empty' => true, 'options' => $options['Cui66']['typecontrat_actif'] ),
-				'Cui66.codecdiae',
-				'Cui.numconventionindividuelle',
-				'Cui.numconventionobjectif'				
+			$this->Translator->normalize(
+				array(
+					'Cui.secteurmarchand' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui66.typecontrat' => array( 'empty' => true, 'options' => $options['Cui66']['typecontrat_actif'] ),
+					'Cui66.codecdiae',
+					'Cui.numconventionindividuelle',
+					'Cui.numconventionobjectif'				
+				)
 			),
 			$defaultParams
 		) . '</fieldset>'
@@ -100,18 +102,22 @@
 	echo '<fieldset id="PartenairecuiEmployeur"><legend>' . __d('cuis66', 'Partenairecui.employeur') . '</legend>'; 
 	echo '<fieldset><legend>' . __d('cuis66', 'Partenaire.charger') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui.partenaire_id' => array( 'empty' => true, 'type' => 'select' ),
+			$this->Translator->normalize(
+				array(
+					'Cui.partenaire_id' => array( 'empty' => true, 'type' => 'select' ),
+				)
 			),
 			$defaultParams
 		) 
 		. '<div class="submit"><input type="button" id="PartenaireCharger" value="Charger" /></div></fieldset>'
 		. $this->Default3->subform(
-			array(
-				'Partenairecui.raisonsociale',
-				'Partenairecui.enseigne',
-				'Partenairecui66.responsable',
-				'Partenairecui66.telresponsable',
+			$this->Translator->normalize(
+				array(
+					'Partenairecui.raisonsociale',
+					'Partenairecui.enseigne',
+					'Partenairecui66.responsable',
+					'Partenairecui66.telresponsable',
+				)
 			),
 			$defaultParams
 		) 
@@ -124,18 +130,20 @@
 			.		'<legend>' . __d('cuis66', 'Partenairecui.adresseemployeur') . '</legend>'
 			
 		. $this->Default3->subform(
-			array(
-				'Adressecui.numvoie',
-				'Adressecui.typevoie',
-				'Adressecui.nomvoie',
-				'Adressecui.complement',
-				'Adressecui.codepostal',
-				'Adressecui.commune',
-				'Adressecui.numtel' => array( 'maxLength' => 14 ),
-				'Adressecui.email',
-				'Adressecui.numfax' => array( 'maxLength' => 14 ),
-				'Adressecui.canton' => array( 'empty' => true ),
-				'Partenairecui66.conseillerdep'
+			$this->Translator->normalize(
+				array(
+					'Adressecui.numvoie',
+					'Adressecui.typevoie',
+					'Adressecui.nomvoie',
+					'Adressecui.complement',
+					'Adressecui.codepostal',
+					'Adressecui.commune',
+					'Adressecui.numtel' => array( 'maxLength' => 14 ),
+					'Adressecui.email',
+					'Adressecui.numfax' => array( 'maxLength' => 14 ),
+					'Adressecui.canton' => array( 'empty' => true ),
+					'Partenairecui66.conseillerdep'
+				)
 			),
 			$defaultParams
 		)
@@ -146,17 +154,19 @@
 			.		'<legend>' . __d('cuis66', 'Partenairecui.adresseadministrative') . '</legend>'
 			
 		. $this->Default3->subform(
-			array(
-				'Adressecui.numvoie2',
-				'Adressecui.typevoie2',
-				'Adressecui.nomvoie2',
-				'Adressecui.complement2',
-				'Adressecui.codepostal2',
-				'Adressecui.commune2',
-				'Adressecui.numtel2' => array( 'maxLength' => 14 ),
-				'Adressecui.email2',
-				'Adressecui.numfax2' => array( 'maxLength' => 14 ),
-				'Adressecui.canton2' => array( 'empty' => true ),
+			$this->Translator->normalize(
+				array(
+					'Adressecui.numvoie2',
+					'Adressecui.typevoie2',
+					'Adressecui.nomvoie2',
+					'Adressecui.complement2',
+					'Adressecui.codepostal2',
+					'Adressecui.commune2',
+					'Adressecui.numtel2' => array( 'maxLength' => 14 ),
+					'Adressecui.email2',
+					'Adressecui.numfax2' => array( 'maxLength' => 14 ),
+					'Adressecui.canton2' => array( 'empty' => true ),
+				)
 			),
 			$defaultParams
 		)
@@ -164,13 +174,15 @@
 		.	'<fieldset id="CuiVoletdroit">'
 		.		'<legend>' . __d('cuis66', 'Cui.voletdroit') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Partenairecui.siret',
-				'Partenairecui.naf' => array( 'empty' => true ),
-				'Partenairecui.statut' => array( 'empty' => true ),
-				'Partenairecui.effectif',
-				'Partenairecui.organismerecouvrement' => array( 'empty' => true ),
-				'Partenairecui.assurancechomage' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Partenairecui.assurancechomage' ) ),
+			$this->Translator->normalize(
+				array(
+					'Partenairecui.siret',
+					'Partenairecui.naf' => array( 'empty' => true ),
+					'Partenairecui.statut' => array( 'empty' => true ),
+					'Partenairecui.effectif',
+					'Partenairecui.organismerecouvrement' => array( 'empty' => true ),
+					'Partenairecui.assurancechomage' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Partenairecui.assurancechomage' ) )
+				)
 			),
 			$defaultParams
 		) 
@@ -178,28 +190,32 @@
 		. '<fieldset id="Partenairecui66Informationssup">'
 		.	 '<legend>' . __d('cuis66', 'Partenairecui66.informationssup') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Partenairecui66.activiteprincipale',
-				'Partenairecui66.codepartenaire',
-				'Partenairecui66.objet',
-				'Partenairecui66.nomtitulairerib',
-				'Partenairecui66.codebanque',
-				'Partenairecui66.codeguichet',
-				'Partenairecui66.numerocompte',
-				'Partenairecui66.etablissementbancaire',
-				'Partenairecui66.clerib',
-				'Partenairecui66.nblits',
-				'Partenairecui66.nbcontratsaideshorscg',
-				'Partenairecui66.nbcontratsaidescg',
-				'Partenairecui66.subventioncg' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Partenairecui66.subventioncg' ) ),
-				'Partenairecui66.commentaire' => array( 'type' => 'textarea' ),
+			$this->Translator->normalize(
+				array(
+					'Partenairecui66.activiteprincipale',
+					'Partenairecui66.codepartenaire',
+					'Partenairecui66.objet',
+					'Partenairecui66.nomtitulairerib',
+					'Partenairecui66.codebanque',
+					'Partenairecui66.codeguichet',
+					'Partenairecui66.numerocompte',
+					'Partenairecui66.etablissementbancaire',
+					'Partenairecui66.clerib',
+					'Partenairecui66.nblits',
+					'Partenairecui66.nbcontratsaideshorscg',
+					'Partenairecui66.nbcontratsaidescg',
+					'Partenairecui66.subventioncg' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Partenairecui66.subventioncg' ) ),
+					'Partenairecui66.commentaire' => array( 'type' => 'textarea' ),
+				)
 			),
 			$defaultParams
 		)
 		. '</fieldset>'
 		. $this->Default3->subform(
-			array(
-				'Partenairecui.ajourversement' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Partenairecui.ajourversement' ) ),
+			$this->Translator->normalize(
+				array(
+					'Partenairecui.ajourversement' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Partenairecui.ajourversement' ) )
+				)
 			),
 			$defaultParams
 		)
@@ -212,14 +228,16 @@
 	
 	echo '<fieldset id="Cui66Dossier"><legend>' . __d('cuis66', 'Cui66.dossier') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui66.dossiereligible' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.dateeligibilite' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui66.dossierrecu' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datereception' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui66.dossiercomplet' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datecomplet' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui66.notedossier'
+			$this->Translator->normalize(
+				array(
+					'Cui66.dossiereligible' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui66.dateeligibilite' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui66.dossierrecu' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui66.datereception' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui66.dossiercomplet' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui66.datecomplet' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui66.notedossier'
+				)
 			),
 			$defaultParams
 		) . '</fieldset>'
@@ -274,9 +292,11 @@
 	}
 	
 	echo '</div>' . $this->Default3->subform(
-			array(
-				'Cui66.zonecouverte' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datefinsejour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+15 ),
+			$this->Translator->normalize(
+				array(
+					'Cui66.zonecouverte' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui66.datefinsejour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+15)
+				)
 			),
 			$defaultParams
 		)
@@ -297,7 +317,7 @@
 		. $this->Default3->DefaultForm->input('Personnecui66.nbpersacharge', array( 'label' => __d('cuis66', 'Cuis66.nbenfants') ))
 		. '<div class="input text"><span class="label">' . __d('cuis66', 'Dossier.dtdemrsa') . '</span><span class="input">' . $personne['Dossier']['dtdemrsa'] . ' (' . $dtdemrsa->diff(new DateTime())->format('%y an(s) %m mois %d jours') . ')</span></div>'
 		. '<div class="input text"><span class="label">' . __d('cuis66', 'Dossier.date_entree_dispositif') . '</span><span class="input">' . $diffStr . '</span></div>'
-		. $this->Default3->subform( array( 'Personnecui66.montantrsa' => array( 'view' => true ) ) )
+		. $this->Default3->subform( array( 'Personnecui66.montantrsa' => array( 'view' => true, 'label' => __m('Personnecui66.montantrsa') ) ) )
 		. '</fieldset>'
 	;
 
@@ -307,14 +327,16 @@
 	
 	echo '<fieldset id="CuiSituationsalarie"><legend>' . __d('cuis66', 'Cui.situationsalarie') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui.niveauformation' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui.inscritpoleemploi' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.inscritpoleemploi' ) ),
-				'Cui.sansemploi' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.sansemploi' ) ),
-				'Cui.beneficiairede' => array( 'type' => 'select', 'multiple' => 'checkbox', 'legend' => __d( 'cuis66', 'Cui.beneficiairede' ) ),
-				'Cui.majorationrsa' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.majorationrsa' ) ),
-				'Cui.rsadepuis' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.rsadepuis' ) ),
-				'Cui.travailleurhandicape' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.travailleurhandicape' ) ),
+			$this->Translator->normalize(
+				array(
+					'Cui.niveauformation' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui.inscritpoleemploi' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.inscritpoleemploi' ) ),
+					'Cui.sansemploi' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.sansemploi' ) ),
+					'Cui.beneficiairede' => array( 'type' => 'select', 'multiple' => 'checkbox', 'legend' => __d( 'cuis66', 'Cui.beneficiairede' ) ),
+					'Cui.majorationrsa' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.majorationrsa' ) ),
+					'Cui.rsadepuis' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.rsadepuis' ) ),
+					'Cui.travailleurhandicape' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.travailleurhandicape' ) )
+				)
 			),
 			$defaultParams
 		) . '</fieldset>'
@@ -326,22 +348,26 @@
 	
 	echo '<fieldset id="CuiContrattravail"><legend>' . __d('cuis66', 'Cui.contrattravail') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui.typecontrat' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.typecontrat' ) ),
-				'Cui.dateembauche' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui.findecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui66.perennisation' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __m('Cui66.perennisation')  ),
+			$this->Translator->normalize(
+				array(
+					'Cui.typecontrat' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.typecontrat' ) ),
+					'Cui.dateembauche' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui.findecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui66.perennisation' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __m('Cui66.perennisation')  ),
+				)
 			),
 			$defaultParams
 		) 
 		. $this->Romev3->fieldset( 'Entreeromev3', $defaultParams )
 		. $this->Default3->subform(
-			array(
-				'Cui66.fonction',
-				'Cui.salairebrut' => array( 'type' => 'text', 'class' => 'euros' ),
-				'Cui.dureehebdo' => array( 'class' => 'heures_minutes' ),
-				'Cui.modulation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.modulation' ) ),
-				'Cui.dureecollectivehebdo' => array( 'class' => 'heures_minutes' ),
+			$this->Translator->normalize(
+				array(
+					'Cui66.fonction',
+					'Cui.salairebrut' => array( 'type' => 'text', 'class' => 'euros' ),
+					'Cui.dureehebdo' => array( 'class' => 'heures_minutes' ),
+					'Cui.modulation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.modulation' ) ),
+					'Cui.dureecollectivehebdo' => array( 'class' => 'heures_minutes' ),
+				)
 			),
 			$defaultParams
 		) . '</fieldset>'
@@ -353,41 +379,47 @@
 	
 	echo '<fieldset id="CuiAccompagnement"><legend>' . __d('cuis66', 'Cui.accompagnement') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui.nomtuteur',
-				'Cui.fonctiontuteur',
-				'Cui.organismedesuivi' => array( 'empty' => true ),
-				'Cui.nomreferent',
-				'Cui.actionaccompagnement' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.actionaccompagnement' ) ),
+			$this->Translator->normalize(
+				array(
+					'Cui.nomtuteur',
+					'Cui.fonctiontuteur',
+					'Cui.organismedesuivi' => array( 'empty' => true ),
+					'Cui.nomreferent',
+					'Cui.actionaccompagnement' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.actionaccompagnement' ) ),
+				)
 			),
 			$defaultParams
 		) 
 		. '<br /><h4>' . __d('cuis66', 'Cui.small_title_accompagnement') . '</h4>'
 		. $this->Default3->subform(
-			array(
-				'Cui.remobilisationemploi' => array( 'empty' => true ),
-				'Cui.aidepriseposte' => array( 'empty' => true ),
-				'Cui.elaborationprojet' => array( 'empty' => true ),
-				'Cui.evaluationcompetences' => array( 'empty' => true ),
-				'Cui.aiderechercheemploi' => array( 'empty' => true ),
-				'Cui.autre' => array( 'empty' => true ),
-				'Cui.autrecommentaire'
+			$this->Translator->normalize(
+				array(
+					'Cui.remobilisationemploi' => array( 'empty' => true ),
+					'Cui.aidepriseposte' => array( 'empty' => true ),
+					'Cui.elaborationprojet' => array( 'empty' => true ),
+					'Cui.evaluationcompetences' => array( 'empty' => true ),
+					'Cui.aiderechercheemploi' => array( 'empty' => true ),
+					'Cui.autre' => array( 'empty' => true ),
+					'Cui.autrecommentaire'
+				)
 			),
 			$defaultParams
 		) 
 		. '<br /><h4>' . __d('cuis66', 'Cui.small_title_formation') . '</h4>'
 		. $this->Default3->subform(
-			array(
-				'Cui.adaptationauposte' => array( 'empty' => true ),
-				'Cui.remiseaniveau' => array( 'empty' => true ),
-				'Cui.prequalification' => array( 'empty' => true ),
-				'Cui.acquisitioncompetences' => array( 'empty' => true ),
-				'Cui.formationqualifiante' => array( 'empty' => true ),
-				'Cui.formation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.formation' ) ),
-				'Cui66.commentaireformation',
-				'Cui.periodeprofessionnalisation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.periodeprofessionnalisation' ) ),
-				'Cui.niveauqualif' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui.validationacquis' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.validationacquis' ) ),
+			$this->Translator->normalize(
+				array(
+					'Cui.adaptationauposte' => array( 'empty' => true ),
+					'Cui.remiseaniveau' => array( 'empty' => true ),
+					'Cui.prequalification' => array( 'empty' => true ),
+					'Cui.acquisitioncompetences' => array( 'empty' => true ),
+					'Cui.formationqualifiante' => array( 'empty' => true ),
+					'Cui.formation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.formation' ) ),
+					'Cui66.commentaireformation',
+					'Cui.periodeprofessionnalisation' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.periodeprofessionnalisation' ) ),
+					'Cui.niveauqualif' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui.validationacquis' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.validationacquis' ) )
+				)
 			),
 			$defaultParams
 		) . '</fieldset>'
@@ -397,8 +429,11 @@
  * SI CAE - PERIODE IMMERSION ?
 /***********************************************************************************/
 	
-	echo $this->Default3->subform(array(
-		'Cui.periodeimmersion' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.periodeimmersion' ) ),
+	echo $this->Default3->subform(
+		$this->Translator->normalize(
+			array(
+				'Cui.periodeimmersion' => array( 'type' => 'radio', 'class' => 'uncheckable add-parent-id', 'legend' => __d( 'cuis66', 'Cui.periodeimmersion' ) ),
+			)
 		),
 		$defaultParams
 	);
@@ -409,19 +444,21 @@
 	
 	echo '<fieldset id="CuiPrise_en_charge"><legend>' . __d('cuis66', 'Cui.prise_en_charge') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui.effetpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui.finpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui.decisionpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui.dureehebdoretenu' => array( 'class' => 'heures_minutes'),
-				'Cui.operationspeciale',
-				'Cui.tauxfixeregion' => array( 'type' => 'text', 'class' => 'percent'),
-				'Cui.priseenchargeeffectif' => array( 'type' => 'text', 'class' => 'percent'),
-				'Cui.exclusifcg' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.exclusifcg' ) ),
-				'Cui.tauxcg' => array( 'type' => 'text', 'class' => 'percent'),
-				'Cui.organismepayeur' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.organismepayeur' ) ),
-				'Cui.intituleautreorganisme',
-				'Cui.adressautreorganisme',
+			$this->Translator->normalize(
+				array(
+					'Cui.effetpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui.finpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui.decisionpriseencharge' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui.dureehebdoretenu' => array( 'class' => 'heures_minutes'),
+					'Cui.operationspeciale',
+					'Cui.tauxfixeregion' => array( 'type' => 'text', 'class' => 'percent'),
+					'Cui.priseenchargeeffectif' => array( 'type' => 'text', 'class' => 'percent'),
+					'Cui.exclusifcg' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.exclusifcg' ) ),
+					'Cui.tauxcg' => array( 'type' => 'text', 'class' => 'percent'),
+					'Cui.organismepayeur' => array( 'type' => 'radio', 'class' => 'uncheckable', 'legend' => __d( 'cuis66', 'Cui.organismepayeur' ) ),
+					'Cui.intituleautreorganisme',
+					'Cui.adressautreorganisme',
+				)
 			),
 			$defaultParams
 		) . '</fieldset>'
@@ -435,11 +472,13 @@
 	
 	echo '<fieldset id="CuiDate"><legend>' . __d('cuis66', 'Cui.date') . '</legend>'
 		. $this->Default3->subform(
-			array(
-				'Cui.faitle' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui66.datebutoir_select' => array( 'empty' => true, 'type' => 'select' ),
-				'Cui66.datebutoir' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
-				'Cui66.demandeenregistree' => array( 'view' => true, 'hidden' => true, 'type' => 'date' )
+			$this->Translator->normalize(
+				array(
+					'Cui.faitle' => array( 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui66.datebutoir_select' => array( 'empty' => true, 'type' => 'select' ),
+					'Cui66.datebutoir' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => '2009', 'maxYear' => date('Y')+4 ),
+					'Cui66.demandeenregistree' => array( 'view' => true, 'hidden' => true, 'type' => 'date' )
+				)
 			),
 			$defaultParams
 		) 
