@@ -671,7 +671,7 @@ class Traitementspcgs66Controller extends AppController {
                 unset($dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]);
             }
 
-            $saved = $this->Traitementpcg66->sauvegardeTraitement($dataToSave);
+            $saved = $this->Traitementpcg66->WebrsaTraitementpcg66->sauvegardeTraitement($dataToSave);
 
             // Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier
             // que celui auquel je suis lié
@@ -767,7 +767,7 @@ class Traitementspcgs66Controller extends AppController {
         $this->set('listeTraitementsNonClos', $listeTraitementsNonClos);
 
         // Récupération et vérification d'une fiche de calcul existante parmi les traitements d'un dossier PCG passé
-        $infoDerniereFicheCalcul = $this->Traitementpcg66->infoDerniereFicheCalcul($personne_id, $this->action, $this->request->data);
+        $infoDerniereFicheCalcul = $this->Traitementpcg66->WebrsaTraitementpcg66->infoDerniereFicheCalcul($personne_id, $this->action, $this->request->data);
         $this->set('infoDerniereFicheCalcul', $infoDerniereFicheCalcul);
 
         $this->_setOptions();
@@ -1039,7 +1039,7 @@ class Traitementspcgs66Controller extends AppController {
         $this->assert(!empty($id), 'error404');
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
 
-        $pdf = $this->Traitementpcg66->getPdfFichecalcul($id);
+        $pdf = $this->Traitementpcg66->WebrsaTraitementpcg66->getPdfFichecalcul($id);
 
         if ($pdf) {
             $this->Gedooo->sendPdfContentToClient($pdf, 'Décision.pdf');
@@ -1059,7 +1059,7 @@ class Traitementspcgs66Controller extends AppController {
         $this->assert(!empty($id), 'error404');
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $this->Traitementpcg66->personneId($id)));
 
-        $pdf = $this->Traitementpcg66->getPdfModeleCourrier($id, $this->Session->read('Auth.User.id'));
+        $pdf = $this->Traitementpcg66->WebrsaTraitementpcg66->getPdfModeleCourrier($id, $this->Session->read('Auth.User.id'));
 	
         if ($pdf) {
             $this->Gedooo->sendPdfContentToClient($pdf, 'ModeleCourrier.pdf');
@@ -1179,7 +1179,7 @@ class Traitementspcgs66Controller extends AppController {
 				array( 'id' => $id, )
 			);
 			
-			$dataCourrier = $this->Traitementpcg66->getDataForPdfCourrier($id, $this->Session->read('Auth.User.id'), false);
+			$dataCourrier = $this->Traitementpcg66->WebrsaTraitementpcg66->getDataForPdfCourrier($id, $this->Session->read('Auth.User.id'), false);
 			$data = array(
 				'modele' => 'Traitementpcg66',
 				'fk_value' => $id,

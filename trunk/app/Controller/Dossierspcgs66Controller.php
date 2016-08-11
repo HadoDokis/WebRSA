@@ -1177,8 +1177,8 @@
 					: null
 				;
 
-				$courriers = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->getPdfsByDossierpcg66Id( $id, $this->Session->read('Auth.User.id') );
-				$queryCourrier = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->getPdfsQuery($id);
+				$courriers = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->getPdfsByDossierpcg66Id( $id, $this->Session->read('Auth.User.id') );
+				$queryCourrier = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->getPdfsQuery($id);
 				
 				$traitementspcgs66_ids = Hash::extract($this->Dossierpcg66->Foyer->find('all', $queryCourrier), '{n}.Traitementpcg66.id');
 				

@@ -393,7 +393,7 @@
 			}
 
 			if ( Hash::get($search, 'Dossierpcg66.dossierechu') ) {
-				$query['conditions'][] = 'Traitementpcg66.id IN ( ' . $this->Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
+				$query['conditions'][] = 'Traitementpcg66.id IN ( ' . $this->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
 			}
 
 			if ( Hash::get($search, 'Traitementpcg66.courriersansmodele') !== null ) {

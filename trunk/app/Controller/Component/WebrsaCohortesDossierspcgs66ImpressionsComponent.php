@@ -114,7 +114,7 @@
 					: null
 				;
 				
-				$courriers = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->getPdfsByDossierpcg66Id( 
+				$courriers = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->getPdfsByDossierpcg66Id( 
 					$dossierpcg_id, $Controller->Session->read('Auth.User.id'), false 
 				);
 				
@@ -199,7 +199,7 @@
 			
 			$traitementspcgs66_ids = array();
 			foreach ((array)Hash::extract($results, '{n}.Dossierpcg66.id') as $dossierpcg_id) {
-				$query = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->getPdfsQuery( $dossierpcg_id );
+				$query = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->getPdfsQuery( $dossierpcg_id );
 				$traitementspcgs66_ids = array_merge(
 					$traitementspcgs66_ids,
 					Hash::extract($Controller->Dossierpcg66->Foyer->find('all', $query), '{n}.Traitementpcg66.id')

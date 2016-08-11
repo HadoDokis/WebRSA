@@ -533,7 +533,7 @@ class Criteredossierpcg66 extends AppModel {
 
         $dossierEchu = Set::extract($params, 'Dossierpcg66.dossierechu');
         if (isset($params['Dossierpcg66']['dossierechu']) && !empty($params['Dossierpcg66']['dossierechu'])) {
-            $conditions[] = 'Traitementpcg66.id IN ( ' . $Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
+            $conditions[] = 'Traitementpcg66.id IN ( ' . $Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
         }
 
         // Origine de la PDO
