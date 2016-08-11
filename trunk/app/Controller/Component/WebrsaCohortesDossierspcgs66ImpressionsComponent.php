@@ -110,7 +110,7 @@
 				$dossierpcg_id = Hash::get($value, 'Dossierpcg66.id');
 				
 				$decisionPdf = $decisionsdossierspcgs66_id !== null 
-					? $Controller->Dossierpcg66->Decisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
+					? $Controller->Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
 					: null
 				;
 				

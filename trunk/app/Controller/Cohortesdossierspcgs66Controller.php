@@ -395,7 +395,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
         $decisionsdossierspcgs66_ids = Set::extract('/Decisiondossierpcg66/id', $dossierspcgs66);
 
         foreach ($decisionsdossierspcgs66_ids as $decisiondossierpcg66_id) {
-            $pdfs[] = $this->Dossierpcg66->Decisiondossierpcg66->getPdfDecision($decisiondossierpcg66_id);
+            $pdfs[] = $this->Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->getPdfDecision($decisiondossierpcg66_id);
         }
 
         $pdfs = $this->Gedooo->concatPdfs($pdfs, 'NotificationsDecisions');
@@ -474,7 +474,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
 				$dossierpcg_id = Hash::get($value, 'Dossierpcg66.id');
 
 				$decisionPdf = $decisionsdossierspcgs66_id !== null
-					? $this->Dossierpcg66->Decisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
+					? $this->Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
 					: null
 				;
 

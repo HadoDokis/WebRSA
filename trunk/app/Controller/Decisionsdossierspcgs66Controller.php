@@ -813,7 +813,7 @@
 
 			$this->DossiersMenus->checkDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) );
 
-			$pdf = $this->Decisiondossierpcg66->getPdfDecision( $id );
+			$pdf = $this->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->getPdfDecision( $id );
 
 			if( $pdf ) {
 				$success = true;
