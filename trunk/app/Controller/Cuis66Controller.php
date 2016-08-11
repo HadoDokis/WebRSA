@@ -362,9 +362,9 @@
 
 			if( !empty( $this->request->data ) ) {
 				$this->Cui->Cui66->begin();
-				if( $this->Cui->Cui66->annule( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
+				if( $this->Cui->Cui66->WebrsaCui66->annule( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
 					$this->Cui->Cui66->commit();
-					$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
+					$this->Cui->Cui66->WebrsaCui66->updatePositionsCuisById( $cui_id );
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Le CUI à été annulé.', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -436,7 +436,7 @@
 			
 			$result = $this->Cui->Cui66->find( 'first', array( 'fields' => 'cui_id', 'conditions' => array( 'Cui66.id' => $cui66_id ) ) );
 			$cui_id = $result['Cui66']['cui_id'];
-			$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
+			$this->Cui->Cui66->WebrsaCui66->updatePositionsCuisById( $cui_id );
 			$this->redirect( Router::url( $this->referer(), true ) );
 		}
 		
@@ -646,7 +646,7 @@
 				$this->Session->setFlash( 'Erreur lors de l\'envoi de l\'E-mail.', 'flash/error' );
 			}
 			
-			$this->Cui->Cui66->updatePositionsCuisById( $cui_id );
+			$this->Cui->Cui66->WebrsaCui66->updatePositionsCuisById( $cui_id );
 			$this->redirect( array( 'action' => 'email', $personne_id, $cui_id ) );
 		}
 		
@@ -751,13 +751,13 @@
 				? $this->Cui->Cui66->modelesOdt['default'] 
 				: $this->Cui->Cui66->modelesOdt[$modeleOdt]
 			;
-			$query = $this->Cui->Cui66->queryImpression( $cui_id );
-			$this->Cui->Cui66->forceVirtualFields = true;
+			$query = $this->Cui->Cui66->WebrsaCui66->queryImpression( $cui_id );
+			$this->Cui->forceVirtualFields = true;
 			
-			$data = $this->Cui->Cui66->find( 'first', $query );
+			$data = $this->Cui->find( 'first', $query );
 			$options = $this->Cui->options();
 
-			$data = $this->Cui->Cui66->completeDataImpression( $data );
+			$data = $this->Cui->Cui66->WebrsaCui66->completeDataImpression( $data );
 
 			$result = $this->Cui->ged(
 				$data,
@@ -841,11 +841,11 @@
 				$pdfPath = $dirPath.DS.$fileName.'.pdf';
 				
 				// On récupère les données pour le remplissage du ODT
-				$query = $this->Cui->Cui66->queryImpression( $cui_id );
+				$query = $this->Cui->Cui66->WebrsaCui66->queryImpression( $cui_id );
 				$this->Cui->Cui66->forceVirtualFields = true;
 				$data = $this->Cui->Cui66->find( 'first', $query );
 				$options = $this->Cui->options();
-				$data = $this->Cui->Cui66->completeDataImpression( $data );
+				$data = $this->Cui->Cui66->WebrsaCui66->completeDataImpression( $data );
 				$pdf = $this->Cui->ged(
 					$data,
 					$path,

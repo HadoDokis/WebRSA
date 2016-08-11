@@ -290,7 +290,7 @@
 		 */
 		public function queryIndex($personne_id){
 			switch ((int)Configure::read('Cg.departement')) {
-				case 66: $query = $this->Cui66->queryIndex($personne_id); break;
+				case 66: $query = $this->Cui66->WebrsaCui66->queryIndex($personne_id); break;
 				default: $query = array(
 					'fields' => array_merge(
 						$this->fields(),
@@ -349,7 +349,7 @@
 		 */
 		public function options($user_id = null) {
 			switch ((int)Configure::read('Cg.departement')) {
-				case 66: $options = $this->Cui66->options(); break;
+				case 66: $options = $this->Cui66->WebrsaCui66->options(); break;
 				default: 
 					$options = Hash::merge(
 						$this->enums(),
@@ -412,7 +412,7 @@
 		 */
 		public function saveAddEdit( array $data, $user_id = null ) {
 			switch ((int)Configure::read('Cg.departement')) {
-				case 66: $success = $this->Cui66->saveAddEdit($data, $user_id); break;
+				case 66: $success = $this->Cui66->WebrsaCui66->saveAddEdit($data, $user_id); break;
 				default: 
 					$success = true;
 					$data['Cui']['user_id'] = $user_id;
@@ -470,7 +470,7 @@
 		 */
 		public function updatePositionsCuisByConditions( array $conditions ) {
 			switch ((int)Configure::read('Cg.departement')) {
-				case 66: $success = $this->Cui66->updatePositionsCuisByConditions($conditions); break;
+				case 66: $success = $this->Cui66->WebrsaCui66->updatePositionsCuisByConditions($conditions); break;
 				default: $success = true;
 			}
 			
@@ -486,7 +486,7 @@
 		 */
 		public function updatePositionsCuisByPosition( $position ) {
 			switch ((int)Configure::read('Cg.departement')) {
-				case 66: $success = $this->Cui66->updatePositionsCuisByPosition($position); break;
+				case 66: $success = $this->Cui66->WebrsaCui66->updatePositionsCuisByPosition($position); break;
 				default: $success = true;
 			}
 			
@@ -517,7 +517,7 @@
 		 */
 		public function prepareFormDataAddEdit( $personne_id, $id = null ) {
 			switch ((int)Configure::read('Cg.departement')) {
-				case 66: $result = $this->Cui66->prepareFormDataAddEdit($personne_id, $id); break;
+				case 66: $result = $this->Cui66->WebrsaCui66->prepareFormDataAddEdit($personne_id, $id); break;
 				default:
 					// Ajout
 					if( empty( $id ) ) {
@@ -621,7 +621,7 @@
 		 */
 		public function queryView( $id = null ){
 			switch ((int)Configure::read('Cg.departement')) {
-				case 66: $query = $this->Cui66->queryView($id); break;
+				case 66: $query = $this->Cui66->WebrsaCui66->queryView($id); break;
 				default:
 					$query = array(
 						'fields' => array_merge(

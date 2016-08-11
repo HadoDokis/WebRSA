@@ -75,6 +75,7 @@
 				'fields' => array(
 					'Cui.id',
 					'Cui.personne_id',
+					'Personne.id',
 				),
 				'conditions' => $conditions,
 				'joins' => array(
@@ -103,6 +104,9 @@
 			
 			if (in_array('ajoutPossible', $params)) {
 				$results['ajoutPossible'] = $this->ajoutPossible($personne_id, $params);
+			}
+			if (in_array('isModuleEmail', $params)) {
+				$results['isModuleEmail'] = true;
 			}
 			
 			return $results;
