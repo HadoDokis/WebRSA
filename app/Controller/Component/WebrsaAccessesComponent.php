@@ -23,63 +23,19 @@
 		public $name = 'WebrsaAccesses';
 
 		/**
-		 * Controller lié au component
-		 *
-		 * @var Object
-		 */
-		public $Controller = null;
-
-		/**
-		 * Modèle principal
-		 *
-		 * @var Object
-		 */
-		public $MainModel = null;
-
-		/**
-		 * Modèle de logique
-		 *
-		 * @var Object
-		 */
-		public $WebrsaModel = null;
-
-		/**
-		 * Modèle supérieur au modèle principal
-		 * ex: Personne ou Foyer
-		 *
-		 * @var Object
-		 */
-		public $parentModelName = null;
-
-		/**
-		 * Nom de la classe de logique d'accès métier à une action
-		 *
-		 * @var String - WebrsaAccess<i>Nomducontroller</i>
-		 */
-		public $WebrsaAccessClassName = '';
-
-		/**
 		 * Funcion init() appelé ?
 		 *
 		 * @var boolean
 		 */
 		protected $_initialized = false;
-
-		/**
-		 * Alias du modèle lié au Controller
-		 *
-		 * @var String
-		 */
-		protected $_alias = '';
-
+		
 		/**
 		 * Assure le chargement des modèles et Utilitaires liés
 		 *
 		 * @param Controller $controller
-		 * @param array $modelNames
 		 * @return void
 		 */
-		public function initialize(Controller $controller, array $modelNames = array()) {
+		public function initialize(Controller $controller) {
 			$this->settings += array(
 				'mainModelName' => null,
 				'webrsaModelName' => null,
@@ -106,11 +62,7 @@
 				App::uses($this->settings['webrsaAccessName'], 'Utility');
 			}
 
-			$this->MainModel =& $Controller->{$this->settings['mainModelName']};
-			$this->WebrsaModel =& $Controller->{$this->settings['webrsaModelName']};
-			$this->WebrsaAccessClassName = $this->settings['webrsaAccessName'];
-
-			$this->parentModelName = $this->settings['parentModelName'] = $this->settings['parentModelName'] ?: (
+			$this->settings['parentModelName'] = $this->settings['parentModelName'] ?: (
 				!isset($controller->{$this->settings['mainModelName']}->belongsTo['Personne']) && isset($controller->{$this->settings['mainModelName']}->belongsTo['Foyer']) ? 'Foyer' : 'Personne'
 			);
 
@@ -137,12 +89,12 @@
 		protected function _setAttr($attr, $name) {
 			$Controller = $this->_Collection->getController();
 			if ($name instanceof Model) {
-				$this->{$attr} = $name;
+				$this->settings[$attr] = $name->name;
 			} elseif (isset($Controller->{$name})) {
-				$this->{$attr} =& $Controller->{$name};
+				$this->settings[$attr] = $name;
 			} else {
 				$Controller->uses[] = $name;
-				$this->{$attr} =& $Controller->{$name};
+				$this->settings[$attr] = $name;
 			}
 			return $this;
 		}
@@ -170,11 +122,10 @@
 		/**
 		 * Assure l'initialisation du component
 		 *
-		 * @param array $modelNames
 		 * @return void
 		 */
-		public function init(array $modelNames = array()) {
-			return $this->_initialized ?: $this->initialize($this->_Collection->getController(), $modelNames);
+		public function init() {
+			return $this->_initialized ?: $this->initialize($this->_Collection->getController());
 		}
 
 		/**
@@ -323,19 +274,19 @@
 				$result = $parent_id;
 			} else {
 				$isLinkedToParent = property_exists($Controller->{$this->settings['mainModelName']}, 'belongsTo')
-					&& isset($Controller->{$this->settings['mainModelName']}->belongsTo[$this->parentModelName]);
+					&& isset($Controller->{$this->settings['mainModelName']}->belongsTo[$this->settings['parentModelName']]);
 				$foreignKey = $isLinkedToParent
-					? $Controller->{$this->settings['mainModelName']}->belongsTo[$this->parentModelName]['foreignKey']
-					: Inflector::underscore($this->parentModelName).'_id'
+					? $Controller->{$this->settings['mainModelName']}->belongsTo[$this->settings['parentModelName']]['foreignKey']
+					: Inflector::underscore($this->settings['parentModelName']).'_id'
 				;
 				$parentPrimarykey = $isLinkedToParent
-					? $Controller->{$this->settings['mainModelName']}->{$this->parentModelName}->primaryKey
+					? $Controller->{$this->settings['mainModelName']}->{$this->settings['parentModelName']}->primaryKey
 					: 'id'
 				;
-				$methodName = Inflector::underscore($this->parentModelName).'Id';
+				$methodName = Inflector::underscore($this->settings['parentModelName']).'Id';
 
 				$result = Hash::get($record, $Controller->{$this->settings['mainModelName']}->alias.'.'.$foreignKey)
-					?: Hash::get($record, $this->parentModelName.'.'.$parentPrimarykey
+					?: Hash::get($record, $this->settings['parentModelName'].'.'.$parentPrimarykey
 				);
 
 				if ($result === null) {
@@ -343,7 +294,7 @@
 						$result = $Controller->{$this->settings['mainModelName']}->{$methodName}($id);
 					} else {
 						trigger_error(sprintf("Field: %s.%s n'existe pas dans %s::getDataForAccess",
-							$this->parentModelName, $parentPrimarykey, $Controller->{$this->settings['webrsaModelName']}->name));
+							$this->settings['parentModelName'], $parentPrimarykey, $Controller->{$this->settings['webrsaModelName']}->name));
 						exit;
 					}
 				}
