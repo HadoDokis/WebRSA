@@ -29,7 +29,7 @@
 		 */
 		public function main() {
 			$this->out("Mise à jour des positions du CUI...");
-			$this->Cui66->updatePositionsCuisByConditions(array());
+			$this->Cui66->WebrsaCui66->updatePositionsCuisByConditions(array());
 			$this->out("Mise à jour terminé avec succès.");
 		}
 	}

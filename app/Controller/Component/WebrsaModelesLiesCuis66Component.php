@@ -38,7 +38,8 @@
 		
 		public function initAccess($mainModelName = 'Cui', $webrsaModelName = 'WebrsaCui66') {
 			App::uses('WebrsaAccess'.Inflector::camelize($this->_Collection->getController()->name), 'Utility');
-			return $this->WebrsaAccesses->init(compact('mainModelName', 'webrsaModelName'));
+			$this->WebrsaAccesses->settings += compact('mainModelName', 'webrsaModelName');
+			return $this->WebrsaAccesses->init();
 		}
 
 		public function index( $cui_id, $params = array(), $customQuery = array() ){
@@ -222,7 +223,7 @@
 				$Model->begin();
 				if( $Model->saveAddEditFormData( $Controller->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
 					$Model->commit();
-					$Model->Cui66->updatePositionsCuisById( $cui_id );
+					$Model->Cui66->WebrsaCui66->updatePositionsCuisById( $cui_id );
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$Controller->redirect( $params['redirect'] );
@@ -278,7 +279,7 @@
 
 			if ($success) {
 				$Model->commit();
-				$Model->Cui66->updatePositionsCuisById( $cui_id );
+				$Model->Cui66->WebrsaCui66->updatePositionsCuisById( $cui_id );
 			} else {
 				$Model->rollback();
 			}
@@ -307,7 +308,7 @@
 			$Model->forceVirtualFields = true;
 			$Model->Cui66->forceVirtualFields = true;
 			
-			$queryImpressionCui66 = $Model->Cui66->queryImpression();
+			$queryImpressionCui66 = $Model->Cui66->WebrsaCui66->queryImpression();
 
 			$queryImpressionCui66['fields'] = array_merge( $queryImpressionCui66['fields'], $Model->fields() );
 			$queryImpressionCui66['joins'][] = $Model->Cui66->join( $Model->alias, array( 'type' => 'INNER' ) );
@@ -316,11 +317,11 @@
 			$Model->Cui66->Cui->forceVirtualFields = true;
 			$dataCui66 = $Model->Cui66->Cui->find( 'first', $queryImpressionCui66 );
 
-			$data = $Model->Cui66->completeDataImpression( $dataCui66 );
+			$data = $Model->Cui66->WebrsaCui66->completeDataImpression( $dataCui66 );
 			
 			$options = array_merge(
 				$Model->options(),
-				$Model->Cui66->options()
+				$Model->Cui66->WebrsaCui66->options()
 			);
 
 			$result = $Model->ged(
