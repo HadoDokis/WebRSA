@@ -364,7 +364,7 @@
 							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
-									'Decisiondossierpcg66.id IN ( ' .$this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->sqDernier( 'Dossierpcg66.id' ). ' )'
+									'Decisiondossierpcg66.id IN ( ' .$this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->sqDernier( 'Dossierpcg66.id' ). ' )'
 								)
 							)
 						),

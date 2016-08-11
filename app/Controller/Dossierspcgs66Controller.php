@@ -1173,7 +1173,7 @@
 				}
 				
 				$decisionPdf = $decisionsdossierspcgs66_id !== null 
-					? $this->Dossierpcg66->Decisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
+					? $this->Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
 					: null
 				;
 

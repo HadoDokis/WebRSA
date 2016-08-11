@@ -124,7 +124,7 @@ class Criteredossierpcg66 extends AppModel {
         $Dossierpcg66 = ClassRegistry::init('Dossierpcg66');
 
         $sqDernierDetailcalculdroitrsa = $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier('Detaildroitrsa.id');
-        $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->sqDernier('Dossierpcg66.id');
+        $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->sqDernier('Dossierpcg66.id');
 
         $conditions = array();
 		
@@ -495,7 +495,7 @@ class Criteredossierpcg66 extends AppModel {
         }
 
         $sqDernierDetailcalculdroitrsa = $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier('Detaildroitrsa.id');
-        $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->sqDernier('Dossierpcg66.id');
+        $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->sqDernier('Dossierpcg66.id');
         $sqDernierTraitementpcg66 = $Dossierpcg66->Personnepcg66->sqLatest('Traitementpcg66', 'created', array(true));
 
         $conditions[] = array(
