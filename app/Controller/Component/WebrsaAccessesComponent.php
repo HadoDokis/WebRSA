@@ -87,22 +87,17 @@
 				'parentModelName' => null,
 			);
 
-//			extract($modelNames);
-//			extract($this->settings);
-
 			$this->settings['mainModelName'] = $this->settings['mainModelName'] ?: self::controllerNameToModelName($controller->name);
 			$this->settings['webrsaModelName'] = $this->settings['webrsaModelName'] ?: 'Webrsa'.$this->settings['mainModelName'];
 			$this->settings['webrsaAccessName'] = $this->settings['webrsaAccessName'] ?: 'WebrsaAccess'.$controller->name;
 
 			// Si le modèle principal n'est pas chargé
 			if (!isset($controller->{$this->settings['mainModelName']})) {
-				//$controller->{$this->settings['mainModelName']} = ClassRegistry::init($this->settings['mainModelName']);
 				$controller->uses[] = $this->settings['mainModelName'];
 			}
 
 			// Si le modèle de logique n'est pas chargé
 			if (!isset($controller->{$this->settings['webrsaModelName']})) {
-				//$controller->{$this->settings['webrsaModelName']} = ClassRegistry::init($this->settings['webrsaModelName']);
 				$controller->uses[] = $this->settings['webrsaModelName'];
 			}
 
@@ -111,13 +106,12 @@
 				App::uses($this->settings['webrsaAccessName'], 'Utility');
 			}
 
-//			$Controller = $controller;
-//			$this->MainModel =& $Controller->{$this->settings['mainModelName']};
-//			$this->WebrsaModel =& $Controller->{$this->settings['webrsaModelName']};
-//			$this->WebrsaAccessClassName = $this->settings['webrsaAccessName'];
+			$this->MainModel =& $Controller->{$this->settings['mainModelName']};
+			$this->WebrsaModel =& $Controller->{$this->settings['webrsaModelName']};
+			$this->WebrsaAccessClassName = $this->settings['webrsaAccessName'];
 
 			$this->parentModelName = $this->settings['parentModelName'] = $this->settings['parentModelName'] ?: (
-				!isset($Controller->{$this->settings['mainModelName']}->belongsTo['Personne']) && isset($Controller->{$this->settings['mainModelName']}->belongsTo['Foyer']) ? 'Foyer' : 'Personne'
+				!isset($controller->{$this->settings['mainModelName']}->belongsTo['Personne']) && isset($controller->{$this->settings['mainModelName']}->belongsTo['Foyer']) ? 'Foyer' : 'Personne'
 			);
 
 			// Vérifications
@@ -129,7 +123,7 @@
 			}
 
 			$this->_initialized = true;
-//debug( $this->settings );
+			
 			return parent::initialize($controller);
 		}
 
@@ -141,12 +135,13 @@
 		 * @return \WebrsaAccessesComponent
 		 */
 		protected function _setAttr($attr, $name) {
+			$Controller = $this->_Collection->getController();
 			if ($name instanceof Model) {
 				$this->{$attr} = $name;
 			} elseif (isset($Controller->{$name})) {
 				$this->{$attr} =& $Controller->{$name};
 			} else {
-				$Controller->{$name} = ClassRegistry::init($name);
+				$Controller->uses[] = $name;
 				$this->{$attr} =& $Controller->{$name};
 			}
 			return $this;
