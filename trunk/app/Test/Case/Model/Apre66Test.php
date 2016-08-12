@@ -65,7 +65,7 @@
 			$count = Hash::get( $this->Correspondancepersonne->find('all', array('fields'=>'count(*)')), '0.0.count' );
 			$this->assertEqual( $count, $nb_entree, var_export( $count, true ) );
 			
-			$result = $this->Apre66->getMontantApreEnCours( $personne_id );
+			$result = $this->Apre66->WebrsaApre66->getMontantApreEnCours( $personne_id );
 			$expected = 2000;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
