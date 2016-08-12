@@ -138,45 +138,6 @@
 		);
 
 		/**
-		 * 
-		 * @param type $decisionpersonnepcg66_id
-		 * @return type
-		 * @deprecated since version 3.0
-		 */
-		public function updateEtatDossierPcg66( $decisionpersonnepcg66_id ) {
-			throw new Exception(sprintf("Utilisation d'une fonction obsolète : %s %s %s", __CLASS__, __FUNCTION__, __LINE__));
-			$decisionpersonnepcg66 = $this->Personnepcg66Situationpdo->Decisionpersonnepcg66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Decisionpersonnepcg66.id' => $decisionpersonnepcg66_id
-					),
-					'contain' => array(
-						'Personnepcg66Situationpdo' => array(
-							'Personnepcg66' => array(
-								'Dossierpcg66'
-							)
-						)
-					)
-				)
-			);
-			$decisionpdo_id = Set::classicExtract( $decisionpersonnepcg66, 'Decisionpersonnepcg66.decisionpdo_id' );
-			$typepdo_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.typepdo_id' );
-			$user_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.user_id' );
-			$avistechnique = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.avistechnique' );
-			$instrencours = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.instrencours' );
-			$validationavis = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.validationproposition' );
-			$iscomplet = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.iscomplet' );
-			$dossierpcg66_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.id' );
-
-			$etat = $this->Dossierpcg66->etatDossierPcg66( $typepdo_id, $user_id, $decisionpdo_id, $instrencours, $avistechnique, $validationavis, $iscomplet, $dossierpcg66_id );
-
-			$return = $this->saveField( 'etatdossierpcg', $etat );
-
-			return $return;
-		}
-
-		/**
 		*	Liste des traitements non clos liés à n'importe quel dossier du Foyer
 		*	@params	integer (defaut Foyer.id)
 		*	@return array
