@@ -186,12 +186,6 @@ class Dossierpcg66 extends AppModel {
                 'message' => 'Champ obligatoire',
             )
         ),
-// 			'iscomplet' => array(
-// 				'notEmptyIf' => array(
-// 					'rule' => array( 'notEmptyIf', 'user_id', false, array( null ) ),
-// 					'message' => 'Champ obligatoire',
-// 				)
-// 			)
     );
 	
 	/**
