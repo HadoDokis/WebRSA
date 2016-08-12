@@ -333,7 +333,7 @@
 			$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
 			$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
 
-			$montantaccorde = $this->Apre66->getMontantApreEnCours($personne_id);
+			$montantaccorde = $this->Apre66->WebrsaApre66->getMontantApreEnCours($personne_id);
 
 			if( $montantaccorde > Configure::read( "Apre.montantMaxComplementaires" ) ) {
 				$alerteMontantAides = true;
@@ -893,7 +893,7 @@
 		public function notifications( $id = null ) {
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
 
-			$pdf = $this->Apre66->getNotificationAprePdf( $id );
+			$pdf = $this->Apre66->WebrsaApre66->getNotificationAprePdf( $id );
 
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Notification_APRE_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );

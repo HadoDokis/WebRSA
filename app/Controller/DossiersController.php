@@ -899,7 +899,7 @@
 					for ($i=2009; $i<=date('Y'); $i++) {
 						$dateDebut = $i.'-01-01';
 						$dateFin = $i.'-12-31';
-						$montant = (integer)$Apre66->getMontantAprePeriode($dateDebut, $dateFin, $personnesFoyer[$index]['Personne']['id']);
+						$montant = (integer)$Apre66->WebrsaApre66->getMontantAprePeriode($dateDebut, $dateFin, $personnesFoyer[$index]['Personne']['id']);
 
 						if ( $montant > 0 || $begin ) {
 							$begin = true;

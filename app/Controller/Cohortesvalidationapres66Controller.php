@@ -297,7 +297,7 @@
 
 			$pdfs = array();
 			foreach( Set::extract( '/Apre66/id', $apres ) as $apre_id ) {
-				$pdfs[] = $this->Apre66->getNotificationAprePdf( $apre_id );
+				$pdfs[] = $this->Apre66->WebrsaApre66->getNotificationAprePdf( $apre_id );
 			}
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'NotificationsApre' );
 

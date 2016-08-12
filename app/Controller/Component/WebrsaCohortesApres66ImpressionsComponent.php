@@ -99,7 +99,7 @@
 			foreach (Hash::extract($datas, '{n}.Apre66.id') as $apre66_id) {
 				$results[] = array(
 					'Pdf' => array(
-						'document' => $Controller->{$params['modelName']}->getNotificationAprePdf( $apre66_id, false )
+						'document' => $Controller->{$params['modelName']}->WebrsaApre66->getNotificationAprePdf( $apre66_id, false )
 					),
 					'Apre66' => array(
 						'id' => $apre66_id
