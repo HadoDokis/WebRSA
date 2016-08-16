@@ -48,6 +48,28 @@
 		}
 		
 		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _edit(array $record, array $params) {
+			return Hash::get($record, 'Passagecov58.etatdossiercov') !== 'associe';
+		}
+		
+		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected static function _delete(array $record, array $params) {
+			return Hash::get($record, 'Passagecov58.etatdossiercov') === null;
+		}
+		
+		/**
 		 * Liste les actions disponnible
 		 * Si une action pointe sur un autre controler, il faut préciser son nom
 		 * ex : Moncontroller.monaction
@@ -56,9 +78,12 @@
 		 * @return array
 		 */
 		public static function actions(array $params = array()) {
+			$params = self::params($params);
 			$result = self::normalize_actions(
 				array(
-					'add' => array('haveOrient' => true, 'haveOrientEmploi' => true)
+					'add' => array('haveOrient' => true, 'haveOrientEmploi' => true),
+					'edit',
+					'delete'
 				)
 			);
 			

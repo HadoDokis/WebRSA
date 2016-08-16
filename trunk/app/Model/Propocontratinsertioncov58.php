@@ -96,6 +96,15 @@
 		);
 
 		/**
+		 * Modèles utilisés par le modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'WebrsaPropocontratinsertioncov58'
+		);
+		
+		/**
 		 * Règle de validation.
 		 *
 		 * @param type $field

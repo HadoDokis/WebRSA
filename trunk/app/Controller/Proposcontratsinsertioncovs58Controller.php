@@ -151,9 +151,11 @@
 		/**
 		 *
 		 */
-		public function add() {
+		public function add($personne_id, $contratinsertion_id = null) {
 			$args = func_get_args();
-			$this->_checkAccess($args[1]);
+			if ($contratinsertion_id) {
+				$this->_checkAccess($contratinsertion_id);
+			}
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
