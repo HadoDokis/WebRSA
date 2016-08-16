@@ -37,9 +37,9 @@
 				exit;
 			}
 			
-			exec('svn blame -v svn://scm.adullact.net/svn/webrsa/trunk/'.$this->args[0], $output);
-			preg_match('/([\d]+)[\s]+([\w]+).+\(([\w.]+ [\d]+ [\S]+ [\d]+)\)/', $output[$this->args[1] -1], $matches);
-			list(, $revision, $author, $date) = $matches;
+			exec('svn blame -v -x -b svn://scm.adullact.net/svn/webrsa/trunk/'.$this->args[0], $output);
+			preg_match('/([\d]+)[\s]+([\w]+).+\(([\w.]+ [\d]+ [\S]+ [\d]+)\)(.*)/', $output[$this->args[1] -1], $matches);
+			list(, $revision, $author, $date, $line) = $matches;
 			
 			$this->out();
 			$this->out(sprintf("RevisionLine %s %d", $this->args[0], $this->args[1]));
@@ -47,6 +47,8 @@
 			$this->out(sprintf("Révision: %d", $revision));
 			$this->out(sprintf("Auteur: %s", $author));
 			$this->out(sprintf("Date: %s", $date));
+			$this->out();
+			$this->out(sprintf("Content:\n%s", $output[$this->args[1] -1]));
 			$this->out();
 			$this->out(sprintf("https://adullact.net/scm/browser.php?group_id=613&commit=%s", $revision));
 		}
