@@ -554,6 +554,18 @@ class ContratsinsertionController extends AppController
 				->Sanctionep58->Dossierep->getErreursCandidatePassage($personne_id)
 			;
 			$controle['haveSanctionep'] = !empty($sanctionseps58);
+			
+			$qdEnCours = $this->Contratinsertion->Propocontratinsertioncov58nv
+				->WebrsaPropocontratinsertioncov58->completeVirtualFieldsForAccess(
+					$this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->qdEnCours($personne_id)
+				)
+			;
+			App::uses('WebrsaAccessProposcontratsinsertioncovs58', 'Utility');
+			$this->set('propocontratinsertioncov58', 
+				WebrsaAccessProposcontratsinsertioncovs58::accesses(
+					$this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find('all', $qdEnCours)
+				)
+			);
 		}
 		
 		/**
@@ -576,6 +588,15 @@ class ContratsinsertionController extends AppController
 			$this->Contratinsertion->enums(),
 			$this->Contratinsertion->Personne->Dossierep->Passagecommissionep->enums()
 		);
+		
+		if ($departement === 58) {
+			$options = array_merge(
+				$options,
+				$this->Contratinsertion->Personne->Orientstruct->Personne->Dossiercov58->Passagecov58->enums(),
+				$this->Contratinsertion->Personne->Orientstruct->Personne->Dossiercov58->Propocontratinsertioncov58->enums()
+			);
+		}
+		
 		$this->set('options', $options);
 
 		/**
