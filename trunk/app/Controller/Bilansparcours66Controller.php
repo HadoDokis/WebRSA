@@ -133,7 +133,7 @@
 
 			$Entretien = ClassRegistry::init( 'Entretien' );
 			$Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
-			$options = array_merge($options, $Entretien->options(), $Contratinsertion->options());
+			$options = array_merge($options, $Entretien->options(), $Contratinsertion->WebrsaContratinsertion->options());
 			$options['Entretien']['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) );
 
 			$this->set( compact( 'options' ) );
@@ -717,7 +717,7 @@
 
 
             // Nombre de mois cumulés pour la contractualisation
-            $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->limiteCumulDureeCER( $personne_id );
+            $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->limiteCumulDureeCER( $personne_id );
             $this->set('nbCumulDureeCER66', $nbCumulDureeCER66);
 
             // On récupère l'utilisateur connecté et qui exécute l'action

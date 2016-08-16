@@ -543,7 +543,7 @@ class ContratsinsertionOldController extends AppController
                 // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs
                 // dépasse 24 mois et que l'allocataire a moins de 55ans
                 if ($agePersonne < Configure::read('Tacitereconduction.limiteAge')) {
-                    if ($this->Contratinsertion->limiteCumulDureeCER($personne_id) > 24) {
+                    if ($this->Contratinsertion->WebrsaContratinsertion->limiteCumulDureeCER($personne_id) > 24) {
                         $blockCumulCER66 = true;
                     }
                 }
@@ -614,7 +614,7 @@ class ContratsinsertionOldController extends AppController
         if (Configure::read('Cg.departement') == 58) {
 
             $nbDemandedemaintienNonfinalisesCovs = 0;
-            $cumulCer = $this->Contratinsertion->limiteCumulDureeCER($personne_id);
+            $cumulCer = $this->Contratinsertion->WebrsaContratinsertion->limiteCumulDureeCER($personne_id);
             if ($cumulCer >= 12) {
                 // Nombre de dossiers COV de cette thématique qui ne sont pas finalisés (Demande de maintien en social)
                 $demandedemaintien = $this->Contratinsertion->Personne->Dossiercov58->qdDossiersNonFinalises($personne_id, 'proposnonorientationsproscovs58');
@@ -1594,7 +1594,7 @@ class ContratsinsertionOldController extends AppController
 
             $saved = $this->Contratinsertion->save($this->request->data);
 
-			$saved = $saved && $this->Contratinsertion->updatePositionsCersByConditions(
+			$saved = $saved && $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 				array( 'Contratinsertion.personne_id' => $contrat['Contratinsertion']['personne_id'] )
 			);
 
@@ -1751,7 +1751,7 @@ class ContratsinsertionOldController extends AppController
                     )
             );
 
-			$saved = $saved && $this->Contratinsertion->updatePositionsCersByConditions(
+			$saved = $saved && $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 				array( 'Contratinsertion.personne_id' => $personne_id )
 			);
 

@@ -563,7 +563,7 @@ class ContratsinsertionController extends AppController
 			App::uses('WebrsaAccessProposcontratsinsertioncovs58', 'Utility');
 			$this->set('propocontratinsertioncov58', 
 				WebrsaAccessProposcontratsinsertioncovs58::accesses(
-					$this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find('all', $qdEnCours)
+					array($this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find('first', $qdEnCours))
 				)
 			);
 		}
@@ -572,7 +572,7 @@ class ContratsinsertionController extends AppController
 		 * Contrôle d'accès
 		 */
 		$querydata = Hash::merge(
-			$this->Contratinsertion->qdIndex($personne_id),
+			$this->Contratinsertion->WebrsaContratinsertion->qdIndex($personne_id),
 			array(
 				'fields' => array(
 					'(SELECT COUNT(*) FROM fichiersmodules AS a WHERE a.modele = \'Contratinsertion\' AND a.fk_value = "Contratinsertion"."id") AS "Fichiermodule__count"',
@@ -582,7 +582,7 @@ class ContratsinsertionController extends AppController
 		);
 		$querydata['contain'] = false;
 		
-		$contratsinsertions = $this->WebrsaAccesses->getIndexRecords($personne_id, $querydata);
+		$contratsinsertion = $this->WebrsaAccesses->getIndexRecords($personne_id, $querydata);
 		
 		$options = array_merge(
 			$this->Contratinsertion->enums(),
@@ -604,7 +604,7 @@ class ContratsinsertionController extends AppController
 		 */
 		if ($departement === 66) {
 			if (Hash::get($personne, 'Personne.age') < (int)Configure::read('Tacitereconduction.limiteAge') 
-				&& $this->Contratinsertion->limiteCumulDureeCER($personne_id) > 24
+				&& $this->Contratinsertion->WebrsaContratinsertion->limiteCumulDureeCER($personne_id) > 24
 			) {
 				$message = "Cet allocataire dépasse les 24 mois de contractualisation "
 					. "dans une orientation SOCIALE. Vous devez donc proposer un bilan pour passage en EPL.";
@@ -614,19 +614,19 @@ class ContratsinsertionController extends AppController
 				$message = "Aucun référent n'est lié au parcours de cette personne.";
 				$messages[$message] = 'error';
 			}
-			if (!Hash::get($contratsinsertions, '0.Contratinsertion.id')) {
+			if (!Hash::get($contratsinsertion, '0.Contratinsertion.id')) {
 				$message = "Cette personne ne possède pas encore de CER.";
 				$messages[$message] = 'notice';
 			}
 			
-			foreach ($contratsinsertions as $key => $contratinsertion) {
+			foreach ($contratsinsertion as $key => $contratinsertion) {
 				$positioncer = Hash::get($contratinsertion, 'Contratinsertion.positioncer');
 				
 				// Ajoute à la position traduite la mention "le <date>"
 				if (in_array($positioncer, array('nonvalid', 'encours'))
 					&& $datenotif = Hash::get($contratinsertion, 'Contratinsertion.datenotification')
 				) {
-					$contratsinsertions[$key]['Contratinsertion']['positioncer'] = Hash::get(
+					$contratsinsertion[$key]['Contratinsertion']['positioncer'] = Hash::get(
 						Hash::get($options, 'Contratinsertion.positioncer'),
 						$positioncer
 					).' le '.date_short($datenotif);
@@ -634,7 +634,7 @@ class ContratsinsertionController extends AppController
 			}
 		}
 		
-		$this->set(compact('personne_id', 'contratsinsertions', 'messages', 'dossierMenu', 'ajoutPossible'));
+		$this->set(compact('personne_id', 'contratsinsertion', 'messages', 'dossierMenu', 'ajoutPossible'));
 		$this->view = Configure::read('nom_form_ci_cg') ? 'index_'.Configure::read('nom_form_ci_cg') : 'index';
     }
 
@@ -889,7 +889,7 @@ class ContratsinsertionController extends AppController
         /// Calcul du numéro du contrat d'insertion
         $nbrCi = $this->Contratinsertion->find('count', array('conditions' => array('Personne.id' => $personne_id)));
 
-        $numouverturedroit = $this->Contratinsertion->checkNumDemRsa($personne_id);
+        $numouverturedroit = $this->Contratinsertion->WebrsaContratinsertion->checkNumDemRsa($personne_id);
 
         //$this->set( 'nbContratsPrecedents', $nbContratsPrecedents );
         $this->set('tc', $tc);
@@ -1393,7 +1393,7 @@ class ContratsinsertionController extends AppController
         }
 
         if (!empty($this->request->data)) {
-            if ($this->Contratinsertion->valider($this->request->data)) {
+            if ($this->Contratinsertion->WebrsaContratinsertion->valider($this->request->data)) {
                 $this->Jetons2->release($dossier_id);
                 $this->Session->setFlash('Enregistrement effectué', 'flash/success');
                 $this->redirect(array('controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']));
@@ -1507,7 +1507,7 @@ class ContratsinsertionController extends AppController
 
             $saved = $this->Contratinsertion->save($this->request->data);
 
-			$saved = $saved && $this->Contratinsertion->updatePositionsCersByConditions(
+			$saved = $saved && $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 				array( 'Contratinsertion.personne_id' => $contrat['Contratinsertion']['personne_id'] )
 			);
 
@@ -1544,7 +1544,7 @@ class ContratsinsertionController extends AppController
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
 		$this->WebrsaAccesses->check($contratinsertion_id);
 
-        $pdf = $this->Contratinsertion->getNotificationopPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
+        $pdf = $this->Contratinsertion->WebrsaContratinsertion->getNotificationopPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
         if (!empty($pdf)) {
             $this->Gedooo->sendPdfContentToClient($pdf, sprintf("contratinsertion_%d_notificationop_%s.pdf", $contratinsertion_id, date('Y-m-d')));
@@ -1565,7 +1565,7 @@ class ContratsinsertionController extends AppController
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
 		$this->WebrsaAccesses->check($contratinsertion_id);
 
-        $pdf = $this->Contratinsertion->getPdfFicheliaisoncer($contratinsertion_id, $this->Session->read('Auth.User.id'));
+        $pdf = $this->Contratinsertion->WebrsaContratinsertion->getPdfFicheliaisoncer($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
         if (!empty($pdf)) {
             $this->Gedooo->sendPdfContentToClient($pdf, "contratinsertion_{$contratinsertion_id}_FicheLiaison.pdf");
@@ -1587,7 +1587,7 @@ class ContratsinsertionController extends AppController
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
 		$this->WebrsaAccesses->check($contratinsertion_id);
 
-        $pdf = $this->Contratinsertion->getPdfNotifbenef($contratinsertion_id, $this->Session->read('Auth.User.id'));
+        $pdf = $this->Contratinsertion->WebrsaContratinsertion->getPdfNotifbenef($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
         if (!empty($pdf)) {
             $this->Gedooo->sendPdfContentToClient($pdf, "contratinsertion_{$contratinsertion_id}_NotificationBeneficiaire_.pdf");
@@ -1610,7 +1610,7 @@ class ContratsinsertionController extends AppController
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
 		$this->WebrsaAccesses->check($contratinsertion_id);
 
-        $pdf = $this->Contratinsertion->getDefaultPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
+        $pdf = $this->Contratinsertion->WebrsaContratinsertion->getDefaultPdf($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
         if (!empty($pdf)) {
             $this->Gedooo->sendPdfContentToClient($pdf, "contratinsertion_{$contratinsertion_id}_nouveau.pdf");
@@ -1669,7 +1669,7 @@ class ContratsinsertionController extends AppController
                     )
             );
 
-			$saved = $saved && $this->Contratinsertion->updatePositionsCersByConditions(
+			$saved = $saved && $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 				array( 'Contratinsertion.personne_id' => $personne_id )
 			);
 
@@ -1713,7 +1713,7 @@ class ContratsinsertionController extends AppController
         $this->DossiersMenus->checkDossierMenu(array('personne_id' => $personne_id));
 		$this->WebrsaAccesses->check($contratinsertion_id);
 
-        $pdf = $this->Contratinsertion->getPdfReconductionCERPlus55Ans($contratinsertion_id, $this->Session->read('Auth.User.id'));
+        $pdf = $this->Contratinsertion->WebrsaContratinsertion->getPdfReconductionCERPlus55Ans($contratinsertion_id, $this->Session->read('Auth.User.id'));
 
         $success = true;
         if (!empty($pdf)) {

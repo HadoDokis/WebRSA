@@ -1211,7 +1211,7 @@
 						'conditions' => array(
 							'OR' => array(
 								'Contratinsertion.id IS NULL',
-								'Contratinsertion.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->sqDernierContrat().' )'
+								'Contratinsertion.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat().' )'
 							)
 						)
 					);

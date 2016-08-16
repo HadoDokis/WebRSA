@@ -273,7 +273,7 @@ class Dossierpcg66 extends AppModel {
                 }
 
 				if( !empty( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] ) ) {
-					$success = $success && $this->Contratinsertion->updatePositionsCersById( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] );
+					$success = $success && $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersById( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] );
 				}
             }
         }

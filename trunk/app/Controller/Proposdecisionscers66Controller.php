@@ -135,10 +135,11 @@ class Proposdecisionscers66Controller extends AppController {
 
                 if ($saved) {
                     $dateDecision = date_cakephp_to_sql($this->request->data['Propodecisioncer66']['datevalidcer']);
-                    $cumulduree = $this->Propodecisioncer66->Contratinsertion->limiteCumulDureeCER($personne_id);
+                    $cumulduree = $this->Propodecisioncer66->Contratinsertion->WebrsaContratinsertion->limiteCumulDureeCER($personne_id);
 
                     if ($this->request->data['Propodecisioncer66']['decisionfinale'] == 'O') {
                         if ($this->request->data['Propodecisioncer66']['isvalidcer'] == 'O') {
+							
                             $saved = $this->Propodecisioncer66->Contratinsertion->updateAllUnBound(
                                 array(
                                     'Contratinsertion.decision_ci' => '\'V\'',
@@ -167,7 +168,7 @@ class Proposdecisionscers66Controller extends AppController {
                             ) && $saved;
                         }
 
-						$saved = $saved && $this->Propodecisioncer66->Contratinsertion->updatePositionsCersByConditions(
+						$saved = $saved && $this->Propodecisioncer66->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 							array( 'Contratinsertion.personne_id' => $personne_id )
 						);
                     }

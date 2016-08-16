@@ -339,7 +339,7 @@
 						)
 					);
 
-					$rg_ci = $this->Dossiercov58->Personne->Contratinsertion->rgCiMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+					$rg_ci = $this->Dossiercov58->Personne->Contratinsertion->WebrsaContratinsertion->rgCiMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
 					$num_contrat = ( $rg_ci == 1 ? 'PRE' : 'REN' );
 
 					if( $values['decisioncov'] == 'valide' ){

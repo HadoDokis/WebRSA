@@ -66,7 +66,7 @@
 			parent::startup();
 			$this->checkDepartement( 66 );
 
-			$result = $this->Contratinsertion->checkConfigUpdateEncoursbilanCg66();
+			$result = $this->Contratinsertion->WebrsaContratinsertion->checkConfigUpdateEncoursbilanCg66();
 			if( $result !== true ) {
 				$this->err( "Mauvaise configuration de Contratinsertion.Cg66.updateEncoursbilan dans le fichier webrsa.inc\n{$check}" );
 				$this->_stop( self::ERROR );
@@ -89,13 +89,13 @@
 		 * @return boolean
 		 */
 		public function updatePositionsCersByPosition( $positioncer ) {
-			$conditions = $this->Contratinsertion->getConditionsPositioncer( $positioncer );
+			$conditions = $this->Contratinsertion->WebrsaContratinsertion->getConditionsPositioncer( $positioncer );
 			$this->counts[$positioncer] = $this->Contratinsertion->find( 'count', array( 'conditions' => $conditions, 'recursive' => -1 ) );
 
 			$msgstr = 'Mise à jour de la position "%s" pour %d contrats d\'engagement réciproque ( %.2f %% ).';
 			$this->out( sprintf( $msgstr, __d( 'contratinsertion', "ENUM::POSITIONCER::{$positioncer}" ), $this->counts[$positioncer], ( $this->counts[$positioncer] / max( $this->counts['total'], 1 ) ) * 100 ) );
 
-			return $this->Contratinsertion->updatePositionsCersByPosition( $positioncer );
+			return $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByPosition( $positioncer );
 		}
 
 		/**
@@ -108,7 +108,7 @@
 			// Obtention des condtions
 			$conditions = array();
 			foreach( array_keys( $this->Contratinsertion->enum( 'positioncer' ) ) as $positioncer ) {
-				$conditionsPosition = $this->Contratinsertion->getConditionsPositioncer( $positioncer );
+				$conditionsPosition = $this->Contratinsertion->WebrsaContratinsertion->getConditionsPositioncer( $positioncer );
 				$conditions[] = array( 'NOT' => array( $conditionsPosition ) );
 			}
 

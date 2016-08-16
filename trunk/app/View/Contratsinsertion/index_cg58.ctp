@@ -17,9 +17,9 @@
 	}
 	
 	// Valeurs avec concatenation
-	foreach ($contratsinsertions as $key => $data) {
+	foreach ($contratsinsertion as $key => $data) {
 		if (Hash::get($data, 'Cov58.datecommission')) {
-			$contratsinsertions[$key]['Cov58']['infocov'] = 'Site '.Hash::get($data, 'Sitecov58.name').'", le '
+			$contratsinsertion[$key]['Cov58']['infocov'] = 'Site '.Hash::get($data, 'Sitecov58.name').'", le '
 				.$this->Locale->date("Datetime::full", Hash::get($data, 'Cov58.datecommission'))
 			;
 		}
@@ -87,7 +87,7 @@
 	
 	echo '<h2>Contrats effectifs</h2>';
 	echo $this->Default3->index(
-		$contratsinsertions,
+		$contratsinsertion,
 		$this->Translator->normalize(
 				array(
 				'Contratinsertion.num_contrat',

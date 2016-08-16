@@ -131,7 +131,7 @@
 								'type' => $types['Contratinsertion'],
 								'conditions' => array(
 									// Le dernier CER
-									'Contratinsertion.id IN ( '.$this->Orientstruct->Personne->Contratinsertion->sqDernierContrat( 'Personne.id', true ).' )'
+									'Contratinsertion.id IN ( '.$this->Orientstruct->Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat( 'Personne.id', true ).' )'
 								)
 							)
 						),

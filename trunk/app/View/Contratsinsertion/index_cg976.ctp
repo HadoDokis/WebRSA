@@ -20,7 +20,7 @@
 	// NOTE : Actuellement, pas de messages pour le 976
 	
 	echo $this->Default3->index(
-		$contratsinsertions,
+		$contratsinsertion,
 		array(
 			'Contratinsertion.date_saisi_ci',
 			'Typeorient.lib_type_orient',

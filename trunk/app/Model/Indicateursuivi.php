@@ -72,7 +72,7 @@
 			$conditions[] = array(
 				'OR' => array(
 					'Contratinsertion.id IS NULL',
-					'Contratinsertion.id IN ( '.$Dossier->Foyer->Personne->Contratinsertion->sqDernierContrat().' )'
+					'Contratinsertion.id IN ( '.$Dossier->Foyer->Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat().' )'
 				)
 			);
 
@@ -246,7 +246,7 @@
 					array(
 						'type' => 'LEFT OUTER',
 						'conditions' => array(
-							'Contratinsertion.id IN ( '.$Personne->Contratinsertion->sqDernierContrat( 'Personne.id', true ).' )',
+							'Contratinsertion.id IN ( '.$Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat( 'Personne.id', true ).' )',
 						)
 					)
 				);

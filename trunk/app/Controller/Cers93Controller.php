@@ -562,7 +562,7 @@
 				$options,
 				$this->Catalogueromev3->dependantSelects()
 			);
-
+		
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options' ) );
 			$this->set( 'urlmenu', '/cers93/index/'.$personne_id );
@@ -631,7 +631,7 @@
 						array( 'Cer93.duree' => Hash::get( $this->request->data, 'Cer93.duree' ) ),
 						array( 'Cer93.id' => Hash::get( $contratinsertion, 'Cer93.id' ) )
 					)
-					&&  $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $personne_id );
+					&&  $this->Cer93->Contratinsertion->WebrsaContratinsertion->updateRangsContratsPersonne( $personne_id );
 
 				if( $success ) {
 					$this->Cer93->Contratinsertion->commit();
@@ -723,7 +723,7 @@
 		 * @return void
 		 */
 		public function impression( $contratinsertion_id = null ) {
-			$this->WebrsaAccesses->check( $id );
+			$this->WebrsaAccesses->check( $contratinsertion_id );
 
 			$personne_id = $this->Cer93->Contratinsertion->personneId( $contratinsertion_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
@@ -891,7 +891,7 @@
 						),
 						array( 'Cer93.id' => Hash::get( $contratinsertion, 'Cer93.id' ) )
 					)
-					&& $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $personne_id );
+					&& $this->Cer93->Contratinsertion->WebrsaContratinsertion->updateRangsContratsPersonne( $personne_id );
 
 				if( $success ) {
 					$this->Cer93->Contratinsertion->commit();

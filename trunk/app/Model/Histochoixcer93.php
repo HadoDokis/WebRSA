@@ -284,7 +284,7 @@
 						)
 					);
 
-					$success = $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
+					$success = $this->Cer93->Contratinsertion->WebrsaContratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
 					$success = $this->Cer93->Contratinsertion->Nonrespectsanctionep93->calculSortieProcedureRelanceParValidationCer( $contratinsertion ) && $success;
 				}
 				// Passage en EP du contrat en seconde lecture
@@ -410,7 +410,7 @@
 							)
 						);
 
-						$success = $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
+						$success = $this->Cer93->Contratinsertion->WebrsaContratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
 						$success = $this->Cer93->Contratinsertion->Nonrespectsanctionep93->calculSortieProcedureRelanceParValidationCer( $contratinsertion ) && $success;
 					}
 				}
