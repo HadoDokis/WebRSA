@@ -309,7 +309,7 @@
 		 * @return array
 		 */
 		protected function _getDernierContratinsertion( $personne_id ) {
-			$sql = $this->Bilanparcours66->Contratinsertion->sqDernierContrat( 'Contratinsertion.personne_id' );
+			$sql = $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->sqDernierContrat( 'Contratinsertion.personne_id' );
 
 			$result = $this->Bilanparcours66->Contratinsertion->find(
 				'first',
@@ -353,7 +353,7 @@
 					if( empty( $primaryKey ) ) {
 						$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->Bilanparcours66->alias}.personne_id" ) );
 						if( !empty( $vxContratinsertion ) ) {
-							$success = $success && $this->Bilanparcours66->Contratinsertion->updatePositionsCersByConditions(
+							$success = $success && $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 								array( 'Contratinsertion.personne_id' => Hash::get( $data, "{$this->Bilanparcours66->alias}.personne_id" ) )
 							);
 							/*$success = $success && $this->Contratinsertion->updateAllUnBound(
@@ -487,7 +487,7 @@
                             }
 
                             // Calcul de la limite de cumul de durée de CER à l'enregistrement du bilan
-                            $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->limiteCumulDureeCER( $data['Bilanparcours66']['personne_id'] );
+                            $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->limiteCumulDureeCER( $data['Bilanparcours66']['personne_id'] );
 							$dureeEngagReconductionCER = $contratinsertion['Contratinsertion']['duree_engag'];
 
                             // Si les champs de reconduction ne sont pas renseignés,
@@ -517,9 +517,9 @@
                             $this->Bilanparcours66->Contratinsertion->create( $contratinsertion );
                             $success = $this->Bilanparcours66->Contratinsertion->save() && $success;
 							if( $success ) {
-								$success = $this->Bilanparcours66->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
+								$success = $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
 							}
-							$success = $success && $this->Bilanparcours66->Contratinsertion->updatePositionsCersByConditions(
+							$success = $success && $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 								array( 'Contratinsertion.personne_id' => $contratinsertion['Contratinsertion']['personne_id'] )
 							);
 
@@ -666,7 +666,7 @@
 										array( 'Contratinsertion.id' => Hash::get( $vxContratinsertion, 'Contratinsertion.id' ) )
 									);
 								}*/
-								$success = $success && $this->Bilanparcours66->Contratinsertion->updatePositionsCersByConditions(
+								$success = $success && $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 									array( 'Contratinsertion.personne_id' => Hash::get( $data, "{$this->Bilanparcours66->alias}.personne_id" ) )
 								);
 							}

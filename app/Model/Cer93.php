@@ -510,7 +510,6 @@
 					$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
 					$this->Contratinsertion->Personne->Foyer->Dossier->fields(),
 					array(
-// 						$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
 						'Historiqueetatpe.identifiantpe',
 						'Historiqueetatpe.etat'
 					)

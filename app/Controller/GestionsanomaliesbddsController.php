@@ -544,7 +544,7 @@
 				array( "{$modelName}.id" => $itemsIds )
 			) && $success;
 
-			$success = $modelClass->updateRangsContratsPersonne( $personneAgarderId ) && $success;
+			$success = $modelClass->WebrsaContratinsertion->updateRangsContratsPersonne( $personneAgarderId ) && $success;
 
 			// On ne fait pas attention au retour de la méthode updateAll car il se pourrait que le contrat ne soit pas validé
 			$modelClass->updateAllUnBound(

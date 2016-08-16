@@ -128,7 +128,7 @@
 							array(
 								'type' => $types['Contratinsertion'],
 								'conditions' => array(
-									'Contratinsertion.id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sqDernierContrat().' )'
+									'Contratinsertion.id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat().' )'
 								)
 							)
 						),

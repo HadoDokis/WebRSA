@@ -19,7 +19,7 @@
 	}
 	
 	echo $this->Default3->index(
-		$contratsinsertions,
+		$contratsinsertion,
 		array(
 			'Contratinsertion.forme_ci',
 			'Contratinsertion.num_contrat_66',

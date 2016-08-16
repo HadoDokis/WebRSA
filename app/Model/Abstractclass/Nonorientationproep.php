@@ -195,7 +195,7 @@
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			// Le dernier CER
-			$conditions[] = 'Contratinsertion.id IN ( '.$this->Orientstruct->Personne->Contratinsertion->sqDernierContrat().' )';
+			$conditions[] = 'Contratinsertion.id IN ( '.$this->Orientstruct->Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat().' )';
 
 			// Le dernier dossier de l'allocataire
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $datas['Filtre'] );

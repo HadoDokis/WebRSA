@@ -19,7 +19,7 @@
 	}
 	
 	echo $this->Default3->index(
-		$contratsinsertions,
+		$contratsinsertion,
 		array(
 			'Contratinsertion.dd_ci',
 			'Contratinsertion.df_ci',

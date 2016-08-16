@@ -175,7 +175,7 @@
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
 									'Contratinsertion.decision_ci' => 'V',
-									'Contratinsertion.id IN ( '.$this->Personne->Contratinsertion->sqDernierContrat( 'Contratinsertion.personne_id', true ).' )',
+									'Contratinsertion.id IN ( '.$this->Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat( 'Contratinsertion.personne_id', true ).' )',
 								)
 							)
 						),

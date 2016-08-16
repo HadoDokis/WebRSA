@@ -1268,7 +1268,7 @@
 						),
 						array(
 							'Contratinsertion.id IS NOT NULL',
-							'Contratinsertion.id IN ( '.$this->Dossierep->Personne->Contratinsertion->sqDernierContrat( 'Personne.id', false ).' )',
+							'Contratinsertion.id IN ( '.$this->Dossierep->Personne->Contratinsertion->WebrsaContratinsertion->sqDernierContrat( 'Personne.id', false ).' )',
 							'Contratinsertion.df_ci <= DATE( NOW() )'
 						)
 					),
