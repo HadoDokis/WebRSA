@@ -281,3 +281,6 @@ msgstr "Supprimer"
 
 msgid "/Sanctionseps58/deleteNonrespectcer/#Sanctionep58.id#"
 msgstr "Supprimer"
+
+msgid "Propocontratinsertioncov58.num_contrat"
+msgstr "Rang du contrat"
