@@ -126,7 +126,7 @@
 		if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
 			echo $this->Xhtml->tag(
 				'div',
-				$this->Xform->label( __d( 'contratinsertion', 'Propocontratinsertioncov58.num_contrat' ) ).
+				$this->Xform->label( __d( 'contratsinsertion', 'Propocontratinsertioncov58.num_contrat' ) ).
 				'Avenant',
 				array(
 					'class' => 'input select'
