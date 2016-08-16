@@ -38,7 +38,7 @@
 			}
 			
 			exec('svn blame -v -x -b svn://scm.adullact.net/svn/webrsa/trunk/'.$this->args[0], $output);
-			preg_match('/([\d]+)[\s]+([\w]+).+\(([\w.]+ [\d]+ [\S]+ [\d]+)\)(.*)/', $output[$this->args[1] -1], $matches);
+			preg_match('/([\d]+)[\s]+([\w]+).+\(([\w.]+ [\d]+ [\S]+ [\d]+)\)(.*)/', $output[$this->args[1] -1], $matches) or die;
 			list(, $revision, $author, $date, $line) = $matches;
 			
 			$this->out();
