@@ -47,5 +47,7 @@
 			$this->out(sprintf("Révision: %d", $revision));
 			$this->out(sprintf("Auteur: %s", $author));
 			$this->out(sprintf("Date: %s", $date));
+			$this->out();
+			$this->out(sprintf("https://adullact.net/scm/browser.php?group_id=613&commit=%s", $revision));
 		}
 	}
