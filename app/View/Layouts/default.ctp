@@ -130,6 +130,14 @@
 		<![endif]-->
 	</head><?php $departement = Configure::read( 'Cg.departement' );?>
 	<body class="<?php echo 'cg'.$departement.' '.Inflector::underscore( $this->name ).' '.$this->action;?>">
+
+	<?php if (Configure::read('UI.beforeLogo.text') || Configure::read('UI.afterLogo.text')):?>
+		<div style="position: relative">
+			<div class="beforeLogo"><?php echo Configure::read('UI.beforeLogo.text');?></div>
+			<div class="afterLogo"><?php echo Configure::read('UI.afterLogo.text');?></div>
+		</div>
+	<?php endif;?>
+		
 <?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>
 	<div id="alertEndSession" style="display: none;">
 		<div id="popups" style="z-index: 1000;">
