@@ -87,7 +87,9 @@
 				parent::_optionsRecords( $params ),
 				array(
 					'Orientstruct' => array(
-						'typeorient_id' => $Controller->Personne->Orientstruct->Typeorient->listOptionsCohortes93(),
+						'typeorient_id' => $departement === 93
+							? $Controller->Personne->Orientstruct->Typeorient->listOptionsCohortes93()
+							: $Controller->Personne->Orientstruct->Typeorient->listOptions(),
 						'structurereferente_id' => $Controller->Personne->Orientstruct->Structurereferente->list1Options(),
 					),
 					'structuresAutomatiques' => $Controller->{$params['modelRechercheName']}->structuresAutomatiques()
