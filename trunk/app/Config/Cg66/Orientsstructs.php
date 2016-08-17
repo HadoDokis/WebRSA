@@ -125,6 +125,30 @@
 	);
 	
 	/**
+	 * Menu "Cohortes" > "Orientation" > "Demandes non orientées (nouveau)"
+	 */
+	Configure::write(
+		'ConfigurableQuery.Orientsstructs.cohorte_nouvelles',
+		array(
+			// 1. Filtres de recherche, on reprend la configuration de la recherche
+			'filters' => Configure::read( 'ConfigurableQuery.Orientsstructs.search.filters' ),
+			// 2. Recherche, on reprend la configuration de la recherche
+			'query' => Configure::read( 'ConfigurableQuery.Orientsstructs.search.query' ),
+			// 3. Nombre d'enregistrements par page
+			'limit' => 10,
+			// 4. Lancer la recherche au premier accès à la page ?
+			'auto' => false,
+			// 5. Résultats de la recherche
+			'results' => Configure::read( 'ConfigurableQuery.Orientsstructs.search.results' ),
+			// 6. Temps d'exécution, mémoire maximum, ...
+			'ini_set' => array(
+				'max_execution_time' => 0,
+				'memory_limit' => '1024M'
+			)
+		)
+	);
+	
+	/**
 	 * Menu "Cohortes" > "Orientation" > "Demandes orientées (nouveau)"
 	 */
 	Configure::write(

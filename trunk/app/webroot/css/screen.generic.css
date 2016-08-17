@@ -2250,3 +2250,21 @@ body table tbody td.action a.users.force_logout {
 body table tbody td.action span.users.force_logout.link.disabled {
 	background-image: url( ../img/icons/disconnect_disabled.png );
 }
+
+body div.beforeLogo {
+	position: absolute;
+	top: 29px;
+	left: 0px;
+	z-index: 3;
+	text-align: right;
+	width: 145px;
+	font-size: 25px;
+}
+
+body div.afterLogo {
+	position: absolute;
+	top: 40px;
+	left: 360px;
+	z-index: 3;
+	font-size: 20px;
+}
