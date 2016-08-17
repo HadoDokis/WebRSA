@@ -1215,4 +1215,14 @@
 	 * Active le module date picker (calendrier javascript)
 	 */
 	Configure::write('Module.Datepicker.enabled', true);
+	
+	/**
+	 * Affichage de messages autour du logo
+	 */
+	$enabled = Configure::read('debug') > 0; // Ne s'affiche que si mode debug activé
+	$beforeLogoText = $enabled ? $_SERVER['HTTP_HOST'] : ''; // Affichera le nom du serveur
+	$afterLogoText = $enabled ? file_get_contents(APP.'VERSION.txt') : ''; // Affichera la version webrsa
+	
+	Configure::write('UI.beforeLogo.text', $beforeLogoText);
+	Configure::write('UI.afterLogo.text', $afterLogoText);
 ?>

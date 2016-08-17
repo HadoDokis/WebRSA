@@ -390,6 +390,12 @@
 				'Module.Datepicker.enabled' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true )
 				),
+				'UI.beforeLogo.text' => array(
+					array( 'rule' => 'string', 'allowEmpty' => true )
+				),
+				'UI.afterLogo.text' => array(
+					array( 'rule' => 'string', 'allowEmpty' => true )
+				),
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
