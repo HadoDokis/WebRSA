@@ -98,13 +98,19 @@
 		 * Lance une recherche
 		 */
 		public function newrequest() {
+			$sessionCache = $this->Session->read('Requestmanager.last.request.data');
+			if (empty($this->request->data) && $sessionCache) {
+				$this->request->data = $sessionCache;
+			}
 			if ( !empty($this->request->data) ) {
+				
 				$query = $this->_requestDataIntoQuery( $this->request->data );
 				$Model = ClassRegistry::init(Hash::get($this->request->data, 'Requestmanager.from'));
 
 				$this->_search( $Model, $query );
 				
 				if ( isset($this->request->data['saveandsearch']) ) {
+					unset($this->request->data['saveandsearch']); // Evite de sauvegarder une nouvelle ligne en cas de refresh de la page
 					$this->request->data['Requestmanager']['model'] = $this->request->data['Requestmanager']['from'];
 					$this->request->data['Requestmanager']['json'] = json_encode($query);
 					$this->Requestmanager->create($this->request->data['Requestmanager']);
@@ -115,6 +121,8 @@
 					}
 					catch (PDOException $e) {}
 				}
+				
+				$this->Session->write('Requestmanager.last.request.data', $this->request->data);
 			}
 		}
 		
