@@ -79,7 +79,7 @@
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->WebrsaCommissionep->themesTraites( $commissionep_id );
 			$niveauFinal = Hash::get( $themes, Inflector::underscore($this->alias) );
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
