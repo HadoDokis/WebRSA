@@ -183,7 +183,8 @@
 					array(
 						'conditions' => array(
 							'Canton.zonegeographique_id' => $zonesgeographiques
-						)
+						),
+						'contain' => false
 					)
 				);
 			}
