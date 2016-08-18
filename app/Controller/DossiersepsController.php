@@ -133,7 +133,7 @@
 			}
 			// Fin conditions zones géographiques CG 66
 
-			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->WebrsaCommissionep->themesTraites( $commissionep_id );
 			$listeThemes = null;
 			if( !empty( $themes ) ) {
 				$listeThemes['OR'] = array();
@@ -197,7 +197,7 @@
 				$this->set( 'themeEmpty', true );
 			}
 
-			$themesChoose = array_keys( $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id ) );
+			$themesChoose = array_keys( $this->Dossierep->Passagecommissionep->Commissionep->WebrsaCommissionep->themesTraites( $commissionep_id ) );
 
 			$dossiers = array();
 			$countDossiers = 0;
@@ -343,7 +343,7 @@
 				}
 
 				// Changer l'état de la séance
-				$success = $this->Dossierep->Passagecommissionep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
+				$success = $this->Dossierep->Passagecommissionep->Commissionep->WebrsaCommissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
 
 				$this->_setFlashResult( 'Save', $success );
 

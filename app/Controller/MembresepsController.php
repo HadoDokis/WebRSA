@@ -244,7 +244,7 @@
 						}
 					}
 					$success = $this->Membreep->CommissionepMembreep->saveAll( $reponsesMembres, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
-					$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
+					$success = $this->Membreep->CommissionepMembreep->Commissionep->WebrsaCommissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
 				}
 				else {
 					$success = false;
@@ -404,12 +404,12 @@
 				}
 
 				$success = $this->Membreep->CommissionepMembreep->saveAll( $reponsesMembres, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
-				$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatAssociePresence( $commissionep_id ) && $success;
+				$success = $this->Membreep->CommissionepMembreep->Commissionep->WebrsaCommissionep->changeEtatAssociePresence( $commissionep_id ) && $success;
 
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
 					$this->Membreep->CommissionepMembreep->commit();
-					if( $this->Membreep->CommissionepMembreep->Commissionep->checkEtat( $commissionep_id ) != 'quorum' ) {
+					if( $this->Membreep->CommissionepMembreep->Commissionep->WebrsaCommissionep->checkEtat( $commissionep_id ) != 'quorum' ) {
 						$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep_id ) );
 					}
 				}

@@ -244,7 +244,7 @@
 		 */
 		protected function _index( $etape = null ) {
 			if( !empty( $this->request->data ) ) {
-				$paginate['Commissionep'] = $this->Commissionep->search(
+				$paginate['Commissionep'] = $this->Commissionep->WebrsaCommissionep->search(
 						$this->request->data, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Session->read( 'Auth.Zonegeographique' )
 				);
 
@@ -511,7 +511,7 @@
 
 			if( !empty( $this->request->data ) && !isset( $this->request->data['Valider'] ) ) {
 				$this->Commissionep->begin();
-				$success = $this->Commissionep->saveDecisions( $commissionep_id, $this->request->data, $niveauDecision );
+				$success = $this->Commissionep->WebrsaCommissionep->saveDecisions( $commissionep_id, $this->request->data, $niveauDecision );
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
@@ -523,10 +523,10 @@
 				}
 			}
 
-			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision, $this->name.'.'.$this->action.'.order' );
+			$dossiers = $this->Commissionep->WebrsaCommissionep->dossiersParListe( $commissionep_id, $niveauDecision, $this->name.'.'.$this->action.'.order' );
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Commissionep->prepareFormData( $commissionep_id, $dossiers, $niveauDecision );
+				$this->request->data = $this->Commissionep->WebrsaCommissionep->prepareFormData( $commissionep_id, $dossiers, $niveauDecision );
 			}
 
 			$this->set( compact( 'commissionep', 'dossiers' ) );
@@ -574,7 +574,7 @@
 			}
 			else {
 				$this->Commissionep->begin();
-				$success = $this->Commissionep->finaliser( $commissionep_id, $this->request->data, $niveauDecision, $this->Session->read( 'Auth.User.id' ) );
+				$success = $this->Commissionep->WebrsaCommissionep->finaliser( $commissionep_id, $this->request->data, $niveauDecision, $this->Session->read( 'Auth.User.id' ) );
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
@@ -645,7 +645,7 @@
 			$this->_setOptions();
 
 			// Dossiers à passer en séance, par thème traité
-			$themes = array_keys( $this->Commissionep->themesTraites( $commissionep_id ) );
+			$themes = array_keys( $this->Commissionep->WebrsaCommissionep->themesTraites( $commissionep_id ) );
 			$this->set( compact( 'themes' ) );
 			$dossiers = array( );
 			$countDossiers = 0;
@@ -679,7 +679,7 @@
 				$countDossiers += count( $dossiers[$theme] );
 			}
 
-			$querydata = $this->Commissionep->qdSynthese( $commissionep_id );
+			$querydata = $this->Commissionep->WebrsaCommissionep->qdSynthese( $commissionep_id );
 			$querydata = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $querydata );
 
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
@@ -881,7 +881,7 @@
 					)
 			);
 
-			$pdf = $this->Commissionep->getPdfPv( $commissionep_id, null, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Commissionep->WebrsaCommissionep->getPdfPv( $commissionep_id, null, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv.pdf' );
@@ -917,7 +917,7 @@
 
 			$pdfs = array();
 			foreach( Set::extract( '/Membreep/id', $commissionep ) as $participant_id ) {
-				$pdfs[] = $this->Commissionep->getPdfPv( $commissionep_id, $participant_id, $this->Session->read( 'Auth.User.id' ) );
+				$pdfs[] = $this->Commissionep->WebrsaCommissionep->getPdfPv( $commissionep_id, $participant_id, $this->Session->read( 'Auth.User.id' ) );
 			}
 			$pdf = $this->Gedooo->concatPdfs( $pdfs, 'PV' );
 
@@ -997,7 +997,7 @@
 				$membreep_id = $membreep['CommissionepMembreep']['reponsesuppleant_id'];
 			}
 
-			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Commissionep->WebrsaCommissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPParticipant.pdf' );
@@ -1021,7 +1021,7 @@
 
 			foreach( $idsMembresEffectifs as $membreep_id ) {
 				if( !empty( $membreep_id ) ) {
-					$pdfs[] = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id, $this->Session->read( 'Auth.User.id' ) );
+					$pdfs[] = $this->Commissionep->WebrsaCommissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id, $this->Session->read( 'Auth.User.id' ) );
 				}
 			}
 
@@ -1128,7 +1128,7 @@
 
 			$this->_checkPrintOrdreDuJour( $commissionep_id );
 
-			$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Commissionep->WebrsaCommissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant.pdf' );
@@ -1160,7 +1160,7 @@
 			);
 			$pdfs = array( );
 			foreach( $liste as $commissionep_membreep_id ) {
-				$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
+				$pdf = $this->Commissionep->WebrsaCommissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
 				$pdfs[] = $pdf;
 			}
 
@@ -1208,7 +1208,7 @@
 
 			$this->assert( !empty( $commissionep ), 'error404' );
 
-			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision, $this->name.'.'.$this->action.'.order' );
+			$dossiers = $this->Commissionep->WebrsaCommissionep->dossiersParListe( $commissionep_id, $niveauDecision, $this->name.'.'.$this->action.'.order' );
 
 			if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {
 
@@ -1320,7 +1320,7 @@
 		public function fichesynthese( $commissionep_id, $dossierep_id, $anonymiser = false ) {
 			$this->WebrsaAccesses->check( $commissionep_id );
 
-			$pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
+			$pdf = $this->Commissionep->WebrsaCommissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheSynthetique.pdf' );
@@ -1352,7 +1352,7 @@
 
 			$pdfs = array( );
 			foreach( array_values( $liste ) as $dossierep_id ) {
-				$pdfs[] = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
+				$pdfs[] = $this->Commissionep->WebrsaCommissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
 			}
 
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Fichessynthese' );
@@ -1372,7 +1372,7 @@
 		 * @param integer $commissionep_id
 		 */
 		public function exportcsv( $commissionep_id = null ) {
-			$querydata = $this->Commissionep->qdSynthese( $commissionep_id );
+			$querydata = $this->Commissionep->WebrsaCommissionep->qdSynthese( $commissionep_id );
 			$querydata = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $querydata );
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
 
