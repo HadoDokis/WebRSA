@@ -166,7 +166,7 @@
 				// Ajout de champs virtuels spécifiques pour les départements
 				$departement = (int)Configure::read( 'Cg.departement' );
 				if( $departement === 58 ) {
-					$sql = $this->Personne->vfEtapeDossierOrientation58();
+					$sql = $this->Personne->WebrsaPersonne->vfEtapeDossierOrientation58();
 					$query['fields']['Personne.etat_dossier_orientation'] = "{$sql} AS \"Personne__etat_dossier_orientation\"";
 				}
 
@@ -232,7 +232,7 @@
 			// Ajout de conditions spécifiques au département connecté
 			$departement = (int)Configure::read( 'Cg.departement' );
 			if( $departement === 58 ) {
-				$query = $this->Personne->completeQueryVfEtapeDossierOrientation58( $query, $search );
+				$query = $this->Personne->WebrsaPersonne->completeQueryVfEtapeDossierOrientation58( $query, $search );
 			} elseif ($departement === 66) {
 				if (hash::get($search, 'Personne.dtnai_month')) {
 					$query['conditions'][] = array('Personne.dtnai_month' => hash::get($search, 'Personne.dtnai_month'));

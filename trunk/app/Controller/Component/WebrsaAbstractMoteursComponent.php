@@ -391,7 +391,7 @@
 				}
 			}
 
-			$query = ClassRegistry::init( 'Personne' )->completeQueryHasLinkedRecord(
+			$query = ClassRegistry::init( 'Personne' )->WebrsaPersonne->completeQueryHasLinkedRecord(
 				$has,
 				$query,
 				$filters

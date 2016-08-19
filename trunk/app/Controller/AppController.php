@@ -416,7 +416,7 @@
 		protected function _setEntriesAncienDossier( $personne_id, $modelAlias ) {
 			if( Configure::read( 'AncienAllocataire.enabled' ) ) {
 				$this->helpers['Default3'] = array( 'className' => 'Default.DefaultDefault' );
-				$entriesAncienDossier = ClassRegistry::init( 'Personne' )->getEntriesAnciensDossiers( $personne_id, $modelAlias );
+				$entriesAncienDossier = ClassRegistry::init( 'Personne' )->WebrsaPersonne->getEntriesAnciensDossiers( $personne_id, $modelAlias );
 				$this->set( compact( 'entriesAncienDossier' ) );
 			}
 		}

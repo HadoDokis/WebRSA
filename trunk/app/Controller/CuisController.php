@@ -325,7 +325,7 @@
 			$this->set( 'alerteRsaSocle', $alerteRsaSocle );
 
             // Alerte à afficher si le titre de séjour se termine bientôt
-            $alerteTitreSejour = $this->Cui->Personne->nbMoisAvantFinTitreSejour($personne_id);
+            $alerteTitreSejour = $this->Cui->Personne->WebrsaPersonne->nbMoisAvantFinTitreSejour($personne_id);
             $this->set( 'alerteTitreSejour', $alerteTitreSejour );
 
 			$cuis = $this->Cui->find(
@@ -749,7 +749,7 @@
                 )
 			);
 			$cui = $this->{$this->modelClass}->find( 'first', $qd_cui );
-			$personne = $this->{$this->modelClass}->Personne->detailsApre( $cui['Cui']['personne_id'], $this->Session->read( 'Auth.User.id' ) );
+			$personne = $this->{$this->modelClass}->Personne->WebrsaPersonne->detailsApre( $cui['Cui']['personne_id'], $this->Session->read( 'Auth.User.id' ) );
 			$this->set( compact( 'personne', 'cui' ) );
 
 			$this->set( 'organismes', $this->Cui->Structurereferente->listeParType( array() ) );

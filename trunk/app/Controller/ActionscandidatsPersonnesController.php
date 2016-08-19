@@ -581,7 +581,7 @@
 			}
             $this->set( 'personne_id', $personne_id );
 
-			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
+			$personne = $this->{$this->modelClass}->Personne->WebrsaPersonne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 
 			// Récupération des dernières informations Pôle Emploi
 			$derniereInformationPe = ClassRegistry::init( 'Informationpe' )->derniereInformation( $personne );

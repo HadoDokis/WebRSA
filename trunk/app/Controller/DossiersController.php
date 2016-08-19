@@ -462,7 +462,7 @@
 			);
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				$query = $this->Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query, array() );
+				$query = $this->Dossier->Foyer->Personne->WebrsaPersonne->completeQueryVfEtapeDossierOrientation58( $query, array() );
 			}
 
 			$personnesFoyer = $this->Dossier->Foyer->Personne->find( 'all', $query );
@@ -884,7 +884,7 @@
 
 				// Anciens dossiers de l'allocataire ?
 				if( Configure::read( 'AncienAllocataire.enabled' ) ) {
-					$personnesFoyer[$index]['AncienDossier'] = $this->Dossier->Foyer->Personne->getAnciensDossiers( $personnesFoyer[$index]['Personne']['id'] );
+					$personnesFoyer[$index]['AncienDossier'] = $this->Dossier->Foyer->Personne->WebrsaPersonne->getAnciensDossiers( $personnesFoyer[$index]['Personne']['id'] );
 				}
 
 				$details[$role] = $personnesFoyer[$index];

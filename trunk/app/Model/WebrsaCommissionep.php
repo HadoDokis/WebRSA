@@ -1953,7 +1953,7 @@
 					array(
 						'Cov58.datecommission',
 						'Structurereferente.lib_struc',
-						$this->Commissionep->Passagecommissionep->Dossierep->Personne->sqStructureorientante( 'Dossierep.personne_id', 'Structureorientante.lib_struc' )
+						$this->Commissionep->Passagecommissionep->Dossierep->Personne->WebrsaPersonne->sqStructureorientante( 'Dossierep.personne_id', 'Structureorientante.lib_struc' )
 					)
 				);
 			}

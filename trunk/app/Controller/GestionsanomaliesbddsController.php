@@ -874,7 +874,7 @@
 				}
 			}
 
-			$tablesLies = $this->Dossier->Foyer->Personne->listForeignKey();
+			$tablesLies = $this->Dossier->Foyer->Personne->WebrsaPersonne->listForeignKey();
 			foreach ($tablesLies as $tablelie) {
 				if ($tablelie === 'correspondancespersonnes') { // Ne possède pas de personne_id mais personne1_id et personne2_id
 					continue; // Est de toute façon supprimé dans tous les cas
@@ -1053,7 +1053,7 @@
 				$cache = $this->Session->read($cacheKey);
 
 				if ($cache === null) {
-					$cache = $this->Dossier->Foyer->Personne->getLinksBetweenTables($personnes_id, $cacheKey);
+					$cache = $this->Dossier->Foyer->Personne->WebrsaPersonne->getLinksBetweenTables($personnes_id, $cacheKey);
 					$this->Session->write($cacheKey, $cache);
 				}
 				$this->set( 'links', $cache );

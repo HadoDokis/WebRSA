@@ -109,7 +109,8 @@
 				<th><?php echo __d( 'personne', 'Personne.sexe' );?></th>
 				<td><?php echo @$sexe[$personne['Personne']['sexe']];?></td>
 			</tr>
-			<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' && $rolepers[$personne['Prestation']['rolepers']] != 'Enfant' ):?>
+			<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' 
+						&& ($personne['Prestation']['rolepers'] === null || $rolepers[$personne['Prestation']['rolepers']] != 'Enfant') ):?>
 				<tr class="even">
 					<th><?php echo __d( 'foyer', 'Foyer.sitfam' );?></th>
 					<td><?php echo ( isset( $sitfam[$personne['Foyer']['sitfam']] ) ?  $sitfam[$personne['Foyer']['sitfam']] : null );?></td>

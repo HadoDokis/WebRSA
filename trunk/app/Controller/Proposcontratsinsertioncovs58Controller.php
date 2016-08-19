@@ -283,7 +283,7 @@
 			$this->set( 'situationdossierrsa_id', $situationdossierrsa['Situationdossierrsa']['id'] );
 
 			//On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-			$personne = $this->Propocontratinsertioncov58->Dossiercov58->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
+			$personne = $this->Propocontratinsertioncov58->Dossiercov58->Personne->WebrsaPersonne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
 			/// Calcul du numéro du contrat d'insertion

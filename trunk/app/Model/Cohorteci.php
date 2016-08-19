@@ -572,7 +572,7 @@
 			// Ajout de l'étape du dossier d'orientation de l'allocataire pour le CG 58
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$this->Contratinsertion->forceVirtualFields = true;
-				$querydata = $this->Contratinsertion->Personne->completeQueryVfEtapeDossierOrientation58( $querydata, $criteresci );
+				$querydata = $this->Contratinsertion->Personne->WebrsaPersonne->completeQueryVfEtapeDossierOrientation58( $querydata, $criteresci );
 			}
 
 			return $querydata;

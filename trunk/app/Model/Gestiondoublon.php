@@ -151,7 +151,7 @@
 							'alias'      => 'p2',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => $Foyer->Personne->conditionsRapprochementPersonne1Personne2( 'Personne', 'p2', false ),
+							'conditions' => $Foyer->Personne->WebrsaPersonne->conditionsRapprochementPersonne1Personne2( 'Personne', 'p2', false ),
 						),
 						array(
 							'table'      => 'calculsdroitsrsa',

@@ -696,7 +696,7 @@
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 
-			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
+			$personne = $this->{$this->modelClass}->Personne->WebrsaPersonne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
 			/// Recherche du type d'orientation

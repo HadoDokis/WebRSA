@@ -233,7 +233,7 @@
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
 
 			// Possède un CER ou un référent (en cours)
-			$query = $this->Orientstruct->Personne->completeQueryHasLinkedRecord(
+			$query = $this->Orientstruct->Personne->WebrsaPersonne->completeQueryHasLinkedRecord(
 				array(
 					'Contratinsertion',
 					'PersonneReferent' => array(
