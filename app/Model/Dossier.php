@@ -464,7 +464,7 @@
 			// Ajout de l'étape du dossier d'orientation de l'allocataire pour le CG 58
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$this->forceVirtualFields = true;
-				$querydata = $this->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $querydata, $params );
+				$querydata = $this->Foyer->Personne->WebrsaPersonne->completeQueryVfEtapeDossierOrientation58( $querydata, $params );
 			}
 
 			return $querydata;
@@ -607,7 +607,7 @@
 			);
 
 			if( Configure::read( 'AncienAllocataire.enabled' ) ) {
-				$sqAncienAllocataire = $this->Foyer->Personne->sqAncienAllocataire();
+				$sqAncienAllocataire = $this->Foyer->Personne->WebrsaPersonne->sqAncienAllocataire();
 				$query['fields'][] = "( \"Prestation\".\"id\" IS NULL AND {$sqAncienAllocataire} ) AS \"Personne__ancienallocataire\"";
 			}
 

@@ -101,7 +101,7 @@
 		 * @medium
 		 */
 		public function testSqAncienAllocataire() {
-			$result = $this->Personne->sqAncienAllocataire();
+			$result = $this->Personne->WebrsaPersonne->sqAncienAllocataire();
 			$expected = '((EXISTS( SELECT "actionscandidats_personnes"."id" AS actionscandidats_personnes__id FROM actionscandidats_personnes AS actionscandidats_personnes   WHERE "actionscandidats_personnes"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "apres"."id" AS apres__id FROM apres AS apres   WHERE "apres"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "bilansparcours66"."id" AS bilansparcours66__id FROM bilansparcours66 AS bilansparcours66   WHERE "bilansparcours66"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "contratsinsertion"."id" AS contratsinsertion__id FROM contratsinsertion AS contratsinsertion   WHERE "contratsinsertion"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "cuis"."id" AS cuis__id FROM cuis AS cuis   WHERE "cuis"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "dsps"."id" AS dsps__id FROM dsps AS dsps   WHERE "dsps"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "dsps_revs"."id" AS dsps_revs__id FROM dsps_revs AS dsps_revs   WHERE "dsps_revs"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "entretiens"."id" AS entretiens__id FROM entretiens AS entretiens   WHERE "entretiens"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "fichesprescriptions93"."id" AS fichesprescriptions93__id FROM fichesprescriptions93 AS fichesprescriptions93   WHERE "fichesprescriptions93"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "memos"."id" AS memos__id FROM memos AS memos   WHERE "memos"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "orientsstructs"."id" AS orientsstructs__id FROM orientsstructs AS orientsstructs   WHERE "orientsstructs"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "personnes_referents"."id" AS personnes_referents__id FROM personnes_referents AS personnes_referents   WHERE "personnes_referents"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "propospdos"."id" AS propospdos__id FROM propospdos AS propospdos   WHERE "propospdos"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "questionnairesd1pdvs93"."id" AS questionnairesd1pdvs93__id FROM questionnairesd1pdvs93 AS questionnairesd1pdvs93   WHERE "questionnairesd1pdvs93"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "questionnairesd2pdvs93"."id" AS questionnairesd2pdvs93__id FROM questionnairesd2pdvs93 AS questionnairesd2pdvs93   WHERE "questionnairesd2pdvs93"."personne_id" = "Personne"."id"    )) OR (EXISTS( SELECT "rendezvous"."id" AS rendezvous__id FROM rendezvous AS rendezvous   WHERE "rendezvous"."personne_id" = "Personne"."id"    )))';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -112,7 +112,7 @@
 		 * @medium
 		 */
 		public function testGetEntriesAnciensDossiers() {
-			$result = $this->Personne->getEntriesAnciensDossiers( 6, 'Apre', true );
+			$result = $this->Personne->WebrsaPersonne->getEntriesAnciensDossiers( 6, 'Apre', true );
 			$expected = array(
 				'fields' => array(
 					'Personne2.id',
@@ -175,7 +175,7 @@
 		 * Test de la méthode Personne::conditionsRapprochementPersonne1Personne2()
 		 */
 		public function testConditionsRapprochementPersonne1Personne2() {
-			$result = $this->Personne->conditionsRapprochementPersonne1Personne2( 'Allocataire1', 'Allocataire2' );
+			$result = $this->Personne->WebrsaPersonne->conditionsRapprochementPersonne1Personne2( 'Allocataire1', 'Allocataire2' );
 			$expected = array(
 				'Allocataire1.id <> Allocataire2.id',
 				'Allocataire1.foyer_id <> Allocataire2.foyer_id',
@@ -213,7 +213,7 @@
 		 */
 		public function testGetAnciensDossiers() {
 			Configure::write( 'Cg.departement', 66 );
-			$result = $this->Personne->getAnciensDossiers( 6, true );
+			$result = $this->Personne->WebrsaPersonne->getAnciensDossiers( 6, true );
 			$expected = array(
 				'fields' => array(
 					'Personne2.id',
@@ -320,7 +320,7 @@
 		 * Test de la méthode Personne::completeQueryHasLinkedRecord()
 		 */
 		public function testCompleteQueryHasLinkedRecord() {
-			$result = $this->Personne->completeQueryHasLinkedRecord(
+			$result = $this->Personne->WebrsaPersonne->completeQueryHasLinkedRecord(
 				array(
 					'Contratinsertion',
 					'PersonneReferent' => array(

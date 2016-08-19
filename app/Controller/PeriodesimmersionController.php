@@ -188,7 +188,7 @@
 			}
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-			$personne = $this->{$this->modelClass}->Cui->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
+			$personne = $this->{$this->modelClass}->Cui->Personne->WebrsaPersonne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );

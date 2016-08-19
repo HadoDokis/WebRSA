@@ -382,7 +382,7 @@ class Criteredossierpcg66 extends AppModel {
                         'type' => 'LEFT OUTER',
                         'conditions' => array(
                             'Personne.id IN (
-                                ' . ClassRegistry::init('Personne')->sqResponsableDossierUnique('Foyer.id') . '
+                                ' . ClassRegistry::init('Personne')->WebrsaPersonne->sqResponsableDossierUnique('Foyer.id') . '
                             )'
                         )
                     )
@@ -521,7 +521,7 @@ class Criteredossierpcg66 extends AppModel {
                 $sqDernierTraitementpcg66
             )
         );
-        $conditions[] = 'Personne.id IN ( ' . $Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id') . ' )';
+        $conditions[] = 'Personne.id IN ( ' . $Dossierpcg66->Foyer->Personne->WebrsaPersonne->sqResponsableDossierUnique('Foyer.id') . ' )';
 
 
 

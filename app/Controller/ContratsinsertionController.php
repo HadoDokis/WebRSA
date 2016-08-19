@@ -884,7 +884,7 @@ class ContratsinsertionController extends AppController
         );
 
         // On ajout l'ID de l'utilisateur connecté afin de récupérer son service instructeur
-        $personne = $this->Contratinsertion->Personne->newDetailsCi($personne_id, $this->Session->read('Auth.User.id'));
+        $personne = $this->Contratinsertion->Personne->WebrsaPersonne->newDetailsCi($personne_id, $this->Session->read('Auth.User.id'));
 
         /// Calcul du numéro du contrat d'insertion
         $nbrCi = $this->Contratinsertion->find('count', array('conditions' => array('Personne.id' => $personne_id)));

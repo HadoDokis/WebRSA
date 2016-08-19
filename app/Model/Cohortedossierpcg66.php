@@ -142,7 +142,7 @@
 					'conditions' => array(
 						'Personne.foyer_id = Foyer.id',
 						'Personne.id IN (
-							'.ClassRegistry::init( 'Personne' )->sqResponsableDossierUnique('Foyer.id').'
+							'.ClassRegistry::init( 'Personne' )->WebrsaPersonne->sqResponsableDossierUnique('Foyer.id').'
 						)'
 					)
 				),
