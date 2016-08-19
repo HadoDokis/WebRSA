@@ -235,7 +235,7 @@
 						array(
 							'OR' => array(
 								'Dsp.id IS NULL',
-								'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
+								'Dsp.id IN ( '.$this->Personne->Dsp->WebrsaDsp->sqDerniereDsp( 'Personne.id' ).' )'
 							)
 						),
 						array(

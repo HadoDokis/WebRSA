@@ -1319,7 +1319,7 @@
 							'( CASE WHEN "DspRev"."id" IS NOT NULL THEN "DspRev"."nivetu" ELSE "Dsp"."nivetu" END ) AS "Dsp__nivetu"'
 						)
 					);
-					$sqDerniereDsp = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Dsp->sqDerniereDsp();
+					$sqDerniereDsp = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Dsp->WebrsaDsp->sqDerniereDsp();
 					$query['joins'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->join(
 						'Dsp',
 						array(

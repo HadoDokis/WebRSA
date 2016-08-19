@@ -961,7 +961,7 @@
 					'nivetu' => Hash::get( $data, 'Instantanedonneesfp93.benef_nivetu' )
 				)
 			);
-			$success = $this->Personne->Dsp->updateDerniereDsp( $personne_id, $dspData ) && $success;
+			$success = $this->Personne->Dsp->WebrsaDsp->updateDerniereDsp( $personne_id, $dspData ) && $success;
 
 			// Instantané données
 			$data['Instantanedonneesfp93']['ficheprescription93_id'] = $this->id;

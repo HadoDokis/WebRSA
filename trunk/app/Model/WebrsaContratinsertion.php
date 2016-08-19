@@ -1343,7 +1343,7 @@
 							'OR' => array(
 								'Dsp.id IS NULL',
 								'Dsp.id IN ('
-								.$this->Contratinsertion->Personne->Dsp->sqDerniereDsp( 'Personne.id' )
+								.$this->Contratinsertion->Personne->Dsp->WebrsaDsp->sqDerniereDsp( 'Personne.id' )
 								.')',
 							)
 						),
