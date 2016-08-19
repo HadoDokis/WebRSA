@@ -370,14 +370,14 @@
 				}
 
 				if( Configure::read( 'Romev3.enabled' ) ) {
-					foreach( $this->Dsp->romev3LinkedModels as $alias ) {
+					foreach( $this->Dsp->WebrsaDsp->romev3LinkedModels as $alias ) {
 						$aliasRev = "{$alias}Rev";
 						$replacements = array();
 
 						$query['joins'][] = $this->join( $aliasRev );
 
 						$fields = array(  );
-						foreach( $this->Dsp->suffixesRomev3 as $suffix ) {
+						foreach( $this->Dsp->WebrsaDsp->suffixesRomev3 as $suffix ) {
 							$prefix = preg_replace( '/^(.*)romev3Rev$/', "\\1", $aliasRev );
 
 							$linked = Inflector::camelize( "{$suffix}romev3" );
@@ -451,7 +451,7 @@
 
 			// Suppression des champs de clés primaires et étrangères des codes ROME V3 liés
 			if( Configure::read( 'Romev3.enabled' ) ) {
-				foreach( $this->Dsp->romev3LinkedModels as $alias ) {
+				foreach( $this->Dsp->WebrsaDsp->romev3LinkedModels as $alias ) {
 					$foreignKey = Inflector::underscore( $alias ).'_id';
 					unset( $old["DspRev"][$foreignKey] );
 					unset( $new["DspRev"][$foreignKey] );
@@ -488,7 +488,7 @@
 			}
 
 			// Suppression des fausses différences trouvées au niveau des libellés vides
-			foreach( $this->Dsp->getCheckboxes() as $alias => $params ) {
+			foreach( $this->Dsp->WebrsaDsp->getCheckboxes() as $alias => $params ) {
 				if( $params['text'] !== false ) {
 					$alias = "{$alias}Rev";
 					$path = "{$alias}.{n}.{$params['text']}";

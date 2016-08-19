@@ -530,7 +530,7 @@
 					'type' => 'LEFT OUTER',
 					'conditions' => array(
 						'DspRev.id IS NULL',
-						'Dsp.id IN ( '.$Dossier->Foyer->Personne->Dsp->sqDerniereDsp().' )'
+						'Dsp.id IN ( '.$Dossier->Foyer->Personne->Dsp->WebrsaDsp->sqDerniereDsp().' )'
 					)
 				)
 			);

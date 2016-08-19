@@ -111,7 +111,7 @@
 					'natlog' => '0908'
 				)
 			);
-			$result = $this->Dsp->updateDerniereDsp( 1, $data );
+			$result = $this->Dsp->WebrsaDsp->updateDerniereDsp( 1, $data );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -132,7 +132,7 @@
 					'natlog' => '0908'
 				)
 			);
-			$result = $this->Dsp->updateDerniereDsp( 2, $data );
+			$result = $this->Dsp->WebrsaDsp->updateDerniereDsp( 2, $data );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -153,7 +153,7 @@
 					'natlog' => '0908'
 				)
 			);
-			$result = $this->Dsp->updateDerniereDsp( 3, $data );
+			$result = $this->Dsp->WebrsaDsp->updateDerniereDsp( 3, $data );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -168,7 +168,7 @@
 		public function testSearchQuery() {
 			Configure::write( 'Romev3.enabled', true );
 
-			$result = $this->Dsp->searchQuery();
+			$result = $this->Dsp->WebrsaDsp->searchQuery();
 			$result = Hash::combine( $result, 'joins.{n}.alias', 'joins.{n}.type' );
 
 			$expected = array(

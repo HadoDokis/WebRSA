@@ -184,7 +184,7 @@
 							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
-									'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Dsp.personne_id' ).' )'
+									'Dsp.id IN ( '.$this->Personne->Dsp->WebrsaDsp->sqDerniereDsp( 'Dsp.personne_id' ).' )'
 								)
 							)
 						),

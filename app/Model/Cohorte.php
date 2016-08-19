@@ -526,7 +526,7 @@
 						'conditions' => array(
 							'Personne.id = Dsp.personne_id',
 							'Dsp.id IN ('
-								.ClassRegistry::init( 'Dsp' )->sqDerniereDsp()
+								.ClassRegistry::init( 'Dsp' )->WebrsaDsp->sqDerniereDsp()
 							.')'
 						)
 					),

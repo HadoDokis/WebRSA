@@ -270,7 +270,7 @@
 						array(
 							'type' => 'LEFT OUTER',
 							'conditions' => array(
-								'Dsp.id IN ( '.$this->Ficheprescription93->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
+								'Dsp.id IN ( '.$this->Ficheprescription93->Personne->Dsp->WebrsaDsp->sqDerniereDsp( 'Personne.id' ).' )'
 							)
 						)
 					),

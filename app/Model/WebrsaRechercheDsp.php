@@ -195,7 +195,7 @@
 
 				// 4. Champs et jointures ROME V2 (CG 66)
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					foreach( $Dsp->modelesRomeV2 as $alias ) {
+					foreach( $Dsp->WebrsaDsp->modelesRomeV2 as $alias ) {
 						foreach( array_keys( $Dsp->{$alias}->schema() ) as $fieldName ) {
 							$unwanted = ( $fieldName === 'id' || strpos( $fieldName, '_id' ) === strlen( $fieldName ) - 3 );
 							if( !$unwanted ) {
@@ -214,7 +214,7 @@
 				// 5. Champs et jointures ROME V3
 				if( Configure::read( 'Romev3.enabled' ) ) {
 					$aliases = array_keys( ClassRegistry::init( 'Entreeromev3' )->belongsTo );
-					foreach( $Dsp->romev3LinkedModels as $modelAlias ) {
+					foreach( $Dsp->WebrsaDsp->romev3LinkedModels as $modelAlias ) {
 						$modelAliasRev = "{$modelAlias}Rev";
 						$modelAliasDonnees = $modelAlias;
 
@@ -240,7 +240,7 @@
 				}
 
 				// 7. Champs virtuels modèles liés cases à cocher
-				foreach( $Dsp->getCheckboxes() as $linkedModelName => $params ) {
+				foreach( $Dsp->WebrsaDsp->getCheckboxes() as $linkedModelName => $params ) {
 					$linkedFieldName = $params['name'];
 
 					$fields = array();
@@ -346,8 +346,8 @@
 			}
 
 			// Conditions modèles liés cases à cocher
-			foreach( $Dsp->searchCheckboxes as $linkedModelName ) {
-				$linkedFieldName = $Dsp->checkboxes['all'][$linkedModelName]['name'];
+			foreach( $Dsp->WebrsaDsp->searchCheckboxes as $linkedModelName ) {
+				$linkedFieldName = $Dsp->WebrsaDsp->checkboxes['all'][$linkedModelName]['name'];
 				$value = Hash::get( $search, "{$linkedModelName}.{$linkedFieldName}" );
 
 				if( !empty( $value ) ) {
@@ -394,9 +394,9 @@
 				$conditionsDspRomeV3 = array();
 				$aliases = array();
 
-				foreach( $Dsp->romev3LinkedModels as $alias ) {
+				foreach( $Dsp->WebrsaDsp->romev3LinkedModels as $alias ) {
 					$aliases[$alias] = "{$alias}Rev";
-					foreach( $Dsp->romev3Fields as $fieldName ) {
+					foreach( $Dsp->WebrsaDsp->romev3Fields as $fieldName ) {
 						$field = "{$alias}.{$fieldName}";
 						$value = suffix( Hash::get( $search, $field ) );
 						if( !empty( $value ) ) {

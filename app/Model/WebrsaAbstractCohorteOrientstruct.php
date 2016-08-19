@@ -110,7 +110,7 @@
 							array(
 								'type' => $types['Dsp'],
 								'conditions' => array(
-									'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp().' )'
+									'Dsp.id IN ( '.$this->Personne->Dsp->WebrsaDsp->sqDerniereDsp().' )'
 								)
 							)
 						),

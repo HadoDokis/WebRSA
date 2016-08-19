@@ -339,7 +339,7 @@
 			}
 			$this->set( 'dsp', $dsp );
 			$this->set( 'rev', $rev );
-			$this->set( 'options', $this->Dsp->options( array( 'find' => false ) ) );
+			$this->set( 'options', $this->Dsp->WebrsaDsp->options( array( 'find' => false ) ) );
 		}
 
 		/**
@@ -505,7 +505,7 @@
 			$personne = $dsprevs; // Pour récupérer les informations de la personne
 			$this->set( 'personne', $personne );
 			$this->set( 'urlmenu', '/dsps/histo/'.$dsprevs['DspRev']['personne_id'] );
-			$this->set( 'options', $this->Dsp->options( array( 'find' => false ) ) );
+			$this->set( 'options', $this->Dsp->WebrsaDsp->options( array( 'find' => false ) ) );
 
 			$this->render( 'view' );
 		}
@@ -547,14 +547,14 @@
 			$this->set( 'diff', $diff );
 
 			if( Configure::read( 'Romev3.enabled' ) ) {
-				$prefixes = $this->Dsp->prefixesRomev3;
-				$suffixes = $this->Dsp->suffixesRomev3;
+				$prefixes = $this->Dsp->WebrsaDsp->prefixesRomev3;
+				$suffixes = $this->Dsp->WebrsaDsp->suffixesRomev3;
 				$this->set( compact( 'prefixes', 'suffixes' ) );
 			}
 
 			$this->set( 'personne_id', Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) );
 			$this->set( 'urlmenu', '/dsps/histo/'.Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) );
-			$this->set( 'options', $this->Dsp->options( array( 'find' => false ) ) );
+			$this->set( 'options', $this->Dsp->WebrsaDsp->options( array( 'find' => false ) ) );
 		}
 
 		/**
@@ -700,9 +700,9 @@
 
 				// Modèles liés, début hasMany spéciaux
 				$deleteConditions = array( );
-				$valuesNone = $this->Dsp->getCheckboxesValuesNone();
+				$valuesNone = $this->Dsp->WebrsaDsp->getCheckboxesValuesNone();
 
-				foreach( $this->Dsp->getCheckboxesVirtualFields() as $fieldName ) {
+				foreach( $this->Dsp->WebrsaDsp->getCheckboxesVirtualFields() as $fieldName ) {
 					list( $model, $checkbox ) = model_field( $fieldName );
 					$values = Set::classicExtract( $this->request->data, "{$model}" );
 
@@ -802,12 +802,12 @@
 			$this->set( 'urlmenu', ( $this->action === 'edit' ? "/dsps/edit/{$dsp['Dsp']['personne_id']}" : "/dsps/histo/{$dsp['Dsp']['personne_id']}" ) );
 
 			// Options
-			$options = $this->Dsp->options();
+			$options = $this->Dsp->WebrsaDsp->options();
 			$this->set( compact( 'options' ) );
 
 			// Valeurs spéciales "Aucun(e)"
-			$valuesNone = $this->Dsp->getCheckboxesValuesNone();
-			$checkboxes = $this->Dsp->getCheckboxes();
+			$valuesNone = $this->Dsp->WebrsaDsp->getCheckboxesValuesNone();
+			$checkboxes = $this->Dsp->WebrsaDsp->getCheckboxes();
 			$this->set( compact( 'checkboxes', 'valuesNone' ) );
 
 			$this->render( '_add_edit' );
@@ -835,7 +835,7 @@
 		public function index() {
 			$params = $this->request->data;
 			if( !empty( $params ) ) {
-				$query = $this->Dsp->search(
+				$query = $this->Dsp->WebrsaDsp->search(
 					$this->_wildcardKeys( $this->request->data, $this->wildcardKeys )
 				);
 
@@ -853,7 +853,7 @@
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
 				$dsps = $this->paginate( $this->Dsp->Personne, array(), array(), $progressivePaginate );
 
-				$checkboxesVirtualFields = $this->Dsp->getCheckboxesVirtualFields();
+				$checkboxesVirtualFields = $this->Dsp->WebrsaDsp->getCheckboxesVirtualFields();
 				$this->set( compact( 'dsps', 'checkboxesVirtualFields' ) );
 			}
 
@@ -863,7 +863,7 @@
 			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
 
-			$options = $this->Dsp->options( array( 'alias' => 'Donnees', 'allocataire' => true ) );
+			$options = $this->Dsp->WebrsaDsp->options( array( 'alias' => 'Donnees', 'allocataire' => true ) );
 
 			$this->set( 'sortableModels', $this->sortableModels );
 			$this->set( compact( 'options', 'prefixes', 'suffixes' ) );
@@ -875,7 +875,7 @@
 		 * @deprecated
 		 */
 		public function exportcsv1() {
-			$query = $this->Dsp->search(
+			$query = $this->Dsp->WebrsaDsp->search(
 				$this->_wildcardKeys( Hash::expand( $this->request->params['named'], '__' ), $this->wildcardKeys )
 			);
 
@@ -891,13 +891,13 @@
 			$dsps = $this->Dsp->Personne->find( 'all', $query );
 
 			$qual = $this->Option->qual();
-			$romev3Aliases = $this->Dsp->romev3LinkedModels;
-			$romev3Fields = $this->Dsp->romev3Fields;
+			$romev3Aliases = $this->Dsp->WebrsaDsp->romev3LinkedModels;
+			$romev3Fields = $this->Dsp->WebrsaDsp->romev3Fields;
 
-			$options = $this->Dsp->options( array( 'alias' => 'Donnees', 'allocataire' => true ) );
+			$options = $this->Dsp->WebrsaDsp->options( array( 'alias' => 'Donnees', 'allocataire' => true ) );
 			$this->set( compact( 'options' ) );
 
-			$checkboxesVirtualFields = $this->Dsp->getCheckboxesVirtualFields();
+			$checkboxesVirtualFields = $this->Dsp->WebrsaDsp->getCheckboxesVirtualFields();
 			$this->set( compact( 'dsps', 'qual', 'romev3Aliases', 'romev3Fields', 'options', 'checkboxesVirtualFields' ) );
 			$this->layout = '';
 		}
