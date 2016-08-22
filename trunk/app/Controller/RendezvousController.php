@@ -354,7 +354,7 @@
 
 			$rdvs = $this->Rendezvous->find( 'all', $query );
 
-			if( Configure::read( 'Cg.departement' ) !== 58 ) {
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
 					'first',
 					array(
