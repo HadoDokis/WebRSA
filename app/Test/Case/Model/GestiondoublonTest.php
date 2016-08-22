@@ -106,6 +106,14 @@
 					),
 				),
 				8 => array(
+					'table' => 'calculsdroitsrsa',
+					'alias' => 'Calculdroitrsa',
+					'type' => 'LEFT',
+					'conditions' => array(
+						0 => 'Calculdroitrsa.personne_id = Demandeur.id'
+					)
+				),
+				9 => array(
 					'table' => 'foyers',
 					'alias' => 'Foyer2',
 					'type' => 'INNER',
@@ -114,19 +122,19 @@
 						0 => 'p2.foyer_id = Foyer2.id',
 					),
 				),
-				9 => array(
+				10 => array(
 					'table' => '"adressesfoyers"',
 					'alias' => 'Adressefoyer2',
 					'type' => 'LEFT OUTER',
 					'conditions' => '"Adressefoyer2"."foyer_id" = "Foyer2"."id" AND (("Adressefoyer2"."id" IS NULL) OR ("Adressefoyer2"."id" IN ( SELECT "adressesfoyers"."id" AS adressesfoyers__id FROM adressesfoyers AS adressesfoyers   WHERE "adressesfoyers"."foyer_id" = "Foyer2"."id" AND "adressesfoyers"."rgadr" = \'01\'   ORDER BY "adressesfoyers"."dtemm" DESC  LIMIT 1 )))'
 				),
-				10 => array(
+				11 => array(
 					'table' => '"adresses"',
 					'alias' => 'Adresse2',
 					'type' => 'LEFT OUTER',
 					'conditions' => '"Adressefoyer2"."adresse_id" = "Adresse2"."id"',
 				),
-				11 => array(
+				12 => array(
 					'table' => 'dossiers',
 					'alias' => 'Dossier2',
 					'type' => 'INNER',
@@ -136,7 +144,7 @@
 						1 => 'Dossier2.id <> Dossier.id',
 					),
 				),
-				12 => array(
+				13 => array(
 					'table' => 'situationsdossiersrsa',
 					'alias' => 'Situationdossierrsa2',
 					'type' => 'INNER',
@@ -145,7 +153,7 @@
 						0 => 'Situationdossierrsa2.dossier_id = Dossier2.id',
 					),
 				),
-				13 => array(
+				14 => array(
 					'table' => '"personnes"',
 					'alias' => 'Demandeur2',
 					'type' => 'LEFT OUTER',

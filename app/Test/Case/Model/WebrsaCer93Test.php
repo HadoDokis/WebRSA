@@ -448,8 +448,8 @@
 			unset( $result['Contratinsertion']['niv_etude'] );
 
 			// Problèmes de caractères blancs...
-			$result['Cer93']['sujets'] = preg_replace( '/\s\s+/', ' ', $result['Cer93']['sujets'] );
-
+			$result['Cer93']['sujets'] = preg_replace( '/\s\s+|\\\\n\\\\r/', ' ', $result['Cer93']['sujets'] );
+			
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 

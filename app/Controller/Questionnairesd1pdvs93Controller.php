@@ -280,7 +280,7 @@
 				$this->Questionnaired1pdv93->Situationallocataire->enums()
 			);
 
-			$options['Questionnaired1pdv93']['rendezvous_id'] = $this->Questionnaired1pdv93->Personne->Rendezvous->findListPersonneId( $personne_id );
+			$options['Questionnaired1pdv93']['rendezvous_id'] = $this->Questionnaired1pdv93->Personne->Rendezvous->WebrsaRendezvous->findListPersonneId( $personne_id );
 			$options['Situationallocataire']['nati'] = ClassRegistry::init( 'WebrsaTableausuivipdv93' )->nati;
 			$options = $this->Questionnaired1pdv93->filterOptions( $options );
 

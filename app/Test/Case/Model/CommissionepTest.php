@@ -8,13 +8,13 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AppModel', 'Model' );
-	App::uses( 'Commissionep', 'Model' );
+	App::uses( 'WebrsaCommissionep', 'Model' );
 
 	/**
 	 * Classe fille du modèle Commissionep permettant d'avoir accès aux méthodes
 	 * protégées.
 	 */
-	class CommissionepExtended extends Commissionep
+	class CommissionepExtended extends WebrsaCommissionep
 	{
 		/**
 		 * Méthode public permettant d'accéder à la méthode protégée _qdFichesSynthetiques()

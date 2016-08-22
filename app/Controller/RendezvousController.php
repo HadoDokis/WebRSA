@@ -546,8 +546,8 @@
 
 				$success = $this->Rendezvous->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
 
-				if( $this->Rendezvous->provoquePassageCommission( $this->request->data ) ) {
-					$success = $this->Rendezvous->creePassageCommission( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) && $success;
+				if( $this->Rendezvous->WebrsaRendezvous->provoquePassageCommission( $this->request->data ) ) {
+					$success = $this->Rendezvous->WebrsaRendezvous->creePassageCommission( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) && $success;
 				}
                 else if( $this->action == 'edit' && !empty( $rdv ) && Configure::read( 'Cg.departement' ) == 58  ) {
                     // On regarde le statut du RDV (si ce dernier est modifié)
