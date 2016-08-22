@@ -365,6 +365,8 @@
 		 */
 		public function saveFormData( $personne_id, array $data ) {
 			// Sauvegarde des données du formulaire
+			debug($data);
+			try {
 			$result = $this->saveAssociated(
 				$data,
 				array(
@@ -372,6 +374,9 @@
 					'atomic' => false
 				)
 			);
+			} catch (Exception $e) {
+				debug($e);
+			}
 
 			$success = $this->saveResultAsBool( $result );
 

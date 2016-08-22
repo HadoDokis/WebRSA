@@ -485,6 +485,13 @@
 				'with' => 'RendezvousThematiquerdv'
 			),
 		);
+		
+		/**
+		 * Les modèles qui seront utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array('WebrsaRendezvous');
 
 		/**
 		 * Surcharge du constructeur pour ajouter des champs virtuels.
@@ -499,165 +506,10 @@
 			// Seulement l'on utilise les thématiques, lorsque l'on n'est pas en
 			// train d'importer des fixtures
 			if( !( unittesting() && $this->useDbConfig === 'default' ) && Configure::read( 'Rendezvous.useThematique' ) ) {
-				$this->virtualFields['thematiques'] = $this->vfListeThematiques( null );
-				$this->virtualFields['thematiques_virgules'] = $this->vfListeThematiques( null, ', ' );
+				$this->virtualFields['thematiques'] = $this->WebrsaRendezvous->vfListeThematiques( null );
+				$this->virtualFields['thematiques_virgules'] = $this->WebrsaRendezvous->vfListeThematiques( null, ', ' );
 			}
 		}
-
-		/**
-		 * Retourne un booléen selon si un dossier d'EP doit ou non
-		 * être créé pour la personne dont l'id est passé en paramètre
-		 *
-		 * @param array $data
-		 * @return boolean
-		 */
-		public function passageEp( $data ) {
-			// 1. Pour le type et le statut du RDV que l'on enregistre, doit-on créer un passage en commission ?
-			$statutrdvtyperdv = $this->Typerdv->StatutrdvTyperdv->find(
-				'first',
-				array(
-					'conditions' => array(
-						'StatutrdvTyperdv.typerdv_id' => $data['Rendezvous']['typerdv_id'],
-						'StatutrdvTyperdv.statutrdv_id' => $data['Rendezvous']['statutrdv_id']
-					),
-					'contain' => false
-				)
-			);
-
-			if( empty( $statutrdvtyperdv ) ) {
-				return false;
-			}
-
-			// 2. Existe-t'il suffisamment de rendez-vous précédents des mêmes types et statuts ?
-			$nbRdvPcd = ( $statutrdvtyperdv['StatutrdvTyperdv']['nbabsenceavantpassagecommission'] - 1 );
-
-			if( $nbRdvPcd > 0 ) {
-				$daterdv = $data['Rendezvous']['daterdv'];
-				if( is_array( $daterdv ) ) {
-					$daterdv = date_cakephp_to_sql( $daterdv );
-				}
-
-				$heurerdv = $data['Rendezvous']['heurerdv'];
-				if( is_array( $heurerdv ) ) {
-					$heurerdv = time_cakephp_to_sql( $heurerdv );
-				}
-
-				$query = array(
-					'fields' => array(
-						'Rendezvous.typerdv_id',
-						'Rendezvous.statutrdv_id'
-					),
-					'contain' => false,
-					'conditions' => array(
-						'Rendezvous.personne_id' => Hash::get( $data, 'Rendezvous.personne_id' )
-					),
-					'order' => array(
-						'Rendezvous.daterdv' => 'DESC',
-						'Rendezvous.heurerdv' => 'DESC',
-						'Rendezvous.id' => 'DESC'
-					),
-					'limit' => $nbRdvPcd
-				);
-
-				// Ici, le compteur à revoir...
-				$id = Hash::get( $data, "{$this->alias}.{$this->primaryKey}" );
-				$action = ( empty( $id ) ? 'add' : 'edit' );
-
-				if( $action === 'add' ) {
-					$query['conditions']["( Rendezvous.daterdv || ' ' || Rendezvous.heurerdv )::TIMESTAMP <"] = "{$daterdv} {$heurerdv}";
-				}
-				else {
-					$query['conditions'][] = array(
-						'OR' => array(
-							"( Rendezvous.daterdv || ' ' || Rendezvous.heurerdv )::TIMESTAMP <" => "{$daterdv} {$heurerdv}",
-							array(
-								"( Rendezvous.daterdv || ' ' || Rendezvous.heurerdv )::TIMESTAMP" => "{$daterdv} {$heurerdv}",
-								'Rendezvous.id <' => $id
-							)
-						)
-					);
-				}
-
-				$rdvs = $this->find( 'all', $query );
-
-				$creation = ( count($rdvs) == $nbRdvPcd );
-				foreach( $rdvs as $rdv ) {
-					if(
-						( $rdv['Rendezvous']['typerdv_id'] != $data['Rendezvous']['typerdv_id'] )
-						|| ( $rdv['Rendezvous']['statutrdv_id'] != $data['Rendezvous']['statutrdv_id'] )
-					) {
-						$creation = false;
-					}
-				}
-
-				if( !$creation ) {
-					return false;
-				}
-			}
-
-			// 3. Existe-t'il déjà un passage en commission en cours pour la même raison ?
-			if( $statutrdvtyperdv['StatutrdvTyperdv']['typecommission'] == 'ep' ) {
-				$dossiercommission = $this->Personne->Dossierep->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Dossierep.actif' => '1',
-							'Dossierep.personne_id' => $data['Rendezvous']['personne_id'],
-							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
-							'Dossierep.id NOT IN ( '.
-								$this->Personne->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array(
-											'passagescommissionseps.dossierep_id'
-										),
-										'alias' => 'passagescommissionseps',
-										'conditions' => array(
-											'passagescommissionseps.etatdossierep' => array ( 'traite', 'annule' )
-										)
-									)
-								)
-							.' )'
-						),
-						'contain' => array(
-							'Sanctionrendezvousep58' => array(
-								'Rendezvous' => array(
-									'conditions' => array(
-										'Rendezvous.typerdv_id' => $data['Rendezvous']['typerdv_id']
-									)
-								)
-							)
-						)
-					)
-				);
-			}
-			else {
-				$dossiercommission = $this->Personne->Dossiercov58->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Dossiercov58.personne_id' => $data['Rendezvous']['personne_id'],
-							'Dossiercov58.themecov58' => 'proposorientssocialescovs58',
-							'Dossiercov58.id NOT IN ( '.
-								$this->Personne->Dossiercov58->Passagecov58->sq(
-									array(
-										'alias' => 'passagescovs58',
-										'fields' => array(
-											'passagescovs58.dossiercov58_id'
-										),
-										'conditions' => array(
-											'passagescovs58.etatdossiercov' => array ( 'traite', 'annule' )
-										)
-									)
-								)
-							.' )'
-						)
-					)
-				);
-			}
-
-			return empty( $dossiercommission );
-		}
-
 
 		/**
 		* FIXME: la même avec dossier COV
@@ -703,7 +555,7 @@
 					}
 				}
 				else {
-					if ( !$this->Statutrdv->provoquePassageCommission( $this->data['Rendezvous']['statutrdv_id'] ) || !$this->passageEp( $this->data ) ) {
+					if ( !$this->Statutrdv->provoquePassageCommission( $this->data['Rendezvous']['statutrdv_id'] ) || !$this->WebrsaRendezvous->passageEp( $this->data ) ) {
 						$dossierep = $this->Sanctionrendezvousep58->find(
 							'first',
 							array(
@@ -807,197 +659,6 @@
 		}
 
 		/**
-		 * Retourne le PDF d'un rendez-vous.
-		 *
-		 * @param integer $id L'id du rendez-vous pour lequel générer l'impression
-		 * @param $user_id L'id de l'utilisateur qui génère l'impression.
-		 * @return string
-		 */
-		public function getDefaultPdf( $id, $user_id ) {
-			$rdv = $this->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->fields(),
-						$this->Permanence->fields(),
-						$this->Personne->fields(),
-						$this->Referent->fields(),
-						$this->Statutrdv->fields(),
-						$this->Structurereferente->fields(),
-						$this->Typerdv->fields(),
-						$this->Personne->Foyer->fields(),
-						$this->Personne->Foyer->Dossier->fields(),
-						$this->Personne->Foyer->Adressefoyer->Adresse->fields()
-					),
-					'joins' => array(
-						$this->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Statutrdv', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-						$this->join( 'Typerdv', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					),
-					'conditions' => array(
-						'Rendezvous.id' => $id,
-						'OR' => array(
-							'Adressefoyer.id IS NULL',
-							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-						)
-					),
-					'contain' => false
-				)
-			);
-
-			$User = ClassRegistry::init( 'User' );
-			$user = $User->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$User->fields(),
-						$User->Serviceinstructeur->fields()
-					),
-					'joins' => array(
-						$User->join( 'Serviceinstructeur', array( 'type' => 'INNER' ) )
-					),
-					'conditions' => array(
-						'User.id' => $user_id
-					),
-					'contain' => false
-				)
-			);
-			$rdv = Set::merge( $rdv, $user );
-
-			$rdv['Rendezvous']['heurerdv'] = date( "H:i", strtotime( $rdv['Rendezvous']['heurerdv'] ) );
-
-			// Utilisation des thématiques de RDV ?
-			$rdv = $this->containThematique( $rdv );
-			$thematiquesrdvs = $rdv['Thematiquerdv'];
-			unset( $rdv['Thematiquerdv'] );
-
-			if( !empty( $thematiquesrdvs ) ) {
-				foreach( $thematiquesrdvs as $key => $values ) {
-					$thematiquesrdvs[$key] = array( 'Thematiquerdv' => $values );
-				}
-			}
-
-			$rdv = array(
-				$rdv,
-				'thematiquesrdvs' => $thematiquesrdvs
-			);
-
-			$Option = ClassRegistry::init( 'Option' );
-			$options = array(
-				'Permanence' => array(
-					'typevoie' => $Option->typevoie()
-				),
-				'Personne' => array(
-					'qual' => $Option->qual()
-				),
-				'Referent' => array(
-					'qual' => $Option->qual()
-				),
-				'Structurereferente' => array(
-					'type_voie' => $Option->typevoie()
-				),
-				'Type' => array(
-					'voie' => $Option->typevoie()
-				),
-				'type' => array(
-					'voie' => $Option->typevoie()
-				),
-			);
-
-			return $this->ged(
-				$rdv,
-				"RDV/{$rdv[0]['Typerdv']['modelenotifrdv']}.odt",
-				true,
-				$options
-			);
-		}
-
-		/**
-		 * FIXME: devrait remplacer la méthode passageEp ?
-		 *
-		 * @param type $data
-		 * @return type
-		 */
-		public function provoquePassageCommission( $data ) {
-			return (
-				Configure::read( 'Cg.departement' ) == 58
-				&& !empty( $data['Rendezvous']['statutrdv_id'] )
-				&& $this->Statutrdv->provoquePassageCommission( $data['Rendezvous']['statutrdv_id'] )
-				&& $this->passageEp( $data )
-			);
-		}
-
-		/**
-		 * FIXME: le nombre vient du nouveau champ
-		 *
-		 * @param type $data
-		 * @param type $user_id
-		 * @return type
-		 */
-		public function creePassageCommission( $data, $user_id ) {
-			$statutrdv_typerdv = $this->Statutrdv->StatutrdvTyperdv->find(
-				'first',
-				array(
-					'conditions' => array(
-						'StatutrdvTyperdv.statutrdv_id' => $data['Rendezvous']['statutrdv_id'],
-						'StatutrdvTyperdv.typerdv_id' => $data['Rendezvous']['typerdv_id'],
-					),
-					'contain' => false
-				)
-			);
-
-			if( $statutrdv_typerdv['StatutrdvTyperdv']['typecommission'] == 'ep' ) {
-				$dossierep = array(
-					'Dossierep' => array(
-						'personne_id' => $data['Rendezvous']['personne_id'],
-						'themeep' => 'sanctionsrendezvouseps58'
-					)
-				);
-				$success = $this->Personne->Dossierep->save( $dossierep );
-
-				$sanctionrendezvousep58 = array(
-					'Sanctionrendezvousep58' => array(
-						'dossierep_id' => $this->Personne->Dossierep->id,
-						'rendezvous_id' => $this->id
-					)
-				);
-
-				$success = $this->Personne->Dossierep->Sanctionrendezvousep58->save( $sanctionrendezvousep58 ) && $success;
-			}
-			else {
-				$themecov58_id = $this->Propoorientsocialecov58->Dossiercov58->Themecov58->field( 'id', array( 'name' => 'proposorientssocialescovs58' ) );
-				$dossiercov58 = array(
-					'Dossiercov58' => array(
-						'personne_id' => $data['Rendezvous']['personne_id'],
-						'themecov58' => 'proposorientssocialescovs58',
-						'themecov58_id' => $themecov58_id,
-					)
-				);
-				$success = $this->Personne->Dossiercov58->save( $dossiercov58 );
-
-				$propoorientsocialecov58 = array(
-					'Propoorientsocialecov58' => array(
-						'dossiercov58_id' => $this->Propoorientsocialecov58->Dossiercov58->id,
-						'rendezvous_id' => $this->id,
-						'user_id' => $user_id
-					)
-				);
-
-				$success = $this->Propoorientsocialecov58->save( $propoorientsocialecov58 ) && $success;
-			}
-
-			return $success;
-		}
-
-
-		/**
 		 * Retourne une sous-requête permettant de connaître le dernier rendez-vous pour un
 		 * allocataire donné.
 		 *
@@ -1014,61 +675,7 @@
 					ORDER BY {$table}.daterdv DESC
 					LIMIT 1";
 		}
-
-		/**
-		 * Retourne la liste des rendez-vous d'une personne, ordonnés par date
-		 * et heure (du plus récent au plus ancien), et libellé de l'objet,
-		 * formattés comme suit:
-		 * <pre>
-		 * array(
-		 *	<Id du RDV> => "<Objet du RDV> du <Date du RDV> à <Heure du RDV>"
-		 * )
-		 * </pre>
-		 *
-		 * @param integer $personne_id L'id de la personne
-		 * @return array
-		 */
-		public function findListPersonneId( $personne_id ) {
-			$rendezvous = array();
-
-			$results = $this->find(
-				'all',
-				array(
-					'fields' => array(
-						'Rendezvous.id',
-						'Rendezvous.daterdv',
-						'Rendezvous.heurerdv',
-						'Typerdv.libelle',
-					),
-					'contain' => false,
-					'conditions' => array(
-						'Rendezvous.personne_id' => $personne_id
-					),
-					'joins' => array(
-						$this->join( 'Typerdv', array( 'type' => 'INNER' ) )
-					),
-					'order' => array(
-						'Rendezvous.daterdv DESC',
-						'Rendezvous.heurerdv DESC',
-						'Typerdv.libelle ASC',
-					)
-				)
-			);
-
-			if( !empty( $results ) ) {
-				foreach( $results as $result ) {
-					$rendezvous[$result['Rendezvous']['id']] = sprintf(
-						'%s du %s à %s',
-						$result['Typerdv']['libelle'],
-						date( 'd/m/Y', strtotime( $result['Rendezvous']['daterdv'] ) ),
-						date( 'H:i:s', strtotime( $result['Rendezvous']['heurerdv'] ) )
-					);
-				}
-			}
-
-			return $rendezvous;
-		}
-
+		
 		/**
 		 *
 		 * TODO: si on utilise les thematiquesrdv seulement
@@ -1076,6 +683,8 @@
 		 * @param array $results
 		 * @param string $thematiqueAlias -> un array plus complet
 		 * @return array
+		 * 
+		 * @deprecated since version 3.1	Utilisé dans une classe dépréciée
 		 */
 		public function containThematique( array $results, $thematiqueAlias = 'Thematiquerdv' ) {
 			if( !empty( $results ) ) {
@@ -1117,104 +726,6 @@
 			}
 
 			return $results;
-		}
-
-		/**
-		 * Ajoute des conditions sur les thématiques de RDV.
-		 *
-		 * A utiliser dans les cohortes et moteur de recherche.
-		 *
-		 * Exemple:
-		 * <pre>$this->conditionsThematique(
-		 *	array(),
-		 *	array(
-		 *		'Rendezvous' => array(
-		 *			'thematiquerdv_id' => array(
-		 *				0 => 3,
-		 *				1 => 5
-		 *			)
-		 *		)
-		 *	),
-		 *	'Rendezvous.thematiquerdv_id'
-		 * );</pre>
-		 * retournera
-		 * <pre>array( Rendezvous.id IN ( SELECT "rendezvous_thematiquesrdvs"."rendezvous_id" AS rendezvous_thematiquesrdvs__rendezvous_id FROM thematiquesrdvs AS thematiquesrdvs INNER JOIN "public"."rendezvous_thematiquesrdvs" AS rendezvous_thematiquesrdvs ON ("rendezvous_thematiquesrdvs"."rendezvous_id" = "Rendezvous"."id") WHERE "rendezvous_thematiquesrdvs"."rendezvous_id" = "Rendezvous"."id" AND "rendezvous_thematiquesrdvs"."thematiquerdv_id" IN ('3', '5') )  )</pre>
-		 *
-		 * @param array $conditions Les conditions déjà existantes
-		 * @param array $search Les critères renvoyés par le formulaire de recherche
-		 * @param mixed $paths Le chemin (ou les chemins) sur lesquels on cherche à appliquer ces filtres.
-		 * @return array
-		 */
-		public function conditionsThematique( $conditions, $search, $paths, array $replacements = array() ) {
-			$paths = (array)$paths;
-			$replacements += array(
-				'RendezvousThematiquerdv' => 'rendezvous_thematiquesrdvs',
-				'Thematiquerdv' => 'thematiquesrdvs'
-			);
-
-			foreach( $paths as $path ) {
-				$thematiquerdv_id = Hash::get( $search, $path );
-				if( !empty( $thematiquerdv_id ) ) {
-					$qd = array(
-						'alias' => 'Thematiquerdv',
-						'fields' => array( 'RendezvousThematiquerdv.rendezvous_id' ),
-						'contain' => false,
-						'joins' => array(
-							$this->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
-						),
-						'conditions' => array(
-							'RendezvousThematiquerdv.rendezvous_id = Rendezvous.id',
-							'RendezvousThematiquerdv.thematiquerdv_id' => $thematiquerdv_id,
-						)
-
-					);
-					$qd = array_words_replace( $qd, $replacements );
-
-					$sq = $this->Thematiquerdv->sq( $qd );
-					$conditions[] = "Rendezvous.id IN ( {$sq} )";
-				}
-			}
-
-			return $conditions;
-		}
-
-		/**
-		 * Retourne un champ virtuel contenant la liste des theématiques liées à
-		 * une RDV, séparées par la chaîne de caractères $glue.
-		 *
-		 * Si le nom du champ virtuel est vide, alors le champ non aliasé sera
-		 * retourné.
-		 *
-		 * @see Configure Rendezvous.useThematique
-		 *
-		 * @param string $fieldName Le nom du champ virtuel; le modèle sera l'alias
-		 *	du modèle (Rendezvous) utilisé.
-		 * @param string $glue La chaîne de caratcères utilisée pour séparer les
-		 *	noms des aides.
-		 * @return string
-		 */
-		public function vfListeThematiques( $fieldName = 'thematiques', $glue = '\\n\r-' ) {
-			$query = array(
-				'fields' => array( 'Thematiquerdv.name' ),
-				'alias' => 'rendezvous_thematiquesrdvs',
-				'joins' => array(
-					$this->RendezvousThematiquerdv->join( 'Thematiquerdv', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'RendezvousThematiquerdv.rendezvous_id = Rendezvous.id'
-				),
-				'contain' => false
-			);
-			$replacements = array( 'RendezvousThematiquerdv' => 'rendezvous_thematiquesrdvs', 'Thematiquerdv' => 'thematiquesrdvs' );
-			$query = array_words_replace( $query, $replacements );
-
-			$sql = "TRIM( BOTH ' ' FROM TRIM( TRAILING '{$glue}' FROM ARRAY_TO_STRING( ARRAY( ".$this->RendezvousThematiquerdv->sq( $query )." ), '{$glue}' ) ) )";
-
-			if( !empty( $fieldName ) ) {
-				$sql = "{$sql} AS \"{$this->alias}__{$fieldName}\"";
-			}
-
-			return $sql;
 		}
 	}
 ?>

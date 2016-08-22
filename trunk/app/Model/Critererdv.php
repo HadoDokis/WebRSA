@@ -88,7 +88,7 @@
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
 			// Recherche par thématique de rendez-vous si nécessaire
-			$conditions = $this->Dossier->Foyer->Personne->Rendezvous->conditionsThematique( $conditions, $criteresrdv, 'Critererdv.thematiquerdv_id' );
+			$conditions = $this->Dossier->Foyer->Personne->Rendezvous->WebrsaRendezvous->conditionsThematique( $conditions, $criteresrdv, 'Critererdv.thematiquerdv_id' );
 
 			$querydata = array(
 				'fields' => array(

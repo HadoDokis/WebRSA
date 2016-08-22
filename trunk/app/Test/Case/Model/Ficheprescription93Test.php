@@ -29,6 +29,7 @@
 			'app.Calculdroitrsa',
 			'app.Categoriefp93',
 			'app.Cer93',
+			'app.Cer93Sujetcer93',
 			'app.Contratinsertion',
 			'app.Detailcalculdroitrsa',
 			'app.Detaildroitrsa',
@@ -57,6 +58,7 @@
 			'app.Referent',
 			'app.Situationdossierrsa',
 			'app.Structurereferente',
+			'app.Sujetcer93',
 			'app.Thematiquefp93',
 			'app.User',
 		);
@@ -254,6 +256,9 @@
 				'Modtransmfp93.Modtransmfp93',
 				'Documentbeneffp93.Documentbeneffp93',
 				'Autre.Ficheprescription93',
+				'Dossier.etatdosrsa',
+				'Dossier.typeinsrmi',
+				'Foyer.regagrifam',
 			);
 			sort( $expected );
 
@@ -316,9 +321,12 @@
 				'Instantanedonnees93.structure_type_voie',
 				'Referent.qual',
 				'Type.voie',
+				'Dossier.etatdosrsa',
+				'Dossier.typeinsrmi',
+				'Foyer.regagrifam',
 			);
 			sort( $expected );
-
+			
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 

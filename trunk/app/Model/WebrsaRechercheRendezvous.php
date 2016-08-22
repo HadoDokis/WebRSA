@@ -107,7 +107,7 @@
 
 				// Si on utilise les thématiques de RDV, ajout du champ virtuel
 				if( Configure::read('Rendezvous.useThematique' ) ) {
-					$query['fields']['Rendezvous.thematiques'] = '( '.$this->Rendezvous->vfListeThematiques( null ).' ) AS "Rendezvous__thematiques"';
+					$query['fields']['Rendezvous.thematiques'] = '( '.$this->Rendezvous->WebrsaRendezvous->vfListeThematiques( null ).' ) AS "Rendezvous__thematiques"';
 				}
 
 				Cache::write( $cacheKey, $query );
@@ -145,7 +145,7 @@
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Rendezvous.daterdv' );
 
 			// Recherche par thématique de rendez-vous si nécessaire
-			$query['conditions'] = $this->Rendezvous->conditionsThematique( $query['conditions'], $search, 'Rendezvous.thematiquerdv_id' );
+			$query['conditions'] = $this->Rendezvous->WebrsaRendezvous->conditionsThematique( $query['conditions'], $search, 'Rendezvous.thematiquerdv_id' );
 
 			// Condition sur le projet de ville territorial de la structure de rendez-vous
 			$query['conditions'] = $this->conditionCommunautesr(

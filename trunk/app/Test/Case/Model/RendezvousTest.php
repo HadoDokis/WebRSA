@@ -50,7 +50,7 @@
 		 * Test de la méthode Rendezvous::conditionsThematique()
 		 */
 		public function testConditionsThematique() {
-			$result = $this->Rendezvous->conditionsThematique(
+			$result = $this->Rendezvous->WebrsaRendezvous->conditionsThematique(
 				array(),
 				array(
 					'Rendezvous' => array(

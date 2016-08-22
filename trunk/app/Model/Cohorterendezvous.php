@@ -144,7 +144,7 @@
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Rendezvous.daterdv' );
 
 			// 3. Thématique(s) du RDV
-			$query['conditions'] = $Rendezvous->conditionsThematique( $query['conditions'], $search, 'Rendezvous.thematiquerdv_id' );
+			$query['conditions'] = $Rendezvous->WebrsaRendezvous->conditionsThematique( $query['conditions'], $search, 'Rendezvous.thematiquerdv_id' );
 
 			// Condition sur le projet de ville territorial de la structure de rendez-vous
 			$query['conditions'] = $this->conditionCommunautesr(
