@@ -22,16 +22,16 @@
                 ?>
             </ul>
 
-
+<?php
+	if( isset( $dossierep ) && !empty( $dossierep ) ) {
+		echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['StatutrdvTyperdv']['motifpassageep'].'.</p>';
+	}
+	if( isset( $dossiercov ) && !empty( $dossiercov ) ) {
+		echo '<p class="error">Ce dossier est en cours de passage en COV: '.$dossiercov['StatutrdvTyperdv']['motifpassageep'].'.</p>';
+	}
+?>
 <?php if( !empty( $rdvs ) ):?>
-	<?php
-		if( isset( $dossierep ) && !empty( $dossierep ) ) {
-			echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['StatutrdvTyperdv']['motifpassageep'].'.</p>';
-		}
-		if( isset( $dossiercov ) && !empty( $dossiercov ) ) {
-			echo '<p class="error">Ce dossier est en cours de passage en COV: '.$dossiercov['StatutrdvTyperdv']['motifpassageep'].'.</p>';
-		}
-	?>
+	
 <table id="listeRendezvous" class="tooltips">
 	<thead>
 		<tr>

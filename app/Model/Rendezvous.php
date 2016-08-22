@@ -56,6 +56,10 @@
 				'checkThematiqueAnnuelleParQuestionnaireD1' => array(
 					'rule' => 'checkThematiqueAnnuelleParQuestionnaireD1',
 					'message' => 'Ce RDV est déjà lié à un D1. Vous ne pouvez pas décocher "Premier RDV de l\'année", sauf en supprimant le D1'
+				),
+				'checkNotPassageCovOrientationSocial' => array(
+					'rule' => 'checkNotPassageCovOrientationSocial',
+					'message' => 'Ce dossier est actuellement en cours de passage dans une COV pour orientation sociale.'
 				)
 			),
 			'daterdv' => array(
@@ -726,6 +730,63 @@
 			}
 
 			return $results;
+		}
+		
+		/**
+		 * Permet de vérifier que le dossier n'est pas actuellement en cours de 
+		 * passage COV pour orientation sociale
+		 * 
+		 * 
+		 * @param array $check
+		 * @param array $rule
+		 * @return boolean
+		 * @see RendezvousController::index (même querydata)
+		 * @todo Factoriser le querydata
+		 */
+		public function checkNotPassageCovOrientationSocial($check, $rule) {
+			$valide = true;
+			
+			if ((int)Configure::read('Cg.departement') === 58 
+				&& $check['typerdv_id'] == Configure::read('Rendezvous.elaborationCER.typerdv_id')
+				&& !Hash::get($this->data, 'Rendezvous.id') // N'est pas un ajout si rempli
+				&& Hash::get($this->data, 'Rendezvous.personne_id')
+			) {
+				$valide = !$this->Personne->Dossiercov58->find(
+					'first',
+					array(
+						'fields' => array(
+							'StatutrdvTyperdv.motifpassageep',
+						),
+						'joins' => array(
+							$this->Personne->Dossiercov58->join('Propoorientsocialecov58'),
+							$this->Personne->Dossiercov58->Propoorientsocialecov58->join('Rendezvous'),
+							$this->Personne->Dossiercov58->Propoorientsocialecov58->Rendezvous->join('Typerdv'),
+							$this->Personne->Dossiercov58->Propoorientsocialecov58->Rendezvous->Typerdv->join('StatutrdvTyperdv')
+						),
+						'conditions' => array(
+							'Dossiercov58.themecov58' => 'proposorientssocialescovs58',
+							'Dossiercov58.personne_id' => Hash::get($this->data, 'Rendezvous.personne_id'),
+							'Dossiercov58.id NOT IN ( '.
+								$this->Personne->Dossiercov58->Passagecov58->sq(
+									array(
+										'fields' => array(
+											'passagescovs58.dossiercov58_id'
+										),
+										'alias' => ' passagescovs58',
+										'conditions' => array(
+											'passagescovs58.etatdossiercov' => array('traite', 'annule')
+										)
+									)
+								)
+							.' )'
+						),
+						'order' => array('Dossiercov58.created ASC'),
+						'contain' => false
+					)
+				);
+			}
+			
+			return $valide;
 		}
 	}
 ?>

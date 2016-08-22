@@ -532,6 +532,7 @@
 				'Selectionradies.conditions' => 'isarray',
 				'Typeorient.emploi_id' => 'integer',
 				'Dossierseps.conditionsSelection' => 'isarray',
+				'Rendezvous.elaborationCER.typerdv_id' => 'integer',
 			);
 
 			$structurereferente_id = Configure::read( 'Sanctionseps58.selection.structurereferente_id' );

@@ -985,4 +985,9 @@
 	 * Active le module date picker (calendrier javascript)
 	 */
 	Configure::write('Module.Datepicker.enabled', false);
+	
+	/**
+	 * Permet de définir l'id du typerdv pour les Rendezvous pour l'élaboration d'un CER
+	 */
+	Configure::write('Rendezvous.elaborationCER.typerdv_id', 13);
 ?>
