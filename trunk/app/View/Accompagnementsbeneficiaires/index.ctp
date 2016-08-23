@@ -38,6 +38,7 @@
 					),
 					'Situationdossierrsa.etatdosrsa' => array(
 						'label' => __m( 'Situationdossierrsa.etatdosrsa' ),
+						'class' => 'etatdosrsa#Situationdossierrsa.etatdosrsa#',
 					),
 					'Cer93.cmu' => array(
 						'label' => __m( 'Cer93.cmu' ),
