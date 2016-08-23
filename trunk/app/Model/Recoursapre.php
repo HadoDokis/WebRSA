@@ -205,7 +205,7 @@
 					$Apre->Structurereferente->fields(),
 					$Apre->Referent->fields(),
 					array(
-						'( '.$Apre->sqApreNomaide().' ) AS "Apre__Natureaide"'
+						'( '.$Apre->WebrsaApre->sqApreNomaide().' ) AS "Apre__Natureaide"'
 					),
 					$Apre->ApreComiteapre->Comiteapre->fields()
 				),
@@ -227,7 +227,7 @@
 				)
 			);
 
-			$aidesApre = $Apre->aidesApre;
+			$aidesApre = $Apre->WebrsaApre->aidesApre;
 			sort( $aidesApre );
 			foreach( $aidesApre as $aide ) {
 				$querydata['fields'] = array_merge( $querydata['fields'], $Apre->{$aide}->fields() );

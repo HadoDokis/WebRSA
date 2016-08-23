@@ -334,7 +334,7 @@
 			if( !empty( $tiers ) ) {
 				$subQueries = array();
 				$this->Apre = ClassRegistry::init( 'Apre' );
-				foreach( $this->Apre->modelsFormation as $model ) {
+				foreach( $this->Apre->WebrsaApre->modelsFormation as $model ) {
 					$table = Inflector::tableize( $model );
 
 					$query['joins'][] = array(

@@ -166,7 +166,7 @@
 			/// Création du champ virtuel montant total pour connaître les montants attribués à une APRE complémentaire
 			$this->Apre = ClassRegistry::init( 'Apre' );
 			$query['fields'][] = $this->Apre->sousRequeteMontantTotal().' AS "Apre__montanttotal"';
-			$query['joins'] = array_merge( $query['joins'], $this->Apre->joinsAidesLiees() );
+			$query['joins'] = array_merge( $query['joins'], $this->Apre->WebrsaApre->joinsAidesLiees() );
 
 			return $query;
 		}

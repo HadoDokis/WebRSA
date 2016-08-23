@@ -22,13 +22,31 @@
 				if (class_exists($model)) {
 					$r = new ReflectionClass($model);
 					if (!$r->isAbstract()) {
-						$errors = ClassRegistry::init($model)->validationErrors;
+						$Model = ClassRegistry::init($model);
+						$errors = $Model->validationErrors;	
 					}
 					if (!empty($errors)) {
-						$results[$model] = $errors;
+						$results[$model] = self::_extractErrorData($Model, $errors);
 					}
 				}
 			}
 			return $results;
+		}
+		
+		/**
+		 * Permet d'extraire la valeur qui a échouée à la validation
+		 * 
+		 * @param Model $Model
+		 * @param array $errors
+		 * @return array
+		 */
+		protected static function _extractErrorData(Model $Model, $errors) {
+			foreach (array_keys($errors) as $key) {
+				if (Hash::get((array)$Model->data, $Model->alias.'.'.$key)) {
+					$errors[$key]['value'] = $Model->data[$Model->alias][$key];
+				}
+			}
+			
+			return $errors;
 		}
 	}

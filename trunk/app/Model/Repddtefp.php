@@ -252,7 +252,7 @@
 
 			$this->Apre = ClassRegistry::init( 'Apre' );
 
-			foreach( $this->Apre->aidesApre as $modelAide ) {
+			foreach( $this->Apre->WebrsaApre->aidesApre as $modelAide ) {
 				$queryData['joins'][] = array(
 					'table'      => Inflector::tableize( $modelAide ),
 					'alias'      => $modelAide,
@@ -426,7 +426,7 @@
 
 				// Montants consommés
 				$fieldTotal = array();
-				foreach( $this->Etatliquidatif->Apre->aidesApre as $modelAide ) {
+				foreach( $this->Etatliquidatif->Apre->WebrsaApre->aidesApre as $modelAide ) {
 					$fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
 				}
 

@@ -62,7 +62,7 @@
 		 * Test de la méthode Apre::modeleOdt()
 		 */
 		public function testModeleOdt() {
-			$result = $this->Apre->modeleOdt( array() );
+			$result = $this->Apre->WebrsaApre->modeleOdt( array() );
 			$expected = 'APRE/apre.odt';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

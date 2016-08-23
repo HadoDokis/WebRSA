@@ -243,7 +243,7 @@
 			///Jointure sur les tables des aides liées à l'APRE
 			$this->Apre = ClassRegistry::init( 'Apre' );
 
-			$queryData['joins'] = array_merge( $queryData['joins'], $this->Apre->joinsAidesLiees() );
+			$queryData['joins'] = array_merge( $queryData['joins'], $this->Apre->WebrsaApre->joinsAidesLiees() );
 
 			return $queryData;
 		}
@@ -300,7 +300,7 @@
 			/// Création du champ virtuel montant total pour connaître les montants attribués à une APRE complémentaire
 			$this->Apre = ClassRegistry::init( 'Apre' );
 			$fieldTotal = array();
-			foreach( $this->Apre->aidesApre as $modelAide ) {
+			foreach( $this->Apre->WebrsaApre->aidesApre as $modelAide ) {
 				$fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
 			}
 			$queryData['fields'][] = '( COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montanttotal"';
@@ -401,7 +401,7 @@
 			/// Création du champ virtuel montant total pour connaître les montants attribués à une APRE complémentaire
 			$this->Apre = ClassRegistry::init( 'Apre' );
 			$fieldTotal = array();
-			foreach( $this->Apre->aidesApre as $modelAide ) {
+			foreach( $this->Apre->WebrsaApre->aidesApre as $modelAide ) {
 				$fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
 			}
 			$queryData['fields'][] = '( COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montanttotal"';
@@ -583,7 +583,7 @@
 			);
 
 			$this->Apre = ClassRegistry::init( 'Apre' );
-			$queryData['joins'] = array_merge( $queryData['joins'], $this->Apre->joinsAidesLiees( true ) );
+			$queryData['joins'] = array_merge( $queryData['joins'], $this->Apre->WebrsaApre->joinsAidesLiees( true ) );
 
 			return $this->Apre->find( 'all', $queryData );
 		}
@@ -939,8 +939,8 @@
 					'Apre.datedemandeapre',
 					'Apre.mtforfait',
 					'Apre.nbenf12',
-					$this->Apre->sqApreNomaide().' AS "Apre__natureaide"',
-					$this->Apre->sqApreNomaide().' AS "Apre__nomaide"',
+					$this->Apre->WebrsaApre->sqApreNomaide().' AS "Apre__natureaide"',
+					$this->Apre->WebrsaApre->sqApreNomaide().' AS "Apre__nomaide"',
 					'Personne.nom',
 					'Personne.prenom',
 					'Adresse.nomcom',
@@ -972,8 +972,8 @@
 				$querydata['fields'] = Set::merge(
 					$querydata['fields'],
 					array(
-						$this->Apre->sqApreNomaide().' AS "Apre__nomaide"',
-						$this->Apre->sqApreNomaide().' AS "Apre__natureaide"',
+						$this->Apre->WebrsaApre->sqApreNomaide().' AS "Apre__nomaide"',
+						$this->Apre->WebrsaApre->sqApreNomaide().' AS "Apre__natureaide"',
 						'"ApreEtatliquidatif"."montantattribue" AS "Apre__allocation"'
 					)
 				);
@@ -995,7 +995,7 @@
 					$querydata['fields'][] = "{$case} AS \"Modellie__{$field}\"";
 				}
 
-				foreach( $this->Apre->aidesApre as $modelAide ) {
+				foreach( $this->Apre->WebrsaApre->aidesApre as $modelAide ) {
 					$querydata['joins'][] = $this->Apre->join( $modelAide );
 					$querydata['fields'] = Set::merge( $querydata['fields'], $this->Apre->{$modelAide}->fields() );
 				}
@@ -1009,7 +1009,7 @@
 					'conditions' => array()
 				);
 
-				foreach( $this->Apre->modelsFormation as $modelAide ) {
+				foreach( $this->Apre->WebrsaApre->modelsFormation as $modelAide ) {
 					$join['conditions']['OR'][] = "( {$modelAide}.tiersprestataireapre_id IS NOT NULL AND  Tiersprestataireapre.id = {$modelAide}.tiersprestataireapre_id )";
 				}
 				$querydata['joins'][] = $join;
@@ -1072,7 +1072,7 @@
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array(
-						'Suiviaideapretypeaide.typeaide = ( '.$this->Apre->sqApreNomaide().' )'
+						'Suiviaideapretypeaide.typeaide = ( '.$this->Apre->WebrsaApre->sqApreNomaide().' )'
 					)
 				);
 				$join = $SuiviaideapretypeaideModel->join( 'Suiviaideapre' );
@@ -1083,7 +1083,7 @@
 				}
 
 				// Montants
-				$querydata['fields'][] = 'ROUND( ( '.$this->Apre->sqApreAllocation().' ) / ( CASE WHEN "Apre"."montantaverser" <> 0 THEN "Apre"."montantaverser" ELSE 1 END ) * 100, 0 ) AS "Apre__pourcentallocation"';
+				$querydata['fields'][] = 'ROUND( ( '.$this->Apre->WebrsaApre->sqApreAllocation().' ) / ( CASE WHEN "Apre"."montantaverser" <> 0 THEN "Apre"."montantaverser" ELSE 1 END ) * 100, 0 ) AS "Apre__pourcentallocation"';
 				$querydata['fields'][] = 'ROUND( "Apre"."montantdejaverse" - "Apre"."montantaverser", 2 ) AS "Apre__restantallocation"';
 
 

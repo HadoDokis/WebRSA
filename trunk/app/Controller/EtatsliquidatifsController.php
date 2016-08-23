@@ -619,7 +619,7 @@
 				$return = $this->Etatliquidatif->Apre->saveAll( $apres, array( 'atomic' => false ) );
 				$return = $this->Etatliquidatif->ApreEtatliquidatif->saveAll( $apres_etatsliquidatifs, array( 'atomic' => false ) ) && $return;
 				if( $return ) {
-					$this->Etatliquidatif->Apre->calculMontantsDejaVerses( $apre_ids );
+					$this->Etatliquidatif->Apre->WebrsaApre->calculMontantsDejaVerses( $apre_ids );
 					$this->Etatliquidatif->ApreEtatliquidatif->commit();
 					$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->request->params, 'named.page' ) ) ) );
 				}

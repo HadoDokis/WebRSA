@@ -390,7 +390,7 @@
 			$fileName = TMP.DS.'logs'.DS.__CLASS__.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
 			ConfigurableQueryFields::exportQueryFields( $query, 'dsps', $fileName );
 
-			$results = $this->options();
+			$results = $this->WebrsaDsp->options();
 			$success = $success && !empty( $results );
 
 			return $success;
@@ -408,7 +408,7 @@
 		 */
 		public function checkParametrage( array $params = array() ) {
 			$keys = array( 'Dsps.index.fields', 'Dsps.index.innerTable', 'Dsps.exportcsv' );
-			$query = $this->search( array() );
+			$query = $this->WebrsaDsp->search( array() );
 
 			App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 			$return = ConfigurableQueryFields::getErrors( $keys, $query );

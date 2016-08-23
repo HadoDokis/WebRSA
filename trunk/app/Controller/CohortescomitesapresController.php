@@ -225,7 +225,7 @@
 			unset( $apre['Apre']['Natureaide'] );
 			unset( $apre['Pieceapre'] );
 			unset( $apre['Montantconsomme'] );
-			foreach( $this->Comiteapre->Apre->aidesApre as $model ) {
+			foreach( $this->Comiteapre->Apre->WebrsaApre->aidesApre as $model ) {
 				unset( $apre[$model] );
 			}
 			unset( $apre['Relanceapre'] );

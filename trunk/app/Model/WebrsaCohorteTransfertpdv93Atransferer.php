@@ -506,6 +506,9 @@
 					// Si mon code INSEE n'a pas de sociopro, alors les options auront tous les sociopro + tous les emploi
 					if( !$hasPdv ) {
 						foreach( $typesorients['Socioprofessionnelle'] as $typeorient_sociopro_id ) {
+							if (!isset($results[$codeinsee][$typeorient_sociopro_id])) {
+								break;
+							}
 							foreach( $typesorients['Emploi'] as $typeorient_emploi_id ) {
 								$results[$codeinsee][$typeorient_sociopro_id] = array_merge(
 									$results[$codeinsee][$typeorient_sociopro_id],
