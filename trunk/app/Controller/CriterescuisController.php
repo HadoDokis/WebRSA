@@ -127,7 +127,7 @@
 			return Hash::merge(
 				$options,
 				$this->Allocataires->options(),
-				$this->Cui->options(),
+				$this->Cui->WebrsaCui->options(),
 				$this->Cui->Emailcui->options()
 			);
 		}

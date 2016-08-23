@@ -389,7 +389,7 @@
                             // Recherche de l'ancien contrat d'insertion
 							$vxContratinsertion = $this->_getDernierContratinsertion( $vxOrientstruct['Orientstruct']['personne_id'] );
 
-                            $sqDernierCui = $this->Bilanparcours66->Cui->sqDernierContrat( '"Cui"."personne_id"' );
+                            $sqDernierCui = $this->Bilanparcours66->Cui->WebrsaCui->sqDernierContrat( '"Cui"."personne_id"' );
                             $vxCui = $this->Bilanparcours66->Cui->find(
                                 'first',
                                 array(
@@ -625,7 +625,7 @@
 						$vxContratinsertion = $this->_getDernierContratinsertion( $vxOrientstruct['Orientstruct']['personne_id'] );
 
 						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
-						$sqDernierCui = $this->Bilanparcours66->Cui->sqDernierContrat( '"Cui"."personne_id"' );
+						$sqDernierCui = $this->Bilanparcours66->Cui->WebrsaCui->sqDernierContrat( '"Cui"."personne_id"' );
 						$vxCui = $this->Bilanparcours66->Cui->find(
 							'first',
 							array(
@@ -865,7 +865,7 @@
 
 						$vxContratinsertion = $this->_getDernierContratinsertion( $vxOrientstruct['Orientstruct']['personne_id'] );
 
-						$sqDernierCui = $this->Bilanparcours66->Cui->sqDernierContrat( '"Cui"."personne_id"' );
+						$sqDernierCui = $this->Bilanparcours66->Cui->WebrsaCui->sqDernierContrat( '"Cui"."personne_id"' );
 						$vxCui = $this->Bilanparcours66->Cui->find(
 							'first',
 							array(

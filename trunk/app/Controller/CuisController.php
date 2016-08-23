@@ -605,9 +605,9 @@
             // Mail envoyé à l'employeur ?
             $isDossierComplet = false;
             $isRecu = ''; //FIXME
-            $dataCaf = $this->Cui->dataCafAllocataire( $personne_id );
+            $dataCaf = $this->Cui->WebrsaCui->dataCafAllocataire( $personne_id );
             if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Cui->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
+				$this->request->data = $this->Cui->WebrsaCui->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
 //    debug($this->request->data);
                 if( $this->action == 'edit' && $this->request->data['Cui']['sendmailemployeur'] == '1' ) {
                     $isDossierComplet = $this->Cui->isDossierComplet($this->request->data);
@@ -1176,13 +1176,13 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
 			
-			$results = $this->WebrsaAccesses->getIndexRecords($personne_id, $this->Cui->queryIndex($personne_id));
+			$results = $this->WebrsaAccesses->getIndexRecords($personne_id, $this->Cui->WebrsaCui->queryIndex($personne_id));
 			
-			$messages = $this->Cui->messages( $personne_id );
-			$addEnabled = $this->Cui->addEnabled( $messages );
+			$messages = $this->Cui->WebrsaCui->messages( $personne_id );
+			$addEnabled = $this->Cui->WebrsaCui->addEnabled( $messages );
 
 			// Options
-			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
+			$options = $this->Cui->WebrsaCui->options($this->Session->read( 'Auth.User.id' ));
 
 			$this->set(
 				compact('results', 'dossierMenu', 'messages', 'addEnabled', 'personne_id', 'options', 'isRsaSocle')
@@ -1234,10 +1234,10 @@
 			// On tente la sauvegarde
 			if( !empty( $this->request->data ) ) {
 				$this->Cui->begin();
-				if( $this->Cui->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
+				if( $this->Cui->WebrsaCui->saveAddEdit( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) ) {
 					$this->Cui->commit();
 					$cui_id = $this->Cui->id;
-					$this->Cui->updatePositionsCuisById( $cui_id );
+					$this->Cui->WebrsaCui->updatePositionsCuisById( $cui_id );
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -1248,15 +1248,15 @@
 				}
 			}
 			else {
-				$this->request->data = $this->Cui->prepareFormDataAddEdit( $personne_id, $id );
+				$this->request->data = $this->Cui->WebrsaCui->prepareFormDataAddEdit( $personne_id, $id );
 			}
 			
 			// Options
-			$options = $this->Cui->options($this->Session->read( 'Auth.User.id' ));
+			$options = $this->Cui->WebrsaCui->options($this->Session->read( 'Auth.User.id' ));
 
 			$urlmenu = "/cuis/index/{$personne_id}";
 			
-			$queryPersonne = $this->Cui->queryPersonne( $personne_id );
+			$queryPersonne = $this->Cui->WebrsaCui->queryPersonne( $personne_id );
 			$this->Cui->Personne->forceVirtualFields = true;
 			$personne = $this->Cui->Personne->find( 'first', $queryPersonne );
 
@@ -1284,11 +1284,11 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
 			
-			$query = $this->Cui->queryView( $id );
+			$query = $this->Cui->WebrsaCui->queryView( $id );
 			$this->request->data = $this->Cui->find( 'first', $query );
 					
 			// Options
-			$options = $this->Cui->options();
+			$options = $this->Cui->WebrsaCui->options();
 			
 			$urlmenu = "/cuis/index/{$personne_id}";
 
