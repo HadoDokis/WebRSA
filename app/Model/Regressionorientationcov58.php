@@ -222,7 +222,7 @@
 						$date_propo = Hash::get( $passagecov58, "{$this->alias}.datedemande" );
 						list( $date_valid, $heure_valid ) = explode( ' ', Hash::get( $passagecov58, 'Cov58.datecommission' ) );
 
-						$rgorient = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+						$rgorient = $this->Dossiercov58->Personne->Orientstruct->WebrsaOrientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						$orientstruct = array(

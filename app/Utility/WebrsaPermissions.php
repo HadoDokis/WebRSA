@@ -241,7 +241,7 @@
 			if( Configure::read( 'Cg.departement' ) == 66 && CakeSession::read( 'Auth.User.type' ) == 'externe_ci' ) {
 				$Dossier = ClassRegistry::init( 'Dossier' );
 
-				$sqlDerniereOrientstruct = $Dossier->Foyer->Personne->Orientstruct->sqDerniere( 'personnes.id', 'derniersorientations' );
+				$sqlDerniereOrientstruct = $Dossier->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere( 'personnes.id', 'derniersorientations' );
 
 				$querydata = array(
 					'fields' => array( 'foyers.dossier_id' ),

@@ -119,7 +119,7 @@
 								'type' => $types['Orientstruct'],
 								'conditions' => array(
 									'Orientstruct.statut_orient' => 'Orienté',
-									'Orientstruct.id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sqDerniere().' )'
+									'Orientstruct.id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )'
 								)
 							)
 						),

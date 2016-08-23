@@ -385,7 +385,7 @@
 					);
 
 					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ){
-						$rgorient = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+						$rgorient = $this->Dossiercov58->Personne->Orientstruct->WebrsaOrientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						if( $values['decisioncov'] == 'valide' ){

@@ -88,7 +88,7 @@
 			$Personne->virtualFields['situation'] = $this->vfPersonneSituation;
 
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
-			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
+			$sqDerniereOrientstruct = $Personne->Orientstruct->WebrsaOrientstruct->sqDerniere();
 
 			$sqOrientstructpcd = $Personne->sqLatest(
 				'Orientstruct',

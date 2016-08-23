@@ -24,7 +24,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Option', 'Transfertpdv93' );
+		public $uses = array( 'Option', 'Transfertpdv93', 'WebrsaOrientstruct' );
 
 		/**
 		 * Les behaviors utilisés par ce modèle.
@@ -593,217 +593,7 @@
 				);
 			}
 		}
-
-		// ---------------------------------------------------------------------
-		// Tout ce qui se trouve ci-dessous pourrait aller dans la classe WebrsaOrientstruct
-		// (et en cas de callback, simplement les appeler ?).
-		// ---------------------------------------------------------------------
-
-		/**
-		 * Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
-		 *
-		 * @param array $data Les données envoyées au modèle pour construire le PDF
-		 * @return string
-		 */
-		public function modeleOdt( $data ) {
-			$departement = (int)Configure::read( 'Cg.departement' );
-
-			if( $departement === 66 ) {
-				$typenotification = $data['Orientstruct']['typenotification'];
-
-				if( !empty( $typenotification ) && $typenotification == 'systematique' ) {
-					return "Orientation/orientationsystematiquepe.odt";
-				}
-				else if( !empty( $typenotification ) && $typenotification == 'dejainscritpe' ) {
-					return "Orientation/orientationpedefait.odt";
-				}
-				else {
-					return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
-				}
-			}
-			// Au CG 93, lorsqu'une orientation fait suite à un déménagement, il
-			// faut imprimer le courrier de transfert PDV
-			else if( $departement === 93 && Hash::get( $data, 'NvOrientstruct.origine' ) === 'demenagement' ) {
-				return $this->Transfertpdv93->modeleOdt( $data );
-			}
-
-			return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
-		}
-
-		/**
-		 * Récupère les données pour le PDF.
-		 *
-		 * @param integer $id L'id technique de l'orientation
-		 * @return array
-		 */
-		public function getDataForPdf( $id, $user_id = null ) {
-			$departement = (int)Configure::read( 'Cg.departement' );
-
-			// Au CG 93, lorsqu'une orientation fait suite à un déménagement, il
-			// faut imprimer le courrier de transfert PDV
-			$isDemenagement = false;
-
-			if( $departement === 93 ) {
-				$demenagement = $this->find(
-					'first',
-					array(
-						'fields' => array(
-							"{$this->alias}.{$this->primaryKey}"
-						),
-						'contain' => false,
-						'conditions' => array(
-							"{$this->alias}.{$this->primaryKey}" => $id,
-							"{$this->alias}.origine" => 'demenagement'
-						)
-					)
-				);
-
-				$isDemenagement = !empty( $demenagement );
-			}
-
-			if( $isDemenagement ) {
-				$orientstruct = $this->Transfertpdv93->getDataForPdf( $id, $user_id );
-
-				// Traduction car elles sont faites directement dans les données pour les orientsstructs
-				$options = $this->Transfertpdv93->getPdfOptions();
-				foreach( $options as $modelAlias => $modelOptions ) {
-					foreach( $modelOptions as $fieldName => $fieldOptions ) {
-						if( isset( $orientstruct[$modelAlias][$fieldName] ) ) {
-							$orientstruct[$modelAlias][$fieldName] = Set::enum(
-								$orientstruct[$modelAlias][$fieldName],
-								$options[$modelAlias][$fieldName]
-							);
-						}
-					}
-				}
-			}
-			else {
-				// TODO: error404/error500 si on ne trouve pas les données
-				$qual = $this->Option->qual();
-				$typevoie = $this->Option->typevoie();
-
-				$orientstruct = $this->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Orientstruct.id' => $id
-						),
-						'contain' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'Adressefoyer' => array(
-										'conditions' => array(
-											'rgadr' => '01'
-										),
-										'Adresse'
-									),
-									'Dossier'
-								),
-							),
-							'Typeorient',
-							'Structurereferente',
-							'Referent',
-							'User',
-						)
-					)
-				);
-
-				if( !is_null( $user_id ) ) {
-					$user = $this->User->find(
-						'first',
-						array(
-							'conditions' => array(
-								'User.id' => $user_id
-							),
-							'contain' => array(
-								'Serviceinstructeur'
-							)
-						)
-					);
-					$orientstruct = Set::merge( $orientstruct, $user );
-				}
-
-				$statut_orient = Hash::get( $orientstruct, "{$this->alias}.statut_orient" );
-
-				$printable = (
-					( $departement == 976 && ( $statut_orient == 'En attente' ) )
-					|| ( $statut_orient == 'Orienté' )
-				);
-
-				if( !$printable ) {
-					return false;
-				}
-
-				$orientstruct['Dossier'] = $orientstruct['Personne']['Foyer']['Dossier'];
-				if( isset( $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'] ) ){
-					$orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
-					unset( $orientstruct['Personne']['Foyer'] );
-				}
-
-				if( $departement != 66 ) {
-					$orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
-					$orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
-				}
-
-
-				/// Recherche référent à tout prix ....
-				// Premère étape: référent du parcours.
-				$referent = Hash::filter( (array)$orientstruct['Referent'] );
-				if( empty( $referent ) ) {
-					$referent = $this->Personne->Referent->PersonneReferent->find(
-						'first',
-						array(
-							'conditions' => array(
-								'PersonneReferent.personne_id' => $orientstruct['Personne']['id']
-							),
-							'recursive' => -1
-						)
-					);
-					if( !empty( $referent ) ) {
-						$orientstruct['Referent'] = $referent['PersonneReferent'];
-					}
-				}
-
-				// Deuxième étape: premier référent renseigné pour la structure sélectionnée
-				$referent = Hash::filter( (array)$orientstruct['Referent'] );
-				if( empty( $referent ) && !empty( $orientstruct['Structurereferente']['id'] ) ) {
-					$referent = $this->Personne->Referent->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
-							),
-							'recursive' => -1
-						)
-					);
-					if( !empty( $referent ) ) {
-						$orientstruct['Referent'] = $referent['Referent'];
-					}
-				}
-			}
-
-			return $orientstruct;
-		}
-
-		/**
-		 * FIXME: select max(rgorient), si on a besoin d'archiver
-		 *
-		 * @param integer $personne_id
-		 * @return integer
-		 */
-		public function rgorientMax( $personne_id ) {
-			return $this->find(
-				'count',
-				array(
-					'conditions' => array(
-						"{$this->alias}.statut_orient" => 'Orienté',
-						"{$this->alias}.personne_id" => $personne_id
-					),
-					'contain' => false
-				)
-			);
-		}
-
+		
 		/**
 		 * Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'.
 		 * Mise à jour de l'origine suivant le statut et le rang de l'orientation.
@@ -831,7 +621,7 @@
 					);
 					$tuple_pcd = $this->find( 'first', $query );
 					if( $tuple_pcd[$this->alias]['statut_orient'] !== 'Orienté' ) {
-						$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $personne_id ) + 1 );
+						$this->data[$this->alias]['rgorient'] = ( $this->WebrsaOrientstruct->rgorientMax( $personne_id ) + 1 );
 					}
 					else {
 						$this->data[$this->alias]['rgorient'] = $tuple_pcd[$this->alias]['rgorient'];
@@ -839,7 +629,7 @@
 				}
 				// Nouvelle entrée
 				else if( !empty( $personne_id ) ) {
-					$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $personne_id ) + 1 );
+					$this->data[$this->alias]['rgorient'] = ( $this->WebrsaOrientstruct->rgorientMax( $personne_id ) + 1 );
 				}
 
 				$origine = Hash::get( $this->data, "{$this->alias}.origine" );
@@ -864,72 +654,6 @@
 		}
 
 		/**
-		 * Retourne la dernière orientation orientée pour une personne.
-		 *
-		 * @param string $personneIdFied
-		 * @param string $alias
-		 * @return string
-		 */
-		public function sqDerniere( $personneIdFied = 'Personne.id', $alias = 'orientsstructs' ) {
-			return $this->sq(
-				array(
-					'fields' => array(
-						"{$alias}.id"
-					),
-					'alias' => $alias,
-					'conditions' => array(
-						"{$alias}.personne_id = {$personneIdFied}",
-						"{$alias}.statut_orient = 'Orienté'",
-						"{$alias}.date_valid IS NOT NULL"
-					),
-					'order' => array( "{$alias}.date_valid DESC" ),
-					'limit' => 1
-				)
-			);
-		}
-
-		/**
-		 * Fonction permettant la mise à jour de la table nonorientes66.
-		 *
-		 * @param integer $orientstruct_id L'id de l'orientation
-		 * @return type
-		 */
-		protected function _updateNonoriente66( $orientstruct_id ) {
-			$success = true;
-
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$orientationAvecEntreeNonoriente66 = $this->find(
-					'first',
-					array(
-						'fields' => array(
-							'Nonoriente66.id'
-						),
-						'conditions' => array(
-							'Orientstruct.id' => $orientstruct_id
-						),
-						'joins' => array(
-							$this->join( 'Personne', array(  'type' => 'INNER' ) ),
-							$this->Personne->join( 'Nonoriente66', array(  'type' => 'INNER' ) )
-						),
-						'contain' => false
-					)
-				);
-
-				if( !empty( $orientationAvecEntreeNonoriente66 )  ) {
-					$success = $this->Nonoriente66->updateAllUnBound(
-						array( 'Nonoriente66.orientstruct_id' => $orientstruct_id ),
-						array(
-							'"Nonoriente66"."id"' => $orientationAvecEntreeNonoriente66['Nonoriente66']['id']
-						)
-					);
-				}
-			}
-
-			return $success;
-		}
-
-
-		/**
 		 * AfterSave.
 		 *
 		 * @param boolean $created
@@ -938,104 +662,9 @@
 		public function afterSave( $created ) {
 			$return = parent::afterSave( $created );
 
-			$return = $this->_updateNonoriente66( $this->id ) && $return;
+			$return = $this->WebrsaOrientstruct->updateNonoriente66( $this->id ) && $return;
 
 			return $return;
-		}
-
-		/**
-		 *
-		 * @param integer $orientstruct_id
-		 * @return string
-		 */
-		public function getPdfNonoriente66 ( $orientstruct_id, $user_id ) {
-			$data = $this->getDataForPdf( $orientstruct_id, $user_id );
-
-			$options = array();
-
-			$nonoriente66 = $this->Personne->Nonoriente66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Nonoriente66.orientstruct_id' => $orientstruct_id
-					),
-					'contain' => false
-				)
-			);
-			$originePdfOrientation = Set::classicExtract( $nonoriente66, 'Nonoriente66.origine' );
-			$typeOrientParentIdPdf = Set::classicExtract( $data, 'Typeorient.parentid' );
-			$reponseAllocataire = Set::classicExtract( $nonoriente66, 'Nonoriente66.reponseallocataire' );
-
-
-			$typesorientsParentidsSocial = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
-			$typesorientsParentidsEmploi = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
-
-			if( $originePdfOrientation == 'isemploi' ) {
-				$modeleodt = 'Orientation/orientationpedefait.odt'; // INFO courrier 1
-			}
-			else {
-				if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsEmploi) ) {
-					$modeleodt = 'Orientation/orientationpe.odt'; //INFO = courrier 3
-				}
-				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial) && ( $reponseAllocataire == 'O' ) ) {
-					$modeleodt = 'Orientation/orientationsociale.odt';// INFO = courrier 4
-				}
-				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial) && ( $reponseAllocataire == 'N' ) ) {
-					$modeleodt = 'Orientation/orientationsocialeauto.odt';// INFO = courrier 5
-				}
-				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial ) ) {
-					$modeleodt = 'Orientation/orientationsociale.odt';// INFO = courrier 5
-				}
-			}
-
-			$pdf = $this->ged( $data, $modeleodt, false, $options );
-
-			if( !empty( $pdf ) ) {
-				$this->Nonoriente66->updateAllUnBound(
-					array( 'Nonoriente66.datenotification' => "'".date( 'Y-m-d' )."'" ),
-					array(
-						'"Nonoriente66"."id"' => $nonoriente66['Nonoriente66']['id']
-					)
-				);
-			}
-
-			return $pdf;
-		}
-
-		/**
-		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
-		 * à la méthode ged du behavior Gedooo et le stocke,
-		 *
-		 * @param integer $id Id du CER
-		 * @param integer $user_id Id de l'utilisateur connecté
-		 * @return string
-		 */
-		public function getDefaultPdf( $id, $user_id ) {
-			$options = Hash::merge(
-				$this->Personne->Foyer->enums(),
-				array(
-					'Prestation' => array(
-						'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers'),
-					),
-					'Type' => array(
-						'voie' => $this->Option->typevoie(),
-					),
-					'type' => array(
-						'voie' => $this->Option->typevoie()
-					),
-					'Detaildroitrsa' => array(
-						'oridemrsa' => ClassRegistry::init('Detaildroitrsa')->enum('oridemrsa'),
-					),
-				),
-				$this->enums()
-			);
-
-			$orientstruct = $this->getDataForPdf( $id, $user_id );
-			$modeledoc = $this->modeleOdt( $orientstruct );
-
-			$pdf = $this->ged( $orientstruct, $modeledoc, false, $options );
-
-			return $pdf;
 		}
 	}
 ?>

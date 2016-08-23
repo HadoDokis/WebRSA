@@ -111,7 +111,7 @@
 							array(
 								'type' => $types['Orientstruct'],
 								'conditions' => array(
-									'Orientstruct.id IN ( '.$this->Contratinsertion->Personne->Orientstruct->sqDerniere().' )'
+									'Orientstruct.id IN ( '.$this->Contratinsertion->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )'
 								)
 							)
 						),

@@ -55,7 +55,7 @@
 			$sqDerniereRgadr01 = $Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 			$sqDerniereRgadr02 = str_replace( '01', '02', $sqDerniereRgadr01 );
 
-			$sqDerniereOrientstruct = $Dossier->Foyer->Personne->Orientstruct->sqDerniere( 'Personne.id' );
+			$sqDerniereOrientstruct = $Dossier->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere( 'Personne.id' );
 			$sqZonesgeographiquesStructuresreferentes = $Dossier->Foyer->Personne->Orientstruct->Structurereferente->StructurereferenteZonegeographique->sq(
 				array(
 					'alias' => 'structuresreferentes_zonesgeographiques',

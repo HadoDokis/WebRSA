@@ -314,7 +314,7 @@
 			$conditions[] = array(
 				'OR' => array(
 					'Orientstruct.id IS NULL',
-					'Orientstruct.id IN ( '.$this->Contratinsertion->Personne->Orientstruct->sqDerniere().' )',
+					'Orientstruct.id IN ( '.$this->Contratinsertion->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )',
 				)
 			);
 

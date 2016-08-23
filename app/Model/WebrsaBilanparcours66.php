@@ -411,7 +411,7 @@
                         if ( $data['Bilanparcours66']['changementrefsansep'] == 'O' ) {
                             list( $typeorient_id, $structurereferente_id ) = explode( '_', $data['Bilanparcours66']['nvstructurereferente_id'] );
 
-                            $rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $vxOrientstruct['Orientstruct']['personne_id'] ) + 1;
+                            $rgorient = $this->Bilanparcours66->Orientstruct->WebrsaOrientstruct->rgorientMax( $vxOrientstruct['Orientstruct']['personne_id'] ) + 1;
                             $origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
 							$referent_id = ( $vxOrientstruct['Orientstruct']['structurereferente_id'] == $structurereferente_id ? $vxOrientstruct['Orientstruct']['referent_id'] : null );
 
@@ -533,7 +533,7 @@
                     else if( $data['Bilanparcours66']['choixsanspassageep'] == 'reorientation' ) {
                         list( $typeorient_id, $structurereferente_id ) = explode( '_', $data['Bilanparcours66']['nvstructurereferente_id'] );
 
-                        $rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $vxOrientstruct['Orientstruct']['personne_id'] ) + 1;
+                        $rgorient = $this->Bilanparcours66->Orientstruct->WebrsaOrientstruct->rgorientMax( $vxOrientstruct['Orientstruct']['personne_id'] ) + 1;
                         $origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
 
                         // Sauvegarde de la nouvelle orientation

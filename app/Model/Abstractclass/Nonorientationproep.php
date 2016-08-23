@@ -183,7 +183,7 @@
 			}
 
 			// La dernière orientation
-			$conditions[] = 'Orientstruct.id IN ( '.$this->Orientstruct->sqDerniere().' )';
+			$conditions[] = 'Orientstruct.id IN ( '.$this->Orientstruct->WebrsaOrientstruct->sqDerniere().' )';
 
 			// Conditions de base pour qu'un allocataire puisse passer en EP
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
@@ -378,7 +378,7 @@
 							'typeorient_id' => $dossier['typeorient_id'],
 							'structurereferente_id' => $dossier['structurereferente_id'],
 							'orientstruct_id' => $dossier['orientstruct_id'],
-							'rgorient' => $this->Orientstruct->rgorientMax( $dossiercov58['Dossiercov58']['personne_id'] ) + 1,
+							'rgorient' => $this->Orientstruct->WebrsaOrientstruct->rgorientMax( $dossiercov58['Dossiercov58']['personne_id'] ) + 1,
 							'datedemande' => date( 'd-m-Y' ),
 							'user_id' => ( isset( $dossier['user_id'] ) ) ? $dossier['user_id'] : null
 						)

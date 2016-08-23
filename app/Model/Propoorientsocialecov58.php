@@ -276,7 +276,7 @@
 					if( $values['decisioncov'] == 'valide' ) {
 						list($datevalidation, $heure) = explode(' ', $passagecov58['Cov58']['datecommission']);
 
-						$rgorient = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+						$rgorient = $this->Dossiercov58->Personne->Orientstruct->WebrsaOrientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						$orientstruct = array(
@@ -503,7 +503,7 @@
 			$fileName = '';
 
 			$typeorientEmploiId = Configure::read( 'Typeorient.emploi_id' );
-			$rgOrientMax = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $data['Personne']['id'] );
+			$rgOrientMax = $this->Dossiercov58->Personne->Orientstruct->WebrsaOrientstruct->rgorientMax( $data['Personne']['id'] );
 
 			if ( $data['Decisionpropoorientsocialecov58']['decisioncov'] == 'valide' ) {
 				$fileName = 'decisionorientationsocdefait.odt';

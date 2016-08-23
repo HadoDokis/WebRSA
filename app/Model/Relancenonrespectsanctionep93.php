@@ -1609,7 +1609,7 @@
 			$data['Nonrespectsanctionep93']['Personne']['qual'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['qual'], $qual );
 
 			// On va chercher la dernière orientation de l'allocataire pour l'ajouter aux données
-			$sqDerniere = $this->Nonrespectsanctionep93->Orientstruct->sqDerniere( 'Orientstruct.personne_id' );
+			$sqDerniere = $this->Nonrespectsanctionep93->Orientstruct->WebrsaOrientstruct->sqDerniere( 'Orientstruct.personne_id' );
 			$query = array(
 				'fields' => array_merge(
 					$this->Nonrespectsanctionep93->Orientstruct->fields(),

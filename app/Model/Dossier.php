@@ -300,7 +300,7 @@
 			$conditions[] = array(
 				'OR' => array(
 					'Orientstruct.id IS NULL',
-					'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->sqDerniere().' )',
+					'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )',
 				)
 			);
 
@@ -576,7 +576,7 @@
 
 			// Les personnes du foyer
 			$conditionsDerniereOrientstruct = array(
-				'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->sqDerniere().' )'
+				'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )'
 			);
 
 			$query = array(

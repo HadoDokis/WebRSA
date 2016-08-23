@@ -778,7 +778,7 @@
 				$conditions = $this->conditionsAdresse( $conditions, $search, false, array() );
 
 				// Possédant au moins une orientation
-				$sq = $Dossier->Foyer->Personne->Orientstruct->sqDerniere();
+				$sq = $Dossier->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere();
 				$conditions[] = "Orientstruct.id IN ( {$sq} )";
 
 				if( !empty( $typeorient_id ) ) {
@@ -1119,7 +1119,7 @@
 				$conditions = $this->conditionsAdresse( $conditions, $search, false, array() );
 
 				// Possédant au moins une orientation - FIXME: CG / OA
-				$sq = $Dossier->Foyer->Personne->Orientstruct->sqDerniere();
+				$sq = $Dossier->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere();
 				$conditions[] = "Orientstruct.id IN ( {$sq} )";
 
 //				$conditions[] = "PersonneReferent.dddesignation BETWEEN '{$annee}-{$mois}-01' AND '{$moissuivant}'";
@@ -1284,7 +1284,7 @@
 				$conditions = $this->conditionsAdresse( $conditions, $search, false, array() );
 
 				// Possédant au moins une orientation
-				$sq = $Dossier->Foyer->Personne->Orientstruct->sqDerniere();
+				$sq = $Dossier->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere();
 				$conditions[] = array(
 					"Orientstruct.id IN ( {$sq} )"
 				);

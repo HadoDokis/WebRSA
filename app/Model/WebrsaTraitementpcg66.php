@@ -449,7 +449,7 @@
 					'Traitementpcg66.id' => $id,
 					'OR' => array(
 						'Orientstruct.id IS NULL',
-						'Orientstruct.id IN ( '.$this->Traitementpcg66->Personnepcg66->Personne->Orientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
+						'Orientstruct.id IN ( '.$this->Traitementpcg66->Personnepcg66->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
 					),
 					'OR' => array(
 						'Adressefoyer.id IS NULL',

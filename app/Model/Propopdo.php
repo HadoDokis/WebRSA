@@ -593,7 +593,7 @@
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				// Lecture des données de la structure référente liée à la dernière orientation
-				$sqDerniereOrientstruct = $this->Personne->Orientstruct->sqDerniere( 'Orientstruct.personne_id' );
+				$sqDerniereOrientstruct = $this->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere( 'Orientstruct.personne_id' );
 				$query = array(
 					'fields' => $this->Personne->Orientstruct->Structurereferente->fields(),
 					'contain' => false,

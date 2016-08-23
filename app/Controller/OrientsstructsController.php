@@ -416,7 +416,7 @@
 			//------------------------------------------------------------------
 			$departement = (int)Configure::read( 'Cg.departement' );
 
-			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
+			$rgorient_max = $this->Orientstruct->WebrsaOrientstruct->rgorientMax( $personne_id );
 
 			// Dossiers d'EP en cours de passage et pouvant déboucher sur une réorientation
 			$reorientationseps = $this->Orientstruct->Personne->Dossierep->getReorientationsEnCours( $personne_id );
@@ -563,7 +563,7 @@
 			$originalAddEditFormData = $this->WebrsaOrientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 
 			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
-			if( $this->action === 'edit' && !empty( $originalAddEditFormData['Orientstruct']['date_valid'] ) && $originalAddEditFormData['Orientstruct']['statut_orient'] == 'Orienté' && $originalAddEditFormData['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $originalAddEditFormData['Orientstruct']['personne_id'] ) ) {
+			if( $this->action === 'edit' && !empty( $originalAddEditFormData['Orientstruct']['date_valid'] ) && $originalAddEditFormData['Orientstruct']['statut_orient'] == 'Orienté' && $originalAddEditFormData['Orientstruct']['rgorient'] != $this->Orientstruct->WebrsaOrientstruct->rgorientMax( $originalAddEditFormData['Orientstruct']['personne_id'] ) ) {
 				$this->Session->setFlash( 'Impossible de modifier une autre orientation que la plus récente.', 'flash/error' );
 				$this->redirect( $redirectUrl );
 			}
@@ -704,7 +704,7 @@
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 			
 			if( in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) ) ) {
-				$pdf = $this->Orientstruct->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
+				$pdf = $this->Orientstruct->WebrsaOrientstruct->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 			}
 			else {
 				$pdf = $this->Orientstruct->getStoredPdf( $id, 'date_impression' );

@@ -106,7 +106,7 @@
 						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationproep66']['created'] );
 						list($date_valid, $heure_valid) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 
-						$rgorient = $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+						$rgorient = $this->Orientstruct->WebrsaOrientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
 
 						$orientstruct = array(
@@ -222,7 +222,7 @@
 			);
 			
 			// La dernière orientation
-			$conditions[] = 'Orientstruct.id IN ( '.$this->Orientstruct->sqDerniere().' )';
+			$conditions[] = 'Orientstruct.id IN ( '.$this->Orientstruct->WebrsaOrientstruct->sqDerniere().' )';
 
 			// Conditions de base pour qu'un allocataire puisse passer en EP
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );

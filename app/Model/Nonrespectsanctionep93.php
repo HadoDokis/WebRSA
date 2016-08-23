@@ -1263,7 +1263,7 @@
 							'Contratinsertion.id IS NULL',
 							'Orientstruct.id IS NOT NULL',
 							'Orientstruct.statut_orient' => 'Orienté',
-							'Orientstruct.id IN ( '.$this->Dossierep->Personne->Orientstruct->sqDerniere().' )',
+							'Orientstruct.id IN ( '.$this->Dossierep->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )',
 							'Orientstruct.date_impression <= DATE( NOW() )',
 						),
 						array(

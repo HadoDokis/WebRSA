@@ -768,7 +768,7 @@
 			$this->Structurereferente->Orientstruct->Behaviors->detach( 'StorablePdf' );
 			foreach( $dossierseps as $dossierep ) {
 				if ( in_array( $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['decision'], array( 'accepte', 'refuse' ) ) ) {
-					$rgorient = $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+					$rgorient = $this->Structurereferente->Orientstruct->WebrsaOrientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
 					$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 					$orientstruct = array(

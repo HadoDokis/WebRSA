@@ -177,7 +177,7 @@
 
 				// 2. Jointures
 				$sqDernierPersonneReferent = $this->Personne->PersonneReferent->sqDerniere( 'Personne.id', false );
-				$sqDerniereOrientstruct = $this->Personne->Orientstruct->sqDerniere();
+				$sqDerniereOrientstruct = $this->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere();
 				$sqOrientstructpcd = $this->Personne->sqLatest(
 					'Orientstruct',
 					'date_valid',

@@ -196,7 +196,7 @@
 					// 1. Si la décision n'est pas une annulation
 					if( in_array( $decision, array( 'maintien', 'reorientation' ) ) ) {
 						// Création de la nouvelle orientation
-						$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $personne_id ) + 1;
+						$rgorient = $this->Bilanparcours66->Orientstruct->WebrsaOrientstruct->rgorientMax( $personne_id ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						$orientstruct = array(

@@ -186,7 +186,7 @@
 						list( $date_propo, $heure_propo ) = explode( ' ', Hash::get( $passagecov58, 'Nonorientationprocov58.created' ) );
 						list( $date_valid, $heure_valid ) = explode( ' ', Hash::get( $passagecov58, 'Cov58.datecommission' ) );
 
-						$rgorient = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+						$rgorient = $this->Dossiercov58->Personne->Orientstruct->WebrsaOrientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						$orientstruct = array(
@@ -497,7 +497,7 @@
 						'Calculdroitrsa.toppersdrodevorsa' => 1,
 						'Situationdossierrsa.etatdosrsa' => $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert(),
 						// La dernière orientation
-						'Orientstruct.id IN ( '.$this->Orientstruct->sqDerniere().' )',
+						'Orientstruct.id IN ( '.$this->Orientstruct->WebrsaOrientstruct->sqDerniere().' )',
 						// ...
 						'EXISTS(
 							SELECT

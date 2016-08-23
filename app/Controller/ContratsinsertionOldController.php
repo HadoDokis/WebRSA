@@ -591,7 +591,7 @@ class ContratsinsertionOldController extends AppController
                     'Orientstruct.personne_id' => $personne_id,
                     'Orientstruct.statut_orient' => 'Orienté',
                     $conditionsTypeorient,
-                    'Orientstruct.id IN ( ' . $this->Contratinsertion->Personne->Orientstruct->sqDerniere('Orientstruct.personne_id') . ' )'
+                    'Orientstruct.id IN ( ' . $this->Contratinsertion->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere('Orientstruct.personne_id') . ' )'
                 ),
                 'order' => 'Orientstruct.date_valid DESC',
                 'contain' => array(

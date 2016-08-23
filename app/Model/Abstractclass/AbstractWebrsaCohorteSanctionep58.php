@@ -172,7 +172,7 @@
 							array(
 								'type' => $types['Typeorient'],
 								'conditions' => array(
-									'Orientstruct.id IN ('.$this->Personne->Orientstruct->sqDerniere().')',
+									'Orientstruct.id IN ('.$this->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().')',
 									// En emploi
 									'Orientstruct.typeorient_id IN (
 										SELECT t.id
@@ -254,7 +254,7 @@
 						array(
 							'type' => 'LEFT OUTER',
 							'conditions' => array(
-								'Orientstruct.id IN ('.$this->Personne->Dossierep->Personne->Orientstruct->sqDerniere().')',
+								'Orientstruct.id IN ('.$this->Personne->Dossierep->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().')',
 								// en emploi
 								'Orientstruct.typeorient_id IN (
 									SELECT t.id

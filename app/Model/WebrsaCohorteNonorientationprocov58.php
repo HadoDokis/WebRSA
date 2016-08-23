@@ -297,7 +297,7 @@
 						'Calculdroitrsa.toppersdrodevorsa' => 1,
 						'Situationdossierrsa.etatdosrsa' => $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert(),
 						// La dernière orientation
-						'Orientstruct.id IN ( '.$this->Orientstruct->sqDerniere().' )',
+						'Orientstruct.id IN ( '.$this->Orientstruct->WebrsaOrientstruct->sqDerniere().' )',
 						// ...
 						'EXISTS(
 							SELECT
