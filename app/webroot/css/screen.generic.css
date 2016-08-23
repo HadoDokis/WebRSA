@@ -2268,3 +2268,12 @@ body div.afterLogo {
 	z-index: 3;
 	font-size: 20px;
 }
+
+/* Ajout d'une croix rouge à côté des états du dossier clos dans l'écran de synthèse du suivi' */
+body.accompagnementsbeneficiaires.index td.etatdosrsa6, body.accompagnementsbeneficiaires.index td.etatdosrsa5 {
+	background-image: url( ../img/icons/cross.png );
+	background-repeat: no-repeat;
+	background-position: left top;
+	padding-left: 20px;
+	margin-left: 0;
+}
