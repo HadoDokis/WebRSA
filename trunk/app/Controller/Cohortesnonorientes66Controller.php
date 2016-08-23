@@ -358,7 +358,7 @@
 		 * @return void
 		 */
 		public function impressionOrientation( $id = null ) {
-			$pdf = $this->Personne->Orientstruct->getPdfNonoriente66( $id, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Personne->Orientstruct->WebrsaOrientstruct->getPdfNonoriente66( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ){
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientation-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );

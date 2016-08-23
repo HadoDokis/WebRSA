@@ -624,7 +624,7 @@
 					// Si réorientation, alors passage en EP Parcours "Réorientation ou maintien d'orientation"
 					if( in_array( $defautinsertionep66['Defautinsertionep66']['decision'], $this->decisionsEplParcours ) ) {
 						// En cas de demande de réorientation, l'EPL Audition va statuer et générer l'orientation
-						$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+						$rgorient = $this->Bilanparcours66->Orientstruct->WebrsaOrientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
 
 						$orientstruct = array(

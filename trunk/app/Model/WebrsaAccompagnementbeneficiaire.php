@@ -202,7 +202,7 @@
 							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
-									'Orientstruct.id IN ( '.$this->Personne->Orientstruct->sqDerniere().' )'
+									'Orientstruct.id IN ( '.$this->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )'
 								)
 							)
 						),

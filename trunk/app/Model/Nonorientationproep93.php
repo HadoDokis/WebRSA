@@ -181,7 +181,7 @@
 						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationproep93']['created'] );
 						list($date_valid, $heure_valid) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 
-						$rgorient = $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+						$rgorient = $this->Orientstruct->WebrsaOrientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						$orientstruct = array(

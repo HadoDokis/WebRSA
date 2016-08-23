@@ -126,7 +126,7 @@
 				$saved = true;
 				$this->Propoorientationcov58->begin();
 
-				$this->request->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax( $personne_id );
+				$this->request->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->WebrsaOrientstruct->rgorientMax( $personne_id );
 
 				// Si c'est une régression, on envoie en COV
 				if ( $this->WebrsaOrientstruct->isRegression( $personne_id, $this->request->data['Propoorientationcov58']['typeorient_id'] ) ) {

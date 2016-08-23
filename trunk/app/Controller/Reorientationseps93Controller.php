@@ -295,7 +295,7 @@
 					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 				}
 
-				$this->set( 'nb_orientations', $this->Reorientationep93->Orientstruct->rgorientMax( $personne_id ) );
+				$this->set( 'nb_orientations', $this->Reorientationep93->Orientstruct->WebrsaOrientstruct->rgorientMax( $personne_id ) );
 				$this->set( 'toppersdrodevorsa', $this->Reorientationep93->Orientstruct->Personne->Calculdroitrsa->field( 'toppersdrodevorsa', array( 'Calculdroitrsa.personne_id' => $personne_id ) ) );
 				$this->set( 'personne_id', $personne_id );
 			}

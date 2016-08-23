@@ -482,7 +482,7 @@
 
 			$pdfs = array();
 			foreach( $nonorientes66 as $nonoriente66 ) {
-				$pdfs[] = $Personne->Orientstruct->getPdfNonoriente66( $nonoriente66['Nonoriente66']['orientstruct_id'], $user_id );
+				$pdfs[] = $Personne->Orientstruct->WebrsaOrientstruct->getPdfNonoriente66( $nonoriente66['Nonoriente66']['orientstruct_id'], $user_id );
 			}
 
 			return $pdfs;

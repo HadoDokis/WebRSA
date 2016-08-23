@@ -230,7 +230,7 @@
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
 									'Orientstruct.statut_orient' => 'Orienté',
-									'Orientstruct.id IN ('.$Personne->Orientstruct->sqDerniere('Orientstruct.personne_id').')'
+									'Orientstruct.id IN ('.$Personne->Orientstruct->WebrsaOrientstruct->sqDerniere('Orientstruct.personne_id').')'
 								)
 							)
 						),

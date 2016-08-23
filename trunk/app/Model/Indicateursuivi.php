@@ -61,7 +61,7 @@
 			$conditions[] = array(
 				'OR' => array(
 					'Orientstruct.id IS NULL',
-					'Orientstruct.id IN ( '.$Dossier->Foyer->Personne->Orientstruct->sqDerniere().' )'
+					'Orientstruct.id IN ( '.$Dossier->Foyer->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )'
 				)
 			);
 
@@ -231,7 +231,7 @@
 					array(
 						'type' => 'LEFT OUTER',
 						'conditions' => array(
-							'Orientstruct.id IN ( '.$Personne->Orientstruct->sqDerniere().' )',
+							'Orientstruct.id IN ( '.$Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().' )',
 						)
 					)
 				);

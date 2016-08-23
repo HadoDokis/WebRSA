@@ -296,7 +296,7 @@
 		 * @param integer $orientstruct_id
 		 */
 		public function imprimernotifications( $orientstruct_id ) {
-			$pdf = $this->Nonoriente66->Orientstruct->getPdfNonoriente66( $orientstruct_id, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Nonoriente66->Orientstruct->WebrsaOrientstruct->getPdfNonoriente66( $orientstruct_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ){
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientation-%d-%s.pdf', $orientstruct_id, date( 'Y-m-d' ) ) );

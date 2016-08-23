@@ -301,7 +301,7 @@
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
 				if( $dossierep['Decisionreorientationep93']['decision'] == 'accepte' ) {
-					$rgorient = $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+					$rgorient = $this->Orientstruct->WebrsaOrientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
 					$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
 
 					// Nouvelle orientation

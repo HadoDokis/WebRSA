@@ -43,7 +43,7 @@
 			$Personne = ClassRegistry::init( 'Personne' );
 
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
-			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
+			$sqDerniereOrientstruct = $Personne->Orientstruct->WebrsaOrientstruct->sqDerniere();
 			$sqDernierContratinsertion = array();
 
 			if( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) {

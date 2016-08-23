@@ -1021,7 +1021,7 @@
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
 									'Orientstruct.id IN (
-										'.$this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->sqDerniere().'
+										'.$this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere().'
 									)'
 								)
 							)
@@ -1937,7 +1937,7 @@
 				$querydata['joins'][] = $this->Commissionep->Passagecommissionep->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) );
 				$querydata['joins'][] = $this->Commissionep->Passagecommissionep->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
 
-				$sqDerniereorientstruct = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->sqDerniere( 'Personne.id' );
+				$sqDerniereorientstruct = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->WebrsaOrientstruct->sqDerniere( 'Personne.id' );
 				$querydata['joins'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) );
 				$querydata['joins'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
 
