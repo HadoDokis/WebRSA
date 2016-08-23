@@ -28,7 +28,7 @@
 			$return = parent::beforeFilter();
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'personnessuivis', $this->Suiviaideapre->find( 'list' ) );
-			$this->set( 'aidesApres', $this->Apre->aidesApre );
+			$this->set( 'aidesApres', $this->Apre->WebrsaApre->aidesApre );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 
 			return $return;

@@ -86,7 +86,7 @@
 			$this->Comiteapre->Apre->deepAfterFind = false;
 
 			$containApre = array( );
-			foreach( $this->Apre->aidesApre as $modelAideAlias ) {
+			foreach( $this->Apre->WebrsaApre->aidesApre as $modelAideAlias ) {
 				$modelPieceAlias = 'Piece'.Inflector::underscore( $modelAideAlias );
 				$containApre[$modelAideAlias] = array( $modelPieceAlias );
 			}
@@ -118,7 +118,7 @@
 			$this->_setOptions();
 			$participants = $this->Participantcomite->find( 'list' );
 			$this->set( 'participants', $participants );
-			$this->set( 'listeAidesApre', $this->Apre->aidesApre );
+			$this->set( 'listeAidesApre', $this->Apre->WebrsaApre->aidesApre );
 		}
 
 		/**		 * *********************************************************************************************

@@ -165,7 +165,7 @@
 					$this->Apre->Structurereferente->fields(),
 					$this->Apre->Referent->fields(),
 					array(
-						'( '.$this->Apre->sqApreNomaide().' ) AS "Apre__Natureaide"'
+						'( '.$this->Apre->WebrsaApre->sqApreNomaide().' ) AS "Apre__Natureaide"'
 					)
 				),
 				'conditions' => array(
@@ -185,7 +185,7 @@
 				)
 			);
 
-			$aidesApre = $this->Apre->aidesApre;
+			$aidesApre = $this->Apre->WebrsaApre->aidesApre;
 			sort( $aidesApre );
 			foreach( $aidesApre as $aide ) {
 				$querydata['fields'] = array_merge( $querydata['fields'], $this->Apre->{$aide}->fields() );
@@ -204,7 +204,7 @@
 
 			// Tiers prestataire
 			$conditionsJoinTiersprestataireApre = array();
-			foreach( $this->Apre->modelsFormation as $modelFormation ) {
+			foreach( $this->Apre->WebrsaApre->modelsFormation as $modelFormation ) {
 				$conditionsJoinTiersprestataireApre[] = array(
 					'Tiersprestataireapre.aidesliees' => $modelFormation,
 					"{$modelFormation}.tiersprestataireapre_id IS NOT NULL",
@@ -266,7 +266,7 @@
 			$apre['User'] = $user['User'];
 
 			// Choix du modèle de document
-			if( in_array( $apre['Apre']['Natureaide'], $this->Apre->modelsFormation ) ) {
+			if( in_array( $apre['Apre']['Natureaide'], $this->Apre->WebrsaApre->modelsFormation ) ) {
 				$typeformation = 'Formation';
 			}
 			else {

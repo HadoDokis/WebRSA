@@ -69,7 +69,7 @@
 			$isRecours = Set::classicExtract( $this->request->params, 'named.recours' );
 			$isRapport = Set::classicExtract( $this->request->params, 'named.rapport' );
 
-			$querydata = $this->ApreComiteapre->Apre->qdPourComiteapre( $id, $isRecours );
+			$querydata = $this->ApreComiteapre->Apre->WebrsaApre->qdPourComiteapre( $id, $isRecours );
 			$this->assert( !empty( $querydata ), 'error404' );
 
 			$this->Apre->deepAfterFind = false;

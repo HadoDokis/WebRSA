@@ -232,7 +232,7 @@
 					)
 				);
 
-				foreach( $this->Apre->modelsFormation as $modelName ) {
+				foreach( $this->Apre->WebrsaApre->modelsFormation as $modelName ) {
 					$aliases[$modelName] = Inflector::tableize( $modelName );
 					$join = $this->Tiersprestataireapre->join(
 						$modelName,

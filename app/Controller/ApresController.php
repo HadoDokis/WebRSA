@@ -369,7 +369,7 @@
 					}
 				}
 				else {
-					foreach( $this->Apre->aidesApre as $aide ) {
+					foreach( $this->Apre->WebrsaApre->aidesApre as $aide ) {
 						$montantaide = Set::classicExtract( $apre, "{$aide}.montantaide" );
 						if( !empty( $montantaide ) ) {
 							$montantComplementaires += $montantaide;
@@ -620,7 +620,7 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Liste de pièces pour chaque modèle lié
-			foreach( $this->Apre->aidesApre as $modeleLie ) {
+			foreach( $this->Apre->WebrsaApre->aidesApre as $modeleLie ) {
 				$tablePieces = 'Piece'.strtolower( $modeleLie );
 				$nomVar = 'pieces'.strtolower( $modeleLie );
 				$list = $this->Apre->{$modeleLie}->{$tablePieces}->find( 'list' );
@@ -628,7 +628,7 @@
 			}
 
 			// Liste des tiers prestataires pour chaque formation
-			foreach( $this->Apre->modelsFormation as $modelFormation ) {
+			foreach( $this->Apre->WebrsaApre->modelsFormation as $modelFormation ) {
 				$list = $this->Tiersprestataireapre->find(
 					'list',
 					array(
@@ -653,7 +653,7 @@
 				$apre_id = $id;
 
 				$contain = array( 'Pieceapre' );
-				foreach( $this->Apre->aidesApre as $modelAideAlias ) {
+				foreach( $this->Apre->WebrsaApre->aidesApre as $modelAideAlias ) {
 					$modelPieceAlias = 'Piece'.Inflector::underscore( $modelAideAlias );
 					$contain[$modelAideAlias] = array( $modelPieceAlias );
 				}
@@ -742,6 +742,11 @@
 				$saveApre = array( );
 				$saveApre['Apre'] = $this->request->data['Apre'];
 				$saveApre['Pieceapre'] = $this->request->data['Pieceapre'];
+				
+				// Compatibilité avec dependentSelect du referent_id
+				if (Hash::get($saveApre, 'Apre.referent_id') && strpos($saveApre['Apre']['referent_id'], '_')) {
+					$saveApre['Apre']['referent_id'] = suffix($saveApre['Apre']['referent_id']);
+				}
 
 				if( $this->Apre->saveAll( $saveApre, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Apre->saveAll( $saveApre, array( 'validate' => 'first', 'atomic' => false ) );
@@ -769,7 +774,7 @@
 					}
 
 					if( $saved ) {
-						$this->Apre->supprimeAidesObsoletes( $this->request->data );
+						$this->Apre->WebrsaApre->supprimeAidesObsoletes( $this->request->data );
 						$this->Apre->commit();
 						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -846,7 +851,7 @@
 		public function impression( $id = null ) {
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
 
-			$pdf = $this->Apre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Apre->WebrsaApre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );

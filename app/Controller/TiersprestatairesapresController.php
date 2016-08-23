@@ -30,7 +30,7 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$options = $this->Tiersprestataireapre->enums();
 			$this->set( 'options', $options );
-			$this->set( 'aidesApres', $this->Apre->aidesApre );
+			$this->set( 'aidesApres', $this->Apre->WebrsaApre->aidesApre );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 		}
 

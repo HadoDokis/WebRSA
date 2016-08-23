@@ -175,7 +175,7 @@
 				$modeleodt = 'APRE/Paiement/paiement_tiersprestataire.odt';
 			}
 			else if( $typeapre == 'complementaire' && $dest == 'beneficiaire' ) {
-				if( !empty( $apre['Apre']['nomaide'] ) && in_array( $apre['Apre']['nomaide'], $this->Etatliquidatif->Apre->modelsFormation ) ) {
+				if( !empty( $apre['Apre']['nomaide'] ) && in_array( $apre['Apre']['nomaide'], $this->Etatliquidatif->Apre->WebrsaApre->modelsFormation ) ) {
 					$typeformation = 'formation';
 				}
 				else {
