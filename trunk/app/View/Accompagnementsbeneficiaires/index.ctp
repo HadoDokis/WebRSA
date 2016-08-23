@@ -11,7 +11,7 @@
 	App::uses( 'WebrsaAccess', 'Utility' );
 	WebrsaAccess::init( $dossierMenu );
 
-	$this->pageTitle = DefaultUtility::evaluateString( $details, 'Synthèse de l\'accompagnement<br/>#Personne.qual# #Personne.nom# #Personne.prenom#' );
+	$this->pageTitle = DefaultUtility::evaluateString( $details, 'Synthèse du suivi<br/>#Personne.qual# #Personne.nom# #Personne.prenom#' );
 	echo $this->Html->tag( 'h1', $this->pageTitle );
 	$this->pageTitle = str_replace( '<br/>', ' de ', $this->pageTitle );
 ?>

@@ -137,10 +137,6 @@
 					$subAllocataire["Mémos ({$count})"] = array( 'url' => array( 'controller' => 'memos', 'action' => 'index', $personne['id'] ) );
 				}
 
-				if( $departement == 93 ) {
-					$subAllocataire['Accompagnement'] = array( 'url' => array( 'controller' => 'accompagnementsbeneficiaires', 'action' => 'index', $personne['id'] ) );
-				}
-
 				// Droit
 				$subAllocataire['Droit'] = array(
 					( $departement == 93 ? 'DSP' : 'DSP d\'origine' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] ) ),
@@ -179,6 +175,8 @@
 					$subAllocataire['Accompagnement du parcours']['Questionnaires D2'] = array(
 						'url' => array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'index', $personne['id'] )
 					);
+
+					$subAllocataire['Accompagnement du parcours']['Synthèse du suivi'] = array( 'url' => array( 'controller' => 'accompagnementsbeneficiaires', 'action' => 'index', $personne['id'] ) );
 				}
 
 				$contratcontroller = 'contratsinsertion';
@@ -248,7 +246,7 @@
 					'Ressources' => array( 'url' => array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] ) ),
 				);
 			}
-			
+
 			// Informations personne
 			$subAllocataire['Informations personne'] = array(
 				'url' => '#',
@@ -303,7 +301,7 @@
 				'Tags du foyer' => array( 'url' => array( 'controller' => 'tags', 'action' => 'index', 'Foyer', $dossier['Foyer']['id'] ) ),
 			);
 		}
-		
+
 		$items['Informations foyer'] += array(
 			'Données CAF' => array(
 				'disabled' => !Configure::read('Module.Donneescaf.enabled'),
