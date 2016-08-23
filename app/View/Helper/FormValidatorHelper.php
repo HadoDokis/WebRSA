@@ -81,7 +81,7 @@
 		
 			if ( $useRequestData ){
 				$requestDataIsString = is_string($useRequestData) && isset($this->request->data[$useRequestData]);
-				$requestData = $requestDataIsString ? $this->request->data[$useRequestData] : $this->request->data;
+				$requestData = $requestDataIsString ? $this->request->data[$useRequestData] : (array)$this->request->data;
 				
 				if ( count($requestData) === 0 ){
 					$this->validationJson = 'undefined';

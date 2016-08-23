@@ -259,7 +259,7 @@
 			}
 			// Mise à jour
 			else {
-				$query = $this->Cui66->Cui->queryView($id);
+				$query = $this->Cui66->Cui->WebrsaCui->queryView($id);
 				$result = $this->Cui66->Cui->find( 'first', $query );
 
 				$result = $this->Cui66->Cui->Entreeromev3->prepareFormDataAddEdit( $result );
@@ -421,8 +421,8 @@
 		 * @return type
 		 */
 		public function queryImpression( $cui_id = null ){
-			$queryView = $this->Cui66->Cui->queryView( $cui_id );
-			$queryPersonne = $this->Cui66->Cui->queryPersonne( 'Cui.personne_id' );
+			$queryView = $this->Cui66->Cui->WebrsaCui->queryView( $cui_id );
+			$queryPersonne = $this->Cui66->Cui->WebrsaCui->queryPersonne( 'Cui.personne_id' );
 			
 			$query['fields'] = array_merge( 
 				$queryView['fields'], 
