@@ -1966,7 +1966,7 @@
 		public function options() {
 			$options = $this->Contratinsertion->enums();
 
-			$options['Contratinsertion']['referent_id'] = $this->Contratinsertion->Referent->listOptions();
+			$options['Contratinsertion']['referent_id'] = $this->Contratinsertion->Referent->WebrsaReferent->listOptions();
 			$options['Contratinsertion']['structurereferente_id'] = $this->Contratinsertion->Structurereferente->listOptions();
 
 			return $options;

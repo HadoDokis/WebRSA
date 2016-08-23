@@ -657,7 +657,7 @@
             $structs = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'conditions' => array( 'Structurereferente.apre' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) );
 			$this->set( 'structs', $structs );
 			///Récupération de la liste des référents liés à l'APRE
-			$referents = $this->Referent->listOptions();
+			$referents = $this->Referent->WebrsaReferent->listOptions();
 			$this->set( 'referents', $referents );
 			///Récupération de la liste des référents liés à l'APRE
 			$typesaides = $this->Typeaideapre66->listOptions();

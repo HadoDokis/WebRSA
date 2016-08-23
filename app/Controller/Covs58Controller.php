@@ -109,7 +109,7 @@
 // 			$options = array_merge($options, $this->Cov58->Passagecov58->Dossiercov58->enums());
 			$typesorients = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
 			$structuresreferentes = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
-			$referents = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Referent->listOptions();
+			$referents = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Referent->WebrsaReferent->listOptions();
 			$sitescovs58 = $this->Cov58->Sitecov58->find( 'list', array( 'fields' => array( 'name' ) ) );
 
 			$referentsorientants = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Referent->find( 'list' );

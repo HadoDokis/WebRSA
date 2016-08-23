@@ -108,7 +108,7 @@
 				array(
 					'Orientstruct' => array(
 						'structureorientante_id' => $Controller->Orientstruct->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
-						'referentorientant_id' => $Controller->Orientstruct->Structurereferente->Referent->listOptions(),
+						'referentorientant_id' => $Controller->Orientstruct->Structurereferente->Referent->WebrsaReferent->listOptions(),
 					)
 				)
 			);

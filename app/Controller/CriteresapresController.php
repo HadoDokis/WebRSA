@@ -62,7 +62,7 @@
 
             $this->set( 'structures', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Structurereferente.apre' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) ) );
 
-			$this->set( 'referents', $this->Apre->Referent->listOptions() );
+			$this->set( 'referents', $this->Apre->Referent->WebrsaReferent->listOptions() );
 		}
 
 		/**

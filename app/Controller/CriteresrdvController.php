@@ -56,7 +56,7 @@
 			$typerdv = $this->Rendezvous->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
 			$this->set( 'typerdv', $typerdv );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->find( 'list' ) );
-			$this->set( 'referents', $this->Rendezvous->Referent->listOptions() );
+			$this->set( 'referents', $this->Rendezvous->Referent->WebrsaReferent->listOptions() );
 
 			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );

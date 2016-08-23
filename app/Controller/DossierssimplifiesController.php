@@ -56,7 +56,7 @@
 			$this->set( 'statut_orient', $statut_orient );
 			$this->set( 'options', $this->Typeorient->listOptions() );
 			$this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
-			$this->set( 'refsorientants', $this->Structurereferente->Referent->listOptions() );
+			$this->set( 'refsorientants', $this->Structurereferente->Referent->WebrsaReferent->listOptions() );
 		}
 
 

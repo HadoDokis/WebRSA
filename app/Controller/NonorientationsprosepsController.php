@@ -74,7 +74,7 @@
 
 		 protected function _setOptions(){
 			$this->set( 'structs', $this->Nonorientationproep66->Orientstruct->Structurereferente->listOptions() );
-			$this->set( 'referents', $this->Nonorientationproep66->Orientstruct->Referent->listOptions() );
+			$this->set( 'referents', $this->Nonorientationproep66->Orientstruct->Referent->WebrsaReferent->listOptions() );
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->loadModel( 'Canton' );
 				$this->set( 'cantons', $this->Canton->selectList() );

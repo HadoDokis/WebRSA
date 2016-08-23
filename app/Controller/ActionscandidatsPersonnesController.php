@@ -635,7 +635,7 @@
 			$this->set( 'structs', $structs );
 
 			///Récupération de la liste des référents
-			$referents = $this->ActioncandidatPersonne->Personne->Referent->listOptions();
+			$referents = $this->ActioncandidatPersonne->Personne->Referent->WebrsaReferent->listOptions();
 			$this->set( 'referents', $referents );
 
 			///Récupération de la liste des actions avec une fiche de candidature

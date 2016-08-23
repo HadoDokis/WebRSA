@@ -67,7 +67,7 @@
 
 			if( !empty( $this->request->data ) ) {
 				$search = $this->request->data['Search'];
-				$queryData = $this->Referent->search($search);
+				$queryData = $this->Referent->WebrsaReferent->search($search);
 				$queryData['limit'] = 20;
 				$this->paginate = $queryData;
 				$referents = $this->paginate( 'Referent', array(), array(), !Hash::get($search, 'Pagination.nombre_total') );
@@ -256,7 +256,7 @@
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
 			if( !empty( $this->request->data ) ) {
-				$queryData = $this->Referent->search( $this->request->data );
+				$queryData = $this->Referent->WebrsaReferent->search( $this->request->data );
 				$queryData['limit'] = 20;
                 $queryData['conditions'][] = array( 'Referent.structurereferente_id' => $structurereferente_id );
 				$this->paginate = $queryData;

@@ -537,7 +537,7 @@
 
 			$this->Jetons2->get( $dossier_id );
 
-			$referents = $this->Rendezvous->Referent->listOptions();
+			$referents = $this->Rendezvous->Referent->WebrsaReferent->listOptions();
 			$this->set( 'referents', $referents );
 
 

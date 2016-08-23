@@ -95,7 +95,7 @@
 			if( $params['find'] === true ) {
 				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
 	// 			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
-				$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->listOptions();
+				$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->WebrsaReferent->listOptions();
 				$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 				$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 			}

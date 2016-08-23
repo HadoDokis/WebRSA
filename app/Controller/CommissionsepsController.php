@@ -176,7 +176,7 @@
 			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
 				$typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
 				$structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
-				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->listOptions();
+				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->WebrsaReferent->listOptions();
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Decisionsaisinepdoep66->Decisionpdo->find( 'list' );
 					$options = Set::merge( $options, $this->Commissionep->Passagecommissionep->Dossierep->Personne->Bilanparcours66->enums() );

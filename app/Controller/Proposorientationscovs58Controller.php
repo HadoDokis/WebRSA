@@ -48,12 +48,12 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$this->set( 'referents', $this->Propoorientationcov58->Referent->listOptions() );
+			$this->set( 'referents', $this->Propoorientationcov58->Referent->WebrsaReferent->listOptions() );
 			$this->set( 'typesorients', $this->Propoorientationcov58->Typeorient->listOptions() );
 			$this->set( 'structuresreferentes', $this->Propoorientationcov58->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
 
 			//Ajout des structures et référents orientants
-			$this->set( 'refsorientants', $this->Propoorientationcov58->Referent->listOptions() );
+			$this->set( 'refsorientants', $this->Propoorientationcov58->Referent->WebrsaReferent->listOptions() );
 			$this->set( 'structsorientantes', $this->Propoorientationcov58->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
 		}
 
