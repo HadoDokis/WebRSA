@@ -3519,7 +3519,7 @@ msgstr "Visualisation d'un passage en COV"
 #-------------------------------------------------------------------------------
 
 msgid "Module:Accompagnementsbeneficiaires"
-msgstr "Accompagnement du bénéficiaire"
+msgstr "Synthèse du suivi du bénéficiaire"
 
 msgid "Accompagnementsbeneficiaires:index"
-msgstr "Visualisation de l'accompagnement du bénéficiaire"
+msgstr "Visualisation de la synthèse du suivi du bénéficiaire"
