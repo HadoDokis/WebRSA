@@ -800,7 +800,7 @@
 			$this->WebrsaAccesses->check($actioncandidat_personne_id);
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->ActioncandidatPersonne->personneId( $actioncandidat_personne_id ) ) );
 
-			$pdf = $this->ActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
+			$pdf = $this->ActioncandidatPersonne->WebrsaActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheCandidature.pdf' );
@@ -877,7 +877,7 @@
 		public function view( $id ) {
 			$this->WebrsaAccesses->check($id);
 			if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
-				$actioncandidat_personne = $this->ActioncandidatPersonne->getFichecandidatureData( $id );
+				$actioncandidat_personne = $this->ActioncandidatPersonne->WebrsaActioncandidatPersonne->getFichecandidatureData( $id );
 
 				if( empty( $actioncandidat_personne ) ) {
 					throw new Error404Exception();
@@ -887,7 +887,7 @@
 				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 				$this->set( 'actionscandidatspersonne', $actioncandidat_personne );
-				$this->set( 'options', $this->ActioncandidatPersonne->getFichecandidatureOptions() );
+				$this->set( 'options', $this->ActioncandidatPersonne->WebrsaActioncandidatPersonne->getFichecandidatureOptions() );
 
 				$this->render( 'view' );
 			}
