@@ -95,6 +95,9 @@ msgstr "Statut actuel"
 msgid "Action.informations"
 msgstr "Informations"
 
+msgid "Action.objetrdv"
+msgstr "Objectif"
+
 msgid "Action.commentairerdv"
 msgstr "Compte-rendu"
 

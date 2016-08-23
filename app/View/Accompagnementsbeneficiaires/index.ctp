@@ -310,14 +310,14 @@
 					//  Lien voir
 					//  --------------------------------------------------------
 					'/Rendezvous/view/#Rendezvous.id#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'condition' => 'in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif" ) )',
 						'condition_group' => 'view',
 						'disabled' => '"#/Rendezvous/view#" != true'
 					),
 					'/Cers93/view/#Contratinsertion.id#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'condition' => '"#Action.name#" == "Contratinsertion"',
 						'condition_group' => 'view',
@@ -325,14 +325,14 @@
 					),
 					// INFO: pas de visualisation pour la fiche de prescription
 					'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'disabled' => true,
 						'condition' => '"#Action.name#" == "Ficheprescription93"',
 						'condition_group' => 'view'
 					),
 					'/Questionnairesd1pdvs93/view/#Questionnaired1pdv93.id#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'condition' => '"#Action.name#" == "Questionnaired1pdv93"',
 						'condition_group' => 'view',
@@ -340,27 +340,27 @@
 					),
 					// INFO: pas de visualisation pour le questionnaire D2
 					'/Questionnairesd2pdvs93/view/#Questionnaired2pdv93.id#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'disabled' => true,
 						'condition' => '"#Action.name#" == "Questionnaired2pdv93"',
 						'condition_group' => 'view'
 					),
 					'/Dsps/view_revs/#DspRev.id#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'condition' => '"#Action.name#" == "DspRev"',
 						'condition_group' => 'view'
 					),
 					'/Entretiens/view/#Entretien.id#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'condition' => '"#Action.name#" == "Entretien"',
 						'condition_group' => 'view',
 						'disabled' => '"#/Entretiens/view#" != true'
 					),
 					'/#Action.view#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'msgid' => 'Voir',
 						'disabled' => true,
 						'condition' => '!in_array( "#Action.name#", array( "Rendezvousindividuel", "Rendezvouscollectif", "Contratinsertion", "Ficheprescription93", "Questionnaired1pdv93", "Questionnaired2pdv93", "DspRev", "Entretien" ) )',
@@ -438,6 +438,10 @@
 					'options' => $options,
 					'id' => 'TableAccompagnementsbeneficiairesIndexActions',
 					'innerTable' => array(
+						'Rendezvous.objetrdv' => array(
+							'label' => __m( 'Action.objetrdv' ),
+							'condition' => 'in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel" ) )',
+						),
 						'Rendezvous.commentairerdv' => array(
 							'label' => __m( 'Action.commentairerdv' ),
 							'condition' => 'in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel" ) )',

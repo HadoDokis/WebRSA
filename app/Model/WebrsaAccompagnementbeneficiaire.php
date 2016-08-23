@@ -327,6 +327,7 @@
 						'Referent.nom_complet',
 						'Statutrdv.libelle',
 						'Rendezvous.thematiques_virgules',
+						'Rendezvous.objetrdv',
 						'Rendezvous.commentairerdv'
 					),
 					'joins' => array(
@@ -347,6 +348,7 @@
 						'Referent.nom_complet',
 						'Statutrdv.libelle',
 						'Rendezvous.thematiques_virgules',
+						'Rendezvous.objetrdv',
 						'Rendezvous.commentairerdv'
 					),
 					'joins' => array(
