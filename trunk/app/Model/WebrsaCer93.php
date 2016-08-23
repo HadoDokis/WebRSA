@@ -247,7 +247,7 @@
 				),
 				'Contratinsertion' => array(
 					'structurereferente_id' => $this->Cer93->Contratinsertion->Structurereferente->listOptions(),
-					'referent_id' => $this->Cer93->Contratinsertion->Referent->listOptions()
+					'referent_id' => $this->Cer93->Contratinsertion->Referent->WebrsaReferent->listOptions()
 				),
 				'Prestation' => array(
 					'rolepers' => $this->Cer93->Contratinsertion->Personne->Prestation->enum( 'rolepers' )

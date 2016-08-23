@@ -1343,7 +1343,7 @@ class ContratsinsertionOldController extends AppController
             $structures = $this->Contratinsertion->Structurereferente->listOptions();
         }
 
-        $referents = $this->Contratinsertion->Referent->listOptions();
+        $referents = $this->Contratinsertion->Referent->WebrsaReferent->listOptions();
 
         $struct_id = Set::classicExtract($this->request->data, 'Contratinsertion.structurereferente_id');
         // FIXME: $this->request->data Contratinsertion.structurereferente_id

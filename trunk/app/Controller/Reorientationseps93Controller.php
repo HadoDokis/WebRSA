@@ -52,7 +52,7 @@
 // 			$options['Reorientationep93']['typeorient_id'] = $this->Reorientationep93->Typeorient->listOptions();
 // 			$options['Reorientationep93']['structurereferente_id'] = $this->Reorientationep93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 // 			$options['Reorientationep93']['motifreorientep93_id'] = $this->Reorientationep93->Motifreorientep93->find( 'list' );
-// 			$options['Reorientationep93']['referent_id'] = $this->Reorientationep93->Referent->listOptions();
+// 			$options['Reorientationep93']['referent_id'] = $this->Reorientationep93->Referent->WebrsaReferent->listOptions();
 // 			$this->set( compact( 'options' ) );
 		}
 
@@ -204,7 +204,7 @@
 					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'list', 'conditions' => array( 'Structurereferente.orientation' => 'O' ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'] ) ),
 					'typeorient_id' => $this->Reorientationep93->Typeorient->listOptions(),
 					'motifreorientep93_id' => $this->Reorientationep93->Motifreorientep93->find( 'list' ),
-					'referent_id' => $this->Reorientationep93->Referent->listOptions()
+					'referent_id' => $this->Reorientationep93->Referent->WebrsaReferent->listOptions()
 				)
 			);
 

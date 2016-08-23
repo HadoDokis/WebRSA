@@ -41,7 +41,7 @@
 // 			$struct = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 // 			$this->set( 'struct', $struct );
 			$this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referents', $this->Contratinsertion->Referent->listOptions() );
+			$this->set( 'referents', $this->Contratinsertion->Referent->WebrsaReferent->listOptions() );
 
 			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
 			$personne_suivi = $this->Contratinsertion->find(

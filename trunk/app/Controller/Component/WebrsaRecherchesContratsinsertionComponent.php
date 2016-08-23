@@ -141,7 +141,7 @@
 					array(
 						'Contratinsertion' => array(
 							'structurereferente_id' => $Controller->Contratinsertion->Structurereferente->listOptions( array( 'orientation' => 'O' ) ),
-							'referent_id' => $Controller->Contratinsertion->Structurereferente->Referent->listOptions()
+							'referent_id' => $Controller->Contratinsertion->Structurereferente->Referent->WebrsaReferent->listOptions()
 						)
 					)
 				);
@@ -149,7 +149,7 @@
 
 			if ($departement === 66) {
 				$options['Dernierreferent']['dernierreferent_id'] =
-					$Controller->Contratinsertion->Structurereferente->Referent->Dernierreferent->listOptions();
+					$Controller->Contratinsertion->Structurereferente->Referent->DernierReferent->WebrsaReferent->listOptions();
 			}
 
 			return $options;

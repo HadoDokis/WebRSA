@@ -691,7 +691,7 @@
 			$structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
 			$this->set( 'structs', $structs );
 			///Récupération de la liste des référents liés à l'APRE
-			$referents = $this->Referent->listOptions();
+			$referents = $this->Referent->WebrsaReferent->listOptions();
 			$this->set( 'referents', $referents );
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur

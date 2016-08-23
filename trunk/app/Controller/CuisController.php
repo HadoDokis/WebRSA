@@ -146,7 +146,7 @@
 			}
 
 
-			$this->set( 'prestataires', $this->Cui->Referent->listOptions() );
+			$this->set( 'prestataires', $this->Cui->Referent->WebrsaReferent->listOptions() );
 			$this->set( 'referents', $this->Cui->Referent->find( 'list', array( 'recursive' => false ) ) );
 
 			$this->set( 'structs', $this->Cui->Structurereferente->listeParType( array( 'cui' => true ) ) );

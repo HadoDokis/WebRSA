@@ -249,7 +249,7 @@
 			);
 
 			$structures = $this->Propocontratinsertioncov58->Structurereferente->listOptions();
-			$referents = $this->Propocontratinsertioncov58->Referent->listOptions();
+			$referents = $this->Propocontratinsertioncov58->Referent->WebrsaReferent->listOptions();
 
 			$this->set( 'tc', $tc );
 

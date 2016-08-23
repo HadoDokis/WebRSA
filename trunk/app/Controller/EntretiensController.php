@@ -365,7 +365,7 @@
 			$this->set( 'structs', $structs );
 
 			///Récupération de la liste des référents
-			$referents = $this->Entretien->Referent->listOptions();
+			$referents = $this->Entretien->Referent->WebrsaReferent->listOptions();
 			$this->set( 'referents', $referents );
 
             //On affiche les actions inactives en édition mais pas en ajout,

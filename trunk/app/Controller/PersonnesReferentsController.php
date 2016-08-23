@@ -457,7 +457,7 @@
 			// Cache géré dans les modèles
 			$options = array(
 				'PersonneReferent' => array(
-					'referent_id' => $this->set( 'referents', $this->PersonneReferent->Referent->listOptions() ),
+					'referent_id' => $this->set( 'referents', $this->PersonneReferent->Referent->WebrsaReferent->listOptions() ),
 					'structurereferente_id' => $this->PersonneReferent->Referent->Structurereferente->listOptions()
 				)
 			);

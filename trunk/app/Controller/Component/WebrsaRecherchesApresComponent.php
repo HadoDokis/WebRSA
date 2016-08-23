@@ -44,7 +44,7 @@
 			$departement = (int)Configure::read( 'Cg.departement' );
 
 			$options['Apre']['structurereferente_id'] = $this->Apre->Structurereferente->listOptions( array( 'orientation' => 'O' ) );
-			$options['Apre']['referent_id'] = $this->Apre->Structurereferente->Referent->listOptions();
+			$options['Apre']['referent_id'] = $this->Apre->Structurereferente->Referent->WebrsaReferent->listOptions();
 
 			if( $departement === 66 ) {
 				$options = Hash::merge(

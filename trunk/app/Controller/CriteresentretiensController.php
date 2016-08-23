@@ -35,7 +35,7 @@
 			$this->set( 'options', (array)Hash::get( $this->Entretien->enums(), 'Entretien' ) );
 // 			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
 			$this->set( 'structs', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referents', $this->Entretien->Referent->listOptions() );
+			$this->set( 'referents', $this->Entretien->Referent->WebrsaReferent->listOptions() );
 		}
 
 		/**

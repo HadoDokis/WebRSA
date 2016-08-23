@@ -183,6 +183,13 @@
 				)
 			)
 		);
+		
+		/**
+		 * Les modèles qui seront utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array('WebrsaActioncandidatPersonne');
 
 		/**
 		 * __construct($id = false, $table = null, $ds = null)
@@ -214,7 +221,7 @@
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
 			//  Calcul de la position de la fiche de calcul
-			$this->data = $this->bilanAccueil( $this->data );
+			$this->data = $this->WebrsaActioncandidatPersonne->bilanAccueil( $this->data );
 
 			return $return;
 		}

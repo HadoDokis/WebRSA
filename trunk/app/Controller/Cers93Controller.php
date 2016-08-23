@@ -521,7 +521,7 @@
 			$options = array(
 				'Contratinsertion' => array(
 					'structurereferente_id' => $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ),
-					'referent_id' => $this->Cer93->Contratinsertion->Referent->listOptions()
+					'referent_id' => $this->Cer93->Contratinsertion->Referent->WebrsaReferent->listOptions()
 				),
 				'Prestation' => array(
 					'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers')

@@ -28,7 +28,7 @@
 		public function _setOptions() {
 			$this->set( 'options', (array)Hash::get( $this->Bilanparcours66->enums(), 'Bilanparcours66' ) );
             $this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referents', $this->Bilanparcours66->Referent->listOptions() );
+			$this->set( 'referents', $this->Bilanparcours66->Referent->WebrsaReferent->listOptions() );
 		}
 
 		/**
