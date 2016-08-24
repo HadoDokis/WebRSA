@@ -612,8 +612,6 @@
 		}
 
         /**
-		 * @fixme docs
-		 *
 		 * Retourne la liste des projets de villes territoriaux, utilisée par les
 		 * utilisateurs de type "cg" et "cpdvcom" du CG 93.
 		 * Mise en cache dans la session de l'utilisateur.
@@ -668,6 +666,12 @@
 						)
 					);
 
+					// Si l'utilisateur est lié à un CPDVCOM, on limite la liste
+					if( 'externe_cpdvcom' === $user_type ) {
+						$communautesr_id = $Controller->Session->read( 'Auth.User.communautesr_id' );
+						$query['conditions'][] = array( 'Communautesr.id' => $communautesr_id );
+					}
+
 					$results['list'] = $Controller->Communautesr->find( 'list', $query );
 
 					// Liens entre les projets de villes comunautaires et les structures référentes
@@ -678,6 +682,12 @@
 						),
 						'contain' => false
 					);
+
+					// Si l'utilisateur est lié à un CPDVCOM, on limite la liste
+					if( 'externe_cpdvcom' === $user_type ) {
+						$communautesr_id = $Controller->Session->read( 'Auth.User.communautesr_id' );
+						$query['conditions'][] = array( 'CommunautesrStructurereferente.communautesr_id' => $communautesr_id );
+					}
 
 					$links = $Controller->Communautesr->CommunautesrStructurereferente->find( 'all', $query );
 
