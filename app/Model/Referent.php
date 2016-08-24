@@ -386,18 +386,6 @@
 		);
 
 		/**
-		 * Exécute les différentes méthods du modèle permettant la mise en cache.
-		 * Utilisé au préchargement de l'application (/prechargements/index).
-		 *
-		 * @return boolean true en cas de succès, false en cas d'erreur,
-		 * 	null pour les fonctions vides.
-		 */
-		public function prechargement() {
-			$success = $this->WebrsaReferent->regenerateCache();
-			return $success;
-		}
-
-		/**
 		 * Après la sauvegarde, on met à jour la table Dernierreferent
 		 *
 		 * @param boolean $created True if this save created a new record
@@ -453,21 +441,6 @@
 			$results[$this->alias]['qual'] = $this->Option->qual();
 
 			return $results;
-		}
-		
-		/**
-		 * Suppression et regénération du cache.
-		 *
-		 * @return boolean
-		 */
-		public function regenerateCache() {
-			$this->_clearModelCache();
-
-			// Regénération des éléments du cache.
-			$success = ( $this->WebrsaReferent->listOptions() !== false )
-				&& ( $this->WebrsaReferent->listOptionsParStructure() !== false );
-
-			return $success;
 		}
 	}
 ?>
