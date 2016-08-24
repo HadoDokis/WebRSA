@@ -48,8 +48,7 @@
 	echo $this->Default3->actions( $actions );
 
 	// 1. Formulaire de recherche, CG
-
-	echo $this->Default3->DefaultForm->create( null, array( 'novalidate' => 'novalidate', 'id' => $searchFormId, 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Default3->DefaultForm->create( null, array( 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->params['action'] ), 'novalidate' => 'novalidate', 'id' => $searchFormId, 'class' => ( isset( $results ) ? 'folded' : 'unfolded' ) ) );
 
 	echo $this->Default3->subform(
 		array(
@@ -70,14 +69,6 @@
 			)
 		);
 	}
-
-	/*if( !empty( $tableau ) && in_array( $type, array( 'cg', 'externe_cpdvcom' ) ) ) {
-		echo $this->Default3->subform(
-			array(
-				'Search.statistiques_internes' => array( 'type' => 'checkbox', 'label' => 'Statistiques internes' )
-			)
-		);
-	}*/
 
 	if( in_array( $type, array( 'cg' ) ) ) {
 		echo '<fieldset class="invisible" id="SearchStructurereferenteFieldsetPdv">';
@@ -118,6 +109,7 @@
 	}
 
 	if( !empty( $tableau ) && in_array( $type, array( 'cg', 'externe_cpdvcom' ) ) ) {
+		echo '<fieldset class="invisible" id="SearchStructurereferenteIdMacro">';
 		echo $this->SearchForm->dependantCheckboxes(
 			'Search.structurereferente_id',
 			array(
@@ -125,11 +117,11 @@
 				'class' => 'divideInto3Collumn',
 				'buttons' => true,
 				'autoCheck' => true,
-				'id' => 'SearchStructurereferenteIdMacro',
 				'domain' => 'tableauxsuivispdvs93',
 				'hide' => true
 			)
 		);
+		echo '</fieldset>';
 	}
 
 	// Formulaire de recherche seulement
@@ -217,6 +209,13 @@
 	echo $this->Observer->disableFieldsOnValue(
 		'Search.communautesr_id',
 		'Search.referent_id',
+		'',
+		false,
+		true
+	);
+	echo $this->Observer->disableFieldsetOnValue(
+		'Search.communautesr_id',
+		'SearchStructurereferenteIdMacro',
 		'',
 		false,
 		true
