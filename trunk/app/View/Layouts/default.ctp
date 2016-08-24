@@ -137,7 +137,7 @@
 			<div class="afterLogo"><?php echo Configure::read('UI.afterLogo.text');?></div>
 		</div>
 	<?php endif;?>
-		
+
 <?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>
 	<div id="alertEndSession" style="display: none;">
 		<div id="popups" style="z-index: 1000;">
@@ -185,7 +185,7 @@
 				?>
 			</div>
 			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>
-				webrsa v. <?php echo app_version();?> 2009 - 2014 @ Adullact.
+				webrsa v. <?php echo app_version();?> 2009 - 2016 @ Adullact Projet.
 				<?php
 					if( Configure::read( 'debug' ) > 0 ) {
 						echo '( CG '.$departement;
@@ -212,7 +212,7 @@
 			if( Configure::read( 'debug' ) > 0 ) {
 				echo $this->Html->tag( 'div', $this->element( 'sql_dump' ), array( 'id' => 'sqldump', 'style' => 'display: none' ) );
 			}
-			
+
 			if (Configure::read('Module.Datepicker.enabled')) {
 				echo $this->element('Cake2Datepicker.datepicker_auto', array('lang' => 'fr'));
 			}
