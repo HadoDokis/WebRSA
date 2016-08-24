@@ -401,3 +401,27 @@ msgstr "Voir"
 
 msgid "/Dsps/view_revs/#DspRev.id#"
 msgstr "Voir le dossier « #Dossier.numdemrsa# »"
+
+msgid "/Dsps/view/:heading"
+msgstr "Données socio-professionnelles de #Personne.nom_complet#"
+
+msgid "/Dsps/add"
+msgstr "Ajouter"
+
+msgid "/Dsps/add/:title"
+msgstr "Ajouter une DSP"
+
+msgid "/Dsps/edit"
+msgstr "Modifier"
+
+msgid "/Dsps/edit/:title"
+msgstr "Modifier cette DSP"
+
+msgid "/Dsps/view_revs/:heading"
+msgstr "Données socio-professionnelles de #Personne.qual# #Personne.nom# #Personne.prenom#"
+
+msgid "/Dsps/revertTo"
+msgstr "Revenir à cette version"
+
+msgid "/Dsps/revertTo/:title"
+msgstr "Revenir à cette version"

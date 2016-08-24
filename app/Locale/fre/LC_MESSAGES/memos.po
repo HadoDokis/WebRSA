@@ -57,3 +57,12 @@ msgstr "Lier des fichiers"
 
 msgid "/Memos/filelink/#Memo.id#"
 msgstr "Lier des fichiers"
+
+msgid "/Memos/index/:heading"
+msgstr "Mémos"
+
+msgid "/Memos/add"
+msgstr "Ajouter"
+
+msgid "/Memos/add/:title"
+msgstr "Ajouter"

@@ -1,12 +1,5 @@
 <?php
-	App::uses('WebrsaAccess', 'Utility');	
-	WebrsaAccess::init($dossierMenu);
-	
-	echo $this->Default3->titleForLayout();
-	
-	echo $this->Default3->actions(
-		WebrsaAccess::actionAdd("/Personnes/add/{$foyer_id}", $ajoutPossible)
-	);
+	echo $this->element('default_index');
 	
 	echo $this->Default3->index(
 		$personnes,
