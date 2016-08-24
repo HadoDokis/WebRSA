@@ -31,7 +31,7 @@
 		 * @var array
 		 */
 		public $uses = array('Referent');
-		
+
 		public function search( $criteres ) {
 			/// Conditions de base
 			$conditions = array();
@@ -86,7 +86,7 @@
 		 * @return array
 		 */
 		public function listOptions() {
-			$cacheKey = 'referent_list_options';
+			$cacheKey = Inflector::underscore( __CLASS__.'_'.__FUNCTION__ );
 			$results = Cache::read( $cacheKey );
 
 			if( $results === false ) {
@@ -228,7 +228,7 @@
 		 * @return array
 		 */
 		public function listOptionsParStructure() {
-			$cacheKey = 'referentparstructure_list_options';
+			$cacheKey = Inflector::underscore( __CLASS__.'_'.__FUNCTION__ );
 			$results = Cache::read( $cacheKey );
 
 			if( $results === false ) {
@@ -253,9 +253,37 @@
 						)
 					)
 				);
+
 				Cache::write( $cacheKey, $results );
 				ModelCache::write( $cacheKey, array( 'Referent', 'Structurereferente', 'Typeorient' ) );
 			}
 			return $results;
-		}		
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$success = $this->regenerateCache();
+			return $success;
+		}
+
+		/**
+		 * Suppression et regénération du cache.
+		 *
+		 * @return boolean
+		 */
+		public function regenerateCache() {
+			$this->_clearModelCache();
+
+			// Regénération des éléments du cache.
+			$success = ( $this->listOptions() !== false )
+				&& ( $this->listOptionsParStructure() !== false );
+
+			return $success;
+		}
 	}
