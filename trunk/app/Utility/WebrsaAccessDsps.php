@@ -48,6 +48,18 @@
 		 * @param array $params
 		 * @return boolean
 		 */
+		protected static function _add(array $record, array $params) {
+			$params = self::params($params);
+			return Hash::get($params, 'ajoutPossible');
+		}
+
+		/**
+		 * Permission d'accès
+		 * 
+		 * @param array $record
+		 * @param array $params
+		 * @return boolean
+		 */
 		protected static function _view(array $record, array $params) {
 			return true;
 		}
@@ -106,7 +118,8 @@
 			$params = self::params( $params );
 			$result = self::normalize_actions(
 				array(
-					'view', 
+					'add' => array('ajoutPossible' => true),
+					'view',
 					'view_revs', 
 					'view_diff', 
 					'edit', 

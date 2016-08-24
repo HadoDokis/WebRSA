@@ -22,7 +22,7 @@
 		 * 
 		 * @var array
 		 */
-		public static $dossierMenu;
+		public static $dossierMenu = null;
 		
 		/**
 		 * Permet de définir en une fois les variables utiles
@@ -123,8 +123,6 @@
 			
 			if ($access === null) {
 				trigger_error("L'URL <b>/$controller/$action</b> n'a pas &eacute;t&eacute; trouv&eacute;e dans les donn&eacute;es envoy&eacute;es");
-				debug(array_keys($record));
-				exit;
 			}
 			
 			$aclAccess = self::$dossierMenu !== null
@@ -167,6 +165,35 @@
 			return $ajoutPossible && $aclAccess;
 		}
 		
+		public static function actions($urls, $data = array(), array $params = array()) {
+			$links = array();
+			
+			if (empty($data)) {
+				$params += array('regles_metier' => false);
+			}
+			
+			foreach (Hash::normalize($urls) as $url => $urlParams) {
+				if (Hash::get((array)$urlParams, 'hidden')) {
+					continue;
+				}
+				
+				$allParams = (array)$urlParams + $params;
+				
+				if (isset($urlParams['add'])) {
+					$link = self::actionAdd($url, $urlParams['add']);
+				} elseif (!isset($allParams['regles_metier']) || $allParams['regles_metier']) {
+					$link = self::link($url, $allParams);
+					$link[$url]['disabled'] = !($link[$url]['disabled'] !== true && self::isEnabled($data, $url));
+				} else {
+					$link = self::link($url, $allParams);
+				}
+				
+				$links = array_merge($links, $link);
+			}
+			
+			return $links;
+		}
+		
 		/**
 		 * Extrait le nom du controller et l'action à partir d'une url
 		 * 
@@ -176,7 +203,6 @@
 		protected static function _extractControllerAction($url) {
 			if (!preg_match('/^\/([\w]+)(?:\/([\w]+)){0,1}/', $url, $matches)) {
 				trigger_error("URL mal d&eacute;finie");
-				exit;
 			}
 			
 			return array(

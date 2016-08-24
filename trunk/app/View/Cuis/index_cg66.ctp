@@ -1,25 +1,5 @@
 <?php
-	App::uses('WebrsaAccess', 'Utility');
-	WebrsaAccess::init($dossierMenu);
-
-	echo $this->Default3->titleForLayout($this->request->data, compact('domain'));
-	
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-	}
-
-	echo $this->element( 'ancien_dossier' );
-
-	echo $this->Default3->actions(
-		WebrsaAccess::actionAdd("/Cuis/add/{$personne_id}", $ajoutPossible)
-	);
-
-	// A-t'on des messages à afficher à l'utilisateur ?
-	if( !empty( $messages ) ) {
-		foreach( $messages as $message => $class ) {
-			echo $this->Html->tag( 'p', __m($message), array( 'class' => "message {$class}" ) );
-		}
-	}
+	echo $this->element('default_index');
 	
 	// Ajout des dates sur certaines positions du CUI
 	foreach( $results as $key => $value ){

@@ -1112,6 +1112,10 @@ ul.actions li.action span.print.disabled {
 	background-image: url( ../img/icons/printer_disabled.png );
 }
 
+ul.actions li.arrow_undo a, ul.actions li a.arrow_undo, td.action a.arrow_undo {
+	background-image: url( ../img/icons/arrow_undo.png );
+}
+
 /**/
 
 td.button a, td.action a, td.button span, td span.button, table.default2 td a.button, table.default2 td span.button, a.action_impression {
