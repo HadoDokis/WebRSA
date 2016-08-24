@@ -468,86 +468,9 @@
 			debug( $actions );
 		?>
 	</div>
-	<div id="fichiersmodules">
-		<?php
-			// TODO: les mettre dans leurs propres vues (appelées en ajax à la demande)
-			echo $this->Html->tag( 'h2', 'Fichiers liés', array( 'class' => 'title' ) );
-
-			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'AccompagnementsbeneficiairesFichiersmodulesSearchForm' ) );
-			$this->request->data = array(
-				'Search' => array(
-					'Fichiermodule' => array(
-						'date_from' => date_sql_to_cakephp( '2009-01-01' )
-					)
-				)
-			);
-			echo $this->SearchForm->dateRange(
-				'Search.Fichiermodule.date',
-				array(
-					'prefix' => 'Search',
-					'legend' => __m( 'Search.Fichiermodule.date' ),
-					'minYear_from' => 2009,
-					'minYear_to' => 2009,
-					'maxYear_from' => date( 'Y' ) + 1,
-					'maxYear_to' => date( 'Y' ) + 1
-				)
-			);
-			echo $this->Default3->DefaultForm->input(
-				'Search.Fichiermodule.modele',
-				array(
-					'label' => __m( 'Search.Fichiermodule.modele' ),
-					'options' => $options['Fichiermodule']['modele'],
-					'required' => false,
-					'empty' => true
-				)
-			);
-			echo $this->Default3->DefaultForm->end();
-
-			echo $this->Default3->index(
-				$fichiersmodules,
-				array(
-					'Fichiermodule.modele' => array(
-						'label' => 'Module',
-						'class' => '#Fichiermodule.modele#'
-					),
-					'Fichiermodule.name' => array(
-						'label' => 'Nom',
-						'class' => 'sortable',
-					),
-					'Fichiermodule.mime' => array(
-						'label' => 'Type',
-						'class' => 'sortable',
-					),
-					'Fichiermodule.created' => array(
-						'label' => 'Créé le',
-						'class' => 'sortable date-fr filter_date date',
-					),
-					'/#Fichiermodule.controller#/download/#Fichiermodule.id#' => array(
-						'msgid' => 'Télécharger',
-						'title' => 'Télécharger le fichier lié'
-					),
-					'/#Fichiermodule.controller#/view/#Fichiermodule.fk_value#' => array(
-						'msgid' => 'Voir',
-						'title' => 'Voir l\'enregistrement auquel le fichier est lié'
-					),
-					'/#Fichiermodule.controller#/filelink/#Fichiermodule.fk_value#' => array(
-						'msgid' => 'Liste',
-						'title' => 'Liste des fichiers liés'
-					)
-				),
-				array(
-					'class' => 'search sortable',
-					'paginate' => false,
-					'options' => $options,
-					'id' => 'TableAccompagnementsbeneficiairesIndexFichiersmodules'
-				)
-			);
-			debug($fichiersmodules);
-		?>
-	</div>
 	<div id="impressions">
 		<?php
-			echo $this->Html->tag( 'h2', 'Impressions', array( 'class' => 'title' ) );
+			echo $this->Html->tag( 'h2', 'Courriers', array( 'class' => 'title' ) );
 
 			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'AccompagnementsbeneficiairesImpressionsSearchForm' ) );
 			$this->request->data = array(
@@ -845,7 +768,84 @@
 			);
 			debug($impressions);
 		?>
-</div>
+	</div>
+	<div id="fichiersmodules">
+		<?php
+			// TODO: les mettre dans leurs propres vues (appelées en ajax à la demande)
+			echo $this->Html->tag( 'h2', 'Fichiers liés', array( 'class' => 'title' ) );
+
+			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'AccompagnementsbeneficiairesFichiersmodulesSearchForm' ) );
+			$this->request->data = array(
+				'Search' => array(
+					'Fichiermodule' => array(
+						'date_from' => date_sql_to_cakephp( '2009-01-01' )
+					)
+				)
+			);
+			echo $this->SearchForm->dateRange(
+				'Search.Fichiermodule.date',
+				array(
+					'prefix' => 'Search',
+					'legend' => __m( 'Search.Fichiermodule.date' ),
+					'minYear_from' => 2009,
+					'minYear_to' => 2009,
+					'maxYear_from' => date( 'Y' ) + 1,
+					'maxYear_to' => date( 'Y' ) + 1
+				)
+			);
+			echo $this->Default3->DefaultForm->input(
+				'Search.Fichiermodule.modele',
+				array(
+					'label' => __m( 'Search.Fichiermodule.modele' ),
+					'options' => $options['Fichiermodule']['modele'],
+					'required' => false,
+					'empty' => true
+				)
+			);
+			echo $this->Default3->DefaultForm->end();
+
+			echo $this->Default3->index(
+				$fichiersmodules,
+				array(
+					'Fichiermodule.modele' => array(
+						'label' => 'Module',
+						'class' => '#Fichiermodule.modele#'
+					),
+					'Fichiermodule.name' => array(
+						'label' => 'Nom',
+						'class' => 'sortable',
+					),
+					'Fichiermodule.mime' => array(
+						'label' => 'Type',
+						'class' => 'sortable',
+					),
+					'Fichiermodule.created' => array(
+						'label' => 'Créé le',
+						'class' => 'sortable date-fr filter_date date',
+					),
+					'/#Fichiermodule.controller#/download/#Fichiermodule.id#' => array(
+						'msgid' => 'Télécharger',
+						'title' => 'Télécharger le fichier lié'
+					),
+					'/#Fichiermodule.controller#/view/#Fichiermodule.fk_value#' => array(
+						'msgid' => 'Voir',
+						'title' => 'Voir l\'enregistrement auquel le fichier est lié'
+					),
+					'/#Fichiermodule.controller#/filelink/#Fichiermodule.fk_value#' => array(
+						'msgid' => 'Liste',
+						'title' => 'Liste des fichiers liés'
+					)
+				),
+				array(
+					'class' => 'search sortable',
+					'paginate' => false,
+					'options' => $options,
+					'id' => 'TableAccompagnementsbeneficiairesIndexFichiersmodules'
+				)
+			);
+			debug($fichiersmodules);
+		?>
+	</div>
 <script type="text/javascript">
 	//<![CDATA[
 	/**
