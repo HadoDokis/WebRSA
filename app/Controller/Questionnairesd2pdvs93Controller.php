@@ -248,7 +248,9 @@
 
 			// Options
 			$options = $this->Questionnaired2pdv93->options( array( 'find' => true ) );
-			$this->set( compact( 'personne_id', 'personne', 'options', 'dossierMenu', 'isAjax' ) );
+			$urlmenu = "/questionnairesd2pdvs93/index/{$personne_id}";
+
+			$this->set( compact( 'personne_id', 'personne', 'options', 'dossierMenu', 'isAjax', 'urlmenu' ) );
 
 			if( $isAjax ) {
 				$this->layout = null;
