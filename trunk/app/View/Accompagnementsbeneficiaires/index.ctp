@@ -21,7 +21,7 @@
 			// Premier onglet, accompagnement
 			echo $this->Html->tag( 'h2', 'Accompagnement', array( 'class' => 'title' ) );
 
-			echo '<table class="noborder"><tr><td class="noborder" style="width: 50%;">';
+			echo '<table class="noborder" style="width:100%;"><tr><td class="noborder" style="width: 50%;">';
 			echo $this->Html->tag( 'h3', 'Droits' );
 			echo $this->Default3->view(
 				$details,
@@ -38,7 +38,7 @@
 					),
 					'Situationdossierrsa.etatdosrsa' => array(
 						'label' => __m( 'Situationdossierrsa.etatdosrsa' ),
-						'class' => 'etatdosrsa#Situationdossierrsa.etatdosrsa#',
+						'class' => 'situationdossierrsa etatdosrsa#Situationdossierrsa.etatdosrsa#',
 					),
 					'Cer93.cmu' => array(
 						'label' => __m( 'Cer93.cmu' ),
@@ -465,7 +465,6 @@
 					)
 				)
 			);
-			debug( $actions );
 		?>
 	</div>
 	<div id="impressions">
@@ -766,7 +765,6 @@
 					'id' => 'TableAccompagnementsbeneficiairesIndexImpressions'
 				)
 			);
-			debug($impressions);
 		?>
 	</div>
 	<div id="fichiersmodules">
@@ -843,7 +841,6 @@
 					'id' => 'TableAccompagnementsbeneficiairesIndexFichiersmodules'
 				)
 			);
-			debug($fichiersmodules);
 		?>
 	</div>
 <script type="text/javascript">
@@ -928,7 +925,7 @@
 					$(row).removeClassName( 'odd' );
 					$(row).removeClassName( 'even' );
 
-					$(row).addClassName( ( shown % 2 == 0 ? 'even' : 'odd' ) );
+					$(row).addClassName( ( shown % 2 === 0 ? 'even' : 'odd' ) );
 				}
 			} );
 

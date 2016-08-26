@@ -572,6 +572,9 @@
 		 * @return array
 		 */
 		public function actions( $personne_id, array $params = array() ) {
+			$structurereferente_id = (array)Hash::get( $params, 'structurereferente_id' );
+			unset( $params['structurereferente_id'] );
+
 			$config = Hash::normalize( $this->_configActions() );
 			$results = array();
 
@@ -583,6 +586,11 @@
 
 				// Conditions
 				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+
+				// Conditions supplémentaires pour les RDV et les entretiens
+				if( !empty( $structurereferente_id ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+					$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structurereferente_id );
+				}
 
 				$this->Personne->{$modelName}->forceVirtualFields = true;
 				$records = $this->Personne->{$modelName}->find( 'all', $query );
@@ -703,7 +711,10 @@
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
-		public function fichiersmodules( $personne_id ) {
+		public function fichiersmodules( $personne_id, array $params = array() ) {
+			$structurereferente_id = (array)Hash::get( $params, 'structurereferente_id' );
+			unset( $params['structurereferente_id'] );
+
 			$results = array();
 			$config = $this->_configFichiersmodules();
 
@@ -716,6 +727,11 @@
 				if( 'Personne' !== $modelName ) {
 					// Conditions
 					$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+
+					// Conditions supplémentaires pour les RDV et les entretiens
+					if( !empty( $structurereferente_id ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structurereferente_id );
+					}
 
 					$this->Personne->{$modelName}->forceVirtualFields = true;
 					$records = $this->Personne->{$modelName}->find( 'all', $query );
@@ -1005,7 +1021,10 @@
 		 * @param integer $personne_id L'id du bénéficiaire
 		 * @return array
 		 */
-		public function impressions( $personne_id ) {
+		public function impressions( $personne_id, array $params = array() ) {
+			$structurereferente_id = (array)Hash::get( $params, 'structurereferente_id' );
+			unset( $params['structurereferente_id'] );
+
 			$results = array();
 			$config = $this->_configImpressions();
 
@@ -1019,6 +1038,11 @@
 				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['pdf'], $query['name'] );
 
 				if( 'Personne' !== $modelName ) {
+					// Conditions supplémentaires pour les RDV et les entretiens
+					if( !empty( $structurereferente_id ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structurereferente_id );
+					}
+
 					if( isset( $this->Personne->{$modelName} ) ) {
 						$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 						if( true === $pdf ) {

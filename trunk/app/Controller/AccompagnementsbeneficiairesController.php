@@ -31,7 +31,9 @@
 		 */
 		public $components = array(
 			'DossiersMenus',
-			'Jetons2'
+			'Jetons2',
+			'InsertionsBeneficiaires',
+			'Workflowscers93'
 		);
 
 		/**
@@ -57,26 +59,13 @@
 		);
 
 		/**
-		 * Liste des actions pour lesquelles les droits ACL sont les mêmes que
-		 * ceux d'autres actions.
-		 *
-		 * @var array
-		 */
-		public $commeDroit = array(
-			'fichiersmodules' => 'Accompagnementsbeneficiaires:index',
-			'impressions' => 'Accompagnementsbeneficiaires:index'
-		);
-
-		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
 		 *
 		 * @var array
 		 */
 		public $crudMap = array(
-			'fichiersmodules' => 'read',
-			'index' => 'read',
-			'impressions' => 'read'
+			'index' => 'read'
 		);
 
 		/**
@@ -87,50 +76,30 @@
 		 */
 		public function index( $personne_id ) {
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
-			$this->set( compact( 'dossierMenu' ) );
+			$options = $this->WebrsaAccompagnementbeneficiaire->options();
 
-			//
-			// TODO: si pas ajax
+			// 1. Accompagnement
 			$query = $this->WebrsaAccompagnementbeneficiaire->qdDetails( array( 'Personne.id' => $personne_id ) );
 			$this->Personne->forceVirtualFields = true;
 			$details = $this->Personne->find( 'first', $query );
 
-			// TODO: query actions
-			$actions = $this->WebrsaAccompagnementbeneficiaire->actions( $personne_id );
+			// 2. Tableaux
+			$params = array();
+			$userType = $this->Session->read( 'Auth.User.type' );
+			if( 0 === strpos( $userType, 'externe_' ) ) {
+				$params['structurereferente_id'] = $this->Workflowscers93->getUserStructurereferenteId( false );
+			}
 
-			$options = $this->WebrsaAccompagnementbeneficiaire->options();
+			// 2.1 Tableau d'actions
+			$actions = $this->WebrsaAccompagnementbeneficiaire->actions( $personne_id, $params );
 
-			$this->set( compact( 'actions', 'options', 'details' ) );
+			// 2.2 Tableau de courriers
+			$impressions = $this->WebrsaAccompagnementbeneficiaire->impressions( $personne_id, $params );
 
-			// FIXME: à supprimer, on triche tant que l'Ajax n'est pas mis en place
-			$this->fichiersmodules( $personne_id );
-			$this->impressions( $personne_id );
-		}
+			// 2.3 Tableau de fichiers liés
+			$fichiersmodules = $this->WebrsaAccompagnementbeneficiaire->fichiersmodules( $personne_id, $params );
 
-		/**
-		 * @todo Fichiers liés
-		 *
-		 * @param integer $personne_id
-		 */
-		public function fichiersmodules( $personne_id ) {
-			//isset( $this->request->params['isAjax'] )
-			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
-
-			$fichiersmodules = $this->WebrsaAccompagnementbeneficiaire->fichiersmodules( $personne_id );
-			$this->set( compact( 'fichiersmodules' ) );
-		}
-
-		/**
-		 * @todo Impressions
-		 *
-		 * @param integer $personne_id
-		 */
-		public function impressions( $personne_id ) {
-			//isset( $this->request->params['isAjax'] )
-			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
-
-			$impressions = $this->WebrsaAccompagnementbeneficiaire->impressions( $personne_id );
-			$this->set( compact( 'impressions' ) );
+			$this->set( compact( 'dossierMenu', 'options', 'details', 'actions', 'impressions', 'fichiersmodules' ) );
 		}
 	}
 ?>
