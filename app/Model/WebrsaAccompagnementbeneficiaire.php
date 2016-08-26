@@ -520,6 +520,16 @@
 
 					$query = $this->_completeConfigAccess( $query );
 
+					// Clés étrangères vers les tables structuresreferentes et referents ?
+					if( false === $this->Personne->{$query['modelName']}->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+						$this->Personne->{$query['modelName']}->Behaviors->attach( 'Postgres.PostgresTable' );
+					}
+					$foreignKeys = $this->Personne->{$query['modelName']}->getPostgresForeignKeysFrom();
+					$links = Hash::combine($foreignKeys, '{s}.From.column', '{s}.To.table');
+
+					$query['structurereferente_id'] = array_search( 'structuresreferentes', $links );
+					$query['referent_id'] = array_search( 'referents', $links );
+
 					$config[$alias] = $query;
 				}
 
@@ -565,6 +575,54 @@
 			return $results;
 		}
 
+		// Champ virtuel
+		// TODO: dans un Behavior
+		// TODO: alias
+		public function structurereferenteHorszone( $fieldName, array $structuresreferentes_ids ) {
+			if( false === empty( $structuresreferentes_ids ) ) {
+				list( $modelName, $fieldName ) = model_field( $fieldName );
+				$Dbo = $this->getDataSource();
+
+				$result = $Dbo->conditions(
+					array(
+						'NOT' => array( "{$modelName}.{$fieldName}" => $structuresreferentes_ids )
+					),
+					true,
+					false,
+					$this
+				);
+			}
+			else {
+				$result = 'FALSE';
+			}
+
+			return "( {$result} ) AS \"Referent__horszone\"";
+		}
+		public function referentHorszone( $fieldName, array $structuresreferentes_ids ) {
+			if( false === empty( $structuresreferentes_ids ) ) {
+				list( $modelName, $fieldName ) = model_field( $fieldName );
+				$Dbo = $this->getDataSource();
+				$Referent = ClassRegistry::init( 'Referent' );
+
+				$subQuery = array(
+					'fields' => array( 'Referent.id' ),
+					'conditions' => array(
+						"Referent.id = {$modelName}.{$fieldName}",
+						'Referent.structurereferente_id' => $structuresreferentes_ids,
+					),
+					'contain' => false
+				);
+				$sql = words_replace( $Referent->sq( $subQuery ), array( 'Referent' => 'referents' ) );
+
+				$result = "\"{$modelName}\".\"{$fieldName}\" IN ( {$sql} )";
+			}
+			else {
+				$result = 'FALSE';
+			}
+
+			return "( {$result} ) AS \"Referent__horszone\"";
+		}
+
 		/**
 		 * Récupère la liste des actions liées au bénéficiaire.
 		 *
@@ -572,7 +630,7 @@
 		 * @return array
 		 */
 		public function actions( $personne_id, array $params = array() ) {
-			$structurereferente_id = (array)Hash::get( $params, 'structurereferente_id' );
+			$structuresreferentes_ids = (array)Hash::get( $params, 'structurereferente_id' );
 			unset( $params['structurereferente_id'] );
 
 			$config = Hash::normalize( $this->_configActions() );
@@ -588,9 +646,23 @@
 				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
 				// Conditions supplémentaires pour les RDV et les entretiens
-				if( !empty( $structurereferente_id ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
-					$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structurereferente_id );
+				if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+					$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
 				}
+
+				// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
+				// TODO: mettre dans une méthode
+				if( false !== $query['structurereferente_id'] ) {
+					$query['fields'][] = $this->structurereferenteHorszone( "{$modelName}.{$query['structurereferente_id']}", $structuresreferentes_ids );
+				}
+				else if( false !== $query['referent_id'] ) {
+					$query['fields'][] = $this->referentHorszone( "{$modelName}.{$query['referent_id']}", $structuresreferentes_ids );
+				}
+				else {
+					$query['fields'][] = 'NULL AS "Referent__horszone"';
+				}
+				// TODO: $query['referent_id']
+				unset( $query['structurereferente_id'], $query['referent_id'] );
 
 				$this->Personne->{$modelName}->forceVirtualFields = true;
 				$records = $this->Personne->{$modelName}->find( 'all', $query );
@@ -712,7 +784,7 @@
 		 * @return array
 		 */
 		public function fichiersmodules( $personne_id, array $params = array() ) {
-			$structurereferente_id = (array)Hash::get( $params, 'structurereferente_id' );
+			$structuresreferentes_ids = (array)Hash::get( $params, 'structurereferente_id' );
 			unset( $params['structurereferente_id'] );
 
 			$results = array();
@@ -729,8 +801,8 @@
 					$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
 					// Conditions supplémentaires pour les RDV et les entretiens
-					if( !empty( $structurereferente_id ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
-						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structurereferente_id );
+					if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
 					}
 
 					$this->Personne->{$modelName}->forceVirtualFields = true;
@@ -1022,7 +1094,7 @@
 		 * @return array
 		 */
 		public function impressions( $personne_id, array $params = array() ) {
-			$structurereferente_id = (array)Hash::get( $params, 'structurereferente_id' );
+			$structuresreferentes_ids = (array)Hash::get( $params, 'structurereferente_id' );
 			unset( $params['structurereferente_id'] );
 
 			$results = array();
@@ -1039,8 +1111,8 @@
 
 				if( 'Personne' !== $modelName ) {
 					// Conditions supplémentaires pour les RDV et les entretiens
-					if( !empty( $structurereferente_id ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
-						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structurereferente_id );
+					if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
 					}
 
 					if( isset( $this->Personne->{$modelName} ) ) {
