@@ -1004,7 +1004,9 @@ table.sortable thead th.sortcol {
 	text-decoration: underline;
 }
 
-/* Module accompagnement bénéficiaire */
+/*******************************************************************************
+ * Ecran de synthèse du suivi
+ ******************************************************************************/
 body.accompagnementsbeneficiaires table.details {
 	width: 100%;
 }
@@ -1016,21 +1018,4 @@ body.accompagnementsbeneficiaires table.index, body.accompagnementsbeneficiaires
 body.accompagnementsbeneficiaires table.details tbody th {
 	width: 20em;
 	max-width: 20em;
-}
-
-/* Module accompagnement bénéficiaire: CMU, CMU-C */
-body.accompagnementsbeneficiaires table.details tbody td.boolean.encours {
-	background-image: url( ../img/icons/hourglass.png );
-}
-
-body.accompagnementsbeneficiaires table.details tbody td.boolean.null {
-	background-image: url( ../img/icons/bullet_white.png );
-}
-
-body.accompagnementsbeneficiaires table.details tbody td.boolean.oui {
-	background-image: url( ../img/icons/tick.png );
-}
-
-body.accompagnementsbeneficiaires table.details tbody td.boolean.non {
-	background-image: url( ../img/icons/cross.png );
 }
