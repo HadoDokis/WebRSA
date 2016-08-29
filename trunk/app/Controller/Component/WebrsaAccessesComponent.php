@@ -116,7 +116,7 @@
 		 * @return \WebrsaAccessesComponent
 		 */
 		public function setMainModel($modelName) {
-			return $this->_setAttr('MainModel', $modelName);
+			return $this->_setAttr('mainModelName', $modelName);
 		}
 
 		/**

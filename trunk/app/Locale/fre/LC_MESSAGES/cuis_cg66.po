@@ -63,6 +63,9 @@ msgstr "Supprimer"
 msgid "/Cuis66/delete/#Cui.id#"
 msgstr "Supprimer"
 
+msgid "/Cuis66/delete/#Cui.id# ?"
+msgstr "Cette action supprimera définitivement cet enregistrement. Voulez-vous continuer ?"
+
 msgid "/Cuis66/email_send"
 msgstr "Envoyer E-mail"
 
@@ -857,7 +860,7 @@ msgid "/Cuis66/notification/#Cui66.id#"
 msgstr "Notification"
 
 msgid "/Cuis66/filelink"
-msgstr "Fichiers liés"
+msgstr "Fichiers liés (#Fichiermodule.nombre#)"
 
 msgid "/Cuis66/filelink/#Cui.id#"
 msgstr "Fichiers liés"
