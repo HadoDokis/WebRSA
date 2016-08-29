@@ -19,6 +19,15 @@
 	class DefaultDataHelper extends AppHelper
 	{
 		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Text'
+		);
+
+		/**
 		 * La liste des types de champs, au sens CakePHP, par nom de modèle.
 		 *
 		 * @var array
@@ -195,6 +204,9 @@
 						break;
 					case 'text':
 					default:
+						if( 'truncate' === $format ) {
+							$value = $this->Text->truncate( $value, 255 );
+						}
 						$return = $value;
 				}
 			}

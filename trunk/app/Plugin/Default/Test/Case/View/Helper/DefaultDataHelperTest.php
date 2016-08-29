@@ -134,6 +134,12 @@
 			$result = $this->DefaultData->format( '11:05:55', 'time' );
 			$expected = '11:05:55';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Truncate
+			$text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+			$result = $this->DefaultData->format( $text, 'text', 'truncate' );
+			$expected = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolo...';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
