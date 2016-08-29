@@ -568,6 +568,20 @@ class ContratsinsertionController extends AppController
 			);
 		}
 		
+		// Pas de blocage pour le 976, donc il faut retirer la mention 
+		// "Impossible de créer un CER." et mettre le message sous la class "notice"
+		if ($departement === 976) {
+			$newMessages = array();
+			foreach ($messages as $message => $class) {
+				if ($class === 'error' && strpos($message, "Impossible de créer un CER.")) {
+					$message = str_replace('Impossible de créer un CER.', '', $message);
+					$class = 'notice';
+				}
+				$newMessages[$message] = $class;
+			}
+			$messages = $newMessages;
+		}
+		
 		/**
 		 * Contrôle d'accès
 		 */

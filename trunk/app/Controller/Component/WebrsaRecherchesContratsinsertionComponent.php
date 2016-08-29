@@ -149,7 +149,7 @@
 
 			if ($departement === 66) {
 				$options['Dernierreferent']['dernierreferent_id'] =
-					$Controller->Contratinsertion->Structurereferente->Referent->DernierReferent->WebrsaReferent->listOptions();
+					$Controller->Contratinsertion->Structurereferente->Referent->DernierReferent->listOptions();
 			}
 
 			return $options;

@@ -77,7 +77,7 @@ msgid "/Contratsinsertion/delete/#Contratinsertion.id# ?"
 msgstr "Confirmez-vous la suppression du CER ?"
 
 msgid "/Contratsinsertion/filelink"
-msgstr "Fichiers liés"
+msgstr "Fichiers liés (#Fichiermodule.count#)"
 
 msgid "/Contratsinsertion/filelink/#Contratinsertion.id#"
 msgstr "Fichiers liés"
