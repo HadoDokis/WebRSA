@@ -1,20 +1,7 @@
 <?php
-	$defaultParams = array('paginate' => false, 'options' => $options);
+	echo $this->element('default_index');
 	
-	App::uses('WebrsaAccess', 'Utility');
-	WebrsaAccess::init($dossierMenu);
-
-	echo $this->Default3->titleForLayout($this->request->data, compact('domain'));
-	echo $this->element('ancien_dossier');
-
-	echo $this->Default3->actions(
-		WebrsaAccess::actionAdd("/Proposcontratsinsertioncovs58/add/{$personne_id}", $ajoutPossible, array('msgid' => 'Ajouter'))
-	);
-
-	// A-t'on des messages à afficher à l'utilisateur ?
-	foreach ((array)$messages as $message => $class) {
-		echo $this->Html->tag('p', __m($message), array('class' => "message {$class}"));
-	}
+	$defaultParams = array('paginate' => false, 'options' => $options);
 	
 	// Valeurs avec concatenation
 	foreach ($contratsinsertion as $key => $data) {
@@ -44,9 +31,7 @@
 					)
 				)
 			),
-			$defaultParams + array(
-				'paginate' => false,
-			)
+			$defaultParams
 		);
 		echo '<br/>';
 	}
@@ -106,13 +91,9 @@
 					'/Contratsinsertion/delete/#Contratinsertion.id#',
 					'/Sanctionseps58/nonrespectcer/#Contratinsertion.id#',
 					'/Proposcontratsinsertioncovs58/add/#Contratinsertion.personne_id#/#Contratinsertion.id#',
-					'/Contratsinsertion/filelink/#Contratinsertion.id#' => array(
-						'msgid' => __m('/Contratsinsertion/filelink').' (#Fichiermodule.count#)'
-					)
+					'/Contratsinsertion/filelink/#Contratinsertion.id#',
 				)
 			)
 		),
-		$defaultParams + array(
-			'paginate' => false,
-		)
+		$defaultParams
 	);
