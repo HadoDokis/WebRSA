@@ -148,8 +148,11 @@
 		 * @return string
 		 */
 		public function index( array $datas, array $fields, array $params = array() ) {
+			$emptyLabel = Hash::get( $params, 'empty_label' );
+			$emptyLabel = false === empty( $emptyLabel ) ? $emptyLabel : 'Aucun enregistrement';
+			unset( $params['empty_label'] );
 			if( empty( $datas ) ) {
-				return $this->DefaultHtml->tag( 'p', 'Aucun enregistrement', array( 'class' => 'notice' ) );
+				return $this->DefaultHtml->tag( 'p', $emptyLabel, array( 'class' => 'notice' ) );
 			}
 
 			$paginate = ( isset( $params['paginate'] ) ? $params['paginate'] : true );

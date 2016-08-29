@@ -350,6 +350,7 @@
 					$this->Rendezvous->Behaviors->attach( 'LinkedRecords' );
 				}
 				$query = $this->Rendezvous->linkedRecordsCompleteQuerydata( $query, 'Questionnaired1pdv93' );
+				$query['contain'] = array('Thematiquerdv');
 			}
 
 			$rdvs = $this->Rendezvous->find( 'all', $query );

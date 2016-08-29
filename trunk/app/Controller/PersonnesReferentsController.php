@@ -212,6 +212,7 @@
 
 			$this->_setEntriesAncienDossier( $personne_id, 'PersonneReferent' );
 
+			$this->PersonneReferent->forceVirtualFields = true;
 			$personnes_referents = $this->WebrsaAccesses->getIndexRecords(
 				$personne_id, array(
 					'fields' => array_merge(
@@ -219,7 +220,8 @@
 						$this->PersonneReferent->Referent->fields(),
 						$this->PersonneReferent->Referent->Structurereferente->fields(),
 						array(
-							$this->PersonneReferent->Fichiermodule->sqNbFichiersLies( $this->PersonneReferent, 'nombre' )
+							$this->PersonneReferent->Fichiermodule->sqNbFichiersLies( $this->PersonneReferent, 'nombre' ),
+							'Referent.nom_complet',
 						)
 					),
 					'conditions' => array(

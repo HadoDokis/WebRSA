@@ -1618,4 +1618,294 @@
 
 			return $sq;
 		}
+		
+		/**
+		 * Renvoi le querydata pour l'index des bilans de parcours
+		 * 
+		 * @return array
+		 */
+		public function getIndexQuery() {
+			return $this->completeQueryDataForEps(
+				array(
+					'fields' => array(
+						'Bilanparcours66.id',
+						'Bilanparcours66.datebilan',
+						'Bilanparcours66.positionbilan',
+						'Serviceinstructeur.lib_service',
+						'Structurereferente.lib_struc',
+						$this->Bilanparcours66->Referent->sqVirtualField('nom_complet'),
+						'Bilanparcours66.proposition',
+
+						// Même colonne, ne pas fusionner pour utiliser les options
+						'Bilanparcours66.examenauditionpe',
+						'Bilanparcours66.examenaudition',
+						'Bilanparcours66.choixparcours',
+
+						// Proposition (note : pas de proposition dans le cas d'une thématique Audition/Defautinsertionep66)
+						'ParcoursPropositionTypeorient.lib_type_orient',
+						'ParcoursPropositionStructurereferente.lib_struc',
+
+						// Greffe de la décision du dossier PCG lié (CGA)
+						'Decisionpdo.libelle',
+						'Dossierpcg66.etatdossierpcg',
+
+						$this->Bilanparcours66->Fichiermodule->sqNbFichiersLies( $this->Bilanparcours66, 'nb_fichiers' ),
+						$this->Bilanparcours66->WebrsaBilanparcours66->sqNbManifestations( 'Bilanparcours66.id', 'nb_manifestations' )
+					),
+					'joins' => array(
+						$this->Bilanparcours66->join('Serviceinstructeur'),
+						$this->Bilanparcours66->join('Structurereferente'),
+						$this->Bilanparcours66->join('Referent'),
+						$this->Bilanparcours66->join('Dossierpcg66'),
+						$this->Bilanparcours66->Dossierpcg66->join(
+							'Decisiondossierpcg66',
+							array(
+								'type' => 'LEFT',
+								'conditions' => array(
+									'Decisiondossierpcg66.id IN ('
+									. $this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66
+										->WebrsaDecisiondossierpcg66->sqDernier('Dossierpcg66.id') . ')'
+								)
+							)
+						),
+						$this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo'),
+					),
+					'contain' => false,
+					'order' => array(
+						'Bilanparcours66.datebilan' => 'DESC',
+						'Bilanparcours66.id' => 'DESC'
+					)
+				)
+			);
+		}
+		
+		/**
+		 * Fait les jointures sur les EPs liés, avec séparation par etape et par thématique.
+		 * 
+		 * @param array $query
+		 * @return array
+		 */
+		public function completeQueryDataForEps($query = array()) {
+			// Thématique Saisinebilanparcoursep66 (commission Parcours)
+			$jointuresParcours = array(
+				$this->Bilanparcours66->join('Saisinebilanparcoursep66'),
+				array(
+					'table' => '"dossierseps"',
+					'alias' => 'ParcoursDossierep',
+					'type' => 'LEFT',
+					'conditions' => '"Saisinebilanparcoursep66"."dossierep_id" = "ParcoursDossierep"."id"'
+				),
+				array(
+					'table' => '"passagescommissionseps"',
+					'alias' => 'ParcoursPassagecommissionep',
+					'type' => 'LEFT',
+					'conditions' => '"ParcoursPassagecommissionep"."dossierep_id" = "ParcoursDossierep"."id" '
+
+					// @see Passagecommissionep::sqDernier()
+					. 'AND "ParcoursPassagecommissionep"."id" IN ('
+						. 'SELECT "passagescommissionseps"."id" AS passagescommissionseps__id '
+						. 'FROM passagescommissionseps AS passagescommissionseps '
+						. 'INNER JOIN "public"."commissionseps" AS commissionseps '
+							. 'ON ("passagescommissionseps"."commissionep_id" = "commissionseps"."id") '
+						. 'WHERE "passagescommissionseps"."dossierep_id" = "ParcoursDossierep"."id" '
+						. 'ORDER BY "commissionseps"."dateseance" DESC, "commissionseps"."id" DESC '
+						. 'LIMIT 1) '
+
+					. 'AND "ParcoursPassagecommissionep"."etatdossierep" IN (\'traite\', \'annule\', \'reporte\')'
+				),
+
+				// Proposition
+				array(
+					'alias' => 'ParcoursPropositionTypeorient',
+					'table' => '"typesorients"',
+					'type' => 'LEFT',
+					'conditions' => '"Saisinebilanparcoursep66"."typeorient_id" = "ParcoursPropositionTypeorient"."id"'
+				),
+				array(
+					'table' => '"structuresreferentes"',
+					'alias' => 'ParcoursPropositionStructurereferente',
+					'type' => 'LEFT',
+					'conditions' => '"Saisinebilanparcoursep66"."structurereferente_id" '
+					. '= "ParcoursPropositionStructurereferente"."id"'
+				),
+
+				// Avis
+				array(
+					'table' => '"decisionssaisinesbilansparcourseps66"',
+					'alias' => 'ParcoursAvis',
+					'type' => 'LEFT',
+					'conditions' => '"ParcoursAvis"."passagecommissionep_id" = "ParcoursPassagecommissionep"."id" '
+					. 'AND "ParcoursAvis"."etape" = \'ep\''
+				),
+				array(
+					'alias' => 'ParcoursAvisTypeorient',
+					'table' => '"typesorients"',
+					'type' => 'LEFT',
+					'conditions' => '"ParcoursAvis"."typeorient_id" = "ParcoursAvisTypeorient"."id"'
+				),
+				array(
+					'table' => '"structuresreferentes"',
+					'alias' => 'ParcoursAvisStructurereferente',
+					'type' => 'LEFT',
+					'conditions' => '"ParcoursAvis"."structurereferente_id" '
+					. '= "ParcoursAvisStructurereferente"."id"'
+				),
+
+				// Décision
+				array(
+					'table' => '"decisionssaisinesbilansparcourseps66"',
+					'alias' => 'ParcoursDecision',
+					'type' => 'LEFT',
+					'conditions' => '"ParcoursDecision"."passagecommissionep_id" = "ParcoursPassagecommissionep"."id" '
+					. 'AND "ParcoursDecision"."etape" = \'cg\''
+				),
+				array(
+					'alias' => 'ParcoursDecisionTypeorient',
+					'table' => '"typesorients"',
+					'type' => 'LEFT',
+					'conditions' => '"ParcoursDecision"."typeorient_id" = "ParcoursDecisionTypeorient"."id"'
+				),
+				array(
+					'table' => '"structuresreferentes"',
+					'alias' => 'ParcoursDecisionStructurereferente',
+					'type' => 'LEFT',
+					'conditions' => '"ParcoursDecision"."structurereferente_id" '
+					. '= "ParcoursDecisionStructurereferente"."id"'
+				),
+			);
+
+			// Thématique Defautinsertionep66 (commission Audition)
+			$jointuresAudition = array(
+				$this->Bilanparcours66->join('Defautinsertionep66'),
+				array(
+					'table' => '"dossierseps"',
+					'alias' => 'AuditionDossierep',
+					'type' => 'LEFT',
+					'conditions' => '"Defautinsertionep66"."dossierep_id" = "AuditionDossierep"."id"'
+				),
+				array(
+					'table' => '"passagescommissionseps"',
+					'alias' => 'AuditionPassagecommissionep',
+					'type' => 'LEFT',
+					'conditions' => '"AuditionPassagecommissionep"."dossierep_id" = "AuditionDossierep"."id" '
+
+					// @see Passagecommissionep::sqDernier()
+					. 'AND "AuditionPassagecommissionep"."id" IN ('
+						. 'SELECT "passagescommissionseps"."id" AS passagescommissionseps__id '
+						. 'FROM passagescommissionseps AS passagescommissionseps '
+						. 'INNER JOIN "public"."commissionseps" AS commissionseps '
+							. 'ON ("passagescommissionseps"."commissionep_id" = "commissionseps"."id") '
+						. 'WHERE "passagescommissionseps"."dossierep_id" = "AuditionDossierep"."id" '
+						. 'ORDER BY "commissionseps"."dateseance" DESC, "commissionseps"."id" DESC '
+						. 'LIMIT 1) '
+
+					. 'AND "AuditionPassagecommissionep"."etatdossierep" IN (\'traite\', \'annule\', \'reporte\')'
+				),
+
+				// Avis
+				array(
+					'table' => '"decisionsdefautsinsertionseps66"',
+					'alias' => 'AuditionAvis',
+					'type' => 'LEFT',
+					'conditions' => '"AuditionAvis"."passagecommissionep_id" = "AuditionPassagecommissionep"."id" '
+					. 'AND "AuditionAvis"."etape" = \'ep\''
+				),
+				array(
+					'alias' => 'AuditionAvisTypeorient',
+					'table' => '"typesorients"',
+					'type' => 'LEFT',
+					'conditions' => '"AuditionAvis"."typeorient_id" = "AuditionAvisTypeorient"."id"'
+				),
+				array(
+					'table' => '"structuresreferentes"',
+					'alias' => 'AuditionAvisStructurereferente',
+					'type' => 'LEFT',
+					'conditions' => '"AuditionAvis"."structurereferente_id" '
+					. '= "AuditionAvisStructurereferente"."id"'
+				),
+
+				// Décision
+				array(
+					'table' => '"decisionsdefautsinsertionseps66"',
+					'alias' => 'AuditionDecision',
+					'type' => 'LEFT',
+					'conditions' => '"AuditionDecision"."passagecommissionep_id" = "AuditionPassagecommissionep"."id" '
+					. 'AND "AuditionDecision"."etape" = \'cg\''
+				),
+				array(
+					'alias' => 'AuditionDecisionTypeorient',
+					'table' => '"typesorients"',
+					'type' => 'LEFT',
+					'conditions' => '"AuditionDecision"."typeorient_id" = "AuditionDecisionTypeorient"."id"'
+				),
+				array(
+					'table' => '"structuresreferentes"',
+					'alias' => 'AuditionDecisionStructurereferente',
+					'type' => 'LEFT',
+					'conditions' => '"AuditionDecision"."structurereferente_id" '
+					. '= "AuditionDecisionStructurereferente"."id"'
+				),
+			);
+
+			return array(
+				'fields' => array_merge(
+					(array)Hash::get($query, 'fields'),
+					array(
+						// Avis
+						'(CASE WHEN "Saisinebilanparcoursep66"."id" IS NOT NULL '
+							. 'THEN "ParcoursAvisTypeorient"."lib_type_orient" '
+							. 'ELSE "AuditionAvisTypeorient"."lib_type_orient" '
+						. 'END) AS "Avis__lib_type_orient"',
+
+						'(CASE WHEN "Saisinebilanparcoursep66"."id" IS NOT NULL '
+							. 'THEN "ParcoursAvisStructurereferente"."lib_struc" '
+							. 'ELSE "AuditionAvisStructurereferente"."lib_struc" '
+						. 'END) AS "Avis__lib_struc"',
+
+						'(CASE WHEN "Saisinebilanparcoursep66"."id" IS NOT NULL '
+							. 'THEN "ParcoursAvis"."decision"::text '
+							. 'ELSE "AuditionAvis"."decision"::text '
+						. 'END) AS "Avis__decision"',
+
+						'(COALESCE("ParcoursAvis"."commentaire", "AuditionAvis"."commentaire")) AS "Avis__commentaire"',
+
+						'(CASE WHEN COALESCE("ParcoursAvis"."commentaire", "AuditionAvis"."commentaire") IS NOT NULL '
+							. 'THEN TRUE '
+							. 'ELSE FALSE '
+						. 'END) AS "Avis__havecommentaire"',
+
+						'(CASE WHEN "Saisinebilanparcoursep66"."id" IS NOT NULL '
+							. "THEN 'Parcours' "
+							. 'ELSE CASE WHEN "Defautinsertionep66"."id" IS NOT NULL '
+								. "THEN 'Audition' "
+								. "ELSE NULL END "
+						. 'END) AS "Avis__thematique"',
+
+						// A fusionner avec Avis.decision (uniquement pour type Audition)
+						'AuditionAvis.decisionsup',
+
+						// Décision
+						'(CASE WHEN "Saisinebilanparcoursep66"."id" IS NOT NULL '
+							. 'THEN "ParcoursDecisionTypeorient"."lib_type_orient" '
+							. 'ELSE "AuditionDecisionTypeorient"."lib_type_orient" '
+						. 'END) AS "Decision__lib_type_orient"',
+
+						'(CASE WHEN "Saisinebilanparcoursep66"."id" IS NOT NULL '
+							. 'THEN "ParcoursDecisionStructurereferente"."lib_struc" '
+							. 'ELSE "AuditionDecisionStructurereferente"."lib_struc" '
+						. 'END) AS "Decision__lib_struc"',
+
+						'(CASE WHEN "Saisinebilanparcoursep66"."id" IS NOT NULL '
+							. 'THEN "ParcoursDecision"."decision"::text '
+							. 'ELSE "AuditionDecision"."decision"::text '
+						. 'END) AS "Decision__decision"',
+					)
+				),
+				'joins' => array_merge(
+					Hash::get($query, 'joins'),
+					$jointuresParcours,
+					$jointuresAudition
+				)
+			) + $query;
+		}
 	}

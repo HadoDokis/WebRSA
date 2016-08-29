@@ -292,198 +292,23 @@
 		 *
 		 * @param integer $personne_id
 		 */
-		public function index( $personne_id = null ) {
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+		public function index($personne_id) {
+			$this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
+			$this->_setEntriesAncienDossier($personne_id, 'Bilanparcours66');
 
-			$this->_setEntriesAncienDossier( $personne_id, 'Bilanparcours66' );
+			$cacheKey = 'Bilanparcours66_'.Inflector::underscore(__METHOD__);
+			$query = Cache::read($cacheKey);
 
-			$cacheKey = Inflector::underscore( $this->Bilanparcours66->useDbConfig ).'_Bilanparcours66_'.Inflector::underscore( __METHOD__ );
-			$query = Cache::read( $cacheKey );
-
-			if( $query === false ) {
-				// Jointure spéciale sur Dossierep suivant la thématique
-				$joinSaisinebilanparcoursep66 = $this->Bilanparcours66->Saisinebilanparcoursep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
-				$joinDefautinsertionep66 = $this->Bilanparcours66->Defautinsertionep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
-
-				$joinDossierep = $joinSaisinebilanparcoursep66;
-				$joinDossierep['conditions'] = array(
-					'OR' => array(
-						$joinSaisinebilanparcoursep66['conditions'],
-						$joinDefautinsertionep66['conditions']
-					)
-				);
-
-				$query = array(
-					'fields' => array(
-						'Bilanparcours66.id',
-						'Bilanparcours66.datebilan',
-						'Bilanparcours66.positionbilan',
-						'Bilanparcours66.proposition',
-						'Bilanparcours66.examenaudition',
-						'Bilanparcours66.examenauditionpe',
-						'Bilanparcours66.motifannulation',
-						'Bilanparcours66.motifreport',
-						'Bilanparcours66.choixparcours',
-						'Serviceinstructeur.lib_service',
-						'Structurereferente.lib_struc',
-						'Propotypeorient.lib_type_orient',
-						'Propostructurereferente.lib_struc',
-						'Avissaisinebilanparcoursep66.decision',
-						'Avistypeorient.lib_type_orient',
-						'Avisstructurereferente.lib_struc',
-						'Decisionsaisinebilanparcoursep66.decision',
-						'Decisionsaisinebilanparcoursep66.commentaire',
-						'Decisiontypeorient.lib_type_orient',
-						'Decisionstructurereferente.lib_struc',
-						'Decisionsaisinebilanparcoursep66.structurereferente_id',
-						// -----------------------------------------------------
-						'Avisdefautinsertionep66.id',
-						'Avisdefautinsertionep66.decision',
-						'Avisdefautinsertionep66.decisionsup',
-						'Decisiondefautinsertionep66.id',
-						'Decisiondefautinsertionep66.decision',
-						'Decisiondefautinsertionep66.decisionsup',
-						'Decisiondefautinsertionep66.commentaire',
-						'Dossierpcg66.etatdossierpcg',
-						'Decisionpdo.libelle',
-						'Defautinsertionep66.dateimpressionconvoc',
-
-						$this->Bilanparcours66->Referent->sqVirtualField( 'nom_complet' ),
-						$this->Bilanparcours66->Fichiermodule->sqNbFichiersLies( $this->Bilanparcours66, 'nb_fichiers' ),
-						$this->Bilanparcours66->WebrsaBilanparcours66->sqNbManifestations( 'Bilanparcours66.id', 'nb_manifestations' )
-					),
-					'joins' => array(
-						$this->Bilanparcours66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->join( 'Dossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->Dossierpcg66->join(
-							'Decisiondossierpcg66',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Decisiondossierpcg66.id IN ( ' .$this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->sqDernier( 'Dossierpcg66.id' ). ' )'
-								)
-							)
-						),
-						$this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
-
-						array_words_replace(
-							$this->Bilanparcours66->Saisinebilanparcoursep66->join(
-								'Typeorient',
-								array(
-									'type' => 'LEFT OUTER'
-								)
-							),
-							array( 'Typeorient' => 'Propotypeorient' )
-						),
-						array_words_replace(
-							$this->Bilanparcours66->Saisinebilanparcoursep66->join(
-								'Structurereferente',
-								array(
-									'type' => 'LEFT OUTER'
-								)
-							),
-							array( 'Structurereferente' => 'Propostructurereferente' )
-						),
-
-						$joinDossierep,
-						$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->join(
-							'Passagecommissionep',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Passagecommissionep.id IN (' . $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier() . ')',
-									'Passagecommissionep.etatdossierep' => array( 'traite', 'annule', 'reporte' )
-								)
-							)
-						),
-						array_words_replace(
-							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
-								'Decisionsaisinebilanparcoursep66',
-								array(
-									'type' => 'LEFT OUTER',
-									'conditions' => array(
-										'Decisionsaisinebilanparcoursep66.etape' => 'ep'
-									)
-								)
-							),
-							array( 'Decisionsaisinebilanparcoursep66' => 'Avissaisinebilanparcoursep66' )
-						),
-						array_words_replace(
-							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
-								'Typeorient',
-								array( 'type' => 'LEFT OUTER' )
-							),
-							array( 'Decisionsaisinebilanparcoursep66' => 'Avissaisinebilanparcoursep66', 'Typeorient' => 'Avistypeorient' )
-						),
-						array_words_replace(
-							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
-								'Structurereferente',
-								array( 'type' => 'LEFT OUTER' )
-							),
-							array( 'Decisionsaisinebilanparcoursep66' => 'Avissaisinebilanparcoursep66', 'Structurereferente' => 'Avisstructurereferente' )
-						),
-						$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
-							'Decisionsaisinebilanparcoursep66',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Decisionsaisinebilanparcoursep66.etape' => 'cg'
-								)
-							)
-						),
-						array_words_replace(
-							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
-								'Typeorient',
-								array( 'type' => 'LEFT OUTER' )
-							),
-							array( 'Typeorient' => 'Decisiontypeorient' )
-						),
-						array_words_replace(
-							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
-								'Structurereferente',
-								array( 'type' => 'LEFT OUTER' )
-							),
-							array( 'Structurereferente' => 'Decisionstructurereferente' )
-						),
-						//$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Decisiondefautinsertionep66', array( 'type' => 'LEFT OUTER' ) ), // Nécéssite Passagecommissionep.id
-						array_words_replace(
-							$this->Bilanparcours66->Defautinsertionep66->Dossierep->Passagecommissionep->join(
-								'Decisiondefautinsertionep66',
-								array(
-									'type' => 'LEFT OUTER',
-									'conditions' => array(
-										'Decisiondefautinsertionep66.etape' => 'ep'
-									)
-								)
-							),
-							array( 'Decisiondefautinsertionep66' => 'Avisdefautinsertionep66' )
-						),
-						$this->Bilanparcours66->Defautinsertionep66->Dossierep->Passagecommissionep->join(
-							'Decisiondefautinsertionep66',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Decisiondefautinsertionep66.etape' => 'cg'
-								)
-							)
-						),
-					),
-					'conditions' => array(),
-					'order' => array( 'Bilanparcours66.datebilan DESC', 'Bilanparcours66.id DESC' )
-				);
-				Cache::write( $cacheKey, $query );
+			if ($query === false) {
+				Cache::write($cacheKey, $query = $this->Bilanparcours66->WebrsaBilanparcours66->getIndexQuery());
 			}
 
 			$query['conditions']['Bilanparcours66.personne_id'] = $personne_id;
 			
 			$bilansparcours66 = $this->WebrsaAccesses->getIndexRecords($personne_id, $query);
 			
-			$this->_setOptions( array(), array( 'find' => false ) );
-			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct', 'ajoutPossible' )  );
+			$this->_setOptions(array(), array('find' => false));
+			$this->set(compact('bilansparcours66', 'nborientstruct', 'struct', 'ajoutPossible'));
 		}
 
 		/**
