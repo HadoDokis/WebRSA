@@ -520,16 +520,6 @@
 
 					$query = $this->_completeConfigAccess( $query );
 
-					// Clés étrangères vers les tables structuresreferentes et referents ?
-					if( false === $this->Personne->{$query['modelName']}->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
-						$this->Personne->{$query['modelName']}->Behaviors->attach( 'Postgres.PostgresTable' );
-					}
-					$foreignKeys = $this->Personne->{$query['modelName']}->getPostgresForeignKeysFrom();
-					$links = Hash::combine($foreignKeys, '{s}.From.column', '{s}.To.table');
-
-					$query['structurereferente_id'] = array_search( 'structuresreferentes', $links );
-					$query['referent_id'] = array_search( 'referents', $links );
-
 					$config[$alias] = $query;
 				}
 
@@ -575,52 +565,21 @@
 			return $results;
 		}
 
-		// Champ virtuel
-		// TODO: dans un Behavior
-		// TODO: alias
-		public function structurereferenteHorszone( $fieldName, array $structuresreferentes_ids ) {
-			if( false === empty( $structuresreferentes_ids ) ) {
-				list( $modelName, $fieldName ) = model_field( $fieldName );
-				$Dbo = $this->getDataSource();
-
-				$result = $Dbo->conditions(
-					array(
-						'NOT' => array( "{$modelName}.{$fieldName}" => $structuresreferentes_ids )
-					),
-					true,
-					false,
-					$this
-				);
-			}
-			else {
-				$result = 'FALSE';
+		/**
+		 * Conditions supplémentaires pour les RDV et les entretiens qui ne doivent
+		 * pas être partagés entre structures référentes.
+		 *
+		 * @param string $modelName
+		 * @param array $query
+		 * @param array $structuresreferentes_ids
+		 * @return array
+		 */
+		public function completeQueryProtectedRecords( $modelName, array $query, array $structuresreferentes_ids ) {
+			if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+				$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
 			}
 
-			return "( {$result} ) AS \"Referent__horszone\"";
-		}
-		public function referentHorszone( $fieldName, array $structuresreferentes_ids ) {
-			if( false === empty( $structuresreferentes_ids ) ) {
-				list( $modelName, $fieldName ) = model_field( $fieldName );
-				$Dbo = $this->getDataSource();
-				$Referent = ClassRegistry::init( 'Referent' );
-
-				$subQuery = array(
-					'fields' => array( 'Referent.id' ),
-					'conditions' => array(
-						"Referent.id = {$modelName}.{$fieldName}",
-						'Referent.structurereferente_id' => $structuresreferentes_ids,
-					),
-					'contain' => false
-				);
-				$sql = words_replace( $Referent->sq( $subQuery ), array( 'Referent' => 'referents' ) );
-
-				$result = "\"{$modelName}\".\"{$fieldName}\" IN ( {$sql} )";
-			}
-			else {
-				$result = 'FALSE';
-			}
-
-			return "( {$result} ) AS \"Referent__horszone\"";
+			return $query;
 		}
 
 		/**
@@ -645,24 +604,18 @@
 				// Conditions
 				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
-				// Conditions supplémentaires pour les RDV et les entretiens
-				if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
-					$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
-				}
+				$query = $this->completeQueryProtectedRecords( $modelName, $query, $structuresreferentes_ids );
 
 				// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
-				// TODO: mettre dans une méthode
-				if( false !== $query['structurereferente_id'] ) {
-					$query['fields'][] = $this->structurereferenteHorszone( "{$modelName}.{$query['structurereferente_id']}", $structuresreferentes_ids );
+				if( false === $this->Personne->{$modelName}->Behaviors->attached( 'WebrsaStructurereferenteliee' ) ) {
+					$this->Personne->{$modelName}->Behaviors->attach( 'WebrsaStructurereferenteliee' );
 				}
-				else if( false !== $query['referent_id'] ) {
-					$query['fields'][] = $this->referentHorszone( "{$modelName}.{$query['referent_id']}", $structuresreferentes_ids );
-				}
-				else {
-					$query['fields'][] = 'NULL AS "Referent__horszone"';
-				}
-				// TODO: $query['referent_id']
-				unset( $query['structurereferente_id'], $query['referent_id'] );
+
+				$query = $this->Personne->{$modelName}->completeQueryHorsZone(
+					$query,
+					$structuresreferentes_ids,
+					$this->Personne->{$modelName}->links()
+				);
 
 				$this->Personne->{$modelName}->forceVirtualFields = true;
 				$records = $this->Personne->{$modelName}->find( 'all', $query );
@@ -801,9 +754,18 @@
 					$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
 					// Conditions supplémentaires pour les RDV et les entretiens
-					if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
-						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
+					$query = $this->completeQueryProtectedRecords( $modelName, $query, $structuresreferentes_ids );
+
+					// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
+					if( false === $this->Personne->{$modelName}->Behaviors->attached( 'WebrsaStructurereferenteliee' ) ) {
+						$this->Personne->{$modelName}->Behaviors->attach( 'WebrsaStructurereferenteliee' );
 					}
+
+					$query = $this->Personne->{$modelName}->completeQueryHorsZone(
+						$query,
+						$structuresreferentes_ids,
+						$this->Personne->{$modelName}->links()
+					);
 
 					$this->Personne->{$modelName}->forceVirtualFields = true;
 					$records = $this->Personne->{$modelName}->find( 'all', $query );
@@ -1110,30 +1072,37 @@
 				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['pdf'], $query['name'] );
 
 				if( 'Personne' !== $modelName ) {
-					// Conditions supplémentaires pour les RDV et les entretiens
-					if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
-						$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
-					}
-
 					if( isset( $this->Personne->{$modelName} ) ) {
+						$Model = $this->Personne->{$modelName};
 						$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 						if( true === $pdf ) {
 							$query['conditions'][] = $this->Pdf->sqImprime( $this->Personne->{$modelName} );
 						}
-
-						$this->Personne->{$modelName}->forceVirtualFields = true;
-						$records = $this->Personne->{$modelName}->find( 'all', $query );
 					}
 					else {
 						$this->loadModel( $modelName );
+						$Model = $this->{$modelName};
 						$query['conditions'][] = array( 'Personne.id' => $personne_id );
 						if( true === $pdf ) {
 							$query['conditions'][] = $this->Pdf->sqImprime( $this->{$modelName} );
 						}
-
-						$this->{$modelName}->forceVirtualFields = true;
-						$records = $this->{$modelName}->find( 'all', $query );
 					}
+
+					$query = $this->completeQueryProtectedRecords( $modelName, $query, $structuresreferentes_ids );
+
+					// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
+					if( false === $Model->Behaviors->attached( 'WebrsaStructurereferenteliee' ) ) {
+						$Model->Behaviors->attach( 'WebrsaStructurereferenteliee' );
+					}
+
+					$query = $Model->completeQueryHorsZone(
+						$query,
+						$structuresreferentes_ids,
+						$Model->links()
+					);
+
+					$Model->forceVirtualFields = true;
+					$records = $Model->find( 'all', $query );
 				}
 				else {
 					$query['conditions'][] = array( 'Personne.id' => $personne_id );
