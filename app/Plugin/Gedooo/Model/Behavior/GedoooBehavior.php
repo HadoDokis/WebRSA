@@ -103,7 +103,9 @@
 		public function gedConfigureKeys( Model $model ) {
 			$keys = array(
 				'Gedooo.method' => 'string',
-				'Gedooo.debug_export_data' => 'boolean'
+				'Gedooo.debug_export_data' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true ),
+				)
 			);
 
 			if( !is_null( $this->_gedoooBehavior ) ) {

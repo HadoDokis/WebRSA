@@ -212,6 +212,9 @@ msgstr "Veuillez entrer une valeur %2$s %1$s"
 msgid "Validate::inclusiveRange"
 msgstr "Veuillez entrer une valeur entre %s et %s"
 
+msgid "Validate::boolean"
+msgstr "Veuillez entrer une valeur booléenne"
+
 ###############################################################################
 # Forms/Index
 ###############################################################################
