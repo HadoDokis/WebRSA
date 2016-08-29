@@ -244,4 +244,14 @@
 				__mn('test7', 'tests7', 2, array(2, 'arguments')), "Remplacement vsprintf avec traduction pluriel"
 			);
 		}
+		
+		/**
+		 * __domain
+		 */
+		public function test__domain() {
+			$this->assertEquals(__domain('test1'), 'domain1', "__domain() utilisé pour 'test1'");
+			$this->assertEquals(__domain('pas de traduction'), 'domain1', "__domain() dernier domain connu");
+			$this->assertEquals(__domain('test2'), 'domain2', "__domain() utilisé pour 'test2'");
+			$this->assertEquals(__domain('test5', 'tests5', 2), 'domain2', "__domain() utilisé pour 'test5' avec pluriel");
+		}
 	}
