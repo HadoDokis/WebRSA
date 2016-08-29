@@ -1010,6 +1010,10 @@ msgstr "Export CSV"
 
 msgid "Dossiers:edit"
 msgstr "Modification du dossier RSA"
+
+msgid "Dossiers:exportcsv1"
+msgstr "Export CSV"
+
 ###############################################################################
 
 msgid "Module:Dossierscovs58"
@@ -1049,6 +1053,9 @@ msgstr "Gestion des dossiers d'EP suppressibles"
 
 msgid "Dossierseps:delete"
 msgstr "Suppression d'un dossier d'EP"
+
+msgid "Dossierseps:deletepassage"
+msgstr "Supprimer le dernier passage en commission"
 
 ###############################################################################
 
@@ -1125,6 +1132,9 @@ msgstr "Ajout/Édition d'un entretien"
 
 msgid "Entretiens:delete"
 msgstr "Suppression d'un entretien"
+
+msgid "Entretiens:impression"
+msgstr "Impression d'un entretien"
 
 ###############################################################################
 
@@ -1403,6 +1413,9 @@ msgstr "Visualisation des sanctions"
 msgid "Listesanctionseps58:edit"
 msgstr "Ajout/Édition d'une sanction"
 
+msgid "Listesanctionseps58:delete"
+msgstr "Suppression d'une sanction"
+
 ###############################################################################
 
 msgid "Module:Manifestationsbilansparcours66"
@@ -1561,6 +1574,10 @@ msgstr "Suppression d'une orientation"
 
 msgid "Orientsstructs:printChangementReferent"
 msgstr "Notification de changement de référent (CG66)"
+
+msgid "Orientsstructs:impression_changement_referent"
+msgstr "Notification de changement de référent (CG66)"
+
 ###############################################################################
 
 msgid "Module:Originespdos"
@@ -2882,6 +2899,9 @@ msgstr "Workflow CER: 4. Décision CG - 4.3 Validation Cadre (cohorte)"
 msgid "Cohortescers93:exportcsv"
 msgstr "Workflow CER: 2. Saisie d'un CER (télécharger le tableau)"
 
+msgid "Cohortescers93:impressionsDecisions"
+msgstr "Imprimer les décisions"
+
 ###############################################################################
 
 msgid "Module:Histoschoixcers93"
@@ -2896,11 +2916,20 @@ msgstr "Workflow CER: 3. Envoi CG (individuel)"
 msgid "Histoschoixcers93:premierelecture"
 msgstr "Workflow CER: 4. Décision CG - 4.1 Première lecture (individuel)"
 
+msgid "Histoschoixcers93:premierelecture_consultation"
+msgstr "Workflow CER: 4. Décision CG - 4.1 Première lecture (consultation, individuel)"
+
 msgid "Histoschoixcers93:secondelecture"
 msgstr "Workflow CER: 4. Décision CG - 4.2 Validation CS (individuel)"
 
+msgid "Histoschoixcers93:secondelecture_consultation"
+msgstr "Workflow CER: 4. Décision CG - 4.2 Validation CS (consultation, individuel)"
+
 msgid "Histoschoixcers93:aviscadre"
 msgstr "Workflow CER: 4. Décision CG - 4.3 Validation Cadre (individuel)"
+
+msgid "Histoschoixcers93:aviscadre_consultation"
+msgstr "Workflow CER: 4. Décision CG - 4.3 Validation Cadre (consultation, individuel)"
 
 ###############################################################################
 
