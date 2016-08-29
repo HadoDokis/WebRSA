@@ -155,6 +155,10 @@
 			$result = $this->DefaultDefault->index( array(), $fields, $params );
 			$expected = '<p class="notice">Aucun enregistrement</p>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			
+			$result = $this->DefaultDefault->index( array(), $fields, array('empty_label' => 'Label customisé') );
+			$expected = '<p class="notice">Label customisé</p>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			// Avec le tri
 			$result = $this->DefaultDefault->index( $this->datas, $fields, $params );

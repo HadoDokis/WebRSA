@@ -71,3 +71,12 @@ msgstr "Filtrer par situation de contractualisation de l'allocataire"
 
 msgid "Search.Personne.situation"
 msgstr "Situation de contractualisation de l'allocataire"
+
+msgid "/PersonnesReferents/index/:heading"
+msgstr "Référents liés à la personne"
+
+msgid "/PersonnesReferents/add"
+msgstr "Ajouter"
+
+msgid "/PersonnesReferents/add/:title"
+msgstr "Ajouter un Référent"

@@ -146,3 +146,66 @@ msgstr "Filtrer par période"
 
 msgid "Search.Bilanparcours66.hasmanifestation"
 msgstr "L'allocataire s'est-il manifesté ? "
+
+msgid "/Bilansparcours66/index/:heading"
+msgstr "Bilan de parcours de la personne"
+
+msgid "/Bilansparcours66/add"
+msgstr "Ajouter"
+
+msgid "/Bilansparcours66/add/:title"
+msgstr "Ajouter"
+
+msgid "Proposition.lib"
+msgstr "Proposition du référent"
+
+msgid "Avis.lib"
+msgstr "Avis de l'EP"
+
+msgid "Decision.lib"
+msgstr "Décision du CG"
+
+msgid "/Bilansparcours66/view"
+msgstr "Voir"
+
+msgid "/Bilansparcours66/view/#Bilanparcours66.id#"
+msgstr "Voir"
+
+msgid "/Bilansparcours66/edit"
+msgstr "Modifier"
+
+msgid "/Bilansparcours66/edit/#Bilanparcours66.id#"
+msgstr "Modifier"
+
+msgid "/Bilansparcours66/impression"
+msgstr "Imprimer"
+
+msgid "/Bilansparcours66/impression/#Bilanparcours66.id#"
+msgstr "Imprimer"
+
+msgid "/Manifestationsbilansparcours66/index"
+msgstr "Manifestations (#Bilanparcours66.nb_manifestations#)"
+
+msgid "/Manifestationsbilansparcours66/index/#Bilanparcours66.id#"
+msgstr "Manifestations"
+
+msgid "/Bilansparcours66/cancel"
+msgstr "Annuler"
+
+msgid "/Bilansparcours66/cancel/#Bilanparcours66.id#"
+msgstr "Annuler"
+
+msgid "/Bilansparcours66/filelink"
+msgstr "Fichiers liés (#Fichiermodule.nb_fichiers#)"
+
+msgid "/Bilansparcours66/filelink/#Bilanparcours66.id#"
+msgstr "Fichiers liés"
+
+msgid "Bilanparcours66.examen"
+msgstr "Motif de la saisine"
+
+msgid "Avis.commentaire"
+msgstr "Commentaire"
+
+msgid "Bilansparcours66::index::emptyLabel"
+msgstr "Aucun bilan de parcours présent pour cette personne."

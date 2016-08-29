@@ -300,7 +300,7 @@ function mkTooltipTables() {
 			if( $( tr ).up( '.innerTableCell' ) == undefined ) {
 				$( tr ).addClassName( 'dynamic' );
 				var jPosition = 0;
-				$( tr ).getElementsBySelector( 'td' ).each( function( td ) {
+				$( tr ).childElements().each( function( td ) {
 					if(
 						( !actionPositions.include( jPosition ) && $(td).hasClassName('action') === false )
 						&& ( !inputPositions.include( jPosition ) && $(td).hasClassName('input') === false )

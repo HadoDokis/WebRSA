@@ -128,3 +128,48 @@ msgstr "Imprimer"
 
 msgid "/Rendezvous/impression/#Rendezvous.id#"
 msgstr "Imprimer le rendez-vous de #Personne.nom_complet#"
+
+msgid "/Rendezvous/index/:heading"
+msgstr "Rendez-vous"
+
+msgid "/Rendezvous/add"
+msgstr "Ajouter"
+
+msgid "/Rendezvous/add/:title"
+msgstr "Ajouter un Rendez-vous"
+
+msgid "/Rendezvous/view"
+msgstr "Voir"
+
+msgid "/Rendezvous/view/#Rendezvous.id#"
+msgstr "Voir le Rendez-vous"
+
+msgid "/Rendezvous/edit"
+msgstr "Modifier"
+
+msgid "/Rendezvous/edit/#Rendezvous.id#"
+msgstr "Modifier le Rendez-vous"
+
+msgid "/Rendezvous/delete"
+msgstr "Supprimer"
+
+msgid "/Rendezvous/delete/#Rendezvous.id#"
+msgstr "Supprimer le Rendez-vous"
+
+msgid "/Rendezvous/delete/#Rendezvous.id# ?"
+msgstr "Supprimer le Rendez-vous"
+
+msgid "/Rendezvous/delete/#Rendezvous.id##d1"
+msgstr "Attention ce RDV est lié à un questionnaire D1, si vous le supprimez, vous supprimez également le D1"
+
+msgid "/Rendezvous/delete/#Rendezvous.id##d1 ?"
+msgstr "Attention ce RDV est lié à un questionnaire D1, si vous le supprimez, vous supprimez également le D1"
+
+msgid "/Rendezvous/filelink"
+msgstr "Fichiers liés (#Fichiermodule.nb_fichiers_lies#)"
+
+msgid "/Rendezvous/delete/#Rendezvous.id#"
+msgstr "Fichiers liés"
+
+msgid "Rendezvous::index::emptyLabel"
+msgstr "Cette personne ne possède pas encore de rendez-vous."

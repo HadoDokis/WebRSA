@@ -507,8 +507,8 @@
 			else if( !empty( $params['personne_id'] ) && is_numeric( $params['personne_id'] ) ) {
 				$conditions['Dossier.id'] = $this->Foyer->Personne->dossierId( $params['personne_id'] );
 			}
-
-			if( empty( $conditions ) ) {
+			
+			if( empty( $conditions ) || end($conditions) === null ) {
 				throw new NotFoundException();
 			}
 
