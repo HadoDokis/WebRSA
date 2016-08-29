@@ -2312,3 +2312,12 @@ body.accompagnementsbeneficiaires td.etatdosrsa2, body.accompagnementsbeneficiai
 body.accompagnementsbeneficiaires td.etatdosrsa1, body.accompagnementsbeneficiaires td.etatdosrsa6, body.accompagnementsbeneficiaires td.etatdosrsa5 {
 	background-image: url( ../img/icons/cross.png );
 }
+
+/* Visualisation d'un Rendezvous' */
+body.rendezvous.view div#ficheCI table {
+    max-width: 61.5em;
+}
+
+body.rendezvous.view div#ficheCI tbody th {
+    width: 20em;
+}

@@ -345,12 +345,16 @@
 					'Rendezvous.heurerdv DESC'
 				)
 			);
+
 			if( (string)Configure::read( 'Cg.departement' ) === '93' ) {
 				if( false === $this->Rendezvous->Behaviors->attached( 'LinkedRecords' ) ) {
 					$this->Rendezvous->Behaviors->attach( 'LinkedRecords' );
 				}
 				$query = $this->Rendezvous->linkedRecordsCompleteQuerydata( $query, 'Questionnaired1pdv93' );
-				$query['contain'] = array('Thematiquerdv');
+			}
+
+			if( true === Configure::read( 'Rendezvous.useThematique' ) ) {
+				$query['fields'][] = 'Rendezvous.thematiques';
 			}
 
 			$rdvs = $this->Rendezvous->find( 'all', $query );
