@@ -25,10 +25,16 @@
 			'Xform',
 			'Default2',
 			'Default3' => array('className' => 'Default.DefaultDefault'),
-			'Default'
+			'Default',
+			'Search.SearchForm'
 		);
 
-		public $components = array( 'Default', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'Workflowscers93' );
+		public $components = array(
+			'Default',
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array( 'actions' => array( 'index', 'clotureenmasse' ) ),
+			'Workflowscers93'
+		);
 
 		public $commeDroit = array(
 			'add' => 'Referents:edit'
@@ -50,10 +56,18 @@
 				)
 			);
 
-			foreach( array( 'Structurereferente' ) as $linkedModel ) {
-				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
-				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
-			}
+			$structuresreferentes_ids = $this->Workflowscers93->getUserStructurereferenteId( false );
+			$options['Referent']['structurereferente_id'] = $this->InsertionsBeneficiaires->structuresreferentes(
+				array(
+					'type' => 'optgroup',
+					'conditions' => (
+						false === empty( $structuresreferentes_ids )
+						? array( 'Structurereferente.id' => $structuresreferentes_ids )
+						: array()
+					)
+				)
+			);
+			$options['Referent']['has_datecloture'] = array( '0' => 'Non', '1' => 'Oui' );
 
 			$this->set( compact( 'options' ) );
 		}
@@ -256,7 +270,7 @@
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
 			if( !empty( $this->request->data ) ) {
-				$queryData = $this->Referent->WebrsaReferent->search( $this->request->data );
+				$queryData = $this->Referent->WebrsaReferent->search( (array)Hash::get( $this->request->data, 'Search' ) );
 				$queryData['limit'] = 20;
                 $queryData['conditions'][] = array( 'Referent.structurereferente_id' => $structurereferente_id );
 				$this->paginate = $queryData;

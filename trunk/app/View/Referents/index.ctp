@@ -17,28 +17,37 @@
 	);
 	echo $this->Default3->actions( $actions );
 
-	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->action ), 'id' => $searchFormId ) );
+	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->action ), 'id' => $searchFormId, 'class' => ( isset( $referents ) ? 'folded' : 'unfolded' ) ) );
 
 	echo $this->Default3->subform(
 		$this->Translator->normalize(
 			array(
-				'Search.Referent.nom' => array('required' => false),
-				'Search.Referent.prenom' => array('required' => false),
-				'Search.Referent.fonction' => array('required' => false),
+				'Search.Referent.nom' => array( 'required' => false ),
+				'Search.Referent.prenom' => array( 'required' => false ),
+				'Search.Referent.fonction' => array( 'required' => false ),
 				'Search.Referent.structurereferente_id' => array(
 					'label' => 'Structure référente liée',
 					'required' => false,
-					'type' => ( $this->action == 'index' ? 'select': 'hidden' ),
 					'empty' => true
-				)
+				),
+				'Search.Referent.actif' => array( 'required' => false, 'empty' => true )
 			)
 		),
 		array(
 			'options' => array( 'Search' => $options ),
 			'fieldset' => true,
+			'legend' => 'Filtrer par référent'
 		)
 	);
-	
+
+	echo $this->SearchForm->dateRange( 'Search.Referent.datecloture', array(
+		'domain' => Inflector::underscore( "{$this->request->params['controller']}_{$this->request->params['action']}" ),
+		'minYear_from' => '2009',
+		'maxYear_from' => date( 'Y' ) + 1,
+		'minYear_to' => '2009',
+		'maxYear_to' => date( 'Y' ) + 4
+	) );
+
 	echo $this->Allocataires->blocPagination( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options ) );
 ?>
@@ -48,6 +57,7 @@
 	</div>
 <?php
 	echo $this->Form->end();
+	echo $this->Observer->disableFormOnSubmit( $searchFormId );
 
 	if( isset( $referents ) ) {
 		$this->Default3->DefaultPaginator->options(
@@ -66,6 +76,7 @@
 					'Referent.email',
 					'Structurereferente.lib_struc',
 					'Referent.actif',
+					'Referent.datecloture',
 					'/referents/cloturer/#Referent.id#' => array(
 						'disabled' => "('#Referent.datecloture#' == '' || '#PersonneReferent.nb_referents_lies#' > 0) === false"
 					),
@@ -77,15 +88,18 @@
 			),
 			array(
 				'options' => $options,
-				'format' => $this->element( 'pagination_format', array( 'modelName' => 'Structurereferente' ) )
+				'format' => $this->element( 'pagination_format', array( 'modelName' => 'Referent' ) )
 			)
 		);
 	}
 
-	echo $this->Default->button(
-		'back',
-		array(
-			'controller' => 'parametrages',
-			'action'     => 'index'
-		)
-	);
+	if( 'index' === $this->request->params['action'] ) {
+		echo $this->Default->button(
+			'back',
+			array(
+				'controller' => 'parametrages',
+				'action'     => 'index'
+			)
+		);
+	}
+?>

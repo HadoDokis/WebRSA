@@ -39,3 +39,9 @@ msgstr "Supprimer"
 
 msgid "Search.Referent.fonction"
 msgstr "Fonction"
+
+msgid "Search.Referent.actif"
+msgstr "Actif"
+
+msgid "Search.Referent.datecloture"
+msgstr "Date de clôture"
