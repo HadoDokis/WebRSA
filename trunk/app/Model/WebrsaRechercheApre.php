@@ -152,12 +152,12 @@
 						)
 					);
 				}
-				
+
 				Cache::write( $cacheKey, $query );
 			}
-			
+
 			$this->Apre->deepAfterFind = false;
-			
+
 			return $query;
 		}
 
@@ -257,6 +257,27 @@
 				$value = (string)Hash::get( $search, $path );
 				if( $value !== '' ) {
 					$query['conditions'][$path] = $value;
+				}
+			}
+
+			// Critères sur la relance d'APRE - date de relance
+			$daterelance = Hash::get( $search, 'Relanceapre.daterelance' );
+			if( false === empty( $daterelance ) ) {
+				$from = Hash::get( $search, 'Relanceapre.daterelance_from' );
+				$to = Hash::get( $search, 'Relanceapre.daterelance_to' );
+
+				if( valid_date( $from ) && valid_date( $to ) ) {
+					$subQuery = array(
+						'alias' => 'relancesapres',
+						'fields' => array( 'relancesapres.apre_id' ),
+						'contain' => false,
+						'conditions' => array(
+							'relancesapres.apre_id = Apre.id',
+							'relancesapres.daterelance BETWEEN \''.date_cakephp_to_sql( $from ).'\' AND \''.date_cakephp_to_sql( $to ).'\''
+						)
+					);
+
+					$query['conditions'][] = 'Apre.id IN ( '.$this->Apre->Relanceapre->sq( $subQuery ).' )';
 				}
 			}
 
