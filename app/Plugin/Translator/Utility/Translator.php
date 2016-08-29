@@ -19,6 +19,14 @@
 	class Translator implements TranslatorInterface
 	{
 		/**
+		 * Contient le nom du dernier domain utilisé dans une traduction
+		 * 
+		 * @var string
+		 * @static
+		 */
+		public static $lastDomain = null;
+		
+		/**
 		 * @var Translator
 		 * @static
 		 */
@@ -110,10 +118,13 @@
 		 * @param integer $count Count Count is used with $plural to choose the correct plural form.
 		 * @param string $language Language to translate string to.
 		 *							If null it checks for language in session followed by Config.language configuration variable.
+		 * @param boolean $useCache Use cache or not
 		 * @return string translated string.
 		 * @throws Exception
 		 */
-		public static function translate($singular, $plural = null, $category = 6, $count = null, $language = null) {
+		public static function translate(
+			$singular, $plural = null, $category = 6, $count = null, $language = null, $useCache = true
+		) {
 			$className = get_called_class();
 			$instance = $className::getInstance();
 
@@ -121,18 +132,26 @@
 				throw new Exception("Domaines non défini dans la classe ".get_called_class(), 500);
 			}
 
-			$path = $instance::path($singular, $plural, $category, $count, $language);
-			$translated = TranslatorHash::exists($instance::$_cache, $path) ? TranslatorHash::get($instance::$_cache, $path) : false;
+			if ($useCache) {
+				$path = $instance::path($singular, $plural, $category, $count, $language);
+				$translated = TranslatorHash::exists($instance::$_cache, $path) 
+					? TranslatorHash::get($instance::$_cache, $path) 
+					: false;
+			}
 			
-			if (!$translated) {
+			if (!$useCache || !$translated) {
 				foreach ($instance->domains() as $domain) {
 					$translated = I18n::translate($singular, $plural, $domain, $category, $count, $language);
 					if ($translated !== $singular) {
+						self::$lastDomain = $domain;
 						break;
 					}
 				}
-				$instance::$_cache = TranslatorHash::insert($instance::$_cache, $path, $translated);
-				$instance::$_tainted = true;
+				
+				if ($useCache) {
+					$instance::$_cache = TranslatorHash::insert($instance::$_cache, $path, $translated);
+					$instance::$_tainted = true;
+				}
 			}
 			
 			return $translated;

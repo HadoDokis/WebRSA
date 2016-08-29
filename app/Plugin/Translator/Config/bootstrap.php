@@ -40,3 +40,20 @@
 			return vsprintf($instance::translate($singular, $plural, 6, $count), $args);
 		}
 	}
+	
+	if (!function_exists('__domain')) {
+		/**
+		 * Permet d'obtenir le nom du domain utilisé pour une traduction
+		 * 
+		 * @param string $singular
+		 * @param string $plural
+		 * @param integer $count
+		 * @return string
+		 */
+		function __domain($singular, $plural = null, $category = 6, $count = null, $language = null) {
+			$instance = Translator::getInstance();
+			$instance::translate($singular, $plural, $category, $count, $language, $useCache = false);
+			
+			return $instance::$lastDomain;
+		}
+	}
