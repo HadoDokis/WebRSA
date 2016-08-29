@@ -30,28 +30,51 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array('Referent');
+		public $uses = array( 'Referent' );
 
-		public function search( $criteres ) {
+		/**
+		 * Behaviors utilisés par le modèle.
+		 *
+		 * @var array
+		 */
+		public $actsAs = array( 'Conditionnable' );
+
+		/**
+		 * Moteur de recherche par référent.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function search( $search ) {
 			/// Conditions de base
 			$conditions = array();
 
 			// Critères sur une personne du foyer - nom, prénom, nom de naissance -> FIXME: seulement demandeur pour l'instant
 			$filtersReferent = array();
 			foreach( array( 'nom', 'prenom', 'fonction' ) as $critereReferent ) {
-				if( isset( $criteres['Referent'][$critereReferent] ) && !empty( $criteres['Referent'][$critereReferent] ) ) {
-					$conditions[] = 'Referent.'.$critereReferent.' ILIKE \''.$this->Referent->wildcard( $criteres['Referent'][$critereReferent] ).'\'';
+				if( isset( $search['Referent'][$critereReferent] ) && !empty( $search['Referent'][$critereReferent] ) ) {
+					$conditions[] = 'Referent.'.$critereReferent.' ILIKE \''.$this->Referent->wildcard( $search['Referent'][$critereReferent] ).'\'';
 				}
 			}
 
-			if( isset( $criteres['Referent']['id'] ) && !empty( $criteres['Referent']['id'] ) ) {
-				$conditions[] = array( 'Referent.id' => $criteres['Referent']['id'] );
+			if( isset( $search['Referent']['id'] ) && !empty( $search['Referent']['id'] ) ) {
+				$conditions[] = array( 'Referent.id' => $search['Referent']['id'] );
 			}
 
 			// Critère sur la structure référente de l'utilisateur
-			if( isset( $criteres['Referent']['structurereferente_id'] ) && !empty( $criteres['Referent']['structurereferente_id'] ) ) {
-				$conditions[] = array( 'Referent.structurereferente_id' => $criteres['Referent']['structurereferente_id'] );
+			$structurereferente_id = (string)suffix( Hash::get( $search, 'Referent.structurereferente_id' ) );
+			if( '' !== $structurereferente_id ) {
+				$conditions[] = array( 'Referent.structurereferente_id' => $structurereferente_id );
 			}
+
+			// Référent actif ?
+			$actif = (string)Hash::get( $search, 'Referent.actif' );
+			if( '' !== $actif ) {
+				$conditions[] = array( 'Referent.actif' => $actif );
+			}
+
+			// Possède une date de clôture ?
+			$conditions = $this->conditionsDates( $conditions, $search, array( 'Referent.datecloture' ) );
 
 			if( false === $this->Referent->Behaviors->attached( 'Occurences' ) ) {
 				$this->Referent->Behaviors->attach( 'Occurences' );

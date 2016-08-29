@@ -2321,3 +2321,8 @@ body.rendezvous.view div#ficheCI table {
 body.rendezvous.view div#ficheCI tbody th {
     width: 20em;
 }
+
+/* Clôture d'un référent' */
+body.referents td.action span.link.cloturer {
+	background-image: url( ../img/icons/date_edit_disabled.png );
+}
