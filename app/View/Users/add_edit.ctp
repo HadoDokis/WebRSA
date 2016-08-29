@@ -39,7 +39,10 @@
 	<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
 	<?php echo $this->Form->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
 </div>
-<?php echo $this->Form->end();?>
+<?php
+	echo $this->Form->end();
+	echo $this->Observer->disableFormOnSubmit();
+?>
 
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
