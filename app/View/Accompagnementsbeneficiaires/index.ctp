@@ -466,10 +466,12 @@
 						'Rendezvous.objetrdv' => array(
 							'label' => __m( 'Action.objetrdv' ),
 							'condition' => 'in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel" ) )',
+							'format' => 'truncate'
 						),
 						'Rendezvous.commentairerdv' => array(
 							'label' => __m( 'Action.commentairerdv' ),
 							'condition' => 'in_array( "#Action.name#", array( "Rendezvouscollectif", "Rendezvousindividuel" ) )',
+							'format' => 'truncate'
 						),
 						'Prestatairehorspdifp93.name' => array(
 							'label' => __m( 'Action.prestatairefp' ),
