@@ -144,7 +144,7 @@ msgstr "Raison de l'annulation"
 msgid "/Cuis66/annule/:heading"
 msgstr "Annulation d'un CUI"
 
-msgid "Cuis66::filelink"
+msgid "/Cuis66/filelink/:heading"
 msgstr "Fichiers liés au CUI"
 
 ###############################################################################

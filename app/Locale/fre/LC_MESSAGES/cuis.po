@@ -793,8 +793,26 @@ msgstr "Voir"
 msgid "/Cuis/index/#Cui.personne_id#"
 msgstr "Voir les CUIs de #Personne.nom_complet#"
 
+msgid "/Cuis/view"
+msgstr "Voir"
+
+msgid "/Cuis/view/#Cui.id#"
+msgstr "Voir"
+
+msgid "/Cuis/edit"
+msgstr "Modifier"
+
+msgid "/Cuis/edit/#Cui.id#"
+msgstr "Modifier"
+
+msgid "/Cuis/delete"
+msgstr "Supprimer"
+
+msgid "/Cuis/delete/#Cui.id#"
+msgstr "Supprimer"
+
 msgid "/Cuis/filelink"
-msgstr "Fichiers liés"
+msgstr "Fichiers liés (#Fichiermodule.nombre#)"
 
 msgid "/Cuis/filelink/#Cui.id#"
 msgstr "Fichiers liés"
@@ -813,3 +831,9 @@ msgstr "ATA"
 
 msgid "Cui.beneficiaire_rsa"
 msgstr "RSA"
+
+msgid "/Cuis/filelink/:heading"
+msgstr "Fichiers liés au CUI"
+
+msgid "/Cuis/delete/#Cui.id# ?"
+msgstr "Cette action supprimera définitivement cet enregistrement. Voulez-vous continuer ?"

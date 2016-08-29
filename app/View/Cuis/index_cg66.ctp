@@ -47,10 +47,8 @@
 					'/Suspensionscuis66/index/#Cui.id#' => array('class' => 'suspension'),
 					'/Rupturescuis66/index/#Cui.id#' => array('class' => 'rupture'),
 					'/Cuis66/annule/#Cui66.id#' => array('class' => 'cancel'),
-					'/Cuis66/delete/#Cui.id#',
-					'/Cuis66/filelink/#Cui.id#' => array(
-						'msgid' => __m('/Cuis66/filelink')." (#Fichiermodule.nombre#)",
-					),
+					'/Cuis66/delete/#Cui.id#' => array('confirm' => true),
+					'/Cuis66/filelink/#Cui.id#',
 				)
 			)
 		),
@@ -59,3 +57,4 @@
 			'paginate' => false,
 		)
 	);
+	
