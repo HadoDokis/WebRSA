@@ -13,13 +13,6 @@
 	);
 	echo $this->element('default_index', $paramsElement);
 
-	foreach ($rdvs as $key => $rdv) {
-		$thematiques = Hash::extract($rdv, 'Thematiquerdv.{n}.name');
-		if (!empty($thematiques)) {
-			$rdvs[$key]['Thematiquerdv']['name'] = '<ul><li>'.implode('</li><li>', $thematiques).'</li></ul>';
-		}
-	}
-
 	echo $this->Default3->index(
 		$rdvs,
 		$this->Translator->normalize(
@@ -53,15 +46,23 @@
 			'paginate' => false,
 			'empty_label' => __m('Rendezvous::index::emptyLabel'),
 			'innerTable' => $this->Translator->normalize(
-				array(
-					'Rendezvous.objetrdv' => array(
-						'format' => 'truncate'
+				array_merge(
+					array(
+						'Rendezvous.objetrdv' => array(
+							'format' => 'truncate'
+						),
+						'Rendezvous.commentairerdv' => array(
+							'format' => 'truncate'
+						)
 					),
-					'Rendezvous.commentairerdv' => array(
-						'format' => 'truncate'
-					),
-					'Thematiquerdv.name' => array(
-						'condition' => "'#Thematiquerdv.name#' !== ''",
+					(
+						Configure::read( 'Rendezvous.useThematique' )
+						? array(
+							'Rendezvous.thematiques' => array(
+								'type' => 'list'
+							)
+						)
+						: array()
 					)
 				)
 			)
