@@ -168,7 +168,7 @@ msgstr "Attention ce RDV est lié à un questionnaire D1, si vous le supprimez, 
 msgid "/Rendezvous/filelink"
 msgstr "Fichiers liés (#Fichiermodule.nb_fichiers_lies#)"
 
-msgid "/Rendezvous/delete/#Rendezvous.id#"
+msgid "/Rendezvous/filelink/#Rendezvous.id#"
 msgstr "Fichiers liés"
 
 msgid "Rendezvous::index::emptyLabel"
