@@ -597,70 +597,80 @@
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Apre"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Apres', 'impression' )
 						),
 						'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Décision"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Commissionseps', 'impressionDecision' )
 						),
 						'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Commissionep" && "#Impression.type#" == "Convocation"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Commissionseps', 'printConvocationBeneficiaire' )
 						),
 						'/Cers93/impression/#Contratinsertion.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impression"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Cers93', 'impression' )
 						),
 						'/Cers93/impressionDecision/#Contratinsertion.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Contratinsertion" && "#Impression.impression#" == "impressionDecision"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Cers93', 'impressionDecision' )
 						),
 						'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Ficheprescription93"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Fichesprescriptions93', 'impression' )
 						),
 						'/Orientsstructs/impression/#Orientstruct.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Orientstruct"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Orientsstructs', 'impression' )
 						),
 						'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Relancesnonrespectssanctionseps93', 'impression' )
 						),
 						'/Rendezvous/impression/#Rendezvous.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Rendezvous"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Rendezvous', 'impression' )
 						),
 						'/Cohortestransfertspdvs93/impression/#NvOrientstruct.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Transfertpdv93"',
 							'condition_group' => 'impression',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Cohortestransfertspdvs93', 'impression' )
 						),
 						// ---------------------------------------------------------
 						// Lien voir
@@ -670,56 +680,64 @@
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Apre"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Apres', 'view' )
 						),
 						'/Historiqueseps/view_passage/#Passagecommissionep.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Commissionep"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Historiqueseps', 'view_passage' )
 						),
 						'/Cers93/view/#Contratinsertion.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Contratinsertion"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Cers93', 'view' )
 						),
 						'/Fichesprescriptions93/view/#Ficheprescription93.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Ficheprescription93"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Fichesprescriptions93', 'view' )
 						),
 						'/Orientsstructs/view/#NvOrientstruct.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Transfertpdv93"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Orientsstructs', 'view' )
 						),
 						'/Orientsstructs/view/#Orientstruct.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Orientstruct"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Orientsstructs', 'view' )
 						),
 						'/Relancesnonrespectssanctionseps93/view/#Relancenonrespectsanctionep93.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Relancenonrespectsanctionep93"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Relancesnonrespectssanctionseps93', 'view' )
 						),
 						'/Rendezvous/view/#Rendezvous.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
 							'condition' => '"#Impression.name#" == "Rendezvous"',
 							'condition_group' => 'view',
-							'title' => false
+							'title' => false,
+							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Rendezvous', 'view' )
 						),
 					)
 				) + array(
