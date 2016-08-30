@@ -72,6 +72,12 @@ msgstr "Filtrer par situation de contractualisation de l'allocataire"
 msgid "Search.Personne.situation"
 msgstr "Situation de contractualisation de l'allocataire"
 
+msgid "Search.PersonneReferentPcd.referent_id"
+msgstr "Nom du référent précédent"
+
+msgid "Search.PersonneReferentPcd.dfdesignation"
+msgstr "Date de fin de désignation du référent précédent"
+
 msgid "/PersonnesReferents/index/:heading"
 msgstr "Référents liés à la personne"
 

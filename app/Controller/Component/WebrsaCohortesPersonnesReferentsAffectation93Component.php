@@ -127,6 +127,15 @@
 				)
 			);
 
+			// Référent précédent
+			$result['PersonneReferentPcd']['referent_id'] = $Controller->InsertionsBeneficiaires->referents(
+				array(
+					'type' => 'optgroup',
+					'prefix' => true,
+					'conditions' => array( 'Structurereferente.id' => $pdvs_ids )
+				)
+			);
+
 			return $result;
 		}
 
