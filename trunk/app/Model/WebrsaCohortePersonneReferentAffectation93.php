@@ -9,6 +9,7 @@
 	 */
 	App::uses( 'AbstractWebrsaCohorte', 'Model/Abstractclass' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * La classe WebrsaCohortePersonneReferentAffectation93 ...
@@ -324,6 +325,44 @@
 						'NOT' => array( 'Orientstruct.origine' => 'demenagement' ),
 					);
 				}
+			}
+
+			// Filtrer par affectation précédente: référent précédent
+			$referentpcd_id = Sanitize::clean( suffix( (string)Hash::get( $search, 'PersonneReferentPcd.referent_id' ) ) );
+			if( '' !== $referentpcd_id ) {
+				$subQuery = array(
+					'alias' => 'personnes_referents',
+					'fields' => array( 'personnes_referents.referent_id' ),
+					'contain' => false,
+					'conditions' => array(
+						'personnes_referents.personne_id = Personne.id',
+						'personnes_referents.dfdesignation IS NOT NULL'
+					),
+					'order' => array( 'personnes_referents.dddesignation DESC' ),
+					'limit' => 1
+				);
+				$sql = $this->Personne->PersonneReferent->sq( $subQuery );
+				$query['conditions'][] = "( {$sql} ) = '{$referentpcd_id}'";
+			}
+
+			// Filtrer par affectation précédente: date de fin de désignation du référent précédent
+			$dfdesignation_pcd = Hash::get( $search, 'PersonneReferentPcd.dfdesignation' );
+			if( '1' === $dfdesignation_pcd ) {
+				$from = Hash::get( $search, 'PersonneReferentPcd.dfdesignation_from' );
+				$to = Hash::get( $search, 'PersonneReferentPcd.dfdesignation_to' );
+				$subQuery = array(
+					'alias' => 'personnes_referents',
+					'fields' => array( 'personnes_referents.dfdesignation' ),
+					'contain' => false,
+					'conditions' => array(
+						'personnes_referents.personne_id = Personne.id',
+						'personnes_referents.dfdesignation IS NOT NULL'
+					),
+					'order' => array( 'personnes_referents.dddesignation DESC' ),
+					'limit' => 1
+				);
+				$sql = $this->Personne->PersonneReferent->sq( $subQuery );
+				$query['conditions'][] = "( {$sql} ) BETWEEN '".date_cakephp_to_sql( $from )."' AND '".date_cakephp_to_sql( $to )."'";
 			}
 
 			return $query;
