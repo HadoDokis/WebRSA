@@ -5,10 +5,10 @@
 
 	echo $this->Default3->titleForLayout();
 
-	$searchFormId = 'ReferentsIndexForm';
+	$searchFormId = "{$this->request->params['controller']}_{$this->request->params['action']}_form";
 	$actions =  array(
 		'/Referents/add' => array(),
-		'/Referents/index/#toggleform' => array(
+		"/Referents/{$this->request->params['action']}/#toggleform" => array(
 			'title' => 'Visibilité formulaire',
 			'text' => 'Formulaire',
 			'class' => 'search',
@@ -49,7 +49,6 @@
 	) );
 
 	echo $this->Allocataires->blocPagination( array( 'prefix' => 'Search', 'options' => $options ) );
-	echo $this->Allocataires->blocScript( array( 'prefix' => 'Search', 'options' => $options ) );
 ?>
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>

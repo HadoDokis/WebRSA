@@ -15,6 +15,8 @@
 	 */
 	App::uses('Folder', 'Utility');
 	App::uses('File', 'Utility');
+	App::uses('DefaultUrl', 'Default.Utility');
+	App::uses('WebrsaPermissions', 'Utility');
 
 	class ReferentsController extends AppController
 	{
@@ -207,9 +209,28 @@
 			);
 			$this->assert( !empty( $referent ), 'invalidParameter' );
 
+			// Les administrateurs n'ont pas accès à la cohorte de clôture en masse
+			$referer = Hash::get( $this->request->data, 'Referent.referer' );
+			if( null !== $referer ) {
+				$redirectUrl = Router::parse( $referer );
+				$redirectUrl = array_merge(
+					$redirectUrl,
+					$redirectUrl['pass'],
+					$redirectUrl['named']
+				);
+				unset( $redirectUrl['pass'], $redirectUrl['named'] );
+			}
+			else {
+				$redirectUrl = (
+					WebrsaPermissions::check( $this->name, 'clotureenmasse' )
+					? array( 'controller' => 'referents', 'action' => 'clotureenmasse' )
+					: array( 'controller' => 'referents', 'action' => 'index' )
+				);
+			}
+
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'index' ) );
+				$this->redirect( $redirectUrl );
 			}
 
 			// Tentative d'enregistrement du formulaire
@@ -249,7 +270,7 @@
 
 					$this->Referent->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
+					$this->redirect( $redirectUrl );
 				}
 				else {
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
@@ -258,6 +279,10 @@
 			}
 			else {
 				$this->request->data = $referent;
+			}
+
+			if( null === $referer ) {
+				$this->request->data['Referent']['referer'] = $this->referer( null, true );
 			}
 		}
 

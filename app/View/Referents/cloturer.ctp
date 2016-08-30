@@ -16,6 +16,7 @@
 		array(
 			'fieldset' => false,
 			'legend' => false,
+			'Referent.referer' => array( 'type' => 'hidden' ),
 			'Referent.id' => array( 'type' => 'hidden' ),
 			'Referent.datecloture' => array( 'required' => true, 'type' => 'date', 'dateFormat' => 'DMY' )
 		)
@@ -31,5 +32,6 @@
 	);
 
 	echo $this->Xform->end();
+	echo $this->Observer->disableFormOnSubmit();
 ?>
 <div class="clearer"><hr /></div>
