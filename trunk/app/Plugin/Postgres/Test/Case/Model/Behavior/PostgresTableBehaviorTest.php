@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe PostgresTableBehaviorTestTest.
+	 * Code source de la classe PostgresTableBehaviorTest.
 	 *
 	 * PHP 5.3
 	 *
@@ -11,12 +11,12 @@
 	require_once( dirname( __FILE__ ).DS.'..'.DS.'models.php' );
 
 	/**
-	 * La classe PostgresTableBehaviorTestTest ...
+	 * La classe PostgresTableBehaviorTest ...
 	 *
 	 * @package Postgres
 	 * @subpackage Test.Case.Model.Behavior
 	 */
-	class PostgresTableBehaviorTestTest extends CakeTestCase
+	class PostgresTableBehaviorTest extends CakeTestCase
 	{
 		/**
 		 *
@@ -137,7 +137,7 @@
 						'table' => 'postgres_groups',
 						'column' => 'id',
 						'nullable' => false,
-						'unique' => false
+						'unique' => true
 					)
 				)
 			);
@@ -168,7 +168,7 @@
 						'table' => 'postgres_groups',
 						'column' => 'id',
 						'nullable' => false,
-						'unique' => false
+						'unique' => true
 					)
 				)
 			);
@@ -200,7 +200,7 @@
 							'table' => 'postgres_groups',
 							'column' => 'id',
 							'nullable' => false,
-							'unique' => false
+							'unique' => true
 						)
 					)
 				)
@@ -234,7 +234,7 @@
 								'table' => 'postgres_groups',
 								'column' => 'id',
 								'nullable' => false,
-								'unique' => false
+								'unique' => true
 							)
 						)
 					)
@@ -259,7 +259,7 @@
 								'table' => 'postgres_groups',
 								'column' => 'id',
 								'nullable' => false,
-								'unique' => false
+								'unique' => true
 							)
 						)
 					)

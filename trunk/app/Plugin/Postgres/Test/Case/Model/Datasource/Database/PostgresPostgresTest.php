@@ -183,7 +183,7 @@
 						'table' => 'postgres_groups',
 						'column' => 'id',
 						'nullable' => false,
-						'unique' => false
+						'unique' => true
 					)
 				)
 			);
