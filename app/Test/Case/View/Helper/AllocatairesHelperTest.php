@@ -88,7 +88,11 @@
 			$result = $this->Allocataires->blocDossier( array() );
 			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dtdemrsa]" id="SearchDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Search][Dossier][dtdemrsa]"  value="1" id="SearchDossierDtdemrsa"/><label for="SearchDossierDtdemrsa">Filtrer par date de demande RSA</label></div><fieldset id="SearchDossierDtdemrsa_from_to"><legend>Date de demande RSA</legend><div class="input date"><label for="SearchDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Search][Dossier][dtdemrsa_from][day]" id="SearchDossierDtdemrsaFromDay">
 '.$options['From']['days'].'
@@ -116,7 +120,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$result = $this->Allocataires->blocDossier( array( 'fieldset' => false ) );
 			$expected = '<div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dtdemrsa]" id="SearchDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Search][Dossier][dtdemrsa]"  value="1" id="SearchDossierDtdemrsa"/><label for="SearchDossierDtdemrsa">Filtrer par date de demande RSA</label></div><fieldset id="SearchDossierDtdemrsa_from_to"><legend>Date de demande RSA</legend><div class="input date"><label for="SearchDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Search][Dossier][dtdemrsa_from][day]" id="SearchDossierDtdemrsaFromDay">
 '.$options['From']['days'].'
@@ -181,7 +189,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$result = $this->Allocataires->blocDossier( $params );
 			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">' . __d( 'dossier', 'Dossier.matricule.large' ) . '</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', \'SearchDossierDtdemrsa_from_to\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dtdemrsa]" id="SearchDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Search][Dossier][dtdemrsa]"  value="1" id="SearchDossierDtdemrsa"/><label for="SearchDossierDtdemrsa">Filtrer par date de demande RSA</label></div><fieldset id="SearchDossierDtdemrsa_from_to"><legend>Date de demande RSA</legend><div class="input date"><label for="SearchDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Search][Dossier][dtdemrsa_from][day]" id="SearchDossierDtdemrsaFromDay">
 '.$options['From']['days'].'
@@ -201,7 +213,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <div class="checkbox"><input type="checkbox" name="data[Search][Situationdossierrsa][etatdosrsa][]" value="0" id="SearchSituationdossierrsaEtatdosrsa0" /><label for="SearchSituationdossierrsaEtatdosrsa0">Nouvelle demande en attente de décision CG pour ouverture du droit</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchSituationdossierrsaEtatdosrsaChoice\', \'SearchSituationdossierrsaEtatdosrsaFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchSituationdossierrsaEtatdosrsaChoice\', \'SearchSituationdossierrsaEtatdosrsaFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Detailcalculdroitrsa][natpf_choice]" id="SearchDetailcalculdroitrsaNatpfChoice_" value="0"/><input type="checkbox" name="data[Search][Detailcalculdroitrsa][natpf_choice]"  value="1" id="SearchDetailcalculdroitrsaNatpfChoice"/><label for="SearchDetailcalculdroitrsaNatpfChoice">Filtrer par nature de prestation</label></div><fieldset id="SearchDetailcalculdroitrsaNatpfFieldset"><legend>Natures de prestation</legend><div class="input select"><input type="hidden" name="data[Search][Detailcalculdroitrsa][natpf]" value="" id="SearchDetailcalculdroitrsaNatpf"/>
 
@@ -209,7 +225,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <div class="checkbox"><input type="checkbox" name="data[Search][Detailcalculdroitrsa][natpf][]" value="RSI" id="SearchDetailcalculdroitrsaNatpfRSI" /><label for="SearchDetailcalculdroitrsaNatpfRSI">RSA Socle majoré (Financement sur fonds Conseil général)</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDetailcalculdroitrsaNatpfChoice\', \'SearchDetailcalculdroitrsaNatpfFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchDetailcalculdroitrsaNatpfChoice\', \'SearchDetailcalculdroitrsaNatpfFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><div class="input select"><label for="SearchDossierAncienneteDispositif">Ancienneté dans le dispositif</label><select name="data[Search][Dossier][anciennete_dispositif]" id="SearchDossierAncienneteDispositif">
 <option value=""></option>
@@ -278,7 +298,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$result = $this->Allocataires->blocDossier( $params );
 			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="FilterDossierNumdemrsa">Filter.Dossier.numdemrsa</label><input name="data[Filter][Dossier][numdemrsa]" maxlength="11" type="text" id="FilterDossierNumdemrsa"/></div><div class="input text"><label for="FilterDossierMatricule">Filter.Dossier.matricule</label><input name="data[Filter][Dossier][matricule]" maxlength="15" type="text" id="FilterDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Filter][Dossier][dernier]" id="FilterDossierDernier_" value="0"/><input type="checkbox" name="data[Filter][Dossier][dernier]"  value="1" id="FilterDossierDernier"/><label for="FilterDossierDernier">Filter.Dossier.dernier</label></div><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'FilterDossierDtdemrsa\', \'FilterDossierDtdemrsa_from_to\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'FilterDossierDtdemrsa\', \'FilterDossierDtdemrsa_from_to\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Filter][Dossier][dtdemrsa]" id="FilterDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Filter][Dossier][dtdemrsa]"  value="1" id="FilterDossierDtdemrsa"/><label for="FilterDossierDtdemrsa">Filtrer par filter.Dossier.dtdemrsa</label></div><fieldset id="FilterDossierDtdemrsa_from_to"><legend>Filter.Dossier.dtdemrsa</legend><div class="input date"><label for="FilterDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Filter][Dossier][dtdemrsa_from][day]" id="FilterDossierDtdemrsaFromDay">
 '.$options['From']['days'].'
@@ -297,7 +321,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <div class="checkbox"><input type="checkbox" name="data[Filter][Situationdossierrsa][etatdosrsa][]" value="Z" id="FilterSituationdossierrsaEtatdosrsaZ" /><label for="FilterSituationdossierrsaEtatdosrsaZ">Non défini</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'FilterSituationdossierrsaEtatdosrsaChoice\', \'FilterSituationdossierrsaEtatdosrsaFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'FilterSituationdossierrsaEtatdosrsaChoice\', \'FilterSituationdossierrsaEtatdosrsaFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
@@ -388,7 +416,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93005" id="SearchAdresseNumcom93005" /><label for="SearchAdresseNumcom93005">93005 AULNAY-SOUS-BOIS</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchAdresseNumcomChoice\', \'SearchAdresseNumcomFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchAdresseNumcomChoice\', \'SearchAdresseNumcomFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
@@ -466,7 +498,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93001" id="SearchAdresseNumcom93001" /><label for="SearchAdresseNumcom93001">93001 AUBERVILLIERS</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchAdresseNumcomChoice\', \'SearchAdresseNumcomFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchAdresseNumcomChoice\', \'SearchAdresseNumcomFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
@@ -589,13 +625,17 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 </select></div><div class="input select required"><label for="SearchPersonneReferentReferentId">Référent du parcours</label><select name="data[Search][PersonneReferent][referent_id]" id="SearchPersonneReferentReferentId">
 <option value=""></option>
 <option value="1_1">M. Emploi Paul</option>
-</select></div><script type="text/javascript">document.observe( \'dom:loaded\', function() {
+</select></div><script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() {
 				try {
 					dependantSelect( \'SearchPersonneReferentReferentId\', \'SearchPersonneReferentStructurereferenteId\' );
 				} catch(e) {
 					console.log(e);
 				}
-			} );</script>';
+			} );
+//]]>
+</script>';
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 

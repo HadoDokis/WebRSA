@@ -25,6 +25,7 @@
 			'app.Adressefoyer',
 			'app.Calculdroitrsa',
 			'app.Cer93',
+			'app.Cer93Sujetcer93',
 			'app.Contratinsertion',
 			'app.Dossier',
 			'app.Foyer',
@@ -35,6 +36,7 @@
 			'app.Referent',
 			'app.Situationdossierrsa',
 			'app.Structurereferente',
+			'app.Sujetcer93',
 		);
 
 		protected $_querydatas = array(

@@ -564,7 +564,7 @@
 		 */
 		 public function testApacheVersion() {
 			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+				$this->markTestSkipped( 'Ce test ne peut être exécuté que dans un navigateur.' );
 			}
 
 			 $result = apache_version();
@@ -576,7 +576,7 @@
 		 */
 		 public function testApacheModules() {
 			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+				$this->markTestSkipped( 'Ce test ne peut être exécuté que dans un navigateur.' );
 			}
 
 			 $result = (array)apache_modules();
@@ -983,7 +983,7 @@
 			$result = hash_filter_keys( $data, $filters );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
-		
+
 		/**
 		 * Test de la fonction filesize2bytes
 		 */

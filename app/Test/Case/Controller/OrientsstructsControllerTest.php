@@ -10,7 +10,8 @@
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'AppController', 'Controller' );
 	App::uses( 'OrientsstructsController', 'Controller' );
-	
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
+
 	class OrientsstructspublicController extends OrientsstructsController
 	{
 		public function getIndexActionsList(array $records, array $params = array()) {
@@ -32,8 +33,26 @@
 		 *
 		 * @var array
 		 */
-		public $fixtures = array(
-		);
+		public $fixtures = array();
+
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			CakeTestSession::setupBeforeClass();
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			CakeTestSession::teardownAfterClass();
+		}
 
 		/**
 		 * Préparation du test.
@@ -42,6 +61,19 @@
 			parent::setUp();
 			$this->Orientsstructs = new OrientsstructspublicController();
 			$this->Orientsstructs->request->params['controller'] = 'orientsstructs';
+
+			CakeTestSession::start();
+			CakeTestSession::delete( 'Auth' );
+		}
+
+		/**
+		 * tearDown method
+		 *
+		 * @return void
+		 */
+		public function tearDown() {
+			CakeTestSession::destroy();
+			parent::tearDown();
 		}
 
 		/**
@@ -67,11 +99,13 @@
 					)
 				)
 			);
-			
+
 			/**
 			 * Test 66
 			 */
 			Configure::write('Cg.departement', 66);
+			CakeTestSession::write( WebrsaPermissions::$sessionPermissionsKey.'.Module:Orientsstructs', true );
+
 			$results = $this->Orientsstructs->getIndexActionsList($records, $params);
 			$expected = array(
 				'/Orientsstructs/add/1' => array(
@@ -81,11 +115,13 @@
 				)
 			);
 			$this->assertEqual($results, $expected, 'Failed in '.__FUNCTION__.' : '.__LINE__);
-			
+
 			/**
 			 * Test 58
 			 */
 			Configure::write('Cg.departement', 58);
+			CakeTestSession::write( WebrsaPermissions::$sessionPermissionsKey.'.Module:Proposorientationscovs58', true );
+
 			$results = $this->Orientsstructs->getIndexActionsList($records, $params);
 			$expected = array(
 				'/Proposorientationscovs58/add/1' => array(
@@ -95,11 +131,13 @@
 				)
 			);
 			$this->assertEqual($results, $expected, 'Failed in '.__FUNCTION__.' : '.__LINE__);
-			
+
 			/**
 			 * Test 93 - rgorient_max >= 1
 			 */
 			Configure::write('Cg.departement', 93);
+			CakeTestSession::write( WebrsaPermissions::$sessionPermissionsKey.'.Module:Reorientationseps93', true );
+
 			$results = $this->Orientsstructs->getIndexActionsList($records, $params);
 			$expected = array(
 				'/Reorientationseps93/add/1' => array(
@@ -109,7 +147,7 @@
 				)
 			);
 			$this->assertEqual($results, $expected, 'Failed in '.__FUNCTION__.' : '.__LINE__);
-			
+
 			/**
 			 * Test 93 - rgorient_max === 0
 			 */

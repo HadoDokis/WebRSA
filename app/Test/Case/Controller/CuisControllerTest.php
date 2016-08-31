@@ -11,7 +11,7 @@
 	App::uses('AppController', 'Controller');
 	App::uses('CuiController', 'Controller');
 	App::uses('SuperFixture', 'SuperFixture.Utility');
-	
+
 	/**
 	 * La classe CuisControllerTest ...
 	 *
@@ -26,6 +26,11 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$_SERVER['REQUEST_URI'] = '/';
+			}
+
 			$this->controller = $this->generate('Cuis');
 		}
 
@@ -36,15 +41,15 @@
 			$this->_defineConf();
 			$this->_setRequestData();
 			SuperFixture::load($this, 'Cui');
-			
+
 			$this->testAction('/cuis/search', array('data' => $this->controller->request->data, 'method' => 'post') );
 			$result = $this->controller->viewVars;
-			
+
 			$compareData = $result['results'][9];
 			$compareData['Cui']['effetpriseencharge'] = null; // Les dates changent d'une année à l'autre
 			$compareData['Cui']['finpriseencharge'] = null;
 			$compareData['Cui']['faitle'] = null;
-			
+
 			$expected = array(
 				'Personne' => array(
 					'nom_complet' => 'MR Voisin Éric'
@@ -66,7 +71,7 @@
 			);
 			$this->assertEquals($compareData, $expected, "Différences détectées dans le résultat de la recherche");
 		}
-		
+
 		protected function _defineConf() {
 			Configure::write('Cg.departement', 123);
 			Configure::write(
@@ -122,7 +127,7 @@
 				)
 			);
 		}
-		
+
 		protected function _setRequestData() {
 			$this->controller->request->data = array(
 				'Search' => array(

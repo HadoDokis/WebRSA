@@ -42,6 +42,8 @@
 			'app.Questionnaired2pdv93',
 			'app.Contratinsertion',
 			'app.Cer93',
+			'app.Cer93Sujetcer93',
+			'app.Sujetcer93',
 		);
 
 		/**

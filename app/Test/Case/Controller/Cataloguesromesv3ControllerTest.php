@@ -90,6 +90,10 @@
 			Configure::write( 'Cg.departement', 66 );
 			Configure::write( 'Romev3.enabled', true );
 
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$_SERVER['REQUEST_URI'] = '/';
+			}
+
 			$this->controller = $this->generate(
 				'Cataloguesromesv3',
 				array(
