@@ -167,7 +167,7 @@
 		 */
 		public function getPostgresForeignKeysFrom( Model $Model ) {
 			$return = $this->getPostgresForeignKeys( $Model );
-			return Hash::get( $return, 'from' );
+			return (array)Hash::get( $return, 'from' );
 		}
 
 		/**
@@ -179,7 +179,7 @@
 		 */
 		public function getPostgresForeignKeysTo( Model $Model ) {
 			$return = $this->getPostgresForeignKeys( $Model );
-			return Hash::get( $return, 'to' );
+			return (array)Hash::get( $return, 'to' );
 		}
 	}
 ?>
