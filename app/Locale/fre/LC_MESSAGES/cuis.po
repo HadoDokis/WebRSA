@@ -42,15 +42,6 @@ msgstr "Ajout d'un Contrat Unique d'Insertion"
 msgid "/Cuis/edit/:heading"
 msgstr "Modification d'un Contrat Unique d'Insertion"
 
-msgid "/Cuis/view"
-msgstr "Voir"
-
-msgid "/Cuis/edit"
-msgstr "Modifier"
-
-msgid "/Cuis/delete"
-msgstr "Supprimer"
-
 msgid "/Cuis/email_send"
 msgstr "Envoyer E-mail"
 
