@@ -162,10 +162,14 @@
 <option value="1_1">Conducteur / Conductrice d&#039;engins de débardage</option>
 </select></div><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { dependantSelect( \'Deractromev3Domaineromev3Id\', \'Deractromev3Familleromev3Id\' );
+document.observe( \'dom:loaded\', function() { try {
+	dependantSelect( \'Deractromev3Domaineromev3Id\', \'Deractromev3Familleromev3Id\' );
 dependantSelect( \'Deractromev3Metierromev3Id\', \'Deractromev3Domaineromev3Id\' );
 dependantSelect( \'Deractromev3Appellationromev3Id\', \'Deractromev3Metierromev3Id\' );
- } );
+;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><script type="text/javascript">
 //<![CDATA[
@@ -229,10 +233,14 @@ $( \'Deractromev3Romev3\' ).writeAttribute( \'autocomplete\', \'off\' );Event.ob
 <option value="1_1">Conducteur / Conductrice d&#039;engins de débardage</option>
 </select></div><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { dependantSelect( \'SearchDeractromev3Domaineromev3Id\', \'SearchDeractromev3Familleromev3Id\' );
+document.observe( \'dom:loaded\', function() { try {
+	dependantSelect( \'SearchDeractromev3Domaineromev3Id\', \'SearchDeractromev3Familleromev3Id\' );
 dependantSelect( \'SearchDeractromev3Metierromev3Id\', \'SearchDeractromev3Domaineromev3Id\' );
 dependantSelect( \'SearchDeractromev3Appellationromev3Id\', \'SearchDeractromev3Metierromev3Id\' );
- } );
+;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><script type="text/javascript">
 //<![CDATA[

@@ -185,6 +185,10 @@
 		public function setUp() {
 			Configure::write( 'Cg.departement', 66 );
 
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$_SERVER['REQUEST_URI'] = '/';
+			}
+
 			$this->controller = $this->generate(
 				'Dossierssimplifies',
 				array(

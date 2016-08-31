@@ -186,6 +186,16 @@
 				'Historiqueetatpe' => 'LEFT OUTER',
 				'Adressefoyer' => 'LEFT OUTER',
 				'Adresse' => 'LEFT OUTER',
+				'Structurereferente' => 'LEFT OUTER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referent' => 'LEFT OUTER',
+				'Contratinsertion' => 'LEFT OUTER',
+				'Structurereferentecer' => 'LEFT OUTER',
+				'Referentcer' => 'LEFT OUTER',
+				'Regressionorientationep58' => 'LEFT OUTER',
+				'Typeorientpropo' => 'LEFT OUTER',
+				'Structurereferentepropo' => 'LEFT OUTER',
+				'Referentpropo' => 'LEFT OUTER',
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

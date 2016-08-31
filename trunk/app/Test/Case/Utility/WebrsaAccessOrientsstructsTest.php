@@ -1,20 +1,20 @@
 <?php
 	/**
-	 * Code source de la classe WebrsaAccessOrientstructTest.
+	 * Code source de la classe WebrsaAccessOrientsstructsTest.
 	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Test.Case.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'WebrsaAccessOrientstruct', 'Utility' );
+	App::uses( 'WebrsaAccessOrientsstructs', 'Utility' );
 
 	/**
-	 * La classe WebrsaAccessOrientstructTest réalise les tests unitaires de la classe WebrsaAccessOrientstruct.
+	 * La classe WebrsaAccessOrientsstructsTest réalise les tests unitaires de la classe WebrsaAccessOrientsstructs.
 	 *
 	 * @package app.Test.Case.Model
 	 */
-	class WebrsaAccessOrientstructTest extends CakeTestCase
+	class WebrsaAccessOrientsstructsTest extends CakeTestCase
 	{
 		/**
 		 * Fixtures utilisés.
@@ -24,16 +24,16 @@
 		public $fixtures = array();
 
 		/**
-		 * Test de la méthode WebrsaAccessOrientstruct::params()
+		 * Test de la méthode WebrsaAccessOrientsstructs::params()
 		 *
-		 * @covers WebrsaAccessOrientstruct::params
+		 * @covers WebrsaAccessOrientsstructs::params
 		 */
 		public function testParams() {
 			Configure::write( 'Cg.departement', 58 );
 			$params = array(
 				'reorientationseps' => true,
 			);
-			$result = WebrsaAccessOrientstruct::params($params);
+			$result = WebrsaAccessOrientsstructs::params($params);
 			$expected = array(
 				'alias' => 'Orientstruct',
 				'departement' => (int)Configure::read( 'Cg.departement' ),
@@ -44,9 +44,9 @@
 		}
 
 		/**
-		 * Test de la méthode WebrsaAccessOrientstruct::access()
+		 * Test de la méthode WebrsaAccessOrientsstructs::access()
 		 *
-		 * @covers WebrsaAccessOrientstruct::access
+		 * @covers WebrsaAccessOrientsstructs::access
 		 */
 		public function testAccess() {
 			Configure::write( 'Cg.departement', 58 );
@@ -63,26 +63,28 @@
 				'ajout_possible' => true,
 				'reorientationseps' => false
 			);
-			$result = WebrsaAccessOrientstruct::access( $record, $params );
+			$result = WebrsaAccessOrientsstructs::access( $record, $params );
 			$expected = array(
 				'Orientstruct' => array(
 					'rgorient' => 1,
 					'printable' => true,
 					'linked_records' => true,
 					'dernier' => true,
-					'dernier_oriente' => true,
-					'action_edit' => true,
-					'action_impression' => true,
-					'action_delete' => false,
-				)
+					'dernier_oriente' => true
+				),
+				'/Orientsstructs/add' => true,
+				'/Orientsstructs/edit' => true,
+				'/Orientsstructs/impression' => true,
+				'/Orientsstructs/delete' => false,
+				'/Orientsstructs/filelink' => true
 			);
 			$this->assertEqual( $result, $expected, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
-		 * Test de la méthode WebrsaAccessOrientstruct::accesses()
+		 * Test de la méthode WebrsaAccessOrientsstructs::accesses()
 		 *
-		 * @covers WebrsaAccessOrientstruct::accesses
+		 * @covers WebrsaAccessOrientsstructs::accesses
 		 */
 		public function testAccesses() {
 			Configure::write( 'Cg.departement', 58 );
@@ -110,8 +112,8 @@
 				'ajout_possible' => true,
 				'reorientationseps' => false
 			);
-			$accesses = WebrsaAccessOrientstruct::accesses($records, $params);
-			$result = WebrsaAccessOrientstruct::accesses($records, $params);
+			$accesses = WebrsaAccessOrientsstructs::accesses($records, $params);
+			$result = WebrsaAccessOrientsstructs::accesses($records, $params);
 			$expected = array(
 				(int) 0 => array(
 					'Orientstruct' => array(
@@ -119,11 +121,13 @@
 						'printable' => true,
 						'linked_records' => true,
 						'dernier' => true,
-						'dernier_oriente' => true,
-						'action_edit' => true,
-						'action_impression' => true,
-						'action_delete' => false
-					)
+						'dernier_oriente' => true
+					),
+					'/Orientsstructs/add' => true,
+					'/Orientsstructs/edit' => true,
+					'/Orientsstructs/impression' => true,
+					'/Orientsstructs/delete' => false,
+					'/Orientsstructs/filelink' => true
 				),
 				(int) 1 => array(
 					'Orientstruct' => array(
@@ -131,18 +135,20 @@
 						'printable' => true,
 						'linked_records' => true,
 						'dernier' => false,
-						'dernier_oriente' => false,
-						'action_edit' => false,
-						'action_impression' => true,
-						'action_delete' => false
-					)
+						'dernier_oriente' => false
+					),
+					'/Orientsstructs/add' => true,
+					'/Orientsstructs/edit' => false,
+					'/Orientsstructs/impression' => true,
+					'/Orientsstructs/delete' => false,
+					'/Orientsstructs/filelink' => true
 				)
 			);
 			$this->assertEqual( $result, $expected, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
-		 * @covers WebrsaAccessOrientstruct::check
+		 * @covers WebrsaAccessOrientsstructs::check
 		 */
 		public function testCheck() {
 			Configure::write( 'Cg.departement', 58 );
@@ -159,16 +165,16 @@
 			);
 
 			// Défini
-			$result = WebrsaAccessOrientstruct::check( 'impression', $record, $params );
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'impression', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 
 			// Non défini
-			$result = WebrsaAccessOrientstruct::check( 'foo', $record, $params );
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'foo', $record, $params );
 			$this->assertFalse( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
-		 * @covers WebrsaAccessOrientstruct::_edit
+		 * @covers WebrsaAccessOrientsstructs::_edit
 		 */
 		public function test_edit() {
 			/*
@@ -184,9 +190,9 @@
 				'ajout_possible' => true,
 			);
 
-			$result = WebrsaAccessOrientstruct::check( 'edit', $record, $params );
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'edit', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
-			
+
 			/*
 			 * Une des conditions non remplie
 			 */
@@ -200,9 +206,9 @@
 				'ajout_possible' => true,
 			);
 
-			$result = WebrsaAccessOrientstruct::check( 'edit', $record, $params );
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'edit', $record, $params );
 			$this->assertFalse( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
-			
+
 			/*
 			 * Conditions supplémentaires pour le CG 66
 			 * remplie
@@ -213,7 +219,7 @@
 			$dateDuJour->sub($interval);
 			Configure::write( 'Periode.modifiableorientation.nbheure', $nombreJours*24 );
 			Configure::write( 'Cg.departement', 66 );
-			
+
 			$record = array(
 				'Orientstruct' => array(
 					'dernier' => true,
@@ -224,10 +230,10 @@
 			$params = array(
 				'ajout_possible' => true,
 			);
-			
-			$result = WebrsaAccessOrientstruct::check( 'edit', $record, $params );
+
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'edit', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
-			
+
 			/*
 			 * Conditions supplémentaires pour le CG 66
 			 * Non remplie
@@ -238,7 +244,7 @@
 			$dateDuJour->sub($interval);
 			Configure::write( 'Periode.modifiableorientation.nbheure', $nombreJours*24 );
 			Configure::write( 'Cg.departement', 66 );
-			
+
 			$record = array(
 				'Orientstruct' => array(
 					'dernier' => true,
@@ -249,13 +255,13 @@
 			$params = array(
 				'ajout_possible' => true,
 			);
-			
-			$result = WebrsaAccessOrientstruct::check( 'edit', $record, $params );
+
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'edit', $record, $params );
 			$this->assertFalse( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
-		 * @covers WebrsaAccessOrientstruct::_impression
+		 * @covers WebrsaAccessOrientsstructs::_impression
 		 */
 		public function test_impression() {
 			/*
@@ -267,12 +273,12 @@
 				)
 			);
 			$params = array();
-			$result = WebrsaAccessOrientstruct::check( 'impression', $record, $params );
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'impression', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
-		 * @covers WebrsaAccessOrientstruct::_delete
+		 * @covers WebrsaAccessOrientsstructs::_delete
 		 */
 		public function test_delete() {
 			/*
@@ -288,14 +294,15 @@
 			$params = array(
 				'reorientationseps' => '' // empty
 			);
-			$result = WebrsaAccessOrientstruct::check( 'delete', $record, $params );
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'delete', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
-		 * @covers WebrsaAccessOrientstruct::_impression_changement_referent
+		 * @covers WebrsaAccessOrientsstructs::_impression_changement_referent
 		 */
 		public function test_impression_changement_referent() {
+			Configure::write( 'Cg.departement', 66 );
 			/*
 			 * Conditions toutes remplies
 			 */
@@ -306,22 +313,30 @@
 				)
 			);
 			$params = array();
-			$result = WebrsaAccessOrientstruct::check( 'impression_changement_referent', $record, $params );
+			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'impression_changement_referent', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}
 
 		/**
-		 * @covers WebrsaAccessOrientstruct::actions
+		 * @covers WebrsaAccessOrientsstructs::actions
 		 */
 		public function testActions() {
 			Configure::write('Cg.departement', 66);
 			$params = array();
-			$result = WebrsaAccessOrientstruct::actions($params);
+			$result = WebrsaAccessOrientsstructs::actions($params);
 			$expected = array(
-				'edit', 
-				'impression', 
-				'delete',
-				'impression_changement_referent', // Spécial CG 66
+				'Orientsstructs.add' => array(
+					'ajout_possible' => true
+				),
+				'Orientsstructs.edit' => array(
+					'ajout_possible' => true
+				),
+				'Orientsstructs.impression' => array(),
+				'Orientsstructs.delete' => array(
+					'reorientationseps' => true
+				),
+				'Orientsstructs.filelink' => array(),
+				'Orientsstructs.impression_changement_referent' => array()
 			);
 			$this->assertEqual($result, $expected, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 		}

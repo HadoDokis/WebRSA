@@ -149,7 +149,8 @@
 					'Typeorient.actif' => 'O',
 				),
 				'empty' => false,
-				'cache' => true
+				'cache' => true,
+				'with_parentid' => false
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -160,7 +161,8 @@
 				'conditions' => array(),
 				'empty' => true,
 				'cache' => true,
-				'foo' => 'bar'
+				'foo' => 'bar',
+				'with_parentid' => false
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 

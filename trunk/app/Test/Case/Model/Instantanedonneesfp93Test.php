@@ -25,6 +25,7 @@
 			'app.Adresse',
 			'app.Adressefoyer',
 			'app.Cer93',
+			'app.Cer93Sujetcer93',
 			'app.Calculdroitrsa',
 			'app.Contratinsertion',
 			'app.Dossier',
@@ -40,6 +41,7 @@
 			'app.Personne',
 			'app.Prestation',
 			'app.Situationdossierrsa',
+			'app.Sujetcer93',
 		);
 
 		/**
