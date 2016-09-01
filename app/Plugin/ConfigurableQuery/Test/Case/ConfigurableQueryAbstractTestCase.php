@@ -8,14 +8,14 @@
 			return trim( $xhtml );
 		}
 
-		public static function assertEquals( $result, $expected, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false ) {
+		public static function assertEquals( $expected, $result, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false ) {
 			if( empty( $message ) ) {
 				$message = var_export( $result, true );
 			}
 
 			return parent::assertEquals(
-				$result,
 				$expected,
+				$result,
 				$message,
 				$delta,
 				$maxDepth,
@@ -26,8 +26,8 @@
 
 		public static function assertEqualsXhtml( $result, $expected, $message = '' ) {
 			return self::assertEquals(
-				self::_normalizeXhtml( $result ),
-				self::_normalizeXhtml( $expected )
+				self::_normalizeXhtml( $expected ),
+				self::_normalizeXhtml( $result )
 			);
 		}
 	}
