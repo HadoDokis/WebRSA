@@ -30,11 +30,11 @@
 
 			$result = CacheMap::read( 'Apple' );
 			$expected = array( 'lalala' );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = CacheMap::delete( $key );
 			$expected = 2;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -53,14 +53,15 @@
 			// Structurereferente::_onChange()
 			$result = CacheMap::read( 'Structurereferente' );
 			$expected = array( 'Structurereferente_listoptions' );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 			//if( !empty( $result) ) {
 				//foreach( $result as $cacheKey ) {
 					//Cache::delete( $cacheKey );
 				//}
 			//}
 			$result = CacheMap::delete( 'Structurereferente' );
-			$this->assertEquals( $result, 1, var_export( $result, true ) );
+			$expected = 1;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = CacheMap::read();
 			$expected = array(
@@ -85,7 +86,7 @@
 					0 => 'Group',
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
