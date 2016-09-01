@@ -17,26 +17,38 @@
 	class GedoooUtilityTest extends CakeTestCase
 	{
 		/**
+		 * Préparation du test.
+		 */
+		public function setUp() {
+			parent::setUp();
+
+			Configure::write( 'Config.language', 'fre' );
+			App::build( array( 'locales' => CakePlugin::path( 'Gedooo' ).'Test'.DS.'Locale'.DS ) );
+		}
+
+		/**
 		 * Test de la méthode GedoooUtility::key()
 		 */
 		public function testKey() {
 			$result = GedoooUtility::key( 'Foo' );
-			$this->assertEqual( 'foo', $result, var_export( $result, true ) );
+			$this->assertEquals( 'foo', $result, var_export( $result, true ) );
 
 			$result = GedoooUtility::key( 'FooBar' );
-			$this->assertEqual( 'foobar', $result, var_export( $result, true ) );
+			$this->assertEquals( 'foobar', $result, var_export( $result, true ) );
 
 			$result = GedoooUtility::key( 'Foo.bar' );
-			$this->assertEqual( 'foo_bar', $result, var_export( $result, true ) );
+			$this->assertEquals( 'foo_bar', $result, var_export( $result, true ) );
 		}
 
 		/**
 		 * Test de la méthode GedoooUtility::msgstr()
 		 */
 		public function testMsgstr() {
-			// FIXME: ajouter un fichier de traduction et des tests propres au plugin
 			$result = GedoooUtility::msgstr( 'Orientstruct.typeorient_id' );
-			$this->assertEqual( 'Type d\'orientation', $result, var_export( $result, true ) );
+			$this->assertEquals( 'Type d\'orientation', $result, var_export( $result, true ) );
+
+			$result = GedoooUtility::msgstr( 'Foo' );
+			$this->assertEquals( 'Foo', $result, var_export( $result, true ) );
 		}
 
 	}
