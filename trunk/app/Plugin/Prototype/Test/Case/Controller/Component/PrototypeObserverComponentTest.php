@@ -116,7 +116,7 @@
 					'otherfield' => 6
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2. Masquage
 			$result = $this->Controller->PrototypeObserver->disableFieldsOnValue(
@@ -138,7 +138,7 @@
 					'otherfield' => 6
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -178,7 +178,7 @@
 					'otherfield' => 6
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2. Masquage
 			$result = $this->Controller->PrototypeObserver->disableFieldsOnCheckbox(
@@ -199,7 +199,7 @@
 					'otherfield' => 6
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

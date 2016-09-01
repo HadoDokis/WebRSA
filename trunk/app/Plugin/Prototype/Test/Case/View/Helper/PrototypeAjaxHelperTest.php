@@ -114,7 +114,7 @@ Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { 
 {$this->results['updateDivOnFieldsChange']}
 //]]>
 </script>";
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -143,7 +143,7 @@ var ajax_onload_parameters_f4996e4fb30300f09983a129c7e14162 =  Object.clone( aja
 
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -161,7 +161,7 @@ var ajax_onload_parameters_f4996e4fb30300f09983a129c7e14162 =  Object.clone( aja
 					'Ficheprescription93.referent_id',
 				)
 			);
-			$this->assertEqual( $result, null, var_export( $result, true ) );
+			$this->assertNull( $result );
 
 			$this->Ajax->beforeLayout( 'Foos/index.ctp' );
 			$result = $this->View->fetch( 'scriptBottom' );
@@ -171,7 +171,7 @@ var ajax_onload_parameters_f4996e4fb30300f09983a129c7e14162 =  Object.clone( aja
 //]]>
 </script>";
 
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
