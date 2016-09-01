@@ -163,7 +163,7 @@
 		 * @return void
 		 */
 		public function testSetup() {
-			$this->assertEquals( $this->Site->validate, $this->validate, var_export( $this->Site->validate, true ) );
+			$this->assertEquals( $this->validate, $this->Site->validate, var_export( $this->Site->validate, true ) );
 
 		}
 
@@ -188,7 +188,7 @@
 			$this->Site->create(array());
 			$this->Site->validates();
 
-			$this->assertEquals( $this->Site->validate, $validate, var_export( $this->Site->validate, true ) );
+			$this->assertEquals( $validate, $this->Site->validate, var_export( $this->Site->validate, true ) );
 		}
 	}
 ?>

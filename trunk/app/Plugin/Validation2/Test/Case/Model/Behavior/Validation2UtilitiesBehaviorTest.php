@@ -51,11 +51,11 @@
 		public function testMethodCacheKey() {
 			$result = $this->Site->methodCacheKey( 'FooBar', 'baz' );
 			$expected = 'test_FooBar_baz_Site';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->methodCacheKey( 'FooBar', 'baz', true );
 			$expected = 'test__foo_bar_baz__site';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -71,7 +71,7 @@
 				'allowEmpty' => NULL,
 				'on' => NULL,
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->normalizeValidationRule( array( 'between', 2, 5 ) );
 			$expected = array(
@@ -81,7 +81,7 @@
 				'allowEmpty' => NULL,
 				'on' => NULL,
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->normalizeValidationRule( array( 'rule' => array( 'between', 2, 5 ), 'allowEmpty' => true ) );
 			$expected = array(
@@ -91,7 +91,7 @@
 				'allowEmpty' => true,
 				'on' => NULL,
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->normalizeValidationRule( array( 'rule' => 'integer', 'allowEmpty' => true ) );
 			$expected = array(
@@ -101,7 +101,7 @@
 				'allowEmpty' => true,
 				'on' => NULL,
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -111,23 +111,23 @@
 		public function testDefaultValidationRuleMessage() {
 			$result = $this->Site->defaultValidationRuleMessage( null );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( 'notEmpty' );
 			$expected = __( 'Validate::notEmpty' );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'between', 2, 5 ) );
 			$expected = sprintf( __( 'Validate::between' ), array( 2, 5 ) );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'between', array( 2, 5 ) ) );
 			$expected = sprintf( __( 'Validate::between' ), array( 2, 5 ) );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'rule' => array( 'between', array( 2, 5 ) ), 'domain' => 'default' ) );
 			$expected = sprintf( __( 'Validate::between' ), array( 2, 5 ) );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -147,7 +147,7 @@
 					)
 				)
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -177,7 +177,7 @@
 			$this->Site->unsetValidationRule( 'id', 'notEmpty' );
 			$result = $this->Site->validate;
 			$expected = array( 'id' => array() );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -206,11 +206,11 @@
 			);
 			$result = $this->Site->hasValidationRule( 'id', 'notEmpty' );
 			$expected = true;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->hasValidationRule( 'id', 'inexistant' );
 			$expected = false;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -256,7 +256,7 @@
 					),
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

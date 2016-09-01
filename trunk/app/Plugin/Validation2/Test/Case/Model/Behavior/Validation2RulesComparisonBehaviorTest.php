@@ -59,19 +59,19 @@
 		public function testAllEmpty() {
 			$result = $this->Site->allEmpty( null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => '', 'fax' => null );
 			$this->Site->create( $data );
 			$result = $this->Site->allEmpty( array( 'phone' => '' ), 'fax' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => ' ', 'fax' => null );
 			$this->Site->create( $data );
 			$result = $this->Site->allEmpty( array( 'phone' => ' ' ), 'fax' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -83,31 +83,31 @@
 		public function testNotEmptyIf() {
 			$result = $this->Site->notEmptyIf( null, null, null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => 'X', 'fax' => null );
 			$this->Site->create( $data );
 			$result = $this->Site->notEmptyIf( array( 'phone' => 'X' ), 'fax', true, array( null ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => '', 'fax' => null );
 			$this->Site->create( $data );
 			$result = $this->Site->notEmptyIf( array( 'phone' => '' ), 'fax', true, array( null ) );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => '', 'fax' => 'P' );
 			$this->Site->create( $data );
 			$result = $this->Site->notEmptyIf( array( 'phone' => '' ), 'fax', true, array( 'P' ) );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => '', 'fax' => 'F' );
 			$this->Site->create( $data );
 			$result = $this->Site->notEmptyIf( array( 'phone' => '' ), 'fax', true, array( 'P' ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -118,7 +118,7 @@
 		public function testNotNullIf() {
 			$result = $this->Site->notNullIf( null, null, null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => '0606060606', 'fax' => null );
 			$this->Site->create( $data );
@@ -129,7 +129,7 @@
 				array( null )
 			);
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => null, 'fax' => null );
 			$this->Site->create( $data );
@@ -140,7 +140,7 @@
 				array( null )
 			);
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'phone' => '0606060606', 'fax' => '0404040404' );
 			$this->Site->create( $data );
@@ -151,7 +151,7 @@
 				array( null )
 			);
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -162,17 +162,17 @@
 		public function testGreaterThanIfNotZero() {
 			$result = $this->Site->greaterThanIfNotZero( null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->create( array( 'value' => 1, 'reference' => 1 ) );
 			$result = $this->Site->greaterThanIfNotZero( array( 'value' => 1 ), 'reference' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->create( array( 'value' => 1, 'reference' => 2 ) );
 			$result = $this->Site->greaterThanIfNotZero( array( 'value' => 1 ), 'reference' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -183,39 +183,39 @@
 		public function testCompareDates() {
 			$result = $this->Site->compareDates( null, null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->create( array( 'from' => null, 'to' => null ) );
 			$result = $this->Site->compareDates( array( 'from' => null ), 'to', 'null' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'from' => '2012-01-01', 'to' => '2012-01-02' );
 			$this->Site->create( $data );
 
 			$result = $this->Site->compareDates( array( 'from' => $data['from'] ), 'to', '<' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->compareDates( array( 'from' => $data['from'] ), 'to', '*' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->compareDates( array( 'from' => $data['from'] ), 'to', '>' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'from' => '2012-01-02', 'to' => '2012-01-01' );
 			$this->Site->create( $data );
 			$result = $this->Site->compareDates( array( 'from' => $data['from'] ), 'to', '<=' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'from' => '2012-01-01', 'to' => '2012-01-01' );
 			$this->Site->create( $data );
 			$result = $this->Site->compareDates( array( 'from' => $data['from'] ), 'to', '==' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -226,31 +226,31 @@
 		public function testFoo() {
 			$result = $this->Site->foo( null, null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->foo( array(), null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->create( array( 'Site' => array( 'value' => null, 'othervalue' => null ) ) );
 			$result = $this->Site->foo( array( 'value' => null ), 'othervalue' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->create( array( 'Site' => array( 'value' => true, 'othervalue' => false ) ) );
 			$result = $this->Site->foo( array( 'value' => true ), 'othervalue' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->create( array( 'Site' => array( 'value' => null, 'othervalue' => 5 ) ) );
 			$result = $this->Site->foo( array( 'value' => null ), 'othervalue' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->create( array( 'Site' => array( 'value' => false, 'othervalue' => null ) ) );
 			$result = $this->Site->foo( array( 'value' => false ), 'othervalue' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -261,29 +261,29 @@
 		public function testCheckUnique() {
 			$result = $this->Site->checkUnique( null, null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'name' => 'CakePHP', 'birthday' => null );
 			$this->Site->create( $data );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), array( 'name', 'birthday' ) );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'id' => 1, 'name' => 'CakePHP', 'birthday' => null );
 			$this->Site->create( $data );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), array( 'name', 'birthday' ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), array( 'name', 'user_id' ) );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -294,7 +294,7 @@
 		public function testCheckDureeDates() {
 			$result = $this->Site->checkDureeDates( null, null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Avec une durée incorrecte
 			$data = array( 'dd' => '2015-05-20', 'df' => '2016-05-19' );
@@ -302,7 +302,7 @@
 
 			$result = $this->Site->checkDureeDates( array( 'duree' => '10' ), 'dd', 'df' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Avec une durée correcte
 			$data = array( 'dd' => '2015-05-20', 'df' => '2016-03-19' );
@@ -310,7 +310,7 @@
 
 			$result = $this->Site->checkDureeDates( array( 'duree' => '10' ), 'dd', 'df' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 			
 			// Durée de 3, 6, 9 et 12 mois
 			foreach( array(3,6,9,12) as $duree ){
@@ -326,7 +326,7 @@
 					$this->Site->create( $data );
 					$result = $this->Site->checkDureeDates( array( 'duree' => $duree ), 'dd', 'df' );
 					$expected = true;
-					$this->assertEqual( $result, $expected, var_export( $result, true ) );
+					$this->assertEquals( $expected, $result, var_export( $result, true ) );
 				}
 			}
 		}
@@ -340,26 +340,26 @@
 			$this->Site->create(array('phone' => 'X', 'fax' => 'Y'));
 			$result = $this->Site->emptyIf(array('fax' => 'Y'), 'phone', true, array(null)); // Vide si phone === null
 			$expected = true;
-			$this->assertEqual($result, $expected, "Validation ok si la condition n'est pas remplie");
+			$this->assertEquals( $expected, $result, "Validation ok si la condition n'est pas remplie");
 			
 			$this->Site->create(array('phone' => null, 'fax' => null));
 			$result = $this->Site->emptyIf(array('fax' => null), 'phone', true, array(null)); // Vide si phone === null
 			$expected = true;
-			$this->assertEqual($result, $expected, "Validation ok si la condition est remplie et que le champ testé est vide");
+			$this->assertEquals( $expected, $result, "Validation ok si la condition est remplie et que le champ testé est vide");
 			
 			$this->Site->create(array('phone' => null, 'fax' => 'Y'));
 			$result = $this->Site->emptyIf(array('fax' => 'Y'), 'phone', true, array(null)); // Vide si phone === null
 			$expected = false;
-			$this->assertEqual($result, $expected, "Echec de validation car la condition est rempli mais le champ testé n'est pas vide");
+			$this->assertEquals( $expected, $result, "Echec de validation car la condition est rempli mais le champ testé n'est pas vide");
 			
 			// Mauvaise utilisation
 			$result = $this->Site->emptyIf(null, null, null, null);
 			$expected = false;
-			$this->assertEqual($result, $expected, "Params non défini");
+			$this->assertEquals( $expected, $result, "Params non défini");
 			
 			$result = $this->Site->emptyIf(array(), 'phone', true, array(null));
 			$expected = true;
-			$this->assertEqual($result, $expected, "Pas de champs à vérifier");
+			$this->assertEquals( $expected, $result, "Pas de champs à vérifier");
 		}
 	}
 ?>
