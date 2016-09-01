@@ -61,22 +61,22 @@
 			$url = array( 'action' => 'logout' );
 			$result = DefaultUrl::toString( $url );
 			$expected = '/Users/logout';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = array( 'action' => 'index', '#' => 'results' );
 			$result = DefaultUrl::toString( $url );
 			$expected = '/Users/index/#results';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = array( 'plugin' => 'plugin', 'controller' => 'controllers', 'action' => 'action', 'prefix' => 'prefix', 0 => 'param1', 'named' => 'value' );
 			$result = DefaultUrl::toString( $url );
 			$expected = '/Plugin.Controllers/prefix_action/param1/named:value';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = array( 'plugin' => 'plugin', 'controller' => 'controllers', 'action' => 'action', 'prefix' => 'prefix', 0 => 'param1', '#' => 'anchor,subanchor', 'named' => 'value' );
 			$result = DefaultUrl::toString( $url );
 			$expected = '/Plugin.Controllers/prefix_action/param1/named:value#anchor,subanchor';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = array(
 				'plugin' => 'acl_extras',
@@ -91,13 +91,13 @@
 			);
 			$result = DefaultUrl::toString( $url );
 			$expected = '/AclExtras.Users/admin_index/category/Search__active:1/Search__User__username:admin#content';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = array( 'action' => 'index', 'prefix' => 'admin', 'admin' => true );
 			$this->_setRequest( $url );
 			$result = DefaultUrl::toString( $url );
 			$expected = '/Users/admin_index';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -108,23 +108,23 @@
 		public function testToString2() {
 			$result = DefaultUrl::toString( array( 'controller' => 'foos', 'action' => 'bar' ) );
 			$expected = '/Foos/bar';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toString( '/Foos/bar' );
 			$expected = '/Foos/bar';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toString( array( 'controller' => 'foos', 'action' => 'bar', 'Search__active' => 1 ) );
 			$expected = '/Foos/bar/Search__active:1';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toString( '/Foos/bar/Search__active:1' );
 			$expected = '/Foos/bar/Search__active:1';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toString( array( 'plugin' => 'tests','controller' => 'foos', 'prefix' => 'admin', 'admin' => true, 'action' => 'bar', 0 => 666, 'Search__active' => 1 ) );
 			$expected = '/Tests.Foos/admin_bar/666/Search__active:1';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -140,7 +140,7 @@
 				'controller' => 'users',
 				'action' => 'logout'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = '/Users/index#results';
 			$result = DefaultUrl::toArray( $url );
@@ -150,7 +150,7 @@
 				'action' => 'index',
 				'#' => 'results'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = '/Users/index/#results';
 			$result = DefaultUrl::toArray( $url );
@@ -160,7 +160,7 @@
 				'action' => 'index',
 				'#' => 'results'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = '/Plugin.Controllers/admin_action/param1/named:value';
 			$result = DefaultUrl::toArray( $url );
@@ -173,7 +173,7 @@
 				'admin' => true,
 				'named' => 'value'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = '/Plugin.Controllers/prefix_action/param1/named:value/#anchor,subanchor';
 			$result = DefaultUrl::toArray( $url );
@@ -185,7 +185,7 @@
 				'named' => 'value',
 				'#' => 'anchor,subanchor'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$url = '/AclExtras.Users/admin_index/category/Search__active:1/Search__User__username:admin/#content';
 			$result = DefaultUrl::toArray( $url );
@@ -200,7 +200,7 @@
 				'Search__User__username' => 'admin',
 				'#' => 'content'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 
@@ -212,23 +212,23 @@
 		public function testToArray2() {
 			$result = DefaultUrl::toArray( '/Foos/bar' );
 			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar' );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toArray( '/Foos/bar/Search__active:1' );
 			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', 'Search__active' => 1 );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toArray( '/Tests.Foos/admin_bar/666/Search__active:1' );
 			$expected = array( 'plugin' => 'tests','controller' => 'foos', 'prefix' => 'admin', 'admin' => true, 'action' => 'bar', 0 => 666, 'Search__active' => 1 );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toArray( '/Foos/bar#6' );
 			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', '#' => 6 );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = DefaultUrl::toArray( '/Foos/bar##Model.field#' );
 			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', '#' => '#Model.field#' );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

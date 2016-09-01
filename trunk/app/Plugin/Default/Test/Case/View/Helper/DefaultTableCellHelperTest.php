@@ -122,7 +122,7 @@
 				'6',
 				array( 'class' => 'data integer positive', ),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec des options, dont la valeur est traduite
 			$htmlAttributes = array( 'options' => array( 'red' => 'Foo' ) );
@@ -131,7 +131,7 @@
 				'Foo',
 				array( 'class' => 'data string ', ),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec des options, mais dont la valeur n'est pas traduite
 			$htmlAttributes = array( 'options' => array( 'blue' => 'Foo' ) );
@@ -140,7 +140,7 @@
 				'red',
 				array( 'class' => 'data string ', ),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec un label spécifié, ce qui ne doit rien changer
 			$result = $this->DefaultTableCell->data( 'Apple.id', array( 'label' => 'Test label' ) );
@@ -148,7 +148,7 @@
 				'6',
 				array( 'class' => 'data integer positive', ),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec une liste
 			$options = array(
@@ -167,7 +167,7 @@
 					'class' => 'data list text',
 				)
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec une liste vide
 			$data = array(
@@ -185,7 +185,7 @@
 					'class' => 'data list text',
 				)
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec un datetime
 			$data = array(
@@ -202,7 +202,7 @@
 					'class' => 'data datetime ',
 				)
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec un datetime pour lequel on force le format
 			$data = array(
@@ -219,7 +219,7 @@
 					'class' => 'data datetime ',
 				)
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec une clé value (composée de deux champs)
 			$data = array(
@@ -241,7 +241,7 @@
 					'class' => ''
 				)
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Test avec une clé value (composée de deux champs) et la traduction d'options
 			$data = array(
@@ -265,7 +265,7 @@
 					'class' => ''
 				)
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -285,7 +285,7 @@
 					'for' => NULL,
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$htmlAttributes = array( 'for' => 'ApplesView' );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
@@ -296,7 +296,7 @@
 					'for' => 'ApplesView',
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -317,7 +317,7 @@
 					'for' => NULL,
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$htmlAttributes = array( 'for' => 'ApplesView' );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
@@ -328,7 +328,7 @@
 					'for' => 'ApplesView',
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -345,7 +345,7 @@
 					'class' => 'input integer',
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -361,7 +361,7 @@
 				'6',
 				array( 'class' => 'data integer positive', ),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->DefaultTableCell->auto( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
@@ -380,14 +380,14 @@
 					'class' => 'input integer',
 				),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->DefaultTableCell->auto( 'data[Apple][id]', array( 'type'=> 'text', 'disabled' => '( "#Apple.id#" == "6" )' ) );
 			$expected = array(
 				'<div class="input text"><label for="AppleId">Id</label><input name="data[Apple][id]" disabled="disabled" type="text" id="AppleId"/></div>',
 				array( 'class' => 'input text', ),
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

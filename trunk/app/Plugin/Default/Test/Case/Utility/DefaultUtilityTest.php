@@ -78,22 +78,22 @@
 			// 1. Remplacement simple
 			$result = DefaultUtility::evaluateString( $this->data, '#User.username#' );
 			$expected = 'foo';
-			$this->assertEqual( $result, $expected, $result );
+			$this->assertEquals( $expected, $result, $result );
 
 			// 2. Remplacement double
 			$result = DefaultUtility::evaluateString( $this->data, '#User.username# is a #User.lastname#' );
 			$expected = 'foo is a bar';
-			$this->assertEqual( $result, $expected, $result );
+			$this->assertEquals( $expected, $result, $result );
 
 			// 3. Remplacement avec une apostrophe
 			$result = DefaultUtility::evaluateString( $this->data2, '"#Prestatairefp93.description#" == "Le rôle social du C.C.A.S. s\'exprime ..."' );
 			$expected = '"Le rôle social du C.C.A.S. s\'exprime ..." == "Le rôle social du C.C.A.S. s\'exprime ..."';
-			$this->assertEqual( $result, $expected, $result );
+			$this->assertEquals( $expected, $result, $result );
 
 			// 4. Remplacement avec des guillemets doubles
 			$result = DefaultUtility::evaluateString( $this->data2, '"#Prestatairefp93.name#" == "CCAS / Résidence \"La butte aux pinsons\""' );
 			$expected = '"CCAS / Résidence \"La butte aux pinsons\"" == "CCAS / Résidence \"La butte aux pinsons\""';
-			$this->assertEqual( $result, $expected, $result );
+			$this->assertEquals( $expected, $result, $result );
 		}
 
 		/**
@@ -118,7 +118,7 @@
 					)
 				)
 			);
-			$this->assertEqual( $result, $expected, $result );
+			$this->assertEquals( $expected, $result, $result );
 		}
 
 		/**
@@ -153,7 +153,7 @@
 					'confirm' => '/AclUtilities.Users/admin_edit/6#content ?',
 				),
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 
 			// Essai en surchargeant la valeur de msgid
 			$result = DefaultUtility::linkParams( '/Users/view/#User.id#', array( 'msgid' => 'Mon msgid' ), $this->data );
@@ -167,7 +167,7 @@
 				),
 				array()
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -211,7 +211,7 @@
 					'confirm' => '/Commissionseps/view/59#dossiers,nonorientationproep58 ?'
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -228,7 +228,7 @@
 
 			$result = DefaultUtility::msgid( $url );
 			$expected = '/Users/index';
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 
 			$url = array(
 				'plugin' => 'acl_extras',
@@ -241,7 +241,7 @@
 
 			$result = DefaultUtility::msgid( $url );
 			$expected = '/AclExtras.Users/admin_view';
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -262,7 +262,7 @@
 				'title' => '/Users/view/#User.id#/:title',
 				'confirm' => '/Users/view/#User.id# ?'
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 
 			$url = array(
 				'plugin' => 'acl_extras',
@@ -275,7 +275,7 @@
 
 			$result = DefaultUtility::attributes( $url );
 			$expected = array();
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 
 			$url = array(
 				'plugin' => null,
@@ -288,7 +288,7 @@
 				'title' => '/Tableauxsuivispdvs93/tableaud1/:title', // FIXME ?
 				'confirm' => '/Tableauxsuivispdvs93/tableaud1 ?'
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -306,11 +306,11 @@
 
 			$result = DefaultUtility::domain( $url, array( 'domain' => 'vibrations' ) );
 			$expected = 'vibrations';
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 
 			$result = DefaultUtility::domain( $url );
 			$expected = 'users';
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 
 			$url = array(
 				'plugin' => 'acl_extras',
@@ -323,7 +323,7 @@
 
 			$result = DefaultUtility::domain( $url );
 			$expected = 'users';
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 	}
 ?>

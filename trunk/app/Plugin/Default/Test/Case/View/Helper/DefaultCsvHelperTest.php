@@ -83,7 +83,7 @@
 6,"My new appleOrange",25/12/2006,"25/12/2006 à 05:29:39",22:57:17
 7,"Some wierd color",25/12/2006,"25/12/2006 à 05:34:21",22:57:17
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -110,7 +110,7 @@
 6,"My new appleOrange",,"25/12/2006 à 05:29:39"
 7,"Some wierd color",,"25/12/2006 à 05:34:21"
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -150,7 +150,7 @@
 6,"My new appleOrange",25/12/2006,"25/12/2006 à 05:29:39",22:57:17
 7,"Some wierd color",25/12/2006,"25/12/2006 à 05:34:21",22:57:17
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -181,7 +181,7 @@
 6,"My new appleOrange",25/12/2006,"25/12/2006 à 05:29:39",22:57:17
 7,"Some wierd color",25/12/2006,"25/12/2006 à 05:34:21",22:57:17
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -200,7 +200,7 @@
 			);
 
 			$expected = "Apple.id,Apple.color,Apple.date,Apple.created,Apple.mytime\n";
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -213,7 +213,7 @@
 			);
 
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -303,7 +303,7 @@
 1,"Aucune difficulté"
 2,"Santé, Reconnaissance de la qualité de travailleur handicapé"
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -332,7 +332,7 @@
 			$expected = '1,"01/12/2006 à 13:31:26"
 2,"22/11/2006 à 10:43:13"
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

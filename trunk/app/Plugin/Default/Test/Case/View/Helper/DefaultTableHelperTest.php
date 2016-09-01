@@ -232,7 +232,7 @@
 			// Sans donnée
 			$result = $this->DefaultTable->thead( array(), $params );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Avec le tri
 			$result = $this->DefaultTable->thead( $this->fields, $params );
@@ -244,7 +244,7 @@
 							</tr>
 						</thead>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// Sans le tri
 			$result = $this->DefaultTable->thead( $this->fields, $params + array( 'sort' => false ) );
@@ -255,7 +255,7 @@
 								<th class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// Sans le tri sur certaines colonnes
 			$fields = Hash::normalize($this->fields);
@@ -268,7 +268,7 @@
 								<th class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// Avec un nom de colonne qui surcharge la traduction
 			$fields = Hash::normalize( $this->fields );
@@ -282,7 +282,7 @@
 								<th class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -320,7 +320,7 @@
 							</tr>
 						</thead>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 1. Avec et sans condition_group
 			$fields = array(
@@ -358,7 +358,7 @@
 							</tr>
 						</thead>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -372,7 +372,7 @@
 
 			$result = $this->DefaultTable->tbody( array(), $this->fields, $params );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->DefaultTable->tbody( $this->data, $this->fields, $params );
 			$expected = '<tbody>
@@ -389,7 +389,7 @@
 								</td>
 							</tr>
 						</tbody>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$fields = array(
 				'data[Apple][][id]',
@@ -404,7 +404,7 @@
 								<td class="data string ">Red</td>
 							</tr>
 						</tbody>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -419,7 +419,7 @@
 				'domain' => 'apples',
 				'sort' => true
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2. Surcharge des valeurs
 			$params = array(
@@ -435,7 +435,7 @@
 				'domain' => 'my_apples',
 				'sort' => false
 			);
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -449,7 +449,7 @@
 
 			$result = $this->DefaultTable->index( array(), $this->fields, $params );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 1.
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params );
@@ -476,7 +476,7 @@
 								</tr>
 							</tbody>
 						</table>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 2. En ajoutant explicitement l'id de la table
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params + array( 'id' => 'TableTestApplesIndex' ) );
@@ -504,7 +504,7 @@
 							</tbody>
 						</table>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 3. En ajoutant des classes aux colonnes
 			$fields = Hash::normalize( $this->fields );
@@ -534,7 +534,7 @@
 							</tbody>
 						</table>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 4. En ajoutant une ligne d'en-têtes
 			$fields = Hash::normalize( $this->fields );
@@ -572,7 +572,7 @@
 							</tbody>
 						</table>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 5. En spécifiant ou non le format du datetime
 			$fields = array(
@@ -598,7 +598,7 @@
 					</tr>
 				</tbody>
 			</table>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultTable->index( $this->data, $this->fields, $params );
 			$expected = '<table id="TableApplesIndex" class="apples index">
@@ -624,7 +624,7 @@
 								</tr>
 							</tbody>
 						</table>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -642,7 +642,7 @@
 			// 1. Avec un tableau de details vide
 			$result = $this->DefaultTable->details( array(), $this->fields, $params );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2. Avec un tableau de details "classique"
 			$result = $this->DefaultTable->details( $this->data[0], $fields, $params );
@@ -658,7 +658,7 @@
 								</tr>
 							</tbody>
 						</table>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 3. Avec un tableau de détails vide à cause des conditions
 			$result = $this->DefaultTable->details(
@@ -674,7 +674,7 @@
 				$params
 			);
 			$expected = null;
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -691,7 +691,7 @@
 
 			$result = $this->DefaultTable->detailsTbody( array(), $this->fields, $params );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$params['options'] = array( 'Apple' => array( 'color' => array( 'red' => 'Foo' ) ) );
 			$result = $this->DefaultTable->detailsTbody( $this->data[0], $fields, $params );
@@ -705,7 +705,7 @@
 								<td class="data string ">Foo</td>
 							</tr>
 						</tbody>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -722,7 +722,7 @@
 
 			$result = $this->DefaultTable->detailsTbody( array(), $this->fields, $params );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$params['options'] = array( 'Apple' => array( 'color' => array( 'red' => 'Foo' ) ) );
 			$result = $this->DefaultTable->detailsTbody( $this->data[0], $fields, $params );
@@ -736,7 +736,7 @@
 								<td class="data string ">Foo</td>
 							</tr>
 						</tbody>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -760,7 +760,7 @@
 								<td class="data string ">red</td>
 							</tr>
 						</tbody>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -807,7 +807,7 @@
 					</ul>
 				</td>
 			</tr>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 2. Avec condition vraie
 			$base = Router::url( '/' );
@@ -825,7 +825,7 @@
 				<td class="data string ">red</td>
 				<td class="action"><a href="'.$base.'apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a></td>
 			</tr>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 3. Avec condition fausse
 			$fields = array(
@@ -841,7 +841,7 @@
 				<td class="data integer positive">6</td>
 				<td class="data string ">red</td>
 			</tr>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -892,7 +892,7 @@
 					</tr>
 				</tbody>
 			</table>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 	}
 ?>

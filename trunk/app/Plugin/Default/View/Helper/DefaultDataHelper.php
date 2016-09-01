@@ -205,7 +205,7 @@
 					case 'text':
 					default:
 						if( 'truncate' === $format ) {
-							$value = $this->Text->truncate( $value, 255 );
+							$value = $this->Text->truncate( $value, 500 );
 						}
 						$return = $value;
 				}
