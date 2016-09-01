@@ -99,7 +99,7 @@
 							. '<input name="Cancel" type="submit" value="Annuler"/>'
 							. '<input name="Reset" type="reset" value="Remise à zéro"/>'
 					. '</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -110,36 +110,36 @@
 		public function testFieldValue() {
 			$result = $this->DefaultForm->fieldValue( 'Apple.id', array( 'label' => 'Id', 'type' => 'integer' ) );
 			$expected = '<div class="input value integer"><span class="label">Id</span><span class="input">666</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.name', array( 'label' => 'Name' ) );
 			$expected = '<div class="input value"><span class="label">Name</span><span class="input">Étagère</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.foo', array( 'label' => 'Name' ) );
 			$expected = '<div class="input value"><span class="label">Name</span><span class="input"> </span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.date', array( 'label' => 'Date', 'type' => 'date' ) );
 			$expected = '<div class="input value date"><span class="label">Date</span><span class="input">17/03/2014</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.category', array( 'label' => 'Category', 'options' => array( 'red' => 'Red apple' ) ) );
 			$expected = '<div class="input value"><span class="label">Category</span><span class="input">Red apple</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.description', array( 'label' => 'Description', 'nl2br' => true ) );
 			$expected = '<div class="input value"><span class="label">Description</span><span class="input">Line 1<br /> Line2</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.name', array( 'label' => 'Id', 'hidden' => true ) );
 			$expected = '<div class="input value"><input type="hidden" name="data[Apple][name]" value="Étagère" id="AppleName"/><span class="label">Id</span><span class="input">Étagère</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// Date avec un format spécifique
 			$result = $this->DefaultForm->fieldValue( 'Apple.date', array( 'label' => 'Date', 'type' => 'date', 'format' => '%B %Y' ) );
 			$expected = '<div class="input value date"><span class="label">Date</span><span class="input">mars 2014</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -150,27 +150,27 @@
 		public function testInput() {
 			$result = $this->DefaultForm->input( 'Apple.id' );
 			$expected = '<input type="hidden" name="data[Apple][id]" value="666" id="AppleId"/>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->input( 'Apple.category', array( 'required' => true ) );
 			$expected = '<div class="input text"><label for="AppleCategory"><abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][category]" required="1" type="text" value="red" id="AppleCategory"/></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->input( 'Apple.category', array( 'label' => 'Foo <', 'escape' => false ) );
 			$expected = '<div class="input text"><label for="AppleCategory">Foo <</label><input name="data[Apple][category]" type="text" value="red" id="AppleCategory"/></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->input( 'Apple.category', array( 'required' => true, 'label' => 'Foo <' ) );
 			$expected = '<div class="input text"><label for="AppleCategory">Foo &lt; <abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][category]" required="1" type="text" value="red" id="AppleCategory"/></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->input( 'Apple.category', array( 'view' => true ) );
 			$expected = '<div class="input value"><span class="label">Category</span><span class="input">red</span></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->input( 'DataTest.count' );
 			$expected = '<div class="input text"><label for="DataTestCount">Count</label><input name="data[DataTest][count]" type="text" id="DataTestCount"/></div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 
@@ -182,7 +182,7 @@
 		public function testInputHidden() {
 			$result = $this->DefaultForm->input( 'Apple.id', array( 'type' => 'hidden', 'options' => array( 1, 2 ) ) );
 			$expected = '<input type="hidden" name="data[Apple][id]" value="666" id="AppleId"/>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -193,11 +193,11 @@
 		public function testLabel() {
 			$result = $this->DefaultForm->label( 'Apple.id' );
 			$expected = '<label for="AppleId">Id</label>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultForm->label( 'Apple.id', null, array( 'required' => true ) );
 			$expected = '<label for="AppleId"><abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 	}
 ?>

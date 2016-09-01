@@ -113,7 +113,7 @@
 
 			$result = $this->DefaultDefault->actions( array() );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->DefaultDefault->actions( array( '/Users/admin_add' ) );
 			$expected = '<ul class="actions">
@@ -121,7 +121,7 @@
 								<a href="'.$this->base.'admin/users/add" title="/Users/admin_add/:title" class="users admin_add">'.__d( 'users', '/Users/admin_add' ).'</a>
 							</li>
 						</ul>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultDefault->actions( array( '/Users/admin_add' => array( 'text' => 'Aut Caesar, aut nihil' ) ) );
 			$expected = '<ul class="actions">
@@ -129,7 +129,7 @@
 								<a href="'.$this->base.'admin/users/add" title="/Users/admin_add/:title" class="users admin_add">Aut Caesar, aut nihil</a>
 							</li>
 						</ul>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$result = $this->DefaultDefault->actions( array( '/Users/admin_add' => array( 'enabled' => false ) ) );
 			$expected = '<ul class="actions">
@@ -137,7 +137,7 @@
 								<span title="/Users/admin_add/:title" class="users add disabled">'.__d( 'users', '/Users/admin_add' ).'</span>
 							</li>
 						</ul>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -154,11 +154,11 @@
 			// Sans donnée
 			$result = $this->DefaultDefault->index( array(), $fields, $params );
 			$expected = '<p class="notice">Aucun enregistrement</p>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 			
 			$result = $this->DefaultDefault->index( array(), $fields, array('empty_label' => 'Label customisé') );
 			$expected = '<p class="notice">Label customisé</p>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Avec le tri
 			$result = $this->DefaultDefault->index( $this->datas, $fields, $params );
@@ -195,7 +195,7 @@
 								<span><a href="'.$this->base.'apples/index/page:7" rel="last">'.h( __( 'last >>' ) ).'</a></span>
 							</p>
 						</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// Sans le tri
 			$result = $this->DefaultDefault->index( $this->datas, $fields, $params + array( 'paginate' => false ) );
@@ -211,7 +211,7 @@
 								</tr>
 							</tbody>
 						</table>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_1_of_1'] );
 			$expectedCounter = sprintf( preg_replace( '/\{[^\}]+\}/', '%d', __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) ), 1, 1, 1, 19 );
@@ -236,7 +236,7 @@
 						<div class="pagination">
 							<p class="counter">'.$expectedCounter.'</p>
 						</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_1_of_2'] );
 			$expectedCounter = sprintf( preg_replace( '/\{[^\}]+\}/', '%d', __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) ), 1, 2, 1, 20 );
@@ -276,7 +276,7 @@
 							</p>
 						</div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_2_of_2'] );
 			$expectedCounter = sprintf( preg_replace( '/\{[^\}]+\}/', '%d', __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) ), 2, 2, 21, 21 );
@@ -313,7 +313,7 @@
 								<span class="last">'.h( __( 'last >>' ) ).'</span>
 							</p>
 						</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -325,12 +325,12 @@
 			// Avec les msgid par défaut
 			$result = $this->DefaultDefault->titleForLayout( $this->datas );
 			$expected = '<h1>/Apples/index/:heading</h1>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Avec un msgid précisé
 			$result = $this->DefaultDefault->titleForLayout( $this->datas[0], array( 'msgid' => 'Id de la pomme: #Apple.id#' ) );
 			$expected = '<h1>Id de la pomme: 7</h1>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -345,11 +345,11 @@
 
 			$result = $this->DefaultDefault->view( $this->datas[0], $fields );
 			$expected = '<table id="TableApplesIndex" class="apples index"><tbody><tr class="odd"><td>Apple.id</td> <td class="data integer positive">7</td></tr></tbody></table>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->DefaultDefault->view( array(), $fields );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 		}
 
@@ -391,7 +391,7 @@
 							</div>
 						</form>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -417,7 +417,7 @@
 							</select>
 						</div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 2. Test sans le label
 			$fields = array(
@@ -435,7 +435,7 @@
 							</select>
 						</div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$fields = array(
 				'Apple.color' => array('type' => 'radio'),
@@ -452,7 +452,7 @@
 				. '</fieldset>'
 			. '</div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			$fields = array(
 				'Apple.color' => array('type' => 'radio', 'legend' => 'Foo'),
@@ -469,7 +469,7 @@
 				. '</fieldset>'
 			. '</div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 3. Test avec 'hidden_empty'
 			$options = array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) );
@@ -495,7 +495,7 @@
 								</select>
 							</div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -515,7 +515,7 @@
 			$result = $this->DefaultDefault->subformView( $fields, $params );
 			$expected = '<div class="input value"><span class="label">Apple.id</span><span class="input"></span></div><div class="input value"><span class="label">Apple.color</span><span class="input"></span></div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 2. Test sans le label
 			$fields = array(
@@ -528,7 +528,7 @@
 			$result = $this->DefaultDefault->subformView( $fields, $params );
 			$expected = '<div class="input value"><span class="label">Apple.id</span><span class="input"></span></div><div class="input value"><span class="label"></span><span class="input"></span></div>';
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -551,7 +551,7 @@
 			$expected = 'Apple.id,Apple.color,Apple.date,Apple.created,Apple.mytime
 1,"Red 1",04/01/1951,"22/11/2006 à 10:38:58",22:57:17
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -565,22 +565,22 @@
 			// 2. S'il y a un message (une notice)
 			$result = $this->DefaultDefault->messages( array( 'Foo' => 'notice' ) );
 			$expected = '<p class="message notice">Foo</p>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 2. S'il y a plusieurs messages
 			$result = $this->DefaultDefault->messages( array( 'Foo' => 'notice', 'Bar' => 'error', 'Baz' => 'warning' ) );
 			$expected = '<p class="message notice">Foo</p><p class="message error">Bar</p><p class="message warning">Baz</p>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 3. En spécifiant le tag
 			$result = $this->DefaultDefault->messages( array( 'Foo' => 'notice', 'Bar' => 'error' ), array( 'tag' => 'div' ) );
 			$expected = '<div class="message notice">Foo</div><div class="message error">Bar</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// 4. En spécifiant le domaine
 			$result = $this->DefaultDefault->messages( array( 'Instantanedonneesfp93.benef_etatdosrsa_ouverts' => 'notice' ), array( 'domain' => 'fichesprescriptions93' ) );
 			$expected = '<p class="message notice">Cet allocataire n\'est actuellement pas dans un dossier en état ouvert.</p>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 	}
 ?>
