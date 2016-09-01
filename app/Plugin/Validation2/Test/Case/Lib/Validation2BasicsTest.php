@@ -26,7 +26,7 @@
 				'integer' => array( 0, 3 ),
 				'float' => array( 2 ),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -35,11 +35,11 @@
 		public function testCacheKey() {
 			$result = cacheKey( array( 'test', 'Foo', 'Bar', 'Baz' ) );
 			$expected = 'test_Foo_Bar_Baz';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = cacheKey( array( 'test', 'Foo', 'Bar', 'Baz' ), true );
 			$expected = 'test__foo__bar__baz';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

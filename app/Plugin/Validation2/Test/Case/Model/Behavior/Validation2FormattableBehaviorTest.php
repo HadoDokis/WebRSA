@@ -105,7 +105,7 @@
 				$this->Site->create( $record['data'] );
 				$this->Site->validates();
 				$result = $this->Site->data;
-				$this->assertEquals( $result, $record['expected'], var_export( $result, true ) );
+				$this->assertEquals( $record['expected'], $result, var_export( $result, true ) );
 			}
 		}
 
@@ -121,7 +121,7 @@
 				$this->Site->Behaviors->trigger( 'beforeSave', array( $this->Site ) );
 				$result = $this->Site->data;
 
-				$this->assertEquals( $result, $record['expected'], var_export( $result, true ) );
+				$this->assertEquals( $record['expected'], $result, var_export( $result, true ) );
 			}
 		}
 

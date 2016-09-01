@@ -53,25 +53,25 @@
 		public function testInteger() {
 			$result = $this->Site->integer( null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'Site' => array( 'user_id' => 666 ) );
 			$this->Site->create( $data );
 			$result = $this->Site->integer( $data['Site'] );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'Site' => array( 'user_id' => 'foo' ) );
 			$this->Site->create( $data );
 			$result = $this->Site->integer( $data['Site'] );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'Site' => array( 'user_id' => 666.1 ) );
 			$this->Site->create( $data );
 			$result = $this->Site->integer( $data['Site'] );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -81,34 +81,34 @@
 		 */
 		public function testBoolean() {
 			$result = $this->Site->boolean( null );
-			$this->assertEqual( $result, false, var_export( $result, true ) );
+			$this->assertFalse( $result );
 
 			$result = $this->Site->boolean( array( 'published' => true ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => false ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => 0 ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => 1 ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => '0' ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => '1' ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => 'true' ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => 'false' ) );
-			$this->assertEqual( $result, true, var_export( $result, true ) );
+			$this->assertTrue( $result );
 
 			$result = $this->Site->boolean( array( 'published' => '2' ) );
-			$this->assertEqual( $result, false, var_export( $result, true ) );
+			$this->assertFalse( $result );
 		}
 	}
 ?>
