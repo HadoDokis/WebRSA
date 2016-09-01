@@ -51,7 +51,8 @@
 		public function testCount() {
 			$Csv = new CsvFileReader( $this->csvFileAnimals, array( 'headers' => true ) );
 			$result = $Csv->count();
-			$this->assertEqual( $result, 2, $result );
+			$expected = 2;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -64,7 +65,7 @@
 				0 => 'Jaguar',
 				1 => 'Panthera onca',
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -74,7 +75,7 @@
 			$Csv = new CsvFileReader( $this->csvFileAnimals, array( 'headers' => true ) );
 			$result = $Csv->key();
 			$expected = 0;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -85,7 +86,7 @@
 			$Csv->next();
 			$result = $Csv->key();
 			$expected = 1;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -95,7 +96,7 @@
 			$Csv = new CsvFileReader( $this->csvFileAnimals, array( 'headers' => true ) );
 			$result = $Csv->valid();
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -108,7 +109,7 @@
 				0 => 'Name',
 				1 => 'Scientific name',
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
