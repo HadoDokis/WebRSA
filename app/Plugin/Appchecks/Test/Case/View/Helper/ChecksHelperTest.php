@@ -61,7 +61,7 @@
 			$elements = array( 'One' => true, 'Two' => false );
 			$result = $this->Checks->checklist( $elements, 'drivers' );
 			$expected = '<ul class="check drivers"><li class="success">One</li><li class="error">Two</li></ul>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -73,12 +73,12 @@
 			$elements = array( 'One' => true, 'Two' => false );
 			$result = $this->Checks->table( $elements );
 			$expected = '<table class="checks values"><tbody><tr class="success"><th>One</th></tr><tr class="error"><th>Two</th></tr></tbody></table>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$elements = array( 'One' => array( 'value' => 4, 'message' => 'Foo', 'success' => true ), 'Two' => array( 'value' => 'Bar', 'message' => 'Baz', 'success' => false ) );
 			$result = $this->Checks->table( $elements );
 			$expected = '<table class="checks values"><tbody><tr class="success"><th>One</th><td class="value">4</td><td class="message">Foo</td></tr><tr class="error"><th>Two</th><td class="value">Bar</td><td class="message">Baz</td></tr></tbody></table>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
