@@ -87,11 +87,11 @@
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFormOnSubmit( \'AppleIndexForm\' );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2. Sans message
 			$result = $this->Observer->disableFormOnSubmit( 'UsersLoginForm' );
@@ -100,11 +100,11 @@ document.observe( \'dom:loaded\', function() { try {
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFormOnSubmit( \'UsersLoginForm\' );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 3. Avec message
 			$result = $this->Observer->disableFormOnSubmit( 'UsersLoginForm', 'Connexion en cours' );
@@ -113,11 +113,11 @@ document.observe( \'dom:loaded\', function() { try {
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFormOnSubmit( \'UsersLoginForm\', \'Connexion en cours\' );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -136,11 +136,11 @@ document.observe( \'dom:loaded\', function() { try {
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFieldsOnCheckbox( \'Documentbeneffp93Documentbeneffp934\', [ \'Ficheprescription93Documentbeneffp93Autre\' ], false, false );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -153,11 +153,11 @@ document.observe( \'dom:loaded\', function() { try {
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFieldsetOnCheckbox( \'SearchUserBirthday\', \'SearchUserBirthdayRange\', false, false );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -177,12 +177,12 @@ document.observe( \'dom:loaded\', function() { try {
 dependantSelect( \'SearchUserRegion\', \'SearchUserCountry\' );
 ;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
 
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -205,11 +205,11 @@ dependantSelect( \'SearchUserRegion\', \'SearchUserCountry\' );
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFieldsOnValue( \'Ficheprescription93PersonneAIntegre\', [ \'Ficheprescription93PersonneDateIntegrationDay\', \'Ficheprescription93PersonneDateIntegrationMonth\', \'Ficheprescription93PersonneDateIntegrationYear\' ], [ undefined, \'\', \'0\' ], true, false );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -228,11 +228,11 @@ document.observe( \'dom:loaded\', function() { try {
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', \'SpecificitesFichesprescriptions93\', [ undefined, \'1\' ], true, true );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -253,11 +253,11 @@ document.observe( \'dom:loaded\', function() { try {
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFieldsetOnRadioValue( \'MonFormulaire\', \'data[Search][Ficheprescription93][exists]\', \'SpecificitesFichesprescriptions93\', [ undefined, \'1\' ], true, true );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -281,11 +281,11 @@ document.observe( \'dom:loaded\', function() { try {
 document.observe( \'dom:loaded\', function() { try {
 	observeDisableFieldsOnRadioValue( \'MonFormulaire\', \'data[Ficheprescription93][personne_a_integre]\', [ \'Ficheprescription93PersonneDateIntegrationDay\', \'Ficheprescription93PersonneDateIntegrationMonth\', \'Ficheprescription93PersonneDateIntegrationYear\' ], [ undefined, \'\', \'0\' ], true, false );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 } } );
 //]]>
 </script>';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 
@@ -297,10 +297,10 @@ document.observe( \'dom:loaded\', function() { try {
 			$this->Observer->useBuffer = true;
 
 			$result = $this->Observer->disableFormOnSubmit( 'UsersLoginForm' );
-			$this->assertEqual( $result, null, var_export( $result, true ) );
+			$this->assertNull( $result );
 
 			$result = $this->Observer->disableFieldsetOnCheckbox( 'Search.User.birthday', 'SearchUserBirthdayRange' );
-			$this->assertEqual( $result, null, var_export( $result, true ) );
+			$this->assertNull( $result );
 
 			$result = $this->Observer->dependantSelect(
 				array(
@@ -308,7 +308,7 @@ document.observe( \'dom:loaded\', function() { try {
 					'Search.User.country' => 'Search.User.region',
 				)
 			);
-			$this->assertEqual( $result, null, var_export( $result, true ) );
+			$this->assertNull( $result );
 
 			$result = $this->Observer->disableFieldsetOnValue(
 				'Search.Ficheprescription93.exists',
@@ -317,7 +317,7 @@ document.observe( \'dom:loaded\', function() { try {
 				true,
 				true
 			);
-			$this->assertEqual( $result, null, var_export( $result, true ) );
+			$this->assertNull( $result );
 
 			$this->Observer->beforeLayout( 'Foos/index.ctp' );
 			$result = $this->View->fetch( 'scriptBottom' );
@@ -327,30 +327,30 @@ document.observe( \'dom:loaded\', function() {
 try {
 	observeDisableFormOnSubmit( \'UsersLoginForm\' );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 }
 try {
 	observeDisableFieldsetOnCheckbox( \'SearchUserBirthday\', \'SearchUserBirthdayRange\', false, false );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 }
 try {
 	dependantSelect( \'SearchUserCountry\', \'SearchUserContinent\' );
 dependantSelect( \'SearchUserRegion\', \'SearchUserCountry\' );
 ;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 }
 try {
 	observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', \'SpecificitesFichesprescriptions93\', [ \'1\' ], true, true );;
 } catch( e ) {
-	console.log( e );
+	console.error( e );
 }
 } );
 //]]>
 </script>';
 
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
