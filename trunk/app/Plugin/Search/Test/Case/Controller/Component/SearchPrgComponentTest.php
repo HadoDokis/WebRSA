@@ -171,7 +171,7 @@
 				true,
 			);
 
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -196,7 +196,7 @@
 			$result = $this->Controller->redirected;
 			$expected = null;
 
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -219,7 +219,7 @@
 					)
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -259,7 +259,7 @@
 				true
 			);
 
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $SearchPrg->Session->read( "{$prgSessionKey}.{$sessionKey}" );
 			$expected = array(
@@ -267,7 +267,7 @@
 					'foo' => 'bar'
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -298,7 +298,7 @@
 				'sessionKey' => $sessionKey,
 				'Foo' => 'bar'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -315,7 +315,7 @@
 				'foo' => 'bar+++++',
 				'bar' => array ( 'baz     ' ),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

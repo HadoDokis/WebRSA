@@ -142,12 +142,12 @@
 		public function testSessionKey() {
 			$result = $this->Controller->SearchSavedRequests->sessionKey( 'users', 'index' );
 			$expected = 'SearchSavedRequests.Users.index';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Controller->SearchSavedRequests->name = 'Foo';
 			$result = $this->Controller->SearchSavedRequests->sessionKey( 'users', 'index' );
 			$expected = 'Foo.Users.index';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -164,7 +164,7 @@
 			);
 			$result = $this->Controller->SearchSavedRequests->write( 'users', 'index', $url );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->SearchSavedRequests->Session->read( 'SearchSavedRequests.Users.index' );
 			$expected = array(
@@ -173,7 +173,7 @@
 				'action' => 'index',
 				'Foo' => 'bar'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -197,7 +197,7 @@
 				'action' => 'index',
 				'Foo' => 'bar'
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -216,7 +216,7 @@
 
 			$result = $this->Controller->SearchSavedRequests->check( 'users', 'index' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -235,15 +235,15 @@
 
 			$result = $this->Controller->SearchSavedRequests->check( 'users', 'index' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->SearchSavedRequests->delete( 'users', 'index' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->SearchSavedRequests->check( 'users', 'index' );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -265,7 +265,7 @@
 			// Premier appel, redirection vers l'URL enregistrée
 			$result = $this->Controller->SearchSavedRequests->redirect( 'users', 'index', $default );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->redirected;
 			$expected = array(
@@ -278,12 +278,12 @@
 				null,
 				true
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Second appel, redirection vers default
 			$result = $this->Controller->SearchSavedRequests->redirect( 'users', 'index', $default );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->redirected;
 			$expected = array(
@@ -295,7 +295,7 @@
 				null,
 				true,
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

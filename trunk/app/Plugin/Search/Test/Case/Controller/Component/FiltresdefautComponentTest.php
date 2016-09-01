@@ -92,7 +92,7 @@
 		public function testConfigureKey() {
 			$result = $this->Controller->Filtresdefaut->configureKey();
 			$expected = 'Filtresdefaut.FiltresdefautTest_index';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -104,14 +104,14 @@
 			$this->Controller->Filtresdefaut->merge();
 			$result = $this->Controller->request->data;
 			$expected = array();
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$originalData = array( 'Foo' => array( 'bar' => 'baz' ) );
 			$this->Controller->request->data = $originalData;
 			$this->Controller->Filtresdefaut->merge();
 			$result = $this->Controller->request->data;
 			$expected = $originalData;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			Configure::write(
 				$this->Controller->Filtresdefaut->configureKey(),
@@ -125,7 +125,7 @@
 			$this->Controller->Filtresdefaut->merge();
 			$result = $this->Controller->request->data;
 			$expected = array( 'Foo' => array( 'dernier' => '1', 'bar' => 'baz' ), 'Bar' => array( 'foo' => 'baz' ) );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -145,7 +145,7 @@
 			$this->Controller->Filtresdefaut->beforeRender( $this->Controller );
 			$result = $this->Controller->request->data;
 			$expected = array( 'Foo' => array( 'dernier' => '1' ), 'Bar' => array( 'foo' => 'baz' ) );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

@@ -149,7 +149,7 @@
 		public function testSessionKey() {
 			$result = $this->Controller->SearchSavedReferer->sessionKey();
 			$expected = 'SearchSavedReferer./apples/edit/4';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

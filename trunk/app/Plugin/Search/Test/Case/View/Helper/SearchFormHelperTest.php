@@ -96,10 +96,14 @@
 <div class="checkbox"><input type="checkbox" name="data[Search][Dossier][etatdosrsa][]" value="6" id="SearchDossierEtatdosrsa6" /><label for="SearchDossierEtatdosrsa6">Clos</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', \'SearchDossierEtatdosrsaFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', \'SearchDossierEtatdosrsaFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -126,10 +130,14 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <div class="checkbox"><input type="checkbox" name="data[Search][Dossier][etatdosrsa][]" value="6" id="SearchDossierEtatdosrsa6" /><label for="SearchDossierEtatdosrsa6">Clos</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', \'SearchDossierEtatdosrsaFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', \'SearchDossierEtatdosrsaFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -156,10 +164,14 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <div class="checkbox"><input type="checkbox" name="data[Search][Dossier][etatdosrsa][]" value="6" id="SearchDossierEtatdosrsa6" /><label for="SearchDossierEtatdosrsa6">Clos</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', \'SearchDossierEtatdosrsaFieldset\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', \'SearchDossierEtatdosrsaFieldset\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -189,7 +201,11 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 
 			$expected = '<script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchAppleDate\', \'SearchAppleDate_from_to\', false, false ); } );
+document.observe( \'dom:loaded\', function() { try {
+	observeDisableFieldsetOnCheckbox( \'SearchAppleDate\', \'SearchAppleDate_from_to\', false, false );;
+} catch( e ) {
+	console.error( e );
+} } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Apple][date]" id="SearchAppleDate_" value="0"/><input type="checkbox" name="data[Search][Apple][date]"  value="1" id="SearchAppleDate"/><label for="SearchAppleDate">Filtrer par search.Apple.date</label></div><fieldset id="SearchAppleDate_from_to"><legend>Search.Apple.date</legend><div class="input date"><label for="SearchAppleDateFromDay">Du (inclus)</label><select name="data[Search][Apple][date_from][day]" id="SearchAppleDateFromDay">
 '.$daysFrom.'
@@ -204,7 +220,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 </select>-<select name="data[Search][Apple][date_to][year]" id="SearchAppleDateToYear">
 '.$yearsTo.'
 </select></div></fieldset>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -216,14 +232,14 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$expected = '<script type=\'text/javascript\'>document.observe( \'dom:loaded\', function() {
 					observeDisableFormOnSubmit( \'UsersEditForm\' );
 				} );</script>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// Avec message à l'utilisateur
 			$result = $this->SearchForm->observeDisableFormOnSubmit( 'UsersEditForm', 'Merci de patienter' );
 			$expected = '<script type=\'text/javascript\'>document.observe( \'dom:loaded\', function() {
 					observeDisableFormOnSubmit( \'UsersEditForm\', \'Merci de patienter\' );
 				} );</script>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -243,7 +259,7 @@ dependantSelect( \'SearchSlaveId\', \'SearchMasterId\' );
 } );
 //]]>
 </script>';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}*/
 	}
 ?>
