@@ -60,49 +60,49 @@
 
 			$result = MultiDomainsTranslator::translate( 'test' );
 			$expected = 'Traduction pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translate( 'test.n2', 1 );
 			$expected = '1 Traduction pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translate( 'Test.test' );
 			$expected = 'Traduction pour model CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			MultiDomainsTranslator::reset();
 			Configure::write( 'MultiDomainsTranslator.prefix', 'cd93' );
 
 			$result = MultiDomainsTranslator::translate( 'test' );
 			$expected = 'Traduction pour controller CD93';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translate( 'Test.test' );
 			$expected = 'Traduction pour model CD93';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translate( 'test2' );
 			$expected = 'Controller par defaut';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translate( 'Test.test2' );
 			$expected = 'Model par defaut';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translate( 'Foo.bar' ); // Not found
 			$expected = 'Foo.bar';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translate( 'Autremodeltest.test' );
 			$expected = 'Selection d\'un autre model';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			MultiDomainsTranslator::reset();
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'monprefix', 'separator' => '%%' ) );
 
 			$result = MultiDomainsTranslator::translate( 'test' );
 			$expected = 'Changement de prefix et de séparateur';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			MultiDomainsTranslator::reset();
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'eng', 'separator' => '_' ) );
@@ -110,7 +110,7 @@
 
 			$result = MultiDomainsTranslator::translate( 'test' );
 			$expected = 'English traduction\'s file';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -122,27 +122,27 @@
 
 			$result = MultiDomainsTranslator::translatePlural( 'test', 'tests', 1 );
 			$expected = 'Traduction pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translatePlural( 'test', 'test_plural', 2 );
 			$expected = 'Traductions pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translatePlural( 'Test.test2', 'Test.test2_plural', 2 );
 			$expected = 'Models par defaut';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translatePlural( 'test.n2', 'tests.n2', 1, 1 );
 			$expected = '1 Traduction pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translatePlural( 'test.n2', 'test_plural.n2', 2, 2 );
 			$expected = '2 Traductions pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::translatePlural( 'foo', 'foos', 2 ); // Not found
 			$expected = 'foos';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -152,12 +152,12 @@
 			$_SESSION['Config']['language'] = 'eng';
 			$result = MultiDomainsTranslator::language();
 			$expected = 'eng';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$_SESSION['Config']['language'] = 'fre';
 			$result = MultiDomainsTranslator::language();
 			$expected = 'fre';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -169,19 +169,19 @@
 
 			$result = MultiDomainsTranslator::translate( 'test' );
 			$expected = 'Traduction pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			Configure::write( 'MultiDomainsTranslator.prefix', 'cd93' );
 
 			$result = MultiDomainsTranslator::translate( 'test' );
 			$expected = 'Traduction pour controller CD66'; // Pas de changement malgrès le changement du prefix
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			MultiDomainsTranslator::reset();
 
 			$result = MultiDomainsTranslator::translate( 'test' );
 			$expected = 'Traduction pour controller CD93';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -193,7 +193,7 @@
 
 			$result = MultiDomainsTranslator::urlDomains();
 			$expected = array( 'cd66_tests_index', 'tests_index', 'cd66_tests', 'tests' );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			MultiDomainsTranslator::reset();
 			$this->_setRequest( array('controller' => 'foos', 'action' => 'bar') );
@@ -201,7 +201,7 @@
 
 			$result = MultiDomainsTranslator::urlDomains();
 			$expected = array( 'cd93#foos#bar', 'foos#bar', 'cd93#foos', 'foos' );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -210,15 +210,15 @@
 		public function testModel_field() {
 			$result = MultiDomainsTranslator::model_field( 'Testmodel.test' );
 			$expected = array( 'Testmodel', 'test' );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::model_field( 'Testmodel.0.test' );
 			$expected = array( 'Testmodel', 'test' );
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = MultiDomainsTranslator::model_field( 'Testmodel' );
 			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
