@@ -18,6 +18,7 @@
 	App::uses( 'CsvHelper', 'View/Helper' );
 	App::uses( 'ConfigurableQueryAbstractTestCase', 'ConfigurableQuery.Test/Case' );
 	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
+	App::uses( 'Translator', 'Translator.Utility' );
 
 	class CsvTestHelper extends CsvHelper
 	{
@@ -124,12 +125,15 @@
 			$request->addParams( $requestParams );
 
 			Router::setRequestInfo( $request );
-
-			App::build( array( 'locales' => CakePlugin::path( 'ConfigurableQuery' ).'Test'.DS.'Locale'.DS ) );
 			Configure::write( 'ConfigurableQuery', null );
 			Configure::write( 'Users', null );
 			Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg66' ) );
 			Configure::write( 'Config.language', 'fre' );
+			App::build( array( 'locales' => CakePlugin::path( 'ConfigurableQuery' ).'Test'.DS.'Locale'.DS ) );
+
+			Translator::reset();
+			$domains = array( 'users_index_cg66', 'users_index', 'users_cg66', 'users', 'default' );
+			Translator::domains( $domains );
 
 			CakeTestSession::start();
 			$_SESSION['Config']['language'] = 'fre';
@@ -180,7 +184,7 @@
 				'keyPrefix' => 'ConfigurableQuery',
 				'key' => 'Users.index',
 			);
-			$this->assertEquals( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -210,7 +214,7 @@
 					'label' => 'Groupe'
 				)
 			);
-			$this->assertEquals( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -241,7 +245,7 @@
 					'label' => 'Groupe'
 				)
 			);
-			$this->assertEquals( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -325,7 +329,7 @@
 				<div class="pagination">
 					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
 				</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			// On test l'insert de colonnes
 			$insert = array(
@@ -378,7 +382,7 @@
 				<div class="pagination">
 					<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
 				</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -508,7 +512,7 @@
 				<input type="hidden" name="data[User][modified]" value="2015-06-29 00:28:35" id="UserModified"/>'
 			;
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 
 			Configure::write(
 				'ConfigurableQuery.Users.index.results',
@@ -568,7 +572,7 @@
 				<input type="hidden" name="data[User][modified]" value="2015-06-29 00:28:35" id="UserModified"/>'
 			;
 
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -663,7 +667,7 @@
 			<div class="pagination">
 				<p class="counter">Résultats 1 - 1 sur au moins 1 résultats.</p>
 			</div>';
-			$this->assertEqualsXhtml( $result, $expected );
+			$this->assertEqualsXhtml( $expected, $result );
 		}
 
 		/**
@@ -696,7 +700,7 @@
 			$expected = '"Id de l\'utilisateur",Identifiant,"Créé le",User.modified
 1,admin,"29/06/2015 à 00:28:35","lundi 29 juin 2015 00:28"
 ';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

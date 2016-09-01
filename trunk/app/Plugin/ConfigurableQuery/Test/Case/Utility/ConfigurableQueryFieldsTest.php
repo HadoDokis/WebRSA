@@ -47,7 +47,7 @@
 					'value' => "array (\n  0 => 'Foo.bar',\n  1 => 'Foo.baz',\n)"
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -78,7 +78,7 @@
 					'value' => "array (\n  0 => 'Foo.bar',\n  1 => 'Foo.baz',\n  2 => 'Bar.baz',\n  3 => '/Foos/view/#Foo.id#',\n)"
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -99,7 +99,7 @@
 					'value' => "array (\n  0 => 'Foo.bar',\n  1 => 'Foo.baz',\n)"
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -123,7 +123,7 @@
 					'Bar.foo' => 'Bar.foo'
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -141,7 +141,7 @@
 			$result = file_get_contents( $fileName );
 			unlink( $fileName );
 			$expected = "\"Champ\",\"Intitulé\"\nFoo.bar,Foo.bar\nFoo.baz,Foo.baz\nBar.foo,Bar.foo\nBar.baz,Bar.baz\nBaz.bar,Baz.bar";
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -169,7 +169,7 @@
 				'Group.created' => 'Group.created',
 				'Group.modified' => 'Group.modified',
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
