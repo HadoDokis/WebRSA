@@ -120,7 +120,7 @@ LIMIT 5</div>
   ),
   'random' => $result['random']
 );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 			
 			$sql = 'SELECT myfunction(\'foo\')';
 			$result = Analysesql::analyse($sql);
@@ -158,7 +158,7 @@ LIMIT 5</div>
   ),
   'random' => $result['random'],
 );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 			
 			$sql = 'UPDATE '.$s.'public'.$e.'.'.$s.'foos'.$e.' AS '.$s.'Foo'.$e.' SET '.$s.'Foo'.$e.'.'.$s.'name'.$e.' = MYFUNCTION(\'Foo\', \'Bar\') WHERE '.$s.'Foo'.$e.'.'.$s.'name'.$e.' LIKE \'Foobar%\'';
 			$result = Analysesql::analyse($sql);
@@ -206,7 +206,7 @@ WHERE '.$s.'Foo'.$e.'.'.$s.'name'.$e.' LIKE \'Foobar%\'</div>
   'random' => $result['random'],
 );
 			
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 			
 			$sql = 'UPDATE '.$s.'public'.$e.'.'.$s.'connections'.$e.' SET '.$s.'modified'.$e.' = \'2015-07-17 10:40:23\' WHERE '.$s.'public'.$e.'.'.$s.'connections'.$e.'.'.$s.'id'.$e.' = 244397';
 			$result = Analysesql::analyse($sql);
@@ -251,7 +251,7 @@ WHERE '.$s.'public'.$e.'.'.$s.'connections'.$e.'.'.$s.'id'.$e.' = 244397</div>
   ),
   'random' => $result['random'],
 );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 			
 			$sql = 'DELETE FROM '.$s.'foos'.$e.' AS '.$s.'Foo'.$e.' WHERE '.$s.'Foo'.$e.'.'.$s.'bar'.$e.' IS NULL';
 			$result = Analysesql::analyse($sql);
@@ -297,7 +297,7 @@ WHERE '.$s.'Foo'.$e.'.'.$s.'bar'.$e.' IS NULL</div>
   'random' => $result['random'],
 );
 			
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
