@@ -56,11 +56,11 @@
 		public function testMethodCacheKey() {
 			$result = $this->Site->methodCacheKey( 'ClassName', 'methodName' );
 			$expected = 'test_ClassName_methodName_Site';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->methodCacheKey( 'ClassName', 'methodName', true );
 			$expected = 'test__class_name_method_name__site';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -77,7 +77,7 @@
 				'allowEmpty' => null,
 				'on' => null,
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->normalizeValidationRule( array( 'notEmpty' ) );
 			$expected = array(
@@ -87,7 +87,7 @@
 				'allowEmpty' => null,
 				'on' => null,
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->normalizeValidationRule( array( 'rule' => 'alphaNumeric' ) );
 			$expected = array(
@@ -97,7 +97,7 @@
 				'allowEmpty' => null,
 				'on' => null,
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->normalizeValidationRule( array( 'rule' => array( 'minLength', 10 ) ) );
 			$expected = array(
@@ -107,7 +107,7 @@
 				'allowEmpty' => null,
 				'on' => null,
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -118,19 +118,19 @@
 		public function testDefaultValidationRuleMessage() {
 			$result = $this->Site->defaultValidationRuleMessage( null );
 			$expected = null;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( 'notEmpty' );
 			$expected = 'Champ obligatoire';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'rule' => array( 'maxLength', 10 ) ) );
 			$expected = 'Maximum 10 caractères';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'rule' => array( 'maxLength', 10 ), 'domain' => 'default' ) );
 			$expected = 'Maximum 10 caractères';
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -142,11 +142,11 @@
 			$this->Site->validate['name'] = array( 'notEmpty' );
 			$this->Site->create( array( 'Site' => array( 'name' => '' ) ) );
 			$result = $this->Site->validates();
-			$this->assertEqual( $result, false, var_export( $result, true ) );
+			$this->assertFalse( $result );
 
 			$result = $this->Site->validationErrors;
 			$expected = array( 'name' => array( 'Champ obligatoire' ) );
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -170,7 +170,7 @@
 					)
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$this->Site->setValidationRule( 'name', array( 'rule' => array( 'minLength', 10 ) ) );
 			$result = $this->Site->validate;
@@ -197,7 +197,7 @@
 					),
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -245,7 +245,7 @@
 					)
 				)
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -283,7 +283,7 @@
 			);
 			$result = $this->Site->hasValidationRule( 'name', 'notEmpty' );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**

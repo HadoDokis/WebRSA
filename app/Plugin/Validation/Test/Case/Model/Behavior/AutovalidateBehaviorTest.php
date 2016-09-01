@@ -124,9 +124,9 @@
 		 * @return void
 		 */
 		public function testAutovalidationRules() {
-			$this->assertEqual(
-				$this->Site->validate,
+			$this->assertEquals(
 				$this->_expectedDeducedRules,
+				$this->Site->validate,
 				var_export( $this->Site->validate, true )
 			);
 		}
@@ -141,9 +141,9 @@
 		 */
 		public function testAutovalidationRulesWithoutCache() {
 			Cache::clear();
-			$this->assertEqual(
-				$this->Site->validate,
+			$this->assertEquals(
 				$this->_expectedDeducedRules,
+				$this->Site->validate,
 				var_export( $this->Site->validate, true )
 			);
 		}

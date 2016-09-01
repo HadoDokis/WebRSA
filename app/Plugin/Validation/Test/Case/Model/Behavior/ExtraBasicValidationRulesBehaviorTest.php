@@ -54,20 +54,20 @@
 		public function testInteger() {
 			$result = $this->Site->integer( null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->integer( array( 'foo' => '15' ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->integer( array( 'foo' => 15 ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 
 			$result = $this->Site->integer( array( 'foo' => 'bar' ) );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -78,23 +78,23 @@
 		public function testBoolean() {
 			$result = $this->Site->boolean( null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->boolean( array( 'foo' => 1 ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->boolean( array( 'foo' => true ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->boolean( array( 'foo' => 'true' ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->boolean( array( 'foo' => 'bar' ) );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -105,25 +105,25 @@
 		public function testCheckUnique() {
 			$result = $this->Site->checkUnique( null, null, null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'name' => 'gwoo', 'birthday' => null );
 			$this->Site->create( $data );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), null );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), array( 'name', 'birthday' ) );
 			$expected = false;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$data = array( 'id' => 1, 'name' => 'gwoo', 'birthday' => null );
 			$this->Site->create( $data );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), array( 'name', 'birthday' ) );
 			$expected = true;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
