@@ -37,19 +37,19 @@
 		public function testTranslateSingle() {
 			$result = Translator::translate('pas de traduction');
 			$expected = 'pas de traduction';
-			$this->assertEquals($result, $expected, $expected);
+			$this->assertEquals( $expected, $result, $expected);
 
 			$result = Translator::translate('test1');
 			$expected = 'traduction domain1/test1';
-			$this->assertEquals($result, $expected, $expected);
+			$this->assertEquals( $expected, $result, $expected);
 
 			$result = Translator::translate('test2');
 			$expected = 'traduction domain2/test2';
-			$this->assertEquals($result, $expected, $expected);
+			$this->assertEquals( $expected, $result, $expected);
 
 			$result = Translator::translate('test3');
 			$expected = 'traduction domain2/test3';
-			$this->assertEquals($result, $expected, $expected.' avec présence dans domain3');
+			$this->assertEquals( $expected, $result, $expected.' avec présence dans domain3');
 		}
 
 		/**
@@ -60,7 +60,7 @@
 
 			$result = Translator::translate('test4');
 			$expected = 'English traduction\'s file';
-			$this->assertEquals($result, $expected, $expected);
+			$this->assertEquals( $expected, $result, $expected);
 		}
 
 		/**
@@ -69,11 +69,11 @@
 		public function testTranslatePlural() {
 			$result = Translator::translate('test5', 'tests5', 6, $nb = 1);
 			$expected = 'traduction domain1/test5';
-			$this->assertEquals($result, $expected, $expected.' singulier');
+			$this->assertEquals( $expected, $result, $expected.' singulier');
 
 			$result = Translator::translate('test5', 'tests5', 6, $nb = 2);
 			$expected = 'traduction domain1/test5 pluriel';
-			$this->assertEquals($result, $expected, $expected);
+			$this->assertEquals( $expected, $result, $expected);
 		}
 
 		/**
@@ -94,13 +94,13 @@
 			$result = Translator::lang();
 			$expected = 'eng';
 
-			$this->assertEqual($result, $expected, "Language changé par variable \$_SESSION");
+			$this->assertEquals($expected, $result, "Language changé par variable \$_SESSION");
 
 			$_SESSION = null;
 			$result = Translator::lang();
 			$expected = 'fre';
 
-			$this->assertEqual($result, $expected, "Language changé par Config");
+			$this->assertEquals($expected, $result, "Language changé par Config");
 		}
 
 		/**
@@ -110,7 +110,7 @@
 			$result = Translator::domainsKey();
 			$expected = '["domain1","domain2","domain3"]';
 
-			$this->assertEqual($result, $expected, "Domains key");
+			$this->assertEquals($expected, $result, "Domains key");
 		}
 
 		/**
@@ -198,7 +198,7 @@
 			$result = Translator::domains();
 			$expected = array(0 => 'default');
 
-			$this->assertEqual($result, $expected, "Reset");
+			$this->assertEquals($expected, $result, "Reset");
 		}
 
 		/**
@@ -244,14 +244,14 @@
 				__mn('test7', 'tests7', 2, array(2, 'arguments')), "Remplacement vsprintf avec traduction pluriel"
 			);
 		}
-		
+
 		/**
 		 * __domain
 		 */
 		public function test__domain() {
-			$this->assertEquals(__domain('test1'), 'domain1', "__domain() utilisé pour 'test1'");
-			$this->assertEquals(__domain('pas de traduction'), 'domain1', "__domain() dernier domain connu");
-			$this->assertEquals(__domain('test2'), 'domain2', "__domain() utilisé pour 'test2'");
-			$this->assertEquals(__domain('test5', 'tests5', 2), 'domain2', "__domain() utilisé pour 'test5' avec pluriel");
+			$this->assertEquals('domain1', __domain('test1'), "__domain() utilisé pour 'test1'");
+			$this->assertEquals('domain1', __domain('pas de traduction'), "__domain() dernier domain connu");
+			$this->assertEquals('domain2', __domain('test2'), "__domain() utilisé pour 'test2'");
+			$this->assertEquals('domain2', __domain('test5', 'tests5', 2), "__domain() utilisé pour 'test5' avec pluriel");
 		}
 	}

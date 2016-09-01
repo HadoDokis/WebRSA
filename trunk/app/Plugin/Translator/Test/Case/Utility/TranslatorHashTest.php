@@ -100,7 +100,7 @@
 			$keys1 = array('fr_FR', 'a:3:{i:0;s:12:"groups_index";i:1;s:6:"groups";i:2;s:7:"default";}', '__', 'id');
 			$this->assertEquals('Id', TranslatorHash::get($data, $keys1));
 			$keys2 = array('fr_FR', 'a:3:{i:0;s:12:"groups_index";i:1;s:6:"groups";i:2;s:7:"default";}', '__', 'name');
-			$this->assertEquals(null, TranslatorHash::get($data, $keys2));
+			$this->assertNull(TranslatorHash::get($data, $keys2));
 			$keys3 = array('fr_FR', 'a:3:{i:0;s:12:"groups_index";i:1;s:6:"groups";i:2;s:7:"default";}', '__');
 			$this->assertEquals(array('id' => 'Id'), TranslatorHash::get($data, $keys3));
 		}

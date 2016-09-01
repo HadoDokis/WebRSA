@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MultiDomainsTranslatorPlugin" default="build" basedir="./../../../..">
+<project name="TranslatorPlugin" default="build" basedir="./../../../..">
 	<property name="dir.ant.build" value="${basedir}/tmp/build" />
 	<property name="dir.ant.artifacts" value="${dir.ant.build}/artifacts" />
 	<property name="dir.ant.logs" value="${dir.ant.build}/logs" />
 	<property name="dir.cakephp.app" value="${basedir}" />
-	<property name="dir.cakephp.plugin" value="${dir.cakephp.app}/Plugin/MultiDomainsTranslator" />
+	<property name="dir.cakephp.plugin" value="${dir.cakephp.app}/Plugin/Translator" />
 	<property name="dir.cakephp.tmp" value="${dir.cakephp.app}/tmp" />
 	<property name="dir.phpcs.ruleset" value="${dir.cakephp.plugin}/Vendor/Jenkins/phpcs" />
 	<property name="file.phpmd.ruleset" value="${dir.cakephp.plugin}/Vendor/Jenkins/phpmd/ruleset.xml" />
@@ -102,7 +102,7 @@
 	<!-- Tests untaires -->
 	<target name="phpunit" depends="clean,lint">
 		<exec executable="lib/Cake/Console/cake" dir="${basedir}/.." failonerror="true">
-			<arg line="test MultiDomainsTranslator AllMultiDomainsTranslatorTests
+			<arg line="test Translator AllTranslatorTests
 				--verbose
 				--strict
 				--no-colors
