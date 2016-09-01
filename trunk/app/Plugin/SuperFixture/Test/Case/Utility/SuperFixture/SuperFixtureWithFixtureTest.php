@@ -21,22 +21,22 @@
 	{
 		/**
 		 * Fixtures pour le test
-		 * ATTENTION : Utile pour la comparaison With/Without fixtures qui a deja 
+		 * ATTENTION : Utile pour la comparaison With/Without fixtures qui a deja
 		 * provoqué des bugs en cas d'absence des fixtures dans la classe de test unitaire
-		 * 
+		 *
 		 * @var array
 		 */
 		public $fixtures = array(
 			'plugin.SuperFixture.SuperFixtureBaz', // Si modifications, changez la methode testUnload()
 		);
-		
+
 		/**
 		 * Test de la méthode SuperFixture::load();
 		 */
 		public function testLoad() {
 			SuperFixture::load($this, 'FooBaz'); // Ne pas confondre avec FooBar qui contien une fixture
-			
-			$result = ClassRegistry::init('SuperFixtureFoo')->find('all', $this->_query);debug($result);
+
+			$result = ClassRegistry::init('SuperFixtureFoo')->find('all', $this->_query);
 			$expected = array(
 				(int) 0 => array(
 					'SuperFixtureFoo' => array(
@@ -69,13 +69,13 @@
 					)
 				)
 			);
-			
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
-		
+
 		/**
 		 * Test de la méthode SuperFixture::load();
-		 * 
+		 *
 		 * @expectedException MissingTableException
 		 */
 		public function testNotLoad() {
@@ -84,7 +84,7 @@
 
 		/**
 		 * Test de la méthode SuperFixture::load();
-		 * 
+		 *
 		 * @expectedException NotFoundException
 		 */
 		public function testLoadSuperFixtureNotFound() {
@@ -93,7 +93,7 @@
 
 		/**
 		 * Test de la méthode SuperFixture::load();
-		 * 
+		 *
 		 * @expectedException NotFoundException
 		 */
 		public function testLoadInnerNotFound() {
@@ -106,13 +106,13 @@
 		public function testUnLoad() {
 			SuperFixture::load($this, 'FooBaz');
 			$this->fixtureManager->unload($this);
-			
-			$this->assertEquals( $this->fixtures, array('plugin.SuperFixture.SuperFixtureBaz'), var_export( $this->fixtures, true ) );
+
+			$this->assertEquals( array( 'plugin.SuperFixture.SuperFixtureBaz' ), $this->fixtures, var_export( $this->fixtures, true ) );
 		}
 
 		/**
 		 * Test de la méthode SuperFixture::load();
-		 * 
+		 *
 		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testLoadFixtureNotFound() {

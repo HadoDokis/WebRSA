@@ -20,26 +20,26 @@
 	 * @subpackage Test.Case.Utility.SuperFixture
 	 */
 	class BakeSuperFixtureTest extends SuperFixtureTestParent
-	{	
+	{
 		/**
 		 * Test de la disponnibilité de Faker
-		 * 
+		 *
 		 * @see https://github.com/fzaninotto/Faker
 		 */
 		public function testFaker() {
 			$Faker = Faker\Factory::create('fr_FR');
-			
+
 			$Faker->seed(1234);
-			$this->assertEquals($Faker->name, 'Jeannine Vallee');
-			$this->assertEquals($Faker->name, 'Louis Martel');
-			$this->assertEquals($Faker->city, 'Marion');
-			$this->assertEquals($Faker->city, 'Gautierboeuf');
-			$this->assertEquals($Faker->address, "82, place de Morin\n64474 Chevallier");
-			$this->assertEquals($Faker->phoneNumber, "0131397292");
-			$this->assertEquals($Faker->unique()->word, "sit");		// Ideal pour les index unique
-			$this->assertEquals($Faker->unique()->word, "veniam");
+			$this->assertEquals( 'Jeannine Vallee', $Faker->name );
+			$this->assertEquals( 'Louis Martel', $Faker->name );
+			$this->assertEquals( 'Marion', $Faker->city );
+			$this->assertEquals( 'Gautierboeuf', $Faker->city );
+			$this->assertEquals( "82, place de Morin\n64474 Chevallier", $Faker->address );
+			$this->assertEquals( "0131397292", $Faker->phoneNumber );
+			$this->assertEquals( "sit", $Faker->unique()->word );		// Ideal pour les index unique
+			$this->assertEquals( "veniam", $Faker->unique()->word );
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 */
@@ -49,27 +49,27 @@
 			 */
 			SuperFixture::load($this, 'FooBar'); // On créer les tables pour le test
 			$BakeSuperFixture = new BakeSuperFixture(); // Utilitaire
-			
+
 			// Definition des rêgles comme dans le cadre d'un BakeSuperFixtureInterface
 			$SuperFixtureBaz = new BSFObject('SuperFixtureBaz');
-			
+
 			$SuperFixtureBar = new BSFObject('SuperFixtureBar');
 			$SuperFixtureBar->fields = array(
 				'super_fixture_baz_id' => array('foreignkey' => $SuperFixtureBaz->getName())	// Assignera l'id de SuperFixtureBaz
 			);
-			
+
 			$SuperFixtureFoo = new BSFObject('SuperFixtureFoo');
 			$SuperFixtureFoo->fields = array(
 				'super_fixture_bar_id' => array('auto' => true)	// Assignera l'id de SuperFixtureBar
 			);
-			
+
 			// Remplissage des tables...
 			$data = compact('SuperFixtureBaz', 'SuperFixtureBar', 'SuperFixtureFoo'); // L'ordre est important
 			$BakeSuperFixture->create($data, $sauvegarde_en_base = true);
-			
+
 			$Foo = ClassRegistry::init('SuperFixtureFoo');
 			$add = array('order' => array('SuperFixtureFoo.id' => 'DESC'));
-			
+
 			/**
 			 * Test 1 : definition automatique des champs obligatoires
 			 */
@@ -89,8 +89,8 @@
 					'name' => 'Perferendis voluptatibus incidunt nostrum quia possimus.'
 				)
 			);
-			$this->assertEquals($result, $expected, "Test 1");
-			
+			$this->assertEquals( $expected, $result, "Test 1");
+
 			/**
 			 * Test 2 : changement des valeurs en cas de rappel de la fonction
 			 */
@@ -111,8 +111,8 @@
 					'name' => 'Nostrum et voluptas consequatur delectus autem nam.'
 				)
 			);
-			$this->assertEquals($result, $expected, "Test 2");
-			
+			$this->assertEquals( $expected, $result, "Test 2");
+
 			/**
 			 * Test 3 : Ajout de rêgles pour générer les données
 			 */
@@ -120,17 +120,17 @@
 			$SuperFixtureFoo->fields += array(
 				'name' => array('in_array' => array('val1', 'val2', 'val3'))
 			);
-			
+
 			// Valeur forcée
 			$SuperFixtureBar->fields += array(
 				'name' => array('value' => 'Une valeur forcée')
 			);
-			
+
 			// Appel à la library Faker
 			$SuperFixtureBaz->fields += array(
 				'name' => array('faker' => array('rule' => 'regexify', '(Une|Des) valeur(|s) generée(|s) [0-9]{1,10}'))
 			);
-			
+
 			$data = compact('SuperFixtureBaz', 'SuperFixtureBar', 'SuperFixtureFoo'); // L'ordre est important
 			$BakeSuperFixture->create($data, $sauvegarde_en_base);
 			$result = $Foo->find('first', $this->_query + $add);
@@ -149,16 +149,16 @@
 					'name' => 'Une valeur generée 429'
 				)
 			);
-			$this->assertEquals($result, $expected, "Test 3");
-			
+			$this->assertEquals( $expected, $result, "Test 3");
+
 			/**
-			 * Test 4 : mention "unique" NOTE : un 4e appel dans ce cas lance une exception car 
+			 * Test 4 : mention "unique" NOTE : un 4e appel dans ce cas lance une exception car
 			 * il n'y a plus de valeur unique (un reset est possible cela dit).
 			 */
 			$SuperFixtureFoo->fields['name'] = array('in_array' => array('val1', 'val2', 'val3'), 'unique' => true);
 			$SuperFixtureBar->fields['name'] = array('in_array' => array('val1', 'val2', 'val3'), 'unique' => true);
 			$SuperFixtureBaz->fields['name'] = array('in_array' => array('val1', 'val2', 'val3'), 'unique' => true);
-			
+
 			$data = compact('SuperFixtureBaz', 'SuperFixtureBar', 'SuperFixtureFoo');
 			$BakeSuperFixture->create($data, true);
 			$result = $Foo->find('first', $this->_query + $add);
@@ -177,8 +177,8 @@
 					'name' => 'val1'
 				)
 			);
-			$this->assertEquals($result, $expected, "Test 4");
-			
+			$this->assertEquals( $expected, $result, "Test 4");
+
 			/**
 			 * Test 5 : contain et auto foreignkey
 			 */
@@ -186,7 +186,7 @@
 			$SuperFixtureBar->contain = array($SuperFixtureFoo);
 			$SuperFixtureBaz->contain = array($SuperFixtureBar);
 			$data = array($SuperFixtureBaz);
-			
+
 			$BakeSuperFixture->create($data, $sauvegarde_en_base);
 			$result = $Foo->find('first', $this->_query + $add);
 			$expected = array(
@@ -205,8 +205,8 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 					'name' => 'val3'
 				)
 			);
-			$this->assertEquals($result, $expected, "Test 5");
-			
+			$this->assertEquals( $expected, $result, "Test 5");
+
 			/**
 			 * Test 6 : création des données en une seule ligne
 			 */
@@ -218,13 +218,13 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 				'created' => null,
 				'updated' => null
 			);
-			$this->assertEquals(end($result['SuperFixtureBaz']), $expected, "Test 6");
-			
+			$this->assertEquals( $expected, end($result['SuperFixtureBaz']), "Test 6" );
+
 			/**
 			 * Test 7 : autres parametres
 			 */
 			$result = $BakeSuperFixture->create(
-				array(new BSFObject('SuperFixtureFoo', 
+				array(new BSFObject('SuperFixtureFoo',
 					array(
 						'name' => array('type' => 'datetime'), // Changement de type
 						'text_field' => array('faker' => 'address'), // faker sans array
@@ -242,13 +242,13 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 				'created' => null,
 				'updated' => null
 			);
-			$this->assertEquals(end($result['SuperFixtureFoo']), $expected, "Test 7");
+			$this->assertEquals( $expected, end($result['SuperFixtureFoo']), "Test 7" );
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On fait appel 3 fois à "unique" avec un array de seulement 2 éléments
-		 * 
+		 *
 		 * @expectedException OverflowException
 		 */
 		public function testCreateException() {
@@ -259,30 +259,30 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$SuperFixtureBaz->runs = 3;
 			$BakeSuperFixture->create(array($SuperFixtureBaz));
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de fields
-		 * 
+		 *
 		 * Message spécial foreignkey
-		 * 
+		 *
 		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testCreateException2() {
 			SuperFixture::load($this, 'FooBar');
 			$BakeSuperFixture = new BakeSuperFixture();
-			
+
 			// Au lieu de 'name' => array('foreignkey' => $SuperFixtureBar->getName())
-			$SuperFixtureBaz = new BSFObject('SuperFixtureFoo', array('super_fixture_bar_id' => 'Test_123')); 
+			$SuperFixtureBaz = new BSFObject('SuperFixtureFoo', array('super_fixture_bar_id' => 'Test_123'));
 			$BakeSuperFixture->create(array($SuperFixtureBaz));
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de fields
-		 * 
+		 *
 		 * Message spécial value
-		 * 
+		 *
 		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testCreateException3() {
@@ -291,25 +291,25 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$SuperFixtureBaz = new BSFObject('SuperFixtureBaz', array('name' => 'Test')); // Au lieu de 'name' => array('value' => 'Test')
 			$BakeSuperFixture->create(array($SuperFixtureBaz));
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de fields
-		 * 
+		 *
 		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testCreateException4() {
 			SuperFixture::load($this, 'FooBar');
 			$BakeSuperFixture = new BakeSuperFixture();
-			$SuperFixtureBaz = new BSFObject('SuperFixtureBaz'); 
+			$SuperFixtureBaz = new BSFObject('SuperFixtureBaz');
 			$SuperFixtureBaz->fields = new BSFObject(); // On envoi quelque chose d'inatendu
 			$BakeSuperFixture->create(array($SuperFixtureBaz));
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de fields
-		 * 
+		 *
 		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testCreateException5() {
@@ -318,11 +318,11 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$SuperFixtureBaz = new BSFObject('SuperFixtureBaz', array('name' => new BSFObject()));  // On envoi quelque chose d'inatendu
 			$BakeSuperFixture->create(array($SuperFixtureBaz));
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de fields
-		 * 
+		 *
 		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testCreateException6() {
@@ -331,11 +331,11 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$SuperFixtureBaz = new BSFObject('SuperFixtureBaz', array('un_champ_qui_nexiste_pas' => array('value' => '1')));
 			$BakeSuperFixture->create(array($SuperFixtureBaz));
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de date
-		 * 
+		 *
 		 * @expectedException PDOException
 		 */
 		public function testCreateException7() {
@@ -344,11 +344,11 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$SuperFixtureBaz = new BSFObject('SuperFixtureFoo', array('date_field' => array('value' => '1')));
 			$BakeSuperFixture->create(array($SuperFixtureBaz), true);
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de date
-		 * 
+		 *
 		 * @expectedException PDOException
 		 */
 		public function testCreateException8() {
@@ -357,11 +357,11 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$SuperFixtureBaz = new BSFObject('SuperFixtureFoo', array('date_field' => array('value' => '2015-02-31')));
 			$BakeSuperFixture->create(array($SuperFixtureBaz), true);
 		}
-		
+
 		/**
 		 * Test de la fonction BakeSuperFixture::create
 		 * On a fait une erreur dans la synthaxe de date
-		 * 
+		 *
 		 * @expectedException PHPUnit_Framework_Error_Notice
 		 */
 		public function testCreateException9() {
@@ -374,12 +374,11 @@ Aut ut accusamus molestias. Distinctio excepturi et qui et. Unde ipsum esse cons
 			$BakeSuperFixture->saveParams['validate'] = true;
 			$SuperFixtureBaz = new BSFObject('SuperFixtureFoo', array('name' => array('value' => 'test')));
 			$BakeSuperFixture->create(array($SuperFixtureBaz), true);
-			debug($Model->find('all'));
 		}
-		
+
 		/**
 		 * Obtien la liste des champs d'un Model
-		 * 
+		 *
 		 * @param Model $Model
 		 * @return array
 		 */
