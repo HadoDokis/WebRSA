@@ -21,13 +21,13 @@
 		 */
 		public function testKey() {
 			$result = GedoooUtility::key( 'Foo' );
-			$this->assertEqual( $result, 'foo', $result );
+			$this->assertEqual( 'foo', $result, var_export( $result, true ) );
 
 			$result = GedoooUtility::key( 'FooBar' );
-			$this->assertEqual( $result, 'foobar', $result );
+			$this->assertEqual( 'foobar', $result, var_export( $result, true ) );
 
 			$result = GedoooUtility::key( 'Foo.bar' );
-			$this->assertEqual( $result, 'foo_bar', $result );
+			$this->assertEqual( 'foo_bar', $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -36,7 +36,7 @@
 		public function testMsgstr() {
 			// FIXME: ajouter un fichier de traduction et des tests propres au plugin
 			$result = GedoooUtility::msgstr( 'Orientstruct.typeorient_id' );
-			$this->assertEqual( $result, 'Type d\'orientation', $result );
+			$this->assertEqual( 'Type d\'orientation', $result, var_export( $result, true ) );
 		}
 
 	}
