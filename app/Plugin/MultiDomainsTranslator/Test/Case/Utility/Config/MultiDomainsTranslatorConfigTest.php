@@ -60,7 +60,7 @@
 
 			$result = __m( 'test' );
 			$expected = 'Traduction pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 		/**
@@ -72,7 +72,7 @@
 
 			$result = __mn( 'test', 'tests', 1 );
 			$expected = 'Traduction pour controller CD66';
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
