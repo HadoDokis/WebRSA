@@ -113,7 +113,7 @@
 				'VACUUM ANALYZE;',
 				"REINDEX DATABASE {$this->Shell->Dbo->config['database']};"
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -133,7 +133,7 @@
 			$expected = array(
 				"REINDEX DATABASE {$this->Shell->Dbo->config['database']};"
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -155,7 +155,7 @@
 				'BEGIN',
 				'COMMIT',
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
@@ -175,7 +175,7 @@
 			$expected = array(
 				'VACUUM ANALYZE;'
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 	}
 ?>

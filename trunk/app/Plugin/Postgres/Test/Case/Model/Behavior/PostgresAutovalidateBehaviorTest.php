@@ -69,7 +69,7 @@
 				'allowEmpty' => true,
 				'on' => null
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = Hash::get( $this->User->validate, 'popularity.inclusiveRange' );
 			$expected = array(
@@ -79,7 +79,7 @@
 				'allowEmpty' => true,
 				'on' => null
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = Hash::get( $this->User->validate, 'phone.phone' );
 			$expected = array(
@@ -89,7 +89,7 @@
 				'allowEmpty' => true,
 				'on' => null
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// inList avec des espaces et un nom de colonne entre quotes
 			// CHECK (cakephp_validate_in_list("position"::text, ARRAY['in line'::text, 'out of line'::text]))
@@ -101,7 +101,7 @@
 				'allowEmpty' => true,
 				'on' => null
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>

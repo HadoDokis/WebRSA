@@ -187,7 +187,7 @@
 					)
 				)
 			);
-			$this->assertEqual( $result, $expected );
+			$this->assertEquals( $expected, $result );
 		}
 
 		/**
