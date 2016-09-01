@@ -151,11 +151,11 @@
 					),
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->request->params['paging']['Apple']['count'];
 			$expected = 3;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2°) Pagination progressive forcée à false
 			$result = $this->Controller->paginate( 'Apple', array(), array(), false );
@@ -173,11 +173,11 @@
 					),
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->request->params['paging']['Apple']['count'];
 			$expected = 7;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 3°) Pagination progressive configurée à true
 			SearchProgressivePagination::enable( $this->Controller->name, $this->Controller->action );
@@ -196,11 +196,11 @@
 					),
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->request->params['paging']['Apple']['count'];
 			$expected = 3;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 3°) Pagination progressive configurée à false
 			SearchProgressivePagination::disable( $this->Controller->name, $this->Controller->action );
@@ -219,11 +219,11 @@
 					),
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Controller->request->params['paging']['Apple']['count'];
 			$expected = 7;
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
 
@@ -239,7 +239,7 @@
 				)
 			);
 
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
 ?>
