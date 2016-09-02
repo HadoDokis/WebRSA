@@ -31,11 +31,6 @@
 			echo $this->Form->input( 'Search.PersonneReferentPcd.referent_id', array( 'label' => __m( 'Search.PersonneReferentPcd.referent_id' ), 'type' => 'select', 'options' => $options['PersonneReferentPcd']['referent_id'], 'empty' => true ) );
 			echo $this->Allocataires->SearchForm->dateRange( 'Search.PersonneReferentPcd.dfdesignation', $paramDate );
 		?>
-		</fieldset>
-		<?php
-			echo $this->Allocataires->SearchForm->dependantCheckboxes( 'Search.Personne.situation', array( 'options' => $options['Personne']['situation'], 'domain' => $this->request->params['controller'] ) );
-			echo $this->Form->input( 'Search.Dossier.transfere', array( 'label' => 'Dossier transféré ?', 'empty' => true, 'options' => $options['exists'] ) );
-		?>
 	</fieldset>
 	<?php
 		echo $this->Allocataires->SearchForm->dateRange( 'Search.Orientstruct.date_valid', $paramDate );
