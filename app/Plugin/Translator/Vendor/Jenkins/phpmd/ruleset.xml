@@ -9,7 +9,7 @@
 	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
 	xsi:noNamespaceSchemaLocation="http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
-	<description>Configuration de phpmd pour le plugin MultiDomainsTranslator</description>
+	<description>Configuration de phpmd pour le plugin Translator</description>
 
 	<!-- Codesize -->
 	<rule ref="rulesets/codesize.xml" />
@@ -19,8 +19,7 @@
 		CamelCaseParameterName, CamelCaseVariableName à cause des conventions
 		de CakePHP.
 	-->
-	<!-- On utilise $_SESSION comme dans I18n -->
-	<!-- <rule ref="rulesets/controversial.xml/Superglobals" /> -->
+	<rule ref="rulesets/controversial.xml/Superglobals" />
 	<rule ref="rulesets/controversial.xml/CamelCaseClassName" />
 
 	<!-- Design -->

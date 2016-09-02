@@ -7,7 +7,7 @@
 	@see /usr/lib/php/PHP/CodeSniffer/Standards
 -->
 <ruleset name="phpcs">
-	<description>Standards de codage pour le plugin MultiDomainsTranslator.</description>
+	<description>Standards de codage pour le plugin Translator.</description>
 		<!-- Règles de base, quasiment indiscpensables -->
 		<rule ref="Generic.CodeAnalysis.EmptyStatement"/> <!-- performances, logique -->
 		<rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/> <!-- logique -->
@@ -55,7 +55,7 @@
 	<rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
 	<rule ref="Generic.PHP.LowerCaseConstant"/>
 	<rule ref="Generic.PHP.LowerCaseKeyword"/>
-	<!--<rule ref="Generic.WhiteSpace.DisallowTabIndent"/>-->
+	<rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
 
 	<rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
 

@@ -19,8 +19,7 @@
 		CamelCaseParameterName, CamelCaseVariableName à cause des conventions
 		de CakePHP.
 	-->
-	<!-- On utilise $_SESSION comme dans I18n -->
-	<!-- <rule ref="rulesets/controversial.xml/Superglobals" /> -->
+	<rule ref="rulesets/controversial.xml/Superglobals" />
 	<rule ref="rulesets/controversial.xml/CamelCaseClassName" />
 
 	<!-- Design -->

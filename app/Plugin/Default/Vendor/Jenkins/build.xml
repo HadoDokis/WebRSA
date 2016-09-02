@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="DefaultPlugin" default="build" basedir="./../../../..">
-	<property name="dir.ant.build" value="${basedir}/tmp/build" />
+<project name="PluginDefault" default="build" basedir="./../../../..">
+	<property name="dir.ant.build" value="${basedir}/tmp/build/PluginDefault" />
 	<property name="dir.ant.artifacts" value="${dir.ant.build}/artifacts" />
 	<property name="dir.ant.logs" value="${dir.ant.build}/logs" />
 	<property name="dir.cakephp.app" value="${basedir}" />
@@ -15,18 +15,13 @@
 	<target name="quality" depends="clean,lint,phpunit,phploc,phpdoc,phpcs,phpmd,pdepend,phpcpd,phpcb"/>
 	<target name="build" depends="clean,lint,phpunit"/>
 
-	<!-- Nettoyage du répertoire tmp de CakePHP -->
+	<!-- Nettoyage des répertoires de travail -->
 	<target name="clear">
-		<delete verbose="true">
-			<fileset
-				dir="${dir.cakephp.tmp}"
-				excludes="**/.svn,**/empty" />
-		</delete>
+		<delete dir="${dir.ant.build}" />
 	</target>
 
 	<!-- Nettoyage et création des répertoires de travail -->
 	<target name="clean" depends="clear">
-		<delete dir="${dir.ant.build}" />
 		<mkdir dir="${dir.ant.build}" />
 		<mkdir dir="${dir.ant.build}/api" />
 		<mkdir dir="${dir.ant.artifacts}" />
@@ -62,7 +57,7 @@
 			<arg line="-o /dev/null"/>
 			<fileset
 				dir="${dir.cakephp.plugin}"
-				includes="Locale/**/*.po"
+				includes="**/*.po"
 				excludes="" />
 		</apply>
 	</target>
@@ -95,6 +90,7 @@
 		</apply>
 	</target>
 
+	<!-- Vérification de la syntaxe des fichiers -->
 	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
 
 	<!-- Tests untaires -->
@@ -194,7 +190,8 @@
 			<arg line="--log-pmd ${dir.ant.logs}/pmd-cpd.xml
 				--min-lines 5
 				--min-tokens 70
-				--exclude ${ignorelist}
+				--exclude Vendor
+				--exclude Test
 				--names *.php,*.ctp
 				." />
 		</exec>
@@ -207,7 +204,7 @@
 			failonerror="false">
 			<arg line="--log ${dir.ant.logs}
 				--source ${dir.cakephp.plugin}
-				-E /\/(app\/(Lib|Model|Vendor|Plugin\/(Gedooo|Pgsqlcake|Validation)))\//
+				-E /\/(Vendor|Test)\//
 				--output ${dir.ant.build}/php-code-browser
 				--crapThreshold=10
 			." />

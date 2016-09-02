@@ -26,7 +26,7 @@
 		<rule ref="Generic.PHP.SAPIUsage"/> <!-- éviter de casser ? -->
 		<rule ref="Generic.Strings.UnnecessaryStringConcat"/> <!-- performances -->
 		<rule ref="PEAR.Files.IncludingFile"/> <!-- standard PHP -->
-		<!--<rule ref="PEAR.Functions.ValidAppClassesValue"/>--> <!-- éviter de casser ? INFO: casse phpcs -->
+		<rule ref="PEAR.Functions.ValidDefaultValue"/> <!-- éviter de casser ? -->
 		<rule ref="Squiz.Classes.LowercaseClassKeywords"/> <!-- standard PHP -->
 		<rule ref="Squiz.Classes.SelfMemberReference"/> <!-- standard PHP -->
 		<rule ref="Squiz.Commenting.FunctionCommentThrowTag"/> <!-- pas fait par phpdocumentor ? + FIXME/TODO -->
