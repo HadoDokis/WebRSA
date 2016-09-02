@@ -16,16 +16,90 @@
 	 */
 	class ActionscandidatsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Actionscandidats';
-		public $uses = array( 'Actioncandidat', 'Option' );
-		public $helpers = array( 'Xform', 'Default', 'Theme', 'Default2', 'Fileuploader' );
-		public $components = array( 'Default', 'Fileuploader', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
-		
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajax_getLastNumcodefamille' );
 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+			'Fileuploader',
+			'Search.SearchPrg' => array(
+				'actions' => array('index')
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Xform',
+			'Default',
+			'Theme',
+			'Default2',
+			'Fileuploader',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Actioncandidat',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
+			'add' => 'Actionscandidats:edit',
 			'view' => 'Actionscandidats:index',
-			'add' => 'Actionscandidats:edit'
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax_getLastNumcodefamille',
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajax_getLastNumcodefamille' => 'read',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'create',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'fileview' => 'read',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		/**

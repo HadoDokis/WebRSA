@@ -16,21 +16,18 @@
 	 */
 	class DossiersController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Dossiers';
 
-		public $uses = array( 'Dossier', 'Option', 'Informationpe', 'Tableausuivipdv93' );
-
-		public $helpers = array(
-			'Csv' ,
-			'Search',
-			'Default2',
-			'Gestionanomaliebdd',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-			'Allocataires'
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
@@ -38,18 +35,60 @@
 			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'index', 'search' )
+				'actions' => array(
+					'index',
+					'search',
+				)
 			),
 		);
 
- 		public $aucunDroit = array( 'unlock' );
-
 		/**
+		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
- 		public $commeDroit = array( 'search' => 'Dossiers:index' );
+		public $helpers = array(
+			'Allocataires',
+			'Csv',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Gestionanomaliebdd',
+			'Search',
+		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Dossier',
+			'Informationpe',
+			'Option',
+			'Tableausuivipdv93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'search' => 'Dossiers:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'unlock',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -59,9 +98,12 @@
 		public $crudMap = array(
 			'edit' => 'update',
 			'exportcsv' => 'read',
+			'exportcsv1' => 'read',
 			'index' => 'read',
-			'view' => 'read',
+			'menu' => 'read',
 			'search' => 'read',
+			'unlock' => 'read',
+			'view' => 'read',
 		);
 
 		/**

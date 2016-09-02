@@ -16,15 +16,86 @@
 	 */
 	class EtatsliquidatifsController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Etatsliquidatifs';
-		public $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Option' );
-		public $components = array( 'Gedooo.Gedooo' );
-		public $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement', 'Theme', 'Cake1xLegacy.Ajax' );
-		public $commeDroit = array(
-			'add' => 'Etatsliquidatifs:edit'
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Gedooo.Gedooo',
 		);
-		public $aucunDroit = array( 'ajaxmontant' );
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Apreversement',
+			'Cake1xLegacy.Ajax',
+			'Locale',
+			'Paginator',
+			'Theme',
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Etatliquidatif',
+			'Option',
+			'Parametrefinancier',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Etatsliquidatifs:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxmontant',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxmontant' => 'read',
+			'edit' => 'update',
+			'hopeyra' => 'read',
+			'impression' => 'update',
+			'impressions' => 'update',
+			'index' => 'read',
+			'pdf' => 'read',
+			'selectionapres' => 'read',
+			'validation' => 'update',
+			'versementapres' => 'read',
+			'visualisationapres' => 'read',
+		);
 
 		/**
 		 *

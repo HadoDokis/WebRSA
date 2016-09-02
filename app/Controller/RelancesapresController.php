@@ -15,18 +15,74 @@
 	 */
 	class RelancesapresController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Relancesapres';
 
-		public $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/* , 'Dsp' */, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
-
-		public $helpers = array( 'Locale', 'Csv',  'Xform', 'Xhtml' );
-
-		public $components = array( 'Jetons2', 'Gedooo.Gedooo', 'DossiersMenus' );
-
-		public $commeDroit = array(
-			'add' => 'Relancesapres:edit'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Gedooo.Gedooo',
+			'Jetons2',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Xform',
+			'Xhtml',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Acccreaentr',
+			'Acqmatprof',
+			'Actprof',
+			'Amenaglogt',
+			'Apre',
+			'Locvehicinsert',
+			'Option',
+			'Permisb',
+			'Personne',
+			'Prestation',
+			'Relanceapre',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Relancesapres:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

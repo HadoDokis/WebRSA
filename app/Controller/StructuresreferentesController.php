@@ -15,35 +15,85 @@
 	 */
 	class StructuresreferentesController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Structuresreferentes';
 
-		public $uses = array(
-			'Structurereferente',
-			'Referent',
-			'Orientstruct',
-			'Typeorient',
-			'Zonegeographique',
-			'Apre',
-			'Option',
-			'WebrsaStructurereferente'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 			'Translator',
-			'Xform'
+			'Xform',
 		);
 
-		public $components = array(
-			'Search.SearchPrg' => array(
-				'actions' => array( 'index' )
-			)
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Apre',
+			'Option',
+			'Orientstruct',
+			'Referent',
+			'Structurereferente',
+			'Typeorient',
+			'WebrsaStructurereferente',
+			'Zonegeographique',
 		);
-
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'add' => 'Structuresreferentes:edit'
+			'add' => 'Structuresreferentes:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
 		);
 
 		protected function _setOptions() {

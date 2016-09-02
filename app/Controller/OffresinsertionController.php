@@ -15,27 +15,89 @@
 	 */
 	class OffresinsertionController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Offresinsertion';
-		public $uses = array( 'Offreinsertion', 'Actioncandidat', 'Contactpartenaire', 'Partenaire', 'Option' );
 
-		public $helpers = array( 'Default2', 'Fileuploader', 'Csv' );
-
-		public $commeDroit = array(
-			'view' => 'Offresinsertion:index'
-		);
-
-        public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
+			'Fileuploader' => array(
+                'colonneModele' => 'Actioncandidat',
+            ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'index' => array( 'filter' => 'Search' )
-				)
+					'index' => array(
+						'filter' => 'Search'
+					),
+				),
 			),
-            'Fileuploader' => array(
-                'colonneModele' => 'Actioncandidat'
-            )
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default2',
+			'Fileuploader',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Actioncandidat',
+			'Contactpartenaire',
+			'Offreinsertion',
+			'Option',
+			'Partenaire',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'view' => 'Offresinsertion:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'create',
+			'download' => 'read',
+			'exportcsv' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		public function _setOptions() {

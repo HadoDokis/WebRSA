@@ -17,29 +17,76 @@
 	 */
 	class MemosController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Memos';
 
-		public $uses = array( 'Memo', 'Option', 'Personne', 'WebrsaMemo' );
-
-		public $helpers = array(
-			'Locale',
-			'Xform',
-			'Default2',
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+			'DossiersMenus',
 			'Fileuploader',
-			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
-			)
+			'Jetons2',
+			'WebrsaAccesses',
 		);
 
-		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'DossiersMenus', 'WebrsaAccesses' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
+		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Memo',
+			'Option',
+			'Personne',
+			'WebrsaMemo',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
 			'add' => 'Memos:edit',
 			'view' => 'Memos:index',
 		);
-
-		public $aucunDroit = array( 'ajaxfiledelete', 'ajaxfileupload', 'fileview', 'download' );
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -56,6 +103,7 @@
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
+			'view' => 'read',
 		);
 
 		/**

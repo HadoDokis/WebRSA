@@ -17,24 +17,24 @@
 	 */
 	class Dossierspcgs66Controller extends AppController
 	{
-		public $helpers = array( 
-			'Default', 
-			'Default2', 
-			'Cake1xLegacy.Ajax', 
-			'Fileuploader',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-		);
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Dossierspcgs66';
 
-		public $uses = array( 'Dossierpcg66', 'Option', 'Typenotifpdo', 'Decisionpdo', 'WebrsaDossierpcg66' );
-
-		public $components = array( 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
 			'Cohortes', 
+			'DossiersMenus',
 			'Fileuploader', 
 			'Gedooo.Gedooo', 
 			'Jetons2', 
-			'DossiersMenus',
 			'Search.SearchPrg' => array(
 				'actions' => array( 
 					'search', 
@@ -57,22 +57,69 @@
 			),
 		);
 
-		public $commeDroit = array(
-			'add' => 'Dossierspcgs66:edit',
-			'view' => 'Dossierspcgs66:index',
-			'search' => 'Criteresdossierspcgs66:dossier',
-			'search_gestionnaire' => 'Criteresdossierspcgs66:gestionnaire',
-			'exportcsv' => 'Criteresdossierspcgs66:exportcsv',
-			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
-			'cohorte_enattenteaffectation' => 'Cohortesdossierspcgs66:enattenteaffectation',
-			'imprimer' => 'Decisionsdossierspcgs66::decisionproposition',
-			'search_affectes' => 'Cohortesdossierspcgs66:affectes',
-			'cohorte_imprimer' => 'Cohortesdossierspcgs66:aimprimer',
-			'cohorte_atransmettre' => 'Cohortesdossierspcgs66:atransmettre',
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Fileuploader',
 		);
 
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo', 'ajax_getetatdossierpcg66' );
-
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Decisionpdo',
+			'Dossierpcg66',
+			'Option',
+			'Typenotifpdo',
+			'WebrsaDossierpcg66',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Dossierspcgs66:edit',
+			'cohorte_atransmettre' => 'Cohortesdossierspcgs66:atransmettre',
+			'cohorte_enattenteaffectation' => 'Cohortesdossierspcgs66:enattenteaffectation',
+			'cohorte_imprimer' => 'Cohortesdossierspcgs66:aimprimer',
+			'exportcsv' => 'Criteresdossierspcgs66:exportcsv',
+			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
+			'imprimer' => 'Decisionsdossierspcgs66::decisionproposition',
+			'search' => 'Criteresdossierspcgs66:dossier',
+			'search_affectes' => 'Cohortesdossierspcgs66:affectes',
+			'search_gestionnaire' => 'Criteresdossierspcgs66:gestionnaire',
+			'view' => 'Dossierspcgs66:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax_getetatdossierpcg66',
+			'ajax_view_decisions',
+			'ajaxetatpdo',
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -81,19 +128,28 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
-			'ajaxetatpdo' => 'read',
+			'ajax_getetatdossierpcg66' => 'read',
+			'ajax_view_decisions' => 'read',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
+			'cancel' => 'update',
 			'cohorte_atransmettre' => 'update',
 			'cohorte_enattenteaffectation' => 'update',
-			'cohorte_rsamajore' => 'update',
 			'cohorte_heberge' => 'update',
 			'cohorte_imprimer' => 'update',
+			'cohorte_imprimer_impressions' => 'update',
+			'cohorte_rsamajore' => 'update',
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
 			'exportcsv' => 'read',
+			'exportcsv_affectes' => 'read',
+			'exportcsv_atransmettre' => 'read',
+			'exportcsv_enattenteaffectation' => 'read',
 			'exportcsv_gestionnaire' => 'read',
+			'exportcsv_heberge' => 'read',
+			'exportcsv_imprimer' => 'read',
+			'exportcsv_rsamajore' => 'read',
 			'fileview' => 'read',
 			'imprimer' => 'update',
 			'index' => 'read',
@@ -102,7 +158,7 @@
 			'search_gestionnaire' => 'read',
 			'view' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */

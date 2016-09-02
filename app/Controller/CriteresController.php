@@ -19,15 +19,84 @@
 	 */
 	class CriteresController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Criteres';
-		public $uses = array( 'Critere', 'Typeorient', 'Option', 'Orientstruct', );
 
-		public $aucunDroit = array( 'constReq', 'ajaxstruc' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
+			'RequestHandler',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
+		);
 
-		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Csv',
+			'Search',
+		);
 
-		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsBeneficiaires' );
-
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Critere',
+			'Option',
+			'Orientstruct',
+			'Typeorient',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxstruc',
+			'constReq',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'ajaxstruc' => 'read',
+			'exportcsv' => 'read',
+			'index' => 'read',
+		);
+		
 		/**
 		*
 		*/

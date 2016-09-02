@@ -5,6 +5,7 @@
 	 * PHP 5.3
 	 *
 	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'SearchProgressivePagination', 'Search.Utility' );
@@ -52,7 +53,8 @@
 		public $uses = array( 'User', 'Connection' );
 
 		/**
-		 * @fixme
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
 		 *
 		 * @var array
 		 */
@@ -337,7 +339,8 @@
 			// Désactivation uniquement sur les méthode faisant autre chose que de la lecture ?
 			//if( Hash::get( $this->crudMap, $this->request->action ) !== 'read' )
 			$this->disableCache();
-
+			
+debug(ControllerCache::tmpFunction());
 			//Paramétrage du composant Auth
 			$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
 			$this->Auth->logoutRedirect = array( 'controller' => 'users', 'action' => 'login' );

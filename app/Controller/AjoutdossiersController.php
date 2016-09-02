@@ -25,9 +25,82 @@
 	 */
 	class AjoutdossiersController extends AppController
 	{
-		// INFO: http://bakery.cakephp.org/articles/view/wizard-component-1-2-1
-		public $components = array( 'Wizard' );
-		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle', 'Detailressourcemensuelle', 'Orientstruct', 'Detaildroitrsa', 'Serviceinstructeur', 'Suiviinstruction', 'Ajoutdossier' );
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Ajoutdossiers';
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Wizard',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Adresse',
+			'Adressefoyer',
+			'Ajoutdossier',
+			'Detaildroitrsa',
+			'Detailressourcemensuelle',
+			'Dossier',
+			'Foyer',
+			'Option',
+			'Orientstruct',
+			'Personne',
+			'Ressource',
+			'Ressourcemensuelle',
+			'Serviceinstructeur',
+			'Suiviinstruction',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'confirm' => 'update',
+			'wizard' => 'create',
+		);
 
 		/**
 		 *

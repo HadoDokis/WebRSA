@@ -15,15 +15,72 @@
 	 */
 	class IndicateursmensuelsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Indicateursmensuels';
 
-		public $uses = array( 'Indicateurmensuel', 'Serviceinstructeur' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Gestionzonesgeos',
 		);
 
-		public $helpers = array( 'Search' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Indicateurmensuel',
+			'Serviceinstructeur',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'contratsinsertion' => 'read',
+			'index' => 'read',
+			'nombre_allocataires' => 'read',
+			'orientations' => 'read',
+		);
 
 		/**
 		 * Indicateurs mensuels

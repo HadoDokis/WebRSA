@@ -16,20 +16,72 @@
 	 */
 	class Decisionsdossierspcgs66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Decisionsdossierspcgs66';
 
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'Fileuploader', 'DossiersMenus' );
-
-		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader', 'Locale' );
-
-		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf' );
-
-		public $aucunDroit = array( 'ajaxproposition', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
-		public $commeDroit = array(
-			'view' => 'Decisionsdossierspcgs66:index'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'Jetons2',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default2',
+			'Fileuploader',
+			'Locale',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Decisiondossierpcg66',
+			'Option',
+			'Pdf',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'view' => 'Decisionsdossierspcgs66:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxproposition',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -40,8 +92,9 @@
 			'add' => 'create',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
-			'ajaxproposition' => 'view',
+			'ajaxproposition' => 'read',
 			'avistechnique' => 'update',
+			'cancel' => 'update',
 			'decisionproposition' => 'update',
 			'delete' => 'delete',
 			'download' => 'read',
@@ -53,7 +106,7 @@
 			'validation' => 'update',
 			'view' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */

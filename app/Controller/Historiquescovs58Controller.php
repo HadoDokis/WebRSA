@@ -17,7 +17,6 @@
 	 */
 	class Historiquescovs58Controller extends AppController
 	{
-
 		/**
 		 * Nom du contrôleur.
 		 *
@@ -32,7 +31,7 @@
 		 */
 		public $components = array(
 			'DossiersMenus',
-			'Jetons2'
+			'Jetons2',
 		);
 
 		/**
@@ -45,7 +44,7 @@
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			)
+			),
 		);
 
 		/**
@@ -55,9 +54,28 @@
 		 */
 		public $uses = array(
 			'Dossiercov58',
-			'WebrsaDossiercov58'
+			'WebrsaDossiercov58',
 		);
-
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -66,7 +84,7 @@
 		 */
 		public $crudMap = array(
 			'index' => 'read',
-			'view_passage' => 'read',
+			'view' => 'read',
 		);
 
 		/**

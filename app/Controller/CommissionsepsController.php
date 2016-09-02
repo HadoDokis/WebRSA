@@ -17,23 +17,113 @@
 	 */
 	class CommissionsepsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Commissionseps';
 
-		public $helpers = array( 'Default', 'Default2', 'Csv' );
-		public $uses = array( 'Commissionep', 'Option' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
+			'Gedooo.Gedooo',
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions'
-				)
+					'index',
+					'creationmodification',
+					'attributiondossiers',
+					'arbitrageep',
+					'arbitragecg',
+					'recherche',
+					'decisions',
+				),
 			),
-			'Gedooo.Gedooo',
 			'WebrsaAccesses' => array(
 				'parentModelName' => 'Commissionep'
-			)
+			),
 		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default',
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Commissionep',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
 			'edit' => 'Commissionseps:add',
-			'view' => 'Commissionseps:recherche'
+			'view' => 'Commissionseps:recherche',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'arbitragecg' => 'read',
+			'arbitrageep' => 'read',
+			'attributiondossiers' => 'read',
+			'creationmodification' => 'read',
+			'decisioncg' => 'read',
+			'decisionep' => 'read',
+			'decisions' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'exportcsv' => 'read',
+			'fichessynthese' => 'read',
+			'fichesynthese' => 'read',
+			'impressionDecision' => 'update',
+			'impressionpv' => 'update',
+			'impressionpvcohorte' => 'update',
+			'impressionsDecisions' => 'update',
+			'ordredujour' => 'read',
+			'printConvocationBeneficiaire' => 'update',
+			'printConvocationParticipant' => 'update',
+			'printConvocationsBeneficiaires' => 'update',
+			'printConvocationsParticipants' => 'update',
+			'printOrdreDuJour' => 'update',
+			'printOrdresDuJour' => 'update',
+			'recherche' => 'read',
+			'traitercg' => 'update',
+			'traiterep' => 'update',
+			'validecommission' => 'update',
+			'view' => 'read',
 		);
 
 		/**

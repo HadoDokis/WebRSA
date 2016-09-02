@@ -16,11 +16,29 @@
 	 */
 	class Covs58Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Covs58';
-		public $uses = array( 'Cov58', 'Option' );
 
 		/**
-		 * Helpers utilisés par ce contrôleur.
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
+			'Gedooo.Gedooo',
+		);
+
+		/**
+		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
@@ -32,12 +50,56 @@
 			),
 			'Search.SearchForm',
 		);
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'Gedooo.Gedooo' );
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cov58',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
 			'add' => 'Covs58:edit',
-			'view' => 'Covs58:index'
+			'view' => 'Covs58:index',
 		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'decisioncov' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'impressiondecision' => 'update',
+			'impressionpv' => 'update',
+			'index' => 'read',
+			'ordredujour' => 'read',
+			'view' => 'read',
+			'visualisationdecisions' => 'read',
+		);
+		
 		public $etatsActions = array(
 			'cree' => array(
 				'dossierseps::choose',

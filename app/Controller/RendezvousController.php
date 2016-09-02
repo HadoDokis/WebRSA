@@ -18,57 +18,91 @@
 	 */
 	class RendezvousController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Rendezvous';
 
-		public $uses = array( 'Rendezvous', 'Option', 'WebrsaRendezvous' );
-
-		public $helpers = array(
-			'Locale',
-			'Csv',
-			'Cake1xLegacy.Ajax',
-			'Xform',
-			'Default2',
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Allocataires',
+			'DossiersMenus',
 			'Fileuploader',
+			'Gedooo.Gedooo',
+			'InsertionsBeneficiaires',
+			'Jetons2',
+			'Workflowscers93',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'search' => array('filter' => 'Search'),
+				),
+			),
+			'WebrsaAccesses',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Csv',
+			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
 			'Search.SearchForm',
 		);
 
-		public $components = array(
-			'Allocataires',
-			'Gedooo.Gedooo',
-			'Fileuploader',
-			'Jetons2',
-			'DossiersMenus',
-			'InsertionsBeneficiaires',
-			'Workflowscers93',
-			// 'Search.Filtresdefaut' => array( 'search' ), // FIXME
-			'Search.SearchPrg' => array(
-				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
-				)
-			),
-			'WebrsaAccesses'
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Option',
+			'Rendezvous',
+			'WebrsaRendezvous',
 		);
-
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'view' => 'Rendezvous:index',
 			'add' => 'Rendezvous:edit',
-			'search' => 'Criteresrdv:index',
 			'exportcsv' => 'Criteresrdv:exportcsv',
+			'search' => 'Criteresrdv:index',
+			'view' => 'Rendezvous:index',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
 		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxperm',
 			'ajaxreferent',
 			'ajaxreffonct',
-			'ajaxperm',
-			'ajaxfileupload',
-			'ajaxfiledelete',
+			'download',
 			'fileview',
-			'download'
 		);
-
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -83,13 +117,13 @@
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'impression' => 'read',
 			'index' => 'read',
-			'view' => 'read',
 			'search' => 'read',
-			'exportcsv' => 'read'
+			'view' => 'read',
 		);
 
 		/**

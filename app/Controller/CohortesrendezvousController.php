@@ -31,20 +31,22 @@
 		 */
 		public $components = array(
 			'Allocataires',
-			'Cohortes'  => array(
+			'Cohortes' => array(
 				'cohorte'
 			),
 			'InsertionsBeneficiaires',
-			'Search.Filtresdefaut' => array( 'cohorte' ),
+			'Search.Filtresdefaut' => array(
+				'cohorte',
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'cohorte' => array(
 						'filter' => 'Search',
 						'ajax' => false
 					),
-				)
+				),
 			),
-			'Workflowscers93'
+			'Workflowscers93',
 		);
 
 		/**
@@ -66,8 +68,41 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohorterendezvous', 'Rendezvous' );
-
+		public $uses = array(
+			'Cohorterendezvous',
+			'Rendezvous',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'cohorte' => 'update',
+			'exportcsv' => 'read'
+		);
+		
 		/**
 		 * Retourne le query à utiliser dans la méthode cohorte, que l'appel ait
 		 * été fait en ajax ou non.

@@ -19,20 +19,85 @@
 	 */
 	class CohortesindusController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cohortesindus';
 
-		public $uses = array( 'Cohorteindu', 'Option', 'Structurereferente', 'Dossier', 'Situationdossierrsa' );
-
-		public $helpers = array( 'Csv', 'Paginator', 'Locale', 'Search' );
-
-		public $paginate = array(
-			'limit' => 20,
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Paginator',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cohorteindu',
+			'Dossier',
+			'Option',
+			'Situationdossierrsa',
+			'Structurereferente',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
+		);
+
+		public $paginate = array(
+			'limit' => 20,
 		);
 
 		/**

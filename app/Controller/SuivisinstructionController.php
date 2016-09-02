@@ -15,16 +15,63 @@
 	 */
 	class SuivisinstructionController  extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Suivisinstruction';
 
-		public $uses = array( 'Suiviinstruction', 'Option', 'Dossier', 'Serviceinstructeur' );
-
-		public $components = array( 'Jetons2', 'DossiersMenus' );
-
-		public $commeDroit = array(
-			'view' => 'Suivisinstruction:index'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Dossier',
+			'Option',
+			'Serviceinstructeur',
+			'Suiviinstruction',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'view' => 'Suivisinstruction:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

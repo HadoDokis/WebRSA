@@ -17,17 +17,67 @@
 	 */
 	class RessourcesController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Ressources';
 
-		public $uses = array( 'Ressource', 'Option', 'Personne', 'Ressourcemensuelle', 'Detailressourcemensuelle', 'WebrsaRessource' );
-
-		public $components = array( 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
-
-		public $commeDroit = array(
-			'view' => 'Ressources:index',
-			'add' => 'Ressources:edit'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
+			'WebrsaAccesses',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Detailressourcemensuelle',
+			'Option',
+			'Personne',
+			'Ressource',
+			'Ressourcemensuelle',
+			'WebrsaRessource',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Ressources:edit',
+			'view' => 'Ressources:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -40,7 +90,7 @@
 			'index' => 'read',
 			'view' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */

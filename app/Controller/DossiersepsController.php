@@ -16,18 +16,18 @@
 	 */
 	class DossiersepsController extends AppController
 	{
-		public $helpers = array(
-			'Default',
-			'Default2',
-			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
-			),
-			'Csv',
-			'Type2'
-		);
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Dossierseps';
 
-		public $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'DossiersMenus',
 			'Gedooo.Gedooo',
@@ -44,6 +44,71 @@
 					),
 				)
 			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Type2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Decisionpdo',
+			'Dossierep',
+			'Option',
+			'Propopdo',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'administration' => 'read',
+			'choose' => 'read',
+			'courrierInformation' => 'update',
+			'courriersInformations' => 'update',
+			'decisioncg' => 'read',
+			'decisions' => 'read',
+			'delete' => 'delete',
+			'deletepassage' => 'delete',
+			'exportcsv' => 'read',
+			'index' => 'read',
 		);
 
 		/**

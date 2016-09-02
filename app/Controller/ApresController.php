@@ -15,44 +15,108 @@
 	 */
 	class ApresController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Apres';
 
-		public $uses = array( 'Apre', 'Histoaprecomplementaire', 'Dossier', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent', 'Foyer' );
+		/**
+		 * Modèles utilisés
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Acccreaentr',
+			'Acqmatprof',
+			'Actprof',
+			'Amenaglogt',
+			'Apre',
+			'ApreComiteapre',
+			'Contratinsertion',
+			'Dossier',
+			'Dsp',
+			'Formpermfimo',
+			'Foyer',
+			'Histoaprecomplementaire',
+			'Locvehicinsert',
+			'Option',
+			'Permisb',
+			'Personne',
+			'Prestation',
+			'Referent',
+			'Relanceapre',
+			'Structurereferente',
+			'Tiersprestataireapre',
+		);
 
+		/**
+		 * Helpers utilisés
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
-			'Locale',
-			'Csv',
 			'Cake1xLegacy.Ajax',
-			'Xform',
-			'Xhtml',
-			'Fileuploader',
+			'Csv',
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
+			'Xhtml',
 		);
 
+		/**
+		 * Components utilisés
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Allocataires',
-			'Fileuploader',
-			'Jetons2',
 			'DossiersMenus',
+			'Fileuploader',
 			'Gedooo.Gedooo',
+			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search', 'search_eligibilite' )
 			),
 		);
 
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'view' => 'Apres:index',
-			'search' => 'Criteresapres:all',
 			'exportcsv' => 'Criteresapres:exportcsv',
+			'exportcsv_eligibilite' => 'Criteresapres:exportcsv',
+			'search' => 'Criteresapres:all',
 			'search_eligibilite' => 'Criteresapres:eligible',
-			'exportcsv_eligibilite' => 'Criteresapres:exportcsv'
+			'view' => 'Apres:index',
 		);
 
-		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		/**
+		 * Actions non soumises aux droits.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxref',
+			'ajaxstruct',
+			'ajaxtierspresta',
+			'ajaxtiersprestaactprof',
+			'ajaxtiersprestaformpermfimo',
+			'ajaxtiersprestaformqualif',
+			'ajaxtiersprestapermisb',
+			'download',
+			'fileview',
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -80,7 +144,8 @@
 			'search' => 'read',
 			'exportcsv' => 'read',
 			'search_eligibilite' => 'read',
-			'exportcsv_eligibilite' => 'read'
+			'exportcsv_eligibilite' => 'read',
+			'impression' => 'update',
 		);
 
 		/**

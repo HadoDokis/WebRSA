@@ -15,13 +15,20 @@
 	 */
 	class ParametragesController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Parametrages';
-		public $uses = array( 'Dossier', 'Structurereferente', 'Zonegeographique' );
 
-		public $commeDroit = array(
-			'view' => 'Parametrages:index',
-			'modulefse93' => 'Parametrages:index',
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			
 		);
 
 		/**
@@ -33,6 +40,51 @@
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Dossier',
+			'Structurereferente',
+			'Zonegeographique',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'modulefse93' => 'Parametrages:index',
+			'view' => 'Parametrages:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'cataloguesromesv3' => 'read',
+			'fichesprescriptions93' => 'read',
+			'index' => 'read',
+			'modulefse93' => 'read',
+			'view' => 'read',
 		);
 
 		/**

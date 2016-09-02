@@ -15,16 +15,72 @@
 	 */
 	class ComitesapresParticipantscomitesController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'ComitesapresParticipantscomites';
 
-		public $uses = array( 'ComiteapreParticipantcomite', 'Apre', 'Participantcomite', 'Comiteapre' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Jetonsfonctions2',
+		);
 
-		public $components = array( 'Jetonsfonctions2' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Xform',
+		);
 
-		public $helpers = array( 'Xform' );
-
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Apre',
+			'Comiteapre',
+			'ComiteapreParticipantcomite',
+			'Participantcomite',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'add' => 'ComitesapresParticipantscomites:edit'
+			'add' => 'ComitesapresParticipantscomites:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+			'rapport' => 'read',
 		);
 
 		protected function _setOptions() {

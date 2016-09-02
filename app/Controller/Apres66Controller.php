@@ -17,31 +17,69 @@
 	 */
 	class Apres66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Apres66';
 
-		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer', 'WebrsaApre66' );
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Adressefoyer',
+			'Aideapre66',
+			'Apre66',
+			'Foyer',
+			'Fraisdeplacement66',
+			'Option',
+			'Personne',
+			'Pieceaide66',
+			'Pieceaide66Typeaideapre66',
+			'Piececomptable66',
+			'Piececomptable66Typeaideapre66',
+			'Prestation',
+			'Referent',
+			'Structurereferente',
+			'Themeapre66',
+			'Typeaideapre66',
+			'WebrsaApre66'
+		);
 
+		/**
+		 * Helpers utilisés
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
-			'Default',
-			'Locale',
 			'Cake1xLegacy.Ajax',
-			'Xform',
-			'Xhtml',
-			'Fileuploader',
+			'Default',
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
+			'Xhtml',
 		);
 
+		/**
+		 * Components utilisés
+		 *
+		 * @var array
+		 */
 		public $components = array(
-			'Default',
-			'Gedooo.Gedooo',
-			'Fileuploader',
-			'Jetons2',
-			'DossiersMenus',
-			'InsertionsBeneficiaires',
 			'Cohortes',
+			'Default',
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'InsertionsBeneficiaires',
+			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'cohorte_validation' => array(
@@ -64,17 +102,37 @@
 			'WebrsaAccesses'
 		);
 
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'view66' => 'Apres66:index',
 			'add' => 'Apres66:edit',
-			'cohorte_validation' => 'Cohortesvalidationapres66::apresvalider',
 			'cohorte_imprimer' => 'Cohortesvalidationapres66::validees',
 			'cohorte_notifiees' => 'Cohortesvalidationapres66::notifiees',
-			'cohorte_transfert' => 'Cohortesvalidationapres66::transfert',
 			'cohorte_traitement' => 'Cohortesvalidationapres66::traitement',
+			'cohorte_transfert' => 'Cohortesvalidationapres66::transfert',
+			'cohorte_validation' => 'Cohortesvalidationapres66::apresvalider',
+			'view66' => 'Apres66:index',
 		);
 
-		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajax_nb_fichiers_lies' );
+		/**
+		 * Actions non soumises aux droits.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax_get_nb_fichiers_lies',
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxpiece',
+			'ajaxref',
+			'ajaxstruct',
+			'download',
+			'fileview',
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -84,14 +142,27 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
+			'ajax_get_nb_fichiers_lies' => 'read',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
 			'ajaxpiece' => 'read',
 			'ajaxref' => 'read',
 			'ajaxstruct' => 'read',
 			'cancel' => 'update',
+			'cohorte_imprimer' => 'read',
+			'cohorte_imprimer_impressions' => 'update',
+			'cohorte_notifiees' => 'read',
+			'cohorte_notifiees_impressions' => 'update',
+			'cohorte_traitement' => 'update',
+			'cohorte_transfert' => 'update',
+			'cohorte_validation' => 'update',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv_imprimer' => 'read',
+			'exportcsv_notifiees' => 'read',
+			'exportcsv_traitement' => 'read',
+			'exportcsv_transfert' => 'read',
+			'exportcsv_validation' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'impression' => 'read',
@@ -100,11 +171,6 @@
 			'maillink' => 'read',
 			'notifications' => 'read',
 			'view66' => 'read',
-			'cohorte_validation' => 'update',
-			'cohorte_imprimer' => 'read',
-			'cohorte_notifiees' => 'read',
-			'cohorte_transfert' => 'update',
-			'cohorte_traitement' => 'update',
 		);
 
 		/**

@@ -19,20 +19,86 @@
 	 */
 	class CriteresciController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Criteresci';
 
-		public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent', 'Situationdossierrsa', 'Catalogueromev3' );
-
-		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search', 'Romev3' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Gestionzonesgeos',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
 			'InsertionsBeneficiaires',
-			'Workflowscers93'
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
+			'Workflowscers93',
 		);
 
-		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Csv',
+			'Romev3',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Action',
+			'Catalogueromev3',
+			'Cohorteci',
+			'Contratinsertion',
+			'Option',
+			'Referent',
+			'Situationdossierrsa',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxreferent',
+			'constReq',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
+		);
 
 		/**
 		 *

@@ -16,22 +16,65 @@
 	*/
 	class Decisionspersonnespcgs66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Decisionspersonnespcgs66';
 
 		/**
-		 * @access public
+		 * Components utilisés.
+		 *
+		 * @var array
 		 */
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
-
-		public $helpers = array( 'Default2' );
-
-		public $uses = array( 'Decisionpersonnepcg66', 'Option', 'Pdf' );
-
-		public $commeDroit = array(
-			'view' => 'Decisionspersonnespcgs66:index',
-			'add' => 'Decisionspersonnespcgs66:edit'
+		public $components = array(
+			'Default',
+			'DossiersMenus',
+			'Gedooo.Gedooo',
+			'Jetons2',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Decisionpersonnepcg66',
+			'Option',
+			'Pdf',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Decisionspersonnespcgs66:edit',
+			'view' => 'Decisionspersonnespcgs66:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

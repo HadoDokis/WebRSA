@@ -28,7 +28,9 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Gestionzonesgeos' );
+		public $components = array(
+			'Gestionzonesgeos',
+		);
 
 		/**
 		 * Helpers utilisés.
@@ -43,7 +45,7 @@
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => false
 			),
-			'Search'
+			'Search',
 		);
 
 		/**
@@ -51,8 +53,46 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Statistiqueministerielle', 'Serviceinstructeur' );
-
+		public $uses = array(
+			'Serviceinstructeur',
+			'Statistiqueministerielle',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'indicateurs_caracteristiques_contrats' => 'read',
+			'indicateurs_delais' => 'read',
+			'indicateurs_motifs_reorientation' => 'read',
+			'indicateurs_natures_contrats' => 'read',
+			'indicateurs_organismes' => 'read',
+			'indicateurs_orientations' => 'read',
+			'indicateurs_reorientations' => 'read',
+		);
+		
 		/**
 		 * Envoi des données communes pour les moteurs de recherche.
 		 */

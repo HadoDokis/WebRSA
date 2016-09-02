@@ -3,7 +3,7 @@
 	 * Code source de la classe TagsController.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('WebrsaAccessTags', 'Utility');
 
@@ -28,21 +28,17 @@
 		 */
 		public $components = array(
 			'Cohortes', 
+			'DossiersMenus',
 			'Fileuploader', 
 			'Gedooo.Gedooo', 
 			'Jetons2', 
-			'DossiersMenus',
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'cohorte' => array(
-						'filter' => 'Search'
-					),
-					'cohorte_heberge' => array(
-						'filter' => 'Search'
-					),
-				)
+					'cohorte' => array('filter' => 'Search'),
+					'cohorte_heberge' => array('filter' => 'Search'),
+				),
 			),
-			'WebrsaAccesses'
+			'WebrsaAccesses',
 		);
 
 		/**
@@ -63,11 +59,30 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Foyer',
+			'Personne',
 			'Tag',
 			'WebrsaCohorteTag',
 			'WebrsaTag',
-			'Personne',
-			'Foyer',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
 		);
 		
 		/**
@@ -78,10 +93,12 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
+			'cancel' => 'update',
 			'cohorte' => 'update',
 			'delete' => 'delete',
 			'edit' => 'update',
 			'index' => 'read',
+			'indexparams' => 'read',
 			'tag_gestionsdoublons_index' => 'update',
 		);
 

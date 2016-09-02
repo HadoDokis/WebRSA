@@ -16,18 +16,78 @@
 	 */
 	class Piecesmailscuis66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Piecesmailscuis66';
-		public $uses = array( 'Piecemailcui66', 'Option' );
-		public $helpers = array( 'Xform', 'Default', 'Default2', 'Default3' => array('className' => 'Default.DefaultDefault'), 'Theme' , 'Fileuploader');
-		public $components = array( 'Default', 'Fileuploader' );
 
-		public $commeDroit = array(
-			'view' => 'Piecesmailscuis66:index'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+			'Fileuploader',
 		);
-        
-        public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
-        public $crudMap = array(
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Fileuploader',
+			'Theme',
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Option',
+			'Piecemailcui66',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'view' => 'Piecesmailscuis66:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
 			'add' => 'create',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
@@ -38,9 +98,7 @@
 			'index' => 'read',
 			'view' => 'read',
 		);
-
-        
-        
+		
 		protected function _setOptions() {
 			$options = $this->Piecemailcui66->enums();
             $this->set( compact( 'options' ) );

@@ -30,14 +30,18 @@
 		 */
 		public $components = array(
 			'Allocataires',
-			'Cohortes' => array( 'index' ),
+			'Cohortes' => array(
+				'index'
+			),
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
-			'Search.Filtresdefaut' => array( 'index' ),
+			'Search.Filtresdefaut' => array(
+				'index',
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'index' => array( 'filter' => 'Search' ),
-				)
+					'index' => array('filter' => 'Search'),
+				),
 			),
 		);
 
@@ -59,7 +63,44 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option', 'Personne', 'Questionnaired2pdv93', 'WebrsaTableausuivipdv93' );
+		public $uses = array(
+			'Cohorted2pdv93',
+			'Dossier',
+			'Option',
+			'Personne',
+			'Questionnaired2pdv93',
+			'Tableausuivipdv93',
+			'WebrsaTableausuivipdv93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+		);
 
 		/**
 		 * Moteur de recherche des questionnaires D2

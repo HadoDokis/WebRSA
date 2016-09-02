@@ -15,22 +15,18 @@
 	 */
 	class IndusController  extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Indus';
 
-		public $uses = array( 'Infofinanciere', 'Indu', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
-
-		public $commeDroit = array(
-			'search' => 'Cohortesindus:index',
-			'exportcsv' => 'Cohortesindus:exportcsv',
-			'view' => 'Indus:index'
-		);
-
-		public $helpers = array(
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Jetons2',
 			'DossiersMenus',
@@ -40,6 +36,53 @@
 		);
 
 		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cohorteindu',
+			'Dossier',
+			'Foyer',
+			'Indu',
+			'Infofinanciere',
+			'Option',
+			'Personne',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'exportcsv' => 'Cohortesindus:exportcsv',
+			'search' => 'Cohortesindus:index',
+			'view' => 'Indus:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
 		 *
@@ -48,8 +91,8 @@
 		public $crudMap = array(
 			'exportcsv' => 'read',
 			'index' => 'read',
-			'read' => 'read',
-			'search' => 'read'
+			'search' => 'read',
+			'view' => 'read',
 		);
 
 		/**

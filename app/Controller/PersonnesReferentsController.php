@@ -18,56 +18,91 @@
 	 */
 	class PersonnesReferentsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'PersonnesReferents';
 
-		public $uses = array( 'PersonneReferent', 'Option', 'WebrsaPersonneReferent' );
-
-		public $helpers = array(
-			'Locale',
-			'Xform',
-			'Fileuploader',
-			'Default2',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-			'Observer' => array(
-				'className' => 'Prototype.PrototypeObserver',
-				'useBuffer' => true
-			),
-			'Search.SearchForm',
-		);
-
 		/**
-		 * Components utilisés
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
 		public $components = array(
 			'Cohortes',
-			'Fileuploader',
-			'Jetons2',
 			'DossiersMenus',
+			'Fileuploader',
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
+			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'cohorte_affectation93' => array( 'filter' => 'Search' )
 				)
 			),
+			'WebrsaAccesses',
 			'Workflowscers93',
-			'WebrsaAccesses'
 		);
 
 		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Fileuploader',
+			'Locale',
+			'Observer' => array(
+				'className' => 'Prototype.PrototypeObserver',
+				'useBuffer' => true
+			),
+			'Search.SearchForm',
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Option',
+			'PersonneReferent',
+			'WebrsaPersonneReferent',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'cohorte_affectation93' => 'Cohortesreferents93:affecter',
-			'exportcsv_affectation93' => 'Cohortesreferents93:exportcsv'
+			'exportcsv_affectation93' => 'Cohortesreferents93:exportcsv',
 		);
-
-		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxperm',
+			'ajaxreferent',
+			'ajaxreffonct',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

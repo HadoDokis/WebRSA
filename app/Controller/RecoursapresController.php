@@ -16,13 +16,92 @@
 	 */
 	class RecoursapresController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Recoursapres';
 
-		public $uses = array( 'Canton', 'Dossier', 'Recoursapre', 'Foyer', 'Adresse', 'Comiteapre', 'Personne', 'ApreComiteapre', 'Apre', 'Option', 'Adressefoyer' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Gedooo.Gedooo',
+			'Gestionzonesgeos',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'demande',
+					'visualisation',
+				),
+			),
+		);
 
-		public $components = array( 'Gestionzonesgeos', 'Gedooo.Gedooo', 'Search.SearchPrg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Search',
+			'Xform',
+			'Xhtml',
+		);
 
-		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml', 'Search' );
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Adresse',
+			'Adressefoyer',
+			'Apre',
+			'ApreComiteapre',
+			'Canton',
+			'Comiteapre',
+			'Dossier',
+			'Foyer',
+			'Option',
+			'Personne',
+			'Recoursapre',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'demande' => 'read',
+			'exportcsv' => 'read',
+			'impression' => 'update',
+			'visualisation' => 'read',
+		);
 
 		/**
 		*

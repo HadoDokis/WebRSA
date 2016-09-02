@@ -17,19 +17,18 @@
 	 */
 	class Cohortesnonorientes66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cohortesnonorientes66';
 
-		public $uses = array(
-			'Cohortenonoriente66',
-			'Personne',
-			'Zonegeographique',
-			'Dossier',
-			'Option',
-			'Canton'
-		);
-
-		public $helpers = array( 'Csv', 'Default2', 'Search', 'Gestionanomaliebdd' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Cohortes' => array(
 				'isemploi',
@@ -40,13 +39,77 @@
 			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'isemploi' => array( 'filter' => 'Search' ),
-					'notisemploi' => array( 'filter' => 'Search' ),
-					'notisemploiaimprimer' => array( 'filter' => 'Search' ),
-					'notifaenvoyer' => array( 'filter' => 'Search' ),
-					'oriente' => array( 'filter' => 'Search' )
-				)
-			)
+					'isemploi' => array('filter' => 'Search'),
+					'notisemploi' => array('filter' => 'Search'),
+					'notisemploiaimprimer' => array('filter' => 'Search'),
+					'notifaenvoyer' => array('filter' => 'Search'),
+					'oriente' => array('filter' => 'Search'),
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default2',
+			'Gestionanomaliebdd',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Canton',
+			'Cohortenonoriente66',
+			'Dossier',
+			'Option',
+			'Personne',
+			'Zonegeographique',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'impression' => 'update',
+			'impressionOrientation' => 'update',
+			'impressions' => 'update',
+			'impressionsOrientation' => 'update',
+			'isemploi' => 'read',
+			'notifaenvoyer' => 'read',
+			'notisemploi' => 'read',
+			'notisemploiaimprimer' => 'read',
+			'oriente' => 'read',
 		);
 
 		/**

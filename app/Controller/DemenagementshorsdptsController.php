@@ -31,11 +31,14 @@
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
-			'Jetons2', // FIXME: à cause de DossiersMenus
-			'Search.Filtresdefaut' => array( 'search', 'search1' ),
+			'Jetons2',
+			'Search.Filtresdefaut' => array(
+				'search',
+				'search1',
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'search1' => array( 'filter' => 'Search' ),
+					'search1' => array('filter' => 'Search'),
 					'search'
 				)
 			),
@@ -59,8 +62,31 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Demenagementhorsdpt', 'Personne' );
-
+		public $uses = array(
+			'Demenagementhorsdpt',
+			'Personne',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'search1' => 'Demenagementshorsdpts:search',
+			'exportcsv1' => 'Demenagementshorsdpts:exportcsv',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -68,15 +94,10 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'exportcsv1' => 'read',
 			'exportcsv' => 'read',
-			'search1' => 'read',
+			'exportcsv1' => 'read',
 			'search' => 'read',
-		);
-
-		public $commeDroit = array(
-			'search1' => 'Demenagementshorsdpts:search',
-			'exportcsv1' => 'Demenagementshorsdpts:exportcsv'
+			'search1' => 'read',
 		);
 
 		/**

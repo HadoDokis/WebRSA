@@ -8,38 +8,101 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	App::uses('Folder', 'Utility');
+	App::uses('File', 'Utility');
+	App::uses('DefaultUrl', 'Default.Utility');
+	App::uses('WebrsaPermissions', 'Utility');
+	
 	/**
 	 * La classe ReferentsController ...
 	 *
 	 * @package app.Controller
 	 */
-	App::uses('Folder', 'Utility');
-	App::uses('File', 'Utility');
-	App::uses('DefaultUrl', 'Default.Utility');
-	App::uses('WebrsaPermissions', 'Utility');
-
 	class ReferentsController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Referents';
-		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
-		public $helpers = array(
-			'Xform',
-			'Default2',
-			'Default3' => array('className' => 'Default.DefaultDefault'),
-			'Default',
-			'Search.SearchForm'
-		);
 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Default',
 			'InsertionsBeneficiaires',
-			'Search.SearchPrg' => array( 'actions' => array( 'index', 'clotureenmasse' ) ),
-			'Workflowscers93'
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+					'clotureenmasse',
+				),
+			),
+			'Workflowscers93',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Search.SearchForm',
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Option',
+			'Referent',
+			'Structurereferente',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'add' => 'Referents:edit'
+			'add' => 'Referents:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax_getreferent',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajax_getreferent' => 'read',
+			'clotureenmasse' => 'read',
+			'cloturer' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
 		);
 
 		protected function _setOptions() {

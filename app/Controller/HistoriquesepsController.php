@@ -17,23 +17,70 @@
 	 */
 	class HistoriquesepsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Historiqueseps';
 
-		public $uses = array( 'Dossierep', 'Option', 'WebrsaHistoriqueep', 'Passagecommissionep' );
-
-		public $helpers = array( 'Default2', 'Xpaginator2' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
-			'Jetons2',
 			'DossiersMenus',
+			'Jetons2',
 			'WebrsaAccesses' => array(
 				'mainModelName' => 'Passagecommissionep',
 				'webrsaModelName' => 'WebrsaHistoriqueep',
 				'webrsaAccessName' => 'WebrsaAccessHistoriqueseps',
 				'parentModelName' => 'Personne'
-			)
+			),
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+			'Xpaginator2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Dossierep',
+			'Option',
+			'Passagecommissionep',
+			'WebrsaHistoriqueep',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

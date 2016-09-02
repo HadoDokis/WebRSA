@@ -15,23 +15,96 @@
 	 */
 	class TraitementspdosController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Traitementspdos';
 
-		public $uses = array( 'Traitementpdo', 'Propopdo', 'Personne', 'Dossier', 'Descriptionpdo', 'Traitementtypepdo', 'Fichiermodule' );
-
 		/**
-		 * @access public
+		 * Components utilisés.
+		 *
+		 * @var array
 		 */
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
-
-		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Locale', 'Fileuploader' );
-
-		public $commeDroit = array(
-			'view' => 'Traitementspdos:index',
-			'add' => 'Traitementspdos:edit'
+		public $components = array(
+			'Default',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'Jetons2',
 		);
 
-		public $aucunDroit = array( 'ajaxstatutpersonne', 'ajaxnbtextareacourrier', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default2',
+			'Fileuploader',
+			'Locale',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Descriptionpdo',
+			'Dossier',
+			'Fichiermodule',
+			'Personne',
+			'Propopdo',
+			'Traitementpdo',
+			'Traitementtypepdo',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Traitementspdos:edit',
+			'view' => 'Traitementspdos:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxnbtextareacourrier',
+			'ajaxstatutpersonne',
+			'download',
+			'fileview',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'create',
+			'ajaxstatutpersonne' => 'read',
+			'clore' => 'read',
+			'delete' => 'delete',
+			'download' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+			'printCourrier' => 'update',
+			'view' => 'read',
+		);
 
 		/**
 		 *

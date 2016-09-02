@@ -16,7 +16,7 @@
 	class Manifestationsbilansparcours66Controller extends AppController
 	{
 		/**
-		 * Nom
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
@@ -27,24 +27,53 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Jetons2', 'Fileuploader', 'DossiersMenus' );
+		public $components = array(
+			'DossiersMenus',
+			'Fileuploader',
+			'Jetons2',
+		);
 
 		/**
 		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Default2', 'Fileuploader' );
+		public $helpers = array(
+			'Default2',
+			'Fileuploader',
+		);
 
 		/**
 		 * Modèles utilisés.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Manifestationbilanparcours66' );
-
-		public $aucunDroit = array( 'ajaxfiledelete', 'ajaxfileupload', 'fileview', 'download' );
-
+		public $uses = array(
+			'Manifestationbilanparcours66',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

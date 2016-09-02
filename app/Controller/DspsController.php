@@ -17,51 +17,94 @@
 	 */
 	class DspsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Dsps';
 
-		public $helpers = array(
-			'Xform',
-			'Xhtml',
-			'Dsphm',
-			'Default2',
-			'Fileuploader',
-			'Search',
-			'Csv',
-			'Romev3',
-			'Default3' => array(
-//				'className' => 'Default.DefaultDefault'
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			)
-		);
-
-		public $uses = array( 'Dsp', 'DspRev', 'Option', 'Familleromev3', 'Catalogueromev3', 'WebrsaDsp' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
-			'Jetons2',
 			'Default',
-			'InsertionsBeneficiaires',
+			'DossiersMenus',
 			'Fileuploader',
 			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
+			'Jetons2',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'index', 'search' )
+				'actions' => array(
+					'index',
+					'search',
+				),
 			),
-			'DossiersMenus',
-			'WebrsaAccesses' => array('mainModelName' => 'DspRev', 'webrsaModelName' => 'WebrsaDsp')
+			'WebrsaAccesses' => array(
+				'mainModelName' => 'DspRev',
+				'webrsaModelName' => 'WebrsaDsp'
+			),
 		);
 
-		public $paginate = array(
-			'limit' => 10,
-			'order' => array( 'DspRev.created' => 'desc', 'DspRev.id' => 'desc' )
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault',
+			),
+			'Dsphm',
+			'Fileuploader',
+			'Romev3',
+			'Search',
+			'Xform',
+			'Xhtml',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Catalogueromev3',
+			'Dsp',
+			'DspRev',
+			'Familleromev3',
+			'Option',
+			'WebrsaDsp',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
+			'exportcsv1' => 'Dsps:exportcsv',
 			'findPersonne' => 'Dsps:view',
 			'search' => 'Dsps:index',
-			'exportcsv1' => 'Dsps:exportcsv',
 		);
-
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -86,6 +129,11 @@
 			'view' => 'read',
 			'view_diff' => 'read',
 			'view_revs' => 'read',
+		);
+		
+		public $paginate = array(
+			'limit' => 10,
+			'order' => array( 'DspRev.created' => 'desc', 'DspRev.id' => 'desc' )
 		);
 
 		public $wildcardKeys = array(

@@ -16,14 +16,14 @@
 	class Cohortescers93Controller extends AppController
 	{
 		/**
-		 * Nom du contrôleur
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
 		public $name = 'Cohortescers93';
 
 		/**
-		 * Components utilisés par ce contrôleur.
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
@@ -36,6 +36,9 @@
 				'validationcs',
 				'validationcadre'
 			),
+			'Gedooo.Gedooo',
+			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
 			'Search.Filtresdefaut' => array(
 				'saisie',
 				'avalidercpdv',
@@ -44,8 +47,6 @@
 				'validationcadre',
 				'visualisation'
 			),
-			'Gestionzonesgeos',
-			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'saisie' => array(
@@ -70,31 +71,71 @@
 			),
 			'WebrsaUsers',
 			'Workflowscers93',
-			'Gedooo.Gedooo'
+			
 		);
 
 		/**
-		 * Helpers utilisés par ce contrôleur.
+		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
 		public $helpers = array(
 			'Allocataires',
+			'Cake1xLegacy.Ajax',
+			'Checkboxes',
 			'Csv',
 			'Default2',
 			'Search',
 			'Xform',
 			'Xhtml',
-			'Cake1xLegacy.Ajax',
-			'Checkboxes'
 		);
 
 		/**
-		 * Modèles utilisés par ce contrôleur.
+		 * Modèles utilisés.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohortecer93', 'Contratinsertion', 'Option' );
+		public $uses = array(
+			'Cohortecer93',
+			'Contratinsertion',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'avalidercpdv' => 'update',
+			'exportcsv' => 'read',
+			'impressionsDecisions' => 'update',
+			'premierelecture' => 'read',
+			'saisie' => 'read',
+			'validationcadre' => 'update',
+			'validationcs' => 'update',
+			'visualisation' => 'read',
+		);
 
 		/**
 		 * Moteur de recherche et traitement des enregistrements ligne par ligne

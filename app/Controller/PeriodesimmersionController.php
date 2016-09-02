@@ -17,21 +17,75 @@
 	 */
 	class PeriodesimmersionController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Periodesimmersion';
 
-		public $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Adressefoyer', 'Structurereferente' );
-
-		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Xform' );
-
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Jetons2', 'Default', 'DossiersMenus' );
-
-		public $aucunDroit = array( 'gedooo' );
-
-		public $commeDroit = array(
-			'view' => 'Periodesimmersion:index',
-			'add' => 'Periodesimmersion:edit'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+			'DossiersMenus',
+			'Gedooo.Gedooo',
+			'Jetons2',
+			'RequestHandler',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default',
+			'Default2',
+			'Locale',
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Adressefoyer',
+			'Cui',
+			'Dossier',
+			'Option',
+			'Periodeimmersion',
+			'Personne',
+			'Referent',
+			'Structurereferente',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Periodesimmersion:edit',
+			'view' => 'Periodesimmersion:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'gedooo',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

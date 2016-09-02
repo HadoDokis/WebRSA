@@ -17,20 +17,68 @@
 	 */
 	class Proposcontratsinsertioncovs58Controller extends AppController
 	{
-		public $name = "Proposcontratsinsertioncovs58";
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Proposcontratsinsertioncovs58';
 
-		public $uses = array( 'Propocontratinsertioncov58', 'Option', 'Action', 'WebrsaContratinsertion' );
-
-		public $helpers = array( 'Cake1xLegacy.Ajax' );
-
-		public $components = array( 'RequestHandler', 'Jetons2', 'DossiersMenus' );
-
-		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
-
-		public $commeDroit = array(
-			'add' => 'Contratsinsertion:edit'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
+			'RequestHandler',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Action',
+			'Option',
+			'Propocontratinsertioncov58',
+			'WebrsaContratinsertion',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Contratsinsertion:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax',
+			'ajaxraisonci',
+			'ajaxref',
+			'ajaxstruct',
+			'notificationsop',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

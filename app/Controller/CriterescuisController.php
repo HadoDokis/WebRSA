@@ -18,14 +18,12 @@
 	 */
 	class CriterescuisController extends AppController
 	{
-		public $name = 'Criterescuis';
-
 		/**
-		 * Modèles utilisés
+		 * Nom du contrôleur.
 		 *
-		 * @var array
+		 * @var string
 		 */
-		public $uses = array( 'Criterecui', 'Cui' );
+		public $name = 'Criterescuis';
 
 		/**
 		 * Components utilisés.
@@ -35,14 +33,16 @@
 		public $components = array(
 			'Allocataires',
 			'Gestionzonesgeos',
-			'Search.Filtresdefaut' => array( 'search' ),
+			'Search.Filtresdefaut' => array(
+				'search',
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'search' => array(
-						'filter' => 'Search'
-					)
-				)
-			)
+						'filter' => 'Search',
+					),
+				),
+			),
 		);
 
 		/**
@@ -55,8 +55,48 @@
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
-			'Search.SearchForm',
 			'Romev3',
+			'Search.SearchForm',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Criterecui',
+			'Cui',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'search' => 'read',
 		);
 
 		// TODO: nom de méthode search()

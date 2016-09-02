@@ -24,25 +24,6 @@
 		public $name = 'Tableauxsuivispdvs93';
 
 		/**
-		 * Correspondances entre les méthodes publiques correspondant à des
-		 * actions accessibles par URL et le type d'action CRUD.
-		 *
-		 * @var array
-		 */
-		public $crudMap = array(
-			'delete' => 'delete',
-			'historiser' => 'create',
-			'index' => 'read',
-			'tableau1b3' => 'read',
-			'tableau1b4' => 'read',
-			'tableau1b5' => 'read',
-			'tableau1b6' => 'read',
-			'tableaud1' => 'read',
-			'tableaud2' => 'read',
-			'view' => 'read',
-		);
-
-		/**
 		 * Components utilisés.
 		 *
 		 * @var array
@@ -58,11 +39,11 @@
 					'tableau1b4',
 					'tableau1b5',
 					'tableau1b6',
-				)
+				),
 			),
-			'Workflowscers93',
 			'WebrsaTableauxsuivispdvs93',
 			'WebrsaUsers',
+			'Workflowscers93',
 		);
 
 		/**
@@ -75,7 +56,7 @@
 				'className' => 'Default.DefaultDefault'
 			),
 			'Search.SearchForm',
-			'Tableaud2'
+			'Tableaud2',
 		);
 
 		/**
@@ -83,8 +64,52 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Tableausuivipdv93', 'Cohortetransfertpdv93', 'WebrsaTableausuivipdv93' );
-
+		public $uses = array(
+			'Cohortetransfertpdv93',
+			'Tableausuivipdv93',
+			'WebrsaTableausuivipdv93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'delete' => 'delete',
+			'exportcsvcorpus' => 'read',
+			'exportcsvdonnees' => 'read',
+			'historiser' => 'create',
+			'index' => 'read',
+			'tableau1b3' => 'read',
+			'tableau1b4' => 'read',
+			'tableau1b5' => 'read',
+			'tableau1b6' => 'read',
+			'tableaud1' => 'read',
+			'tableaud2' => 'read',
+			'view' => 'read',
+		);
+		
 		/**
 		 *
 		 * @param array $search

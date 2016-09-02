@@ -17,7 +17,7 @@
 	class Cers93Controller extends AppController
 	{
 		/**
-		 * Nom
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
@@ -29,16 +29,16 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Gedooo.Gedooo',
-			'Jetons2',
 			'DossiersMenus',
+			'Gedooo.Gedooo',
 			'InsertionsBeneficiaires',
+			'Jetons2',
 			'WebrsaAccesses' => array(
 				'mainModelName' => 'Contratinsertion',
 				'webrsaModelName' => 'WebrsaCer93',
 				'webrsaAccessName' => 'WebrsaAccessCers93',
 				'parentModelName' => 'Personne',
-			)
+			),
 		);
 
 		/**
@@ -47,18 +47,18 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Cake1xLegacy.Ajax',
-			'Locale',
-			'Webrsa',
-			'Romev3',
 			'Ajax2' => array(
 				'className' => 'Prototype.PrototypeAjax',
 				'useBuffer' => false
 			),
+			'Cake1xLegacy.Ajax',
+			'Cer93',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
-			'Cer93'
+			'Locale',
+			'Romev3',
+			'Webrsa',
 		);
 
 		/**
@@ -66,15 +66,33 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cer93', 'Catalogueromev3', 'WebrsaCer93' );
-
+		public $uses = array(
+			'Catalogueromev3',
+			'Cer93',
+			'WebrsaCer93',
+		);
+		
 		/**
-		 * Actions non soumises aux droits.
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
-		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct' );
-
+		public $aucunDroit = array(
+			'ajax',
+			'ajaxref',
+			'ajaxstruct',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -96,7 +114,7 @@
 			'signature' => 'update',
 			'view' => 'read',
 		);
-
+		
 		/**
 		 * Action vide pour obtenir l'écran de paramétrage.
 		 *

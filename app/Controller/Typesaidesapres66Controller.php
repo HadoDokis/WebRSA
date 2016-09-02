@@ -15,22 +15,76 @@
      */
     class Typesaidesapres66Controller extends AppController
     {
-        public $name = 'Typesaidesapres66';
-
-        public $helpers = array( 'Default', 'Default2' );
-
-        public $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66' );
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Typesaidesapres66';
 
 		/**
-		 * Components utilisés par ce contrôleur.
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Default' );
+		public $components = array(
+			'Default',
+		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default',
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Pieceaide66',
+			'Piececomptable66',
+			'Themeapre66',
+			'Typeaideapre66',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
+			'add' => 'Typesaidesapres66:edit',
 			'view' => 'Typesaidesapres66:index',
-			'add' => 'Typesaidesapres66:edit'
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
         /**

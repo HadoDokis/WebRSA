@@ -18,36 +18,85 @@
 	 */
 	class CuisController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cuis';
 
-		public $uses = array( 'Cui', 'Option', 'Departement', 'WebrsaCui' );
-
-		public $helpers = array( 
-			'Default', 
-			'Default2', 
-			'Locale', 
-			'Csv', 
-			'Xform', 
-			'Fileuploader', 
-			'Cake1xLegacy.Ajax',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Default',
+			'DossiersMenus',
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'Jetons2',
-			'DossiersMenus',
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
 			),
-			'WebrsaAccesses'
+			'WebrsaAccesses',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Csv',
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
+		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cui',
+			'Departement',
+			'Option',
+			'WebrsaCui',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Cuis:edit',
+			'exportcsv' => 'Criterescuis:exportcsv',
+			'search' => 'Criterescuis:search',
+			'view' => 'Cuis:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -67,15 +116,6 @@
 			'index' => 'read',
 			'search' => 'read',
 			'view' => 'read',
-		);
-
-		public $aucunDroit = array('ajaxfileupload', 'fileview', 'download');
-
-		public $commeDroit = array(
-			'add' => 'Cuis:edit',
-			'view' => 'Cuis:index',
-			'search' => 'Criterescuis:search',
-			'exportcsv' => 'Criterescuis:exportcsv',
 		);
 
 		/**

@@ -18,26 +18,71 @@
 	class ChecksController extends AppController
 	{
 		/**
-		* @access public
-		*/
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Checks';
 
 		/**
-		* @access public
-		*/
-		public $uses = array( 'Appchecks.Check', 'Webrsacheck', 'WebrsaRecherche' );
-
-		/**
-		* @access public
-		*/
-		public $helpers = array( 'Appchecks.Checks', 'Default2', 'Default' );
-
-		/**
-		 * Components utilisés par ce contrôleur.
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Gedooo.Gedooo' );
+		public $components = array(
+			'Gedooo.Gedooo',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Appchecks.Checks',
+			'Default',
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Appchecks.Check',
+			'WebrsaRecherche',
+			'Webrsacheck',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+		);
 
 		/**
 		 * Vérifications concernant Apache:

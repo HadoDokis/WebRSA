@@ -15,21 +15,73 @@
 	 */
 	class InfosfinancieresController  extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Infosfinancieres';
 
-		public $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
-
-		public $helpers = array( 'Paginator', 'Locale', 'Csv' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'DossiersMenus',
 			'Gestionzonesgeos',
 			'Jetons2',
-			'Search.SearchPrg' => array( 'actions' => array( 'indexdossier' ) )
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'indexdossier',
+				),
+			),
 		);
 
-		public $commeDroit = array( 'view' => 'Infosfinancieres:index' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Paginator',
+		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cohorteindu',
+			'Dossier',
+			'Foyer',
+			'Infofinanciere',
+			'Option',
+			'Personne',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'view' => 'Infosfinancieres:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -42,19 +94,6 @@
 			'indexdossier' => 'read',
 			'view' => 'read',
 		);
-
-		/**
-		 *
-		 */
-		/*public function beforeFilter() {
-			ini_set('max_execution_time', 0);
-			parent::beforeFilter();
-			$this->set( 'type_allocation', $this->Option->type_allocation() );
-			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre') );
-			$this->set( 'typeopecompta', ClassRegistry::init('Infofinanciere')->enum('typeopecompta') );
-			$this->set( 'sensopecompta', ClassRegistry::init('Infofinanciere')->enum('sensopecompta') );
-			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
-		}*/
 
         protected function _setOptions() {
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
