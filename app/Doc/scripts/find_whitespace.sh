@@ -17,14 +17,18 @@ fi
 ME="$0"
 APP_DIR="`dirname "$ME"`/../.."
 
-find "$APP_DIR" -type f -iregex '.*\.\(php\|inc\|ctp\)' \! -path \*/\.svn/\* | while read -r ;
-do
-	# Espace(s) en début de fichier
-	head -n1 "$REPLY" | pcregrep -M '\A\s+<\?' >> /dev/null
-	if [ "$?" -eq "0" ] ; then
-		echo "$REPLY"
-	fi
+(
+	cd "$APP_DIR"
 
-	# Espace(s) en fin de fichier
-	pcregrep -Ml '\?>\s\s+\z' "$REPLY"
-done
+	find . -type f -iregex '.*\.\(php\|inc\|ctp\)' \! -path \*/\.svn/\* | while read -r ;
+	do
+		# Espace(s) en début de fichier
+		head -n1 "$REPLY" | pcregrep -M '\A[\s\n]+' >> /dev/null
+		if [ "$?" -eq "0" ] ; then
+			echo "$REPLY" | sed "s/^\./Caractère(s) blanc(s) au début de: app/g"
+		fi
+
+		# Espace(s) en fin de fichier
+		pcregrep -Ml '\?>\s*[ \t]+\z' "$REPLY" | sed "s/^\./Caractère(s) blanc(s) à la fin de: app/g"
+	done
+)
