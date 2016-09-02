@@ -18,31 +18,85 @@
 	 */
 	class CohortesController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cohortes';
 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Cohortes'  => array(
+				'nouvelles',
+				'enattente',
+			),
+			'Gedooo.Gedooo',
+			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
+				'actions' => 'orientees',
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Search',
+			'Xpaginator',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
 		public $uses = array(
 			'Cohorte',
 			'Option',
-			'Zonegeographique',
 			'Personne',
+			'Zonegeographique',
 		);
-
-		public $helpers = array(
-			'Csv',
-			'Xpaginator',
-			'Locale',
-			'Search'
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
 		);
-
-		public $components = array(
-			'Gedooo.Gedooo',
-			'Search.SearchPrg' => array( 'actions' => 'orientees' ),
-			'Cohortes'  => array(
-				'nouvelles',
-				'enattente'
-			),
-			'Gestionzonesgeos',
-			'InsertionsBeneficiaires'
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'cohortegedooo' => 'update',
+			'enattente' => 'read',
+			'nouvelles' => 'read',
+			'orientees' => 'read',
 		);
 
 		public $paginate = array( 'limit' => 20 );

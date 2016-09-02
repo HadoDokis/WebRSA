@@ -33,15 +33,18 @@
 			'DossiersMenus',
 			'Gedooo.Gedooo',
 			'InsertionsBeneficiaires',
-			'Jetons2', // FIXME: à cause de DossiersMenus
-			'Search.Filtresdefaut' => array( 'search', 'search1' ),
+			'Jetons2',
+			'Search.Filtresdefaut' => array(
+				'search',
+				'search1',
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
-					'search1' => array( 'filter' => 'Search' ),
-				)
+					'search' => array('filter' => 'Search'),
+					'search1' => array('filter' => 'Search'),
+				),
 			),
-			'WebrsaAccesses'
+			'WebrsaAccesses',
 		);
 
 		/**
@@ -66,8 +69,36 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Ficheprescription93', 'Personne' );
-
+		public $uses = array(
+			'Ficheprescription93',
+			'Personne',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'ajax_action' => 'Fichesprescriptions93:index',
+			'ajax_duree_pdi' => 'Fichesprescriptions93:index',
+			'ajax_prescripteur' => 'Fichesprescriptions93:index',
+			'ajax_prestataire' => 'Fichesprescriptions93:index',
+			'ajax_prestataire_horspdi' => 'Fichesprescriptions93:index',
+			'exportcsv1' => 'Fichesprescriptions93:exportcsv',
+			'search1' => 'Fichesprescriptions93:search',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -75,35 +106,20 @@
 		 * @var array
 		 */
 		public $crudMap = array(
+			'add' => 'create',
 			'ajax_action' => 'read',
 			'ajax_duree_pdi' => 'read',
 			'ajax_prescripteur' => 'read',
 			'ajax_prestataire' => 'read',
 			'ajax_prestataire_horspdi' => 'read',
-			'add' => 'create',
+			'cancel' => 'update',
 			'edit' => 'update',
-			'index' => 'read',
-			'impression' => 'read',
 			'exportcsv' => 'read',
 			'exportcsv1' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
 			'search' => 'read',
 			'search1' => 'read',
-			'cancel' => 'update',
-		);
-
-		/**
-		 * Au niveau des droits, on traitera les actions Ajax comme l'index.
-		 *
-		 * @var array
-		 */
-		public $commeDroit = array(
-			'ajax_prescripteur' => 'Fichesprescriptions93:index',
-			'ajax_action' => 'Fichesprescriptions93:index',
-			'ajax_prestataire' => 'Fichesprescriptions93:index',
-			'ajax_prestataire_horspdi' => 'Fichesprescriptions93:index',
-			'ajax_duree_pdi' => 'Fichesprescriptions93:index',
-			'search1' => 'Fichesprescriptions93:search',
-			'exportcsv1' => 'Fichesprescriptions93:exportcsv',
 		);
 
 		/**

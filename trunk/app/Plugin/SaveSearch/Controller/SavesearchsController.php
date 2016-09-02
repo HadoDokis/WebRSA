@@ -15,14 +15,22 @@
 	 */
 	class SavesearchsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Savesearchs';
 
-		public $components = array();
-
-		public $uses = array(
-			'Savesearch'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			
 		);
-		
+
 		/**
 		 * Helpers utilisés.
 		 *
@@ -44,28 +52,48 @@
 		);
 
 		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Savesearch',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller::action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax_geturl',
+		);
+		
+		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
 		 *
 		 * @var array
 		 */
 		public $crudMap = array(
+			'ajax_geturl' => 'read',
+			'delete' => 'update',
+			'delete_group' => 'update',
+			'edit' => 'update',
+			'edit_group' => 'update',
+			'index' => 'read',
 			'save' => 'update',
 			'save_group' => 'update',
-			'index' => 'read',
-			'edit' => 'update',
-			'delete' => 'update',
-			'edit_group' => 'update',
-			'delete_group' => 'update',
-		);
-		
-		/**
-		 * Liste des actions sans besoin de droits
-		 * 
-		 * @var array
-		 */
-		public $aucunDroit = array(
-			'ajax_geturl'
 		);
 
 		/**

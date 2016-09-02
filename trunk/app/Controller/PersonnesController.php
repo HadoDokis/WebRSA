@@ -17,27 +17,74 @@
 	 */
 	class PersonnesController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Personnes';
 
-		public $uses = array( 'Personne', 'Option', 'Grossesse', 'Foyer', 'WebrsaPersonne' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Fileuploader',
+			'Jetons2',
+			'WebrsaAccesses',
+		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
 			'Default2',
-			'Default3' => array('className' => 'Default.DefaultDefault'),
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
 			'Fileuploader',
 		);
 
-		public $components = array(
-			'Fileuploader', 'Jetons2', 'DossiersMenus', 'WebrsaAccesses'
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Foyer',
+			'Grossesse',
+			'Option',
+			'Personne',
+			'WebrsaPersonne',
 		);
-
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
+			'add' => 'Personnes:edit',
 			'view' => 'Personnes:index',
-			'add' => 'Personnes:edit'
 		);
-
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -48,13 +95,13 @@
 			'add' => 'create',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
+			'coordonnees' => 'update',
 			'download' => 'read',
 			'edit' => 'update',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
 			'view' => 'read',
-			'coordonnees' => 'update',
 		);
 
 		/**

@@ -15,12 +15,72 @@
 	 */
 	class DroitsController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Droits';
-		public $uses = array( 'Groups', 'User' );
-		public $components = array( 'Menu', 'Acl', 'Droits' );
-		public $helpers = array( 'Droits' );
-		public $aucunDroit = array( 'edit' );
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Acl',
+			'Droits',
+			'Menu',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Droits',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Groups',
+			'User',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'edit',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'edit' => 'update',
+		);
+		
 		public $tabDroits = array( );
 		public $iProfil = -1;
 		public $iMenu = -1;

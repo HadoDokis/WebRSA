@@ -18,16 +18,86 @@
 	 */
 	class CriteresapresController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Criteresapres';
 
-		public $uses = array( 'Critereapre', 'Aideapre66', 'Apre',  'Apre66', 'Tiersprestataireapre', 'Option' );
-
-		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml', 'Xpaginator', 'Search' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Gestionzonesgeos',
-			'Search.SearchPrg' => array( 'actions' => array( 'all', 'eligible' ) ),
-            'InsertionsBeneficiaires'
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'all',
+					'eligible',
+				),
+			),
+            'InsertionsBeneficiaires',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Search',
+			'Xform',
+			'Xhtml',
+			'Xpaginator',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Aideapre66',
+			'Apre',
+			'Apre66',
+			'Critereapre',
+			'Option',
+			'Tiersprestataireapre',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'all' => 'read',
+			'eligible' => 'read',
+			'exportcsv' => 'read',
 		);
 
 		/**

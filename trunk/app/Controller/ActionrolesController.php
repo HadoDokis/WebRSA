@@ -29,7 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Default'
+			'Default',
 		);
 
 		/**
@@ -38,10 +38,10 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Xform', 
 			'Default', 
 			'Default2', 
-			'Theme'
+			'Theme',
+			'Xform', 
 		);
 
 		/**
@@ -50,7 +50,40 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Actionrole'
+			'Actionrole',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+			'add' => 'create',
+			'delete' => 'delete',
+			'view' => 'read',
+			'edit' => 'update',
 		);
 
 		/**

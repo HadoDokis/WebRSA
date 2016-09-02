@@ -16,20 +16,86 @@
 	 */
 	class PartenairesController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Partenaires';
-		public $uses = array( 'Partenaire', 'ActioncandidatPartenaire', 'Option', 'Personne' );
-		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Default',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default',
+			'Default2',
+			'Theme',
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'ActioncandidatPartenaire',
+			'Option',
+			'Partenaire',
+			'Personne',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'view' => 'Partenaires:index',
 			'add' => 'Partenaires:edit',
 			'ajax_coordonnees' => 'Partenaires:edit',
+			'view' => 'Partenaires:index',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajax_coordonnees' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
+			'view' => 'read',
+		);
 
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers

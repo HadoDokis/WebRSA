@@ -16,32 +16,65 @@
 	class SignalementsepsController extends AppController
 	{
 		/**
-		 * Modèles utilisés par ce contrôleur.
+		 * Nom du contrôleur.
 		 *
-		 * @var array
+		 * @var string
 		 */
-		public $uses = array( 'Signalementep93' );
+		public $name = 'Signalementseps';
 
 		/**
-		 * Components utilisés par ce contrôleur.
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
 		public $components = array(
-			'Jetons2',
 			'DossiersMenus',
+			'Jetons2',
 			'WebrsaAccesses' => array(
 				'mainModelName' => 'Signalementep93',
 				'webrsaModelName' => 'WebrsaSignalementep',
 				'webrsaAccessName' => 'WebrsaAccessSignalementseps',
 				'parentModelName' => 'Contratinsertion',
-			)
+			),
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Signalementep93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'add' => 'Signalementseps:edit'
+			'add' => 'Signalementseps:edit',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

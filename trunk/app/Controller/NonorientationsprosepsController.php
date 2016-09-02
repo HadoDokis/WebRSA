@@ -16,7 +16,34 @@
 	 */
 	class NonorientationsprosepsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Nonorientationsproseps';
 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Allocataires',
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+					'search',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
 			'Allocataires',
 			'Csv',
@@ -27,24 +54,38 @@
 			'Xpaginator',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
 		public $uses = array(
 			'Nonorientationproep58',
-			'Nonorientationproep93',
 			'Nonorientationproep66',
-			'Orientstruct'
+			'Nonorientationproep93',
+			'Orientstruct',
 		);
-
-		public $components = array(
-			'Allocataires',
-			'InsertionsBeneficiaires',
-			'Search.SearchPrg' => array(
-				'actions' => array(
-					'index',
-					'search'
-				)
-			)
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'exportcsvNew' => 'Nonorientationsproseps:exportcsv',
+			'search' => 'Nonorientationsproseps:index',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -52,16 +93,12 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'search' => 'read',
 			'exportcsv' => 'read',
 			'exportcsvNew' => 'read',
+			'index' => 'read',
+			'search' => 'read',
 		);
-
-		public $commeDroit = array(
-			'search' => 'Nonorientationsproseps:index',
-			'exportcsvNew' => 'Nonorientationsproseps:exportcsv',
-		);
-
+		
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			$this->modelClass = 'Nonorientationproep'.Configure::read( 'Cg.departement' );

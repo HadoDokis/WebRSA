@@ -18,14 +18,78 @@
 	 */
 	class CriteresentretiensController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Criteresentretiens';
 
-		public $uses = array( 'Critereentretien', 'Entretien', 'Option' );
-		public $helpers = array( 'Csv', 'Default2', 'Search' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Gestionzonesgeos',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
-			'InsertionsBeneficiaires'
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default2',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Critereentretien',
+			'Entretien',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
 		);
 
 		/**

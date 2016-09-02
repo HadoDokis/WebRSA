@@ -17,59 +17,85 @@
 	class Relancesnonrespectssanctionseps93Controller extends AppController
 	{
 		/**
-		 * Modèles utilisés par ce contrôleur.
+		 * Nom du contrôleur.
 		 *
-		 * @var array
+		 * @var string
 		 */
-		public $uses = array(
-			'Relancenonrespectsanctionep93',
-			'Nonrespectsanctionep93',
-			'Orientstruct',
-			'Contratinsertion',
-			'Dossierep',
-			'Dossier',
-			'Pdf',
-			'WebrsaRelancenonrespectsanctionep93'
-		);
+		public $name = 'Relancesnonrespectssanctionseps93';
 
 		/**
-		 * Composants ,utilisés par ce contrôleur.
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
 		public $components = array(
-			'Search.SearchPrg' => array(
-				'actions' => array(
-					'cohorte' => array( 'filter' => 'Search' ),
-					'impressions'
-				)
-			),
+			'Cohortes' => array( 'cohorte' ),
+			'DossiersMenus',
 			'Gedooo.Gedooo',
 			'InsertionsBeneficiaires',
-			'Cohortes' => array( 'cohorte' ),
 			'Jetons2',
-			'DossiersMenus',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'cohorte' => array('filter' => 'Search'),
+					'impressions',
+				),
+			),
 			'WebrsaAccesses' => array(
 				'mainModelName' => 'Nonrespectsanctionep93',
 				'webrsaModelName' => 'WebrsaRelancenonrespectsanctionep93',
 				'webrsaAccessName' => 'WebrsaAccessRelancesnonrespectssanctionseps93',
 				'parentModelName' => 'Personne',
-			)
+			),
 		);
 
 		/**
-		 * Helpers utilisés par ce contrôleur.
+		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
 		public $helpers = array(
-			'Default2',
 			'Csv',
+			'Default2',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
-			)
+			),
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Contratinsertion',
+			'Dossier',
+			'Dossierep',
+			'Nonrespectsanctionep93',
+			'Orientstruct',
+			'Pdf',
+			'Relancenonrespectsanctionep93',
+			'WebrsaRelancenonrespectsanctionep93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.

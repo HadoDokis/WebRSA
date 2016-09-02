@@ -17,43 +17,86 @@
 	 */
 	class EntretiensController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Entretiens';
 
-		public $uses = array( 'Entretien', 'Option', 'WebrsaEntretien' );
-
-		public $helpers = array(
-			'Locale',
-			'Csv',
-			'Cake1xLegacy.Ajax',
-			'Xform',
-			'Default2',
-			'Fileuploader',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Allocataires',
-			'Fileuploader',
-			'Jetons2',
 			'Default',
 			'DossiersMenus',
-			'InsertionsBeneficiaires',
+			'Fileuploader',
 			'Gedooo.Gedooo',
+			'InsertionsBeneficiaires',
+			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array( 'search' )
 			),
 			'WebrsaAccesses',
 		);
 
-		public $commeDroit = array(
-			'view' => 'Entretiens:index',
-			'add' => 'Entretiens:edit',
-			'search' => 'Criteresentretiens:index',
-			'exportcsv' => 'Criteresentretiens:exportcsv'
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Csv',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Entretien',
+			'Option',
+			'WebrsaEntretien',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Entretiens:edit',
+			'exportcsv' => 'Criteresentretiens:exportcsv',
+			'search' => 'Criteresentretiens:index',
+			'view' => 'Entretiens:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxaction',
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -68,15 +111,14 @@
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
+			'impression' => 'update',
 			'index' => 'read',
-			'view' => 'read',
 			'search' => 'read',
-			'exportcsv' => 'read'
+			'view' => 'read',
 		);
-
-		public $aucunDroit = array( 'ajaxaction', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		 *

@@ -15,16 +15,71 @@
 	 */
 	class Proposdecisionscuis66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Proposdecisionscuis66';
 
-		public $uses = array( 'Propodecisioncui66', 'Option' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'Jetons2',
+		);
 
-		public $helpers = array( 'Default2', 'Default', 'Fileuploader', 'Cake1xLegacy.Ajax' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default',
+			'Default2',
+			'Fileuploader',
+		);
 
-		public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo', 'DossiersMenus', 'Fileuploader' );
-
-		public $aucunDroit = array( 'ajaxtaux','ajaxfileupload', 'fileview', 'download' );
-
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Propodecisioncui66',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxtaux',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -33,18 +88,19 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
-			'delete' => 'delete',
-			'edit' => 'update',
-			'notifelucui' => 'read',
-			'propositioncui' => 'read',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
+			'delete' => 'delete',
 			'download' => 'read',
+			'edit' => 'update',
 			'filelink' => 'read',
 			'fileview' => 'read',
-            'printavis' => 'read'
+			'maillink' => 'read',
+			'notifelucui' => 'read',
+			'printaviscui' => 'update',
+			'propositioncui' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */

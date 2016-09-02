@@ -3,7 +3,7 @@
 	 * Code source de la classe LogtracesController.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
@@ -19,13 +19,15 @@
 		 * @var string
 		 */
 		public $name = 'Logtraces';
-		
+
 		/**
 		 * Components utilisés.
 		 *
 		 * @var array
 		 */
-		public $components = array();
+		public $components = array(
+			
+		);
 
 		/**
 		 * Helpers utilisés.
@@ -44,7 +46,26 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Group'
+			'Group',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
 		);
 		
 		/**
@@ -54,15 +75,8 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'index' => 'read'
+			'index' => 'read',
 		);
-		
-		/**
-		 * Méthodes ne nécessitant aucun droit.
-		 *
-		 * @var array
-		 */
-		public $aucunDroit = array();
 		
 		public function index() {
 			$total_duration = (integer)Configure::read('Module.Logtrace.total_duration');

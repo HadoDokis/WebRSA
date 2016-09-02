@@ -15,16 +15,67 @@
 	 */
 	class PrestsformController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Prestsform';
 
-		public $uses = array( 'Actioninsertion', 'Contratinsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Personne');
-
-		public $commeDroit = array(
-			'add' => 'Prestsform:edit'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
 		);
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			
+		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Action',
+			'Actioninsertion',
+			'Aidedirecte',
+			'Contratinsertion',
+			'Option',
+			'Personne',
+			'Prestform',
+			'Refpresta',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Prestsform:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -35,7 +86,7 @@
 			'add' => 'create',
 			'edit' => 'update',
 		);
-
+		
 		/**
 		 *
 		 */

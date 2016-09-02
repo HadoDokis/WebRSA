@@ -16,7 +16,7 @@
 	class Histoschoixcers93Controller extends AppController
 	{
 		/**
-		 * Nom
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
@@ -35,7 +35,16 @@
 				'webrsaModelName' => 'WebrsaHistochoixcer93',
 				'webrsaAccessName' => 'WebrsaAccessHistoschoixcers93',
 				'parentModelName' => 'Personne',
-			)
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Checkboxes',
 		);
 
 		/**
@@ -43,15 +52,29 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Histochoixcer93' );
-
+		public $uses = array(
+			'Histochoixcer93',
+		);
+		
 		/**
-		 * Helpers utilisés.
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Checkboxes' );
-
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -62,9 +85,11 @@
 			'attdecisioncg' => 'create',
 			'attdecisioncpdv' => 'create',
 			'aviscadre' => 'create',
+			'aviscadre_consultation' => 'read',
 			'premierelecture' => 'create',
-			'premierelecture_consultation' => 'view',
+			'premierelecture_consultation' => 'read',
 			'secondelecture' => 'create',
+			'secondelecture_consultation' => 'read',
 		);
 
 		/**

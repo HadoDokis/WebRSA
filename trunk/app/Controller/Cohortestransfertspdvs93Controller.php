@@ -19,7 +19,7 @@
 	class Cohortestransfertspdvs93Controller extends AppController
 	{
 		/**
-		 * Nom
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
@@ -34,22 +34,18 @@
 			'Cohortes'=> array(
 				'atransferer'
 			),
-			'Search.Filtresdefaut' => array(
-				'atransferer',
-				'transferes'
-			),
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
+			'Search.Filtresdefaut' => array(
+				'atransferer',
+				'transferes',
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'atransferer' => array(
-						'filter' => 'Search'
-					),
-					'transferes' => array(
-						'filter' => 'Search'
-					),
-				)
+					'atransferer' => array('filter' => 'Search'),
+					'transferes' => array('filter' => 'Search'),
+				),
 			),
 		);
 
@@ -60,10 +56,10 @@
 		 */
 		public $helpers = array(
 			'Allocataires',
+			'Csv',
 			'Default2',
-			'Xpaginator2',
 			'Search',
-			'Csv'
+			'Xpaginator2',
 		);
 
 		/**
@@ -71,7 +67,44 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohortetransfertpdv93', 'Transfertpdv93', 'Option' );
+		public $uses = array(
+			'Cohortetransfertpdv93',
+			'Option',
+			'Transfertpdv93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'atransferer' => 'read',
+			'exportcsv' => 'read',
+			'impression' => 'update',
+			'impressions' => 'update',
+			'transferes' => 'read',
+		);
 
 		/**
 		 * Recherche et traitement des allocataires à transférer.

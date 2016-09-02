@@ -15,13 +15,71 @@
 	 */
 	class TypesnotifspdosController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Typesnotifspdos';
-		public $uses = array( 'Typenotifpdo', 'Propopdo' );
-		public $helpers = array( 'Xform' );
 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Propopdo',
+			'Typenotifpdo',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'add' => 'Typesnotifspdos:edit'
+			'add' => 'Typesnotifspdos:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'deleteparametrage' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
 		);
 
 		public function index() {

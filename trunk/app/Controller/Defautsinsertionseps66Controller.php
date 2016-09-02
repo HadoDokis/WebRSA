@@ -15,7 +15,23 @@
 	 */
 	class Defautsinsertionseps66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Defautsinsertionseps66';
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
+			'Gedooo.Gedooo' ,
+			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
+			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'selectionnoninscrits',
@@ -25,25 +41,52 @@
 					'search_radies'
 				)
 			),
-			'Gestionzonesgeos',
-			'InsertionsBeneficiaires',
-			'Gedooo.Gedooo' ,
-			'Jetons2',
 		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
 			'Default2',
-			'Search',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
+			'Search',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
 		public $uses = array(
 			'Defautinsertionep66',
+			'Personne',
 			'WebrsaRechercheNoninscrit',
-			'Personne'
 		);
-
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'search_noninscrits' => 'Defautsinsertionseps66:selectionnoninscrits',
+			'search_radies' => 'Defautsinsertionseps66:selectionradies',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -51,17 +94,16 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'search_noninscrits' => 'read',
-			'search_radies' => 'read',
+			'courriersinformations' => 'update',
 			'exportcsv_noninscrits' => 'read',
 			'exportcsv_radies' => 'read',
+			'printCourriersInformations' => 'update',
+			'search_noninscrits' => 'read',
+			'search_radies' => 'read',
+			'selectionnoninscrits' => 'read',
+			'selectionradies' => 'read',
 		);
-
-		public $commeDroit = array(
-			'search_noninscrits' => 'Defautsinsertionseps66:selectionnoninscrits',
-			'search_radies' => 'Defautsinsertionseps66:selectionradies',
-		);
-
+		
 		/**
 		* 'qdNonInscrits', 'noninscriptionpe'
 		*/

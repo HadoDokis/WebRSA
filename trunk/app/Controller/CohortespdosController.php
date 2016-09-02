@@ -18,14 +18,18 @@
 	 */
 	class CohortespdosController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cohortespdos';
-		public $uses = array( 'Canton', 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo', 'Traitementtypepdo',  'User', 'Zonegeographique', 'Personne' );
-		public $helpers = array( 'Csv', 'Paginator', 'Search' );
 
-		public $paginate = array(
-			'limit' => 20,
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Cohortes' => array(
 				'avisdemande',
@@ -34,16 +38,83 @@
 			'InsertionsBeneficiaires',
 			'Search.Filtresdefaut' => array(
 				'avisdemande',
-				'valide'
+				'valide',
 			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'avisdemande' => array(
 						'filter' => 'Search'
 					),
-					'valide'
-				)
-			)
+					'valide',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Paginator',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Canton',
+			'Cohortepdo',
+			'Decisionpdo',
+			'Dossier',
+			'Option',
+			'Personne',
+			'Propopdo',
+			'Situationdossierrsa',
+			'Traitementtypepdo',
+			'Typenotifpdo',
+			'Typepdo',
+			'User',
+			'Zonegeographique',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'avisdemande' => 'read',
+			'exportcsv' => 'read',
+			'valide' => 'update'
+		);
+
+		public $paginate = array(
+			'limit' => 20,
 		);
 
 		/**

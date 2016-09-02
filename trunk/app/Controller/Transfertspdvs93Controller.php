@@ -29,15 +29,17 @@
 		 * @var array
 		 */
 		public $components = array(
-//			'Allocataires',
-//			'DossiersMenus',
-//			'Gedooo.Gedooo',
 			'Cohortes',
 			'InsertionsBeneficiaires',
 			'Jetons2',
-			'Search.Filtresdefaut' => array( 'search' ),
+			'Search.Filtresdefaut' => array(
+				'search',
+			),
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search', 'cohorte_atransferer' )
+				'actions' => array(
+					'search',
+					'cohorte_atransferer',
+				),
 			),
 		);
 
@@ -59,18 +61,31 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Dossier' );
-
+		public $uses = array(
+			'Dossier',
+		);
+		
 		/**
-		 *
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'search' => 'Criterestransfertspdvs93:index',
-			'exportcsv' => 'Criterestransfertspdvs93:exportcsv',
 			'cohorte_atransferer' => 'Cohortestransfertspdvs93:atransferer',
+			'exportcsv' => 'Criterestransfertspdvs93:exportcsv',
+			'search' => 'Criterestransfertspdvs93:index',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -78,11 +93,10 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'search' => 'read',
-			'exportcsv' => 'read',
 			'cohorte_atransferer' => 'create',
+			'exportcsv' => 'read',
+			'search' => 'read',
 		);
-
 
 		/**
 		 * Moteur de recherche par rendez-vous (nouveau).

@@ -18,17 +18,79 @@
 	 */
 	class CriteresrdvController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Criteresrdv';
 
-		public $uses = array( 'Critererdv', 'Rendezvous', 'Option' );
-
-		public $helpers = array( 'Csv', 'Paginator', 'Search' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
-			'Workflowscers93'
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
+			'Workflowscers93',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Paginator',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Critererdv',
+			'Option',
+			'Rendezvous',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
 		);
 
 		/**

@@ -19,18 +19,89 @@
 	 */
 	class CriterespdosController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Criterespdos';
 
-		public $uses = array( 'Criterepdo', 'Personne', 'Typenotifpdo', 'Typepdo', 'Option', 'Situationpdo',
-			'Propopdo', 'Decisionpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Situationdossierrsa'
-		);
-
-		public $helpers = array( 'Csv', 'Search', 'Default2' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
-			'Search.SearchPrg' => array( 'actions' => array( 'index', 'nouvelles' ) )
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+					'nouvelles',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default2',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Criterepdo',
+			'Decisionpdo',
+			'Option',
+			'Originepdo',
+			'Personne',
+			'Propopdo',
+			'Situationdossierrsa',
+			'Situationpdo',
+			'Statutdecisionpdo',
+			'Statutpdo',
+			'Typenotifpdo',
+			'Typepdo',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
+			'nouvelles' => 'read',
 		);
 
 		/**

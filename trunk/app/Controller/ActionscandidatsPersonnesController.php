@@ -19,30 +19,26 @@
 	 */
 	class ActionscandidatsPersonnesController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'ActionscandidatsPersonnes';
-		public $uses = array( 'ActioncandidatPersonne','Option', 'WebrsaActioncandidatPersonne' );
 
-		public $helpers = array(
-			'Default',
-			'Locale',
-			'Cake1xLegacy.Ajax',
-			'Xform',
-			'Xhtml',
-			'Fileuploader',
-			'Default2',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
-			'Default',
-			'Gedooo.Gedooo',
-			'Fileuploader',
-			'Jetons2',
-			'DossiersMenus',
-			'InsertionsBeneficiaires',
 			'Cohortes',
+			'Default',
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'InsertionsBeneficiaires',
+			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'search' => array(
@@ -56,19 +52,68 @@
 					),
 				)
 			),
-			'WebrsaAccesses'
+			'WebrsaAccesses',
 		);
 
-		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
+			'Xhtml',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'ActioncandidatPersonne',
+			'Option',
+			'WebrsaActioncandidatPersonne',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-// 			'view' => 'ActionscandidatsPersonnes:index',
 			'add' => 'ActionscandidatsPersonnes:edit',
-			'search' => 'Criteresfichescandidature:index',
-			'exportcsv' => 'Criteresfichescandidature:exportcsv',
 			'cohorte_enattente' => 'Cohortesfichescandidature66:fichesenattente',
 			'cohorte_encours' => 'Cohortesfichescandidature66:fichesencours',
+			'exportcsv' => 'Criteresfichescandidature:exportcsv',
+			'search' => 'Criteresfichescandidature:index',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxpart',
+			'ajaxreferent',
+			'ajaxreffonct',
+			'ajaxstruct',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -84,10 +129,14 @@
 			'ajaxreffonct' => 'read',
 			'ajaxstruct' => 'read',
 			'cancel' => 'update',
+			'cohorte_enattente' => 'update',
+			'cohorte_encours' => 'update',
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
 			'exportcsv' => 'read',
+			'exportcsv_enattente' => 'read',
+			'exportcsv_encours' => 'read',
 			'filelink' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
@@ -96,8 +145,6 @@
 			'printFiche' => 'read',
 			'search' => 'read',
 			'view' => 'read',
-			'cohorte_enattente' => 'update',
-			'cohorte_encours' => 'update',
 		);
 
 		/**

@@ -24,25 +24,75 @@
 		public $name = 'Cohortescomitesapres';
 
 		/**
-		 * Modèles utilisés.
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohortecomiteapre', 'Option', 'Comiteapre' );
+		public $components = array(
+			'Gedooo.Gedooo',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'aviscomite',
+					'notificationscomite',
+				),
+			),
+		);
 
 		/**
 		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml' );
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Xform',
+			'Xhtml',
+		);
 
 		/**
-		 * Components utilisés.
+		 * Modèles utilisés.
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Gedooo.Gedooo', 'Search.SearchPrg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) );
+		public $uses = array(
+			'Cohortecomiteapre',
+			'Comiteapre',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'aviscomite' => 'read',
+			'editdecision' => 'update',
+			'exportcsv' => 'read',
+			'impression' => 'update',
+			'notificationscomite' => 'read',
+		);
 
 		/**
 		 *

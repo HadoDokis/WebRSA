@@ -105,6 +105,8 @@
 
 									if( array_key_exists( 'crudMap', $subClassVars ) and !empty( $subClassVars['crudMap'] ) ) {
 										$crudMap["{$moduleAlias}"] = $subClassVars['crudMap'];
+									} else {
+										$crudMap["{$moduleAlias}"] = array();
 									}
 								}
 							}
@@ -187,6 +189,115 @@
 			else {
 				return Hash::get( self::$_crudMap, "{$controllerName}.{$actionName}" );
 			}
+		}
+
+		/**
+		 * Permet d'obtenir la liste des valeurs crud incorecte (!= 'create', 'read', 'update', 'delete')
+		 * 
+		 * @return array
+		 */
+		public static function crudMapErrors() {
+			$result = array();
+			$accepted = array('create', 'read', 'update', 'delete');
+			self::init();
+
+			foreach (self::$_crudMap as $controllerName => $params) {
+				foreach ($params as $actionName => $crudValue) {
+					if (!in_array($crudValue, $accepted)) {
+						$result = Hash::insert($result, $controllerName.'.'.$actionName, $crudValue);
+					}
+				}
+			}
+			
+			return $result;
+		}
+		
+		/**
+		 * Donne la liste des actions n'étant pas dans la crudMap d'un controller
+		 * 
+		 * @return array array('ControllerName' => array('actionName' => 'crud_type_supposé_a_remplacer_au_besoin'))
+		 */
+		public static function crudMapMissings() {
+			self::init();
+			App::uses('AppController', 'Controller');
+			$appControllerActions = get_class_methods('AppController');
+			$result = array();
+			
+			foreach (self::$_crudMap as $controllerName => $params) {debug($controllerName);
+				App::uses($controllerName.'Controller', 'Controller');
+				$actionsCrud = array_keys($params);
+				$actionsController = array_diff(
+					get_class_methods($controllerName.'Controller'),
+					$appControllerActions
+				);
+				sort($actionsController);
+				
+				foreach ($actionsController as $actionName) {
+					if (strpos($actionName, '_') !== 0 && !in_array($actionName, $actionsCrud)) {
+						$result[$controllerName][$actionName] = self::_findCrud($actionName);
+					}
+				}
+			}
+			
+			return $result;
+		}
+		
+		/**
+		 * Inverse de crudMapMissings dans le fonctionnement :
+		 * Permet de trouver les actions présentes dans le crud mais absente dans le controller
+		 * 
+		 * @return array
+		 */
+		public static function crudMapActionsMissings() {
+			self::init();
+			App::uses('AppController', 'Controller');
+			$appControllerActions = get_class_methods('AppController');
+			$result = array();
+			
+			foreach (self::$_crudMap as $controllerName => $params) {
+				App::uses($controllerName.'Controller', 'Controller');
+				$actionsCrud = array_keys($params);
+				$actionsController = array_diff(
+					get_class_methods($controllerName.'Controller'),
+					$appControllerActions
+				);
+				sort($actionsController);
+				
+				foreach ($actionsCrud as $actionName) {
+					if (!in_array($actionName, $actionsController)) {
+						$result[$controllerName][] = $actionName;
+					}
+				}
+			}
+			
+			return $result;
+		}
+		
+		/**
+		 * Tente de deviner le crud en fonction du nom de l'action, donne "read" par défaut
+		 * 
+		 * @param string $action
+		 * @return string
+		 */
+		protected static function _findCrud($action) {
+			$result = 'read';
+			
+			if (strpos($action, 'edit') !== false 
+				|| strpos($action, 'cohorte') !== false 
+				|| strpos($action, 'impression') !== false
+				|| strpos($action, 'courrier') !== false
+				|| strpos($action, 'print') !== false
+				|| strpos($action, 'cancel') !== false
+				|| strpos($action, 'valid') !== false
+			) {
+				$result = 'update';
+			} elseif (strpos($action, 'delete') !== false) {
+				$result = 'delete';
+			} elseif (strpos($action, 'add') !== false || strpos($action, 'upload') !== false) {
+				$result = 'create';
+			}
+			
+			return $result;
 		}
 	}
 ?>

@@ -3,7 +3,7 @@
 	 * Code source de la classe Cuis66.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('AppController', 'Controller');
 	App::uses('CakeEmail', 'Network/Email');
@@ -24,13 +24,6 @@
 		public $name = 'Cuis66';
 
 		/**
-		 * Modèles utilisés.
-		 *
-		 * @var array
-		 */
-		public $uses = array( 'Cui', 'Option', 'Personne', 'WebrsaCui', 'WebrsaEmailcui', 'Emailcui' );
-		
-		/**
 		 * Components utilisés.
 		 *
 		 * @var array
@@ -39,10 +32,10 @@
 			'Allocataires',
 			'DossiersMenus',
 			'Fileuploader',
-			'Gestionzonesgeos',
 			'Gedooo.Gedooo',
+			'Gestionzonesgeos',
 			'Jetons2',
-			'WebrsaAccesses'
+			'WebrsaAccesses',
 		);
 
 		/**
@@ -64,9 +57,44 @@
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => true
 			),
-			'Romev3', 
+			'Romev3',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cui',
+			'Emailcui',
+			'Option',
+			'Personne',
+			'WebrsaCui',
+			'WebrsaEmailcui',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'ajaxfileupload' => 'Cuis66::filelink',
+			'ajaxfiledelete' => 'Cuis66::filelink',
+			'ajax_generate_email' => 'Cuis66::email_add',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -74,23 +102,28 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'index' => 'read',
 			'add' => 'create',
-			'edit' => 'update',
+			'ajax_generate_email' => 'read',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'create',
 			'annule' => 'delete',
 			'delete' => 'delete',
-			'view' => 'read',
+			'download' => 'read',
+			'edit' => 'update',
 			'email' => 'read',
-			'email_send' => 'create',
 			'email_add' => 'create',
-			'email_edit' => 'update',
 			'email_delete' => 'delete',
-			'impression' => 'view',
-			'filelink' => 'view',
-			'ajaxfileupload' => 'add',
-			'ajaxfiledelete' => 'delete',
-			'fileview' => 'view',
-			'download' => 'view',
+			'email_edit' => 'update',
+			'email_send' => 'create',
+			'email_view' => 'read',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'impression_fichedeliaison' => 'update',
+			'index' => 'read',
+			'indexparams' => 'read',
+			'notification' => 'update',
+			'view' => 'read',
 		);
 		
 		/**

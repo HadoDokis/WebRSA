@@ -3,7 +3,7 @@
 	 * Code source de la classe AccessesController.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
@@ -19,13 +19,6 @@
 		 * @var string
 		 */
 		public $name = 'Accesses';
-		
-		/**
-		 * Liste des controllers qu'il ne faut pas traiter
-		 */
-		public $ignoreList = array(
-			'App', 'Pages', 'AbstractParametrages'
-		);
 
 		/**
 		 * Components utilisés.
@@ -54,7 +47,26 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Group'
+			'Group',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'setbygroups' => 'Groups::index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax_getform',
 		);
 		
 		/**
@@ -64,26 +76,15 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'index' => 'read'
+			'ajax_getform' => 'read',
+			'setbygroups' => 'read',
 		);
 		
 		/**
-		 * Utilise les droits d'un autre Controller::action
-		 * sur une action en particulier
-		 * 
-		 * @var array
+		 * Liste des controllers qu'il ne faut pas traiter
 		 */
-		public $commeDroit = array(
-			'setbygroups' => 'Groups::index'
-		);
-		
-		/**
-		 * Méthodes ne nécessitant aucun droit.
-		 *
-		 * @var array
-		 */
-		public $aucunDroit = array(
-			'ajax_getform'
+		public $ignoreList = array(
+			'App', 'Pages', 'AbstractParametrages'
 		);
 		
 		/**

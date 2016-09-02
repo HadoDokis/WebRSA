@@ -15,12 +15,72 @@
 	 */
 	class SuivisinsertionController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Suivisinsertion';
 
-		public $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option', 'Rendezvous', 'Aidedirecte', 'Cui' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
+		);
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			
+		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Actioninsertion',
+			'Aidedirecte',
+			'Contratinsertion',
+			'Cui',
+			'Dossier',
+			'Foyer',
+			'Option',
+			'Orientstruct',
+			'Rendezvous',
+			'Structurereferente',
+			'Suiviinstruction',
+			'Typeorient',
+			'Typocontrat',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -30,7 +90,7 @@
 		public $crudMap = array(
 			'index' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */

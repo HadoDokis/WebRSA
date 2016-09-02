@@ -15,52 +15,100 @@
 	 */
 	class IndicateurssuivisController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Indicateurssuivis';
 
-		public $helpers = array(
-			'Xform',
-			'Xhtml',
-			'Default2',
-			'Search',
-			'Csv',
-			'Allocataires',
-			'Default3' => array(
-				'className' => 'Default.DefaultDefault'
-			),
-		);
-
-		public $uses = array(
-			'Allocataire',
-			'Dossier',
-			'Option',
-			'Structurereferente',
-			'Referent',
-			'Indicateursuivi',
-			'Dossierep',
-			'Foyer',
-			'Personne',
-			'Informationpe'
-		);
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'Allocataires',
 			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
 			'Search.Filtresdefaut' => array(
 				'index',
-				'search'
+				'search',
 			),
-			'InsertionsBeneficiaires',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'index',
-					'search' => array( 'filter' => 'Search' ),
-				)
+					'search' => array('filter' => 'Search'),
+				),
 			),
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Allocataires',
+			'Csv',
+			'Default2',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Search',
+			'Xform',
+			'Xhtml',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Allocataire',
+			'Dossier',
+			'Dossierep',
+			'Foyer',
+			'Indicateursuivi',
+			'Informationpe',
+			'Option',
+			'Personne',
+			'Referent',
+			'Structurereferente',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'search' => 'Indicateurssuivis:index',
 			'exportcsv_search' => 'Indicateurssuivis:exportcsv',
+			'search' => 'Indicateurssuivis:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'exportcsv_search' => 'read',
+			'index' => 'read',
+			'search' => 'read',
 		);
 
 		protected function _setOptions() {

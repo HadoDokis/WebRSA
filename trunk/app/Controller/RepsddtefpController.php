@@ -16,12 +16,83 @@
 	 */
 	class RepsddtefpController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Repsddtefp';
-		public $uses = array( 'Apre', 'Repddtefp', 'Option', 'Budgetapre', 'Etatliquidatif', 'Zonegeographique' );
-		public $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator', 'Csv' );
-		public $aucunDroit = array( 'exportcsv' );
 
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'suivicontrole' ) ) );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'suivicontrole',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Paginator',
+			'Xform',
+			'Xpaginator',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Apre',
+			'Budgetapre',
+			'Etatliquidatif',
+			'Option',
+			'Repddtefp',
+			'Zonegeographique',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'exportcsv',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
+			'suivicontrole' => 'read',
+		);
 
 		/**
 		*

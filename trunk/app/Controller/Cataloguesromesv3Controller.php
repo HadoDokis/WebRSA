@@ -30,13 +30,18 @@
 		 */
 		public $components = array(
 			'Ajax',
-			'Search.Filtresdefaut' => array( 'famillesromesv3', 'domainesromesv3', 'metiersromesv3', 'appellationsromesv3' ),
+			'Search.Filtresdefaut' => array(
+				'famillesromesv3',
+				'domainesromesv3',
+				'metiersromesv3',
+				'appellationsromesv3',
+			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'famillesromesv3' => array( 'filter' => 'Search' ),
-					'domainesromesv3' => array( 'filter' => 'Search' ),
-					'metiersromesv3' => array( 'filter' => 'Search' ),
-					'appellationsromesv3' => array( 'filter' => 'Search' ),
+					'famillesromesv3' => array('filter' => 'Search'),
+					'domainesromesv3' => array('filter' => 'Search'),
+					'metiersromesv3' => array('filter' => 'Search'),
+					'appellationsromesv3' => array('filter' => 'Search'),
 				)
 			)
 		);
@@ -63,28 +68,53 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Catalogueromev3', 'Familleromev3', 'Domaineromev3', 'Metierromev3', 'Appellationromev3' );
-
+		public $uses = array(
+			'Appellationromev3',
+			'Catalogueromev3',
+			'Domaineromev3',
+			'Familleromev3',
+			'Metierromev3',
+		);
+		
 		/**
-		 * Correspondances des droits.
-		 *
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'famillesromesv3' => 'Cataloguesromesv3:index',
-			'domainesromesv3' => 'Cataloguesromesv3:index',
-			'metiersromesv3' => 'Cataloguesromesv3:index',
+			'add' => 'Cataloguesromesv3:edit',
 			'appellationsromesv3' => 'Cataloguesromesv3:index',
-			'add' => 'Cataloguesromesv3:edit'
+			'domainesromesv3' => 'Cataloguesromesv3:index',
+			'famillesromesv3' => 'Cataloguesromesv3:index',
+			'metiersromesv3' => 'Cataloguesromesv3:index',
 		);
-
+		
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			'ajax_appellation'
+			'ajax_appellation',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajax_appellation' => 'read',
+			'appellationsromesv3' => 'read',
+			'delete' => 'delete',
+			'domainesromesv3' => 'read',
+			'edit' => 'update',
+			'famillesromesv3' => 'read',
+			'index' => 'read',
+			'metiersromesv3' => 'read',
 		);
 
 		/**

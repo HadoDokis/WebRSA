@@ -17,43 +17,84 @@
 	 */
 	class Bilansparcours66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Bilansparcours66';
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'InsertionsBeneficiaires',
+			'Jetons2',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'search'
+				)
+			),
+			'WebrsaAccesses',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
+			'Cake1xLegacy.Ajax',
 			'Default',
 			'Default2',
-			'Fileuploader',
-			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
+			'Fileuploader',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
 		public $uses = array(
 			'Bilanparcours66',
-			'WebrsaBilanparcours66',
-			'Option',
 			'Dossierep',
-			'Typeorient'
+			'Option',
+			'Typeorient',
+			'WebrsaBilanparcours66',
 		);
-
-		public $components = array(
-			'Gedooo.Gedooo',
-			'Fileuploader',
-			'Jetons2',
-			'DossiersMenus',
-			'InsertionsBeneficiaires',
-			'Search.SearchPrg' => array(
-				'actions' => array( 'search' )
-			),
-			'WebrsaAccesses'
-		);
-
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
 			'add' => 'Bilansparcours66:edit',
-			'search' => 'Criteresbilansparcours66:index',
 			'exportcsv' => 'Criteresbilansparcours66:exportcsv',
+			'search' => 'Criteresbilansparcours66:index',
 		);
-
-		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'choixformulaire',
+			'download',
+			'fileview',
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -65,7 +106,6 @@
 			'add' => 'create',
 			'ajaxfiledelete' => 'delete',
 			'ajaxfileupload' => 'update',
-			'ajaxstruc' => 'read',
 			'cancel' => 'update',
 			'download' => 'read',
 			'edit' => 'update',
@@ -258,34 +298,6 @@
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/bilanspourcours66/index/'.$personne_id );
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'bilanparcours66' ) );
-		}
-
-		/**
-		 * Ajax pour les structures liées aux référents
-		 *
-		 * @param integer $referent_id
-		 */
-		public function ajaxstruc( $referent_id = null ) {
-			Configure::write( 'debug', 0 );
-
-			$dataReferent_id = Set::extract( $this->request->data, 'Bilanparcours66.referent_id' );
-			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
-
-			if( !empty( $referent_id ) ) {
-				$referent = $this->Bilanparcours66->Referent->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Referent.id' => $referent_id
-						),
-						'contain' => array(
-							'Structurereferente'
-						)
-					)
-				);
-				$this->set( 'referent', $referent );
-			}
-			$this->render( 'ajaxstruc', 'ajax' );
 		}
 
 		/**

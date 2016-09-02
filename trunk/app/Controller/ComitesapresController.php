@@ -15,14 +15,88 @@
 	 */
 	class ComitesapresController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Comitesapres';
-		public $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'Dossier'/* , 'ComiteapreParticipantcomite' */, 'Participantcomite', 'Apre', 'Referent' );
-		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml' );
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index', 'liste' ) ) );
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+					'liste',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Locale',
+			'Xform',
+			'Xhtml',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Apre',
+			'Comiteapre',
+			'Dossier',
+			'Option',
+			'Participantcomite',
+			'Personne',
+			'Referent',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
+			'add' => 'Comitesapres:edit',
 			'view' => 'Comitesapres:index',
-			'add' => 'Comitesapres:edit'
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+			'exportcsv' => 'read',
+			'index' => 'read',
+			'liste' => 'read',
+			'rapport' => 'read',
+			'view' => 'read',
 		);
 
 		/**		 * *******************************************************************

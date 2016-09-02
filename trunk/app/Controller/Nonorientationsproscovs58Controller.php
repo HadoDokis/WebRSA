@@ -33,14 +33,14 @@
 			'Cohortes',
 			'Search.Filtresdefaut' => array(
 				'cohorte',
-				'cohorte1'
+				'cohorte1',
 			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'cohorte' => array( 'filter' => 'Search' ),
-					'cohorte1' => array( 'filter' => 'Search' )
-				)
-			)
+					'cohorte' => array('filter' => 'Search'),
+					'cohorte1' => array('filter' => 'Search'),
+				),
+			),
 		);
 
 		/**
@@ -53,7 +53,7 @@
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
-			'Search.SearchForm'
+			'Search.SearchForm',
 		);
 
 		/**
@@ -61,20 +61,32 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Nonorientationprocov58' );
-
+		public $uses = array(
+			'Nonorientationprocov58',
+		);
+		
 		/**
-		 * Les droits sont les mêmes que ceux de l'ancienne cohorte.
-		 *
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'cohorte' => 'Nonorientationsproseps:index',
-			'exportcsv' => 'Nonorientationsproseps:exportcsv',
 			'cohorte1' => 'Nonorientationsproseps:index',
+			'exportcsv' => 'Nonorientationsproseps:exportcsv',
 			'exportcsv1' => 'Nonorientationsproseps:exportcsv',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -83,9 +95,9 @@
 		 */
 		public $crudMap = array(
 			'cohorte' => 'create',
-			'exportcsv' => 'read',
 			'cohorte1' => 'create',
-			'exportcsv1' => 'read'
+			'exportcsv' => 'read',
+			'exportcsv1' => 'read',
 		);
 
 		/**

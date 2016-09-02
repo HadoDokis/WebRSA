@@ -15,18 +15,94 @@
 	 */
 	class Gestionssanctionseps58Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Csv', 'Search' );
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Gestionssanctionseps58';
 
-		public $uses = array( 'Gestionsanctionep58', 'Personne', 'Commissionep', 'Option', 'Dossier', 'Zonegeographique' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
+			'Cohortes' => array(
+				'traitement',
+			),
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
-			'Cohortes' => array(
-				'traitement'
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'traitement' => array(
+						'filter' => 'Search'
+					),
+					'visualisation',
+				),
 			),
-			'Search.SearchPrg' => array( 'actions' => array( 'traitement' => array( 'filter' => 'Search' ), 'visualisation' ) ),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default',
+			'Default2',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Commissionep',
+			'Dossier',
+			'Gestionsanctionep58',
+			'Option',
+			'Personne',
+			'Zonegeographique',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'impressionSanction1' => 'update',
+			'impressionSanction2' => 'update',
+			'impressionsSanctions1' => 'update',
+			'impressionsSanctions2' => 'update',
+			'traitement' => 'read',
+			'visualisation' => 'read',
 		);
 
 		/**

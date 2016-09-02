@@ -3,7 +3,7 @@
 	 * Code source de la classe RequestsmanagerController.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('AppController', 'Controller');
 
@@ -26,7 +26,9 @@
 		 *
 		 * @var array
 		 */
-		public $components = array();
+		public $components = array(
+			
+		);
 
 		/**
 		 * Helpers utilisés.
@@ -34,10 +36,10 @@
 		 * @var array
 		 */
 		public $helpers = array(
+			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
-			'Cake1xLegacy.Ajax',
 		);
 
 		/**
@@ -46,7 +48,52 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Requestmanager'
+			'Requestmanager',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'ajax_check' => 'Requestsmanager:index',
+			'ajax_get' => 'Requestsmanager:index',
+			'ajax_getjointure' => 'Requestsmanager:index',
+			'ajax_gettable' => 'Requestsmanager:index',
+			'ajax_list' => 'Requestsmanager:index',
+			'ajax_load' => 'Requestsmanager:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'ajax_check' => 'read',
+			'ajax_get' => 'read',
+			'ajax_getjointure' => 'read',
+			'ajax_gettable' => 'read',
+			'ajax_list' => 'read',
+			'ajax_load' => 'read',
+			'edit' => 'update',
+			'index' => 'read',
+			'indexparams' => 'read',
+			'newrequest' => 'read',
+			'savedindex' => 'read',
+			'search' => 'read',
 		);
 		
 		/**

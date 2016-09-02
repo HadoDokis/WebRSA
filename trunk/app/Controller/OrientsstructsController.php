@@ -37,21 +37,15 @@
 			'Gedooo.Gedooo',
 			'InsertionsBeneficiaires',
 			'Jetons2',
-			/*'Search.Filtresdefaut' => array(
-				'cohorte_nouvelles',
-				'cohorte_enattente',
-				'cohorte_orientees',
-				'search'
-			),*/
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'search' => array( 'filter' => 'Search' ),
-					'cohorte_nouvelles' => array( 'filter' => 'Search' ),
-					'cohorte_enattente' => array( 'filter' => 'Search' ),
-					'cohorte_orientees' => array( 'filter' => 'Search' )
-				)
+					'cohorte_enattente' => array('filter' => 'Search'),
+					'cohorte_nouvelles' => array('filter' => 'Search'),
+					'cohorte_orientees' => array('filter' => 'Search'),
+					'search' => array('filter' => 'Search'),
+				),
 			),
-			'WebrsaAccesses'
+			'WebrsaAccesses',
 		);
 
 		/**
@@ -65,7 +59,7 @@
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 			'Fileuploader',
-			'Search.SearchForm'
+			'Search.SearchForm',
 		);
 
 		/**
@@ -73,25 +67,39 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Orientstruct', 'WebrsaOrientstruct'/*, 'Option'*/ );
-
+		public $uses = array(
+			'Orientstruct',
+			'WebrsaOrientstruct',
+		);
+		
 		/**
-		 *
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'ajaxfileupload' => 'Orientsstructs:filelink',
 			'ajaxfiledelete' => 'Orientsstructs:filelink',
+			'ajaxfileupload' => 'Orientsstructs:filelink',
+			'cohorte_enattente' => 'Cohortes:enattente',
+			'cohorte_impressions' => 'Cohortes:cohortegedooo',
+			'cohorte_nouvelles' => 'Cohortes:nouvelles',
+			'cohorte_orientees' => 'Cohortes:orientees',
 			'download' => 'Orientsstructs:filelink',
+			'exportcsv' => 'Criteres:exportcsv',
 			'fileview' => 'Orientsstructs:filelink',
 			'search' => 'Criteres:index',
-			'exportcsv' => 'Criteres:exportcsv',
-			'cohorte_nouvelles' => 'Cohortes:nouvelles',
-			'cohorte_enattente' => 'Cohortes:enattente',
-			'cohorte_orientees' => 'Cohortes:orientees',
-			'cohorte_impressions' => 'Cohortes:cohortegedooo',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -100,24 +108,24 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
-			'ajaxfileupload' => 'create',
 			'ajaxfiledelete' => 'delete',
-			'cohorte_nouvelles' => 'update',
+			'ajaxfileupload' => 'create',
 			'cohorte_enattente' => 'update',
-			'cohorte_orientees' => 'read',
 			'cohorte_impressions' => 'update',
-			'fileview' => 'read',
+			'cohorte_nouvelles' => 'update',
+			'cohorte_orientees' => 'read',
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
+			'exportcsv' => 'read',
 			'filelink' => 'read',
-			'index' => 'read',
+			'fileview' => 'read',
 			'impression' => 'read',
 			'impression_changement_referent' => 'read',
+			'index' => 'read',
 			'search' => 'read',
-			'exportcsv' => 'read'
 		);
-
+		
 		/**
 		 * Envoi d'un fichier temporaire depuis le formualaire.
 		 */

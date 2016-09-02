@@ -15,19 +15,69 @@
 	 */
 	class Personnespcgs66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Personnespcgs66';
 
-		public $uses = array( 'Personnepcg66', 'Option', 'Dossierpcg66' );
-
-		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader', 'Romev3' );
-
-		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus' );
-
-		public $commeDroit = array(
-			'view' => 'Personnespcgs66:index',
-			'add' => 'Personnespcgs66:edit'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+			'DossiersMenus',
+			'Fileuploader',
+			'Jetons2',
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+			'Fileuploader',
+			'Locale',
+			'Romev3',
+			'Xform',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Dossierpcg66',
+			'Option',
+			'Personnepcg66',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Personnespcgs66:edit',
+			'view' => 'Personnespcgs66:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -40,7 +90,7 @@
 			'edit' => 'update',
 			'view' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */

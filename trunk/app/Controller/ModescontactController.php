@@ -18,27 +18,71 @@
 	 */
 	class ModescontactController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Modescontact';
 
-		public $uses = array( 'Modecontact',  'Option' , 'Foyer', 'WebrsaModecontact' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
+			'WebrsaAccesses',
+		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
-			'Xform',
-			'Default2',
 			'Default',
-			'Theme',
+			'Default2',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
+			'Theme',
+			'Xform',
 		);
 
-		public $components = array( 'Jetons2', 'DossiersMenus', 'WebrsaAccesses' );
-
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Foyer',
+			'Modecontact',
+			'Option',
+			'WebrsaModecontact',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
 			'view' => 'Modescontact:index',
-			'add' => 'Modescontact:edit'
+			'add' => 'Modescontact:edit',
 		);
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -51,7 +95,7 @@
 			'index' => 'read',
 			'view' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */

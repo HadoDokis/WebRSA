@@ -15,12 +15,74 @@
 	 */
 	class EpsController extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2' );
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Eps';
 
-		public $commeDroit = array(
-			'add' => 'Eps:edit'
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default',
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Ep',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Eps:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'addparticipant' => 'create',
+			'delete' => 'delete',
+			'deleteparticipant' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
+		);
 
 		/**
 		*

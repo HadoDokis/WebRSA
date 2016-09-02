@@ -3,7 +3,7 @@
 	 * Code source de la classe Accompagnementscuis66.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('AppController', 'Controller');
 
@@ -21,13 +21,6 @@
 		 */
 		public $name = 'Accompagnementscuis66';
 
-		/**
-		 * Modèles utilisés.
-		 *
-		 * @var array
-		 */
-		public $uses = array( 'Accompagnementcui66', 'Option' ); // FIXME: pour Cui66, passer par Propo...
-		
 		/**
 		 * Components utilisés.
 		 *
@@ -52,6 +45,7 @@
 				'className' => 'Prototype.PrototypeAjax',
 				'useBuffer' => false
 			),
+			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
@@ -59,9 +53,39 @@
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => true
 			),
-			'Romev3', 'Cake1xLegacy.Ajax'
+			'Romev3',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Accompagnementcui66',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'ajaxfileupload' => 'Accompagnementscuis66::filelink',
+			'ajaxfiledelete' => 'Accompagnementscuis66::filelink',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -69,16 +93,17 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'index' => 'read',
 			'add' => 'create',
-			'edit' => 'update',
-			'delete' => 'delete',
-			'view' => 'read',
-			'filelink' => 'view',
-			'ajaxfileupload' => 'add',
 			'ajaxfiledelete' => 'delete',
-			'fileview' => 'view',
-			'download' => 'view',
+			'ajaxfileupload' => 'create',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'view' => 'read',
 		);
 		
 		/**

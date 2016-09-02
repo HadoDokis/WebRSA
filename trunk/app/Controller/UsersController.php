@@ -20,32 +20,95 @@
 	 */
 	class UsersController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Users';
 
-		public $uses = array( 'User', 'Option', 'WebrsaUser' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Dbdroits',
+			'Jetons2',
+			'Menu',
+			'Password',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+				),
+			),
+			'WebrsaUsers',
+		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
 			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
 			'Translator',
-			'Xform'
+			'Xform',
 		);
 
-		public $components = array(
-			'Dbdroits',
-			'Menu',
-			'Password',
-			'Jetons2',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
-			'WebrsaUsers',
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Option',
+			'User',
+			'WebrsaUser',
 		);
-
-		public $aucunDroit = array( 'login', 'logout', 'forgottenpass' );
-
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'add' => 'Users:edit'
+			'add' => 'Users:edit',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'forgottenpass',
+			'login',
+			'logout',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'changepass' => 'update',
+			'delete' => 'delete',
+			'delete_jetons' => 'delete',
+			'delete_jetonsfonctions' => 'delete',
+			'edit' => 'update',
+			'force_logout' => 'read',
+			'forgottenpass' => 'read',
+			'index' => 'read',
+			'login' => 'read',
+			'logout' => 'read',
 		);
 
 		/**

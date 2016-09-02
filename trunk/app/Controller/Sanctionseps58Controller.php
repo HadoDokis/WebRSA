@@ -18,7 +18,38 @@
 	class Sanctionseps58Controller extends AppController
 	{
 		/**
-		 * Helpers utilisés dans ce contrôleur.
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Sanctionseps58';
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Allocataires',
+			'Cohortes',
+			'DossiersMenus',
+			'Jetons2',
+			'Search.Filtresdefaut' => array(
+				'selectionradies',
+				'selectionnoninscrits',
+			),
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'cohorte_radiespe' => array('filter' => 'Search'),
+					'cohorte_noninscritspe' => array('filter' => 'Search'),
+					'selectionradies' => array('filter' => 'Search'),
+					'selectionnoninscrits' => array('filter' => 'Search'),
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
@@ -29,31 +60,7 @@
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
-			'Search'
-		);
-
-		/**
-		 * Coponents utilisés.
-		 *
-		 * @var array
-		 */
-		public $components = array(
-			'Allocataires',
-			'Jetons2',
-			'Cohortes',
-			'DossiersMenus',
-			'Search.Filtresdefaut' => array(
-				'selectionradies',
-				'selectionnoninscrits'
-			),
-			'Search.SearchPrg' => array(
-				'actions' => array(
-					'cohorte_radiespe' => array( 'filter' => 'Search' ),
-					'cohorte_noninscritspe' => array( 'filter' => 'Search' ),
-					'selectionradies' => array( 'filter' => 'Search' ),
-					'selectionnoninscrits' => array( 'filter' => 'Search' )
-				)
-			)
+			'Search',
 		);
 
 		/**
@@ -61,8 +68,34 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Sanctionep58', 'Contratinsertion', 'WebrsaContratinsertion' );
-
+		public $uses = array(
+			'Contratinsertion',
+			'Sanctionep58',
+			'WebrsaContratinsertion',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'cohorte_noninscritspe' => 'Sanctionseps58:selectionnoninscrits',
+			'cohorte_radiespe' => 'Sanctionseps58:selectionradies',
+			'exportcsv_noninscritspe' => 'Sanctionseps58:exportcsv',
+			'exportcsv_radiespe' => 'Sanctionseps58:exportcsv',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -70,28 +103,17 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'cohorte_radiespe' => 'create',
-			'exportcsv_radiespe' => 'read',
 			'cohorte_noninscritspe' => 'create',
-			'exportcsv_noninscritspe' => 'read',
+			'cohorte_radiespe' => 'create',
 			'deleteNonrespectcer' => 'delete',
 			'exportcsv' => 'read',
+			'exportcsv_noninscritspe' => 'read',
+			'exportcsv_radiespe' => 'read',
 			'nonrespectcer' => 'create',
 			'selectionnoninscrits' => 'create',
 			'selectionradies' => 'create',
 		);
-
-		/**
-		 *
-		 * @var array
-		 */
- 		public $commeDroit = array(
-			'cohorte_radiespe' => 'Sanctionseps58:selectionradies',
-			'exportcsv_radiespe' => 'Sanctionseps58:exportcsv',
-			'cohorte_noninscritspe' => 'Sanctionseps58:selectionnoninscrits',
-			'exportcsv_noninscritspe' => 'Sanctionseps58:exportcsv',
-		);
-
+		
 		/**
 		 * @deprecated since 3.0.0
 		 *

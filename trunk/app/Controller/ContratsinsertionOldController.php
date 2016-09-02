@@ -18,101 +18,144 @@
  */
 class ContratsinsertionOldController extends AppController
 {
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'ContratsinsertionOld';
 
-    public $name = 'ContratsinsertionOld';
-
-    public $uses = array('Contratinsertion', 'Option');
-
-    public $helpers = array(
-		'Cake1xLegacy.Ajax',
-		'Default2',
-		'Default3' => array(
-			'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-		),
-		'Fileuploader',
-		'Widget',
-	);
-
-    public $components = array(
-		'Cohortes',
-		'RequestHandler',
-		'Gedooo.Gedooo',
-		'Fileuploader',
-		'Jetons2',
-		'DossiersMenus',
-		'InsertionsBeneficiaires',
-		'Search.SearchPrg' => array(
-			'actions' => array(
-				'search',
-				'cohorte_nouveaux' => array( 'filter' => 'Search' ),
-				'cohorte_valides' => array( 'filter' => 'Search' ),
-				'cohorte_cersimpleavalider' => array( 'filter' => 'Search' ),
-				'cohorte_cerparticulieravalider' => array( 'filter' => 'Search' ),
-				'search_valides' => array( 'filter' => 'Search' ),
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Cohortes',
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'InsertionsBeneficiaires',
+			'Jetons2',
+			'RequestHandler',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'search',
+					'cohorte_nouveaux' => array('filter' => 'Search'),
+					'cohorte_valides' => array('filter' => 'Search'),
+					'cohorte_cersimpleavalider' => array('filter' => 'Search'),
+					'cohorte_cerparticulieravalider' => array('filter' => 'Search'),
+					'search_valides' => array('filter' => 'Search'),
+				),
 			),
-		),
-	);
+			'WebrsaAccesses',
+		);
 
-    public $commeDroit = array(
-        'index' => 'Contratsinsertion:index',
-        'view' => 'Contratsinsertion:index',
-        'add' => 'Contratsinsertion:edit',
-        'valider' => 'Contratsinsertion:valider',
-        'cancel' => 'Contratsinsertion:cancel',
-        'delete' => 'Contratsinsertion:delete',
-        'impression' => 'Contratsinsertion:impression',
-        'add' => 'Contratsinsertion:add',
-		'search' => 'Criteresci:index',
-		'exportcsv' => 'Criteresci:exportcsv',
-		'cohorte_cersimpleavalider' => 'Cohortesci:nouveauxsimple',
-		'cohorte_cerparticulieravalider' => 'Cohortesci:nouveauxparticulier',
-		'search_valides' => 'Cohortesci:valides',
-		'cohorte_nouveaux' => 'Cohortesci:nouveaux',
-		'cohorte_valides' => 'Cohortesci:valides',
-		'exportcsv_valides' => 'Cohortesci:valides',
-    );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Fileuploader',
+			'Widget',
+		);
 
-    public $aucunDroit = array('ajax', 'ajaxaction', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download');
-
-    /**
-     * Correspondances entre les méthodes publiques correspondant à des
-     * actions accessibles par URL et le type d'action CRUD.
-     *
-     * @var array
-     */
-    public $crudMap = array(
-        'add' => 'create',
-        'ajaxaction' => 'read',
-        'ajaxfiledelete' => 'delete',
-        'ajaxfileupload' => 'update',
-        'ajaxref' => 'update',
-        'ajaxstruct' => 'update',
-        'cancel' => 'update',
-        'cohorte_nouveaux' => 'update',
-        'cohorte_valides' => 'read',
-        'delete' => 'delete',
-        'download' => 'read',
-        'edit' => 'update',
-        'exportcsv' => 'read',
-        'exportcsv_valides' => 'read',
-        'ficheliaisoncer' => 'read',
-        'filelink' => 'read',
-        'fileview' => 'read',
-        'impression' => 'read',
-        'index' => 'read',
-        'notifbenef' => 'read',
-        'notification' => 'update',
-        'notificationsop' => 'read',
-        'reconduction_cer_plus_55_ans' => 'read',
-		'search' => 'read',
-        'valider' => 'update',
-        'validerparticulier' => 'update',
-        'validersimple' => 'update',
-        'view' => 'read',
-		'cohorte_cersimpleavalider' => 'update',
-		'cohorte_cerparticulieravalider' => 'update',
-		'search_valides' => 'read',
-    );
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Contratinsertion',
+			'Option',
+			'WebrsaContratinsertion',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'add' => 'Contratsinsertion:edit',
+			'cohorte_cerparticulieravalider' => 'Cohortesci:nouveauxparticulier',
+			'cohorte_cersimpleavalider' => 'Cohortesci:nouveauxsimple',
+			'cohorte_nouveaux' => 'Cohortesci:nouveaux',
+			'cohorte_valides' => 'Cohortesci:valides',
+			'exportcsv' => 'Criteresci:exportcsv',
+			'exportcsv_valides' => 'Cohortesci:valides',
+			'search' => 'Criteresci:index',
+			'search_valides' => 'Cohortesci:valides',
+			'view' => 'Contratsinsertion:index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax',
+			'ajaxaction',
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxraisonci',
+			'ajaxref',
+			'ajaxstruct',
+			'download',
+			'fileview',
+			'notificationsop',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxaction' => 'read',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxref' => 'update',
+			'ajaxstruct' => 'update',
+			'cancel' => 'update',
+			'cohorte_cerparticulieravalider' => 'update',
+			'cohorte_cersimpleavalider' => 'update',
+			'cohorte_nouveaux' => 'update',
+			'cohorte_valides' => 'read',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'exportcsv' => 'read',
+			'exportcsv_cerparticulieravalider' => 'update',
+			'exportcsv_cersimpleavalider' => 'update',
+			'exportcsv_search_valides' => 'update',
+			'exportcsv_valides' => 'read',
+			'ficheliaisoncer' => 'read',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'notifbenef' => 'read',
+			'notification' => 'update',
+			'notificationsop' => 'read',
+			'reconduction_cer_plus_55_ans' => 'read',
+			'search' => 'read',
+			'search_valides' => 'read',
+			'valider' => 'update',
+			'validerparticulier' => 'update',
+			'validersimple' => 'update',
+			'view' => 'read',
+		);
 
     /**
      * Envoi des options communes à la vue (CG 58, 66, 93).

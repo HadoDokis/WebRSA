@@ -15,15 +15,81 @@
 	*/
 	class FoyersController extends AppController
 	{
-		public $name = 'Foyers';
 		/**
-		* @access public
-		*/
-		public $uses = array( 'Foyer', 'Option'  );
-		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Foyers';
 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Fileuploader',
+			'Jetons2',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default2',
+			'Fileuploader',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Foyer',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'create',
+			'corbeille' => 'read',
+			'download' => 'read',
+			'filelink' => 'read',
+			'fileview' => 'read',
+		);
 
 		protected function _setOptions() {
 			$this->set( 'options', $this->Foyer->enums() );

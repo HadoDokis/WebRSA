@@ -17,30 +17,92 @@
 	 */
 	class CohortesciController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cohortesci';
 
-		public $uses = array( 'Cohorteci', 'Dossier', 'Option' );
-
-		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
-
-		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search', 'Default2' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
-			'Search.SearchPrg' => array(
-				'actions' => array(
-					'valides',
-					'nouveaux' => array( 'filter' => 'Search' ),
-					'nouveauxsimple' => array( 'filter' => 'Search' ),
-					'nouveauxparticulier' => array( 'filter' => 'Search' )
-				)
-			),
-			'Gestionzonesgeos',
-			'InsertionsBeneficiaires',
 			'Cohortes' => array(
 				'nouveaux',
 				'nouveauxsimple',
-				'nouveauxparticulier'
-			)
+				'nouveauxparticulier',
+			),
+			'Gestionzonesgeos',
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'valides',
+					'nouveaux' => array('filter' => 'Search'),
+					'nouveauxsimple' => array('filter' => 'Search'),
+					'nouveauxparticulier' => array('filter' => 'Search'),
+				)
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Csv',
+			'Default2',
+			'Search',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cohorteci',
+			'Dossier',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxreferent',
+			'constReq',
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'ajaxreferent' => 'read',
+			'exportcsv' => 'read',
+			'nouveaux' => 'read',
+			'nouveauxparticulier' => 'read',
+			'nouveauxsimple' => 'read',
+			'valides' => 'update',
 		);
 
 		/**

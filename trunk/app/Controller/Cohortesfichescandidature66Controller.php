@@ -16,33 +16,85 @@
 	 */
 	class Cohortesfichescandidature66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cohortesfichescandidature66';
 
-		public $uses = array(
-			'Cohortefichecandidature66',
-			'ActioncandidatPersonne',
-			'Actioncandidat',
-			'Zonegeographique',
-			'Dossier',
-			'Canton'
-		);
-
-		public $helpers = array( 'Default2' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
-            'Search.SearchPrg' => array(
+			'Cohortes' => array(
+                'fichesenattente',
+                'fichesencours'
+            ),
+			'Gestionzonesgeos',
+            'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
                 'actions' => array(
                     'fichesenattente' => array( 'filter' => 'Search' ),
                     'fichesencours' => array( 'filter' => 'Search' )
                 )
             ),
-            'Gestionzonesgeos',
-            'InsertionsBeneficiaires',
-            'Cohortes' => array(
-                'fichesenattente',
-                'fichesencours'
-            )
-        );
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Actioncandidat',
+			'ActioncandidatPersonne',
+			'Canton',
+			'Cohortefichecandidature66',
+			'Dossier',
+			'Zonegeographique',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'fichesenattente' => 'read',
+			'fichesencours' => 'read',
+		);
 
 		/**
 		*

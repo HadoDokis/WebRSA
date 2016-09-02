@@ -15,35 +15,25 @@
 	 */
 	class Nonorientes66Controller extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Nonorientes66';
 
-		public $uses = array(
-			'Nonoriente66',
-			'Option'
-		);
-
-		public $helpers = array(
-			'Default',
-			'Locale',
-			'Cake1xLegacy.Ajax',
-			'Xform',
-			'Xhtml',
-			'Fileuploader',
-			'Default2',
-			'Default3' => array(
-				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			),
-		);
-
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
-			'Default',
-			'Gedooo.Gedooo',
-			'Fileuploader',
-			'Jetons2',
-			'DossiersMenus',
 			'Cohortes',
+			'Default',
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'cohorte_isemploi' => array(
@@ -61,18 +51,64 @@
 					'recherche_notifie' => array(
 						'filter' => 'Search'
 					),
-				)
+				),
 			),
 		);
 
-		public $commeDroit = array(
-			'cohorte_isemploi' => 'Cohortesnonorientes66::isemploi',
-			'cohorte_imprimeremploi' => 'Cohortesnonorientes66::notisemploiaimprimer',
-			'cohorte_reponse' => 'Cohortesnonorientes66::notisemploi',
-			'cohorte_imprimernotifications' => 'Cohortesnonorientes66::notifaenvoyer',
-			'recherche_notifie' => 'Cohortesnonorientes66::oriente',
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
+			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
+			'Xhtml',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Nonoriente66',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'cohorte_imprimeremploi' => 'Cohortesnonorientes66::notisemploiaimprimer',
+			'cohorte_imprimernotifications' => 'Cohortesnonorientes66::notifaenvoyer',
+			'cohorte_isemploi' => 'Cohortesnonorientes66::isemploi',
+			'cohorte_reponse' => 'Cohortesnonorientes66::notisemploi',
+			'recherche_notifie' => 'Cohortesnonorientes66::oriente',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -80,10 +116,24 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'cohorte_isemploi' => 'update',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'create',
 			'cohorte_imprimeremploi' => 'update',
-			'cohorte_reponse' => 'update',
+			'cohorte_imprimeremploi_impressions' => 'update',
 			'cohorte_imprimernotifications' => 'update',
+			'cohorte_imprimernotifications_impressions' => 'update',
+			'cohorte_isemploi' => 'update',
+			'cohorte_reponse' => 'update',
+			'download' => 'read',
+			'exportcsv_imprimeremploi' => 'read',
+			'exportcsv_imprimernotifications' => 'read',
+			'exportcsv_isemploi' => 'read',
+			'exportcsv_notifie' => 'read',
+			'exportcsv_reponse' => 'read',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'imprimeremploi' => 'read',
+			'imprimernotifications' => 'read',
 			'recherche_notifie' => 'read',
 		);
 

@@ -3,7 +3,7 @@
 	 * Code source de la classe Primoanalyses.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('AppController', 'Controller');
 
@@ -28,10 +28,10 @@
 		 */
 		public $components = array(
 			'Default',
+			'DossiersMenus',
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'Jetons2',
-			'DossiersMenus',
 			'Search.SearchPrg' => array(
 				'actions' => array('search')
 			),
@@ -43,16 +43,16 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Default', 
-			'Default2', 
-			'Locale', 
-			'Csv', 
-			'Xform', 
-			'Fileuploader', 
 			'Cake1xLegacy.Ajax',
+			'Csv',
+			'Default',
+			'Default2',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
 			),
+			'Fileuploader',
+			'Locale',
+			'Xform',
 		);
 
 		/**
@@ -63,6 +63,41 @@
 		public $uses = array(
 			'Fichedeliaison',
 			'Primoanalyse',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'affecter' => 'read',
+			'avis' => 'read',
+			'delete' => 'delete',
+			'indexparams' => 'read',
+			'proposition' => 'read',
+			'validation' => 'update',
+			'view' => 'read',
 		);
 		
 		/**

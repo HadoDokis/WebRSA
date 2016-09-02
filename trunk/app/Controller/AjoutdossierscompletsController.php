@@ -15,10 +15,76 @@
 	 */
 	class AjoutdossierscompletsController extends AppController
 	{
-		public $components = array( 'Default' );
-		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Detaildroitrsa', 'Option', 'Ajoutdossiercomplet', 'Dernierdossierallocataire' );
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Ajoutdossierscomplets';
 
-		public $helpers = array( 'Default2' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'Default',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Adresse',
+			'Adressefoyer',
+			'Ajoutdossiercomplet',
+			'Dernierdossierallocataire',
+			'Detaildroitrsa',
+			'Dossier',
+			'Foyer',
+			'Option',
+			'Personne',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+		);
 
 		protected function  _setOptions() {
 			$options = array();

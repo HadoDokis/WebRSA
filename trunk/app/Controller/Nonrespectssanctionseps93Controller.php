@@ -15,8 +15,80 @@
 	 */
 	class Nonrespectssanctionseps93Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Csv' );
-		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ), 'InsertionsBeneficiaires' );
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Nonrespectssanctionseps93';
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'InsertionsBeneficiaires',
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'selectionradies' => array(
+						'filter' => 'Search'
+					),
+					'index',
+				),
+			),
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Csv',
+			'Default',
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Nonrespectsanctionep93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
+			'selectionradies' => 'read',
+		);
 
 		/**
 		*

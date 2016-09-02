@@ -15,45 +15,112 @@
 	 */
 	class PropospdosController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Propospdos';
 
-		public $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Traitementpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
-
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
+			'Cohortes',
+			'DossiersMenus',
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'Jetons2',
-			'Cohortes',
-			'DossiersMenus',
 			'Search.SearchPrg' => array(
-				'actions' => array( 'search', 'search_possibles', 'cohorte_nouvelles', 'cohorte_validees' )
-			)
+				'actions' => array(
+					'search',
+					'search_possibles',
+					'cohorte_nouvelles',
+					'cohorte_validees',
+				),
+			),
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
 		public $helpers = array(
+			'Cake1xLegacy.Ajax',
 			'Default',
 			'Default2',
-			'Cake1xLegacy.Ajax',
-			'Fileuploader',
 			'Default3' => array(
 				'className' => 'ConfigurableQuery.ConfigurableQueryDefault'
-			)
+			),
+			'Fileuploader',
 		);
 
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Decisionpdo',
+			'Dossier',
+			'Option',
+			'Originepdo',
+			'Pdf',
+			'Personne',
+			'Piecepdo',
+			'Propopdo',
+			'Referent',
+			'Situationdossierrsa',
+			'Situationpdo',
+			'Statutdecisionpdo',
+			'Statutpdo',
+			'Suiviinstruction',
+			'Traitementpdo',
+			'Typenotifpdo',
+			'Typepdo',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'view' => 'Propospdos:index',
 			'add' => 'Propospdos:edit',
-			'search' => 'Criterespdos:index',
-			'exportcsv' => 'Criterespdos:exportcsv',
-			'search_possibles' => 'Criterespdos:nouvelles',
-			'exportcsv_possibles' => 'Criterespdos:nouvelles',
 			'cohorte_nouvelles' => 'Cohortespdos:avisdemande',
 			'cohorte_validees' => 'Cohortespdos:valide',
+			'exportcsv' => 'Criterespdos:exportcsv',
+			'exportcsv_possibles' => 'Criterespdos:nouvelles',
 			'exportcsv_validees' => 'Cohortespdos:exportcsv',
+			'search' => 'Criterespdos:index',
+			'search_possibles' => 'Criterespdos:nouvelles',
+			'view' => 'Propospdos:index',
 		);
-
-		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajaxetat1',
+			'ajaxetat2',
+			'ajaxetat3',
+			'ajaxetat4',
+			'ajaxetat5',
+			'ajaxetatpdo',
+			'ajaxfichecalcul',
+			'ajaxfiledelete',
+			'ajaxfileupload',
+			'ajaxstruct',
+			'download',
+			'fileview',
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -68,11 +135,11 @@
 			'ajaxstruct' => 'read',
 			'cohorte_nouvelles' => 'update',
 			'cohorte_validees' => 'read',
-			'exportcsv_validees' => 'read',
 			'download' => 'read',
 			'edit' => 'update',
 			'exportcsv' => 'read',
 			'exportcsv_possibles' => 'read',
+			'exportcsv_validees' => 'read',
 			'fileview' => 'read',
 			'index' => 'read',
 			'printCourrier' => 'read',

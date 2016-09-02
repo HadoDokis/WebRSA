@@ -16,34 +16,70 @@
 	class DescriptionspdosController extends AppController
 	{
 		/**
-		 * Le nom du contrôleur.
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
 		public $name = 'Descriptionspdos';
 
 		/**
-		 * Components utilisés par ce contrôleur.
+		 * Components utilisés.
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Default' );
+		public $components = array(
+			'Default',
+		);
 
 		/**
-		 * Helpers utilisés par ce contrôleur.
+		 * Helpers utilisés.
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Default2' );
+		public $helpers = array(
+			'Default2',
+		);
 
 		/**
-		 * Équivalence des droits des actions de ce contrôleur.
+		 * Modèles utilisés.
 		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Descriptionpdo',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
 		 * @var array
 		 */
 		public $commeDroit = array(
+			'add' => 'Descriptionspdos:edit',
 			'view' => 'Descriptionspdos:index',
-			'add' => 'Descriptionspdos:edit'
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
 		);
 
 		/**

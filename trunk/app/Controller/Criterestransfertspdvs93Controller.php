@@ -20,7 +20,7 @@
 	class Criterestransfertspdvs93Controller extends AppController
 	{
 		/**
-		 * Nom
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
@@ -46,7 +46,7 @@
 					),
 				)
 			),
-			'Workflowscers93'
+			'Workflowscers93',
 		);
 
 		/**
@@ -57,7 +57,7 @@
 		public $helpers = array(
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
-			)
+			),
 		);
 
 		/**
@@ -65,7 +65,41 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Criteretransfertpdv93', 'Dossier', 'Option' );
+		public $uses = array(
+			'Criteretransfertpdv93',
+			'Dossier',
+			'Option',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
+		);
 
 		/**
 		 * Permet de limiter les résultats de la recherche à ceux dont l'adresse

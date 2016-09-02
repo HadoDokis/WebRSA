@@ -3,7 +3,7 @@
 	 * Code source de la classe SynthesedroitsController.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('AppController', 'Controller');
 
@@ -28,7 +28,7 @@
 		 */
 		public $components = array(
 			'Acl',
-			'Menu'
+			'Menu',
 		);
 
 		/**
@@ -37,7 +37,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Csv'
+			'Csv',
 		);
 
 		/**
@@ -46,7 +46,26 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Group'
+			'Group',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'index' => 'Groups::index',
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
 		);
 		
 		/**
@@ -56,17 +75,7 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'index' => 'read'
-		);
-		
-		/**
-		 * Utilise les droits d'un autre Controller::action
-		 * sur une action en particulier
-		 * 
-		 * @var array
-		 */
-		public $commeDroit = array(
-			'index' => 'Groups::index'
+			'index' => 'read',
 		);
 
 		/**

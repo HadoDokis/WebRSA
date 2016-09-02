@@ -15,18 +15,76 @@
 	*/
 	class DecisionspropospdosController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Decisionspropospdos';
 
 		/**
-		 * @access public
+		 * Components utilisés.
+		 *
+		 * @var array
 		 */
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
-		public $helpers = array( 'Default2' );
-		public $uses = array( 'Decisionpropopdo', 'Option', 'Pdf' );
+		public $components = array(
+			'Default',
+			'Gedooo.Gedooo',
+			'Jetons2',
+		);
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Decisionpropopdo',
+			'Option',
+			'Pdf',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
+			'add' => 'Decisionspropospdos:edit',
 			'view' => 'Decisionspropospdos:index',
-			'add' => 'Decisionspropospdos:edit'
+		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'decisionproposition' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'view' => 'read',
 		);
 
 		/**

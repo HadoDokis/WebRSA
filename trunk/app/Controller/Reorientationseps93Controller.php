@@ -16,21 +16,66 @@
 	 */
 	class Reorientationseps93Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2' );
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
+		public $name = 'Reorientationseps93';
 
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
 			'DossiersMenus',
 			'InsertionsBeneficiaires',
 			'Jetons2',
-			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array(
+				'actions' => array('index')
+			),
 		);
 
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default',
+			'Default2',
+		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Cohortetransfertpdv93',
+			'Reorientationep93',
+		);
+		
+		/**
+		 * Utilise les droits d'un autre Controller:action
+		 * sur une action en particulier
+		 * 
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'add' => 'Reorientationseps93:edit'
+			'add' => 'Reorientationseps93:edit',
 		);
-
-		public $uses = array( 'Reorientationep93', 'Cohortetransfertpdv93' );
-
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
+		
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -43,7 +88,7 @@
 			'edit' => 'update',
 			'index' => 'read',
 		);
-
+		
 		/**
 		 *
 		 */
