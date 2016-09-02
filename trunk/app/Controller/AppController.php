@@ -340,7 +340,6 @@
 			//if( Hash::get( $this->crudMap, $this->request->action ) !== 'read' )
 			$this->disableCache();
 			
-debug(ControllerCache::tmpFunction());
 			//Paramétrage du composant Auth
 			$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
 			$this->Auth->logoutRedirect = array( 'controller' => 'users', 'action' => 'login' );
