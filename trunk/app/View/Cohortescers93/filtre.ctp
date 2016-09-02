@@ -1,4 +1,3 @@
-
 <!-- Début du filtre-->
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {

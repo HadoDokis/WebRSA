@@ -19,7 +19,7 @@
 	{
 		/**
 		 * Paramètres par défaut
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -31,10 +31,10 @@
 				'reorientationseps' => null
 			);
 		}
-		
+
 		/**
 		 * Action add()
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
@@ -97,7 +97,7 @@
 		 */
 		protected static function _delete(array $record, array $params) {
 			$reorientationseps = Hash::get($params, 'reorientationseps');
-			
+
 			return Hash::get($record, "{$params['alias']}.dernier") == true
 				&& Hash::get($record, "{$params['alias']}.dernier_oriente") == true
 				&& Hash::get($record, "{$params['alias']}.linked_records") == false
@@ -119,7 +119,7 @@
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
@@ -130,7 +130,7 @@
 
 		/**
 		 * Liste les actions disponnible
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -138,9 +138,9 @@
 			$params = self::params($params);
 			$result = self::normalize_actions(
 				array(
-					'add' => array('ajout_possible' => true), 
-					'edit' => array('ajout_possible' => true), 
-					'impression', 
+					'add' => array('ajout_possible' => true),
+					'edit' => array('ajout_possible' => true),
+					'impression',
 					'delete' => array('reorientationseps' => true),
 					'filelink'
 				)
