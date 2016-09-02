@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="PostgresPlugin" default="build" basedir="./../../../..">
-	<property name="dir.ant.build" value="${basedir}/tmp/build" />
+<project name="PluginPostgres" default="build" basedir="./../../../..">
+	<property name="dir.ant.build" value="${basedir}/tmp/build/PluginPostgres" />
 	<property name="dir.ant.artifacts" value="${dir.ant.build}/artifacts" />
 	<property name="dir.ant.logs" value="${dir.ant.build}/logs" />
 	<property name="dir.cakephp.app" value="${basedir}" />
@@ -15,18 +15,13 @@
 	<target name="quality" depends="clean,lint,phpunit,phploc,phpdoc,phpcs,phpmd,pdepend,phpcpd,phpcb"/>
 	<target name="build" depends="clean,lint,phpunit"/>
 
-	<!-- Nettoyage du répertoire tmp de CakePHP -->
+	<!-- Nettoyage des répertoires de travail -->
 	<target name="clear">
-		<delete verbose="true">
-			<fileset
-				dir="${dir.cakephp.tmp}"
-				excludes="**/.svn,**/empty" />
-		</delete>
+		<delete dir="${dir.ant.build}" />
 	</target>
 
 	<!-- Nettoyage et création des répertoires de travail -->
 	<target name="clean" depends="clear">
-		<delete dir="${dir.ant.build}" />
 		<mkdir dir="${dir.ant.build}" />
 		<mkdir dir="${dir.ant.build}/api" />
 		<mkdir dir="${dir.ant.artifacts}" />
@@ -42,11 +37,9 @@
 			<fileset
 				dir="${dir.cakephp.plugin}"
 				includes="**/*.php,**/*.ctp"
-				excludes="**/.*/**,**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
+				excludes="" />
 		</apply>
 	</target>
-
-	<target name="lint" depends="php-lint,sql-lint"/>
 
 	<!--
 		Vérification de la syntaxe des fichiers SQL par le parseur de PostgreSQL
@@ -61,6 +54,59 @@
 		  <arg value="find ${dir.cakephp.plugin} -name '*.sql' | xargs pgsanity"/>
 		</exec>
 	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .po
+		@url http://stackoverflow.com/questions/9880259/detecting-errors-in-po-files
+
+		Lorsque plusieurs traductions du même msgid sont présentes dans un fichier
+		.po, c'est la dernière qui est prise en compte.
+
+                sudo aptitude install gettext
+	-->
+	<target name="po-lint">
+		<apply executable="msgfmt" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<arg line="-v"/>
+			<arg line="-C"/>
+			<arg line="-o /dev/null"/>
+			<fileset
+				dir="${dir.cakephp.plugin}"
+				includes="**/*.po"
+				excludes="" />
+		</apply>
+	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .js
+		@url http://ariya.ofilabs.com/2012/10/javascript-validator-with-esprima.html
+
+		sudo aptitude install nodejs nodejs-legacy npm
+		sudo npm install -g esprima
+	-->
+	<target name="js-lint">
+		<apply executable="esvalidate" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<fileset dir="${dir.cakephp.plugin}" includes="webroot/**/**.js"/>
+		</apply>
+	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .css
+		@url https://github.com/stubbornella/csslint/wiki/Command-line-interface
+
+		sudo aptitude install nodejs nodejs-legacy npm
+		sudo npm install -g csslint
+	-->
+	<target name="css-lint">
+		<apply executable="csslint" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<arg line="--format=compact"/>
+			<arg line="--warnings=display-property-grouping,duplicate-properties,empty-rules,known-properties"/>
+			<fileset dir="${dir.cakephp.plugin}" includes="webroot/**/**.css"/>
+		</apply>
+	</target>
+
+	<!-- Vérification de la syntaxe des fichiers -->
+	<!--<target name="lint" depends="php-lint,sql-lint,po-lint,js-lint,css-lint"/>-->
+	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
 
 	<!-- Tests untaires -->
 	<target name="phpunit" depends="clean,lint">
@@ -159,7 +205,8 @@
 			<arg line="--log-pmd ${dir.ant.logs}/pmd-cpd.xml
 				--min-lines 5
 				--min-tokens 70
-				--exclude ${ignorelist}
+				--exclude Vendor
+				--exclude Test
 				--names *.php,*.ctp
 				." />
 		</exec>
@@ -172,7 +219,7 @@
 			failonerror="false">
 			<arg line="--log ${dir.ant.logs}
 				--source ${dir.cakephp.plugin}
-				-E /\/(app\/(Lib|Model|Vendor|Plugin\/(Gedooo|Pgsqlcake|Validation|Validation2))|lib|Test)\//
+				-E /\/(Vendor|Test)\//
 				--output ${dir.ant.build}/php-code-browser
 				--crapThreshold=10
 			." />
