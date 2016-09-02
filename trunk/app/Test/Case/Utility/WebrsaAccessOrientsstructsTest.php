@@ -177,9 +177,7 @@
 		 * @covers WebrsaAccessOrientsstructs::_edit
 		 */
 		public function test_edit() {
-			/*
-			 * Conditions toutes remplies
-			 */
+			// Conditions toutes remplies
 			Configure::write( 'Cg.departement', 58 );
 			$record = array(
 				'Orientstruct' => array(
@@ -193,9 +191,7 @@
 			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'edit', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 
-			/*
-			 * Une des conditions non remplie
-			 */
+			// Une des conditions non remplie
 			Configure::write( 'Cg.departement', 58 );
 			$record = array(
 				'Orientstruct' => array(
@@ -209,10 +205,7 @@
 			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'edit', $record, $params );
 			$this->assertFalse( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 
-			/*
-			 * Conditions supplémentaires pour le CG 66
-			 * remplie
-			 */
+			// Conditions supplémentaires pour le CG 66 remplie
 			$nombreJours = 10;
 			$dateDuJour = new DateTime(date('Y-m-d'));
 			$interval = new DateInterval('P'.($nombreJours-1).'D'); // -1
@@ -234,10 +227,7 @@
 			$result = WebrsaAccessOrientsstructs::check( 'Orientsstructs', 'edit', $record, $params );
 			$this->assertTrue( $result, 'Failed in '.__FUNCTION__.' : '.__LINE__ );
 
-			/*
-			 * Conditions supplémentaires pour le CG 66
-			 * Non remplie
-			 */
+			// Conditions supplémentaires pour le CG 66 Non remplie
 			$nombreJours = 10;
 			$dateDuJour = new DateTime(date('Y-m-d'));
 			$interval = new DateInterval('P'.($nombreJours+1).'D'); // +1
@@ -264,9 +254,7 @@
 		 * @covers WebrsaAccessOrientsstructs::_impression
 		 */
 		public function test_impression() {
-			/*
-			 * Conditions toutes remplies
-			 */
+			// Conditions toutes remplies
 			$record = array(
 				'Orientstruct' => array(
 					'printable' => true,
@@ -281,9 +269,7 @@
 		 * @covers WebrsaAccessOrientsstructs::_delete
 		 */
 		public function test_delete() {
-			/*
-			 * Conditions toutes remplies
-			 */
+			// Conditions toutes remplies
 			$record = array(
 				'Orientstruct' => array(
 					'dernier' => true,
@@ -303,9 +289,7 @@
 		 */
 		public function test_impression_changement_referent() {
 			Configure::write( 'Cg.departement', 66 );
-			/*
-			 * Conditions toutes remplies
-			 */
+			// Conditions toutes remplies
 			$record = array(
 				'Orientstruct' => array(
 					'premier_oriente' => true,
