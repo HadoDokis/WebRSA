@@ -516,34 +516,34 @@
 			'dernier' => array(
 				'type'      => 'boolean',
 				'postgres'  => '"%s"."id" IN (
-					SELECT a.id FROM orientsstructs AS a 
-					WHERE a.personne_id = "%s"."personne_id" 
-					ORDER BY COALESCE( a.rgorient, \'0\') DESC, 
-						a.date_valid DESC, 
-						a.id DESC 
+					SELECT a.id FROM orientsstructs AS a
+					WHERE a.personne_id = "%s"."personne_id"
+					ORDER BY COALESCE( a.rgorient, \'0\') DESC,
+						a.date_valid DESC,
+						a.id DESC
 					LIMIT 1)'
 			),
 			'dernier_oriente' => array(
 				'type'      => 'boolean',
 				'postgres'  => 'NOT EXISTS(
-					SELECT * FROM orientsstructs AS a 
-					WHERE a.personne_id = "%s"."personne_id" 
-					AND a.statut_orient = \'Orienté\' AND "%s"."statut_orient" = \'Orienté\' 
-					AND "%s"."id" != a.id 
+					SELECT * FROM orientsstructs AS a
+					WHERE a.personne_id = "%s"."personne_id"
+					AND a.statut_orient = \'Orienté\' AND "%s"."statut_orient" = \'Orienté\'
+					AND "%s"."id" != a.id
 					AND (
-						a.date_valid > "%s"."date_valid" 
+						a.date_valid > "%s"."date_valid"
 						OR (a.date_valid = "%s"."date_valid" AND a.id > "%s"."id")
 					) LIMIT 1)'
 			),
 			'premier_oriente' => array(
 				'type'      => 'boolean',
 				'postgres'  => 'NOT EXISTS(
-					SELECT a.id FROM orientsstructs AS a 
-					WHERE a.personne_id = "%s"."personne_id" 
-					AND a.statut_orient = \'Orienté\' AND "%s"."statut_orient" = \'Orienté\' 
-					AND "%s"."id" != a.id 
+					SELECT a.id FROM orientsstructs AS a
+					WHERE a.personne_id = "%s"."personne_id"
+					AND a.statut_orient = \'Orienté\' AND "%s"."statut_orient" = \'Orienté\'
+					AND "%s"."id" != a.id
 					AND (
-						a.date_valid < "%s"."date_valid" 
+						a.date_valid < "%s"."date_valid"
 						OR (a.date_valid = "%s"."date_valid" AND a.id < "%s"."id")
 					) LIMIT 1)'
 			),
@@ -593,7 +593,7 @@
 				);
 			}
 		}
-		
+
 		/**
 		 * Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'.
 		 * Mise à jour de l'origine suivant le statut et le rang de l'orientation.
@@ -665,6 +665,34 @@
 			$return = $this->WebrsaOrientstruct->updateNonoriente66( $this->id ) && $return;
 
 			return $return;
+		}
+
+		/**
+		 * Récupère les données pour le PDF.
+		 *
+		 * Pont vers la méthode WebrsaOrientstruct::getDataForPdf permettant de
+		 * fonctionner avec StorablePdfBehavior.
+		 *
+		 * @param integer $id L'id technique de l'orientation
+		 * @param integer $user_id L'id technique de l'utilisateur effectuant l'impression
+		 * @return array
+		 */
+		public function getDataForPdf( $id, $user_id = null ) {
+			return $this->WebrsaOrientstruct->getDataForPdf( $id, $user_id );
+		}
+
+		/**
+		 * Retourne le chemin relatif du modèle de document à utiliser pour
+		 * l'enregistrement du PDF.
+		 *
+		 * Pont vers la méthode WebrsaOrientstruct::modeleOdt permettant de
+		 * fonctionner avec StorablePdfBehavior.
+		 *
+		 * @param array $data Les données envoyées au modèle pour construire le PDF
+		 * @return string
+		 */
+		public function modeleOdt( $data ) {
+			return $this->WebrsaOrientstruct->modeleOdt( $data );
 		}
 	}
 ?>

@@ -375,7 +375,7 @@
 				$this->virtualFields['natureaide'] = $this->WebrsaApre->vfListeAidesLiees93( null );
 			}
 		}
-		
+
 		/**
 		*
 		*/
@@ -433,7 +433,7 @@
 			}
 			return $return;
 		}
-		
+
 		/**
 		*
 		*/
@@ -469,7 +469,7 @@
 
 			return $options;
 		}
-		
+
 		/**
 		 *	@deprecated since version 3.1	N'est plus utilisé
 		 */
@@ -479,6 +479,34 @@
 				$fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
 			}
 			return '( COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) )';
+		}
+
+		/**
+		 * Retourne les données nécessaires à l'impression d'une APRE complémentaire
+		 * pour le CG 93.
+		 *
+		 * Pont vers la méthode WebrsaApre::getDataForPdf permettant de
+		 * fonctionner avec StorablePdfBehavior.
+		 *
+		 * @param integer $id L'id technique de l'orientation
+		 * @param integer $user_id L'id technique de l'utilisateur effectuant l'impression
+		 * @return array
+		 */
+		public function getDataForPdf( $id, $user_id = null ) {
+			return $this->WebrsaApre->getDataForPdf( $id, $user_id );
+		}
+
+		/**
+		 * Retourne le chemin vers le modèle odt utilisé pour l'APRE.
+		 *
+		 * Pont vers la méthode WebrsaApre::modeleOdt permettant de
+		 * fonctionner avec StorablePdfBehavior.
+		 *
+		 * @param array $data Les données envoyées au modèle pour construire le PDF
+		 * @return string
+		 */
+		public function modeleOdt( $data ) {
+			return $this->WebrsaApre->modeleOdt( $data );
 		}
 	}
 ?>
