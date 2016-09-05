@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="PluginTranslator" default="build" basedir="./../../../..">
-	<property name="dir.ant.build" value="${basedir}/tmp/build/PluginTranslator" />
+<project name="plugin-Translator" default="build" basedir="./../../../..">
+	<property name="dir.ant.build" value="${basedir}/tmp/build/plugin-Translator" />
 	<property name="dir.ant.artifacts" value="${dir.ant.build}/artifacts" />
 	<property name="dir.ant.logs" value="${dir.ant.build}/logs" />
 	<property name="dir.cakephp.app" value="${basedir}" />
@@ -95,7 +95,7 @@
 	<!-- po-lint: La gestion des formes du pluriel est une extension de la version GNU de gettext -->
 	<target name="lint" depends="php-lint,js-lint,css-lint"/>
 
-	<!-- Tests untaires -->
+	<!-- Tests unitaires -->
 	<target name="phpunit" depends="clean,lint">
 		<exec executable="lib/Cake/Console/cake" dir="${basedir}/.." failonerror="true">
 			<arg line="test Translator AllTranslatorTests

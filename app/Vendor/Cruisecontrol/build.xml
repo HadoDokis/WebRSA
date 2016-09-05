@@ -92,7 +92,7 @@
 
 	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
 
-	<!-- Tests untaires -->
+	<!-- Tests unitaires -->
 	<target name="unittest" depends="clear,lint">
 		<exec executable="lib/Cake/Console/cake" dir="${basedir}/source" failonerror="true">
 			<arg line="test app AllTests

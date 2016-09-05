@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="PluginPostgres" default="build" basedir="./../../../..">
-	<property name="dir.ant.build" value="${basedir}/tmp/build/PluginPostgres" />
+<project name="plugin-Postgres" default="build" basedir="./../../../..">
+	<property name="dir.ant.build" value="${basedir}/tmp/build/plugin-Postgres" />
 	<property name="dir.ant.artifacts" value="${dir.ant.build}/artifacts" />
 	<property name="dir.ant.logs" value="${dir.ant.build}/logs" />
 	<property name="dir.cakephp.app" value="${basedir}" />
@@ -108,7 +108,7 @@
 	<!--<target name="lint" depends="php-lint,sql-lint,po-lint,js-lint,css-lint"/>-->
 	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
 
-	<!-- Tests untaires -->
+	<!-- Tests unitaires -->
 	<target name="phpunit" depends="clean,lint">
 		<exec executable="lib/Cake/Console/cake" dir="${basedir}/.." failonerror="true">
 			<arg line="test Postgres AllPostgresTests

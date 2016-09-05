@@ -26,19 +26,19 @@
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>app/tmp/build/PluginCsv/**</artifacts>
+      <artifacts>app/tmp/build/plugin-Csv/**</artifacts>
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
     <hudson.tasks.junit.JUnitResultArchiver>
-      <testResults>app/tmp/build/PluginCsv/logs/phpunit.xml</testResults>
+      <testResults>app/tmp/build/plugin-Csv/logs/phpunit.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <testDataPublishers/>
     </hudson.tasks.junit.JUnitResultArchiver>
     <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher plugin="cloverphp@0.3.3">
       <publishHtmlReport>true</publishHtmlReport>
-      <reportDir>app/tmp/build/PluginCsv/coverage</reportDir>
-      <xmlLocation>app/tmp/build/PluginCsv/logs/phpunit.coverage.xml</xmlLocation>
+      <reportDir>app/tmp/build/plugin-Csv/coverage</reportDir>
+      <xmlLocation>app/tmp/build/plugin-Csv/logs/phpunit.coverage.xml</xmlLocation>
       <disableArchiving>true</disableArchiving>
       <healthyTarget>
         <methodCoverage>70</methodCoverage>

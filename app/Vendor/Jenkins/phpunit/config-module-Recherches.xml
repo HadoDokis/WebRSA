@@ -3,8 +3,7 @@
 	xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd">
 	<!--
 		On s'assure de faire la couverture de code uniquement sur les fichiers
-		sources du module Fiche de prescription (CG 93), moins les tests, plugins
-		et vendors.
+		sources du module Recherches, moins les tests, plugins et vendors.
 	-->
 	<filter>
 		<whitelist>

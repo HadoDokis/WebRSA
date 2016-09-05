@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="module-romev3" default="build" basedir="./../../">
+<project name="module-Recherches" default="build" basedir="./../../">
 	<property name="dir.cakephp.app" value="${basedir}" />
-	<property name="dir.ant.build" value="${basedir}/tmp/build" />
+	<property name="dir.ant.build" value="${basedir}/tmp/build/module-Recherches" />
 	<property name="dir.ant.artifacts" value="${dir.ant.build}/artifacts" />
 	<property name="dir.ant.logs" value="${dir.ant.build}/logs" />
 	<property name="dir.cakephp.tmp" value="${dir.cakephp.app}/tmp" />
 
 	<property name="dir.phpcs.ruleset" value="${dir.cakephp.app}/Vendor/Jenkins/phpcs/ruleset-module.xml" />
 	<property name="file.phpmd.ruleset" value="${dir.cakephp.app}/Vendor/Jenkins/phpmd/ruleset-module.xml" />
-	<property name="file.phpunit.config" value="${dir.cakephp.app}/Vendor/Jenkins/phpunit/config-module-romev3.xml" />
+	<property name="file.phpunit.config" value="${dir.cakephp.app}/Vendor/Jenkins/phpunit/config-module-Recherches.xml" />
 
 	<property name="excludes" value="**/.*/**,**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
 
-	<property name="words" value="romev3 romesv3 Romev3 Romesv3 RomeV3 RomesV3" />
+	<property name="words" value="WebrsaAbstractMoteurs WebrsaAbstractCohortes WebrsaAbstractRecherches WebrsaCohorte WebrsaRecherche" />
 
 	<target name="init">
 		<exec executable="bash" failonerror="on" logerror="on" outputproperty="includes.php">
@@ -43,18 +43,13 @@
 	<target name="quality" depends="init,clean,lint,phpunit,phploc,phpcs,phpmd,phpcb"/>
 	<target name="build" depends="init,clean,lint,phpunit"/>
 
-	<!-- Nettoyage du répertoire tmp de CakePHP -->
+	<!-- Nettoyage des répertoires de travail -->
 	<target name="clear">
-		<delete verbose="true">
-			<fileset
-				dir="${dir.cakephp.tmp}"
-				excludes="**/.svn,**/empty" />
-		</delete>
+		<delete dir="${dir.ant.build}" />
 	</target>
 
 	<!-- Nettoyage et création des répertoires de travail -->
 	<target name="clean" depends="clear">
-		<delete dir="${dir.ant.build}" />
 		<mkdir dir="${dir.ant.build}" />
 		<mkdir dir="${dir.ant.build}/api" />
 		<mkdir dir="${dir.ant.artifacts}" />
@@ -63,6 +58,7 @@
 		<mkdir dir="${dir.ant.build}/php-code-browser" />
 	</target>
 
+	<!-- Vérification de la syntaxe des fichiers .php -->
 	<target name="php-lint" depends="init">
 		<apply executable="php" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
 			<arg line="-l"/>
@@ -73,6 +69,7 @@
 		</apply>
 	</target>
 
+	<!-- Vérification de la syntaxe des fichiers .po -->
 	<target name="po-lint" depends="init">
 		<apply executable="msgfmt" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
 			<arg line="-v"/>
@@ -85,12 +82,13 @@
 		</apply>
 	</target>
 
+	<!-- Vérification de la syntaxe des fichiers -->
 	<target name="lint" depends="php-lint,po-lint"/>
 
-	<!-- TODO -->
-	<target name="phpunit" depends="clean,lint">
+	<!-- Tests unitaires -->
+	<target name="phpunit" depends="init,clean,lint">
 		<exec executable="lib/Cake/Console/cake" dir="${basedir}/.." failonerror="true">
-			<arg line="test app AllRomev3Tests
+			<arg line="test app AllRecherchesTests
 				--verbose
 				--strict
 				--no-colors
@@ -102,14 +100,15 @@
 		</exec>
 	</target>
 
-	<!--<target name="phploc" depends="clean,lint">-->
-	<target name="phploc" depends="init">
+	<!-- Mesures du code -->
+	<target name="phploc" depends="init,clean,lint">
 		<exec executable="phploc" dir="${dir.cakephp.app}">
 			<arg line="${filelist.space}
 					--log-csv ${dir.ant.logs}/phploc.csv" />
 		</exec>
 	</target>
 
+	<!-- Checkstyle -->
 	<target name="phpcs" depends="init,clean,lint">
 		<exec executable="phpcs"
 			  dir="${dir.cakephp.app}"
@@ -125,6 +124,7 @@
 		</exec>
 	</target>
 
+	<!-- Mess detector -->
 	<target name="phpmd" depends="init,clean,lint">
 		<exec executable="phpmd"
 			dir="${dir.cakephp.app}"
@@ -137,10 +137,8 @@
 		</exec>
 	</target>
 
-	<!--<target name="phpcb" depends="init,clean,lint">-->
-	<!-- - -debugExcludes -->
-	<!-- - -excludePCRE '/(\/(app\/(Doc|Plugin|Test|tmp|Vendor|webroot|index\.php)|lib)\/)/'-->
-	<target name="phpcb" depends="init,clean">
+	<!-- Code browser -->
+	<target name="phpcb" depends="init,clean,lint">
 		<exec executable="phpcb"
 			dir="${dir.cakephp.app}"
 			failonerror="false">
