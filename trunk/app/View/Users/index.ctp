@@ -77,7 +77,8 @@
 				'Search.User.communautesr_id',
 				'Search.User.structurereferente_id',
 				'Search.User.referent_id'
-			)
+			),
+			'class' => ( isset( $results ) ? 'folded' : 'unfolded' )
 		)
 	);
 	echo $this->Observer->disableFormOnSubmit( $searchFormId );
