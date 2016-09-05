@@ -88,7 +88,7 @@
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -807,7 +807,7 @@
 				$saveApre = array( );
 				$saveApre['Apre'] = $this->request->data['Apre'];
 				$saveApre['Pieceapre'] = $this->request->data['Pieceapre'];
-				
+
 				// Compatibilité avec dependentSelect du referent_id
 				if (Hash::get($saveApre, 'Apre.referent_id') && strpos($saveApre['Apre']['referent_id'], '_')) {
 					$saveApre['Apre']['referent_id'] = suffix($saveApre['Apre']['referent_id']);
@@ -938,11 +938,8 @@
 			$this->helpers[] = 'Search.SearchForm';
 			$Recherches = $this->Components->load( 'WebrsaRecherchesApres' );
 			$departement = (int)Configure::read( 'Cg.departement' );
-			$Recherches->search(
-				array(
-					'modelName' => 'Apre'
-				)
-			);
+			$config = ClassRegistry::init( 'WebrsaRecherche' )->searches["{$this->name}.{$this->request->params['action']}"];
+			$Recherches->search( $config );
 
 			$this->Apre->validate = array();
 			ClassRegistry::init('Aideapre66')->validate = array();
@@ -999,11 +996,8 @@
 		public function search_eligibilite() {
 			$this->helpers[] = 'Search.SearchForm';
 			$Recherches = $this->Components->load( 'WebrsaRecherchesApresEligibilite' );
-			$Recherches->search(
-				array(
-					'modelRechercheName' => 'WebrsaRechercheApreEligibilite',
-				)
-			);
+			$config = ClassRegistry::init( 'WebrsaRecherche' )->searches["{$this->name}.{$this->request->params['action']}"];
+			$Recherches->search( $config );
 
 			$this->Apre->validate = array();
 			ClassRegistry::init('Aideapre66')->validate = array();
