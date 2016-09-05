@@ -367,6 +367,7 @@
 					'Apple.color',
 				),
 				array(
+					'id' => 'TestForm',
 					'options' => $options,
 					'hidden_empty' => array(
 						'Apple.pip'
@@ -374,7 +375,7 @@
 					'class' => 'folded'
 				)
 			);
-			$expected = '<form action="'.$this->base.'" novalidate="novalidate" class="folded" id="Form" method="post" accept-charset="utf-8">
+			$expected = '<form action="'.$this->base.'" novalidate="novalidate" class="folded" id="TestForm" method="post" accept-charset="utf-8">
 							<div style="display:none;">
 								<input type="hidden" name="_method" value="POST"/>
 							</div>
