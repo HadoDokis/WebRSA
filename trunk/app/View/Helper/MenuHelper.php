@@ -156,7 +156,8 @@
 				if( !isset( $item['disabled'] ) || !$item['disabled'] ) {
 					$sub = $item;
 					$title = ( isset( $sub['title'] ) ? $sub['title'] : false );
-					unset( $sub['url'], $sub['disabled'], $sub['title'] );
+					$class = ( isset( $sub['class'] ) ? $sub['class'] : false );
+					unset( $sub['url'], $sub['disabled'], $sub['title'], $sub['class'] );
 
 					$sub = $this->make2( $sub, $disabledTag );
 
@@ -168,13 +169,13 @@
 						$controllerName = $item['url']['controller'];
 						$actionName = isset($item['url']['action']) ? $item['url']['action'] : 'index';
 					}
-					
+
 					// Cas array('url' => '/moncontroller/monaction')
 					elseif (isset($item['url']) && is_string($item['url']) && preg_match('/^\/(?:([\w]+)\/([\w]+)|([\w]+))/', $item['url'], $matches)) {
 						$controllerName = $matches[1];
 						$actionName = isset($matches[2]) ? $matches[2] : 'index';
 					}
-					
+
 					else {
 						$controllerName = '/';
 						$actionName = '/';
@@ -186,7 +187,7 @@
 						if( is_array( $url ) ) {
 							$url += array( 'plugin' => null );
 						}
-						$content .= $this->Html->link( $key, $url, $htmlOptions ).$sub;
+						$content .= $this->Html->link( $key, $url, $htmlOptions + array( 'class' => $class ) ).$sub;
 					}
 					else if( !empty( $sub ) ) {
 						$htmlOptions = array();

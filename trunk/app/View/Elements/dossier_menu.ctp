@@ -157,10 +157,21 @@
 				}
 
 				// Accompagnement du parcours
-				$subAllocataire['Accompagnement du parcours'] = array(
-					'Chronologie parcours' => array( 'url' => '#' ),
-					( $departement == 93 ? 'Personne chargée du suivi' : 'Référent du parcours' ) => array( 'url' => array( 'controller' => 'personnes_referents', 'action' => 'index', $personne['id'] ) ),
-					'Gestion RDV' => array( 'url' => array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] ) ),
+				$subAllocataire['Accompagnement du parcours'] = array( 'Chronologie parcours' => array( 'url' => '#' ) );
+
+				if( $departement == '93' ) {
+					$subAllocataire['Accompagnement du parcours']['Synthèse du suivi'] = array(
+						'class' => 'accompagnementsbeneficiaires index',
+						'url' => array( 'controller' => 'accompagnementsbeneficiaires', 'action' => 'index', $personne['id'] )
+					);
+				}
+
+				$subAllocataire['Accompagnement du parcours'] = array_merge(
+					$subAllocataire['Accompagnement du parcours'],
+					array(
+						( $departement == 93 ? 'Personne chargée du suivi' : 'Référent du parcours' ) => array( 'url' => array( 'controller' => 'personnes_referents', 'action' => 'index', $personne['id'] ) ),
+						'Gestion RDV' => array( 'url' => array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] ) ),
+					)
 				);
 
 				if( $departement == 66 ) {
@@ -175,8 +186,6 @@
 					$subAllocataire['Accompagnement du parcours']['Questionnaires D2'] = array(
 						'url' => array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'index', $personne['id'] )
 					);
-
-					$subAllocataire['Accompagnement du parcours']['Synthèse du suivi'] = array( 'url' => array( 'controller' => 'accompagnementsbeneficiaires', 'action' => 'index', $personne['id'] ) );
 				}
 
 				$contratcontroller = 'contratsinsertion';

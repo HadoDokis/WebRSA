@@ -796,18 +796,18 @@
 		 */
 		protected function _readConfigImpressions() {
 			$config = array(
-				'/Apres/impression/#Apre.id#' => array(
-					'modelName' => 'Apre',
-					'name' => 'Apre',
-					'fields' => array(
-						'Apre.id',
-						'Apre.personne_id',
-						'Apre.datedemandeapre'
-					),
-					'conditions' => array(
-						'Apre.statutapre' => 'C'
-					)
-				),
+//				'/Apres/impression/#Apre.id#' => array(
+//					'modelName' => 'Apre',
+//					'name' => 'Apre',
+//					'fields' => array(
+//						'Apre.id',
+//						'Apre.personne_id',
+//						'Apre.datedemandeapre'
+//					),
+//					'conditions' => array(
+//						'Apre.statutapre' => 'C'
+//					)
+//				),
 				'/Cers93/impression/#Contratinsertion.id#' => array(
 					'modelName' => 'Contratinsertion',
 					'webrsaModelName' => 'WebrsaCer93',
@@ -861,57 +861,57 @@
 						)
 					)
 				),
-				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
-					'modelName' => 'Dossierep',
-					'name' => 'Commissionep',
-					'webrsaModelName' => 'WebrsaCommissionep',
-					'webrsaAccessName' => 'WebrsaAccessCommissionseps',
-					'fields' => array(
-						'Passagecommissionep.id',
-						'Dossierep.id',
-						'Dossierep.personne_id',
-						'Dossierep.created',
-						'Commissionep.dateseance',
-						'\'Décision\' AS "Impression__type"',
-					),
-					'joins' => array(
-						'Passagecommissionep' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Commissionep' => array(
-									'type' => 'INNER'
-								)
-							)
-						)
-					),
-					'conditions' => array(
-						'Commissionep.etatcommissionep' => 'traite'
-					)
-				),
-				'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
-					'modelName' => 'Dossierep',
-					'name' => 'Commissionep',
-					'webrsaModelName' => 'WebrsaCommissionep',
-					'webrsaAccessName' => 'WebrsaAccessCommissionseps',
-					'fields' => array(
-						'Passagecommissionep.id',
-						'Dossierep.id',
-						'Dossierep.personne_id',
-						'Dossierep.created',
-						'Commissionep.dateseance',
-						'\'Convocation\' AS "Impression__type"',
-					),
-					'joins' => array(
-						'Passagecommissionep' => array(
-							'type' => 'INNER', // FIXME: ajout de conditions
-							'joins' => array(
-								'Commissionep' => array(
-									'type' => 'INNER'
-								)
-							)
-						)
-					)
-				),
+//				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
+//					'modelName' => 'Dossierep',
+//					'name' => 'Commissionep',
+//					'webrsaModelName' => 'WebrsaCommissionep',
+//					'webrsaAccessName' => 'WebrsaAccessCommissionseps',
+//					'fields' => array(
+//						'Passagecommissionep.id',
+//						'Dossierep.id',
+//						'Dossierep.personne_id',
+//						'Dossierep.created',
+//						'Commissionep.dateseance',
+//						'\'Décision\' AS "Impression__type"',
+//					),
+//					'joins' => array(
+//						'Passagecommissionep' => array(
+//							'type' => 'INNER',
+//							'joins' => array(
+//								'Commissionep' => array(
+//									'type' => 'INNER'
+//								)
+//							)
+//						)
+//					),
+//					'conditions' => array(
+//						'Commissionep.etatcommissionep' => 'traite'
+//					)
+//				),
+//				'/Commissionseps/printConvocationBeneficiaire/#Passagecommissionep.id#' => array(
+//					'modelName' => 'Dossierep',
+//					'name' => 'Commissionep',
+//					'webrsaModelName' => 'WebrsaCommissionep',
+//					'webrsaAccessName' => 'WebrsaAccessCommissionseps',
+//					'fields' => array(
+//						'Passagecommissionep.id',
+//						'Dossierep.id',
+//						'Dossierep.personne_id',
+//						'Dossierep.created',
+//						'Commissionep.dateseance',
+//						'\'Convocation\' AS "Impression__type"',
+//					),
+//					'joins' => array(
+//						'Passagecommissionep' => array(
+//							'type' => 'INNER', // FIXME: ajout de conditions
+//							'joins' => array(
+//								'Commissionep' => array(
+//									'type' => 'INNER'
+//								)
+//							)
+//						)
+//					)
+//				),
 				'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
 					'modelName' => 'Ficheprescription93',
 					'fields' => array(
@@ -928,65 +928,65 @@
 						'Orientstruct.id',
 						'Orientstruct.personne_id',
 						'Orientstruct.date_valid',
-						'\'Orientation\' AS "Impression__type"',
+						'( CASE WHEN "Orientstruct"."origine" = \'reorientation\' THEN \'Réorientation\' ELSE \'Orientation\' END ) AS "Impression__type"',
 					)
 				),
-				'/Rendezvous/impression/#Rendezvous.id#' => array(
-					'modelName' => 'Rendezvous',
-					'fields' => array(
-						'Rendezvous.id',
-						'Rendezvous.personne_id',
-						'Rendezvous.created',
-						'\'Rendez-vous\' AS "Impression__type"',
-					)
-				),
-				'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
-					'pdf' => true, // Stocké dans la table PDF pour le 93
-					'modelName' => 'Relancenonrespectsanctionep93',
-					'fields' => array(
-						'Nonrespectsanctionep93.id',
-						'Relancenonrespectsanctionep93.id',
-						'Relancenonrespectsanctionep93.daterelance',
-						'Relancenonrespectsanctionep93.numrelance',
-						'Orientstruct.id',
-						'Orientstruct.personne_id',
-						'Contratinsertion.id',
-						'Contratinsertion.personne_id',
-						'Pdf.id',
-						'Personne.id',
-						'( CASE WHEN "Relancenonrespectsanctionep93"."numrelance" = 1 THEN "Relancenonrespectsanctionep93"."numrelance" || \'ère relance\' ELSE "Relancenonrespectsanctionep93"."numrelance" || \'ème relance\' END ) AS "Impression__type"',
-					),
-					'joins' => array(
-						'Nonrespectsanctionep93' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Contratinsertion' => array(
-									'type' => 'LEFT OUTER'
-								),
-								'Orientstruct' => array(
-									'type' => 'LEFT OUTER'
-								)
-							)
-						),
-						'Pdf' => array(
-							'type' => 'LEFT OUTER'
-						),
-						array(
-							'table' => '"personnes"',
-							'alias' => 'Personne',
-							'type' => 'INNER',
-							'conditions' => array(
-								'OR' => array(
-									'Contratinsertion.personne_id = Personne.id',
-									'Orientstruct.personne_id = Personne.id',
-								)
-							)
-						),
-					),
-					'conditions' => array(
-						'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' )
-					)
-				)
+//				'/Rendezvous/impression/#Rendezvous.id#' => array(
+//					'modelName' => 'Rendezvous',
+//					'fields' => array(
+//						'Rendezvous.id',
+//						'Rendezvous.personne_id',
+//						'Rendezvous.created',
+//						'\'Rendez-vous\' AS "Impression__type"',
+//					)
+//				),
+//				'/Relancesnonrespectssanctionseps93/impression/#Relancenonrespectsanctionep93.id#' => array(
+//					'pdf' => true, // Stocké dans la table PDF pour le 93
+//					'modelName' => 'Relancenonrespectsanctionep93',
+//					'fields' => array(
+//						'Nonrespectsanctionep93.id',
+//						'Relancenonrespectsanctionep93.id',
+//						'Relancenonrespectsanctionep93.daterelance',
+//						'Relancenonrespectsanctionep93.numrelance',
+//						'Orientstruct.id',
+//						'Orientstruct.personne_id',
+//						'Contratinsertion.id',
+//						'Contratinsertion.personne_id',
+//						'Pdf.id',
+//						'Personne.id',
+//						'( CASE WHEN "Relancenonrespectsanctionep93"."numrelance" = 1 THEN "Relancenonrespectsanctionep93"."numrelance" || \'ère relance\' ELSE "Relancenonrespectsanctionep93"."numrelance" || \'ème relance\' END ) AS "Impression__type"',
+//					),
+//					'joins' => array(
+//						'Nonrespectsanctionep93' => array(
+//							'type' => 'INNER',
+//							'joins' => array(
+//								'Contratinsertion' => array(
+//									'type' => 'LEFT OUTER'
+//								),
+//								'Orientstruct' => array(
+//									'type' => 'LEFT OUTER'
+//								)
+//							)
+//						),
+//						'Pdf' => array(
+//							'type' => 'LEFT OUTER'
+//						),
+//						array(
+//							'table' => '"personnes"',
+//							'alias' => 'Personne',
+//							'type' => 'INNER',
+//							'conditions' => array(
+//								'OR' => array(
+//									'Contratinsertion.personne_id = Personne.id',
+//									'Orientstruct.personne_id = Personne.id',
+//								)
+//							)
+//						),
+//					),
+//					'conditions' => array(
+//						'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' )
+//					)
+//				)
 			);
 
 			return $config;
@@ -1196,12 +1196,12 @@
 					'Impression' => array(
 						// Tableau "Impressions"
 						'name' => array(
-							'Commissionep' => 'EP',
+//							'Commissionep' => 'EP',
 							'Contratinsertion' => 'CER',
 							'Ficheprescription93' => 'Prescription',
 							'Orientstruct' => 'Orientation',
-							'Rendezvous' => 'Rendez-vous',
-							'Relancenonrespectsanctionep93' => 'Relance',
+//							'Rendezvous' => 'Rendez-vous',
+//							'Relancenonrespectsanctionep93' => 'Relance',
 							'Transfertpdv93' => 'Transfert PDV',
 						)
 					),
