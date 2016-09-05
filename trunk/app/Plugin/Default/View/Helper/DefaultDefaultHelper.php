@@ -285,7 +285,10 @@
 			$class = ( isset( $params['class'] ) ? $params['class'] : null );
 			unset( $params['class'] );
 
-			$return = $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate', 'class' => $class ) );
+			$id = ( isset( $params['id'] ) ? $params['id'] : null );
+			unset( $params['id'] );
+
+			$return = $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate', 'class' => $class, 'id' => $id ) );
 			$return .= $this->subform( $fields, $params );
 			if( !empty( $buttons ) ) {
 				$return .= $this->DefaultForm->buttons( (array)$buttons );
