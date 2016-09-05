@@ -155,7 +155,7 @@
 			$result = $this->DefaultDefault->index( array(), $fields, $params );
 			$expected = '<p class="notice">Aucun enregistrement</p>';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
-			
+
 			$result = $this->DefaultDefault->index( array(), $fields, array('empty_label' => 'Label customisé') );
 			$expected = '<p class="notice">Label customisé</p>';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
@@ -370,10 +370,11 @@
 					'options' => $options,
 					'hidden_empty' => array(
 						'Apple.pip'
-					)
+					),
+					'class' => 'folded'
 				)
 			);
-			$expected = '<form action="'.$this->base.'" novalidate="novalidate" id="Form" method="post" accept-charset="utf-8">
+			$expected = '<form action="'.$this->base.'" novalidate="novalidate" class="folded" id="Form" method="post" accept-charset="utf-8">
 							<div style="display:none;">
 								<input type="hidden" name="_method" value="POST"/>
 							</div>
