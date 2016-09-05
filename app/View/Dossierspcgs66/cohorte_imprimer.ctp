@@ -40,11 +40,11 @@
 				'Search.Dossierpcg66.typepdo_id' => array( 'empty' => true ),
 				'Search.Dossierpcg66.orgpayeur' => array( 'empty' => true ),
 				'Search.Traitementpcg66.courriersansmodele',
+				'Search.Dossierpcg66.poledossierpcg66_id',
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
 		. $this->Xform->multipleCheckbox( 'Search.Decisiondossierpcg66.decisionpdo_id', $options, 'divideInto3Collumn' )
-		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.poledossierpcg66_id', $options )
 		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
 		. $this->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
 		. '</fieldset>'
