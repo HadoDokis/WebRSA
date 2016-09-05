@@ -115,7 +115,7 @@
 				;
 				
 				$courriers = $Controller->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->getPdfsByDossierpcg66Id( 
-					$dossierpcg_id, $Controller->Session->read('Auth.User.id'), false 
+					$dossierpcg_id, $Controller->Session->read('Auth.User.id')
 				);
 				
 				// Il faut au moins 1 PDF sinon il y a un problême
