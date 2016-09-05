@@ -26,7 +26,7 @@
 		?>
 	</fieldset>
 	<fieldset>
-		<legend>Recherche par affectation précédente</legend>
+		<legend>Réaffectation d'un nouveau référent</legend>
 		<?php
 			echo $this->Form->input( 'Search.PersonneReferentPcd.referent_id', array( 'label' => __m( 'Search.PersonneReferentPcd.referent_id' ), 'type' => 'select', 'options' => $options['PersonneReferentPcd']['referent_id'], 'empty' => true ) );
 			echo $this->Allocataires->SearchForm->dateRange( 'Search.PersonneReferentPcd.dfdesignation', $paramDate );
