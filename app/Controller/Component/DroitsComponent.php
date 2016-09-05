@@ -117,9 +117,9 @@
 			}
 
 			// Si $aucunDroit est définie et vide alors retourne liste vide
-			if( array_key_exists( 'aucunDroit', $subClassVars ) and empty( $subClassVars['aucunDroit'] ) ) {
+			/*if( array_key_exists( 'aucunDroit', $subClassVars ) and empty( $subClassVars['aucunDroit'] ) ) {
 				return array( );
-			}
+			}*/
 
 			// Création de la liste des actions du controleur
 			$parentClassMethods = get_class_methods( 'AppController' );
