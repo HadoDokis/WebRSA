@@ -2,8 +2,8 @@
 <project>
   <actions/>
   <description>&lt;div&gt;&#xd;
-  &lt;img type=&quot;image/svg+xml&quot; width=&quot;400&quot; height=&quot;240&quot; src=&quot;ws/app/tmp/build/PluginAnalyseSql/artifacts/10-dependencies.svg&quot; /&gt;&#xd;
-  &lt;img type=&quot;image/svg+xml&quot; width=&quot;400&quot; height=&quot;240&quot; src=&quot;ws/app/tmp/build/PluginAnalyseSql/artifacts/11-overview.svg&quot; /&gt;&#xd;
+  &lt;img type=&quot;image/svg+xml&quot; width=&quot;400&quot; height=&quot;240&quot; src=&quot;ws/app/tmp/build/plugin-AnalyseSql/artifacts/10-dependencies.svg&quot; /&gt;&#xd;
+  &lt;img type=&quot;image/svg+xml&quot; width=&quot;400&quot; height=&quot;240&quot; src=&quot;ws/app/tmp/build/plugin-AnalyseSql/artifacts/11-overview.svg&quot; /&gt;&#xd;
 &lt;/div&gt;</description>
   <logRotator class="hudson.tasks.LogRotator">
     <daysToKeep>-1</daysToKeep>
@@ -50,7 +50,7 @@
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
-      <pattern>app/tmp/build/PluginAnalyseSql/logs/checkstyle.xml</pattern>
+      <pattern>app/tmp/build/plugin-AnalyseSql/logs/checkstyle.xml</pattern>
     </hudson.plugins.checkstyle.CheckStylePublisher>
     <hudson.plugins.pmd.PmdPublisher plugin="pmd@3.37">
       <healthy></healthy>
@@ -74,7 +74,7 @@
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
-      <pattern>app/tmp/build/PluginAnalyseSql/logs/phpmd.xml</pattern>
+      <pattern>app/tmp/build/plugin-AnalyseSql/logs/phpmd.xml</pattern>
     </hudson.plugins.pmd.PmdPublisher>
     <hudson.plugins.dry.DryPublisher plugin="dry@2.38">
       <healthy></healthy>
@@ -98,24 +98,24 @@
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
-      <pattern>app/tmp/build/PluginAnalyseSql/logs/pmd-cpd.xml</pattern>
+      <pattern>app/tmp/build/plugin-AnalyseSql/logs/pmd-cpd.xml</pattern>
       <highThreshold>50</highThreshold>
       <normalThreshold>25</normalThreshold>
     </hudson.plugins.dry.DryPublisher>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>app/tmp/build/PluginAnalyseSql/**</artifacts>
+      <artifacts>app/tmp/build/plugin-AnalyseSql/**</artifacts>
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
     <hudson.tasks.junit.JUnitResultArchiver>
-      <testResults>app/tmp/build/PluginAnalyseSql/logs/phpunit.xml</testResults>
+      <testResults>app/tmp/build/plugin-AnalyseSql/logs/phpunit.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <testDataPublishers/>
     </hudson.tasks.junit.JUnitResultArchiver>
     <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher plugin="cloverphp@0.3.3">
       <publishHtmlReport>true</publishHtmlReport>
-      <reportDir>app/tmp/build/PluginAnalyseSql/coverage</reportDir>
-      <xmlLocation>app/tmp/build/PluginAnalyseSql/logs/phpunit.coverage.xml</xmlLocation>
+      <reportDir>app/tmp/build/plugin-AnalyseSql/coverage</reportDir>
+      <xmlLocation>app/tmp/build/plugin-AnalyseSql/logs/phpunit.coverage.xml</xmlLocation>
       <disableArchiving>true</disableArchiving>
       <healthyTarget>
         <methodCoverage>70</methodCoverage>
@@ -131,7 +131,7 @@
           <yaxis>Lines of Code</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -157,7 +157,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -189,7 +189,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -217,7 +217,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -243,7 +243,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -271,7 +271,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -297,7 +297,7 @@
           <yaxis>Average Length</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -322,7 +322,7 @@
           <yaxis>Cyclomatic Complexity by Structure</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/PluginAnalyseSql/logs/phploc.csv</file>
+              <file>app/tmp/build/plugin-AnalyseSql/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -348,14 +348,14 @@
       <reportTargets>
         <htmlpublisher.HtmlPublisherTarget>
           <reportName>Code Browser</reportName>
-          <reportDir>app/tmp/build/PluginAnalyseSql/php-code-browser</reportDir>
+          <reportDir>app/tmp/build/plugin-AnalyseSql/php-code-browser</reportDir>
           <reportFiles>index.html</reportFiles>
           <keepAll>false</keepAll>
           <wrapperName>htmlpublisher-wrapper.html</wrapperName>
         </htmlpublisher.HtmlPublisherTarget>
         <htmlpublisher.HtmlPublisherTarget>
           <reportName>API</reportName>
-          <reportDir>app/tmp/build/PluginAnalyseSql/api</reportDir>
+          <reportDir>app/tmp/build/plugin-AnalyseSql/api</reportDir>
           <reportFiles>index.html</reportFiles>
           <keepAll>false</keepAll>
           <wrapperName>htmlpublisher-wrapper.html</wrapperName>
@@ -363,7 +363,7 @@
       </reportTargets>
     </htmlpublisher.HtmlPublisher>
     <hudson.plugins.jdepend.JDependRecorder plugin="jdepend@1.2.3">
-      <configuredJDependFile>app/tmp/build/PluginAnalyseSql/logs/jdepend.xml</configuredJDependFile>
+      <configuredJDependFile>app/tmp/build/plugin-AnalyseSql/logs/jdepend.xml</configuredJDependFile>
     </hudson.plugins.jdepend.JDependRecorder>
     <hudson.plugins.violations.ViolationsPublisher plugin="violations@0.7.11">
       <config>
@@ -377,7 +377,7 @@
               <max>999</max>
               <unstable>9999</unstable>
               <usePattern>false</usePattern>
-              <pattern>app/tmp/build/PluginAnalyseSql/logs/checkstyle.xml</pattern>
+              <pattern>app/tmp/build/plugin-AnalyseSql/logs/checkstyle.xml</pattern>
             </hudson.plugins.violations.TypeConfig>
           </entry>
           <entry>
@@ -399,7 +399,7 @@
               <max>999</max>
               <unstable>9999</unstable>
               <usePattern>false</usePattern>
-              <pattern>app/tmp/build/PluginAnalyseSql/logs/pmd-cpd.xml</pattern>
+              <pattern>app/tmp/build/plugin-AnalyseSql/logs/pmd-cpd.xml</pattern>
             </hudson.plugins.violations.TypeConfig>
           </entry>
           <entry>
@@ -509,7 +509,7 @@
               <max>999</max>
               <unstable>9999</unstable>
               <usePattern>false</usePattern>
-              <pattern>app/tmp/build/PluginAnalyseSql/logs/phpmd.xml</pattern>
+              <pattern>app/tmp/build/plugin-AnalyseSql/logs/phpmd.xml</pattern>
             </hudson.plugins.violations.TypeConfig>
           </entry>
           <entry>

@@ -21,7 +21,7 @@
   <builders>
     <hudson.tasks.Ant plugin="ant@1.2">
       <targets>quality</targets>
-      <buildFile>app/Vendor/Jenkins/module-pcg66.xml</buildFile>
+      <buildFile>app/Vendor/Jenkins/build-module-Ficheprescription93.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
@@ -47,7 +47,7 @@
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
-      <pattern>app/tmp/build/logs/checkstyle.xml</pattern>
+      <pattern>app/tmp/build/module-Ficheprescription93/logs/checkstyle.xml</pattern>
     </hudson.plugins.checkstyle.CheckStylePublisher>
     <hudson.plugins.pmd.PmdPublisher plugin="pmd@3.37">
       <healthy></healthy>
@@ -71,22 +71,22 @@
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
-      <pattern>app/tmp/build/logs/phpmd.xml</pattern>
+      <pattern>app/tmp/build/module-Ficheprescription93/logs/phpmd.xml</pattern>
     </hudson.plugins.pmd.PmdPublisher>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>app/tmp/build/**</artifacts>
+      <artifacts>app/tmp/build/module-Ficheprescription93/**</artifacts>
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
     <hudson.tasks.junit.JUnitResultArchiver>
-      <testResults>app/tmp/build/logs/phpunit.xml</testResults>
+      <testResults>app/tmp/build/module-Ficheprescription93/logs/phpunit.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <testDataPublishers/>
     </hudson.tasks.junit.JUnitResultArchiver>
     <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher plugin="cloverphp@0.3.3">
       <publishHtmlReport>true</publishHtmlReport>
-      <reportDir>app/tmp/build/coverage</reportDir>
-      <xmlLocation>app/tmp/build/logs/phpunit.coverage.xml</xmlLocation>
+      <reportDir>app/tmp/build/module-Ficheprescription93/coverage</reportDir>
+      <xmlLocation>app/tmp/build/module-Ficheprescription93/logs/phpunit.coverage.xml</xmlLocation>
       <disableArchiving>true</disableArchiving>
       <healthyTarget>
         <methodCoverage>70</methodCoverage>
@@ -102,7 +102,7 @@
           <yaxis>Lines of Code</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -128,7 +128,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -160,7 +160,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -188,7 +188,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -214,7 +214,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -242,7 +242,7 @@
           <yaxis>Count</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -268,7 +268,7 @@
           <yaxis>Average Length</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -293,7 +293,7 @@
           <yaxis>Cyclomatic Complexity by Structure</yaxis>
           <series>
             <hudson.plugins.plot.CSVSeries>
-              <file>app/tmp/build/logs/phploc.csv</file>
+              <file>app/tmp/build/module-Ficheprescription93/logs/phploc.csv</file>
               <label></label>
               <fileType>csv</fileType>
               <strExclusionSet>
@@ -319,7 +319,7 @@
       <reportTargets>
         <htmlpublisher.HtmlPublisherTarget>
           <reportName>Code Browser</reportName>
-          <reportDir>app/tmp/build/php-code-browser</reportDir>
+          <reportDir>app/tmp/build/module-Ficheprescription93/php-code-browser</reportDir>
           <reportFiles>index.html</reportFiles>
           <keepAll>false</keepAll>
           <wrapperName>htmlpublisher-wrapper.html</wrapperName>
@@ -338,7 +338,7 @@
               <max>999</max>
               <unstable>9999</unstable>
               <usePattern>false</usePattern>
-              <pattern>app/tmp/build/logs/checkstyle.xml</pattern>
+              <pattern>app/tmp/build/module-Ficheprescription93/logs/checkstyle.xml</pattern>
             </hudson.plugins.violations.TypeConfig>
           </entry>
           <entry>
@@ -470,7 +470,7 @@
               <max>999</max>
               <unstable>9999</unstable>
               <usePattern>false</usePattern>
-              <pattern>app/tmp/build/logs/phpmd.xml</pattern>
+              <pattern>app/tmp/build/module-Ficheprescription93/logs/phpmd.xml</pattern>
             </hudson.plugins.violations.TypeConfig>
           </entry>
           <entry>

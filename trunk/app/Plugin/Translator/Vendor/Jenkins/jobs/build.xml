@@ -26,19 +26,19 @@
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>app/tmp/build/PluginTranslator/**</artifacts>
+      <artifacts>app/tmp/build/plugin-Translator/**</artifacts>
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
     <hudson.tasks.junit.JUnitResultArchiver>
-      <testResults>app/tmp/build/PluginTranslator/logs/phpunit.xml</testResults>
+      <testResults>app/tmp/build/plugin-Translator/logs/phpunit.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <testDataPublishers/>
     </hudson.tasks.junit.JUnitResultArchiver>
     <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher plugin="cloverphp@0.3.3">
       <publishHtmlReport>true</publishHtmlReport>
-      <reportDir>app/tmp/build/PluginTranslator/coverage</reportDir>
-      <xmlLocation>app/tmp/build/PluginTranslator/logs/phpunit.coverage.xml</xmlLocation>
+      <reportDir>app/tmp/build/plugin-Translator/coverage</reportDir>
+      <xmlLocation>app/tmp/build/plugin-Translator/logs/phpunit.coverage.xml</xmlLocation>
       <disableArchiving>true</disableArchiving>
       <healthyTarget>
         <methodCoverage>70</methodCoverage>

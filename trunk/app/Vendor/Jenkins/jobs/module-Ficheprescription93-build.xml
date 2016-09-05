@@ -21,24 +21,24 @@
   <builders>
     <hudson.tasks.Ant plugin="ant@1.2">
       <targets>build</targets>
-      <buildFile>app/Vendor/Jenkins/module-ficheprescription93.xml</buildFile>
+      <buildFile>app/Vendor/Jenkins/build-module-Ficheprescription93.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>app/tmp/build/**</artifacts>
+      <artifacts>app/tmp/build/module-Ficheprescription93/**</artifacts>
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
     <hudson.tasks.junit.JUnitResultArchiver>
-      <testResults>app/tmp/build/logs/phpunit.xml</testResults>
+      <testResults>app/tmp/build/module-Ficheprescription93/logs/phpunit.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <testDataPublishers/>
     </hudson.tasks.junit.JUnitResultArchiver>
     <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher plugin="cloverphp@0.3.3">
       <publishHtmlReport>true</publishHtmlReport>
-      <reportDir>app/tmp/build/coverage</reportDir>
-      <xmlLocation>app/tmp/build/logs/phpunit.coverage.xml</xmlLocation>
+      <reportDir>app/tmp/build/module-Ficheprescription93/coverage</reportDir>
+      <xmlLocation>app/tmp/build/module-Ficheprescription93/logs/phpunit.coverage.xml</xmlLocation>
       <disableArchiving>true</disableArchiving>
       <healthyTarget>
         <methodCoverage>70</methodCoverage>
