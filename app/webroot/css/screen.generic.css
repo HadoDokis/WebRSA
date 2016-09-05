@@ -2326,3 +2326,11 @@ body.rendezvous.view div#ficheCI tbody th {
 body.referents td.action span.link.cloturer {
 	background-image: url( ../img/icons/date_edit_disabled.png );
 }
+
+/* Menu du dossier, mise en évidence du lien "Synthèse du suivi" pour le CG 93  */
+div#pageContent div.treemenu a.accompagnementsbeneficiaires.index {
+	font-weight: normal;
+}
+div#pageContent div.treemenu a.accompagnementsbeneficiaires.index.selected {
+	font-weight: bold;
+}
