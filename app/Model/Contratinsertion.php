@@ -591,7 +591,7 @@
 					LIMIT 1)'
 			),
 		);
-		
+
 		/**
 		 * Surcharge du constructeur avec ajout du champ virtuel num_contrat_66
 		 * lorsqu'il s'agit d'un renouvellement et que l'allocataire avait plus
@@ -608,7 +608,7 @@
 				$this->loadVirtualFields();
 			}
 		}
-		
+
 		/**
 		 * Surcharge de la méthode beforeValidate pour nettoyer la valeur de
 		 * duree_engag qui peut être suivie d'un '_' au CG 58 lorsque le formulaire
@@ -721,7 +721,7 @@
 
 			return $return;
 		}
-		
+
 		/**
 		 * Surcharge de la méthode enums() afin d'ajouter la valeur virtuelle
 		 * "Renouvellement par tacite reconduction" pour le champ num_contrat
@@ -764,7 +764,7 @@
 
 			return $options;
 		}
-		
+
 		protected function _liaisonDossierpcg66( $created ) {
 			$success = true;
 
@@ -863,7 +863,7 @@
 
 			return $success; // FIXME: à traiter
 		}
-		
+
 		public function checkPostgresqlIntervals() {
 			$keys = array( 'Criterecer.delaiavanteecheance' );
 
@@ -874,7 +874,7 @@
 
 			return $this->_checkPostgresqlIntervals( $keys );
 		}
-		
+
 		/**
 		 * Chargement des champs virtuels dynamiques du modèle.
 		 */
@@ -895,6 +895,35 @@
 					ELSE "'.$this->alias.'"."num_contrat"::text
 				END
 			)';
+		}
+
+		/**
+		 * Récupération des données nécessaires à l'impression du PDF par défaut
+		 * du contrat.
+		 *
+		 * Pont vers la méthode WebrsaContratinsertion::getDataForPdf permettant de
+		 * fonctionner avec StorablePdfBehavior.
+		 *
+		 * @param integer $id L'id technique de l'orientation
+		 * @param integer $user_id L'id technique de l'utilisateur effectuant l'impression
+		 * @return array
+		 */
+		public function getDataForPdf( $id, $user_id = null ) {
+			return $this->WebrsaContratinsertion->getDataForPdf( $id, $user_id );
+		}
+
+		/**
+		 * Retourne le chemin relatif du modèle de document utilisé pour
+		 * l'impression du PDF par défaut.
+		 *
+		 * Pont vers la méthode WebrsaContratinsertion::modeleOdt permettant de
+		 * fonctionner avec StorablePdfBehavior.
+		 *
+		 * @param array $data Les données envoyées au modèle pour construire le PDF
+		 * @return string
+		 */
+		public function modeleOdt( $data ) {
+			return $this->WebrsaContratinsertion->modeleOdt( $data );
 		}
 	}
 ?>
