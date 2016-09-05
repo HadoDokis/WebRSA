@@ -282,7 +282,10 @@
 			$buttons = ( isset( $params['buttons'] ) ? $params['buttons'] : array( 'Save', 'Cancel' ) );
 			unset( $params['buttons'] );
 
-			$return = $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate' ) );
+			$class = ( isset( $params['class'] ) ? $params['class'] : null );
+			unset( $params['class'] );
+
+			$return = $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate', 'class' => $class ) );
 			$return .= $this->subform( $fields, $params );
 			if( !empty( $buttons ) ) {
 				$return .= $this->DefaultForm->buttons( (array)$buttons );
