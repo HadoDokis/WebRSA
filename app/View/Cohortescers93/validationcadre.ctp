@@ -9,6 +9,8 @@
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
 
 	if( isset( $cers93 ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		$mode_impression = ( Hash::get( $this->request->data, 'Search.Cer93.mode_operation' ) == 'impression' );
 
 		if( empty( $cers93 ) ) {

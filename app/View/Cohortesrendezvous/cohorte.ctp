@@ -116,6 +116,8 @@
 
 	// 2. Traitement des résultats de la recherche
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		// TODO: à factoriser avec Dsps::index() + les exportcsv
 		$fields = Hash::normalize( (array)Configure::read( 'Cohortesrendezvous.cohorte.fields' ) );
 

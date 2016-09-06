@@ -41,7 +41,7 @@
 
 	echo $this->Form->input( 'Repddtefp.numcom', array( 'label' => __d( 'apre', 'Repddtefp.numcom' ), 'type' => 'select', 'options' => $mesCodesInsee,  'empty' => true ) );
 
-	echo $this->Form->submit( 'Calculer' );
+	echo $this->Html->tag( 'div', $this->Form->button( __( 'Calculer' ) ), array( 'class' => 'submit' ) );
 	echo $this->Form->end();
 ?>
 

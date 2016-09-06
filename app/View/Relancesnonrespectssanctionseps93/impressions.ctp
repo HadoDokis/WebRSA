@@ -73,7 +73,8 @@
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 
-	echo $this->Xform->end( __( 'Rechercher' ) );
+	echo $this->Html->tag( 'div', $this->Form->button( __( 'Search' ) ), array( 'class' => 'submit' ) );
+	echo $this->Form->end();
 ?>
 
 <?php if( isset( $relances ) ):?>
@@ -81,6 +82,7 @@
 		<p class="notice">Aucun dossier relancé ne correspond à vos critères.</p>
 	<?php else:?>
 		<?php
+			echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
 			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 
 			$pagination = $this->Xpaginator->paginationBlock( 'Relancenonrespectsanctionep93', $this->passedArgs );

@@ -53,6 +53,8 @@
 
 <?php if( isset( $radiespe ) ):?>
 <?php
+	echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 	if ( is_array( $radiespe ) && count( $radiespe ) > 0 ) {
 		$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 

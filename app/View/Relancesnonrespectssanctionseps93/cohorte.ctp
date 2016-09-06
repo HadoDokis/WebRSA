@@ -76,13 +76,16 @@
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 
-	echo $this->Form->end( __( 'Rechercher' ) );
+	echo $this->Html->tag( 'div', $this->Form->button( __( 'Search' ) ), array( 'class' => 'submit' ) );
+	echo $this->Form->end();
+
 	// Résultats
 	if( isset( $results ) ) {
 		if( empty( $results ) ) {
 			echo $this->Xhtml->tag( 'p', 'Aucun résultat ne correspond à ces critères.', array( 'class' => 'notice' ) );
 		}
 		else {
+			echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
 			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 
 			if( $this->request->data['Search']['Relance']['contrat'] == 0 ) {

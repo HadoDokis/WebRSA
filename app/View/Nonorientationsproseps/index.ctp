@@ -83,7 +83,7 @@
 	?>
 
 	<div class="submit">
-		<?php echo $this->Form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
+		<?php echo $this->Form->button( __( 'Search' ), array( 'type' => 'submit' ) );?>
 		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
 	</div>
 <?php echo $this->Form->end();?>
@@ -94,6 +94,7 @@
 		<p class="notice"><?php echo 'Aucun allocataire ne correspond à vos critères de recherche.';?>
 	<?php else: ?>
 		<?php
+			echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
 			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 			echo $this->Form->create();
 		?>

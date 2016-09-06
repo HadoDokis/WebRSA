@@ -55,6 +55,6 @@
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 
-	echo $this->Form->submit( __( 'Search' ) );
+	echo $this->Html->tag( 'div', $this->Form->button( __( 'Search' ) ), array( 'class' => 'submit' ) );
 	echo $this->Form->end();
 ?>
