@@ -838,7 +838,12 @@
 				);
 			}
 
-			$query['fields'][] = "( CASE {$case} ELSE NULL END ) AS \"Decisionthematique__decision\"";
+			if( false === empty( $themes ) ) {
+				$query['fields'][] = "( CASE {$case} ELSE NULL END ) AS \"Decisionthematique__decision\"";
+			}
+			else {
+				$query['fields'][] = "NULL AS \"Decisionthematique__decision\"";
+			}
 
 			$query['conditions'][] = $conditions;
 

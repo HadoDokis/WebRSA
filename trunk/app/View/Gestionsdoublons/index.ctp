@@ -46,6 +46,8 @@
 
 	// Résultats
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
                 $this->Default3->DefaultPaginator->options(
                     array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
 		);
@@ -71,14 +73,14 @@
 			'Adresse2.nomcom',
 			'Dossier2.locked' => array( 'type' => 'boolean' ),
 		);
-		
+
 		if (Configure::read('Gestionsdoublons.index.useTag') && Configure::read('Gestionsdoublons.index.Tag.valeurtag_id')) {
 			$indexCols['/Tags/tag_gestionsdoublons_index/#Foyer.id#/#Foyer2.id#'] = array(
 				'disabled' => '( !\''.$this->Permissions->check( 'Tags', 'tag_gestionsdoublons_index' ).'\' )',
 			);
 			$nbActions++;
 		}
-		
+
 		$indexCols = array_merge(
 			$indexCols,
 			array(
@@ -93,7 +95,7 @@
 				)
 			)
 		);
-		
+
 		$index = $this->Default3->index(
 			$results,
 			$indexCols,

@@ -80,6 +80,8 @@
 	echo $this->Xform->end( 'Rechercher' );
 
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		$filtresErreur = array(
 			'touteerreur' => @$this->request->data['Gestionanomaliebdd']['touteerreur'],
 			'enerreur' => @$this->request->data['Gestionanomaliebdd']['enerreur'],
