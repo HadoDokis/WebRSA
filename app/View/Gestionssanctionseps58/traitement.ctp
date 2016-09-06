@@ -124,18 +124,20 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		<?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
-			<?php $modeleDecision = Inflector::classify( "decisions{$gestionanctionep58['Dossierep']['themeep']}" );?>
-			observeDisableFieldsOnValue(
-				'<?php echo "{$modeleDecision}{$index}";?>Arretsanction',
-				[
-					'<?php echo "{$modeleDecision}{$index}";?>DatearretsanctionDay',
-					'<?php echo "{$modeleDecision}{$index}";?>DatearretsanctionMonth',
-					'<?php echo "{$modeleDecision}{$index}";?>DatearretsanctionYear'
-				],
-				[ '' ],
-				true
-			);
-		<?php endforeach;?>
+		<?php if( isset( $gestionsanctionseps58 ) ):?>
+			<?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
+				<?php $modeleDecision = Inflector::classify( "decisions{$gestionanctionep58['Dossierep']['themeep']}" );?>
+				observeDisableFieldsOnValue(
+					'<?php echo "{$modeleDecision}{$index}";?>Arretsanction',
+					[
+						'<?php echo "{$modeleDecision}{$index}";?>DatearretsanctionDay',
+						'<?php echo "{$modeleDecision}{$index}";?>DatearretsanctionMonth',
+						'<?php echo "{$modeleDecision}{$index}";?>DatearretsanctionYear'
+					],
+					[ '' ],
+					true
+				);
+			<?php endforeach;?>
+		<?php endif;?>
 	});
 </script>
