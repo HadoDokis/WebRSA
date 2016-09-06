@@ -62,9 +62,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Gestionsanctionep58',
 			'Commissionep',
 			'Dossier',
-			'Gestionsanctionep58',
 			'Option',
 			'Personne',
 			'Zonegeographique',

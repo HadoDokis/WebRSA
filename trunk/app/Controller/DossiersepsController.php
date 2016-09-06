@@ -67,9 +67,9 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Decisionpdo',
-			'Dossierep',
 			'Option',
+			'Dossierep',
+			'Decisionpdo',
 			'Propopdo',
 		);
 		

@@ -46,12 +46,12 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Dossier',
 			'Adresse',
 			'Adressefoyer',
 			'Ajoutdossiercomplet',
 			'Dernierdossierallocataire',
 			'Detaildroitrsa',
-			'Dossier',
 			'Foyer',
 			'Option',
 			'Personne',

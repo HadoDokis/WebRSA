@@ -57,8 +57,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Dossier',
 			'Gestionanomaliebdd',
+			'Dossier',
 			'Option',
 		);
 		

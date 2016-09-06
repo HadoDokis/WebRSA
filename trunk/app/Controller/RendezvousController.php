@@ -70,8 +70,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'Rendezvous',
+			'Option',
 			'WebrsaRendezvous',
 		);
 		

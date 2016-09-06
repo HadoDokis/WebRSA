@@ -53,9 +53,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Personnepcg66',
 			'Dossierpcg66',
 			'Option',
-			'Personnepcg66',
 		);
 		
 		/**

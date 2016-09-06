@@ -50,8 +50,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'Typecontratcui66',
+			'Option',
 		);
 		
 		/**

@@ -58,8 +58,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'ActioncandidatPersonne',
 			'Criterefichecandidature',
+			'ActioncandidatPersonne',
 			'Partenaire',
 		);
 		

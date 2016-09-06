@@ -47,10 +47,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Totalisationacompte',
 			'Identificationflux',
 			'Infofinanciere',
 			'Option',
-			'Totalisationacompte',
 		);
 		
 		/**

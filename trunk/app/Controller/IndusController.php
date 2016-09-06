@@ -52,11 +52,11 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Infofinanciere',
 			'Cohorteindu',
 			'Dossier',
 			'Foyer',
 			'Indu',
-			'Infofinanciere',
 			'Option',
 			'Personne',
 		);

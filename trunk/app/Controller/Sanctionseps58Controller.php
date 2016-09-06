@@ -69,8 +69,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Contratinsertion',
 			'Sanctionep58',
+			'Contratinsertion',
 			'WebrsaContratinsertion',
 		);
 		

@@ -46,8 +46,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'Suiviaideapre',
+			'Option',
 		);
 		
 		/**

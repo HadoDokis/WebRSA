@@ -55,10 +55,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Personne',
 			'Foyer',
 			'Grossesse',
 			'Option',
-			'Personne',
 			'WebrsaPersonne',
 		);
 		

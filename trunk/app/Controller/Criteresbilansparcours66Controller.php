@@ -58,8 +58,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Bilanparcours66',
 			'Criterebilanparcours66',
+			'Bilanparcours66',
 			'Option',
 			'Referent',
 		);

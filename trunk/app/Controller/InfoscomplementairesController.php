@@ -47,12 +47,12 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Personne',
 			'Activite',
 			'Allocationsoutienfamilial',
 			'Creancealimentaire',
 			'Dossier',
 			'Option',
-			'Personne',
 			'Titresejour',
 		);
 		

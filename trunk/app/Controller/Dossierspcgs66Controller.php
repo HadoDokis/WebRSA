@@ -78,8 +78,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Decisionpdo',
 			'Dossierpcg66',
+			'Decisionpdo',
 			'Option',
 			'Typenotifpdo',
 			'WebrsaDossierpcg66',

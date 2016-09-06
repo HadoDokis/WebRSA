@@ -65,8 +65,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'User',
+			'Option',
 			'WebrsaUser',
 		);
 		

@@ -55,9 +55,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Partenaire',
 			'ActioncandidatPartenaire',
 			'Option',
-			'Partenaire',
 			'Personne',
 		);
 		

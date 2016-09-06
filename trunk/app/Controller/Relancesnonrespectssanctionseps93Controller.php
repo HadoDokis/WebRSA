@@ -67,13 +67,13 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Relancenonrespectsanctionep93',
 			'Contratinsertion',
 			'Dossier',
 			'Dossierep',
 			'Nonrespectsanctionep93',
 			'Orientstruct',
 			'Pdf',
-			'Relancenonrespectsanctionep93',
 			'WebrsaRelancenonrespectsanctionep93',
 		);
 		

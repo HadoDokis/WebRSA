@@ -58,11 +58,11 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Canton',
 			'Adresse',
 			'Adressefoyer',
 			'Apre',
 			'ApreComiteapre',
-			'Canton',
 			'Comiteapre',
 			'Dossier',
 			'Foyer',

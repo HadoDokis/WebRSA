@@ -57,8 +57,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Foyer',
 			'Modecontact',
+			'Foyer',
 			'Option',
 			'WebrsaModecontact',
 		);

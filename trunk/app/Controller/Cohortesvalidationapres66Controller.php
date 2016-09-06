@@ -66,11 +66,11 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Cohortevalidationapre66',
 			'Aideapre66',
 			'Apre',
 			'Apre66',
 			'Canton',
-			'Cohortevalidationapre66',
 			'Dossier',
 			'Option',
 			'Zonegeographique',

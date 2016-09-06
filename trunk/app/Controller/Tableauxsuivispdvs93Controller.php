@@ -65,8 +65,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Cohortetransfertpdv93',
 			'Tableausuivipdv93',
+			'Cohortetransfertpdv93',
 			'WebrsaTableausuivipdv93',
 		);
 		

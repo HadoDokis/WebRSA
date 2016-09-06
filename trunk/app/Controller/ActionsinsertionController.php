@@ -47,8 +47,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Action',
 			'Actioninsertion',
+			'Action',			
 			'Aidedirecte',
 			'Contratinsertion',
 			'Option',

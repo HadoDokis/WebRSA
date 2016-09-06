@@ -30,9 +30,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Apre66',
 			'Adressefoyer',
 			'Aideapre66',
-			'Apre66',
 			'Foyer',
 			'Fraisdeplacement66',
 			'Option',

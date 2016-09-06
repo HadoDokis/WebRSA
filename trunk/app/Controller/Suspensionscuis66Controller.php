@@ -62,8 +62,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'Suspensioncui66',
+			'Option',
 		);
 		
 		/**

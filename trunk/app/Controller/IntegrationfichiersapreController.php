@@ -46,7 +46,7 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Integrationfichierapre',
+			
 		);
 		
 		/**

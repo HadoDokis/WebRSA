@@ -58,10 +58,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Cohortefichecandidature66',
 			'Actioncandidat',
 			'ActioncandidatPersonne',
 			'Canton',
-			'Cohortefichecandidature66',
 			'Dossier',
 			'Zonegeographique',
 		);

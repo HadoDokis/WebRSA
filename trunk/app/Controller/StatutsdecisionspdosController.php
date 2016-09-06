@@ -48,9 +48,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Statutdecisionpdo',
 			'Option',
 			'Propopdo',
-			'Statutdecisionpdo',
 		);
 		
 		/**

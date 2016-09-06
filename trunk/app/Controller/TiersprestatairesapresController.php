@@ -46,9 +46,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Tiersprestataireapre',
 			'Apre',
 			'Option',
-			'Tiersprestataireapre',
 		);
 		
 		/**

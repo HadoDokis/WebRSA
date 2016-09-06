@@ -59,9 +59,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Tag',
 			'Foyer',
 			'Personne',
-			'Tag',
 			'WebrsaCohorteTag',
 			'WebrsaTag',
 		);

@@ -47,10 +47,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Suiviinstruction',
 			'Dossier',
 			'Option',
 			'Serviceinstructeur',
-			'Suiviinstruction',
 		);
 		
 		/**

@@ -48,7 +48,7 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Listesanctionep58',
+			
 		);
 		
 		/**

@@ -47,10 +47,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Typeaideapre66',
 			'Pieceaide66',
 			'Piececomptable66',
 			'Themeapre66',
-			'Typeaideapre66',
 		);
 		
 		/**
