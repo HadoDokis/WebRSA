@@ -62,26 +62,26 @@
 			'Option',
 			'Personne',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'view' => 'Infosfinancieres:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -96,7 +96,7 @@
 		);
 
         protected function _setOptions() {
-			$this->set( 'type_allocation', $this->Option->type_allocation() );
+			$this->set( 'type_allocation', ClassRegistry::init('Infofinanciere')->enum('type_allocation') );
 			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre') );
 			$this->set( 'typeopecompta', ClassRegistry::init('Infofinanciere')->enum('typeopecompta') );
 			$this->set( 'sensopecompta', ClassRegistry::init('Infofinanciere')->enum('sensopecompta') );
