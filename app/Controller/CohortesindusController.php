@@ -65,26 +65,26 @@
 			'Situationdossierrsa',
 			'Structurereferente',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -122,7 +122,7 @@
 			//$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $this->Situationdossierrsa->etatOuvert())) );
 			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
-			$this->set( 'type_allocation', $this->Option->type_allocation() );
+			$this->set( 'type_allocation', ClassRegistry::init('Infofinanciere')->enum('type_allocation') );
 			$this->set( 'rolepers', ClassRegistry::init('Prestation')->enum('rolepers') );
             $this->set( 'qual', $this->Option->qual() );
 		}
