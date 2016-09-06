@@ -3,6 +3,7 @@
 <?php require_once( dirname( __FILE__ ).DS.'search.ctp' ); ?>
 
 <?php if( isset( $gestionsanctionseps58 ) ):?>
+	<?php echo $this->Html->tag( 'h2', 'Résultats de la recherche' );?>
     <?php if( empty( $gestionsanctionseps58 ) ):?>
         <p class="notice"><?php echo 'Aucune sanction présente.';?></p>
     <?php else:?>
