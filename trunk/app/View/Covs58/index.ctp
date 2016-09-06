@@ -54,6 +54,8 @@
 	echo $this->Observer->disableFormOnSubmit( $searchFormId );
 
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		$etatsActions = var_export( $etatsActions, true );
 
 		$this->Default3->DefaultPaginator->options(

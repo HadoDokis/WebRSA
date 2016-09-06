@@ -487,16 +487,19 @@
 				'disabled' => ( (boolean)Configure::read( 'Requestmanager.enabled' ) === false ),
 				'url' => array( 'controller' => 'requestsmanager', 'action' => 'index' ),
 			),
-			'Indicateurs mensuels' => array(
-				'disabled' => ( $departement != 66 ),
-				'Généralités' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ) ),
-				'Nombre d\'allocataires' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'nombre_allocataires' ) ),
-				'Les orientations' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'orientations' ) ),
-				'Les CER' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'contratsinsertion' ) ),
-			),
-			'Indicateurs mensuels ' => array(
-				'disabled' => ( $departement == 66 ),
-				'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ),
+			'Indicateurs mensuels' => (
+				( $departement == 66 )
+				? array(
+					'disabled' => ( $departement != 66 ),
+					'Généralités' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ) ),
+					'Nombre d\'allocataires' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'nombre_allocataires' ) ),
+					'Les orientations' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'orientations' ) ),
+					'Les CER' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'contratsinsertion' ) ),
+				)
+				: array(
+					'disabled' => ( $departement == 66 ),
+					'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ),
+				)
 			),
 			'Statistiques ministérielles' => array(
 				'Indicateurs d\'orientations' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_orientations'  ) ),

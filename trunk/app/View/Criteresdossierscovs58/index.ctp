@@ -97,6 +97,7 @@
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Dossiercov58', $this->passedArgs ); ?>
 <?php echo $pagination;?>
 <?php if( isset( $dossierscovs58 ) ):?>
+	<?php echo $this->Html->tag( 'h2', 'Résultats de la recherche' );?>
     <?php if( is_array( $dossierscovs58 ) && count( $dossierscovs58 ) > 0  ):?>
         <?php
             echo '<table><thead>';

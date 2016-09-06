@@ -7,13 +7,13 @@
 	if ( $compteurs['Fonctionmembreep'] == 0 ) {
 		echo "<p class='error'>Merci d'ajouter au moins une fonction pour les membres avant d'ajouter un membre.</p>";
 	}
-	
+
 	echo '<ul class="actionMenu"><li>'.$this->Xhtml->addLink(
 		'Ajouter',
 		array( 'controller' => 'membreseps', 'action' => 'add' ),
 		$this->Permissions->check( 'membreseps', 'add' ) && ( $compteurs['Fonctionmembreep'] != 0 )
 	).'</li></ul>';
-		
+
 	// Début du formulaire
 	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
 		$this->Xhtml->image(
@@ -23,9 +23,9 @@
 		'#',
 		array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
 	).'</li></ul>';
-	
+
 	echo $this->Xform->create( 'Membreep', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );
-	
+
 	echo '<fieldset>';
 	echo $this->Xform->input( 'Membreep.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
 		echo $this->Default2->subform(
@@ -49,8 +49,10 @@
 
 	echo $this->Xform->end();
 	// Fin du formulaire
-	
+
 	if( !empty( $this->request->data ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		echo $this->Default2->index(
 			$membreseps,
 			array(
