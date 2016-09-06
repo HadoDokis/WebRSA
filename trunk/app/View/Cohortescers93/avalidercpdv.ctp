@@ -8,6 +8,8 @@
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
 
 	if( isset( $cers93 ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		if( empty( $cers93 ) ) {
 			echo $this->Xhtml->tag( 'p', 'Aucun résultat', array( 'class' => 'notice' ) );
 		}

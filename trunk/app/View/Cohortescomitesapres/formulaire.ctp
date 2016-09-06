@@ -28,7 +28,7 @@
 <!-- Résultats -->
 
 <?php if( isset( $comitesapres ) ):?>
-
+	<?php echo $this->Html->tag( 'h2', 'Résultats de la recherche' );?>
 	<?php if( is_array( $comitesapres ) && count( $comitesapres ) > 0 ):?>
 		<?php echo $pagination;?>
 		<?php echo $this->Xform->create( 'Cohortecomiteapre', array() );?>

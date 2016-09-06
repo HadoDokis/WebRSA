@@ -22,7 +22,7 @@
 <!-- Résultats -->
 
 <?php if( isset( $recoursapres ) ):?>
-
+	<?php echo $this->Html->tag( 'h2', 'Résultats de la recherche' );?>
 	<?php if( is_array( $recoursapres ) && count( $recoursapres ) > 0 ):?>
 		<?php echo $pagination;?>
 		<?php echo $this->Xform->create( 'Recoursapre', array() );?>

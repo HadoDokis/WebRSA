@@ -59,6 +59,8 @@
 	echo $this->Observer->disableFormOnSubmit( $searchFormId );
 
 	if( isset( $referents ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		$this->Default3->DefaultPaginator->options(
 			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
 		);
