@@ -73,8 +73,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Catalogueromev3',
 			'Dsp',
+			'Catalogueromev3',
 			'DspRev',
 			'Familleromev3',
 			'Option',

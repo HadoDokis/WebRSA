@@ -66,10 +66,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Traitementpcg66',
 			'Dossierpcg66',
 			'Option',
 			'Personnepcg66',
-			'Traitementpcg66',
 			'WebrsaTraitementpcg66',
 		);
 		

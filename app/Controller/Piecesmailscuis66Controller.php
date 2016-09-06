@@ -55,8 +55,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'Piecemailcui66',
+			'Option',
 		);
 		
 		/**

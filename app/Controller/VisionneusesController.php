@@ -48,8 +48,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'RejetHistorique',
 			'Visionneuse',
+			'RejetHistorique',
 		);
 		
 		/**

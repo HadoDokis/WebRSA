@@ -50,9 +50,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Propocontratinsertioncov58',
 			'Action',
 			'Option',
-			'Propocontratinsertioncov58',
 			'WebrsaContratinsertion',
 		);
 		

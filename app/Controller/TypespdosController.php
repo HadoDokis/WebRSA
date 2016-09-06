@@ -47,8 +47,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Propopdo',
 			'Typepdo',
+			'Propopdo',
 		);
 		
 		/**

@@ -49,8 +49,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Rendezvous',
 			'Thematiquerdv',
+			'Rendezvous',
 		);
 		
 		/**

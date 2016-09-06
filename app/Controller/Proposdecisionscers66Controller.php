@@ -54,8 +54,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'Propodecisioncer66',
+			'Option',
 			'WebrsaContratinsertion',
 		);
 		

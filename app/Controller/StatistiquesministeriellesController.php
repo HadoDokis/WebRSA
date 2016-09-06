@@ -54,8 +54,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Serviceinstructeur',
 			'Statistiqueministerielle',
+			'Serviceinstructeur',
 		);
 		
 		/**

@@ -61,10 +61,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Critereapre',
 			'Aideapre66',
 			'Apre',
 			'Apre66',
-			'Critereapre',
 			'Option',
 			'Tiersprestataireapre',
 		);

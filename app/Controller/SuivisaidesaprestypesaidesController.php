@@ -46,10 +46,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Suiviaideapretypeaide',
 			'Apre',
 			'Option',
 			'Suiviaideapre',
-			'Suiviaideapretypeaide',
 		);
 		
 		/**

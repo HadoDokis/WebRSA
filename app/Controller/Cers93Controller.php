@@ -67,8 +67,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Catalogueromev3',
 			'Cer93',
+			'Catalogueromev3',
 			'WebrsaCer93',
 		);
 		

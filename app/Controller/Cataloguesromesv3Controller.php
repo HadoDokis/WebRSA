@@ -69,8 +69,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Appellationromev3',
 			'Catalogueromev3',
+			'Appellationromev3',
 			'Domaineromev3',
 			'Familleromev3',
 			'Metierromev3',

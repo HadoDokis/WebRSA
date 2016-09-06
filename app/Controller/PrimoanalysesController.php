@@ -61,8 +61,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Fichedeliaison',
 			'Primoanalyse',
+			'Fichedeliaison',
 		);
 		
 		/**

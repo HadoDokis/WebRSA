@@ -47,9 +47,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Situationdossierrsa',
 			'Dossier',
 			'Option',
-			'Situationdossierrsa',
 			'Suspensiondroit',
 			'Suspensionversement',
 		);

@@ -51,11 +51,11 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Apre',
 			'Acccreaentr',
 			'Acqmatprof',
 			'Actprof',
 			'Amenaglogt',
-			'Apre',
 			'Locvehicinsert',
 			'Option',
 			'Permisb',

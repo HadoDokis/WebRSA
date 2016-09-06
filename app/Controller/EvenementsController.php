@@ -48,9 +48,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Option',
 			'Evenement',
 			'Foyer',
-			'Option',
 		);
 		
 		/**

@@ -47,12 +47,12 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Foyer',
 			'Actioninsertion',
 			'Aidedirecte',
 			'Contratinsertion',
 			'Cui',
 			'Dossier',
-			'Foyer',
 			'Option',
 			'Orientstruct',
 			'Rendezvous',

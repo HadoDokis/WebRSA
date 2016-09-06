@@ -47,7 +47,7 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Objetentretien',
+			
 		);
 		
 		/**

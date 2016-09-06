@@ -52,12 +52,12 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Traitementpdo',
 			'Descriptionpdo',
 			'Dossier',
 			'Fichiermodule',
 			'Personne',
 			'Propopdo',
-			'Traitementpdo',
 			'Traitementtypepdo',
 		);
 		

@@ -64,6 +64,7 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Propopdo',
 			'Decisionpdo',
 			'Dossier',
 			'Option',
@@ -71,7 +72,6 @@
 			'Pdf',
 			'Personne',
 			'Piecepdo',
-			'Propopdo',
 			'Referent',
 			'Situationdossierrsa',
 			'Situationpdo',

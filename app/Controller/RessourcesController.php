@@ -50,10 +50,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Ressource',
 			'Detailressourcemensuelle',
 			'Option',
 			'Personne',
-			'Ressource',
 			'Ressourcemensuelle',
 			'WebrsaRessource',
 		);

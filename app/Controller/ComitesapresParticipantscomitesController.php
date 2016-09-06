@@ -46,9 +46,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'ComiteapreParticipantcomite',
 			'Apre',
 			'Comiteapre',
-			'ComiteapreParticipantcomite',
 			'Participantcomite',
 		);
 		

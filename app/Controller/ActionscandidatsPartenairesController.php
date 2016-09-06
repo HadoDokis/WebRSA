@@ -48,8 +48,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Actioncandidat',
 			'ActioncandidatPartenaire',
+			'Actioncandidat',
 			'Option',
 			'Partenaire',
 			'Personne',

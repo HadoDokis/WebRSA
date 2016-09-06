@@ -46,9 +46,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array(
-			
-		);
+		public $uses = false;
 		
 		/**
 		 * Utilise les droits d'un autre Controller:action

@@ -46,8 +46,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Contratinsertion',
 			'Typocontrat',
+			'Contratinsertion',
 		);
 		
 		/**

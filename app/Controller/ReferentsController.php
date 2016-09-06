@@ -65,8 +65,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Option',
 			'Referent',
+			'Option',
 			'Structurereferente',
 		);
 		

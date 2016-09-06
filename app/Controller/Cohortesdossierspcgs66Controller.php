@@ -68,8 +68,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Canton',
 			'Cohortedossierpcg66',
+			'Canton',
 			'Dossier',
 			'Dossierpcg66',
 			'Option',

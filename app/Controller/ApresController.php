@@ -28,11 +28,11 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Apre',
 			'Acccreaentr',
 			'Acqmatprof',
 			'Actprof',
 			'Amenaglogt',
-			'Apre',
 			'ApreComiteapre',
 			'Contratinsertion',
 			'Dossier',

@@ -46,10 +46,10 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Zonegeographique',
 			'Adresse',
 			'Structurereferente',
 			'User',
-			'Zonegeographique',
 		);
 		
 		/**

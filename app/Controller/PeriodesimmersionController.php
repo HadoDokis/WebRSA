@@ -56,11 +56,11 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Periodeimmersion',
 			'Adressefoyer',
 			'Cui',
 			'Dossier',
 			'Option',
-			'Periodeimmersion',
 			'Personne',
 			'Referent',
 			'Structurereferente',

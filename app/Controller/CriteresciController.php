@@ -60,9 +60,9 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Cohorteci',
 			'Action',
 			'Catalogueromev3',
-			'Cohorteci',
 			'Contratinsertion',
 			'Option',
 			'Referent',

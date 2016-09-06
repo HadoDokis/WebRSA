@@ -53,8 +53,8 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Cohortetransfertpdv93',
 			'Reorientationep93',
+			'Cohortetransfertpdv93',
 		);
 		
 		/**

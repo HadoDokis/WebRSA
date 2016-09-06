@@ -54,11 +54,11 @@
 		 * @var array
 		 */
 		public $uses = array(
+			'Structurereferente',
 			'Apre',
 			'Option',
 			'Orientstruct',
 			'Referent',
-			'Structurereferente',
 			'Typeorient',
 			'WebrsaStructurereferente',
 			'Zonegeographique',
