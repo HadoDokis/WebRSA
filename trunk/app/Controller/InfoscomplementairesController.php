@@ -55,26 +55,26 @@
 			'Option',
 			'Titresejour',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -98,7 +98,7 @@
 			$this->set( 'paysact', ClassRegistry::init('Activite')->enum('paysact') );
 			$this->set( 'orioblalim', ClassRegistry::init('Creancealimentaire')->enum('orioblalim') );
 			$this->set( 'etatcrealim', ClassRegistry::init('Creancealimentaire')->enum('etatcrealim') );
-			$this->set( 'verspa', $this->Option->verspa() );
+			$this->set( 'verspa', $this->Creancealimentaire->enum('verspa') );
 			$this->set( 'topjugpa', ClassRegistry::init('Creancealimentaire')->enum('topjugpa') );
 			$this->set( 'motidiscrealim', ClassRegistry::init('Creancealimentaire')->enum('motidiscrealim') );
 			$this->set( 'engproccrealim', ClassRegistry::init('Creancealimentaire')->enum('engproccrealim') );
@@ -184,7 +184,7 @@
 						'order' => 'Creancealimentaire.ddcrealim DESC',
 					)
 				);
-				
+
 				if( !empty( $tCreancealimentaire ) ) {
 					$personnesFoyer[$index]['Creancealimentaire'] = $tCreancealimentaire['Creancealimentaire'];
 				}
