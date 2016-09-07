@@ -12,10 +12,6 @@
 		'minYear_to' => '2009', 
 		'maxYear_to' => date( 'Y' ) + 4
 	);
-	$paramAllocataire = array(
-		'options' => $options,
-		'prefix' => 'Search',
-	);
 	$dateRule = array(
 		'date' => array(
 			'rule' => array('date'),
@@ -26,7 +22,7 @@
 		)
 	);
 	
-	echo $this->Default3->titleForLayout( array(), array( 'domain' => $domain ) );
+	$this->start( 'custom_search_filters' );
 	
 	$dates = array(
 		'Dossier' => array('dtdemrsa' => $dateRule),
@@ -34,36 +30,6 @@
 		'Bilanparcours66' => array('datebilan' => $dateRule)
 	);
 	echo $this->FormValidator->generateJavascript($dates, false);
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
-	}
-
-	echo $this->Default3->actions(
-		array(
-			'/' . $controller . '/' . $action . '/#toggleform' => array(
-				'onclick' => '$(\'' . $formId . '\').toggle(); return false;',
-				'class' => $action . 'Form',
-				'domain' => $domain
-			),
-		)
-	);
-
-	// 1. Moteur de recherche
-	echo $this->Xform->create( null, 
-		array( 
-			'id' => $formId, 
-			'class' => ( ( isset( $results ) ) ? 'folded' : 'unfolded' ), 
-			'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
-		)
-	);
-
-	echo $this->Allocataires->blocDossier($paramAllocataire);
-
-	echo $this->Allocataires->blocAdresse($paramAllocataire);
-
-	echo $this->Allocataires->blocAllocataire($paramAllocataire);
 	
 	echo '<fieldset><legend>' . __m( 'Bilanparcours66.search' ) . '</legend>'
 		. $this->Default3->subform(
@@ -78,7 +44,7 @@
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
-		. $this->SearchForm->dateRange( 'Search.Bilanparcours66.datebilan', $paramDate )
+		. $this->Allocataires->SearchForm->dateRange( 'Search.Bilanparcours66.datebilan', $paramDate )
 		. $this->Default3->subform(
 			array(
 				'Search.Bilanparcours66.hasmanifestation' => array( 'empty' => true ),
@@ -88,27 +54,15 @@
 		. '</fieldset>'
 	;
 	
-	echo $this->Allocataires->blocReferentparcours($paramAllocataire);
-	
-	echo $this->Allocataires->blocPagination($paramAllocataire);
+	$this->end();
 
-	echo $this->Xform->end( 'Search' );
-	
-	echo $this->Search->observeDisableFormOnSubmit( $formId );
-
-	// 2. Formulaire de traitement des résultats de la recherche
-	if( isset( $results ) ) {
-		echo $this->Default3->configuredIndex(
-			$results,
-			array(
-				'format' => SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ),
-				'options' => $options
-			)
-		);
-		
-		echo $this->element( 'search_footer' );
-	}
-	
+	echo $this->element(
+		'ConfigurableQuery/search',
+		array(
+			'customSearch' => $this->fetch( 'custom_search_filters' ),
+			'exportcsv' => array( 'action' => 'exportcsv' )
+		)
+	);
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
