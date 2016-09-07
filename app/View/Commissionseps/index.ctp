@@ -130,12 +130,14 @@
 
 <?php echo $this->Xform->end();
 	if( isset( $commissionseps ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		if( empty( $commissionseps ) ) {
 			echo $this->Xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );
 		}
 		else {
 			$pagination = $this->Xpaginator->paginationBlock( 'Commissionep', $this->passedArgs );
-			
+
 			$showLienAvisEp = ( Configure::read( 'Cg.departement' ) == 66 );
 
 			echo $pagination;
@@ -205,10 +207,10 @@
 						break;
 					case 'arbitragecg':
 						$lien = '';
-						if( $showLienAvisEp ) { 
+						if( $showLienAvisEp ) {
 							$lien = '<td>'.$this->Xhtml->link( 'Voir avis EP', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
 						}
-						
+
 						$lien .= '<td>'.$this->Xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
 						break;
 					case 'decisions':
