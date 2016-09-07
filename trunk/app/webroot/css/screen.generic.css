@@ -2319,8 +2319,9 @@ body.referents td.action span.link.cloturer {
 
 /* Menu du dossier, mise en évidence du lien "Synthèse du suivi" pour le CG 93  */
 div#pageContent div.treemenu a.accompagnementsbeneficiaires.index {
-	font-weight: normal;
+	font-size: 120%;
+	background-color: #32d56e;
 }
 div#pageContent div.treemenu a.accompagnementsbeneficiaires.index.selected {
-	font-weight: bold;
+	background-color: #a8dbef;
 }
