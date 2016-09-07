@@ -48,7 +48,8 @@
         </table>
     </div>
 <?php if( !Configure::read( 'Jetons2.disabled' ) && Configure::read( 'Etatjetons.enabled' ) ) {?>
-	<script>
+	<script type="text/javascript">
+		//<![CDATA[
 		function jetonDelete( user_id ) {
 			if ( $('jetons_count').innerHTML !== '0' 
 				&& confirm("La libération des dossiers nécessite un rechargement de la page, toutes les modifications non sauvegardées seront perdues. Voulez-vous continuer ?") ) {
@@ -68,6 +69,7 @@
 				});
 			}
 		}
+		//]]>
 	</script>
 <?php }?>
 <?php endif;?>

@@ -53,16 +53,16 @@
 					$this->generateValidationRules($additionnalFields, $useRequestData)->validationJson : $this->validationJson;
 			
 			$script = '<script type="text/javascript">
-		<!--//--><![CDATA[//><!--
-			FormValidator.initializeVars({
-				validationRules: ' . $validationJson . ',
-				traductions: ' . $this->generateTraductions()->traductions . ',
-				validationJS: ' . $validationJS . ',
-				validationOnchange: ' . $validationOnchange . ',
-				validationOnsubmit: ' . $validationOnsubmit . '
-			});
-		//--><!]]>
-		</script>';
+//<![CDATA[
+FormValidator.initializeVars({
+	validationRules: ' . $validationJson . ',
+	traductions: ' . $this->generateTraductions()->traductions . ',
+	validationJS: ' . $validationJS . ',
+	validationOnchange: ' . $validationOnchange . ',
+	validationOnsubmit: ' . $validationOnsubmit . '
+});
+//]]>
+</script>';
 			
 			return $script;
 		}
