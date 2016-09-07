@@ -40,6 +40,17 @@
 		</apply>
 	</target>
 
+	<!-- Vérification de la syntaxe des fichiers .xml et .xsl -->
+	<target name="xml-lint">
+		<apply executable="xmllint" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
+			<arg line="--noout"/>
+			<fileset
+				dir="${dir.cakephp.app}"
+				includes="**/*.xml,**/*.xsl"
+				excludes="**/Vendor/Netbeans/Templates/**,**/tmp/**,**/Plugin/PgDbSnapshot/**" />
+		</apply>
+	</target>
+
 	<!-- Vérification de la syntaxe des fichiers .php et .ctp -->
 	<target name="php-lint">
 		<apply executable="php" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
@@ -116,7 +127,7 @@
 
 	<!-- Vérification de la syntaxe des fichiers -->
 	<!-- <target name="lint" depends="php-lint,sql-lint,po-lint,js-lint,css-lint"/> -->
-	<target name="lint" depends="bash-lint,php-lint,po-lint,js-lint,css-lint"/>
+	<target name="lint" depends="bash-lint,xml-lint,php-lint,po-lint,js-lint,css-lint"/>
 
 	<!-- Tests unitaires -->
 	<target name="phpunit" depends="clean,lint">
