@@ -555,7 +555,10 @@ document.observe( \'dom:loaded\', function() { try {
 				),
 				'fieldset' => false
 			);
-
+			
+			Configure::write('Cg.departement', 93);
+			Configure::delete('Search.Options.enums.Personne.trancheage');
+			
 			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocAllocataire( $params );
 
@@ -585,7 +588,7 @@ document.observe( \'dom:loaded\', function() { try {
 <option value="1">Oui</option>
 <option value="0">Non</option>
 </select></div>';
-
+	
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			// 2. Avec le fieldset
