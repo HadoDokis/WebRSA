@@ -7,6 +7,7 @@
 	 * @package app.View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'ConnectionManager', 'Model' );
 
 	/**
 	 * La classe TypeHelper ...
@@ -28,6 +29,12 @@
 		*/
 
 		protected $_typeInfos = array();
+
+		/**
+		* Cache for table names
+		*/
+
+		protected $_sources = array();
 
 		/**
 		* @param string $path ie. User.username, User.0.id
@@ -59,21 +66,38 @@
 			list( $modelName, $fieldName ) = model_field( $path );
 
 			if( empty( $this->_typeInfos["{$modelName}.{$fieldName}"] ) ) {
+				$defaultTypeInfos = array(
+					'type' => 'text',
+					'null' => true,
+					'default' => '',
+					'length' => null
+				);
+
 				try {
 					$model = ClassRegistry::init( $modelName );
 
-					if( !$model->Behaviors->attached( 'Typeable' ) ) {
-						$model->Behaviors->attach( 'Typeable' );
+					if( false === isset( $this->_sources[$model->useDbConfig] ) ) {
+						$Db = ConnectionManager::getDataSource( $model->useDbConfig );
+						if( true === method_exists( $Db, 'listSources' ) ) {
+							$this->_sources[$model->useDbConfig] = array_map( 'strtolower', (array)$Db->listSources() );
+						}
+						else {
+							$this->_sources[$model->useDbConfig] = array();
+						}
 					}
-					$typeInfos = $model->getTypeInfos( $fieldName );
+
+					if( true === in_array( strtolower( $model->tablePrefix . $model->useTable ), $this->_sources[$model->useDbConfig] ) ) {
+						if( false === $model->Behaviors->attached( 'Typeable' ) ) {
+							$model->Behaviors->attach( 'Typeable' );
+						}
+						$typeInfos = $model->getTypeInfos( $fieldName );
+					}
+					else {
+						$typeInfos = $defaultTypeInfos;
+					}
 
 				} catch( Exception $e ) {
-					$typeInfos = array(
-						'type' => 'text',
-						'null' => true,
-						'default' => '',
-						'length' => null
-					);
+					$typeInfos = $defaultTypeInfos;
 					$this->log( sprintf( '%s:%d %s', $e->getFile(), $e->getCode(), $e->getMessage() ), LOG_DEBUG );
 				}
 
