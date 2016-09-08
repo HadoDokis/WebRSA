@@ -128,7 +128,13 @@
 			// INFO: évite certaines URL trop longues, comme dans la recherche par fiches de prescription
 			$params = Hash::filter( $params );
 			if( empty( $params ) ) {
-				$params = array( 'prg' => true );
+				$filter = Hash::get( $this->settings, "{$Controller->action}.filter" );
+				if( false === empty( $filter ) ) {
+					$params = array( "{$filter}__active" => true, 'prg' => true );
+				}
+				else {
+					$params = array( 'prg' => true );
+				}
 			}
 
 			$redirect = array_merge( array( 'action' => $Controller->action ), $params );
