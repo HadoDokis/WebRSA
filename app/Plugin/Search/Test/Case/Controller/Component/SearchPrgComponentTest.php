@@ -224,9 +224,9 @@
 
 		/**
 		 * Test de la méthode SearchPrgComponent::startup() lorsque la requête
-		 * est envoyée en POST.
+		 * est envoyée en POST et qu'il existe des filtres de recherche.
 		 */
-		public function testPostRedirectFilter() {
+		public function testPostRedirectFilterWithSearchFilters() {
 			$_SERVER['REQUEST_METHOD'] = 'POST';
 			$data = array(
 				'Search' => array(
@@ -267,6 +267,70 @@
 					'foo' => 'bar'
 				)
 			);
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode SearchPrgComponent::startup() lorsque la requête
+		 * est envoyée en POST et qu'il n'existe pas de filtre de recherche.
+		 */
+		public function testPostRedirectFilterWithoutSearchFilters() {
+			// 1. Avec la clé "Search" (par défaut)
+			$_SERVER['REQUEST_METHOD'] = 'POST';
+			$data = array(
+				'Search' => array(
+					'User' => array(
+						'username' => ''
+					)
+				)
+			);
+
+			$action = $this->Controller->request->params['action'];
+			$key = Hash::get( $this->Controller->SearchPrg2->settings, 'index.filter' );
+			$this->Controller->data = $data;
+			$this->Controller->SearchPrg2->startup( $this->Controller );
+			$result = $this->Controller->redirected;
+
+			$expected = array(
+				array(
+					'action' => $action,
+					"{$key}__active" => true,
+					'prg' => true
+				),
+				null,
+				true
+			);
+
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 2. Avec la clé "FooBar"
+			$_SERVER['REQUEST_METHOD'] = 'POST';
+			$data = array(
+				'FooBar' => array(
+					'User' => array(
+						'username' => ''
+					)
+				)
+			);
+			$this->Controller->SearchPrg2->settings['index']['filter'] = 'FooBar';
+			$this->Controller->SearchPrg2->initialize( $this->Controller );
+
+			$action = $this->Controller->request->params['action'];
+			$key = Hash::get( $this->Controller->SearchPrg2->settings, 'index.filter' );
+			$this->Controller->data = $data;
+			$this->Controller->SearchPrg2->startup( $this->Controller );
+			$result = $this->Controller->redirected;
+
+			$expected = array(
+				array(
+					'action' => $action,
+					"{$key}__active" => true,
+					'prg' => true
+				),
+				null,
+				true
+			);
+
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
