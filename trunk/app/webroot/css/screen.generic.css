@@ -2105,7 +2105,11 @@ table.results_table.full_size.horizontal_view th {
 	color: #0545df;
 }
 
-body table tbody td.action a.tag_gestionsdoublons_index, body table tbody td.action span.tag_gestionsdoublons_index.disabled {
+body table tbody td.action a.tag_gestionsdoublons_index {
+	background-image: url( ../img/icons/tag_red.png );
+}
+
+body table tbody td.action span.tag_gestionsdoublons_index.disabled {
 	background-image: url( ../img/icons/tag_red_disabled.png );
 }
 
