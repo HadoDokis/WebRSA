@@ -154,7 +154,7 @@
 					if (!empty($old)) {
 						$conditions = array('role_id' => $role_id);
 						if (!empty($notDelete)) {
-							$conditions['user_id NOT IN'] = $notDelete;
+							$conditions[] = 'user_id NOT IN ('.implode(', ', $notDelete).')';
 						}
 						$this->Role->RoleUser->deleteAll($conditions);
 					}
