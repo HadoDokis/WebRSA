@@ -14,11 +14,17 @@ BEGIN;
 -- pas passés
 -- *****************************************************************************
 
+-- Ajout du champ foyerid dans la table adresses
+-- @see app/Config/sql/patches/2.x/patch-2.0-rc08.sql
+SELECT add_missing_table_field( 'public', 'adresses', 'foyerid', 'INTEGER' );
+
+-- Suppression des anciennes colonnes de la table adresses
+-- @see app/Config/sql/patches/2.x/patch-2.6.10.sql
+
 -- Suppression de la vue
 DROP VIEW IF EXISTS public.exportcloud;
 
 -- Suppression des colonnes des anciens flux
--- @see app/Config/sql/patches/2.x/patch-2.6.10.sql
 
 SELECT alter_table_drop_column_if_exists( 'public', 'parcours', 'typevoie' );
 SELECT alter_table_drop_column_if_exists( 'public', 'parcours', 'locaadr' );
@@ -102,9 +108,9 @@ CREATE VIEW exportcloud AS
 	)
 	ORDER BY personnes.id;
 
--- Ajout du champ foyerid dans la table adresses
--- @see app/Config/sql/patches/2.x/patch-2.0-rc08.sql
-SELECT add_missing_table_field( 'public', 'adresses', 'foyerid', 'INTEGER' );
+-- Augmentation de la longueur de l'intitulé des types d'orientations
+-- @see app/Config/sql/patches/2.x/patch-2.7.05.sql
+ALTER TABLE typesorients ALTER COLUMN lib_type_orient TYPE VARCHAR(75);
 
 -- *****************************************************************************
 COMMIT;
