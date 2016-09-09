@@ -20,6 +20,7 @@
 <!-- Résultats -->
 
 <?php if( isset( $cohortepdo ) ):?>
+	<?php echo $this->Html->tag( 'h2', 'Résultats de la recherche' );?>
 	<?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
 		<?php echo $pagination;?>
 		<?php echo $this->Form->create( 'Cohortepdo', array() );?>

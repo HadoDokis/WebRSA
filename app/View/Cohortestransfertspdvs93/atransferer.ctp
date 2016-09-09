@@ -11,6 +11,8 @@
 
 	// Résultats
 	if( isset( $results ) ) {
+		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 		if( empty( $results ) ) {
 			echo $this->Html->tag( 'p', 'Aucun résultat', array( 'class' => 'notice' ) );
 		}
