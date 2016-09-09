@@ -60,6 +60,8 @@
 ?>
 
 <?php
+	echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 	echo $this->Default2->index(
 		$personnes,
 		array(

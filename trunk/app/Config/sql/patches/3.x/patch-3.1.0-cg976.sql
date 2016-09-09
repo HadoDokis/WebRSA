@@ -48,7 +48,7 @@ SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 'l
 
 SELECT alter_table_drop_column_if_exists( 'public', 'cers93', 'locaadr' );
 
--- Re-création de la vue, moins la colonne adresses.typevoie
+-- Re-création de la vue, la colonne adresses.typevoie contient à présent la valeur NULL
 
 CREATE VIEW exportcloud AS
     SELECT
@@ -59,6 +59,7 @@ CREATE VIEW exportcloud AS
 			personnes.nom,
 			personnes.prenom,
 			adresses.numvoie,
+			NULL AS typevoie,
 			adresses.libtypevoie,
 			adresses.nomvoie,
 			adresses.compladr,

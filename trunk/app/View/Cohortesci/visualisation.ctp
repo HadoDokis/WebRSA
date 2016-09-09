@@ -20,6 +20,7 @@
 	}
 ?>
 <?php if( !empty( $this->request->data ) ):?>
+	<?php echo $this->Html->tag( 'h2', 'Résultats de la recherche' );?>
 	<?php if( empty( $cohorteci ) ):?>
 		<?php
 			switch( $this->action ) {

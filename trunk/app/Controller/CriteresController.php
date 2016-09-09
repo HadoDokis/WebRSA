@@ -64,17 +64,17 @@
 			'Orientstruct',
 			'Typeorient',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -84,7 +84,7 @@
 			'ajaxstruc',
 			'constReq',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -96,7 +96,7 @@
 			'exportcsv' => 'read',
 			'index' => 'read',
 		);
-		
+
 		/**
 		*
 		*/
