@@ -97,6 +97,7 @@
 </script>
 
 <?php if( isset( $entretiens ) ):?>
+<h2 class="noprint">Résultats de la recherche</h2>
     <?php if( empty( $entretiens ) ):?>
         <?php $message = 'Aucun entretien n\'a été trouvé.';?>
         <p class="notice"><?php echo $message;?></p>

@@ -84,7 +84,10 @@
 
 <?php echo $this->Xform->end();?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Dossierpcg66', $this->passedArgs ); ?>
+<?php if ($pagination):?>
+<h2 class="noprint">Résultats de la recherche</h2>
 <?php echo $pagination;?>
+<?php endif;?>
 <?php if( isset( $cohortedossierpcg66 ) ):?>
     <?php if( is_array( $cohortedossierpcg66 ) && count( $cohortedossierpcg66 ) > 0  ):?>
         <?php echo $this->Form->create( 'Affectationdossierpcg66', array() );?>

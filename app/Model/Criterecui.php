@@ -168,13 +168,6 @@
 					'Cui.id' => 'ASC'
 				);
 				
-				// 4. Si on utilise les cantons, on ajoute une jointure
-				if( Configure::read( 'CG.cantons' ) ) {
-					$Canton = ClassRegistry::init( 'Canton' );
-					$query['fields']['Canton.canton'] = 'Canton.canton';
-					$query['joins'][] = $Canton->joinAdresse();
-				}
-
 				Cache::write( $cacheKey, $query );
 			}
 

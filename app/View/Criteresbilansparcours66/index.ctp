@@ -91,7 +91,10 @@
 
 <?php echo $this->Xform->end();?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs ); ?>
+<?php if ($pagination):?>
+<h2 class="noprint">Résultats de la recherche</h2>
 <?php echo $pagination;?>
+<?php endif;?>
 <?php if( isset( $bilansparcours66 ) ):?>
 	<?php if( is_array( $bilansparcours66 ) && count( $bilansparcours66 ) > 0  ):?>
 		<?php

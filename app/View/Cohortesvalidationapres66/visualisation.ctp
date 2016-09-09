@@ -78,6 +78,7 @@
 
 
 <?php if( isset( $cohortevalidationapre66 ) ):?>
+<h2 class="noprint">Résultats de la recherche</h2>
     <?php if( empty( $cohortevalidationapre66 ) ):?>
         <?php
             switch( $this->action ) {

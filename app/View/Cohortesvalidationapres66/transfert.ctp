@@ -78,7 +78,10 @@
 
 <?php echo $this->Xform->end();?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Apre66', $this->passedArgs ); ?>
+<?php if ($pagination):?>
+<h2 class="noprint">Résultats de la recherche</h2>
 <?php echo $pagination;?>
+<?php endif;?>
 <?php if( isset( $cohortevalidationapre66 ) ):?>
     <?php if( is_array( $cohortevalidationapre66 ) && count( $cohortevalidationapre66 ) > 0  ):?>
         <?php echo $this->Form->create( 'TransfertApre', array() );?>

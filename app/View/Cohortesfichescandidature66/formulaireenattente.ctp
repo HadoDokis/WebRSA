@@ -8,7 +8,10 @@
 <?php require_once( dirname( __FILE__ ).DS.'filtre.ctp' ); ?>
 
 <?php $pagination = $this->Xpaginator->paginationBlock( 'ActioncandidatPersonne', $this->passedArgs ); ?>
+<?php if ($pagination):?>
+<h2 class="noprint">Résultats de la recherche</h2>
 <?php echo $pagination;?>
+<?php endif;?>
 <?php if( isset( $cohortefichecandidature66 ) ):?>
 	<?php if( is_array( $cohortefichecandidature66 ) && count( $cohortefichecandidature66 ) > 0  ):?>
 		<?php echo $this->Form->create( 'SuiviActioncandidatPersonne', array() );?>

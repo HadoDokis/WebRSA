@@ -16,6 +16,7 @@
 <?php require_once( 'filtre.ctp' );?>
 
 <?php if( !empty( $this->request->data ) && $formSent ):?>
+<h2 class="noprint">Résultats de la recherche</h2>
 	<?php if( empty( $cohorte ) ):?>
 		<?php
 			switch( $this->action ) {
