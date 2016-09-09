@@ -35,7 +35,7 @@ msgid "Actionrole.url"
 msgstr "URL"
 
 msgid "Actionroles::delete::confirm"
-msgstr "Supprimer le rôle ?"
+msgstr "Supprimer l'action de rôle ?"
 
 msgid "Actionrole::index::empty"
 msgstr "Vide"

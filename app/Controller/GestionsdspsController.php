@@ -39,7 +39,7 @@
 		public $helpers = array(
 			
 		);
-
+		
 		/**
 		 * Modèles utilisés.
 		 *

@@ -43,15 +43,6 @@
 		);
 
 		/**
-		 * Modèles utilisés.
-		 *
-		 * @var array
-		 */
-		public $uses = array(
-			
-		);
-		
-		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
 		 * 
