@@ -159,5 +159,15 @@
 		public function addEnabled( array $messages ) {
 			return $this->WebrsaCui66->addEnabled($messages);
 		}
+		
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @return array
+		 */
+		public function options($user_id = null) {
+			return $this->WebrsaCui66->options($user_id);
+		}
 	}
 ?>

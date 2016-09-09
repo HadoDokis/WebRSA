@@ -132,7 +132,10 @@
 
 <?php echo $this->Xform->end();?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'ActioncandidatPersonne', $this->passedArgs ); ?>
+<?php if ($pagination):?>
+<h2 class="noprint">Résultats de la recherche</h2>
 <?php echo $pagination;?>
+<?php endif;?>
 <?php if( isset( $actionscandidats_personnes ) ):?>
 	<?php if( is_array( $actionscandidats_personnes ) && count( $actionscandidats_personnes ) > 0  ):?>
 		<?php

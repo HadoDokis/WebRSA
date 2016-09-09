@@ -100,6 +100,7 @@
 <?php echo $this->Xform->end();?>
 
 <?php if( isset( $cohortesnonorientes66 ) ):?>
+<h2 class="noprint">Résultats de la recherche</h2>
     <?php if( empty( $cohortesnonorientes66 ) ):?>
         <p class="notice"><?php echo 'Aucun allocataire à orienter.';?></p>
     <?php else:?>

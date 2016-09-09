@@ -203,6 +203,8 @@
 
 	// 2. Formulaire de traitement des résultats de la recherche
 	if( isset( $results ) ) {
+		echo '<h2 class="noprint">Résultats de la recherche</h2>';
+		
 		if( !empty( $results ) ) {
 			echo $this->Default3->DefaultForm->create( null, array( 'id' => 'CriterescuisSearchForm' ) );
 		}

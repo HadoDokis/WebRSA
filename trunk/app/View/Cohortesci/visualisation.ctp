@@ -35,6 +35,7 @@
 		<?php
 			$domain_search_plugin = ( Configure::read( 'Cg.departement' ) == 93 ) ? 'search_plugin_93' : 'search_plugin';
 		?>
+		<h2 class="noprint">Résultats de la recherche</h2>
 		<?php echo $pagination;?>
 		<table class="tooltips default2">
 			<thead>

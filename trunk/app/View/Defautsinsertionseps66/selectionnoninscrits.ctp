@@ -60,6 +60,7 @@
 <?php echo $this->Form->end();?>
 
 <?php if( isset( $personnes ) ):?>
+<h2 class="noprint">Résultats de la recherche</h2>
 <?php
 	if ( is_array( $personnes ) && count( $personnes ) > 0 ) {
 		echo $this->Default2->index(

@@ -132,12 +132,12 @@
 			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'qual', $this->Option->qual() );
 
-			$this->set( 'referents', ClassRegistry::init( 'Referent' )->listOptions( ) );
+			$this->set( 'referents', ClassRegistry::init( 'Referent' )->WebrsaReferent->listOptions( ) );
 			$this->set( 'options', $this->Orientstruct->enums() );
 
 
 			//Ajout des structures et référents orientants
-			$this->set( 'refsorientants', ClassRegistry::init( 'Referent' )->listOptions() );
+			$this->set( 'refsorientants', ClassRegistry::init( 'Referent' )->WebrsaReferent->listOptions() );
 			$this->set( 'structsorientantes', ClassRegistry::init( 'Structurereferente' )->listOptions( array( 'orientation' => 'O' ) ) );
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {

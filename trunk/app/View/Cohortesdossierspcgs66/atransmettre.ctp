@@ -99,6 +99,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
         ?>
         <p class="notice"><?php echo $message; ?></p>
     <?php else: ?>
+<h2 class="noprint">Résultats de la recherche</h2>
         <?php $pagination = $this->Xpaginator->paginationBlock('Dossierpcg66', $this->passedArgs); ?>
         <?php echo $pagination; ?>
         <?php echo $this->Form->create('Dossierpcg66Atransmettre', array()); ?>

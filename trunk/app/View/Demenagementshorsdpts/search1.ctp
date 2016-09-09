@@ -33,6 +33,8 @@
 	echo $this->Xform->end( 'Search' );
 
 	if( isset( $results ) ) {
+		echo '<h2 class="noprint">Résultats de la recherche</h2>';
+		
 		$this->Default3->DefaultPaginator->options(
 			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
 		);
