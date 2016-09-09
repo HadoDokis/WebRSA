@@ -40,15 +40,6 @@
 			'Default',
 			'Default2',
 		);
-
-		/**
-		 * Modèles utilisés.
-		 *
-		 * @var array
-		 */
-		public $uses = array(
-			
-		);
 		
 		/**
 		 * Utilise les droits d'un autre Controller:action

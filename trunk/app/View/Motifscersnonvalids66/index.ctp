@@ -5,6 +5,7 @@
     );
 ?>
 <?php
+	$motifscersnonvalids66 = !empty($motifscersnonvalids66) ? $motifscersnonvalids66 : array();
     echo $this->Default2->index(
         $motifscersnonvalids66,
         array(
