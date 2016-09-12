@@ -30,4 +30,13 @@
 		public $uses = array(
 			'Propositionprimo'
 		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 * 
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
 	}

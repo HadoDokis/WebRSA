@@ -96,6 +96,12 @@ msgstr "Annulation d'une fiche de candidature/prescription"
 msgid "ActionscandidatsPersonnes:maillink"
 msgstr "Envoi de mail"
 
+msgid "ActionscandidatsPersonnes:exportcsv_enattente"
+msgstr "Export CSV des fiches de candidature/prescription en attente"
+
+msgid "ActionscandidatsPersonnes:exportcsv_encours"
+msgstr "Export CSV des fiches de candidature/prescription en attente"
+
 ###############################################################################
 
 msgid "Module:Actionsinsertion"
@@ -106,6 +112,26 @@ msgstr "Visualisation des actions d'insertion"
 
 msgid "Actionsinsertion:edit"
 msgstr "Ajout/Édition d'une action d'insertion"
+
+###############################################################################
+
+msgid "Module:Actionroles"
+msgstr "Paramétrage des rôles"
+
+msgid "Actionroles:index"
+msgstr "Visualisation des rôles"
+
+msgid "Actionroles:add"
+msgstr "Ajout d'un rôle"
+
+msgid "Actionroles:edit"
+msgstr "Modification d'un rôle"
+
+msgid "Actionroles:delete"
+msgstr "Suppression d'un rôle"
+
+msgid "Actionroles:view"
+msgstr "Voir un rôle"
 
 ###############################################################################
 
@@ -179,6 +205,31 @@ msgstr "Impression d'une APRE"
 
 msgid "Apres66:cancel"
 msgstr "Annulation d'une APRE"
+
+msgid "Apres66:exportcsv_validation"
+msgstr "Export CSV des APREs à valider"
+
+msgid "Apres66:exportcsv_imprimer"
+msgstr "Export CSV des APREs à imprimer"
+
+msgid "Apres66:cohorte_imprimer_impressions"
+msgstr "Action 'Imprimer la cohorte' des APREs à notifier"
+
+msgid "Apres66:cohorte_imprimer"
+msgstr "Cohorte d'APREs à notifier"
+
+msgid "Apres66:cohorte_notifiees_impressions"
+msgstr "Action 'Imprimer la cohorte' des APREs notifiées"
+
+msgid "Apres66:exportcsv_notifiees"
+msgstr "Export CSV des APREs à notifier"
+
+msgid "Apres66:exportcsv_transfert"
+msgstr "Export CSV des APREs à transférer par la cellule"
+
+msgid "Apres66:exportcsv_traitement"
+msgstr "Export CSV des APREs à traiter par la cellule"
+
 ###############################################################################
 
 msgid "Module:ApresComitesapres"
@@ -278,6 +329,17 @@ msgstr "Ajout/Édition d'un canton"
 
 msgid "Cantons:delete"
 msgstr "Suppression d'un canton"
+
+###############################################################################
+
+msgid "Module:Changementsadresses"
+msgstr "Moteur de recherche par changement d'adresse"
+
+msgid "Changementsadresses:search"
+msgstr "Recherche par changement d'adresse"
+
+msgid "Changementsadresses:exportcsv"
+msgstr "Export CSV de la recherche par changement d'adresse"
 
 ###############################################################################
 
@@ -655,6 +717,51 @@ msgstr "Suppression d'un CER"
 msgid "Contratsinsertion:cancel"
 msgstr "Annulation d'un CER"
 
+msgid "Contratsinsertion:search"
+msgstr "Recherche par CER"
+
+msgid "Contratsinsertion:exportcsv"
+msgstr "Export CSV de la recherche par CER"
+
+msgid "Contratsinsertion:ficheliaisoncer"
+msgstr "Impression d'une fiche de liaison du CER"
+
+msgid "Contratsinsertion:notifbenef"
+msgstr "Notification au bénéficiaire du CER"
+
+msgid "Contratsinsertion:notification"
+msgstr "Définir la date d'envoi des documents"
+
+msgid "Contratsinsertion:reconduction_cer_plus_55_ans"
+msgstr "Tacite reconduction d'un CER pour plus de 55 ans"
+
+msgid "Contratsinsertion:cohorte_nouveaux"
+msgstr "Cohorte des Nouveaux CERs à valider"
+
+msgid "Contratsinsertion:cohorte_valides"
+msgstr "Cohorte des Nouveaux CERs validés"
+
+msgid "Contratsinsertion:exportcsv_valides"
+msgstr "Export CSV des nouveaux CERs validés"
+
+msgid "Contratsinsertion:cohorte_cersimpleavalider "
+msgstr "Cohorte des CER Simples à valider"
+
+msgid "Contratsinsertion:exportcsv_cersimpleavalider"
+msgstr "Export CSV des CER Simples à valider"
+
+msgid "Contratsinsertion:cohorte_cerparticulieravalider"
+msgstr "Cohorte des CER Particuliers à valider"
+
+msgid "Contratsinsertion:exportcsv_cerparticulieravalider"
+msgstr "Export CSV des CER Particuliers à valider"
+
+msgid "Contratsinsertion:search_valides"
+msgstr "Décisions prises sur le CER"
+
+msgid "Contratsinsertion:exportcsv_search_valides"
+msgstr "Export CSV des Décisions prises sur le CER"
+
 ###############################################################################
 
 msgid "Module:Courrierspdos"
@@ -855,6 +962,76 @@ msgstr "Synthèse"
 
 ###############################################################################
 
+msgid "Module:Cuis66"
+msgstr "CUI du CD66"
+
+msgid "Cuis66:index"
+msgstr "Visualisation des CUIs (66)"
+
+msgid "Cuis66:add"
+msgstr "Ajout d'un CUI (66)"
+
+msgid "Cuis66:edit"
+msgstr "Édition d'un CUI (66)"
+
+msgid "Cuis66:delete"
+msgstr "Suppression d'un CUI (66)"
+
+msgid "Cuis66:indexparams"
+msgstr "Paramétrage des CUIs (66)"
+
+msgid "Cuis66:filelink"
+msgstr "Fichiers liés au CUI (66)"
+
+msgid "Cuis66:annule"
+msgstr "Annulation du CUI (66)"
+
+msgid "Cuis66:notification"
+msgstr "Marquer le CUI comme notifié"
+
+msgid "Cuis66:email"
+msgstr "Liste des e-mails du CUI"
+
+msgid "Cuis66:email_delete"
+msgstr "Suppression d'un e-mail du CUI"
+
+msgid "Cuis66:email_add"
+msgstr "Ajout d'un e-mail du CUI"
+
+msgid "Cuis66:email_edit"
+msgstr "Modification d'un e-mail du CUI"
+
+msgid "Cuis66:email_view"
+msgstr "Visualisation d'un e-mail du CUI"
+
+msgid "Cuis66:email_send"
+msgstr "Envoi d'un e-mail du CUI"
+
+msgid "Cuis66:impression_fichedeliaison"
+msgstr "Imprimer la fiche de liaison du CUI"
+
+msgid "Cuis66:impression"
+msgstr "Impression du CUI"
+
+msgid "Cuis66:view"
+msgstr "Visualisation du CUI (66)"
+
+###############################################################################
+
+msgid "Module:Dashboards"
+msgstr "Tableau de bord principal"
+
+msgid "Dashboards:index"
+msgstr "Liste des Tableaux de bord"
+
+msgid "Dashboards:indexparams"
+msgstr "Paramétrage des Tableaux de bord"
+
+msgid "Dashboards:reset_cache"
+msgstr "Recalculer les nombres dans les Tableaux de bord"
+
+###############################################################################
+
 msgid "Module:Decisionsdossierspcgs66"
 msgstr "Propositions de décision au niveau foyer (Dossier PCG CG66)"
 
@@ -884,6 +1061,9 @@ msgstr "Validation (après avis technique)"
 
 msgid "Decisionsdossierspcgs66:filelink"
 msgstr "Lier des fichiers à la décision"
+
+msgid "Decisionsdossierspcgs66:cancel"
+msgstr "Annuler la décision d'un dossier PCG"
 
 ###############################################################################
 
@@ -972,6 +1152,12 @@ msgstr "Impression du courrier d'information"
 msgid "Defautsinsertionseps66:printCourriersInformations"
 msgstr "Impression des courriers d'information"
 
+msgid "Defautsinsertionseps66:exportcsv_noninscrits"
+msgstr "Export CSV des non inscrits à pôle emploi"
+
+msgid "Defautsinsertionseps66:exportcsv_radies"
+msgstr "Export CSV des radiés de pôle emploi"
+
 ###############################################################################
 
 msgid "Module:Descriptionspdos"
@@ -993,6 +1179,17 @@ msgstr "Détails du droit RSA"
 
 msgid "Detailsdroitsrsa:index"
 msgstr "Visulaisation des détails du droit RSA"
+
+###############################################################################
+
+msgid "Module:Donneescaf"
+msgstr "Module Flux CAF"
+
+msgid "Donneescaf:personne"
+msgstr "Flux CAF d'une personne"
+
+msgid "Donneescaf:foyer"
+msgstr "Flux CAF d'un foyer"
 
 ###############################################################################
 
@@ -1070,6 +1267,36 @@ msgstr "Ajout/Édition d'un dossier PCG"
 
 msgid "Dossierspcgs66:delete"
 msgstr "Suppression d'un dossier PCG"
+
+msgid "Dossierspcgs66:cancel"
+msgstr "Annulation d'un dossier PCG"
+
+msgid "Dossierspcgs66:exportcsv_affectes"
+msgstr "Export CSV de dossiers PCGs affectés"
+
+msgid "Dossierspcgs66:exportcsv_enattenteaffectation"
+msgstr "Export CSV de dossiers PCGs en attente d'affectation"
+
+msgid "Dossierspcgs66:exportcsv_atransmettre"
+msgstr "Export CSV de dossiers PCGs à transmettre"
+
+msgid "Dossierspcgs66:cohorte_heberge"
+msgstr "Cohorte de création de dossier PCG pour les allocataires hébergés"
+
+msgid "Dossierspcgs66:exportcsv_heberge"
+msgstr "Export CSV de la Cohorte de création de dossier PCG pour les allocataires hébergés"
+
+msgid "Dossierspcgs66:cohorte_rsamajore"
+msgstr "Cohorte de création de dossier PCG pour les RSA majorés"
+
+msgid "Dossierspcgs66:exportcsv_rsamajore"
+msgstr "Export CSV de la Cohorte de création de dossier PCG pour les RSA majorés"
+
+msgid "Dossierspcgs66:cohorte_imprimer_impressions"
+msgstr "Action 'Imprimer la cohorte' des PCGs à imprimer"
+
+msgid "Dossierspcgs66:exportcsv_imprimer"
+msgstr "Export CSV des PCGs à imprimer"
 
 ###############################################################################
 
@@ -1198,6 +1425,38 @@ msgstr "Evènements"
 
 msgid "Evenements:index"
 msgstr "Visualisation des événements"
+
+###############################################################################
+
+msgid "Module:Fichedeliaisons"
+msgstr "Module fiche de liaison"
+
+msgid "Fichedeliaisons:index"
+msgstr "Liste des fiches de liaison d'un dossier"
+
+msgid "Fichedeliaisons:add"
+msgstr "Ajout d'une fiche de liaison"
+
+msgid "Fichedeliaisons:edit"
+msgstr "Modification d'une fiche de liaison"
+
+msgid "Fichedeliaisons:avis"
+msgstr "Émettre un avis technique sur la fiche de liaison"
+
+msgid "Fichedeliaisons:validation"
+msgstr "Validation de la fiche de liaison"
+
+msgid "Fichedeliaisons:delete"
+msgstr "Suppression d'une fiche de liaison"
+
+msgid "Fichedeliaisons:view"
+msgstr "Visualisation d'une fiche de liaison"
+
+msgid "Fichedeliaisons:filelink"
+msgstr "Fichiers liés à une fiche de liaison"
+
+msgid "Fichedeliaisons:indexparams"
+msgstr "Paramétrage des fiches de liaison"
 
 ###############################################################################
 
@@ -1415,6 +1674,34 @@ msgstr "Ajout/Édition d'une sanction"
 
 msgid "Listesanctionseps58:delete"
 msgstr "Suppression d'une sanction"
+
+###############################################################################
+
+msgid "Module:Logicielprimos"
+msgstr "Paramétrage des logiciels utilisés pour réaliser la primo analyse"
+
+msgid "Logicielprimos:index"
+msgstr "Liste des logiciels"
+
+msgid "Logicielprimos:add"
+msgstr "Ajouter un logiciel"
+
+msgid "Logicielprimos:edit"
+msgstr "Modifier un logiciel"
+
+msgid "Logicielprimos:delete"
+msgstr "Supprimer un logiciel"
+
+msgid "Logicielprimos:view"
+msgstr "Visualiser un logiciel"
+
+###############################################################################
+
+msgid "Module:Logtraces"
+msgstr "Logtraces : Log les appels de page"
+
+msgid "Logtraces:index"
+msgstr "Visualisation de graphiques sur les appels de page"
 
 ###############################################################################
 
@@ -1791,6 +2078,33 @@ msgstr "Visualisation des prestations"
 
 msgid "Prestsform:edit"
 msgstr "Modification des prestations"
+
+###############################################################################
+
+msgid "Module:Primoanalyses"
+msgstr "Module de primo analyse (lié à la fiche de liaison)"
+
+msgid "Primoanalyses:affecter"
+msgstr "Affecter une primo analyse"
+
+msgid "Primoanalyses:proposition"
+msgstr "Proposition de décision d'une primo analyse"
+
+msgid "Primoanalyses:avis"
+msgstr "Émettre un avis technique sur une primo analyse"
+
+msgid "Primoanalyses:validation"
+msgstr "Validation d'une primo analyse"
+
+msgid "Primoanalyses:delete"
+msgstr "Suppression d'une primo analyse"
+
+msgid "Primoanalyses:view"
+msgstr "Visualisation d'une primo analyse"
+
+msgid "Primoanalyses:indexparams"
+msgstr "Paramétrages des primo analyses"
+
 ###############################################################################
 
 msgid "Module:Proposcontratsinsertioncovs58"
@@ -1801,6 +2115,55 @@ msgstr "Ajout/Édition d'un CER"
 
 msgid "Proposcontratsinsertioncovs58:delete"
 msgstr "Suppression d'un CER"
+
+###############################################################################
+
+msgid "Module:Propositionprimos"
+msgstr "Paramétrage des propositions de primo analyse"
+
+msgid "Propositionprimos:index"
+msgstr "Liste des propositions de primo analyse"
+
+msgid "Propositionprimos:add"
+msgstr "Ajout d'une proposition de primo analyse"
+
+msgid "Propositionprimos:edit"
+msgstr "Modification d'une proposition de primo analyse"
+
+msgid "Propositionprimos:delete"
+msgstr "Suppression d'une proposition de primo analyse"
+
+msgid "Propositionprimos:view"
+msgstr "Visualisation d'une proposition de primo analyse"
+
+###############################################################################
+
+msgid "Module:Propositionscuis66"
+msgstr "Paramétrage des propositions du CUI"
+
+msgid "Propositionscuis66:index"
+msgstr "Liste des propositions du CUI"
+
+msgid "Propositionscuis66:add"
+msgstr "Ajout d'une proposition du CUI"
+
+msgid "Propositionscuis66:edit"
+msgstr "Modification d'une proposition du CUI"
+
+msgid "Propositionscuis66:delete"
+msgstr "Suppression d'une proposition du CUI"
+
+msgid "Propositionscuis66:view"
+msgstr "Visualisation d'une proposition du CUI"
+
+msgid "Propositionscuis66:impression"
+msgstr "Imprimer une proposition du CUI"
+
+msgid "Propositionscuis66:filelink"
+msgstr "Fichiers liés à une proposition du CUI"
+
+msgid "Propositionscuis66:impression_aviselu"
+msgstr "Imprimer l'avis de l'élu d'une proposition du CUI"
 
 ###############################################################################
 
@@ -2023,6 +2386,49 @@ msgstr "Suivi et contrôle de l'enveloppe d'APRE"
 
 ###############################################################################
 
+msgid "Module:Requestgroups"
+msgstr "Paramétrage des catégories de requêtes de l'éditeur de requêtes"
+
+msgid "Requestgroups:index"
+msgstr "Liste des catégories de requêtes"
+
+msgid "Requestgroups:add"
+msgstr "Ajout d'une catégorie de requête"
+
+msgid "Requestgroups:edit"
+msgstr "Modification d'une catégorie de requête"
+
+msgid "Requestgroups:delete"
+msgstr "Suppression d'une catégorie de requête"
+
+msgid "Requestgroups:view"
+msgstr "Visualisation d'une catégorie de requête"
+
+###############################################################################
+
+msgid "Module:Requestsmanager"
+msgstr "Éditeur de requêtes"
+
+msgid "Requestsmanager:index"
+msgstr "Constructeur de requêtes"
+
+msgid "Requestsmanager:search"
+msgstr "Lancer une requête enregistrée"
+
+msgid "Requestsmanager:newrequest"
+msgstr "Lancement de la requête créé"
+
+msgid "Requestsmanager:indexparams"
+msgstr "Paramétrage de l'éditeur de requêtes"
+
+msgid "Requestsmanager:savedindex"
+msgstr "Liste des requêtes (paramétrage)"
+
+msgid "Requestsmanager:edit"
+msgstr "Modification d'une requête"
+
+###############################################################################
+
 msgid "Module:Ressources"
 msgstr "Ressources"
 
@@ -2031,6 +2437,26 @@ msgstr "Visualisation des ressources"
 
 msgid "Ressources:edit"
 msgstr "Ajout/Édition des ressources"
+
+###############################################################################
+
+msgid "Module:Roles"
+msgstr "Paramétrage des rôles (lié au tableau de bord principal)"
+
+msgid "Roles:index"
+msgstr "Liste des rôles"
+
+msgid "Roles:add"
+msgstr "Ajout d'un rôle"
+
+msgid "Roles:edit"
+msgstr "Modification d'un rôle"
+
+msgid "Roles:delete"
+msgstr "Suppression d'un rôle"
+
+msgid "Roles:view"
+msgstr "Visualisation d'un rôle"
 
 ###############################################################################
 
@@ -2051,6 +2477,32 @@ msgstr "Suppression des non respect du CER"
 
 msgid "Sanctionseps58:exportcsv"
 msgstr "Export CSV"
+###############################################################################
+
+msgid "Module:Savesearchs"
+msgstr "Module de sauvegarde des recherches"
+
+msgid "Savesearchs:index"
+msgstr "Liste des recherches sauvegardées"
+
+msgid "Savesearchs:save"
+msgstr "Sauvegarder la recherche"
+
+msgid "Savesearchs:save_group"
+msgstr "Sauvegarder la recherche pour mon groupe"
+
+msgid "Savesearchs:edit"
+msgstr "Modifier la sauvegarde"
+
+msgid "Savesearchs:edit_group"
+msgstr "Modifier la sauvegarde pour mon groupe"
+
+msgid "Savesearchs:delete"
+msgstr "Supprimer la sauvegarde"
+
+msgid "Savesearchs:delete_group"
+msgstr "Supprimer la sauvegarde pour mon groupe"
+
 ###############################################################################
 
 msgid "Module:Servicesinstructeurs"
@@ -2314,6 +2766,12 @@ msgstr "Déverser de la DO"
 msgid "Traitementspcgs66:printModeleCourrier"
 msgstr "Impression du modèle de courrier du traitement PCG"
 
+msgid "Traitementspcgs66:envoiCourrier"
+msgstr "Marquer un traitement de type courrier comme envoyé"
+
+msgid "Traitementspcgs66:switch_imprimer"
+msgstr "Inclure le traitement dans la décision/cohorte"
+
 ###############################################################################
 
 msgid "Module:Traitementspdos"
@@ -2493,6 +2951,46 @@ msgstr "Visualisation de la Visionneuse"
 
 ###############################################################################
 
+msgid "Module:Valeurstags"
+msgstr "Paramétrage des valeurs de tags"
+
+msgid "Valeurstags:index"
+msgstr "Liste des valeurs de tags"
+
+msgid "Valeurstags:add"
+msgstr "Ajouter une valeur de tag"
+
+msgid "Valeurstags:edit"
+msgstr "Modifier une valeur de tag"
+
+msgid "Valeurstags:delete"
+msgstr "Supprimer une valeur de tag"
+
+msgid "Valeurstags:view"
+msgstr "Visualiser une valeur de tag"
+
+###############################################################################
+
+msgid "Module:Valsprogsfichescandidatures66"
+msgstr "Paramétrage des valeurs de programme région d'une fiche de candidature"
+
+msgid "Valsprogsfichescandidatures66:index"
+msgstr "Liste des valeurs de programme"
+
+msgid "Valsprogsfichescandidatures66:add"
+msgstr "Ajout d'une valeur de programme"
+
+msgid "Valsprogsfichescandidatures66:edit"
+msgstr "Modification d'une valeur de programme"
+
+msgid "Valsprogsfichescandidatures66:delete"
+msgstr "Suppression d'une valeur de programme"
+
+msgid "Valsprogsfichescandidatures66:view"
+msgstr "Visualisation d'une valeur de programme"
+
+###############################################################################
+
 msgid "Module:Zonesgeographiques"
 msgstr "Paramétrage des zones géographiques"
 
@@ -2529,6 +3027,9 @@ msgstr "Impression"
 
 msgid "Accompagnementscuis66:view"
 msgstr "Visualisation des accompagnements du CUI"
+
+msgid "Accompagnementscuis66:filelink"
+msgstr "Fichiers liés aux accompagnements du CUI"
 
 ###############################################################################
 
@@ -2628,6 +3129,22 @@ msgstr "Suppression des fichiers liés"
 
 msgid "Decisionscuis66:filelink"
 msgstr "Pièces jointes"
+
+msgid "Decisionscuis66:impression_decisionelu"
+msgstr "Imprimer la décision de l'élu"
+
+msgid "Decisionscuis66:impression_notifbenef"
+msgstr "Imprimer la Notification au bénéficiaire"
+
+msgid "Decisionscuis66:impression_notifemployeur"
+msgstr "Imprimer la Notification à l'employeur"
+
+msgid "Decisionscuis66:impression_attestationcompetence"
+msgstr "Imprimer l'attestation de compétence"
+
+msgid "Decisionscuis66:index"
+msgstr "Liste des décisions du CUI"
+
 ###############################################################################
 
 msgid "Module:Gestionssanctionseps58"
@@ -2701,6 +3218,43 @@ msgstr "Suppression des motifs de non validation"
 
 ###############################################################################
 
+msgid "Module:Motiffichedeliaisons"
+msgstr "Paramétrage des motifs de fiche de liaison"
+
+msgid "Motiffichedeliaisons:index"
+msgstr "Visualisation des motifs de fiche de liaison"
+
+msgid "Motiffichedeliaisons:add"
+msgstr "Ajout d'un motif de fiche de liaison"
+
+msgid "Motiffichedeliaisons:edit"
+msgstr "Modification d'un motif de fiche de liaison"
+
+msgid "Motiffichedeliaisons:delete"
+msgstr "Suppression d'un motif de fiche de liaison"
+
+msgid "Motiffichedeliaisons:view"
+msgstr "Visualisation d'un motif de fiche de liaison"
+
+###############################################################################
+
+msgid "Module:Motifsrefuscuis66"
+msgstr "Paramétrage des motifs de refus d'un CUI"
+
+msgid "Motifsrefuscuis66:index"
+msgstr "Visualisation des motifs de refus d'un CUI"
+
+msgid "Motifsrefuscuis66:edit"
+msgstr "Modification d'un motif de refus d'un CUI"
+
+msgid "Motifsrefuscuis66:delete"
+msgstr "Suppression d'un motif de refus d'un CUI"
+
+msgid "Motifsrefuscuis66:view"
+msgstr "Visualisation d'un motif de refus d'un CUI"
+
+###############################################################################
+
 msgid "Module:Motifssortiecuis66"
 msgstr "CUI (CG66) : paramétrages, motifs de sortie"
 
@@ -2720,6 +3274,33 @@ msgstr "Module de non orientation (CG66)"
 
 msgid "Nonorientes66:filelink"
 msgstr "Ajout de pièce jointe à une non orientation"
+
+msgid "Nonorientes66:exportcsv_isemploi"
+msgstr "Export CSV des Non orientés inscrits au Pôle Emploi"
+
+msgid "Nonorientes66:imprimeremploi"
+msgstr "Imprimer le questionnaire des Non orientés inscrits au Pôle Emploi"
+
+msgid "Nonorientes66:exportcsv_imprimeremploi"
+msgstr "Export CSV de la cohorte d'impression des Non orientés inscrits au Pôle Emploi"
+
+msgid "Nonorientes66:cohorte_imprimeremploi_impressions"
+msgstr "Action 'Imprimer la cohorte' des Non orientés inscrits au Pôle Emploi"
+
+msgid "Nonorientes66:exportcsv_reponse"
+msgstr "Export CSV de la Gestion des réponses des Non orientés"
+
+msgid "Nonorientes66:imprimernotifications"
+msgstr "Imprimer la notification d'un Non orienté"
+
+msgid "Nonorientes66:exportcsv_imprimernotifications"
+msgstr "Export CSV de la cohorte d'impression de la notification d'un Non orienté"
+
+msgid "Nonorientes66:cohorte_imprimernotifications_impressions"
+msgstr "Action 'Imprimer la cohorte' de la cohorte d'impression de la notification d'un Non orienté"
+
+msgid "Nonorientes66:exportcsv_notifie"
+msgstr "Export CSV des Orientés et notifiés"
 
 ###############################################################################
 
@@ -2817,6 +3398,9 @@ msgstr "Ajout d'une suspension"
 
 msgid "Suspensionscuis66:edit"
 msgstr "Modification d'une suspension"
+
+msgid "Suspensionscuis66:view"
+msgstr "Visualisation d'une suspension"
 
 msgid "Suspensionscuis66:delete"
 msgstr "Suppression d'une suspension"
@@ -3156,6 +3740,66 @@ msgstr "Suppression d'un lien"
 
 ###############################################################################
 
+msgid "Module:Tags"
+msgstr "Module de tag"
+
+msgid "Tags:add"
+msgstr "Ajouter un tag"
+
+msgid "Tags:edit"
+msgstr "Modifier un tag"
+
+msgid "Tags:index"
+msgstr "Liste des tags"
+
+msgid "Tags:delete"
+msgstr "Suppression d'un tag"
+
+msgid "Tags:cohorte"
+msgstr "Taguer par cohorte"
+
+msgid "Tags:indexparams"
+msgstr "Paramétrage des tags"
+
+msgid "Tags:cancel"
+msgstr "Annuler un tag"
+
+msgid "Tags:tag_gestionsdoublons_index"
+msgstr "Taguer une paire de dossier comme n'étant pas un doublon"
+
+###############################################################################
+
+msgid "Module:Tauxcgscuis66"
+msgstr "Paramétrage des Taux CG du CUI"
+
+msgid "Tauxcgscuis66:index"
+msgstr "liste des Taux CG du CUI"
+
+msgid "Tauxcgscuis66:add"
+msgstr "Ajout d'un Taux CG du CUI"
+
+msgid "Tauxcgscuis66:edit"
+msgstr "Modification d'un Taux CG du CUI"
+
+msgid "Tauxcgscuis66:delete"
+msgstr "Suppression d'un Taux CG du CUI"
+
+###############################################################################
+
+msgid "Module:Typescontratscuis66"
+msgstr "Paramétrage des types de contrats du CUI"
+
+msgid "Typescontratscuis66:index"
+msgstr "Liste des types de contrats du CUI"
+
+msgid "Typescontratscuis66:edit"
+msgstr "Ajouter/Modifier un type de contrat du CUI"
+
+msgid "Typescontratscuis66:delete"
+msgstr "Supprimer un type de contrat du CUI"
+
+###############################################################################
+
 msgid "Module:Orgstransmisdossierspcgs66"
 msgstr "Dossier PCG (CG66) : paramétrages, organismes auxquels les dossiers PCG sont transmis"
 
@@ -3202,8 +3846,20 @@ msgstr "Suppression d'un motif de rupture"
 msgid "Module:Rupturescuis66"
 msgstr "Ruptures du CUI (CG66)"
 
+msgid "Rupturescuis66:index"
+msgstr "Liste des ruptures du CUI"
+
+msgid "Rupturescuis66:add"
+msgstr "Ajout d'une rupture du CUI"
+
 msgid "Rupturescuis66:edit"
-msgstr "Ajout/Modification d'une rupture"
+msgstr "Modification d'une rupture du CUI"
+
+msgid "Rupturescuis66:delete"
+msgstr "Suppression d'une rupture du CUI"
+
+msgid "Rupturescuis66:filelink"
+msgstr "Fichiers liés à une rupture du CUI"
 
 ###############################################################################
 
@@ -3439,6 +4095,39 @@ msgstr "Modification d'un élément"
 msgid "Cataloguespdisfps93:delete"
 msgstr "Suppression d'un élément"
 
+###############################################################################
+
+msgid "Module:Categorietags"
+msgstr "Paramétrage des catégories de tags"
+
+msgid "Categorietags:index"
+msgstr "Visualiser la liste des catégories de tag"
+
+msgid "Categorietags:add"
+msgstr "Ajouter une catégorie de tag"
+
+msgid "Categorietags:edit"
+msgstr "Modifier une catégorie de tag"
+
+msgid "Categorietags:delete"
+msgstr "Supprimer une catégorie de tag"
+
+msgid "Categorietags:view"
+msgstr "Visualiser une catégorie de tag"
+
+###############################################################################
+
+msgid "Module:Piecesmanquantescuis66"
+msgstr "Paramétrage des pièces manquante d'un CUI"
+
+msgid "Piecesmanquantescuis66:index"
+msgstr "Liste des pièces manquante d'un CUI"
+
+msgid "Piecesmanquantescuis66:edit"
+msgstr "Ajout/Modification d'une pièce manquante d'un CUI"
+
+msgid "Piecesmanquantescuis66:delete"
+msgstr "Suppression d'une pièce manquante d'un CUI"
 
 ###############################################################################
 

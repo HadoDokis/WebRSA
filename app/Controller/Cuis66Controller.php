@@ -92,7 +92,8 @@
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+			'download',
+			'fileview',
 		);
 		
 		/**
