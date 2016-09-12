@@ -185,8 +185,8 @@
 					$dd_ci_from = Set::check( $this->request->data, 'Contratinsertion.dd_ci_from' ) ? Set::extract( $this->request->data, 'Contratinsertion.dd_ci_from' ) : strtotime( '-1 week' );
 					$dd_ci_to = Set::check( $this->request->data, 'Contratinsertion.dd_ci_to' ) ? Set::extract( $this->request->data, 'Contratinsertion.dd_ci_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Contratinsertion.dd_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dd_ci_from ) );?>
-				<?php echo $this->Form->input( 'Contratinsertion.dd_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.dd_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => 58 == $departement ? date( 'Y' ) + 3 : date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dd_ci_from ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.dd_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
 			</fieldset>
 
 			<!-- Contratinsertion sur la date de fin du CER -->
@@ -197,11 +197,28 @@
 					$df_ci_from = Set::check( $this->request->data, 'Contratinsertion.df_ci_from' ) ? Set::extract( $this->request->data, 'Contratinsertion.df_ci_from' ) : strtotime( '-1 week' );
 					$df_ci_to = Set::check( $this->request->data, 'Contratinsertion.df_ci_to' ) ? Set::extract( $this->request->data, 'Contratinsertion.df_ci_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Contratinsertion.df_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
-				<?php echo $this->Form->input( 'Contratinsertion.df_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.df_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => 58 == $departement ? date( 'Y' ) + 3 : date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.df_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
 			</fieldset>
 
-			<?php echo $this->Search->date( 'Contratinsertion.periode_validite', 'Période de validité' );?>
+			<?php
+				$params = (
+					58 == $departement
+					? array(
+						'minYear_from' => date( 'Y' ) - 120,
+						'maxYear_from' => date( 'Y' ) + 3,
+						'minYear_to' => date( 'Y' ) - 120,
+						'maxYear_to' => date( 'Y' ) + 5,
+					)
+					: array(
+						'minYear_from' => date( 'Y' ) - 120,
+						'maxYear_from' => date( 'Y' ),
+						'minYear_to' => date( 'Y' ) - 120,
+						'maxYear_to' => date( 'Y' ) + 5,
+					)
+				);
+				echo $this->Search->date( 'Contratinsertion.periode_validite', 'Période de validité', $params );
+			?>
 
 			<?php
 				echo $this->Form->input( 'Contratinsertion.arriveaecheance', array( 'label' => 'Allocataire dont le CER est arrivé à échéance', 'type' => 'checkbox' )  );

@@ -207,7 +207,13 @@
 		 * @param string $path
 		 * @return string
 		 */
-		public function date( $path, $fieldLabel = null ) {
+		public function date( $path, $fieldLabel = null, array $params = array() ) {
+			$params += array(
+				'minYear_from' => date( 'Y' ) - 120,
+				'maxYear_from' => date( 'Y' ),
+				'minYear_to' => date( 'Y' ) - 120,
+				'maxYear_to' => date( 'Y' ) + 5,
+			);
 			$fieldsetId = $this->domId( $path ).'_from_to';
 
 			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false );
@@ -223,8 +229,8 @@
 			$input .= $this->Xhtml->tag(
 				'fieldset',
 				$this->Xhtml->tag( 'legend', $fieldLabel )
-				.$this->Xform->input( $path.'_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'default' => strtotime( '-1 week' ) ) )
-				.$this->Xform->input( $path.'_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) ),
+				.$this->Xform->input( $path.'_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => $params['maxYear_from'], 'minYear' => $params['minYear_from'], 'default' => strtotime( '-1 week' ) ) )
+				.$this->Xform->input( $path.'_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => $params['maxYear_to'], 'minYear' => $params['minYear_to'] ) ),
 				array( 'id' => $fieldsetId )
 			);
 

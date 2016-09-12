@@ -1,8 +1,10 @@
 <?php
-	echo $this->element('default_index');
-	
+	$addLink = '/Proposcontratsinsertioncovs58/add/'.$personne_id;
+
+	echo $this->element('default_index', array( 'addLink' => $addLink ));
+
 	$defaultParams = array('paginate' => false, 'options' => $options);
-	
+
 	// Valeurs avec concatenation
 	foreach ($contratsinsertion as $key => $data) {
 		if (Hash::get($data, 'Cov58.datecommission')) {
@@ -11,7 +13,7 @@
 			;
 		}
 	}
-	
+
 	if (!empty($sanctionseps58)) {
 		echo '<h2>Signalements pour non respect du contrat</h2>';
 		echo $this->Default3->index(
@@ -35,7 +37,7 @@
 		);
 		echo '<br/>';
 	}
-	
+
 	if (Hash::get($propocontratinsertioncov58, '0.Propocontratinsertioncov58.id')) {
 		echo '<h2>Contrat en cours de validation par la commission d\'orientation et de validation</h2>';
 		echo $this->Default3->index(
@@ -69,7 +71,7 @@
 		);
 		echo '<br/>';
 	}
-	
+
 	echo '<h2>Contrats effectifs</h2>';
 	echo $this->Default3->index(
 		$contratsinsertion,
@@ -90,7 +92,10 @@
 					'/Contratsinsertion/impression/#Contratinsertion.id#',
 					'/Contratsinsertion/delete/#Contratinsertion.id#',
 					'/Sanctionseps58/nonrespectcer/#Contratinsertion.id#',
-					'/Proposcontratsinsertioncovs58/add/#Contratinsertion.personne_id#/#Contratinsertion.id#',
+					'/Proposcontratsinsertioncovs58/add/#Contratinsertion.personne_id#/#Contratinsertion.id#' => array(
+						'msgid' => 'Avenant',
+						'title' => 'Avenant'
+					),
 					'/Contratsinsertion/filelink/#Contratinsertion.id#',
 				)
 			)

@@ -146,9 +146,9 @@
 		</tr>
 	</table>
 
-	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.dd_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => false ) );?>
+	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.dd_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+3, 'minYear'=>date('Y')-2 , 'empty' => false ) );?>
 	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.duree_engag', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.duree_engag' ), 'type' => 'text' ) );?>
-	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.df_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
+	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.df_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+3, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
 
 </fieldset>
 	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.datedemande', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.date_saisi_ci' ), 'type' => 'hidden' ) ) ;?>

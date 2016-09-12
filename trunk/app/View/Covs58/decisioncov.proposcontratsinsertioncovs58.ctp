@@ -32,7 +32,7 @@
 
 
 				array(
-					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.dd_ci", array( 'type' => 'date', 'default' => $dossiercov['Propocontratinsertioncov58']['dd_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear' => date('Y') + 2, 'minYear' => 2009 ) ),
+					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.dd_ci", array( 'type' => 'date', 'default' => $dossiercov['Propocontratinsertioncov58']['dd_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear' => date('Y') + 3, 'minYear' => 2009 ) ),
 					array( 'class' => ( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['dd_ci'] ) ? 'error' : '' ) )
 				),
 				array(
@@ -40,7 +40,7 @@
 					array( 'class' => ( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['duree_engag'] ) ? 'error' : '' ) )
 				),
 				array(
-					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.df_ci", array( 'type' => 'date', 'default' => $dossiercov['Propocontratinsertioncov58']['df_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear' => date('Y') + 2, 'minYear' => 2009 ) ),
+					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.df_ci", array( 'type' => 'date', 'default' => $dossiercov['Propocontratinsertioncov58']['df_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear' => date('Y') + 3, 'minYear' => 2009 ) ),
 					array( 'class' => ( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['df_ci'] ) ? 'error' : '' ) )
 				),
 

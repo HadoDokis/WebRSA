@@ -41,6 +41,12 @@
 
 	echo $this->FormValidator->generateJavascript($dates, false);
 
+	$paramDateCer = array(
+		'minYear_from' => '2009',
+		'maxYear_from' => 58 == $departement ? date( 'Y' ) + 3 : date( 'Y' ) + 1,
+		'minYear_to' => '2009',
+		'maxYear_to' => date( 'Y' ) + 4
+	) + $paramDate;
 	echo '<fieldset><legend>' . __m( 'Contratinsertion.search' ) . '</legend>'
 		. $this->Default3->subform(
 			array_merge(
@@ -165,9 +171,9 @@
 		}
 
 		echo $this->SearchForm->dateRange( 'Search.Contratinsertion.datevalidation_ci', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Contratinsertion.dd_ci', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Contratinsertion.df_ci', $paramDate )
-		. $this->SearchForm->dateRange( 'Search.Contratinsertion.periode_validite', $paramDate )
+		. $this->SearchForm->dateRange( 'Search.Contratinsertion.dd_ci', $paramDateCer )
+		. $this->SearchForm->dateRange( 'Search.Contratinsertion.df_ci', $paramDateCer )
+		. $this->SearchForm->dateRange( 'Search.Contratinsertion.periode_validite', $paramDateCer )
 		. $this->Default3->subform(
 			array_merge(
 				array(
