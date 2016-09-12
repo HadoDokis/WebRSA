@@ -51,11 +51,19 @@
 		
 		/**
 		 * Méthodes ne nécessitant aucun droit.
+		 * 
+		 * NOTE : Malgrès que ce soit un Controller abstrait, il apparait dans les droits
+		 * Il est désormais nécéssaire d'avoir un attribut $aucunDroit pour les enfants
+		 * si on veux restreindre les droits d'accès
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+			'add',
+			'delete',
+			'edit',
+			'index',
+			'view',
 		);
 		
 		/**

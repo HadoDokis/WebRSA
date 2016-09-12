@@ -30,5 +30,14 @@
 		public $uses = array(
 			'Logicielprimo'
 		);
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 * 
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			
+		);
 	}
 ?>
