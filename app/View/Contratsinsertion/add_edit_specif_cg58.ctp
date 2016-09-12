@@ -143,9 +143,9 @@
 		</tr>
 	</table>
 
-	<?php echo $this->Xform->input( 'Contratinsertion.dd_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-10 , 'empty' => false ) );?>
+	<?php echo $this->Xform->input( 'Contratinsertion.dd_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+3, 'minYear'=>date('Y')-10 , 'empty' => false ) );?>
 	<?php echo $this->Xform->input( 'Contratinsertion.duree_engag', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.duree_engag' ), 'type' => 'text' ) );?>
-	<?php echo $this->Xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-10, 'empty' => true ) ) ;?>
+	<?php echo $this->Xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+3, 'minYear'=>date('Y')-10, 'empty' => true ) ) ;?>
 
 </fieldset>
 	<?php echo $this->Xform->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci' ), 'type' => 'hidden'  ) ) ;?>

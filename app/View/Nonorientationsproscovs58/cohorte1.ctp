@@ -21,8 +21,8 @@
 		'fieldset',
 		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Search.Contratinsertion.df_ci' ) )
 		.$this->Xform->input( 'Search.Contratinsertion.df_ci', array( 'type' => 'hidden', 'value' => true ) )
-		.$this->Xform->input( 'Search.Contratinsertion.df_ci_from', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
-		.$this->Xform->input( 'Search.Contratinsertion.df_ci_to', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
+		.$this->Xform->input( 'Search.Contratinsertion.df_ci_from', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
+		.$this->Xform->input( 'Search.Contratinsertion.df_ci_to', array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => 2009, 'domain' => $this->request->params['controller'] ) )
 	);
 
 	echo $this->Allocataires->blocReferentparcours(

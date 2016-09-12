@@ -265,10 +265,10 @@ msgid "/Sanctionseps58/nonrespectcer/#Contratinsertion.id#"
 msgstr "Sanction"
 
 msgid "/Proposcontratsinsertioncovs58/add"
-msgstr "Avenant"
+msgstr "Ajouter"
 
 msgid "/Proposcontratsinsertioncovs58/add/#Contratinsertion.id#"
-msgstr "Avenant"
+msgstr "Ajouter"
 
 msgid "Sanctionep58.created"
 msgstr "Date signalement"
