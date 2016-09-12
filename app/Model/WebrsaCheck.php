@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Webrsacheck.
+	 * Code source de la classe WebrsaCheck.
 	 *
 	 * PHP 5.3
 	 *
@@ -19,12 +19,12 @@
 	 *
 	 * @package app.Model
 	 */
-	class Webrsacheck extends AppModel
+	class WebrsaCheck extends AppModel
 	{
 		/**
 		 * @var string
 		 */
-		public $name = 'Webrsacheck';
+		public $name = 'WebrsaCheck';
 
 		/**
 		 * @var string
@@ -906,7 +906,7 @@
 
 		/**
 		 *
-		 * @see Webrsacheck::querydataFragmentsErrors()
+		 * @see WebrsaCheck::querydataFragmentsErrors()
 		 * @see Allocataire::testSearchConditions()
 		 *
 		 * @return array
@@ -1106,7 +1106,7 @@
 		 * Vérifie les fragments de querydata se trouvant en paramétrage dans le
 		 * webrsa.inc pour tous les modèles concernés.
 		 *
-		 * @see Webrsacheck::allSqRechercheErrors()
+		 * @see WebrsaCheck::allSqRechercheErrors()
 		 *
 		 * @return array
 		 */

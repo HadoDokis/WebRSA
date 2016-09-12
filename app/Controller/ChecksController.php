@@ -52,28 +52,28 @@
 		public $uses = array(
 			'Appchecks.Check',
 			'WebrsaRecherche',
-			'Webrsacheck',
+			'WebrsaCheck',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -204,7 +204,7 @@
 		 * @access protected
 		 */
 		protected function _modeles() {
-			$modeles = $this->Webrsacheck->allModelesOdt( Configure::read( 'Cg.departement' ) );
+			$modeles = $this->WebrsaCheck->allModelesOdt( Configure::read( 'Cg.departement' ) );
 
 			return array(
 				'Modelesodt' => array(
@@ -235,8 +235,8 @@
 			return array(
 				'Postgresql' => array(
 					'Version' => $this->Check->version( 'PostgreSQL', $Dbo->getPostgresVersion(), '8.3' ),
-					'Fuzzystrmatch' => $this->Webrsacheck->checkPostgresFuzzystrmatchFunctions(),
-					'Date' => $this->Webrsacheck->checkPostgresTimeDifference()
+					'Fuzzystrmatch' => $this->WebrsaCheck->checkPostgresFuzzystrmatchFunctions(),
+					'Date' => $this->WebrsaCheck->checkPostgresTimeDifference()
 				)
 			);
 		}
@@ -267,7 +267,7 @@
 		 * @return array
 		 */
 		protected function _configurePrimaryKeys() {
-			$return = $this->Webrsacheck->allConfigurePrimaryKeys();
+			$return = $this->WebrsaCheck->allConfigurePrimaryKeys();
 
 			if( !empty( $return ) ) {
 				foreach( $return as $key => $params ) {
@@ -303,19 +303,19 @@
 						'Version' => $this->Check->version( 'WebRSA', app_version(), '0' ),
 					),
 					'configure' =>  $this->Check->configure(
-						$this->Webrsacheck->allConfigureKeys( Configure::read( 'Cg.departement' ) )
+						$this->WebrsaCheck->allConfigureKeys( Configure::read( 'Cg.departement' ) )
 					),
-					'intervals' => $this->Webrsacheck->checkAllPostgresqlIntervals( Configure::read( 'Cg.departement' ) ),
-					'querydata_fragments_errors' => $this->Webrsacheck->allQuerydataFragmentsErrors(),
-					'sqRechercheErrors' => $this->Webrsacheck->allSqRechercheErrors(),
+					'intervals' => $this->WebrsaCheck->checkAllPostgresqlIntervals( Configure::read( 'Cg.departement' ) ),
+					'querydata_fragments_errors' => $this->WebrsaCheck->allQuerydataFragmentsErrors(),
+					'sqRechercheErrors' => $this->WebrsaCheck->allSqRechercheErrors(),
 					'configure_primary_key' => $this->_configurePrimaryKeys(),
-					'configure_regexps' => $this->Webrsacheck->allConfigureRegexpsErrors(),
-					'configure_fields' => $this->Webrsacheck->allCheckParametrage(),
-					'ini_set' => $this->Webrsacheck->allConfigureIniSet(),
-					'configure_bad_keys' => $this->Webrsacheck->allCheckBadKeys(),
+					'configure_regexps' => $this->WebrsaCheck->allConfigureRegexpsErrors(),
+					'configure_fields' => $this->WebrsaCheck->allCheckParametrage(),
+					'ini_set' => $this->WebrsaCheck->allConfigureIniSet(),
+					'configure_bad_keys' => $this->WebrsaCheck->allCheckBadKeys(),
 					'configurable_query' => $recherches,
-					'configure_evidence' => $this->Webrsacheck->allConfigureEvidence(),
-					'tableaux_conditions' => $this->Webrsacheck->allConfigureTableauxConditions(),
+					'configure_evidence' => $this->WebrsaCheck->allConfigureEvidence(),
+					'tableaux_conditions' => $this->WebrsaCheck->allConfigureTableauxConditions(),
 					'webrsa_access' => WebrsaCheckAccess::checkWebrsaAccess(),
 				)
 			);
@@ -330,7 +330,7 @@
 		protected function _storedDataErrors() {
 			return array(
 				'Storeddata' => array(
-					'errors' => $this->Webrsacheck->allStoredDataErrors()
+					'errors' => $this->WebrsaCheck->allStoredDataErrors()
 				)
 			);
 		}
@@ -341,7 +341,7 @@
 		 * @return array
 		 */
 		protected function _services() {
-			$services = $this->Webrsacheck->services();
+			$services = $this->WebrsaCheck->services();
 
 			if( !empty( $services ) ) {
 				foreach( $services as $serviceName => $results ) {
@@ -362,7 +362,7 @@
 		 * @return array
 		 */
 		protected function _emails() {
-			$names = $this->Webrsacheck->allEmailConfigs();
+			$names = $this->WebrsaCheck->allEmailConfigs();
 			$results = array();
 
 			foreach( $names as $name ) {

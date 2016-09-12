@@ -194,8 +194,8 @@
 				),
 			);
 
-			$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
-			if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
+			$WebrsaCheck = ClassRegistry::init( 'WebrsaCheck' );
+			if( Hash::get( $WebrsaCheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
 				$expected['OR'][] = array(
 					'difference(Allocataire1.nom, Allocataire2.nom) >= 4',
 					'difference(Allocataire1.prenom, Allocataire2.prenom) >= 4',

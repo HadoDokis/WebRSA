@@ -192,8 +192,8 @@
 			$this->Gestiondoublon = ClassRegistry::init( 'Gestiondoublon' );
 			Configure::write('Gestionsdoublons.index.useTag', false);
 
-			$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
-			if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
+			$WebrsaCheck = ClassRegistry::init( 'WebrsaCheck' );
+			if( Hash::get( $WebrsaCheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
 				$this->emptySearch['joins'][7]['conditions']['OR'][] = array(
 					'difference(Allocataire1.nom, Allocataire2.nom) >= 4',
 					'difference(Allocataire1.prenom, Allocataire2.prenom) >= 4',
