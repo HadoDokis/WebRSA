@@ -14,7 +14,7 @@
 
 	/**
 	 * La classe WebrsaPersonne possède la logique métier web-rsa
-	 * 
+	 *
 	 * @package app.Model
 	 */
 	class WebrsaPersonne extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -32,7 +32,7 @@
 		 * @var array
 		 */
 		public $uses = array('Personne');
-		
+
 		/**
 		 * Liste des alias de modèles pour lesquels on prend en compte les
 		 * anciens dossiers dans lesquels l'allocataire n'a plus de prestation.
@@ -63,7 +63,7 @@
 
 		/**
 		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
-		 * 
+		 *
 		 * @param array $query
 		 * @return type
 		 */
@@ -71,10 +71,10 @@
 			$fields = array('Personne.nom');
 			return Hash::merge($query, array('fields' => array_values($fields)));
 		}
-		
+
 		/**
 		 * Permet d'obtenir le nécéssaire pour calculer les droits d'accès métier à une action
-		 * 
+		 *
 		 * @param array $conditions
 		 * @return array
 		 */
@@ -99,38 +99,38 @@
 					'Personne.prenom' => 'ASC',
 				)
 			);
-			
+
 			$results = $this->Personne->Foyer->find('all', $this->completeVirtualFieldsForAccess($query));
 			return $results;
 		}
-		
+
 		/**
 		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
-		 * 
+		 *
 		 * @see WebrsaAccess::getParamsList
 		 * @param integer $foyer_id
 		 * @param array $params - Liste des paramètres actifs
 		 */
 		public function getParamsForAccess($foyer_id, array $params = array()) {
 			$results = array();
-			
+
 			if (in_array('ajoutPossible', $params)) {
 				$results['ajoutPossible'] = $this->ajoutPossible($foyer_id);
 			}
-			
+
 			return $results;
 		}
-		
+
 		/**
 		 * Permet de savoir si il est possible d'ajouter un enregistrement
-		 * 
+		 *
 		 * @param integer $foyer_id
 		 * @return boolean
 		 */
 		public function ajoutPossible($foyer_id) {
 			return true;
 		}
-		
+
 		/**
 		 *
 		 */
@@ -640,8 +640,8 @@
 				)
 			);
 
-			$Webrsacheck = ClassRegistry::init( "Webrsacheck" );
-			if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
+			$WebrsaCheck = ClassRegistry::init( "WebrsaCheck" );
+			if( Hash::get( $WebrsaCheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
 				$conditions['OR'][] = array(
 					"difference({$personne1Alias}.nom, {$personne2Alias}.nom) >=" => $differenceThreshold,
 					"difference({$personne1Alias}.prenom, {$personne2Alias}.prenom) >=" => $differenceThreshold,
@@ -1029,7 +1029,7 @@
 				$eq = $Dbo->endQuote;
 				$escapedModelName = $dq.$this->Personne->alias.$eq;
 				$escapedPrimary = $dq.$this->Personne->primaryKey.$eq;
-				
+
 				$conditions = array_words_replace(
 					(array)$join['conditions'],
 					array(
