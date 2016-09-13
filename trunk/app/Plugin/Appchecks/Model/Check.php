@@ -851,12 +851,19 @@
 				$options = (array)$options;
 				$options += $params;
 
-				$freeBytes = disk_free_space( $directory );
-
-				if( $freeBytes < $options['threshold'] ) {
+				if( false === is_dir( $directory ) ) {
 					$return[$directory]['success'] = false;
-					$msgstr = 'L\'espace disponible dans le répertoire %s devrait être d\'au moins %s mais il ne reste actuellement que %s';
-					$return[$directory]['message'] = sprintf( $msgstr, $directory, byteSize( $options['threshold'] ), byteSize( $freeBytes ) );
+					$msgstr = 'Le répertoire %s n\'existe pas';
+					$return[$directory]['message'] = sprintf( $msgstr, $directory );
+				}
+				else {
+					$freeBytes = disk_free_space( $directory );
+
+					if( $freeBytes < $options['threshold'] ) {
+						$return[$directory]['success'] = false;
+						$msgstr = 'L\'espace disponible dans le répertoire %s devrait être d\'au moins %s mais il ne reste actuellement que %s';
+						$return[$directory]['message'] = sprintf( $msgstr, $directory, byteSize( $options['threshold'] ), byteSize( $freeBytes ) );
+					}
 				}
 			}
 
