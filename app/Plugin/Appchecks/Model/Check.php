@@ -595,7 +595,7 @@
 		public function pearExtensions( $extensions, $base = true ) {
 			$results = array();
 
-			$success = @include_once( 'PEAR.php' );
+			$success = (bool)@include_once( 'PEAR.php' );
 			if( $base ) {
 				$results['PEAR'] = array(
 					'success' => $success,
@@ -603,7 +603,7 @@
 				);
 			}
 
-			$success = @include_once( 'PEAR/Registry.php' );
+			$success = (bool)@include_once( 'PEAR/Registry.php' );
 			if( $base ) {
 				$results['Registry'] = array(
 					'success' => $success,
