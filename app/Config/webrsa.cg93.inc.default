@@ -1386,7 +1386,8 @@
 			 */
 			'conditions_indicateurs_organismes' => array(
 				'Pôle emploi (PE) (2)' => array(
-					'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%'
+					'Structurereferente.typeorient_id' => 3,
+					'Structurereferente.id' => array( 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 94, 95, 96, 97, 99, 113, 118, 133 ),
 				),
 				'Organisme public de placement professionnel autre que PE (maison de l\'emploi, PLIE, mission locale,...) (2)' => array(),
 				'Entreprise de travail temporaire, agence privée de placement (2)' => array(),
@@ -1394,36 +1395,13 @@
 				'Insertion par l\'activité économique (IAE) (uniquement si le référent appartient à l\'IAE) (2)' => array(),
 				'Autres organismes de placement professionnel (2)' => array(),
 				'Service du département ou de l\'agence départementale d\'insertion (ADI) (3)' => array(
-					'NOT' => array(
-						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
-						)
-					)
+					'Structurereferente.typeorient_id' => 2,
+					'Structurereferente.id' => array( 2, 3, 8, 9, 14, 16, 18, 20, 22, 23, 26, 28, 30, 34, 39, 42, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 101, 117, 123 )
 				),
-				'dont orientation professionnelle ou socioprofessionnelle' => array(
-					'Typeorient.id' => array( 3, 1 ),
-					'NOT' => array(
-						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
-						)
-					)
-				),
+				'dont orientation professionnelle ou socioprofessionnelle' => array(),
 				'dont orientation sociale' => array(
-					'Typeorient.id' => array( 2 ),
-					'NOT' => array(
-						'OR' => array(
-							array( 'Structurereferente.lib_struc ILIKE' => 'P%le Emploi%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
-							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
-						)
-					)
+					'Structurereferente.typeorient_id' => 2,
+					'Structurereferente.id' => array( 2, 3, 8, 9, 14, 16, 18, 20, 22, 23, 26, 28, 30, 34, 39, 42, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 101, 117, 123 )
 				),
 				'Caf/Établissement des allocations familiales (2) (4)' => array(
 					'Structurereferente.lib_struc ILIKE' => '%CAF%',
@@ -1435,8 +1413,14 @@
 				'CCAS, CIAS (2)' => array(
 					'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%',
 				),
-				'Associations d\'insertion (2)' => array(),
-				'Autres organismes d\'insertion (2)' => array(),
+				'Associations d\'insertion (2)' => array(
+					'Structurereferente.typeorient_id' => 2,
+					'Structurereferente.id' => array( 104, 105, 106, 107, 108, 109, 111, 116, 119, 120, 121, 122 )
+				),
+				'Autres organismes d\'insertion (2)' => array(
+					'Structurereferente.typeorient_id' => 1,
+					'Structurereferente.id' => array( 1, 7, 10, 11, 13, 15, 17, 19, 21, 24, 27, 29, 31, 32, 33, 38, 40, 41, 43, 45, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 100, 114 )
+				)
 			),
 			/**
 			 * Catégories et délais permettant de différencier les types de contrats.
@@ -1823,13 +1807,13 @@
 			'groupes_acceptes' => array( 1 )
 		)
 	);
-	
+
 	/**
 	 * Suffix des fichiers de traductions spécialisés pour le CG
 	 * ex: controller_action_suffix.po -> dossiers_index_cg01.po
 	 */
 	Configure::write('WebrsaTranslator.suffix', 'cg'.Configure::read('Cg.departement'));
-	
+
 	/**
 	 * /!\ N'activer ce module que sur une période courte /!\
 	 * Permet de logger tous les appels de pages, active également l'accès au module de visualisation dans administration
@@ -1837,7 +1821,7 @@
 	 */
 	Configure::write('Module.Logtrace.enabled', false);
 	Configure::write('Module.Logtrace.total_duration', 60 * 60 * 1); // Durée en secondes du graph (max 32746)
-	
+
 	/**
 	 * Active le module date picker (calendrier javascript)
 	 */
