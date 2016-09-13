@@ -55,14 +55,18 @@
 						$this->_compare($scans[0], $scans[1]);
 					}
 				} else {
-					$this->out("Veuillez choisir deux fichiers scans sur lesquels effectuer la comparaison");
+					$this->out("Veuillez choisir deux fichiers scans sur lesquels effectuer la comparaison ou bien tapez 'scan'");
 					$choixPossible = array();
 					
 					foreach ($scans as $scan) {
 						$choixPossible[] = substr($scan, 0, strlen($scan) -5);
 					}
 					
-					$choix1 = $this->in("", $choixPossible, $choixPossible[0]);
+					$choix1 = $this->in("", array_merge($choixPossible, array('scan')), $choixPossible[0]);
+					
+					if ($choix1 === 'scan') {
+						return $this->_scanDatabase();
+					}
 					
 					// On retire le choix de la liste
 					foreach ($choixPossible as $key => $scan) {
