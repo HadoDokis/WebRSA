@@ -55,7 +55,7 @@
 						$this->_compare($scans[0], $scans[1]);
 					}
 				} else {
-					$this->out("Veuillez choisir deux fichiers scans sur lesquels effectuer la comparaison ou bien tapez 'scan'");
+					$this->out("Veuillez choisir deux fichiers scans sur lesquels effectuer la comparaison ou bien tapez '<warning>scan</warning>'");
 					$choixPossible = array();
 					
 					foreach ($scans as $scan) {
@@ -164,6 +164,7 @@
 		protected function _createTmpDir() {
 			if (!is_dir(TMP.'DatabaseCompare')) {
 				mkdir(TMP.'DatabaseCompare');
+				chmod(TMP.'DatabaseCompare', 0777);
 			}
 		}
 		
@@ -171,7 +172,7 @@
 			$results = array();
 			
 			foreach (scandir(TMP.'DatabaseCompare') as $file) {
-				if (!is_dir(TMP.'DatabaseCompare'.DS.$file)) {
+				if (!is_dir(TMP.'DatabaseCompare'.DS.$file) && strpos($file, '.scan')) {
 					$results[] = $file;
 				}
 			}
@@ -312,7 +313,8 @@
 				}
 			}
 			
-			$this->out(implode("\n\n", $report), 2);
+			$this->out($r = implode("\n\n", $report), 2);
+			$this->createFile(TMP.'DatabaseCompare'.DS.'last_report.txt', $r);
 		}
 		
 		/**
