@@ -449,11 +449,18 @@
 
 						$data[$Model->alias][$field] = $value;
 
-						if (!$Model->save($data)) {
-							$errors = implode(', ', (array)Hash::get($Model->validationErrors, $field));
+						try {
+							if (!$Model->save($data)) {
+								$errors = implode(', ', (array)Hash::get($Model->validationErrors, $field));
+								$success = false;
+								$message[] = "La tentative d'insérer la valeur <b>{$value}</b> dans <b>{$path}</b> a échoué : {$errors}";
+							}
+						} catch (Exception $e) {
+							$Dbo = $Model->getDataSource();
 							$success = false;
-							$message[] = "La tentative d'insérer la valeur <b>{$value}</b> dans <b>{$path}</b> a échoué : {$errors}";
+							$message[] = $Dbo->lastError();
 						}
+						
 						break;
 					}
 
