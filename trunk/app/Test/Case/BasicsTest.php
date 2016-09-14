@@ -996,5 +996,41 @@
 			$this->assertEqual(filesize2bytes('25 TB'), 25 * pow(1024, 4), 'Test "T" avec "B"');
 			$this->assertEqual(filesize2bytes('1.25P'), 1.25 * pow(1024, 5), 'Test "P" avec float');
 		}
+
+		/**
+		 * Test de la fonction query_fields()
+		 */
+		public function testQueryFields() {
+			// 1. Cas simple avec une clé numérique
+			$query = array( 'fields' => array( 'Model.field1' ) );
+			$result = query_fields( $query );
+			$expected = array( 'Model.field1' );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 2. Cas simple avec une clé texte
+			$query = array( 'fields' => array( 'Model.field1' => 'Model.field1' ) );
+			$result = query_fields( $query );
+			$expected = array( 'Model.field1' );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 3. Cas simple avec une clé numérique et une clé texte
+			$query = array( 'fields' => array( 'Model.field1' => 'Model.field1', 'Model.field2' ) );
+			$result = query_fields( $query );
+			$expected = array( 'Model.field1', 'Model.field2' );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 4. Cas complexe
+			$query = array(
+				'fields' => array(
+					'Model.field1' => 'Model.field1',
+					'Model.field2',
+					'Model.field3' => '( 1 + 1 ) AS "Model__field3"',
+					'( 2 + 2 ) AS "Model__field4"'
+				)
+			);
+			$result = query_fields( $query );
+			$expected = array( 'Model.field1', 'Model.field2', 'Model.field3' );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
 	}
 ?>
