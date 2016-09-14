@@ -402,7 +402,7 @@
 
 		protected function _queryOrder( array $query, array $params ) {
 			$Controller = $this->_Collection->getController();
-			
+
 			// Met les clefs sort et direction dans le query['order'] et les rends invisible pour le paginateur
 			$sortCol = false;
 			$toSave = array('sort', 'direction');
@@ -412,14 +412,14 @@
 					$Controller->request->params,
 					'named.'.$saveName
 				);
-				
+
 				if ($$saveName !== null) {
 					$sortCol = true;
 					$Controller->request->params['named']['saved_'.$saveName] = $$saveName;
 				}
 			}
 			$Controller->request->params['named']['saved_modelName'] = $params['modelName'];
-			
+
 			// Si un order existe dans l'url, on l'utilise, sinon on regarde dans la conf
 			$query['order'] = $sortCol ? array($sort => $direction) : (array)Configure::read($this->_configureKey('query.order', $params));
 			if (!isset($query['order'][$params['modelName'].'.id'])) {
@@ -428,10 +428,10 @@
 
 			return $query;
 		}
-		
+
 		/**
 		 * Restitution de l'order sauvegardé
-		 * 
+		 *
 		 * @param Controller $controller
 		 */
 		public function beforeRender(Controller $controller) {
@@ -439,13 +439,13 @@
 				$sort = $controller->request->params['named']['saved_sort'];
 				$direction = $controller->request->params['named']['saved_direction'];
 				$order = array($sort => $direction);
-				
+
 				$controller->request->params['paging'][$controller->request->params['named']['saved_modelName']]['order'] = $order;
 				$controller->request->params['paging'][$controller->request->params['named']['saved_modelName']]['options'] = compact(
 					'sort', 'direction', 'order'
 				);
 			}
-			
+
 			return parent::beforeRender($controller);
 		}
 
@@ -645,7 +645,8 @@
 			// Récupération du query
 			$searchQuery = $this->_query( $search, $params );
 
-			$available = array_keys( $searchQuery['fields'] );
+			// Champs disponibles
+			$available = query_fields( $searchQuery );
 
 			$requested = array();
 			foreach( $params['keys'] as $path ) {
