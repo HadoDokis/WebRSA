@@ -528,31 +528,56 @@
 		/**
 		 * Vérifie l'accès à un WebService.
 		 *
-		 * @param string $wsdl
-		 * @param string $message Le gabarit du message à utiliser en cas d'erreur.
+		 * @param string $wsdl L'URL du webservice
+		 * @param array $params Un array de paramètres
+		 *	- "message": le gabarit du message à utiliser en cas d'erreur (par
+		 *		         défaut: "Le WebService n'est pas accessible (%s)")
+		 *	- "timeout": la durée du timeout en secondes (par défaut: 30)
 		 * @return array
 		 */
-		public function webservice( $wsdl, $message = "Le WebService n' est pas accessible (%s)" ) {
-			$result = array();
+		public function webservice( $wsdl, array $params = array() ) {
+			$params += array(
+				'message' => 'Le WebService n\'est pas accessible (%s)',
+				'timeout' => 30
+			);
+			$result = array(
+				'success' => true,
+				'message' => null,
+				'value' => null
+			);
 
-			// TODO: faire une méthode dans le Check
-			$handle = fopen($wsdl,"r");
+			$oldTimeout = ini_get( 'default_socket_timeout' );
+			ini_set( 'default_socket_timeout', $params['timeout'] );
+
+			// Faire une méthode dans le Check ?
+			$handle = @fopen( $wsdl, 'r' );
 			if( !empty($handle) ) {
 				fclose( $handle );
 			}
 			else {
+				$error = error_get_last();
 				$result['success'] = false;
-				$result['message'] = sprintf( $message, "L'URL {$wsdl} n'est pas accessible." );
-				return $result;
+				$result['message'] = sprintf( $params['message'], $error['message'] );
 			}
 
-			try {
-				$client = @new SoapClient( $wsdl, array( 'exceptions' => 1 ) ); //FIXME si le wsdl ne répond pas, page blanche !!
-				$result['success'] = true;
-			} catch( Exception $e ) {
-				$result['success'] = false;
-				$result['message'] = sprintf( $message, $e->getMessage() );
+			if( true === $result['success'] ) {
+				// INFO: si le wsdl ne répond pas, page blanche / erreur 500 !!
+				try {
+					$options = array(
+						'connection_timeout' => $params['timeout'],
+						'exceptions' => true,
+						'trace' => false,
+						'cache_wsdl' => WSDL_CACHE_NONE
+					);
+					$client = @new SoapClient( $wsdl, $options );
+					$result['success'] = true;
+				} catch( Exception $e ) {
+					$result['success'] = false;
+					$result['message'] = sprintf( $params['message'], trim( $e->getMessage() ) );
+				}
 			}
+
+			ini_set( 'default_socket_timeout', $oldTimeout );
 
 			return $result;
 		}
@@ -564,22 +589,33 @@
 		 *
 		 * @param string $hostname
 		 * @param string $port
-		 * @param string $message
+		 * @param array $params Un array de paramètres
+		 *	- "message": le gabarit du message à utiliser en cas d'erreur (par
+		 *		         défaut: "La machine distante n'est pas accessible (%s)")
+		 *	- "timeout": la durée du timeout en secondes (par défaut: 30)
 		 * @return array
 		 */
-		public function socket( $hostname, $port, $message = "La machine distante n' est pas accessible (%s)" ) {
-			$timeout=10;
-			Set_Time_Limit(0);  //Time for script to run .. not sure how it works with 0 but you need it
-//			Ignore_User_Abort(True); //this will force the script running at the end
-			$handle = @fsockopen( $hostname, $port, $errno, $errstr, $timeout );
-			$result = array(
-				'success' => !empty( $handle )
+		public function socket( $hostname, $port, array $params = array() ) {
+			$params += array(
+				'message' => 'La machine distante n\'est pas accessible (%s)',
+				'timeout' => 30
 			);
-			if( !$result['success'] ){
-				$result['message'] = sprintf( $message, "{$errno}: {$errstr}" );
+
+			$result = array(
+				'success' => true,
+				'message' => null,
+				'value' => null,
+			);
+
+			$handle = @fsockopen( $hostname, $port, $errno, $errstr, $params['timeout'] );
+
+			if( false === empty( $handle ) ){
+				$result['success'] = true;
+				fclose( $handle );
 			}
 			else {
-				fclose( $handle );
+				$result['success'] = false;
+				$result['message'] = sprintf( $params['message'], "{$errno}: {$errstr}" );
 			}
 
 			return $result;
