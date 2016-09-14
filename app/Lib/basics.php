@@ -212,7 +212,7 @@
 		}
 		return $size;
 	}
-	
+
 	/**
 	 * Converti les "human readable file size" (e.g. 10 MB, 200.20 GB, 8M) en bytes.
 	 *
@@ -235,11 +235,11 @@
 		}
 
 		$bytes = floatval($str);
-		
+
 		if (preg_match('/([KMGTP]?[BO]{0,1})$/si', $str, $matches) && !empty($bytes_array[strtoupper($matches[1])])) {
 			$bytes *= $bytes_array[strtoupper($matches[1])];
 		}
-		
+
 		return intval(round($bytes, 2));
 	}
 
@@ -1330,6 +1330,35 @@
 
 		foreach( $paths as $path ) {
 			$result = Hash::insert( $result, $path, Hash::get( $data, $path ) );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Retourne, pour un querydata donné, les champs qui seront disponibles dans
+	 * la clé "fields".
+	 * Deux cas possibles:
+	 *	- la valeur si une clé numérique existe et la valeur ressemble à "Model.field"
+	 *	- la clé si une clé texte existe
+	 *
+	 * @param array $query Le querydata
+	 * @return array
+	 */
+	function query_fields( array $query ) {
+		$fields = isset( $query['fields'] ) ? (array)$query['fields'] : array();
+		$result = array();
+
+		foreach( $fields as $key => $value ) {
+			if( false === is_int( $key ) ) {
+				$result[] = $key;
+			}
+			else {
+				$tokens = model_field( $value, false );
+				if( null !== $tokens ) {
+					$result[] = "{$tokens[0]}.{$tokens[1]}";
+				}
+			}
 		}
 
 		return $result;
