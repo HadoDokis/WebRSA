@@ -51,7 +51,8 @@
 			'customSearch' => $this->fetch( 'custom_search_filters' ),
 			'exportcsv' => array( 'action' => 'exportcsv_affectation93' ),
 			'afterResults' => $buttons,
-			'modelName' => 'Personne'
+			'modelName' => 'Personne',
+			'configuredCohorteParams' => $configuredCohorteParams + array( 'sort' => false )
 		)
 	);
 ?>

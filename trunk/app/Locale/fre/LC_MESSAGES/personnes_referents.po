@@ -52,7 +52,7 @@ msgstr "Action"
 msgid "data[Cohorte][][PersonneReferent][referent_id]"
 msgstr "Affectation"
 
-msgid "Structurereferente.lib_struc"
+msgid "Structurereferentepcd.lib_struc"
 msgstr "Structure référente source"
 
 msgid "/PersonnesReferents/index"

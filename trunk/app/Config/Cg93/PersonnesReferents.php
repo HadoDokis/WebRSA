@@ -74,7 +74,7 @@
 					'Cer93.positioncer',
 					'Contratinsertion.df_ci',
 					'PersonneReferent.dddesignation',
-					'Structurereferente.lib_struc',
+					'Structurereferentepcd.lib_struc',
 					'/PersonnesReferents/index/#Personne.id#' => array(
 						'title' => false
 					)
