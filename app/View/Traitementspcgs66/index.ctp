@@ -52,57 +52,59 @@
 
 		echo $this->Default3->index(
 			$listeTraitements,
-			array(
-				'Situationpdo.libelle' => array( 'type'=>'string' ),
-				'Traitementpcg66.descriptionpdo_id' => array( 'type'=>'string' ),
-				'Traitementpcg66.datedepart',
-				'Traitementpcg66.datereception',
-				'Traitementpcg66.daterevision',
-				'Traitementpcg66.dateecheance',
-				'Traitementpcg66.typetraitement',
-				'Traitementpcg66.imprimer' => array( 'type' => 'boolean' ),
-				'Traitementpcg66.dateenvoicourrier',
-				'Traitementpcg66.etattraitementpcg',
-				'Traitementpcg66.created',
-			) + WebrsaAccess::links(
+			$this->Translator->normalize(
 				array(
-					'/Traitementspcgs66/view/#Traitementpcg66.id#',
-					'/Traitementspcgs66/edit/#Traitementpcg66.id#',
-					'/Traitementspcgs66/printFicheCalcul/#Traitementpcg66.id#' => array('class' => 'print'),
-					'/Traitementspcgs66/switch_imprimer/#Traitementpcg66.id#' => array(
-						'class' => 'boolean enabled',
-						'condition' => "'#Traitementpcg66.typetraitement#' === 'courrier'",
-						'condition_group' => 'typetraitement'
-					),
-					'/False/switch_imprimer' => array(
-						'msgid' => '',
-						'condition' => "'#Traitementpcg66.typetraitement#' !== 'courrier'",
-						'condition_group' => 'typetraitement'
-					),
-					'/Traitementspcgs66/printModeleCourrier/#Traitementpcg66.id#' => array('class' => 'print'),
-					'/Traitementspcgs66/envoiCourrier/#Traitementpcg66.id#' => array('class' => 'email_send'),
-					'/Traitementspcgs66/reverseDO/#Traitementpcg66.id#' => array(
-						'class' => 'button',
-						'condition' => "'#Traitementpcg66.reversedo#' !== '1'",
-						'condition_group' => 'reversedo'
-					),
-					'/Traitementspcgs66/deverseDO/#Traitementpcg66.id#' => array(
-						'class' => 'button',
-						'condition' => "'#Traitementpcg66.reversedo#' === '1'",
-						'condition_group' => 'reversedo'
-					),
-					'/Traitementspcgs66/clore/#Traitementpcg66.id#' => array('class' => 'button'),
-					'/Traitementspcgs66/cancel/#Traitementpcg66.id#' => array(
-						'condition' => "'#Traitementpcg66.annule#' !== 'O'",
-						'condition_group' => 'annule'
-					),
-					'/Traitementspcgs66/canceled/#Traitementpcg66.id#' => array(
-						'msgid' => 'Annulé',
-						'class' => 'cancel',
-						'condition' => "'#Traitementpcg66.annule#' === 'O'",
-						'condition_group' => 'annule'
-					),
-					'/Traitementspcgs66/delete/#Traitementpcg66.id#',
+					'Situationpdo.libelle' => array( 'type'=>'string' ),
+					'Traitementpcg66.descriptionpdo_id' => array( 'type'=>'string' ),
+					'Traitementpcg66.datedepart',
+					'Traitementpcg66.datereception',
+					'Traitementpcg66.daterevision',
+					'Traitementpcg66.dateecheance',
+					'Traitementpcg66.typetraitement',
+					'Traitementpcg66.imprimer' => array( 'type' => 'boolean' ),
+					'Traitementpcg66.dateenvoicourrier',
+					'Traitementpcg66.etattraitementpcg',
+					'Traitementpcg66.created',
+				) + WebrsaAccess::links(
+					array(
+						'/Traitementspcgs66/view/#Traitementpcg66.id#',
+						'/Traitementspcgs66/edit/#Traitementpcg66.id#',
+						'/Traitementspcgs66/printFicheCalcul/#Traitementpcg66.id#' => array('class' => 'print'),
+						'/Traitementspcgs66/switch_imprimer/#Traitementpcg66.id#' => array(
+							'class' => 'boolean enabled',
+							'condition' => "'#Traitementpcg66.typetraitement#' === 'courrier'",
+							'condition_group' => 'typetraitement'
+						),
+						'/False/switch_imprimer' => array(
+							'msgid' => '',
+							'condition' => "'#Traitementpcg66.typetraitement#' !== 'courrier'",
+							'condition_group' => 'typetraitement'
+						),
+						'/Traitementspcgs66/printModeleCourrier/#Traitementpcg66.id#' => array('class' => 'print'),
+						'/Traitementspcgs66/envoiCourrier/#Traitementpcg66.id#' => array('class' => 'email_send'),
+						'/Traitementspcgs66/reverseDO/#Traitementpcg66.id#' => array(
+							'class' => 'button',
+							'condition' => "'#Traitementpcg66.reversedo#' !== '1'",
+							'condition_group' => 'reversedo'
+						),
+						'/Traitementspcgs66/deverseDO/#Traitementpcg66.id#' => array(
+							'class' => 'button',
+							'condition' => "'#Traitementpcg66.reversedo#' === '1'",
+							'condition_group' => 'reversedo'
+						),
+						'/Traitementspcgs66/clore/#Traitementpcg66.id#' => array('class' => 'button'),
+						'/Traitementspcgs66/cancel/#Traitementpcg66.id#' => array(
+							'condition' => "'#Traitementpcg66.annule#' !== 'O'",
+							'condition_group' => 'annule'
+						),
+						'/Traitementspcgs66/canceled/#Traitementpcg66.id#' => array(
+							'msgid' => 'Annulé',
+							'class' => 'cancel',
+							'condition' => "'#Traitementpcg66.annule#' === 'O'",
+							'condition_group' => 'annule'
+						),
+						'/Traitementspcgs66/delete/#Traitementpcg66.id#' => array('confirm' => true),
+					)
 				)
 			),
 			$defaultParams + array(
