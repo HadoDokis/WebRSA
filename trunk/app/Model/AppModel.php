@@ -67,7 +67,7 @@
 			'group' => null,
 			'offset' => null
 		);
-		
+
 		/**
 		 * Cache "live", notamment utilisé par la méthode enums.
 		 *
@@ -76,13 +76,13 @@
 		protected $_appModelCache = array(
 			'enums' => array()
 		);
-		
+
 		/**
 		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
 		 * règle de validation inList ou en contrainte dans la base de données en
 		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
 		 * fini de valeurs existe.
-		 * 
+		 *
 		 * @see AppModel::enums
 		 *
 		 * @var array
@@ -377,31 +377,30 @@
 			}
 		}
 
-
 		/**
-		 * FIXME: remplace la fonction ci-dessus
+		 * Permet de vérifier la syntaxe d'intervalles au sens PostgreSQL.
 		 *
-		 * @param array $keys
-		 * @return array
+		 * @param string|array $keys La ou les clés de configuration à vérifier.
+		 * @param boolean $asBoolean Si true, retourne le résultat sous forme de
+		 *	booléen, sinon retourne un tableau contenant, pour chacune des clés,
+		 *  un tableau contenant les clés "success", "message" et "value" utilisé
+		 *  dans la vérification de l'application.
+		 * @return array|boolean
 		 */
 		protected function _checkPostgresqlIntervals( $keys, $asBoolean = false ) {
-			if( !$this->Behaviors->attached( 'Pgsqlcake.PgsqlSchema' ) ) {
-				$this->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
-			}
+			$result = array();
 
-			$keys = (array)$keys;
-
-			$results = array( );
-			foreach( $keys as $key ) {
-				$results[$key] = $this->pgCheckIntervalSyntax( Configure::read( $key ) );
+			foreach( (array)$keys as $key ) {
+				$value = Configure::read( $key );
+				$result[$key] = $this->getDataSource()->checkPostgresIntervalSyntax( $value );
 			}
 
 			if( $asBoolean ) {
-				$booleans = Set::classicExtract( $results, '{s}.success' );
-				$results = !in_array( false, $booleans, true );
+				$booleans = Hash::extract( $result, '{s}.success' );
+				$result = !in_array( false, $booleans, true );
 			}
 
-			return $results;
+			return $result;
 		}
 
 		/**
@@ -568,7 +567,7 @@
 							foreach( $values as $value ) {
 								$list[$value] = __d( $domain, "ENUM::{$fieldNameUpper}::{$value}" );
 							}
-							
+
 							$this->_appModelCache[$cacheKey][$this->alias][$field] = $list;
 						}
 					}

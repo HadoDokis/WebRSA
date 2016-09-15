@@ -178,7 +178,13 @@
 			array_merge(
 				array(
 					'Search.Contratinsertion.arriveaecheance' => array( 'type' => 'checkbox' ),
-					'Search.Contratinsertion.echeanceproche' => array( 'type' => 'checkbox' ),
+					'Search.Contratinsertion.echeanceproche' => array(
+						'type' => 'checkbox',
+						'label' => sprintf(
+							__m( 'Search.Contratinsertion.echeanceproche' ),
+							localized_interval( Configure::read( 'Criterecer.delaiavanteecheance' ), array( 'precision' => 'd' ) )
+						)
+					),
 				),
 				(
 					$departement === 66

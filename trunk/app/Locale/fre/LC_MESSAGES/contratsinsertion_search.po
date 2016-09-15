@@ -62,7 +62,7 @@ msgid "Search.Contratinsertion.arriveaecheance"
 msgstr "Allocataire dont le CER est arrivé à échéance"
 
 msgid "Search.Contratinsertion.echeanceproche"
-msgstr "CER arrivant à échéance (par défaut, se terminant sous 1 mois)"
+msgstr "CER arrivant à échéance (se terminant sous %%s)"
 
 msgid "Search.Contratinsertion.notifienonvalide"
 msgstr "CER non validé et notifié il y a 45 jours"

@@ -233,6 +233,13 @@
 	define( 'CONFIGS', APP.DS.'Config'.DS );
 	define( 'ABSTRACTMODELS', APP.DS.'Model'.DS.'Abstractclass'.DS );
 
+	// Valeurs par défaut pour certaines clés de configuration
+	Configure::write(
+		array(
+			'Criterecer.delaiavanteecheance' => '1 month'
+		)
+	);
+
 	require_once( CONFIGS.'webrsa.inc' );
 	require_once( APPLIBS.'basics.php' );
 	require_once( APPLIBS.'xinflector.php' );

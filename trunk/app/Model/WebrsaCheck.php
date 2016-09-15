@@ -242,160 +242,182 @@
 		 * @return array
 		 */
 		protected function _allConfigureKeysCommon() {
-			$result = array(
-				'Admin.unlockall' => 'boolean',
-				'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
-				'AjoutOrientationPossible.toppersdrodevorsa' => 'string',
-				'AncienAllocataire.enabled' => 'boolean',
-				'CG.cantons' => 'boolean',
-				'Cg.departement' => array(
-					array( 'rule' => 'inList', array( 58, 66, 93, 976 ) ),
+			$departement = (int)Configure::read( 'Cg.departement' );
+
+			$result = array_merge(
+				array(
+					'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
+					'AjoutOrientationPossible.toppersdrodevorsa' => 'string',
+					'AncienAllocataire.enabled' => 'boolean',
+					'CG.cantons' => 'boolean',
+					'Cg.departement' => array(
+						array( 'rule' => 'inList', array( 58, 66, 93, 976 ) ),
+					),
+					'Cohorte.dossierTmpPdfs' => 'string',
+					'Criterecer.delaiavanteecheance' => 'string',
+					'Detailcalculdroitrsa.natpf.socle' => 'isarray',
+					'Dossierep.delaiavantselection' => array(
+						array( 'rule' => 'string', 'allowEmpty' => true ),
+					),
+					'Gestiondoublon.Situationdossierrsa2.etatdosrsa' => array(
+						array( 'rule' => 'isarray' ),
+						array( 'rule' => 'inListArray', array( 'Z', 1, 2, 3, 4, 5, 6 ) ),
+					),
+					'Jetons2.disabled' => 'boolean',
+					'Optimisations.progressivePaginate' => 'boolean',
+					'Optimisations.useTableDernierdossierallocataire' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true ),
+					),
+					'Recherche.identifiantpecourt' => 'boolean',
+					'Recherche.qdFilters.Serviceinstructeur' => 'boolean',
 				),
-				'Cohorte.dossierTmpPdfs' => 'string',
-				'Criterecer.delaiavanteecheance' => 'string',
-				'Detailcalculdroitrsa.natpf.socle' => 'isarray',
-				'Dossierep.delaiavantselection' => array(
-					array( 'rule' => 'string', 'allowEmpty' => true ),
+				(
+					true === in_array( $departement, array( 58, 66 ), true )
+						? array(
+							'Selectionnoninscritspe.intervalleDetection' => array(
+								array(
+									'rule' => 'string',
+									'allowEmpty' => false
+								)
+							)
+						)
+						: array()
 				),
-				'FULL_BASE_URL' => 'url',
-				'Gestiondoublon.Situationdossierrsa2.etatdosrsa' => array(
-					array( 'rule' => 'isarray' ),
-					array( 'rule' => 'inListArray', array( 'Z', 1, 2, 3, 4, 5, 6 ) ),
+				array(
+					'Situationdossierrsa.etatdosrsa.ouvert' => 'isarray',
+					'UI.menu.large' => 'boolean',
+					'UI.menu.lienDemandeur' => array(
+						array( 'rule' => 'url', 'allowEmpty' =>true ),
+					),
+					'User.adresse' => 'boolean',
+					'Utilisateurs.multilogin' => 'boolean',
+					'Zonesegeographiques.CodesInsee' => 'boolean',
+					'alerteFinSession' => 'boolean',
+					'nb_limit_print' => 'integer',
 				),
-				'Jetons2.disabled' => 'boolean',
-				'Optimisations.progressivePaginate' => 'boolean',
-				'Optimisations.useTableDernierdossierallocataire' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true ),
+				(
+					true === in_array( $departement, array( 66, 93 ), true )
+						? array(
+							'nom_form_apre_cg' => array(
+								array( 'rule' => 'inList', array( 'cg66', 'cg93' ) ),
+							)
+						)
+						: array()
 				),
-				'Periode.modifiable.nbheure' => 'integer',
-				'Recherche.identifiantpecourt' => 'boolean',
-				'Recherche.qdFilters.Serviceinstructeur' => 'boolean',
-				'Selectionnoninscritspe.intervalleDetection' => 'string',
-				'Situationdossierrsa.etatdosrsa.ouvert' => 'isarray',
-				'UI.menu.large' => 'boolean',
-				'UI.menu.lienDemandeur' => array(
-					array( 'rule' => 'url', 'allowEmpty' =>true ),
-				),
-				'User.adresse' => 'boolean',
-				'Utilisateurs.multilogin' => 'boolean',
-				'Zonesegeographiques.CodesInsee' => 'boolean',
-				'alerteFinSession' => 'boolean',
-				'nb_limit_print' => 'integer',
-				'nom_form_apre_cg' => array(
-					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
-				),
-				'nom_form_bilan_cg' => array(
-					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
-				),
-				'nom_form_ci_cg' => array(
-					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
-				),
-				'nom_form_cui_cg' => array(
-					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
-				),
-				'nom_form_pdo_cg' => array(
-					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
-				),
-				'with_parentid' => 'boolean',
-				'Utilisateurs.reconnection' => 'boolean',
-                'Rendezvous.useThematique' => 'boolean',
-				'Statistiqueministerielle.conditions_droits_et_devoirs' => 'isarray',
-				'Statistiqueministerielle.conditions_types_parcours.professionnel' => 'isarray',
-				'Statistiqueministerielle.conditions_types_parcours.socioprofessionnel' => 'isarray',
-				'Statistiqueministerielle.conditions_types_parcours.social' => 'isarray',
-				'Statistiqueministerielle.conditions_indicateurs_organismes' => 'isarray',
-				'Statistiqueministerielle.conditions_types_cers.ppae' => 'isarray',
-				'Statistiqueministerielle.conditions_types_cers.cer_pro' => 'isarray',
-				'Statistiqueministerielle.conditions_types_cers.cer_pro_social' => 'isarray',
-				'Statistiqueministerielle.conditions_organismes.SPE' => 'isarray',
-				'Statistiqueministerielle.conditions_organismes.SPE_PoleEmploi' => 'isarray',
-				'Statistiqueministerielle.conditions_organismes.HorsSPE' => 'isarray',
-				'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray',
-				'WebrsaEmailConfig.testEnvironments' => 'isarray',
-				'Romev3.enabled' => 'boolean',
-				'MultiDomainsTranslator.prefix' => 'string',
-				'Etatjetons.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Requestmanager.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Canton.useAdresseCanton' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('CG.cantons') )
-				),
-				'Alerte.changement_adresse.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Alerte.changement_adresse.delai' => array(
-					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Canton.useAdresseCanton') )
-				),
-				'MultiDomainsTranslator.prefix' => array(
-					array( 'rule' => 'string', 'allowEmpty' => true )
-				),
-				'Module.Cui.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Gestionsdoublons.index.useTag' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Gestionsdoublons.index.Tag.valeurtag_id' => array(
-					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Gestionsdoublons.index.useTag') )
-				),
-				'Module.Savesearch.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('Module.Savesearch.mon_menu.enabled') )
-				),
-				'Module.Savesearch.mon_menu.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('Module.Savesearch.enabled') )
-				),
-				'Module.Savesearch.mon_menu.name' => array(
-					array( 'rule' => 'string', 'allowEmpty' => true )
-				),
-				'Anciensmoteurs.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'MultiDomainsTranslator.prefix' => array(
-					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93', 'cg976' ) ),
-				),
-				'Module.Synthesedroits.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'ConfigurableQuery.common.filters.Adresse.numcom.multiple' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'ConfigurableQuery.common.filters.Adresse.numcom.multiple_larger_1' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Module.Dashboards.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'ConfigurableQuery.common.two_ways_order.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Module.Attributiondroits.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Search.Options.enums' => array(
-					array( 'rule' => 'isarray', 'allowEmpty' => true )
-				),
-				'Module.Donneescaf.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'WebrsaTranslator.suffix' => 'string',
-				'Module.Logtrace.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'Module.Logtrace.total_duration' => array(
-					array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Module.Logtrace.enabled') )
-				),
-				'Module.Datepicker.enabled' => array(
-					array( 'rule' => 'boolean', 'allowEmpty' => true )
-				),
-				'UI.beforeLogo.text' => array(
-					array( 'rule' => 'string', 'allowEmpty' => true )
-				),
-				'UI.afterLogo.text' => array(
-					array( 'rule' => 'string', 'allowEmpty' => true )
-				),
+				array(
+					'nom_form_ci_cg' => array(
+						array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93', 'cg976' ) ),
+					),
+					'nom_form_pdo_cg' => array(
+						array(
+							'rule' => 'inList',
+							array( 'cg66', 'cg93' ),
+							'allowEmpty' => false === in_array( $departement, array( 66, 93 ), true )
+						),
+					),
+					'with_parentid' => 'boolean',
+					'Utilisateurs.reconnection' => 'boolean',
+					'Rendezvous.useThematique' => 'boolean',
+					'Statistiqueministerielle.conditions_droits_et_devoirs' => 'isarray',
+					'Statistiqueministerielle.conditions_types_parcours.professionnel' => 'isarray',
+					'Statistiqueministerielle.conditions_types_parcours.socioprofessionnel' => 'isarray',
+					'Statistiqueministerielle.conditions_types_parcours.social' => 'isarray',
+					'Statistiqueministerielle.conditions_indicateurs_organismes' => 'isarray',
+					'Statistiqueministerielle.conditions_types_cers.ppae' => 'isarray',
+					'Statistiqueministerielle.conditions_types_cers.cer_pro' => 'isarray',
+					'Statistiqueministerielle.conditions_types_cers.cer_pro_social' => 'isarray',
+					'Statistiqueministerielle.conditions_organismes.SPE' => 'isarray',
+					'Statistiqueministerielle.conditions_organismes.SPE_PoleEmploi' => 'isarray',
+					'Statistiqueministerielle.conditions_organismes.HorsSPE' => 'isarray',
+					'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray',
+					'WebrsaEmailConfig.testEnvironments' => array(
+						array( 'rule' => 'isarray', 'allowEmpty' => true )
+					),
+					'Romev3.enabled' => 'boolean',
+					'MultiDomainsTranslator.prefix' => 'string',
+					'Etatjetons.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Requestmanager.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Canton.useAdresseCanton' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('CG.cantons') )
+					),
+					'Alerte.changement_adresse.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Alerte.changement_adresse.delai' => array(
+						array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Canton.useAdresseCanton') )
+					),
+					'MultiDomainsTranslator.prefix' => array(
+						array( 'rule' => 'string', 'allowEmpty' => true )
+					),
+					'Module.Cui.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Gestionsdoublons.index.useTag' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Gestionsdoublons.index.Tag.valeurtag_id' => array(
+						array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Gestionsdoublons.index.useTag') )
+					),
+					'Module.Savesearch.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('Module.Savesearch.mon_menu.enabled') )
+					),
+					'Module.Savesearch.mon_menu.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => !Configure::read('Module.Savesearch.enabled') )
+					),
+					'Module.Savesearch.mon_menu.name' => array(
+						array( 'rule' => 'string', 'allowEmpty' => true )
+					),
+					'Anciensmoteurs.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'MultiDomainsTranslator.prefix' => array(
+						array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93', 'cg976' ) ),
+					),
+					'Module.Synthesedroits.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'ConfigurableQuery.common.filters.Adresse.numcom.multiple' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'ConfigurableQuery.common.filters.Adresse.numcom.multiple_larger_1' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Module.Dashboards.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'ConfigurableQuery.common.two_ways_order.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Module.Attributiondroits.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Search.Options.enums' => array(
+						array( 'rule' => 'isarray', 'allowEmpty' => true )
+					),
+					'Module.Donneescaf.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'WebrsaTranslator.suffix' => 'string',
+					'Module.Logtrace.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'Module.Logtrace.total_duration' => array(
+						array( 'rule' => 'integer', 'allowEmpty' => !Configure::read('Module.Logtrace.enabled') )
+					),
+					'Module.Datepicker.enabled' => array(
+						array( 'rule' => 'boolean', 'allowEmpty' => true )
+					),
+					'UI.beforeLogo.text' => array(
+						array( 'rule' => 'string', 'allowEmpty' => true )
+					),
+					'UI.afterLogo.text' => array(
+						array( 'rule' => 'string', 'allowEmpty' => true )
+					)
+				)
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
@@ -799,7 +821,6 @@
 		 *		- Dossierep::checkConfigDossierepDelaiavantselection
 		 *		- Nonrespectsanctionep93::checkConfigUpdateIntervalleCerDo19Cg93
 		 *		- Contratinsertion::checkConfigUpdateEncoursbilanCg66
-		 *		- Contratinsertion::checkConfigCriterecerDelaiavantecheance
 		 *	2°) Bouger AppModel::_checkPostgresqlIntervals ici ?
 		 *  3°) Voir si on ne peut pas combiner la boucle avec celle ci-dessus ?
 		 *  4°) Les anciennes fonctions se trouvant dans les modèles sont-elles encore utilisées ?
@@ -807,7 +828,6 @@
 		 * app/models/informationpe.php:299:                       return $this->_checkSqlIntervalSyntax( Configure::read( 'Selectionnoninscritspe.intervalleDetection' ) );
 		 * app/models/nonrespectsanctionep93.php:1080:                     return $this->_checkSqlIntervalSyntax( Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ) );
 		 * app/models/contratinsertion.php:852:                    return $this->_checkSqlIntervalSyntax( Configure::read( 'Contratinsertion.Cg66.updateEncoursbilan' ) );
-		 * app/models/contratinsertion.php:861:                    return $this->_checkSqlIntervalSyntax( Configure::read( 'Criterecer.delaiavanteecheance' ) );
 		 * app/models/dossierep.php:548:                   return $this->_checkSqlIntervalSyntax( $delaiavantselection );
 		 */
 		public function checkAllPostgresqlIntervals( $departement ) {

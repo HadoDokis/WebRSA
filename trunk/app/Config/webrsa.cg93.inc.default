@@ -48,13 +48,6 @@
 		)
 	);
 
-	/**
-	 * Le chemin complet vers la base de l'application (utilisé par certains shells)
-	 *
-	 * @default: null
-	 */
-	Configure::write( 'FULL_BASE_URL', 'http://rsa.cg93.fr' );
-
 	Configure::write( 'Cg.departement', 93 );
 	Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg'.Configure::read( 'Cg.departement' ) ) );
 
@@ -73,15 +66,6 @@
 
 	// Limit pour le nombre de documents à éditer dans la cohorte par orientation
 	Configure::write( 'nb_limit_print', 5000 );
-
-
-	/**
-	 * Permet à l'administrateur d'accéder à toutes les parties de l'application
-	 * normalement bloquées aux seules parties de paramétrage renseignées.
-	 * Voir AppController::_isAdminAction().
-	 * @default false
-	 */
-	Configure::write( 'Admin.unlockall', true );
 
 	/**
 	 * Montant maximal des apres complémentaires pour une personne au cours
@@ -173,18 +157,6 @@
 	 * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
 	 */
 	Configure::write( 'nom_form_pdo_cg', 'cg93' );
-
-	/**
-	 * Champs spécifique selon le CG pour le formulaire du bilan de parcours / Fiche de saisine
-	 * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
-	 */
-	Configure::write( 'nom_form_bilan_cg', 'cg93' );
-
-	/**
-	 * Champs spécifique selon le CG pour le formulaire du Contrat Unqiue d'Insertion
-	 * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
-	 */
-	Configure::write( 'nom_form_cui_cg', 'cg93' );
 
 	/**
 	 *   Paramètre pour connaître le pourcentage du 1er versement, lors d'un versement en 2 fois,
@@ -414,16 +386,6 @@
 	 * @default false
 	 */
 	Configure::write( 'Recherche.identifiantpecourt', false );
-
-
-	/**
-	 * Durée du délai (intervalle) entre la date de validation de l'orientation et la date
-	 * d'inscription au Pôle Emploi
-	 *
-	 * Voir le document app/docs/Documentation administrateurs.odt, partie
-	 * "Intervalles PostgreSQL"
-	 */
-	Configure::write( 'Selectionnoninscritspe.intervalleDetection', '2 months' );
 
 	/**
 	 * Gestion des anomalies

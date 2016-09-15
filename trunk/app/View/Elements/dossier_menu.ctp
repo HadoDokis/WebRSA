@@ -143,17 +143,24 @@
 					( $departement == 66 ? 'DSPs mises à jour' : 'MAJ DSP' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] ) ),
 				);
 
+				$nom_form_pdo_cg = Configure::read( 'nom_form_pdo_cg' );
 				if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
-					$subAllocataire['Droit']['Consultation dossier PDO'] = array( 'url' => array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] ) );
+					if( null !== $nom_form_pdo_cg ) {
+						$subAllocataire['Droit']['Consultation dossier PDO'] = array( 'url' => array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] ) );
+					}
 					$subAllocataire['Droit']['Orientation'] = array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] ) );
 				}
 				else if (Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
 					$subAllocataire['Droit']['Orientation'] = array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] ) );
-					$subAllocataire['Droit']['Traitements PCG'] = array( 'url' => array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne['id'] ) );
+					if( null !== $nom_form_pdo_cg ) {
+						$subAllocataire['Droit']['Traitements PCG'] = array( 'url' => array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne['id'] ) );
+					}
 				}
 				else {
 					$subAllocataire['Droit']['Orientation'] = array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] ) );
-					$subAllocataire['Droit']['Consultation dossier PDO'] = array( 'url' => array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] ) );
+					if( null !== $nom_form_pdo_cg ) {
+						$subAllocataire['Droit']['Consultation dossier PDO'] = array( 'url' => array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] ) );
+					}
 				}
 
 				// Accompagnement du parcours
@@ -230,12 +237,14 @@
 					)
 				);
 
-				$subAllocataire['Accompagnement du parcours']['Aides financières'] = array(
-					'url' => '#',
-					'Aides / APRE' => array(
-						'url' => array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
-					)
-				);
+				if( true === in_array( $departement, array( 66, 93 ), true ) ) {
+					$subAllocataire['Accompagnement du parcours']['Aides financières'] = array(
+						'url' => '#',
+						'Aides / APRE' => array(
+							'url' => array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
+						)
+					);
+				}
 
 				if( $departement != 66 ) {
 					$subAllocataire['Accompagnement du parcours']['Mémos'] = array(

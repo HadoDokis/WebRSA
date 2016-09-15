@@ -507,5 +507,16 @@
 
 			return parent::checkParametrage( compact( 'query' ) );
 		}
+
+		/**
+		 * Retourne la liste des clés de configuration pour lesquelles il faut
+		 * vérifier la syntaxe de l'intervalle PostgreSQL.
+		 *
+		 * @return array
+		 */
+		public function checkPostgresqlIntervals() {
+			$keys = array( 'Criterecer.delaiavanteecheance' );
+			return $this->_checkPostgresqlIntervals( $keys );
+		}
 	}
 ?>

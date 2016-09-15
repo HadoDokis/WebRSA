@@ -7,20 +7,10 @@
 
 <?php
 	if( $this->action == 'add'  ) {
-		if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ) {
-			$this->pageTitle = 'Ajout d\'un bilan de parcours';
-		}
-		else {
-			$this->pageTitle = 'Ajout d\'une fiche de saisine';
-		}
+		$this->pageTitle = 'Ajout d\'un bilan de parcours';
 	}
 	else {
-		if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ) {
-			$this->pageTitle = 'Édition du bilan de parcours';
-		}
-		else {
-			$this->pageTitle = 'Édition de la fiche de saisine';
-		}
+		$this->pageTitle = 'Édition du bilan de parcours';
 	}
 
 	function radioBilan( $view, $path, $value, $label ) {
@@ -198,9 +188,9 @@
 						'options' => $options,
 					)
 				);
-			}			
+			}
 			echo '</div>';
-			
+
 			echo '<div class="scrollable" id="listeCERs"><h3>' . __d('bilansparcours66', 'Dernier CER') . '</h3>';
 			echo $this->Default3->view(
 				$contratsinsertion,
@@ -218,7 +208,7 @@
 					'th' => true,
 					'options' => $options,
 				)
-			);			
+			);
 			echo '</div>';
 		?>
 	<?php

@@ -1363,4 +1363,53 @@
 
 		return $result;
 	}
+
+	/**
+	 * Convertit un intervalle (au format strtotime ou PostgreSQL) en un
+	 * intervalle ajusté et localisé en français (par exemple: "3 jours, 2 heures").
+	 *
+	 * @param string $interval_string L'intervalle à convertir
+	 * @param array $params Un array de paramètres dont les clés peuvent etre:
+	 *	- now: une chaîne date/heure représentant la date à partir de laquelle
+	 *      calculer l'intervalle (par défaut: "now")
+	 *	- precision: une valeur parmi "y", "m", "d", "h", "i", "s", null qui
+	 *      représente la précision maximale (par défaut: null)
+	 * @return string
+	 */
+	function localized_interval( $interval_string, array $params = array() ) {
+		$params += array( 'now' => 'now', 'precision' => null );
+
+		try {
+			$from = new DateTime( $params['now'] );
+			$to = new DateTime( $interval_string );
+			$interval = $to->diff($from);
+
+			// INFO: on pourrait passer par un fichier de traduction
+			$parts = array(
+				'y' => array( 'singular' => 'année', 'plural' => 'années' ),
+				'm' => array( 'singular' => 'mois', 'plural' => 'mois' ),
+				'd' => array( 'singular' => 'jour', 'plural' => 'jours' ),
+				'h' => array( 'singular' => 'heure', 'plural' => 'heures' ),
+				'i' => array( 'singular' => 'minute', 'plural' => 'minutes' ),
+				's' => array( 'singular' => 'seconde', 'plural' => 'secondes' )
+			);
+
+			$format = array();
+			$skip = false;
+			foreach( $parts as $part => $units ) {
+				if( 0 < $interval->{$part} && false === $skip ) {
+					$unit = __mn( $units['singular'], $units['plural'], $interval->{$part} );
+					$format[] = "%{$part} {$unit}";
+				}
+
+				if( $part === $params['precision'] ) {
+					$skip = true;
+				}
+			}
+
+			return $interval->format( implode( ', ', $format ) );
+		} catch( Exception $e ) {
+			return (string)$interval_string;
+		}
+	}
 ?>
