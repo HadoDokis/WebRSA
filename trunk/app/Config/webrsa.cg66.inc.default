@@ -1197,4 +1197,9 @@
 
 	Configure::write('UI.beforeLogo.text', $beforeLogoText);
 	Configure::write('UI.afterLogo.text', $afterLogoText);
+	
+	/**
+	 * Tableau de bord principal
+	 */
+	Configure::write('Module.Dashboards.enabled', true);
 ?>

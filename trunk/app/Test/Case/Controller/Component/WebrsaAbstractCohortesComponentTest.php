@@ -14,6 +14,7 @@
 	App::uses('WebrsaAbstractCohortesComponent', 'Controller/Component');
 	App::uses('CakeEventListener', 'Event');
 	App::uses('SuperFixture', 'SuperFixture.Utility');
+	App::uses( 'Orientstruct', 'Model' );
 	
 	/**
 	 * NonAbstractCohorteTestComponent class
@@ -55,6 +56,11 @@
 	 */
 	class WebrsaAbstractCohortesComponentTest extends CakeTestCase
 	{
+		public $fixtures = array(
+			'Dsp',
+			'DspRev',
+		);
+		
 		/**
 		 * Controller property
 		 *
@@ -67,15 +73,26 @@
 		 */
 		public function setUp() {
 			parent::setUp();
-
+			
+			Configure::write('Recherche.qdFilters.Serviceinstructeur', false);
+			
+			SuperFixture::load($this, 'WebrsaAbstractCohorte');
+			ClassRegistry::flush();
+			
+			// On mock la méthode ged()
+			$Orientstruct = $this->getMock(
+				'Orientstruct',
+				array( 'ged' ),
+				array( array( 'ds' => 'test' ) )
+			);
+			ClassRegistry::addObject( 'Orientstruct', $Orientstruct );
+			
 			$Request = new CakeRequest('dossiers/search', false);
 			$Request->addParams(array('controller' => 'dossiers', 'action' => 'action_cohorte'));
 
 			$this->Controller = new WebrsaCheckTestController($Request);
 			$this->Controller->Components->init($this->Controller);
 			$this->Controller->NonAbstractCohorteTest->initialize($this->Controller);
-			
-			SuperFixture::load($this, 'WebrsaAbstractCohorte');
 		}
 
 		/**
