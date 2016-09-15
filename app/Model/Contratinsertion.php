@@ -864,8 +864,14 @@
 			return $success; // FIXME: à traiter
 		}
 
+		/**
+		 * Retourne la liste des clés de configuration pour lesquelles il faut
+		 * vérifier la syntaxe de l'intervalle PostgreSQL.
+		 *
+		 * @return array
+		 */
 		public function checkPostgresqlIntervals() {
-			$keys = array( 'Criterecer.delaiavanteecheance' );
+			$keys = array();
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$keys[] = 'Contratinsertion.Cg66.updateEncoursbilan';

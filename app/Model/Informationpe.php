@@ -433,10 +433,21 @@
 			return $sqDerniereInformationpe;
 		}
 
+		/**
+		 * Retourne la liste des clés de configuration pour lesquelles il faut
+		 * vérifier la syntaxe de l'intervalle PostgreSQL.
+		 *
+		 * @return array
+		 */
 		public function checkPostgresqlIntervals() {
-			return $this->_checkPostgresqlIntervals(
-				array( 'Selectionnoninscritspe.intervalleDetection' )
-			);
+			$departement = (int)Configure::read( 'Cg.departement' );
+			if( in_array( $departement, array( 58, 66 ) ) ) {
+				return $this->_checkPostgresqlIntervals(
+					array( 'Selectionnoninscritspe.intervalleDetection' )
+				);
+			}
+
+			return array();
 		}
 	}
 ?>

@@ -32,17 +32,17 @@
 		 * @var array
 		 */
 		public $uses = array('Contratinsertion');
-		
+
 		/**
 		 * Mémorise le résultat d'une fonction en cas d'appels succéssifs de celles-ci
-		 * 
+		 *
 		 * @var array - array(__FUNCTION__.'.'.md5(json_encode(array($param1, $param2, ...))) => $results)
 		 */
 		private $_mem = array();
-		
+
 		/**
 		 * Permet d'obtenir la clef pour le stockage du résultat de fonction en fonction des paramètres
-		 * 
+		 *
 		 * @param String $functionName
 		 * @param mixed $params
 		 * @return String
@@ -53,7 +53,7 @@
 
 		/**
 		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
-		 * 
+		 *
 		 * @param array $query
 		 * @return type
 		 */
@@ -69,14 +69,14 @@
 				'Personne.age' => $this->Contratinsertion->Personne->sqVirtualfield('age'),
 				'Contratinsertion.dernier' => $this->Contratinsertion->sqVirtualfield('dernier'),
 			);
-			
+
 			$query['joins'] = isset($query['joins']) ? $query['joins'] : array();
 			$joinsAvailables = Hash::extract($query, 'joins.{n}.alias');
-			
+
 			if (!in_array('Personne', $joinsAvailables)) {
 				$query['joins'][] = $this->Contratinsertion->join('Personne');
 			}
-			
+
 			if ($departement === 66) {
 				$fields['Propodecisioncer66.isvalidcer'] = 'Propodecisioncer66.isvalidcer';
 				if (!in_array('Propodecisioncer66', $joinsAvailables)) {
@@ -84,7 +84,7 @@
 				}
 			} elseif ($departement === 58) {
 				$fields['Passagecommissionep.etatdossierep'] = 'Passagecommissionep.etatdossierep';
-				
+
 				if (!in_array('Sanctionep58', $joinsAvailables)) {
 					$query['joins'][] = $this->Contratinsertion->join('Sanctionep58');
 				}
@@ -113,13 +113,13 @@
 					$query['joins'][] = $this->Contratinsertion->Sanctionep58->Dossierep->join('Passagecommissionep');
 				}
 			}
-			
+
 			return Hash::merge($query, array('fields' => array_values($fields)));
 		}
-		
+
 		/**
 		 * Permet d'obtenir le nécéssaire pour calculer les droits d'accès métier à une action
-		 * 
+		 *
 		 * @param array $conditions
 		 * @return array
 		 */
@@ -140,21 +140,21 @@
 					'Contratinsertion.id' => 'DESC',
 				)
 			);
-			
+
 			$results = $this->Contratinsertion->find('all', $this->completeVirtualFieldsForAccess($query));
 			return $results;
 		}
-		
+
 		/**
 		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
-		 * 
+		 *
 		 * @see WebrsaAccess::getParamsList
 		 * @param integer $personne_id
 		 * @param array $params - Liste des paramètres actifs
 		 */
 		public function getParamsForAccess($personne_id, array $params = array()) {
 			$results = $this->haveNeededDatas($personne_id);
-			
+
 			if (in_array('haveSanctionep', $params)) {
 				$querydata = $this->qdThematiqueEp('Sanctionep58', $personne_id);
 				$querydata['fields'] = 'Sanctionep58.id';
@@ -169,33 +169,33 @@
 			if (in_array('ajoutPossible', $params)) {
 				$results['ajoutPossible'] = $this->ajoutPossible($personne_id);
 			}
-			
+
 			return $results;
 		}
-		
+
 		/**
 		 * Permet de savoir si il est possible d'ajouter un enregistrement
-		 * 
+		 *
 		 * @param integer $personne_id
 		 * @return boolean
 		 */
 		public function ajoutPossible($personne_id) {
 			$departement = Configure::read('Cg.departement');
 			extract($this->haveNeededDatas($personne_id));
-			
+
 			// Spécial CG
 			$cgCond = true;
 			if ($departement === 58) {
 				$cgCond = $isSoumisdroitetdevoir;
 			}
-			
+
 			return $haveOrient && !$haveOrientEmploi && !$haveCui && !$haveDossiercovnonfinal && $cgCond;
 		}
-		
+
 		/**
-		 * Vérifi la présence ou non, d'enregistrements sur d'autres tables qui 
+		 * Vérifi la présence ou non, d'enregistrements sur d'autres tables qui
 		 * influent sur la possibilitée d'ajout d'un contrat insertion
-		 * 
+		 *
 		 * @param integer $personne_id
 		 * @return array
 		 */
@@ -241,7 +241,7 @@
 									'OR' => array(
 										array(
 											'Typeorient.parentid IS NULL',
-											'Typeorient.id' => $typeOrientPrincipaleEmploiId, 
+											'Typeorient.id' => $typeOrientPrincipaleEmploiId,
 										),
 										'Typeorient.parentid' => $typeOrientPrincipaleEmploiId
 									)
@@ -278,7 +278,7 @@
 					);
 
 					$query['fields'][] = '("Dossiercov58"."id" IS NOT NULL) AS "Personne__havedossiercovnonfinal"';
-					$query['joins'][] = $Personne->join('Dossiercov58', 
+					$query['joins'][] = $Personne->join('Dossiercov58',
 						array('conditions' => $dossiercov['conditions'])
 					);
 
@@ -294,7 +294,7 @@
 				/**
 				 * Résultats
 				 */
-				$record['Personne']['isSoumisdroitetdevoir'] = 
+				$record['Personne']['isSoumisdroitetdevoir'] =
 					$this->Contratinsertion->Personne->Calculdroitrsa->isSoumisAdroitEtDevoir($personne_id)
 				;
 
@@ -320,13 +320,13 @@
 					'haveDemandemaintiencovnonfinal' => (boolean)Hash::get($record, 'Personne.haveDemandemaintiencovnonfinal'),
 					'needReorientationsociale' => (boolean)Hash::get($record, 'Personne.needReorientationsociale'),
 				);
-				
+
 				$this->_mem[$memKey] = $results;
 			}
-			
+
 			return $this->_mem[$memKey];
 		}
-		
+
 		/**
 		 * (CG 58, 93)
 		 *
@@ -980,14 +980,6 @@
 		 */
 		public function checkConfigUpdateEncoursbilanCg66() {
 			return $this->_checkPostgresqlIntervals( array( 'Contratinsertion.Cg66.updateEncoursbilan' ), true );
-		}
-
-		/**
-		 * Vérifie l'intervalle, entre la date de fin d'un CER et la date du jour, en deçà duquel
-		 * le CER sera détecté afin de retrouver les cERs arrivant à échéance
-		 */
-		public function checkConfigCriterecerDelaiavantecheance() {
-			return $this->_checkPostgresqlIntervals( array( 'Criterecer.delaiavanteecheance' ), true );
 		}
 
 		/**

@@ -1,11 +1,6 @@
 <?php $personne_id = Set::classicExtract( $this->request->params, 'pass.0' ); ?>
 <?php
-	if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ){
-		$this->pageTitle = 'Bilan de parcours de la personne';
-	}
-	else {
-		$this->pageTitle = 'Fiche de saisine de la personne';
-	}
+	$this->pageTitle = 'Bilan de parcours de la personne';
 debug($urlmenu);
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
@@ -36,7 +31,7 @@ debug($urlmenu);
 				echo "</tr></thead><tbody>";
 
 			foreach($bilansparcours66 as $key => $bilanparcours66) {
-				
+
 				// Infobulle
 				$innerTable = '<table id="innerTablesearchResults'.$key.'" class="innerTable">
 						<tbody>
@@ -46,9 +41,9 @@ debug($urlmenu);
 							</tr>
 						</tbody>
 					</table>';
-				
+
 				echo "<tr>\n";
-				
+
 				// Date du bilan de parcours, Position du bilan ...
 				$data = array(
 					date_short( $bilanparcours66['Bilanparcours66']['datebilan'] ),
@@ -56,35 +51,35 @@ debug($urlmenu);
 					$bilanparcours66['Serviceinstructeur']['lib_service'], // MSP
 					$bilanparcours66['Structurereferente']['lib_struc'], // Type de structure
 					$bilanparcours66['Referent']['nom_complet'], // Nom du référent
-				); 
-				
+				);
+
 				// Type de commission
 				$data[5] = $bilanparcours66['Bilanparcours66']['proposition'] ? value( $options['Bilanparcours66']['proposition'], $bilanparcours66['Bilanparcours66']['proposition'] ) : '&nbsp;';
-				
+
 				// Motif de la saisine
-				$data[6] = 
-					( $bilanparcours66['Bilanparcours66']['examenauditionpe'] ) ? 
-						value( $options['Bilanparcours66']['examenauditionpe'], $bilanparcours66['Bilanparcours66']['examenauditionpe'] ) : 
-					(( $bilanparcours66['Bilanparcours66']['examenaudition'] ) ? 
+				$data[6] =
+					( $bilanparcours66['Bilanparcours66']['examenauditionpe'] ) ?
+						value( $options['Bilanparcours66']['examenauditionpe'], $bilanparcours66['Bilanparcours66']['examenauditionpe'] ) :
+					(( $bilanparcours66['Bilanparcours66']['examenaudition'] ) ?
 						value( $options['Bilanparcours66']['examenaudition'], $bilanparcours66['Bilanparcours66']['examenaudition'] ) :
-					(( $bilanparcours66['Bilanparcours66']['choixparcours'] ) ? 
+					(( $bilanparcours66['Bilanparcours66']['choixparcours'] ) ?
 						value( $options['Bilanparcours66']['choixparcours'], $bilanparcours66['Bilanparcours66']['choixparcours'] ) :
-					'&nbsp;'));		
-				
-				// Proposition du referent	
+					'&nbsp;'));
+
+				// Proposition du referent
 				$data[7] = ( $bilanparcours66['Propotypeorient']['lib_type_orient'] ) ?
 					array( $bilanparcours66['Propotypeorient']['lib_type_orient'], $bilanparcours66['Propostructurereferente']['lib_struc'] ) :
 					'&nbsp;'
 				;
-				
+
 				// Avis de l'EP
 				if ( $bilanparcours66['Avisdefautinsertionep66']['decision'] ){
 					$avis = '';
-					
+
 					if ($bilanparcours66['Avisdefautinsertionep66']['decisionsup']){
 						$avis = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Avisdefautinsertionep66']['decisionsup'] ) . ' - ';
 					}
-					
+
 					$avis .= __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Avisdefautinsertionep66']['decision'] );
 					$data[8] = $avis;
 				}
@@ -97,20 +92,20 @@ debug($urlmenu);
 				else{
 					$data[8] = '&nbsp;';
 				}
-				
-				
+
+
 				// Decision du CG
 				if ($bilanparcours66['Decisiondefautinsertionep66']['decision']){
 					$avis = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Decisiondefautinsertionep66']['decision'] );
-					
+
 					if ($bilanparcours66['Decisiondefautinsertionep66']['decisionsup']){
 						$avis .= __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Decisiondefautinsertionep66']['decisionsup'] ) . ' - ';
 					}
-					
+
 					if ($bilanparcours66['Decisionpdo']['libelle']){
 						$avis .= '<br /><br />CGA : ' . $bilanparcours66['Decisionpdo']['libelle'];
 					}
-					
+
 					$data[9] = $avis;
 				}
 				elseif ( in_array( $bilanparcours66['Decisionsaisinebilanparcoursep66']['decision'], array( 'maintien', 'annule', 'reporte' ) ) ){
@@ -122,7 +117,7 @@ debug($urlmenu);
 				else{
 					$data[9] = '&nbsp;';
 				}
-				
+
 				$block = !( $bilanparcours66['Bilanparcours66']['positionbilan'] == 'annule' );
 				$epparcours = !( in_array( $bilanparcours66['Bilanparcours66']['proposition'], array( 'audition', 'auditionpe' ) ) && !empty( $bilanparcours66['Defautinsertionep66']['dateimpressionconvoc'] ) );
 
@@ -132,17 +127,17 @@ debug($urlmenu);
 					}
 					else{
 						$colspan = '';
-						
+
 						if ($key >= 7){
 							$colspan = ' colspan="2"';
 						}
-						
+
 						if (!$val) $val = '&nbsp;';
-						
+
 						echo '<td' . $colspan . '>'.$val.'</td>';
 					}
 				}
-				
+
 				echo $this->Xhtml->tag(
 					'td',
 					$this->Default2->button(
@@ -185,12 +180,12 @@ debug($urlmenu);
 						)
 					)
 				);
-				
+
 				$enabled = (( $this->Permissions->checkDossier( 'manifestationsbilansparcours66', 'index', $dossierMenu ) == 1 )
 								&& $block
 								&& !$epparcours
 				);
-				
+
 				$manif = $this->Xhtml->tag(
 					'td',
 					$this->Default2->button(
@@ -203,12 +198,12 @@ debug($urlmenu);
 						)
 					)
 				);
-				
+
 				// Ajout du nombre de manifestations
 				$cutPos = ( $enabled ) ? strpos($manif, '</a>') : strpos($manif, '</span>');
-				
+
 				echo substr($manif, 0, $cutPos) . '&nbsp;(' . $bilanparcours66['Bilanparcours66']['nb_manifestations'] . ')' . substr($manif, $cutPos);
-				
+
 				echo $this->Xhtml->tag(
 					'td',
 					$this->Default2->button(
@@ -245,9 +240,9 @@ debug($urlmenu);
 					$innerTable,
 					array( 'class' => 'innerTableCell noprint' )
 				);
-				
+
 				echo "</tr>\n";
-					
+
 			}
 			echo "</tbody></table>";
 		}

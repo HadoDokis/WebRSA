@@ -174,7 +174,7 @@
 				'Gestionnaires PCGs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'search_gestionnaire'  ) ),
 			),
 			'Par PDOs' => array(
-				'disabled' => ( $departement == 66 ),
+				'disabled' => ( $departement == 66 || null === Configure::read( 'nom_form_pdo_cg' ) ),
 				'Nouvelles PDOs' => array( 'class' => 'search', 'url' => array( 'controller' => 'propospdos', 'action' => 'search_possibles'  ) ),
 				'Liste des PDOs' => array( 'class' => 'search', 'url' => array( 'controller' => 'propospdos', 'action' => 'search' ) ),
 			),

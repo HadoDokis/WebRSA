@@ -48,13 +48,6 @@
 		)
 	);
 
-	/**
-	 * Le chemin complet vers la base de l'application (utilisé par certains shells)
-	 *
-	 * @default: null
-	 */
-	Configure::write( 'FULL_BASE_URL', 'http://localhost/webrsa/trunk' );
-
 	Configure::write( 'Cg.departement', 66 );
 	Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg'.Configure::read( 'Cg.departement' ) ) );
 
@@ -73,15 +66,6 @@
 
 	// Limit pour le nombre de documents à éditer dans la cohorte par orientation
 	Configure::write( 'nb_limit_print', 2000 );
-
-
-	/**
-	 * Permet à l'administrateur d'accéder à toutes les parties de l'application
-	 * normalement bloquées aux seules parties de paramétrage renseignées.
-	 * Voir AppController::_isAdminAction().
-	 * @default false
-	 */
-	Configure::write( 'Admin.unlockall', false );
 
 	/**
 	 * Montant maximal des apres complémentaires pour une personne au cours
@@ -174,18 +158,6 @@
 	 * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
 	 */
 	Configure::write( 'nom_form_pdo_cg', 'cg66' );
-
-	/**
-	 * Champs spécifique selon le CG pour le formulaire du bilan de parcours / Fiche de saisine
-	 * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
-	 */
-	Configure::write( 'nom_form_bilan_cg', 'cg66' );
-
-	/**
-	 * Champs spécifique selon le CG pour le formulaire du Contrat Unqiue d'Insertion
-	 * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
-	 */
-	Configure::write( 'nom_form_cui_cg', 'cg66' );
 
 	/**
 	 *   Paramètre pour connaître le pourcentage du 1er versement, lors d'un versement en 2 fois,
@@ -1196,13 +1168,13 @@
 			'groupes_acceptes' => array( 1 )
 		)
 	);
-	
+
 	/**
 	 * Suffix des fichiers de traductions spécialisés pour le CG
 	 * ex: controller_action_suffix.po -> dossiers_index_cg01.po
 	 */
 	Configure::write('WebrsaTranslator.suffix', 'cg'.Configure::read('Cg.departement'));
-	
+
 	/**
 	 * /!\ N'activer ce module que sur une période courte /!\
 	 * Permet de logger tous les appels de pages, active également l'accès au module de visualisation dans administration
@@ -1210,19 +1182,19 @@
 	 */
 	Configure::write('Module.Logtrace.enabled', false);
 	Configure::write('Module.Logtrace.total_duration', 60 * 60 * 1); // Durée en secondes du graph (max 32746)
-	
+
 	/**
 	 * Active le module date picker (calendrier javascript)
 	 */
 	Configure::write('Module.Datepicker.enabled', true);
-	
+
 	/**
 	 * Affichage de messages autour du logo
 	 */
 	$enabled = Configure::read('debug') > 0; // Ne s'affiche que si mode debug activé
 	$beforeLogoText = $enabled && isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''; // Affichera le nom du serveur
 	$afterLogoText = $enabled ? file_get_contents(APP.'VERSION.txt') : ''; // Affichera la version webrsa
-	
+
 	Configure::write('UI.beforeLogo.text', $beforeLogoText);
 	Configure::write('UI.afterLogo.text', $afterLogoText);
 ?>

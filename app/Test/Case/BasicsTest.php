@@ -1032,5 +1032,35 @@
 			$expected = array( 'Model.field1', 'Model.field2', 'Model.field3' );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la fonction localized_interval()
+		 */
+		public function testLocalizedInterval() {
+			// 1. Valeur simple
+			$result = localized_interval( '1 month' );
+			$expected = '1 mois';
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 2. Valeur composée
+			$result = localized_interval( '1 month 2 day' );
+			$expected = '1 mois, 2 jours';
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 3. Valeur erronée
+			$result = localized_interval( 'foobar' );
+			$expected = 'foobar';
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 4. Valeur composée, avec singuliers et pluriels
+			$result = localized_interval( '2 year 1 month 3 day 1 hour 2 minute 1 second' );
+			$expected = '2 années, 1 mois, 3 jours, 1 heure, 2 minutes, 1 seconde';
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 4. Valeur composée, avec singuliers et pluriels
+			$result = localized_interval( '48 days', array( 'now' => '2016-09-15', 'precision' => 'd' ) );
+			$expected = '1 mois, 17 jours';
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
 	}
 ?>

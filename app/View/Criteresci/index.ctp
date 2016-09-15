@@ -222,7 +222,16 @@
 
 			<?php
 				echo $this->Form->input( 'Contratinsertion.arriveaecheance', array( 'label' => 'Allocataire dont le CER est arrivé à échéance', 'type' => 'checkbox' )  );
-				echo $this->Form->input( 'Contratinsertion.echeanceproche', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  );
+				echo $this->Form->input(
+					'Contratinsertion.echeanceproche',
+					array(
+						'label' => sprintf(
+							'CER arrivant à échéance (se terminant sous %s)',
+							localized_interval( Configure::read( 'Criterecer.delaiavanteecheance' ), array( 'precision' => 'd' ) )
+						),
+						'type' => 'checkbox'
+					)
+				);
 			?>
 
 			<?php if( $departement == 66 ) {

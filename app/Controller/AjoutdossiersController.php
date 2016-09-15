@@ -47,7 +47,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			
+
 		);
 
 		/**
@@ -71,26 +71,26 @@
 			'Serviceinstructeur',
 			'Suiviinstruction',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -491,7 +491,6 @@
 				// Fin de la transaction
 				if( $saved ) {
 					$this->Dossier->commit();
-// 					if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' )
 					$this->Wizard->resetWizard();
 					$this->redirect( array( 'controller' => 'dossiers', 'action' => 'view', $this->Dossier->id ) );
 				}

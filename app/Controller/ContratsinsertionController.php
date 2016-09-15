@@ -78,11 +78,11 @@
 			'Option',
 			'WebrsaContratinsertion',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -97,7 +97,7 @@
 			'search_valides' => 'Cohortesci:valides',
 			'view' => 'Contratsinsertion:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -115,7 +115,7 @@
 			'fileview',
 			'notificationsop',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -580,7 +580,7 @@
 			// Contrôles supplémentaire utile pour un CG en particulier
 			if ($departement === 58) {
 				$querydata = $this->WebrsaContratinsertion->qdThematiqueEp('Sanctionep58', $personne_id);
-				$querydata['fields'] = Set::merge($querydata['fields'], 
+				$querydata['fields'] = Set::merge($querydata['fields'],
 					array(
 						'Sanctionep58.id',
 						'Sanctionep58.contratinsertion_id',
@@ -609,14 +609,14 @@
 					)
 				;
 				App::uses('WebrsaAccessProposcontratsinsertioncovs58', 'Utility');
-				$this->set('propocontratinsertioncov58', 
+				$this->set('propocontratinsertioncov58',
 					WebrsaAccessProposcontratsinsertioncovs58::accesses(
 						array($this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find('first', $qdEnCours))
 					)
 				);
 			}
 
-			// Pas de blocage pour le 976, donc il faut retirer la mention 
+			// Pas de blocage pour le 976, donc il faut retirer la mention
 			// "Impossible de créer un CER." et mettre le message sous la class "notice"
 			if ($departement === 976) {
 				$newMessages = array();
@@ -665,7 +665,7 @@
 			 * Spécifique aux Départements
 			 */
 			if ($departement === 66) {
-				if (Hash::get($personne, 'Personne.age') < (int)Configure::read('Tacitereconduction.limiteAge') 
+				if (Hash::get($personne, 'Personne.age') < (int)Configure::read('Tacitereconduction.limiteAge')
 					&& $this->Contratinsertion->WebrsaContratinsertion->limiteCumulDureeCER($personne_id) > 24
 				) {
 					$message = "Cet allocataire dépasse les 24 mois de contractualisation "
@@ -1028,16 +1028,6 @@
 					$this->request->data['Contratinsertion']['avisraison_ci'] = Set::classicExtract($this->request->data, 'Contratinsertion.avisraison_radiation_ci');
 				}
 
-				//FIXME: bloc à commenter une fois confirmé le fait de ne plus valider automatiquemlent les CERs à l'enregistrement
-	// 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
-	// 					$contratinsertionDecisionCi = Set::classicExtract( $this->request->data, 'Contratinsertion.forme_ci' );
-	// 					if( $contratinsertionDecisionCi == 'S' ) {
-	// 						///Validation si le contrat est simple (CG66)
-	// 						$this->request->data['Contratinsertion']['decision_ci'] = 'V';
-	// 						$this->request->data['Contratinsertion']['datevalidation_ci'] = $this->request->data['Contratinsertion']['date_saisi_ci'];
-	// 					}
-	// 				}
-
 				/**
 				 *   Utilisé pour les dates de suspension et de radiation
 				 *   Si les dates ne sont pas présentes en base, elles ne seront pas affichées
@@ -1279,29 +1269,6 @@
 					trigger_error(__('Le type orientation principale Emploi n\'est pas bien défini.'), E_USER_WARNING);
 				}
 
-				/* $structures = $this->Contratinsertion->Structurereferente->find(
-				  'list',
-				  array(
-				  'fields' => array(
-				  'Structurereferente.id',
-				  'Structurereferente.lib_struc',
-				  'Typeorient.lib_type_orient'
-				  ),
-				  'joins' => array(
-				  $this->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
-				  ),
-				  'recursive' => -1,
-				  'order' => array(
-				  'Typeorient.lib_type_orient ASC',
-				  'Structurereferente.lib_struc'
-				  ),
-				  'conditions' => array(
-				  'Structurereferente.actif' => 'O',
-				  'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId
-				  )
-				  )
-				  ); */
-
 				$structures = $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'conditions' => array( 'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId ) + $this->InsertionsBeneficiaires->conditions['structuresreferentes'], 'prefix' => false ) );
 
 				//On affiche les actions inactives en édition mais pas en ajout,
@@ -1321,26 +1288,6 @@
 			$struct_id = Set::classicExtract($this->request->data, 'Contratinsertion.structurereferente_id');
 			// FIXME: $this->request->data Contratinsertion.structurereferente_id
 			$this->set('struct_id', $struct_id);
-
-			/* if( !empty( $struct_id ) ) {
-			  $struct = $this->Contratinsertion->Structurereferente->find(
-			  'first',
-			  array(
-			  'fields' => array(
-			  'Structurereferente.num_voie',
-			  'Structurereferente.type_voie',
-			  'Structurereferente.nom_voie',
-			  'Structurereferente.code_postal',
-			  'Structurereferente.ville',
-			  ),
-			  'conditions' => array(
-			  'Structurereferente.id' => Set::extract( $this->request->data, 'Contratinsertion.structurereferente_id' )
-			  ),
-			  'recursive' => -1
-			  )
-			  );
-			  $this->set( 'StructureAdresse', $struct['Structurereferente']['num_voie'].' '.$struct['Structurereferente']['type_voie'].' '.$struct['Structurereferente']['nom_voie'].'<br/>'.$struct['Structurereferente']['code_postal'].' '.$struct['Structurereferente']['ville'] );
-			  } */
 
 			$referent_id = Set::classicExtract($this->request->data, 'Contratinsertion.referent_id');
 			$referent_id = preg_replace('/^[0-9]+_([0-9]+)$/', '\1', $referent_id);
@@ -1366,8 +1313,6 @@
 						)
 				);
 
-	//				$this->set( 'ReferentEmail', $referent['Referent']['email'].'<br/>'.$referent['Referent']['numero_poste'] );
-	//				$this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
 				$this->set('ReferentNom', $referent['Referent']['nom'] . ' ' . $referent['Referent']['prenom']);
 			}
 
@@ -1380,7 +1325,7 @@
 			$this->set(compact('structures', 'referents'));
 			$this->set('urlmenu', '/contratsinsertion/index/' . $personne_id);
 
-			$this->render('add_edit_specif_cg' . Configure::read('Cg.departement'));
+			$this->render( 'add_edit_specif_'.Configure::read( 'nom_form_ci_cg' ) );
 		}
 
 		/**
