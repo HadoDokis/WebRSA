@@ -370,109 +370,194 @@
 		 * @return array
 		 */
 		public function checkHiddenCohorteValues( $params = array() ) {
+			$Controller = $this->_Collection->getController();
 			$params = $this->_params( $params );
 			$success = true;
-			$message = array();
+			$messages = array();
 
 			foreach ((array)Configure::read($this->_configureKey('cohorte.values', $params)) as $path => $value) {
-				$model_field = model_field($path, false);
-
-				// Syntaxe correcte
-				if ( $model_field === null ) {
-					$success = false;
-					$message[] = "La table et le champ de <b>{$path}</b> n'ont pas été trouvé. Utilisez la syntaxe suivante : Modele.champ.";
-					continue;
-				}
-
-				// $path est de type hasAndBelongsToMany : ex: Monmodel.0_Monmodel
-				$hasAndBelongsToMany = preg_match('/^([\w]+)\.(?:[\d]+.){0,1}([\w]+)$/', $path, $matches) && $matches[1] === $matches[2];
-				$Model = ClassRegistry::init($model_field[0]);
-				$this->_rebuildValidation($Model);
-
-				$field = $hasAndBelongsToMany ? $Model->primaryKey : $model_field[1];
-
-				// Table et champ existent
-				if ( !$hasAndBelongsToMany && in_array( $model_field[1], array_keys( $Model->schema() ) ) === false ) {
-					$success = false;
-					$message[] = "L'existance de <b>{$model_field[1]}</b> dans le modele <b>{$model_field[0]}</b> n'a pas été trouvé.";
-					continue;
-				}
-
-				// Existance de la valeur dans un hasAndBelongsToMany
-				$conditions = array(
-					'conditions' => array($Model->primaryKey => $value),
-					'contain' => false
-				);
-				if ($hasAndBelongsToMany && (!is_numeric($value) || !$Model->find('first', $conditions))) {
-					$success = false;
-					$message[] = "La valeur <b>{$value}</b> pour <b>{$path}</b> ne se trouve pas dans <b>{$Model->alias}.{$Model->primaryKey}</b>.";
-					continue;
-				}
-
-				// Test de clef étrangère
-				if ($value !== null) {
-					// On regarde si la clef est une clef étrangère
-					$test = $this->_isValidIfIsForeignKey( $Model, $path, $value );
-
-					if (!$test['success']) {
-						$message[] = $test['message'];
-						continue;
-					}
-				}
-
-				// Test d'enregistrement
-				if ( $field !== $Model->primaryKey ) {
-					$Model->begin();
-					$blackList = array();
-
-					while (true) {
-						$data = $Model->find('first',
-							array(
-								'recursive' => -1,
-								'contain' => false,
-								'conditions' => !empty($blackList) ? array(
-									$Model->alias.'.id NOT IN ('.implode(', ', $blackList).')'
-								) : array()
-							)
-						);
-
-						// Si on a pas un enregistrement sain, inutile de continuer (n'arrive que sur des tables vide).
-						if (empty($data)) {
-							break;
-						}
-
-						// On teste avant tout l'enregistrement sans rien toucher (vérification par le modèle de l'enregistrement)
-						if (!$Model->save($data)) {
-							$blackList[] = Hash::get($data, $Model->alias.'.id');
-							continue;
-						}
-
-						$data[$Model->alias][$field] = $value;
-
-						try {
-							if (!$Model->save($data)) {
-								$errors = implode(', ', (array)Hash::get($Model->validationErrors, $field));
-								$success = false;
-								$message[] = "La tentative d'insérer la valeur <b>{$value}</b> dans <b>{$path}</b> a échoué : {$errors}";
-							}
-						} catch (Exception $e) {
-							$Dbo = $Model->getDataSource();
-							$success = false;
-							$message[] = $Dbo->lastError();
-						}
-						
-						break;
-					}
-
-					$Model->rollback();
+				$message = $this->_checkHiddenCohorteValueByPath($path, $value, $success, $params);
+				
+				if (!empty($message)) {
+					$messages[] = $message;
 				}
 			}
 
 			return array(
 				'success' => $success,
 				'message' => $success ? "Aucune erreur n'a été trouvée." : 'Des erreurs ont été trouvées!',
-				'value' => implode("<br/>", $message),
+				'value' => implode("<br/>", $messages),
 			);
+		}
+		
+		/**
+		 * Vérifi l'existance d'un champ et, dans le cas d'un foreign key,
+		 * de l'existance de l'enregistrement cible.
+		 * 
+		 * @param type $path
+		 * @return string|null renvoi un message d'erreur si le champ n'est pas correct
+		 */
+		protected function _isNotAValidField($path, $value) {
+			$model_field = model_field($path, false);
+
+			// Syntaxe correcte
+			if ($model_field === null) {
+				return "La table et le champ de <b>{$path}</b> n'ont "
+						. "pas été trouvé. Utilisez la syntaxe suivante : Modele.champ.";
+			}
+
+			// $path est de type hasAndBelongsToMany : ex: Monmodel.0_Monmodel
+			$hasAndBelongsToMany = preg_match('/^([\w]+)\.(?:[\d]+.){0,1}([\w]+)$/', $path, $matches)
+				&& $matches[1] === $matches[2];
+			
+			$Model = ClassRegistry::init($model_field[0]);
+			
+			try {
+				$Model->find('first', array('contain' => false));
+			} catch(Exception $e) {
+				return 'La table du Model '.$model_field[0]." n'a pas été trouvée.";
+			}
+			
+//			$this->_rebuildValidation($Model);
+
+			$field = $hasAndBelongsToMany ? $Model->primaryKey : $model_field[1];
+
+			// Table et champ existent
+			if (!$hasAndBelongsToMany && !in_array($model_field[1], array_keys($Model->schema()))) {
+				return "L'existance de <b>{$model_field[1]}</b> dans "
+						. "le modèle <b>{$model_field[0]}</b> n'a pas été trouvé.";
+			}
+
+			// Existance de la valeur dans un hasAndBelongsToMany
+			$conditions = array(
+				'conditions' => array($Model->primaryKey => $value),
+				'contain' => false
+			);
+			if ($hasAndBelongsToMany && (!is_numeric($value) || !$Model->find('first', $conditions))) {
+				return "La valeur <b>{$value}</b> pour <b>{$path}</b> "
+						. "ne se trouve pas dans <b>{$Model->alias}.{$Model->primaryKey}</b>.";
+			}
+
+			// Test de clef étrangère
+			if ($value !== null) {
+				// On regarde si la clef est une clef étrangère
+				$test = $this->_isValidIfIsForeignKey( $Model, $path, $value );
+
+				if (!$test['success']) {
+					return $test['message'];
+				}
+			}
+			
+			return null;
+		}
+		
+		/**
+		 * Vérifi la possibilité 
+		 * 
+		 * @param string $path sous forme Model.field
+		 * @param mixed $value valeur du champ
+		 * @param boolean $success
+		 * @param array $params
+		 * @return string message d'erreur
+		 */
+		protected function _checkHiddenCohorteValueByPath($path, $value, &$success, $params) {
+			$testField = $this->_isNotAValidField($path, $value);
+
+			if ($testField) {
+				$success = false;
+				return $testField;
+			}
+			
+			list($modelName, $field) = model_field($path);
+			$Model = ClassRegistry::init($modelName);
+			$Dbo = $Model->getDataSource();
+			$Controller = $this->_Collection->getController();
+			$ModelRecherche = $Controller->{$params['modelRechercheName']};
+			$blackList = array();
+			$message = null;
+			$saveSuccess = true;
+			
+			// Condition qu'on peut ajouter dans le model de recherche pour 
+			// augmenter la cohérence des données choisies
+			$conditionsSup = isset($ModelRecherche->checkHiddenCohorteValuesConditions)
+				? $ModelRecherche->checkHiddenCohorteValuesConditions
+				: array();
+			
+			while (count($blackList) < 10) {
+				$data = $Model->find('first',
+					array(
+						'recursive' => -1,
+						'contain' => false,
+						'conditions' => array(
+							!empty($blackList) ? array(
+								$Model->alias.'.id NOT IN ('.implode(', ', $blackList).')'
+							) : array(),
+							$conditionsSup
+						)
+					)
+				);
+
+				// Si on a pas un enregistrement sain, inutile de continuer.
+				if (empty($data)) {
+					break;
+				}
+
+				// On teste avant tout l'enregistrement sans rien toucher 
+				// (vérification par le modèle de l'enregistrement)
+				$saveSuccess = $this->_secureTestSave($Model, $data);
+				
+				// Sauvegarde échouée
+				if ($saveSuccess === false) {
+					$blackList[] = Hash::get($data, $Model->alias.'.id');
+					continue;
+					
+				// Exception lors de la sauvegarde
+				} elseif ($saveSuccess === null) {
+					$message = 'Exception: '.$Dbo->lastError();
+					break;
+				}
+
+				$data[$Model->alias][$field] = $value;
+				
+				$saveSuccess = $this->_secureTestSave($Model, $data);
+
+				// Sauvegarde échouée
+				if ($saveSuccess === false) {
+					$errors = implode(', ', (array)Hash::get($Model->validationErrors, $field));
+					$message = "La tentative d'insérer la valeur <b>{$value}</b> "
+						. "dans <b>{$path}</b> a échoué : {$errors}";
+					
+				// Exception lors de la sauvegarde
+				} elseif ($saveSuccess === null) {
+					$message = 'Exception: '.$Dbo->lastError();
+				}
+
+				$success = $success && $saveSuccess;
+				break;
+			}
+			
+			return $message;
+		}
+		
+		/**
+		 * Permet de tester la sauvegarde sur un model sans risque d'exception
+		 * 
+		 * @param Model $Model
+		 * @param type $data
+		 * @return boolean|null résultat de sauvegarde ou null en cas d'exception
+		 */
+		protected function _secureTestSave(Model $Model, $data) {
+			$Model->begin();
+			
+			try {
+				$success = $Model->save($data);
+			} catch (Exception $e) {
+				$success = null;
+			}
+			
+			$Model->rollback();
+			
+			return $success;
 		}
 
 		/**
