@@ -45,6 +45,21 @@
 			'Orientstruct.structurereferente_id',
 			'Orientstruct.date_valid' => array( 'type' => 'date' )
 		);
+
+		/**
+		 * Liste des conditions supplémentaires éventuelles pour les tests
+		 * réalisés par la méthode WebrsaAbstractCohortesComponent::checkHiddenCohorteValues
+		 *
+		 * @var array
+		 */
+		public $checkHiddenCohorteValuesConditions = array(
+			'Orientstruct.personne_id IS NOT NULL',
+			'Orientstruct.statut_orient' => 'Orienté',
+			'Orientstruct.date_valid IS NOT NULL',
+			'Orientstruct.rgorient' => 1,
+			'Orientstruct.origine' => 'cohorte',
+			'Orientstruct.user_id IS NOT NULL'
+		);
 		
 		/**
 		 * Retourne le querydata de base, en fonction du département, à utiliser
