@@ -128,7 +128,7 @@
 			$this->Controller = new SearchSavedRefererTestsController( $Request, $Response );
 			$this->Controller->constructClasses();
 
-			$_SERVER['HTTP_REFERER'] = FULL_BASE_URL.Router::url( array( 'controller' => 'apples', 'action' => 'index' ) );
+			$_SERVER['HTTP_REFERER'] = Router::url( array( 'controller' => 'apples', 'action' => 'index' ) );
 
 			CakeTestSession::start();
 		}
