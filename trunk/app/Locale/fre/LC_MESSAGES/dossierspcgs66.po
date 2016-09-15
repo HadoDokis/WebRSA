@@ -845,3 +845,6 @@ msgstr "Nombre d'enfants"
 
 msgid "Foyer.ddsitfam"
 msgstr "Date de changement de situation familiale"
+
+msgid "/Dossierspcgs66/delete/#Dossierpcg66.id# ?"
+msgstr "Etes-vous sûr de vouloir supprimer le dossier ?"

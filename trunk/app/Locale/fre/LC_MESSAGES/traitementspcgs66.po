@@ -186,3 +186,6 @@ msgstr "Ajouter"
 
 msgid "/Traitementspcgs66/add/:title"
 msgstr "Ajouter"
+
+msgid "/Traitementspcgs66/delete/#Traitementpcg66.id# ?"
+msgstr "Voulez-vous vraiment supprimer ce traitement ?"
