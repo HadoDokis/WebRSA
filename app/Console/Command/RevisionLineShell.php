@@ -283,25 +283,41 @@
 					$highlight = $match[0];
 				}
 
+				$i = 0;
 				foreach ($before as $b) {
 					if ($highlight && $b[0] === '-' && strpos($b, $highlight)) {
 						$b = '<warning>'.$b.'</warning>';
 					} elseif ($b[0] === '-') {
 						$b = '<comment>'.$b.'</comment>';
 					}
+					
 					$this->out($b);
+					$i++;
+					
+					if ($i >= 200) {
+						$this->out('<warning>Dépasse les 200 lignes...</warning>');
+						break;
+					}
 				}
 
 				$this->out();
 				$this->out('Nouveau (révision '.($lineRevision).'):');
 
+				$i = 0;
 				foreach ($after as $a) {
 					if (substr($a, $tailleLigne+1) === $lineLine) {
 						$a = '<warning>'.$a.'</warning>';
 					} elseif ($a[0] === '+') {
 						$a = '<comment>'.$a.'</comment>';
 					}
+					
 					$this->out($a);
+					$i++;
+					
+					if ($i >= 200) {
+						$this->out('<warning>Dépasse les 200 lignes...</warning>');
+						break;
+					}
 				}
 			}
 		}
