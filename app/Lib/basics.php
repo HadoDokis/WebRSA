@@ -892,21 +892,30 @@
 
 	/**
 	 * Retourne le chemin vers le binaire Apache2.
-	 * Par défaut, retourne /usr/sbin/apache2, sinon retourne la valeur paramétrée
-	 * dans le fichier app/Config/webrsa.inc, sous la clé 'apache_bin'.
+	 * Vérifie la valeur paramétrée dans le fichier app/Config/webrsa.inc sous
+	 * la clé 'apache_bin' puis les chemins /usr/sbin/apachectl et /usr/sbin/apache2.
 	 *
 	 * Exemple:
 	 * <pre>Configure::write( 'apache_bin', '/usr/bin/apache2' );</pre>
 	 * @return string
 	 */
 	function apache_bin() {
-		$bin = Configure::read( 'apache_bin' );
+		$result = null;
 
-		if( empty( $bin ) ) {
-			$bin = '/usr/sbin/apache2';
+		$binaries = array(
+			Configure::read( 'apache_bin' ),
+			'/usr/sbin/apachectl',
+			'/usr/sbin/apache2'
+		);
+
+		for( $i = 0 ; $i < count($binaries) && true === empty( $result ) ; $i++ ) {
+			$which = exec( "which {$binaries[$i]}" );
+			if( false === empty( $which ) ) {
+				$result = $which;
+			}
 		}
 
-		return $bin;
+		return $result;
 	}
 
 	/**
@@ -916,7 +925,7 @@
 	 * @return string
 	 */
 	function apache_version() {
-		if( function_exists( 'apache_get_version' ) ) {
+		if( false && function_exists( 'apache_get_version' ) ) { // FIXME
 			$rawVersion = apache_get_version();
 		}
 		else {
