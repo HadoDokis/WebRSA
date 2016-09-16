@@ -19,13 +19,13 @@
 	 */
 
 	// Exemple de configuration avec l'ancien Gedooo
-	/*Configure::write(
+	Configure::write(
 		'Gedooo',
 		array(
 			'method' => 'classic',
-			'wsdl' => 'http://gedooo.test.adullact.org:8080/axis2/services/OfficeService?wsdl',
+			'wsdl' => 'http://127.0.0.1:8080/axis2/services/OfficeService?wsdl',
 		)
-	);*/
+	);
 
 	// Exemple de configuration avec le nouveau Gedooo et unoconv
 	/*Configure::write(
@@ -38,7 +38,7 @@
 	);*/
 
 	// Exemple de configuration avec le nouveau Gedooo et cloudooo
-	Configure::write(
+	/*Configure::write(
 		'Gedooo',
 		array(
 			'method' => 'cloudooo',
@@ -46,7 +46,7 @@
 			'cloudooo_host' => 'cloudooo.test.adullact.org',
 			'cloudooo_port' => '8011'
 		)
-	);
+	);*/
 
 	Configure::write( 'Cg.departement', 66 );
 	Configure::write( 'MultiDomainsTranslator', array( 'prefix' => 'cg'.Configure::read( 'Cg.departement' ) ) );
@@ -200,11 +200,11 @@
 	/**
 	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
 	 */
-	Configure::write( 'Traitementpcg66.fichecalcul_coefannee1', 34 );
-	Configure::write( 'Traitementpcg66.fichecalcul_coefannee2', 25 );
+	Configure::write( 'Traitementpcg66.fichecalcul_coefannee1', 1.8 );
+	Configure::write( 'Traitementpcg66.fichecalcul_coefannee2', 1.8 );
 
-	Configure::write( 'Traitementpcg66.fichecalcul_cavntmax', 80300 );
-	Configure::write( 'Traitementpcg66.fichecalcul_casrvmax', 32100 );
+	Configure::write( 'Traitementpcg66.fichecalcul_cavntmax', 82200 );
+	Configure::write( 'Traitementpcg66.fichecalcul_casrvmax', 32900 );
 
 	Configure::write( 'Traitementpcg66.fichecalcul_abattbicvnt', 71 );
 	Configure::write( 'Traitementpcg66.fichecalcul_abattbicsrv', 50 );
@@ -223,19 +223,17 @@
 
 	/**
 	 * Configuration pour le dialogue avec un CMS (système de gestion de contenu)
-	 * comme Alfresco, servant à stocker les PDF.
-	 *
-	 * Exemple de configuration:
-	 *	Configure::write(
-	 *		'Cmis', array(
-	 *			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
-	 *			'username' => 'user',
-	 *			'password' => 'pass',
-	 *			'prefix' => '/Sites/Webrsa',
-	 *		)
-	 *	);
+	 * comme Alfresco, servant à stocker les PDF
 	 */
-	Configure::write( 'Cmis', array() );
+	Configure::write(
+		'Cmis',
+		array(
+			'url' => 'http://rhea:8080/alfresco/service/api/cmis',
+			'username' => '*****',
+			'password' => '*****',
+			'prefix' => '/Sites/Webrsa',
+		)
+	);
 
 	/**
 	 * Permet de rajouter des conditions aux conditions de recherches suivant
@@ -335,7 +333,7 @@
 			'smtpOptions' => array(
 				'port'=>'25',
 				'timeout'=>'30',
-				'host' => 'xxxxx.cgxxxx.fr',
+				'host' => 'karibu.cg66.fr',
 				'username'=>'',
 				'password'=>'',
 				'client' => 'smtp_helo_hostname'
@@ -536,7 +534,7 @@
      *  124 = Actions Région : Formations API - PRQ - ERI
      *
 	 */
-    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '124' ) );
+	Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '124', '178' ) );
 
     /**
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
@@ -668,7 +666,7 @@
 	 *
 	 * @default null
 	 */
-	Configure::write( 'WebrsaEmailConfig.testEnvironments', array( 'remus.cg66.fr' ) );
+	Configure::write( 'WebrsaEmailConfig.testEnvironments', array( 'lupus.cg66.fr' ) );
 
 	/**
 	 * Permet d'utiliser le module ROME V3:
@@ -688,7 +686,7 @@
 	 * Voir le document app/docs/Documentation administrateurs.odt, partie
 	 * "Intervalles PostgreSQL"
 	 */
-	Configure::write( 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe', '3 months' );
+	Configure::write( 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe', '6 months' );
 
 	/**
 	 * Validation javascript - Options
