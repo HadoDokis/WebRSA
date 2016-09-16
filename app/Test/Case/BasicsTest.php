@@ -1047,17 +1047,22 @@
 			$expected = '1 mois, 2 jours';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
-			// 3. Valeur erronée
+			// 3. Valeur erronée pour l'intervalle
 			$result = localized_interval( 'foobar' );
 			$expected = 'foobar';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
-			// 4. Valeur composée, avec singuliers et pluriels
+			// 4. Valeur erronée pour la date de départ
+			$result = localized_interval( '1 month 2 day', array( 'now' => 'foobar' ) );
+			$expected = '1 month 2 day';
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 5. Valeur composée, avec singuliers et pluriels
 			$result = localized_interval( '2 year 1 month 3 day 1 hour 2 minute 1 second' );
 			$expected = '2 années, 1 mois, 3 jours, 1 heure, 2 minutes, 1 seconde';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
-			// 4. Valeur composée, avec singuliers et pluriels
+			// 6. Valeur composée, avec singuliers et pluriels
 			$result = localized_interval( '48 days', array( 'now' => '2016-09-15', 'precision' => 'd' ) );
 			$expected = '1 mois, 17 jours';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );

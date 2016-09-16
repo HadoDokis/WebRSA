@@ -1381,7 +1381,12 @@
 
 		try {
 			$from = new DateTime( $params['now'] );
-			$to = new DateTime( $interval_string );
+			$to = new DateTime();
+			$timestamp = strtotime( $interval_string,  $from->getTimestamp() );
+			if( false === $timestamp ) {
+				throw new RuntimeException();
+			}
+			$to->setTimestamp( $timestamp );
 			$interval = $to->diff($from);
 
 			// INFO: on pourrait passer par un fichier de traduction
