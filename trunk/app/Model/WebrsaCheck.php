@@ -888,27 +888,55 @@
 		}
 
 		/**
-		 * Vérifie le bon fonctionnement du service CMIS.
+		 * Vérifie la configuration et le bon fonctionnement du service CMIS.
 		 *
 		 * @return array
 		 */
 		protected function _serviceCmis() {
-			$connected = Cmis::configured();
+			$config = Hash::filter(
+				array(
+					'url' => Configure::read( 'Cmis.url' ),
+					'username' => Configure::read( 'Cmis.username' ),
+					'password' => Configure::read( 'Cmis.password' ),
+					'prefix' => Configure::read( 'Cmis.prefix' )
+				)
+			);
 
-			return array(
+			$configured = false === empty( $config );
+			$connected = $configured && Cmis::configured();
+
+			$stringRule = array(
+				'rule' => 'string',
+				'allowEmpty' => false === $configured
+			);
+
+			if( false === $configured ) {
+				$message = 'Connexion au serveur non paramétrée';
+			}
+			else {
+				$message = ( $connected ? null : 'Impossible de se connecter au serveur' );
+			}
+
+			$result = array(
 				'configure' => array(
-					'Cmis.url' => 'string',
-					'Cmis.username' => 'string',
-					'Cmis.password' => 'string',
-					'Cmis.prefix' => 'string'
+					'Cmis.url' => array(
+						$stringRule,
+						array( 'rule' => 'url', 'allowEmpty' => false === $configured )
+					),
+					'Cmis.username' => array( $stringRule ),
+					'Cmis.password' => array( $stringRule ),
+					'Cmis.prefix' => array( $stringRule )
 				),
 				'tests' => array(
 					'Connexion au serveur' => array(
-						'success' => $connected,
-						'message' => ( $connected ? null : 'Impossible de se connecter au serveur' )
+						'success' => false === $configured || $connected,
+						'message' => $message
 					)
 				)
 			);
+
+
+			return $result;
 		}
 
 		/**

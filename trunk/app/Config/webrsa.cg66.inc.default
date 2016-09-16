@@ -221,19 +221,21 @@
 	 */
 	Configure::write( 'Nonorientationproep66.delaiCreationContrat', 60 );
 
-
 	/**
 	 * Configuration pour le dialogue avec un CMS (système de gestion de contenu)
-	 * comme Alfresco, servant à stocker les PDF
+	 * comme Alfresco, servant à stocker les PDF.
+	 *
+	 * Exemple de configuration:
+	 *	Configure::write(
+	 *		'Cmis', array(
+	 *			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+	 *			'username' => 'user',
+	 *			'password' => 'pass',
+	 *			'prefix' => '/Sites/Webrsa',
+	 *		)
+	 *	);
 	 */
-	Configure::write(
-			'Cmis', array(
-		'url' => 'http://xxxxxx/alfresco/service/api/cmis',
-		'username' => 'user',
-		'password' => 'pass',
-		'prefix' => '/Sites/Webrsa',
-			)
-	);
+	Configure::write( 'Cmis', array() );
 
 	/**
 	 * Permet de rajouter des conditions aux conditions de recherches suivant
@@ -1197,7 +1199,7 @@
 
 	Configure::write('UI.beforeLogo.text', $beforeLogoText);
 	Configure::write('UI.afterLogo.text', $afterLogoText);
-	
+
 	/**
 	 * Tableau de bord principal
 	 */

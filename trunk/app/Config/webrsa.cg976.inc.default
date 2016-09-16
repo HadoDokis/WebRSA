@@ -65,17 +65,19 @@
 
 	/**
 	 * Configuration pour le dialogue avec un CMS (système de gestion de contenu)
-	 * comme Alfresco, servant à stocker les PDF
+	 * comme Alfresco, servant à stocker les PDF.
+	 *
+	 * Exemple de configuration:
+	 *	Configure::write(
+	 *		'Cmis', array(
+	 *			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+	 *			'username' => 'user',
+	 *			'password' => 'pass',
+	 *			'prefix' => '/Sites/Webrsa',
+	 *		)
+	 *	);
 	 */
-	Configure::write(
-		'Cmis',
-		array(
-			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
-			'username' => 'user',
-			'password' => 'pass',
-			'prefix' => '/Sites/Webrsa',
-		)
-	);
+	Configure::write( 'Cmis', array() );
 
 	/**
 	 * Permet de rajouter des conditions aux conditions de recherches suivant
@@ -534,13 +536,13 @@
 			'groupes_acceptes' => array( 1 )
 		)
 	);
-	
+
 	/**
 	 * Suffix des fichiers de traductions spécialisés pour le CG
 	 * ex: controller_action_suffix.po -> dossiers_index_cg01.po
 	 */
 	Configure::write('WebrsaTranslator.suffix', 'cg'.Configure::read('Cg.departement'));
-	
+
 	/**
 	 * /!\ N'activer ce module que sur une période courte /!\
 	 * Permet de logger tous les appels de pages, active également l'accès au module de visualisation dans administration
@@ -548,7 +550,7 @@
 	 */
 	Configure::write('Module.Logtrace.enabled', false);
 	Configure::write('Module.Logtrace.total_duration', 60 * 60 * 1); // Durée en secondes du graph (max 32746)
-	
+
 	/**
 	 * Active le module date picker (calendrier javascript)
 	 */
