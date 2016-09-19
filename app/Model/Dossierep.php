@@ -288,10 +288,10 @@
 		public function themesCg() {
 			$return = array();
 			$enums = $this->enums();
-			$ereg = '/eps'.Configure::read( 'Cg.departement' ).'$/';
+			$regexp = '/eps'.Configure::read( 'Cg.departement' ).'$/';
 
 			foreach( $enums['Dossierep']['themeep'] as $key => $value ) {
-				if( preg_match( $ereg, $key ) ) {
+				if( preg_match( $regexp, $key ) ) {
 					$return[$key] = $value;
 				}
 			}
