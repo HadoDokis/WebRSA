@@ -246,8 +246,20 @@
 
 			$result = array_merge(
 				array(
-					'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
-					'AjoutOrientationPossible.toppersdrodevorsa' => 'string',
+					'AjoutOrientationPossible.situationetatdosrsa' => array(
+						array(
+							'rule' => 'inListArray',
+							array( 'Z', '0', '1', '2', '3', '4', '5', '6' ),
+							'allowEmpty' => true
+						)
+					),
+					'AjoutOrientationPossible.toppersdrodevorsa' => array(
+						array(
+							'rule' => 'inListArray',
+							array( null, '0', '1' ),
+							'allowEmpty' => true
+						)
+					),
 					'AncienAllocataire.enabled' => 'boolean',
 					'CG.cantons' => 'boolean',
 					'Cg.departement' => array(
