@@ -362,7 +362,7 @@
 					'Adresse.nomcom',
 					'Dossier.dtdemrsa',
 					'User.nom_complet',
-					'Propopdo.commentairepdo', // FIXME
+					'Decisionpropopdo.commentairepdo',
 					'/Propospdos/index/#Propopdo.personne_id#' => array(
 						'class' => 'external'
 					)
@@ -412,7 +412,7 @@
 					'Typepdo.libelle' => array(
 						'label' => 'Type de PDO',
 					),
-					'Propopdo.datedecisionpdo' => array(
+					'Decisionpropopdo.datedecisionpdo' => array(
 						'label' => 'Date de soumission PDO',
 					),
 					'Decisionpdo.libelle' => array(
@@ -421,7 +421,7 @@
 					'Propopdo.motifpdo' => array(
 						'label' => 'Motif PDO',
 					),
-					'Propopdo.commentairepdo' => array( // FIXME
+					'Decisionpropopdo.commentairepdo' => array(
 						'label' => 'Commentaires PDO',
 					),
 					'User.nom_complet',
