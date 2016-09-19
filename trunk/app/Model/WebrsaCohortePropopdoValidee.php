@@ -43,12 +43,14 @@
 				'Foyer' => 'INNER',
 				'Propopdo' => 'INNER',
 				'Prestation' => 'INNER',
+				'Decisionpdo' => 'LEFT OUTER',
 				'Decisionpropopdo' => 'LEFT OUTER',
 				'Traitementpdo' => 'LEFT OUTER',
 				'Adressefoyer' => 'LEFT OUTER',
 				'Dossier' => 'INNER',
 				'Adresse' => 'LEFT OUTER',
 				'Situationdossierrsa' => 'INNER',
+				'Typepdo' => 'LEFT OUTER',
 				'Referentparcours' => 'LEFT OUTER',
 				'Structurereferenteparcours' => 'LEFT OUTER',
 				'Detaildroitrsa' => 'LEFT OUTER',
@@ -69,7 +71,9 @@
 							$this->Personne->Propopdo,
 							$this->Personne->Propopdo->Decisionpropopdo,
 							$this->Personne->Propopdo->Traitementpdo,
-							$this->Personne->Propopdo->User
+							$this->Personne->Propopdo->Typepdo,
+							$this->Personne->Propopdo->User,
+							$this->Personne->Propopdo->Decisionpropopdo->Decisionpdo
 						)
 					),
 					array(
@@ -85,8 +89,10 @@
 					array(
 						$this->Personne->join( 'Propopdo', array( 'type' => $types['Propopdo'] ) ),
 						$this->Personne->Propopdo->join( 'Decisionpropopdo', array( 'type' => $types['Decisionpropopdo'] ) ),
+						$this->Personne->Propopdo->join( 'Typepdo', array( 'type' => $types['Typepdo'] ) ),
 						$this->Personne->Propopdo->join( 'Traitementpdo', array( 'type' => $types['Traitementpdo'] ) ),
-						$this->Personne->Propopdo->join( 'User', array( 'type' => $types['User'] ) )
+						$this->Personne->Propopdo->join( 'User', array( 'type' => $types['User'] ) ),
+						$this->Personne->Propopdo->Decisionpropopdo->join( 'Decisionpdo', array( 'type' => $types['Decisionpdo'] ) )
 					)
 				);
 
