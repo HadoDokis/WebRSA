@@ -118,7 +118,7 @@
 		/**
 		 * Test de la méthode Autovalidate::setup
 		 *
-		 * @FIXME: on dirait qu'il utilise la classe AutovalidateBehavior qui
+		 * @fixme: on dirait qu'il utilise la classe AutovalidateBehavior qui
 		 *	n'est pas dans le plugin lorsqu'on fait passer tous les tests.
 		 *
 		 * @return void
@@ -134,7 +134,7 @@
 		/**
 		 * Test de la méthode Autovalidate::setup sans le cache.
 		 *
-		 * @FIXME: on dirait qu'il utilise la classe AutovalidateBehavior qui
+		 * @fixme: on dirait qu'il utilise la classe AutovalidateBehavior qui
 		 *	n'est pas dans le plugin lorsqu'on fait passer tous les tests.
 		 *
 		 * @return void

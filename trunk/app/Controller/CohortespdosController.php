@@ -12,7 +12,7 @@
 	/**
 	 * La classe CohortespdosController implémente un moteur de recherche par PDOs (CG 93).
 	 *
-	 * @deprectaed since 3.0.00
+	 * @deprecated since 3.0.00
 	 *
 	 * @package app.Controller
 	 */

@@ -289,7 +289,7 @@
 		 *	- params -> replacements (alias, de manière générale + dans chaque jointure)
 		 *	- conditions ?
 		 *
-		 * @fixem: si la jointure est déjà faite
+		 * @fixme: si la jointure est déjà faite
 		 *
 		 * @param Model $model
 		 * @param array $joins
