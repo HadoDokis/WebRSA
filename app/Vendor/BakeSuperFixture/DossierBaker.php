@@ -44,9 +44,7 @@
 		 */
 		public static function getData() {
 			// Objets stockés
-			$dossiers = array();
-			$adresses = array();
-			$globals = self::initializeGlobals();
+			$datas = array('globals' => self::initializeGlobals());
 			
 			// Passage pour chaques combinaisons des valeurs suivantes
 			$etatdosrsa = array(
@@ -59,11 +57,25 @@
 			foreach ($etatdosrsa as $etat) {
 				foreach ($natpf as $nat) {
 					$data = self::completeDossier($etat, $nat);
-					$dossiers = array_merge($dossiers, $data['dossiers']);
-					$adresses = array_merge($adresses, $data['adresses']);
+					
+					// Niveau supplémentaire pour trier par modèle dans le bon ordre d'insertion en base
+					foreach ($data as $key => $values) {
+						if (!isset($datas[$key])) {
+							$datas[$key] = array();
+						}
+						
+						$datas[$key] = array_merge($datas[$key], (array)$values);
+					}
 				}
 			}
-			return array_merge($globals, $adresses, $dossiers);
+			
+			// On supprime le premier niveau de clef
+			$results = array();
+			foreach ($datas as $key => $data) {
+				$results = array_merge($results, $data);
+			}
+			
+			return $results;
 		}
 		
 		/**
@@ -75,26 +87,45 @@
 			/**
 			 * Serviceinstucteur
 			 */
-			self::$Serviceinstructeur = new BSFObject('Serviceinstructeur', array('lib_service' => array('auto' => true)));
+			self::$Serviceinstructeur = new BSFObject(
+				'Serviceinstructeur', array('lib_service' => array('auto' => true, 'faker' => 'city'))
+			);
 			
 			/**
 			 * Group
 			 */
-			self::$Group = new BSFObject('Group', array('name' => array('auto' => true, 'faker' => 'city')));
+			self::$Group = new BSFObject('Group', array('name' => array('value' => 'Administrateurs')));
 			
 			/**
 			 * User
 			 */
 			self::$User = new BSFObject('User', array(
 				'type' => array('value' => 'cg'),
-				'serviceinstructeur_id' => array('foreignkey' => self::$Serviceinstructeur->getName()),
+				'username' => array('value' => 'webrsa'),
+				'password' => array('value' => '83a98ed2a57ad9734eb0a1694293d03c74ae8a57'),
 				'group_id' => array('foreignkey' => self::$Group->getName()),
+				'serviceinstructeur_id' => array('foreignkey' => self::$Serviceinstructeur->getName()),
+				'nom' => array('auto' => true, 'faker' => 'lastName'),
+				'prenom' => array('auto' => true, 'faker' => array('rule' => 'firstName')),
+				'date_naissance' => array(
+					'auto' => true, // NOTE : entre 1960 et 1999, un jour entre le 1er et le 28e (entre 17 et 56 ans en 2016)
+					'faker' => array('rule' => 'regexify', '19[6-9][0-9]\-(1[0-2]|0[1-9])\-(2[0-8]|1[0-9]|0[1-9])'),
+				),
+				'date_deb_hab' => array('value' => '2010-01-01'),
+				'date_fin_hab' => array('value' => '2050-12-30'),
+				'filtre_zone_geo' => array('value' => false),
+				'isgestionnaire' => array('value' => 'N'),
+				'sensibilite' => array('value' => 'O'),
+				'numtel' => array('auto' => true, 'faker' => array('rule' => 'regexify', '0[1-7][0-9]{8}')),
 			));
 			
 			/**
 			 * Typeorient
 			 */
-			self::$Typeorient = new BSFObject('Typeorient', array('lib_type_orient' => array('auto' => true), 'actif' => array('value' => 'O')));
+			self::$Typeorient = new BSFObject('Typeorient', array(
+				'lib_type_orient' => array('auto' => true, 'faker' => 'city'),
+				'actif' => array('value' => 'O'))
+			);
 			
 			/**
 			 * Structurereferente
@@ -169,7 +200,7 @@
 			
 			$adresses[] = new BSFObject('Adresse', $adresseFields+array(
 				'nomvoie' => array('value' => strtoupper(substr($adr1, strlen($mat1[0])))),
-				'libtypevoie' => array('value' => strtoupper($mat1[1]))
+				'libtypevoie' => array('value' => strtoupper($mat1[1])),
 			));
 			$adresse1 =& $adresses[count($adresses)-1];
 			$adresses[] = new BSFObject('Adresse', $adresseFields+array(
@@ -188,12 +219,31 @@
 			 * NOTE :	Double foreign key, il faut enregistrer les adresses avant les dossiers
 			 *			Donc on spécifie manuellement les foreign key sur Adresse
 			 */
+			$date1 = $Faker->regexify("(199[0-9]|200[0-9]|201[0-5]|201[0-5])\-(1[0-2]|0[1-9])\-(2[0-8]|1[0-9]|0[1-9])");
+			$date2 = $Faker->regexify("(199[0-9]|200[0-9]|201[0-5]|201[0-5])\-(1[0-2]|0[1-9])\-(2[0-8]|1[0-9]|0[1-9])");
+			$datetime1 = new DateTime($date1);
+			$datetime2 = new DateTime($date2);
+			
+			if ($datetime1 < $datetime2) {
+				$tmp = $date1;
+				$date1 = $date2;
+				$date2 = $tmp;
+			}
+			
 			$foyer->contain = array(
-				new BSFObject('Adressefoyer', 
-					array('rgadr' => array('value' => '01'), 'adresse_id' => array('foreignkey' => $adresse1->getName()))
+				new BSFObject('Adressefoyer',
+					array(
+						'rgadr' => array('value' => '01'),
+						'adresse_id' => array('foreignkey' => $adresse1->getName()),
+						'dtemm' => array('value' => $date1),
+					)
 				),
-				new BSFObject('Adressefoyer', 
-					array('rgadr' => array('value' => '02'), 'adresse_id' => array('foreignkey' => $adresse2->getName()))
+				new BSFObject('Adressefoyer',
+					array(
+						'rgadr' => array('value' => '02'),
+						'adresse_id' => array('foreignkey' => $adresse1->getName()),
+						'dtemm' => array('value' => $date2)
+					)
 				),
 				new BSFObject('Adressefoyer', 
 					array('rgadr' => array('value' => '03'), 'adresse_id' => array('foreignkey' => $adresse3->getName()))
@@ -248,6 +298,9 @@
 				array('topsansdomfixe' => array('value' => 0), 'topfoydrodevorsa' => array('value' => 1))
 			);
 			$detaildroitrsa =& $detaildroitrsas[count($detaildroitrsas)-1];
+			$detaildroitrsa->fields = array(
+				'dossier_id' => array('foreignkey' => $dossier->getName()),
+			);
 
 			/**
 			 * Detailcalculdroitrsa
@@ -255,13 +308,12 @@
 			$detaildroitrsa->contain = array(
 				new BSFObject('Detailcalculdroitrsa', array('natpf' => array('auto' => true, 'in_array' => (array)$nat))),
 			);
-
+			
 			/**
 			 * Situationdossierrsa
 			 */
 			$dossier->contain = array(
 				new BSFObject('Situationdossierrsa', array('etatdosrsa' => array('auto' => true, 'in_array' => (array)$etat))),
-				$detaildroitrsa,
 				$foyer,
 			);
 			
@@ -286,6 +338,15 @@
 			);
 			$personnePrincipale->contain[] = $orientstruct;
 			
-			return compact('dossiers', 'personnes', 'adresses');
+			/**
+			 * Dernier dossier d'un allocataire
+			 */
+			$dernierdossierallocataire = new BSFObject('Dernierdossierallocataire');
+			$dernierdossierallocataire->fields = array(
+				'dossier_id' => array('foreignkey' => $dossier->getName()),
+			);
+			$personnePrincipale->contain[] = $dernierdossierallocataire;
+			
+			return compact('adresses', 'dossiers', 'personnes');
 		}
 	}
