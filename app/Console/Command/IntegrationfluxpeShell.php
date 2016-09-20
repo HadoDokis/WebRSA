@@ -326,7 +326,7 @@
 		/**
 		 * Initialisation des attributs_foreignKeysToInformationpe et _foreignKeysToHistoriqueetatpe
 		 *
-		 * @returrn void
+		 * @return void
 		 */
 		protected function _initForeignKeysTo() {
 			$this->Informationpe->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );

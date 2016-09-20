@@ -230,7 +230,7 @@
 		 *
 		 * Ask the terminal, and default to min 80 chars.
 		 *
-		 * @TODO can you get windows to tell you the size of the terminal?
+		 * @todo can you get windows to tell you the size of the terminal?
 		 * @param mixed $width null
 		 * @return void
 		 * @access protected

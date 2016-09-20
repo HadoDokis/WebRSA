@@ -182,7 +182,7 @@
 
 		/**
 		 * Export du tableau en CSV
-		 * @deprecacted since version 3.0
+		 * @deprecated since version 3.0
 		 */
 		public function exportcsv() {
 			if ((int)Configure::read('Cg.departement') === 66) {

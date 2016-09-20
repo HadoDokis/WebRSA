@@ -38,7 +38,7 @@
 
 		/**
 		* @param string $path ie. User.username, User.0.id
-		* @retrun string ie. string, integer
+		* @return string ie. string, integer
 		*/
 
 		protected function _fieldType( $path ) {
@@ -59,7 +59,7 @@
 
 		/**
 		* @param string $path ie. User.username, User.0.id
-		* @retrun string ie. string, integer
+		* @return string ie. string, integer
 		*/
 
 		protected function _typeInfos( $path ) {

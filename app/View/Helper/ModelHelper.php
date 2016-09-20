@@ -151,7 +151,7 @@
 		 * Retourne la partie du schéma concernant un champ donné.
 		 *
 		 * @param string $path ie. User.username, User.0.id
-		 * @retrun array ie.
+		 * @return array ie.
 		 * <pre>
 		 * 	array(
 		 * 		'type' => 'integer',
