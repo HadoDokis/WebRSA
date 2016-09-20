@@ -131,7 +131,7 @@
 					}
 
 					// Si une valeur par defaut existe et qu'aucune valeur n'est defini
-					if ($params['default'] !== '' && $params['value'] === '') {
+					if ($params['default'] !== '' && $params['value'] === '' && !Hash::get($params, 'foreignkey')) {
 						continue;
 					}
 
@@ -157,7 +157,11 @@
 
 					// Cas du foreignkey
 					if (Hash::get($params, 'foreignkey') && $params['value'] === '') {
-						$params['value'] = end($this->_foreignkeys[$params['foreignkey']]);
+						if (isset($this->_foreignkeys[$params['foreignkey']])) {
+							$params['value'] = end($this->_foreignkeys[$params['foreignkey']]);
+						} else {
+							trigger_error("La clef étrangère '{$params['foreignkey']}' n'existe pas au moment de la création de {$obj->getName()}. Assurez-vous que l'enregistrement existe avant de tenter de l'attribuer à une table.");
+						}
 					}
 
 					// Si une valeur est defini, on ajoute à l'array de sauvegarde
