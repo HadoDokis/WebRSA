@@ -189,6 +189,29 @@
 		</exec>
 	</target>
 
+	<!-- Compatibilité PHP 7 -->
+	<!--
+		@see https://github.com/wimg/PHPCompatibility#user-content-installation-method-1
+		sudo git clone https://github.com/wimg/PHPCompatibility.git /usr/share/php/test/PHP_CodeSniffer/CodeSniffer/Standards/PHPCompatibility
+		sudo phpcs - -config-set installed_paths /usr/share/php/test/PHP_CodeSniffer/CodeSniffer/Standards
+
+		@todo @SuppressWarnings
+		@fixme ereg ?
+	-->
+	<target name="phpcs_php7" depends="clean">
+		<exec executable="phpcs"
+			  dir="${dir.cakephp.app}"
+			  output="${dir.ant.logs}/checkstyle_php7.xml"
+			  error="/dev/null"
+			  failonerror="false">
+			<arg line=".
+				--report=checkstyle
+				--standard=PHPCompatibility
+				--runtime-set testVersion 5.3-7.0
+				--extensions=php,ctp" />
+		</exec>
+	</target>
+
 	<!-- Mess detector -->
 	<target name="phpmd" depends="clean,lint">
 		<exec executable="phpmd"
