@@ -189,29 +189,6 @@
 		</exec>
 	</target>
 
-	<!-- Compatibilité PHP 7 -->
-	<!--
-		@see https://github.com/wimg/PHPCompatibility#user-content-installation-method-1
-		sudo git clone https://github.com/wimg/PHPCompatibility.git /usr/share/php/test/PHP_CodeSniffer/CodeSniffer/Standards/PHPCompatibility
-		sudo phpcs - -config-set installed_paths /usr/share/php/test/PHP_CodeSniffer/CodeSniffer/Standards
-
-		@todo @SuppressWarnings
-		@fixme ereg ?
-	-->
-	<target name="phpcs_php7" depends="clean">
-		<exec executable="phpcs"
-			  dir="${dir.cakephp.app}"
-			  output="${dir.ant.logs}/checkstyle_php7.xml"
-			  error="/dev/null"
-			  failonerror="false">
-			<arg line=".
-				--report=checkstyle
-				--standard=PHPCompatibility
-				--runtime-set testVersion 5.3-7.0
-				--extensions=php,ctp" />
-		</exec>
-	</target>
-
 	<!-- Mess detector -->
 	<target name="phpmd" depends="clean,lint">
 		<exec executable="phpmd"
@@ -269,4 +246,44 @@
 			." />
 		</exec>
 	</target>
+
+	<!-- Compatibilité PHP 7 -->
+	<!--
+		PHP CheckStyle
+
+		@see https://github.com/wimg/PHPCompatibility#user-content-installation-method-1
+		sudo git clone https://github.com/wimg/PHPCompatibility.git /usr/share/php/test/PHP_CodeSniffer/CodeSniffer/Standards/PHPCompatibility
+		sudo phpcs - -config-set installed_paths /usr/share/php/test/PHP_CodeSniffer/CodeSniffer/Standards
+	-->
+	<target name="phpcs_php7" depends="clean,lint">
+		<exec executable="phpcs"
+			  dir="${dir.cakephp.app}"
+			  output="${dir.ant.logs}/checkstyle_php7.xml"
+			  error="/dev/null"
+			  failonerror="false">
+			<arg line=".
+				--report=checkstyle
+				--standard=${dir.cakephp.app}/Vendor/Jenkins/phpcs-php7/ruleset.xml
+				--runtime-set testVersion 5.3-7.0
+				--ignore=${dir.cakephp.app}/Plugin/SuperFixture/Vendor/fzaninotto
+				--extensions=php,ctp,class" />
+		</exec>
+	</target>
+
+	<!--
+		Code browser
+	-->
+	<target name="phpcb_php7" depends="clean,lint">
+		<exec executable="phpcb"
+			dir="${dir.cakephp.app}"
+			failonerror="false">
+			<arg line="--log ${dir.ant.logs}
+				--source ${dir.cakephp.app}
+				--output ${dir.ant.build}/php-code-browser
+				--crapThreshold=10
+			." />
+		</exec>
+	</target>
+
+	<target name="php7" depends="clean,lint,phpcs_php7,phpcb_php7"/>
 </project>
