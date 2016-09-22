@@ -1470,7 +1470,7 @@
 	 * de l'application".
 	 */
 	Configure::write(
-		'PlagesHoraires',
+		'Module.PlagesHoraires',
 		array(
 			'enabled' => true,
 			'heure_debut' => 8,
