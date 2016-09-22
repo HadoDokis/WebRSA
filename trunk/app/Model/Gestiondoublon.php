@@ -106,60 +106,77 @@
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ )."_{$differenceThreshold}";
 			$query = Cache::read( $cacheKey );
 
-			if( $query === false ) {
-				$Foyer = ClassRegistry::init( 'Foyer' );
-
-				$conditionsJoinDemandeur = array(
-					'OR' => array(
-						'Personne.id IN ( SELECT prestations.personne_id FROM prestations WHERE prestations.personne_id = Personne.id AND prestations.natprest = \'RSA\' AND prestations.rolepers = \'DEM\' ORDER BY prestations.personne_id ASC LIMIT 1 )',
-						'Personne.id IS NULL'
-					)
-				);
-
+			if (!$query) {
+				$Foyer = ClassRegistry::init('Foyer');
+				
+				// Refonte :
 				$query = array(
+					'fields' => array(
+						'Foyer.id',
+						'Foyer2.id',
+						'Dossier.numdemrsa',
+						'Dossier.dtdemrsa',
+						'Dossier.matricule',
+						'Demandeur.nom',
+						'Demandeur.prenom',
+						'Situationdossierrsa.etatdosrsa',
+						'Adresse.nomcom',
+						'Dossier2.numdemrsa',
+						'Dossier2.dtdemrsa',
+						'Dossier2.matricule',
+						'Demandeur2.nom',
+						'Demandeur2.prenom',
+						'Situationdossierrsa2.etatdosrsa',
+						'Adresse2.nomcom',
+					),
 					'joins' => array(
-						$Foyer->join(
-							'Adressefoyer',
+						$Foyer->join('Adressefoyer',								// Adressefoyer
 							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array(
-									'OR' => array(
-										'Adressefoyer.id IS NULL',
-										'Adressefoyer.id IN ( '.$Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-									)
+									'Adressefoyer.id IN ('.$Foyer->Adressefoyer->sqDerniereRgadr01('Foyer.id').')'
 								)
 							)
 						),
-						$Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-						$Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
-						$Foyer->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
-						array_words_replace(
-							$Foyer->join(
-								'Personne',
-								array(
-									'type' => 'LEFT OUTER',
-									'conditions' => $conditionsJoinDemandeur
-								)
-							),
-							array( 'Personne' => 'Demandeur' )
+						$Foyer->join('Dossier', array('type' => 'INNER')),			// Dossier
+						$Foyer->join('Personne', array('type' => 'INNER')),
+						$Foyer->Adressefoyer->join('Adresse',						// Adresse
+							array('type' => 'LEFT OUTER')
 						),
-						// Jointure avec ce qui est en doublon
+						$Foyer->Dossier->join('Situationdossierrsa',				// Situationdossierrsa
+							array('type' => 'LEFT OUTER')
+						),
+						$Foyer->Personne->join('Prestation',
+							array(
+								'type' => 'INNER',
+								'conditions' => array(
+									'Prestation.rolepers' => array('DEM', 'CJT')
+								)
+							)
+						),
+						array(
+							'alias' => '"Demandeur"',								// Demandeur
+							'table' => 'personnes',
+							'conditions' => '"Demandeur"."foyer_id" = "Foyer"."id"',
+							'type' => 'INNER',
+						),
+						array(
+							'alias' => '"PrestationDem"',							// PrestationDem
+							'table' => 'prestations',
+							'conditions' => array(
+								"PrestationDem.personne_id = Demandeur.id",
+								"PrestationDem.natprest" => 'RSA', 
+								"PrestationDem.rolepers" => 'DEM',
+							),
+							'type' => 'INNER',
+						),
 						array(
 							'table'      => 'personnes',
 							'alias'      => 'p2',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => $Foyer->Personne->WebrsaPersonne->conditionsRapprochementPersonne1Personne2( 'Personne', 'p2', false ),
-						),
-						array(
-							'table'      => 'calculsdroitsrsa',
-							'alias'      => 'Calculdroitrsa',
-							'type'       => 'LEFT',
-							'conditions' => array(
-								'Calculdroitrsa.personne_id = Demandeur.id',
-							)
+							'conditions' => $Foyer->Personne->WebrsaPersonne
+								->conditionsRapprochementPersonne1Personne2('Personne', 'p2', false),
 						),
 						array(
 							'table'      => 'foyers',
@@ -170,62 +187,53 @@
 								'p2.foyer_id = Foyer2.id',
 							)
 						),
-						array_words_replace(
-							$Foyer->join(
-								'Adressefoyer',
-								array(
-									'type' => 'LEFT OUTER',
-									'conditions' => array(
-										'OR' => array(
-											'Adressefoyer.id IS NULL',
-											'Adressefoyer.id IN ( '.$Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-										)
-									)
-								)
-							),
-							array( 'Foyer' => 'Foyer2', 'Adressefoyer' => 'Adressefoyer2' )
-						),
-						array_words_replace(
-							$Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-							array( 'Adressefoyer' => 'Adressefoyer2', 'Adresse' => 'Adresse2' )
-						),
 						array(
-							'table'      => 'dossiers',
-							'alias'      => 'Dossier2',
-							'type'       => 'INNER',
-							'foreignKey' => false,
+							'alias' => '"Adressefoyer2"',							// Adressefoyer2
+							'table' => 'adressesfoyers',
 							'conditions' => array(
-								'Foyer2.dossier_id = Dossier2.id',
-								'Dossier2.id <> Dossier.id'
-							)
-						),
-						array(
-							'table'      => 'situationsdossiersrsa',
-							'alias'      => 'Situationdossierrsa2',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Situationdossierrsa2.dossier_id = Dossier2.id',
-							)
-						),
-						array_words_replace(
-							$Foyer->join(
-								'Personne',
-								array(
-									'type' => 'LEFT OUTER',
-									'conditions' => $conditionsJoinDemandeur
-								)
+								'"Adressefoyer2"."foyer_id" = "Foyer2"."id"',
+								'"Adressefoyer2"."id" IN ('.$Foyer->Adressefoyer->sqDerniereRgadr01('Foyer2.id').')'
 							),
-							array( 'Personne' => 'Demandeur2' )
+							'type' => 'LEFT OUTER'
 						),
-					),
-					'conditions' => array(
 						array(
-							'OR' => array(
-								'Prestation.id IS NULL',
-								'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-							)
-						)
+							'alias' => '"Adresse2"',								// Adresse2
+							'table' => 'adresses',
+							'conditions' => array(
+								'"Adressefoyer2"."adresse_id" = "Adresse2"."id"',
+							),
+							'type' => 'LEFT OUTER'
+						),
+						array(
+							'alias' => '"Dossier2"',								// Dossier2
+							'table' => 'dossiers',
+							'conditions' => '"Foyer2"."dossier_id" = "Dossier2"."id"',
+							'type' => 'INNER'
+						),
+						array(
+							'alias' => '"Situationdossierrsa2"',					// Situationdossierrsa2
+							'table' => 'situationsdossiersrsa',
+							'conditions' => array(
+								'"Situationdossierrsa2"."dossier_id" = "Dossier2"."id"',
+							),
+							'type' => 'INNER',
+						),
+						array(
+							'alias' => '"Demandeur2"',								// Demandeur2
+							'table' => 'personnes',
+							'conditions' => '"Demandeur2"."foyer_id" = "Foyer2"."id"',
+							'type' => 'INNER',
+						),
+						array(
+							'alias' => '"PrestationDem2"',							// PrestationDem2
+							'table' => 'prestations',
+							'conditions' => array(
+								"PrestationDem2.personne_id = Demandeur2.id",
+								"PrestationDem2.natprest" => 'RSA', 
+								"PrestationDem2.rolepers" => 'DEM',
+							),
+							'type' => 'INNER',
+						),
 					),
 					'contain' => false,
 					'order' => array(
@@ -236,20 +244,9 @@
 						'Dossier.id',
 					)
 				);
-
-				$query['fields'] = $query['group'] = Hash::merge(
-					$Foyer->fields(),
-					$Foyer->Dossier->fields(),
-					$Foyer->Dossier->fields(),
-					$Foyer->Adressefoyer->Adresse->fields(),
-					$Foyer->Dossier->Situationdossierrsa->fields(),
-					array_words_replace( $Foyer->Personne->fields(), array( 'Personne' => 'Demandeur' ) ),
-					array_words_replace( $Foyer->fields(), array( 'Foyer' => 'Foyer2' ) ),
-					array_words_replace( $Foyer->Dossier->fields(), array( 'Dossier' => 'Dossier2' ) ),
-					array_words_replace( $Foyer->Adressefoyer->Adresse->fields(), array( 'Adresse' => 'Adresse2' ) ),
-					array_words_replace( $Foyer->Dossier->Situationdossierrsa->fields(), array( 'Situationdossierrsa' => 'Situationdossierrsa2' ) ),
-					array_words_replace( $Foyer->Personne->fields(), array( 'Personne' => 'Demandeur2' ) )
-				);
+				
+				$query['group'] = $query['fields'];
+				$query['group'][] = 'Dossier.id';
 				
 				// Retirer les lignes taggés
 				$valeurtag_id = Configure::read('Gestionsdoublons.index.Tag.valeurtag_id');
@@ -264,7 +261,7 @@
 					$joinEntiteTag2['conditions'] = array(
 						'EntiteTag2.fk_value = Foyer2.id',
 						'EntiteTag2.modele' => 'Foyer',
-						'EntiteTag2.tag_id = EntiteTag2.tag_id'
+						'EntiteTag2.tag_id = EntiteTag.tag_id'
 					);
 					
 					$query['joins'][] = $joinEntiteTag;
@@ -274,7 +271,7 @@
 
 				Cache::write( $cacheKey, $query );
 			}
-
+			
 			// 2. Partie searchConditionsComplexes()
 			$query['conditions'] = $this->conditionsPersonneFoyerDossier( $query['conditions'], $search );
 			$query['conditions'] = array_words_replace( $query['conditions'], array( 'Personne' => 'Demandeur' ) );
