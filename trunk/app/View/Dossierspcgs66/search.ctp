@@ -43,8 +43,8 @@
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
 		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.etatdossierpcg', $options, 'divideInto2Collumn' )
 		. $this->Xform->multipleCheckbox( 'Search.Decisiondossierpcg66.org_id', $options, 'divideInto2Collumn' )
-		. $this->Xform->multipleCheckbox( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
-		. $this->Xform->multipleCheckbox( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
 		. $this->Default3->subform(
 			array(
 				'Search.Decisiondossierpcg66.useravistechnique_id' => array( 'empty' => true, 'options' => $options['Dossierpcg66']['user_id'] ),

@@ -526,6 +526,34 @@
 		}
 		
 		/**
+		 * Génère un fieldset de type multiple checkbox
+		 * 
+		 * @param string $path
+		 * @param array $options
+		 * @param string $class
+		 * @return string
+		 */
+		public function multipleCheckboxToutCocher( $path, array $options = array(), $class = '' ) {
+			$name = model_field($path);
+			
+			$uniqueClass = 'toutCochable'.$name[0].Inflector::camelize($name[1]);
+			$selecteur = 'div.'.$uniqueClass.' input';
+			$buttons = '<div>'
+				.$this->button('Tout cocher', array('type' => 'button', 'onclick' => "return toutCocher('$selecteur', true);"))
+				.$this->button('Tout décocher', array('type' => 'button', 'onclick' => "return toutDecocher('$selecteur', true);"))
+			.'</div>';
+			
+			return $this->input($path, array(
+				'label' => __m($path),
+				'type' => 'select',
+				'before' => $buttons,
+				'multiple' => 'checkbox',
+				'options' => Hash::get($options, "{$name[0]}.{$name[1]}"),
+				'class' => trim($class.' '.$uniqueClass)
+			));
+		}
+		
+		/**
 		 * Renvoi une div d'afficahge d'erreur
 		 * 
 		 * @param mixed $errors Liste des erreurs

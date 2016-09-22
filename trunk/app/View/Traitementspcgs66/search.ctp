@@ -22,17 +22,6 @@
 		)
 	);
 	
-	function multipleCheckbox( $View, $path, $options, $class = '' ) {
-		$name = model_field($path);
-		return $View->Xform->input($path, array(
-			'label' => __m($path), 
-			'type' => 'select', 
-			'multiple' => 'checkbox', 
-			'options' => $options[$name[0]][$name[1]],
-			'class' => $class
-		));
-	}
-	
 	$this->start( 'custom_search_filters' );
 	
 	$dates = array(
@@ -48,14 +37,14 @@
 	echo $this->FormValidator->generateJavascript($dates, false);
 	
 	echo '<fieldset><legend>' . __m( 'Traitementpcg66.search' ) . '</legend>'
-		. multipleCheckbox( $this, 'Search.Dossierpcg66.poledossierpcg66_id', $options )
-		. multipleCheckbox( $this, 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
+		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.poledossierpcg66_id', $options )
+		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Traitementpcg66.dateecheance', $paramDate )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Traitementpcg66.daterevision', $paramDate )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Traitementpcg66.created', $paramDate )
-		. multipleCheckbox( $this, 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
-		. multipleCheckbox( $this, 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
 		. $this->Default3->subform(
 			array(
 				'Search.Traitementpcg66.descriptionpdo_id' => array( 'empty' => true ),
