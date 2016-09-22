@@ -43,8 +43,8 @@
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)
 		. $this->Xform->multipleCheckbox( 'Search.Decisiondossierpcg66.decisionpdo_id', $options, 'divideInto2Collumn' )
-		. $this->Xform->multipleCheckbox( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
-		. $this->Xform->multipleCheckbox( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
 		. $this->Default3->subform(
 			array(
 				'Search.Dossierpcg66.dossierechu' => array( 'type' => 'checkbox' )

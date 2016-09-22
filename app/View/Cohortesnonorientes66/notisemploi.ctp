@@ -211,8 +211,8 @@
 			</tbody>
 		</table>
 <?php
-	echo $this->Xform->button( 'Tout cocher', array( 'onclick' => "return toutCocher( 'input.atraiter', true );" ) );
-	echo $this->Xform->button( 'Tout décocher', array( 'onclick' => "return toutDecocher( 'input.atraiter', true );" ) );
+	echo $this->Xform->button( 'Tout cocher', array( 'type' => 'button', 'onclick' => "return toutCocher( 'input.atraiter', true );" ) );
+	echo $this->Xform->button( 'Tout décocher', array( 'type' => 'button', 'onclick' => "return toutDecocher( 'input.atraiter', true );" ) );
 
 ?>
 		<?php echo $this->Xform->submit( 'Validation de la liste' );?>

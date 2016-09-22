@@ -171,9 +171,13 @@ function divideIntoCollumn(dom, nbCollumn) {
 
 	// Stock les labels et copie les elements
 	parent.select('div').each(function (div) {
-		var name = div.select('label').first().innerHTML.replace(/[^A-Za-z]+/g, '');
-		childs[name.toUpperCase()] = Element.clone(div, true);
-		childsNames.push(name.toUpperCase());
+		var name;
+		
+		if (div.select('label').length) {
+			name = div.select('label').first().innerHTML.replace(/[^A-Za-z]+/g, '');
+			childs[name.toUpperCase()] = Element.clone(div, true);
+			childsNames.push(name.toUpperCase());
+		}
 	});
 
 	// Les labels sont trié
