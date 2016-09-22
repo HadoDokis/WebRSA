@@ -163,9 +163,8 @@
 		 * @throws PlageHoraireUserException
 		 */
 		protected function _checkHabilitationsPlagesHoraires() {
-			if( Configure::read( 'PlagesHoraires.enabled' ) ) {
-				// TODO: vérifier la configuration
-				$config = (array)Configure::read( 'PlagesHoraires' );
+			if( Configure::read( 'Module.PlagesHoraires.enabled' ) ) {
+				$config = (array)Configure::read( 'Module.PlagesHoraires' );
 				$config += array(
 					'heure_debut' => 1,
 					'heure_fin' => 23,
@@ -339,7 +338,7 @@
 			// Désactivation uniquement sur les méthode faisant autre chose que de la lecture ?
 			//if( Hash::get( $this->crudMap, $this->request->action ) !== 'read' )
 			$this->disableCache();
-			
+
 			//Paramétrage du composant Auth
 			$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
 			$this->Auth->logoutRedirect = array( 'controller' => 'users', 'action' => 'login' );
@@ -519,7 +518,7 @@
 
 			return $cache;
 		}
-		
+
 		/**
 		 * Log chaque appel de page
 		 */
@@ -539,12 +538,12 @@
 				$this->log($message, 'trace');
 			}
 		}
-		
+
 		public function beforeRedirect($url, $status = null, $exit = true) {
 			$this->_logTrace();
 			return parent::beforeRedirect( $url, $status, $exit );
 		}
-		
+
 		public function afterFilter() {
 			$this->_logTrace();
 			return parent::afterFilter();

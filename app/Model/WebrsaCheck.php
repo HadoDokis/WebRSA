@@ -525,7 +525,7 @@
 			}
 
 			// Utilise-t-on les plages horaires ?
-			$plagesHorairesEnabled = ( true === Configure::read( 'PlagesHoraires.enabled' ) );
+			$plagesHorairesEnabled = ( true === Configure::read( 'Module.PlagesHoraires.enabled' ) );
 			$allowEmpty = ( false === $plagesHorairesEnabled );
 			$this->loadModel( 'User' );
 			$groups_ids = array_keys( $this->User->Group->find( 'list', array( 'contain' => false ) ) );
@@ -533,19 +533,19 @@
 			$result = array_merge(
 				$result,
 				array(
-					'PlagesHoraires.enabled' =>  array(
+					'Module.PlagesHoraires.enabled' =>  array(
 						array( 'rule' => 'boolean', 'allowEmpty' => true ),
 					),
-					'PlagesHoraires.heure_debut' =>  array(
+					'Module.PlagesHoraires.heure_debut' =>  array(
 						array( 'rule' => 'inList', range( 0, 23 ), 'allowEmpty' => $allowEmpty ),
 					),
-					'PlagesHoraires.heure_fin' =>  array(
+					'Module.PlagesHoraires.heure_fin' =>  array(
 						array( 'rule' => 'inList', range( 0, 23 ), 'allowEmpty' => $allowEmpty ),
 					),
-					'PlagesHoraires.jours_weekend' =>  array(
+					'Module.PlagesHoraires.jours_weekend' =>  array(
 						array( 'rule' => 'inListArray', array( 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ), 'allowEmpty' => $allowEmpty ),
 					),
-					'PlagesHoraires.groupes_acceptes' =>  array(
+					'Module.PlagesHoraires.groupes_acceptes' =>  array(
 						array( 'rule' => 'inListArray', $groups_ids, 'allowEmpty' => true ),
 					)
 				)
