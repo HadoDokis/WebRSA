@@ -126,5 +126,16 @@
 		public function dateHabilitationUser( $error ) {
 			$this->_generic( $error, 'date_habilitation_user' );
 		}
+
+		/**
+		 * Rendu de la vue app/View/Errors/plage_horaire_user.ctp lorsque l'on
+		 * est en mode "production".
+		 *
+		 * @param Exception $error
+		 * @return void
+		 */
+		public function plageHoraireUser( $error ) {
+			$this->_generic( $error, 'plage_horaire_user' );
+		}
 	}
 ?>
