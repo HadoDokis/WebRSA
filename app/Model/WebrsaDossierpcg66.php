@@ -979,6 +979,7 @@
 						array(
 							'type' => 'LEFT OUTER',
 							'conditions' => array(
+								'Decisiondossierpcg66.validationproposition' => 'O',
 								'Decisiondossierpcg66.id IN ('
 								. 'SELECT a.id FROM decisionsdossierspcgs66 AS a '
 								. 'WHERE a.dossierpcg66_id = "Dossierpcg66"."id" '
