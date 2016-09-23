@@ -151,6 +151,11 @@
 			$data = $$classNameIn->getData();
 			$fileString = TemplateSuperFixture::getFileString($classNameOut, $BakeSuperFixture->create($data, false));
 			
+			$report = '';
+			foreach ($BakeSuperFixture->report() as $modelName => $count) {
+				$report .= $modelName.': '.$count.' row'.($count > 1 ? 's' : '')."\n";
+			}
+			
 			fputs($outFile, $fileString);
 			fclose($outFile);
 			
@@ -158,7 +163,7 @@
 			
 			$this->out();
 			$this->out("Le fichier ".$this->args[1]." a été crée avec success !");
-			$this->out();
+			$this->out($report, 2);
 		}
 		
 		/**

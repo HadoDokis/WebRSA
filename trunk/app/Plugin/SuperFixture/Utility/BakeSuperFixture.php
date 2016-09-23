@@ -66,6 +66,20 @@
 
 			return $this->_savedData;
 		}
+		
+		/**
+		 * Produit un rapport sous forme d'array sur les modèles utilisés et le nombre d'enregistrements créé
+		 * 
+		 * @return array
+		 */
+		public function report() {
+			$report = array();
+			foreach ($this->_savedData as $modelName => $datas) {
+				$report[$modelName] = count($datas);
+			}
+			
+			return $report;
+		}
 
 		/**
 		 * Permet la création en arbre

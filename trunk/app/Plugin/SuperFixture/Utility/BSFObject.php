@@ -37,6 +37,13 @@
 		public $fields = array();
 		
 		/**
+		 * Liste de BSFObject sur lesquels faire une jointure
+		 * 
+		 * @var array BSFObject
+		 */
+		public $contain = array();
+		
+		/**
 		 * Identifiant unique de l'objet
 		 * 
 		 * @var String
