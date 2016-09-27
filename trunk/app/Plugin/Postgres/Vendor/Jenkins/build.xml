@@ -30,14 +30,33 @@
 		<mkdir dir="${dir.ant.build}/php-code-browser" />
 	</target>
 
+	<!-- Vérification de la syntaxe des fichiers .sh -->
+	<target name="bash-lint">
+		<apply executable="bash" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<arg line="-n"/>
+			<fileset
+				dir="${dir.cakephp.plugin}"
+				includes="**/*.sh" />
+		</apply>
+	</target>
+
+	<!-- Vérification de la syntaxe des fichiers .xml et .xsl -->
+	<target name="xml-lint">
+		<apply executable="xmllint" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<arg line="--noout"/>
+			<fileset
+				dir="${dir.cakephp.plugin}"
+				includes="**/*.xml,**/*.xsl" />
+		</apply>
+	</target>
+
 	<!-- Vérification de la syntaxe des fichiers .php et .ctp -->
 	<target name="php-lint">
 		<apply executable="php" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
 			<arg line="-l"/>
 			<fileset
 				dir="${dir.cakephp.plugin}"
-				includes="**/*.php,**/*.ctp"
-				excludes="" />
+				includes="**/*.php,**/*.ctp" />
 		</apply>
 	</target>
 
@@ -62,7 +81,7 @@
 		Lorsque plusieurs traductions du même msgid sont présentes dans un fichier
 		.po, c'est la dernière qui est prise en compte.
 
-                sudo aptitude install gettext
+		sudo aptitude install gettext
 	-->
 	<target name="po-lint">
 		<apply executable="msgfmt" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
@@ -71,8 +90,7 @@
 			<arg line="-o /dev/null"/>
 			<fileset
 				dir="${dir.cakephp.plugin}"
-				includes="**/*.po"
-				excludes="" />
+				includes="**/*.po" />
 		</apply>
 	</target>
 
@@ -105,8 +123,8 @@
 	</target>
 
 	<!-- Vérification de la syntaxe des fichiers -->
-	<!--<target name="lint" depends="php-lint,sql-lint,po-lint,js-lint,css-lint"/>-->
-	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
+	<!--<target name="lint" depends="bash-lint,xml-lint,php-lint,sql-lint,po-lint,js-lint,css-lint"/>-->
+	<target name="lint" depends="bash-lint,xml-lint,php-lint,po-lint,js-lint,css-lint"/>
 
 	<!-- Tests unitaires -->
 	<target name="phpunit" depends="clean,lint">
@@ -161,12 +179,13 @@
 				--tab-width=4
 				--report=checkstyle
 				--standard=${dir.phpcs.ruleset}
+				--runtime-set testVersion 5.3-7.0
 				--ignore=${ignorelist}
 				--extensions=php,ctp" />
 		</exec>
 	</target>
 
-	<!-- Mess detector, avant: arg line=". xml codesize" -->
+	<!-- Mess detector -->
 	<target name="phpmd" depends="clean,lint">
 		<exec executable="phpmd"
 			dir="${dir.cakephp.plugin}"
@@ -193,11 +212,6 @@
 	</target>
 
 	<!-- Copy/paste detector -->
-	<!--
-		-exclude Test
-		-exclude webroot/test.php
-		-exclude webroot/index.php
-	-->
 	<target name="phpcpd" depends="clean,lint">
 		<exec executable="phpcpd"
 			dir="${dir.cakephp.plugin}"
@@ -219,7 +233,7 @@
 			failonerror="false">
 			<arg line="--log ${dir.ant.logs}
 				--source ${dir.cakephp.plugin}
-				-E /\/(Vendor|Test)\//
+				-E /\/(Vendor)\//
 				--output ${dir.ant.build}/php-code-browser
 				--crapThreshold=10
 			." />
