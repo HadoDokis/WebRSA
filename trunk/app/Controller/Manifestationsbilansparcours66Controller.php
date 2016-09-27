@@ -156,15 +156,21 @@
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 			
-			$personne_id = $this->Manifestationbilanparcours66->personneId( $id );
-
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-			$this->set( 'urlmenu', '/bilansparcours66/index/'.$personne_id );
-
-			$fichiers = array();
 			$manifestationbilanparcours66 = $this->Manifestationbilanparcours66->find(
 				'first',
 				array(
+					'fields' => array(
+						'Personne.id',
+						'Foyer.dossier_id',
+						'Manifestationbilanparcours66.id',
+						'Manifestationbilanparcours66.haspiecejointe',
+						'Manifestationbilanparcours66.bilanparcours66_id',
+					),
+					'joins' => array(
+						$this->Manifestationbilanparcours66->join('Bilanparcours66'),
+						$this->Manifestationbilanparcours66->Bilanparcours66->join('Personne'),
+						$this->Manifestationbilanparcours66->Bilanparcours66->Personne->join('Foyer'),
+					),
 					'conditions' => array(
 						'Manifestationbilanparcours66.id' => $id
 					),
@@ -175,13 +181,15 @@
 					)
 				)
 			);
+			
+			$personne_id = Hash::get($manifestationbilanparcours66, 'Personne.id');
+			$dossier_id = Hash::get($manifestationbilanparcours66, 'Foyer.dossier_id');
+			$bilanparcours66_id = Hash::get($manifestationbilanparcours66, 'Manifestationbilanparcours66.bilanparcours66_id');
+			
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			$this->set( 'urlmenu', '/bilansparcours66/index/'.$personne_id );
 
-			$bilanparcours66_id = $manifestationbilanparcours66['Manifestationbilanparcours66']['bilanparcours66_id'];
-			$personne_id = $this->Manifestationbilanparcours66->Bilanparcours66->field( 'personne_id' );
-
-			$dossier_id = $this->Manifestationbilanparcours66->Bilanparcours66->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-
+			$fichiers = array();
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
