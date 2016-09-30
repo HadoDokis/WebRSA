@@ -296,8 +296,10 @@
 		 * 
 		 * @param integer $dossierpcg66_id
 		 * @return array
+		 * @deprecated since version 3.1
 		 */
 		public function findDecisiondossierpcg( $dossierpcg66_id ) {
+			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
 			//Gestion des décisions pour le dossier au niveau foyer
 			$joins = array(
 				array(

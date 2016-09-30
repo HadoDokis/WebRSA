@@ -12,18 +12,20 @@
 	
 	echo $this->Default3->index(
 		$results, 
-		array(
-			'Categorietag.name',
-			'Valeurtag.name',
-			'Tag.etat',
-			'Tag.commentaire',
-			'Tag.limite',
-			'Tag.created',
-		) + WebrsaAccess::links(
+		$this->Translator->normalize(
 			array(
-				'/tags/edit/#Tag.id#',
-				'/tags/cancel/#Tag.id#',
-				'/tags/delete/#Tag.id#',
+				'Categorietag.name',
+				'Valeurtag.name',
+				'Tag.etat',
+				'Tag.commentaire',
+				'Tag.limite',
+				'Tag.created',
+			) + WebrsaAccess::links(
+				array(
+					'/tags/edit/#Tag.id#',
+					'/tags/cancel/#Tag.id#',
+					'/tags/delete/#Tag.id#' => array('confirm' => true),
+				)
 			)
 		), 
 		array(

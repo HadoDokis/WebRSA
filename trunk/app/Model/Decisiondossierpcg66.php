@@ -196,6 +196,18 @@ class Decisiondossierpcg66 extends AppModel {
         )
     );
 	
+	public $virtualFields = array(
+			'dernier' => array(
+				'type'      => 'boolean',
+				'postgres'  => '"%s"."id" IN (
+					SELECT a.id FROM decisionsdossierspcgs66 AS a
+					WHERE a.dossierpcg66_id = "%s"."dossierpcg66_id"
+					AND (a.etatdossierpcg IS NULL OR a.etatdossierpcg != \'annule\')
+					ORDER BY a.created DESC
+					LIMIT 1)'
+			),
+	);
+	
 	/**
 	 * Les modèles qui seront utilisés par ce modèle.
 	 *
