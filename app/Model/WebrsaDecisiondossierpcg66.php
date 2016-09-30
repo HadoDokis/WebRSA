@@ -6,13 +6,15 @@
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
 	App::uses( 'WebrsaAbstractLogic', 'Model' );
+	App::uses('WebrsaLogicAccessInterface', 'Model/Interface');
+	App::uses('WebrsaModelUtility', 'Utility');
 
 	/**
 	 * La classe WebrsaDecisiondossierpcg66 ...
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaDecisiondossierpcg66 extends WebrsaAbstractLogic
+	class WebrsaDecisiondossierpcg66 extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
 	{
 		/**
 		 * Nom du modèle.
@@ -386,5 +388,140 @@
 							{$table}.dossierpcg66_id = " . $field . "
 						ORDER BY {$table}.created DESC
 						LIMIT 1";
+		}
+		
+		/**
+		 * Donne la query pour un index
+		 * Dans ce cas precis, l'index est l'edit d'un dossier pcg
+		 * 
+		 * @param integer $dossierpcg66_id
+		 * @return array
+		 */
+		public function queryIndex($dossierpcg66_id) {
+			return array(
+				'fields' => array(
+					'Decisionpdo.libelle',
+					'Decisiondossierpcg66.id',
+					'Decisiondossierpcg66.dossierpcg66_id',
+					'Decisiondossierpcg66.avistechnique',
+					'Decisiondossierpcg66.dateavistechnique',
+					'Decisiondossierpcg66.validationproposition',
+					'Decisiondossierpcg66.datevalidation',
+					'Decisiondossierpcg66.motifannulation',
+					$this->Decisiondossierpcg66->Fichiermodule
+						->sqNbFichiersLies($this->Decisiondossierpcg66, 'nb_fichiers_lies'),
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Decisiondossierpcg66->join('Decisionpdo')
+				),
+				'conditions' => array(
+					'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id
+				)
+			);
+		}
+		
+		/**
+		 * Permet d'obtenir le nécéssaire pour calculer les droits d'accès métier à une action
+		 * 
+		 * @param array $conditions
+		 * @param array $params
+		 * @return array
+		 */
+		public function getDataForAccess(array $conditions, array $params = array()) {
+			$query = array(
+				'fields' => array(
+					'Decisiondossierpcg66.id',
+					'Dossierpcg66.id',
+					'Foyer.id',
+				),
+				'conditions' => $conditions,
+				'joins' => array(
+					$this->Decisiondossierpcg66->join('Dossierpcg66'),
+					$this->Decisiondossierpcg66->Dossierpcg66->join('Foyer')
+				),
+				'contain' => false,
+				'order' => array(
+					'Decisiondossierpcg66.created' => 'DESC',
+					'Decisiondossierpcg66.id' => 'DESC',
+				)
+			);
+			
+			$results = $this->Decisiondossierpcg66->find('all', $this->completeVirtualFieldsForAccess($query, $params));
+			return $results;
+		}
+		
+		/**
+		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
+		 * 
+		 * @see WebrsaAccess::getParamsList
+		 * @param integer $dossierpcg66_id
+		 * @param array $params - Liste des paramètres actifs
+		 */
+		public function getParamsForAccess($dossierpcg66_id, array $params = array()) {
+			$results = array();
+			
+			if (in_array('ajoutPossible', $params)) {
+				$results['ajoutPossible'] = $this->ajoutPossible($dossierpcg66_id, $params);
+			}
+			
+			return $results;
+		}
+		
+		/**
+		 * Permet de savoir si il est possible d'ajouter un enregistrement
+		 * 
+		 * @param integer $dossierpcg66_id
+		 * @param array $params
+		 * @return boolean
+		 */
+		public function ajoutPossible($dossierpcg66_id, array $params = array()) {
+			$dossierpcg = $this->Decisiondossierpcg66->Dossierpcg66->find('first', array(
+				'fields' => 'Dossierpcg66.id',
+				'contain' => false,
+				'joins' => array(
+					$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER'))
+				),
+				'conditions' => array(
+					'Dossierpcg66.id' => $dossierpcg66_id,
+					'Dossierpcg66.etatdossierpcg' => array(
+						'arevoir',
+						'attaffect',
+						'attinstr',
+						'attinstrattpiece',
+						'attinstrdocarrive',
+						'decisionnonvalid',
+						'instr',
+						'instrencours',
+					),
+				)
+			));
+			
+			return !empty($dossierpcg);
+		}
+		
+		/**
+		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
+		 * 
+		 * @param array $query
+		 * @param array $params
+		 * @return type
+		 */
+		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
+			$query['fields'] = array_merge(
+				(array)Hash::get($query, 'fields'),
+				array(
+					'Decisiondossierpcg66.dernier' => $this->Decisiondossierpcg66->sqVirtualField('dernier'),
+					'Decisiondossierpcg66.validationproposition',
+					'Decisiondossierpcg66.etatdossierpcg',
+					'Dossierpcg66.etatdossierpcg',
+				)
+			);
+			
+			if (WebrsaModelUtility::findJoinKey("Dossierpcg66", $query) === false) {
+				$query['joins'][] = $this->Decisiondossierpcg66->join("Dossierpcg66");
+			}
+			
+			return $query;
 		}
 	}

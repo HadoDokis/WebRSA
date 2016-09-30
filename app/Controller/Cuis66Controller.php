@@ -249,7 +249,7 @@
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
+				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 			}
 
 			// On tente la sauvegarde
@@ -261,7 +261,7 @@
 					$this->Cui->WebrsaCui->updatePositionsCuisById( $cui_id );
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'action' => 'index', $personne_id ) );
+					$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Cui->rollback();
@@ -391,7 +391,7 @@
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
+				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->request->data ) ) {
@@ -401,7 +401,7 @@
 					$this->Cui->Cui66->WebrsaCui66->updatePositionsCuisById( $cui_id );
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Le CUI à été annulé.', 'flash/success' );
-					$this->redirect( array( 'action' => 'index', $personne_id ) );
+					$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Cui->Cui66->rollback();

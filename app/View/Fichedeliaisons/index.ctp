@@ -1,7 +1,6 @@
 <?php
 	// Donne le domain du plus haut niveau de précision (prefix, action puis controller)
 	$domain = current(WebrsaTranslator::domains());
-	$defaultParams = compact('options', 'domain');
 
 	echo $this->Default3->titleForLayout($this->request->data, compact('domain'));
 	
@@ -58,34 +57,38 @@
 	
 	echo $this->Default3->index(
 		$fichedeliaisons,
-		array(
-			'Fichedeliaison.etat',
-			'Fichedeliaison.expediteur_id',
-			'Fichedeliaison.destinataire_id',
-			'Fichedeliaison.datefiche',
-			'Fichedeliaison.motiffichedeliaison_id',
-			'/Fichedeliaisons/view/#Fichedeliaison.id#' => array(
-				'disabled' => $perm['view']
-			),
-			'/Fichedeliaisons/edit/#Fichedeliaison.id#' => array(
-				'disabled' => "('#Fichedeliaison.etat#' != 'attavistech') OR ".$perm['edit']
-			),
-			'/Fichedeliaisons/avis/#Fichedeliaison.id#' => array(
-				'class' => 'avistechnique',
-				'disabled' => "(!in_array('#Fichedeliaison.etat#', array('attavistech', 'attval'))) OR ".$perm['avis']
-			),
-			'/Fichedeliaisons/validation/#Fichedeliaison.id#' => array(
-				'disabled' => "(!in_array('#Fichedeliaison.etat#', array('attval')) ) OR ".$perm['validation']
-			),
-			'/Fichedeliaisons/delete/#Fichedeliaison.id#' => array(
-				'disabled' => "('#Primoanalyse.etat#' !== '') OR ".$perm['delete']
-			),
-			'/Fichedeliaisons/filelink/#Fichedeliaison.id#' => array(
-				'disabled' => $perm['filelink'],
-				'msgid' => __m('/Fichedeliaisons/filelink').' (#Fichiermodule.nombre#)'
-			),
+		$this->Translator->normalize(
+			array(
+				'Fichedeliaison.etat',
+				'Fichedeliaison.expediteur_id',
+				'Fichedeliaison.destinataire_id',
+				'Fichedeliaison.datefiche',
+				'Fichedeliaison.motiffichedeliaison_id',
+				'/Fichedeliaisons/view/#Fichedeliaison.id#' => array(
+					'disabled' => $perm['view']
+				),
+				'/Fichedeliaisons/edit/#Fichedeliaison.id#' => array(
+					'disabled' => "('#Fichedeliaison.etat#' != 'attavistech') OR ".$perm['edit']
+				),
+				'/Fichedeliaisons/avis/#Fichedeliaison.id#' => array(
+					'class' => 'avistechnique',
+					'disabled' => "(!in_array('#Fichedeliaison.etat#', array('attavistech', 'attval'))) OR ".$perm['avis']
+				),
+				'/Fichedeliaisons/validation/#Fichedeliaison.id#' => array(
+					'disabled' => "(!in_array('#Fichedeliaison.etat#', array('attval')) ) OR ".$perm['validation']
+				),
+				'/Fichedeliaisons/delete/#Fichedeliaison.id#' => array(
+					'disabled' => "('#Primoanalyse.etat#' !== '') OR ".$perm['delete'],
+					'confirm' => true
+				),
+				'/Fichedeliaisons/filelink/#Fichedeliaison.id#' => array(
+					'disabled' => $perm['filelink'],
+					'msgid' => __m('/Fichedeliaisons/filelink').' (#Fichiermodule.nombre#)'
+				),
+			)
 		),
-		$defaultParams + array(
+		array(
+			'options' => $options,
 			'paginate' => false,
 		)
 	);
@@ -94,35 +97,39 @@
 	
 	echo $this->Default3->index(
 		$primoanalyses,
-		array(
-			'Primoanalyse.etat',
-			'Primoanalyse.user_id',
-			'Primoanalyse.propositionprimo_id',
-			'Primoanalyse.dateprimo',
-			'/Primoanalyses/view/#Primoanalyse.id#' => array(
-				'disabled' => "(!in_array('#Primoanalyse.etat#', array('attavistech', 'attval', 'decisionnonvalid', 'traite'))) OR ".$perm['Primoanalyses.view']
-			),
-			'/Primoanalyses/affecter/#Primoanalyse.id#' => array(
-				'disabled' => "(!in_array('#Primoanalyse.etat#', array('attaffect', 'attinstr'))) OR ".$perm['Primoanalyses.affecter']
-			),
-			'/Primoanalyses/proposition/#Primoanalyse.id#' => array(
-				'disabled' => "(!in_array('#Primoanalyse.etat#', array('attinstr', 'attavistech'))) OR ".$perm['Primoanalyses.proposition']
-			),
-			'/Primoanalyses/avis/#Primoanalyse.id#' => array(
-				'class' => 'avistechnique',
-				'disabled' => "(!in_array('#Primoanalyse.etat#', array('attavistech', 'attval'))) OR ".$perm['Primoanalyses.avis']
-			),
-			'/Primoanalyses/validation/#Primoanalyse.id#' => array(
-				'disabled' => "(!in_array('#Primoanalyse.etat#', array('attval'))) OR ".$perm['Primoanalyses.validation']
-			),
-			'/Dossierspcgs66/edit/#Primoanalyse.dossierpcg66_id#' => array(
-				'disabled' => "('#Primoanalyse.dossierpcg66_id#' === '') OR ".$perm['Dossierspcgs66.edit']
-			),
-			'/Primoanalyses/delete/#Primoanalyse.id#' => array(
-				'disabled' => "('#Primoanalyse.dossierpcg66_id#' !== '') OR ".$perm['Primoanalyses.delete']
-			),
+		$this->Translator->normalize(
+			array(
+				'Primoanalyse.etat',
+				'Primoanalyse.user_id',
+				'Primoanalyse.propositionprimo_id',
+				'Primoanalyse.dateprimo',
+				'/Primoanalyses/view/#Primoanalyse.id#' => array(
+					'disabled' => "(!in_array('#Primoanalyse.etat#', array('attavistech', 'attval', 'decisionnonvalid', 'traite'))) OR ".$perm['Primoanalyses.view']
+				),
+				'/Primoanalyses/affecter/#Primoanalyse.id#' => array(
+					'disabled' => "(!in_array('#Primoanalyse.etat#', array('attaffect', 'attinstr'))) OR ".$perm['Primoanalyses.affecter']
+				),
+				'/Primoanalyses/proposition/#Primoanalyse.id#' => array(
+					'disabled' => "(!in_array('#Primoanalyse.etat#', array('attinstr', 'attavistech'))) OR ".$perm['Primoanalyses.proposition']
+				),
+				'/Primoanalyses/avis/#Primoanalyse.id#' => array(
+					'class' => 'avistechnique',
+					'disabled' => "(!in_array('#Primoanalyse.etat#', array('attavistech', 'attval'))) OR ".$perm['Primoanalyses.avis']
+				),
+				'/Primoanalyses/validation/#Primoanalyse.id#' => array(
+					'disabled' => "(!in_array('#Primoanalyse.etat#', array('attval'))) OR ".$perm['Primoanalyses.validation']
+				),
+				'/Dossierspcgs66/edit/#Primoanalyse.dossierpcg66_id#' => array(
+					'disabled' => "('#Primoanalyse.dossierpcg66_id#' === '') OR ".$perm['Dossierspcgs66.edit']
+				),
+				'/Primoanalyses/delete/#Primoanalyse.id#' => array(
+					'disabled' => "('#Primoanalyse.dossierpcg66_id#' !== '') OR ".$perm['Primoanalyses.delete'],
+					'confirm' => true
+				),
+			)
 		),
-		$defaultParams + array(
+		array(
+			'options' => $options,
 			'paginate' => false,
 		)
 	);

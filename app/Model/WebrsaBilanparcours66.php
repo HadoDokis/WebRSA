@@ -1001,7 +1001,7 @@
 						$queryDataPersonne['fields'] = array( 'Historiqueetatpe.id' );
 						$queryDataPersonne['conditions']['Personne.id'] = $data['Bilanparcours66']['personne_id'];
 						$historiqueetatpe = $this->Bilanparcours66->Defautinsertionep66->Dossierep->Personne->find( 'first', $queryDataPersonne );
-						$historiqueetatpe_id = $historiqueetatpe['Historiqueetatpe']['id'];
+						$historiqueetatpe_id = Hash::get($historiqueetatpe, 'Historiqueetatpe.id');
 					}
 
 					$dossierep = array(

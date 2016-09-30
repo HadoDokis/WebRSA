@@ -6,6 +6,11 @@
 
 	$this->pageTitle = 'Dossier PCG';
 	$domain = 'dossierpcg66';
+	
+	App::uses('WebrsaAccess', 'Utility');
+	if (!empty($dossierMenu)) {
+		WebrsaAccess::init($dossierMenu);
+	}
 ?>
 
 <?php
@@ -227,107 +232,52 @@ document.observe( "dom:loaded", function() {
 			</table>
 		<?php endif;?>
 	</fieldset>
-
+	<fieldset>
+		<legend>Propositions de décision niveau foyer</legend>
 	<?php
-		$block = true;
-		foreach( $decisionsdossierspcgs66 as $i => $decision ){
-			if ( isset( $decision ) ) {
-				$block = false;
-			}
-			else {
-				$block = true;
-			}
-		}
-
-		// Droits d'acces aux actions
-		$perm['add'] = (
-                            $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'add', $dossierMenu ) != '1'
-                            || !in_array( $etatdossierpcg, array( 'attaffect', 'attinstr', 'instrencours', 'attinstrattpiece', 'attinstrdocarrive', 'decisionnonvalid', 'instr', 'arevoir' ) )
-                            || empty( $personnespcgs66 )
-
+		echo $this->Default3->actions(
+			WebrsaAccess::actionAdd("/Decisionsdossierspcgs66/add/{$dossierpcg66_id}", $ajoutDecisionPossible)
 		);
-		$perm['view'] = false;
-		$perm['edit'] = ( '		\'#Decisiondossierpcg66.id#\' != '.$lastDecisionId.'
-								|| (
-									 \''.$etatdossierpcg.'\' == \'transmisop\'
-								)
-								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'edit', $dossierMenu ).'\' != \'1\'
-								|| ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
-		);
-		$perm['avistechnique'] = ( '\''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\'
-                                || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
-                                || (
-									 \''.$etatdossierpcg.'\' == \'transmisop\'
-								)' 
-		);
-		$perm['validation'] = ( '\''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\'
-                                || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
-                                || (
-									 \''.$etatdossierpcg.'\' == \'transmisop\'
-								)' 
-		);
-		$perm['imprimer'] = ( '( "'.$this->Permissions->checkDossier( 'dossierspcgs66', 'imprimer', $dossierMenu ).'" != "1" )
-                                || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
-		);
-		$perm['transmitop'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'transmitop', $dossierMenu ).'" != "1" )
-                                || ( "#Decisiondossierpcg66.validationproposition#" == "N" )
-                                || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
-		);
-		$perm['cancel'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'cancel', $dossierMenu ).'" != "1" ) 
-								|| ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )' 
-		);
-		$perm['delete'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'delete', $dossierMenu ).'" != "1" )' );
-		$perm['filelink'] = ( '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'filelink', $dossierMenu ).'" != "1" )' );
-
-
-		echo $this->Xhtml->tag(
-			'fieldset',
-			$this->Xhtml->tag(
-				'legend',
-				'Propositions de décision niveau foyer'
-			).
-			$this->Default3->actions(
-				array(
-					"/Decisionsdossierspcgs66/add/{$dossierpcg66_id}" => array(
-						'disabled' => $perm['add']
-					),
-				)
-			).
-			$this->Default3->index(
-				$decisionsdossierspcgs66,
+		echo $this->Default3->index(
+			$decisionsdossierspcgs66,
+			$this->Translator->normalize(
 				array(
 					'Decisionpdo.libelle',
 					'Decisiondossierpcg66.avistechnique',
 					'Decisiondossierpcg66.dateavistechnique',
 					'Decisiondossierpcg66.validationproposition',
 					'Decisiondossierpcg66.datevalidation',
-					// NOTE : conflit en v3.0 dans le domaine de traduction dossierspcgs66
-					'Fichiermodule.nb_fichiers_lies' => array( 'label' => __d('decisionsdossierspcgs66', 'Fichiermodule.nb_fichiers_lies')),
-					'/Decisionsdossierspcgs66/view/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['view']	),
-					'/Decisionsdossierspcgs66/edit/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['edit']	),
-					'/Decisionsdossierspcgs66/avistechnique/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['avistechnique']	),
-					'/Decisionsdossierspcgs66/validation/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['validation']	),
-					'/Dossierspcgs66/imprimer/#Decisiondossierpcg66.dossierpcg66_id#/#Decisiondossierpcg66.id#' => array( 
-						'disabled' => $perm['imprimer'],
-						'class' => 'print ActionDecisionproposition'
-					),
-					'/Decisionsdossierspcgs66/transmitop/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['transmitop']	),
-					'/Decisionsdossierspcgs66/cancel/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['cancel']	),
-					'/Decisionsdossierspcgs66/delete/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['delete']	),
-					'/Decisionsdossierspcgs66/filelink/#Decisiondossierpcg66.id#' => array( 'disabled' => $perm['filelink']	),
-				),
-				array(
-					'options' => $options,
-					'tooltip' => array( 'Decisiondossierpcg66.motifannulation' ), // FIXME Ne fonctionne pas sous default3
-					'paginate' => false,
-					'innerTable' => array(
-						'Decisiondossierpcg66.motifannulation' => array('label' => __d('decisiondossierpcg66', 'Decisiondossierpcg66.motifannulation'))
+					'Fichiermodule.nb_fichiers_lies',
+				) + WebrsaAccess::links(
+					array(
+						'/Decisionsdossierspcgs66/view/#Decisiondossierpcg66.id#',
+						'/Decisionsdossierspcgs66/edit/#Decisiondossierpcg66.id#',
+						'/Decisionsdossierspcgs66/avistechnique/#Decisiondossierpcg66.id#',
+						'/Decisionsdossierspcgs66/validation/#Decisiondossierpcg66.id#',
+						'/Dossierspcgs66/imprimer/#Decisiondossierpcg66.dossierpcg66_id#/#Decisiondossierpcg66.id#' => array(
+							'class' => 'print ActionDecisionproposition'
+						),
+						'/Decisionsdossierspcgs66/transmitop/#Decisiondossierpcg66.id#',
+						'/Decisionsdossierspcgs66/cancel/#Decisiondossierpcg66.id#',
+						'/Decisionsdossierspcgs66/delete/#Decisiondossierpcg66.id#' => array('confirm' => true),
+						'/Decisionsdossierspcgs66/filelink/#Decisiondossierpcg66.id#',
 					)
 				)
+			),
+			array(
+				'innerTable' => $this->Translator->normalize(
+					array(
+						'Decisiondossierpcg66.motifannulation' => array(
+							'condition' => "'#Decisiondossierpcg66.etatdossierpcg#' === 'annule'"
+						),
+					)
+				),
+				'options' => $options,
+				'paginate' => false,
 			)
 		);
-
 	?>
+	</fieldset>
 <?php endif;?>
 
 <fieldset id="Etatpdo" class="invisible"></fieldset>

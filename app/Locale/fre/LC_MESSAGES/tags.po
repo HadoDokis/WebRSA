@@ -156,3 +156,6 @@ msgstr "NIR"
 
 msgid "Situationdossierrsa.etatdosrsa"
 msgstr "Etat du dossier"
+
+msgid "/Tags/delete/#Tag.id# ?"
+msgstr "Cette action supprimera définitivement cet enregistrement. Voulez-vous continuer ?"
