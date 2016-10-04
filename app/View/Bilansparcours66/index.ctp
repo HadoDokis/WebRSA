@@ -111,11 +111,19 @@
 			'innerTable' => $this->Translator->normalize(
 				array(
 					'Bilanparcours66.motifannulation' => array(
-						'condition' => "in_array('#Bilanparcours66.positionbilan#', array('annule', 'ajourne'))"
+						'condition' => "in_array('#Bilanparcours66.positionbilan#', array('annule', 'ajourne')) "
+						. "&& '#Bilanparcours66.motifannulation#' !== ''"
 					),
 					'Avis.commentaire' => array(
-						'condition' => "in_array('#Bilanparcours66.positionbilan#', array('annule', 'ajourne', 'traite')) "
+						'condition' => "(in_array('#Bilanparcours66.positionbilan#', array('annule', 'ajourne', 'traite')) "
+						. "|| in_array('#Avis.decision#', array('reporte', 'annule'))) "
 						. "&& '#Avis.havecommentaire#' === '1'"
+					),
+					'Decision.commentaire' => array(
+						'condition' => "(in_array('#Bilanparcours66.positionbilan#', array('annule', 'ajourne', 'traite')) "
+						. "|| in_array('#Decision.decision#', array('reporte', 'annule'))) "
+						. "&& '#Decision.havecommentaire#' === '1' "
+						. "&& '#Decision.commentaire_is_equal#' !== '1'"
 					),
 				)
 			),
