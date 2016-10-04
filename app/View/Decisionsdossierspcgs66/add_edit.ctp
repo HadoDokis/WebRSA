@@ -465,6 +465,17 @@
 						if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['avistechnique'] ) ) {
 							echo $this->Xform->fieldValue( 'Decisiondossierpcg66.useravistechnique_id', Set::enum( Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.useravistechnique_id'), $gestionnaire ) );
 						}
+						
+						if ($this->action === 'avistechnique' 
+							&& Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.retouravistechnique')
+						) {
+							echo $this->Xform->fieldValue(
+								'Commentaire du validateur',
+								Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.commentairevalidation'),
+								false,
+								'textarea'
+							);
+						}
 					?>
 				</fieldset>
 		</fieldset>

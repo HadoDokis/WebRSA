@@ -480,7 +480,13 @@
 				'fields' => 'Dossierpcg66.id',
 				'contain' => false,
 				'joins' => array(
-					$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER'))
+					$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
+					$this->Decisiondossierpcg66->Dossierpcg66->join('Decisiondossierpcg66', 
+						array(
+							'type' => 'LEFT',
+							'conditions' => array('Decisiondossierpcg66.etatdossierpcg IS NULL') // Décision non annulé
+						)
+					),
 				),
 				'conditions' => array(
 					'Dossierpcg66.id' => $dossierpcg66_id,
@@ -494,6 +500,7 @@
 						'instr',
 						'instrencours',
 					),
+					'Decisiondossierpcg66.id IS NULL',
 				)
 			));
 			
@@ -514,7 +521,12 @@
 					'Decisiondossierpcg66.dernier' => $this->Decisiondossierpcg66->sqVirtualField('dernier'),
 					'Decisiondossierpcg66.validationproposition',
 					'Decisiondossierpcg66.etatdossierpcg',
+					'Decisiondossierpcg66.instrencours',
+					'Decisiondossierpcg66.decisionpdo_id',
+					'Decisiondossierpcg66.retouravistechnique',
+					'Decisiondossierpcg66.vuavistechnique',
 					'Dossierpcg66.etatdossierpcg',
+					'Dossierpcg66.dateimpression',
 				)
 			);
 			

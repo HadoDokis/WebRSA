@@ -77,6 +77,8 @@
 			return Hash::get($record, "Decisiondossierpcg66.dernier")
 				&& Hash::get($record, "Dossierpcg66.etatdossierpcg") !== 'transmisop'
 				&& Hash::get($record, "Decisiondossierpcg66.etatdossierpcg") !== 'annule'
+				&& Hash::get($record, "Decisiondossierpcg66.instrencours") !== '1'
+				&& Hash::get($record, "Decisiondossierpcg66.decisionpdo_id") !== null
 			;
 		}
 
@@ -106,6 +108,9 @@
 			return Hash::get($record, "Decisiondossierpcg66.dernier")
 				&& Hash::get($record, "Decisiondossierpcg66.etatdossierpcg") !== 'annule'
 				&& Hash::get($record, "Decisiondossierpcg66.validationproposition") === 'O'
+				&& Hash::get($record, "Dossierpcg66.dateimpression") !== null
+				&& (Hash::get($record, "Decisiondossierpcg66.retouravistechnique") !== '1'
+				|| Hash::get($record, "Decisiondossierpcg66.vuavistechnique") === '1')
 			;
 		}
 
