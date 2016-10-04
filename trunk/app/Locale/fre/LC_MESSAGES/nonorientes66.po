@@ -26,7 +26,7 @@ msgid "/Dossiers/view/#Dossier.id#"
 msgstr "Voir"
 
 msgid "/Nonorientes66/cohorte_imprimeremploi/:heading"
-msgstr "Allocataires inscrits au Pôle Emploi"
+msgstr "Allocataire non inscrits au Pôle Emploi"
 
 msgid "Historiqueetatpe.etat"
 msgstr "Information PE"
