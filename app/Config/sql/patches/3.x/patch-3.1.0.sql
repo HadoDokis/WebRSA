@@ -234,7 +234,8 @@ CREATE UNIQUE INDEX communautessrs_structuresreferentes_communautesr_id_structur
 -- 20160404: ajout du type d'utilisateur externe_cpdvcom pour le ticket #8795 (CG 93)
 --------------------------------------------------------------------------------
 
-SELECT add_missing_table_field ( 'public', 'users', 'communautesr_id', 'INTEGER DEFAULT NULL REFERENCES communautessrs(id) ON DELETE SET NULL ON UPDATE CASCADE' );
+SELECT add_missing_table_field ( 'public', 'users', 'communautesr_id', 'INTEGER DEFAULT NULL' );
+ALTER TABLE users ADD CONSTRAINT users_communautesr_id_fk FOREIGN KEY (communautesr_id) REFERENCES communautessrs(id) ON DELETE SET NULL ON UPDATE CASCADE;
 DROP INDEX IF EXISTS users_communautesr_id_idx;
 CREATE INDEX users_communautesr_id_idx ON users (communautesr_id);
 
