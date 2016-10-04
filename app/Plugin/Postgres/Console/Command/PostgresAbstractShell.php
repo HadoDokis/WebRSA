@@ -86,8 +86,8 @@
 				$command = $Parser->command();
 
 				$this->error(
-					sprintf( $msgstr, $whoami, implode( ', ', $accepted ) ),
-					"<info>Exemple:</info> sudo -u {$accepted[0]} lib/Cake/Console/cake {$command} [...]"
+					sprintf( $msgstr, $whoami, implode( ', ', $this->acceptedUsers ) ),
+					"<info>Exemple:</info> sudo -u {$this->acceptedUsers[0]} lib/Cake/Console/cake {$command} [...]"
 				);
 			}
 		}
