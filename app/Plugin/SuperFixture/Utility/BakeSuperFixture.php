@@ -6,6 +6,8 @@
 	 * @subpackage Utility
 	 */
 
+	App::uses('FakerManager', 'SuperFixture.Utility');
+
 	/**
 	 * La classe SuperFixture permet le chargement de "Super Fixtures", des fixtures
 	 * regroupant les données nécésaire à un test.
@@ -50,7 +52,7 @@
 		 * Constructeur de classe
 		 */
 		public function __construct() {
-			$this->Faker = Faker\Factory::create('fr_FR');
+			$this->Faker = FakerManager::getInstance('Baker');
 		}
 
 		/**

@@ -10,9 +10,10 @@
 
 	App::uses('BSFObject', 'SuperFixture.Utility');
 	App::uses('BakeSuperFixtureInterface', 'SuperFixture.Interface');
+	App::uses('FakerManager', 'SuperFixture.Utility');
 	
 	$requires = array(
-		'Dossier', 'Foyer', 'Personne'
+		'Dossier', 'Foyer', 'Personne', 'Adresse'
 	);
 	foreach ($requires as $require) {
 		require_once 'Element'.DS.$require.'ElementBaker.php';
@@ -45,12 +46,12 @@
 		 * 
 		 * @var BSFObject
 		 */
-		public $User;
-		public $Typeorient;
-		public $Structurereferente;
-		public $Referent;
-		public $Serviceinstructeur;
-		public $Group;
+		public $Users;
+		public $Typeorients;
+		public $Structuresreferentes;
+		public $Referents;
+		public $Servicesinstructeurs;
+		public $Groups;
 		
 		/**
 		 * @var Faker
@@ -61,8 +62,6 @@
 		 * @var boolean true -> 3 adresses par foyers, false -> 1 seule adresse
 		 */
 		public $multipleAdresses = true;
-		
-		public $test = 'Webrsa';
 		
 		/**
 		 * Constructeur
@@ -90,6 +89,7 @@
 		 * @param array $datas BSFObject
 		 * @param array $results Laisser vide, se remplira avec les résultats de la recherche
 		 * @param string $path Laisser vide, utile pour la récursivitée
+		 * @return array BSFObject
 		 */
 		public static function find($modelName, $datas, &$result = array(), $path = 'base') {
 			foreach ((array)$datas as $object) {
@@ -104,10 +104,23 @@
 		}
 		
 		/**
+		 * Permet d'obtenir le premier BSFObject trouvé pour un $modelName particulier
+		 * 
+		 * @param string $modelName Nom du modèle de object à trouver
+		 * @param array $datas BSFObject
+		 * @return BSFObject
+		 */
+		public static function findFirst($modelName, $datas) {
+			$find = self::find($modelName, $datas);
+			
+			return current($find);
+		}
+		
+		/**
 		 * Initialisation de la classe
 		 */
 		public function initialize() {
-			$this->Faker = Faker\Factory::create('fr_FR');
+			$this->Faker = FakerManager::getInstance();
 		}
 		
 		/**
@@ -136,7 +149,7 @@
 			// Objets stockés
 			$datas = array_merge(
 				array('globals' => $instance->initializeGlobals()),
-				$instance->beforeGetData()
+				array('before' => $instance->beforeGetData())
 			);
 			
 			// Passage pour chaques combinaisons des valeurs suivantes
@@ -180,66 +193,170 @@
 			/**
 			 * Serviceinstucteur
 			 */
-			$this->Serviceinstructeur = new BSFObject(
-				'Serviceinstructeur', array('lib_service' => array('auto' => true, 'faker' => 'city'))
-			);
+			$this->Servicesinstructeurs = $this->getServicesinstructeurs();
 			
 			/**
 			 * Group
 			 */
-			$this->Group = new BSFObject('Group', array('name' => array('value' => 'Administrateurs')));
+			$this->Groups = $this->getGroups();
 			
 			/**
 			 * User
 			 */
-			$this->User = new BSFObject('User', array(
-				'type' => array('value' => 'cg'),
-				'username' => array('value' => 'webrsa'),
-				'password' => array('value' => '83a98ed2a57ad9734eb0a1694293d03c74ae8a57'),
-				'group_id' => array('foreignkey' => $this->Group->getName()),
-				'serviceinstructeur_id' => array('foreignkey' => $this->Serviceinstructeur->getName()),
-				'nom' => array('auto' => true, 'faker' => 'lastName'),
-				'prenom' => array('auto' => true, 'faker' => array('rule' => 'firstName')),
-				'date_naissance' => array(
-					'auto' => true, // NOTE : entre 1960 et 1999, un jour entre le 1er et le 28e (entre 17 et 56 ans en 2016)
-					'faker' => array('rule' => 'regexify', '19[6-9][0-9]\-(1[0-2]|0[1-9])\-(2[0-8]|1[0-9]|0[1-9])'),
-				),
-				'date_deb_hab' => array('value' => '2010-01-01'),
-				'date_fin_hab' => array('value' => '2050-12-30'),
-				'filtre_zone_geo' => array('value' => false),
-				'isgestionnaire' => array('value' => 'N'),
-				'sensibilite' => array('value' => 'O'),
-				'numtel' => array('auto' => true, 'faker' => array('rule' => 'regexify', '0[1-7][0-9]{8}')),
-			));
+			$this->Users = $this->getUsers($this->Groups, $this->Servicesinstructeurs);
 			
 			/**
 			 * Typeorient
 			 */
-			$this->Typeorient = new BSFObject('Typeorient', array(
-				'lib_type_orient' => array('auto' => true, 'faker' => 'city'),
-				'actif' => array('value' => 'O'))
-			);
+			$this->Typeorients = $this->getTypeorients();
 			
 			/**
 			 * Structurereferente
 			 */
-			$this->Structurereferente = new BSFObject('Structurereferente', array(
-				'typeorient_id' => array('foreignkey' => $this->Typeorient->getName()),
-				'contratengagement' => array('value' => 'N'),
-				'apre' => array('value' => 'N'),
-				'orientation' => array('value' => 'O'),
-				'pdo' => array('value' => 'N'),
-				'actif' => array('value' => 'O'),
-				'typestructure' => array('value' => 'msp'),
-				'cui' => array('value' => 'N'),
-			));
+			$this->Structuresreferentes = $this->getStructuresreferentes($this->Typeorients);
 			
 			/**
 			 * Referent
 			 */
-			$this->Referent = new BSFObject('Referent', array('structurereferente_id' => array('foreignkey' => $this->Structurereferente->getName())));
+			$this->Referents = $this->getReferents($this->Structuresreferentes);
 			
-			return array($this->Serviceinstructeur, $this->Group, $this->User, $this->Typeorient, $this->Structurereferente, $this->Referent);
+			return array_merge($this->Servicesinstructeurs, $this->Groups, $this->Users, $this->Typeorients, $this->Structuresreferentes, $this->Referents);
+		}
+		
+		/**
+		 * @return array BSFObject
+		 */
+		public function getServicesinstructeurs() {
+			return array(new BSFObject(
+				'Serviceinstructeur', array('lib_service' => array('auto' => true, 'faker' => 'city'))
+			));
+		}
+		
+		/**
+		 * @return array BSFObject
+		 */
+		public function getGroups() {
+			return array(new BSFObject('Group', array('name' => array('value' => 'Administrateurs'))));
+		}
+		
+		/**
+		 * @params array $groups
+		 * @params array $servicesinstructeurs
+		 * @return array BSFObject
+		 */
+		public function getUsers(array $groups, array $servicesinstructeurs) {
+			$results = array();
+			
+			foreach ($groups as $group) {
+				foreach ($servicesinstructeurs as $serviceinstructeur) {
+					$results[] = new BSFObject('User', array(
+						'type' => array('value' => 'cg'),
+						'username' => array('value' => 'webrsa'),
+						'password' => array('value' => '83a98ed2a57ad9734eb0a1694293d03c74ae8a57'),
+						'group_id' => array('foreignkey' => $group->getName()),
+						'serviceinstructeur_id' => array('foreignkey' => $serviceinstructeur->getName()),
+						'nom' => array('auto' => true, 'faker' => 'lastName'),
+						'prenom' => array('auto' => true, 'faker' => array('rule' => 'firstName')),
+						'date_naissance' => array(
+							'auto' => true, // NOTE : entre 1960 et 1999, un jour entre le 1er et le 28e (entre 17 et 56 ans en 2016)
+							'faker' => array('rule' => 'regexify', '19[6-9][0-9]\-(1[0-2]|0[1-9])\-(2[0-8]|1[0-9]|0[1-9])'),
+						),
+						'date_deb_hab' => array('value' => '2010-01-01'),
+						'date_fin_hab' => array('value' => '2050-12-30'),
+						'filtre_zone_geo' => array('value' => false),
+						'isgestionnaire' => array('value' => 'N'),
+						'sensibilite' => array('value' => 'O'),
+						'numtel' => array('auto' => true, 'faker' => array('rule' => 'regexify', '0[1-7][0-9]{8}')),
+					));
+				}
+			}
+			
+			return $results;
+		}
+		
+		/**
+		 * @return array BSFObject
+		 */
+		public function getTypeorients() {
+			$social = new BSFObject('Typeorient', array(
+				'lib_type_orient' => array('value' => 'Social'),
+				'actif' => array('value' => 'O'),
+				'parentid' => array('value' => null)
+			));
+			
+			$emploi = new BSFObject('Typeorient', array(
+				'lib_type_orient' => array('value' => 'Emploi'),
+				'actif' => array('value' => 'O'),
+				'parentid' => array('value' => null)
+			));
+			
+			$Faker = FakerManager::getInstance(__FUNCTION__);
+			$nameSocial = 'Social - '.$Faker->unique()->city;
+			$nameEmploi = 'Emploi - '.$Faker->unique()->city;
+			
+			return array(
+				$social,
+				$emploi,
+				new BSFObject('Typeorient', array(
+					'lib_type_orient' => array('value' => $nameSocial),
+					'actif' => array('value' => 'O'),
+					'parentid' => array('foreignkey' => $social->getName())
+				)),
+				new BSFObject('Typeorient', array(
+					'lib_type_orient' => array('value' => $nameEmploi),
+					'actif' => array('value' => 'O'),
+					'parentid' => array('foreignkey' => $emploi->getName())
+				)),
+			);
+		}
+		
+		/**
+		 * @params array $typeorients
+		 * @return array BSFObject
+		 */
+		public function getStructuresreferentes(array $typeorients) {
+			$results = array();
+			
+			foreach ($typeorients as $typeorient) {
+				// Catégories
+				if (!isset($typeorient->fields['parentid']['foreignkey']) && !isset($typeorient->fields['parentid']['value'])) {
+					continue;
+				}
+				
+				$results[] = new BSFObject('Structurereferente', array(
+					'typeorient_id' => array('foreignkey' => $typeorient->getName()),
+					'lib_struc' => array('auto' => true, 'faker' => 'company'),
+					'contratengagement' => array('value' => 'N'),
+					'apre' => array('value' => 'O'),
+					'orientation' => array('value' => 'O'),
+					'pdo' => array('value' => 'O'),
+					'actif' => array('value' => 'O'),
+					'typestructure' => array('value' => 'msp'),
+					'cui' => array('value' => 'O'),
+				));
+			}
+			
+			return $results;
+		}
+		
+		/**
+		 * @params BSFObject $typeorient
+		 * @return array BSFObject
+		 */
+		public function getReferents(array $structuresreferentes) {
+			$results = array();
+			
+			foreach ($structuresreferentes as $structurereferente) {
+				$male = $this->Faker->randomDigit >= 5;
+				$results[] = new BSFObject('Referent', array(
+					'structurereferente_id' => array('foreignkey' => $structurereferente->getName()),
+					'qual' => array('value' => $male ? 'MR' : 'MME'),
+					'nom' => array('auto' => true, 'faker' => 'lastName'),
+					'prenom' => array('auto' => true, 'faker' => array('rule' => 'firstName', $male ? 'male' : 'female')),
+				));
+			}
+			
+			return $results;
 		}
 		
 		/**
@@ -264,11 +381,11 @@
 		public function getAdresses() {
 			$dp = Configure::read('Cg.departement');
 			$adresseFields = array(
-				'numvoie' => array('auto' => true, 'faker' => array('rule' => 'regexify', '[1-9][0-9]{0,2}')),
-				'codepos' => array('auto' => true, 'faker' => array('rule' => 'regexify', $dp.'[0-9]{3}')),
+				'numvoie' => array('value' => $this->Faker->regexify('[1-9][0-9]{0,2}')),
+				'codepos' => array('value' => $this->Faker->regexify($dp.'[0-9]{3}')),
 				'pays' => array('value' => 'FRA'),
-				'numcom' => array('auto' => true, 'faker' => array('rule' => 'regexify', $dp.'0([1-9][0-9]|[0-9][1-9])')),
-				'nomcom' => array('auto' => true, 'faker' => array('rule' => 'city')),
+				'numcom' => array('value' => $this->Faker->regexify($dp.'0([1-9][0-9]|[0-9][1-9])')),
+				'nomcom' => array('value' => $this->Faker->city()),
 			);
 
 			$regex = '/^([\\w\\-\']+) /';
@@ -356,11 +473,12 @@
 		
 		/**
 		 * @params BSFObject $dossier BSFObject de dossier
+		 * @params BSFObject $foyer BSFObject du foyer
 		 * @params boolean $cgj Ajouter un conjoin
 		 * @param integer $enf Nombre d'enfants
 		 * @return array BSFObject
 		 */
-		public function getPersonnes(BSFObject &$dossier, $cjt = false, $enf = 0) {
+		public function getPersonnes(BSFObject &$dossier, BSFObject &$foyer, $cjt = false, $enf = 0) {
 			$personnes = array();
 			$personneElement = new PersonneElementBaker();
 			$male = $this->Faker->randomDigit >= 5; // 1/2 chances que le personne soit un homme
@@ -380,6 +498,10 @@
 			for ($i=2; $i<$enf+2; $i++) {
 				$personnes[$i] = $personneElement->get($adulte = false);
 				$personnes[$i]->contain = $this->getPersonneContain($dossier, 'ENF');
+			}
+			
+			foreach (array_keys($personnes) as $key) {
+				$personnes[$key]->fields['foyer_id'] = array('foreignkey' => $foyer->getName());
 			}
 			
 			return $personnes;
@@ -440,7 +562,7 @@
 			$detaildroitrsa->fields = array(
 				'dossier_id' => array('foreignkey' => $dossier->getName()),
 			);
-
+			
 			/**
 			 * Detailcalculdroitrsa
 			 */
@@ -470,6 +592,47 @@
 				array('etatdosrsa' => array('auto' => true, 'in_array' => (array)$etatdosrsa))
 			);
 		}
+		/**
+		 * @params array $personnes
+		 * @return array BSFObject
+		 */
+		public function getInformationspe($personnes) {
+			$informationspe = array();
+			
+			foreach ($personnes as $personne) {
+				$prestations = $this->find('Prestation', $personne->contain);
+				$prestation = current($prestations);
+				
+				if (!in_array($prestation->fields['rolepers']['value'], array('DEM', 'CJT'))) {
+					continue;
+				}
+				
+				$informationspe[] = new BSFObject('Informationpe', array(
+					'nir' => array('value' => $personne->fields['nir']['value']),
+					'nom' => array('value' => $personne->fields['nom']['value']),
+					'prenom' => array('value' => $personne->fields['prenom']['value']),
+					'dtnai' => array('value' => $personne->fields['dtnai']['value']),
+				), array(
+					$this->getInformationpeHistoriqueetatpe()
+				));
+			}
+			
+			return $informationspe;
+		}
+		
+		/**
+		 * @return BSFObject
+		 */
+		public function getInformationpeHistoriqueetatpe() {
+			$identifiantpe = $this->Faker->unique()->regexify('([0-9]{7}[A-Z][0-9]{3}|[0-9]{10}[A-Z])');
+			
+			return new BSFObject('Historiqueetatpe', array(
+				'identifiantpe' => array('value' => $identifiantpe),
+				'date' => array('value' => '2015-01-01'),
+				'etat' => array('value' => 'inscription'),
+				'code' => array('value' => '1'),
+			));
+		}
 		
 		/**
 		 * Permet d'obtenir un Dossier avec tout ses contain de base
@@ -479,7 +642,7 @@
 		 * @return array
 		 */
 		public function completeDossier($etat = null, $nat = null) {
-			if (empty($this->User)) {
+			if (empty($this->Users)) {
 				$this->initializeGlobals();
 			}
 			
@@ -495,7 +658,9 @@
 			 * Foyer
 			 */
 			$foyers = $this->getFoyers();
-			$foyers[0]->fields['dossier_id'] = array('foreignkey' => $dossiers[0]->getName());
+			foreach ($dossiers as $key => $dossier) {
+				$foyers[$key]->fields['dossier_id'] = array('foreignkey' => $dossier->getName());
+			}
 
 			/**
 			 * Adresses
@@ -523,7 +688,7 @@
 				$enf++;
 			}
 			
-			$personnes = $this->getPersonnes($dossiers[0], $cjt, $enf);
+			$personnes = $this->getPersonnes($dossiers[0], $foyers[0], $cjt, $enf);
 			
 			/**
 			 * Detaildroitrsa
@@ -538,6 +703,11 @@
 				$foyers[0],
 			);
 			
-			return compact('adresses', 'dossiers', 'personnes', 'detailsdroitsrsa');
+			/**
+			 * Informationpe
+			 */
+			$informationspe = $this->getInformationspe($personnes);
+			
+			return compact('adresses', 'dossiers', 'personnes', 'detailsdroitsrsa', 'informationspe');
 		}
 	}

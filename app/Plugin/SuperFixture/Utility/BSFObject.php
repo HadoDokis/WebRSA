@@ -5,6 +5,8 @@
 	 * @package SuperFixture
 	 * @subpackage Utility
 	 */
+
+	App::uses('FakerManager', 'SuperFixture.Utility');
 	
 	/**
 	 * La classe BSFObject (Bake Super Fixture Object) permet la créations des composants
@@ -61,14 +63,17 @@
 		/**
 		 * Constructeur de classe, defini le modele sur lequel se base l'objet
 		 * 
-		 * @param type $modelName
+		 * @param string $modelName
+		 * @param array $fields
+		 * @param array $contain
 		 */
-		public function __construct($modelName = null, array $fields = array()) {
-			$Faker = Faker\Factory::create('fr_FR');
+		public function __construct($modelName = null, array $fields = array(), array $contain = array()) {
+			$Faker = FakerManager::getInstance('BSFObject.'.$modelName);
 			
 			$this->modelName = $modelName;
 			$this->_name = $modelName.'_'.$Faker->unique()->randomNumber();
 			$this->fields = $fields;
+			$this->contain = $contain;
 		}
 		
 		/**

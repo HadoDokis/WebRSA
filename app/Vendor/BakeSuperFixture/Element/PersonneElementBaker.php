@@ -9,6 +9,7 @@
 	 */
 
 	App::uses('BSFObject', 'SuperFixture.Utility');
+	App::uses('FakerManager', 'SuperFixture.Utility');
 
 	/**
 	 * Classe PersonneElementBaker, permet d'obtenir un element générique
@@ -32,7 +33,7 @@
 		 * @return \BSFObject
 		 */
 		public function get($adulte = true, $male = null) {
-			$Faker = Faker\Factory::create('fr_FR');
+			$Faker = FakerManager::getInstance();
 			$Personne = new BSFObject('Personne');
 			
 			// NIR
@@ -46,14 +47,19 @@
 			$male = $male === null ? $Faker->randomDigit >= 5 : $male;
 			$nir = ($male ? '1' : '2').substr($dtnai, 2,2).substr($dtnai, 5,2).$casA.$ordreNaissance;
 			
+			$nirValue = $Faker->unique()->regexify($nir);
+			$cleNir = cle_nir($nirValue);
+			
+			$prenom = $Faker->firstName($male ? 'male' : 'female');
+			
 			$Personne->fields = array(
 				'qual' => array('value' => $male ? 'MR' : 'MME'),
 				'nom' => array('value' => $this->nom),
 				'nomnai' => array('value' => $this->nom),
-				'prenom' => array('auto' => true, 'faker' => array('rule' => 'firstName', $male ? 'male' : 'female')),
+				'prenom' => array('value' => $prenom),
 				'nomcomnai' => array('auto' => true, 'faker' => 'city'),
 				'dtnai' => array('value' => $dtnai),
-				'nir' => array('auto' => true, 'faker' => array('rule' => 'regexify', $nir)),
+				'nir' => array('value' => $nirValue.$cleNir),
 			);
 			
 			if (!$male && $adulte) {
