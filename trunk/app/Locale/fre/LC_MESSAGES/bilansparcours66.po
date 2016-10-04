@@ -205,7 +205,10 @@ msgid "Bilanparcours66.examen"
 msgstr "Motif de la saisine"
 
 msgid "Avis.commentaire"
-msgstr "Commentaire"
+msgstr "Commentaire de l'EP (étape EP)"
+
+msgid "Decision.commentaire"
+msgstr "Commentaire de l'EP (étape CG)"
 
 msgid "Bilansparcours66::index::emptyLabel"
 msgstr "Aucun bilan de parcours présent pour cette personne."

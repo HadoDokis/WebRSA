@@ -1899,6 +1899,19 @@
 							. 'THEN "ParcoursDecision"."decision"::text '
 							. 'ELSE "AuditionDecision"."decision"::text '
 						. 'END) AS "Decision__decision"',
+						
+						'(COALESCE("ParcoursDecision"."commentaire", "AuditionDecision"."commentaire")) '
+						. 'AS "Decision__commentaire"',
+						
+						'(CASE WHEN COALESCE("ParcoursDecision"."commentaire", "AuditionDecision"."commentaire") IS NOT NULL '
+							. 'THEN TRUE '
+							. 'ELSE FALSE '
+						. 'END) AS "Decision__havecommentaire"',
+						
+						// évite les doublons de commentaire
+						'(COALESCE("ParcoursDecision"."commentaire", "AuditionDecision"."commentaire") '
+						. '= COALESCE("ParcoursAvis"."commentaire", "AuditionAvis"."commentaire")) '
+						. 'AS "Decision__commentaire_is_equal"',
 					)
 				),
 				'joins' => array_merge(
