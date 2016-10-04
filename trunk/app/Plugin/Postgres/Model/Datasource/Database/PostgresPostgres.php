@@ -6,7 +6,9 @@
 	 * @subpackage Model.Datasource.Database
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	// @codeCoverageIgnoreStart
 	App::uses( 'Postgres', 'Model/Datasource/Database' );
+	// @codeCoverageIgnoreEnd
 
 	/**
 	 * Surcouche au driver Postgres de CakePHP avec des méthodes spécifiques

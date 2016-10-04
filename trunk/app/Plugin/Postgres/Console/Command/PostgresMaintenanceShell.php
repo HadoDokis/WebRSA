@@ -8,8 +8,9 @@
 	 * @subpackage Console.Command
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'AppShell', 'Console/Command' );
-	App::uses( 'ConnectionManager', 'Model' );
+	// @codeCoverageIgnoreStart
+	App::uses( 'PostgresAbstractShell', 'Postgres.Console/Command' );
+	// @codeCoverageIgnoreEnd
 
 	/**
 	 * La classe PostgresMaintenanceShell fournit des méthodes de maintenance de
@@ -20,24 +21,14 @@
 	 * @package Postgres
 	 * @subpackage Console.Command
 	 */
-	class PostgresMaintenanceShell extends AppShell
+	class PostgresMaintenanceShell extends PostgresAbstractShell
 	{
 		/**
-		 * La constante à utiliser dans la méthode _stop() en cas de succès.
-		 */
-		const SUCCESS = 0;
-
-		/**
-		 * La constante à utiliser dans la méthode _stop() en cas d'erreur.
-		 */
-		const ERROR = 1;
-
-		/**
-		 * Le connection vers la base de données.
+		 * Description courte du shell
 		 *
-		 * @var DboSource
+		 * @var string
 		 */
-		public $Dbo = null;
+		public $description = 'Shell de maintenance de base de données PostgreSQL';
 
 		/**
 		 * Liste des sous-commandes et de leur description.
@@ -71,39 +62,6 @@
 				'default' => 'default',
 			)
 		);
-
-		/**
-		 * Initialisation: lecture des paramètres, on s'assure d'avoir une connexion
-		 * PostgreSQL valide, on affiche la version de PostgreSQL utilisée.
-		 */
-		public function startup() {
-			parent::startup();
-
-			$connection = ( isset( $this->params['connection'] ) ? $this->params['connection'] : 'default' );
-
-			try {
-				$this->Dbo = ConnectionManager::getDataSource( $connection );
-			} catch( Exception $Exception ) {
-				 $this->log( $Exception->getMessage(), LOG_ERR );
-			}
-
-			if( !is_a( $this->Dbo, 'DataSource' ) || !$this->Dbo->connected ) {
-				$this->err( "Impossible de se connecter avec la connexion {$connection}" );
-				$this->_stop( self::ERROR );
-				return;
-			}
-
-			if( !( $this->Dbo instanceof Postgres ) ) {
-				$this->err( "La connexion {$connection} n'utilise pas le driver postgres" );
-				$this->_stop( self::ERROR );
-				return;
-			}
-
-			$result = $this->Dbo->query( 'SELECT version();' );
-			$this->out( Hash::get( $result, '0.0.version' ) );
-			$this->hr();
-			$this->out();
-		}
 
 		/**
 		 * Reconstruction des indexes.
@@ -189,19 +147,6 @@
 			}
 
 			$this->_stop( $success ? self::SUCCESS : self::ERROR );
-		}
-
-		/**
-		 * Paramétrages et aides du shell.
-		 */
-		public function getOptionParser() {
-			$Parser = parent::getOptionParser();
-
-			$Parser->description( 'Script de maintenance de base de données PostgreSQL' );
-			$Parser->addSubcommands( $this->commands );
-			$Parser->addOptions( $this->options );
-
-			return $Parser;
 		}
 	}
 ?>

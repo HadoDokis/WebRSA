@@ -8,7 +8,9 @@
 	 * @subpackage Model.Behavior
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	// @codeCoverageIgnoreStart
 	App::uses( 'Validation2AutovalidateBehavior', 'Validation2.Model/Behavior' );
+	// @codeCoverageIgnoreEnd
 
 	/**
 	 * La classe PostgresAutovalidateBehavior ajoute aux fonctionnalités de la
