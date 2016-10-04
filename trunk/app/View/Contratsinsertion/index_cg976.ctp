@@ -29,5 +29,12 @@
 		array(
 			'options' => $options,
 			'paginate' => false,
+			'innerTable' => $this->Translator->normalize(
+				array(
+					'Contratinsertion.motifannulation' => array(
+						'condition' => "'#Contratinsertion.motifannulation#' !== ''"
+					)
+				)
+			)
 		)
 	);
