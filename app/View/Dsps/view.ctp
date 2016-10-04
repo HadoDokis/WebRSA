@@ -1,5 +1,4 @@
 <?php
-	$personne_id = Hash::get($dsp, 'Personne.id');
 	$dsp_id = Hash::get($dsp, 'Dsp.id');
 
 	$paramsElement = array(
