@@ -65,6 +65,7 @@
 				'Referentapre' => 'INNER',
 				'Themeapre66' => 'INNER',
 				'Typeaideapre66' => 'INNER',
+				'Dernierreferent' => 'LEFT',
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -112,6 +113,7 @@
 						$this->Apre66->join( 'Referentapre', array( 'type' => $types['Referentapre'] ) ),
 						$this->Apre66->Aideapre66->join( 'Themeapre66', array( 'type' => $types['Themeapre66'] ) ),
 						$this->Apre66->Aideapre66->join( 'Typeaideapre66', array( 'type' => $types['Typeaideapre66'] ) ),
+						$this->Apre66->Referentapre->join( 'Dernierreferent', array( 'type' => $types['Dernierreferent'] ) ),
 					)
 				);
 
@@ -141,6 +143,7 @@
 				'Aideapre66.themeapre66_id',
 				'Apre66.numeroapre',
 				'Apre66.referent_id',
+				'Dernierreferent.dernierreferent_id',
 			);
 
 			// Fils de dependantSelect

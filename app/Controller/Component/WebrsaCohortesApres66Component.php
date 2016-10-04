@@ -55,6 +55,8 @@
 			$options['Aideapre66']['themeapre66_id'] = $Controller->Apre66->Aideapre66->Themeapre66->find( 'list' );
 			$options['Aideapre66']['typeaideapre66_id'] = $Controller->Apre66->Aideapre66->Typeaideapre66->listOptions();
 			$options['Apre66']['referent_id'] = $Controller->Apre66->Referent->find( 'list' );
+			$options['Dernierreferent']['dernierreferent_id'] =
+					$Controller->Apre66->Referent->Dernierreferent->listOptions();
 			
 			return $options;
 		}

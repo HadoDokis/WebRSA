@@ -102,3 +102,9 @@ msgstr "Traité"
 
 msgid "Apre66.isapre"
 msgstr "Type"
+
+msgid "Search.Dernierreferent.recherche"
+msgstr "Rechercher un référent (hors structure)"
+
+msgid "Search.Dernierreferent.dernierreferent_id"
+msgstr "Nom du référent (hors structure)"
