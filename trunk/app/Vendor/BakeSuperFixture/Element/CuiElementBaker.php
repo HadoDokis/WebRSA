@@ -9,6 +9,7 @@
 	 */
 
 	App::uses('BSFObject', 'SuperFixture.Utility');
+	App::uses('FakerManager', 'SuperFixture.Utility');
 
 	/**
 	 * Classe CuiElementBaker, permet d'obtenir un element générique
@@ -23,7 +24,7 @@
 		 * @return \BSFObject
 		 */
 		public function get() {
-			$Faker = Faker\Factory::create('fr_FR');
+			$Faker = FakerManager::getInstance();
 			
 			// Permet de faire un lien cohérent entre la durée sans emploi et l'inscription à pole emploi
 			$inscritpoleemploi = array();
