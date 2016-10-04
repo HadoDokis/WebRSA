@@ -156,6 +156,7 @@
 			 */
 			$paths = array(
 				'Contratinsertion.forme_ci',
+				'Contratinsertion.positioncer',
 				'Contratinsertion.structurereferente_id',
 				'Personne.etat_dossier_orientation',
 				'Dernierreferent.dernierreferent_id',
