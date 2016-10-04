@@ -83,7 +83,7 @@
 		 */
 		public $hasOne = array(
 			'Populationd1d2pdv93' => array(
-				'className' => '',
+				'className' => 'Populationd1d2pdv93',
 				'foreignKey' => 'questionnaired2pdv93_id',
 				'conditions' => null,
 				'fields' => null,
