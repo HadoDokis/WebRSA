@@ -37,8 +37,12 @@
 		array(
 			'options' => $options,
 			'paginate' => false,
-			'innerTable' => array(
-				'Dossierpcg66.motifannulation'
+			'innerTable' => $this->Translator->normalize(
+				array(
+					'Dossierpcg66.motifannulation' => array(
+						'condition' => "'#Dossierpcg66.motifannulation#' !== ''"
+					)
+				)
 			)
 		)
 	);

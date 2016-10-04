@@ -109,7 +109,14 @@
 			),
 			$defaultParams + array(
 				'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, '
-					. 'starting on record %start%, ending on %end%')
+					. 'starting on record %start%, ending on %end%'),
+				'innerTable' => $this->Translator->normalize(
+					array(
+						'Traitementpcg66.motifannulation' => array(
+							'condition' => "'#Traitementpcg66.motifannulation#' !== ''"
+						)
+					)
+				)
 			)
 		);
 	}
