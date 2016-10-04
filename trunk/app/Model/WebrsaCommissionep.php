@@ -543,7 +543,7 @@
 					if( $niveauDecisionTheme == 'decisioncg' ) {
 						$nbDossierATraiterCg += $this->Commissionep->Passagecommissionep->Dossierep->{$modelName}->nbDossiersATraiterCg( $commissionep_id );
 
-						if( $nbDossierATraiterCg == 0 ) {
+						if( $nbDossierATraiterCg == 0 && isset($dataCg[$modelDecisionName]) ) {
 							foreach( $dataCg[$modelDecisionName] as $i => $dataDecision  ) {
 								unset( $dataCg[$modelDecisionName][$i]['id'] );
 								$dataCg[$modelDecisionName][$i]['etape'] = 'cg';

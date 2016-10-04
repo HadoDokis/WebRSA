@@ -71,7 +71,11 @@
 		 * @return boolean
 		 */
 		protected static function _imprimer(array $record, array $params) {
-			return Hash::get($record, "Decisiondossierpcg66.etatdossierpcg") !== 'annule';
+			return Hash::get($record, "Decisiondossierpcg66.etatdossierpcg") !== 'annule'
+				&& Hash::get($record, "Decisiondossierpcg66.validationproposition") === 'O'
+				&& (Hash::get($record, "Decisiondossierpcg66.retouravistechnique") !== '1'
+				|| Hash::get($record, "Decisiondossierpcg66.vuavistechnique") === '1')
+			;
 		}
 
 		/**

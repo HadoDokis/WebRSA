@@ -328,6 +328,16 @@ CREATE UNIQUE INDEX actionroles_role_name_unique ON actionroles (role_id, name);
 
 UPDATE acos SET alias = 'Contratsinsertion:reconduction_cer_plus_55_ans' WHERE alias = 'Contratsinsertion:reconductionCERPlus55Ans';
 
+--------------------------------------------------------------------------------
+-- Réparation des mauvaises foreign key
+--------------------------------------------------------------------------------
+
+ALTER TABLE orgstransmisdossierspcgs66 DROP CONSTRAINT orgstransmisdossierspcgs66_poledossierpcg66_id_fkey;
+ALTER TABLE orgstransmisdossierspcgs66 
+	ADD CONSTRAINT orgstransmisdossierspcgs66_poledossierpcg66_id_fkey
+	FOREIGN KEY (poledossierpcg66_id) REFERENCES polesdossierspcgs66(id)
+	ON DELETE SET NULL ON UPDATE CASCADE;
+
 
 -- *****************************************************************************
 COMMIT;

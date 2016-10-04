@@ -327,5 +327,26 @@ document.observe( "dom:loaded", function() {
 			}
 		);
 	}
+	
+	/**
+	 * Lorsque on clic sur imprimer et qu'on a les droits, Transmettre OP se "dégrise"
+	 */
+	$$('a.dossierspcgs66.imprimer').each(function(element) {
+		element.observe('click', function() {
+			var td = element.up('tr').select('span.decisionsdossierspcgs66.transmitop').first().up('td'),
+				trad = '<?php echo __m('/Decisionsdossierspcgs66/transmitop');?>',
+				url = '<?php echo Router::url(array('controller' => 'decisionsdossierspcgs66', 'action' => 'transmitop'));?>',
+				expl = element.getAttribute('href').split('/'),
+				id = expl[expl.length -1],
+				a = new Element('a', {href: url+'/'+id, class: 'decisionsdossierspcgs66 transmitop'}).insert(trad);
+		
+			if (<?php echo WebrsaPermissions::checkDossier('decisionsdossierspcgs66', 'transmitop', $dossierMenu)
+				? 'true' : 'false';?>
+			) {
+				td.innerHTML = '';
+				td.insert(a);
+			}
+		});
+	});
 </script>
 <?php } ?>
