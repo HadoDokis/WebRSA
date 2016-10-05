@@ -21,7 +21,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				<th rowspan="2">Structure</th>
 				<th rowspan="2">Motif saisine</th>
 				<th rowspan="2">Avis EPL</th>
-				<th colspan="4">Décision CG</th>
+				<th colspan="4">Décision CT</th>
+				<th rowspan="2">Décision PCG</th>
 				<!-- <th rowspan="2">Observations</th> -->
 				<th colspan="2" rowspan="2">Actions</th>
 				<th class="innerTableHeader noprint">Avis EP</th>
@@ -49,20 +50,18 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 			
 			// Affiche la décision du dossier PCG attaché à l'EP si commission Audition ne s'est pas transformé en Parcours
 			$decisionPCG = null;
-			if (Hash::get($decisioncg, 'typeorient_id') === null) {
-				foreach ((array)Hash::get($dossierep, 'Personne.Foyer.Dossierpcg66') as $dossierpcg) {
-					$decisiondefautinsertionep66_id = Hash::get($dossierpcg, 'decisiondefautinsertionep66_id');
-					if ($decisiondefautinsertionep66_id === Hash::get($decisionep, 'id')
-						|| $decisiondefautinsertionep66_id === Hash::get($decisioncg, 'id')
-					) {
-						foreach ((array)Hash::get($dossierpcg, 'Decisiondossierpcg66') as $decision) {
-							if (Hash::get($decision, 'validationproposition') === 'O') {
-								$decisionPCG = Hash::get($options, 'Decisiondossierpcg66.decisionpdo_id.'.Hash::get($decision, 'decisionpdo_id'));
-								break;
-							}
+			foreach ((array)Hash::get($dossierep, 'Personne.Foyer.Dossierpcg66') as $dossierpcg) {
+				$decisiondefautinsertionep66_id = Hash::get($dossierpcg, 'decisiondefautinsertionep66_id');
+				if ($decisiondefautinsertionep66_id === Hash::get((array)$decisionep, 'id')
+					|| $decisiondefautinsertionep66_id === Hash::get($decisioncg, 'id')
+				) {
+					foreach ((array)Hash::get($dossierpcg, 'Decisiondossierpcg66') as $decision) {
+						if (Hash::get($decision, 'validationproposition') === 'O') {
+							$decisionPCG = Hash::get($options, 'Decisiondossierpcg66.decisionpdo_id.'.Hash::get($decision, 'decisionpdo_id'));
+							break;
 						}
-						break;
 					}
+					break;
 				}
 			}
 			
@@ -85,6 +84,37 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
                     )
                 )
             );
+			
+			$decisionCT = array(
+				implode(' / ', Hash::filter(
+					array(
+						Hash::get($options, 'Decisiondefautinsertionep66.decision.'.Hash::get($decisioncg, 'decision')),
+						Hash::get($options, 'Decisiondefautinsertionep66.decision.'.Hash::get($decisioncg, 'decisionsup')),
+					)
+				)), 
+				array('id' => "Decisiondefautinsertionep66{$i}DecisionColumn")
+			);
+			
+			$typeorient = array(
+				($id = Hash::get($decisioncg, 'typeorient_id'))
+					? Hash::get($liste_typesorients, $id)
+					: null,
+				array('id' => "Decisiondefautinsertionep66{$i}TypeorientId")
+			);
+			
+			$structurereferente = array(
+				($id = Hash::get($decisioncg, 'structurereferente_id'))
+					? Hash::get($liste_structuresreferentes, $id)
+					: null,
+				array('id' => "Decisiondefautinsertionep66{$i}StructurereferenteId")
+			);
+			
+			$referent = array(
+				($id = Hash::get($decisioncg, 'referent_id'))
+					? Hash::get($liste_referents, $id)
+					: null,
+				array('id' => "Decisiondefautinsertionep66{$i}ReferentId")
+			);
 
             $eplAuditionEnEplParcours = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
             $enabled = ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) && ( $dossierep['Passagecommissionep'][0]['etatdossierep'] != 'annule' ) && ( in_array( $eplAuditionEnEplParcours, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ) );
@@ -102,17 +132,13 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 					$examenaudition,
 					$avisEp,
 
-					$decisionPCG
-						? array($decisionPCG, array('id' => "Decisiondefautinsertionep66{$i}DecisionColumn"))
-						: array( implode( ' / ', Hash::filter( (array)array(
-							@$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-							@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )]
-						) ) ), array( 'id' => "Decisiondefautinsertionep66{$i}DecisionColumn" ) ),
-
-					array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
-					array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
-					array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-//					Set::classicExtract( $decisioncg, "commentaire" ),
+					$decisionCT,
+					$typeorient,
+					$structurereferente,
+					$referent,
+					
+					$decisionPCG,
+						
 					array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
                     $this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $enabled ) ),
 				),
