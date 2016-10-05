@@ -1423,8 +1423,19 @@ function toutChoisir( radios, valeur, simulate ) {
  */
 function make_external_links() {
 	$$('a.external').each( function ( link ) {
+		var originalJavascript = $( link ).onclick;
+		
 		$( link ).onclick = function() {
-			window.open( $( link ).href, '_blank' );
+			var result = true;
+
+			if( null !== originalJavascript ) {
+				result = originalJavascript();
+			}
+
+			if( true === result ) {
+				window.open( $( link ).href, '_blank' );
+			}
+
 			return false;
 		};
 	} );

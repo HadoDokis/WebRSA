@@ -857,5 +857,20 @@
 
 			return $this->_getOrCreateDecisionPdf( $passagecommissionep_id, $gedooo_data, $modeleOdt, $datas['options'] );
 		}
+		
+		/**
+		 * Retourne le querydata qui sera utilisé par la thématique pour la
+		 * sélection des dossiers à associer à une commission d'EP donnée.
+		 *
+		 * @param integer $commissionep_id
+		 * @return array
+		 */
+		public function qdListeDossierChoose($commissionep_id = null) {
+			$query = parent::qdListeDossierChoose($commissionep_id);
+			
+			$query['fields'][] = 'Dossierep.is_reporte';
+			
+			return $query;
+		}
 	}
 ?>

@@ -1,29 +1,51 @@
 <?php
-	echo $this->Default2->index(
+	$formId = 'DossiersepsChoose'.$theme.'Form';
+	echo $this->Default3->DefaultForm->create(null, array('id' => $formId));
+	
+	echo $this->Default3->index(
 		$dossiers[$theme],
-		array(
-			'Personne.qual',
-			'Personne.nom',
-			'Personne.prenom',
-			'Personne.dtnai',
-			'Adresse.nomcom',
-			'Dossierep.created',
-			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
-			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
+		$this->Translator->normalize(
+			array(
+				'Personne.qual',
+				'Personne.nom',
+				'Personne.prenom',
+				'Personne.dtnai',
+				'Adresse.nomcom',
+				'Dossierep.created',
+				'Foyer.enerreur' => array('type' => 'string', 'class' => 'foyer_enerreur'),
+				'data[Passagecommissionep][][chosen]' => array('type' => 'checkbox', 'label' => false),
+				'/Personnes/view/#Personne.id#',
+				'/Dossierseps/disable/#Dossierep.id#' => array(
+					'disabled' => "'#Dossierep.is_reporte#' !== '1'",
+					'confirm' => true,
+					'class' => 'cancel'
+				),
+			)
 		),
 		array(
-			'cohorte' => true,
 			'options' => $options,
-			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
-			'paginate' => Inflector::classify( $theme ),
-			'actions' => array( 'Personnes::view' ),
+			'paginate' => Inflector::classify($theme),
 			'id' => $theme,
-			'labelcohorte' => array(
-				'Enregistrer',
-				'Annuler' => array( 'name' => 'Cancel' ),
-			),
-			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) ),
-			'trClass' => $trClass,
 		)
 	);
-?>
+	
+	// Champs cachés
+	foreach ($dossiers[$theme] as $key => $dossier) {
+		echo $this->Xform->input('Dossierep.'.$key.'.id', array(
+			'type' => 'hidden',
+			'value' => Hash::get($dossier, 'Dossierep.id'),
+		));
+		echo $this->Xform->input('Passagecommissionep.'.$key.'.id', array(
+			'type' => 'hidden',
+			'value' => Hash::get($dossier, 'Passagecommissionep.id'),
+		));
+	}
+	
+	echo $this->Xform->input('Choose.theme', array(
+		'type' => 'hidden',
+		'value' => $theme,
+	));
+	
+	echo $this->Default3->DefaultForm->buttons(array('Save', 'Cancel'));
+	echo $this->Default3->DefaultForm->end();
+	echo $this->Observer->disableFormOnSubmit($formId);

@@ -99,3 +99,21 @@ msgstr "Supprimer le dernier passage en commission d'EP"
 
 msgid "/Dossierseps/deletepassage/#Passagecommissionep.id# ?"
 msgstr "Réellement supprimer le dernier passage en commission d'EP ?"
+
+msgid "data[Passagecommissionep][][chosen]"
+msgstr "Sélectionner"
+
+msgid "/Personnes/view"
+msgstr "Voir"
+
+msgid "/Personnes/view/#Personne.id#"
+msgstr "Voir"
+
+msgid "/Dossierseps/disable"
+msgstr "Désactiver"
+
+msgid "/Dossierseps/disable/#Dossierep.id#"
+msgstr "Désactiver"
+
+msgid "/Dossierseps/disable/#Dossierep.id# ?"
+msgstr "Cette ligne n'apparaîtra plus. Voulez-vous continuer ?"
