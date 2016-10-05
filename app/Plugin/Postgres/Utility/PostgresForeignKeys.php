@@ -88,20 +88,11 @@
 
 				static::$_modelNames = App::objects( 'Model' );
 				if( false === empty( static::$_modelNames ) ) {
-					$debug = Configure::read( 'debug' );
-					$cacheDisabled = Configure::read( 'Cache.disable' );
-
-					Configure::write( 'debug', 0 );
-					Configure::write( 'Cache.disable', false );
-
 					$conditions = array(
 						'From.table_schema' => static::$_connexions[$connexion]->config['schema'],
 						'To.table_schema' => static::$_connexions[$connexion]->config['schema']
 					);
 					$foreignKeys = static::$_connexions[$connexion]->getPostgresForeignKeys( $conditions );
-
-					Configure::write( 'debug', $debug );
-					Configure::write( 'Cache.disable', $cacheDisabled );
 
 					static::$_foreignKeys[$connexion] = array();
 					foreach( $foreignKeys as $foreignKey ) {
@@ -267,6 +258,17 @@
 			}
 
 			return static::$_missing[$connexion];
+		}
+
+		/**
+		 * Supprime les différents live caches de l'objet.
+		 */
+		public static function clear() {
+			static::$_modelCache = array();
+			static::$_foreignKeys = array();
+			static::$_modelNames = array();
+			static::$_missing = array();
+			static::$_connexions = false;
 		}
 	}
 ?>

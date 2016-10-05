@@ -23,6 +23,14 @@
 	class PostgresMaintenanceShellTest extends CakeTestCase
 	{
 		/**
+		 * Constante à utiliser avec la méthode matchesRegularExpression sur les
+		 * mock.
+		 * Il s'agit d'une expression régulière pour matcher les lignes d'en-tetes
+		 * des shells, envoyées à la méthode mockée "out".
+		 */
+		const SHELL_GENERIC_OUT_REGEXP = '/^(<info>Welcome.*||App *:.*|Path *:.*|PostgreSQL [0-9]+.*|\-+)$/';
+
+		/**
 		 * Fixtures utilisés par ces tests unitaires.
 		 *
 		 * @var array
@@ -41,10 +49,9 @@
 			$out = $this->getMock( 'ConsoleOutput', array( ), array( ), '', false );
 			$in = $this->getMock( 'ConsoleInput', array( ), array( ), '', false );
 
-//			$this->Shell = new PostgresMaintenanceShell( $out, $out, $in );
 			$this->Shell = $this->getMock(
 				'PostgresMaintenanceShell',
-				array( 'out', 'err', '_stop' ),
+				array( 'out', 'err', '_stop', 'log' ),
 				array( $out, $out, $in )
 			);
 
@@ -59,26 +66,14 @@
 			parent::tearDown();
 		}
 
-
-		/**
-		 * Test de la méthode PostgresMaintenanceShell::help().
-		 *
-		 * @large
-		 */
-//		public function testHelp() {
-//			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
-//
-//			$this->Shell->params['help'] = true;
-//			$this->Shell->startup();
-//		}
-
 		/**
 		 * Test de la méthode PostgresMaintenanceShell::startup().
 		 *
 		 * @large
 		 */
 		public function testStartup() {
-			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 1 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( PostgresMaintenanceShell::ERROR );
+			$this->Shell->expects( $this->once() )->method( 'log' )->with( 'The datasource configuration "foo" was not found in database.php' );
 
 			$this->Shell->params['connection'] = 'foo';
 			$this->Shell->startup();
@@ -90,7 +85,16 @@
 		 * @large
 		 */
 		public function testAll() {
-			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( PostgresMaintenanceShell::SUCCESS );
+
+			$this->Shell->expects( $this->any() )->method( 'out' )->with(
+				$this->logicalOr(
+					$this->matchesRegularExpression( static::SHELL_GENERIC_OUT_REGEXP ),
+					$this->matchesRegularExpression( '/[0-9]{2}:[0-9]{2}:[0-9]{2} \- Mise à jour des compteurs des champs auto-incrémentés \(sequences\)/' ),
+					$this->matchesRegularExpression( '/[0-9]{2}:[0-9]{2}:[0-9]{2} \- Nettoyage de la base de données et mise à jour des statistiques du planificateur \(vacuum\)/' ),
+					$this->matchesRegularExpression( '/[0-9]{2}:[0-9]{2}:[0-9]{2} \- Reconstruction des indexes \(reindex\)/' )
+				)
+			);
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );
@@ -122,7 +126,14 @@
 		 * @large
 		 */
 		public function testReindex() {
-			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( PostgresMaintenanceShell::SUCCESS );
+
+			$this->Shell->expects( $this->any() )->method( 'out' )->with(
+				$this->logicalOr(
+					$this->matchesRegularExpression( static::SHELL_GENERIC_OUT_REGEXP ),
+					$this->matchesRegularExpression( '/[0-9]{2}:[0-9]{2}:[0-9]{2} \- Reconstruction des indexes \(reindex\)/' )
+				)
+			);
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );
@@ -142,7 +153,14 @@
 		 * @large
 		 */
 		public function testSequences() {
-			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( PostgresMaintenanceShell::SUCCESS );
+
+			$this->Shell->expects( $this->any() )->method( 'out' )->with(
+				$this->logicalOr(
+					$this->matchesRegularExpression( static::SHELL_GENERIC_OUT_REGEXP ),
+					$this->matchesRegularExpression( '/[0-9]{2}:[0-9]{2}:[0-9]{2} \- Mise à jour des compteurs des champs auto-incrémentés \(sequences\)/' )
+				)
+			);
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );
@@ -164,7 +182,14 @@
 		 * @large
 		 */
 		public function testVacuum() {
-			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( PostgresMaintenanceShell::SUCCESS );
+
+			$this->Shell->expects( $this->any() )->method( 'out' )->with(
+				$this->logicalOr(
+					$this->matchesRegularExpression( static::SHELL_GENERIC_OUT_REGEXP ),
+					$this->matchesRegularExpression( '/[0-9]{2}:[0-9]{2}:[0-9]{2} \- Nettoyage de la base de données et mise à jour des statistiques du planificateur \(vacuum\)/' )
+				)
+			);
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );

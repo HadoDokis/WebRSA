@@ -61,17 +61,6 @@
 		}
 
 		/**
-		 * Test de la méthode PostgresTableBehavior::setup()
-		 *
-		 * @expectedException FatalErrorException
-		 */
-//		public function testSetup() {
-//			$this->User->Behaviors->detach( 'Postgres.PostgresTable' );
-//			$this->User->getDataSource()->config['datasource'] = 'Database/Mysql';
-//			$this->User->Behaviors->attach( 'Postgres.PostgresTable' );
-//		}
-
-		/**
 		 * Test de la méthode PostgresTableBehavior::getPostgresCheckConstraints()
 		 */
 		public function testGetPostgresCheckConstraints() {
