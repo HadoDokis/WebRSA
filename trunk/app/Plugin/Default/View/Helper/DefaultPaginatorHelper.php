@@ -93,16 +93,16 @@
 				
 				$url = array_merge(array('sort' => $key, 'direction' => $dir), $url, array('order' => null));
 				
-				$ascLink = $this->link($ascImg, $asc,
+				$ascLink = $this->_link($ascImg, $asc,
 					array('class' => 'arrow arrow-up', 'title' => 'Ranger par ordre croissant') + $options
 				);
-				$descLink = $this->link($descImg, $desc,
+				$descLink = $this->_link($descImg, $desc,
 					array('class' => 'arrow arrow-down', 'title' => 'Ranger par ordre décroissant') + $options
 				);
 				
 				$options['title'] = $dir === 'asc' ? 'Ranger par ordre croissant' : 'Ranger par ordre décroissant';
 				
-				$return = '<div class="two_ways order-container">'.$this->link($title, $url, $options)
+				$return = '<div class="two_ways order-container">'.$this->_link($title, $url, $options)
 					.' <div class="container two_ways">'
 					.$ascLink
 					.$descLink
@@ -110,6 +110,24 @@
 			}
 			
 			return $return;
+		}
+		
+		/**
+		 * Permet d'ajouter si disponnible, les params['pass'] à l'url
+		 * 
+		 * @param string $title Title for the link.
+		 * @param string|array $url Url for the action. See Router::url()
+		 * @param array $options Options for the link. See #options for list of keys.
+		 * @return string A link with pagination parameters.
+		 * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::link
+		 */
+		protected function _link($title, $url = array(), $options = array()) {
+			$pass = array();
+			if (!empty($this->request->params['pass'])) {
+				$pass = $this->request->params['pass'];
+			}
+			
+			return $this->link($title, array_merge($pass, $url), $options);
 		}
 	}
 ?>
