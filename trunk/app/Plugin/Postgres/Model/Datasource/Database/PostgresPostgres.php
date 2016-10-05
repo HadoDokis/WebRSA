@@ -262,7 +262,7 @@
 
 		/**
 		 * Méthode utilitaire permettant de savoir si une contrainte de clé
-		 * étrangère existe dans le schéma de la base de données "test".
+		 * étrangère existe dans le schéma de la base de données.
 		 *
 		 * @param string $fromTable
 		 * @param string $fromColumn
@@ -286,7 +286,7 @@
 
 		/**
 		 * Méthode utilitaire permettant d'ajouter une contrainte de clé étrangère
-		 * dans le schéma de la base de données "test".
+		 * dans le schéma de la base de données.
 		 *
 		 * @param string $fromTable
 		 * @param string $fromColumn
@@ -309,7 +309,7 @@
 
 		/**
 		 * Méthode utilitaire permettant de supprimer une contrainte de clé étrangère
-		 * dans le schéma de la base de données "test".
+		 * dans le schéma de la base de données.
 		 *
 		 * @param string $fromTable
 		 * @param string $fromColumn
