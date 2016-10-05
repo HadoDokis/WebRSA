@@ -115,15 +115,17 @@
 		 * Retourne la liste des clés étrangères présentes en base de données.
 		 *
 		 * @param array $conditions
+		 * @param bool $cache
 		 * @return array
 		 */
-		public function getPostgresForeignKeys( array $conditions = array() ) {
+		public function getPostgresForeignKeys( array $conditions = array(), $cache = null ) {
+			$cache = ( null === $cache ) ? ( 0 == Configure::read( 'debug' ) ) : (bool)$cache;
 			$conditions = $this->conditions( $conditions, true, false );
 
 			$cacheKey = sprintf( "%s_%s_%s_%s", $this->configKeyName, __CLASS__, __FUNCTION__, md5( $conditions ) );
-			$results = Cache::read( $cacheKey );
+			$results = ( false === $cache ) ? false : Cache::read( $cacheKey );
 
-			if( $results === false ) {
+			if( false === $results ) {
 				$sql = "SELECT
 					tc.constraint_name AS \"Foreignkey__name\",
 					\"Foreignkey\".update_rule AS \"Foreignkey__onupdate\",
@@ -207,8 +209,14 @@
 					AND {$conditions}
 					ORDER BY tc.constraint_name ASC;";
 
+				if( false === $cache ) {
+					$sql .= '/* '.microtime( true ).' */';
+				}
 				$results = $this->query( $sql );
-				Cache::write( $cacheKey, $results );
+
+				if( true === $cache ) {
+					Cache::write( $cacheKey, $results );
+				}
 			}
 
 			return $results;
@@ -250,6 +258,73 @@
 			}
 
 			return $results;
+		}
+
+		/**
+		 * Méthode utilitaire permettant de savoir si une contrainte de clé
+		 * étrangère existe dans le schéma de la base de données "test".
+		 *
+		 * @param string $fromTable
+		 * @param string $fromColumn
+		 * @param string $toTable
+		 * @param string $toColumn
+		 * @param type $cache
+		 * @return bool
+		 */
+		public function existsPostgresForeignKey( $fromTable, $fromColumn, $toTable, $toColumn, $cache = null ) {
+			$conditions = array(
+				'From.table_schema' => $this->config['schema'],
+				'From.table_name' => $fromTable,
+				'From.column_name' => $fromColumn,
+				'To.table_schema' => $this->config['schema'],
+				'To.table_name' => $toTable,
+				'To.column_name' => $toColumn
+			);
+			$result = $this->getPostgresForeignKeys( $conditions, $cache );
+			return false === empty( $result );
+		}
+
+		/**
+		 * Méthode utilitaire permettant d'ajouter une contrainte de clé étrangère
+		 * dans le schéma de la base de données "test".
+		 *
+		 * @param string $fromTable
+		 * @param string $fromColumn
+		 * @param string $toTable
+		 * @param string $toColumn
+		 * @return bool
+		 */
+		public function addPostgresForeignKey( $fromTable, $fromColumn, $toTable, $toColumn ) {
+			$params = array(
+				'{schema}' => $this->config['schema'],
+				'{fromTable}' => $fromTable,
+				'{fromColumn}' => $fromColumn,
+				'{toTable}' => $toTable,
+				'{toColumn}' => $toColumn
+			);
+			$sql = 'ALTER TABLE "{schema}"."{fromTable}" ADD CONSTRAINT "{fromTable}_{fromColumn}_fk" FOREIGN KEY ("{fromColumn}") REFERENCES "{schema}"."{toTable}"("{toColumn}") ON UPDATE NO ACTION ON DELETE NO ACTION /* '.microtime( true ).' */;';
+			$sql = str_replace( array_keys( $params ), array_values( $params ), $sql );
+			return false !== $this->query( $sql );
+		}
+
+		/**
+		 * Méthode utilitaire permettant de supprimer une contrainte de clé étrangère
+		 * dans le schéma de la base de données "test".
+		 *
+		 * @param string $fromTable
+		 * @param string $fromColumn
+		 * @return bool
+		 */
+		public function dropPostgresForeignKey( $fromTable, $fromColumn ) {
+			$params = array(
+				'{schema}' => $this->config['schema'],
+				'{fromTable}' => $fromTable,
+				'{fromColumn}' => $fromColumn
+			);
+			$sql = 'ALTER TABLE "{schema}"."{fromTable}" DROP CONSTRAINT "{fromTable}_{fromColumn}_fk" /* '.microtime( true ).' */;';
+			$sql = str_replace( array_keys( $params ), array_values( $params ), $sql );
+
+			return false !== $this->query( $sql );
 		}
 	}
 ?>

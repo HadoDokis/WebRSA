@@ -55,6 +55,10 @@
 		 * Nettoyage postérieur au test.
 		 */
 		public function tearDown() {
+			if( true === $this->Dbo->existsPostgresForeignKey( 'postgres_users', 'group_id', 'postgres_groups', 'id' ) ) {
+				$this->Dbo->dropPostgresForeignKey( 'postgres_users', 'group_id' );
+			}
+			$this->Dbo->addPostgresForeignKey( 'postgres_users', 'group_id', 'postgres_groups', 'id' );
 			unset( $this->Dbo, $this->User );
 			parent::tearDown();
 		}
@@ -233,6 +237,32 @@
 				)
 			);
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode PostgresPostgres::existsPostgresForeignKey()
+		 */
+		public function testExistsPostgresForeignKey() {
+			$this->assertTrue( $this->Dbo->existsPostgresForeignKey( 'postgres_users', 'group_id', 'postgres_groups', 'id' ) );
+			$this->assertFalse( $this->Dbo->existsPostgresForeignKey( 'postgres_groups', 'id', 'postgres_users', 'group_id' ) );
+		}
+
+		/**
+		 * Test de la méthode PostgresPostgres::dropPostgresForeignKey()
+		 */
+		public function testDropPostgresForeignKey() {
+			$this->assertTrue( $this->Dbo->dropPostgresForeignKey( 'postgres_users', 'group_id' ) );
+			$this->assertFalse( $this->Dbo->existsPostgresForeignKey( 'postgres_users', 'group_id', 'postgres_groups', 'id' ) );
+		}
+
+		/**
+		 * Test de la méthode PostgresPostgres::addPostgresForeignKey()
+		 */
+		public function testAddPostgresForeignKey() {
+			$this->assertTrue( $this->Dbo->dropPostgresForeignKey( 'postgres_users', 'group_id' ) );
+			$this->assertFalse( $this->Dbo->existsPostgresForeignKey( 'postgres_users', 'group_id', 'postgres_groups', 'id' ) );
+			$this->assertTrue( $this->Dbo->addPostgresForeignKey( 'postgres_users', 'group_id', 'postgres_groups', 'id' ) );
+			$this->assertTrue( $this->Dbo->existsPostgresForeignKey( 'postgres_users', 'group_id', 'postgres_groups', 'id' ) );
 		}
 	}
 ?>
