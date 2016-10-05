@@ -86,7 +86,7 @@
 	makeTabbed( 'tabbedWrapper', 2 );
 	makeTabbed( 'dossierseps', 3 );
 
-	$$( 'td.action a' ).each( function( elmt ) {
+	$$( 'td.action a.view' ).each( function( elmt ) {
 		$( elmt ).addClassName( 'external' );
 	} );
 </script>

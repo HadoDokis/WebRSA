@@ -787,5 +787,43 @@
 
 			$this->redirect( $this->referer() );
 		}
+		
+		/**
+		 * Permet de passer un dossier EP en actif = false
+		 * 
+		 * @param integer $id
+		 */
+		public function disable($id) {
+			$result = $this->Dossierep->find('first', 
+				array(
+					'fields' => 'Dossierep.id',
+					'contain' => false,
+					'conditions' => array('Dossierep.id' => $id)
+				)
+			);
+			
+			$this->assert(!empty($result), 'error404');
+			
+			$data = array(
+				'Dossierep' => array(
+					'id' => $id,
+					'actif' => 0
+				)
+			);
+			
+			$this->Dossierep->begin();
+			$this->Dossierep->create($data);
+			
+			if ($this->Dossierep->save()) {
+				$this->Dossierep->commit();
+				$this->Session->setFlash('Désactivation effectuée', 'flash/success');
+			}
+			else {
+				$this->Dossierep->rollback();
+				$this->Session->setFlash('Désactivation impossible', 'flash/error');
+			}
+			
+			$this->redirect($this->referer());
+		}
 	}
 ?>
