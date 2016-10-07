@@ -428,7 +428,10 @@
 					),
 					'UI.afterLogo.text' => array(
 						array( 'rule' => 'string', 'allowEmpty' => true )
-					)
+					),
+					'textarea.auto_resize' => array(
+						array( 'rule' => 'isarray', 'allowEmpty' => true )
+					),
 				)
 			);
 

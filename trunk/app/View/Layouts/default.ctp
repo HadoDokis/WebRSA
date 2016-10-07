@@ -108,6 +108,17 @@
 					setTimeout(sessionEnd, sessionTime*1000);
 				}
 				<?php endif;?>
+				
+				<?php if (Configure::read('textarea.auto_resize.all')
+					|| Configure::read('textarea.auto_resize.'.$this->request->params['controller'].'.all')
+					|| Configure::read('textarea.auto_resize.'.$this->request->params['controller'].'.'.$this->action)
+				): ?>
+					
+				$$('textarea').each(function(element) {
+					makeTextareaAutoExpandable(element);
+				});
+				
+				<?php endif;?>
 			} );
 
 			<?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>

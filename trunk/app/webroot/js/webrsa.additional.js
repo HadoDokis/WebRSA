@@ -1,4 +1,4 @@
-/*global document, $$, toString*/
+/*global document, $$, toString, Element*/
 
 /**
  * Polyfill
@@ -200,9 +200,102 @@ function divideIntoCollumn(dom, nbCollumn) {
 	return true;
 }
 
+
+/*************************************************************************
+ * Permet le redimentionnement automatique des textarea					 *
+ *************************************************************************/
+
+/**
+ * Donne des evenements lors de la modification d'un textarea afin de permetre son redimentionnement
+ * @param {DOM} container
+ * @returns {void}
+ */
+function textareaResizeEvents(container) {
+	'use strict';
+	var area = container.select('textarea').first(),
+		span = container.select('span').first();
+
+	// anticipe le redimentionnement pour éviter le clignotement
+	area.observe('keydown', function(event) {
+		if (event.key.length === 1) {
+			span.innerHTML = area.getValue() + event.key;
+		}
+	});
+
+	area.observe('keyup', function() {
+		span.innerHTML = area.getValue();
+	});
+
+	area.observe('change', function() {
+		span.innerHTML = area.getValue();
+	});
+
+	container.addClassName('active');
+	span.innerHTML = area.getValue();
+}
+
+/**
+ * Créer la structure autour du textarea, nécéssaire pour l'auto-redimentionnement
+ * Lance textareaResizeEvents() sur la structure ainsi créé
+ * @param {DOM} textarea
+ * @returns {void}
+ */
+function makeTextareaAutoExpandable(textarea) {
+	'use strict';
+	var div, pre, span, newTextarea, visible;
+	
+	// Poupée russe
+	div = new Element('div', {'class': 'autoExpandTextareaContainer'});
+	pre = new Element('pre');
+	span = new Element('span');
+	newTextarea = Element.clone(textarea, true);
+	pre.insert(span);
+	pre.insert('<br/><br/><br/>');
+	div.insert(pre);
+	div.insert(newTextarea);
+	
+	// Le div récupère la taille du textarea si définie à 100%
+	visible = textarea.visible();
+	if (!visible) {
+		textarea.show(); // Permet d'obtenir la vrai valeur css width
+	}
+	
+	if (textarea.getStyle('width') === '100%' || getWidthInPercent(textarea) > 99) {
+		div.setStyle({width: '100%'});
+	}
+	
+	if (!visible) {
+		textarea.hide();
+	}
+	
+	textarea.up().insertBefore(div, textarea);
+	textarea.remove();
+	
+	textareaResizeEvents(div);
+}
+
+
 /*************************************************************************
  * Autres fonctions utiles												 *
  *************************************************************************/
+
+/**
+ * Permet d'obtenir la taille en % d'un element
+ * @param {DOM} element
+ * @returns {float}
+ */
+function getWidthInPercent(element) {
+	var clone = element.clone(),
+		percent = 0;
+	
+	clone.setStyle({width: '100%'});
+	element.up().insertBefore(clone, element);
+	
+	percent = parseFloat(element.getWidth(), 10) / parseFloat(clone.getWidth(), 10) * 100;
+	
+	clone.remove();
+	return percent;
+}
 
 /**
  * Si une valeur vaut undefined, lui attribu la defaultValue
