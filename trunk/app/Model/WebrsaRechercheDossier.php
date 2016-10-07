@@ -237,6 +237,12 @@
 					$sql = $this->Dossier->Foyer->Personne->linkedRecordVirtualField( 'Nonoriente66' );
 					$query['conditions'][] = 'NOT ' . $sql;
 				}
+				
+				// Recherche par Tag
+				$valeurtag_id = (array)Hash::get($search, 'Tag.valeurtag_id');
+				if (!empty($valeurtag_id)) {
+					$query['conditions'][] = ClassRegistry::init('Tag')->sqHasTagValue($valeurtag_id);
+				}
 			}
 
 			return $query;
