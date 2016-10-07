@@ -371,4 +371,13 @@
 	 * Active le module date picker (calendrier javascript)
 	 */
 	Configure::write('Module.Datepicker.enabled', false);
+	
+	/**
+	 * Permet le redimensionnement automatique des textarea
+	 * 
+	 * textarea.auto_resize.all => tout les textarea
+	 * textarea.auto_resize.controllername.all => tout les textarea d'un controlleur en particulier
+	 * textarea.auto_resize.controllername.action => tout les textarea d'un controlleur et d'une action en particulier
+	 */
+	Configure::write('textarea.auto_resize.all', false);
 ?>

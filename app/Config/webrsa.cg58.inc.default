@@ -770,4 +770,13 @@
 	 * Permet de définir l'id du typerdv pour les Rendezvous pour l'élaboration d'un CER
 	 */
 	Configure::write('Rendezvous.elaborationCER.typerdv_id', 13);
+	
+	/**
+	 * Permet le redimensionnement automatique des textarea
+	 * 
+	 * textarea.auto_resize.all => tout les textarea
+	 * textarea.auto_resize.controllername.all => tout les textarea d'un controlleur en particulier
+	 * textarea.auto_resize.controllername.action => tout les textarea d'un controlleur et d'une action en particulier
+	 */
+	Configure::write('textarea.auto_resize.all', false);
 ?>
