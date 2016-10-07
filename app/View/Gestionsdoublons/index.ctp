@@ -19,13 +19,24 @@
 	if( ( isset( $this->request->data['Search'] ) && !empty( $this->request->params['named'] ) ) ) {
 		$out = "document.observe( 'dom:loaded', function() { \$('GestionsdoublonsIndexForm').hide(); } );";
 		echo $this->Html->scriptBlock( $out );
+	} elseif ($etats2 = Configure::read('Gestiondoublon.Situationdossierrsa2.etatdosrsa')) {
+		$this->request->data['Search']["Situationdossierrsa2"]['etatdosrsa'] = (array)$etats2;
+		$this->request->data['Search']["Situationdossierrsa2"]['etatdosrsa_choice'] = '1';
 	}
 
 	// Moteur de recherche
 	echo $this->Xform->create( null, array( 'id' => 'GestionsdoublonsIndexForm' ) );
 
 	// Filtres concernant le dossier
-	echo $this->Search->blocDossier( $options['Situationdossierrsa']['etatdosrsa'], 'Search' );
+	echo $this->Search->blocDossier( null, 'Search' );
+	
+	echo '<fieldset><legend>Volet de gauche</legend>';
+	echo $this->Search->etatdosrsa($options['Situationdossierrsa']['etatdosrsa'],  "Search.Situationdossierrsa.etatdosrsa");
+	echo '</fieldset>';
+	
+	echo '<fieldset><legend>Volet de droite</legend>';
+	echo $this->Search->etatdosrsa($options['Situationdossierrsa']['etatdosrsa'],  "Search.Situationdossierrsa2.etatdosrsa");
+	echo '</fieldset>';
 
 	echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
 

@@ -317,7 +317,11 @@
 			$content = $this->Xform->input( "{$prefix}Dossier.numdemrsa", array( 'label' => 'Numéro de dossier RSA' ) );
 			$content .= $this->Xform->input( "{$prefix}Dossier.matricule", array( 'label' => __d( 'dossier', 'Dossier.matricule.large' ) ) );
 			$content .= $this->date( "{$prefix}Dossier.dtdemrsa" );
-			$content .= $this->etatdosrsa( $etatsdosrsa, "{$prefix}Situationdossierrsa.etatdosrsa" );
+			
+			if (!empty($etatsdosrsa)) {
+				$content .= $this->etatdosrsa( $etatsdosrsa, "{$prefix}Situationdossierrsa.etatdosrsa" );
+			}
+			
 			$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
 
 

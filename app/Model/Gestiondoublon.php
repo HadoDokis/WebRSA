@@ -242,7 +242,8 @@
 						'Dossier.matricule',
 						'Dossier.dtdemrsa DESC',
 						'Dossier.id',
-					)
+					),
+					'conditions' => array()
 				);
 				
 				$query['group'] = $query['fields'];
@@ -275,13 +276,11 @@
 			// 2. Partie searchConditionsComplexes()
 			$query['conditions'] = $this->conditionsPersonneFoyerDossier( $query['conditions'], $search );
 			$query['conditions'] = array_words_replace( $query['conditions'], array( 'Personne' => 'Demandeur' ) );
-
-			$etatdosrsa2 = (array)Configure::read( 'Gestiondoublon.Situationdossierrsa2.etatdosrsa' );
-			if( empty( $etatdosrsa2 ) ) {
-				$etatdosrsa2 = array( 'Z' );
+			
+			if (Hash::get($search, 'Situationdossierrsa2.etatdosrsa_choice')) {
+				$query['conditions']['Situationdossierrsa2.etatdosrsa'] = Hash::get($search, 'Situationdossierrsa2.etatdosrsa');
 			}
-			$query['conditions']['Situationdossierrsa2.etatdosrsa'] = $etatdosrsa2;
-
+			
 			return $query;
 		}
 		
