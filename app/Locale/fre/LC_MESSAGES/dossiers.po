@@ -90,3 +90,6 @@ msgstr "Référent du parcours"
 
 msgid "Dsp.natlog"
 msgstr "Conditions de logement"
+
+msgid "Search.Tag.valeurtag_id"
+msgstr "Recherche par Tag"

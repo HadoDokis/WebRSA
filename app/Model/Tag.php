@@ -186,5 +186,48 @@
 			
 			return Hash::get($this->find('first', $query), 'Tag.personne_id');
 		}
+		
+		/**
+		 * Utile pour faire un filtre de recherche sans jointures sur Tag donc
+		 * sans risquer d'ajouter des lignes
+		 * 
+		 * @param array|string|integer $valeurtag_id
+		 * @param string|integer $foyer_id mettre <= à 0 pour ignorer
+		 * @param string|integer $personne_id mettre <= à 0 pour ignorer
+		 * @return string
+		 */
+		public function sqHasTagValue($valeurtag_id, $foyer_id = '"Foyer"."id"', $personne_id = '"Personne"."id"') {
+			$query = array(
+				'fields' => 'Tag.id',
+				'joins' => array(
+					$this->join('EntiteTag', array(
+						'type' => 'INNER',
+						'conditions' => array(
+							'OR' => array(
+								array(
+									'EntiteTag.modele' => 'Foyer',
+									'EntiteTag.fk_value = '.$foyer_id
+								),
+								array(
+									'EntiteTag.modele' => 'Personne',
+									'EntiteTag.fk_value = '.$personne_id
+								),
+							)
+						)
+					))
+				),
+				'conditions' => array(
+					is_string($valeurtag_id) ? 'Tag.valeurtag_id = '.$valeurtag_id : 'Tag.valeurtag_id' => $valeurtag_id
+				),
+				'limit' => 1
+			);
+			
+			$sq = words_replace(
+				$this->sq($query),
+				array('EntiteTag' => 'entites_tags', 'Tag' => 'tags')
+			);
+			
+			return "(SELECT EXISTS($sq))";
+		}
 	}
 ?>

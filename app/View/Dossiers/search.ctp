@@ -35,6 +35,11 @@
 		}
 	?>
 </fieldset>
+<?php
+	if ($departement === 66) {
+		echo $this->Xform->multipleCheckbox('Search.Tag.valeurtag_id', $options);
+	}
+?>
 <?php $this->end();?>
 
 <?php
