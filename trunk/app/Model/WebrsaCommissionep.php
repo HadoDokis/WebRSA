@@ -109,9 +109,9 @@
 		 * impressions. Utiliser %s pour remplacer par l'alias.
 		 */
 		public $modelesOdt = array(
-			'%s/pv.odt',
-			'%s/convocationep_participant.odt',
-			'%s/convocationep_beneficiaire.odt',
+			'Commissionep/pv.odt',
+			'Commissionep/convocationep_participant.odt',
+			'Commissionep/convocationep_beneficiaire.odt',
 		);
 
 		/**
