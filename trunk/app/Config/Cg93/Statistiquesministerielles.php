@@ -61,12 +61,12 @@
 				'Autres organismes de placement professionnel (2)' => array(),
 				'Service du département ou de l\'agence départementale d\'insertion (ADI) (3)' => array(
 					'Structurereferente.typeorient_id' => 2,
-					'Structurereferente.id' => array( 2, 3, 8, 9, 14, 16, 18, 20, 22, 23, 26, 28, 30, 34, 39, 42, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 101, 117, 123, 126, 128, 132 )
+					'Structurereferente.id' => array( 2, 3, 8, 9, 14, 16, 18, 20, 22, 23, 26, 28, 30, 34, 39, 42, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 98, 101, 117, 123, 126, 128, 132 )
 				),
 				'dont orientation professionnelle ou socioprofessionnelle' => array(),
 				'dont orientation sociale' => array(
 					'Structurereferente.typeorient_id' => 2,
-					'Structurereferente.id' => array( 2, 3, 8, 9, 14, 16, 18, 20, 22, 23, 26, 28, 30, 34, 39, 42, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 101, 117, 123, 126, 128, 132 )
+					'Structurereferente.id' => array( 2, 3, 8, 9, 14, 16, 18, 20, 22, 23, 26, 28, 30, 34, 39, 42, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 98, 101, 117, 123, 126, 128, 132 )
 				),
 				'Caf/Établissement des allocations familiales (2) (4)' => array(
 					'Structurereferente.lib_struc ILIKE' => '%CAF%',
@@ -80,7 +80,7 @@
 				),
 				'Associations d\'insertion (2)' => array(
 					'Structurereferente.typeorient_id' => 2,
-					'Structurereferente.id' => array( 102, 104, 105, 106, 107, 108, 109, 110, 111, 116, 119, 120, 121, 122, 124, 125, 129 )
+					'Structurereferente.id' => array( 98, 102, 104, 105, 106, 107, 108, 109, 110, 111, 112, 116, 119, 120, 121, 122, 124, 125, 127, 129, 130, 134 )
 				),
 				'Autres organismes d\'insertion (2)' => array(
 					'Structurereferente.typeorient_id' => 1,
