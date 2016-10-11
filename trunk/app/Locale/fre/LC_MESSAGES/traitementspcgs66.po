@@ -76,6 +76,9 @@ msgstr "Numéro RM ou RCS"
 msgid "Search.Fichiermodule.exists"
 msgstr "Corbeille pleine ?"
 
+msgid "Search.Traitementpcg66.etattraitementpcg"
+msgstr "Etat du traitement"
+
 msgid "Fichiermodule.nb_fichiers_lies"
 msgstr "Nb de fichiers dans la corbeille"
 
