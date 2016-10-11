@@ -10,6 +10,7 @@
 	 * @package app.Console.Command
 	 * @license ${license}
 	 */
+	App::uses( 'AppShell', 'Console/Command' );
 
 	/**
 	 * La classe ${name} ...

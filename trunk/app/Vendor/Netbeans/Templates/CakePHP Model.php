@@ -10,6 +10,7 @@
 	 * @package app.Model
 	 * @license ${license}
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe ${name} ...
