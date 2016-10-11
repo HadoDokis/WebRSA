@@ -10,6 +10,7 @@
 	 * @package app.Model.Behavior
 	 * @license ${license}
 	 */
+	App::uses( 'ModelBehavior', 'Model' );
 
 	/**
 	 * La classe ${name} ...

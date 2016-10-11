@@ -10,6 +10,7 @@
 	 * @package app.View.Helper
 	 * @license ${license}
 	 */
+	App::uses( 'AppHelper', 'View/Helper' );
 
 	/**
 	 * La classe ${name} ...

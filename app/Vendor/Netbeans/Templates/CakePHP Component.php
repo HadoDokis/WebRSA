@@ -10,6 +10,7 @@
 	 * @package app.Controller.Component
 	 * @license ${license}
 	 */
+	App::uses( 'Component', 'Controller' );
 
 	/**
 	 * La classe ${name} ...
