@@ -1,4 +1,4 @@
-<#include "freemarker_functions.ftl">
+<#include "../freemarker_functions.ftl">
 # Traductions de ${name}.po
 # @license: ${license}
 #

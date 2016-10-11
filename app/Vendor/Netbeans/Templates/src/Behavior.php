@@ -1,4 +1,4 @@
-<#include "freemarker_functions.ftl">
+<#include "../freemarker_functions.ftl">
 <?php
 	/**
 	 * Code source de la classe ${name}.
