@@ -55,6 +55,7 @@
 				'Search.Traitementpcg66.saisonnier' => array( 'empty' => true ),
 				'Search.Traitementpcg66.nrmrcs',
 				'Search.Fichiermodule.exists' => array( 'empty' => true ),
+				'Search.Traitementpcg66.etattraitementpcg' => array( 'empty' => true, 'escape' => false ),
 			),
 			array( 'options' => array( 'Search' => $options ), 'domain' => $domain )
 		)

@@ -178,6 +178,7 @@
 				'Traitementpcg66.regime',
 				'Traitementpcg66.saisonnier',
 				'Traitementpcg66.nrmrcs',
+				'Traitementpcg66.etattraitementpcg',
 			);
 
 			$pathsDate = array(
