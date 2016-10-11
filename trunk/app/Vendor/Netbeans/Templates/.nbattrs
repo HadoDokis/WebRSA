@@ -1,48 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
 <attributes version="1.0">
-    <fileobject name="CakePHP Behavior.php">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
+    <fileobject name="src">
+        <attr name="displayName" stringvalue="src"/>
     </fileobject>
-    <fileobject name="CakePHP Component.php">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP Controller.php">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP Helper.php">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP Model.php">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP Shell.php">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP Utility.php">
-        <attr name="displayName" stringvalue="CakePHP Utility"/>
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP View.ctp">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP freemarker_functions.ftl">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="CakePHP locale.po">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
-    <fileobject name="Test">
-        <attr name="displayName" stringvalue="Test"/>
+    <fileobject name="test">
+        <attr name="displayName" stringvalue="test"/>
     </fileobject>
 </attributes>
