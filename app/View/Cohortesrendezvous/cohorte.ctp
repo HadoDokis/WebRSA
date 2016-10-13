@@ -1,5 +1,5 @@
 <?php
-	if( !$this->request->is( 'ajax' ) ) {
+	if( false === $this->request->is( 'ajax' ) ) {
 		echo $this->element( 'required_javascript' );
 
 		echo $this->Default3->titleForLayout();
@@ -116,8 +116,6 @@
 
 	// 2. Traitement des résultats de la recherche
 	if( isset( $results ) ) {
-		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
-
 		// TODO: à factoriser avec Dsps::index() + les exportcsv
 		$fields = Hash::normalize( (array)Configure::read( 'Cohortesrendezvous.cohorte.fields' ) );
 
@@ -190,6 +188,8 @@
 		}
 		// 2. On n'est pas en ajax
 		else {
+			echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
+
 			if( !empty( $results ) ) {
 				echo $this->Default3->DefaultForm->create( null, array( 'id' => 'CohortesrendezvousCohorteForm' ) );
 			}
