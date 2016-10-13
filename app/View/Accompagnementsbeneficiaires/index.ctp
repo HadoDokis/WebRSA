@@ -870,7 +870,9 @@
 						'msgid' => 'Télécharger',
 						'title' => 'Télécharger le fichier lié'
 					),
-					'/#Fichiermodule.controller#/view/#Fichiermodule.fk_value#' => array(
+					'/#Fichiermodule.controller#/#Fichiermodule.view_action#/#Fichiermodule.fk_value#' => array(
+						'class' => 'view',
+						'disabled' => 'in_array( "#Fichiermodule.modele#", array( "PersonneReferent", "Orientstruct" ) )',
 						'msgid' => 'Voir',
 						'title' => 'Voir l\'enregistrement auquel le fichier est lié'
 					),
