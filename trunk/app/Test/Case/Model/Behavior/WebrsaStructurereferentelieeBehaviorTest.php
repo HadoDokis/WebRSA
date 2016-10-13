@@ -112,7 +112,7 @@
 		public function testReferentHorszone() {
 			// 1. Avec des ids de structures référentes passées en paramètres
 			$result = $this->Rendezvous->referentHorszone( 'Rendezvous.referent_id', array( 1, 2 ) );
-			$expected = '( "Rendezvous"."referent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."referent_id" AND "referents"."structurereferente_id" IN (1, 2)    ) ) AS "Referent__horszone"';
+			$expected = '( "Rendezvous"."referent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."referent_id" AND NOT ("referents"."structurereferente_id" IN (1, 2))    ) ) AS "Referent__horszone"';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2. Sans id de structure référente passé en paramètres
@@ -122,12 +122,12 @@
 
 			// 3. Sans alias
 			$result = $this->Rendezvous->referentHorszone( 'Rendezvous.referent_id', array( 1, 2 ), array( 'alias' => false ) );
-			$expected = '"Rendezvous"."referent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."referent_id" AND "referents"."structurereferente_id" IN (1, 2)    )';
+			$expected = '"Rendezvous"."referent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."referent_id" AND NOT ("referents"."structurereferente_id" IN (1, 2))    )';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 4. Avec un autre alias
 			$result = $this->Rendezvous->referentHorszone( 'Rendezvous.referent_id', array( 1, 2 ), array( 'alias' => 'Foo.bar' ) );
-			$expected = '( "Rendezvous"."referent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."referent_id" AND "referents"."structurereferente_id" IN (1, 2)    ) ) AS "Foo__bar"';
+			$expected = '( "Rendezvous"."referent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."referent_id" AND NOT ("referents"."structurereferente_id" IN (1, 2))    ) ) AS "Foo__bar"';
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
@@ -173,7 +173,7 @@
 			$expected = array(
 				'fields' => array(
 					'Rendezvous.id',
-					'( "Rendezvous"."rereferent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."rereferent_id" AND "referents"."structurereferente_id" IN (1, 2)    ) ) AS "Referent__horszone"',
+					'( "Rendezvous"."rereferent_id" IN ( SELECT "referents"."id" AS "Referent__id" FROM "referents" AS "referents"   WHERE "referents"."id" = "Rendezvous"."rereferent_id" AND NOT ("referents"."structurereferente_id" IN (1, 2))    ) ) AS "Referent__horszone"'
 				),
 				'contain' => false,
 			);

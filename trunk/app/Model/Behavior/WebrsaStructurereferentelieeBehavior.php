@@ -102,7 +102,9 @@
 					'fields' => array( 'Referent.id' ),
 					'conditions' => array(
 						"Referent.id = {$modelName}.{$fieldName}",
-						'Referent.structurereferente_id' => $structuresreferentes_ids,
+						'NOT' => array(
+							'Referent.structurereferente_id' => $structuresreferentes_ids
+						)
 					),
 					'contain' => false
 				);
