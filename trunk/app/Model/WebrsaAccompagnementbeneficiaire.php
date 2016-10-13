@@ -647,7 +647,10 @@
 						'Cer93'
 					)
 				),
-				'DspRev',
+				'DspRev' => array(
+					'controller' => 'dsps',
+					'view_action' => 'view_revs'
+				),
 				'Entretien',
 				'Memo',
 				'Orientstruct',
@@ -679,6 +682,11 @@
 					$query = (array)$query;
 
 					$query['modelName'] = isset( $query['modelName'] ) ? $query['modelName'] : $alias;
+
+					// Contrôleur
+					$query['controller'] = isset( $query['controller'] ) ? $query['controller'] : Inflector::tableize( $query['modelName'] );
+					// Action
+					$query['view_action'] = isset( $query['view_action'] ) ? $query['view_action'] : 'view';
 
 					// Champs
 					$fields = (array)Hash::get( $query, 'fields' );
@@ -747,7 +755,9 @@
 				$modelName = $query['modelName'];
 				$webrsaModelName = $query['webrsaModelName'];
 				$webrsaAccessName = $query['webrsaAccessName'];
-				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'] );
+				$controller = $query['controller'];
+				$view_action = $query['view_action'];
+				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['controller'] );
 
 				if( 'Personne' !== $modelName ) {
 					// Conditions
@@ -778,6 +788,8 @@
 					$records = $this->Personne->find( 'all', $query );
 				}
 
+				$records = Hash::insert( $records, '{n}.Fichiermodule.controller', $controller );
+				$records = Hash::insert( $records, '{n}.Fichiermodule.view_action', $view_action );
 				$records = $this->_computeAccesses( $records, $personne_id, compact( 'webrsaModelName', 'webrsaAccessName' ) );
 
 				$results = array_merge(
