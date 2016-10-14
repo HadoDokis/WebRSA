@@ -666,7 +666,7 @@
 							'title' => false,
 							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Rendezvous', 'impression' )
 						),
-						'/Cohortestransfertspdvs93/impression/#NvOrientstruct.id#' => array(
+						'/Cohortestransfertspdvs93/impression/#Orientstruct.id#' => array(
 							'msgid' => 'Imprimer',
 							'class' => 'impression',
 							'condition' => '"#Impression.name#" == "Transfertpdv93"',
@@ -709,18 +709,10 @@
 							'title' => false,
 							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Fichesprescriptions93', 'view' )
 						),
-						'/Orientsstructs/view/#NvOrientstruct.id#' => array(
-							'msgid' => 'Voir',
-							'class' => 'view external',
-							'condition' => '"#Impression.name#" == "Transfertpdv93"',
-							'condition_group' => 'view',
-							'title' => false,
-							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Orientsstructs', 'view' )
-						),
 						'/Orientsstructs/view/#Orientstruct.id#' => array(
 							'msgid' => 'Voir',
 							'class' => 'view external',
-							'condition' => '"#Impression.name#" == "Orientstruct"',
+							'condition' => 'in_array( "#Impression.name#", array( "Orientstruct", "Transfertpdv93" ) )',
 							'condition_group' => 'view',
 							'title' => false,
 							'disabled' => Accompagnementbeneficiaire93Permissions::disabled( 'Orientsstructs', 'view' )
@@ -774,17 +766,10 @@
 						'condition_group' => 'index',
 						'title' => false
 					),
-					'/Orientsstructs/index/#NvOrientstruct.personne_id#' => array(
-						'msgid' => 'Liste',
-						'class' => 'index external',
-						'condition' => '"#Impression.name#" == "Transfertpdv93"',
-						'condition_group' => 'index',
-						'title' => false
-					),
 					'/Orientsstructs/index/#Orientstruct.personne_id#' => array(
 						'msgid' => 'Liste',
 						'class' => 'index external',
-						'condition' => '"#Impression.name#" == "Orientstruct"',
+						'condition' => 'in_array( "#Impression.name#", array( "Orientstruct", "Transfertpdv93" ) )',
 						'condition_group' => 'index',
 						'title' => false
 					),

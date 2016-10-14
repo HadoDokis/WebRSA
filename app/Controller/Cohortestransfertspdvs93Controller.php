@@ -72,26 +72,26 @@
 			'Option',
 			'Transfertpdv93',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -101,8 +101,8 @@
 		public $crudMap = array(
 			'atransferer' => 'read',
 			'exportcsv' => 'read',
-			'impression' => 'update',
-			'impressions' => 'update',
+			'impression' => 'read',
+			'impressions' => 'read',
 			'transferes' => 'read',
 		);
 
