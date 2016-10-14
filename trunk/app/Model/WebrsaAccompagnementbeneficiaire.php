@@ -853,24 +853,28 @@
 						'Cer93.positioncer' => array( '99rejete', '99valide' )
 					)
 				),
-				'/Cohortestransfertspdvs93/impression/#NvOrientstruct.id#' => array(
-					'modelName' => 'Transfertpdv93',
+				'/Cohortestransfertspdvs93/impression/#Orientstruct.id#' => array(
+					'pdf' => true, // Stocké dans la table PDF pour le 93
+					'name' => 'Transfertpdv93',
+					'modelName' => 'Orientstruct',
+					'webrsaAccessName' => 'WebrsaAccessTransfertspdvs93',
+					'links' => array(
+						'structurereferente_id' => 'structurereferente_id',
+						'referent_id' => 'referent_id'
+					),
 					'fields' => array(
-						'NvOrientstruct.id',
-						'NvOrientstruct.personne_id',
-						'Transfertpdv93.created',
+						'Orientstruct.id',
+						'Orientstruct.personne_id',
+						'"NvTransfertpdv93"."created" AS "Transfertpdv93__created"',
 						'\'impression\' AS "Impression__impression"',
 						'\'Courrier transfert\' AS "Impression__type"',
 					),
 					'joins' => array(
-						'NvOrientstruct' => array(
-							'type' => 'INNER',
-							'joins' => array(
-								'Personne' => array(
-									'type' => 'INNER'
-								)
-							)
-						)
+						'NvTransfertpdv93' => array( 'type' => 'INNER' ),
+						'Personne' => array( 'type' => 'INNER' )
+					),
+					'conditions' => array(
+						'Orientstruct.origine' => 'demenagement'
 					)
 				),
 //				'/Commissionseps/impressionDecision/#Passagecommissionep.id#' => array(
@@ -936,6 +940,10 @@
 				'/Orientsstructs/impression/#Orientstruct.id#' => array(
 					'pdf' => true, // Stocké dans la table PDF pour le 93
 					'modelName' => 'Orientstruct',
+					'links' => array(
+						'structurereferente_id' => 'structurereferente_id',
+						'referent_id' => 'referent_id'
+					),
 					'fields' => array(
 						'Orientstruct.id',
 						'Orientstruct.personne_id',
@@ -1025,7 +1033,8 @@
 					$query = (array)$query;
 					$query += array(
 						'pdf' => false,
-						'contain' => false
+						'contain' => false,
+						'links' => null
 					);
 
 					if( !isset( $query['name'] ) ) {
@@ -1080,8 +1089,9 @@
 				$webrsaAccessName = $query['webrsaAccessName'];
 				$name = $query['name'];
 				$pdf = $query['pdf'];
+				$links = $query['links'];
 
-				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['pdf'], $query['name'] );
+				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['pdf'], $query['name'], $query['links'] );
 
 				if( 'Personne' !== $modelName ) {
 					if( isset( $this->Personne->{$modelName} ) ) {
@@ -1107,10 +1117,12 @@
 						$Model->Behaviors->attach( 'WebrsaStructurereferenteliee' );
 					}
 
+					$links = false === empty( $links ) ? $links : $Model->links();
+
 					$query = $Model->completeQueryHorsZone(
 						$query,
 						$structuresreferentes_ids,
-						$Model->links()
+						$links
 					);
 
 					$Model->forceVirtualFields = true;

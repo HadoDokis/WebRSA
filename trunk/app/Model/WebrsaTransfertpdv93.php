@@ -54,21 +54,22 @@
 		public function getDataForAccess( array $conditions, array $params = array() ) {
 			$query = array(
 				'fields' => array(
-					'Memo.id',
-					'Memo.personne_id',
+					'Transfertpdv93.id',
+					'Transfertpdv93.personne_id',
 				),
 				'conditions' => $conditions,
 				'joins' => array(
-					$this->Memo->join( 'Personne' )
+					$this->Transfertpdv93->join( 'NvOrientstruct' ),
+					$this->Transfertpdv93->NvOrientstruct->join( 'Personne' )
 				),
 				'contain' => false,
 				'order' => array(
-					'Memo.created' => 'DESC',
-					'Memo.id' => 'DESC',
+					'Transfertpdv93.created' => 'DESC',
+					'Transfertpdv93.id' => 'DESC',
 				)
 			);
 
-			$results = $this->Memo->find( 'all', $this->completeVirtualFieldsForAccess( $query ) );
+			$results = $this->Transfertpdv93->find( 'all', $this->completeVirtualFieldsForAccess( $query ) );
 			return $results;
 		}
 
