@@ -325,7 +325,7 @@
 									echo '<li>'.$this->Xhtml->link(
 										'Impression des fiches synthétiques',
 										array( 'controller' => 'commissionseps', 'action' => 'fichessynthese', $commissionep['Commissionep']['id'], true ),
-										array( 'class' => 'button fichessynthese' ),
+										array( 'class' => 'button fichessynthese', 'enabled' => false === empty( $dossierseps ) ),
                                         'Etes-vous sûr de vouloir imprimer les fiches synthétiques ?'
 									).'</li>';
 								}
