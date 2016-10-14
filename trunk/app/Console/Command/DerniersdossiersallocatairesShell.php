@@ -136,7 +136,7 @@
 		 *
 		 */
 		public function help() {
-			$this->out( "Usage: cake/console/cake derniersdossiersallocataires" );
+			$this->out( "Usage: sudo -u www-data lib/Cake/Console/cake derniersdossiersallocataires" );
 
 			$this->_stop( 0 );
 		}
