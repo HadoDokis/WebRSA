@@ -16,7 +16,7 @@ msgstr "Catégories de rôles (onglets)"
 msgid "Categoriesactionroles::add"
 msgstr "Ajout d'une catégorie de rôle"
 
-msgid "Categoriesactionroles::add"
+msgid "Categoriesactionroles::edit"
 msgstr "Modification d'une catégorie de rôle"
 
 msgid "Categoriesactionroles::delete"
