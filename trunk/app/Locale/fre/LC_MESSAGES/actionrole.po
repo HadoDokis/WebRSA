@@ -28,6 +28,9 @@ msgstr "Intitulé de l'action du rôle"
 msgid "Actionrole.role_id"
 msgstr "Rôle lié :"
 
+msgid "Actionrole.categorieactionrole_id"
+msgstr "Catégorie de l'action du rôle (onglet)"
+
 msgid "Actionrole.description"
 msgstr "Description"
 

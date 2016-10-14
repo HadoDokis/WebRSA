@@ -25,6 +25,7 @@
             'Actionrole.id' => array( 'type' => 'hidden' ),
             'Actionrole.name' => array( 'type' => 'text', 'required' => true ),
             'Actionrole.role_id' => array( 'type' => 'select', 'required' => true ),
+            'Actionrole.categorieactionrole_id' => array( 'type' => 'select', 'required' => true ),
             'Actionrole.description' => array( 'type' => 'textarea' ),
             'Actionrole.url' => array( 'type' => 'textarea', 'required' => true ),
         ),

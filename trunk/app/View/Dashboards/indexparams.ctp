@@ -25,6 +25,19 @@
 
                 echo $this->Xhtml->tableCells(
                     array(
+                        'Catégories de rôles (onglets)',
+                        $this->Xhtml->viewLink(
+                            'Voir la table',
+                            array('controller' => 'categoriesactionroles', 'action' => 'index'),
+                            $this->Permissions->check('categoriesactionroles', 'index')
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+
+                echo $this->Xhtml->tableCells(
+                    array(
                         'Action des rôles',
                         $this->Xhtml->viewLink(
                             'Voir la table',
