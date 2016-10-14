@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe ActionrolesController.
+	 * Code source de la classe CategoriesactionrolesController.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,18 +10,18 @@
 
     App::import( 'Behaviors', 'Occurences' );
 	/**
-	 * La classe ActionrolesController ...
+	 * La classe CategoriesactionrolesController ...
 	 *
 	 * @package app.Controller
 	 */
-	class ActionrolesController extends AppController
+	class CategoriesactionrolesController extends AppController
 	{
 		/**
 		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
-		public $name = 'Actionroles';
+		public $name = 'Categoriesactionroles';
 
 		/**
 		 * Components utilisés.
@@ -50,7 +50,7 @@
 		 * @var array
 		 */
 		public $uses = array(
-			'Actionrole',
+			'Categorieactionrole',
 		);
 		
 		/**
@@ -90,17 +90,17 @@
 		 * Listing du contenu de la table
 		 */
 		public function index() {
-			$this->Actionrole->Behaviors->attach( 'Occurences' );
+			$this->Categorieactionrole->Behaviors->attach( 'Occurences' );
   
-            $querydata = $this->Actionrole->qdOccurencesExists(
+            $querydata = $this->Categorieactionrole->qdOccurencesExists(
                 array(
-                    'fields' => $this->Actionrole->fields(),
-                    'order' => array( 'Actionrole.name ASC' )
+                    'fields' => $this->Categorieactionrole->fields(),
+                    'order' => array( 'Categorieactionrole.name ASC' )
                 )
             );
 
             $this->paginate = $querydata;
-            $actionroles = $this->paginate('Actionrole');
+            $actionroles = $this->paginate('Categorieactionrole');
 			$options = $this->_options();
             $this->set( compact('actionroles', 'options'));
 		}
@@ -125,8 +125,8 @@
             }
 
 			if( !empty( $this->request->data ) ) {
-				$this->Actionrole->create( $this->request->data );
-				$success = $this->Actionrole->save();
+				$this->Categorieactionrole->create( $this->request->data );
+				$success = $this->Categorieactionrole->save();
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
@@ -134,17 +134,17 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
-				$this->request->data = $this->Actionrole->find(
+				$this->request->data = $this->Categorieactionrole->find(
 					'first',
 					array(
 						'contain' => false,
-						'conditions' => array( 'Actionrole.id' => $id )
+						'conditions' => array( 'Categorieactionrole.id' => $id )
 					)
 				);
 				$this->assert( !empty( $this->request->data ), 'error404' );
 			}
 			else{
-				$this->request->data['Actionrole']['actif'] = true;
+				$this->request->data['Categorieactionrole']['actif'] = true;
 			}
 			
 			$options = $this->_options();
@@ -178,10 +178,7 @@
 		 * @return array
 		 */
 		protected function _options() {
-			$options['Actionrole']['role_id'] = $this->Actionrole->Role->find('list', array('order' => 'name', 'conditions' => array('actif' => 1)));
-			$options['Actionrole']['categorieactionrole_id'] = $this->Actionrole->Categorieactionrole->find('list', array('order' => 'name'));
-			
-			return $options;
+			return array();
 		}
 	}
 ?>

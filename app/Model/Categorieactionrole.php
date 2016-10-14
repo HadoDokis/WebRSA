@@ -1,24 +1,24 @@
 <?php
 	/**
-	 * Code source de la classe Actionrole.
+	 * Code source de la classe Categorieactionrole.
 	 *
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
 
 	/**
-	 * La classe Actionrole ...
+	 * La classe Categorieactionrole ...
 	 *
 	 * @package app.Model
 	 */
-	class Actionrole extends AppModel
+	class Categorieactionrole extends AppModel
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'Actionrole';
+		public $name = 'Categorieactionrole';
 
 		/**
 		 * Récursivité par défaut du modèle.
@@ -41,16 +41,9 @@
 		/**
 		 * @var array
 		 */
-		public $belongsTo = array(
-			'Role' => array(
-				'className' => 'Role',
-				'foreignKey' => 'role_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Categorieactionrole' => array(
-				'className' => 'Categorieactionrole',
+		public $hasMany = array(
+			'Actionrole' => array(
+				'className' => 'Actionrole',
 				'foreignKey' => 'categorieactionrole_id',
 				'conditions' => '',
 				'fields' => '',
@@ -58,4 +51,3 @@
 			),
 		);
 	}
-?>

@@ -1,29 +1,26 @@
 <?php
 	echo $this->Xhtml->tag(
 		'h1',
-		$this->pageTitle = __d( 'actionrole', "Actionroles::{$this->action}" )
+		$this->pageTitle = __d( 'categorieactionrole', "Categoriesactionroles::{$this->action}" )
 	);
 
 	// occurences renvoi false si il n'y a pas de modèle liés autrement que en belongsTo, on s'assure qu'un false/null soit à 0
 	foreach ($actionroles as $key => $value) {
-		$actionroles[$key]['Actionrole']['occurences'] = (int)Hash::get($value, 'Actionrole.occurences');
+		$actionroles[$key]['Categorieactionrole']['occurences'] = (int)Hash::get($value, 'Categorieactionrole.occurences');
 	}
 	
 	echo $this->Default2->index(
 		$actionroles,
 		array(
-			'Actionrole.role_id',
-			'Actionrole.categorieactionrole_id',
-			'Actionrole.name',
-			'Actionrole.description',
+			'Categorieactionrole.name',
 		),
 		array(
 			'cohorte' => false,
 			'actions' => array(
-				'Actionroles::edit',
-				'Actionroles::delete' => array( 'disabled' => '\'#Actionrole.occurences#\'!= "0"' )
+				'Categoriesactionroles::edit',
+				'Categoriesactionroles::delete' => array( 'disabled' => '\'#Categorieactionrole.occurences#\'!= "0"' )
 			),
-			'add' => 'Actionroles::add',
+			'add' => 'Categoriesactionroles::add',
 			'options' => $options
 		)
 	);

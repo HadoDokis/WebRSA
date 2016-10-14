@@ -100,7 +100,7 @@
 				'joins' => array(
 					$this->Role->join('RoleUser'),
 				),
-				'contain' => array('Actionrole'),
+				'contain' => array('Actionrole' => array('Categorieactionrole')),
 				'conditions' => array(
 					'Role.actif' => 1,
 					'RoleUser.user_id' => $this->Session->read('Auth.User.id'),

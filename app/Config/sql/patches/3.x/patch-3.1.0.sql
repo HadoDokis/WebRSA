@@ -296,29 +296,42 @@ CREATE TABLE structuresreferentes_tableauxsuivispdvs93 (
 -- Dashboard
 --------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS actionroles, roles_users, roles;
+DROP TABLE IF EXISTS categoriesactionroles, actionroles, roles_users, roles;
 
 CREATE TABLE roles (
-	id SERIAL NOT NULL PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	actif SMALLINT NOT NULL
+	id							SERIAL NOT NULL PRIMARY KEY,
+	name						VARCHAR(255) NOT NULL,
+	actif						SMALLINT NOT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
 );
 ALTER TABLE roles ADD CONSTRAINT roles_actif_in_list_chk CHECK (cakephp_validate_in_list(actif, ARRAY[0, 1]));
 CREATE UNIQUE INDEX roles_name_unique ON roles (name);
 
 CREATE TABLE roles_users (
-	id SERIAL NOT NULL PRIMARY KEY,
-	role_id	INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	user_id	INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+	id SERIAL					NOT NULL PRIMARY KEY,
+	role_id						INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id						INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE UNIQUE INDEX roles_users_unique ON roles_users (role_id, user_id);
 
+CREATE TABLE categoriesactionroles (
+	id							SERIAL NOT NULL PRIMARY KEY,
+	name						VARCHAR(255),
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+CREATE UNIQUE INDEX categoriesactionroles_unique ON categoriesactionroles (name);
+
 CREATE TABLE actionroles (
-	id SERIAL NOT NULL PRIMARY KEY,
-	role_id	INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	name VARCHAR(255),
-	description TEXT,
-	url TEXT
+	id							SERIAL NOT NULL PRIMARY KEY,
+	role_id						INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	categorieactionrole_id		INTEGER NOT NULL REFERENCES categoriesactionroles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	name						VARCHAR(255),
+	description					TEXT,
+	url							TEXT,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
 );
 CREATE UNIQUE INDEX actionroles_role_name_unique ON actionroles (role_id, name);
 
