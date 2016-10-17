@@ -18,6 +18,10 @@
 						'dtdemrsa_from' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '-1 week' ) ) ),
 						// Au (inclus)
 						'dtdemrsa_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( 'now' ) ) ),
+					),
+					'Situationdossierrsa' => array(
+						'etatdosrsa_choice' => '0',
+						'etatdosrsa' => array( '0','2', '3', '4' )
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche

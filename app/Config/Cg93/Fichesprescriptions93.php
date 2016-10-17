@@ -22,12 +22,14 @@
 						'nombre_total' => '0'
 					),
 					'Situationdossierrsa' => array(
-						'etatdosrsa_choice' => '1',
-						'etatdosrsa' => array( '2', '3', '4' )
+						'etatdosrsa_choice' => '0',
+						'etatdosrsa' => array( '0','2', '3', '4' )
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
-				'accepted' => array(),
+				'accepted' => array(
+					'Situationdossierrsa.etatdosrsa' => array( 0, 1, 2, 3, 4, 5, 6 )
+				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
 			),
@@ -36,7 +38,9 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(),
 				// 2.2 Conditions supplémentaires optionnelles
-				'conditions' => array(),
+				'conditions' => array(
+					'Situationdossierrsa.etatdosrsa <>' => 'Z'
+				),
 				// 2.3 Tri par défaut
 				'order' => array()
 			),
@@ -55,6 +59,7 @@
 					'Adresse.nomcom',
 					'Ficheprescription93.statut',
 					'Actionfp93.name',
+					'Prestatairefp93.name',
 					'Dossier.locked' => array(
 						'type' => 'boolean',
 						'class' => 'dossier_locked'
@@ -75,6 +80,10 @@
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(
+					'Calculdroitrsa.toppersdrodevorsa',
+					'Personne.age' => array( 'label' => 'Age' ),
+					'Ficheprescription93.benef_retour_presente',
+					'Ficheprescription93.personne_a_integre',
 					'Personne.dtnai',
 					'Dossier.numdemrsa',
 					'Personne.nir',
@@ -106,10 +115,12 @@
 					'Dossier.numdemrsa',
 					'Dossier.dtdemrsa',
 					'Dossier.matricule',
-					'Personne.nom_complet',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
 					'Prestation.rolepers',
 					'Ficheprescription93.statut',
-					'Referent.nom_complet',
+					'Referent.nom_complet' => array( 'label' => 'Referent etablissant la FP' ),
 					'Adresse.numvoie' => array( 'domain' => 'adresse' ),
 					'Adresse.libtypevoie' => array( 'domain' => 'adresse' ),
 					'Adresse.nomvoie' => array( 'domain' => 'adresse' ),
@@ -128,6 +139,7 @@
 					'Filierefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
 					'Prestatairefp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
 					'Actionfp93.name' => array( 'domain' => 'cataloguespdisfps93' ),
+					'Ficheprescription93.benef_retour_presente',
 					'Ficheprescription93.dd_action',
 					'Ficheprescription93.df_action',
 					'Ficheprescription93.date_signature',
