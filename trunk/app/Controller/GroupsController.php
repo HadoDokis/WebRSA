@@ -50,26 +50,26 @@
 		public $uses = array(
 			'Group',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Groups:edit',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -82,7 +82,7 @@
 			'edit' => 'update',
 			'index' => 'read',
 		);
-		
+
 		/**
 		*
 		*/
@@ -253,6 +253,14 @@
 
 			$this->set('listeCtrlAction', $this->Menu->menuCtrlActionAffichage());
 			$this->request->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$group_id));
+
+			// Vérification: le nombre de champs qui seront renvoyés par le
+			// formulaire ne doit pas excéder ce qui est défini dans max_input_vars
+			$max_input_vars = ini_get( 'max_input_vars' );
+			if( 2500 > $max_input_vars ) {
+				$message = 'La valeur de max_input_vars (%d) est trop faible pour permettre l\'enregistrement des droits. Merci de vérifier la valeur recommandée dans la partie "Vérification de l\'application"';
+				$this->Session->setFlash( sprintf( $message, $max_input_vars ), 'flash/error' );
+			}
 
 			// Liste des groupes parents pour le menu déroulant
 			$querydata = array(
