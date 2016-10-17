@@ -19,7 +19,7 @@
 	{
 		/**
 		 * Paramètres par défaut
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
@@ -32,7 +32,7 @@
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
@@ -44,7 +44,7 @@
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
@@ -55,19 +55,23 @@
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
 		 */
 		protected static function _edit(array $record, array $params) {
 			$params = self::params($params);
-			return Hash::get($record, 'Rendezvous.dernier') && !Hash::get($params, 'dossiercommissionLie');
+			return (
+					Hash::get($record, 'Rendezvous.dernier')
+					|| 93 === $params['departement']
+				)
+				&& !Hash::get($params, 'dossiercommissionLie');
 		}
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
@@ -78,19 +82,23 @@
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
 		 */
 		protected static function _delete(array $record, array $params) {
 			$params = self::params($params);
-			return Hash::get($record, 'Rendezvous.dernier') && !Hash::get($params, 'dossiercommissionLie');
+			return (
+					Hash::get($record, 'Rendezvous.dernier')
+					|| 93 === $params['departement']
+				)
+				&& !Hash::get($params, 'dossiercommissionLie');
 		}
 
 		/**
 		 * Permission d'accès
-		 * 
+		 *
 		 * @param array $record
 		 * @param array $params
 		 * @return boolean
@@ -98,21 +106,21 @@
 		protected static function _filelink(array $record, array $params) {
 			return true;
 		}
-		
+
 		/**
 		 * Liste les actions disponnible
-		 * 
+		 *
 		 * @param array $params
 		 * @return array
 		 */
 		public static function actions(array $params = array()) {
 			$result = self::normalize_actions(
 				array(
-					'add' => array('ajoutPossible' => true), 
-					'view', 
-					'edit' => array('dossiercommissionLie' => true), 
-					'impression', 
-					'delete' => array('dossiercommissionLie' => true), 
+					'add' => array('ajoutPossible' => true),
+					'view',
+					'edit' => array('dossiercommissionLie' => true),
+					'impression',
+					'delete' => array('dossiercommissionLie' => true),
 					'filelink'
 				)
 			);
