@@ -19,6 +19,10 @@
 						// Au (inclus)
 						'dtdemrsa_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( 'now' ) ) ),
 					),
+					'Situationdossierrsa' => array(
+						'etatdosrsa_choice' => 0,
+						'etatdosrsa' => array('0', '2', '3', '4' )
+					),
 					'Rendezvous' => array(
 						// Case à cocher "Filtrer par date de RDV"
 						'daterdv' => '0',
@@ -29,7 +33,9 @@
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
-				'accepted' => array(),
+				'accepted' => array(
+					'Situationdossierrsa.etatdosrsa' => array( 0, 1, 2, 3, 4, 5, 6 )
+				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
 			),
@@ -38,7 +44,9 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(),
 				// 2.2 Conditions supplémentaires optionnelles
-				'conditions' => array(),
+				'conditions' => array(
+					'Situationdossierrsa.etatdosrsa <>' => 'Z'
+				),
 				// 2.3 Tri par défaut
 				'order' => array( 'Rendezvous.daterdv' )
 			),
@@ -73,12 +81,14 @@
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(
-					'Personne.dtnai',
-					'Adresse.numcom',
-					'Personne.nir',
+					'Calculdroitrsa.toppersdrodevorsa',
+					'Personne.age' => array(
+						'label' => 'Age'
+					),
 					'Prestation.rolepers',
 					'Rendezvous.thematiques' => array(
-						'type' => 'list'
+						'type' => 'list',
+						'label' => 'Thématique du RDV'
 					),
 					'Structurereferenteparcours.lib_struc',
 					'Referentparcours.nom_complet',

@@ -9,6 +9,13 @@
 			'filters' => array(
 				// 1.1 Valeurs par défaut des filtres de recherche
 				'defaults' => array(
+					'Dossier' => array(
+						'dernier' => '1'
+					),
+					'Situationdossierrsa' => array(
+						'etatdosrsa_choice' => '0',
+						'etatdosrsa' => array( '0','2', '3', '4' )
+					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
 				'accepted' => array(),

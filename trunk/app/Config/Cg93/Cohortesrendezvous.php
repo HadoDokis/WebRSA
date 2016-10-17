@@ -10,13 +10,13 @@
 				'Dossier' => array(
 					'dernier' => '1'
 				),
-				/*'Situationdossierrsa' => array(
-					'etatdosrsa_choice' => 1,
-					'etatdosrsa' => array( '2', '3', '4' )
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => 0,
+					'etatdosrsa' => array( '0', '2', '3', '4' )
 				),
 				'Calculdroitrsa' => array(
 					'toppersdrodevorsa' => 1
-				),*/
+				),
 				'Rendezvous' => array(
 					'statutrdv_id' => 2, // Statut "prévu"
 					'daterdv' => '1',

@@ -9,19 +9,16 @@
 			'filters' => array(
 				// 1.1 Valeurs par défaut des filtres de recherche
 				'defaults' => array(
-					'Dossier' => array(
-						// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
-						'dernier' => '1',
-						// Case à cocher "Filtrer par date de demande RSA"
-						'dtdemrsa' => '0',
-						// Du (inclus)
-						'dtdemrsa_from' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '-1 week' ) ) ),
-						// Au (inclus)
-						'dtdemrsa_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( 'now' ) ) ),
+					'Dossier' => array( 'dernier' => '1' ),
+					'Situationdossierrsa' => array(
+						'etatdosrsa_choice' => '0',
+						'etatdosrsa' => array( '0', '2', '3', '4' )
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
-				'accepted' => array(),
+				'accepted' => array(
+					'Situationdossierrsa.etatdosrsa' => array( 'Z', 0, 1, 2, 3, 4, 5, 6 )
+				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array()
 			),
@@ -30,7 +27,9 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(),
 				// 2.2 Conditions supplémentaires optionnelles
-				'conditions' => array(),
+				'conditions' => array(
+					'Situationdossierrsa.etatdosrsa <>' => 'Z'
+				),
 				// 2.3 Tri par défaut
 				'order' => array( 'Contratinsertion.df_ci' )
 			),
@@ -63,9 +62,8 @@
 				),
 				// 5.3 Infobulle optionnelle du tableau de résultats
 				'innerTable' => array(
-					'Personne.dtnai',
-					'Adresse.numcom',
-					'Personne.nir',
+					'Calculdroitrsa.toppersdrodevorsa',
+					'Personne.age' => array( 'label' => 'Age' ),
 					'Prestation.rolepers',
 					'Situationdossierrsa.etatdosrsa',
 					'Structurereferenteparcours.lib_struc',
@@ -96,10 +94,13 @@
 					'Dossier.numdemrsa',
 					'Dossier.matricule',
 					'Situationdossierrsa.etatdosrsa',
+					'Calculdroitrsa.toppersdrodevorsa',
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
 					'Dossier.matricule',
+					'Personne.numport',
+					'Personne.email',
 					'Adresse.numvoie',
 					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
@@ -277,7 +278,9 @@
 					)
 				),
 				// 1.2 Restriction des valeurs qui apparaissent dans les filtres de recherche
-				'accepted' => array(),
+				'accepted' => array(
+					'Situationdossierrsa.etatdosrsa' => array( 0, 1, 2, 3, 4, 5, 6 )
+				),
 				// 1.3 Ne pas afficher ni traiter certains filtres de recherche
 				'skip' => array(
 					'Dossier.anciennete_dispositif',
@@ -297,7 +300,9 @@
 				// 2.1 Restreindre ou forcer les valeurs renvoyées par le filtre de recherche
 				'restrict' => array(),
 				// 2.2 Conditions supplémentaires optionnelles
-				'conditions' => array(),
+				'conditions' => array(
+					'Situationdossierrsa.etatdosrsa <>' => 'Z'
+				),
 				// 2.3 Tri par défaut
 				'order' => array( 'Contratinsertion.df_ci' => 'ASC' )
 			),
