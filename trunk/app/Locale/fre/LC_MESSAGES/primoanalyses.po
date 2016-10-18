@@ -27,6 +27,12 @@ msgstr "Avis technique sur la Primo analyse"
 msgid "/Primoanalyses/validation/:heading"
 msgstr "Validation de la Primo analyse"
 
+msgid "/Primoanalyses/vu/:heading"
+msgstr "Action \"Vu\" de la Primo analyse"
+
+msgid "/Primoanalyses/afaire/:heading"
+msgstr "Action \"A faire\" de la Primo analyse"
+
 
 # ==============================================================================
 # Champs

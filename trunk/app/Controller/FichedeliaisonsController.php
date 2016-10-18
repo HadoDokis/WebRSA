@@ -110,6 +110,13 @@
 		);
 		
 		/**
+		 * Nom de l'array contenant la config pour l'envoi d'e-mails
+		 * @see app/Config/email.php
+		 * @var String
+		 */
+		public $configEmail = 'mail_fichedeliaison';
+		
+		/**
 		 * Pagination sur la table.
 		 * 
 		 * @param integer $foyer_id
@@ -157,6 +164,14 @@
 				$data['Fichedeliaison']['user_id'] = $this->Session->read('Auth.User.id');
 				$data['Fichedeliaison']['foyer_id'] = $foyer_id;
 				
+				if ($data['Fichedeliaison']['direction'] === 'interne_vers_externe') {
+					$data['Fichedeliaison']['expediteur_id'] = $data['Fichedeliaison']['expediteurinterne_id'];
+					$data['Fichedeliaison']['destinataire_id'] = $data['Fichedeliaison']['destinataireexterne_id'];
+				} else {
+					$data['Fichedeliaison']['expediteur_id'] = $data['Fichedeliaison']['expediteurexterne_id'];
+					$data['Fichedeliaison']['destinataire_id'] = $data['Fichedeliaison']['destinataireinterne_id'];
+				}
+				
 				$this->Fichedeliaison->begin();
 				$this->Fichedeliaison->create($data['Fichedeliaison']);
 				$success = $this->Fichedeliaison->save();
@@ -173,6 +188,37 @@
 						);
 						$this->Fichedeliaison->FichedeliaisonPersonne->create($insert);
 						$success = $this->Fichedeliaison->FichedeliaisonPersonne->save() && $success;
+					}	
+				}
+				
+				$this->Fichedeliaison->Destinataireemail->deleteAllUnbound(array('fichedeliaison_id' => $fichedeliaison_id));
+				if ($success && Hash::get($this->request->data, 'Fichedeliaison.envoiemail') 
+					&& !empty($this->request->data['Destinataireemail'])
+				) {
+					foreach ((array)$this->request->data['Destinataireemail']['a'] as $destinataire) {
+						preg_match('/[\d]+_(.*)/', $destinataire, $match); // equivalent de suffix() mais compatible avec un email
+						
+						$this->Fichedeliaison->Destinataireemail->create(
+							array(
+								'fichedeliaison_id' => $fichedeliaison_id,
+								'name' => $match[1],
+								'type' => 'A',
+							)
+						);
+						$success = $this->Fichedeliaison->Destinataireemail->save() && $success;
+					}
+					
+					foreach ((array)Hash::get($this->request->data, 'Destinataireemail.cc') as $destinataire) {
+						preg_match('/[\d]+_(.*)/', $destinataire, $match); // equivalent de suffix() mais compatible avec un email
+						
+						$this->Fichedeliaison->Destinataireemail->create(
+							array(
+								'fichedeliaison_id' => $fichedeliaison_id,
+								'name' => $match[1],
+								'type' => 'CC',
+							)
+						);
+						$success = $this->Fichedeliaison->Destinataireemail->save() && $success;
 					}
 				}
 				
@@ -199,6 +245,25 @@
 			$foyer_id = $this->Fichedeliaison->foyerId($fichedeliaison_id);
 			$this->_edit($foyer_id);
 			$this->request->data = $this->Fichedeliaison->find('first', array('conditions' => array('id' => $fichedeliaison_id)));
+			
+			/**
+			 * Expediteur/destinataire
+			 */
+			if (hash::get($this->request->data, 'Fichedeliaison.direction') === 'externe_vers_interne') {
+				$this->request->data['Fichedeliaison']['expediteurexterne_id'] = 
+					$this->request->data['Fichedeliaison']['expediteur_id'];
+				$this->request->data['Fichedeliaison']['destinataireinterne_id'] = 
+					$this->request->data['Fichedeliaison']['destinataire_id'];
+			} else {
+				$this->request->data['Fichedeliaison']['expediteurinterne_id'] = 
+					$this->request->data['Fichedeliaison']['expediteur_id'];
+				$this->request->data['Fichedeliaison']['destinataireexterne_id'] = 
+					$this->request->data['Fichedeliaison']['destinataire_id'];
+			}
+			
+			/**
+			 * Concerne
+			 */
 			$this->request->data['FichedeliaisonPersonne']['personne_id'] = 
 				Hash::extract(
 					$this->Fichedeliaison->FichedeliaisonPersonne->find('all', 
@@ -207,6 +272,33 @@
 					'{n}.FichedeliaisonPersonne.personne_id'
 				)
 			;
+			
+			/**
+			 * Destinataires e-mail
+			 */
+			$a = Hash::extract(
+				$this->Fichedeliaison->Destinataireemail->find('all', 
+					array('conditions' => array('fichedeliaison_id' => $fichedeliaison_id, 'type' => 'A'))
+				), 
+				'{n}.Destinataireemail.name'
+			);
+			$this->request->data['Destinataireemail']['a'] = array();
+			foreach ($a as $email) {
+				$destinataire_id = Hash::get($this->request->data, 'Fichedeliaison.destinataire_id');
+				$this->request->data['Destinataireemail']['a'][] = $destinataire_id.'_'.h($email);
+			}
+			
+			$cc = Hash::extract(
+				$this->Fichedeliaison->Destinataireemail->find('all', 
+					array('conditions' => array('fichedeliaison_id' => $fichedeliaison_id, 'type' => 'CC'))
+				), 
+				'{n}.Destinataireemail.name'
+			);
+			$this->request->data['Destinataireemail']['cc'] = array();
+			foreach ($cc as $email) {
+				$destinataire_id = Hash::get($this->request->data, 'Fichedeliaison.destinataire_id');
+				$this->request->data['Destinataireemail']['cc'][] = $destinataire_id.'_'.h($email);
+			}
 		}
 
 		/**
@@ -233,6 +325,33 @@
 					'{n}.FichedeliaisonPersonne.personne_id'
 				)
 			;
+			
+			/**
+			 * Destinataires e-mail
+			 */
+			$a = Hash::extract(
+				$this->Fichedeliaison->Destinataireemail->find('all', 
+					array('conditions' => array('fichedeliaison_id' => $fichedeliaison_id, 'type' => 'A'))
+				), 
+				'{n}.Destinataireemail.name'
+			);
+			$this->request->data['Destinataireemail']['a'] = array();
+			foreach ($a as $email) {
+				$destinataire_id = Hash::get($this->request->data, 'Fichedeliaison.destinataire_id');
+				$this->request->data['Destinataireemail']['a'][] = $destinataire_id.'_'.h($email);
+			}
+			
+			$cc = Hash::extract(
+				$this->Fichedeliaison->Destinataireemail->find('all', 
+					array('conditions' => array('fichedeliaison_id' => $fichedeliaison_id, 'type' => 'CC'))
+				), 
+				'{n}.Destinataireemail.name'
+			);
+			$this->request->data['Destinataireemail']['cc'] = array();
+			foreach ($cc as $email) {
+				$destinataire_id = Hash::get($this->request->data, 'Fichedeliaison.destinataire_id');
+				$this->request->data['Destinataireemail']['cc'][] = $destinataire_id.'_'.h($email);
+			}
 		}
 		
 		/**
@@ -288,6 +407,12 @@
 				if ($success) {
 					$this->Fichedeliaison->commit();
 					$etat = current($this->Fichedeliaison->updatePositionsById($fichedeliaison_id));
+					
+					if ($etat === 'decisionvalid' && $data['Fichedeliaison']['envoiemail'] 
+						&& empty($data['Fichedeliaison']['dateenvoiemail'])
+					) {
+						$this->_sendmail($fichedeliaison_id);
+					}
 					
 					if ($etat === 'decisionvalid') {
 						$this->_createPrimoanalyse($fichedeliaison_id);
@@ -408,6 +533,36 @@
 				'propositionprimo_id' => $this->Primoanalyse->Propositionprimo->find('list'),
 			);
 			
+			$emails = $this->Fichedeliaison->Expediteur->find('all',
+				array(
+					'fields' => array(
+						'Expediteur.id',
+						'User.email',
+					),
+					'joins' => array(
+						$this->Fichedeliaison->Expediteur->join('User')
+					),
+					'conditions' => array(
+						'Expediteur.actif' => 1,
+						'User.email IS NOT NULL',
+						'User.email !=' => ''
+					),
+					'order' => array('User.email' => 'ASC')
+				)
+			);
+			$emailsServices = array();
+			foreach ($emails as $email) {
+				$emailsServices[$email['Expediteur']['id'].'_'.h($email['User']['email'])] = $email['User']['email'];
+			}
+			
+			$servicesInterne = $this->Fichedeliaison->Expediteur->find('list',
+				array('conditions' => array('Expediteur.actif' => 1, 'Expediteur.interne' => 1))
+			);
+			$servicesExterne = $this->Fichedeliaison->Expediteur->find('list',
+				array('conditions' => array('Expediteur.actif' => 1, 'Expediteur.interne' => 0))
+			);
+			$this->set(compact('emailsServices', 'servicesInterne', 'servicesExterne'));
+			
 			$options = Hash::merge(
 				$options,
 				$this->Fichedeliaison->enums(),
@@ -441,6 +596,82 @@
 				$this->Primoanalyse->create(array('fichedeliaison_id' => $fichedeliaison_id, 'etat' => 'attaffect'));
 				return $this->Primoanalyse->save();
 			}
+		}
+		
+		/**
+		 * Permet d'envoyer un email aux personnes dans Destinataireemail
+		 * 
+		 * @param integer $fichedeliaison_id
+		 */
+		protected function _sendmail($fichedeliaison_id) {
+			$query = array(
+				'fields' => array(
+					// NOTE : ordre important pour la traduction
+					'Expediteur.name',
+					'Destinataire.name',
+					'Dossier.matricule',
+					'Motiffichedeliaison.name',
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Fichedeliaison->join('Expediteur'),
+					$this->Fichedeliaison->join('Destinataire'),
+					$this->Fichedeliaison->join('Foyer'),
+					$this->Fichedeliaison->Foyer->join('Dossier'),
+					$this->Fichedeliaison->join('Motiffichedeliaison'),
+				),
+				'conditions' => array(
+					'Fichedeliaison.id' => $fichedeliaison_id
+				)
+			);
+			
+			$result = $this->Fichedeliaison->find('first', $query);
+			
+			$params = array_merge(
+				array('Notification::email'),
+				Hash::flatten($result)
+			);
+			$message = call_user_func_array('__m', $params);
+			
+			$Email = new CakeEmail($this->configEmail);
+			
+			$Email->subject(__m('Notification::subject'));
+			
+			if (WebrsaEmailConfig::isTestEnvironment()){
+				$Email->to(WebrsaEmailConfig::getValue($this->configEmail, 'to', $Email->to()));
+			} else {
+				$Email->to(
+					Hash::extract(
+						$this->Fichedeliaison->Destinataireemail->find('all', 
+							array(
+								'fields' => 'name',
+								'conditions' => array(
+									'Destinataireemail.fichedeliaison_id' => $fichedeliaison_id,
+									'Destinataireemail.type' => 'A'
+								)
+							)
+						),
+						'{n}.Destinataireemail.name'
+					)
+				);
+				$Email->cc(
+					Hash::extract(
+						$this->Fichedeliaison->Destinataireemail->find('all', 
+							array(
+								'fields' => 'name',
+								'conditions' => array(
+									'Destinataireemail.fichedeliaison_id' => $fichedeliaison_id,
+									'Destinataireemail.type' => 'CC'
+								)
+							)
+						),
+						'{n}.Destinataireemail.name'
+					)
+				);
+			}
+			
+			$this->Fichedeliaison->id = $fichedeliaison_id;
+			return $Email->send($message) && $this->Fichedeliaison->save(array("dateenvoiemail" => date("Y-m-d")));
 		}
 	}
 ?>

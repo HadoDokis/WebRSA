@@ -147,6 +147,10 @@
 				'Permanences' => array( 'controller' => 'permanences', 'action' => 'index' ),
 				'Référents pour les structures' => array( 'controller' => 'referents', 'action' => 'index' ),
 				'Rendez-vous' => array( 'controller' => 'gestionsrdvs', 'action' => 'index' ),
+				'Services' => ( $departement === 66 )
+					? array( 'controller' => 'services66', 'action' => 'index' )
+					: null
+				,
 				'Services instructeurs' => array( 'controller' => 'servicesinstructeurs', 'action' => 'index' ),
 				'Sites d\'actions médico-sociale COVs' => ( $departement === 58 )
 					? array( 'controller' => 'sitescovs58', 'action' => 'index' )

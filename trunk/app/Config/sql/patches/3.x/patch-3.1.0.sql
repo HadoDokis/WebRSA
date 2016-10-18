@@ -87,7 +87,9 @@ ALTER TABLE savesearchs ADD CONSTRAINT savesearchs_isformenu_in_list_chk CHECK (
 -- Fiche de liaison - Paramêtrages
 --------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS avisprimoanalyses, primoanalyses, fichedeliaisons_personnes, avisfichedeliaisons, logicielprimos_primoanalyses, fichedeliaisons, motiffichedeliaisons;
+SELECT alter_table_drop_column_if_exists ('public', 'users', 'service66_id');
+DROP TABLE IF EXISTS destinatairesemails_fichedeliaisons, destinatairesemails, avisprimoanalyses, primoanalyses, fichedeliaisons_personnes, avisfichedeliaisons, logicielprimos_primoanalyses, fichedeliaisons, motiffichedeliaisons, services66;
+
 CREATE TABLE motiffichedeliaisons (
 	id SERIAL NOT NULL PRIMARY KEY,
 	name VARCHAR(255),
@@ -111,6 +113,20 @@ CREATE TABLE propositionprimos (
 );
 ALTER TABLE propositionprimos ADD CONSTRAINT propositionprimos_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY[0, 1] ) );
 
+CREATE TABLE services66 (
+	id							SERIAL NOT NULL PRIMARY KEY,
+	name						VARCHAR(255),
+	actif						SMALLINT NOT NULL,
+	interne						SMALLINT NOT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+CREATE UNIQUE INDEX services66_name_unique ON services66 (name);
+ALTER TABLE services66 ADD CONSTRAINT services66_actif_in_list_chk CHECK (cakephp_validate_in_list(actif, ARRAY[0, 1]));
+ALTER TABLE services66 ADD CONSTRAINT services66_interne_in_list_chk CHECK (cakephp_validate_in_list(interne, ARRAY[0, 1]));
+
+ALTER TABLE users ADD COLUMN service66_id INTEGER REFERENCES services66(id) ON DELETE SET NULL ON UPDATE CASCADE;
+
 --------------------------------------------------------------------------------
 -- Fiche de liaison - Tables principales
 --------------------------------------------------------------------------------
@@ -119,10 +135,14 @@ CREATE TABLE fichedeliaisons (
 	id SERIAL NOT NULL PRIMARY KEY,
 	foyer_id INTEGER NOT NULL REFERENCES foyers(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	motiffichedeliaison_id INTEGER NOT NULL REFERENCES motiffichedeliaisons(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	expediteur_id INTEGER NOT NULL REFERENCES originespdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	destinataire_id INTEGER NOT NULL REFERENCES originespdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	expediteur_id INTEGER NOT NULL REFERENCES services66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	destinataire_id INTEGER NOT NULL REFERENCES services66(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	direction VARCHAR(255) NOT NULL,
 	datefiche DATE NOT NULL,
+	traitementafaire SMALLINT,
+	envoiemail SMALLINT,
+	dateenvoiemail DATE,
 	commentaire TEXT,
 	etat VARCHAR(16),
 	haspiecejointe CHAR(1) NOT NULL DEFAULT '0',
@@ -130,6 +150,9 @@ CREATE TABLE fichedeliaisons (
     modified TIMESTAMP WITHOUT TIME ZONE
 );
 ALTER TABLE fichedeliaisons ADD CONSTRAINT fichedeliaisons_etape_in_list_chk CHECK ( cakephp_validate_in_list( etat, ARRAY['attavistech', 'attval', 'decisionnonvalid', 'decisionvalid', 'traite', 'annule'] ) );
+ALTER TABLE fichedeliaisons ADD CONSTRAINT fichedeliaisons_direction_in_list_chk CHECK (cakephp_validate_in_list(direction, ARRAY['interne_vers_externe', 'externe_vers_interne']));
+ALTER TABLE fichedeliaisons ADD CONSTRAINT fichedeliaisons_traitementafaire_in_list_chk CHECK (cakephp_validate_in_list(traitementafaire, ARRAY[0, 1]));
+ALTER TABLE fichedeliaisons ADD CONSTRAINT fichedeliaisons_envoiemail_in_list_chk CHECK (cakephp_validate_in_list(envoiemail, ARRAY[0, 1]));
 
 CREATE TABLE primoanalyses (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -142,11 +165,29 @@ CREATE TABLE primoanalyses (
 	dateprimo DATE,
 	commentaire TEXT,
 	etat VARCHAR(16),
+	actionvu SMALLINT,
+	datevu DATE,
+	commentairevu TEXT,
+	actionafaire SMALLINT,
+	dateafaire DATE,
+	commentaireafaire TEXT,
 	created TIMESTAMP WITHOUT TIME ZONE,
     modified TIMESTAMP WITHOUT TIME ZONE
 );
-ALTER TABLE primoanalyses ADD CONSTRAINT primoanalyses_etape_in_list_chk CHECK ( cakephp_validate_in_list( etat, ARRAY['attaffect', 'attinstr', 'attavistech', 'attval', 'decisionnonvalid', 'traite', 'annule'] ) );
+ALTER TABLE primoanalyses ADD CONSTRAINT primoanalyses_etape_in_list_chk CHECK ( cakephp_validate_in_list( etat, ARRAY['attaffect', 'attinstr', 'attavistech', 'attval', 'vu', 'decisionnonvalid', 'traite', 'annule'] ) );
 ALTER TABLE primoanalyses ADD CONSTRAINT primoanalyses_createdossierpcg_in_list_chk CHECK ( cakephp_validate_in_list( createdossierpcg, ARRAY[0, 1] ) );
+ALTER TABLE primoanalyses ADD CONSTRAINT primoanalyses_actionvu_in_list_chk CHECK (cakephp_validate_in_list(actionvu, ARRAY[0, 1]));
+ALTER TABLE primoanalyses ADD CONSTRAINT primoanalyses_actionafaire_in_list_chk CHECK (cakephp_validate_in_list(actionafaire, ARRAY[0, 1]));
+
+CREATE TABLE destinatairesemails (
+	id SERIAL NOT NULL PRIMARY KEY,
+	fichedeliaison_id INTEGER NOT NULL REFERENCES fichedeliaisons(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	name VARCHAR(255),
+	type VARCHAR(3),
+	created TIMESTAMP WITHOUT TIME ZONE,
+    modified TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE destinatairesemails ADD CONSTRAINT destinatairesemails_type_in_list_chk CHECK (cakephp_validate_in_list(type, ARRAY['A', 'CC', 'CCI']));
 
 --------------------------------------------------------------------------------
 -- Fiche de liaison - Tables de liaisons
@@ -321,7 +362,7 @@ CREATE TABLE categoriesactionroles (
 	created						TIMESTAMP WITHOUT TIME ZONE,
 	modified					TIMESTAMP WITHOUT TIME ZONE
 );
-CREATE UNIQUE INDEX categoriesactionroles_unique ON categoriesactionroles (name);
+CREATE UNIQUE INDEX categoriesactionroles_name_unique ON categoriesactionroles (name);
 
 CREATE TABLE actionroles (
 	id							SERIAL NOT NULL PRIMARY KEY,
@@ -351,6 +392,8 @@ ALTER TABLE orgstransmisdossierspcgs66
 	ADD CONSTRAINT orgstransmisdossierspcgs66_poledossierpcg66_id_fkey
 	FOREIGN KEY (poledossierpcg66_id) REFERENCES polesdossierspcgs66(id)
 	ON DELETE SET NULL ON UPDATE CASCADE;
+
+
 
 
 -- *****************************************************************************

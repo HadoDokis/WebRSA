@@ -13,6 +13,7 @@
 		$this->Translator->normalize(
 			array(
 				$modelName.'.name',
+				$modelName.'.interne' => array('type' => 'boolean'),
 				$modelName.'.actif' => array('type' => 'boolean'),
 			) + WebrsaAccess::links(
 				array(
@@ -28,5 +29,5 @@
 	
 	echo $this->Xhtml->link(
 		'Retour',
-		array('controller' => 'fichedeliaisons', 'action' => 'indexparams')
+		array('controller' => 'parametrages', 'action' => 'index')
 	);

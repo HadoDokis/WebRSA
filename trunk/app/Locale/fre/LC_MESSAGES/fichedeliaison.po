@@ -48,3 +48,33 @@ msgstr "Etat de la fiche"
 
 msgid "Fichedeliaison.haspiecejointe"
 msgstr "Pièce jointe"
+
+msgid "Fichedeliaison.direction"
+msgstr "Direction de la fiche"
+
+msgid "Fichedeliaison.traitementafaire"
+msgstr "Traitement à faire"
+
+msgid "Fichedeliaison.envoiemail"
+msgstr "Envoyer un e-mail (notification lors de la validation)"
+
+msgid "Fichedeliaison.dateenvoiemail"
+msgstr "Date d'envoi de l'e-mail"
+
+msgid "ENUM::DIRECTION::interne_vers_externe"
+msgstr "Envoi Hors DASAD"
+
+msgid "ENUM::DIRECTION::externe_vers_interne"
+msgstr "Envoi à la DASAD"
+
+msgid "ENUM::ENVOIEMAIL::0"
+msgstr "Non"
+
+msgid "ENUM::ENVOIEMAIL::1"
+msgstr "Oui"
+
+msgid "ENUM::TRAITEMENTAFAIRE::0"
+msgstr "Non"
+
+msgid "ENUM::TRAITEMENTAFAIRE::1"
+msgstr "Oui"

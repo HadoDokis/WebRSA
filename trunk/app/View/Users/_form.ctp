@@ -15,6 +15,10 @@
 	<?php
 		echo $this->Form->input( 'User.numtel', array( 'label' =>  required( __( 'numtel' ) ), 'type' => 'text', 'maxlength' => 15 ) );
 
+if ($departement === 66) {
+	echo $this->Form->input('User.email', array('label' => __('email'), 'type' => 'text', 'maxlength' => 15));
+}
+		
 		if( Configure::read( 'User.adresse' ) ) {
 			echo $this->Form->input( 'User.numvoie', array( 'label' =>  __d( 'adresse', 'Adresse.numvoie' ), 'type' => 'text' ) );
 			echo $this->Form->input( 'User.typevoie', array( 'label' =>  __d( 'adresse', 'Adresse.libtypevoie' ), 'type' => 'select', 'options' => $typevoie, 'empty' => true  ) );
@@ -63,6 +67,17 @@
 	?>
 </fieldset>
 <?php elseif( $departement === 66 ):?>
+<fieldset class="col2">
+	<legend>Service de l'utilisateur</legend>
+	<?php echo $this->Form->input('User.service66_id', 
+		array(
+			'type' => 'select',
+			'options' => $services66,
+			'empty' => true,
+			'label' => __d('user', 'User.service66_id')
+		)
+	);?>
+</fieldset>
 <fieldset class="col2">
 	<legend>Type d'utilisateur</legend>
 	<?php

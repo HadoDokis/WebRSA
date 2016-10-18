@@ -39,6 +39,8 @@
 		'Primoanalyses.proposition',
 		'Primoanalyses.avis',
 		'Primoanalyses.validation',
+		'Primoanalyses.vu',
+		'Primoanalyses.afaire',
 		'Primoanalyses.delete',
 		'Dossierspcgs66.edit',
 	);
@@ -104,7 +106,7 @@
 				'Primoanalyse.propositionprimo_id',
 				'Primoanalyse.dateprimo',
 				'/Primoanalyses/view/#Primoanalyse.id#' => array(
-					'disabled' => "(!in_array('#Primoanalyse.etat#', array('attavistech', 'attval', 'decisionnonvalid', 'traite'))) OR ".$perm['Primoanalyses.view']
+					'disabled' => "(in_array('#Primoanalyse.etat#', array('attaffect'))) OR ".$perm['Primoanalyses.view']
 				),
 				'/Primoanalyses/affecter/#Primoanalyse.id#' => array(
 					'disabled' => "(!in_array('#Primoanalyse.etat#', array('attaffect', 'attinstr'))) OR ".$perm['Primoanalyses.affecter']
@@ -121,6 +123,14 @@
 				),
 				'/Dossierspcgs66/edit/#Primoanalyse.dossierpcg66_id#' => array(
 					'disabled' => "('#Primoanalyse.dossierpcg66_id#' === '') OR ".$perm['Dossierspcgs66.edit']
+				),
+				'/Primoanalyses/vu/#Primoanalyse.id#' => array(
+					'class' => 'validation',
+					'disabled' => $perm['Primoanalyses.vu'],
+				),
+				'/Primoanalyses/afaire/#Primoanalyse.id#' => array(
+					'class' => 'error_icon',
+					'disabled' => "('#Fichedeliaison.traitementafaire#' !== '0') OR ".$perm['Primoanalyses.afaire'],
 				),
 				'/Primoanalyses/delete/#Primoanalyse.id#' => array(
 					'disabled' => "('#Primoanalyse.dossierpcg66_id#' !== '') OR ".$perm['Primoanalyses.delete'],

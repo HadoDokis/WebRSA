@@ -661,7 +661,7 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid, debug)
 		// Pratique pour comprendre pourquoi un element s'active ou se désactive
 		if (debug) {
 			console.log("----------DEBUG: disableElementsOnValues()----------");
-			console.log("Element: '"+valueName+"' tagetValue: '"+values[i].operator+" "+values[i].value+"' value: '"+valueElement.getValue()+"' condition: "+(condition ? 'true' : 'false'));
+			console.log("Element: '"+valueName+"' targetValue: '"+values[i].operator+" "+values[i].value+"' value: '"+valueElement.getValue()+"' condition: "+(condition ? 'true' : 'false'));
 		}
 	}
 	

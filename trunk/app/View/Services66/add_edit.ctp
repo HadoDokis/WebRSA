@@ -23,9 +23,11 @@
 				array(
 					$modelName.'.id' => array('type' => 'hidden'),
 					$modelName.'.name',
+					$modelName.'.interne',
 					$modelName.'.actif' => array('type' => 'checkbox'),
 				)
-			)
+			),
+			array('options' => $options)
 		) . '</fieldset>'
 	;
 	

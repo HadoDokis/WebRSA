@@ -112,6 +112,18 @@ msgstr "Validation"
 msgid "/Primoanalyses/validation/#Primoanalyse.id#"
 msgstr "Validation"
 
+msgid "/Primoanalyses/vu"
+msgstr "Vu"
+
+msgid "/Primoanalyses/vu/#Primoanalyse.id#"
+msgstr "Vu"
+
+msgid "/Primoanalyses/afaire"
+msgstr "A faire"
+
+msgid "/Primoanalyses/afaire/#Primoanalyse.id#"
+msgstr "A faire"
+
 msgid "/Primoanalyses/delete"
 msgstr "Suppression"
 
@@ -187,3 +199,19 @@ msgstr "Commentaire"
 
 msgid "Fichedeliaison.haspiecejointe"
 msgstr "Pièce jointe"
+
+# ==============================================================================
+# E-mail
+# ==============================================================================
+
+msgid "Notification::subject"
+msgstr "Fiche de liaison"
+
+msgid "Notification::email"
+msgstr "Une fiche de liaison à été créé par '%s' pour '%s'. Elle concerne le dossier '%s' pour le motif : '%s'"
+
+msgid "Destinataireemail.a"
+msgstr "A"
+
+msgid "Destinataireemail.cc"
+msgstr "CC"
