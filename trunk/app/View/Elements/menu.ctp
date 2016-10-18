@@ -141,6 +141,10 @@
 				'disabled' => ( $departement != 93 || false === $user_externe ),
                 'url' => array( 'controller' => 'cohortesrendezvous', 'action' => 'cohorte' )
 			),
+			'Tags' => array(
+				'disabled' => ( $departement != 66 ),
+				'url' => array( 'controller' => 'tags', 'action' => 'cohorte' )
+			),
 		),
 		'Recherches' => array(
 			'Par dossier / allocataire' => array( 'class' => 'search', 'url' => array( 'controller' => 'dossiers', 'action' => 'search' ) ),
