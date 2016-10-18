@@ -472,7 +472,7 @@
 	 * Apre complementaire CG93
 	 * @default true
 	 */
-	Configure::write( 'Apre.complementaire.query', true );
+	Configure::write( 'Apre.complementaire.query', false );
 
 	/**
 	 * Url pointant sur le serveur qui nous intéresse pour lcontacter QUERY
@@ -722,58 +722,57 @@
 	 */
 	Configure::write( 'Cohortescers93.saisie.periodeRenouvellement', '1 month' );
 
-	/**
-	 * Permet de débloquer la fonctionnalité "Enregistrement automatique d'un RDV"
-	 * lors de la saisie d'un CER.
-	 *
-	 * @var boolean
-	 * @default null (false)
-	 */
-	Configure::write( 'Contratinsertion.RdvAuto.active', false );
-
     /**
 	 * Configuration des types de RDV
 	 */
 	Configure::write(
 		'Rendezvous.Typerdv',
 		array(
-			'collectif_id' => 14,
-			'individuel_id' => 15
+			'collectif_id' => 14, // Collectif
+			'individuel_id' => 15 // Individuel
 		)
 	);
 
 	/**
-	 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
-	 * qui concerne la rédaction d'un CER (ex.: "Individuel").
-	 *
-	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
-	 *
-	 * @var integer
-	 * @default null
+	 * Paramétrage de l'enregistrement automatique d'un RDV lors de la saisie
+	 * d'un CER.
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', null );
-
-	/**
-	 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
-	 * qui indique que l'allocataire était présent (ex.: "Présent").
-	 *
-	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
-	 *
-	 * @var integer
-	 * @default null
-	 */
-	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', null );
-
-	/**
-	 * L'id technique de l'enregistrement de la table thematiquesrdvs ("Thématique du RDV")
-	 * qui concerne la rédaction d'un CER (ex.: "Pour un Contrat d'Engagement Réciproque").
-	 *
-	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
-	 *
-	 * @var integer
-	 * @default null
-	 */
-	Configure::write( 'Contratinsertion.RdvAuto.thematiquerdv_id', 10 );
+	Configure::write(
+		'Contratinsertion.RdvAuto',
+		array(
+			/**
+			 * Activation de la fonctionnalité.
+			 *
+			 * @var boolean
+			 * @default null (false)
+			 */
+			'active' => false,
+			/**
+			 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
+			 * qui concerne la rédaction d'un CER (ex.: "Individuel").
+			 *
+			 * @var integer
+			 * @default null
+			 */
+			'typerdv_id' => null,
+			/**
+			 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
+			 * qui indique que l'allocataire était présent (ex.: "Présent").
+			 *
+			 * @var integer
+			 * @default null
+			 */
+			'statutrdv_id' => null,
+			/**
+			 * L'id technique de l'enregistrement de la table thematiquesrdvs ("Thématique du RDV")
+			 * qui concerne la rédaction d'un CER (ex.: "Pour un Contrat d'Engagement Réciproque").
+			 *
+			 * @var integer
+			 * @default null
+			 */
+			'thematiquerdv_id' => 10
+		)
+	);
 
 	/**
 	 * Permet-on à l'utilisateur de se reconnecter alors que sa session n'est pas
@@ -1161,6 +1160,10 @@
 			'categories' => array(
 				// Catégories (colonne 1), Thématiques (colonne 2) et conditions à appliquer
 				'Prescriptions Socio - professionnelles' => array(
+					'Actions locales' => array(
+						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
+						'Categoriefp93.name' => 'Actions locales'
+					),
 					'Redynamisation' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
@@ -1198,9 +1201,9 @@
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => 'Action du CUCS'
 					),
-					'Actions locales' => array(
+					'Action Permis de conduire' => array(
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
-						'Categoriefp93.name' => 'Actions locales'
+						'Categoriefp93.name' => 'Action Permis de conduire'
 					),
 					'Autres (*)' => array(
 						// Non défini
@@ -1209,6 +1212,11 @@
 					),
 				),
 				'Prescriptions Professionnelles' => array(
+					'Actions locales' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
+						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
+						'Categoriefp93.name' => 'Actions locales'
+					),
 					'Formation pré-qualifiante' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.type' => 'pdi',
@@ -1265,11 +1273,6 @@
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name' => 'Accompagnement vers l emploi'
-					),
-					'Actions locales' => array(
-						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
-						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name' => 'Actions locales'
 					),
 					'Autres (*)' => array(
 						// Non défini
@@ -1402,7 +1405,7 @@
 	/**
 	 * Affiche les anciens moteurs de cohorte et de recherche pour comparaison
 	 */
-	Configure::write('Anciensmoteurs.enabled', false);
+	Configure::write('Anciensmoteurs.enabled', true);
 
 	/**
 	 * Export CSV des droits des groupes
@@ -1498,10 +1501,10 @@
 	 * Active le module date picker (calendrier javascript)
 	 */
 	Configure::write('Module.Datepicker.enabled', false);
-	
+
 	/**
 	 * Permet le redimensionnement automatique des textarea
-	 * 
+	 *
 	 * textarea.auto_resize.all => tout les textarea
 	 * textarea.auto_resize.controllername.all => tout les textarea d'un controlleur en particulier
 	 * textarea.auto_resize.controllername.action => tout les textarea d'un controlleur et d'une action en particulier
