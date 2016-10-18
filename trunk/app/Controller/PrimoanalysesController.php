@@ -345,6 +345,8 @@
 					'fields' => array(
 						'Expediteur.id',
 						'User.email',
+						'User.nom',
+						'User.prenom',
 					),
 					'joins' => array(
 						$this->Fichedeliaison->Expediteur->join('User')
@@ -359,7 +361,8 @@
 			);
 			$emailsServices = array();
 			foreach ($emails as $email) {
-				$emailsServices[$email['Expediteur']['id'].'_'.h($email['User']['email'])] = $email['User']['email'];
+				$emailsServices[$email['Expediteur']['id'].'_'.h($email['User']['email'])] 
+					= $email['User']['nom'].' '.$email['User']['prenom'].' ('.$email['User']['email'].')';
 			}
 			
 			$servicesInterne = $this->Fichedeliaison->Expediteur->find('list',
