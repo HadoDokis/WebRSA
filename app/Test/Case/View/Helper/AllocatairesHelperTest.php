@@ -412,8 +412,8 @@ document.observe( \'dom:loaded\', function() { try {
 			$result = $this->Allocataires->blocAdresse( $params );
 			$expected = '<fieldset><legend>Recherche par adresse</legend><div class="input checkbox"><input type="hidden" name="data[Search][Adresse][numcom_choice]" id="SearchAdresseNumcomChoice_" value="0"/><input type="checkbox" name="data[Search][Adresse][numcom_choice]"  onclick="try { toutCocher( &#039;input[name=\\&#039;data[Search][Adresse][numcom][]\\&#039;]&#039; ); } catch( e ) { console.log( e ); };" value="1" id="SearchAdresseNumcomChoice"/><label for="SearchAdresseNumcomChoice">Filtrer par numéro de commune au sens INSEE</label></div><fieldset id="SearchAdresseNumcomFieldset"><legend>Numéro de commune au sens INSEE</legend><div class="buttons"><button type="button" onclick="try { toutCocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); } catch( e ) { console.log( e ); }; return false;">Tout cocher</button><button type="button" onclick="toutDecocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); return false;">Tout décocher</button></div><div class="input select"><input type="hidden" name="data[Search][Adresse][numcom]" value="" id="SearchAdresseNumcom"/>
 
-<div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93001" id="SearchAdresseNumcom93001" /><label for="SearchAdresseNumcom93001">93001 AUBERVILLIERS</label></div>
-<div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93005" id="SearchAdresseNumcom93005" /><label for="SearchAdresseNumcom93005">93005 AULNAY-SOUS-BOIS</label></div>
+<div class="divideInto3Columns"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93001" id="SearchAdresseNumcom93001" /><label for="SearchAdresseNumcom93001">93001 AUBERVILLIERS</label></div>
+<div class="divideInto3Columns"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93005" id="SearchAdresseNumcom93005" /><label for="SearchAdresseNumcom93005">93005 AULNAY-SOUS-BOIS</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { try {
@@ -495,7 +495,7 @@ document.observe( \'dom:loaded\', function() { try {
 			$result = $this->Allocataires->blocAdresse( $params );
 			$expected = '<fieldset><legend>Recherche par adresse</legend><div class="input checkbox"><input type="hidden" name="data[Search][Adresse][numcom_choice]" id="SearchAdresseNumcomChoice_" value="0"/><input type="checkbox" name="data[Search][Adresse][numcom_choice]"  onclick="try { toutCocher( &#039;input[name=\\&#039;data[Search][Adresse][numcom][]\\&#039;]&#039; ); } catch( e ) { console.log( e ); };" value="1" id="SearchAdresseNumcomChoice"/><label for="SearchAdresseNumcomChoice">Filtrer par numéro de commune au sens INSEE</label></div><fieldset id="SearchAdresseNumcomFieldset"><legend>Numéro de commune au sens INSEE</legend><div class="buttons"><button type="button" onclick="try { toutCocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); } catch( e ) { console.log( e ); }; return false;">Tout cocher</button><button type="button" onclick="toutDecocher( \'input[name=\\\'data[Search][Adresse][numcom][]\\\']\' ); return false;">Tout décocher</button></div><div class="input select"><input type="hidden" name="data[Search][Adresse][numcom]" value="" id="SearchAdresseNumcom"/>
 
-<div class="divideInto3Collumn"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93001" id="SearchAdresseNumcom93001" /><label for="SearchAdresseNumcom93001">93001 AUBERVILLIERS</label></div>
+<div class="divideInto3Columns"><input type="checkbox" name="data[Search][Adresse][numcom][]" value="93001" id="SearchAdresseNumcom93001" /><label for="SearchAdresseNumcom93001">93001 AUBERVILLIERS</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { try {
