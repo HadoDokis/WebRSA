@@ -38,13 +38,13 @@
 	
 	echo '<fieldset><legend>' . __m( 'Traitementpcg66.search' ) . '</legend>'
 		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.poledossierpcg66_id', $options )
-		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Collumn' )
+		. $this->Xform->multipleCheckbox( 'Search.Dossierpcg66.user_id', $options, 'divideInto3Columns' )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Dossierpcg66.dateaffectation', $paramDate )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Traitementpcg66.dateecheance', $paramDate )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Traitementpcg66.daterevision', $paramDate )
 		. $this->Allocataires->SearchForm->dateRange( 'Search.Traitementpcg66.created', $paramDate )
-		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Collumn' )
-		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Collumn' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.situationpdo_id', $options, 'divideInto2Columns' )
+		. $this->Xform->multipleCheckboxToutCocher( 'Search.Traitementpcg66.statutpdo_id', $options, 'divideInto2Columns' )
 		. $this->Default3->subform(
 			array(
 				'Search.Traitementpcg66.descriptionpdo_id' => array( 'empty' => true ),

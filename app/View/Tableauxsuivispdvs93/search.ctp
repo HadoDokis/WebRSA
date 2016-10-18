@@ -114,7 +114,7 @@
 			'Search.structurereferente_id',
 			array(
 				'options' => $options['Search']['structurereferente_id'],
-				'class' => 'divideInto3Collumn',
+				'class' => 'divideInto3Columns',
 				'buttons' => true,
 				'autoCheck' => true,
 				'domain' => 'tableauxsuivispdvs93',

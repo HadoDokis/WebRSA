@@ -137,15 +137,15 @@ function addParentId(dom, id) {
  * Fonctionne également sur tout autre élément avec la même structure :
  * <parent>
  *		<label></label>
- *		<div class="divideInto2Collumn">
+ *		<div class="divideInto2Columns">
  *			<label></label>
  *		</div>
  * </parent>
  * @param {HTML} dom
- * @param {integer} nbCollumn
+ * @param {integer} nbColumns
  * @returns {Boolean}
  */
-function divideIntoCollumn(dom, nbCollumn) {
+function divideIntoColumns(dom, nbColumns) {
 	'use strict';
 	var parent = dom.up(),
 		parentWidth = Element.getWidth(parent), // Pour le calcul de la taille des colonnes
@@ -184,14 +184,14 @@ function divideIntoCollumn(dom, nbCollumn) {
 	childsNames.sort();
 
 	// On insert les colonnes
-	for (; i < nbCollumn; i++) {
-		divList[i] = new Element('div', {style: 'width:' + Math.floor(parentWidth / nbCollumn - 1) + 'px;display:inline-block;vertical-align:top;'});
+	for (; i < nbColumns; i++) {
+		divList[i] = new Element('div', {style: 'width:' + Math.floor(parentWidth / nbColumns - 1) + 'px;display:inline-block;vertical-align:top;'});
 		parent.insert(divList[i]);
 	}
 
 	// On rempli les colonnes dans le bon ordre
 	for (i = 0; i < childsNames.length; i++) {
-		divList[Math.floor(i / Math.ceil(childsNames.length / nbCollumn))].insert(childs[childsNames[i]]);
+		divList[Math.floor(i / Math.ceil(childsNames.length / nbColumns))].insert(childs[childsNames[i]]);
 	}
 
 	// On retire l'ancien element
@@ -754,13 +754,13 @@ document.observe("dom:loaded", function () {
 		addParentId(dom);
 	});
 
-	// Divise les elements portant la class divideInto2Collumn en deux colonnes
-	$$('.divideInto2Collumn').each(function (dom) {
-		divideIntoCollumn(dom, 2);
+	// Divise les elements portant la class divideInto2Columns en deux colonnes
+	$$('.divideInto2Columns').each(function (dom) {
+		divideIntoColumns(dom, 2);
 	});
 
-	// Divise les elements portant la class divideInto3Collumn en trois colonnes
-	$$('.divideInto3Collumn').each(function (dom) {
-		divideIntoCollumn(dom, 3);
+	// Divise les elements portant la class divideInto3Columns en trois colonnes
+	$$('.divideInto3Columns').each(function (dom) {
+		divideIntoColumns(dom, 3);
 	});
 });

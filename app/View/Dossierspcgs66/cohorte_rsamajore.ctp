@@ -37,11 +37,11 @@
 	$this->start( 'custom_search_filters' );
 
 	if( Configure::read( 'CG.cantons' ) ) {
-		echo $this->Xform->multipleCheckbox( 'Search.Zonegeographique.id', $options, 'divideInto2Collumn' );
+		echo $this->Xform->multipleCheckbox( 'Search.Zonegeographique.id', $options, 'divideInto2Columns' );
 	}
 
-	echo $this->Xform->multipleCheckbox( 'Search.Prestation.rolepers', $options, 'divideInto2Collumn' );
-	echo $this->Xform->multipleCheckbox( 'Search.Foyer.composition', $options, 'divideInto2Collumn' );
+	echo $this->Xform->multipleCheckbox( 'Search.Prestation.rolepers', $options, 'divideInto2Columns' );
+	echo $this->Xform->multipleCheckbox( 'Search.Foyer.composition', $options, 'divideInto2Columns' );
 
 	echo '<fieldset><legend>' . __m( 'Tag.cohorte_fieldset' ) . '</legend>'
 		. $this->Default3->subform(

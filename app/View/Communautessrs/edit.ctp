@@ -23,7 +23,7 @@
 			'Structurereferente.Structurereferente' => array(
 				'label' => false,
 				'multiple' => 'checkbox',
-				'class' => 'divideInto2Collumn'
+				'class' => 'divideInto2Columns'
 			)
 		),
 		array(
