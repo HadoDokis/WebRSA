@@ -208,7 +208,12 @@
 						$success = $this->Fichedeliaison->Destinataireemail->save() && $success;
 					}
 					
-					foreach ((array)Hash::get($this->request->data, 'Destinataireemail.cc') as $destinataire) {
+					$cc = Hash::get($this->request->data, 'Destinataireemail.cc');
+					if (empty($cc)) {
+						$cc = array();
+					}
+					
+					foreach ($cc as $destinataire) {
 						preg_match('/[\d]+_(.*)/', $destinataire, $match); // equivalent de suffix() mais compatible avec un email
 						
 						$this->Fichedeliaison->Destinataireemail->create(

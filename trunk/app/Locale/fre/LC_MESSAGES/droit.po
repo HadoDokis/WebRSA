@@ -2105,6 +2105,12 @@ msgstr "Visualisation d'une primo analyse"
 msgid "Primoanalyses:indexparams"
 msgstr "Paramétrages des primo analyses"
 
+msgid "Primoanalyses:vu"
+msgstr "Action \"Vu\" de la primo analyse"
+
+msgid "Primoanalyses:afaire"
+msgstr "Action \"A faire\" de la primo analyse"
+
 ###############################################################################
 
 msgid "Module:Proposcontratsinsertioncovs58"
