@@ -15,7 +15,8 @@ if [ "$PCREGREP_PRESENT" != "0" ] ; then
 fi
 
 ME="$0"
-APP_DIR="`dirname "$ME"`/../.."
+HERE="`dirname "${ME}"`"
+APP_DIR="`readlink -f "${HERE}/../.."`"
 
 (
 	cd "$APP_DIR"
