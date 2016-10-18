@@ -126,7 +126,19 @@
 			// On récupère la liste des controllers pour les options du select
 			$controllers = array();
 			foreach (App::objects('controller') as $controllerName) {
+				App::uses($controllerName, 'Controller');
+				$Reflection = new ReflectionClass($controllerName);
+				if ($Reflection->isAbstract() || in_array($controllerName, array('AppController', 'Controller'))) {
+					continue;
+				}
+				
 				$controllerNameShort = preg_replace('/Controller$/', '', $controllerName);
+				
+				// S'il n'y a pas d'actions qui nécéssite des droits, on n'affiche pas le controller
+				$actions = $this->Droits->listeActionsControleur($controllerNameShort);
+				if (empty($actions)) {
+					continue;
+				}
 				
 				$notMyDepartement = preg_match('/[\d]+$/', $controllerNameShort, $matches) && (integer)$matches[0] !== $departement;
 				if ($notMyDepartement || in_array($controllerName, $this->ignoreList)) {
@@ -151,20 +163,66 @@
 				exit;
 			}
 			$actions = $this->Droits->listeActionsControleur($controllerNameShort);
-			$groups = $this->Group->find('list', array('order' => 'Group.name'));
+			$groups = $this->Group->find('list',
+				array(
+					'joins' => array(
+						array(
+							'type' => 'INNER',
+							'table' => 'aros',
+							'alias' => 'Aro',
+							'conditions' => array(
+								'Aro.model' => 'Group',
+								'Aro.foreign_key = Group.id'
+							)
+						)
+					),
+					'order' => 'Group.name'
+				)
+			);
 			
-			$isDefined = (boolean)ClassRegistry::init('Aco')->find(
-				'first', array('conditions' => array('alias' => 'Module:'.$controllerNameShort))
+			$isDefined = (boolean)$this->Acl->Aco->find(
+				'first', array('conditions' => array('alias' => 'Module:'.$controllerNameShort), 'recursive' => -1)
 			);
 			
 			// On créer les Acos si besoin
 			if (!$isDefined) {
-				$this->Acl->Aco->create(array('foreign_key' => 0, 'parent_id' => 0, 'alias' => 'Module:'.$controllerNameShort));
+				$maxRght = Hash::get(
+					$this->Acl->Aco->find('first',
+						array(
+							'fields' => 'rght',
+							'recursive' => -1,
+							'order' => array('rght' => 'DESC'),
+							'limit' => 1
+						)
+					),
+					'Aco.rght'
+				);
+				
+				$this->Acl->Aco->create(
+					array(
+						'foreign_key' => 0,
+						'parent_id' => 0,
+						'alias' => 'Module:'.$controllerNameShort,
+						'lft' => $maxRght + 1,
+						'rght' => $maxRght + ((count($actions) + 1) *2),
+					)
+				);
 				$this->Acl->Aco->save();
 				$parent_id = $this->Acl->Aco->getLastInsertId();
 				
+				$lft = $maxRght + 2;
+				
 				foreach ($actions as $action) {
-					$this->Acl->Aco->create(array('foreign_key' => 0, 'parent_id' => $parent_id, 'alias' => $controllerNameShort.':'.$action));
+					$this->Acl->Aco->create(
+						array(
+							'foreign_key' => 0,
+							'parent_id' => $parent_id,
+							'alias' => $controllerNameShort.':'.$action,
+							'lft' => $lft,
+							'rght' => $lft +1
+						)
+					);
+					$lft += 2;
 					$this->Acl->Aco->save();
 				}
 			}
@@ -199,6 +257,17 @@
 		protected function _updateGroup($group_id, $acosAlias, $method) {
 			$query = array(
 				'fields' => array('User.id'),
+				'joins' => array(
+					array(
+						'type' => 'INNER',
+						'table' => 'aros',
+						'alias' => 'Aro',
+						'conditions' => array(
+							'model' => 'Utilisateur',
+							'foreign_key = User.id'
+						)
+					)
+				),
 				'conditions' => array('User.group_id' => $group_id),
 				'contain' => false
 			);
@@ -211,13 +280,6 @@
 			}
 			
 			return $success;
-			
-			/**
-			 * TODO : La non suppréssion des aros_acos avec des _read en -1 semble poser des problèmes :
-			 * ex: 
-			 * -Accès total désactivé = accès impossible pour toutes les actions
-			 * -Accès total activé, action désactivé = accès impossible pour l'action en question
-			 */
 		}
 	}
 ?>

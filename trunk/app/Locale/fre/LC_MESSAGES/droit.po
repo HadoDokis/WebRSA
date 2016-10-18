@@ -4267,3 +4267,23 @@ msgstr "Suppression d'une catégorie d'action de rôle"
 
 msgid "Categoriesactionroles:view"
 msgstr "Voir une catégorie d'action de rôle"
+
+###############################################################################
+
+msgid "Module:Services66"
+msgstr "Paramétrage des Services (DASAD et Hors DASAD)"
+
+msgid "Services66:index"
+msgstr "Visualisation des services"
+
+msgid "Services66:add"
+msgstr "Ajout d'un service"
+
+msgid "Services66:edit"
+msgstr "Édition d'un service"
+
+msgid "Services66:delete"
+msgstr "Suppression d'un service"
+
+msgid "Services66:view"
+msgstr "Visualisation d'un service"
