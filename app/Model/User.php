@@ -155,7 +155,8 @@
 			'email' => array(
 				'email' => array(
 					'rule' => array( 'email' ),
-					'message' => 'Veuillez entrer une adresse mail valide'
+					'message' => 'Veuillez entrer une adresse mail valide',
+					'allowEmpty' => true
 				)
 			),
 		);

@@ -6,7 +6,7 @@
 		<tr>
 			<th>Groupe</th>
 			<th>Accès total</th>
-			<?php echo '<th>'.implode("</th>\n\t\t\t<th>", $actions)."</th>\n"; ?>
+			<?php echo !empty($actions) ? '<th>'.implode("</th>\n\t\t\t<th>", $actions)."</th>\n" : ''; ?>
 		</tr>
 	</thead>
 	<tbody>
