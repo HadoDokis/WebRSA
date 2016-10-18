@@ -1426,7 +1426,7 @@ td.button.validation.disabled a, td.action a.validation.disabled, td span.button
 }
 
 td.button.avistechnique a, td.action a.avistechnique, td span.button.avistechnique, table.default2 td a.button.avistechnique {
-    background-image: url( ../img/icons/page_attach );
+    background-image: url( ../img/icons/page_attach.png );
 }
 td.button.avistechnique.disabled a, td.action a.avistechnique.disabled, td span.button.avistechnique.disabled, table.default2 td a.button.avistechnique.disabled {
     background-image: url( ../img/icons/page_attach_disabled.png );

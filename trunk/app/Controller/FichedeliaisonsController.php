@@ -6,6 +6,8 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('AppController', 'Controller');
+	App::uses('CakeEmail', 'Network/Email');
+	App::uses('WebrsaEmailConfig', 'Utility');
 
 	/**
 	 * La classe Fichedeliaisons ...
