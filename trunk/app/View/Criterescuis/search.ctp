@@ -84,7 +84,7 @@
 		}
 		
 		echo '<fieldset><legend id="Cui66Choixformulaire">' . __d('cuis66', 'Cui66.positions') . '</legend>'
-			. multipleCheckbox( $this, 'Search.Cui66.etatdossiercui66', $options, 'divideInto2Collumn' )
+			. multipleCheckbox( $this, 'Search.Cui66.etatdossiercui66', $options, 'divideInto2Columns' )
 			. $this->SearchForm->dateRange( 'Search.Historiquepositioncui66.created', $paramDate )	
 			. '</fieldset>'
 		;

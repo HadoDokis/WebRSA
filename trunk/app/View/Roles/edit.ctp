@@ -39,7 +39,7 @@
 			'hiddenField' => false,
 			'before' => '<input type="button" onClick="selectAll(this)" value="Cocher/Décocher tout"/><br/>',
 			'options' => $users,
-			'class' => 'divideInto3Collumn'
+			'class' => 'divideInto3Columns'
 		));
 		
 		/*

@@ -261,7 +261,7 @@
 			$multiple = Configure::read( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple' );
 			$multiple_larger_1 = Configure::read( 'ConfigurableQuery.common.filters.Adresse.numcom.multiple_larger_1' );
 			if( $multiple && ( !$multiple_larger_1 || count( $numscoms ) > 1 ) ) {
-				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $numscoms, 'class' => 'divideInto3Collumn', 'buttons' => true, 'autoCheck' => true ) );
+				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $numscoms, 'class' => 'divideInto3Columns', 'buttons' => true, 'autoCheck' => true ) );
 			}
 			else {
 				$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'options' => $numscoms, 'empty' => true ) );
