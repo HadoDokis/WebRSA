@@ -1,4 +1,3 @@
-
 <?php
 	/**
 	 * Code source de la classe WebrsaAbstractCohortesComponentTest.
