@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 * Valeurs par défaut du filtre de recherche de la cohorte de RDV.
 	 */
@@ -10,18 +9,11 @@
 				'Dossier' => array(
 					'dernier' => '1'
 				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa_choice' => 0,
-					'etatdosrsa' => array( '0', '2', '3', '4' )
-				),
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => 1
-				),
 				'Rendezvous' => array(
 					'statutrdv_id' => 2, // Statut "prévu"
 					'daterdv' => '1',
-					'daterdv_from' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '+1 day' ) ) ),
-					'daterdv_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( '+1 year' ) ) ),
+					'daterdv_from' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( 'first day of this month' ) ) ),
+					'daterdv_to' => date_sql_to_cakephp( date( 'Y-m-d', strtotime( 'now' ) ) ),
 				),
 				'Pagination' => array(
 					'nombre_total' => '0'
@@ -84,7 +76,10 @@
 				'Typerdv.libelle',
 				'Rendezvous.daterdv',
 				'Rendezvous.heurerdv',
-				'Statutrdv.libelle'
+				'Statutrdv.libelle',
+				'Personne.numfixe' => array( 'label' => 'Num de telephone fixe' ),
+				'Personne.numport' => array( 'label' => 'Num de telephone portable' ),
+				'Personne.email' => array( 'label' => 'Adresse mail' )
 			)
 		)
 	);

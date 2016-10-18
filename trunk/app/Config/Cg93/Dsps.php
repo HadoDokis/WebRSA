@@ -242,6 +242,7 @@
 					'Situationdossierrsa.etatdosrsa',
 					'Donnees.nivetu',
 					'Donnees.hispro',
+					//intitulés des structures référentes
 					'Structurereferenteparcours.lib_struc' => array(
 						'label' => __d( 'search_plugin_93', 'Structurereferenteparcours.lib_struc' )
 					),
@@ -273,8 +274,6 @@
 				'Detaildroitrsa.natpf',
 				'Calculdroitrsa.toppersdrodevorsa',
 				'Memo.name',
-				'Personne.numfixe',
-				'Modecontact.numtel',
 				'Personne.age',
 				'Adresse.numvoie',
 				'Adresse.libtypevoie',
@@ -285,6 +284,7 @@
 				'Adresse.nomcom',
 				'Donnees.libsecactrech',
 				'Donnees.libemploirech',
+				//intitulés des structures référentes
 				'Structurereferenteparcours.lib_struc' => array(
 					'label' => __d( 'search_plugin_93', 'Structurereferenteparcours.lib_struc' )
 				),
@@ -301,7 +301,10 @@
 				'Actrechromev3.familleromev3',
 				'Actrechromev3.domaineromev3',
 				'Actrechromev3.metierromev3',
-				'Actrechromev3.appellationromev3'
+				'Actrechromev3.appellationromev3',
+				'Personne.numfixe' => array( 'label' => 'Num de telephone fixe' ),
+				'Personne.numport' => array( 'label' => 'Num de telephone portable' ),
+				'Personne.email' => array( 'label' => 'Adresse mail' )
 			)
 		)
 	);
