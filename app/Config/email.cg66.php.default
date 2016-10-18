@@ -260,5 +260,33 @@
 			'charset' => 'utf-8',
 			'headerCharset' => 'utf-8',
 		);
+		
+		/**
+		 * Configuration de l'envoi de mails pour les fiches de liaison
+		 *
+		 * Lorsque l'application est en debug > 0, alors le mail est envoyé à
+		 * l'adresse spécifiée pour la clé 'to', ou à l'expéditeur (clé 'from').
+		 *
+		 * De même, si une clé 'subject' est spécifiée, elle sera utilisée comme
+		 * sujet du mail.
+		 *
+		 * @var array
+		 */
+		public $mail_fichedeliaison = array(
+			'transport' => 'Smtp',
+			'from' => 'emailcuifrom@cgxxxx.fr',
+			'replyTo' => 'emailcuifrom@cgxxxx.fr',
+			'to' => 'adressetest@cgxxxx.fr',
+			'subject' => 'Demande concernant le CUI',
+			'host' => 'xxxxx.cgxxxx.fr',
+			'port' => 25,
+			'timeout' => 30,
+			'username' => 'xxxxxxx',
+			'password' => 'xxxxxxx',
+			'client' => 'smtp_helo_hostname',
+			'log' => false,
+			'charset' => 'utf-8',
+			'headerCharset' => 'utf-8',
+		);
 	}
 ?>

@@ -142,8 +142,8 @@
 					$this->Fichedeliaison->fields(),
 					array(
 						'Motiffichedeliaison.name',
-						'Expediteur.libelle',
-						'Destinataire.libelle',
+						'Expediteur.name',
+						'Destinataire.name',
 					)
 				),
 				'joins' => array(
@@ -180,8 +180,8 @@
 					$this->Fichedeliaison->Validationfiche->fields(),
 					array(
 						'Motiffichedeliaison.name',
-						'Expediteur.libelle',
-						'Destinataire.libelle',
+						'Expediteur.name',
+						'Destinataire.name',
 					)
 				),
 				'joins' => array(
@@ -214,13 +214,19 @@
 		protected function _getConditionsPositions() {
 			$return = array(
 				'traite' => array(
-					array(
+					'OR' => array(
 						'Validationprimo.choix' => 1,
+						'Primoanalyse.actionafaire' => 1,
 					)
 				),
 				'decisionnonvalid' => array(
 					array(
 						'Validationprimo.choix' => 0,
+					)
+				),
+				'vu' => array(
+					array(
+						'Primoanalyse.actionvu' => 1,
 					)
 				),
 				'attval' => array(

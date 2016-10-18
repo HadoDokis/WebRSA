@@ -71,3 +71,6 @@ msgstr "Externe, chef de projet communautaire"
 
 msgid "User.nom_complet"
 msgstr "Gestionnaire"
+
+msgid "User.service66_id"
+msgstr "Service de l'utilisateur"

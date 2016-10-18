@@ -203,6 +203,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+            'Service66' => array(
+				'className' => 'Service66',
+				'foreignKey' => 'service66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(

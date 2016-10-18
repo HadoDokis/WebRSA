@@ -1,8 +1,4 @@
 <?php
-	// Donne le domain du plus haut niveau de précision (prefix, action puis controller)
-	$domain = current(WebrsaTranslator::domains());
-	$defaultParams = compact('options', 'domain');
-
 	echo $this->Default3->titleForLayout($this->request->data, compact('domain'));
 	echo $this->FormValidator->generateJavascript();
 
@@ -29,7 +25,7 @@
 			'Fichedeliaison.motiffichedeliaison_id' => array('empty' => true),
 			'Fichedeliaison.commentaire' => array('type' => 'textarea'),
 		),
-		$defaultParams + array('th' => true, 'caption' => 'Fiche de liaison', 'class' => 'table-view')
+		array('options' => $options, 'th' => true, 'caption' => 'Fiche de liaison', 'class' => 'table-view')
 	);
 
 	echo $this->Default3->view(
@@ -39,7 +35,7 @@
 			'Avistechniquefiche.choix' => array('type' => 'radio', 'class'=>"uncheckable"),
 			'Avistechniquefiche.commentaire' => array('type' => 'textarea'),
 		),
-		$defaultParams + array('th' => true, 'caption' => 'Avis technique', 'class' => 'table-view')
+		array('options' => $options, 'th' => true, 'caption' => 'Avis technique', 'class' => 'table-view')
 	);
 	
 /***********************************************************************************
@@ -50,11 +46,13 @@
 		. $this->Default3->subform(
 			array(
 				'Validationfiche.id' => array('type' => 'hidden'),
+				'Fichedeliaison.envoiemail' => array('type' => 'hidden'),	// Pour décider ou pas l'envoi de l'email
+				'Fichedeliaison.dateenvoiemail' => array('type' => 'hidden'),
 				'Validationfiche.date' => array('type' => 'date', 'dateFormat' => 'DMY'),
 				'Validationfiche.choix' => array('type' => 'radio'),
 				'Validationfiche.commentaire' => array('type' => 'textarea'),
 			),
-			$defaultParams
+			array('options' => $options)
 		) . '</fieldset>'
 	;
 	

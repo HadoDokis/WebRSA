@@ -28,6 +28,9 @@ msgstr "En attente d'avis technique"
 msgid "ENUM::ETAT::attval"
 msgstr "En attente de validation"
 
+msgid "ENUM::ETAT::vu"
+msgstr "Vu"
+
 msgid "ENUM::ETAT::decisionnonvalid"
 msgstr "Refusé"
 
@@ -36,6 +39,18 @@ msgstr "Traité"
 
 msgid "ENUM::ETAT::annule"
 msgstr "Annulé"
+
+msgid "ENUM::ACTIONVU::0"
+msgstr "Non"
+
+msgid "ENUM::ACTIONVU::1"
+msgstr "Oui"
+
+msgid "ENUM::ACTIONAFAIRE::0"
+msgstr "Non"
+
+msgid "ENUM::ACTIONAFAIRE::1"
+msgstr "Oui"
 
 msgid "Primoanalyse.etat"
 msgstr "Etat"
@@ -57,3 +72,27 @@ msgstr "Date de la proposition"
 
 msgid "Primoanalyse.commentaire"
 msgstr "Commentaire"
+
+msgid "Primoanalyse.actionvu"
+msgstr "Vu ?"
+
+msgid "Primoanalyse.datevu"
+msgstr "Date"
+
+msgid "Primoanalyse.commentairevu"
+msgstr "Commentaire"
+
+msgid "Primoanalyse.actionafaire"
+msgstr "A faire ?"
+
+msgid "Primoanalyse.dateafaire"
+msgstr "Date"
+
+msgid "Primoanalyse.commentaireafaire"
+msgstr "Commentaire"
+
+msgid "Primoanalyse.created"
+msgstr "Date de création"
+
+msgid "Primoanalyse.modified"
+msgstr "Date de modification"

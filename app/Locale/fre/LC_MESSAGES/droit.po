@@ -4241,3 +4241,23 @@ msgstr "Synthèse du suivi du bénéficiaire"
 
 msgid "Accompagnementsbeneficiaires:index"
 msgstr "Visualisation de la synthèse du suivi du bénéficiaire"
+
+#-------------------------------------------------------------------------------
+
+msgid "Module:Categoriesactionroles"
+msgstr "Paramétrage des catégories d'action de rôle (onglets)"
+
+msgid "Categoriesactionroles:index"
+msgstr "Visualisation des catégories d'action de rôle"
+
+msgid "Categoriesactionroles:add"
+msgstr "Ajout d'une catégorie d'action de rôle"
+
+msgid "Categoriesactionroles:edit"
+msgstr "Modification d'une catégorie d'action de rôle"
+
+msgid "Categoriesactionroles:delete"
+msgstr "Suppression d'une catégorie d'action de rôle"
+
+msgid "Categoriesactionroles:view"
+msgstr "Voir une catégorie d'action de rôle"

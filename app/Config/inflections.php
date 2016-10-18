@@ -497,6 +497,9 @@ $irregularPlural = array(
 	'communautesr' => 'communautessrs',
 	'communautesr_structurereferente' => 'communautessrs_structuresreferentes',
 	'structurereferente_tableausuivipdv93' => 'structuresreferentes_tableauxsuivispdvs93',
+	'service66' => 'services66',
+	'destinataireemail' => 'destinatairesemails',
+	'destinataireemail_fichedeliaison' => 'destinatairesemails_fichedeliaisons',
 	// Tableau de bord
 	'role_user' => 'roles_users',
 	'categorieactionrole' => 'categoriesactionroles',

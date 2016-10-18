@@ -1,9 +1,11 @@
 <?php
-	// Donne le domain du plus haut niveau de précision (prefix, action puis controller)
-	$domain = current(WebrsaTranslator::domains());
-	$defaultParams = compact('options', 'domain');
+	$defaultParams = array(
+		'options' => $options,
+		'th' => true,
+		'class' => 'table-view'
+	);
 
-	echo $this->Default3->titleForLayout($this->request->data, compact('domain'));
+	echo $this->Default3->titleForLayout($this->request->data);
 	echo $this->FormValidator->generateJavascript();
 
 	if( Configure::read( 'debug' ) > 0 ) {
@@ -17,38 +19,52 @@
 
 	echo $this->Default3->view(
 		$this->request->data,
-		array(
-			'Fichedeliaison.etat' => array('empty' => true),
-			'Fichedeliaison.expediteur_id' => array('empty' => true),
-			'Fichedeliaison.destinataire_id' => array('empty' => true),
-			'FichedeliaisonPersonne.personne_id' => array(
-				'type' => 'select', 'multiple' => 'checkbox', 'options' => $concerne, 'fieldset' => true
-			),
-			'Fichedeliaison.datefiche' => array('type' => 'date', 'dateFormat' => 'DMY'),
-			'Fichedeliaison.motiffichedeliaison_id' => array('empty' => true),
-			'Fichedeliaison.commentaire' => array('type' => 'textarea'),
-		),
-		$defaultParams + array('th' => true, 'caption' => 'Fiche de liaison', 'class' => 'table-view')
+		$this->Translator->normalize(
+			array(
+				'Fichedeliaison.etat' => array('empty' => true),
+				'Fichedeliaison.expediteur_id' => array('empty' => true),
+				'Fichedeliaison.destinataire_id' => array('empty' => true),
+				'FichedeliaisonPersonne.personne_id' => array(
+					'type' => 'select', 'multiple' => 'checkbox', 'options' => $concerne, 'fieldset' => true
+				),
+				'Fichedeliaison.datefiche' => array('type' => 'date', 'dateFormat' => 'DMY'),
+				'Fichedeliaison.motiffichedeliaison_id' => array('empty' => true),
+				'Fichedeliaison.envoiemail' => array('type' => 'radio'),
+				'Fichedeliaison.dateenvoiemail' => array('type' => 'date', 'dateFormat' => 'DMY'),
+				'Destinataireemail.a' => array(
+					'type' => 'select', 'multiple' => 'checkbox', 'options' => $emailsServices, 'fieldset' => true
+				),
+				'Destinataireemail.cc' => array(
+					'type' => 'select', 'multiple' => 'checkbox', 'options' => $emailsServices, 'fieldset' => true
+				),
+				'Fichedeliaison.commentaire' => array('type' => 'textarea'),
+			)
+		),	
+		$defaultParams + array('caption' => 'Fiche de liaison')
 	);
 
 	echo $this->Default3->view(
 		$this->request->data,
-		array(
-			'Avistechniquefiche.date' => array('type' => 'date', 'dateFormat' => 'DMY'),
-			'Avistechniquefiche.choix' => array('type' => 'radio'),
-			'Avistechniquefiche.commentaire' => array('type' => 'textarea'),
+		$this->Translator->normalize(
+			array(
+				'Avistechniquefiche.date' => array('type' => 'date', 'dateFormat' => 'DMY'),
+				'Avistechniquefiche.choix' => array('type' => 'radio'),
+				'Avistechniquefiche.commentaire' => array('type' => 'textarea'),
+			)
 		),
-		$defaultParams + array('th' => true, 'caption' => 'Avis technique', 'class' => 'table-view')
+		$defaultParams + array('caption' => 'Avis technique')
 	);
 
 	echo $this->Default3->view(
 		$this->request->data,
-		array(
-			'Validationfiche.date' => array('type' => 'date', 'dateFormat' => 'DMY'),
-			'Validationfiche.choix' => array('type' => 'radio'),
-			'Validationfiche.commentaire' => array('type' => 'textarea'),
+		$this->Translator->normalize(
+			array(
+				'Validationfiche.date' => array('type' => 'date', 'dateFormat' => 'DMY'),
+				'Validationfiche.choix' => array('type' => 'radio'),
+				'Validationfiche.commentaire' => array('type' => 'textarea'),
+			)
 		),
-		$defaultParams + array('th' => true, 'caption' => 'Validation', 'class' => 'table-view')
+		$defaultParams + array('caption' => 'Validation')
 	);
 
 	echo $this->Xhtml->link(

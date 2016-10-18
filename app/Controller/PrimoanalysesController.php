@@ -340,6 +340,36 @@
 				'propositionprimo_id' => $this->Primoanalyse->Propositionprimo->find('list'),
 			);
 			
+			$emails = $this->Fichedeliaison->Expediteur->find('all',
+				array(
+					'fields' => array(
+						'Expediteur.id',
+						'User.email',
+					),
+					'joins' => array(
+						$this->Fichedeliaison->Expediteur->join('User')
+					),
+					'conditions' => array(
+						'Expediteur.actif' => 1,
+						'User.email IS NOT NULL',
+						'User.email !=' => ''
+					),
+					'order' => array('User.email' => 'ASC')
+				)
+			);
+			$emailsServices = array();
+			foreach ($emails as $email) {
+				$emailsServices[$email['Expediteur']['id'].'_'.h($email['User']['email'])] = $email['User']['email'];
+			}
+			
+			$servicesInterne = $this->Fichedeliaison->Expediteur->find('list',
+				array('conditions' => array('Expediteur.actif' => 1, 'Expediteur.interne' => 1))
+			);
+			$servicesExterne = $this->Fichedeliaison->Expediteur->find('list',
+				array('conditions' => array('Expediteur.actif' => 1, 'Expediteur.interne' => 0))
+			);
+			$this->set(compact('emailsServices', 'servicesInterne', 'servicesExterne'));
+			
 			$options['Logicielprimo']['name'] = $this->Primoanalyse->LogicielprimoPrimoanalyse->Logicielprimo->find('list');
 			
 			$options = Hash::merge(
@@ -444,6 +474,97 @@
 			;
 			
 			$this->request->data = Hash::merge($primoanalyse, $this->request->data);
+			
+			/**
+			 * Destinataires e-mail
+			 */
+			$a = Hash::extract(
+				$this->Fichedeliaison->Destinataireemail->find('all', 
+					array('conditions' => array('fichedeliaison_id' => $fichedeliaison_id, 'type' => 'A'))
+				), 
+				'{n}.Destinataireemail.name'
+			);
+			$this->request->data['Destinataireemail']['a'] = array();
+			foreach ($a as $email) {
+				$destinataire_id = Hash::get($this->request->data, 'Fichedeliaison.destinataire_id');
+				$this->request->data['Destinataireemail']['a'][] = $destinataire_id.'_'.h($email);
+			}
+			
+			$cc = Hash::extract(
+				$this->Fichedeliaison->Destinataireemail->find('all', 
+					array('conditions' => array('fichedeliaison_id' => $fichedeliaison_id, 'type' => 'CC'))
+				), 
+				'{n}.Destinataireemail.name'
+			);
+			$this->request->data['Destinataireemail']['cc'] = array();
+			foreach ($cc as $email) {
+				$destinataire_id = Hash::get($this->request->data, 'Fichedeliaison.destinataire_id');
+				$this->request->data['Destinataireemail']['cc'][] = $destinataire_id.'_'.h($email);
+			}
+		}
+		
+		/**
+		 * Traitement lors des actions tel que "Vu" ou "A faire"
+		 * 
+		 * @param integer $primoanalyse_id
+		 */
+		protected function _action($primoanalyse_id) {
+			$primoanalyse = $this->Primoanalyse->find('first', $this->Primoanalyse->getEditQuery($primoanalyse_id));
+			$fichedeliaison_id = Hash::get($primoanalyse, 'Primoanalyse.fichedeliaison_id');
+			$foyer_id = $this->Fichedeliaison->foyerId($fichedeliaison_id);
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu(array('foyer_id' => $foyer_id));
+			$dossier_id = $dossierMenu['Dossier']['id'];
+			
+			$this->Jetons2->get($dossier_id);
+			if (!empty($this->request->data)) {
+				if (isset($this->request->data['Cancel'])) {
+					$this->Jetons2->release($dossier_id);
+					$this->redirect(array('controller' => 'fichedeliaisons', 'action' => 'index', $foyer_id));
+				}
+				
+				$this->Primoanalyse->id = $primoanalyse_id;
+				$this->Primoanalyse->begin();
+				$success = $this->Primoanalyse->save($this->request->data);
+				
+				if ($success) {
+					$this->Fichedeliaison->commit();
+					$this->Primoanalyse->updatePositionsById($primoanalyse_id);
+					$this->Fichedeliaison->updatePositionsById($fichedeliaison_id); // Passe en traité si primo analyse > traité
+					$this->Jetons2->release($dossier_id);
+					$this->Session->setFlash('Enregistrement effectué', 'flash/success');
+					$this->redirect(array('controller' => 'fichedeliaisons', 'action' => 'index', $foyer_id));
+				}
+				else {
+					$this->Fichedeliaison->rollback();
+					$this->Session->setFlash('Erreur lors de l\'enregistrement', 'flash/error');
+				}
+			} else {
+				$this->request->data = $this->Primoanalyse->find('first', $this->Primoanalyse->getEditQuery($primoanalyse_id));
+			}
+			
+			$this->set('dossierMenu', $dossierMenu);
+			$this->set('urlMenu', '/Fichedeliaisons/index/#Foyer_id#');
+			$this->_setOptions();
+		}
+		
+		/**
+		 * Permet de marquer la primoanalyse comme "vu"
+		 * Influe sur l'etat de la primoanalyse
+		 * 
+		 * @param integer $primoanalyse_id
+		 */
+		public function vu($primoanalyse_id) {
+			return $this->_action($primoanalyse_id);
+		}
+		
+		/**
+		 * Permet de marquer la primoanalyse comme "A faire"
+		 * Influe sur l'etat de la primoanalyse
+		 * 
+		 * @param integer $primoanalyse_id
+		 */
+		public function afaire($primoanalyse_id) {
+			return $this->_action($primoanalyse_id);
 		}
 	}
 ?>

@@ -222,6 +222,17 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'options', $this->User->enums() );
 			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list', array( 'conditions' => array( 'Structurereferente.actif' => 'O' ) ) ) );
+			
+			if (Configure::read('Cg.departement') === 66) {
+				$internes = $this->User->Service66->find('list', 
+					array('conditions' => array('Service66.actif' => 1, 'Service66.interne' => 1))
+				);
+				$externes = $this->User->Service66->find('list', 
+					array('conditions' => array('Service66.actif' => 1, 'Service66.interne' => 0))
+				);
+				
+				$this->set('services66', array('DASAD' => $internes, 'Hors DASAD' => $externes));
+			}
 
             $this->set(
                 'polesdossierspcgs66',

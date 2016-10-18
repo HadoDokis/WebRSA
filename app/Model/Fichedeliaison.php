@@ -86,7 +86,7 @@
 				'counterCache' => null
 			),
 			'Expediteur' => array(
-				'className' => 'Originepdo',
+				'className' => 'Service66',
 				'foreignKey' => 'expediteur_id',
 				'conditions' => null,
 				'type' => 'INNER',
@@ -95,7 +95,7 @@
 				'counterCache' => null
 			),
 			'Destinataire' => array(
-				'className' => 'Originepdo',
+				'className' => 'Service66',
 				'foreignKey' => 'destinataire_id',
 				'conditions' => null,
 				'type' => 'INNER',
@@ -122,6 +122,17 @@
 		public $hasMany = array(
 			'Primoanalyse' => array(
 				'className' => 'Primoanalyse',
+				'foreignKey' => 'fichedeliaison_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
+			'Destinataireemail' => array(
+				'className' => 'Destinataireemail',
 				'foreignKey' => 'fichedeliaison_id',
 				'conditions' => null,
 				'order' => null,
@@ -173,6 +184,19 @@
 		);
 		
 		/**
+		 * Règles de validation.
+		 *
+		 * @var array
+		 */
+		public $validate = array(
+			'direction' => array(
+				'notEmpty' => array(
+					'rule' => array('notEmpty')
+				)
+			)
+		);
+		
+		/**
 		 * Permet d'obtenir la requête nécéssaire pour l'index
 		 * 
 		 * @param integer $foyer_id
@@ -183,8 +207,8 @@
 					$this->fields(),
 					array(
 						'Motiffichedeliaison.name',
-						'Expediteur.libelle',
-						'Destinataire.libelle',
+						'Expediteur.name',
+						'Destinataire.name',
 						'Primoanalyse.etat',
 						$this->Fichiermodule->sqNbFichiersLies($this, 'nombre'),
 					)
