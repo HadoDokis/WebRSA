@@ -631,7 +631,7 @@
 	 *
 	 * @default /usr/sbin/apache2
 	 */
-	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
+	Configure::write( 'apache_bin', '/usr/sbin/httpd' );
 
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortetransfertspdvs93/atransferer

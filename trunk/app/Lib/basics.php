@@ -905,7 +905,8 @@
 		$binaries = array(
 			Configure::read( 'apache_bin' ),
 			'/usr/sbin/apachectl',
-			'/usr/sbin/apache2'
+			'/usr/sbin/apache2',
+			'/usr/sbin/httpd'
 		);
 
 		for( $i = 0 ; $i < count($binaries) && true === empty( $result ) ; $i++ ) {
@@ -937,7 +938,7 @@
 			}
 		}
 
-		return preg_replace( '/^.*Apache\/([^ ]+) .*$/', '\1', $rawVersion );
+		return preg_replace( '/^.*Apache\/([0-9\.]+).*$/', '\1', $rawVersion );
 	}
 
 	/**
