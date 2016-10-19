@@ -73,6 +73,48 @@
 				
 				$json = json_decode(Hash::get($result, 'Requestmanager.json'), true);
 				
+				/**
+				 * Ignore selon valeur tag
+				 */
+				if ( Hash::get($search, 'Tag.valeurtag_id') ) {
+					$sq = $this->Tag->sq(
+						array(
+							'alias' => 'tags',
+							'fields' => 'tags.id',
+							'joins' => array(
+								array(
+									'alias' => 'entites_tags',
+									'table' => 'entites_tags',
+									'conditions' => array(
+										'entites_tags.tag_id = tags.id'
+									),
+									'type' => 'INNER'
+								)
+							),
+							'conditions' => array(
+								array('OR' => array(
+									'tags.limite IS NULL',
+									'tags.limite > NOW()',
+								)),
+								'tags.etat' => array( 'encours', 'traite' ),
+								'tags.valeurtag_id' => Hash::get($search, 'Tag.valeurtag_id'),
+								'OR' => array(
+									array(
+										'entites_tags.modele' => 'Personne',
+										'entites_tags.fk_value = Personne.id'
+									),
+									array(
+										'entites_tags.modele' => 'Foyer',
+										'entites_tags.fk_value = Foyer.id'
+									),
+								)
+							),
+							'limit' => 1
+						)
+					);
+					$json['conditions'][] = "NOT EXISTS({$sq})";
+				}				
+				
 				return $json;
 			}
 			
@@ -85,10 +127,6 @@
 				'Prestation.rolepers'
 			);
 			
-			if( Configure::read( 'CG.cantons' ) ) {
-				$paths[] = 'Zonegeographique.id';
-			}
-
 			// Fils de dependantSelect
 			$pathsToExplode = array(
 			);
@@ -249,15 +287,24 @@
 				}
 				else {
 					// On récupère la bonne foreign key
-					$data[$key]['Tag']['fk_value'] = $value[$value['Tag']['modele']]['id'];
+					$data[$key]['EntiteTag']['fk_value'] = $value[$value['EntiteTag']['modele']]['id'];
 					
 					// On ne garde que l'essentiel
-					$data[$key] = array('Tag' => $data[$key]['Tag']);
+					$data[$key] = array('EntiteTag' => $data[$key]['EntiteTag'], 'Tag' => $data[$key]['Tag']);
 					unset($data[$key]['Tag']['selection']);
 				}
 			}
 			
-			$success = !empty($data) && $this->Tag->saveAll($data);
+			// Sauvegarde un par un
+			$success = true;
+			foreach ($data as $value) {
+				$this->Tag->create($value['Tag']);
+				$success = $this->Tag->save() && $success;
+				
+				$value['EntiteTag']['tag_id'] = $this->Tag->id;
+				$this->Tag->EntiteTag->create($value['EntiteTag']);
+				$success = $this->Tag->EntiteTag->save() && $success;
+			}
 			
 			return $success;
 		}

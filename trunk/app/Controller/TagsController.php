@@ -293,7 +293,7 @@
 				'Tag.selection' => array('type' => 'checkbox', 'label' => '&nbsp;'),
 				'EntiteTag.modele' => array('type' => 'select', 'label' => ''),
 				'Tag.valeurtag_id' => array('type' => 'select', 'label' => ''),
-				'Tag.limite' => array('type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4),
+				'Tag.limite' => array('type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4, 'empty' => true),
 				'Tag.commentaire' => array('type' => 'textarea', 'label' => ''),
 			);
 			$Recherches = $this->Components->load('WebrsaCohortesTags');

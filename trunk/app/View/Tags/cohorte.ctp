@@ -13,18 +13,13 @@
 	$this->start( 'custom_search_filters' );
 
 	echo $this->Xform->multipleCheckbox( 'Search.Tag.valeurtag_id', $options['filter'] );
-
-	if( Configure::read( 'CG.cantons' ) ) {
-		echo $this->Xform->multipleCheckbox( 'Search.Zonegeographique.id', $options, 'divideInto2Columns' );
-	}
-
 	echo $this->Xform->multipleCheckbox( 'Search.Prestation.rolepers', $options, 'divideInto2Columns' );
 	echo $this->Xform->multipleCheckbox( 'Search.Foyer.composition', $options, 'divideInto2Columns' );
 
 	echo '<fieldset><legend>' . __m( 'Tag.cohorte_fieldset' ) . '</legend>'
 		. $this->Default3->subform(
 			array(
-				'Search.Foyer.nb_enfants',
+				'Search.Foyer.nb_enfants' => array( 'empty' => true ),
 				'Search.Adresse.heberge' => array( 'empty' => true ),
 				'Search.Requestmanager.name' => array( 'empty' => true ),
 			),
@@ -44,7 +39,7 @@
 				'Cohorte.EntiteTag.modele',
 				'Cohorte.Tag.valeurtag_id',
 				'Cohorte.Tag.calcullimite' => array( 'empty' => true, 'options' => Configure::read('Tags.cohorte.range_date_butoir') ),
-				'Cohorte.Tag.limite' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4 ),
+				'Cohorte.Tag.limite' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y')+4, 'empty' => true ),
 				'Cohorte.Tag.commentaire',
 			),
 			array(
