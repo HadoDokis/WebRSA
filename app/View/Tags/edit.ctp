@@ -19,7 +19,7 @@
 		. $this->Default3->subform(
 			array(
 				'Tag.id' => array( 'type' => 'hidden' ),
-				'Tag.etat' => array( 'type' => 'hidden' ),
+				'Tag.etat',
 				'Tag.valeurtag_id',
 				'Tag.commentaire',
 				'Tag.limite' => array( 'empty' => true, 'dateFormat' => 'DMY', 'minYear' => $minYear, 'maxYear' => date('Y')+4 ),

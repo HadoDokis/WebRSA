@@ -217,7 +217,8 @@
 					))
 				),
 				'conditions' => array(
-					is_string($valeurtag_id) ? 'Tag.valeurtag_id = '.$valeurtag_id : 'Tag.valeurtag_id' => $valeurtag_id
+					is_string($valeurtag_id) ? 'Tag.valeurtag_id = '.$valeurtag_id : 'Tag.valeurtag_id' => $valeurtag_id,
+					"Tag.etat" => 'encours'
 				),
 				'limit' => 1
 			);
