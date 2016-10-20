@@ -172,6 +172,13 @@
 
 				$this->_setFlashResult('Save', $success);
 				if ($success) {
+					Cache::config('one day', array(
+						'engine' => 'File',
+						'duration' => '+1 day',
+						'path' => CACHE,
+						'prefix' => 'cake_oneday_'
+					));
+					Cache::clear(false, 'one day');
 					$this->Role->commit();
 					$this->redirect( array( 'action' => 'index' ) );
 				} else {
