@@ -682,7 +682,7 @@ msgid "Traitementpcg66.daterevision"
 msgstr "Date de révision"
 
 msgid "Traitementpcg66.imprimer"
-msgstr "Inclure dans décision"
+msgstr "Inclure dans la cohorte d'impression"
 
 msgid "Traitementpcg66.etattraitementpcg"
 msgstr "Etat du traitement"

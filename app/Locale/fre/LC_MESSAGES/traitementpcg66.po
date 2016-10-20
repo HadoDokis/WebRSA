@@ -55,7 +55,7 @@ msgid "Traitementspcgs66::edit"
 msgstr "Modification du traitement"
 
 msgid "Traitementspcgs66::switch_imprimer"
-msgstr "Inclure dans décision"
+msgstr "Inclure/Exclure"
 
 msgid "Traitementspcgs66::printModeleCourrier"
 msgstr "Impression du courrier"
@@ -88,7 +88,7 @@ msgid "Traitementpcg66.daterevision"
 msgstr "Date de révision"
 
 msgid "Traitementpcg66.imprimer"
-msgstr "Inclure dans décision"
+msgstr "Inclure dans la cohorte d'impression"
 
 msgid "Traitementpcg66.etattraitementpcg"
 msgstr "Etat du traitement"

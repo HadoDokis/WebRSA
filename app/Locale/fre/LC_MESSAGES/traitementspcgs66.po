@@ -107,7 +107,7 @@ msgid "Traitementpcg66.typetraitement"
 msgstr "Type de traitement"
 
 msgid "Traitementpcg66.imprimer"
-msgstr "Inclure dans décision"
+msgstr "Inclure dans la cohorte d'impression"
 
 msgid "Traitementpcg66.dateenvoicourrier"
 msgstr "Date d'envoi du courrier"
@@ -137,10 +137,10 @@ msgid "/Traitementspcgs66/printFicheCalcul/#Traitementpcg66.id#"
 msgstr "Fiche de calcul"
 
 msgid "/Traitementspcgs66/switch_imprimer"
-msgstr "Inclure dans décision"
+msgstr "Inclure/Exclure"
 
 msgid "/Traitementspcgs66/switch_imprimer/#Traitementpcg66.id#"
-msgstr "Inclure dans décision"
+msgstr "Inclure/Exclure"
 
 msgid "/Traitementspcgs66/printModeleCourrier"
 msgstr "Imprimer courrier"
