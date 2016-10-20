@@ -7,6 +7,7 @@
 	 * @package app.View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppHelper', 'View/Helper' );
 
 	/**
 	 * La classe SearchHelper comprend des combinaisons de champs de formulaire
@@ -317,11 +318,11 @@
 			$content = $this->Xform->input( "{$prefix}Dossier.numdemrsa", array( 'label' => 'Numéro de dossier RSA' ) );
 			$content .= $this->Xform->input( "{$prefix}Dossier.matricule", array( 'label' => __d( 'dossier', 'Dossier.matricule.large' ) ) );
 			$content .= $this->date( "{$prefix}Dossier.dtdemrsa" );
-			
+
 			if (!empty($etatsdosrsa)) {
 				$content .= $this->etatdosrsa( $etatsdosrsa, "{$prefix}Situationdossierrsa.etatdosrsa" );
 			}
-			
+
 			$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
 
 

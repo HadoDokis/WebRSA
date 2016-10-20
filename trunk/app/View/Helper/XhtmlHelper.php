@@ -7,8 +7,8 @@
 	 * @package app.View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Helper', 'Html' );
 	App::uses( 'ControllerCache', 'Model/Datasource' );
+	App::uses( 'HtmlHelper', 'View/Helper' );
 
 	/**
 	 * La classe XhtmlHelper est une classe d'aide à l'écriture rapide de code

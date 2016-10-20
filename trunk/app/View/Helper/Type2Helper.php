@@ -7,7 +7,7 @@
 	 * @package app.View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Helper', 'Model' );
+	App::uses( 'ModelHelper', 'View/Helper' );
 
 	/**
 	 * TODO: dane une classe, un meilleur nom ?
