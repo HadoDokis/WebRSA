@@ -7,8 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	App::uses('WebrsaAccessBilansparcours66', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessBilansparcours66', 'Utility' );
 
 	/**
 	 * La classe CohortesciController permet de gérer les bilans de parcours (CG 66).
@@ -70,11 +70,11 @@
 			'Typeorient',
 			'WebrsaBilanparcours66',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -82,7 +82,7 @@
 			'exportcsv' => 'Criteresbilansparcours66:exportcsv',
 			'search' => 'Criteresbilansparcours66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -316,9 +316,9 @@
 			}
 
 			$query['conditions']['Bilanparcours66.personne_id'] = $personne_id;
-			
+
 			$bilansparcours66 = $this->WebrsaAccesses->getIndexRecords($personne_id, $query);
-			
+
 			$this->_setOptions(array(), array('find' => false));
 			$this->set(compact('bilansparcours66', 'nborientstruct', 'struct', 'ajoutPossible'));
 		}

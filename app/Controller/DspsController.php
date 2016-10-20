@@ -7,8 +7,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
-	App::uses('WebrsaAccessDsps', 'Utility');
+	App::uses( 'WebrsaAccessDsps', 'Utility' );
 
 	/**
 	 * La classe DspsController ...
@@ -80,11 +81,11 @@
 			'Option',
 			'WebrsaDsp',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -92,7 +93,7 @@
 			'findPersonne' => 'Dsps:view',
 			'search' => 'Dsps:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -104,7 +105,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -130,7 +131,7 @@
 			'view_diff' => 'read',
 			'view_revs' => 'read',
 		);
-		
+
 		public $paginate = array(
 			'limit' => 10,
 			'order' => array( 'DspRev.created' => 'desc', 'DspRev.id' => 'desc' )
@@ -312,7 +313,7 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
 
 			$this->_setEntriesAncienDossier( $id, 'Dsp' );
-			
+
 			$query = $this->WebrsaDsp->completeVirtualFieldsForAccess(
 				array(
 					'conditions' => array(
@@ -340,7 +341,7 @@
 					)
 				)
 			);
-			
+
 			$paramsAccess = $this->WebrsaDsp->getParamsForAccess($this->Dsp->personneId($id), WebrsaAccessDsps::getParamsList());
 			$this->set('ajoutPossible', Hash::get($paramsAccess, 'ajoutPossible'));
 

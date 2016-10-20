@@ -7,8 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	 App::uses('WebrsaCheckAccess', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaCheckAccess', 'Utility' );
 
 	/**
 	 * La classe ChecksController ...

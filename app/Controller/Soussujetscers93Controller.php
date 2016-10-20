@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe Soussujetscers93Controller permet la gestion des CER du CG 93 (hors workflow).
@@ -28,7 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			
+
 		);
 
 		/**
@@ -37,7 +38,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			
+
 		);
 
 		/**
@@ -48,26 +49,26 @@
 		public $uses = array(
 			'Soussujetcer93',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -80,7 +81,7 @@
 			'edit' => 'update',
 			'index' => 'read',
 		);
-		
+
 		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
@@ -131,7 +132,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'soussujetscers93', 'action' => 'index' ) );
 			}
-		
+
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Soussujetcer93->begin();
@@ -158,7 +159,7 @@
 					)
 				);
 			}
-			
+
 			$options = array(
 				'Soussujetcer93' => array(
 					'sujetcer93_id' => $this->Soussujetcer93->Sujetcer93->find( 'list', array( 'fields' => array( 'id', 'name' ), 'conditions' => array( 'Sujetcer93.isautre' => '0' ) ) )
@@ -168,7 +169,7 @@
 
 			$this->render( 'edit' );
 		}
-		
+
 		public function delete( $soussujetcer93_id = null ) {
 			// Vérification du format de la variable
 			if( !$this->Soussujetcer93->exists( $soussujetcer93_id ) ) {

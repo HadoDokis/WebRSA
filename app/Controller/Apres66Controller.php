@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 	App::uses( 'CakeEmail', 'Network/Email' );
 	App::uses( 'WebrsaEmailConfig', 'Utility' );
 
@@ -105,7 +106,7 @@
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -365,7 +366,7 @@
 			$this->set( 'personne', $personne );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Apre' );
-			
+
 			$apres = $this->WebrsaAccesses->getIndexRecords(
 				$personne_id, array(
 					'fields' => array_merge(
@@ -526,7 +527,7 @@
 					'first', array('conditions' => array('Typeaideapre66.id' => $typeaideapre66_id),)
 				);
 			}
-			
+
 			$this->request->data = array( );
 
 			if( !empty( $apre_id ) ) {
@@ -915,7 +916,7 @@
 			}
 
 			$this->set('typeaideOptions', $this->_typeaideOptions());
-			
+
 			$struct_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.structurereferente_id" );
 			$this->set( 'struct_id', $struct_id );
 
@@ -1260,7 +1261,7 @@
 
 		/**
 		 * Fait la distinction entre les options pour les APREs et celles des ADREs
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _typeaideOptions() {
@@ -1277,7 +1278,7 @@
 					'order' => 'Typeaideapre66.name ASC',
 				)
 			);
-			
+
 			$options = array(
 				'ADRE' => array(),
 				'APRE' => array(),

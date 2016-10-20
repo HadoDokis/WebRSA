@@ -7,7 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import('Sanitize');
+	App::uses( 'AppController', 'Controller' );
+	App::import( 'Sanitize' );
 
 	/**
 	 * La classe CohortesindusController implémente un moteur de rechrche par indus.

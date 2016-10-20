@@ -5,8 +5,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('AbstractParametragesController', 'Controller');
 	App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AbstractParametragesController', 'Controller' );
 
 	/**
 	 * La classe MotiffichedeliaisonsController ...
@@ -30,13 +30,13 @@
 		public $uses = array(
 			'Motiffichedeliaison'
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
-		 * 
+		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
 	}

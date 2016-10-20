@@ -7,8 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	 App::uses('WebrsaAccessMemos', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessMemos', 'Utility' );
 
 	/**
 	 * La classe MemosController permet de gérer les mémos attachés à un allocataire.
@@ -63,18 +63,18 @@
 			'Personne',
 			'WebrsaMemo',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Memos:edit',
 			'view' => 'Memos:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -86,7 +86,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -250,7 +250,7 @@
 					'recursive' => -1
 				)
 			);
-			
+
 			$this->set(compact('memos', 'personne_id', 'ajoutPossible'));
 		}
 

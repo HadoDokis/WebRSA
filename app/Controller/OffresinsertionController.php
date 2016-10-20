@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe OffresinsertionController ...
@@ -63,17 +64,17 @@
 			'Option',
 			'Partenaire',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'view' => 'Offresinsertion:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -85,7 +86,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -119,7 +120,7 @@
 			foreach (Hash::extract($this->Actioncandidat->Partenaire->find('all', $query), '{n}.Partenaire.codepartenaire') as $code) {
 				$options['Partenaire']['codepartenaire'][$code] = $code;
 			}
-			
+
 			$query = array(
 				'fields' => 'Actioncandidat.themecode',
 				'contain' => false,
@@ -129,7 +130,7 @@
 			foreach (Hash::extract($this->Actioncandidat->find('all', $query), '{n}.Actioncandidat.themecode') as $code) {
 				$options['Actioncandidat']['themecode'][$code] = $code;
 			}
-			
+
 			$query = array(
 				'fields' => 'Actioncandidat.codefamille',
 				'contain' => false,

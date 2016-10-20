@@ -7,8 +7,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
     App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
+
 	/**
 	 * La classe RolesController ...
 	 *
@@ -38,10 +39,10 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Default', 
-			'Default2', 
+			'Default',
+			'Default2',
 			'Theme',
-			'Xform', 
+			'Xform',
 		);
 
 		/**
@@ -52,26 +53,26 @@
 		public $uses = array(
 			'Role',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -91,7 +92,7 @@
 		 */
 		public function index() {
 			$this->Role->Behaviors->attach( 'Occurences' );
-  
+
             $querydata = $this->Role->qdOccurencesExists(
                 array(
                     'fields' => $this->Role->fields(),
@@ -115,7 +116,7 @@
 
 		/**
 		 * Modification d'une entrée
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function edit( $id = null ) {
@@ -129,7 +130,7 @@
 				$this->Role->create( $this->request->data );
 				$success = $this->Role->save();
 				$role_id = $this->Role->id;
-				
+
 				if ($success) {
 					// On prend les anciennes valeurs de RoleUser
 					$old = (array)Hash::extract(
@@ -142,14 +143,14 @@
 							)
 						), '{n}.RoleUser.user_id'
 					);
-					
+
 					// On prend les nouvelles
 					$new = (array)Hash::get($this->request->data, 'RoleUser.user_id');
-					
+
 					// On défini ce qui doit être ajouté ou supprimé de la base de donnée
 					$toWrite = array_diff($new, $old);
 					$notDelete = array_intersect($old, $new);
-					
+
 					// On détruit ce qui n'est pas dans la liste
 					if (!empty($old)) {
 						$conditions = array('role_id' => $role_id);
@@ -158,7 +159,7 @@
 						}
 						$this->Role->RoleUser->deleteAll($conditions);
 					}
-					
+
 					// On enregistre les nouvelles valeurs
 					if (!empty($toWrite)) {
 						$data = array();
@@ -188,13 +189,13 @@
 				$user_ids = Hash::extract($this->request->data, 'RoleUser.{n}.user_id');
 				unset($this->request->data['RoleUser']);
 				$this->request->data['RoleUser']['user_id'] = $user_ids;
-				
+
 				$this->assert( !empty( $this->request->data ), 'error404' );
 			}
 			else{
 				$this->request->data['Role']['actif'] = true;
 			}
-			
+
 			$users = $this->Role->User->find('all',
 				array(
 					'fields' => array(
@@ -213,14 +214,14 @@
 					)
 				)
 			);
-			
+
 			$dataUsers = array();
 			foreach ($users as $user) {
 				$dataUsers[$user['Group']['name']][$user['User']['id']] = $user['User']['nom_prenom'];
 			}
-			
+
 			$options = $this->_options();
-			
+
 			$this->set( compact( 'options', 'dataUsers' ) );
 
 			$this->view = 'edit';
@@ -228,7 +229,7 @@
 
 		/**
 		 * Suppression d'une entrée
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
@@ -237,16 +238,16 @@
 
 		/**
 		 * Visualisation de la table
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function view( $id ) {
 			$this->Default->view( $id );
 		}
-		
+
 		/**
 		 * Options pour la vue
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _options() {

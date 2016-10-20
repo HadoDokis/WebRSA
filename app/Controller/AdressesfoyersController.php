@@ -7,8 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	 App::uses('WebrsaAccessAdressesfoyers', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessAdressesfoyers', 'Utility' );
 
 	/**
 	 * La classe AdressesfoyersController permet de lister, voir, ajouter et supprimer des adresses à un foyer RSA.
@@ -41,7 +41,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			
+
 		);
 
 		/**
@@ -54,27 +54,27 @@
 			'Option',
 			'WebrsaAdressefoyer',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Adressesfoyers:edit',
 			'view' => 'Adressesfoyers:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -127,7 +127,7 @@
 					)
 				)
 			);
-			
+
 			// Assignations à la vue
 			$this->set( 'foyer_id', $foyer_id );
 			$this->set( 'adresses', $adresses );
@@ -141,7 +141,7 @@
 		public function view( $id = null ) {
 			$this->WebrsaAccesses->check($id);
 			$foyer_id = $this->Adressefoyer->foyerId($id);
-			
+
 			$query = $this->WebrsaAdressefoyer->completeVirtualFieldsForAccess(
 				array(
 					'conditions' => array( 'Adressefoyer.id' => $id ),
@@ -150,7 +150,7 @@
 					)
 				)
 			);
-			
+
 			$paramsAccess = $this->WebrsaAdressefoyer->getParamsForAccess($foyer_id, WebrsaAccessAdressesfoyers::getParamsList());
 			$adresse = WebrsaAccessAdressesfoyers::access($this->Adressefoyer->find('first', $query), $paramsAccess);
 

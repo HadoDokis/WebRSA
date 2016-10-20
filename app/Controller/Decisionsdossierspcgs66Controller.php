@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe Decisionsdossierspcgs66Controller permet de gérer les décisions
@@ -58,17 +59,17 @@
 			'Option',
 			'Pdf',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'view' => 'Decisionsdossierspcgs66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -81,7 +82,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -106,7 +107,7 @@
 			'validation' => 'update',
 			'view' => 'read',
 		);
-		
+
 		/**
 		 *
 		 */
@@ -575,9 +576,9 @@
 				if( $this->request->action !== 'add' && Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id' ) !== null ) {
 					unset($this->request->data['Decisiondossierpcg66']['userproposition_id']);
 				}
-				
+
 				$this->Decisiondossierpcg66->begin();
-				
+
 				if( $this->Decisiondossierpcg66->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 					if( !empty( $this->request->data['Decisiondossierpcg66Decisionpersonnepcg66'][0]['decisionpersonnepcg66_id'] ) ) {
@@ -622,12 +623,12 @@
 					if( $saved ) {
 						$saved = $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
 					}
-					
+
 					/**
 					 * Si un traitement de type courrier a été crée le même jour, on le met dans la liste d'impression de la décision
 					 */
 					if ( $saved && Hash::get( $this->request->data, 'Decisiondossierpcg66.validationproposition' ) === 'O' ) {
-						$listeDecisions = $this->Decisiondossierpcg66->Dossierpcg66->find( 'all', 
+						$listeDecisions = $this->Decisiondossierpcg66->Dossierpcg66->find( 'all',
 							array(
 								'fields' => array(
 									'Decisiondossierpcg66.id',
@@ -643,7 +644,7 @@
 								)
 							)
 						);
-						
+
 						foreach ( Hash::extract( $listeDecisions, '{n}.Decisiondossierpcg66.id' ) as $key => $idsDossierspcgs66 ) {
 							$traitementsCourrierMemeJour = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->find( 'all',
 								array(
@@ -682,7 +683,7 @@
 							}
 						}
 					}
-					
+
                     // Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier
                     // que celui auquel je suis lié
                     if( $saved && !empty( $this->request->data['Traitementpcg66']['Traitementpcg66'] ) ) {
@@ -768,7 +769,7 @@
 
             $personnesFoyerIds = Hash::extract( $dossierpcg66, 'Foyer.Personne.{n}.id' );
             $listeTraitementsNonClos = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->listeTraitementpcg66NonClos( array_values( $personnesFoyerIds ), $this->action, $this->request->data );
-			
+
 			if (!empty($listeTraitementsNonClos)) {
 				$listeTraitementsNonClos['Traitementpcg66']['autorisations'] = array(
 					'printFicheCalcul' => array(),
@@ -811,8 +812,8 @@
 					$avistechniquemodifiable = ( $this->action != 'add' );
 					break;
 			}
-			
-			
+
+
 			// Fichiers liés aux traitements de type document arrivé
 			$fichiermoduleJoin = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->join('Fichiermodule', array('type' => 'INNER'));
 			$fichiermoduleJoin['conditions'] = array(
@@ -820,7 +821,7 @@
 				'Fichiermodule.fk_value = Traitementpcg66.id',
 			);
 
-			$fichiersDocument = $this->Decisiondossierpcg66->Dossierpcg66->find('all', 
+			$fichiersDocument = $this->Decisiondossierpcg66->Dossierpcg66->find('all',
 				array(
 					'fields' => array(
 						'Fichiermodule.id',
@@ -830,7 +831,7 @@
 					'contain' => false,
 					'joins' => array(
 						$this->Decisiondossierpcg66->Dossierpcg66->join('Personnepcg66', array('type' => 'INNER')),
-						$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->join('Traitementpcg66', 
+						$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->join('Traitementpcg66',
 							array(
 								'type' => 'INNER',
 								'conditions' => array(
@@ -845,7 +846,7 @@
 					)
 				)
 			);
-			
+
 			$this->set( compact( 'personnespcgs66', 'dossierpcg66', 'decisiondossierpcg66', 'avistechniquemodifiable', 'validationmodifiable', 'fichiersDocument' ) );
 
 			$this->_setOptions();
@@ -870,9 +871,9 @@
 
 			if( $pdf ) {
 				$success = true;
-				
+
 				$query = array(
-					'fields' => array( 
+					'fields' => array(
 						'Dossierpcg66.id',
 						'Dossierpcg66.etatdossierpcg'
 					),
@@ -887,14 +888,14 @@
 				$results = $this->Decisiondossierpcg66->Dossierpcg66->find( 'first', $query );
 
 				$this->Decisiondossierpcg66->begin();
-				
+
 				// Si l'etat du dossier est decisionvalid on le passe en atttransmiop avec une date d'impression
 				if ( Hash::get( $results, 'Dossierpcg66.etatdossierpcg' ) === 'decisionvalid' ) {
 					$results['Dossierpcg66']['dateimpression'] = date('Y-m-d');
 					$results['Dossierpcg66']['etatdossierpcg'] = 'atttransmisop';
 					$success = $this->Decisiondossierpcg66->Dossierpcg66->save($results['Dossierpcg66']);
 				}
-		
+
 				if( $success ) {
 					$this->Decisiondossierpcg66->commit();
 					$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision.pdf' );
@@ -1039,9 +1040,9 @@
 				$this->Decisiondossierpcg66->begin();
 				$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 				if( $saved ) {
-					
+
 					$saved = $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($dossierpcg66_id);
-					
+
                     if( $saved ) {
                         $saved = $this->Decisiondossierpcg66->Dossierpcg66->WebrsaDossierpcg66->generateDossierPCG66Transmis( $dossierpcg66_id ) && $saved;
                     }
@@ -1142,7 +1143,7 @@
 			);
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find( 'first', $qd_decisiondossierpcg66 );
 			$dossierpcg66_id = Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id');
-			
+
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) ) );
 
 			$dossier_id = $this->Decisiondossierpcg66->dossierId( $id );

@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe Personnespcgs66Controller (CG 66).
@@ -57,27 +58,27 @@
 			'Dossierpcg66',
 			'Option',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Personnespcgs66:edit',
 			'view' => 'Personnespcgs66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -90,7 +91,7 @@
 			'edit' => 'update',
 			'view' => 'read',
 		);
-		
+
 		/**
 		 *
 		 */
@@ -424,7 +425,7 @@
 
 				$this->Personnepcg66->create( $personnepcg66 );
 				$success = $this->Personnepcg66->save() && $success;
-				
+
 				$success = $this->_checkValidation() && $success;
 
 				if( $success ) {
@@ -524,7 +525,7 @@
                 // suivant la DERNIERE perosnne saisie préalablement
                 if( !empty( $dossierpcg66Pcd['Personnepcg66'] ) ){
                     $this->request->data['Personnepcg66']['personne_id'] = $dossierpcg66Pcd['Personnepcg66'][0]['personne_id'];
-					
+
 					//Préremplissage des rome v3
 					$romev3 = (array)Hash::get($dossierpcg66Pcd, 'Personnepcg66.0.Categorieromev3');
 					$depend['familleromev3_id'] = Hash::get($romev3, 'familleromev3_id');
@@ -622,17 +623,17 @@
 
 		protected function _checkValidation() {
 			$success = true;
-			
+
 			if( empty( $this->request->data['Situationpdo']['Situationpdo'] ) ) {
 				$success = false;
 				$this->Personnepcg66->invalidate( 'Situationpdo.Situationpdo', 'Il est obligatoire de saisir au moins un motif de décision pour la personne.' );
 			}
-			
+
 			if( empty( $this->request->data['Statutpdo']['Statutpdo'] ) ) {
 				$success = false;
 				$this->Personnepcg66->invalidate( 'Statutpdo.Statutpdo', 'Il est obligatoire de saisir au moins un statut pour la personne.' );
 			}
-			
+
 			if (Hash::get($this->request->data, 'Personnepcg66.id')) {
 				$query = array(
 					'fields' => array(
@@ -649,7 +650,7 @@
 				);
 				$results = (array)$this->Personnepcg66->Traitementpcg66->find('all', $query);
 				$errors = array();
-				
+
 				foreach ($results as $value) {
 					$situationpdo_id = Hash::get($value, 'Traitementpcg66.situationpdo_id');
 					$libelle = Hash::get($value, 'Situationpdo.libelle');
@@ -658,12 +659,12 @@
 						$errors[] = "Un traitement existe portant un motif non choisi ({$libelle}).";
 					}
 				}
-				
+
 				foreach (array_unique($errors) as $error) {
 					$this->Personnepcg66->invalidate('Situationpdo.Situationpdo', $error);
 				}
 			}
-			
+
 			return $success;
 		}
 	}

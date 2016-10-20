@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
     App::import( 'Behaviors', 'Occurences' );
 	/**
@@ -53,26 +54,26 @@
 			'Textmailcui66',
 			'Option',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'view' => 'Textsmailscuis66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -86,7 +87,7 @@
 			'index' => 'read',
 			'view' => 'read',
 		);
-		
+
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers
 		*   - default.php
@@ -95,7 +96,7 @@
 
 		public function index() {
 			$this->Textmailcui66->Behaviors->attach( 'Occurences' );
-  
+
             $querydata = $this->Textmailcui66->qdOccurencesExists(
                 array(
                     'fields' => $this->Textmailcui66->fields(),

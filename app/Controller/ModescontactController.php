@@ -7,8 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	App::uses('WebrsaAccessModescontact', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessModescontact', 'Utility' );
 
 	/**
 	 * La classe ModescontactController ...
@@ -62,27 +62,27 @@
 			'Option',
 			'WebrsaModecontact',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'view' => 'Modescontact:index',
 			'add' => 'Modescontact:edit',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -95,7 +95,7 @@
 			'index' => 'read',
 			'view' => 'read',
 		);
-		
+
 		/**
 		 *
 		 */
@@ -114,7 +114,7 @@
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
-			
+
 			// Recherche des personnes du foyer
 			$modescontact = $this->WebrsaAccesses->getIndexRecords(
 				$foyer_id, array(

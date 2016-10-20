@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe FichiersmodulesController ...
@@ -28,7 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			
+
 		);
 
 		/**
@@ -37,7 +38,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			
+
 		);
 
 		/**
@@ -48,26 +49,26 @@
 		public $uses = array(
 			'Fichiermodule'
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -77,7 +78,7 @@
 		public $crudMap = array(
 			'delete' => 'delete',
 		);
-		
+
 		/**
 		 * Suppression du fichiers préalablement associés à un traitement donné
 		 *

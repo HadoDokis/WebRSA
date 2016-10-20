@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
      App::import( 'Behaviors', 'Occurences');
+	 App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe ActionscandidatsController ...
@@ -58,18 +59,18 @@
 			'Actioncandidat',
 			'Option',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Actionscandidats:edit',
 			'view' => 'Actionscandidats:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -82,7 +83,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -123,7 +124,7 @@
 				$options['Zonegeographique'] = $this->Actioncandidat->Zonegeographique->find( 'list' );
 				$zonesselected = $this->Actioncandidat->Zonegeographique->find( 'list', array( 'fields' => array( 'id' ) ) );
 				$this->set( compact( 'zonesselected' ) );
-				
+
 
 // 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$conditionsChargeinsertionSecretaire = Configure::read( 'Chargeinsertion.Secretaire.group_id' );
@@ -321,7 +322,7 @@
 		public function view( $id ) {
 			$this->Default->view( $id );
 		}
-		
+
 		/**
 		 * Permet à partir du themecode et de codefamille de trouver le dernier numéro du code famille
 		 */
@@ -338,10 +339,10 @@
 					'Actioncandidat.numcodefamille' => 'DESC'
 				)
 			);
-			
+
 			$result = Hash::get($this->Actioncandidat->find('first', $query), 'Actioncandidat.numcodefamille');
 			echo $result ? $result : 'Aucun numéro du code famille n\'a été trouvé';
-			
+
 			exit;
 		}
 	}

@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe MetiersexercesController permet la gestion des CER du CG 93 (hors workflow).
@@ -28,7 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			
+
 		);
 
 		/**
@@ -37,7 +38,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			
+
 		);
 
 		/**
@@ -48,26 +49,26 @@
 		public $uses = array(
 			'Metierexerce',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -80,7 +81,7 @@
 			'edit' => 'update',
 			'index' => 'read',
 		);
-		
+
 		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
@@ -120,7 +121,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'metiersexerces', 'action' => 'index' ) );
 			}
-		
+
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Metierexerce->begin();
@@ -147,7 +148,7 @@
 			}
 			$this->render( 'edit' );
 		}
-		
+
 		public function delete( $metierexerce_id = null ) {
 			// Vérification du format de la variable
 			if( !$this->Metierexerce->exists( $metierexerce_id ) ) {

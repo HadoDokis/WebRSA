@@ -7,9 +7,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessContratsinsertion', 'Utility' );
 
-	 App::uses('WebrsaAccessContratsinsertion', 'Utility');
-	 
 	/**
 	* Gestion des dossiers d'EP pour "Non respect et sanctions" (CG 58).
 	 *
@@ -73,11 +73,11 @@
 			'Contratinsertion',
 			'WebrsaContratinsertion',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -86,16 +86,16 @@
 			'exportcsv_noninscritspe' => 'Sanctionseps58:exportcsv',
 			'exportcsv_radiespe' => 'Sanctionseps58:exportcsv',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -113,7 +113,7 @@
 			'selectionnoninscrits' => 'create',
 			'selectionradies' => 'create',
 		);
-		
+
 		/**
 		 * @deprecated since 3.0.0
 		 *
@@ -227,7 +227,7 @@
 		 */
 		public function nonrespectcer( $contratinsertion_id ) {
 			$this->_checkAccess($contratinsertion_id);
-			
+
 			$contratinsertion = $this->Sanctionep58->Dossierep->Personne->Contratinsertion->find(
 				'first',
 				array(
@@ -414,11 +414,11 @@
 				)
 			);
 		}
-		
+
 		/**
-		 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès 
+		 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès
 		 * à une action en fonction d'un enregistrement
-		 * 
+		 *
 		 * @see ContratsinsertionController::_checkAccess
 		 * @param integer $contratinsertion_id
 		 */
@@ -431,10 +431,10 @@
 			$params = $this->WebrsaContratinsertion->haveNeededDatas($personne_id);
 			$params['erreursCandidatePassage'] = $this->Sanctionep58->Dossierep->getErreursCandidatePassage($personne_id);
 			$params['haveSanctionep'] = !empty($sanctionseps58);
-			
+
 			$records = $this->WebrsaContratinsertion->getDataForAccess(array('Contratinsertion.id' => $contratinsertion_id));
 			$record = end($records);
-			
+
 			$redirectUrl = array('controller' => 'Contratsinsertion', 'action' => 'index', $personne_id);
 			$msgstr = 'Impossible d\'effectuer cette action.';
 

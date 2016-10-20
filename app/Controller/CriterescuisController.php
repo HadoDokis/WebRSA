@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
@@ -68,26 +69,26 @@
 			'Criterecui',
 			'Cui',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -118,7 +119,7 @@
 				);
 				$this->set( compact( 'results' ) );
 			}
-			
+
 			$options = $this->_getOptions();
 			$this->set( compact( 'options' ) );
 			$this->Cui->validate = array();
@@ -126,7 +127,7 @@
 			$this->Cui->Cui66->Decisioncui66->validate = array();
 			$this->Cui->Partenairecui->Adressecui->validate = array();
 		}
-		
+
 		protected function _getOptions() {
 			// Tables suplémentaire pour un CG donné
 			$cgDepartement = Configure::read( 'Cg.departement' );
@@ -134,7 +135,7 @@
 			$options = array();
 			if( isset( $this->Cui->{$modelCuiDpt} ) ) {
 				$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->options() );
-				
+
 				// Liste de modeles potentiel pour un CG donné
 				$modelPotentiel = array(
 					'Accompagnementcui' . $cgDepartement,
@@ -143,27 +144,27 @@
 					'Rupturecui' . $cgDepartement,
 					'Suspensioncui' . $cgDepartement,
 				);
-				
+
 				foreach ( $modelPotentiel as $modelName ){
 					if ( isset( $this->Cui->{$modelCuiDpt}->{$modelName} ) ){
 						$options = Hash::merge( $options, $this->Cui->{$modelCuiDpt}->{$modelName}->options() );
 					}
 				}
 			}
-			
+
 			// INFO : Fait doublon avec $this->Allocataires->options() car se merge mal (clef numérique)
 			unset($options['Situationdossierrsa']);
-			
+
 			$options['Adressecui']['canton'] = $this->Gestionzonesgeos->listeCantons();
-			
+
 			$communes = $this->Cui->Partenairecui->Adressecui->query('SELECT commune AS "Adressecui__commune" FROM adressescuis GROUP BY commune');
 			foreach ( $communes as $value ) {
 				$commune = Hash::get($value, 'Adressecui.commune');
 				$options['Adressecui']['commune'][$commune] = $commune;
 			}
-			
+
 			$options['Cui']['partenaire_id'] = $this->Cui->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
-			
+
 			return Hash::merge(
 				$options,
 				$this->Allocataires->options(),
@@ -171,7 +172,7 @@
 				$this->Cui->Emailcui->options()
 			);
 		}
-		
+
 		/**
 		 *
 		 * @param array $search Les filtres venant du moteur de recherche
@@ -187,7 +188,7 @@
 
 			return $query;
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la cohorte en CSV.
 		 */

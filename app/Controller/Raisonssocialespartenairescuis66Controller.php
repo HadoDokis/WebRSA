@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
     App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe Raisonssocialespartenairescuis66Controller permet la gestion des CER du CG 93 (hors workflow).
@@ -29,7 +30,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			
+
 		);
 
 		/**
@@ -38,7 +39,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			
+
 		);
 
 		/**
@@ -49,26 +50,26 @@
 		public $uses = array(
 			'Raisonsocialepartenairecui66',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -81,7 +82,7 @@
 			'edit' => 'update',
 			'index' => 'read',
 		);
-		
+
 		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
@@ -92,9 +93,9 @@
 //			$raisonssocialespartenairescuis66 = $this->Raisonsocialepartenairecui66->find( 'all', array( 'recursive' => -1 ) );
 
 //			$this->set('raisonssocialespartenairescuis66', $raisonssocialespartenairescuis66);
-            
+
             $this->Raisonsocialepartenairecui66->Behaviors->attach( 'Occurences' );
-  
+
             $querydata = $this->Raisonsocialepartenairecui66->qdOccurencesExists(
                 array(
                     'fields' => $this->Raisonsocialepartenairecui66->fields(),
@@ -161,7 +162,7 @@
 			}
 			$this->render( 'edit' );
 		}
-		
+
 		public function delete( $raisonsocialepartenairecui66_id = null ) {
 			// Vérification du format de la variable
 			/*if( !$this->Raisonsocialepartenairecui66->exists( $raisonsocialepartenairecui66_id ) ) {

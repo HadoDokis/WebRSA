@@ -7,9 +7,10 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	 App::uses('ZipUtility', 'Utility');
-	 App::uses('WebrsaPdfUtility', 'Utility');
-	 App::uses('WebrsaAccessDecisionsdossierspcgs66', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaPdfUtility', 'Utility' );
+	App::uses( 'WebrsaAccessDecisionsdossierspcgs66', 'Utility' );
+	App::uses( 'ZipUtility', 'Utility' );
 
 	/**
 	 * La classe Dossierspcgs66Controller ... (CG 66).
@@ -31,14 +32,14 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Cohortes', 
+			'Cohortes',
 			'DossiersMenus',
-			'Fileuploader', 
-			'Gedooo.Gedooo', 
-			'Jetons2', 
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'Jetons2',
 			'Search.SearchPrg' => array(
-				'actions' => array( 
-					'search', 
+				'actions' => array(
+					'search',
 					'search_gestionnaire',
 					'search_affectes',
 					'cohorte_imprimer',
@@ -86,11 +87,11 @@
 			'WebrsaDossierpcg66',
 			'WebrsaDecisiondossierpcg66',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -106,7 +107,7 @@
 			'search_gestionnaire' => 'Criteresdossierspcgs66:gestionnaire',
 			'view' => 'Dossierspcgs66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -121,7 +122,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -160,7 +161,7 @@
 			'search_gestionnaire' => 'read',
 			'view' => 'read',
 		);
-		
+
 		/**
 		 *
 		 */
@@ -282,10 +283,10 @@
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
-		
+
 		/**
 		 * Permet de recalculer l'etat d'un dossier pcg et d'obtenir la nouvelle valeur
-		 * 
+		 *
 		 * @param type $id du Dossierpcg66
 		 */
 		public function ajax_getetatdossierpcg66( $id = null ) {
@@ -297,9 +298,9 @@
 				$this->set( compact( 'etatdossierpcg', 'datetransmission', 'orgs' ) );
 				$this->render( 'ajaxetatpdo', 'ajax' );
 			}
-			
+
 			$this->Dossierpcg66->WebrsaDossierpcg66->updatePositionsPcgsById($id);
-			
+
 			$sqOrgs = str_replace('Decisiondossierpcg66', 'decision', $this->Dossierpcg66->Decisiondossierpcg66->sq(
 				array(
 					'fields' => 'Orgtransmisdossierpcg66.name',
@@ -313,7 +314,7 @@
 					),
 				)
 			));
-			
+
 			$query = array(
 				'fields' => array(
 					'Dossierpcg66.etatdossierpcg',
@@ -332,97 +333,97 @@
 				'contain' => false
 			);
 			$result = $this->Dossierpcg66->find('first', $query);
-			
+
 			$etatdossierpcg = Hash::get($result, 'Dossierpcg66.etatdossierpcg');
 			$datetransmission = Hash::get($result, 'Decisiondossierpcg66.datetransmissionop');
 			$orgs = Hash::get($result, 'Notificationdecisiondossierpcg66.name' );
-			
+
 			$this->set( compact( 'etatdossierpcg', 'datetransmission', 'orgs' ) );
 			$this->render( 'ajaxetatpdo', 'ajax' );
 		}
 
 		/**
 		 * Liste des dossiers PCG d'un foyer
-		 * 
+		 *
 		 * @param integer $foyer_id
 		 */
 		public function index( $foyer_id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			$personneDem = $this->WebrsaDossierpcg66->findPersonneDem($foyer_id);
-			
+
 			$results = $this->WebrsaDossierpcg66->getIndexData( $foyer_id );
-			
+
 			$this->set( compact( 'personneDem', 'results', 'foyer_id' ) );
 			$this->_setOptions();
 		}
 
 		/**
 		 * Action d'ajout d'un dossier pcg
-		 * 
+		 *
 		 * @param type $foyer_id
 		 */
 		public function add( $foyer_id ) {
 			// Initialisation
 			$this->_init_add_edit($foyer_id);
-			
+
 			// Sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->_save_add_edit();
 			}
-			
+
 			// Modification du request data uniquement à la fin
 			$this->set( 'personnedecisionmodifiable', $this->_isDecisionModifiable($foyer_id) );
-			
+
 			// Vue
 			$this->view = 'edit';
 		}
-		
+
 		/**
 		 * Action d'edition d'un dossier pcg
-		 * 
+		 *
 		 * @param type $dossierpcg66_id
 		 */
 		public function edit( $dossierpcg66_id ) {
 			// Initialisation
 			$foyer_id = $this->Dossierpcg66->field( 'foyer_id', array( 'id' => $dossierpcg66_id ) );
 			$this->_init_add_edit($foyer_id);
-			
+
 			// Récupération de données
 			$dossierpcg66 = $this->WebrsaDossierpcg66->findDossierpcg($dossierpcg66_id);
 			$this->assert( !empty( $dossierpcg66 ), 'invalidParameter' );
 			$personnespcgs66 = $this->WebrsaDossierpcg66->findPersonnepcg($dossierpcg66_id);
-			
+
 			$paramsAccess = $this->WebrsaDecisiondossierpcg66->getParamsForAccess(
 				$dossierpcg66_id, WebrsaAccessDecisionsdossierspcgs66::getParamsList()
 			);
 			$this->set('ajoutDecisionPossible', Hash::get($paramsAccess, 'ajoutPossible') !== false);
-			
+
 			$query = $this->WebrsaDecisiondossierpcg66->completeVirtualFieldsForAccess(
 				$this->WebrsaDecisiondossierpcg66->queryIndex($dossierpcg66_id)
 			);
-			
+
 			$decisionsdossierspcgs66 =  WebrsaAccessDecisionsdossierspcgs66::accesses(
 				$this->Dossierpcg66->Decisiondossierpcg66->find('all', $query)
 			);
-			
+
 			$fichiersEnBase = Hash::extract( $this->WebrsaDossierpcg66->findFichiers($dossierpcg66_id), '{n}.Fichiermodule' );
-			
+
 			// Variables pour la vue
 			$etatdossierpcg = Hash::get($dossierpcg66, 'Dossierpcg66.etatdossierpcg');
 			$lastDecisionId = Hash::get($decisionsdossierspcgs66, '0.Decisiondossierpcg66.id');
 			$ajoutDecision = Hash::get($decisionsdossierspcgs66, '0.Decisiondossierpcg66.validationproposition') !== null;
-			$this->set( 
-				compact( 
-					'ajoutDecision', 
-					'lastDecisionId', 
-					'decisionsdossierspcgs66', 
-					'personnespcgs66', 
-					'dossierpcg66_id', 
-					'etatdossierpcg', 
+			$this->set(
+				compact(
+					'ajoutDecision',
+					'lastDecisionId',
+					'decisionsdossierspcgs66',
+					'personnespcgs66',
+					'dossierpcg66_id',
+					'etatdossierpcg',
 					'fichiersEnBase',
 					'dossierpcg66'
-				) 
+				)
 			);
 
 			// Sauvegarde du formulaire
@@ -432,49 +433,49 @@
 			else {
 				$this->request->data = $dossierpcg66;
 			}
-			
+
 			// Modification du request data uniquement à la fin
 			$this->set( 'personnedecisionmodifiable', $this->_isDecisionModifiable( $foyer_id, $etatdossierpcg ) );
 			$this->request->data['Dossierpcg66']['user_id'] = $dossierpcg66['Dossierpcg66']['poledossierpcg66_id'].'_'.$dossierpcg66['Dossierpcg66']['user_id'];
 		}
-		
+
 		/**
 		 * Initialisation du formulaire d'edition d'un dossier pcg
 		 * Informations sur le demandeur, jeton, redirection en cas de retour
-		 * 
+		 *
 		 * @todo $gestionnairemodifiable est inutile, vérifier son utilité initiale, le retirer ?
 		 * @param integer $foyer_id
 		 */
 		protected function _init_add_edit( $foyer_id ) {
 			// Validité de l'url
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
-			
+
 			//Gestion des jetons
 			$dossier_id = $this->Dossierpcg66->Foyer->dossierId( $foyer_id );
 			$this->Jetons2->get( $dossier_id );
-			
+
 			// Redirection si Cancel
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $foyer_id ) );
 			}
-			
+
 			// Récupération de données
 			$personneDem = $this->WebrsaDossierpcg66->findPersonneDem($foyer_id);
-			
+
 			// Variables pour la vue
 			$gestionnairemodifiable = true;
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 			$this->set( compact( 'personneDem', 'gestionnairemodifiable', 'foyer_id', 'dossier_id' ) );
 			$this->_setOptions();
 		}
-		
+
 		/**
 		 * Sauvegarde d'un formulaire add ou edit
 		 */
 		protected function _save_add_edit() {
 			$this->Dossierpcg66->begin();
-			
+
 			if ( !Hash::get($this->request->data, 'Dossierpcg66.etatdossierpcg') ) {
 				$this->request->data['Dossierpcg66']['etatdossierpcg'] = 'attaffect';
 			}
@@ -488,7 +489,7 @@
 			);
 
 			/**
-			 * INFO : Passe l'etat d'une EP Audition transformé en EP Parcours 
+			 * INFO : Passe l'etat d'une EP Audition transformé en EP Parcours
 			 * en "traité" si EP Parcours n'est pas traité alors que le Dossierpcg est validé.
 			 * En pratique ça n'arrive jamais et je ne comprend pas l'utilité de ce processus...
 			 * Ne semble pas avoir de conséquences.
@@ -509,10 +510,10 @@
 				$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 			}
 		}
-		
+
 		/**
 		 * Sauvegarde des fichiers liés
-		 * 
+		 *
 		 * @param integer $id
 		 * @return boolean
 		 */
@@ -524,11 +525,11 @@
 				$id
 			);
 		}
-		
+
 		/**
 		 * Décide si on affiche la partie "décision" du formulaire
 		 * Attention, rempli le request->data
-		 * 
+		 *
 		 * @param integer $foyer_id
 		 * @param string $etatdossierpcg
 		 * @return boolean
@@ -552,7 +553,7 @@
                 $this->request->data['Dossierpcg66']['user_id'] = $dossierpcg66Pcd['Dossierpcg66']['poledossierpcg66_id'].'_'.$dossierpcg66Pcd['Dossierpcg66']['user_id'];
                 $this->request->data['Dossierpcg66']['etatdossierpcg'] = 'attinstr';
             }
-			
+
 			return !in_array($etatdossierpcg, array( '', 'attaffect' ));
 		}
 
@@ -668,7 +669,7 @@
 			}
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -686,7 +687,7 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
 			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -703,7 +704,7 @@
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDossierspcgs66' );
 			$Recherches->exportcsv( array( 'view' => 'exportcsv' ) );
 		}
-		
+
 		/**
 		 * Moteur de recherche
 		 */
@@ -731,10 +732,10 @@
 			);
 			$this->Dossierpcg66->Typepdo->validate = array();
 			$this->Dossierpcg66->Originepdo->validate = array();
-			
+
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Enattenteaffectation' ) );
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -754,10 +755,10 @@
 			$this->Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->validate = array(
 				'orgtransmisdossierpcg66_id' => array( 'notEmpty' => array( 'rule' => 'notEmpty' ) )
 			);
-			
+
 			$Recherches->cohorte( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre' ) );
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -765,7 +766,7 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
 			$Recherches->exportcsv( array( 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Atransmettre' ) );
 		}
-				
+
 		/**
 		 * Cohorte
 		 */
@@ -773,7 +774,7 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
 			$Recherches->cohorte( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge' ) );
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -781,7 +782,7 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
 			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Heberge' ) );
 		}
-				
+
 		/**
 		 * Cohorte
 		 */
@@ -789,7 +790,7 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
 			$Recherches->cohorte( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore' ) );
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -797,7 +798,7 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66' );
 			$Recherches->exportcsv( array( 'modelName' => 'Dossier', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Rsamajore' ) );
 		}
-		
+
 		/**
 		 * Cohorte
 		 */
@@ -805,21 +806,21 @@
 			$Recherches = $this->Components->load( 'WebrsaCohortesDossierspcgs66Impressions' );
 			$Recherches->search( array( 'modelName' => 'Dossierpcg66', 'modelRechercheName' => 'WebrsaCohorteDossierpcg66Imprimer' ) );
 		}
-		
+
 		/**
 		 * Impression de la cohorte
 		 */
 		public function cohorte_imprimer_impressions() {
 			$Cohortes = $this->Components->load( 'WebrsaCohortesDossierspcgs66Impressions' );
-			$Cohortes->impressions( 
-				array( 
-					'modelName' => 'Dossierpcg66', 
+			$Cohortes->impressions(
+				array(
+					'modelName' => 'Dossierpcg66',
 					'modelRechercheName' => 'WebrsaCohorteDossierpcg66Imprimer',
 					'configurableQueryFieldsKey' => 'Dossierspcgs66.cohorte_imprimer'
-				) 
+				)
 			);
 		}
-		
+
 		/**
 		 * Export du tableau de résultats de la recherche
 		 */
@@ -831,42 +832,42 @@
 		/**
 		 * Créer et envoi à l'utilisateur un fichier zip comprenant les Décisions valide d'un Dossier PCG
 		 * et les traitements de type courrier à imprimer.
-		 * 
+		 *
 		 * Remplace l'ancienne fonction : Decisionsdossierspcgs66::decisionproposition()
 		 * qui envoyait un unique PDF de la proposition
-		 * 
+		 *
 		 * NOTE : Un traitement doit avoir la valeur imprimer = 1 pour être imprimé (dans tout les cas)
 		 * Un traitement ne sera imprimé que s'il est attaché à une proposition valide ou si il n'y a pas de proposition
-		 * Dans la cohorte, ne sera affiché que les dossiers PCG avec une proposition validée 
+		 * Dans la cohorte, ne sera affiché que les dossiers PCG avec une proposition validée
 		 * ou bien un traitement à imprimer sans proposition
-		 * 
+		 *
 		 * Cas 1:	Dans le dossier pcg, la proposition est validée et un traitement est à imprimer.
 		 *			Il faut imprimer la proposition et le traitement.
-		 * 
+		 *
 		 * Cas 2:	Dans le dossier pcg, la proposition n'est pas validée et un traitement est à imprimer.
 		 *			Il faut imprimer uniquement la proposition.
-		 * 
+		 *
 		 * Cas 3:	Dans la cohorte, la proposition est validée et un traitement est à imprimer.
 		 *			Il faut imprimer la proposition et le traitement.
-		 * 
+		 *
 		 * Cas 4:	Dans la cohorte, il n'y a aucune proposition mais il y a un traitement à imprimer.
 		 *			Il faut imprimer uniquement le traitement.
-		 * 
+		 *
 		 * @param integer $id
 		 * @param integer $decision_id decisiondossierpcg66 Appelé "proposition de décision"
 		 */
 		public function imprimer( $id, $decision_id = null ) {
 			$this->assert( !empty( $id ), 'error404' );
 			$this->DossiersMenus->checkDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) );
-			
+
 			$query = $this->Dossierpcg66->WebrsaDossierpcg66->getImpressionBaseQuery( $id );
-			
+
 			// Cas n° 1 et 2 : Dans dossier pcg, on précise $decision_id (pas dans la cohorte qui inclue les traitements sans proposition)
-			// Note : Logiquement, il ne peut y avoir une proposition non validé 
+			// Note : Logiquement, il ne peut y avoir une proposition non validé
 			if ( $decision_id !== null ) {
 				$query['conditions'][] = array( 'Decisiondossierpcg66.id' => $decision_id );
 			}
-			
+
 			$results = $this->Dossierpcg66->find( 'first', $query );
 			$decisionsdossierspcgs66_id = Hash::get($results, 'Decisiondossierpcg66.id');
 
@@ -881,26 +882,26 @@
 					$results['Dossierpcg66']['etatdossierpcg'] = 'atttransmisop';
 					$success = $this->Dossierpcg66->Decisiondossierpcg66->Dossierpcg66->save($results['Dossierpcg66']);
 				}
-				
-				$decisionPdf = $decisionsdossierspcgs66_id !== null 
+
+				$decisionPdf = $decisionsdossierspcgs66_id !== null
 					? $this->Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->getPdfDecision( $decisionsdossierspcgs66_id )
 					: null
 				;
 
 				$courriers = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->getPdfsByDossierpcg66Id( $id, $this->Session->read('Auth.User.id') );
 				$queryCourrier = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->getPdfsQuery($id);
-				
+
 				$traitementspcgs66_ids = Hash::extract($this->Dossierpcg66->Foyer->find('all', $queryCourrier), '{n}.Traitementpcg66.id');
-				
+
 				if ($success && !empty($traitementspcgs66_ids)) {
 					$success = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnbound(
 						array( 'etattraitementpcg' => "'attente'" ),
 						array( 'id' => $traitementspcgs66_ids )
 					);
 				}
-				
+
 				if( $success && ( $decisionPdf !== null || !empty($courriers) ) ) {
-					
+
 					$this->Dossierpcg66->Decisiondossierpcg66->commit();
 
 					$prefix = 'Dossier_PCG';
@@ -909,12 +910,12 @@
 					$fileName = "{$date}_{$prefix}_{$id}_Courrier_{$allocatairePrincipal}.pdf";
 					$PdfUtility = new WebrsaPdfUtility();
 					$pdfList = array();
-					
+
 					if ( $decisionPdf !== null ) {
 						$pdfList[] = $decisionPdf;
 						$fileName = "{$date}_{$prefix}_{$id}_Decision_{$allocatairePrincipal}.pdf";
 					}
-					
+
 					foreach ( $courriers as $i => $courrier ) {
 						$pdf = $courrier;
 						$pdfList[] = $pdf;
@@ -923,20 +924,20 @@
 					if ( Configure::read('Dossierspcgs66.imprimer_cohorte.Impression.RectoVerso') ) {
 						$pdfList = $PdfUtility->preparePdfListForRectoVerso( $pdfList );
 					}
-					
+
 					$concatPdf = $this->Gedooo->concatPdfs($pdfList, 'Dossierpcg66');
 					$this->Gedooo->sendPdfContentToClient($concatPdf, $fileName);
 				}
 				else {
 					$this->Dossierpcg66->Decisiondossierpcg66->rollback();
 				}
-				
+
 			}
 
 			$this->Session->setFlash( 'Impossible de générer le(s) fichier PDF', 'default', array( 'class' => 'error' ) );
 			$this->redirect( $this->referer() );
 		}
-		
+
 		public function ajax_view_decisions($dossierpcg66_id) {
 			$decisionsdossierspcgs66 = $this->Dossierpcg66->find('all',
 				array(
@@ -956,17 +957,17 @@
 					'conditions' => array('Dossierpcg66.id' => $dossierpcg66_id)
 				)
 			);
-			
+
 			$users = array();
-			$users_list = $this->Dossierpcg66->Decisiondossierpcg66->User->find('all', 
+			$users_list = $this->Dossierpcg66->Decisiondossierpcg66->User->find('all',
 				array('fields' => array('id', 'nom', 'prenom'), 'contain' => false)
 			);
 			foreach ($users_list as $user) {
 				$users[$user['User']['id']] = $user['User']['nom'].' '.$user['User']['prenom'];
 			}
-			
+
 			$this->set(compact('decisionsdossierspcgs66', 'dossierMenu', 'users'));
-			
+
 			$this->render('ajax_view_decisions', 'ajax');
 		}
 	}

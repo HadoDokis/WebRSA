@@ -7,8 +7,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
     App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
+
 	/**
 	 * La classe Piecesmailscuis66Controller ...
 	 *
@@ -58,17 +59,17 @@
 			'Piecemailcui66',
 			'Option',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'view' => 'Piecesmailscuis66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -80,7 +81,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -98,12 +99,12 @@
 			'index' => 'read',
 			'view' => 'read',
 		);
-		
+
 		protected function _setOptions() {
 			$options = $this->Piecemailcui66->enums();
             $this->set( compact( 'options' ) );
         }
-        
+
 		/**
 		 * http://valums.com/ajax-upload/
 		 * http://doc.ubuntu-fr.org/modules_php
@@ -159,10 +160,10 @@
 			);
 			// On Alias
 			$prepareSq = str_replace( 'Piecemailcui66', 'piecesmailscuis66', $this->Piecemailcui66->sq($occurenceQuery));
-			
+
 			// On remet la bonne condition
 			$occurenceSq = str_replace( '"piecesmailscuis66"."id"', '"Piecemailcui66"."id"', $prepareSq );
-			
+
             $querydata = array(
                 'fields' => array_merge(
                     $this->Piecemailcui66->fields(),
@@ -212,15 +213,15 @@
             $fichiers = array();
 			if( !empty( $this->request->data ) ) {
                 $this->Piecemailcui66->begin();
-			
+
 				// Rend inactif si n'a pas de pièce jointe
 				if ( $this->request->data['Piecemailcui66']['haspiecejointe'] === '0' ){
 					$this->request->data['Piecemailcui66']['actif'] = 0;
 				}
-                
+
 				$this->Piecemailcui66->create( $this->request->data );
 				$success = $this->Piecemailcui66->save();
-              
+
                 if( $success ){
 					$path = $this->action === 'add' ? null : $this->Piecemailcui66->id;
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $path );
@@ -230,7 +231,7 @@
 						( ( $this->action == 'add' ) ? $this->Piecemailcui66->id : $id )
 					) && $saved;
                 }
-                
+
                 if( $success ) {
 					$this->Piecemailcui66->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -251,7 +252,7 @@
 					)
 				);
 				$this->assert( !empty( $this->request->data ), 'error404' );
-                
+
                 $fichiersEnBase = $this->Piecemailcui66->Fichiermodule->find(
 					'all',
 					array(
