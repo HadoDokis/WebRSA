@@ -12,7 +12,7 @@
 	 * INFO: cette thématique n'est actuellement pas utilisée lorsqu'on crée un regroupementep, même si
 	 * la thématique figure dans l'enum type_themeep.
 	 */
-	App::uses( 'Nonorientationproep', 'Model/Abstractclasses' );
+	App::uses( 'Nonorientationproep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Nonorientationproep66 ...

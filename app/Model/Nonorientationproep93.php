@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'Nonorientationproep', 'Model/Abstractclasses' );
+	App::uses( 'Nonorientationproep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Nonorientationproep93 ...

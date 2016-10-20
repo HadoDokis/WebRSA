@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'AbstractThematiquecov58', 'Model/Abstractclasses' );
+	App::uses( 'AbstractThematiquecov58', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Propononorientationprocov58 ...
