@@ -5,7 +5,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('AbstractParametragesController', 'Controller');
+	App::uses( 'AbstractParametragesController', 'Controller' );
 	App::import( 'Behaviors', 'Occurences' );
 
 	/**
@@ -30,22 +30,22 @@
 		public $uses = array(
 			'Service66'
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
-		 * 
+		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Formulaire de modification
 		 */
 		protected function _add_edit($id = null) {
 			$this->set('options', $this->Service66->enums());
-			
+
 			return parent::_add_edit($id);
 		}
 	}

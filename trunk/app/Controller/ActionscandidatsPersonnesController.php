@@ -7,9 +7,10 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 	App::uses( 'CakeEmail', 'Network/Email' );
 	App::uses( 'WebrsaEmailConfig', 'Utility' );
-	App::uses('WebrsaActionscandidatsPersonnes', 'Utility');
+	App::uses( 'WebrsaActionscandidatsPersonnes', 'Utility' );
 
 	/**
 	 * La classe ActionscandidatsPersonnesController permet la gestion des fiches
@@ -83,11 +84,11 @@
 			'Option',
 			'WebrsaActioncandidatPersonne',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -97,7 +98,7 @@
 			'exportcsv' => 'Criteresfichescandidature:exportcsv',
 			'search' => 'Criteresfichescandidature:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -113,7 +114,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -334,7 +335,7 @@
                 )
 			);
 			$this->set( compact( 'orientationLiee' ) );
-			
+
 			$actionscandidats_personnes = $this->WebrsaAccesses->getIndexRecords(
 				$personne_id, array(
 					'fields' => array_merge(

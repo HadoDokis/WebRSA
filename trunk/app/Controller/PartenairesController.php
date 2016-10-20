@@ -7,7 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-     App::import('Behaviors', 'Occurences');
+	App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe PartenairesController ...
@@ -60,11 +61,11 @@
 			'Option',
 			'Personne',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -72,16 +73,16 @@
 			'ajax_coordonnees' => 'Partenaires:edit',
 			'view' => 'Partenaires:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -243,12 +244,12 @@
 
 		/**
 		 * Permet de récupérer les informations d'un partenaire sous forme de JSON
-		 * 
+		 *
 		 * @param Number $id
 		 */
 		public function ajax_coordonnees( $id ){
 			$fields = $this->Partenaire->fields();
-			
+
 			if ( Configure::read( 'Cg.departement' ) == 66 ){
 				$sqNbContratCui = $this->Partenaire->Cui->Partenairecui->Partenairecui66->sqNbCuisActif( $id );
 			}
@@ -259,7 +260,7 @@
 				);
 				$sqNbContratCui = $this->Partenaire->Cui->sq( $queryNbContrat );
 			}
-			
+
 			$query = array(
 				'fields' => array_merge(
 					$fields,
@@ -274,7 +275,7 @@
 				),
 				'conditions' => array( 'Partenaire.id' => $id )
 			);
-			
+
 			$json = $this->Partenaire->find('first', $query);
 			$json['Partenaire']['raisonsociale'] = $json['Raisonsocialepartenairecui66']['name'];
 			unset($json['Raisonsocialepartenairecui66']);

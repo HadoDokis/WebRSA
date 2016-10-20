@@ -5,8 +5,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('AbstractParametragesController', 'Controller');
 	App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'AbstractParametragesController', 'Controller' );
 
 	/**
 	 * La classe LogicielprimosController ...
@@ -30,14 +31,14 @@
 		public $uses = array(
 			'Logicielprimo'
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
-		 * 
+		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
 	}
 ?>

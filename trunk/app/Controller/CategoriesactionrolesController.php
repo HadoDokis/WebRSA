@@ -7,8 +7,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
     App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
+
 	/**
 	 * La classe CategoriesactionrolesController ...
 	 *
@@ -38,10 +39,10 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Default', 
-			'Default2', 
+			'Default',
+			'Default2',
 			'Theme',
-			'Xform', 
+			'Xform',
 		);
 
 		/**
@@ -52,26 +53,26 @@
 		public $uses = array(
 			'Categorieactionrole',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -91,7 +92,7 @@
 		 */
 		public function index() {
 			$this->Categorieactionrole->Behaviors->attach( 'Occurences' );
-  
+
             $querydata = $this->Categorieactionrole->qdOccurencesExists(
                 array(
                     'fields' => $this->Categorieactionrole->fields(),
@@ -115,7 +116,7 @@
 
 		/**
 		 * Modification d'une entrée
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function edit( $id = null ) {
@@ -146,9 +147,9 @@
 			else{
 				$this->request->data['Categorieactionrole']['actif'] = true;
 			}
-			
+
 			$options = $this->_options();
-			
+
 			$this->set( compact( 'options' ) );
 
 			$this->view = 'edit';
@@ -156,7 +157,7 @@
 
 		/**
 		 * Suppression d'une entrée
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
@@ -165,16 +166,16 @@
 
 		/**
 		 * Visualisation de la table
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function view( $id ) {
 			$this->Default->view( $id );
 		}
-		
+
 		/**
 		 * Options pour la vue
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _options() {

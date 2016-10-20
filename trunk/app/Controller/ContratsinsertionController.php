@@ -8,9 +8,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	App::uses('WebrsaAccessContratsinsertion', 'Utility');
-	App::uses('WebrsaPermissions', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessContratsinsertion', 'Utility' );
+	App::uses( 'WebrsaPermissions', 'Utility' );
 
 	/**
 	 * La classe ContratsinsertionController permet la gestion des contrats d'insertion au niveau du dossier

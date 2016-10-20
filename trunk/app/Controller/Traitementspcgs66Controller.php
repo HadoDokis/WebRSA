@@ -8,8 +8,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	App::uses('WebrsaAccessTraitementspcgs66', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessTraitementspcgs66', 'Utility' );
 
 	/**
 	 * La classe Traitementspcgs66Controller (CG 66).
@@ -72,11 +72,11 @@
 			'Personnepcg66',
 			'WebrsaTraitementpcg66',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -85,7 +85,7 @@
 			'search' => 'Criterestraitementspcgs66:index',
 			'view' => 'Traitementspcgs66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -99,7 +99,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -1130,7 +1130,7 @@
 			$this->Traitementpcg66->begin();
 
 			// On récupère l'id du dossier pcg
-			$data = $this->Traitementpcg66->find( 'first', 
+			$data = $this->Traitementpcg66->find( 'first',
 				array(
 					'fields' => 'Personnepcg66.dossierpcg66_id',
 					'conditions' => array(
@@ -1220,8 +1220,8 @@
 			if (!empty($this->request->data)) {
 				$this->Traitementpcg66->begin();
 
-				$success = $this->Traitementpcg66->updateAllUnbound( 
-					array( 
+				$success = $this->Traitementpcg66->updateAllUnbound(
+					array(
 						'dateenvoicourrier' => "'".date_cakephp_to_sql($this->request->data['Traitementpcg66']['dateenvoicourrier'])."'",
 						'etattraitementpcg' => "'envoyé'"
 					),
@@ -1267,7 +1267,7 @@
 
 		/**
 		 * Change la valeur de Traitementpcg66.imprimer par son contraire (0 ou 1)
-		 * 
+		 *
 		 * @param type $traitement_id
 		 */
 		public function switch_imprimer( $traitement_id ) {
@@ -1295,8 +1295,8 @@
 			;
 
 			// Pour éviter de passer dans beforeValidate() qui ajoute des champs à valeur NULL
-			$success = $this->Traitementpcg66->updateAllUnbound( 
-				array( 
+			$success = $this->Traitementpcg66->updateAllUnbound(
+				array(
 					'imprimer' => $imprimer,
 					'etattraitementpcg' => $etattraitementpcg
 				),
@@ -1306,8 +1306,8 @@
 			if ( $success ) {
 				$this->Traitementpcg66->commit();
 
-				$message = !Hash::get( $oldImprimer, 'Traitementpcg66.imprimer' ) 
-					? 'Ce courrier est désormais prêt à être imprimé en cohorte.' 
+				$message = !Hash::get( $oldImprimer, 'Traitementpcg66.imprimer' )
+					? 'Ce courrier est désormais prêt à être imprimé en cohorte.'
 					: 'Ce courrier n\'est plus disponible en cohorte'
 				;
 

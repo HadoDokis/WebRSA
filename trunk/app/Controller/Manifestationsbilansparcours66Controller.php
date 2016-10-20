@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
 	/**
 	 * La classe Manifestationsbilansparcours66Controller ... (CG 66).
@@ -51,17 +52,17 @@
 		public $uses = array(
 			'Manifestationbilanparcours66',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -73,7 +74,7 @@
 			'download',
 			'fileview',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -155,7 +156,7 @@
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
-			
+
 			$manifestationbilanparcours66 = $this->Manifestationbilanparcours66->find(
 				'first',
 				array(
@@ -181,11 +182,11 @@
 					)
 				)
 			);
-			
+
 			$personne_id = Hash::get($manifestationbilanparcours66, 'Personne.id');
 			$dossier_id = Hash::get($manifestationbilanparcours66, 'Foyer.dossier_id');
 			$bilanparcours66_id = Hash::get($manifestationbilanparcours66, 'Manifestationbilanparcours66.bilanparcours66_id');
-			
+
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 			$this->set( 'urlmenu', '/bilansparcours66/index/'.$personne_id );
 

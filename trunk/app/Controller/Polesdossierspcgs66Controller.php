@@ -7,8 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 
-//    App::import( 'Behaviors', 'Occurences' );
 	/**
 	 * La classe Polesdossierspcgs66Controller ...
 	 *
@@ -53,27 +53,27 @@
 			'Poledossierpcg66',
 			'Option',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Polesdossierspcgs66:edit',
 			'view' => 'Polesdossierspcgs66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -87,7 +87,7 @@
 			'index' => 'read',
 			'view' => 'read',
 		);
-        
+
         protected function _setOptions() {
             $options = array();
             $options = $this->Poledossierpcg66->enums();
@@ -103,7 +103,7 @@
 		*/
 
 		public function index() {
-          
+
             $this->Poledossierpcg66->Behaviors->attach( 'Occurences' );
             $querydata = $this->Poledossierpcg66->qdOccurencesExists(
                     array(
@@ -120,10 +120,10 @@
                 )
             );
             $this->paginate = $querydata;
-			$polesdossierspcgs66 = $this->paginate( 'Poledossierpcg66' );            
-            
+			$polesdossierspcgs66 = $this->paginate( 'Poledossierpcg66' );
+
             $this->set( compact( 'polesdossierspcgs66' ) );
-            
+
 			$this->_setOptions();
 		}
 

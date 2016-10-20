@@ -7,8 +7,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
 
-    App::import( 'Behaviors', 'Occurences' );
 	/**
 	 * La classe ActionrolesController ...
 	 *
@@ -38,10 +39,10 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Default', 
-			'Default2', 
+			'Default',
+			'Default2',
 			'Theme',
-			'Xform', 
+			'Xform',
 		);
 
 		/**
@@ -52,26 +53,26 @@
 		public $uses = array(
 			'Actionrole',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -91,7 +92,7 @@
 		 */
 		public function index() {
 			$this->Actionrole->Behaviors->attach( 'Occurences' );
-  
+
             $querydata = $this->Actionrole->qdOccurencesExists(
                 array(
                     'fields' => $this->Actionrole->fields(),
@@ -115,7 +116,7 @@
 
 		/**
 		 * Modification d'une entrée
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function edit( $id = null ) {
@@ -146,9 +147,9 @@
 			else{
 				$this->request->data['Actionrole']['actif'] = true;
 			}
-			
+
 			$options = $this->_options();
-			
+
 			$this->set( compact( 'options' ) );
 
 			$this->view = 'edit';
@@ -156,7 +157,7 @@
 
 		/**
 		 * Suppression d'une entrée
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
@@ -165,22 +166,22 @@
 
 		/**
 		 * Visualisation de la table
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function view( $id ) {
 			$this->Default->view( $id );
 		}
-		
+
 		/**
 		 * Options pour la vue
-		 * 
+		 *
 		 * @return array
 		 */
 		protected function _options() {
 			$options['Actionrole']['role_id'] = $this->Actionrole->Role->find('list', array('order' => 'name', 'conditions' => array('actif' => 1)));
 			$options['Actionrole']['categorieactionrole_id'] = $this->Actionrole->Categorieactionrole->find('list', array('order' => 'name'));
-			
+
 			return $options;
 		}
 	}

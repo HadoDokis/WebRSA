@@ -7,7 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('AppController', 'Controller');
+	App::uses( 'AppController', 'Controller' );
 	App::uses( 'DepartementUtility', 'Utility' );
 	App::uses( 'WebrsaAccessOrientsstructs', 'Utility' );
 
@@ -71,11 +71,11 @@
 			'Orientstruct',
 			'WebrsaOrientstruct',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -90,16 +90,16 @@
 			'fileview' => 'Orientsstructs:filelink',
 			'search' => 'Criteres:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -125,7 +125,7 @@
 			'index' => 'read',
 			'search' => 'read',
 		);
-		
+
 		/**
 		 * Envoi d'un fichier temporaire depuis le formualaire.
 		 */
@@ -387,7 +387,7 @@
 		 */
 		protected function _getIndexActionsList(array $records, array $params = array()) {
 			$departement = (int)Configure::read('Cg.departement');
-			
+
 			$msgid = null;
 			if ($departement === 93 && $params['rgorient_max'] >= 1) {
 				$url = "/Reorientationseps93/add/{$records[0]['Orientstruct']['id']}";
@@ -400,7 +400,7 @@
 				$controller = 'orientsstructs';
 				$msgid = $departement === 93 ? 'Demander une réorientation' : 'Ajouter';
 			}
-			
+
 			$actions[$url] = array(
 				'domain' => $this->request->params['controller'],
 				'msgid' => $msgid,
@@ -469,7 +469,7 @@
 					&& empty( $reorientationscovs );
 
 			$en_procedure_relance = $this->WebrsaOrientstruct->enProcedureRelance( $personne_id );
-			
+
 			/**
 			 * Contrôle d'accès
 			 */
@@ -566,7 +566,7 @@
 			// -----------------------------------------------------------------
 			$redirectUrl = array( 'action' => 'index', $personne_id );
 			$user_id = $this->Session->read( 'Auth.User.id' );
-			
+
 			//$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 			$originalAddEditFormData = $this->WebrsaOrientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 
@@ -680,7 +680,7 @@
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
-			
+
 			$this->Jetons2->get( $dossier_id );
 
 			$this->Orientstruct->begin();
@@ -710,7 +710,7 @@
 			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
-			
+
 			if( in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) ) ) {
 				$pdf = $this->Orientstruct->WebrsaOrientstruct->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 			}
@@ -742,7 +742,7 @@
 			$this->WebrsaAccesses->check($id);
 			$personne_id = $this->Orientstruct->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
-			
+
 			$pdf = $this->WebrsaOrientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {

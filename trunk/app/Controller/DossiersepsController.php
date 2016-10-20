@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppController', 'Controller' );
 	App::import( 'Core', 'Sanitize' );
 
 	/**
@@ -72,26 +73,26 @@
 			'Decisionpdo',
 			'Propopdo',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -787,33 +788,33 @@
 
 			$this->redirect( $this->referer() );
 		}
-		
+
 		/**
 		 * Permet de passer un dossier EP en actif = false
-		 * 
+		 *
 		 * @param integer $id
 		 */
 		public function disable($id) {
-			$result = $this->Dossierep->find('first', 
+			$result = $this->Dossierep->find('first',
 				array(
 					'fields' => 'Dossierep.id',
 					'contain' => false,
 					'conditions' => array('Dossierep.id' => $id)
 				)
 			);
-			
+
 			$this->assert(!empty($result), 'error404');
-			
+
 			$data = array(
 				'Dossierep' => array(
 					'id' => $id,
 					'actif' => 0
 				)
 			);
-			
+
 			$this->Dossierep->begin();
 			$this->Dossierep->create($data);
-			
+
 			if ($this->Dossierep->save()) {
 				$this->Dossierep->commit();
 				$this->Session->setFlash('Désactivation effectuée', 'flash/success');
@@ -822,7 +823,7 @@
 				$this->Dossierep->rollback();
 				$this->Session->setFlash('Désactivation impossible', 'flash/error');
 			}
-			
+
 			$this->redirect($this->referer());
 		}
 	}

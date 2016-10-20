@@ -8,6 +8,7 @@
  * @package app.Controller
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
+App::uses( 'AppController', 'Controller' );
 
 /**
  * La classe ContratsinsertionController permet la gestion des contrats d'insertion au niveau du dossier
@@ -76,11 +77,11 @@ class ContratsinsertionOldController extends AppController
 			'Option',
 			'WebrsaContratinsertion',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
@@ -95,7 +96,7 @@ class ContratsinsertionOldController extends AppController
 			'search_valides' => 'Cohortesci:valides',
 			'view' => 'Contratsinsertion:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -113,7 +114,7 @@ class ContratsinsertionOldController extends AppController
 			'fileview',
 			'notificationsop',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -673,7 +674,7 @@ class ContratsinsertionOldController extends AppController
             $nbdossiersnonfinalisescovs = $this->Contratinsertion->Personne->Dossiercov58->find('count', $qdDossiersCov58NonFinalises);
             $this->set('nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs);
 
-			// 
+			//
             $querydata = $this->_qdThematiqueEp('Sanctionep58', $personne_id);
             $querydata['fields'] = Set::merge(
                             $querydata['fields'], array(

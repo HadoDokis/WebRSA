@@ -5,8 +5,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('AppController', 'Controller');
-	App::uses('CakeEmail', 'Network/Email');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'CakeEmail', 'Network/Email' );
 	App::uses( 'WebrsaEmailConfig', 'Utility' );
 
 	/**
@@ -68,26 +68,26 @@
 			'Tauxcgcui66',
 			'Option',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -100,21 +100,21 @@
 			'edit' => 'update',
 			'delete' => 'delete',
 		);
-		
+
 		/**
 		 * Liste des CUI du bénéficiaire.
-		 * 
+		 *
 		 * @param integer $personne_id
 		 */
 		public function index() {
 			$results = $this->Tauxcgcui66->find( 'all' );
-			
+
 			// Options
 			$options = $this->Tauxcgcui66->options();
 
 			$this->set( compact( 'results', 'options' ) );
 		}
-		
+
 		/**
 		 * Formulaire d'ajout
 		 *
@@ -152,17 +152,17 @@
 			else {
 				$this->request->data = $this->Tauxcgcui66->prepareFormDataAddEdit( $id );
 			}
-			
+
 			// Options
 			$options = $this->Tauxcgcui66->options();
 
 			$this->set( compact( 'options' ) );
 			$this->render( 'edit' );
 		}
-		
+
 		/**
 		 * Supprime un tauxcg
-		 * 
+		 *
 		 * @param type $id
 		 */
 		public function delete( $id ){

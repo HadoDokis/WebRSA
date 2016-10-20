@@ -7,8 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
-	App::uses('WebrsaAccessContratsinsertion', 'Utility');
+	App::uses( 'AppController', 'Controller' );
+	App::uses( 'WebrsaAccessContratsinsertion', 'Utility' );
 
 	/**
 	 * La classe Proposcontratsinsertioncovs58Controller ... (CG 58).
@@ -55,17 +55,17 @@
 			'Option',
 			'WebrsaContratinsertion',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Contratsinsertion:edit',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
@@ -78,7 +78,7 @@
 			'ajaxstruct',
 			'notificationsop',
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -547,9 +547,9 @@
 		}
 
 		/**
-		 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès 
+		 * Fait appel à WebrsaAccessContratsinsertion pour vérifier les droits d'accès
 		 * à une action en fonction d'un enregistrement
-		 * 
+		 *
 		 * @see ContratsinsertionController::_checkAccess
 		 * @param integer $contratinsertion_id
 		 */

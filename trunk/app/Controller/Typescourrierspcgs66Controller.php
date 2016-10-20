@@ -1,4 +1,4 @@
-<?php    
+<?php
     /**
      * Code source de la classe Typescourrierspcgs66Controller.
      *
@@ -7,6 +7,7 @@
      * @package app.Controller
      * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
      */
+	App::uses( 'AppController', 'Controller' );
 
     /**
      * La classe Typescourrierspcgs66Controller ...
@@ -39,27 +40,27 @@
 		public $helpers = array(
 			'Default2',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'add' => 'Typescourrierspcgs66:edit',
 			'view' => 'Typescourrierspcgs66:index',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -91,8 +92,8 @@
                 )
             );
             $this->paginate = $querydata;
-			$typescourrierspcgs66 = $this->paginate( 'Typecourrierpcg66' );            
-            
+			$typescourrierspcgs66 = $this->paginate( 'Typecourrierpcg66' );
+
             $this->_setOptions();
             $this->set( compact( 'typescourrierspcgs66' ) );
         }

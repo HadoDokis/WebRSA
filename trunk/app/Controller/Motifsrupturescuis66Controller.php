@@ -7,8 +7,9 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
     App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'AppController', 'Controller' );
+
 	/**
 	 * La classe Motifsrupturescuis66Controller ...
 	 *
@@ -53,27 +54,27 @@
 			'Motifrupturecui66',
 			'Option',
 		);
-		
+
 		/**
 		 * Utilise les droits d'un autre Controller:action
 		 * sur une action en particulier
-		 * 
+		 *
 		 * @var array
 		 */
 		public $commeDroit = array(
 			'view' => 'Motifsrupturescuis66:index',
 			'add' => 'Motifsrupturescuis66:edit',
 		);
-		
+
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			
+
 		);
-		
+
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
 		 * actions accessibles par URL et le type d'action CRUD.
@@ -96,7 +97,7 @@
 
 		public function index() {
 			$this->Motifrupturecui66->Behaviors->attach( 'Occurences' );
-  
+
             $querydata = $this->Motifrupturecui66->qdOccurencesExists(
                 array(
                     'fields' => $this->Motifrupturecui66->fields(),
