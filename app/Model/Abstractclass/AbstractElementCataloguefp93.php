@@ -8,6 +8,7 @@
 	 * @package app.Model.Abstractclass
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * Interface pour les classes d'éléments du catalogue des fiches de prescription
