@@ -7,7 +7,7 @@
 	 * @package app.Model.Behavior
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Behavior', 'Gedooo.Gedooo' );
+	App::uses( 'GedoooBehavior', 'Gedooo.Model/Behavior' );
 	require_once( APPLIBS.'cmis.php' );
 
 	/**

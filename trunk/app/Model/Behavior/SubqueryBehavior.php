@@ -9,6 +9,7 @@
 	 * @package app.Model.Behavior
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'ModelBehavior', 'Model' );
 
 	/**
 	 * Behavior that generates a clean subquery string from a $queryData array.

@@ -9,6 +9,7 @@
 	 *
 	 * @package app.Model.Behavior
 	 */
+	App::uses( 'ModelBehavior', 'Model' );
 
 	/**
 	 * Behavior with useful functionality around models containing an enum type field.

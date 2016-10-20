@@ -11,6 +11,7 @@
 	 * @license http://www.opensource.org/licenses/mit-license.php The MIT License
 	 * @package app.Model.Behavior
 	 */
+	App::uses( 'ModelBehavior', 'Model' );
 
 	/**
 	 * Model behavior to support soft deleting records.
