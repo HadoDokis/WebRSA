@@ -16,6 +16,15 @@
 	 */
 	class AutomatisationsepsShell extends XShell
 	{
+		/**
+		 * Modèles utilisés par le shell.
+		 *
+		 * @var array
+		 */
+		public $uses = array(
+			'Nonrespectsanctionep93',
+			'Propopdo'
+		);
 
 		/**
 		 *
@@ -38,17 +47,12 @@
 		}
 
 		/**
+		 * Retourne la liste des DO 19 à traiter.
 		 *
+		 * @return array
 		 */
-		public function main() {
-
-			$out = array( );
-
-			$this->Propopdo = ClassRegistry::init( 'Propopdo' );
-			$this->Nonrespectsanctionep93 = ClassRegistry::init( 'Nonrespectsanctionep93' );
-
-			$propospdos = $this->Propopdo->find(
-					'all', array(
+		protected function _propospdos() {
+			$query = array(
 				'joins' => array(
 					array(
 						'table' => 'decisionspropospdos',
@@ -124,54 +128,80 @@
 								AND ( commissionseps.dateseance + INTERVAL \''.Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ).' days\' ) <= NOW()
 					)',
 				)
-					)
 			);
+
+			return $this->Propopdo->find( 'all', $query );
+		}
+
+		/**
+		 * Retourne les données à enregistrer dans le nouveau dossier d'EP.
+		 *
+		 * @param array $propopdo
+		 * @return array
+		 */
+		protected function _dossierep( array $propopdo ) {
+			$query = array(
+				'conditions' => array(
+					'Dossierep.themeep' => 'nonrespectssanctionseps93',
+					'Nonrespectsanctionep93.origine' => 'pdo',
+					'Nonrespectsanctionep93.propopdo_id' => $propopdo['Propopdo']['id'],
+					'Nonrespectsanctionep93.sortieprocedure IS NULL',
+					'Nonrespectsanctionep93.active' => 0
+				),
+				'joins' => array(
+					array(
+						'alias' => 'Nonrespectsanctionep93',
+						'table' => 'nonrespectssanctionseps93',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
+						)
+					)
+				),
+				'contain' => false
+			);
+
+			$nbpassagespcd = $this->Nonrespectsanctionep93->Dossierep->find( 'count', $query );
+
+			$dossierep = array(
+				'Dossierep' => array(
+					'personne_id' => $propopdo['Propopdo']['personne_id'],
+					'themeep' => 'nonrespectssanctionseps93',
+				),
+				'Nonrespectsanctionep93' => array(
+					'propopdo_id' => $propopdo['Propopdo']['id'],
+					'origine' => 'pdo',
+					'rgpassage' => ( $nbpassagespcd + 1 )
+				)
+			);
+
+			return $dossierep;
+		}
+
+		/**
+		 *
+		 */
+		public function main() {
+			$success = true;
+			$out = array( );
+			$thrown = null;
+
+			$propospdos = $this->_propospdos();
 
 			if( count( $propospdos ) > 0 ) {
 				$this->Propopdo->begin();
-				$success = true;
 
-
-				$this->XProgressBar->start( count( $propospdos ) );
-				foreach( $propospdos as $propopdo ) {
-					$nbpassagespcd = $this->Nonrespectsanctionep93->Dossierep->find(
-							'count', array(
-						'conditions' => array(
-							'Dossierep.themeep' => 'nonrespectssanctionseps93',
-							'Nonrespectsanctionep93.origine' => 'pdo',
-							'Nonrespectsanctionep93.propopdo_id' => $propopdo['Propopdo']['id'],
-							'Nonrespectsanctionep93.sortieprocedure IS NULL',
-							'Nonrespectsanctionep93.active' => 0
-						),
-						'joins' => array(
-							array(
-								'alias' => 'Nonrespectsanctionep93',
-								'table' => 'nonrespectssanctionseps93',
-								'type' => 'INNER',
-								'conditions' => array(
-									'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
-								)
-							)
-						),
-						'contain' => false
-							)
-					);
-
-					$dossierep = array(
-						'Dossierep' => array(
-							'personne_id' => $propopdo['Propopdo']['personne_id'],
-							'themeep' => 'nonrespectssanctionseps93',
-						),
-						'Nonrespectsanctionep93' => array(
-							'propopdo_id' => $propopdo['Propopdo']['id'],
-							'origine' => 'pdo',
-							'rgpassage' => ( $nbpassagespcd + 1 )
-						)
-					);
-
-					$tmpSuccess = $this->Nonrespectsanctionep93->saveAll( $dossierep, array( 'atomic' => false ) );
-					$success = !empty( $tmpSuccess ) && $success;
-					$this->XProgressBar->next();
+				try {
+					$this->XProgressBar->start( count( $propospdos ) );
+					foreach( $propospdos as $propopdo ) {
+						$dossierep = $this->_dossierep( $propopdo );
+						$tmpSuccess = $this->Nonrespectsanctionep93->saveAll( $dossierep, array( 'atomic' => false ) );
+						$success = !empty( $tmpSuccess ) && $success;
+						$this->XProgressBar->next();
+					}
+				} catch( PDOException $e ) {
+					$thrown = $e;
+					$success = false;
 				}
 
 				if( $success ) {
@@ -181,6 +211,10 @@
 				else {
 					$this->Propopdo->rollback();
 					$out[] = '<error>'.sprintf( 'Erreur(s) lors de l\'enregistrement des %s dossiers EP pour la thématique "non respect / sanctions (CG 93)"', count( $propospdos ) ).'</error>';
+					if( null !== $thrown ) {
+						$message = sprintf( "%s\nSQL: %s", $thrown->getTraceAsString(), $thrown->queryString );
+						$this->log( $message, LOG_ERR );
+					}
 				}
 			}
 			else {
@@ -189,7 +223,8 @@
 
 			$this->out();
 			$this->out( $out );
-		}
 
+			$this->_stop( $success ? self::SUCCESS : self::ERROR );
+		}
 	}
 ?>
