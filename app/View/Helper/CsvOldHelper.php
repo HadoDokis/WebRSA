@@ -11,6 +11,7 @@
 	 *
 	 * @package app.View.Helper
 	 */
+	App::uses( 'AppHelper', 'View/Helper' );
 
 	/**
 	 * CSV helper for cakePHP. Compatible with version 1.1.x.x and higher.
