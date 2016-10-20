@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	@ini_set( 'memory_limit', '2048M' );
+	App::uses( 'AppShell', 'Console/Command' );
 	App::uses( 'File', 'Cake/Utility' );
 
 	// lib/Cake/Console/cake ImportCsvApres93 /tmp/APRE.csv
