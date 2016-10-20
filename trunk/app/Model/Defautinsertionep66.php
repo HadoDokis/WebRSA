@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
+	App::uses( 'Thematiqueep', 'Model/Abstractclasses' );
 
 	/**
 	 * Saisines d'EP pour les bilans de parcours pour le conseil général du
@@ -1594,7 +1594,7 @@
 			$result = $this->Dossierep->Passagecommissionep->find( 'all', $query );
 			return !empty( $result );
 		}
-		
+
 		/**
 		 * Retourne le querydata qui sera utilisé par la thématique pour la
 		 * sélection des dossiers à associer à une commission d'EP donnée.
@@ -1604,9 +1604,9 @@
 		 */
 		public function qdListeDossierChoose($commissionep_id = null) {
 			$query = parent::qdListeDossierChoose($commissionep_id);
-			
+
 			$query['fields'][] = 'Dossierep.is_reporte';
-			
+
 			return $query;
 		}
 	}

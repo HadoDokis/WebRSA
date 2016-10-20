@@ -7,8 +7,9 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'Sanitize', 'Utility' );
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * La classe WebrsaTableausuivipdv93 contient la logique métier concernant

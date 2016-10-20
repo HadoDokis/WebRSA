@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Piecemodeletypecourrierpcg66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Piecemodeletypecourrierpcg66 ...
@@ -18,7 +19,7 @@
 		public $name = 'Piecemodeletypecourrierpcg66';
 
 		public $order = 'Piecemodeletypecourrierpcg66.name ASC';
-		
+
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
@@ -94,7 +95,7 @@
 				'with' => 'Mtpcg66Pmtcpcg66'
 			)
 		);
-		
+
 		/**
 		 *
 		 */
@@ -108,7 +109,7 @@
 					'recursive' => -1,
 					'contain' => false
 				);
-				
+
 				if( isset( $this->data[$this->alias][$this->primaryKey] ) && !empty( $this->data[$this->alias][$this->primaryKey] ) ) {
 					$querydata["{$this->alias}.{$this->primaryKey} <>"] = $this->data[$this->alias][$this->primaryKey];
 				}
@@ -118,7 +119,7 @@
 
 			return true;
 		}
-		
+
 		/**
 		 * Retourne une sous-requête permettant d'obtenir la liste des pièces liées
 		 * au modèle de courrier des traitements PCGs 66.

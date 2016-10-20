@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Raisonsocialepartenairecui66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Raisonsocialepartenairecui66 ...
@@ -18,7 +19,7 @@
 		public $name = 'Raisonsocialepartenairecui66';
 
 		public $displayField = 'name';
-		
+
 		public $recursive = -1;
 
 		public $actsAs = array(

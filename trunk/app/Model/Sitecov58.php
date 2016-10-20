@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Sitecov58.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Sitecov58 ...
@@ -39,7 +40,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		public $hasAndBelongsToMany = array(
 			'Zonegeographique' => array(
 				'className' => 'Zonegeographique',

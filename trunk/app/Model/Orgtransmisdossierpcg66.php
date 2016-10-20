@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Orgtransmisdossierpcg66 ...
@@ -28,8 +29,8 @@
 			'Formattable',
 			'Pgsqlcake.PgsqlAutovalidate'
 		);
-        
-        
+
+
         public $belongsTo = array(
 			'Poledossierpcg66' => array(
 				'className' => 'Poledossierpcg66',
@@ -60,7 +61,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		public $hasAndBelongsToMany = array(
 			'Notificationdecisiondossierpcg66' => array(
 				'className' => 'Decisiondossierpcg66',
@@ -79,6 +80,6 @@
 				'with' => 'Decdospcg66Orgdospcg66'
 			)
 		);
-		
+
 	}
 ?>

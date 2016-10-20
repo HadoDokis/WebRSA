@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Statutpdo.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Statutpdo ...
@@ -68,9 +69,9 @@
 				'with' => 'Personnepcg66Statutpdo'
 			)
 		);
-        
+
          /**
-         * Permet de connaître le nombre d'occurences de Personnepcg66 dans 
+         * Permet de connaître le nombre d'occurences de Personnepcg66 dans
          * lesquelles apparaît ce statut PDOs
          * @return array()
          */
@@ -80,7 +81,7 @@
 					$this->fields(),
 					array( 'COUNT("Personnepcg66"."id") AS "Statutpdo__occurences"' )
 				),
-				'joins' => array( 
+				'joins' => array(
 					$this->join( 'Personnepcg66Statutpdo' ),
                     $this->Personnepcg66Statutpdo->join( 'Personnepcg66' )
 				),

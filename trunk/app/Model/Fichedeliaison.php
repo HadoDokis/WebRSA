@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Fichedeliaison ...
@@ -182,7 +183,7 @@
 				'with' => 'FichedeliaisonPersonne'
 			),
 		);
-		
+
 		/**
 		 * Règles de validation.
 		 *
@@ -195,10 +196,10 @@
 				)
 			)
 		);
-		
+
 		/**
 		 * Permet d'obtenir la requête nécéssaire pour l'index
-		 * 
+		 *
 		 * @param integer $foyer_id
 		 */
 		public function getIndexQuery($foyer_id) {
@@ -238,10 +239,10 @@
 					'Fichedeliaison.created' => 'DESC'
 				)
 			);
-			
+
 			return $query;
 		}
-		
+
 		/**
 		 * Retourne les positions et les conditions CakePHP/SQL dans l'ordre dans
 		 * lequel elles doivent être traitées pour récupérer la position actuelle.
@@ -327,11 +328,11 @@
 				'fields' => 'Fichedeliaison.id',
 				'conditions' => $conditions,
 			));
-			
+
 			$case = $this->getCasePositionFichedeliaison();
 			$Dbo = $this->getDataSource();
 			$etats = array();
-			
+
 			foreach ((array)Hash::extract($occurences, '{n}.Fichedeliaison.id') as $fichedeliaison_id) {
 				$sql = '
 					UPDATE fichedeliaisons AS "Fichedeliaison"
@@ -363,14 +364,14 @@
 					AND a.id = "Fichedeliaison"."id"
 					RETURNING "Fichedeliaison"."etat";'
 				;
-				
+
 				$etats[$fichedeliaison_id] = Hash::get($Dbo->query($sql), '0.0.etat');
-				
+
 				if ($etats[$fichedeliaison_id] === false) {
 					 return false;
 				}
 			}
-			
+
 			return $etats;
 		}
 
@@ -383,9 +384,9 @@
 		public function updatePositionsByPosition( $etat ) {
 			$conditions = $this->getConditionsEtat( $etat );
 
-			$query = array( 
-				'fields' => array( "{$this->alias}.{$this->primaryKey}" ), 
-				'conditions' => $conditions, 
+			$query = array(
+				'fields' => array( "{$this->alias}.{$this->primaryKey}" ),
+				'conditions' => $conditions,
 				'joins' => array( $this->join( 'Fichedeliaison' ) )
 			);
 			$sample = $this->find( 'first', $query );
@@ -412,10 +413,10 @@
 
 			return $return;
 		}
-		
+
 		/**
 		 * Renvoi le foyer_id d'un enregistrement
-		 * 
+		 *
 		 * @param integer $fichedeliaison_id
 		 * @return integer
 		 */
@@ -424,7 +425,7 @@
 				'fields' => 'Fichedeliaison.foyer_id',
 				'conditions' => array('Fichedeliaison.id' => $fichedeliaison_id)
 			);
-			
+
 			return Hash::get($this->find('first', $query), 'Fichedeliaison.foyer_id');
 		}
 	}

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Modeletypecourrierpcg66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Modeletypecourrierpcg66 ...
@@ -18,7 +19,7 @@
 		public $name = 'Modeletypecourrierpcg66';
 
 		public $order = 'Modeletypecourrierpcg66.name ASC';
-		
+
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(

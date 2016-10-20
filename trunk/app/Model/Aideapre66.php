@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Aideapre66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Aideapre66 ...
@@ -227,7 +228,7 @@
 				);
 				$typeaideapre66 = $this->Typeaideapre66->find('first', $qd_typeaideapre66);
 
-				$plafond = Hash::get($this->data, 'Apre66.isapre') 
+				$plafond = Hash::get($this->data, 'Apre66.isapre')
 					? Hash::get($typeaideapre66, 'Typeaideapre66.plafond')
 					: Hash::get($typeaideapre66, 'Typeaideapre66.plafondadre')
 				;
@@ -446,7 +447,7 @@
 					'contain' => false
 				)
 			);
-			$plafondAide = Hash::get($this->data, 'Apre66.isapre') 
+			$plafondAide = Hash::get($this->data, 'Apre66.isapre')
 				? Hash::get($typeaideapre66, 'Typeaideapre66.plafond')
 				: Hash::get($typeaideapre66, 'Typeaideapre66.plafondadre')
 			;

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Typecourrierpcg66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Typecourrierpcg66 ...
@@ -18,7 +19,7 @@
 		public $name = 'Typecourrierpcg66';
 
 		public $order = 'Typecourrierpcg66.name ASC';
-                
+
                 public $actsAs = array(
                     'Postgres.PostgresAutovalidate',
                     'Validation2.Validation2Formattable',
@@ -36,7 +37,7 @@
 				)
 			)
 		);
-                
+
 		public $hasOne = array(
 			'Traitementpcg66' => array(
 				'className' => 'Traitementpcg66',
@@ -52,7 +53,7 @@
 				'counterQuery' => ''
 			)
 		);
-                
+
 		public $hasMany = array(
 			'Modeletypecourrierpcg66' => array(
 				'className' => 'Modeletypecourrierpcg66',

@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Tag ...
@@ -56,7 +57,7 @@
 				'counterCache' => null
 			),
 		);
-		
+
 		/**
 		 * Associations "Has many".
 		 *
@@ -68,20 +69,20 @@
 				'foreignKey' => 'tag_id',
 			),
 		);
-		
+
 		/**
 		 * Récupère les données d'un tag
-		 * 
+		 *
 		 * @param integer $tag_id
 		 * @return array
 		 */
 		public function findTagById( $tag_id ) {
 			return $this->find('first', $this->queryTagByCondition(array('Tag.id' => $tag_id)));
 		}
-		
+
 		/**
 		 * Trouve tout les tags d'une personne
-		 * 
+		 *
 		 * @param string $modele
 		 * @param integer $id
 		 * @return array
@@ -91,15 +92,15 @@
 				'modele' => $modele,
 				'fk_value' => $id
 			);
-			
+
 			$query = $this->queryTagByCondition($conditions);
-			
+
 			return $this->find('all', $query);
 		}
-		
+
 		/**
 		 * Renvoi la query de base pour les tags
-		 * 
+		 *
 		 * @param array $conditions
 		 * @return array
 		 */
@@ -120,10 +121,10 @@
 				'conditions' => $conditions
 			);
 		}
-		
+
 		/**
 		 * Met à jour l'etat du tag
-		 * 
+		 *
 		 * @param type $conditions
 		 */
 		public function updateEtatTagByConditions( array $conditions = array() ) {
@@ -135,23 +136,23 @@
 			);
 			$fieldsPerime = array('Tag.etat' => "'perime'");
 			$success = $this->updateAllUnBound($fieldsPerime, $conditionsPerime);
-			
+
 			return $success;
 		}
-		
-		/** 
+
+		/**
 		 * Calcule l'etat du Tag après chaques modifications
-		 * 
+		 *
 		 * @param boolean $created
 		 */
 		public function afterSave( $created ) {
 			$this->updateEtatTagByConditions( array( 'Tag.id' => $this->id ) );
 		}
-		
+
 		/**
 		 * Envoi un personne_id
 		 * Si entité est sur le foyer, enverra le premier demandeur trouvé
-		 * 
+		 *
 		 * @param integer $tag_id
 		 * @return integer personne_id
 		 */
@@ -183,14 +184,14 @@
 					)
 				)
 			);
-			
+
 			return Hash::get($this->find('first', $query), 'Tag.personne_id');
 		}
-		
+
 		/**
 		 * Utile pour faire un filtre de recherche sans jointures sur Tag donc
 		 * sans risquer d'ajouter des lignes
-		 * 
+		 *
 		 * @param array|string|integer $valeurtag_id
 		 * @param string|integer $foyer_id mettre <= à 0 pour ignorer
 		 * @param string|integer $personne_id mettre <= à 0 pour ignorer
@@ -222,12 +223,12 @@
 				),
 				'limit' => 1
 			);
-			
+
 			$sq = words_replace(
 				$this->sq($query),
 				array('EntiteTag' => 'entites_tags', 'Tag' => 'tags')
 			);
-			
+
 			return "(SELECT EXISTS($sq))";
 		}
 	}

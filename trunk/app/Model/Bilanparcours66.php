@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * Bilan de parcours pour le conseil général du département 66.
@@ -312,10 +313,10 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		/**
 		 * Modèles utilisés par ce modèle.
-		 * 
+		 *
 		 * @var array
 		 */
 		public $uses = array(

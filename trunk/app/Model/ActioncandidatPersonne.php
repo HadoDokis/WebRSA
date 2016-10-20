@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe ActioncandidatPersonne ...
@@ -183,7 +184,7 @@
 				)
 			)
 		);
-		
+
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *
@@ -193,9 +194,9 @@
 
 		/**
 		 * __construct($id = false, $table = null, $ds = null)
-		 * 
+		 *
 		 * Rend la saisie d'un Nom du programme obligatoire si Actions Région : formation est selectionné
-		 * 
+		 *
 		 * @param array $id
 		 * @param unknown_type $table
 		 * @param unknown_type $ds

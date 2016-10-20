@@ -9,6 +9,8 @@
 	define( 'ANNOBTNIVDIPMAX_MIN_YEAR', ( date( 'Y' ) - 100 ) );
 	define( 'ANNOBTNIVDIPMAX_MAX_YEAR', date( 'Y' ) );
 	define( 'ANNOBTNIVDIPMAX_MESSAGE', 'Veuillez entrer une année comprise entre '.ANNOBTNIVDIPMAX_MIN_YEAR.' et '.ANNOBTNIVDIPMAX_MAX_YEAR.' .' );
+	App::uses( 'AppModel', 'Model' );
+
 	/**
 	 * La classe Dsp ...
 	 *
@@ -361,14 +363,14 @@
 				)
 			)
 		);
-		
+
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *
 		 * @var array
 		 */
 		public $uses = array('WebrsaDsp');
-		
+
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.
 		 * Utilisé au préchargement de l'application (/prechargements/index).
@@ -395,7 +397,7 @@
 
 			return $success;
 		}
-		
+
 		/**
 		 * Vérification que les champs spécifiés dans le paramétrage par les clés
 		 * Dsps.index.fields, Dsps.index.innerTable et Dsps.exportcsv dans le

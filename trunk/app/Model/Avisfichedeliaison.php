@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Avisfichedeliaison ...
@@ -80,10 +81,10 @@
 				'counterCache' => null
 			),
 		);
-		
+
 		/**
 		 * Prépare le formulaire d'avis ou de validation
-		 * 
+		 *
 		 * @param integer $fichedeliaison_id
 		 * @return array
 		 */
@@ -107,15 +108,15 @@
 					),
 				)
 			);
-			$results['FichedeliaisonPersonne']['personne_id'] = 
+			$results['FichedeliaisonPersonne']['personne_id'] =
 				Hash::extract(
-					$this->Fichedeliaison->FichedeliaisonPersonne->find('all', 
+					$this->Fichedeliaison->FichedeliaisonPersonne->find('all',
 						array('conditions' => array('fichedeliaison_id' => $fichedeliaison_id))
-					), 
+					),
 					'{n}.FichedeliaisonPersonne.personne_id'
 				)
 			;
-			
+
 			return $results;
 		}
 	}

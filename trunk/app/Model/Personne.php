@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Personne ...
@@ -92,13 +93,13 @@
 				)
 			)
 		);
-		
+
 		/**
 		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
 		 * règle de validation inList ou en contrainte dans la base de données en
 		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
 		 * fini de valeurs existe.
-		 * 
+		 *
 		 * @see AppModel::enums
 		 *
 		 * @var array
@@ -109,7 +110,7 @@
             'sexe' => array('1', '2'),
             'typedtnai' => array('J', 'N', 'O'),
 		);
-		
+
 		public $belongsTo = array(
 			'Foyer' => array(
 				'className' => 'Foyer',
@@ -772,7 +773,7 @@
 				'postgres' => 'EXTRACT(MONTH FROM "%s"."dtnai")'
 			),
 		);
-		
+
 		/**
 		 * Valeurs possibles pour le champ virtuel etat_dossier_orientation (CG 58).
 		 *
@@ -780,7 +781,7 @@
 		 * @see Personne::enums
 		 */
 		public $etat_dossier_orientation = array( 'oriente', 'en_attente', 'non_oriente', 'en_cours_reorientation' );
-		
+
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *
@@ -884,7 +885,7 @@
 
 			return $enums;
 		}
-		
+
 		/**
 		 * Préchargement du cache du modèle.
 		 *
@@ -893,12 +894,12 @@
 		public function prechargement() {
 			return $this->WebrsaPersonne->prechargement();
 		}
-		
+
 		 /**
 		 *   Calcul du nombre d emois restant avant la fin du titre de séjour de l'alcoataire
 		 *   @params integer personne_id
          *  return integer Nb de mois avant la fin du titre de séjour
-		 * 
+		 *
 		 * @deprecated since version 3.1		Utilisé dans une methode dépréciée
 		 */
 

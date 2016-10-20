@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Apre66 ...
@@ -222,7 +223,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *
@@ -256,7 +257,7 @@
 
 			return true;
 		}
-		
+
 		/**
 		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo

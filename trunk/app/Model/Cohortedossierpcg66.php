@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
 
 	/**
@@ -215,8 +216,8 @@
 						.')'
 					)
 				),
-				$this->Dossier->Foyer->Personne->join( 'Prestation', 
-					array( 
+				$this->Dossier->Foyer->Personne->join( 'Prestation',
+					array(
 						'type' => 'INNER',
 						'conditions' => array( 'Prestation.rolepers' => 'DEM' )
 					)
@@ -264,7 +265,7 @@
 				'contain' => false,
 				'conditions' => $conditions
 			);
-			
+
 			if( $statutAffectation === 'Affectationdossierpcg66::aimprimer' ) {
 				$query['order'] = array( 'Foyer.id' );
 			}

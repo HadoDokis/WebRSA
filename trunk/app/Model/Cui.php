@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
 
 	/**
@@ -23,7 +24,7 @@
 		public $name = 'Cui';
 
 		/**
-		 * Recurcivité du model 
+		 * Recurcivité du model
 		 * @var integer
 		 */
 		public $recursive = -1;
@@ -133,7 +134,7 @@
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
-		
+
 		/**
 		 * Valeur des checkbox du champ beneficiairede
 		 * @var array
@@ -144,7 +145,7 @@
 			'ATA',
 			'RSA'
 		);
-		
+
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *

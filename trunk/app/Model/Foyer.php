@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Foyer ...
@@ -21,13 +22,13 @@
             'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable'
 		);
-		
+
 		/**
 		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
 		 * règle de validation inList ou en contrainte dans la base de données en
 		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
 		 * fini de valeurs existe.
-		 * 
+		 *
 		 * @see AppModel::enums
 		 *
 		 * @var array
@@ -314,7 +315,7 @@
 				'counterQuery' => ''
 			),
 		);
-		
+
 		/**
 		 * Retourne l'id du dossier à partir de l'id du foyer
 		 *

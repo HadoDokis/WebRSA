@@ -12,7 +12,7 @@
 	 * INFO: cette thématique n'est actuellement pas utilisée lorsqu'on crée un regroupementep, même si
 	 * la thématique figure dans l'enum type_themeep.
 	 */
-	require_once( ABSTRACTMODELS.'Nonorientationproep.php' );
+	App::uses( 'Nonorientationproep', 'Model/Abstractclasses' );
 
 	/**
 	 * La classe Nonorientationproep66 ...
@@ -153,7 +153,7 @@
 
 			return $querydata;
 		}
-		
+
 		/**
 		 * Retourne un querydata permettant de retrouver les allocataires  orientés en social depuis un
 		 * certain temps (suivant le filtre ou la configuration au CG 66), qui ne possèdent pas de CER en
@@ -208,7 +208,7 @@
 					AND typesorients.parentid IN ( '.implode( ',', $typesorientsParentidsSocial ).' )
 					AND orientsstructs.date_valid <= \''.date( 'Y-m-d', strtotime( '- 24 month', time() ) ).'\'
 			)';
-			
+
 			$conditions[] = array(
 				'Contratinsertion.id NOT IN (
 					SELECT contratsinsertion.id
@@ -220,7 +220,7 @@
 							bilansparcours66.contratinsertion_id = Contratinsertion.id
 				)'
 			);
-			
+
 			// La dernière orientation
 			$conditions[] = 'Orientstruct.id IN ( '.$this->Orientstruct->WebrsaOrientstruct->sqDerniere().' )';
 

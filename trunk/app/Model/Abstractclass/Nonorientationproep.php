@@ -7,9 +7,8 @@
 	 * @package app.Model.Abstractclass
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'Thematiqueep', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
-	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
+	App::uses( 'Thematiqueep', 'Model/Abstractclasses' );
 
 	/**
 	 * La classe Nonorientationproep ...

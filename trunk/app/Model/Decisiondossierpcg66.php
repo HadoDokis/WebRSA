@@ -8,6 +8,7 @@
  * @package app.Model
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
+App::uses( 'AppModel', 'Model' );
 
 /**
  * La classe Decisiondossierpcg66 ...
@@ -195,7 +196,7 @@ class Decisiondossierpcg66 extends AppModel {
             )
         )
     );
-	
+
 	public $virtualFields = array(
 			'dernier' => array(
 				'type'      => 'boolean',
@@ -207,7 +208,7 @@ class Decisiondossierpcg66 extends AppModel {
 					LIMIT 1)'
 			),
 	);
-	
+
 	/**
 	 * Les modèles qui seront utilisés par ce modèle.
 	 *
@@ -270,11 +271,11 @@ class Decisiondossierpcg66 extends AppModel {
             return null;
         }
     }
-	
+
 	/**
 	 * Fonction permettant de récupérer les décisions qui ont été uniquement
 	 * transmises à l'OP
-	 * 
+	 *
 	 * @deprecated since version 3.1
 	 */
 	public function sqDatetransmissionOp($dossierpcg66Id = 'Dossierpcg66.id') {
@@ -301,12 +302,12 @@ class Decisiondossierpcg66 extends AppModel {
 						)
 		);
 	}
-	
+
 	/**
 	 * Change un etat de dossier PCG dans le cas ou la position est 'decisionvalid'.
 	 * Ajoute une date d'impression.
 	 * Renvoi vrai si le dossier PCG a déjà été imprimmé.
-	 * 
+	 *
 	 * @param mixed $ids
 	 * @return boolean
 	 * @deprecated since version 3.1	(utilisé dans Cohortesdossierspcgs66Controller::notificationsCohorte)
@@ -329,7 +330,7 @@ class Decisiondossierpcg66 extends AppModel {
 			array(
 				'Dossierpcg66.dateimpression' => "'" . date('Y-m-d') . "'",
 				'Dossierpcg66.etatdossierpcg' => '\'atttransmisop\''
-			), 
+			),
 			array(
 				'Dossierpcg66.id' => Hash::extract( $results, '{n}.Dossierpcg66.id' )
 			)

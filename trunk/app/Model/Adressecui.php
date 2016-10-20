@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Adressecui est la classe contenant les information de contact du CUI.
@@ -16,9 +17,9 @@
 	class Adressecui extends AppModel
 	{
 		public $name = 'Adressecui';
-		
+
 		public $recursive = -1;
-		
+
 		public $hasOne = array(
 			'Partenairecui' => array(
 				'className' => 'Partenairecui',
@@ -26,7 +27,7 @@
 				'dependent' => true,
 			),
 		);
-		
+
 		/**
 		 * Behaviors utilisés par le modèle.
 		 *
@@ -40,8 +41,8 @@
 				'phone' => array( 'numtel', 'numfax', 'numtel2', 'numfax2' )
 			),
 		);
-		
-		
+
+
 		/**
 		 * Règles de validation.
 		 *

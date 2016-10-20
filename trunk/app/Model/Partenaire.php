@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Partenaire.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Partenaire ...
@@ -18,7 +19,7 @@
 		public $name = 'Partenaire';
 
 		public $displayField = 'libstruc';
-		
+
 		public $recursive = -1;
 
 		public $actsAs = array(
@@ -88,7 +89,7 @@
 				'with' => 'ActioncandidatPartenaire'
 			)
 		);
-		
+
 		public $belongsTo = array(
 			'Raisonsocialepartenairecui66' => array(
 				'className' => 'Raisonsocialepartenairecui66',
@@ -105,21 +106,21 @@
 				'order' => ''
 			),
 		);
-		
+
 		public $hasMany = array(
 			'Cui' => array(
 				'className' => 'Cui',
 				'foreignKey' => 'partenaire_id',
 			)
 		);
-		
+
 		public $virtualFields = array(
 			'adresse' => array(
 				'type'      => 'string',
 				'postgres'  => '( "%s"."numvoie" || \' \' || "%s"."typevoie" || \' \' || "%s"."nomvoie" || \' \' || "%s"."compladr" || \' \' || "%s"."codepostal" || \' \' || "%s"."ville" )'
 			)
 		);
-		
+
 		/**
 		*	Recherche des partenaires dans le paramétrage de l'application
 		*
@@ -161,7 +162,7 @@
 		/**
 		 * Permet de récupérer le dernier code partenaire (sous forme de 3 chiffres)
 		 * Utile pour le calcul d'un nouveau code partenaire
-		 * 
+		 *
 		 * @return array
 		 */
 		public function sqGetLastCodePartenaire(){

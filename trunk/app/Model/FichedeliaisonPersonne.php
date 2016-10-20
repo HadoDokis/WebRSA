@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe FichedeliaisonPersonne ...
@@ -62,17 +63,17 @@
 				'counterCache' => null
 			),
 		);
-		
+
 		/**
 		 * Permet d'obtenir une liste des personnes dans le foyer sous forme de phrase
 		 * ex: array(12546 => 'Le demandeur (Monsieur JOHN DOE)')
-		 * 
+		 *
 		 * @param integer $foyer_id
 		 * @return array
 		 */
 		public function optionsConcerne($foyer_id) {
 			$Foyer =& $this->Personne->Foyer;
-			
+
 			$query = array(
 				'fields' => array(
 					'Personne.id',
@@ -99,12 +100,12 @@
 				)
 			);
 			$results = $Foyer->find('all', $query);
-			
+
 			$options = array();
 			foreach ($results as $result) {
 				$options[Hash::get($result, 'Personne.id')] = Hash::get($result, 'Personne.appelation');
 			}
-			
+
 			return $options;
 		}
 	}

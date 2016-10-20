@@ -7,7 +7,6 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-
 	App::uses('WebrsaAbstractLogic', 'Model');
 	App::uses('WebrsaLogicAccessInterface', 'Model/Interface');
 
@@ -34,19 +33,19 @@
 
 		/**
 		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
-		 * 
+		 *
 		 * @param array $query
 		 * @return type
 		 */
 		public function completeVirtualFieldsForAccess(array $query = array(), array $params = array()) {
 			$query['fields'][] = 'ActioncandidatPersonne.positionfiche';
-			
+
 			return $query;
 		}
-		
+
 		/**
 		 * Permet d'obtenir le nécéssaire pour calculer les droits d'accès métier à une action
-		 * 
+		 *
 		 * @param array $conditions
 		 * @return array
 		 */
@@ -60,30 +59,30 @@
 				'contain' => false
 			);
 			$results = $this->ActioncandidatPersonne->find('all', $this->completeVirtualFieldsForAccess($query));
-			
+
 			return $results;
 		}
-		
+
 		/**
 		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
-		 * 
+		 *
 		 * @see WebrsaAccess::getParamsList
 		 * @param integer $personne_id
 		 * @param array $params - Liste des paramètres actifs
 		 */
 		public function getParamsForAccess($personne_id, array $params = array()) {
 			$results = array();
-			
+
 			if (in_array('ajoutPossible', $params)) {
 				$results['ajoutPossible'] = $this->ajoutPossible($personne_id);
 			}
-			
+
 			return $results;
 		}
-		
+
 		/**
 		 * Permet de savoir si il est possible d'ajouter un enregistrement
-		 * 
+		 *
 		 * @param integer $personne_id
 		 * @return boolean
 		 */
@@ -103,10 +102,10 @@
 				)
 			);
 			$result = $this->ActioncandidatPersonne->Personne->find('first', $query);
-			
+
 			return !empty($result);
 		}
-		
+
 		/**
 		 * Venu
 		 * 	Retenu
