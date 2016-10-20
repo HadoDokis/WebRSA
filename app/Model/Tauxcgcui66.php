@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Tauxcgcui66 ...
@@ -39,12 +40,12 @@
 
 		public function options(){
 			$optionsCui66 = ClassRegistry::init( 'Cui66' )->options();
-			
+
 			$options['Tauxcgcui66'] = array_merge( $optionsCui66['Cui'], $optionsCui66['Cui66'] );
-			
+
 			return $options;
 		}
-		
+
 		public function prepareFormDataAddEdit( $id ){
 			// Cas ajout
 			if ( $id === null ){
@@ -66,14 +67,14 @@
 					)
 				);
 			}
-			
+
 			if ( empty($result) ){
 				throw new HttpException(404, "HTTP/1.1 404 Not Found");
 			}
-			
+
 			return $result;
 		}
-		
+
 		public function saveAddEdit( $data ){
 			return $this->save( $data );
 		}

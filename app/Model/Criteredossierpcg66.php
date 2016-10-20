@@ -8,6 +8,7 @@
  * @package app.Model
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
+App::uses( 'AppModel', 'Model' );
 
 /**
  * La classe Criteredossierpcg66 ...
@@ -127,7 +128,7 @@ class Criteredossierpcg66 extends AppModel {
         $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->WebrsaDecisiondossierpcg66->sqDernier('Dossierpcg66.id');
 
         $conditions = array();
-		
+
         /// Filtre zone géographique
         $conditions[] = $this->conditionsZonesGeographiques($filtre_zone_geo, $mesCodesInsee);
 
@@ -314,7 +315,7 @@ class Criteredossierpcg66 extends AppModel {
         if (isset($nbpropo) && $nbpropo != '') {
             $conditions[] = array($Dossierpcg66->sqVirtualField('nbpropositions', false) => $nbpropo);
         }
-		
+
 		$joinTraitementpcg66 = $Dossierpcg66->Personnepcg66->join('Traitementpcg66');
 		$sqJoinTraitement = str_replace('Traitementpcg66', 'traitement', $Dossierpcg66->Personnepcg66->Traitementpcg66->sq(
 			array(
@@ -390,7 +391,7 @@ class Criteredossierpcg66 extends AppModel {
 				$Dossierpcg66->join('User', array('type' => 'LEFT OUTER')),
                 $Dossierpcg66->join('Personnepcg66'),
                 $joinTraitementpcg66,
-				$Dossierpcg66->Foyer->join('Adressefoyer', 
+				$Dossierpcg66->Foyer->join('Adressefoyer',
 					array(
 						'type' => 'LEFT OUTER',
 						'conditions' => 'Adressefoyer.id IN ( ' . $Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01('Foyer.id') . ' )'
@@ -403,14 +404,14 @@ class Criteredossierpcg66 extends AppModel {
                     'type' => 'LEFT OUTER'
                         )
                 ),
-                $Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo', 
+                $Dossierpcg66->Decisiondossierpcg66->join('Decisionpdo',
 					array(
 						'type' => 'LEFT OUTER',
 						'conditions' => "Decisiondossierpcg66.id IN ( {$sqDerniereDecisiondossierpcg66} )"
 					)
 				),
                 $Dossierpcg66->Foyer->Dossier->join('Detaildroitrsa', array('type' => 'LEFT OUTER')),
-                $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa', 
+                $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join('Detailcalculdroitrsa',
 					array(
 						'type' => 'LEFT OUTER',
 						'conditions' => "Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )"

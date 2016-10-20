@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionpdo.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Decisionpdo ...
@@ -88,7 +89,7 @@
 				),
 			),
 		);
-		
+
 
 		/**
 		 * Retourne la liste des modèles odt paramétrés pour le impressions de
@@ -113,10 +114,10 @@
 			);
 			return Set::extract( $items, '/'.$this->alias.'/modele' );
 		}
-        
-        
+
+
         /**
-         * Permet de connaître le nombre d'occurences de Dossierpcg dans 
+         * Permet de connaître le nombre d'occurences de Dossierpcg dans
          * lesquelles apparaît ce type de PDOs
          * @return array()
          */
@@ -126,7 +127,7 @@
 					$this->fields(),
 					array( 'COUNT("Decisiondossierpcg66"."id") AS "Decisionpdo__occurences"' )
 				),
-				'joins' => array( 
+				'joins' => array(
 					$this->join( 'Decisiondossierpcg66' )
 				),
 				'recursive' => -1,

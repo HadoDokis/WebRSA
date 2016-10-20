@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Typepdo.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Typepdo ...
@@ -86,9 +87,9 @@
 				'counterQuery' => ''
 			)
 		);
-        
+
         /**
-         * Permet de connaître le nombre d'occurences de Dossierpcg dans 
+         * Permet de connaître le nombre d'occurences de Dossierpcg dans
          * lesquelles apparaît ce type de PDOs
          * @return array()
          */
@@ -98,7 +99,7 @@
 					$this->fields(),
 					array( 'COUNT("Dossierpcg66"."id") AS "Typepdo__occurences"' )
 				),
-				'joins' => array( 
+				'joins' => array(
 					$this->join( 'Dossierpcg66' )
 				),
 				'recursive' => -1,

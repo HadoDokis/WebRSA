@@ -10,6 +10,7 @@
 	define( 'DATE_DECISION_FACULTATIVE', Configure::read( 'Cg.departement' ) != 66 );
 	define( 'REFERENT_FACULTATIF', Configure::read( 'Cg.departement' ) != 66 );
 	define( 'STORABLE_PDF_ACTIVE', Configure::read( 'Cg.departement' ) != 66 );
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Contratinsertion permet de gérer les CER de manière individuelle.

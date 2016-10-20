@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
 
 	/**
@@ -71,13 +72,13 @@
 				)
 			)
 		);
-		
+
 		/**
 		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
 		 * règle de validation inList ou en contrainte dans la base de données en
 		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
 		 * fini de valeurs existe.
-		 * 
+		 *
 		 * @see AppModel::enums
 		 *
 		 * @var array
@@ -507,7 +508,7 @@
 			else if( !empty( $params['personne_id'] ) && is_numeric( $params['personne_id'] ) ) {
 				$conditions['Dossier.id'] = $this->Foyer->Personne->dossierId( $params['personne_id'] );
 			}
-			
+
 			if( empty( $conditions ) || end($conditions) === null ) {
 				throw new NotFoundException();
 			}
@@ -537,7 +538,7 @@
 				$querydata[$key] = array_merge( $querydata[$key], $qdPartsJetons[$key] );
 			}
 			$dossier = $this->find( 'first', $querydata );
-			
+
 			if (empty($dossier)) {
 				trigger_error("Aucun Foyer n'a été trouvé avec les conditions suivantes : ".var_export($conditions, true));
 				exit;
@@ -640,7 +641,7 @@
 				$this->_appModelCache[$cacheKey] = Cache::read( $cacheKey );
 
 				// Dans le cache CakePHP ?
-				if( false === $this->_appModelCache[$cacheKey] ) {			
+				if( false === $this->_appModelCache[$cacheKey] ) {
 					$this->_appModelCache[$cacheKey] = parent::enums();
 
 					// FIXME: seulement pour le 93 ?
@@ -652,7 +653,7 @@
 						'6_8' => 'De 6 ans à moins de 9 ans',
 						'9_999' => 'Plus de 9 ans',
 					);
-					
+
 					$this->_cacheOptionsNumorg($cacheKey);
 
 					Cache::write( $cacheKey, $this->_appModelCache[$cacheKey] );
@@ -661,7 +662,7 @@
 
 			return $this->_appModelCache[$cacheKey];
 		}
-		
+
 		/**
 		 * On enregistre la liste des traductions connues, mais on ne met pas en inList,
 		 * sinon on aura des soucis à l'enregistrement d'un nouveau numorg
@@ -677,7 +678,7 @@
 				} else {
 					$numorg = sprintf('%03d', $i);
 				}
-				
+
 				$label = __d( $domain, "ENUM::NUMORG::{$numorg}" );
 				if ($label !== "ENUM::NUMORG::{$numorg}") {
 					$this->_appModelCache[$cacheKey][$this->alias]['numorg'][(string)$numorg] = $label;

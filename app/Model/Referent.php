@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	define( 'CHAMP_FACULTATIF_REFERENT', Configure::read( 'Cg.departement' ) == 58 );
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Referent s'occupe de la gestion des référents.

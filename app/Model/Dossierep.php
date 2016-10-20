@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Dossierep ...
@@ -245,14 +246,14 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		public $virtualFields = array(
 			'is_reporte' => array(
 				'type'      => 'boolean',
 				'postgres'  => '("%s"."id" IN (
-					SELECT a.id FROM dossierseps a 
-					JOIN passagescommissionseps b ON a.id = b.dossierep_id 
-					WHERE a.id = "%s"."id" 
+					SELECT a.id FROM dossierseps a
+					JOIN passagescommissionseps b ON a.id = b.dossierep_id
+					WHERE a.id = "%s"."id"
 					AND b.etatdossierep = \'reporte\'))'
 			),
 		);

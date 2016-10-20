@@ -8,6 +8,7 @@
  * @package app.Model
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
+App::uses( 'AppModel', 'Model' );
 
 /**
  * La classe Dossierpcg66 ...
@@ -187,10 +188,10 @@ class Dossierpcg66 extends AppModel {
             )
         ),
     );
-	
+
 	/**
 	 * Modèles utilisés par ce modèle.
-	 * 
+	 *
 	 * @var array
 	 */
 	public $uses = array(
@@ -206,7 +207,7 @@ class Dossierpcg66 extends AppModel {
 
         $typepdo_id = Set::classicExtract($dossierpcg66, 'Dossierpcg66.typepdo_id');
     }
-	
+
     /**
      *   AfterSave
      */
@@ -307,7 +308,7 @@ class Dossierpcg66 extends AppModel {
             return null;
         }
     }
-	
+
 	/**
 	 * Préparation des données du formulaire d'ajout ou de modification d'un
 	 * Dossier PCG

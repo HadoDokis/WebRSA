@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Role ...
@@ -37,7 +38,7 @@
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
-		
+
 		/**
 		 * Ces models possèdent une clef étrangère vers ce model
 		 * @var array
@@ -54,7 +55,7 @@
 				'dependent' => true,
 			),
 		);
-		
+
 		/**
 		 * Associations "Has and belongs to many".
 		 *

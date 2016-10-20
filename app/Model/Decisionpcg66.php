@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionpcg66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Decisionpcg66 ...
@@ -61,15 +62,15 @@
 			)
 		);
 
-		
-		
+
+
 		public function qdOccurences() {
 			return array(
 				'fields' => array_merge(
 					$this->fields(),
 					array( 'COUNT("Questionpcg66"."id") AS "Decisionpcg66__occurences"' )
 				),
-				'joins' => array( 
+				'joins' => array(
 					$this->join( 'Questionpcg66' )
 				),
 				'recursive' => -1,

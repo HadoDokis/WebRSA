@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Adresse ...
@@ -64,7 +65,7 @@
 		 * règle de validation inList ou en contrainte dans la base de données en
 		 * raison des valeurs actuellement en base, mais pour lequels un ensemble
 		 * fini de valeurs existe.
-		 * 
+		 *
 		 * @see AppModel::enums
 		 *
 		 * @var array
@@ -101,7 +102,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		/**
 		 * Associations "Has and belongs to many".
 		 *
@@ -319,10 +320,10 @@
 			'ZONE',
 			'ZONE A URBANISER EN PRIORITE'
 		);
-		
+
 		/**
 		 * Liste des champs où la valeur du notEmpty/allowEmpty est configurable
-		 * 
+		 *
 		 * @var array
 		 */
 		public $configuredAllowEmptyFields = array(
@@ -388,14 +389,14 @@
 
 			return Hash::combine( $results, '{n}.Adresse.numcom', array( '%s %s', '{n}.Adresse.numcom', '{n}.Adresse.nomcom' ) );
 		}
-		
+
 		/**
 		 * En cas de sauvegarde sur Adresse, on doit recalculer le canton (si Canton activé)
 		 * @param boolean $created
 		 */
 		public function afterSave($created) {
 			parent::afterSave($created);
-			
+
 			if ( Configure::read( 'Canton.useAdresseCanton' ) ) {
 				$this->AdresseCanton->updateByConditions( array( 'Adresse.id' => $this->id ) );
 			}

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Originepdo.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Originepdo ...
@@ -80,11 +81,11 @@
 				'counterQuery' => ''
 			)
 		);
-        
+
         /**
-         * Permet de connaître le nombre d'occurences de Traitement PCGs dans 
+         * Permet de connaître le nombre d'occurences de Traitement PCGs dans
          * lesquelles apparaît cette description de Traitements PCGs
-         * @return array() 
+         * @return array()
          */
         public function qdOccurences() {
 			return array(
@@ -92,7 +93,7 @@
 					$this->fields(),
 					array( 'COUNT("Dossierpcg66"."id") AS "Originepdo__occurences"' )
 				),
-				'joins' => array( 
+				'joins' => array(
 					$this->join( 'Dossierpcg66' )
 				),
 				'recursive' => -1,

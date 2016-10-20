@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Partenairecui66 est la classe contenant les partenaires (entreprises/mairie...) du CUI.
@@ -16,9 +17,9 @@
 	class Partenairecui66 extends AppModel
 	{
 		public $name = 'Partenairecui66';
-		
+
 		public $recursive = -1;
-		
+
         public $belongsTo = array(
 			'Partenairecui' => array(
 				'className' => 'Partenairecui',
@@ -29,7 +30,7 @@
 				'dependent' => true
 			),
         );
-		
+
 		/**
 		 * Behaviors utilisés par le modèle.
 		 *
@@ -40,11 +41,11 @@
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
-		
+
 		/**
 		 * Fait le lien entre la table Partenaire et Les nouvelles tables pour le CUI
-		 * 
-		 * @var array 
+		 *
+		 * @var array
 		 */
 		public $correspondancesChamps = array(
 			'id' => 'Cui.partenaire_id',
@@ -72,10 +73,10 @@
 			'nbcontratsaidescg' => 'Partenairecui66.nbcontratsaidescg',
 			'nomresponsable' => 'Partenairecui66.responsable',
 		);
-		
+
 		/**
 		 * Permet d'ajouter les champs de la table Partenaire en fonction des champs de Partenairecui, Partenairecui66 et Adressecui
-		 * 
+		 *
 		 * @param array $data
 		 * @return array
 		 */
@@ -89,7 +90,7 @@
 				'directeur' => null,
 				'adressedirecteur' => null,
 			);
-			
+
 			// Conversion de champs
 			foreach( $this->correspondancesChamps as $fieldName => $path ){
 				$extract = Set::classicExtract( $data, $path );
@@ -97,22 +98,22 @@
 					$data['Partenaire'][$fieldName] = $extract;
 				}
 			}
-			
+
 			// Ajout de champs
 			foreach( $champsNonCouvert as $key => $value ){
 				if ( $value !== null ){
 					$data['Partenaire'][$key] = $value;
 				}
 			}
-			
+
 			return $data;
 		}
-		
+
 		/**
 		 * Requète permettant de connaitre le nombre de Cuis actif d'un partenaire en fonction
 		 * de l'id du partenaire.
 		 * lié à la table partenaires et stocké dans la table cuis (CG 66)
-		 * 
+		 *
 		 * @param integer $partenaire_id
 		 * @return array
 		 */
@@ -134,7 +135,7 @@
 					'Cui.partenaire_id' => $partenaire_id
 				)
 			);
-			
+
 			return $this->sq( $query );
 		}
 	}

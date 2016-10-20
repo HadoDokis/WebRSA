@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Contactpartenaire.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Contactpartenaire ...
@@ -81,8 +82,8 @@
 				'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
 			)
 		);
-        
-        
+
+
         /**
 		*	Recherche des contacts de partenaires dans le paramétrage de l'application
 		*
@@ -98,7 +99,7 @@
 					$conditions[] = 'Contactpartenaire.'.$critereContactpartenaire.' ILIKE \''.$this->wildcard( $criteres['Contactpartenaire'][$critereContactpartenaire] ).'\'';
 				}
 			}
-            
+
             if( !empty( $criteres['Contactpartenaire']['partenaire_id'] ) ) {
                 $conditions[] = array( 'Partenaire.id' => $criteres['Contactpartenaire']['partenaire_id'] );
             }

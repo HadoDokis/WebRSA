@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Modeletraitementpcg66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Modeletraitementpcg66 ...
@@ -23,7 +24,7 @@
 			'Formattable'
 		);
 
-		
+
 		public $belongsTo = array(
 			'Traitementpcg66' => array(
 				'className' => 'Traitementpcg66',
@@ -40,7 +41,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		public $hasAndBelongsToMany = array(
 			'Piecemodeletypecourrierpcg66' => array(
 				'className' => 'Piecemodeletypecourrierpcg66',

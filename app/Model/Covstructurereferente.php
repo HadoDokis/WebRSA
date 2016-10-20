@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Model', 'Structurereferente' );
+	App::uses( 'Structurereferente', 'Model' );
 
 	/**
 	 * La classe Covstructurereferente ...

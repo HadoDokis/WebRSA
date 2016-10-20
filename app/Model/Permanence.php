@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Permanence.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Permanence ...
@@ -18,7 +19,7 @@
 
 		public $displayField = 'libpermanence';
 
-		
+
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
@@ -27,7 +28,7 @@
 			),
 			'Formattable'
 		);
-		
+
 		public $validate = array(
 			'structurereferente_id' => array(
 				array(
@@ -107,7 +108,7 @@
 		public function listOptions() {
 			$conditions = array();
 			$conditions = array( 'Permanence.actif' => 'O' );
-			
+
 			$tmp = $this->find(
 				'all',
 				array (

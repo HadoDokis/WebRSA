@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Model', 'Typeorient' );
+	App::uses( 'Typeorient', 'Model' );
 
 	/**
 	 * La classe Covtypeorient ...

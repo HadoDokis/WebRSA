@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Nonoriente66 ...
@@ -72,10 +73,10 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		/**
 		 * Liste des modeles odt utilisé par ce Modele
-		 * 
+		 *
 		 * @var array
 		 */
 		public $modelesOdt = array(
@@ -85,7 +86,7 @@
 			'courrier3' => 'Orientation/orientationsociale.odt',
 			'courrier4' => 'Orientation/orientationsocialeauto.odt',
 		);
-		
+
 		/**
 		 * Retourne les données nécessaires à l'impression
 		 *
@@ -132,7 +133,7 @@
 			);
 			return $querydata;
 		}
-		
+
 		/**
 		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo
@@ -184,11 +185,11 @@
 				$options
 			);
 		}
-		
+
 		/**
 		 * Fonction permettant d'enregistrer la date du jour de l'impression du courrier envoyé
 		 * aux allocataires ne possédant pas encore d'orientation
-		 * 
+		 *
 		 * @param integer $personne_id
 		 * @param integer $user_id
 		 * @return boolean
@@ -208,10 +209,10 @@
 			$this->create( $nonoriente66 );
 			return $this->save();
 		}
-		
+
 		/**
 		 * Renvoi le chemin vers le document odt en fonction de data
-		 * 
+		 *
 		 * @param array $data
 		 * @return string
 		 */
@@ -227,13 +228,13 @@
 					return Hash::get($data, 'Nonoriente66.reponseallocataire') === 'N' ? $this->modelesOdt['courrier4'] : $this->modelesOdt['courrier3'];
 				}
 			}
-			
+
 			return $this->modelesOdt['default'];
 		}
-		
+
 		/**
 		 * Permet un choix de structures en fonction du canton
-		 * 
+		 *
 		 * @return array
 		 */
 		public function structuresAutomatiques() {

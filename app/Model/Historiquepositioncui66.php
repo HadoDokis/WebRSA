@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Historiquepositioncui66 est la classe contenant les e-mails du CUI.
@@ -16,9 +17,9 @@
 	class Historiquepositioncui66 extends AppModel
 	{
 		public $name = 'Historiquepositioncui66';
-		
+
 		public $recursive = -1;
-		
+
 		public $belongsTo = array(
 			'Cui66' => array(
 				'className' => 'Cui66',

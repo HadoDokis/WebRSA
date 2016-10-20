@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Partenairecui est la classe contenant les partenaires (entreprises/mairie...) du CUI.
@@ -16,9 +17,9 @@
 	class Partenairecui extends AppModel
 	{
 		public $name = 'Partenairecui';
-		
+
 		public $recursive = -1;
-		
+
         public $belongsTo = array(
 			'Adressecui' => array(
 				'className' => 'Adressecui',
@@ -26,7 +27,7 @@
 				'dependent' => true,
 			),
         );
-		
+
 		public $hasOne = array(
 			'Cui' => array(
 				'className' => 'Cui',
@@ -45,7 +46,7 @@
 				'dependent' => true
 			),
 		);
-		
+
 		/**
 		 * Behaviors utilisés par le modèle.
 		 *

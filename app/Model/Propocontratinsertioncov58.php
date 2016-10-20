@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	require_once( ABSTRACTMODELS.'AbstractThematiquecov58.php' );
+	App::uses( 'AbstractThematiquecov58', 'Model/Abstractclasses' );
 
 	/**
 	 * La classe Propocontratinsertioncov58 ...
@@ -103,7 +103,7 @@
 		public $uses = array(
 			'WebrsaPropocontratinsertioncov58'
 		);
-		
+
 		/**
 		 * Règle de validation.
 		 *

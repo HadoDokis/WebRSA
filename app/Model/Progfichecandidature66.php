@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Progfichecandidature66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Progfichecandidature66 ...
@@ -42,8 +43,8 @@
 //				'with' => 'CandidatureProg66'
 //			)
 //		);
-        
-        
+
+
         public $hasMany = array(
 			'ActioncandidatPersonne' => array(
 				'className' => 'ActioncandidatPersonne',
@@ -72,7 +73,7 @@
 				'counterQuery' => ''
 			),
 		);
-        
+
         /**
 		 * Retourne une sous-requête permettant d'obtenir la liste des programmes
          * de type région saisis lors de la création de la fiche de candidature

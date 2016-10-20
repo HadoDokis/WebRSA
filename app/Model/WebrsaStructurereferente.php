@@ -7,6 +7,8 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
+
 	/**
 	 * La classe WebrsaStructurereferente s'occupe de la logique métier des
 	 * structures référentes.

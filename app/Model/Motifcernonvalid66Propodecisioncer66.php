@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Motifcernonvalid66Propodecisioncer66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Motifcernonvalid66Propodecisioncer66 ...
@@ -19,7 +20,7 @@
 
 		public $recursive = -1;
 
-		
+
 		public $belongsTo = array(
 			'Motifcernonvalid66' => array(
 				'className' => 'Motifcernonvalid66',

@@ -231,7 +231,6 @@
 	// Définition de certains répertoires
 	define( 'MODELESODT_DIR', APP.'Vendor'.DS.'modelesodt'.DS );
 	define( 'CONFIGS', APP.DS.'Config'.DS );
-	define( 'ABSTRACTMODELS', APP.DS.'Model'.DS.'Abstractclass'.DS );
 
 	// Valeurs par défaut pour certaines clés de configuration
 	Configure::write(

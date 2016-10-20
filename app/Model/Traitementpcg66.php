@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Traitementpcg66 ...
@@ -404,10 +405,10 @@
 				'with' => 'CourrierpdoTraitementpcg66'
 			),
 		);
-		
+
 		/**
 		 * Modèles utilisés par ce modèle.
-		 * 
+		 *
 		 * @var array
 		 */
 		public $uses = array(
@@ -514,10 +515,10 @@
 
 			return $return;
 		}
-		
+
 		/**
 		 * Effectue une jointure sur la personne en couple avec la Personne concernée par le traitement.
-		 * 
+		 *
 		 * @param array $query
 		 * @return array
 		 */
@@ -531,7 +532,7 @@
 					$replacements
 				)
 			);
-			
+
 			$sq = $this->Personnepcg66->Personne->Prestation->sq(
 				array(
 					'fields' => array( 'prestations.personne_id' ),
@@ -560,15 +561,15 @@
 				'Personne.id <> Personne2.id'
 			);
 			$query['joins'][] = $join;
-			
+
 			return $query;
 		}
-		
+
 		/**
 		 * Obtien un array avec une liste de pdf des traitements de type courrier avec la mention à imprimer en fonction d'une décision.
 		 * La décision ne doit pas être une proposition refusée.
 		 * Fontionne également si il n'y a aucune propositions dans le dossier pcg
-		 * 
+		 *
 		 * @param array $dossierpcg66_id
 		 * @param array $decisionsdossierspcgs66_id
 		 * @param type $user_id
@@ -577,9 +578,9 @@
 		 * @see $this->getPdfsByDossierpcg66Id()
 		 */
 		public function getPdfsByConditions( $dossierpcg66_id, $decisionsdossierspcgs66_id, $user_id ) {
-			
+
 			// Recherche des traitements lié à la décision dans les autres dossiers pcgs
-			$autreDossierspcgs_ids = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->find( 'all', 
+			$autreDossierspcgs_ids = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->find( 'all',
 				array(
 					'fields' => array(
 						'Dossierpcg66_2.id'
@@ -590,8 +591,8 @@
 							'alias'      => 'Dossierpcg66_2',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => array( 
-								'Dossierpcg66_2.foyer_id = Dossierpcg66.foyer_id', 
+							'conditions' => array(
+								'Dossierpcg66_2.foyer_id = Dossierpcg66.foyer_id',
 								'Dossierpcg66_2.poledossierpcg66_id = Dossierpcg66.poledossierpcg66_id'
 							)
 						),
@@ -626,10 +627,10 @@
 					)
 				)
 			);
-			
+
 			$dossierspcgs_ids = Hash::extract($autreDossierspcgs_ids, '{n}.Dossierpcg66_2.id');
 			$dossierspcgs_ids[] = (int)$dossierpcg66_id;
-			
+
 			// On cherche la liste des traitements à imprimer
 			$traitements_ids = $this->Traitementpcg66->Personnepcg66->Dossierpcg66->find( 'all',
 				array(
@@ -660,7 +661,7 @@
 					)
 				)
 			);
-			
+
 			$results = array();
 			foreach ( (array)$traitements_ids as $data ) {
 				$traitement_id = Hash::get($data, 'Traitementpcg66.id');
@@ -670,13 +671,13 @@
 						array( 'id' => $traitement_id )
 					);
 				}
-				
+
 				$results[] = array(
 					'nom' => Hash::get($data, 'Personne.nom') .'_'. Hash::get($data, 'Personne.prenom'),
 					'pdf' => $this->getPdfModeleCourrier($traitement_id, $user_id)
 				);
 			}
-			
+
 			return $results;
 		}
 	}

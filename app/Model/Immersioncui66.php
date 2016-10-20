@@ -7,9 +7,10 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
-	 * La classe Immersioncui66 est la classe contenant les informations suplémentaire 
+	 * La classe Immersioncui66 est la classe contenant les informations suplémentaire
 	 * des adresses du CUI Pour le CG 66.
 	 *
 	 * @package app.Model
@@ -17,9 +18,9 @@
 	class Immersioncui66 extends AppModel
 	{
 		public $name = 'Immersioncui66';
-		
+
 		public $recursive = -1;
-		
+
         public $belongsTo = array(
 			'Immersionromev3' => array(
 				'className' => 'Entreeromev3',
@@ -31,7 +32,7 @@
 				'counterCache' => null
 			),
         );
-		
+
 		public $hasOne = array(
 			'Accompagnementcui66' => array(
 				'className' => 'Accompagnementcui66',
@@ -39,7 +40,7 @@
 				'dependent' => true,
 			),
 		);
-		
+
 		/**
 		 * Behaviors utilisés par le modèle.
 		 *

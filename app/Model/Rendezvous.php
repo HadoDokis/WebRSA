@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'DefaultUtility', 'Default.Utility' );
 
 	/**
@@ -489,7 +490,7 @@
 				'with' => 'RendezvousThematiquerdv'
 			),
 		);
-		
+
 		/**
 		 * Les modèles qui seront utilisés par ce modèle.
 		 *
@@ -679,7 +680,7 @@
 					ORDER BY {$table}.daterdv DESC
 					LIMIT 1";
 		}
-		
+
 		/**
 		 *
 		 * TODO: si on utilise les thematiquesrdv seulement
@@ -687,7 +688,7 @@
 		 * @param array $results
 		 * @param string $thematiqueAlias -> un array plus complet
 		 * @return array
-		 * 
+		 *
 		 * @deprecated since version 3.1	Utilisé dans une classe dépréciée
 		 */
 		public function containThematique( array $results, $thematiqueAlias = 'Thematiquerdv' ) {
@@ -731,12 +732,12 @@
 
 			return $results;
 		}
-		
+
 		/**
-		 * Permet de vérifier que le dossier n'est pas actuellement en cours de 
+		 * Permet de vérifier que le dossier n'est pas actuellement en cours de
 		 * passage COV pour orientation sociale
-		 * 
-		 * 
+		 *
+		 *
 		 * @param array $check
 		 * @param array $rule
 		 * @return boolean
@@ -745,8 +746,8 @@
 		 */
 		public function checkNotPassageCovOrientationSocial($check, $rule) {
 			$valide = true;
-			
-			if ((int)Configure::read('Cg.departement') === 58 
+
+			if ((int)Configure::read('Cg.departement') === 58
 				&& $check['typerdv_id'] == Configure::read('Rendezvous.elaborationCER.typerdv_id')
 				&& !Hash::get($this->data, 'Rendezvous.id') // N'est pas un ajout si rempli
 				&& Hash::get($this->data, 'Rendezvous.personne_id')
@@ -785,7 +786,7 @@
 					)
 				);
 			}
-			
+
 			return $valide;
 		}
 	}

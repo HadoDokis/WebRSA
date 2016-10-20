@@ -5,6 +5,7 @@
 	 * @package app.Model
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Model.php.
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Valprogfichecandidature66 ...
@@ -38,7 +39,7 @@
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
-		
+
 
 		/**
 		 * Associations "Belongs to".
@@ -56,7 +57,7 @@
 				'counterCache' => null
 			),
 		);
-		
+
 		public function dependantSelectOptions() {
 			$results = $this->find('all',
 				array(
@@ -73,27 +74,27 @@
 					)
 				)
 			);
-			
+
 			$return = array();
 			foreach ($results as $result) {
 				$return[$result['Valprogfichecandidature66']['dependentSelectValues']] = $result['Valprogfichecandidature66']['name'];
 			}
-			
+
 			return $return;
 		}
-		
+
 		/**
 		 * Il faut supprimer le cache en cas de modification
 		 * @param boolean $created
 		 */
 		public function afterSave($created) {
 			parent::afterSave($created);
-			
+
 			$possibleCacheKeys = array(
 				"ActionscandidatsPersonnes_add_options",
 				"ActionscandidatsPersonnes_edit_options",
 			);
-			
+
 			foreach ($possibleCacheKeys as $cacheKey) {
 				Cache::delete( $cacheKey );
 			}

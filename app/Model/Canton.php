@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Canton ...
@@ -28,7 +29,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		/**
 		 * Associations "Has and belongs to many".
 		 *
@@ -227,7 +228,7 @@
 		public function joinAdresse( $type = 'LEFT OUTER' ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
 			$fullTableName = $dbo->fullTableName( $this, true, false );
-			
+
 			$conditions = array(
 				'OR' => array(
 					// 156-161
@@ -310,7 +311,7 @@
 					'limit' => 1
 				)
 			);
-			
+
 			$conditions[] = "Canton.id IN ( {$sq} )";
 
 			return array(

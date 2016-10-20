@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe DspRev ...
@@ -570,9 +571,9 @@
 				),
 				'limit' => 1
 			);
-					
+
 			$sq = preg_replace('/AS ([\w]+) /', 'AS "$1" ', $this->sq($query));
-			
+
 			return $sq;
 		}
 	}

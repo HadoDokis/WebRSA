@@ -7,9 +7,10 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppControllers', 'AppClasses.Utility' );
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'Folder', 'Utility' );
 	require_once( APPLIBS.'cmis.php' );
-	App::uses( 'AppControllers', 'AppClasses.Utility' );
 
 	/**
 	 * Classe permettant de connaître la liste des modèles de documents (odt),

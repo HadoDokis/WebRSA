@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe ActioncandidatMotifsortie.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe ActioncandidatMotifsortie ...
@@ -16,7 +17,7 @@
 	class ActioncandidatMotifsortie extends AppModel
 	{
 		public $name = 'ActioncandidatMotifsortie';
-        
+
         public $actsAs = array(
             'Autovalidate2',
             'Formattable'

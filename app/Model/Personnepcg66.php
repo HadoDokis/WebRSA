@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Personnepcg66 ...
@@ -226,7 +227,7 @@
 						else {
 							$date = '';
 						}
-						
+
 						$echeance = Hash::get($traitementpcg66, 'Traitementpcg66.dateecheance');
 						$echeance = $echeance ? ' au '.date_short($echeance) : '';
 

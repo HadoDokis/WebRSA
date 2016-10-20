@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
 
 	/**
@@ -71,7 +72,7 @@
 				);
 
 				// 2. Ajout des jointures supplémentaires
-				
+
 				// Joiture spéciale pour les emails
 				$emailQuery = array(
 					'alias' => 'emailscuis',
@@ -86,39 +87,39 @@
 					),
 					'limit' => 1
 				);
-				
-				
+
+
 				array_unshift(
 					$query['joins'],
 					$Cui->join( 'Partenairecui', array( 'type' => 'LEFT OUTER' ) ),
 					$Cui->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
-					$Cui->join( 'Emailcui', 
-						array( 
+					$Cui->join( 'Emailcui',
+						array(
 							'type' => 'LEFT OUTER',
 							'conditions' => array(
 								"Emailcui.id IN ( ".$Cui->Emailcui->sq( $emailQuery )." )"
 							)
-						) 
+						)
 					),
 					$Cui->Partenairecui->join( 'Adressecui', array( 'type' => 'LEFT OUTER' ) )
 				);
-				
+
 				// Ajout des tables spécifiques
 				$cgDepartement = Configure::read( 'Cg.departement' );
 				$modelCuiDpt = 'Cui' . $cgDepartement;
 				if( isset( $Cui->{$modelCuiDpt} ) ) {
 					$foreignKey = strtolower($modelCuiDpt) . '_id';
-					
+
 					// Liste de modeles obligatoire pour un CG donné
 					$modelList = array(
 						$Cui->{$modelCuiDpt}
 					);
-					
+
 					array_push(
 						$query['joins'],
 						$Cui->join( $modelCuiDpt, array( 'type' => 'INNER' ) )
 					);
-					
+
 					// Liste de modeles potentiel pour un CG donné
 					$modelPotentiel = array(
 						'Accompagnementcui' . $cgDepartement,
@@ -167,7 +168,7 @@
 					'Personne.prenom' => 'ASC',
 					'Cui.id' => 'ASC'
 				);
-				
+
 				Cache::write( $cacheKey, $query );
 			}
 
@@ -186,7 +187,7 @@
 			$Cui = ClassRegistry::init( 'Cui' );
 
 			$query = $Allocataire->searchConditions( $query, $search );
-			
+
 			$paths = array(
 				'Cui.niveauformation',
 				'Cui.inscritpoleemploi',
@@ -201,14 +202,14 @@
 				'Adressecui.canton',
 				'Entreeromev3.familleromev3_id',
 			);
-			
+
 			$pathsToExplode = array(
 				'Entreeromev3.domaineromev3_id',
 				'Entreeromev3.metierromev3_id',
 				'Entreeromev3.appellationromev3_id',
 			);
-			
-			$pathsDate = array( 
+
+			$pathsDate = array(
 				'Cui.dateembauche',
 				'Cui.findecontrat',
 				'Cui.effetpriseencharge',
@@ -218,8 +219,8 @@
 			);
 
 			if ( Configure::read( 'Cg.departement' ) == 66 ){
-				$paths = array_merge( $paths, 
-					array( 
+				$paths = array_merge( $paths,
+					array(
 						'Cui66.typeformulaire',
 						'Cui.secteurmarchand',
 						'Cui66.typecontrat',
@@ -231,10 +232,10 @@
 						'Decisioncui66.decision',
 					)
 				);
-				
-				
-				$pathsDate = array_merge( $pathsDate, 
-					array( 
+
+
+				$pathsDate = array_merge( $pathsDate,
+					array(
 						'Cui66.dateeligibilite',
 						'Cui66.datereception',
 						'Cui66.datecomplet',
@@ -246,14 +247,14 @@
 					)
 				);
 			}
-			
+
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' ) {
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			foreach( $pathsToExplode as $path ) {
 				$value = Hash::get( $search, $path );
 				if( $value !== null && $value !== '' && strpos($value, '_') > 0 ) {
@@ -261,7 +262,7 @@
 					$query['conditions'][$path] = $value;
 				}
 			}
-			
+
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $pathsDate );
 
 			return $query;

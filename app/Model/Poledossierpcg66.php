@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Poledossierpcg66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Poledossierpcg66 ...
@@ -23,7 +24,7 @@
 			'Pgsqlcake.PgsqlAutovalidate',
 			'Formattable'
 		);
-        
+
         public $belongsTo = array(
 			'Originepdo' => array(
 				'className' => 'Originepdo',
@@ -82,12 +83,12 @@
 				'counterQuery' => ''
 			)
 		);
-        
-        
-         
+
+
+
         /**
-         * Permet de connaître le nombre d'occurences de Dossierpcg dans 
-         * lesquelles apparaît ce pôle 
+         * Permet de connaître le nombre d'occurences de Dossierpcg dans
+         * lesquelles apparaît ce pôle
          * @return array()
          */
         public function qdOccurences() {
@@ -96,7 +97,7 @@
 					$this->fields(),
 					array( 'COUNT("Dossierpcg66"."id") AS "Poledossierpcg66__occurences"' )
 				),
-				'joins' => array( 
+				'joins' => array(
 					$this->join( 'Dossierpcg66' )
 				),
 				'recursive' => -1,

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Typeaideapre66.
 	 *
@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Typeaideapre66 ...
@@ -85,7 +86,7 @@
 				'with' => 'Piececomptable66Typeaideapre66'
 			),
 		);
-		
+
 		public $validate = array(
 			'plafond' => array(
 				'notEmptyIf' => array(
@@ -135,7 +136,7 @@
 					'"Typeaideapre66"."id"',
 					'COUNT("Aideapre66"."id") AS "Typeaideapre66__occurences"',
 				),
-				'joins' => array( 
+				'joins' => array(
 					$this->join( 'Aideapre66' )
 				),
 				'recursive' => -1,
