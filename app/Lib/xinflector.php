@@ -7,6 +7,7 @@
 	 * @package app.Lib
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'Inflector', 'Utility' );
 
 	/**
 	 * La classe Xinflector fournit des méthodes supplémentaires pour gérer les
