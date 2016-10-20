@@ -6,6 +6,7 @@
 	 *
 	 * @package app.Model.Behavior
 	 */
+	App::uses( 'ModelBehavior', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
 
 	/**
