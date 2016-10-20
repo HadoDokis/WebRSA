@@ -9,6 +9,8 @@
 	 * @license     MIT
 	 *
 	 */
+	App::uses( 'Shell', 'Console' );
+
 	/**
 	 * ProgressBarTask class
 	 *
