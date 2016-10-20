@@ -7,6 +7,7 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'Component', 'Controlller' );
 	App::uses( 'DefaultUrl', 'Default.Utility' );
 	App::uses( 'DefaultUtility', 'Default.Utility' );
 
@@ -108,7 +109,7 @@
 			$Controller->view = $params['view'];
 			$Controller->layout = $params['layout'];
 		}
-		
+
 		abstract public function prepareAddEditFormData( $personne_id, $id, $user_id );
 
 		abstract public function saveAddEditFormData( $data, $user_id );

@@ -6,6 +6,8 @@
 	 * ca  : Controller-Action
 	 *
 	 */
+	App::uses( 'Component', 'Controlller' );
+
 	class DbdroitsComponent extends Component
 	{
 		public $components = array( 'Acl', 'Menu' );

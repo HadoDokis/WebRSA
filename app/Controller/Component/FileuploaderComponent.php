@@ -7,8 +7,9 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('Folder', 'Utility');
-	App::uses('File', 'Utility');
+	App::uses( 'Component', 'Controlller' );
+	App::uses( 'Folder', 'Utility' );
+	App::uses( 'File', 'Utility' );
 	require_once( APPLIBS.'cmis.php' );
 
 	/**
@@ -119,7 +120,7 @@
                         $record = Set::merge( $oldrecord, $record );
 
                         ClassRegistry::init( $this->_modeleStockage )->create( $record );
-						
+
                         if( $tmpSaved = ClassRegistry::init( $this->_modeleStockage )->save() ) {
                             $oFile = new File( $dir.DS.$file, true );
                             $tmpSaved = $oFile->delete() && $tmpSaved;
@@ -263,7 +264,7 @@
 					$msgstr = "La taille du fichier excède la taille d'envoi maximum autorisé ($humanReadable)";
 					throw new RuntimeException($msgstr);
 				}
-				
+
 				// On annule si le nom de fichier existe déjà pour l'enregistrement
 				$existing = Hash::merge(
 					$this->_fichiersEnBase( $this->controller->request->query['primaryKey'] ),
