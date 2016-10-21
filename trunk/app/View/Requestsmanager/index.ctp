@@ -660,7 +660,8 @@
 			evalScripts:true,  
 			requestHeaders: {Accept: 'application/json'},
 			onComplete:function(request, json) {
-				var request = JSON.parse(json.json);
+				var request = JSON.parse(json.json),
+					terminated = false;
 				delete request.recursive;
 				delete request.contain;
 				delete request.json;
@@ -695,6 +696,11 @@
 					// On coche toutes les cases à partir de request.field (si regex [\w]+.[\w]+)
 					var matches,
 						reg;
+						
+					if (terminated) {
+						return ;
+					}
+					terminated = true;
 					
 		console.log(request.fields);
 					
@@ -732,6 +738,9 @@
 						
 						// if (key is not numeric)
 						if ( !(!isNaN(parseFloat(key)) && isFinite(key)) ) {
+							if (!Array.isArray(request.conditions[key])) {
+								request.conditions[key] = [request.conditions[key]];
+							}
 							autoCondition(key, request.conditions[key], 0);
 						}
 						else if (typeof request.conditions[key] === 'string' && request.conditions[key] !== '') {
@@ -953,20 +962,20 @@
 	/**
 	 * Rempli automatiquement les conditions en fonction de key et value
 	 * 
-	 * @param {type} key
-	 * @param {type} value
-	 * @param {type} i
+	 * @param {String} key
+	 * @param {Array} value
+	 * @param {integer} i
 	 * @returns {Boolean}	 
 	 */
 	function autoCondition( key, value, i ) {console.info(['autoCondition', key, value, i]);
 		var matches = key.match(/^([\w]+)\.([\w]+)$/);
 		
-		if (i > value.length) {console.info('i>length');
+		if (i >= value.length) {console.info('i>length');
 			return false;
 		}
 		
 		// Cas classique d'utilisation des conditions du requestsmanager (rempli les champs conditions)
-		if (matches !== null && typeof value === 'string') {
+		if (matches !== null && typeof value[i] === 'string') {
 			var input = $$('#FormRequestmaster input[type="text"][original-name="data['+matches[1]+']['+matches[2]+']"]').last();
 			
 			// Le champ condition n'a pas été trouvé, on ajoute la condition à la fin
