@@ -101,6 +101,11 @@
 			if( $departement === 58 ) {
 				$result = array_merge( $result, array( 'Typeorient', 'Structurereferente', 'Referent' ) );
 			}
+			
+			if ($departement === 66) {
+				$result[] = 'Valeurtag';
+				$result[] = 'Categorietag';
+			}
 
 			return $result;
 		}

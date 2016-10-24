@@ -146,6 +146,7 @@
 		 * @param boolean $created
 		 */
 		public function afterSave( $created ) {
+			parent::afterSave($created);
 			$this->updateEtatTagByConditions( array( 'Tag.id' => $this->id ) );
 		}
 
