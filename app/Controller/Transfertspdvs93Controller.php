@@ -30,6 +30,7 @@
 		 */
 		public $components = array(
 			'Cohortes',
+			'Gedooo.Gedooo',
 			'InsertionsBeneficiaires',
 			'Jetons2',
 			'Search.Filtresdefaut' => array(
@@ -128,6 +129,8 @@
 		 * Cohorte de transferts PDV, allocataires à transférer
 		 */
 		public function cohorte_atransferer() {
+			$this->Gedooo->check( false, true );
+
 			$Recherches = $this->Components->load( 'WebrsaCohortesTransfertspdvs93Atransferer' );
 			$Recherches->cohorte(
 				array(
