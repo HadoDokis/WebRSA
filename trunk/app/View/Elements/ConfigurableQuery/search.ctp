@@ -25,6 +25,8 @@
 
 	// $paginate
 	$paginate = isset( $paginate ) ? $paginate : null;
+	
+	$configurableQueryParams = isset($configurableQueryParams) ? $configurableQueryParams : array();
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
@@ -49,7 +51,9 @@
 	}
 	echo $this->Allocataires->blocDossier( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'prefix' => 'Search', 'options' => $options ) );
-	echo $this->Allocataires->blocAllocataire( array( 'prefix' => 'Search', 'options' => $options ) );
+	echo $this->Allocataires->blocAllocataire(
+		array('prefix' => 'Search', 'options' => $options, 'configurableQueryParams' => $configurableQueryParams)
+	);
 	echo $customSearch;
 	echo $this->Allocataires->blocHave( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocReferentparcours( array( 'prefix' => 'Search', 'options' => $options ) );

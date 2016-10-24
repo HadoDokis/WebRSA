@@ -322,6 +322,49 @@
 			}
 			$content .= $this->_input( "{$params['prefix']}Calculdroitrsa.toppersdrodevorsa", $params, array( 'options' => (array)Hash::get( $params, 'options.Calculdroitrsa.toppersdrodevorsa' ), 'empty' => true ) );
 
+			$hasPrestation = (array)Configure::read(
+				$params['configurableQueryParams']['searchKeyPrefix'].'.common.filters.has_prestation'
+			);
+			if (empty($hasPrestation)) {
+				$hasPrestation = (array)Configure::read(
+					$params['configurableQueryParams']['searchKeyPrefix'].'.'
+					.$params['configurableQueryParams']['configurableQueryFieldsKey'].'.filters.has_prestation'
+				);
+			}
+			
+			if (!empty($hasPrestation)) {
+				$options = array(
+					'0' => 'Sans prestation',
+					'1' => 'Demandeur ou Conjoint du RSA'
+				) + (array)Hash::get($params, 'options.Prestation.rolepers');
+				
+				foreach (array_keys($options) as $option) {
+					if (!in_array((string)$option, $hasPrestation, true) 
+						&& (!is_numeric($option) 
+						|| (is_numeric($option) 
+							&& !in_array((integer)$option, $hasPrestation, true))
+						)
+					) {
+						unset($options[$option]);
+					}
+				}
+				
+				$label = __m("{$params['prefix']}Prestation.rolepers");
+				if ($label === "{$params['prefix']}Prestation.rolepers") {
+					$label = __m("Prestation.rolepers");
+				}
+				
+				$content .= $this->_input(
+					"{$params['prefix']}Prestation.rolepers",
+					$params,
+					array(
+						'options' => $options,
+						'empty' => true,
+						'label' => $label
+					)
+				);
+			}
+			
 			return $this->_fieldset( 'Search.Personne', $content, $params );
 		}
 

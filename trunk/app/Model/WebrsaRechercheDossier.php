@@ -209,17 +209,6 @@
 			// Début des spécificités par département
 			$departement = (int)Configure::read( 'Cg.departement' );
 
-			// La personne possède-t-elle un rôle ?
-			if( $departement === 66 ) {
-				$exists = (string)Hash::get( $search, 'Personne.has_prestation' );
-				if( $exists === '0' ) {
-					$query['conditions'][] = 'Prestation.rolepers IS NULL';
-				}
-				else if( $exists === '1' ) {
-					$query['conditions']['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-				}
-			}
-
 			// CD 58: travailleur social chargé de l'évaluation: "Nom du chargé de
 			// l'évaluation" lorsque l'on crée une orientation
 			if( $departement === 58 ) {

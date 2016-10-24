@@ -1037,4 +1037,22 @@
 	 * textarea.auto_resize.controllername.action => tout les textarea d'un controlleur et d'une action en particulier
 	 */
 	Configure::write('textarea.auto_resize.all', true);
+	
+	/**
+	 * Filtre de recherche par Prestations
+	 * Il est possible de remplacer la clef "common" par "Controller.action" 
+	 * pour spécifier par Controller et par action
+	 * Si "common" est spécifié en plus du "Controller.action", 
+	 * la configuration de "Controller.action" prend le dessus
+	 * 
+	 * Valeurs possibles (array) :
+	 * 0 = Sans prestation
+	 * 1 = Demandeur ou Conjoint
+	 * 'DEM' = Demandeur
+	 * 'CJT' = Conjoint
+	 * 'ENF' = Enfant
+	 * 'AUT' = Autre
+	 * 'RDO' = Responsable du dossier
+	 */
+	Configure::write('ConfigurableQuery.common.filters.has_prestation', array(0, 1, 'DEM', 'CJT'));
 ?>
