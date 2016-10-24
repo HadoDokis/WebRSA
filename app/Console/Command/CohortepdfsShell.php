@@ -108,7 +108,7 @@
 
 			$nSuccess = 0;
 			$nErrors = 0;
-			$this->Gedooo = & new GedoooComponent( new ComponentCollection() );
+			$this->Gedooo = new GedoooComponent( new ComponentCollection() );
 
 			$orientsstructsQuerydatas = array(
 				'conditions' => array(
