@@ -397,7 +397,13 @@
 				$query,
 				$filters
 			);
-
+			
+			// Conditions configurables
+			$query['conditions'] = array_merge(
+				(array)Hash::get($query, 'conditions'),
+				$this->Allocataires->configurableConditions($filters, $params)
+			);
+			
 			return $query;
 		}
 
@@ -507,6 +513,8 @@
 				);
 				$Controller->set('moduleSavesearchDispo', ClassRegistry::init('Savesearch')->getAvailablesSearchs($conditions));
 			}
+			
+			$Controller->set('configurableQueryParams', $params);
 		}
 
 		// ---------------------------------------------------------------------

@@ -30,6 +30,8 @@
 	$configuredCohorteParams = isset($configuredCohorteParams) ? $configuredCohorteParams : array();
 	$tableClass = isset( $tableClass ) ? $tableClass : Hash::get($configuredCohorteParams, 'class');
 	$configuredCohorteParams['class'] = $tableClass;
+	
+	$configurableQueryParams = isset($configurableQueryParams) ? $configurableQueryParams : array();
 
 	// $paginate
 	if( isset( $paginate ) ) {
@@ -59,7 +61,9 @@
 	}
 	echo $this->Allocataires->blocDossier( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'prefix' => 'Search', 'options' => $options ) );
-	echo $this->Allocataires->blocAllocataire( array( 'prefix' => 'Search', 'options' => $options ) );
+	echo $this->Allocataires->blocAllocataire(
+		array('prefix' => 'Search', 'options' => $options, 'configurableQueryParams' => $configurableQueryParams)
+	);
 	echo $customSearch;
 	echo $this->Allocataires->blocHave( array( 'prefix' => 'Search', 'options' => $options ) );
 	echo $this->Allocataires->blocReferentparcours( array( 'prefix' => 'Search', 'options' => $options ) );

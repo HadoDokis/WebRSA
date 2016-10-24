@@ -433,6 +433,9 @@
 					'textarea.auto_resize' => array(
 						array( 'rule' => 'isarray', 'allowEmpty' => true )
 					),
+					'ConfigurableQuery.common.filters.has_prestation' => array(
+						array( 'rule' => 'isarray', 'allowEmpty' => true )
+					),
 				)
 			);
 

@@ -25,9 +25,6 @@
 	<legend>Recherche par parcours de l'allocataire</legend>
 	<?php
 		echo $this->Xform->input( 'Search.Dsp.natlog', array( 'label' => 'Conditions de logement', 'type' => 'select', 'empty' => true, 'options' => $options['Dsp']['natlog'] ) );
-		if( $departement == 66 ) {
-			echo $this->Xform->input( 'Search.Personne.has_prestation', array( 'label' => 'Rôle de la personne ?', 'type' => 'select', 'options' => $options['Prestation']['exists'], 'empty' => true ) );
-		}
 		if( $departement == 58 ) {
 			echo $this->Xform->input( 'Search.Activite.act', array( 'label' => 'Code activité', 'type' => 'select', 'empty' => true, 'options' => $options['Activite']['act'] ) );
 			echo $this->Form->input( 'Search.Propoorientationcov58.referentorientant_id', array( 'label' => 'Travailleur social chargé de l\'évaluation', 'type' => 'select', 'options' => $options['Propoorientationcov58']['referentorientant_id'], 'empty' => true ) );

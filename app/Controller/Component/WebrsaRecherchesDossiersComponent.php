@@ -48,12 +48,6 @@
 							'66_999' => '> 65',
 						),
 					),
-					'Prestation' => array(
-						'exists' => array(
-							'0' => 'Sans prestation',
-							'1' => 'Demandeur ou Conjoint du RSA'
-						)
-					)
 				)
 			);
 
