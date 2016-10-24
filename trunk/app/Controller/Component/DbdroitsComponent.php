@@ -6,7 +6,7 @@
 	 * ca  : Controller-Action
 	 *
 	 */
-	App::uses( 'Component', 'Controlller' );
+	App::uses( 'Component', 'Controller' );
 
 	class DbdroitsComponent extends Component
 	{
