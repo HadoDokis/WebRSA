@@ -34,7 +34,7 @@
 	 *
 	 *  Attention : la méthode check autorise toutes les actions qui ne sont pas soumises au droits.
 	 */
-	App::uses( 'Component', 'Controlller' );
+	App::uses( 'Component', 'Controller' );
 
 	class DroitsComponent extends Component
 	{

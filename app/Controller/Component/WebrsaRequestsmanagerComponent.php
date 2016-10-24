@@ -5,7 +5,7 @@
 	 * @package app.Controller.Component
 	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Component.php.
 	 */
-	App::uses( 'Component', 'Controlller' );
+	App::uses( 'Component', 'Controller' );
 
 	/**
 	 * La classe WebrsaRequestsmanagerComponent ...

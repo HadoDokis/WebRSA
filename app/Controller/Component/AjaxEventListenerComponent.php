@@ -1,5 +1,5 @@
 <?php
-	App::uses( 'Component', 'Controlller' );
+	App::uses( 'Component', 'Controller' );
 
 	/*
 		// Mouse Events
