@@ -716,5 +716,20 @@
 
 			return $query;
 		}
+		
+		/**
+		 * Action de suppression
+		 * 
+		 * @param integer $id
+		 */
+		public function delete($id) {
+			if ($this->Requestmanager->delete($id)) {
+				$this->Session->setFlash(__('Delete->success'), 'flash/success');
+			} else {
+				$this->Session->setFlash(__('Delete->error'), 'flash/error');
+			}
+
+			$this->redirect(array('action' => 'savedindex'));
+		}
 	}
 ?>
