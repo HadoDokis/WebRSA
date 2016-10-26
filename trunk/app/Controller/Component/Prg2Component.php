@@ -114,12 +114,7 @@
 					$controller->redirect( $redirect );
 				}
 				else if( $controller->request->is( 'get' ) ) {
-					if( CAKE_BRANCH == '1.2' ) {
-						$controller->request->data = Hash::expand( $controller->request->params['named'], '__' );
-					}
-					else {
-						$controller->request->data = Hash::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
-					}
+					$controller->request->data = Hash::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
 
 					if( isset( $controller->request->params['named']['sessionKey'] ) ) {
 						$sessionParams = $this->Session->read( "Prg.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );

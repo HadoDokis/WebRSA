@@ -421,18 +421,9 @@
 				return null;
 			}
 
-			if( CAKE_BRANCH == '1.2' ) {
-				$sq = preg_replace( $virtualField['regex'], $virtualField['alias'], "{$this->alias}.{$field}" );
-
-				if( !$alias ) {
-					$sq = preg_replace( '/ +AS +[^ ]+$/m', '', $sq );
-				}
-			}
-			else {
-				$sq = "( $virtualField )";
-				if( $alias ) {
-					$sq = "{$sq} AS \"{$this->alias}__{$field}\"";
-				}
+			$sq = "( $virtualField )";
+			if( $alias ) {
+				$sq = "{$sq} AS \"{$this->alias}__{$field}\"";
 			}
 
 			return $sq;

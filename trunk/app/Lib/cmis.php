@@ -7,12 +7,7 @@
 	 * @package app.Lib
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	if( CAKE_BRANCH == '1.2' ) {
-		require_once( APP.'Vendor'.DS.'apache_chemistry'.DS.'cmis_repository_wrapper.php' );
-	}
-	else {
-		require_once( APP.'Vendor'.DS.'apache_chemistry'.DS.'cmis_repository_wrapper.php' );
-	}
+	require_once( APP.'Vendor'.DS.'apache_chemistry'.DS.'cmis_repository_wrapper.php' );
 
 	/**
 	 * Classe utilitaire permettant de dialoguer avec un serveur CMS via le protocole

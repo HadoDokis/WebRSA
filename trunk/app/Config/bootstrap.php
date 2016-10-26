@@ -223,9 +223,6 @@
 		)
 	);
 
-	// Branche de CakePHP que l'on utilise: 1.1, 1.2, 1.3
-	define( 'CAKE_BRANCH', preg_replace( '/^([0-9]+\.[0-9]+)(?![0-9]).*$/', '\1', Configure::version() ) );
-
 	define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
 
 	// Définition de certains répertoires
