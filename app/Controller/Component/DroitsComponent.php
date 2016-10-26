@@ -98,12 +98,7 @@
 			$controllerName = preg_replace( '/Controller$/', '', $controllerName );
 
 			// chargement du controleur
-			if( CAKE_BRANCH == '1.2' ) {
-				App::import( 'Controller', $controllerName );
-			}
-			else {
-				App::uses( "{$controllerName}Controller", 'Controller' );
-			}
+			App::uses( "{$controllerName}Controller", 'Controller' );
 
 			$controllerName = "{$controllerName}Controller";
 
@@ -179,12 +174,7 @@
 			$controllerName = preg_replace( '/Controller$/', '', $controllerName );
 
 			// chargement du controleur
-			if( CAKE_BRANCH == '1.2' ) {
-				App::import( 'Controller', $controllerName );
-			}
-			else {
-				App::uses( "{$controllerName}Controller", 'Controller' );
-			}
+			App::uses( "{$controllerName}Controller", 'Controller' );
 
 			$controllerName = "{$controllerName}Controller";
 
@@ -224,12 +214,7 @@
 			$controllerName = preg_replace( '/Controller$/', '', $controllerName );
 
 			// chargement du controleur
-			if( CAKE_BRANCH == '1.2' ) {
-				App::import( 'Controller', $controllerName );
-			}
-			else {
-				App::uses( "{$controllerName}Controller", 'Controller' );
-			}
+			App::uses( "{$controllerName}Controller", 'Controller' );
 
 			$controllerName = "{$controllerName}Controller";
 
@@ -265,12 +250,7 @@
 		 */
 		protected function _listeActionsCommeControleur( $controllerName ) {
 			// chargement du controleur
-			if( CAKE_BRANCH == '1.2' ) {
-				App::import( 'Controller', $controllerName );
-			}
-			else {
-				App::uses( "{$controllerName}Controller", 'Controller' );
-			}
+			App::uses( "{$controllerName}Controller", 'Controller' );
 
 			$subClassVars = get_class_vars( $controllerName.'Controller' );
 

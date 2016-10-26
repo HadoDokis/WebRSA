@@ -643,7 +643,7 @@
 			$this->set( 'json', array( 'montantattribue' => $montantattribue ) );
 
 			$this->layout = 'ajax';
-			$this->render( '/'.( CAKE_BRANCH == '1.2' ? 'elements' : 'Elements' ).'/json' );
+			$this->render( '/Elements/json' );
 		}
 
 		/**
