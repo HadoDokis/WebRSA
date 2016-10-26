@@ -109,7 +109,7 @@
 			foreach( App::objects( 'model' ) as $modelName ) {
 				$preg_success = preg_match( '/([0-9]{2}$|[0-9]{2}(?=[A-Z]))/', $modelName, $matches );
 				if( is_null( $query['cg'] ) || !$preg_success || ( $matches[0] == $query['cg'] ) ) {
-//					App::import( 'Model', $modelName );
+//					App::uses( $modelName, 'Model' );
 //					$classVars = get_class_vars( $modelName );
 //
 //					if( $classVars['useTable'] !== false && in_array( $classVars['useDbConfig'], $query['useDbConfig'] ) ) {
@@ -203,7 +203,7 @@
 			foreach( App::objects( 'model' ) as $modelName ) {
 				// Si le CG se sert de la classe
 				if( !preg_match( '/([0-9]{2})$/', $modelName, $matches ) || ( $matches[1] == $departement ) ) {
-					App::import( 'Model', $modelName );
+					App::uses( $modelName, 'Model' );
 					$attributes = get_class_vars( $modelName );
 
 					// Peut-on instancier la classe ?
@@ -856,7 +856,7 @@
 			foreach( App::objects( 'model' ) as $modelName ) {
 				// Si le CG se sert de la classe
 				if( !preg_match( '/([0-9]{2})$/', $modelName, $matches ) || ( $matches[1] == $departement ) ) {
-					App::import( 'Model', $modelName );
+					App::uses( $modelName, 'Model' );
 					$attributes = get_class_vars( $modelName );
 					$methods = get_class_methods( $modelName );
 
@@ -895,7 +895,7 @@
 		 * @return array
 		 */
 		protected function _serviceGedooo() {
-			App::import( 'Behavior', 'Gedooo.Gedooo' );
+			App::uses( 'GedoooBehavior', 'Gedooo.Model/Behavior' );
 
 			$GedModel = ClassRegistry::init( 'User' );
 			$GedModel->Behaviors->attach( 'Gedooo.Gedooo' );
@@ -1339,7 +1339,7 @@
 
 			foreach( App::objects( 'model' ) as $modelName ) {
 				if( !in_array( $modelName, $this->notMyModels[$departement] ) ) {
-					App::import( 'Model', $modelName );
+					App::uses( $modelName, 'Model' );
 					$Reflection = new ReflectionClass( $modelName );
 					if( $Reflection->isAbstract() === false ) {
 						$Model = ClassRegistry::init( $modelName );
@@ -1388,7 +1388,7 @@
 				$results = array();
 
 				foreach ( $modelNames as $modelName ) {
-					App::import( 'Model', $modelName );
+					App::uses( $modelName, 'Model' );
 					$Reflection = new ReflectionClass( $modelName );
 					if( $Reflection->isAbstract() === false ) {
 						$Model = ClassRegistry::init( $modelName );
@@ -1557,7 +1557,7 @@
 
 			foreach( App::objects( 'model' ) as $modelName ) {
 				if( !in_array( $modelName, $this->notMyModels[$departement] ) ) {
-					App::import( 'Model', $modelName );
+					App::uses( $modelName, 'Model' );
 					$Reflection = new ReflectionClass( $modelName );
 					if( $Reflection->isAbstract() === false ) {
 						$Model = ClassRegistry::init( $modelName );

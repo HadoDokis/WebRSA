@@ -6,7 +6,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AbstractParametragesController', 'Controller' );
-	App::import( 'Behaviors', 'Occurences' );
+	App::uses( 'OccurencesBehavior', 'Model/Behavior' );
 
 	/**
 	 * La classe Services66ControllerController ...

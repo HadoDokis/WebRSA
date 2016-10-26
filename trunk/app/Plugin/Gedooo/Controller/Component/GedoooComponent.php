@@ -126,7 +126,7 @@
 		 * @return mixed
 		 */
 		public function check( $asBoolean = false, $setFlash = false ) {
-			App::import( 'Behavior', 'Gedooo.Gedooo' );
+			App::uses( 'GedoooBehavior', 'Gedooo.Model/Behavior' );
 
 			$GedModel = ClassRegistry::init( 'User' );
 			$GedModel->Behaviors->attach( 'Gedooo.Gedooo' );

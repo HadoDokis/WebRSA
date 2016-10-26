@@ -112,7 +112,7 @@
 
 			$modelNames = App::objects( 'model' );
 			foreach( $modelNames as $modelName ) {
-				App::import( 'Model', $modelName );
+				App::uses( $modelName, 'Model' );
 
 				$init = true;
 				$attributes = get_class_vars( $modelName );

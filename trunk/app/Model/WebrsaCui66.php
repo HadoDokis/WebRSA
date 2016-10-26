@@ -644,7 +644,7 @@
 			$options['Cui']['partenaire_id'] = $this->Cui66->Cui->Partenaire->find( 'list', array( 'order' => array( 'Partenaire.libstruc' ) ) );
 			
 			// Liste des cantons pour l'adresse du partenaire
-			App::import('Component','Gestionzonesgeos');
+			App::uses( 'GestionzonesgeosComponent', 'Controller/Component' );
 			$Gestionzonesgeos = new GestionzonesgeosComponent(new ComponentCollection());
 			$options['Adressecui']['canton'] = $Gestionzonesgeos->listeCantons();
 			$options['Adressecui']['canton2'] =& $options['Adressecui']['canton'];

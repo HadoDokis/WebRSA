@@ -109,7 +109,7 @@
 		 * @return array
 		 */
 		public function preloadModel( $modelName ) {
-			App::import( 'Model', $modelName );
+			App::uses( $modelName, 'Model' );
 			$availableDbConfigs = array_keys( ConnectionManager::enumConnectionObjects() );
 
 			$Reflection = new ReflectionClass( $modelName );

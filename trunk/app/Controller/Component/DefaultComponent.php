@@ -237,7 +237,7 @@
             }
 
             if( $assertAucuneOccurenceLiee ) {
-                App::import( 'Behaviors', 'Occurences' );
+                App::uses( 'OccurencesBehavior', 'Model/Behavior' );
                 $this->Controller->{$this->Controller->modelClass}->Behaviors->attach( 'Occurences' );
                 $occurences = $this->Controller->{$this->Controller->modelClass}->occurences(
                     array(

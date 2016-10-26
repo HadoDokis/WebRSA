@@ -9,7 +9,7 @@
 	 */
 	App::uses( 'AppController', 'Controller' );
 
-    App::import( 'Behaviors', 'Occurences' );
+    App::uses( 'OccurencesBehavior', 'Model/Behavior' );
 	/**
 	 * La classe Textsmailscuis66Controller ...
 	 *

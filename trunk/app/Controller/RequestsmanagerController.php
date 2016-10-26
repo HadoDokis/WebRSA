@@ -548,7 +548,7 @@
 				if ( $cache === false ) {
 					// Liste des modeles disponible
 					foreach ( App::objects('model') as $modelName ) {
-						App::import( 'Model', $modelName );
+						App::uses( $modelName, 'Model' );
 						$Reflection = new ReflectionClass( $modelName );
 						if( $Reflection->isAbstract() === false ) {
 							$Model = ClassRegistry::init( $modelName );

@@ -159,8 +159,8 @@
 				mkdir($path, 0777, true);
 			}
 			
-			App::import('Helper', 'Csv');
-			App::import('View', 'View');
+			App::uses( 'CsvHelper', 'View/Helper' );
+			App::uses( 'View', 'View' );
 			$Csv = new CsvHelper( new View() );
 			$Csv->addGrid( $data, false );
 			$fileData = $Csv->render(false);

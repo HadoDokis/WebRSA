@@ -265,7 +265,12 @@
 		 */
 		protected function _listeActionsCommeControleur( $controllerName ) {
 			// chargement du controleur
-			App::import( 'Controller', $controllerName );
+			if( CAKE_BRANCH == '1.2' ) {
+				App::import( 'Controller', $controllerName );
+			}
+			else {
+				App::uses( "{$controllerName}Controller", 'Controller' );
+			}
 
 			$subClassVars = get_class_vars( $controllerName.'Controller' );
 

@@ -8,7 +8,7 @@
 	 * @subpackage Console.Command
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'ConnectionManager', 'Model' );
+	App::uses( 'ConnectionManager', 'Model' );
 	App::uses( 'XShell', 'Console/Command' );
 
 	/**

@@ -778,7 +778,7 @@
 		public function getSqLinkedModelsDepartement( $fieldName = 'linked_records' ) {
 			$departement = Configure::read( 'Cg.departement' );
 			if( !$this->Behaviors->attached( 'LinkedRecords' ) ) {
-				App::import( 'Behaviors', 'LinkedRecords' );
+				App::uses( 'LinkedRecordsBehavior', 'Model/Behavior' );
 				$this->Behaviors->attach( 'LinkedRecords' );
 			}
 

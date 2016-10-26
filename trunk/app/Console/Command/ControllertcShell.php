@@ -128,7 +128,12 @@
 					$out[] = '';
 					$out[] = '	require_once( dirname( __FILE__ ).\'/../cake_app_controller_test_case.php\' );';
 					$out[] = '';
-					$out[] = sprintf( '	App::import(\'Controller\', \'%s\');', $name );
+					if( CAKE_BRANCH == '1.2' ) {
+						$out[] = sprintf( '	App::import(\'Controller\', \'%s\');', $name );
+					}
+					else {
+						$out[] = sprintf( '	App::uses( \'%sController\', \'Controller\' );', $name );
+					}
 					$out[] = '';
 					$out[] = sprintf( '	class Test%sController extends %sController {', $name, $name );
 					$out[] = '';
