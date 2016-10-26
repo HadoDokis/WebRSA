@@ -9,7 +9,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AppController', 'Controller' );
-	App::import( 'Sanitize' );
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * La classe Criterestraitementspcgs66Controller ...

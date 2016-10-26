@@ -150,7 +150,7 @@
 				$this->redirect( array( 'controller' => 'typesaidesapres66', 'action' => 'index' ) );
 			}
 
-			App::import( 'Behaviors', 'Occurences' );
+			App::uses( 'OccurencesBehavior', 'Model/Behavior' );
 			$this->Typeaideapre66->Behaviors->attach( 'Occurences' );
 
 			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
