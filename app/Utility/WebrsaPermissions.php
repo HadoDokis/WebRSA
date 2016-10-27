@@ -7,7 +7,6 @@
      * @package app.Utility
      * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
      */
-	App::uses( 'ControllerCache', 'Utility' );
 	App::uses( 'CakeSession', 'Model/Datasource' );
 	App::uses( 'ControllerCache', 'Model/Datasource' );
 
