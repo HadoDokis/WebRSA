@@ -154,32 +154,47 @@
 						. 'ORDER BY "Decisiondossierpcg66"."created" DESC), \'\') || \'</ul>\') '
 						. 'AS "Decisiondossierpcg66__org_id"',
 
-						'Situationpdo.libelle' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
-						. 'SELECT \'<li>\' || "Situationpdo"."libelle" || \'</li>\' AS "Situationpdo__libelle" '
-						. 'FROM "personnespcgs66" AS "Personnepcg66" '
-						. 'LEFT OUTER JOIN "public"."personnespcgs66_situationspdos" AS "Personnepcg66Situationpdo" '
-						. 'ON ("Personnepcg66Situationpdo"."personnepcg66_id" = "Personnepcg66"."id") '
-						. 'LEFT OUTER JOIN "public"."situationspdos" AS "Situationpdo" '
-						. 'ON ("Personnepcg66Situationpdo"."situationpdo_id" = "Situationpdo"."id") '
-						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
-						. 'AS "Situationpdo__libelle"',
+						'Situationpdo.libelles' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
+						. 'SELECT \'<li>\' || d.libelle || \'</li>\' '
+						. 'FROM dossierspcgs66 a '
+						. 'INNER JOIN personnespcgs66 b ON a.id = b.dossierpcg66_id '
+						. 'INNER JOIN personnespcgs66_situationspdos c ON c.personnepcg66_id = b.id '
+						. 'INNER JOIN situationspdos d ON c.situationpdo_id = d.id '
+						. 'WHERE a.id = "Dossierpcg66"."id" '
+						. 'ORDER BY d.libelle'
+						. '), \'\') || \'</ul>\') '
+						. 'AS "Situationpdo__libelles"',
 
-						'Traitementpcg66.statutpdo_id' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
-						. 'SELECT \'<li>\' || "Statutpdo"."libelle" || \'</li>\' AS "Statutpdo__libelle" '
-						. 'FROM "personnespcgs66" AS "Personnepcg66" '
-						. 'LEFT OUTER JOIN "public"."personnespcgs66_statutspdos" AS "Personnepcg66Statutpdo" '
-						. 'ON ("Personnepcg66Statutpdo"."personnepcg66_id" = "Personnepcg66"."id") '
-						. 'LEFT OUTER JOIN "public"."statutspdos" AS "Statutpdo" '
-						. 'ON ("Personnepcg66Statutpdo"."statutpdo_id" = "Statutpdo"."id") '
-						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
-						. 'AS "Traitementpcg66__statutpdo_id"',
+						'Statutpdo.libelles' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
+						. 'SELECT \'<li>\' || d.libelle || \'</li>\' '
+						. 'FROM dossierspcgs66 a '
+						. 'INNER JOIN personnespcgs66 b ON a.id = b.dossierpcg66_id '
+						. 'INNER JOIN personnespcgs66_statutspdos c ON c.personnepcg66_id = b.id '
+						. 'INNER JOIN statutspdos d ON c.statutpdo_id = d.id '
+						. 'WHERE a.id = "Dossierpcg66"."id" '
+						. 'ORDER BY d.libelle'
+						. '), \'\') || \'</ul>\') '
+						. 'AS "Statutpdo__libelles"',
 
+						'Traitementpcg66.dateecheances' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
+						. 'SELECT \'<li>\' || to_char(c.dateecheance, \'DD/MM/YYYY\') || \'</li>\' '
+						. 'FROM "dossierspcgs66" a '
+						. 'INNER JOIN personnespcgs66 b ON a.id = b.dossierpcg66_id '
+						. 'INNER JOIN traitementspcgs66 c ON c.personnepcg66_id = b.id '
+						. 'WHERE a.id = "Dossierpcg66"."id" '
+						. 'AND c.dateecheance IS NOT NULL '
+						. 'ORDER BY c.created'
+						. '), \'\') || \'</ul>\') '
+						. 'AS "Traitementpcg66__dateecheances"',
+						
 						'Dossierpcg66.listetraitements' => '(\'<ul>\' || ARRAY_TO_STRING(ARRAY('
-						. 'SELECT \'<li>\' || "Traitementpcg66"."typetraitement" || \'</li>\' AS "Traitementpcg66__typetraitement" '
-						. 'FROM "traitementspcgs66" AS "Traitementpcg66" '
-						. 'INNER JOIN "public"."personnespcgs66" AS "Personnepcg66" '
-						. 'ON ("Traitementpcg66"."personnepcg66_id" = "Personnepcg66"."id") '
-						. 'WHERE "Personnepcg66"."dossierpcg66_id" = "Dossierpcg66"."id"), \'\') || \'</ul>\') '
+						. 'SELECT \'<li>\' || c."typetraitement" || \'</li>\' AS "Traitementpcg66__typetraitement" '
+						. 'FROM "dossierspcgs66" a '
+						. 'INNER JOIN personnespcgs66 b ON a.id = b.dossierpcg66_id '
+						. 'INNER JOIN traitementspcgs66 c ON c.personnepcg66_id = b.id '
+						. 'WHERE a.id = "Dossierpcg66"."id" '
+						. 'ORDER BY c.created'
+						. '), \'\') || \'</ul>\') '
 						. 'AS "Dossierpcg66__listetraitements"',
 
 						'Fichiermodule.nb_fichiers_lies' => '(SELECT COUNT("fichiermodule"."id") '
@@ -189,8 +204,10 @@
 						. 'AS "Fichiermodule__nb_fichiers_lies"',
 
 						'Personnepcg66.nbtraitements' => '(SELECT COUNT(*) '
-						. 'FROM traitementspcgs66 '
-						. 'WHERE traitementspcgs66.personnepcg66_id = "Personnepcg66"."id") '
+						. 'FROM dossierspcgs66 a '
+						. 'INNER JOIN "personnespcgs66" b ON a.id = b.dossierpcg66_id '
+						. 'INNER JOIN "traitementspcgs66" c ON c.personnepcg66_id = b.id '
+						. 'WHERE a.id = "Dossierpcg66"."id") '
 						. 'AS "Personnepcg66__nbtraitements"',
 						
 						'(SELECT COUNT(*) '
@@ -393,7 +410,7 @@
 			}
 
 			if ( Hash::get($search, 'Dossierpcg66.dossierechu') ) {
-				$query['conditions'][] = 'Traitementpcg66.id IN ( ' . $this->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id') . ' )';
+				$query['conditions'][] = 'EXISTS('.$this->Dossierpcg66->Personnepcg66->Traitementpcg66->WebrsaTraitementpcg66->sqTraitementpcg66Echu('Personnepcg66.id').')';
 			}
 
 			if ( Hash::get($search, 'Traitementpcg66.courriersansmodele') !== null ) {

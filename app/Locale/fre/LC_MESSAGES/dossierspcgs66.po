@@ -848,3 +848,12 @@ msgstr "Date de changement de situation familiale"
 
 msgid "/Dossierspcgs66/delete/#Dossierpcg66.id# ?"
 msgstr "Etes-vous sûr de vouloir supprimer le dossier ?"
+
+msgid "Traitementpcg66.dateecheances"
+msgstr "Dates d'échéance du traitement"
+
+msgid "Situationpdo.libelles"
+msgstr "Motifs de la personne"
+
+msgid "Statutpdo.libelles"
+msgstr "Statuts concernant la personne"
