@@ -127,5 +127,30 @@
 
 			return $result;
 		}
+		
+		/**
+		 * Surcharge en cas d'export csv pour transformer les listes en retour à la ligne
+		 * 
+		 * @param array $params
+		 * @param array $results
+		 */
+		public function afterSearch(array $params, array $results) {
+			$results = parent::afterSearch($params, $results);
+			
+			if (strpos($this->_Collection->getController()->action, 'exportcsv') === 0) {
+				foreach ($results as $key => $values) {
+					foreach ($values as $modelName => $values) {
+						foreach ($values as $fieldName => $value) {
+							if (strpos($value, '<ul>') === 0) {
+								$value = preg_replace('/\<\/?ul\>|\<li\>/', '', $value);
+								$results[$key][$modelName][$fieldName] = trim(preg_replace('/\<\/li\>/', " - ", $value), ' -');
+							}
+						}
+					}
+				}
+			}
+			
+			return $results;
+		}
 	}
 ?>
