@@ -38,10 +38,8 @@
 					'activitebeneficiaire' => array( 'type' => 'activitebeneficiaire', 'domain' => 'apre' ),
 					'typecontrat' => array( 'type' => 'typecontrat', 'domain' => 'apre' ),
 					'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
-// 					'ajoutcomiteexamen' => array( 'type' => 'no', 'domain' => 'apre' ),
 					'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' ),
 					'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' ),
-// 					'presence' => array( 'type' => 'presence', 'domain' => 'apre' ),
 					'justificatif' => array( 'type' => 'justificatif', 'domain' => 'apre' ),
 					'isdecision' => array( 'domain' => 'apre' ),
 					'haspiecejointe' => array( 'domain' => 'apre' )

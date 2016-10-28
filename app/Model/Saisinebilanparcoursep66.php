@@ -244,17 +244,6 @@
 							$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->create( $referent );
 							$success = $this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->save() && $success;
 						}
-
-						/*if( !empty( $dossierep['Bilanparcours66']['contratinsertion_id'] ) ) {
-							// Fin anticipée pour le CER
-							$this->Bilanparcours66->Contratinsertion->updateAllUnBound(
-								array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
-								array(
-									'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-									'"Contratinsertion"."id"' => $dossierep['Bilanparcours66']['contratinsertion_id']
-								)
-							);
-						}*/
 					}
 
 					// 2. Passage de la position du CER "Bilan réalisé – En attente de décision de l'EPL Parcours" à "En attente de renouvellement"
@@ -271,10 +260,6 @@
 					$contratinsertion_id = Hash::get( $contratinsertion, 'Contratinsertion.id' );
 					if( !empty( $contratinsertion_id ) ) {
 						$success = $success && $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->updatePositionsCersById( $contratinsertion_id );
-						/*$success = $success && $this->Bilanparcours66->Contratinsertion->updateAllUnBound(
-							array( 'Contratinsertion.positioncer' => "'attrenouv'" ),
-							array( 'Contratinsertion.id' => $contratinsertion_id )
-						);*/
 					}
 				}
 
@@ -542,7 +527,6 @@
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Typeorient->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->fields(),
-// 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->Permanence->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Referent->fields(),
 					$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->fields(),
 					array_words_replace(
@@ -574,7 +558,6 @@
 					),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-// 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) ),
 					array_words_replace(
@@ -767,18 +750,6 @@
                 // Référent lié au bilan
                 $datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Referent->fields() );
                 $datas['querydata']['joins'][] = $this->Bilanparcours66->join( 'Referent' );
-
-				/* TODO:
-					$this->alias => array(
-						'Typeorient',
-						'Structurereferente',
-						'Bilanparcours66' => array(
-							'Orientstruct' => array(
-								'Typeorient',
-								'Structurereferente',
-							),
-						)
-					),*/
 
 				// Jointures et champs décisions
 				$modelesProposes = array(

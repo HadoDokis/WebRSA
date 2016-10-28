@@ -374,8 +374,6 @@
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
-				/*$this->Jetons2->release( Set::extract( '/Foyer/dossier_id', $this->request->data ) );
-				$this->Jetonsfonctions2->release( $cov58_id );*/
 				$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep_id, '#' => "dossiers,{$this->request->data['Choose']['theme']}" ) );
 			}
 

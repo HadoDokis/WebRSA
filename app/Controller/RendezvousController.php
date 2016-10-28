@@ -691,10 +691,6 @@
 			$struct_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.structurereferente_id" );
 			$this->set( 'struct_id', $struct_id );
 
-// 			$referent_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.referent_id" );
-// 			$referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
-// 			$this->set( 'referent_id', $referent_id );
-
 			$permanence_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.permanence_id" );
 			$permanence_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $permanence_id );
 			$this->set( 'permanence_id', $permanence_id );

@@ -31,34 +31,7 @@
 		*/
 		public function qdPersonnesEnDoublons( $methode, $sansprestation = null, $foyerId = 'personnes.foyer_id', $differenceThreshold = 4 ) {
 			$conditionsCmpAllocataire = array();
-
-			// TODO: méthode pour comparer les nirs, méthode pour comparer les noms/prénoms
-			// 1°) Comparaison stricte -> 4825@cg66_20111110_v21
-			/*if( !!empty( $methode ) || !in_array( $methode, array( 'normale', 'approchante' ) ) ) {
-				$conditionsCmpAllocataire = array(
-					'OR' => array(
-						array(
-							'p1.nir IS NOT NULL',
-							'nir_correct(p1.nir)',
-							'p1.nir = p2.nir',
-							'p1.dtnai = p2.dtnai'
-						),
-						array(
-							'p1.nom = p2.nom',
-							'p1.prenom = p2.prenom',
-							'p1.dtnai = p2.dtnai'
-						)
-					)
-				);
-			}*/
-
-			/*
-			trim nom/prénom (sans/avec), méthode normale -> paramètre nir et paramètre nom/prénom:
-				- 58 -> 235 / 235
-				- 66 -> 4852 / 4857
-				- 93 -> 5070 / 5070
-			*/
-
+			
 			// 2°) Comparaison moins stricte -> 4852@cg66_20111110_v21
 			// Ex.@cg66_20111110_v21: /personnes/index/35633
 			if( !empty( $methode ) && $methode == 'normale' ) {

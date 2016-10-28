@@ -805,7 +805,6 @@
 		 */
 		public function etatdosrsa($etatsDemandes=array()) {
 			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
-			// ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' => $etatsDemandes))
 
 			$etats = array(
 				'Z' => 'Non défini',
@@ -1241,7 +1240,7 @@
 		 */
 		public function natpfcre( $type = null ) {
 			trigger_error("Utilisation d'une méthode dépréciée : ".__CLASS__.'::'.__FUNCTION__, E_USER_DEPRECATED);
-			// ClassRegistry::init('Infofinanciere')->enum('natpfcre', array('type' => $type))
+			
 			$natindu = array(
 				'totsocl' => array(
 					'RSD' => 'Rsa socle',

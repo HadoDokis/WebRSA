@@ -291,8 +291,7 @@
 				array(
 					'fields' => array( 'id', 'pieceaide66_id' ),
 					'conditions' => array(
-						'Pieceaide66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id/*,
-						'NOT' => array( 'Pieceaide66Typeaideapre66.pieceaide66_id' => $piecesPresentes )*/
+						'Pieceaide66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id
 					)
 				)
 			);

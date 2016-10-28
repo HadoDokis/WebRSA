@@ -203,10 +203,6 @@
 			return $this->Apre66->ged( $apre, $modeleodt, false, $options );
 		}
 
-// 		public function autorisationPlafondAideapre66( $aideapre66_id, $personne_id ){
-//
-// 		}
-		
 		/**
 		 * Retourne le chemin vers le modèle odt utilisé pour l'APRE 66
 		 *

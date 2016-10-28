@@ -829,17 +829,7 @@
 						$data['Cer93']['sujetpcd'] = serialize( array( 'Sujetcer93' => $data['Sujetcer93'], 'Sujetromev3' => $sujetromev3 ) );
 						$data['Sujetcer93'] = array();
 					}
-
-					// Copie des enregistrements liés aux codes ROME v.3
-					/*foreach( array( 'Emptrouvromev3' ) as $modelName ) {
-						if( !empty( $dataDernierCerValide[$this->Cer93->alias][$modelName] ) ) {
-							$data[$modelName] = $dataDernierCerValide[$this->Cer93->alias][$modelName];
-
-							unset( $data[$modelName]['id'], $data[$modelName]['created'], $data[$modelName]['modified'] );
-							$data = $this->Cer93->{$modelName}->prepareFormDataAddEdit( $data );
-						}
-					}*/
-
+					
 					// Cas où on a un dernier CER validé
 					$data['Contratinsertion']['rg_ci'] = ( $dataDernierCerValide['Contratinsertion']['rg_ci'] ) + 1;
 				}

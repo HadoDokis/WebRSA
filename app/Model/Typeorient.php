@@ -248,41 +248,6 @@
 		}
 
 		/**
-		*
-		*/
-
-		/*public function occurences() {
-			// Orientstruct
-			$queryData = array(
-				'fields' => array(
-					'"Typeorient"."id"',
-					'COUNT("Structurereferente"."id") + COUNT("Orientstruct"."id") AS "Typeorient__occurences"',
-				),
-				'joins' => array(
-					array(
-						'table'      => 'structuresreferentes',
-						'alias'      => 'Structurereferente',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Structurereferente.typeorient_id = Typeorient.id' )
-					),
-					array(
-						'table'      => 'orientsstructs',
-						'alias'      => 'Orientstruct',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Orientstruct.typeorient_id = Typeorient.id' )
-					),
-				),
-				'recursive' => -1,
-				'group' => array( '"Typeorient"."id"' )
-			);
-			$results = $this->find( 'all', $queryData );
-
-			return Set::combine( $results, '{n}.Typeorient.id', '{n}.Typeorient.occurences' );
-		}*/
-
-		/**
 		*   Recherche du type d'orientation qui n'a plus de parent
 		*/
 

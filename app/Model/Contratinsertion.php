@@ -482,19 +482,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-				/* 'Objetcontratinsertion' => array(
-				  'className' => 'Objetcontratinsertion',
-				  'foreignKey' => 'contratinsertion_id',
-				  'dependent' => true,
-				  'conditions' => '',
-				  'fields' => '',
-				  'order' => '',
-				  'limit' => '',
-				  'offset' => '',
-				  'exclusive' => '',
-				  'finderQuery' => '',
-				  'counterQuery' => ''
-				  ), */
 		);
 		public $hasAndBelongsToMany = array(
 			'User' => array(

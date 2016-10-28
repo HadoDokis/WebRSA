@@ -456,8 +456,6 @@
 				$this->redirect( array( 'action' => 'index', $id ) );
 			}
 
-//			$this->Dossier->Suiviinstruction->order = 'Suiviinstruction.id DESC';
-
 			$qd_dossier = array(
 				'conditions' => array(
 					'Dossier.id' => $personne_id
@@ -524,7 +522,6 @@
 			//Affichage des données
 			elseif( $this->action == 'edit' ) {
 				$this->request->data = $pdo;
-//				$fichiers = $this->Fileuploader->fichiers( $pdo['Propopdo']['id'] );
 
 				$this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
 			}

@@ -61,27 +61,6 @@
 					ELSE \'ENUM::NATPF_D1::NC\'
 				END )'
 			),
-			/*'natpf_fp' => array(
-				'type'      => 'string',
-				'postgres'  => '( CASE
-					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::socle_majore_activite\'
-					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::socle_activite\'
-					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::socle_majore\'
-					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::socle\'
-					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::NC\'
-					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::NC\'
-					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::NC\'
-					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::NC\'
-					ELSE \'ENUM::NATPF_FP::NC\'
-				END )'
-			),
-			'inscritpe' => array(
-				'type'      => 'string',
-				'postgres'  => '( CASE
-					WHEN ( "%s"."etatpe" = \'inscription\' ) THEN \'1\'
-					ELSE \'0\'
-				END )'
-			),*/
 		);
 
 		/**

@@ -686,36 +686,9 @@
 						unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
 					}
 				}
-				/*if( !empty( $dossierscovs58[$key]['Propoorientationcov58']['id'] ) ) {
-					$dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
-					$dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
-
-					unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
-				}
-				else if( !empty( $dossierscovs58[$key]['Propoorientsocialecov58']['id'] ) ) {
-					$dossierscovs58[$key]['Propoorientsocialecov58']['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
-					$dossierscovs58[$key]['Propoorientsocialecov58']['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
-
-					unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
-				}*/
-
+				
 				// Ajout de données à NULL pour l'impression en sections
 				$dossierscovs58[$key] = Set::merge( $empty, $dossierscovs58[$key] );
-
-				/*$champsOrientation = array_keys( $dossierscovs58[$key]['Propoorientationcov58'] );
-debug( $champsOrientation );
-				$orientationVide = array_fill_keys( $champsOrientation, null );
-				$orientationVide['Typeorient'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] ), null );
-				$orientationVide['Structurereferente'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] ), null );
-debug( $orientationVide );*/
-
-				/*if ( isset( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && !empty( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && $dossiercov58['Propoorientationcov58']['rgorient'] > 0 ) {
-					$dossierscovs58[$key]['Proporeorientationcov58'] = $dossierscovs58[$key]['Propoorientationcov58'];
-					$dossierscovs58[$key]['Propoorientationcov58'] = $orientationVide;
-				}
-				else {
-					$dossierscovs58[$key]['Proporeorientationcov58'] = $orientationVide;
-				}*/
 
 				$infope = $this->Informationpe->derniereInformation( $dossiercov58 );
 				$dossierscovs58[$key]['Personne']['inscritpe'] = ( isset( $infope['Historiqueetatpe'][0]['etat'] ) && $infope['Historiqueetatpe'][0]['etat'] == 'inscription' ) ? 'Oui' : 'Non';
@@ -728,9 +701,6 @@ debug( $orientationVide );*/
 			foreach( $themeClassNames as $themeClassName ) {
 				$options[$themeClassName]['decisioncov'] = $decisionscovs;
 			}
-			/*$options['Proporeorientationcov58']['decisioncov'] = $decisionscovs;
-			$options['Propocontratinsertioncov58']['decisioncov'] = $decisionscovs;
-			$options['Propoorientsocialecov58']['decisioncov'] = $decisionscovs;*/
 
 			return $this->ged(
 				array_merge(

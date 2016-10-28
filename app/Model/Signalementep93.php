@@ -273,8 +273,6 @@
 					),
 					'conditions' => array(
 						'Passagecommissionep.commissionep_id' => $commissionep_id
-						/*'Dossierep.commissionep_id' => $commissionep_id,
-						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi*/
 					),
 					'joins' => array(
 						array(
@@ -364,33 +362,6 @@
 				)
 			);
 		}
-
-		/**
-		* Récupération du courrier de convocation à l'allocataire pour un passage
-		* en commission donné.
-		* FIXME: spécifique par thématique
-		*/
-
-		/*public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne',
-						),
-						'Commissionep'
-					)
-				)
-			);
-
-			if( empty( $gedooo_data ) ) {
-				return false;
-			}
-
-			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
-		}*/
 
 		/**
 		* Récupération de la décision suite au passage en commission d'un dossier

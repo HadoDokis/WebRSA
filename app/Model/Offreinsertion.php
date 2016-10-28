@@ -46,10 +46,6 @@
 				$conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $actionname, array( 'encode' => false ) ).'\'';
 			}
 
-// 			if( is_numeric( $partenaire_id ) && !empty( $partenaire_id )  ){
-// 				$conditions[] = 'Partenaire.id = \''.Sanitize::clean( $partenaire_id, array( 'encode' => false ) ).'\'';
-// 			}
-
 			if( is_numeric( $contact_id ) && !empty( $contact_id ) ){
 				$conditions[] = 'Contactpartenaire.id = \''.Sanitize::clean( $contact_id, array( 'encode' => false ) ).'\'';
 			}
@@ -146,14 +142,6 @@
 
 			return $query;
 		}
-
-        /*
-            'global' => $this->Offreinsertion->searchGlobal( $this->request->data ),
-            'actions' => $this->Offreinsertion->searchActions( $this->request->data ),
-            'contactpartenaires' => $this->Offreinsertion->searchContactpartenaires( $this->request->data ),
-            'partenaires' => $this->Offreinsertion->searchPartenaires( $this->request->data ),
-            'actions_par_partenaires' => $this->Offreinsertion->searchActionsParPartenaires( $this->request->data ),
-         */
 
         public function searchGlobal( $params ) {
             return $this->_search( $params );

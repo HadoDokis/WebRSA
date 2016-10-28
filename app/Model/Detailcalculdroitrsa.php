@@ -74,7 +74,6 @@
 		 */
 		public $categoriesNatspfs = array(
 			'activite' => array( 'RCD', 'RCI', 'RCU', 'RCB', 'RCJ' ),
-			//'jeune' => array( 'RCJ', 'RSJ' ),
 			'majore' => array( 'RSI', 'RCI' ),
 			'socle' => array( 'RSD', 'RSI', 'RSU', 'RSB', 'RSJ' ),
 		);

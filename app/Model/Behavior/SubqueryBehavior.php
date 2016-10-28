@@ -81,25 +81,6 @@
 			// PostgreSQL CakePHP 1.3.4: order & group OK
 			$queryData['fields'] = $this->_quote( $model, $queryData['fields'] );
 
-			// INFO: avec PostreSQL -> AS "Foo__bar"
-// 			$queryData['fields'] = $dbo->fields( $model, null, $queryData['fields'], true );
-// debug( $queryData['fields'] );
-
-			/*if( isset( $queryData['joins'] ) && !empty( $queryData['joins'] ) )
-			foreach( $queryData['joins'] as $key => $join ) {
-				if( !isset( $join['table'] ) ) {
-					if( isset( $join['model'] ) ) {
-						$join['table'] = Inflector::tableize( $join['model'] );
-					}
-					else {
-						$join['table'] = Inflector::tableize( $join['alias'] );
-					}
-				}
-
-				$join['table'] = $dbo->fullTableName( $join['table'], true, false );
-				$queryData['joins'][$key] = $join;
-			}*/
-
 			return $dbo->buildStatement( $queryData, $model );
 		}
 	}

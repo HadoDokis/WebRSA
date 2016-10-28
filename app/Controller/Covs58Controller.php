@@ -169,7 +169,7 @@
 			);
 
 			$typevoie = $this->Option->typevoie();
-// 			$options = array_merge($options, $this->Cov58->Passagecov58->Dossiercov58->enums());
+
 			$typesorients = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
 			$structuresreferentes = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
 			$referents = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Referent->WebrsaReferent->listOptions();
@@ -416,8 +416,6 @@
 			$this->_setOptions();
 
 			// Dossiers à passer en séance, par thème traité
-// 			$themes = $this->Cov58->Passagecov58->Dossiercov58->Themecov58->find('list');
-
 			$themes = array_keys( $this->Cov58->themesTraites( $cov58_id ) );
 
 			$this->set(compact('themes'));

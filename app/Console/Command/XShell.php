@@ -206,14 +206,6 @@
 				list($this->params, $this->args) = $this->OptionParser->parse( $argv, $command );
 			}
 			catch( ConsoleException $e ) {
-				/*
-				 * webrsa edit begin
-				 *
-				 * original :
-				 *
-				 * 		$this->out( $this->OptionParser->help( $command ) );
-				 *
-				 */
 				$this->_welcome();
 				$this->out();
 				$this->out( '<error> An error as occured ! </error>' );
@@ -243,13 +235,6 @@
 
 			if( $isTask ) {
 				$command = Inflector::camelize( $command );
-				/*
-				 * webrsa edit begin
-				 *
-				 * original :
-				 *
-				 * 		return $this->{$command}->runCommand( 'execute', $argv );
-				 */
 				$return = $this->{$command}->runCommand( 'execute', $argv );
 				$this->_scritpEnd();
 				return $return;

@@ -92,10 +92,6 @@
 				)
 			),
 			'dateecheance' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'dureeecheance', false, array( '0' ) ),
-//					'message' => 'Champ obligatoire'
-//				),
 				'date' => array(
 					'rule' => 'date',
 					'required' => false,
@@ -210,13 +206,6 @@
 					'allowEmpty' => false
 				)
 			),
-//			'dureefinprisecompte' => array(
-//				array(
-//					'rule' => 'notEmpty',
-//					'required' => false,
-//					'allowEmpty' => false
-//				)
-//			),
 			'dureedepart' => array(
 				array(
 					'rule' => 'notEmpty',

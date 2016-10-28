@@ -567,7 +567,6 @@
 			$redirectUrl = array( 'action' => 'index', $personne_id );
 			$user_id = $this->Session->read( 'Auth.User.id' );
 
-			//$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 			$originalAddEditFormData = $this->WebrsaOrientstruct->getAddEditFormData( $personne_id, $id, $user_id );
 
 			// Retour à l'index si on essaie de modifier une autre orientation que la dernière

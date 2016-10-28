@@ -89,11 +89,6 @@
 		 * @return void
 		 */
 		public function index() {
-
-//			$raisonssocialespartenairescuis66 = $this->Raisonsocialepartenairecui66->find( 'all', array( 'recursive' => -1 ) );
-
-//			$this->set('raisonssocialespartenairescuis66', $raisonssocialespartenairescuis66);
-
             $this->Raisonsocialepartenairecui66->Behaviors->attach( 'Occurences' );
 
             $querydata = $this->Raisonsocialepartenairecui66->qdOccurencesExists(
@@ -164,22 +159,6 @@
 		}
 
 		public function delete( $raisonsocialepartenairecui66_id = null ) {
-			// Vérification du format de la variable
-			/*if( !$this->Raisonsocialepartenairecui66->exists( $raisonsocialepartenairecui66_id ) ) {
-				throw new NotFoundException();
-			}
-
-			$raisonsocialepartenairecui66 = $this->Raisonsocialepartenairecui66->find(
-				'first',
-				array( 'conditions' => array( 'Raisonsocialepartenairecui66.id' => $raisonsocialepartenairecui66_id )
-				)
-			);
-
-			// Tentative de suppression ... FIXME
-			if( $this->Raisonsocialepartenairecui66->deleteAll( array( 'Raisonsocialepartenairecui66.id' => $raisonsocialepartenairecui66_id ), true ) ) {
-				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-				$this->redirect( array( 'controller' => 'raisonssocialespartenairescuis66', 'action' => 'index' ) );
-			}*/
             $this->Default->delete( $raisonsocialepartenairecui66_id, true );
 		}
 	}

@@ -132,7 +132,6 @@
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-			//debug($this->request->data);exit;
 			if( !empty( $this->request->data ) ) {
 				$this->paginate = $this->Indicateursuivi->search(
 					$mesCodesInsee,

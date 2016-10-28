@@ -729,8 +729,6 @@
 					$this->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
 					$this->Contratinsertion->join( 'Actioninsertion', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
-					// $this->Contratinsertion->Propodecisioncer66->join( 'Motifcernonvalid66Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
-					// $this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->join( 'Motifcernonvalid66', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'conditions' => array(
 					'Contratinsertion.id' => $contratinsertion_id
@@ -899,8 +897,7 @@
 
 				// TODO: $this->request->data Contratinsertion.forme_ci
 				$valueFormeci = Set::classicExtract($contratinsertion, 'Contratinsertion.forme_ci');
-				//$nbContratsPrecedents = $this->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
-				// TODO: $this->request->data Contratinsertion.num_contrat
+				
 				$tc = Set::classicExtract($contratinsertion, 'Contratinsertion.num_contrat');
 			}
 
@@ -1518,13 +1515,6 @@
 					array( 'Contratinsertion.personne_id' => $contrat['Contratinsertion']['personne_id'] )
 				);
 
-				/*$saved = $this->{$this->modelClass}->updateAllUnBound(
-								array('Contratinsertion.positioncer' => '\'annule\''), array(
-							'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
-							'"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
-								)
-						) && $saved;*/
-
 				if ($saved) {
 					$this->Contratinsertion->commit();
 					$this->Jetons2->release($dossier_id);
@@ -1679,18 +1669,6 @@
 				$saved = $saved && $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 					array( 'Contratinsertion.personne_id' => $personne_id )
 				);
-
-				/*if ($saved) {
-					$this->request->data['Contratinsertion']['decision_ci'] = $contratinsertion['Contratinsertion']['decision_ci'];
-					$this->request->data['Contratinsertion']['positioncer'] = $this->Contratinsertion->calculPosition($this->request->data);
-
-					$saved = $this->Contratinsertion->updateAllUnBound(
-							array('Contratinsertion.positioncer' => "'" . $this->request->data['Contratinsertion']['positioncer'] . "'"), array(
-						'"Contratinsertion"."personne_id"' => $personne_id,
-						'"Contratinsertion"."id"' => $id
-							)
-					);
-				}*/
 
 				if ($saved) {
 					$this->Contratinsertion->commit();

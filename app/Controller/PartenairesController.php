@@ -223,7 +223,6 @@
 			}
 			$this->_setOptions();
 			$this->render( 'add_edit' );
-// 			$this->Default->{$this->action}( $args );
 		}
 
 		/**

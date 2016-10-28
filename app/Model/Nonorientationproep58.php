@@ -195,11 +195,6 @@
 				);
 
 				$querydata['joins'] = array_merge( $querydata['joins'], $joins );
-// 				$querydata['fields'] = array_merge( $querydata['fields'], array_merge(
-// 					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->fields(  ),
-// 					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->fields(),
-// 					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->Cov58->fields()
-// 				) );
 				$querydata['fields'][] = 'Cov58.datecommission';
 
 

@@ -254,14 +254,6 @@
 				$aroCru = $this->findCru( $cru );
 				$aroEnfants = $this->Acl->Aro->children( $aroCru['Aro']['id'] );
 				foreach( $aroEnfants as $aroEnfant ) {
-					/* on resteint les droits si ils sont spécifiques à l'enfant (sinon héritage) */
-					/* $droitsSpecif = $this->Acl->Aro->query('select count(*) from aros_acos where aro_id = '.$aroEnfant['Aro']['id']);
-					  if (array_key_exists('count(*)', $droitsSpecif[0][0]))
-					  $nbDroitsSpecif = $droitsSpecif[0][0]['count(*)'];
-					  else
-					  $nbDroitsSpecif = $droitsSpecif[0][0]['count'];
-
-					  if ($nbDroitsSpecif>0) { */
 					$cruEnfant = array( 'model' => $aroEnfant['Aro']['model'], 'foreign_key' => $aroEnfant['Aro']['foreign_key'] );
 					foreach( $tabDroits as $acoAlias => $droit )
 						if( !$droit )

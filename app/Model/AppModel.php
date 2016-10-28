@@ -262,45 +262,6 @@
 			parent::unbindModel( $unbind, $reset );
 		}
 
-		// FIXME
-		/**
-		 * Surcharge de la méthode saveAll: on retourne un booléen true / false dans tous les cas.
-		 * En CakePHP 2.0, les options ne sont pas les mêmes, donc on reprend les options par défaut de
-		 * CakePHP 1.2.
-		 *
-		 * @param array $data
-		 * @param array $options
-		 * @return boolean
-		 */
-		/*public function saveAll( $data = NULL, $options = array( ) ) {
-			$options = array_merge( array( 'validate' => true, 'atomic' => true ), $options );
-
-			$return = parent::saveAll( $data, $options );
-
-			if( is_array( $return ) && !empty( $return ) ) {
-				$return = Hash::flatten( $return );
-				$return = ( array_sum( $return ) == count( $return ) );
-			}
-			else if( is_array( $return ) && empty( $return ) ) {
-				return false;
-			}
-			return $return;
-		}*/
-
-		/**
-		 * Retourne un booléen dans tous les cas.
-		 *
-		 * @param array $data Data to save.
-		 * @param boolean|array $validate Either a boolean, or an array.
-		 *   If a boolean, indicates whether or not to validate before saving.
-		 *   If an array, allows control of validate, callbacks, and fieldList
-		 * @param array $fieldList List of fields to allow to be written
-		 * @return boolean
-		 */
-//		public function save( $data = null, $validate = true, $fieldList = array( ) ) {
-//			return ( parent::save( $data, $validate, $fieldList ) !== false );
-//		}
-
 		/**
 		 * Retourne les résultats d'une opération de sauvegarde sous forme d'un
 		 * booléen.
@@ -335,30 +296,6 @@
 			$result = parent::saveAll( $data, $options );
 			return $this->saveResultAsBool( $result );
 		}
-
-		/**
-		 * Retourne un booléen dans tous les cas.
-		 *
-		 * @param array $data Record data to save. This should be an array indexed by association name.
-		 * @param array $options Options to use when saving record data, See $options above.
-		 * @return boolean
-		 */
-//		public function saveAssociated( $data = null, $options = array( ) ) {
-//			$result = parent::saveAssociated( $data, $options );
-//			return $this->saveResultAsBool( $result );
-//		}
-
-		/**
-		 * Retourne un booléen dans tous les cas.
-		 *
-		 * @param array $data Record data to save. This should be a numerically-indexed array
-		 * @param array $options Options to use when saving record data, See $options above.
-		 * @return boolean
-		 */
-//		public function saveMany( $data = null, $options = array( ) ) {
-//			$result = parent::saveMany( $data, $options );
-//			return $this->saveResultAsBool( $result );
-//		}
 
 		/**
 		 * Filtre zone géographique

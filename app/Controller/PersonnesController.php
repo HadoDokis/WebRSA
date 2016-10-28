@@ -208,7 +208,6 @@
 					$this->Personne->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'personnes','action' => 'index', $foyer_id ) );
 					$this->redirect( $this->referer() );
 				}
 				else {

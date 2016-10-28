@@ -179,7 +179,6 @@
 			if( $this->action == 'add' ) {
 				$personnepcg66_id = $id;
 
-// 				$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->findById( $id, null, null, -1 );
 				$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->find(
 						'first', array(
 					'conditions' => array(
@@ -244,14 +243,6 @@
 					$saved = true;
 
 					$saved = $this->Decisionpersonnepcg66->save( $this->request->data );
-
-// 					if ( $saved ) {
-// 						$saved = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->updateEtatViaPersonne( $dossierpcg66_id ) && $saved;
-// 					}
-//
-// 					if ( $saved ) {
-// 						$saved = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->updateEtatViaDecisionPersonnepcg( $dossierpcg66_id ) && $saved;
-// 					}
 
 					if( $saved ) {
 						$this->Decisionpersonnepcg66->commit();

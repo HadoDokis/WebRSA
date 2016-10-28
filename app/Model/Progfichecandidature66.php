@@ -25,26 +25,6 @@
 			'Pgsqlcake.PgsqlAutovalidate'
 		);
 
-//		public $hasAndBelongsToMany = array(
-//			'ActioncandidatPersonne' => array(
-//				'className' => 'ActioncandidatPersonne',
-//				'joinTable' => 'candidatures_progs66',
-//				'foreignKey' => 'progfichecandidature66_id',
-//				'associationForeignKey' => 'actioncandidat_personne_id',
-//				'unique' => true,
-//				'conditions' => '',
-//				'fields' => '',
-//				'order' => '',
-//				'limit' => '',
-//				'offset' => '',
-//				'finderQuery' => '',
-//				'deleteQuery' => '',
-//				'insertQuery' => '',
-//				'with' => 'CandidatureProg66'
-//			)
-//		);
-
-
         public $hasMany = array(
 			'ActioncandidatPersonne' => array(
 				'className' => 'ActioncandidatPersonne',

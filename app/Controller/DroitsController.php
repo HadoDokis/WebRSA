@@ -95,11 +95,6 @@
 		/* Gestion des droits des utilisateurs sur les menus et les actions des controleurs */
 
 		public function edit() {
-			// fonction devenue inutilisable avec la gestion des droits par utilisateur et par groupe
-			/* $this->Session->setFlash( 'Cette fonction n\'est plus utilisée, merci d\'utiliser la gestion des droits par utilisateur et par groupe', 'flash/error' );
-			  $this->redirect('/');
-			  exit(); */
-
 			// Initialisation de la progressBar
 			include ('Vendor/progressbar.php');
 			Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );

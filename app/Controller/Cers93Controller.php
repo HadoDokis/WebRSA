@@ -503,7 +503,6 @@
 				)
 			);
 			$autresoussujet_isautre_id = Hash::extract( $valeursSoussujet, '{n}.Soussujetcer93[isautre=1].id' );
-// 			$autresoussujet_isautre_id = Hash::format( $autresoussujet_isautre_id, array( '{n}.sujetcer93_id', '{n}.id' ), '%%d' );
 			$this->set( 'autresoussujet_isautre_id', $autresoussujet_isautre_id );
 
 			// =================================================================

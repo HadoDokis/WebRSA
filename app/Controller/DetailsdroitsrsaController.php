@@ -119,31 +119,6 @@
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'detaildroitrsa', $detaildroitrsa );
 		}
-
-		/**
-		 *
-		 * @param integer $detaildroitrsa_id
-		 */
-		/*public function view( $detaildroitrsa_id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $detaildroitrsa_id ), 'error404' );
-
-			$detaildroitrsa = $this->Detaildroitrsa->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Detaildroitrsa.id' => $detaildroitrsa_id
-					),
-				'recursive' => -1
-				)
-			);
-
-			$this->assert( !empty( $detaildroitrsa ), 'error404' );
-
-			// Assignations à la vue
-			$this->set( 'dossier_id', $detaildroitrsa['Detaildroitrsa']['dossier_id'] );
-			$this->set( 'detaildroitrsa', $detaildroitrsa );
-		}*/
 	}
 
 ?>

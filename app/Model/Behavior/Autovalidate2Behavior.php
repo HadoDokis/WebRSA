@@ -137,7 +137,6 @@
 
 					/// Numeric
 					if( $params['type'] == 'integer' ) {
-						//$this->addValidationRule( $model, $field, array( 'rule' => 'numeric', 'allowEmpty' => true ) );
 						$this->addValidationRule( $model, $field, array( 'rule' => 'integer', 'allowEmpty' => true ) );
 					}
 

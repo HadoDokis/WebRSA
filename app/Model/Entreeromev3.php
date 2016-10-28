@@ -122,30 +122,6 @@
 				'order' => null,
 				'counterCache' => null
 			),
-			/*'Partenaire' => array(
-				'className' => 'Partenaire',
-				'foreignKey' => 'entreeromev3_id',
-				'conditions' => null,
-				'fields' => null,
-				'order' => null,
-				'dependent' => false
-			),
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'emploiproposeromev3_id',
-				'conditions' => null,
-				'fields' => null,
-				'order' => null,
-				'dependent' => false
-			),
-			'Periodeimmersioncui66' => array(
-				'className' => 'Periodeimmersioncui66',
-				'foreignKey' => 'affectationromev3_id',
-				'conditions' => null,
-				'fields' => null,
-				'order' => null,
-				'dependent' => false
-			),*/
 			'Personnepcg66' => array(
 				'className' => 'Personnepcg66',
 				'foreignKey' => 'categorieromev3_id',

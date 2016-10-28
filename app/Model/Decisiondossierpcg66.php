@@ -26,19 +26,7 @@ class Decisiondossierpcg66 extends AppModel {
                 'orgtransmisdossierpcg66_id'
             )
         ),
-        'Enumerable' => array(
-//            'fields' => array(
-//                'avistechnique',
-//                'validationproposition',
-//                'etatop',
-//                'typersa',
-//                'recidive',
-//                'phase',
-//                'defautinsertion',
-//                'haspiecejointe',
-//                'instrencours'
-//            )
-        ),
+        'Enumerable' => array(),
         'Gedooo.Gedooo',
         'ModelesodtConditionnables' => array(
             66 => array(

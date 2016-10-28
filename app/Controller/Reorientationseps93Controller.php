@@ -94,12 +94,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-// 			$options = $this->Reorientationep93->enums();
-// 			$options['Reorientationep93']['typeorient_id'] = $this->Reorientationep93->Typeorient->listOptions();
-// 			$options['Reorientationep93']['structurereferente_id'] = $this->Reorientationep93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
-// 			$options['Reorientationep93']['motifreorientep93_id'] = $this->Reorientationep93->Motifreorientep93->find( 'list' );
-// 			$options['Reorientationep93']['referent_id'] = $this->Reorientationep93->Referent->WebrsaReferent->listOptions();
-// 			$this->set( compact( 'options' ) );
+
 		}
 
 		/**
@@ -288,7 +283,6 @@
 				if( $success ) {
 					$this->Reorientationep93->commit();
 					$this->Jetons2->release( $dossier_id );
-					//$personne_id = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->request->data['Reorientationep93']['orientstruct_id'] ) );
 					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 				}
 				else {
@@ -332,8 +326,6 @@
 
 			// Lecture de valeurs
 			if( $this->action == 'add' ) {
-				//$personne_id = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
-
 				// Retour à l'index d'orientsstrucs s'il n'est pas possible d'ajouter une réorientation
 				if( !$this->Reorientationep93->ajoutPossible( $personne_id ) ) {
 					$this->Jetons2->release( $dossier_id );

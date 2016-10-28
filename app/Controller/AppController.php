@@ -496,10 +496,6 @@
 
 					$menu = array(
 						'url' => $s['url']
-//						'url' => array(
-//							'controller' => $s['controller'],
-//							'action' => $s['action'],
-//						)
 					);
 //					$menu['url'] = array_merge($menu['url'], explode('/', $params));
 

@@ -94,57 +94,6 @@
 			)
 		);
 
-		/*public function getModels( $query ) {
-			$models = array();
-
-			$default = array(
-				'methods' => null,
-				'behaviors' => null,
-				'attributes' => null,
-				'useDbConfig' => $connections = array_keys( ConnectionManager::enumConnectionObjects() ),
-				'cg' => null,
-			);
-			$query = Set::merge( $default, $query );
-
-			foreach( App::objects( 'model' ) as $modelName ) {
-				$preg_success = preg_match( '/([0-9]{2}$|[0-9]{2}(?=[A-Z]))/', $modelName, $matches );
-				if( is_null( $query['cg'] ) || !$preg_success || ( $matches[0] == $query['cg'] ) ) {
-//					App::uses( $modelName, 'Model' );
-//					$classVars = get_class_vars( $modelName );
-//
-//					if( $classVars['useTable'] !== false && in_array( $classVars['useDbConfig'], $query['useDbConfig'] ) ) {
-//						$modelClass = ClassRegistry::init( $modelName );
-//						$classVars = get_object_vars( $modelClass );
-//						$attributes = array_keys( $classVars );
-//						$methods = get_class_methods( $modelClass );
-//						$behaviors = $classVars['actsAs'];
-//					}
-//					else {
-//						$attributes = array_keys( $classVars );
-//						$methods = get_class_methods( $modelName );
-//						$behaviors = $classVars['actsAs'];
-//					}
-
-					$found = true;
-//					foreach( array( 'methods', 'behaviors', 'attributes' ) as $key ) {
-//						if( !is_null( $query[$key] ) ) {
-//							$query[$key] = (array)$query[$key];
-//							$results = array_intersect( $query[$key], ${$key} );
-//							debug( $results );
-//						}
-//					}
-
-					if( $found ) {
-						$models[] = $modelName;
-					}
-				}
-				debug( array( $modelName => array( $preg_success, var_export( $matches, true ) ) ) );
-			}
-
-			sort( $models );
-			return $models;
-		}*/
-
 		/**
 		 * Liste des clefs de type ValidateAllowEmpty
 		 *

@@ -76,11 +76,6 @@
 				}
 			}
 
-//			if( $return === false ) {
-//				// INFO: ne passe pas dans les tests en console
-//				$this->log( Hash::get( $_SERVER, 'REQUEST_URI' ).': '.var_export( $Model->data, true ), LOG_ERROR );
-//			}
-
 			return $return;
 		}
 

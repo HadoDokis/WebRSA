@@ -100,13 +100,5 @@
 
 			$this->_stop( self::SUCCESS );
 		}
-
-		/**
-		 * Paramétrages et aides du shell.
-		 */
-		/*public function getOptionParser() {
-			$Parser = parent::getOptionParser();
-			return $Parser;
-		}*/
 	}
 ?>

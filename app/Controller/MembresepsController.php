@@ -401,8 +401,6 @@
 
 			$membres_fonction = array();
 			foreach( $listemembres as $membreep ) {
-// 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
-
 				// Modification de l'affichage des remplaçants
 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id'].'_'.$membreep['Membreep']['id']] = $membreep['Membreep']['qual'].' '.$membreep['Membreep']['nom'].' '.$membreep['Membreep']['prenom'];
 			}
@@ -555,25 +553,6 @@
 						$this->Membreep->join( 'CommissionepMembreep', array( 'type' => 'INNER' ) ),
 						$this->Membreep->CommissionepMembreep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
 						$this->Membreep->CommissionepMembreep->Commissionep->join( 'Ep', array( 'type' => 'INNER' ) ),
-						/*array(
-							'table' => 'eps_membreseps',
-							'alias' => 'EpMembreep',
-							'type' => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Membreep.id = EpMembreep.membreep_id',
-								'EpMembreep.ep_id' => $ep_id
-							)
-						),
-						array(
-							'table' => 'eps',
-							'alias' => 'Ep',
-							'type' => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Ep.id = EpMembreep.ep_id'
-							)
-						)*/
 					),
 					'contain'=>false,
 					'group' => array(
@@ -613,8 +592,6 @@
 
 			$membres_fonction = array();
 			foreach( $listemembres as $membreep ) {
-// 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
-
 				// Modification de l'affichage des suppléants
 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id'].'_'.$membreep['Membreep']['id']] = $membreep['Membreep']['qual'].' '.$membreep['Membreep']['nom'].' '.$membreep['Membreep']['prenom'];
 			}

@@ -27,19 +27,6 @@
 			'Pgsqlcake.PgsqlAutovalidate'
 		);
 
-		/*public $validate = array(
-			'libstruc' => array(
-				'isUnique' => array(
-					'rule' => array( 'isUnique' ),
-					'message' => 'Cette valeur est déjà utilisée'
-				),
-				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
-					'message' => 'Champ obligatoire'
-				)
-			),
-		);*/
-
 		public $hasMany = array(
 			'Partenaire' => array(
 				'className' => 'Partenaire',

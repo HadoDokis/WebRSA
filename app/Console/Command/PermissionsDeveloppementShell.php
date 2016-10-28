@@ -68,11 +68,6 @@
 		 */
 		public function initialize() {
 			parent::initialize();
-//			$this->Controller = & new Controller();
-//			$this->components = array( 'Acl', 'Dbdroits' );
-//			$this->uses = array( );
-//			$this->constructClasses();
-//			$this->Component->initialize( new ComponentCollection );
 			$this->ComponentCollection = new ComponentCollection();
 			$this->Acl = new AclComponent( $this->ComponentCollection );
 			$this->Dbdroits = new DbdroitsComponent( $this->ComponentCollection );
@@ -265,7 +260,6 @@
 
 			// Soyons certains de donner l'accès à la page d'accueil
 			$slash = Router::parse( '/' );
-//			$slashAlias = Inflector::camelize( $slash['controller'] ).':'.$slash['action'];
 			$slashAlias = Inflector::camelize( 'dossiers' ).':'.'index';
 			$this->Acl->allow( 'Administrateurs', $slashAlias );
 			$this->XProgressBar->next( 1, 'Administrateurs : accès à la page d\'accueil' );
