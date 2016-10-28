@@ -134,7 +134,6 @@
 
 			if( $params['find'] === true ) {
 				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
-	// 			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 				$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->WebrsaReferent->listOptions();
 				$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 				$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
@@ -285,7 +284,7 @@
 					$this->Bilanparcours66->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'bilansparcours66','action' => 'index', $personne_id ) );
+
 					$this->redirect( $this->referer() );
 				}
 				else {
@@ -1027,7 +1026,7 @@
 			$this->set( 'personne_id', $personne_id );
 
             $this->_setOptions($this->Bilanparcours66->WebrsaBilanparcours66->optionsView());
-//            $this->set( 'options',$this->Bilanparcours66->WebrsaBilanparcours66->optionsView() );
+
 			$this->set( 'bilanparcours66', $this->Bilanparcours66->WebrsaBilanparcours66->dataView( $bilanparcours66_id ) );
 			$this->set( 'urlmenu', "/bilansparcours66/index/{$personne_id}" );
 		}

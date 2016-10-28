@@ -99,15 +99,6 @@
 		*
 		*/
 
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Search.SearchPrg' => array( 'actions' => array( 'suivicontrole' ) ) ) );
-//			parent::__construct();
-//		}
-
-		/**
-		*
-		*/
-
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '1024M');

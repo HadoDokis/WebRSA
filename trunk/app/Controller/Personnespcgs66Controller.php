@@ -179,8 +179,6 @@
 			if( $this->action == 'add' ) {
 				$dossierpcg66_id = $id;
 
-				//$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) ) );
-
 				$dossierpcg66 = $this->Dossierpcg66->find(
 						'first', array(
 					'conditions' => array(
@@ -288,7 +286,6 @@
 									'fields' => array( 'prestations.personne_id' ),
 									'conditions' => array(
 										'prestations.natprest = \'RSA\'',
-//										'prestations.rolepers' => array( 'DEM', 'CJT' )
 									),
 									'contain' => false
 								)
@@ -328,8 +325,6 @@
 				$this->assert( !empty( $personnepcg66 ), 'invalidParameter' );
 				$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
 
-				//$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $dossierpcg66_id ) ) ) );
-
 				$qd_dossierpcg66 = array(
 					'conditions' => array(
 						'Dossierpcg66.id' => $dossierpcg66_id
@@ -357,7 +352,6 @@
 									'fields' => array( 'prestations.personne_id' ),
 									'conditions' => array(
 										'prestations.natprest = \'RSA\'',
-//										'prestations.rolepers' => array( 'DEM', 'CJT' )
 									),
 									'contain' => false
 								)

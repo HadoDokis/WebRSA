@@ -264,7 +264,6 @@
 					$this->Entretien->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'entretiens','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
 				}
 				else {

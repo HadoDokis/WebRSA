@@ -176,17 +176,6 @@
 				$this->set( compact( 'traitementpcg66' ) );
 				$personne_id = Set::classicExtract( $traitementpcg66_id, 'Personnepcg66.personne_id' );
 			}
-			/*else if( $this->action == 'edit' ) {
-				$decisionpersonnepcg66_id = $id;
-				$decisionpersonnepcg66 = $this->Decisiontraitementpcg66->findById( $decisionpersonnepcg66_id, null, null, 1 );
-				$this->assert( !empty( $decisionpersonnepcg66 ), 'invalidParameter' );
-
-				$personnepcg66_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.personnepcg66_id' );
-				$personnepcg66 = $this->Decisiontraitementpcg66->Personnepcg66Situationpdo->Personnepcg66->findById( $personnepcg66_id, null, null, -1 );
-				$personne_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.personne_id' );
-				$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
-				$dossier_id = $this->Decisiontraitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->dossierId( $personne_id );;
-			}*/
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) ) );
 

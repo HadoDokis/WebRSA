@@ -84,26 +84,6 @@
 			),
 		);
 
-// 		public $hasAndBelongsToMany = array(
-// 			// Test liaison avec situationspdos
-// 			'Situationpdo' => array(
-// 				'className' => 'Situationpdo',
-// 				'joinTable' => 'modelestypescourrierspcgs66_situationspdos',
-// 				'foreignKey' => 'modeletypecourrierpcg66_id',
-// 				'associationForeignKey' => 'situationpdo_id',
-// 				'unique' => true,
-// 				'conditions' => '',
-// 				'fields' => '',
-// 				'order' => '',
-// 				'limit' => '',
-// 				'offset' => '',
-// 				'finderQuery' => '',
-// 				'deleteQuery' => '',
-// 				'insertQuery' => '',
-// 				'with' => 'Modeletypecourrierpcg66Situationpdo'
-// 			)
-// 		);
-
 		/**
 		 * Retourne la liste des modèles odt paramétrés pour le impressions de
 		 * cette classe.

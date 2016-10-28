@@ -118,23 +118,6 @@
 		*/
 
 		public function index() {
-//            $this->Contactpartenaire->Behaviors->attach( 'Occurences' );
-//            $querydata = $this->Contactpartenaire->qdOccurencesExists(
-//                array(
-//                    'fields' => array_merge(
-//                        $this->Contactpartenaire->fields(),
-//                        $this->Contactpartenaire->Partenaire->fields()
-//                    ),
-//                    'order' => array('Contactpartenaire.nom ASC')
-//                )
-//            );
-//            $this->paginate = $querydata;
-//            $contactspartenaires = $this->paginate( 'Contactpartenaire' );
-//            $this->_setOptions();
-//            $this->set( compact('contactspartenaires'));
-//
-//		}
-
             if( !empty( $this->request->data ) ) {
                 $this->Contactpartenaire->Behaviors->attach( 'Occurences' );
                 $querydata = $this->Contactpartenaire->search( $this->request->data );

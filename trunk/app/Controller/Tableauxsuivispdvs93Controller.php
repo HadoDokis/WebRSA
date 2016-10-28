@@ -786,7 +786,6 @@
 		 * @param string $action
 		 */
 		public function index( $action = null ) {
-			//$search = $this->_applyStructurereferente( $this->request->data );
 			$search = $this->request->data;
 			$this->_setOptions();
 			$this->_prepareFormData( $search );

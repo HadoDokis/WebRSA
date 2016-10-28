@@ -100,15 +100,6 @@
 				);
 
 				$return = $return && $this->Contratinsertion->WebrsaContratinsertion->updatePositionsCersById( $contratinsertion_id );
-
-// 				if( $contratinsertion['Contratinsertion']['positioncer'] == 'attvalidpart' ) {
-// 					$this->Contratinsertion->updateAllUnBound(
-// 						array( 'Contratinsertion.positioncer' => '\'attvalidpartpropopcg\'' ),
-// 						array(
-// 							'"Contratinsertion"."id"' => $contratinsertion_id
-// 						)
-// 					);
-// 				}
 			}
 			return $return;
 		}

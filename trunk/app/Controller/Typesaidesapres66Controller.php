@@ -130,19 +130,6 @@
             return $return;
         }
 
-
-//         public function index() {
-//
-// 			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
-// // 			debug( $this->Typeaideapre66->occurences() );
-// 			$queryData = array(
-// 				'Typeaideapre66' => array(
-// 					'order' => array( 'Themeapre66.name ASC', 'Typeaideapre66.name ASC' )
-// 				)
-// 			);
-//             $this->Default->index( $queryData );
-//         }
-
         public function index() {
 
             // Retour à la liste en cas d'annulation

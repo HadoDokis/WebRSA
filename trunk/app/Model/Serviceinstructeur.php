@@ -347,12 +347,6 @@
 			}
 		}
 
-		/**
-		*
-		*/
-
-		// 			$this->Serviceinstructeur->sqrechercheErrors( 'foo' );
-		// FIXME: criterespdos/index, criterespdos/nouvelles, criterespdos/exportcsv ($this->Criterepdo->listeDossierPDO, Criterepdo->search)
 		public function sqrechercheErrors( $condition ) {
 			$errors = array();
 

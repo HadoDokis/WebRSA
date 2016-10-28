@@ -139,11 +139,8 @@
 
 			$options[$this->modelClass]['descriptionpdo_id'] = $this->Traitementpcg66->Descriptionpdo->find('list');
 			$options[$this->modelClass]['situationpdo_id'] = $this->Traitementpcg66->Situationpdo->find('list');
-	// 			$options[$this->modelClass]['traitementtypepdo_id'] = $this->Traitementpcg66->Traitementtypepdo->find( 'list' );
 			$options[$this->modelClass]['listeDescription'] = $this->Traitementpcg66->Descriptionpdo->find('all', array('contain' => false));
 			$options[$this->modelClass]['compofoyerpcg66_id'] = $this->Traitementpcg66->Compofoyerpcg66->find('list');
-
-	// 			$options[$this->modelClass]['personnepcg66_situationpdo_id'] = $this->Traitementpcg66->Personnepcg66Situationpdo->find( 'list' );
 
 			$this->set(compact('options'));
 
@@ -254,7 +251,6 @@
 								'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => $i,
 								'Piecemodeletypecourrierpcg66.isactif' => '1'
 							),
-		// 							'fields' => array( 'Piecemodeletypecourrierpcg66.id', 'Piecemodeletypecourrierpcg66.isautrepiece' ),
 							'contain' => false
 						)
 					);
@@ -1159,37 +1155,6 @@
 			}
 
 			$this->redirect($this->referer());
-
-
-			/* @deprecated
-
-			$traitementpcg66 = $this->Traitementpcg66->find(
-					'first', array(
-				'fields' => array_merge(
-						$this->Traitementpcg66->fields(), $this->Traitementpcg66->Personnepcg66->fields(), $this->Traitementpcg66->Personnepcg66->Dossierpcg66->fields()
-				),
-				'conditions' => array(
-					'Traitementpcg66.id' => $id
-				),
-				'contain' => false,
-				'joins' => array(
-					$this->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
-					$this->Traitementpcg66->Personnepcg66->join('Dossierpcg66', array('type' => 'INNER')),
-				)
-					)
-			);
-			$typetraitementpcg = $traitementpcg66['Traitementpcg66']['typetraitement'];
-			$etatdossierpcg = $traitementpcg66['Dossierpcg66']['etatdossierpcg'];
-			$dossierpcg66_id = $traitementpcg66['Dossierpcg66']['id'];
-			if ($typetraitementpcg == 'documentarrive' && $etatdossierpcg == 'attinstrdocarrive') {
-				$this->Traitementpcg66->Personnepcg66->Dossierpcg66->id = $dossierpcg66_id;
-				$this->Traitementpcg66->Personnepcg66->Dossierpcg66->saveField('etatdossierpcg', 'attinstrattpiece');
-			}
-
-
-			$this->Default->delete($id);
-
-			 */
 		}
 
 		/**

@@ -186,8 +186,6 @@
 			$customQuery['fields'][] = $this->Propositioncui66->Fichiermodule->sqNbFichiersLies( $this->Propositioncui66, 'nombre' );
 
 			$this->WebrsaModelesLiesCuis66->index( $cui_id, $params, $customQuery );
-
-			//$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nombre' ),
 		}
 
 		/**

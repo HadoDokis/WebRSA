@@ -1134,11 +1134,8 @@
 				}
 			}
 
-			foreach( $results as $categorie1 => $data ) { // $categorie1 = sexe
-//				$return[$categorie1] = $empty;
-//				$return[$categorie1]['dont'] = array();
-
-				foreach( $data as $categorie2 => $data2 ) { // $categorie2 = 1
+			foreach( $results as $categorie1 => $data ) {
+				foreach( $data as $categorie2 => $data2 ) {
 					if( !isset( $return[$categorie1]['dont'][$categorie2] ) ) {
 						$return[$categorie1]['dont'][$categorie2] = $empty;
 					}

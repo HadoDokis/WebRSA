@@ -125,7 +125,6 @@
 			$this->out();
 			$this->_wait( 'Suppression ...' );
 			if( !empty( $idsASupprimer ) ) {
-//				$conditions = array( 'Pdf.id' => $idsASupprimer );
 				$count = count( $idsASupprimer );
 				$this->XProgressBar->start( $count );
 				for( $i = 0; $i < $count; $i++ ) {

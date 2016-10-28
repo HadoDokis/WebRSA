@@ -381,17 +381,6 @@
 				return true;
 			}
 			else {
-// 				foreach( $themeData as $key => $datas ) {
-// 					if ( !empty( $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] ) ) {
-// 						list( $typeorient_id, $structurereferente_id ) = explode( '_', $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] );
-//
-// 						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['typeorient_id'] = $typeorient_id;
-// 						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] = $structurereferente_id;
-//
-//
-// 					}
-// 				}
-
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore( $this->alias )}->saveAll( $themeData, array( 'atomic' => false ) ) && $success;
 				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),

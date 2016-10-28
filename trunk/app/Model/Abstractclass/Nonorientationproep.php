@@ -362,10 +362,7 @@
 						'Dossiercov58' => array(
 							'themecov58_id' => $themecov58['Themecov58']['id'],
 							'themecov58' => 'proposnonorientationsproscovs58',
-							'personne_id' => $dossier['personne_id']/*,
-							'typeorient_id' => $dossier['typeorient_id'],
-							'structurereferente_id' => $dossier['structurereferente_id'],
-							'orientstruct_id' => $dossier['orientstruct_id']*/
+							'personne_id' => $dossier['personne_id']
 						)
 					);
 					$this->Orientstruct->Propononorientationprocov58->Dossiercov58->create( $dossiercov58 );
@@ -551,17 +548,6 @@
 		public function saveDecisions( $data, $niveauDecision ) {
 			$success = true;
 			if ( isset( $data['Decision'.Inflector::underscore( $this->alias )] ) && !empty( $data['Decision'.Inflector::underscore( $this->alias )] ) ) {
-// 				foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
-// 					if ( isset( $values['structurereferente_id'] ) ) $structurereferente = explode( '_', $values['structurereferente_id'] );
-// 					if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
-// 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = $structurereferente[1];
-// 					}
-// 					else {
-// 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = null;
-// 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
-// 					}
-// 				}
-
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
 				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),

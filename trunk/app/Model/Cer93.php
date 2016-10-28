@@ -70,12 +70,6 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
-			// FIXME
-			/*'adresse' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmpty' )
-				)
-			),*/
 			'codepos' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' )
@@ -91,18 +85,6 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
-			/*'secteuracti_id' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			),
-			'metierexerce_id' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			),*/
 			'dureehebdo' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
@@ -115,12 +97,6 @@
 					'message' => 'Champ obligatoire',
 				)
 			),
-// 			'dureecdd' => array(
-// 				'notEmpty' => array(
-// 					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
-// 					'message' => 'Champ obligatoire',
-// 				)
-// 			),
 			'prevu' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' )

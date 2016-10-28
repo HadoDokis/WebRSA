@@ -81,22 +81,11 @@
 			'delete' => 'delete',
 		);
 
-//		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
-
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			$this->modelClass = 'Regressionorientationep'.Configure::read( 'Cg.departement' );
 			parent::beforeFilter();
 		}
-
-		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
 
 		/**
 		 * Suppression d'un dossier d'EP pour cette thématique dès lors que ce dossier ne possède pas

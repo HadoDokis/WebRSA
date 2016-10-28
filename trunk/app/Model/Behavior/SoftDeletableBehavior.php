@@ -247,7 +247,6 @@
 					}
 
 					if( is_string( $queryData['conditions'] ) ) {
-						//$queryData['conditions'] = $Db->name($model->alias) . '.' . $Db->name($this->__settings[$model->alias]['field']) . '<> 1 AND ' . $queryData['conditions'];
 						$modelName = $Db->name( $model->alias );
 						$fieldName = $Db->name( $this->__settings[$model->alias]['field'] );
 						$queryData['conditions'] = Set::merge(
@@ -255,7 +254,6 @@
 						);
 					}
 					else {
-						//$queryData['conditions'][$model->alias . '.' . $this->__settings[$model->alias]['field']] = '<> 1';
 						$modelName = $Db->name( $model->alias );
 						$fieldName = $Db->name( $this->__settings[$model->alias]['field'] );
 						$queryData['conditions'] = Set::merge(

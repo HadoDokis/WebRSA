@@ -373,25 +373,6 @@
 			else {
 				$formData[$this->alias]['personne_id'] = $personne_id;
 				$formData[$this->alias]['questionnaired1pdv93_id'] = $this->questionnairesd1pdv93Id( $personne_id );
-
-				/*// Lorsque l'allocataire possède un D1 sur l'année N-1, on force la date_validation au 31/12/N-1, sinon on prend la date du jour
-				$querydata = array(
-					'fields' => array( 'Questionnaired1pdv93.date_validation' ),
-					'contain' => false,
-					'conditions' => array(
-						'Questionnaired1pdv93.id' => $formData[$this->alias]['questionnaired1pdv93_id']
-					)
-				);
-				$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
-
-				$date_validation = Hash::get( $questionnaired1pdv93, 'Questionnaired1pdv93.date_validation' );
-				$year_validation = date( 'Y', strtotime( $date_validation ) );
-				if( $year_validation < date( 'Y' ) ) {
-					$date_validation = "{$year_validation}-12-31";
-				}
-				else {
-					$date_validation = date( 'Y-m-d' );
-				}*/
 				$formData[$this->alias]['date_validation'] = $this->_dateValidation( $formData[$this->alias]['questionnaired1pdv93_id'] );
 
 				// Lorsque l'allocataire ne possède pas encore de D2 et est soumis à droits et devoirs, on préremplit en maintien

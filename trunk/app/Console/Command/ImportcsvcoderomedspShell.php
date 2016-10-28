@@ -147,7 +147,6 @@
 						$coderomesecteurdsp66['Coderomesecteurdsp66']['code'] = $code;
 						$coderomesecteurdsp66['Coderomesecteurdsp66']['name'] = $name;
 						$this->Coderomesecteurdsp66->create( $coderomesecteurdsp66 );
-//						$success_secteurs = $this->Coderomesecteurdsp66->save() && $success_secteurs;
 
 
 						$success_save = $this->Coderomesecteurdsp66->save();

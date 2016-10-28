@@ -36,34 +36,7 @@
          * Associations "Has Many".
          * @var array
          */
-        public $hasMany = array(
-//            'Cui' => array(
-//				'className' => 'Cui',
-//				'foreignKey' => 'textmailcui66_id',
-//				'dependent' => false,
-//				'conditions' => '',
-//				'fields' => '',
-//				'order' => '',
-//				'limit' => '',
-//				'offset' => '',
-//				'exclusive' => '',
-//				'finderQuery' => '',
-//				'counterQuery' => ''
-//			),
-//            'Decisioncui66' => array(
-//				'className' => 'Decisioncui66',
-//				'foreignKey' => 'textmailcui66_id',
-//				'dependent' => false,
-//				'conditions' => '',
-//				'fields' => '',
-//				'order' => '',
-//				'limit' => '',
-//				'offset' => '',
-//				'exclusive' => '',
-//				'finderQuery' => '',
-//				'counterQuery' => ''
-//			)
-        );
+        public $hasMany = array();
 
 	}
 ?>

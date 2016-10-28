@@ -210,10 +210,7 @@
 		}
 
 		public function cataloguesromesv3() {
-			$links = array(
-				// TODO
-				//__d( 'cataloguesromesv3', '/Cataloguesromesv3/search/:heading' ) => array( 'controller' => 'cataloguesromesv3', 'action' => 'search' ),
-			);
+			$links = array();
 			$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
 			foreach( $Catalogueromev3->modelesParametrages as $modelName ) {
 				$tableName = Inflector::tableize( $modelName );

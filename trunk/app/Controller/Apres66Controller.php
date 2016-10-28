@@ -461,7 +461,7 @@
 				);
 				$referent = $this->{$this->modelClass}->Referent->find( 'first', $qd_referent );
 			}
-//             $referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
+
 			$this->set( 'referent', $referent );
 			$this->render( '/Apres/ajaxref', 'ajax' );
 		}
@@ -827,15 +827,6 @@
 				if( !empty( $Fraisdeplacement66 ) ) {
 					$success = $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->save() && $success;
 				}
-
-
-				/*
-				  $Modecontact = Hash::expand( Hash::filter( (array)Hash::flatten( $this->request->data['Modecontact'] ) ) );
-				  debug($Modecontact);
-				  die();
-				  if( !empty( $Modecontact ) ){
-				  $success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
-				  } */
 
 				// Tentative d'enregistrement des pièces liées à une APRE selon ne aide donnée
 				if( !empty( $this->request->data['Pieceaide66'] ) ) {

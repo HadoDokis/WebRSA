@@ -283,8 +283,7 @@
 					$modelName,
 					array(),
 					$fields,
-					false // FIXME
-					//!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
+					false
 				);
 
 				// A-t'on des enregistrements liés ?

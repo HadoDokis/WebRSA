@@ -241,17 +241,6 @@
 //			if( $typeapre == 'forfaitaire' ) {
 			$key = 'forfaitaire';
 			$modeleodt = 'APRE/apreforfaitaire.odt';
-			/* }
-			  else if( $typeapre == 'complementaire' && $dest == 'tiersprestataire' ) {
-			  $key = 'etatliquidatif_tiers';
-			  $modeleodt = 'APRE/Paiement/paiement_tiersprestataire.odt';
-			  $nomfichierpdf = sprintf( 'paiement_tiersprestataire-%s.pdf', date( 'Y-m-d' ) );
-			  }
-			  else if( $typeapre == 'complementaire' && $dest == 'beneficiaire' ) {
-			  $key = 'apreforfaitaire';
-			  $modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_beneficiaire.odt';
-			  $nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_beneficiaire-%s.pdf', date( 'Y-m-d' ) );
-			  } */
 
 			// Traductions
 			$Option = ClassRegistry::init( 'Option' );

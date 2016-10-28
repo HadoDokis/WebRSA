@@ -516,7 +516,7 @@
 //				$formData['Decisiondefautinsertionep66'][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['etape'] == $niveauDecision  /*&& !empty( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] )*/ ) {
+				if( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['etape'] == $niveauDecision ) {
 					$formData['Decisiondefautinsertionep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'], $formData['Decisiondefautinsertionep66'][$key]['referent_id'] ) );
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['typeorient_id'], $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] ) );
@@ -764,10 +764,6 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id /*AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/' )
-						/*'conditions' => array(
-							'Situationdossierrsa.dossier_id = Dossier.id',
-							'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' )
-						)*/
 					),
 					array(
 						'table'      => 'calculsdroitsrsa', // FIXME:
@@ -962,7 +958,6 @@
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->fields(),
-// 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->Permanence->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->fields(),
 					$this->Dossierep->Defautinsertionep66->Bilanparcours66->fields(),
 					array_words_replace(
@@ -994,7 +989,6 @@
 					),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-// 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) ),
 					array_words_replace(
@@ -1039,9 +1033,6 @@
 						$this->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
 						$this->Bilanparcours66->fields(),
 						$this->Bilanparcours66->Structurereferente->fields(),
-// 						$this->Bilanparcours66->Structurereferente->Permanence->fields(),
-// 						$this->Bilanparcours66->Serviceinstructeur->fields(),
-// 						$this->Bilanparcours66->User->fields(),
 						$this->Contratinsertion->fields(),
 						$this->Orientstruct->fields()
 					),
@@ -1056,9 +1047,6 @@
 						$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-// 						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
-// 						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
-// 						$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'recursive' => -1,
 					'conditions' => array(
@@ -1174,7 +1162,6 @@
 				array(
 					$this->join( 'Bilanparcours66' ),
 					$this->Bilanparcours66->join( 'Structurereferente' ),
-// 					$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					array_words_replace(
 						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
 						array(
@@ -1189,7 +1176,6 @@
 				array_merge(
 					$this->Bilanparcours66->fields(),
 					$this->Bilanparcours66->Structurereferente->fields(),
-// 					$this->Bilanparcours66->Structurereferente->Permanence->fields(),
 					array_words_replace(
 						$this->Bilanparcours66->User->fields(),
 						array(
@@ -1327,9 +1313,6 @@
 		* d'EP pour un certain niveau de décision. On revoie la chaîne vide car on
 		* n'est pas sensés imprimer de décision pour la commission.
 		*/
-// 		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
-// 			return '';
-// 		}
 		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
 			$modele = $this->alias;
 			$modeleDecisions = 'Decision'.Inflector::underscore( $this->alias );

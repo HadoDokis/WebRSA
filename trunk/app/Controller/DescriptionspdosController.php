@@ -95,9 +95,6 @@
             $this->paginate = $queryData;
 			$descriptionspdos = $this->paginate( $this->modelClass );
             $this->set( compact( 'descriptionspdos' ) );
-//			$this->Default->search(
-//				$this->request->data
-//			);
 		}
 
 		/**

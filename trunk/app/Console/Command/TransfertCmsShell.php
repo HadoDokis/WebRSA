@@ -109,7 +109,6 @@
 			if( !empty( $pdfs ) ) {
 				$this->XProgressBar->start( count( $pdfs ) );
 				foreach( $pdfs as $i => $pdf ) {
-//					$this->out( sprintf( "Traitement du document %s (%s %s)", $i + 1, $modele, $pdf['Pdf']['fk_value'] ) );
 					$progressBarAdditionalInfos = sprintf( "<info>Traitement du document %s (%s %s)</info>", $i + 1, $modele, $pdf['Pdf']['fk_value'] );
 					$this->XProgressBar->next( 1, $progressBarAdditionalInfos );
 					$cmsPath = "/{$modele}/{$pdf['Pdf']['fk_value']}.pdf";

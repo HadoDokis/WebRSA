@@ -129,12 +129,6 @@
 			if( !empty( $aros ) ) {
 				foreach( $aros as $aro ) {
 					$success = $success && $this->Acl->Aro->delete( $aro['Aro']['id'] );
-					/*$permissions_ids = Hash::extract( $aro, 'Aco.{n}.Permission.id' );
-					if( !empty( $permissions_ids ) ) {
-						$success = $success && $this->Acl->Aro->Permission->deleteAll(
-							array( 'Permission.id' => $permissions_ids )
-						);
-					}*/
 				}
 			}
 

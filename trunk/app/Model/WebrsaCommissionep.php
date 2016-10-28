@@ -1719,8 +1719,7 @@
 						$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->fields(),
 						$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->fields(),
 						$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Referent->fields(),
-						$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields()/*,
-						$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->Permanence->fields()*/
+						$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields()
 					),
 					'joins' => array(
 						$this->Commissionep->Passagecommissionep->Dossierep->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
@@ -1728,7 +1727,6 @@
 						$joinBilanparcours66,
 						$this->Commissionep->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Referent', array( 'type' => 'INNER' ) ),
 						$this->Commissionep->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-// 						$this->Commissionep->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'INNER' ) ),
 						$this->Commissionep->Passagecommissionep->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
 						$this->Commissionep->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
 						$this->Commissionep->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),

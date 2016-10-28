@@ -84,11 +84,6 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
-
-			/*$compteurs = array(
-				'Courrierpdo' => ClassRegistry::init( 'Courrierpdo' )->find( 'count' )
-			);
-			$this->set( compact( 'compteurs' ) );*/
 		}
 	}
 

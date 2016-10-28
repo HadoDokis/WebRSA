@@ -356,10 +356,6 @@
 							$success = $success && $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 								array( 'Contratinsertion.personne_id' => Hash::get( $data, "{$this->Bilanparcours66->alias}.personne_id" ) )
 							);
-							/*$success = $success && $this->Contratinsertion->updateAllUnBound(
-								array( 'Contratinsertion.positioncer' => "'attrenouv'" ),
-								array( 'Contratinsertion.id' => Hash::get( $vxContratinsertion, 'Contratinsertion.id' ) )
-							);*/
 						}
 					}
 				}
@@ -654,18 +650,6 @@
 						if( empty( $primaryKey ) ) {
 							$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->Bilanparcours66->alias}.personne_id" ) );
 							if( !empty( $vxContratinsertion ) ) {
-								/*$updatePositionCer = (
-									( Hash::get( $data, 'Bilanparcours66.proposition' ) == 'parcours' )
-									&& ( Hash::get( $data, 'Bilanparcours66.choixparcours' ) == 'maintien' )
-									&& in_array( Hash::get( $data, 'Bilanparcours66.avecep_typeorientprincipale_id' ), (array)Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' ) )
-								);
-
-								if( $updatePositionCer ) {
-									$success = $success && $this->Contratinsertion->updateAllUnBound(
-										array( 'Contratinsertion.positioncer' => "'bilanrealiseattenteeplparcours'" ),
-										array( 'Contratinsertion.id' => Hash::get( $vxContratinsertion, 'Contratinsertion.id' ) )
-									);
-								}*/
 								$success = $success && $this->Bilanparcours66->Contratinsertion->WebrsaContratinsertion->updatePositionsCersByConditions(
 									array( 'Contratinsertion.personne_id' => Hash::get( $data, "{$this->Bilanparcours66->alias}.personne_id" ) )
 								);

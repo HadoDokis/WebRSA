@@ -196,7 +196,6 @@
 			// Options du formulaire de recherche
 			$options = array(
 				'Foyer' => array( 'sitfam' => $this->Option->sitfam() ),
-// 				'Prestation' => array( 'rolepers' => ClassRegistry::init('Prestation')->enum('rolepers') ),
 				'Situationdossierrsa' => array( 'etatdosrsa' => ClassRegistry::init('Dossier')->enum('etatdosrsa') ),
 				'Adresse' => array( 'numcom' => $this->Gestionzonesgeos->listeCodesInsee() ),
 				'Gestionanomaliebdd' => array(
@@ -271,10 +270,7 @@
 
 			// Personnes posant problème au sein du foyer
 			$named = Hash::expand( $this->request->params['named'], '__' );
-			/*$touteerreur = Set::classicExtract( $params, 'Gestionanomaliebdd.touteerreur' );
-			$enerreur = Set::classicExtract( $named, 'Gestionanomaliebdd.enerreur' );
-			$sansprestation = Set::classicExtract( $named, 'Gestionanomaliebdd.sansprestation' );
-			$doublons = Set::classicExtract( $named, 'Gestionanomaliebdd.doublons' );*/
+
 			$methode = Set::classicExtract( $named, 'Gestionanomaliebdd.methode' );
 			$methode = ( empty( $methode ) ? 'normale' : $methode );
 
@@ -331,81 +327,6 @@
 			$problemes = $this->Dossier->Foyer->Personne->find( 'all', $querydata );
 
 			$this->set( compact( 'personnes', 'options', 'methodes', 'problemes', 'foyer' ) );
-
-			/*$named = Hash::expand( $this->request->params['named'], '__' );
-			$enerreur = Set::classicExtract( $named, 'Gestionanomaliebdd.enerreur' );
-			$sansprestation = Set::classicExtract( $named, 'Gestionanomaliebdd.sansprestation' );
-			$doublons = Set::classicExtract( $named, 'Gestionanomaliebdd.doublons' );
-			$methode = Set::classicExtract( $named, 'Gestionanomaliebdd.methode' );
-			$methode = ( empty( $methode ) ? 'normale' : $methode );
-
-			$conditions = array( 'Personne.foyer_id' => $foyer_id, 'OR' => array() );
-
-			if( $enerreur ) {
-				$sq = $this->Dossier->Foyer->Personne->Prestation->sq(
-					array(
-						'fields' => array( 'prestations.personne_id' ),
-						'alias' => 'prestations',
-						'contain' => false,
-						'conditions' => array(
-							'prestations.personne_id = Personne.id',
-							'prestations.natprest' => 'RSA',
-							'prestations.rolepers' => array( 'DEM', 'CJT' ),
-						)
-					)
-				);
-				$conditions['OR'][] = "Personne.id IN ( {$sq} )";
-			}
-
-			if( $sansprestation ) {
-				$sq = $this->Dossier->Foyer->Personne->Prestation->sq(
-					array(
-						'fields' => array( 'prestations.personne_id' ),
-						'alias' => 'prestations',
-						'contain' => false,
-						'conditions' => array(
-							'prestations.personne_id = Personne.id',
-							'prestations.natprest' => 'RSA'
-						)
-					)
-				);
-				$conditions['OR'][] = "Personne.id NOT IN ( {$sq} )";
-			}
-
-			if( $doublons ) {
-				$sq = $this->Gestionanomaliebdd->qdPersonnesEnDoublons(
-					$methode,
-					null,
-					'Personne.foyer_id'
-				);
-				$conditions['OR'][] = "Personne.id IN ( {$sq} )";
-			}
-
-			if( empty( $conditions['OR'] ) ) {
-				unset( $conditions['OR'] );
-			}
-
-			$querydata = array(
-				'fields' => Set::merge(
-					$this->Dossier->Foyer->Personne->fields(),
-					$this->Dossier->Foyer->Personne->Prestation->fields()
-				),
-				'conditions' => $conditions,
-				'contain' => array(
-					'Prestation'
-				),
-				'order' => array(
-					'Personne.dtnai ASC',
-					'Personne.nir ASC',
-					'Personne.nom ASC',
-					'Personne.prenom ASC',
-					'Personne.id DESC',
-				),
-			);
-
-			$personnes = $this->Dossier->Foyer->Personne->find( 'all', $querydata );
-
-			$this->set( compact( 'personnes', 'options', 'methode', 'methodes', 'prestationObligatoire', 'referer' ) );*/
 		}
 
 		// FIXME: UPDATE ou DELETE sur la table « contratsinsertion » viole la contrainte de clé étrangère « actionsinsertion_contratinsertion_id_fkey » de la table « actionsinsertion »
@@ -724,8 +645,6 @@
 							'Personne.id' => $personnes_id
 						),
 						'joins' => array(
-							// FIXME
-				// 			$this->Dossier->Foyer->Personne->{$linkedModelName}->join( 'Personne', array( 'type' => 'INNER' ) )
 							array(
 								'table' => 'personnes',
 								'alias' => 'Personne',
