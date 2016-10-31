@@ -8,10 +8,7 @@
 
 	$departement = Configure::read( 'Cg.departement' );
 ?>
-<h1><?php
-    echo $this->pageTitle;
-//    $this->set('title_for_layout', $this->pageTitle);
-?></h1>
+<h1><?php echo $this->pageTitle; ?></h1>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

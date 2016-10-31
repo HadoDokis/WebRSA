@@ -134,8 +134,7 @@
 
 			$permissionForm = $this->Permissions->checkDossier( $this->request->params['controller'], 'ajaxfileupload', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) );
 
-//			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId ) );
-			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId/**/ ) );
+			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId ) );
 			if( $permissionForm ) {
 				$return .= '<fieldset><legend>'.required( $this->Default2->label( $fieldName ) ).'</legend>';
 				$return .= $this->Form->input( $fieldName, array( 'type' => 'radio', 'options' => $radioOptions, 'legend' => false, 'default' => $haspiecejointeDefault ) );

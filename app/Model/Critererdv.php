@@ -60,7 +60,6 @@
 			}
 			/// Statut RDV
 			if( !empty( $statutrdv_id ) ) {
-//				$conditions[] = 'Rendezvous.statutrdv_id = \''.Sanitize::clean( $statutrdv_id, array( 'encode' => false ) ).'\'';
                 $conditions[] = '( Rendezvous.statutrdv_id IN ( \''.implode( '\', \'', $statutrdv_id ).'\' ) )';
 			}
 

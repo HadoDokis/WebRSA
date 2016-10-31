@@ -88,16 +88,6 @@
 						'schema' => $model->schema(),
 					);
 
-					// MySQL enum ? dans un projet qui utilise PostgreSQL!
-//					foreach( $this->_modelInfos[$modelName]['schema'] as $field => $infos ) {
-//						if( strstr( $infos['type'], 'enum(' ) ) {
-//							$this->_modelInfos[$modelName]['schema'][$field]['type'] = 'string';
-//							if( preg_match_all( "/'([^']+)'/", $infos['type'], $matches ) ) {
-//								$this->_modelInfos[$modelName]['schema'][$field]['options'] = $matches[1];
-//							}
-//						}
-//					}
-
 					Cache::write( $cacheKey, $this->_modelInfos[$modelName] );
 				}
 			}

@@ -20,12 +20,6 @@
 	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
 	echo $this->Allocataires->blocAllocataire( array( 'options' => $options ) );
 
-	// Début spécificités fiche de prescription
-	/*echo $this->Xform->input( 'Search.Ficheprescription93.exists', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
-	echo '<fieldset id="specificites_fichesprescriptions93"><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93' ).'</legend>';
-	echo '</fieldset>';*/
-	// Fin spécificités fiche de prescription
-
 	echo $this->Allocataires->blocReferentparcours( array( 'options' => $options ) );
 	echo $this->Allocataires->blocPagination( array( 'options' => $options ) );
 	echo $this->Allocataires->blocScript( array( 'options' => $options ) );

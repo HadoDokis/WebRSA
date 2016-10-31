@@ -63,8 +63,6 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
             echo $this->Xform->input('Search.Canton.canton', array('label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true));
         }
 
-//                 echo $this->Search->etatDossierPCG66( $etatdossierpcg, 'Search' );
-// debug($options);
         echo $this->Search->multipleCheckboxChoice($options['Dossierpcg66']['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg');
 
         echo $this->Xform->input( 'Search.Dossierpcg66.poledossierpcg66_id', array('label' => __d('dossierpcg66', 'Dossierpcg66.poledossierpcg66_id'), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $polesdossierspcgs66, 'empty' => false) );

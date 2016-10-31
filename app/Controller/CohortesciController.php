@@ -228,20 +228,6 @@
 		protected function _index( $statutValidation = null ) {
 			$this->assert( !empty( $statutValidation ), 'invalidParameter' );
 
-			/*$personne_suivi = $this->Dossier->Foyer->Personne->Contratinsertion->find(
-				'list',
-				array(
-					'fields' => array(
-						'Contratinsertion.pers_charg_suivi',
-						'Contratinsertion.pers_charg_suivi'
-					),
-					'order' => 'Contratinsertion.pers_charg_suivi ASC',
-					'group' => 'Contratinsertion.pers_charg_suivi',
-				)
-			);
-
-			$this->set( 'personne_suivi', $personne_suivi );*/
-
 			// Un formulaire a été envoyé.
 			if( !empty( $this->request->data ) ) {
 				// On a renvoyé  le formulaire de la cohorte

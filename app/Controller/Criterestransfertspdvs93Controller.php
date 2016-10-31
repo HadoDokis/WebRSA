@@ -188,21 +188,6 @@
 
 			$this->set( compact( 'results', 'options' ) );
 			$this->layout = null;
-
-			/*$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
-			$query = $this->Demenagementhorsdpt->search( $search );
-			$query = $this->_completeQuery( $query );
-			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
-			unset( $query['limit'] );
-
-			$results = $this->Personne->find( 'all', $query );
-			$options = Hash::merge(
-				$this->Allocataires->options(),
-				$this->Demenagementhorsdpt->options( array( 'allocataire' => false ) )
-			);
-
-			$this->set( compact( 'results', 'options' ) );
-			$this->layout = null;*/
 		}
 	}
 ?>

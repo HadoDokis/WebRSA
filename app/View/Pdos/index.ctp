@@ -37,18 +37,7 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-				/*echo $this->Xhtml->tableCells(
-					array(
-						h( 'Liste des courriers pour un traitement de PDOs' ),
-						$this->Xhtml->viewLink(
-							'Voir la table',
-							array( 'controller' => 'courrierspdos', 'action' => 'index' )
-						)
-					),
-					array( 'class' => 'odd' ),
-					array( 'class' => 'even' )
-				);*/
-                                
+
 				echo $this->Xhtml->tableCells(
 					array(
 						h( 'Origine PDOs' ),
@@ -112,7 +101,7 @@
 						array( 'class' => 'even' )
 					);
 				}
-				
+
 				echo $this->Xhtml->tableCells(
 					array(
 						h( 'Situation PDOs' ),
@@ -175,7 +164,7 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-				
+
 				if ( Configure::read( 'Cg.departement' ) == 66 ) {
 					echo $this->Xhtml->tableCells(
 						array(
@@ -190,7 +179,7 @@
 						array( 'class' => 'even' )
 					);
 				}
-				
+
 				echo $this->Xhtml->tableCells(
 					array(
 						h( 'Zones supplémentaires pour les courriers de traitements PDOs' ),

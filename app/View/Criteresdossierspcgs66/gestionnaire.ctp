@@ -61,11 +61,6 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
     echo '<fieldset class="col2 noborder">';
     echo $this->Xform->input('Traitementpcg66.statutpdo_id', array('label' => 'Statut concernant la personne', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $statutpersonnepcg66, 'empty' => false));
     echo '</fieldset>';
-//                echo $this->Form->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ) );
-//                echo $this->Form->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut concernant la personne', 'type' => 'select', 'options' => $statutpersonnepcg66, 'empty' => true ) );
-
-
-
     echo $this->Default2->subform(
             array(
                 'Dossierpcg66.dossierechu' => array('label' => 'Dossier échu', 'type' => 'checkbox')
@@ -241,14 +236,13 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
 								</tr>
 							</tbody>
 						</table>';
-//debug( $criteredossierpcg66 );
             echo $this->Xhtml->tableCells(
                     array(
                 h(Set::classicExtract($criteredossierpcg66, 'Dossier.numdemrsa')),
                 $personnesConcernees,
                 h(Set::enum(Set::classicExtract($criteredossierpcg66, 'Dossierpcg66.originepdo_id'), $originepdo)),
                 h(Set::enum(Set::classicExtract($criteredossierpcg66, 'Dossierpcg66.typepdo_id'), $typepdo)),
-                $echeances, //h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.dateecheance' ) ) ),
+                $echeances,
                 h($infoGestionnaire),
                 h($criteredossierpcg66['Dossierpcg66']['nbpropositions']),
                 h($criteredossierpcg66['Personnepcg66']['nbtraitements']),

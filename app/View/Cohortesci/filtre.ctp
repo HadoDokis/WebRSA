@@ -78,7 +78,6 @@
 	</fieldset>
 
 	<?php
-//		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Contratinsertion' );
         echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 		echo $this->Search->paginationNombretotal( 'Search.Contratinsertion.nombre_total' );
 		echo $this->Search->observeDisableFormOnSubmit( 'Search' );

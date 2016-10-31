@@ -11,11 +11,6 @@
 		'Situationpdo.isactif'
 	);
 
-// 	if ( Configure::read( 'Cg.departement' ) == 66 ) {
-// 		$fields['Situationpdo.nc'] = array( 'type' => 'boolean' );
-// 		$fields['Situationpdo.nr'] = array( 'type' => 'boolean' );
-// 	}
-
 	echo $this->Default2->index(
 		$situationspdos,
 		$fields,

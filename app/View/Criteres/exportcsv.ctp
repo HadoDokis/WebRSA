@@ -106,8 +106,7 @@
 			date_short( Hash::get( $orient, 'Orientstruct.date_valid' ) ),
 			Hash::get( $orient, 'Structurereferente.lib_struc' ),
 			Hash::get( $orient, 'Orientstruct.statut_orient' ),
-			$toppersdrodevorsa/*,
-			Set::enum( Hash::get( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )*/
+			$toppersdrodevorsa
 		);
 
 		if( $reorientationEp ) {

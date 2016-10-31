@@ -104,13 +104,12 @@
 									nonorientes66.personne_id = Personne.id
 						)';
 
-// 					$conditions['NOT'] = array( 'Historiqueetatpe.etat' => 'inscription' ); // 1117
 					$conditions[] = array(
 						'OR' => array(
 							'Historiqueetatpe.id IS NULL',
 							'NOT' => array( 'Historiqueetatpe.etat' => 'inscription' )
 						)
-					); // 7642
+					);
 				}
 				else if( $statutNonoriente == 'Nonoriente::notisemploi' ) {
 					$conditions[] = 'Personne.id IN (

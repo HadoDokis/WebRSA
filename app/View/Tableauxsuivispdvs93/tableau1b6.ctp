@@ -7,7 +7,6 @@
 			$this->Xhtml->tableHeaders(
 				array(
 					__d( $domain, 'Tableau1b6.name' ),
-//					__d( $domain, 'Tableau1b6.theme' ),
 					__d( $domain, 'Tableau1b6.count_personnes_prevues' ),
 					__d( $domain, 'Tableau1b6.count_invitations' ),
 					__d( $domain, 'Tableau1b6.count_seances' ),
@@ -21,7 +20,6 @@
 		foreach( $results as $result ) {
 			$cells[] = array(
 				array( h( Hash::get( $result, 'Tableau1b6.name' ) ), array( 'class' => 'name' ) ),
-//				array( h( Hash::get( $result, 'Tableau1b6.theme' ) ), array( 'class' => 'theme' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_personnes_prevues" ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_invitations" ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_seances" ) ), array( 'class' => 'integer number' ) ),

@@ -31,7 +31,6 @@
 			value( $struct, Set::classicExtract( $contrat, 'Contratinsertion.structurereferente_id' ) ),
 			Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.dd_ci' ) ),
-			//Set::enum( Set::extract( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 ),
 			value( $duree_engag, Hash::get( $contrat, 'Contratinsertion.duree_engag' ) ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.df_ci' ) ),
 			Set::classicExtract( $decision_ci, Set::classicExtract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.datevalidation_ci' ) ),

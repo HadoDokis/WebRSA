@@ -40,8 +40,7 @@
 
 		echo $this->Xform->create( null,
 			array(
-				'id' => 'Sanctionep58CohorteRadiespeCohorte',
-//				'url' => Router::url( array( 'controller' => $controller, 'action' => $action ), true )
+				'id' => 'Sanctionep58CohorteRadiespeCohorte'
 			)
 		);
 

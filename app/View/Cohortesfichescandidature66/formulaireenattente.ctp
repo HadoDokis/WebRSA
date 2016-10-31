@@ -80,11 +80,6 @@
 
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.infocomplementaire', array( 'label' => false, 'type' => 'textarea', 'value' => $ficheenattente['ActioncandidatPersonne']['infocomplementaire'] ) ),
 //
-//                         $this->Form->input( 'Aideapre66.'.$index.'.motifrejetequipe', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $ficheenattente['Aideapre66']['motifrejetequipe'] ) ),
-//
-//                         $this->Form->input( 'Aideapre66.'.$index.'.datemontantaccorde', array( 'label' => false, /*'empty' => true,*/  'type' => 'date', 'dateFormat' => 'DMY', 'selected' => $ficheenattente['Aideapre66']['proposition_datemontantaccorde'] ) ),
-
-
 						$this->Xhtml->viewLink(
 							'Voir le contrat « '.$title.' »',
 							array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $ficheenattente['ActioncandidatPersonne']['personne_id'] )
