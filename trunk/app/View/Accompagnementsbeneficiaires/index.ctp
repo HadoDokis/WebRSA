@@ -856,12 +856,13 @@
 						'title' => 'Télécharger le fichier lié'
 					),
 					'/#Fichiermodule.controller#/#Fichiermodule.view_action#/#Fichiermodule.fk_value#' => array(
-						'class' => 'view',
+						'class' => 'view external',
 						'disabled' => 'in_array( "#Fichiermodule.modele#", array( "PersonneReferent", "Orientstruct" ) )',
 						'msgid' => 'Voir',
 						'title' => 'Voir l\'enregistrement auquel le fichier est lié'
 					),
 					'/#Fichiermodule.controller#/filelink/#Fichiermodule.fk_value#' => array(
+						'class' => 'external',
 						'msgid' => 'Liste',
 						'title' => 'Liste des fichiers liés'
 					)
