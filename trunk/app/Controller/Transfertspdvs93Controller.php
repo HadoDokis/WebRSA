@@ -39,7 +39,9 @@
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'search',
-					'cohorte_atransferer',
+					'cohorte_atransferer' => array(
+						'filter' => 'Search'
+					),
 				),
 			),
 		);
