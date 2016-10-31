@@ -237,6 +237,7 @@
 		 * Test de la méthode InsertionsBeneficiairesComponent::typesorients()
 		 *
 		 * @covers InsertionsBeneficiairesComponent::typesorients
+		 * @covers InsertionsBeneficiairesComponent::_typesorients
 		 */
 		public function testTypesorientsCg93() {
 			Configure::write( 'with_parentid', false );
@@ -277,6 +278,7 @@
 		 * pour le CG 66 lorsque l'utilisateur est un "externe_ci".
 		 *
 		 * @covers InsertionsBeneficiairesComponent::typesorients
+		 * @covers InsertionsBeneficiairesComponent::_typesorients
 		 */
 		public function testTypesorientsCg66() {
 			Configure::write( 'Cg.departement', 66 );
@@ -321,6 +323,7 @@
 		 * pour le CG 976, with_parentid.
 		 *
 		 * @covers InsertionsBeneficiairesComponent::typesorients
+		 * @covers InsertionsBeneficiairesComponent::_typesorients
 		 */
 		public function testTypesorientsWithParentId976() {
 			Configure::write( 'Cg.departement', 976 );
@@ -349,6 +352,7 @@
 		 * pas un "externe_ci".
 		 *
 		 * @covers InsertionsBeneficiairesComponent::structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_structuresreferentes
 		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testStructuresreferentes() {
@@ -408,6 +412,7 @@
 		 * pour le CG 66 lorsque l'utilisateur est un "externe_ci".
 		 *
 		 * @covers InsertionsBeneficiairesComponent::structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_structuresreferentes
 		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testStructuresreferentesExterneCi66() {
@@ -427,6 +432,7 @@
 		 * lorsqu'une valeur erronée est envoyée dans la clé "type".
 		 *
 		 * @covers InsertionsBeneficiairesComponent::structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_structuresreferentes
 		 * @expectedException RuntimeException
 		 */
 		public function testStructuresreferentesUnknownType() {
@@ -438,6 +444,7 @@
 		 * pour tous les CG, lorsque l'utilisateur n'est pas un "externe_ci".
 		 *
 		 * @covers InsertionsBeneficiairesComponent::referents
+		 * @covers InsertionsBeneficiairesComponent::_referents
 		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testReferents() {
@@ -499,6 +506,7 @@
 		 * pour le CG 93 lorsque l'utilisateur est un "externe_ci".
 		 *
 		 * @covers InsertionsBeneficiairesComponent::referents
+		 * @covers InsertionsBeneficiairesComponent::_referents
 		 * @covers InsertionsBeneficiairesComponent::_sqStructurereferenteZonesgeographiques93
 		 */
 		public function testReferentsExterneCi93() {
@@ -519,6 +527,7 @@
 		 * valeur erronée est envoyée dans la clé "type".
 		 *
 		 * @covers InsertionsBeneficiairesComponent::referents
+		 * @covers InsertionsBeneficiairesComponent::_referents
 		 * @expectedException RuntimeException
 		 */
 		public function testReferentsUnknownType() {
@@ -529,6 +538,8 @@
 		 * Test de la méthode InsertionsBeneficiairesComponent::completeOptions()
 		 *
 		 * @covers InsertionsBeneficiairesComponent::completeOptions
+		 * @covers InsertionsBeneficiairesComponent::_structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_referents
 		 */
 		public function testCompleteOptions() {
 			$result = $this->Controller->InsertionsBeneficiaires->completeOptions(
@@ -579,9 +590,82 @@
 
 		/**
 		 * Test de la méthode InsertionsBeneficiairesComponent::completeOptions()
+		 *
+		 * @covers InsertionsBeneficiairesComponent::completeOptions
+		 * @covers InsertionsBeneficiairesComponent::_structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_referents
+		 */
+		public function testCompleteOptionsCompleteArray() {
+			CakeTestSession::write( 'Auth.User.type', 'externe_cpdv' );
+			CakeTestSession::write( 'Auth.User.structurereferente_id', 2 );
+
+			$result = $this->Controller->InsertionsBeneficiaires->completeOptions(
+				array(
+					'typeorient_id' => array (
+						1 => 'Socioprofessionnelle',
+						2 => 'Social'
+					),
+					'structurereferente_id' => array(
+						'Socioprofessionnelle' => array(
+							3 => '« Projet de Ville RSA »-Saint Denis-Objectif Emploi',
+						),
+						'Social' => array(
+							2 => 'ADEPT',
+						)
+					),
+					'referent_id' => array(
+						'2_3' => 'MME Nom Prénom',
+					)
+				),
+				array(
+					'typeorient_id' => 1,
+					'structurereferente_id' => 1,
+					'referent_id' => 1
+				),
+				array(
+					'typesorients' => array(),
+					'structuresreferentes' => array(
+						'path' => 'structurereferente_id',
+						'type' => 'optgroup',
+						'prefix' => false
+					),
+					'referents' => array(
+						'path' => 'referent_id',
+						'type' => 'list',
+						'prefix' => true
+					)
+				)
+			);
+			$expected = array(
+				'typeorient_id' => array(
+					1 => 'Socioprofessionnelle',
+					2 => 'Social'
+				),
+				'structurereferente_id' => array(
+					'Socioprofessionnelle' => array(
+						1 => '« Projet de Ville RSA d\'Aubervilliers»',
+						3 => '« Projet de Ville RSA »-Saint Denis-Objectif Emploi',
+					),
+					'Social' => array(
+						2 => 'ADEPT'
+					)
+				),
+				'referent_id' => array(
+					'1_1' => 'MR Dupont Martin',
+					'2_3' => 'MME Nom Prénom'
+				)
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode InsertionsBeneficiairesComponent::completeOptions()
 		 * pour le CG 976, with_parentid.
 		 *
 		 * @covers InsertionsBeneficiairesComponent::completeOptions
+		 * @covers InsertionsBeneficiairesComponent::_typesorients
+		 * @covers InsertionsBeneficiairesComponent::_structuresreferentes
+		 * @covers InsertionsBeneficiairesComponent::_referents
 		 */
 		public function testCompleteOptionsCg976WithParentid() {
 			Configure::write( 'Cg.departement', 976 );

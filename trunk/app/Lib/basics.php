@@ -1427,4 +1427,37 @@
 			return (string)$interval_string;
 		}
 	}
+
+	/**
+	 * Complète les valeurs de $array1 avec les valeurs de $array2, de manière
+	 * récursive, sans renumérotation des clés.
+	 * Si une des (sous-)clés de array1 n'est pas un array, alors il ne sera pas
+	 * complété, meme si la (sous-)clé corespondante d'array2 est un array.
+	 *
+	 * @param array $array1 L'array à compléter
+	 * @param array $array2 L'array permettant de compléter l'array1
+	 * @return array
+	 */
+	function array_complete_recursive( array $array1, array $array2 ) {
+		foreach( $array2 as $key => $value ) {
+			if( false === is_array( $value ) ) {
+				if( false === array_key_exists( $key, $array1 ) ) {
+					$array1[$key] = $value;
+				}
+			}
+			else {
+				$exists = array_key_exists( $key, $array1 );
+				$isArray = $exists && is_array( $array1[$key] );
+
+				if( false === $exists || true === $isArray ) {
+					$array1[$key] = array_complete_recursive(
+						true === $exists ? $array1[$key] : array(),
+						$value
+					);
+				}
+			}
+		}
+
+		return $array1;
+	}
 ?>

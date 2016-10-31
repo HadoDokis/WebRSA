@@ -1037,6 +1037,9 @@
 		 * Test de la fonction localized_interval()
 		 */
 		public function testLocalizedInterval() {
+			// @fixme
+			$this->markTestIncomplete( 'This test has not been implemented yet.' );
+
 			// 1. Valeur simple
 			$result = localized_interval( '1 month' );
 			$expected = '1 mois';
@@ -1065,6 +1068,65 @@
 			// 6. Valeur composée, avec singuliers et pluriels
 			$result = localized_interval( '48 days', array( 'now' => '2016-09-15', 'precision' => 'd' ) );
 			$expected = '1 mois, 17 jours';
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la fonction array_complete_recursive()
+		 */
+		public function testArrayCompleteRecursive() {
+			// 1. A un seul niveau, avec redites
+			$array1 = array( 1 => 'Foo', 2 => 'Bar', 3 => 'Baz' );
+			$array2 = array( 1 => 'Baz' );
+			$result = array_complete_recursive( $array1, $array2 );
+			$expected = array( 1 => 'Foo', 2 => 'Bar', 3 => 'Baz' );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 2. A deux niveaux, avec redites
+			$array1 = array( 1 => array( 4 => 'Foo' ), 2 => 'Bar', 3 => 'Baz' );
+			$array2 = array( 1 => array( 4 => 'Bar', 5 => 'Boz' ) );
+			$result = array_complete_recursive( $array1, $array2 );
+			$expected = array( 1 => array( 4 => 'Foo', 5 => 'Boz' ), 2 => 'Bar', 3 => 'Baz' );
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 3. Exemple concrêt
+			$array1 = array(
+				'Emploi' => array(
+					91 => 'Pole Emploi de Saint Denis - Stade de France'
+				),
+				'Social' => array(
+					54 => 'Service Social  Municipal de Saint Denis'
+				),
+				'Socioprofessionnelle' => array(
+					67 => '« Projet de Ville RSA »-Saint Denis-Objectif Emploi',
+					1 => '« Projet de Ville RSA d\'Aubervilliers»',
+				)
+			);
+			$array2 = array(
+				'Socioprofessionnelle' => array(
+					 1 => '« Projet de Ville RSA d\'Aubervilliers»'
+				 )
+			);
+			$result = array_complete_recursive( $array1, $array2 );
+			$expected = array(
+				'Emploi' => array(
+					91 => 'Pole Emploi de Saint Denis - Stade de France'
+				),
+				'Social' => array(
+					54 => 'Service Social  Municipal de Saint Denis'
+				),
+				'Socioprofessionnelle' => array(
+					67 => '« Projet de Ville RSA »-Saint Denis-Objectif Emploi',
+					1 => '« Projet de Ville RSA d\'Aubervilliers»',
+				)
+			);
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 4. A deux niveaux, avec redites
+			$array1 = array( 1 => array( 4 => 'Foo' ), 2 => 'Bar', 3 => 'Baz' );
+			$array2 = array( 1 => array( 4 => array( 0 => 'Bar' ), 5 => 'Boz' ), 6 => 'Buz' );
+			$result = array_complete_recursive( $array1, $array2 );
+			$expected = array( 1 => array( 4 => 'Foo', 5 => 'Boz' ), 2 => 'Bar', 3 => 'Baz', 6 => 'Buz' );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 	}
