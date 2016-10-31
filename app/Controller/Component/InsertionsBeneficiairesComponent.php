@@ -152,6 +152,10 @@
 		 * Retourne la liste des types d'oriention.
 		 * Mise en cache dans la session de l'utilisateur.
 		 *
+		 * Appelle la méthode InsertionsBeneficiairesComponent::_typesorients
+		 * en ajoutant les conditions implicites suivant le département et
+		 * l'utilisateur connecté.
+		 *
 		 * Options par défaut
 		 * <pre>
 		 * array(
@@ -166,6 +170,7 @@
 		 *
 		 * @todo Typeorient->listOptions() -> -9 requêtes (max, en debug), -5 sinon
 		 *
+		 * @see InsertionsBeneficiairesComponent::_typesorients()
 		 * @see options()
 		 *
 		 * @param array $options La clé conditions permet de spécifier ou
@@ -197,6 +202,42 @@
                );
                 $options['conditions'][] = "Typeorient.id IN ( {$sq} )";
             }
+
+			return $this->_typesorients( $options );
+		}
+
+        /**
+		 * Retourne la liste des types d'oriention.
+		 * Mise en cache dans la session de l'utilisateur.
+		 *
+		 * Options par défaut
+		 * <pre>
+		 * array(
+		 * 	'conditions' => array(
+		 *		'Typeorient.actif' => 'O'
+		 *	),
+		 * 	'empty' => false,
+		 * 	'cache' => true,
+		 *	'with_parentid' => null
+		 * );
+		 * </pre>
+		 *
+		 * @todo Typeorient->listOptions() -> -9 requêtes (max, en debug), -5 sinon
+		 *
+		 * @see options()
+		 *
+		 * @param array $options La clé conditions permet de spécifier ou
+		 *	de surcharger les conditions, la clé empty permet de spécifier si
+		 *	l'on veut une entrée dont la clé sera 0 et la valeur 'Non orienté',
+		 *	la clé with_parentid permet de surcharger la valeur lue par
+		 *	Configure::read( 'with_parentid' ).
+		 * @return array
+		 */
+		protected function _typesorients( array $options = array() ) {
+			$Controller = $this->_Collection->getController();
+			$Controller->loadModel( 'Structurereferente' );
+
+			$options = $this->options( 'typesorients', $options );
 
 			$sessionKey = $this->sessionKey( __FUNCTION__, $options['conditions'] );
 			$results = $this->Session->read( $sessionKey );
@@ -280,6 +321,10 @@
 		 * select avec le type d'orientation) liées à un type d'oientation actif.
 		 * Mise en cache dans la session de l'utilisateur.
 		 *
+		 * Appelle la méthode InsertionsBeneficiairesComponent::_structuresreferentes
+		 * en ajoutant les conditions implicites suivant le département et
+		 * l'utilisateur connecté.
+		 *
 		 * Options par défaut
 		 * <pre>
 		 * array(
@@ -293,11 +338,12 @@
 		 * );
 		 * </pre>
 		 *
+		 * @see InsertionsBeneficiairesComponent::_structuresreferentes()
+		 *
 		 * @param array $options
 		 * @return array
 		 */
 		public function structuresreferentes( $options = array( ) ) {
-			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 			$options = $this->options( __FUNCTION__, $options );
 
@@ -308,6 +354,37 @@
 				$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 				$options['conditions']['Structurereferente.id'] = $structurereferente_id;
 			}
+
+			return $this->_structuresreferentes( $options );
+		}
+
+		/**
+		 * Retourne la liste des structures référentes actives (pour un dependant
+		 * select avec le type d'orientation) liées à un type d'oientation actif.
+		 * Mise en cache dans la session de l'utilisateur.
+		 *
+		 * Options par défaut
+		 * <pre>
+		 * array(
+		 * 	'conditions' => array(
+		 *		'Typeorient.actif' => 'O',
+		 *		'Structurereferente.actif' => 'O'
+		 *	),
+		 * 	'prefix' => true,
+		 * 	'type' => 'list',
+		 * 	'cache' => true
+		 * );
+		 * </pre>
+		 *
+		 * @see InsertionsBeneficiairesComponent::_structuresreferentes()
+		 *
+		 * @param array $options
+		 * @return array
+		 * @throws RuntimeException
+		 */
+		protected function _structuresreferentes( $options = array( ) ) {
+			$Controller = $this->_Collection->getController();
+			$options = $this->options( 'structuresreferentes', $options );
 
 			$sessionKey = $this->sessionKey( __FUNCTION__, $options['conditions'] );
 			$results = $this->Session->read( $sessionKey );
@@ -403,6 +480,10 @@
 		 * un type d'oientation actif.
 		 * Mise en cache dans la session de l'utilisateur.
 		 *
+		 * Appelle la méthode InsertionsBeneficiairesComponent::_referents
+		 * en ajoutant les conditions implicites suivant le département et
+		 * l'utilisateur connecté.
+		 *
 		 * <pre>
 		 * array(
 		 * 	'conditions' => array(
@@ -418,17 +499,52 @@
 		 *
 		 * @todo Referent::listOptions() -> actif, prefix
 		 *
+		 * @see InsertionsBeneficiairesComponent::_referents()
+		 *
 		 * @param array $options
 		 * @return array
 		 */
 		public function referents( $options = array() ) {
-			$Controller = $this->_Collection->getController();
 			$departement = (int)Configure::read( 'Cg.departement' );
 			$options = $this->options( __FUNCTION__, $options );
 
 			if( $departement === 93 && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
 				$options['conditions'][] = $this->_sqStructurereferenteZonesgeographiques93();
 			}
+
+			return $this->_referents( $options );
+		}
+
+		/**
+		 * Retourne la liste des référents actifs (pour un dependant select avec
+		 * la structure référente) liés à une structure référente active, liée à
+		 * un type d'oientation actif.
+		 * Mise en cache dans la session de l'utilisateur.
+		 *
+		 * <pre>
+		 * array(
+		 * 	'conditions' => array(
+		 *		'Typeorient.actif' => 'O',
+		 *		'Structurereferente.actif' => 'O',
+		 *		'Referent.actif' => 'O'
+		 *	),
+		 * 	'prefix' => true,
+		 * 	'type' => 'list',
+		 * 	'cache' => true
+		 * );
+		 * </pre>
+		 *
+		 * @todo Referent::listOptions() -> actif, prefix
+		 *
+		 * @see InsertionsBeneficiairesComponent::_referents()
+		 *
+		 * @param array $options
+		 * @return array
+		 * @throws RuntimeException
+		 */
+		protected function _referents( $options = array() ) {
+			$Controller = $this->_Collection->getController();
+			$options = $this->options( 'referents', $options );
 
 			$sessionKey = $this->sessionKey( __FUNCTION__, $options['conditions'] );
 			$results = $this->Session->read( $sessionKey );
@@ -540,8 +656,11 @@
 		 * );
 		 * </pre>
 		 *
-		 * @see InsertionsBeneficiairesComponent::options qui sera utilisée pour
+		 * @see InsertionsBeneficiairesComponent::options() qui sera utilisée pour
 		 * les autres paramètres.
+		 * @see InsertionsBeneficiairesComponent::_typesorients()
+		 * @see InsertionsBeneficiairesComponent::_structuresreferentes()
+		 * @see InsertionsBeneficiairesComponent::_referents()
 		 *
 		 * @param array $options Les options qui seront envoyées à la vue
 		 * @param array $data L'enregistrement en cours de modification
@@ -603,8 +722,14 @@
 								)
 							);
 						}
-						$results = $this->{$method}( $methodParams );
-						$options[$methodParams['path']] = (array)Hash::get( $options, $methodParams['path'] ) + (array)$results;
+
+						$realMethod = '_'.$method;
+						$results = $this->{$realMethod}( $methodParams );
+
+						$options[$methodParams['path']] = array_complete_recursive(
+							(array)Hash::get( $options, $methodParams['path'] ),
+							(array)$results
+						);
 					}
 				}
 			}
