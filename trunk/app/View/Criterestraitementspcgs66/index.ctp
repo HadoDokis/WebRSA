@@ -50,8 +50,6 @@
 <fieldset>
 	<legend>Recherche par traitement</legend>
 		<?php
-//        echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'traitementpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );
-
             echo $this->Default2->subform(
                 array(
                     'Dossierpcg66.poledossierpcg66_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $polesdossierspcgs66, 'empty' => false )

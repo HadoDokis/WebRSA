@@ -64,7 +64,6 @@
 
 			$typeInfos['domain'] = Inflector::singularize( Inflector::tableize( $modelName ) );
 			$params = Set::merge( $typeInfos, $params );
-			// !isset( $params['type'] ) => error
 
 			if( isset( $params['type'] ) && in_array( $params['type'], array( 'date', 'datetime', 'timestamp' ) ) ) {
 				if( !isset( $params['empty'] ) ) {
@@ -330,19 +329,6 @@
 			);
 
 			list( $model, $field ) = model_field( $path );
-			/*if( $path != "{$model}.{$field}" ) {
-$pathTokens = explode( '.', $path );
-if( !isset( $params['name'] ) ) {
-	$params['name'] = 'data['.implode( '][', $pathTokens ).']';
-}
-if( !isset( $params['id'] ) ) {
-	$params['id'] = Inflector::camelize( implode( '_', $pathTokens ) );
-}
-$path = "{$model}.{$field}";
-// debug( $params );
-
-
-			}*/
 
 			if( isset( $params['type'] ) && $params['type'] == 'radio' ) {
 				unset( $params['empty'] );

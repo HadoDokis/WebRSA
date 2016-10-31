@@ -112,7 +112,6 @@
 		 */
 		protected function _setOptions() {
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
-// 			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
 
 			$this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 

@@ -350,7 +350,6 @@
 					$Personne->Prestation->fields(),
 					$Personne->Foyer->Dossier->fields(),
 					$Personne->Foyer->Adressefoyer->Adresse->fields(),
-//					$Personne->Foyer->Adressefoyer->NvTransfertpdv93->fields(),
 					$Personne->Rendezvous->fields(),
 					$Personne->PersonneReferent->fields(),
 					$Personne->Foyer->Dossier->Situationdossierrsa->fields(),

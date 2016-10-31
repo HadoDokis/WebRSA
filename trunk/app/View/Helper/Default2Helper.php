@@ -913,36 +913,5 @@
 
 			return "<thead><tr>".implode( $firstline )."</tr><tr>".implode( $secondline )."</tr></thead>";
 		}
-
-		/**
-		* TODO: permissions
-		*/
-
-		/*public function menu( $items ) {
-			$return = '';
-			foreach( $items as $key => $item ) {
-				if( is_array( $item ) && isset( $item['controller'] ) && isset( $item['action'] ) ) {
-					$return .= $this->Xhtml->tag(
-						'li',
-						$this->Xhtml->link( $key, $item )
-					);
-				}
-				else if( is_array( $item ) ) {
-					$return .= $this->Xhtml->tag(
-						'li',
-						$this->Xhtml->link( $key, '#' ).$this->menu( $item )
-					);
-				}
-				else {
-					trigger_error( "got {$item} insteat of array", E_USER_ERROR );
-				}
-			}
-
-			if( !empty( $return ) ) {
-				$return = "<ul>{$return}</ul>";
-			}
-
-			return $return;
-		}*/
 	}
 ?>

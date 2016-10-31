@@ -8,7 +8,6 @@
                     <th>Prénom</th>
                     <th>Groupe</th>
                     <th>Service instructeur</th>
-                    <!-- <th>Zones géographiques</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -19,7 +18,7 @@
 					</td>
 					<?php endif;?>
 					<td>
-						<?php 
+						<?php
 							echo $this->Xhtml->link(
 								$this->Session->read('Auth.User.nom' ),
 								array(
@@ -36,13 +35,6 @@
 				<?php if( !Configure::read( 'Jetons2.disabled' ) && Configure::read( 'Etatjetons.enabled' ) && isset($jetons_count) ) {?>
                     <td class="dossier_locked"><a href="#" id="jetons_count" onclick="jetonDelete()"><?php echo $jetons_count;?></a></td>
 				<?php } ?>
-                    <!--<td>
-                        <ul>
-                            <?php /*foreach( $this->Session->read( 'Auth.Zonegeographique' ) as $zone ):?>
-                                <li><?php echo $zone;?></li>
-                            <?php endforeach;*/?>
-                        </ul>
-                    </td>-->
                 </tr>
             </tbody>
         </table>
@@ -51,11 +43,11 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		function jetonDelete( user_id ) {
-			if ( $('jetons_count').innerHTML !== '0' 
+			if ( $('jetons_count').innerHTML !== '0'
 				&& confirm("La libération des dossiers nécessite un rechargement de la page, toutes les modifications non sauvegardées seront perdues. Voulez-vous continuer ?") ) {
 				new Ajax.Request('<?php echo Router::url( array( 'controller' => 'jetons', 'action' => 'ajax_delete' ) ).'/';?>', {
-					asynchronous:true, 
-					evalScripts:true, 
+					asynchronous:true,
+					evalScripts:true,
 					requestHeaders: {Accept: 'application/json'},
 					onComplete: function(request, json) {
 						if ( json ) {

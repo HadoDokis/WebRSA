@@ -198,22 +198,6 @@
 
 		/**
 		 *
-		 */
-		/*public function preconisationscalculables() {
-			$this->Gedooo->check( false, true );
-			$this->_index( 'Calculables' );
-		}*/
-
-		/**
-		 *
-		 */
-		/*public function preconisationsnoncalculables() {
-			$this->Gedooo->check( false, true );
-			$this->_index( 'Non calculables' );
-		}*/
-
-		/**
-		 *
 		 * @param string $statutOrientation
 		 */
 		protected function _index( $statutOrientation = null ) {
@@ -362,14 +346,6 @@
 					$this->set( 'pageTitle', 'Demandes non orientées' );
 					$this->render( 'formulaire' );
 					break;
-//				case 'Calculables':
-//					$this->set( 'pageTitle', 'Demandes d\'orientation préorientées' );
-//					$this->render( 'formulaire' );
-//					break;
-//				case 'Non calculables':
-//					$this->set( 'pageTitle', 'Demandes d\'orientation non préorientées' );
-//					$this->render( 'formulaire' );
-//					break;
 				case 'Orienté':
 					$this->set( 'pageTitle', 'Demandes orientées' );
 					$this->render( 'visualisation' );
@@ -463,23 +439,5 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-
-		/**
-		 *
-		 */
-		/*public function statistiques() {
-			if( !empty( $this->request->data ) ) {
-				$statistiques = $this->Cohorte->statistiques(
-					(array)$this->Session->read( 'Auth.Zonegeographique' ),
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data
-				);
-			}
-
-			$this->_setOptions();
-			$this->set( compact( 'statistiques' ) );
-			$this->set( 'pageTitle', 'Statistiques' );
-			$this->render( 'statistiques' );
-		}*/
 	}
 ?>

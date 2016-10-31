@@ -195,42 +195,6 @@
 		}
 
 		/**
-		 * Traitement du formulaire de recherche concernant les statistiques des cohortes d'orientation.
-		 *
-		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
-		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
-		 * @param array $criteres Critères du formulaire de recherche
-		 * @return array
-		 */
-		/*public function statistiques( $mesCodesInsee, $filtre_zone_geo, $criteres ) {
-			$Personne = ClassRegistry::init( 'Personne' );
-			$Option = ClassRegistry::init( 'Option' );
-
-			$statuts = array( 'Orienté', 'Non orienté', 'En attente' );
-
-			$return = array();
-
-			$typeorient = $criteres['Filtre']['typeorient'];
-
-			foreach( $statuts as $statut ) {
-				if( $statut != 'Orienté' ) {
-					$criteres['Filtre']['propo_algo'] = $typeorient;
-					$criteres['Filtre']['typeorient'] = null;
-				}
-				else {
-					$criteres['Filtre']['propo_algo'] = null;
-					$criteres['Filtre']['typeorient'] = $typeorient;
-				}
-
-				$querydata = $this->recherche( $statut, $mesCodesInsee, $filtre_zone_geo, $criteres, array() );
-				unset( $querydata['fields'] );
-				$return[$statut] = $Personne->find( 'count', $querydata );
-			}
-
-			return  $return;
-		}*/
-
-		/**
 		 * Retourne un querydata résultant du traitement du formulaire de recherche des cohortes d'orientation.
 		 *
 		 * @param string $statutOrientation
@@ -249,14 +213,6 @@
 			/// Conditions de base
 			$conditions = array();
 			$conditions = $this->conditionsSituationdossierrsa( $conditions, $criteres );
-
-//			if( in_array( $statutOrientation, array( 'Calculables', 'Non calculables' ) ) ) {
-//				$enattente = Set::classicExtract( $criteres, 'Filtre.enattente' );
-//				if( empty( $enattente ) ) {
-//					$enattente = array( 'En attente', 'Non orienté' );
-//				}
-//				$conditions['Orientstruct.statut_orient'] = $enattente;
-//			}
 
 			$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation, array( 'encode' => false ) ).'\'';
 
@@ -642,63 +598,6 @@
 		 */
 		public function structuresAutomatiques() {
 			return ClassRegistry::init( 'WebrsaCohorteOrientstructNouvelle' )->structuresAutomatiques();
-			/*$cacheKey = 'cohorte_structures_automatiques';
-			$results = Cache::read( $cacheKey );
-
-			if( $results === false ) {
-				$this->Structurereferente = ClassRegistry::init( 'Structurereferente' );
-				$this->Typeorient = ClassRegistry::init( 'Typeorient' );
-
-				// FIXME: valeurs magiques
-				$intitule = null;
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					$intitule = array( 'Emploi', 'Social', 'Préprofessionnelle' );
-				}
-				else if( Configure::read( 'Cg.departement' ) == 93 ) {
-					$intitule = array( 'Emploi', 'Social', 'Socioprofessionnelle' );
-				}
-				else if( Configure::read( 'Cg.departement' ) == 58 ) {
-					$intitule = array( 'Professionnelle', 'Sociale' );
-				}
-
-				$typesPermis = $this->Typeorient->find(
-					'list',
-					array(
-						'conditions' => array(
-							'Typeorient.lib_type_orient' => $intitule
-						),
-						'recursive' => -1
-					)
-				);
-				$typesPermis = array_keys( $typesPermis );
-
-				$structures = $this->Structurereferente->find(
-					'all',
-					array(
-						'conditions' => array(
-							'Structurereferente.typeorient_id' => $typesPermis
-						),
-						'contain' => array(
-							'Zonegeographique'
-						)
-					)
-				);
-
-
-				$results = array();
-				foreach( $structures as $structure ) {
-					if( !empty( $structure['Zonegeographique'] ) ) {
-						foreach( $structure['Zonegeographique'] as $zonegeographique ) {
-							$results[$structure['Structurereferente']['typeorient_id']][$zonegeographique['codeinsee']] = $structure['Structurereferente']['typeorient_id'].'_'.$structure['Structurereferente']['id'];
-						}
-					}
-				}
-
-				Cache::write( $cacheKey, $results );
-				ModelCache::write( $cacheKey, array( 'Structurereferente', 'Typeorient', 'Zonegeographique' ) );
-			}
-
-			return $results;*/
 		}
 
 		/**

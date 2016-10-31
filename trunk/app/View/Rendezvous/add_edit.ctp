@@ -66,7 +66,7 @@
 	<fieldset>
 		<?php
 			echo $this->Form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( $departement == 93 ? 'Structure proposant le RDV' : __d( 'rendezvous', 'Rendezvous.lib_struct' ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
-			echo $this->Form->input( 'Rendezvous.referent_id', array( 'label' =>  ( $departement == 93 ? 'Personne proposant le RDV' : 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true/*, 'selected' => $struct_id.'_'.$referent_id */) );
+			echo $this->Form->input( 'Rendezvous.referent_id', array( 'label' =>  ( $departement == 93 ? 'Personne proposant le RDV' : 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 			///Ajax
 			echo $this->Ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => array( 'action' => 'ajaxreffonct' ) ) );
 

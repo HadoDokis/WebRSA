@@ -89,7 +89,6 @@ echo $this->Search->blocAdresse($mesCodesInsee, $cantons);
     echo $this->Xform->input('Traitementpcg66.statutpdo_id', array('label' => 'Statut concernant la personne', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $statutpersonnepcg66, 'empty' => false));
     echo '</fieldset>';
 
-// 		echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
     echo $this->Form->input('Decisiondossierpcg66.useravistechnique_id', array('label' => 'Agent ayant émis l\'avis technique', 'type' => 'select', 'options' => $gestionnaire, 'empty' => true));
     echo $this->Form->input('Decisiondossierpcg66.userproposition_id', array('label' => 'Agent ayant émis la validation', 'type' => 'select', 'options' => $gestionnaire, 'empty' => true));
     echo '<fieldset class="col2 noborder">';

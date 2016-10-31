@@ -44,8 +44,6 @@
 			$this->Html->tag( 'legend', __d( 'cataloguesromesv3', 'Search.Domaineromev3' ) )
 			.$this->Default3->subform(
 				array(
-					// TODO
-					//'Search.Domaineromev3.familleromev3_id' => array( 'required' => false ),
 					'Search.Domaineromev3.code' => array( 'required' => false ),
 					'Search.Domaineromev3.name' => array( 'required' => false )
 				),
@@ -63,8 +61,6 @@
 			$this->Html->tag( 'legend', __d( 'cataloguesromesv3', 'Search.Metierromev3' ) )
 			.$this->Default3->subform(
 				array(
-					// TODO
-					//'Search.Metierromev3.familleromev3_id' => array( 'required' => false ),
 					'Search.Metierromev3.code' => array( 'required' => false ),
 					'Search.Metierromev3.name' => array( 'required' => false )
 				),
@@ -82,8 +78,6 @@
 			$this->Html->tag( 'legend', __d( 'cataloguesromesv3', 'Search.Appellationromev3' ) )
 			.$this->Default3->subform(
 				array(
-					// TODO
-					//'Search.Appellationromev3.familleromev3_id' => array( 'required' => false ),
 					'Search.Appellationromev3.name' => array( 'required' => false )
 				),
 				array(

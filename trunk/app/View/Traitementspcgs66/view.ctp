@@ -20,16 +20,14 @@
 			);
 
 		}
-        
+
 		echo $this->Default2->view(
 			$traitementpcg66,
 			array(
 				'Descriptionpdo.name',
 				'Traitementpcg66.datereception',
 				'Traitementpcg66.datedepart',
-// 				'Traitementpcg66.dureedepart' => array( 'type' => 'text', 'value' => @$options['Traitementpcg66']['dureedepart'][$traitementpcg66['Traitementpcg66']['dureedepart']] ),
 				'Traitementpcg66.dateecheance',
-// 				'Traitementpcg66.dureefinperiode' => array( 'type' => 'text', 'value' => @$options['Traitementpcg66']['dureefinperiode'][$traitementpcg66['Traitementpcg66']['dureefinperiode']] ),
 				'Traitementpcg66.daterevision',
 				'Personne.nom_complet' => array( 'type' => 'string', 'value' => '#Personnepcg66.Personne.qual# #Personnepcg66.Personne.nom# #Personnepcg66.Personne.prenom#' )
 			),

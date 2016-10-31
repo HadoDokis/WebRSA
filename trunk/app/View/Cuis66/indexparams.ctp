@@ -74,23 +74,7 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-				
-				/* Voir si on l'utilise ou pas -> Prévoir l'ajout d'un champs dans le Cui pour enregistrer la valeur si utile
-				 * Note : Dans le CERFA, la raison sociale est renseigné en même temps que le nom de l'entreprise
-				 * ex : SARL Dujardin
-				echo $this->Xhtml->tableCells(
-					array(
-						h( 'Raisons sociales des employeurs' ),
-						$this->Xhtml->viewLink(
-							'Voir la table',
-							array( 'controller' => 'raisonssocialespartenairescuis66', 'action' => 'index' ),
-							$this->Permissions->check( 'raisonssocialespartenairescuis66', 'index' )
-						)
-					),
-					array( 'class' => 'odd' ),
-					array( 'class' => 'even' )
-				);*/
-				
+
 				echo $this->Xhtml->tableCells(
 					array(
 						h( 'Lien entre les secteurs et les taux' ),

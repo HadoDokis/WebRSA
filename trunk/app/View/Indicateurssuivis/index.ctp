@@ -35,7 +35,6 @@
 		<legend>Recherche par Adresse</legend>
 		<?php echo $this->Form->input( 'Adresse.nomcom', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
 		<?php echo $this->Form->input( 'Adresse.numcom', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-		<?php //echo $this->Form->input( 'Adresse.codepos', array( 'label' => 'Code postal ', 'type' => 'text' ) );?>
 		<?php
 			if( Configure::read( 'CG.cantons' ) ) {
 				echo $this->Form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
@@ -61,10 +60,6 @@
 				echo $this->Form->input( 'Propoorientationcov58.referentorientant_id', array(  'label' => __d( 'structurereferente', 'Structurereferente.nom_referent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 			?>
 		</fieldset>
-
- <?php
-//  echo $this->Form->input( 'Indicateursuivi.annee', array( 'label' => 'Recherche pour l\'année', 'type' => 'select', 'empty' => true, 'options' => array_range( date( 'Y' )-4, date( 'Y' ) +1 ) ) );
-?>
 
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Filtrer', array( 'type' => 'submit' ) );?>

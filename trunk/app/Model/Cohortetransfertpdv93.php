@@ -193,11 +193,6 @@
 				$querydata['joins'][] = array_words_replace( $Transfertpdv93->VxOrientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ), array( 'Structurereferente' => 'VxStructurereferente' ) );
 			}
 
-			if( $statut != 'impressions' ) {
-				// TODO: Pdf::sqImprime
-//				$querydata['joins'][] = $Dossier->Foyer->Personne->Orientstruct->
-			}
-
 			// FIXME: et qui n'ont pas encore été transférés
 			// FIXME: ici, on a ceux qui sortent du département
 

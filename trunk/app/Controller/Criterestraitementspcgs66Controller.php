@@ -137,12 +137,6 @@
 
 			$options = $this->Traitementpcg66->enums();
 			$this->set('natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf'));
-	// 			$etatdossierpcg = $options['Traitementpcg66']['etatdossierpcg'];
-	//
-	// 			$options = array_merge(
-	// 				$options,
-	// 				$this->Traitementpcg66->Personnepcg66->Traitementpcg66->enums()
-	// 			);
 			$this->set(compact('options'));
 			$this->set('exists', array('1' => 'Oui', '0' => 'Non'));
 		}

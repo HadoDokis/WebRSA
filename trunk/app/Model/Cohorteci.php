@@ -298,17 +298,6 @@
                 }
             }
 
-
-            /// Structure référente du parcours lié au référent du parcours
-			/*if( !empty( $structureParcours ) ) {
-				$conditions[] = 'Structurereferente.id = \''.Sanitize::clean( $structureParcours, array( 'encode' => false ) ).'\'';
-			}*/
-            // Référent du parcours en cours de l'allocataire
-            /*$sqDernierReferent = $this->Contratinsertion->Personne->PersonneReferent->sqDerniere( 'Personne.id' );
-			if( !empty( $referentParcours ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( suffix( $referentParcours ), array( 'encode' => false ) ).'\'';
-			}*/
-
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
 			// Dernière orientation
@@ -370,15 +359,6 @@
                     $this->Contratinsertion->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
                     $this->Contratinsertion->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
                     $this->Contratinsertion->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-                    /*$this->Contratinsertion->Personne->join(
-                        'PersonneReferent',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								"PersonneReferent.id IN ( {$sqDernierReferent} )"
-                            )
-                        )
-                    )*/
 				),
 				'limit' => 10,
 				'order' => 'Contratinsertion.df_ci ASC',

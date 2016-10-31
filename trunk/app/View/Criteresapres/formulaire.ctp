@@ -20,26 +20,8 @@
 </script>
 
 <?php
+	$pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 
-//     if( isset( $apres ) ) {
-//         $this->Xpaginator->options( array( 'url' => $this->request->params['named'] ) );
-//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-//         $pagination = $this->Xhtml->tag( 'p', $this->Xpaginator->counter( $params ) );
-//
-//         $pages = $this->Xpaginator->first( '<< ' );
-//         $pages .= $this->Xpaginator->prev( '< ' );
-//         $pages .= $this->Xpaginator->numbers();
-//         $pages .= $this->Xpaginator->next( ' >' );
-//         $pages .= $this->Xpaginator->last( ' >>' );
-//
-//         $pagination .= $this->Xhtml->tag( 'p', $pages );
-//     }
-//     else {
-//         $pagination = '';
-//     }
-$pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
-?>
-<?php
     if( is_array( $this->request->data ) ) {
         echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
             $this->Xhtml->image(
@@ -53,8 +35,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 
 ?>
 
-<?php /*echo $this->Xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );*/
-    echo $this->Xform->create( 'Critereapre', array( 'id' => 'Critereapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Xform->create( 'Critereapre', array( 'id' => 'Critereapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
 		echo $this->Search->blocAllocataire(  );
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );

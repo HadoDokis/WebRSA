@@ -119,7 +119,6 @@
                     $ActioncandidatPersonne->Motifsortie->fields(),
                     $ActioncandidatPersonne->Actioncandidat->Contactpartenaire->fields(),
                     $ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire->fields(),
-//                    $ActioncandidatPersonne->CandidatureProg66->fields(),
                     $ActioncandidatPersonne->Progfichecandidature66->fields()
                 ),
 				'joins' => $joins,
@@ -127,26 +126,6 @@
 				'order' => array( '"ActioncandidatPersonne"."datesignature" ASC' ),
 				'conditions' => $conditions
 			);
-
-
-
-//            $qdProgsfichescandidatures66 = array(
-//                'fields' => array(
-//                    'Progfichecandidature66.name'
-//                ),
-//                'conditions' => array_merge(
-//                    array('CandidatureProg66.actioncandidat_personne_id = ActioncandidatPersonne.id'),
-//                    $conditions
-//                ),
-//                'joins' => array(
-//                    $ActioncandidatPersonne->join( 'CandidatureProg66', array( 'type' => 'LEFT OUTER' ) ),
-//                    $ActioncandidatPersonne->CandidatureProg66->join( 'Progfichecandidature66', array( 'type' => 'LEFT OUTER' ) )
-//                ),
-//                'contain' => false
-//            );
-//
-//            $vfProgsfichescandidatures66 = $ActioncandidatPersonne->vfListe( $qdProgsfichescandidatures66 );
-//            $query['fields'][] = "{$vfProgsfichescandidatures66} AS \"ActioncandidatPersonne__listenoms\"";
 
 			$query = $ActioncandidatPersonne->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresfichescandidature );
 

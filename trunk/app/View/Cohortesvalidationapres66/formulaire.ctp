@@ -34,10 +34,6 @@
         <fieldset>
 			<?php echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>
 
-            <?php
-
-/* echo $this->Xform->input( 'Cohortevalidationapre66.apresavalider', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );*/?>
-
             <legend>Filtrer par APRE/ADRE</legend>
             <?php
 

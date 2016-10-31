@@ -120,7 +120,6 @@
 
 			$this->set( 'natpfcre', ClassRegistry::init('Infofinanciere')->enum('natpfcre', array('type' => 'autreannulation')) );
 			$this->set( 'typeparte', ClassRegistry::init('Dossier')->enum('typeparte') );
-			//$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa') );
 			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  $this->Situationdossierrsa->etatOuvert())) );
 			$this->set( 'natpf', ClassRegistry::init('Detailcalculdroitrsa')->enum('natpf') );
 			$this->set( 'type_allocation', ClassRegistry::init('Infofinanciere')->enum('type_allocation') );

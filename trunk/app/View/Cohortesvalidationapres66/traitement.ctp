@@ -146,12 +146,6 @@
                             'Voir le contrat « '.$title.' »',
                             array( 'controller' => 'apres66', 'action' => 'index', $validationapre['Apre66']['personne_id'] )
                         ),
-// 						$this->Xhtml->fileLink(
-// 							'Fichiers liés',
-// 							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'filelink', $validationapre['Apre66']['id'] ),
-// 							$this->Permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink' )
-// 						),
-// 						h( '('.$nbFichiersLies.')' ),
 						array( $innerTable, array( 'class' => 'innerTableCell' ) )
                     );
 

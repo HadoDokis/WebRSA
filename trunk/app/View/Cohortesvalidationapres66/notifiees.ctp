@@ -30,7 +30,6 @@
 <?php echo $this->Xform->create( 'Cohortevalidationapre66', array( 'type' => 'post', 'action' => $this->action,  'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
         <fieldset>
-            <?php /*echo $this->Xform->input( 'Cohortevalidationapre66.validees', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );*/?>
 			<?php echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>
 
             <legend>Filtrer par APRE/ADRE</legend>

@@ -23,10 +23,6 @@
 	<?php
 		echo $this->Xform->input( 'Typerdv.libelle', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_rdv' ) ), 'type' => 'text' ) );
 		echo $this->Xform->input( 'Typerdv.modelenotifrdv', array( 'label' =>  required( __d( 'typerdv', 'Typerdv.modelenotifrdv' ) ), 'type' => 'text' ) );
-// 		if ( Configure::read( 'Cg.departement' ) == 58 ) {
-// 			echo $this->Xform->input( 'Typerdv.nbabsencesavpassageep', array( 'label' =>  required( __d( 'typerdv', 'Typerdv.nbabsencesavpassageep' ) ), 'type' => 'text' ) );
-// 			echo $this->Xform->input( 'Typerdv.motifpassageep', array( 'label' =>  __d( 'typerdv', 'Typerdv.motifpassageep' ), 'type' => 'text' ) );
-// 		}
 		if ( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo $this->Xform->input( 'Typerdv.nbabsaveplaudition', array( 'label' =>  required( __d( 'typerdv', 'Typerdv.passageeplaudition' ) ), 'type' => 'text' ) );
 		}

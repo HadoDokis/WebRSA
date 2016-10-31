@@ -172,16 +172,6 @@
 				}
 			}
 
-			// Présence CER ?
-// 			if( isset( $search['Contratinsertion']['exists'] ) && ( $search['Contratinsertion']['exists'] != '' ) ) {
-// 				if( $search['Contratinsertion']['exists'] ) {
-// 					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NOT NULL )";
-// 				}
-// 				else {
-// 					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NULL )";
-// 				}
-// 			}
-
 			/// Présence ou non d'un CER
 			if( isset( $search['Contratinsertion']['exists'] ) && ( $search['Contratinsertion']['exists'] != '' ) ) {
 				if( $search['Contratinsertion']['exists'] ) {

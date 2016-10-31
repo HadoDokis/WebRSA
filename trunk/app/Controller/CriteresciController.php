@@ -105,8 +105,6 @@
 		 *
 		 */
 		protected function _setOptions() {
-// 			$struct = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-// 			$this->set( 'struct', $struct );
 			$this->set( 'struct', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
 			$this->set( 'referents', $this->Contratinsertion->Referent->WebrsaReferent->listOptions() );
 
