@@ -59,7 +59,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Piecespdos:edit',
-			'view' => 'Piecespdos:index',
 		);
 
 		/**

@@ -62,7 +62,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Decisionspropospdos:edit',
-			'view' => 'Decisionspropospdos:index',
 		);
 
 		/**

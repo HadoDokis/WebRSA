@@ -50,7 +50,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Orgstransmisdossierspcgs66:edit',
-			'view' => 'Orgstransmisdossierspcgs66:index',
 		);
 
 		/**

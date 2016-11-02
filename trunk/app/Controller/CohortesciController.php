@@ -88,7 +88,6 @@
 		 */
 		public $aucunDroit = array(
 			'ajaxreferent',
-			'constReq',
 		);
 
 		/**

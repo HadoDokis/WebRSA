@@ -81,9 +81,9 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'ajaxfileupload' => 'Cuis66::filelink',
-			'ajaxfiledelete' => 'Cuis66::filelink',
-			'ajax_generate_email' => 'Cuis66::email_add',
+			'ajaxfileupload' => 'Cuis66:filelink',
+			'ajaxfiledelete' => 'Cuis66:filelink',
+			'ajax_generate_email' => 'Cuis66:email_add',
 		);
 
 		/**

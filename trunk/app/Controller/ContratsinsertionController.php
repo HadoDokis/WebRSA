@@ -107,7 +107,6 @@
 			'ajaxaction',
 			'ajaxfiledelete',
 			'ajaxfileupload',
-			'ajaxraisonci',
 			'ajaxref',
 			'ajaxstruct',
 			'download',

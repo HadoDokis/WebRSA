@@ -59,6 +59,13 @@
 		 * @var array
 		 */
 		public $commeDroit = array();
+		
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array();
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des

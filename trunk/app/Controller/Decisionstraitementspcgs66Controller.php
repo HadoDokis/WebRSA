@@ -63,7 +63,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Decisionstraitementspcgs66:edit',
-			'view' => 'Decisionstraitementspcgs66:index',
 		);
 
 		/**

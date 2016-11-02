@@ -58,7 +58,7 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'setbygroups' => 'Groups::index',
+			'setbygroups' => 'Groups:index',
 		);
 
 		/**

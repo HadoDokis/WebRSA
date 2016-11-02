@@ -85,10 +85,7 @@
 		 *
 		 * @var array
 		 */
-		public $aucunDroit = array(
-			'ajaxreferent',
-			'constReq',
-		);
+		public $aucunDroit = array();
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des

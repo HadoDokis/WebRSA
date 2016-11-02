@@ -83,7 +83,6 @@
 		 */
 		public $aucunDroit = array(
 			'ajaxstruc',
-			'constReq',
 		);
 
 		/**

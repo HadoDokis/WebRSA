@@ -73,8 +73,8 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'ajaxfileupload' => 'Accompagnementscuis66::filelink',
-			'ajaxfiledelete' => 'Accompagnementscuis66::filelink',
+			'ajaxfileupload' => 'Accompagnementscuis66:filelink',
+			'ajaxfiledelete' => 'Accompagnementscuis66:filelink',
 		);
 		
 		/**

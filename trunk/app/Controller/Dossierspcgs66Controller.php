@@ -101,7 +101,7 @@
 			'cohorte_imprimer' => 'Cohortesdossierspcgs66:aimprimer',
 			'exportcsv' => 'Criteresdossierspcgs66:exportcsv',
 			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
-			'imprimer' => 'Decisionsdossierspcgs66::decisionproposition',
+			'imprimer' => 'Decisionsdossierspcgs66:decisionproposition',
 			'search' => 'Criteresdossierspcgs66:dossier',
 			'search_affectes' => 'Cohortesdossierspcgs66:affectes',
 			'search_gestionnaire' => 'Criteresdossierspcgs66:gestionnaire',
@@ -116,7 +116,6 @@
 		public $aucunDroit = array(
 			'ajax_getetatdossierpcg66',
 			'ajax_view_decisions',
-			'ajaxetatpdo',
 			'ajaxfiledelete',
 			'ajaxfileupload',
 			'download',
