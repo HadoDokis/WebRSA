@@ -9,7 +9,7 @@
 	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Contratinsertion', 'Model' );
-	App::uses( 'File', 'Cake/Utility' );
+	App::uses( 'File', 'Utility' );
 
 	/**
 	 * La classe Positionscer66Shell effectue la mise à jour de la position des CER qui en ont besoin :

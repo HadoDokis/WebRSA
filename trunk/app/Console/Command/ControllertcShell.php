@@ -8,9 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'XShell', 'Console/Command' );
-	App::uses( 'Model', 'Cake/Model' );
-	App::uses( 'AppModel', 'Cake/Model' );
-	App::uses( 'File', 'Cake/Utility' );
+	App::uses( 'File', 'Utility' );
 
 	/**
 	 * La classe ControllertcShell ...
