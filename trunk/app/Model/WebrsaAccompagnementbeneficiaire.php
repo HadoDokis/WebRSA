@@ -8,7 +8,9 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AppModel', 'Model' );
+	App::uses( 'DefaultUrl', 'Default.Utility' );
 	App::uses( 'WebrsaLogicAccessInterface', 'Model/Interface' );
+	App::uses( 'WebrsaPermissions', 'Utility' );
 
 	/**
 	 * La classe WebrsaAccompagnementbeneficiaire ...
@@ -380,7 +382,8 @@
 						'Structurereferente' => array( 'type' => 'INNER' ),
 						'Referent' => array( 'type' => 'LEFT OUTER' ),
 						'Cer93' => array( 'type' => 'INNER' )
-					)
+					),
+					'url' => '/Cers93/index'
 				),
 				'Ficheprescription93' => array(
 					'fields' => array(
@@ -472,7 +475,8 @@
 						'DspRev.id',
 						'DspRev.personne_id',
 						'DspRev.created'
-					)
+					),
+					'url' => '/Dsps/histo'
 				),
 				'Entretien' => array(
 					'fields' => array(
@@ -518,6 +522,10 @@
 					$query['joins'] = $joins;
 
 					$query['contain'] = false;
+
+					$query['url'] = isset( $query['url'] )
+						? $query['url']
+						: '/'.Inflector::camelize( Inflector::tableize( $query['modelName'] ) ).'/index';
 
 					$query = $this->_completeConfigAccess( $query );
 
@@ -567,8 +575,10 @@
 		}
 
 		/**
-		 * Conditions supplémentaires pour les RDV et les entretiens qui ne doivent
+		 * Conditions supplémentaires pour les enregistrements qui ne doivent
 		 * pas être partagés entre structures référentes.
+		 *	- RDV et entretiens
+		 *	- D1 et D2 (liés à un RDV)
 		 *
 		 * @param string $modelName
 		 * @param array $query
@@ -576,8 +586,13 @@
 		 * @return array
 		 */
 		public function completeQueryProtectedRecords( $modelName, array $query, array $structuresreferentes_ids ) {
-			if( !empty( $structuresreferentes_ids ) && in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
-				$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
+			if( !empty( $structuresreferentes_ids ) ) {
+				if( in_array( $modelName, array( 'Rendezvous', 'Entretien' ) ) ) {
+					$query['conditions'][] = array( "{$modelName}.structurereferente_id" => $structuresreferentes_ids );
+				}
+				elseif( in_array( $modelName, array( 'Questionnaired1pdv93', 'Questionnaired2pdv93' ) ) ) {
+					$query['conditions'][] = array( 'Rendezvous.structurereferente_id' => $structuresreferentes_ids );
+				}
 			}
 
 			return $query;
@@ -600,33 +615,37 @@
 				$modelName = $query['modelName'];
 				$webrsaModelName = $query['webrsaModelName'];
 				$webrsaAccessName = $query['webrsaAccessName'];
-				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'] );
+				$url = $query['url'];
+				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['url'] );
 
-				// Conditions
-				$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+				$url = DefaultUrl::toArray($url);
+				if( true === WebrsaPermissions::check( $url['controller'], $url['action'] ) ) {
+					// Conditions
+					$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
-				$query = $this->completeQueryProtectedRecords( $modelName, $query, $structuresreferentes_ids );
+					$query = $this->completeQueryProtectedRecords( $modelName, $query, $structuresreferentes_ids );
 
-				// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
-				if( false === $this->Personne->{$modelName}->Behaviors->attached( 'WebrsaStructurereferenteliee' ) ) {
-					$this->Personne->{$modelName}->Behaviors->attach( 'WebrsaStructurereferenteliee' );
+					// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
+					if( false === $this->Personne->{$modelName}->Behaviors->attached( 'WebrsaStructurereferenteliee' ) ) {
+						$this->Personne->{$modelName}->Behaviors->attach( 'WebrsaStructurereferenteliee' );
+					}
+
+					$query = $this->Personne->{$modelName}->completeQueryHorsZone(
+						$query,
+						$structuresreferentes_ids,
+						$this->Personne->{$modelName}->links()
+					);
+
+					$this->Personne->{$modelName}->forceVirtualFields = true;
+					$records = $this->Personne->{$modelName}->find( 'all', $query );
+
+					$records = $this->_computeAccesses( $records, $personne_id, $params + compact( 'webrsaModelName', 'webrsaAccessName' ) );
+
+					$results = array_merge(
+						$results,
+						Hash::insert( $records, '{n}.Action.name', $alias )
+					);
 				}
-
-				$query = $this->Personne->{$modelName}->completeQueryHorsZone(
-					$query,
-					$structuresreferentes_ids,
-					$this->Personne->{$modelName}->links()
-				);
-
-				$this->Personne->{$modelName}->forceVirtualFields = true;
-				$records = $this->Personne->{$modelName}->find( 'all', $query );
-
-				$records = $this->_computeAccesses( $records, $personne_id, $params + compact( 'webrsaModelName', 'webrsaAccessName' ) );
-
-				$results = array_merge(
-					$results,
-					Hash::insert( $records, '{n}.Action.name', $alias )
-				);
 			}
 
 			return $results;
@@ -646,11 +665,14 @@
 					'webrsaAccessName' => 'WebrsaAccessCers93',
 					'joins' => array(
 						'Cer93'
-					)
+					),
+					'controller' => 'cers93',
+					'url' => '/Cers93/index'
 				),
 				'DspRev' => array(
 					'controller' => 'dsps',
-					'view_action' => 'view_revs'
+					'view_action' => 'view_revs',
+					'url' => '/Dsps/histo'
 				),
 				'Entretien',
 				'Memo',
@@ -722,6 +744,10 @@
 
 					$query['contain'] = false;
 
+					$query['url'] = isset( $query['url'] )
+						? $query['url']
+						: '/'.Inflector::camelize( Inflector::tableize( $query['modelName'] ) ).'/index';
+
 					$query = $this->_completeConfigAccess( $query );
 
 					$config[$alias] = $query;
@@ -758,45 +784,52 @@
 				$webrsaAccessName = $query['webrsaAccessName'];
 				$controller = $query['controller'];
 				$view_action = $query['view_action'];
-				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['controller'] );
+				$url = $query['url'];
+				unset( $query['modelName'], $query['webrsaModelName'], $query['webrsaAccessName'], $query['controller'], $query['url'] );
 
-				if( 'Personne' !== $modelName ) {
-					// Conditions
-					$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
+				$url = DefaultUrl::toArray($url);
+				$permissionListeEnregistrements = true === WebrsaPermissions::check( $url['controller'], $url['action'] );
+				$permissionListeFichierslies = true === WebrsaPermissions::check( $url['controller'], 'filelink' );
 
-					// Conditions supplémentaires pour les RDV et les entretiens
-					$query = $this->completeQueryProtectedRecords( $modelName, $query, $structuresreferentes_ids );
+				if( $permissionListeEnregistrements && $permissionListeFichierslies ) {
+					if( 'Personne' !== $modelName ) {
+						// Conditions
+						$query['conditions'][] = array( "{$modelName}.personne_id" => $personne_id );
 
-					// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
-					if( false === $this->Personne->{$modelName}->Behaviors->attached( 'WebrsaStructurereferenteliee' ) ) {
-						$this->Personne->{$modelName}->Behaviors->attach( 'WebrsaStructurereferenteliee' );
+						// Conditions supplémentaires pour les RDV et les entretiens
+						$query = $this->completeQueryProtectedRecords( $modelName, $query, $structuresreferentes_ids );
+
+						// Conditions supplémentaires pour savoir si l'utilisateur est hors zone ou pas lorsque c'est possible
+						if( false === $this->Personne->{$modelName}->Behaviors->attached( 'WebrsaStructurereferenteliee' ) ) {
+							$this->Personne->{$modelName}->Behaviors->attach( 'WebrsaStructurereferenteliee' );
+						}
+
+						$query = $this->Personne->{$modelName}->completeQueryHorsZone(
+							$query,
+							$structuresreferentes_ids,
+							$this->Personne->{$modelName}->links()
+						);
+
+						$this->Personne->{$modelName}->forceVirtualFields = true;
+						$records = $this->Personne->{$modelName}->find( 'all', $query );
+					}
+					else {
+						// Conditions
+						$query['conditions'][] = array( "{$modelName}.id" => $personne_id );
+
+						$this->Personne->forceVirtualFields = true;
+						$records = $this->Personne->find( 'all', $query );
 					}
 
-					$query = $this->Personne->{$modelName}->completeQueryHorsZone(
-						$query,
-						$structuresreferentes_ids,
-						$this->Personne->{$modelName}->links()
+					$records = Hash::insert( $records, '{n}.Fichiermodule.controller', $controller );
+					$records = Hash::insert( $records, '{n}.Fichiermodule.view_action', $view_action );
+					$records = $this->_computeAccesses( $records, $personne_id, compact( 'webrsaModelName', 'webrsaAccessName' ) );
+
+					$results = array_merge(
+						$results,
+						Hash::insert( $records, '{n}.Action.name', $alias )
 					);
-
-					$this->Personne->{$modelName}->forceVirtualFields = true;
-					$records = $this->Personne->{$modelName}->find( 'all', $query );
 				}
-				else {
-					// Conditions
-					$query['conditions'][] = array( "{$modelName}.id" => $personne_id );
-
-					$this->Personne->forceVirtualFields = true;
-					$records = $this->Personne->find( 'all', $query );
-				}
-
-				$records = Hash::insert( $records, '{n}.Fichiermodule.controller', $controller );
-				$records = Hash::insert( $records, '{n}.Fichiermodule.view_action', $view_action );
-				$records = $this->_computeAccesses( $records, $personne_id, compact( 'webrsaModelName', 'webrsaAccessName' ) );
-
-				$results = array_merge(
-					$results,
-					Hash::insert( $records, '{n}.Action.name', $alias )
-				);
 			}
 
 			return $results;
@@ -888,7 +921,7 @@
 						'Orientstruct.date_valid',
 						'( CASE WHEN "Orientstruct"."origine" = \'reorientation\' THEN \'Réorientation\' ELSE \'Orientation\' END ) AS "Impression__type"',
 					)
-				),
+				)
 			);
 
 			return $config;
@@ -1015,10 +1048,7 @@
 
 					$this->Personne->forceVirtualFields = true;
 					$records = $this->Personne->find( 'all', $query );
-					// FIXME
-//					debug( $query );
 					debug( $this->Personne->sq( $query ) );
-//					$records = [];
 				}
 
 				$records = $this->_computeAccesses( $records, $personne_id, compact( 'webrsaModelName', 'webrsaAccessName' ) );
@@ -1099,7 +1129,6 @@
 					'Impression' => array(
 						// Tableau "Impressions"
 						'name' => array(
-//							'Commissionep' => 'EP',
 							'Contratinsertion' => 'CER',
 							'Ficheprescription93' => 'Prescription',
 							'Orientstruct' => 'Orientation',
