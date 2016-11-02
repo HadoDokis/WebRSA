@@ -108,13 +108,7 @@
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			'ajaxetat1',
-			'ajaxetat2',
-			'ajaxetat3',
-			'ajaxetat4',
-			'ajaxetat5',
 			'ajaxetatpdo',
-			'ajaxfichecalcul',
 			'ajaxfiledelete',
 			'ajaxfileupload',
 			'ajaxstruct',

@@ -49,7 +49,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Descriptionspdos:edit',
-			'view' => 'Descriptionspdos:index',
 		);
 
 		/**

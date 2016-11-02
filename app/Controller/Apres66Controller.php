@@ -111,11 +111,11 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Apres66:edit',
-			'cohorte_imprimer' => 'Cohortesvalidationapres66::validees',
-			'cohorte_notifiees' => 'Cohortesvalidationapres66::notifiees',
-			'cohorte_traitement' => 'Cohortesvalidationapres66::traitement',
-			'cohorte_transfert' => 'Cohortesvalidationapres66::transfert',
-			'cohorte_validation' => 'Cohortesvalidationapres66::apresvalider',
+			'cohorte_imprimer' => 'Cohortesvalidationapres66:validees',
+			'cohorte_notifiees' => 'Cohortesvalidationapres66:notifiees',
+			'cohorte_traitement' => 'Cohortesvalidationapres66:traitement',
+			'cohorte_transfert' => 'Cohortesvalidationapres66:transfert',
+			'cohorte_validation' => 'Cohortesvalidationapres66:apresavalider',
 			'view66' => 'Apres66:index',
 		);
 

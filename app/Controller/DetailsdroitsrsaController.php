@@ -60,9 +60,7 @@
 		 *
 		 * @var array
 		 */
-		public $commeDroit = array(
-			'view' => 'Detailsdroitsrsa:index',
-		);
+		public $commeDroit = array();
 
 		/**
 		 * Méthodes ne nécessitant aucun droit.

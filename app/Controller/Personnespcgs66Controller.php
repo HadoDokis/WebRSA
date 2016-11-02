@@ -67,7 +67,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Personnespcgs66:edit',
-			'view' => 'Personnespcgs66:index',
 		);
 
 		/**

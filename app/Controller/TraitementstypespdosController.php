@@ -50,7 +50,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Traitementstypespdos:edit',
-			'view' => 'Traitementstypespdos:index',
 		);
 
 		/**

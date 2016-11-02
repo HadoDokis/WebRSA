@@ -69,7 +69,6 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'add' => 'Traitementspdos:edit',
 			'view' => 'Traitementspdos:index',
 		);
 
@@ -81,7 +80,6 @@
 		public $aucunDroit = array(
 			'ajaxfiledelete',
 			'ajaxfileupload',
-			'ajaxnbtextareacourrier',
 			'ajaxstatutpersonne',
 			'download',
 			'fileview',

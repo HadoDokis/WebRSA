@@ -96,8 +96,6 @@
 		public $aucunDroit = array(
 			'ajaxfiledelete',
 			'ajaxfileupload',
-			'ajaxreferent',
-			'ajaxreffonct',
 			'download',
 			'fileview',
 		);

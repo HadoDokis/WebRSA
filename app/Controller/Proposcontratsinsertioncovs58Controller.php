@@ -72,11 +72,8 @@
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			'ajax',
-			'ajaxraisonci',
 			'ajaxref',
 			'ajaxstruct',
-			'notificationsop',
 		);
 
 		/**

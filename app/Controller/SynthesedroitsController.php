@@ -56,7 +56,7 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'index' => 'Groups::index',
+			'index' => 'Groups:index',
 		);
 
 		/**

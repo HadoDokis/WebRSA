@@ -110,7 +110,6 @@
 			'ajaxfileupload',
 			'ajaxref',
 			'ajaxstruct',
-			'ajaxtierspresta',
 			'ajaxtiersprestaactprof',
 			'ajaxtiersprestaformpermfimo',
 			'ajaxtiersprestaformqualif',

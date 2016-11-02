@@ -89,7 +89,6 @@
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			'ajax',
 			'ajaxref',
 			'ajaxstruct',
 		);
