@@ -104,7 +104,6 @@
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			'ajax',
 			'ajaxaction',
 			'ajaxfiledelete',
 			'ajaxfileupload',

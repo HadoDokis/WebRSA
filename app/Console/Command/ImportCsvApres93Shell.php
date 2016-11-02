@@ -9,7 +9,7 @@
 	 */
 	@ini_set( 'memory_limit', '2048M' );
 	App::uses( 'AppShell', 'Console/Command' );
-	App::uses( 'File', 'Cake/Utility' );
+	App::uses( 'File', 'Utility' );
 
 	// lib/Cake/Console/cake ImportCsvApres93 /tmp/APRE.csv
 	// lib/Cake/Console/cake ImportCsvApres93 -d true /tmp/APRE.csv

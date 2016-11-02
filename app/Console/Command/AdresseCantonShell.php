@@ -7,7 +7,7 @@
 	 */
 	 App::uses( 'XShell', 'Console/Command' );
 	 App::uses( 'ConnectionManager', 'Model' );
-	 App::uses( 'Csv', 'Helper' );
+	 App::uses( 'CsvHelper', 'View/Helper' );
 	 App::uses( 'View', 'View' );
 	 
 	/**
@@ -159,8 +159,6 @@
 				mkdir($path, 0777, true);
 			}
 			
-			App::uses( 'CsvHelper', 'View/Helper' );
-			App::uses( 'View', 'View' );
 			$Csv = new CsvHelper( new View() );
 			$Csv->addGrid( $data, false );
 			$fileData = $Csv->render(false);
