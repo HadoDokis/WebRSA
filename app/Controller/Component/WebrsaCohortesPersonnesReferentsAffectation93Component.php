@@ -105,7 +105,10 @@
 				$Controller->loadModel( 'WebrsaTableausuivipdv93' );
 			}
 
-			$pdvs_ids = array_keys($Controller->WebrsaTableausuivipdv93->listePdvs());
+			$structuresreferentes_ids = Hash::extract(
+				$Controller->Session->read( 'Auth.Structurereferente' ),
+				'{n}.id'
+			);
 
 			// Moteur de recherche -> TODO: faire apparaître les inactifs ?
 			$result['Referent']['id'] = $Controller->InsertionsBeneficiaires->referents(
@@ -113,7 +116,7 @@
 					'type' => 'optgroup',
 					'prefix' => true,
 					'conditions' => $Controller->InsertionsBeneficiaires->conditions['referents']
-						+ array( 'Structurereferente.id' => $pdvs_ids )
+						+ array( 'Structurereferente.id' => $structuresreferentes_ids )
 				)
 			);
 
@@ -123,7 +126,7 @@
 					'type' => 'optgroup',
 					'prefix' => true,
 					'conditions' => $Controller->InsertionsBeneficiaires->conditions['referents']
-						+ array( 'Structurereferente.id' => $pdvs_ids )
+						+ array( 'Structurereferente.id' => $structuresreferentes_ids )
 				)
 			);
 
@@ -132,7 +135,7 @@
 				array(
 					'type' => 'optgroup',
 					'prefix' => true,
-					'conditions' => array( 'Structurereferente.id' => $pdvs_ids )
+					'conditions' => array( 'Structurereferente.id' => $structuresreferentes_ids )
 				)
 			);
 
