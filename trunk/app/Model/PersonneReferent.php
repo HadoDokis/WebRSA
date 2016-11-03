@@ -144,7 +144,9 @@
 					WHERE
 						{$table}.personne_id = ".$field."
 						$conditionCloture
-					ORDER BY {$table}.dddesignation DESC
+					ORDER BY
+						{$table}.dddesignation DESC,
+						{$table}.id DESC
 					LIMIT 1";
 		}
 

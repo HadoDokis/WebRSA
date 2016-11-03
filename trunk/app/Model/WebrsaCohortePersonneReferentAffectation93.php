@@ -335,14 +335,19 @@
 					'fields' => array( 'personnes_referents.referent_id' ),
 					'contain' => false,
 					'conditions' => array(
-						'personnes_referents.personne_id = Personne.id',
-						'personnes_referents.dfdesignation IS NOT NULL'
+						'personnes_referents.personne_id = Personne.id'
 					),
-					'order' => array( 'personnes_referents.dddesignation DESC' ),
+					'order' => array(
+						'personnes_referents.dddesignation DESC',
+						'personnes_referents.id DESC',
+					),
 					'limit' => 1
 				);
 				$sql = $this->Personne->PersonneReferent->sq( $subQuery );
-				$query['conditions'][] = "( {$sql} ) = '{$referentpcd_id}'";
+				$query['conditions'][] = array(
+					'PersonneReferent.id IS NULL',
+					"( {$sql} ) = '{$referentpcd_id}'"
+				);
 			}
 
 			// Filtrer par affectation précédente: date de fin de désignation du référent précédent
@@ -355,14 +360,19 @@
 					'fields' => array( 'personnes_referents.dfdesignation' ),
 					'contain' => false,
 					'conditions' => array(
-						'personnes_referents.personne_id = Personne.id',
-						'personnes_referents.dfdesignation IS NOT NULL'
+						'personnes_referents.personne_id = Personne.id'
 					),
-					'order' => array( 'personnes_referents.dddesignation DESC' ),
+					'order' => array(
+						'personnes_referents.dddesignation DESC',
+						'personnes_referents.id DESC',
+					),
 					'limit' => 1
 				);
 				$sql = $this->Personne->PersonneReferent->sq( $subQuery );
-				$query['conditions'][] = "( {$sql} ) BETWEEN '".date_cakephp_to_sql( $from )."' AND '".date_cakephp_to_sql( $to )."'";
+				$query['conditions'][] = array(
+					'PersonneReferent.id IS NULL',
+					"( {$sql} ) BETWEEN '".date_cakephp_to_sql( $from )."' AND '".date_cakephp_to_sql( $to )."'"
+				);
 			}
 
 			return $query;
