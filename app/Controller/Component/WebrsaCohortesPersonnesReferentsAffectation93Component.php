@@ -106,7 +106,7 @@
 			}
 
 			$structuresreferentes_ids = Hash::extract(
-				$Controller->Session->read( 'Auth.Structurereferente' ),
+				(array)$Controller->Session->read( 'Auth.Structurereferente' ),
 				'{n}.id'
 			);
 
