@@ -6,6 +6,7 @@
  * @package app.Console.Command
  * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Shell.php.
  */
+App::uses( 'AppShell', 'Console/Command' );
 
 /**
  * La classe CheckDroitsControllerShell ...
@@ -19,28 +20,28 @@ class CheckDroitsControllerShell extends AppShell
 	 * @var integer
 	 */
 	public $messageCount = 0;
-	
+
 	/**
 	 * Méthode principale.
 	 */
 	public function main() {
 		$controllers = App::objects('controllers');
-		
+
 		foreach ($controllers as $controller) {
 			App::uses($controller, 'Controller');
 			$reflect = new ReflectionClass($controller);
-			
+
 			if ($reflect->isAbstract()) {
 				continue;
 			}
 			$Controller = new $controller;
-			
+
 			$actions = array();
 			$reflectMethods = $reflect->getMethods(ReflectionMethod::IS_PUBLIC);
 			foreach ($reflectMethods as $reflectMethod) {
 				$actions[] = $reflectMethod->name;
 			}
-			
+
 			// Vérifi que les attributs existent et qu'ils sont public
 			$missings = array();
 			foreach (array('aucunDroit', 'commeDroit', 'crudMap') as $property) {
@@ -54,7 +55,7 @@ class CheckDroitsControllerShell extends AppShell
 					$missings[] = $property;
 				}
 			}
-			
+
 			// Aucun droit
 			if (!in_array('aucunDroit', $missings)) {
 				foreach ($Controller->aucunDroit as $action) {
@@ -63,37 +64,37 @@ class CheckDroitsControllerShell extends AppShell
 					}
 				}
 			}
-			
+
 			// Comme droit
 			if (!in_array('commeDroit', $missings)) {
 				foreach ($Controller->commeDroit as $action => $redirect) {
 					if (!in_array($action, $actions)) {
 						$this->_message('missingAction_commeDroit_key', $controller, $action);
 					}
-					
+
 					if (!preg_match('/^([A-Z][\w]+):([\w]+)$/', $redirect, $matches)) {
 						$this->_message('bad_syntax', $controller, $redirect);
 						continue;
 					}
-					
+
 					if (!in_array($matches[1].'Controller', $controllers)) {
 						$this->_message('controller_not_found', $controller, $redirect);
 						continue;
 					}
-					
+
 					App::uses($matches[1].'Controller', 'Controller');
 					$subReflect = new ReflectionClass($matches[1].'Controller');
 					$subActions = array();
 					foreach ($a = $subReflect->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectMethod) {
 						$subActions[] = $reflectMethod->name;
 					}
-					
+
 					if (!in_array($matches[2], $subActions)) {
 						$this->_message('missingAction_commeDroit_value', $controller, $redirect);
 					}
 				}
 			}
-			
+
 			// Crud map
 			if (!in_array('crudMap', $missings)) {
 				foreach (array_keys($Controller->crudMap) as $action) {
@@ -103,11 +104,11 @@ class CheckDroitsControllerShell extends AppShell
 				}
 			}
 		}
-		
+
 		$this->out('', 2);
 		$this->out('Total de '.$this->messageCount.' erreurs detectés');
 	}
-	
+
 	protected function _message($message, $controllerName, $propertyName) {
 		switch ($message) {
 			case 'missingProperty':
@@ -138,7 +139,7 @@ class CheckDroitsControllerShell extends AppShell
 			default:
 				$out = '';
 		}
-		
+
 		$this->out(sprintf($out, $controllerName, $propertyName));
 		$this->messageCount++;
 	}
