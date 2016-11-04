@@ -590,8 +590,7 @@
 			 $joinPassagecov58Cov58 = $this->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
 			 $joinPassagecov58Cov58['conditions'] = array(
 				$joinPassagecov58Cov58['conditions'],
-				'Cov58.etatcov' => 'finalise',
-				'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid'
+				'Cov58.etatcov' => 'finalise'
 			);
 			$query['joins'][] = $joinPassagecov58Cov58;
 

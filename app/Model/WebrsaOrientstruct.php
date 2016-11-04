@@ -14,7 +14,7 @@
 	/**
 	 * La classe WebrsaOrientstruct possède la logique métier web-rsa pour les
 	 * orientations stockées dans Orientstruct.
-	 * 
+	 *
 	 * @package app.Model
 	 */
 	class WebrsaOrientstruct extends WebrsaAbstractLogic implements WebrsaLogicAccessInterface
@@ -737,10 +737,10 @@
 			// Génération du PDF
 			return $this->Orientstruct->ged( $orientation, $modeleodt, false, $options );
 		}
-		
+
 		/**
 		 * Ajoute les virtuals fields pour permettre le controle de l'accès à une action
-		 * 
+		 *
 		 * @param array $query
 		 * @return type
 		 */
@@ -753,50 +753,50 @@
 				'linked_records' => $this->Orientstruct->getSqLinkedModelsDepartement('linked_records'),
 				'premier_oriente' => $this->Orientstruct->sqVirtualField('premier_oriente'),
 			);
-			
+
 			if ((int)Configure::read('Cg.departement') === 66) {
 				$sql = $this->Orientstruct->getDataSource()->conditions(
 					array('Typeorient.parentid' => (array)Configure::read('Orientstruct.typeorientprincipale.SOCIAL')), true, false
 				);
 				$fields['notifbenefcliquable'] = "({$sql}) AS \"Orientstruct__notifbenefcliquable\"";
 			}
-			
+
 			return Hash::merge($query, array('fields' => array_values( $fields )));
 		}
-		
+
 		/**
 		 * Permet d'obtenir le nécéssaire pour calculer les droits d'accès métier à une action sur les orientations
-		 * 
+		 *
 		 * @param array $conditions
 		 * @return array
 		 */
 		public function getDataForAccess(array $conditions, array $params = array()) {
 			$query = array(
 				'joins' => array(),
-				'conditions' => $conditions, 
+				'conditions' => $conditions,
 				'contain' => false
 			);
-			
+
 			if ((int)Configure::read('Cg.departement') === 66) {
 				$query['joins'][] = $this->Orientstruct->join('Typeorient');
 			}
-			
+
 			$query = $this->completeVirtualFieldsForAccess($query);
 			return $this->Orientstruct->find('all', $query);
 		}
-		
+
 		/**
 		 * Donne les options du rang d'orientation selon le département et le contenu de $records
-		 * 
+		 *
 		 * @param array $records
 		 * @return array
 		 */
 		public function rangOrientationIndexOptions(array $records) {
 			$departement = (int)Configure::read('Cg.departement');
-			
+
 			foreach (array_keys($records) as $key) {
 				$rgorient =& $records[$key]['Orientstruct']['rgorient'];
-				
+
 				if (!empty($rgorient)) {
 					if ($departement == 58) {
 						if (Hash::get($records, "{$key}.Orientstruct.premier_oriente")) {
@@ -817,30 +817,30 @@
 					}
 				}
 			}
-			
+
 			return $records;
 		}
-		
+
 		/**
 		 * Permet d'obtenir les paramètres à envoyer à WebrsaAccess pour une personne en particulier
-		 * 
+		 *
 		 * @see WebrsaAccess::getParamsList
 		 * @param integer $personne_id
 		 * @param array $params - Liste des paramètres actifs
 		 */
 		public function getParamsForAccess($personne_id, array $params = array()) {
 			$results = array();
-			
+
 			if (in_array('ajout_possible', $params)) {
 				$results['ajout_possible'] = $this->ajoutPossible($personne_id);
 			}
 			if (in_array('reorientationseps', $params)) {
 				$results['reorientationseps'] = $this->Orientstruct->Personne->Dossierep->getReorientationsEnCours($personne_id);
 			}
-			
+
 			return $results;
 		}
-		
+
 		/**
 		 * Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
 		 *
@@ -1045,7 +1045,7 @@
 				)
 			);
 		}
-		
+
 		/**
 		 * Retourne la dernière orientation orientée pour une personne.
 		 *
@@ -1065,7 +1065,10 @@
 						"{$alias}.statut_orient = 'Orienté'",
 						"{$alias}.date_valid IS NOT NULL"
 					),
-					'order' => array( "{$alias}.date_valid DESC" ),
+					'order' => array(
+						"{$alias}.date_valid DESC",
+						"{$alias}.id DESC"
+					),
 					'limit' => 1
 				)
 			);
@@ -1110,7 +1113,7 @@
 
 			return $success;
 		}
-		
+
 		/**
 		 *
 		 * @param integer $orientstruct_id
@@ -1169,7 +1172,7 @@
 
 			return $pdf;
 		}
-		
+
 		/**
 		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo et le stocke,
