@@ -287,7 +287,7 @@
 	<div id="data">
 		<h2 class="title">Données stockées en base</h2>
 		<?php foreach( $results['Storeddata']['errors'] as $tablename => $errors ):?>
-		<h3 class="storeddata <?php echo ( count( $errors ) > 0 ? 'error' : 'success' );?>"><?php echo h( $tablename );?></h3>
+		<h3 class="storeddata <?php echo  count( $errors ) > 0 ? 'error' : 'success' ;?>"><?php echo h( $tablename );?></h3>
 		<?php
 			$fields = array();
 			$controllerName = Inflector::camelize( $tablename );

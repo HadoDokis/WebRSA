@@ -156,16 +156,16 @@
 				$this->tabDroits = array_map( 'str_split', $this->tabDroits );
 				$this->_majDroits( $profilsUsersTree, $menuControllersTree );
 
-				echo ('<script>');
-				echo ('    document.getElementById("pourcentage").style.display="none"; ');
-				echo ('    document.getElementById("progrbar").style.display="none";');
-				echo ('    document.getElementById("affiche").style.display="none";');
-				echo ('    document.getElementById("contTemp").style.display="none";');
-				echo ('</script>');
+				echo '<script>';
+				echo '    document.getElementById("pourcentage").style.display="none"; ';
+				echo '    document.getElementById("progrbar").style.display="none";';
+				echo '    document.getElementById("affiche").style.display="none";';
+				echo '    document.getElementById("contTemp").style.display="none";';
+				echo '</script>';
 
-				echo ("Enregistrement effectu&eacute;e <br />");
+				echo "Enregistrement effectu&eacute;e <br />";
 				$urlWebroot = 'http://'.$_SERVER['HTTP_HOST'].$this->request->base;
-				echo ("<a href=' $urlWebroot/'>Retour a la page precedente</a>");
+				echo "<a href=' $urlWebroot/'>Retour a la page precedente</a>";
 				exit;
 			}
 		}

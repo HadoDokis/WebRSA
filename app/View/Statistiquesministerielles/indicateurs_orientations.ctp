@@ -56,11 +56,11 @@
 			<?php foreach( $tranches[$indicateur] as $tranche ):?>
 			<tr>
 				<th><?php echo __d( 'statistiquesministerielles',  $tranche );?></th>
-				<td class="number"><?php echo ( isset( $sdd[$tranche] ) ? $this->Locale->number( $sdd[$tranche] ) : 0 );?></td>
-				<td class="number"><?php echo ( isset( $orient_pro[$tranche] ) ? $this->Locale->number( $orient_pro[$tranche] ) : 0 );?></td>
-				<td class="number"><?php echo ( isset( $orient_sociopro[$tranche] ) ? $this->Locale->number( $orient_sociopro[$tranche] ) : 0 );?></td>
-				<td class="number"><?php echo ( isset( $orient_sociale[$tranche] ) ? $this->Locale->number( $orient_sociale[$tranche] ) : 0 );?></td>
-				<td class="number"><?php echo ( isset( $attente_orient[$tranche] ) ? $this->Locale->number( $attente_orient[$tranche] ) : 0 );?></td>
+				<td class="number"><?php echo  isset( $sdd[$tranche] ) ? $this->Locale->number( $sdd[$tranche] ) : 0 ;?></td>
+				<td class="number"><?php echo  isset( $orient_pro[$tranche] ) ? $this->Locale->number( $orient_pro[$tranche] ) : 0 ;?></td>
+				<td class="number"><?php echo  isset( $orient_sociopro[$tranche] ) ? $this->Locale->number( $orient_sociopro[$tranche] ) : 0 ;?></td>
+				<td class="number"><?php echo  isset( $orient_sociale[$tranche] ) ? $this->Locale->number( $orient_sociale[$tranche] ) : 0 ;?></td>
+				<td class="number"><?php echo  isset( $attente_orient[$tranche] ) ? $this->Locale->number( $attente_orient[$tranche] ) : 0 ;?></td>
 			</tr>
 			<?php endforeach;?>
 		</tbody>

@@ -95,7 +95,7 @@
 				<?php } else { ?>
 					var urlmenu = null;
 				<?php } ?>
-				make_treemenus( baseUrl, <?php echo ( Configure::read( 'UI.menu.large' ) ? 'true' : 'false' );?>, urlmenu );
+				make_treemenus( baseUrl, <?php echo  Configure::read( 'UI.menu.large' ) ? 'true' : 'false' ;?>, urlmenu );
 				make_folded_forms();
 				mkTooltipTables();
 				make_external_links();
