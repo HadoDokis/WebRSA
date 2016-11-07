@@ -50,9 +50,9 @@
 			<?php foreach( $tranches[$indicateur] as $tranche ):?>
 			<tr>
 				<th><?php echo __d( 'statistiquesministerielles',  $tranche );?></th>
-				<td class="number"><?php echo ( isset( $reorientes[$tranche] ) ? $this->Locale->number( $reorientes[$tranche] ) : 0 );?></td>
-				<td class="number"><?php echo ( isset( $organismes_hors_spe[$tranche] ) ? $this->Locale->number( $organismes_hors_spe[$tranche] ) : 0 );?></td>
-				<td class="number"><?php echo ( isset( $organismes_spe[$tranche] ) ? $this->Locale->number( $organismes_spe[$tranche] ) : 0 );?></td>
+				<td class="number"><?php echo  isset( $reorientes[$tranche] ) ? $this->Locale->number( $reorientes[$tranche] ) : 0 ;?></td>
+				<td class="number"><?php echo  isset( $organismes_hors_spe[$tranche] ) ? $this->Locale->number( $organismes_hors_spe[$tranche] ) : 0 ;?></td>
+				<td class="number"><?php echo  isset( $organismes_spe[$tranche] ) ? $this->Locale->number( $organismes_spe[$tranche] ) : 0 ;?></td>
 			</tr>
 			<?php endforeach;?>
 		</tbody>

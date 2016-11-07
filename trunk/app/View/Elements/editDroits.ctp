@@ -20,7 +20,7 @@
 
 	document.observe( "dom:loaded", function() {
 		var baseUrl = '<?php echo Router::url( '/' );?>';
-		make_treemenus_droits( baseUrl, <?php echo ( Configure::read( 'UI.menu.large' ) ? 'true' : 'false' );?> );
+		make_treemenus_droits( baseUrl, <?php echo  Configure::read( 'UI.menu.large' ) ? 'true' : 'false' ;?> );
 	} );
 </script>
 <input type="button" value="Tout cocher" onclick="GereChkbox('tableEditDroits','cocher');" />&nbsp;&nbsp;&nbsp;
