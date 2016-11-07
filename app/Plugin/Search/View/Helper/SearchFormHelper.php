@@ -8,6 +8,7 @@
 	 * @subpackage View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppHelper', 'View/Helper' );
 
 	/**
 	 * La classe SearchFormHelper fournit des méthodes génériques pour des éléments
@@ -167,7 +168,6 @@
 			$fieldsetId = $this->domId( $path ).'_from_to';
 
 			$script = $this->PrototypeObserver->disableFieldsetOnCheckbox( $path, $fieldsetId, false, $params['hide'] );
-//			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false, $params['hide'] );
 
 			$legend = Hash::get( $params, 'legend' );
 			if( $legend === null ) {

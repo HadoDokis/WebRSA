@@ -95,9 +95,7 @@
 				if( $recursive != $object->recursive ) {
 					$parameters['recursive'] = $recursive;
 				}
-				// Début modification
-				// $results = $object->find( $type, array_merge( $parameters, $extra ) );
-				// TODO: factoriser / recopier ?
+
 				$querydata = array_merge( $parameters, $extra );
 				$querydata['offset'] = ( max( 0, $page - 1 ) * $querydata['limit'] );
 				$querydata['limit'] = ( $querydata['limit'] + 1 );
@@ -108,23 +106,10 @@
 				if( isset( $results[$querydata['limit'] - 1] ) ) {
 					unset( $results[$querydata['limit'] - 1] );
 				}
-				// Fin modification
 			}
 			$defaults = $this->getDefaults( $object->alias );
 			unset( $defaults[0] );
 
-			// Début modification
-//			if( $object->hasMethod( 'paginateCount' ) ) {
-//				$count = $object->paginateCount( $conditions, $recursive, $extra );
-//			}
-//			else {
-//				$parameters = compact( 'conditions' );
-//				if( $recursive != $object->recursive ) {
-//					$parameters['recursive'] = $recursive;
-//				}
-//				$count = $object->find( 'count', array_merge( $parameters, $extra ) );
-//			}
-			// Fin modification
 			$pageCount = intval( ceil( $count / $limit ) );
 			$page = max( min( $page, $pageCount ), 1 );
 
