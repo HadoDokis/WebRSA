@@ -166,7 +166,7 @@
 		 * @param array $data
 		 * @return boolean
 		 */
-		public abstract function saveDecisions( $data );
+		abstract public function saveDecisions( $data );
 
 		/**
 		 * Retourne un morceau de querydata propre à la thématique utilisé pour
