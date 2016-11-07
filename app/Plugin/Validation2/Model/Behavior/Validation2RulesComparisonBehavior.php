@@ -8,6 +8,7 @@
 	 * @subpackage Model.Behavior
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'ModelBehavior', 'Model' );
 
 	/**
 	 * La classe Validation2RulesComparisonBehavior fournit des méthodes de
@@ -91,10 +92,10 @@
 
 			return $success;
 		}
-		
+
 		/**
 		 * Vérifi qu'un champ est à vide si le champ $reference ($condition ? '===' : '!==') $values
-		 * 
+		 *
 		 * @param Model $Model
 		 * @param array $checks
 		 * @param string $reference
@@ -106,13 +107,13 @@
 			if (!$this->_checkParams($checks, $reference)) {
 				return false;
 			}
-			
+
 			$check = in_array(Hash::get($Model->data, "{$Model->alias}.{$reference}"), (array)$values);
-			
+
 			if (empty($checks) || $check !== $condition) {
 				return true;
 			}
-			
+
 			foreach ($checks as $value) {
 				if (!empty($value)) {
 					return false;
