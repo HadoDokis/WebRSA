@@ -17,6 +17,8 @@
 		define( 'GEDOOO_TEST_FILE', GEDOOO_PLUGIN_DIR.'Vendor'.DS.'modelesodt'.DS.'test_gedooo.odt' );
 	}
 
+	App::uses( 'ModelBehavior', 'Model' );
+
 	/**
 	 * La classe GedoooBehavior correspond au patron de conception "fabrique"
 	 * (Factory method pattern) et permet d'attacher le bon behavior suivant la
