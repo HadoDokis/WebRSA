@@ -15,6 +15,8 @@
 	// Temps maximum (en seconde), avant que le script n'arrête d'attendre la réponse de Gedooo
 	@ini_set( 'default_socket_timeout', 12000 );
 
+	App::uses( 'Component', 'Controller' );
+
 	/**
 	 * La classe GedoooComponent fournit des méthodes permettant de concaténer
 	 * des fichiers PDF (grâce au binaire pdftk) et d'envoyer un fichier PDF au
