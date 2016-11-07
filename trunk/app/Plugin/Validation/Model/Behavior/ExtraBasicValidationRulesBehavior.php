@@ -7,6 +7,7 @@
 	 * @package Validation
 	 * @subpackage Model.Behavior
 	 */
+	App::uses( 'ModelBehavior', 'Model' );
 
 	/**
 	 * La classe ExtraBasicValidationRulesBehavior ajoute des règles de
