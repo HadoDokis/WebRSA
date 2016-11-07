@@ -4,9 +4,11 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package Fluxcnaf.Console.Command
+	 * @package Fluxcnaf
+	 * @subpackage Console.Command
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppShell', 'Console/Command' );
 	App::uses( 'Xml', 'Utility' );
 	App::uses( 'FluxcnafSchema', 'Fluxcnaf.Utility' );
 
@@ -21,7 +23,8 @@
 	 *
 	 * @see http://xemelios.org/user-guide/documents/rsa.html
 	 *
-	 * @package Fluxcnaf.Console.Command
+	 * @package Fluxcnaf
+	 * @subpackage Console.Command
 	 */
 	class FluxcnafSchemaShell extends AppShell
 	{
@@ -60,14 +63,7 @@
 		 *
 		 * @var array
 		 */
-		public $commands = array(
-			/*'locale' => array(
-				'help' => "Génère un fichier de traductions à partir des enumérations d'un fichier <schema>Dico.xml"
-			),
-			'compare' => array(
-				'help' => "Génère un fichier HTML de comparaison des valeurs finies de balises (champs) pour un ensemble de fichiers <schema>Dico.xml"
-			)*/
-		);
+		public $commands = array();
 
 		/**
 		 * Liste des arguments à passe au shell.
