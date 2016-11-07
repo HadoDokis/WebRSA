@@ -4,14 +4,17 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package Fluxcnaf.Model
+	 * @package Fluxcnaf
+	 * @subpackage Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * La classe Fluxcnaf ...
 	 *
-	 * @package Fluxcnaf.Model
+	 * @package Fluxcnaf
+	 * @subpackage Model
 	 */
 	class Fluxcnaf extends AppModel
 	{

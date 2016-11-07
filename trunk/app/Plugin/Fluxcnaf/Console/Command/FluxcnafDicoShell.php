@@ -4,9 +4,11 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package Fluxcnaf.Console.Command
+	 * @package Fluxcnaf
+	 * @subpackage Console.Command
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AppShell', 'Console/Command' );
 	App::uses( 'Xml', 'Utility' );
 	App::uses( 'FluxcnafDico', 'Fluxcnaf.Utility' );
 
@@ -25,7 +27,8 @@
 	 *
 	 * @see http://xemelios.org/user-guide/documents/rsa.html
 	 *
-	 * @package Fluxcnaf.Console.Command
+	 * @package Fluxcnaf
+	 * @subpackage Console.Command
 	 */
 	class FluxcnafDicoShell extends AppShell
 	{
