@@ -5,7 +5,7 @@
 ?>
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
-<?php require_once( dirname( __FILE__ ).DS.'filtre.ctp' ); ?>
+<?php require_once  dirname( __FILE__ ).DS.'filtre.ctp' ; ?>
 
 <?php $pagination = $this->Xpaginator->paginationBlock( 'ActioncandidatPersonne', $this->passedArgs ); ?>
 <?php if ($pagination):?>

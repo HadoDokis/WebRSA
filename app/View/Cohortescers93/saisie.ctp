@@ -5,7 +5,7 @@
 	$this->set( compact( 'title_for_layout' ) );
 	echo $this->Xhtml->tag( 'h1', $title_for_layout );
 
-	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
+	require_once  dirname( __FILE__ ).DS.'filtre.ctp' ;
 
 	if( isset( $cers93 ) ) {
 		echo $this->Html->tag( 'h2', 'Résultats de la recherche' );
@@ -36,7 +36,7 @@
 				</thead>';
 			echo '<tbody>';
 
-			require_once( dirname( __FILE__ ).DS.'saisie_tbody_trs.ctp' );
+			include_once  dirname( __FILE__ ).DS.'saisie_tbody_trs.ctp' ;
 
 			echo '</tbody>';
 			echo '</table>';

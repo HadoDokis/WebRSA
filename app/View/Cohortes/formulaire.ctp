@@ -56,7 +56,7 @@
 	</script>
 <?php endif;?>
 
-<?php require_once( 'filtre.ctp' );?>
+<?php require_once  'filtre.ctp' ;?>
 
 <?php if( !empty( $this->request->data ) && $formSent ):?>
 <h2 class="noprint">Résultats de la recherche</h2>

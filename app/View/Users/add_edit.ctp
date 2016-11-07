@@ -20,7 +20,7 @@
 <div id="tabbedWrapper" class="tabs">
 	<div id="infos">
 		<h2 class="title">Informations personnelles</h2>
-		<?php include '_form.ctp'; ?>
+		<?php require '_form.ctp'; ?>
 	</div>
 	<div id="droits">
 		<h2 class="title">Droits</h2>

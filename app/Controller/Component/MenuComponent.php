@@ -27,7 +27,7 @@
 		 */
 		public function load( $varNameMenu, $aro = null ) {
 			// lecture du menu du fichier menu.ini.php
-			include(CONFIGS.'menu.ini.php');
+			include CONFIGS.'menu.ini.php';
 			$menuRet = ${$varNameMenu};
 
 			// chargement des droits

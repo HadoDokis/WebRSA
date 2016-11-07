@@ -37,7 +37,7 @@
 				$file = sprintf( 'traiterep.%s.liste.ctp', Inflector::underscore( $theme ) );
 				echo '<div id="'.$theme.'" class="'.$errorClass.'"><h2 class="title '.$errorClass.'">'.__d( 'dossierep', 'ENUM::THEMEEP::'.Inflector::tableize( $theme ) ).'</h2>';
 				if( !empty( $dossiers[$theme]['liste'] ) ) {
-					require_once( $file );
+					include_once  $file ;
 				}
 				else {
 					echo '<p class="notice">Aucun dossier à traiter pour cette thématique.</p>';

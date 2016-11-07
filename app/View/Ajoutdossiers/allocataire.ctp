@@ -10,7 +10,7 @@
 
 	<?php echo $this->Form->input( 'Prestation.natprest', array( 'type' => 'hidden', 'value' => 'RSA' ) );?>
 	<?php echo $this->Form->input( 'Prestation.rolepers', array( 'type' => 'hidden', 'value' => 'DEM' ) );?>
-	<?php require_once( APP.DS.'View'.DS.'Personnes'.DS.'_form.ctp' );?>
+	<?php require_once  APP.DS.'View'.DS.'Personnes'.DS.'_form.ctp' ;?>
 
 	<div class="submit">
 		<?php echo $this->Form->submit( '< Précédent', array( 'name' => 'Previous', 'div'=>false, 'disabled' => true ) );?>
