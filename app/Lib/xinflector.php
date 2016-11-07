@@ -27,7 +27,7 @@
 		 * @param string $path ie. User.username, User.0.id
 		 * @return array( string $model, string $field ) ie. array( 'User', 'username' ), array( 'User', 'id' )
 		 */
-		static public function modelField( $path ) {
+		public static function modelField( $path ) {
 			if( preg_match( "/(?<!\w)(\w+)(\.|\.[0-9]+\.)(\w+)$/", $path, $matches ) ) {
 				return array( $matches[1], $matches[3] );
 			}
@@ -45,7 +45,7 @@
 		 * @param array $fields ie. array( 'id', 'username', .. )
 		 * @return array ie. array( 'User.id', 'User.username' )
 		 */
-		static public function fieldNames( $model, array $fields ) {
+		public static function fieldNames( $model, array $fields ) {
 			$return = array();
 			foreach( $fields as $key => $field ) {
 				$return[$key] = "{$model}.{$field}";
