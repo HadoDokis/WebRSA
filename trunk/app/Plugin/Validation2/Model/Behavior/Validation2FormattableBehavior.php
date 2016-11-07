@@ -9,6 +9,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	require_once dirname( __FILE__ ).DS.'..'.DS.'..'.DS.'Lib'.DS.'basics.php';
+	App::uses( 'ModelBehavior', 'Model' );
 
 	/**
 	 * La classe Validation2FormattableBehavior permet d'appliquer des méthodes
