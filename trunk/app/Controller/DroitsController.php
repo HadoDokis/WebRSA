@@ -96,7 +96,7 @@
 
 		public function edit() {
 			// Initialisation de la progressBar
-			include ('Vendor/progressbar.php');
+			include 'Vendor/progressbar.php';
 			Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
 
 			// Initialisations

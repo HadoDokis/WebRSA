@@ -8,7 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AppModel', 'Model' );
-	require_once( APPLIBS.'cmis.php' );
+	require_once  APPLIBS.'cmis.php' ;
 
 	/**
 	 * Classe abstraite contenant les signatures de méthodes qui doivent être

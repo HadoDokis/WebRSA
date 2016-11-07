@@ -9,7 +9,7 @@
 
 	echo $this->pageTitle = $pageTitle;
 	?>
-</h1><?php require_once( 'filtre.ctp' );?>
+</h1><?php require_once  'filtre.ctp' ;?>
 
 <?php
 	if( isset( $cohorteci ) ) {

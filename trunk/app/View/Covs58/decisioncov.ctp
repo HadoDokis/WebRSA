@@ -19,7 +19,7 @@
 
 				echo '<div id="'.$theme.'" class="'.$errorClass.'"><h2 class="title '.$errorClass.'">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ) ).'</h2>';
 				if( !empty( $dossiers[$theme]['liste'] ) ) {
-					require_once( 'decisioncov.'.Inflector::tableize( $theme ).'.ctp' );
+					include_once  'decisioncov.'.Inflector::tableize( $theme ).'.ctp' ;
 				}
 				else {
 					echo '<p class="notice">Aucun dossier à traiter pour cette thématique.</p>';

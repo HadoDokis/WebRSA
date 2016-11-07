@@ -10,7 +10,7 @@
 	App::uses( 'AppControllers', 'AppClasses.Utility' );
 	App::uses( 'AppModel', 'Model' );
 	App::uses( 'Folder', 'Utility' );
-	require_once( APPLIBS.'cmis.php' );
+	require_once  APPLIBS.'cmis.php' ;
 
 	/**
 	 * Classe permettant de connaître la liste des modèles de documents (odt),

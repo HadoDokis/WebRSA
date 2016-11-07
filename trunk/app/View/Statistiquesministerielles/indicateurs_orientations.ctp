@@ -1,4 +1,4 @@
-<?php require_once( dirname( __FILE__ ).DS.'search.ctp' ); ?>
+<?php require_once  dirname( __FILE__ ).DS.'search.ctp' ; ?>
 <?php if( !empty( $this->request->data ) ): ?>
 	<h2>1 - Orientation des personnes dans le champ des Droits et Devoirs au 31 décembre de l'année, au sens du type de parcours (voir notice)</h2>
 	<?php

@@ -4,7 +4,7 @@
 	echo $this->pageTitle = $pageTitle;
 	?>
 </h1>
-<?php require_once( 'filtre.ctp' );?>
+<?php require_once  'filtre.ctp' ;?>
 <?php
 	if( isset( $cohorteci ) ) {
 		$pagination = $this->Xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );
