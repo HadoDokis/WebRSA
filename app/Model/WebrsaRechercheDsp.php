@@ -7,14 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'AppModel', 'Model' );
+	App::uses( 'AbstractWebrsaRecherche', 'Model/Abstractclass' );
 
 	/**
 	 * La classe WebrsaRechercheDsp ...
 	 *
 	 * @package app.Model
 	 */
-	class WebrsaRechercheDsp extends AppModel
+	class WebrsaRechercheDsp extends AbstractWebrsaRecherche
 	{
 		/**
 		 * Nom du modèle.
