@@ -26,7 +26,7 @@
 				'phone' => array( 'numtel' )
 			),
 			'Validation.ExtraValidationRules',
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 		);
 
 		public $virtualFields = array(

@@ -32,7 +32,7 @@
 
 		public $actsAs = array(
 			'ValidateTranslate',
-            'Pgsqlcake.PgsqlAutovalidate'
+            'Postgres.PostgresAutovalidate'
 		);
 
 		public $hasAndBelongsToMany = array(

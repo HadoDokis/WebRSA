@@ -24,7 +24,7 @@
 
 		public $actsAs = array(
 			'Formattable',
-			'Pgsqlcake.PgsqlAutovalidate'
+			'Postgres.PostgresAutovalidate'
 		);
 
 		public $validate = array(

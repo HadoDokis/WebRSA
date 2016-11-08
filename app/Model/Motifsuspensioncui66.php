@@ -19,7 +19,7 @@ class Motifsuspensioncui66 extends AppModel
     public $name = 'Motifsuspensioncui66';
 
     public $actsAs = array(
-        'Pgsqlcake.PgsqlAutovalidate',
+        'Postgres.PostgresAutovalidate',
         'Formattable'
     );
 

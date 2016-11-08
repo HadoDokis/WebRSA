@@ -24,7 +24,7 @@
 			'Containable',
 			'Enumerable',
 			'Formattable',
-            'Pgsqlcake.PgsqlAutovalidate'
+            'Postgres.PostgresAutovalidate'
 		);
 
 		public $validate = array(

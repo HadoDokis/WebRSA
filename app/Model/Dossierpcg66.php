@@ -31,7 +31,7 @@ class Dossierpcg66 extends AppModel {
         ),
     );
     public $actsAs = array(
-        'Pgsqlcake.PgsqlAutovalidate',
+        'Postgres.PostgresAutovalidate',
         'Formattable' => array(
             'suffix' => array('user_id')
         ),

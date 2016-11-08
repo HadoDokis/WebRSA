@@ -20,8 +20,6 @@
 	 * Ces contraintes doivent porter un nom commençant par cakephp_validate_
 	 * pour être automatiquement ajoutées aux contraintes du modèle.
 	 *
-	 * @see Pgsqlcake.PgsqlAutovalidateBehavior (sera dépréciée par cette classe-ci)
-	 *
 	 * @package Postgres
 	 * @subpackage Model.Behavior
 	 */

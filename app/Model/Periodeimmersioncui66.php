@@ -21,7 +21,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-            'Pgsqlcake.PgsqlAutovalidate',
+            'Postgres.PostgresAutovalidate',
             'Formattable' => array(
 				'suffix' => array( 'metieraffectation_id' ),
 			),

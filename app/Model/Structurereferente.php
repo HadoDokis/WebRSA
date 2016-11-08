@@ -26,7 +26,7 @@
 			'Formattable' => array(
 				'phone' => array( 'numtel', 'numfax' )
 			),
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 			'Validation.ExtraValidationRules',
 		);
 

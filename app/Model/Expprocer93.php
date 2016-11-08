@@ -39,7 +39,7 @@
 			'Formattable' => array(
 				'amount' => array( 'nbduree' )
 			),
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 		);
 
 		/**

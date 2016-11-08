@@ -24,7 +24,7 @@
 
 		public $actsAs = array(
 //			'Autovalidate2',
-            'Pgsqlcake.PgsqlAutovalidate',
+            'Postgres.PostgresAutovalidate',
 			'Enumerable' => array(
 				'fields' => array(
 					'clos',

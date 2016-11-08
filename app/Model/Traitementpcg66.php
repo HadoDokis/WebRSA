@@ -51,7 +51,7 @@
 				)
 			),
 			'Gedooo.Gedooo',
-            'Pgsqlcake.PgsqlAutovalidate'
+            'Postgres.PostgresAutovalidate'
 		);
 
 		public $validate = array(
