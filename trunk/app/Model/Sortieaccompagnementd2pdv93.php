@@ -38,7 +38,7 @@
 		public $actsAs = array(
 			'Formattable',
 			'Occurences',
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 		);
 
 		/**

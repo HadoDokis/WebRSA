@@ -31,7 +31,7 @@
 		public $actsAs = array(
 			'Allocatairelie',
 			'Formattable',
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 			'Questionnairepdv93',
 		);
 

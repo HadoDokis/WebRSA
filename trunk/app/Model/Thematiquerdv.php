@@ -44,7 +44,7 @@
 		 */
 		public $actsAs = array(
 			'Formattable',
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 		);
 
 		/**
@@ -120,13 +120,13 @@
 		 * @return array
 		 */
 		public function linkedModels() {
-			if( !$this->Statutrdv->Rendezvous->Behaviors->attached( 'Pgsqlcake.PgsqlSchema' ) ) {
-				$this->Statutrdv->Rendezvous->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
+			if( false === $this->Statutrdv->Rendezvous->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+				$this->Statutrdv->Rendezvous->Behaviors->attach( 'Postgres.PostgresTable' );
 			}
 
 			$return = array();
 			$domain = Inflector::underscore( $this->alias );
-			$foreignKeys = $this->Statutrdv->Rendezvous->foreignKeysTo();
+			$foreignKeys = $this->Statutrdv->Rendezvous->getPostgresForeignKeysTo();
 
 			if( !empty( $foreignKeys ) ) {
 				foreach( $foreignKeys as $foreignKey ) {

@@ -26,7 +26,7 @@
                     'refsuivicui66_id'
                 )
             ),
-            'Pgsqlcake.PgsqlAutovalidate'
+            'Postgres.PostgresAutovalidate'
 		);
 
 		public $belongsTo = array(

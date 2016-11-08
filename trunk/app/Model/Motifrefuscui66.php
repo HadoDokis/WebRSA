@@ -19,7 +19,7 @@
 		public $name = 'Motifrefuscui66';
 
 		public $actsAs = array(
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 			'Formattable'
 		);
 

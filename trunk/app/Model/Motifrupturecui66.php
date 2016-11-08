@@ -19,7 +19,7 @@
 		public $name = 'Motifrupturecui66';
 
 		public $actsAs = array(
-			'Pgsqlcake.PgsqlAutovalidate',
+			'Postgres.PostgresAutovalidate',
 			'Formattable'
 		);
 

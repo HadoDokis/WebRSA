@@ -329,8 +329,10 @@
 		 * @return void
 		 */
 		protected function _initForeignKeysTo() {
-			$this->Informationpe->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
-			$this->_foreignKeysToInformationpe = $this->Informationpe->foreignKeysTo();
+			if( false === $this->Informationpe->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+				$this->Informationpe->Behaviors->attach( 'Postgres.PostgresTable' );
+			}
+			$this->_foreignKeysToInformationpe = $this->Informationpe->getPostgresForeignKeysTo();
 			$tableName = $this->Informationpe->Historiqueetatpe->getDatasource( $this->Informationpe->Historiqueetatpe->useDbConfig )->fullTableName( $this->Informationpe->Historiqueetatpe, false, false );
 
 			foreach( $this->_foreignKeysToInformationpe as $i => $foreignKey ) {
@@ -339,8 +341,10 @@
 				}
 			}
 
-			$this->Informationpe->Historiqueetatpe->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
-			$this->_foreignKeysToHistoriqueetatpe = $this->Informationpe->Historiqueetatpe->foreignKeysTo();
+			if( false === $this->Informationpe->Historiqueetatpe->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+				$this->Informationpe->Historiqueetatpe->Behaviors->attach( 'Postgres.PostgresTable' );
+			}
+			$this->_foreignKeysToHistoriqueetatpe = $this->Informationpe->Historiqueetatpe->getPostgresForeignKeysTo();
 		}
 
 		/**

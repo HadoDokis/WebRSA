@@ -101,30 +101,12 @@
 		*/
 		protected function _methodes() {
 			$methodes = array( /*'stricte' => 'Stricte',*/ 'normale' => 'Normale' );
-			$this->Dossier->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
-			$pg_functions = $this->Dossier->pgFunctions( 'difference' );
+			$pg_functions = $this->Dossier->getDataSource()->getPostgresFunctions( array( 'pg_proc.proname = \'difference\'' ) );
 			if( !empty( $pg_functions ) ) {
 				$methodes['approchante'] = 'Approchante';
 			}
 
 			return $methodes;
-		}
-
-		/**
-		* FIXME: à mettre dans le modèle Gestionanomalie, fonction prechargement()
-		*/
-		protected function _foreignKeysTo( &$model ) {
-			// @todo: + tables spéciales (fichiersmodules/personnes)
-			$cacheKey = Inflector::underscore( Inflector::camelize( implode( '_', array( __CLASS__, __FUNCTION__, $model->useDbConfig, $model->alias ) ) ) );
-
-			$foreignKeysTo = Cache::read( $cacheKey );
-			if( $foreignKeysTo === false ) {
-				$model->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
-				$foreignKeysTo = $model->foreignKeysTo();
-				Cache::write( $cacheKey, $foreignKeysTo );
-			}
-
-			return Set::extract( '/From/table', $foreignKeysTo );
 		}
 
 		/**
@@ -882,8 +864,10 @@
 				sort( $linkedModels );
 
 				foreach( $linkedModels as $linkedModel ) {
-					$mainModel->{$linkedModel}->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
-					$foreignKeysTo = $mainModel->{$linkedModel}->foreignKeysTo();
+					if( false === $mainModel->{$linkedModel}->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+						$mainModel->{$linkedModel}->Behaviors->attach( 'Postgres.PostgresTable' );
+					}
+					$foreignKeysTo = $mainModel->{$linkedModel}->getPostgresForeignKeysTo();
 					if( !empty( $foreignKeysTo ) ){
 						foreach( $foreignKeysTo as $foreignKeyTo ) {
 							$modelName = Inflector::classify( $foreignKeyTo['From']['table'] );
@@ -902,7 +886,6 @@
 							}
 						}
 					}
-					$mainModel->{$linkedModel}->Behaviors->detach( 'Pgsqlcake.PgsqlSchema' );
 				}
 				Cache::write( $cacheKey, $dependencies );
 			}

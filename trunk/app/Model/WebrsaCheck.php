@@ -1202,8 +1202,6 @@
 		 * Vérifie si la date du serveur PostgreSQL correspond à la date du serveur Web.
 		 * La tolérance est de moins d'une minute.
 		 *
-		 * Permet de déprécier PgsqlSchemaBehavior::pgCheckTimeDifference().
-		 *
 		 * @return array
 		 */
 		public function checkPostgresTimeDifference() {

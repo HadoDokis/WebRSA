@@ -64,7 +64,7 @@
 					'Bilanparcours/courrierinformationavantep.odt',
 				)
 			),
-            'Pgsqlcake.PgsqlAutovalidate',
+            'Postgres.PostgresAutovalidate'
 		);
 
 		public $validate = array(
