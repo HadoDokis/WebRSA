@@ -920,6 +920,9 @@
 						'Orientstruct.personne_id',
 						'Orientstruct.date_valid',
 						'( CASE WHEN "Orientstruct"."origine" = \'reorientation\' THEN \'Réorientation\' ELSE \'Orientation\' END ) AS "Impression__type"',
+					),
+					'conditions' => array(
+						'Orientstruct.origine <>' => 'demenagement'
 					)
 				)
 			);
