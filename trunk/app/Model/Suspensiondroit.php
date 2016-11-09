@@ -18,6 +18,13 @@
 	{
 		public $name = 'Suspensiondroit';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $belongsTo = array(
 			'Situationdossierrsa' => array(
 				'className' => 'Situationdossierrsa',

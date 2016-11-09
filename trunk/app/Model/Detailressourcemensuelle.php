@@ -18,6 +18,13 @@
 	{
 		public $name = 'Detailressourcemensuelle';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'ressourcemensuelle_id' => array(
 				'numeric' => array(

@@ -18,6 +18,13 @@
 	{
 		public $name = 'Action';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'libelle';
 
 		public $order = array( 'Action.libelle ASC' );

@@ -18,6 +18,14 @@
 	{
 
 		public $name = 'Objetentretien';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'name';
 		public $order = 'Objetentretien.id ASC';
 		public $actsAs = array(

@@ -18,6 +18,14 @@
 	{
 
 		public $name = 'Situationdossierrsa';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $useTable = 'situationsdossiersrsa';
 		public $validate = array(
 			'etatdosrsa' => array(

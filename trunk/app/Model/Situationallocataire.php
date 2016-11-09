@@ -34,13 +34,6 @@
 		);
 
 		/**
-		 * Par défaut, on met la récursivité au minimum.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 *
 		 * @see Situationallocataire::natpfD1()
 		 *

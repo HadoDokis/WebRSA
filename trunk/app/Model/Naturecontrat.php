@@ -24,13 +24,6 @@
 		public $name = 'Naturecontrat';
 
 		/**
-		 * Récursivité.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Behaviors utilisés.
 		 *
 		 * @var array

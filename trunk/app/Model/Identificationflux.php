@@ -18,6 +18,13 @@
 	{
 		public $name = 'Identificationflux';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $hasMany = array(
 			'Totalisationacompte' => array(
 				'className' => 'Totalisationacompte',

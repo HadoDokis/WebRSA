@@ -28,13 +28,6 @@
 		public $name = 'WebrsaDecisionregressionorientationcov58';
 
 		/**
-		 * Récursivité par défaut du modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Ce modèle n'utilise pas directement de table.
 		 *
 		 * @var integer

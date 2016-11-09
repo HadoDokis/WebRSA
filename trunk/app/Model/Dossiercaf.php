@@ -18,6 +18,13 @@
 	{
 		public $name = 'Dossiercaf';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		protected $_modules = array( 'caf' );
 
 		public $validate = array(

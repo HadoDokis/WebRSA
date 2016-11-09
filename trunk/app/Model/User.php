@@ -18,6 +18,13 @@
 	{
 		public $name = 'User';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'username';
 
 		public $actsAs = array(

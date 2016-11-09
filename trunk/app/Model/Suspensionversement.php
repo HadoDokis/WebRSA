@@ -18,6 +18,13 @@
 	{
 		public $name = 'Suspensionversement';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'situationdossierrsa_id' => array(
 				'numeric' => array(

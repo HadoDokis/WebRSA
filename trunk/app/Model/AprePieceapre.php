@@ -18,6 +18,13 @@
 	{
 		public $name = 'AprePieceapre';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'apre_id' => array(
 				'numeric' => array(

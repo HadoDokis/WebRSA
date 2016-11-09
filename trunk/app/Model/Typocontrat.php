@@ -18,6 +18,13 @@
 	{
 		public $name = 'Typocontrat';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'lib_typo';
 
 		public $order = 'Typocontrat.id ASC';

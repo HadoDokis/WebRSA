@@ -18,6 +18,13 @@
 	{
 		public $name = 'AmenaglogtPieceamenaglogt';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'amenaglogt_id' => array(
 				'numeric' => array(

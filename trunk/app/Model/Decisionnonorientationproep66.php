@@ -18,8 +18,6 @@
 	{
 		public $name = 'Decisionnonorientationproep66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(

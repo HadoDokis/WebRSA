@@ -18,8 +18,6 @@
 	{
 		public $name = 'Decisiondefautinsertionep66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'Dependencies',
@@ -39,11 +37,11 @@
 			'ValidateTranslate',
 			'Validation2.Validation2RulesComparison'
 		);
-		
+
 		public $validate = array(
 			'decisionsup' => array(
 				'emptyIf' => array(
-					'rule' => array('emptyIf', 'decision', false, 
+					'rule' => array('emptyIf', 'decision', false,
 						array('maintienorientsoc', 'reorientationprofverssoc', 'reorientationsocversprof')
 					),
 					'message' => 'La deuxiême liste déroulante de décision, ne sert que dans le cadre d\'une orientation'

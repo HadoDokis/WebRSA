@@ -22,13 +22,6 @@
 		public $name = 'FichedeliaisonPersonne';
 
 		/**
-		 * Récursivité par défaut du modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Behaviors utilisés par le modèle.
 		 *
 		 * @var array

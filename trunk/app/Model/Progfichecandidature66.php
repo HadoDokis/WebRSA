@@ -18,8 +18,6 @@
 	{
 		public $name = 'Progfichecandidature66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Formattable',
 			'Postgres.PostgresAutovalidate'

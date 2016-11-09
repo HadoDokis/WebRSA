@@ -18,6 +18,13 @@ class Motifsuspensioncui66Suspensioncui66 extends AppModel
 {
     public $name = 'Motifsuspensioncui66Suspensioncui66';
 
+	/**
+	 * Récursivité par défaut du modèle.
+	 *
+	 * @var integer
+	 */
+	public $recursive = 1;
+
     public $belongsTo = array(
         'Motifsuspensioncui66' => array(
             'className' => 'Motifsuspensioncui66',

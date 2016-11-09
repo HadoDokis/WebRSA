@@ -18,6 +18,13 @@
 	{
 		public $name = 'Nonoriente66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
 			'Conditionnable',
 			'Gedooo.Gedooo',

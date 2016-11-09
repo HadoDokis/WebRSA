@@ -31,13 +31,6 @@
 		public $order = array( 'Metierexerce.name ASC' );
 
 		/**
-		 * Récursivité.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Behaviors utilisés.
 		 *
 		 * @var array

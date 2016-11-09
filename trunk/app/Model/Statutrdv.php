@@ -18,6 +18,13 @@
 	{
 		public $name = 'Statutrdv';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'libelle';
 
 		public $order = 'Statutrdv.id ASC';

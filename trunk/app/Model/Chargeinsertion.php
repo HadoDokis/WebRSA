@@ -18,6 +18,13 @@
 	{
 		public $name = 'Chargeinsertion';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'nom_complet';
 
 		public $useTable = 'users';

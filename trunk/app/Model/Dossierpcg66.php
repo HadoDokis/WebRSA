@@ -18,7 +18,6 @@ App::uses( 'AppModel', 'Model' );
 class Dossierpcg66 extends AppModel {
 
     public $name = 'Dossierpcg66';
-    public $recursive = -1;
     public $virtualFields = array(
         'nbpropositions' => array(
             'type' => 'integer',

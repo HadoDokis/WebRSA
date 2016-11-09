@@ -18,6 +18,14 @@
 	{
 
 		public $name = 'Apre66';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'numeroapre';
 		public $useTable = 'apres';
 		public $actsAs = array(

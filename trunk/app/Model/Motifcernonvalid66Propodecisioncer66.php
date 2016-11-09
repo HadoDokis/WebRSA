@@ -18,9 +18,6 @@
 	{
 		public $name = 'Motifcernonvalid66Propodecisioncer66';
 
-		public $recursive = -1;
-
-
 		public $belongsTo = array(
 			'Motifcernonvalid66' => array(
 				'className' => 'Motifcernonvalid66',

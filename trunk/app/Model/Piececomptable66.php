@@ -18,6 +18,13 @@
 	{
 		public $name = 'Piececomptable66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $order = 'Piececomptable66.name ASC';
 
 		public $validate = array(

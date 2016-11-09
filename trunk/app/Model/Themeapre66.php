@@ -18,6 +18,13 @@
 	{
 		public $name = 'Themeapre66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $order = 'Themeapre66.name ASC';
 
 		public $validate = array(

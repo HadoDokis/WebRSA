@@ -18,6 +18,13 @@
 	{
 		public $name = 'FormqualifPieceformqualif';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'formqualif_id' => array(
 				'numeric' => array(

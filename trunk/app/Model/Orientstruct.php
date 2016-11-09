@@ -20,6 +20,13 @@
 		public $name = 'Orientstruct';
 
 		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
+		/**
 		 * Les modèles utilisés par ce modèle, en plus des modèles présents dans
 		 * les relations.
 		 *

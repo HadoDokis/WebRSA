@@ -18,6 +18,13 @@
 	{
 		public $name = 'Creance';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'foyer_id' => array(
 				'numeric' => array(

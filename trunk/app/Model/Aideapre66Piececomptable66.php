@@ -18,6 +18,13 @@
 	{
 		public $name = 'Aideapre66Piececomptable66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'aideapre66_id' => array(
 				'numeric' => array(

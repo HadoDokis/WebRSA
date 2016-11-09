@@ -17,6 +17,14 @@
 	class RejetHistorique extends AppModel
 	{
 		public $name = 'RejetHistorique';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $useDbConfig = 'log';
 	}
 ?>

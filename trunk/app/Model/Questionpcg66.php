@@ -18,8 +18,6 @@
 	{
 		public $name = 'Questionpcg66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'Enumerable' => array(

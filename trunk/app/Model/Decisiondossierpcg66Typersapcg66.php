@@ -18,6 +18,13 @@
 	{
 		public $name = 'Decisiondossierpcg66Typersapcg66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $belongsTo = array(
 			'Decisiondossierpcg66' => array(
 				'className' => 'Decisiondossierpcg66',

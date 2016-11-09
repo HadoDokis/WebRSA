@@ -24,13 +24,6 @@
 		public $name = 'Populationd1d2pdv93';
 
 		/**
-		 * Récursivité par défaut de ce modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Behaviors utilisés.
 		 *
 		 * @var array

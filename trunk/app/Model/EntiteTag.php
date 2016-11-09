@@ -24,13 +24,6 @@
 		public $name = 'EntiteTag';
 
 		/**
-		 * Récursivité par défaut du modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Associations "Belongs to".
 		 *
 		 * @var array

@@ -18,8 +18,6 @@
 	{
 		public $name = 'Propononorientationprocov58';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'Containable',

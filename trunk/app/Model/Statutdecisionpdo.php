@@ -18,6 +18,13 @@
 	{
 		public $name = 'Statutdecisionpdo';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'libelle';
 
 		public $validate = array(

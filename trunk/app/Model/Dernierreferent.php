@@ -18,8 +18,6 @@
 	{
 		public $name = 'Dernierreferent';
 
-		public $recursive = -1;
-
 		public $belongsTo = array(
 			'Referent' => array(
 				'className' => 'Referent',

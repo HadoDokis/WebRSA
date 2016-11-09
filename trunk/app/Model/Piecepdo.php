@@ -18,6 +18,13 @@
 	{
 		public $name = 'Piecepdo';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $belongsTo = array(
 			'Propopdo' => array(
 				'className' => 'Propopdo',

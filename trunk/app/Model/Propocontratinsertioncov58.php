@@ -18,8 +18,6 @@
 	{
 		public $name = 'Propocontratinsertioncov58';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Containable',
 			'Enumerable',

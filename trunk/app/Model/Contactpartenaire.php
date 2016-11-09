@@ -18,6 +18,13 @@
 	{
 		public $name = 'Contactpartenaire';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'nom_candidat';
 
 		public $actsAs = array(

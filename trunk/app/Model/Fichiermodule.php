@@ -21,7 +21,6 @@
 		/**
 		 *
 		 */
-		public $recursive = -1;
 		public $name = 'Fichiermodule';
 		public $actAs = array(
 			'Formattable',

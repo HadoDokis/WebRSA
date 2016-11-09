@@ -18,6 +18,13 @@
 	{
 		public $name = 'Coderomesecteurdsp66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'intitule';
 
 		public $actsAs = array(

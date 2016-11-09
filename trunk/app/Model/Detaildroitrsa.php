@@ -18,6 +18,13 @@
 	{
 		public $name = 'Detaildroitrsa';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'topsansdomfixe' => array(
 				array(

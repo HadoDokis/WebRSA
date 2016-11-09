@@ -18,8 +18,6 @@
 	{
 		public $name = 'Emailcui';
 
-		public $recursive = -1;
-
 		public $belongsTo = array(
 			'Cui' => array(
 				'className' => 'Cui',

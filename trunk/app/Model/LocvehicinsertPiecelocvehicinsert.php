@@ -18,6 +18,13 @@
 	{
 		public $name = 'LocvehicinsertPiecelocvehicinsert';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'locvehicinsert_id' => array(
 				'numeric' => array(

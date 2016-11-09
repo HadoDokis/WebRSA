@@ -19,8 +19,6 @@
 	{
 		public $name = 'Immersioncui66';
 
-		public $recursive = -1;
-
         public $belongsTo = array(
 			'Immersionromev3' => array(
 				'className' => 'Entreeromev3',

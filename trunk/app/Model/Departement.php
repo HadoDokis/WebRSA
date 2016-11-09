@@ -18,6 +18,13 @@
 	{
 		public $name = 'Departement';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $hasMany = array(
 			'Adresse' => array(
 				'className' => 'Adresse',

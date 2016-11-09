@@ -18,6 +18,13 @@
 	{
 		public $name = 'Aideapre66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
 			'Autovalidate2',
 			'Formattable' => array(

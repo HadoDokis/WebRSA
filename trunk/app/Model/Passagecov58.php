@@ -19,9 +19,6 @@
 		/**
 		*
 		*/
-
-		public $recursive = -1;
-
 		public $virtualFields = array(
 			'chosen' => array(
 				'type'      => 'boolean',

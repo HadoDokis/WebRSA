@@ -18,6 +18,13 @@
 	{
 		public $name = 'Ressourcemensuelle';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'moisress' => array(
 				'rule' => 'date',

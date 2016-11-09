@@ -24,12 +24,6 @@
 	 */
 	abstract class AbstractThematiquecov58 extends AppModel
 	{
-		/**
-		 * Récursivité par défaut du modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
 
 		/**
 		 * Fonction retournant un querydata qui va permettre de retrouver des

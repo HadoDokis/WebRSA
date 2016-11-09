@@ -18,8 +18,6 @@
 	{
 		public $name = 'Personnepcg66Statutpdo';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'ValidateTranslate',

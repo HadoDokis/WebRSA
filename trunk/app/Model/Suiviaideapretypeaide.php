@@ -18,6 +18,13 @@
 	{
 		public $name = 'Suiviaideapretypeaide';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $belongsTo = array(
 			'Suiviaideapre' => array(
 				'className' => 'Suiviaideapre',

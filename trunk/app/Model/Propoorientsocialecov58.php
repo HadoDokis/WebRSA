@@ -19,8 +19,6 @@
 	{
 		public $name = 'Propoorientsocialecov58';
 
-		public $recursive = -1;
-
 		/**
 		 * Chemin relatif pour les modèles de documents .odt utilisés lors des
 		 * impressions. Utiliser %s pour remplacer par l'alias.
@@ -126,7 +124,7 @@
 		 * FIXME: à mettre en commun ?
 		 */
 		public function ajoutPossible( $personne_id ) {
-			
+
 		}
 
 		/**

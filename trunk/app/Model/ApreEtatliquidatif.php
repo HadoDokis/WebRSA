@@ -18,6 +18,14 @@
 	{
 
 		public $name = 'ApreEtatliquidatif';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
 			'Frenchfloat' => array(
 				'fields' => array(

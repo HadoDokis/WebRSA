@@ -19,6 +19,13 @@
 		public $name = 'Jeton';
 
 		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
+		/**
 		 * On ne doit jamais cacher les reqûetes (par défaut, elles sont cachées sur une page).
 		 *
 		 * @var boolean

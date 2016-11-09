@@ -23,13 +23,6 @@
 		public $name = 'Ficheprescription93';
 
 		/**
-		 * Récursivité par défaut du modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Correspondance entre les champs virtuels de l'action et les champ réels.
 		 *
 		 * @var array

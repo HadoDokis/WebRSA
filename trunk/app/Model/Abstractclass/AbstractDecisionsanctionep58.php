@@ -18,8 +18,6 @@
 	abstract class AbstractDecisionsanctionep58 extends AbstractDecisionep
 	{
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'ValidateTranslate',

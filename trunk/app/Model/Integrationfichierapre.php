@@ -18,6 +18,13 @@
 	{
 		public $name = 'Integrationfichierapre';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'nbr_atraiter' => array(
 				'numeric' => array(

@@ -18,6 +18,13 @@
 
 		public $name = 'RegroupementzonegeoZonegeographique';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		//The Associations below have been created with all possible keys, those that are not needed can be removed
 		public $belongsTo = array(
 			'Zonegeographique' => array(

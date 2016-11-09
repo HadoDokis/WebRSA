@@ -24,13 +24,6 @@
 		public $name = 'Thematiquerdv';
 
 		/**
-		 * Récursivité
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Tri par défaut.
 		 *
 		 * @var integer

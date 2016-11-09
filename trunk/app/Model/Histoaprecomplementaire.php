@@ -22,5 +22,12 @@
 		 * @var string
 		 */
 		public $name = 'Histoaprecomplementaire';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
 	}
 ?>

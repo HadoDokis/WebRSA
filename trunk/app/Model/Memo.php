@@ -19,6 +19,13 @@
 		public $name = 'Memo';
 
 		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
+		/**
 		 * Tri par défaut des mémos.
 		 *
 		 * @var array

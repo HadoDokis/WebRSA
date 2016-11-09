@@ -18,6 +18,13 @@ class Motifrupturecui66Rupturecui66 extends AppModel
 {
     public $name = 'Motifrupturecui66Rupturecui66';
 
+	/**
+	 * Récursivité par défaut du modèle.
+	 *
+	 * @var integer
+	 */
+	public $recursive = 1;
+
     public $belongsTo = array(
         'Motifrupturecui66' => array(
             'className' => 'Motifrupturecui66',

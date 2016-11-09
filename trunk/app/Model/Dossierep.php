@@ -18,8 +18,6 @@
 	{
 		public $name = 'Dossierep';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Allocatairelie',
 			'Conditionnable',
