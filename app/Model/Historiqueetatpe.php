@@ -26,8 +26,6 @@
 			)
 		);
 
-		public $recursive = -1;
-
 		/**
 		 * Liste de champs et de valeurs possibles qui ne peuvent pas être mis en
 		 * règle de validation inList ou en contrainte dans la base de données en

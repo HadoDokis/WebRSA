@@ -18,8 +18,6 @@
 	{
 		public $name = 'Decisionnonorientationproep93';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'Dependencies',

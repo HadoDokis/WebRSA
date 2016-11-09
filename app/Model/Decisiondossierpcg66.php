@@ -18,7 +18,6 @@ App::uses( 'AppModel', 'Model' );
 class Decisiondossierpcg66 extends AppModel {
 
     public $name = 'Decisiondossierpcg66';
-    public $recursive = -1;
     public $actsAs = array(
         'Postgres.PostgresAutovalidate',
         'Formattable' => array(

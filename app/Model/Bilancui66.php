@@ -18,8 +18,6 @@
 	{
 		public $name = 'Bilancui66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Formattable' => array(
                 'suffix' => array(

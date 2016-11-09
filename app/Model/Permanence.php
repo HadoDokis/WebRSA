@@ -17,6 +17,13 @@
 	class Permanence extends AppModel {
 		public $name = 'Permanence';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'libpermanence';
 
 

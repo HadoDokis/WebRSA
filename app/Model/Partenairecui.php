@@ -18,8 +18,6 @@
 	{
 		public $name = 'Partenairecui';
 
-		public $recursive = -1;
-
         public $belongsTo = array(
 			'Adressecui' => array(
 				'className' => 'Adressecui',

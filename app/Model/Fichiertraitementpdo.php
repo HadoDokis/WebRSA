@@ -19,6 +19,13 @@
 	{
 		public $name = 'Fichiertraitementpdo';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
 			'Enumerable' => array( 'fields' => array( 'type', ) ),
 			'Autovalidate2'

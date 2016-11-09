@@ -20,8 +20,6 @@
 
 		public $displayField = 'dateseance';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'ValidateTranslate',

@@ -18,6 +18,13 @@
 	{
 		public $name = 'Totalisationacompte';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'type_totalisation' => array(
 					'rule' => 'notEmpty',

@@ -18,6 +18,13 @@
 	{
 		public $name = 'Comiteapre';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'intitulecomite';
 
 		public $order = array( 'datecomite ASC' ); // <-- TODO

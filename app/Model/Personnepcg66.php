@@ -18,8 +18,6 @@
 	{
 		public $name = 'Personnepcg66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Allocatairelie',
 			'Autovalidate2',

@@ -18,6 +18,13 @@
 	{
 		public $name = 'Typeorient';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'lib_type_orient';
 
 		public $actsAs = array(

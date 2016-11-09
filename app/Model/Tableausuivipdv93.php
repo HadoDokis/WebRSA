@@ -24,13 +24,6 @@
 		public $name = 'Tableausuivipdv93';
 
 		/**
-		 * Récursivité par défaut de ce modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Behaviors utilisés.
 		 *
 		 * @var array

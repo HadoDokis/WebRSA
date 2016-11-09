@@ -18,6 +18,13 @@
 	{
 		public $name = 'CandidatureProg66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $belongsTo = array(
 			'ActioncandidatPersonne' => array(
 				'className' => 'ActioncandidatPersonne',

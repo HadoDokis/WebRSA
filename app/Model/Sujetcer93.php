@@ -30,14 +30,6 @@
 		 */
 		public $order = array( 'Sujetcer93.name ASC' );
 
-
-		/**
-		 * Récursivité.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
 		/**
 		 * Behaviors utilisés.
 		 *

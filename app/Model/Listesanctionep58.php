@@ -18,6 +18,13 @@
 	{
 		public $name = 'Listesanctionep58';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'sanction';
 
 		public $actsAs = array(

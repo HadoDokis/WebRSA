@@ -24,6 +24,13 @@
 		public $name = 'Adressefoyer';
 
 		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
+		/**
 		 * Tri par défaut des enregistrements.
 		 *
 		 * @var array

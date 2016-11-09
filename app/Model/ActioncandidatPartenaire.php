@@ -18,6 +18,13 @@
 	{
 		public $name = 'ActioncandidatPartenaire';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'libstruc';
 
 		public $actsAs = array (

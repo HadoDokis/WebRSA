@@ -22,11 +22,6 @@
 		/**
 		*
 		*/
-		public $recursive = -1;
-
-		/**
-		*
-		*/
 		abstract public function qdDossiersParListe( $commissionep_id, $niveauDecision );
 
 		/**

@@ -18,6 +18,13 @@
 	{
 		public $name = 'Adresse';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $virtualFields = array(
 			'localite' => array(
 				'type'      => 'string',

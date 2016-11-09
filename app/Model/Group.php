@@ -18,6 +18,13 @@
 	{
 		public $name = 'Group';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $order = array( 'Group.name ASC' );
 
 		public $validate = array(

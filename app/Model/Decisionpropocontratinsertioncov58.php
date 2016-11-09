@@ -18,8 +18,6 @@
 	{
 		public $name = 'Decisionpropocontratinsertioncov58';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',

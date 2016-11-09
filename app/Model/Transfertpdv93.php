@@ -23,8 +23,6 @@
 		 */
 		public $name = 'Transfertpdv93';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Formattable' => array(
 				'suffix' => array(

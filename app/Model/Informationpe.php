@@ -21,8 +21,6 @@
 	{
 		public $name = 'Informationpe';
 
-		public $recursive = -1;
-
 		public $hasMany = array(
 			'Historiqueetatpe' => array(
 				'className' => 'Historiqueetatpe',

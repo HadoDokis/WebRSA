@@ -18,6 +18,13 @@
 	{
 		public $name = 'Libsecactderact66SecteurDsp';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $useTable = 'codesromesecteursdsps66';
 	}
 ?>

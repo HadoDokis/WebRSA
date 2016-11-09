@@ -18,8 +18,6 @@
 	{
 		public $name = 'Propodecisioncui66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Postgres.PostgresAutovalidate',
 			'Containable',

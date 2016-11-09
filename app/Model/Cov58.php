@@ -18,8 +18,6 @@
 	{
 		public $name = 'Cov58';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'Conditionnable',
@@ -686,7 +684,7 @@
 						unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
 					}
 				}
-				
+
 				// Ajout de données à NULL pour l'impression en sections
 				$dossierscovs58[$key] = Set::merge( $empty, $dossierscovs58[$key] );
 

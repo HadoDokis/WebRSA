@@ -21,6 +21,13 @@
 	{
 		public $name = 'Membreep';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
 			'Autovalidate2',
 			'ValidateTranslate',

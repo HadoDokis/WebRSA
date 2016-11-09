@@ -18,6 +18,13 @@ class Motifsuspensioncui66 extends AppModel
 {
     public $name = 'Motifsuspensioncui66';
 
+	/**
+	 * Récursivité par défaut du modèle.
+	 *
+	 * @var integer
+	 */
+	public $recursive = 1;
+
     public $actsAs = array(
         'Postgres.PostgresAutovalidate',
         'Formattable'

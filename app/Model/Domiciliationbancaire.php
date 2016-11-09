@@ -17,5 +17,12 @@
 	class Domiciliationbancaire extends AppModel
 	{
 		public $name = 'Domiciliationbancaire';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
 	}
 ?>

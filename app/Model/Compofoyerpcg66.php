@@ -18,8 +18,6 @@
 	{
 		public $name = 'Compofoyerpcg66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2'
 		);

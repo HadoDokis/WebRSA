@@ -18,6 +18,13 @@
 	{
 		public $name = 'Libderact66Metier';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $useTable = 'codesromemetiersdsps66';
 
 		public $displayField = 'intitule';

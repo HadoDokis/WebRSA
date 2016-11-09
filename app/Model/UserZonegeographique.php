@@ -18,6 +18,13 @@
 	{
 		public $name = 'UserZonegeographique';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'user_id' => array(
 				'numeric' => array(

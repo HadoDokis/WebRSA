@@ -18,8 +18,6 @@
 	{
 		public $name = 'Relancenonrespectsanctionep93';
 
-		public $recursive = -1;
-
 		public $validate = array(
 			'daterelance' => array(
 				array(

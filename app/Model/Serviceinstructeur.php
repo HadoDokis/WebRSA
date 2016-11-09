@@ -22,8 +22,6 @@
 
 		public $order = 'Serviceinstructeur.lib_service ASC';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'Formattable'

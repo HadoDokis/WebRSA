@@ -13,11 +13,6 @@
 	 */
 	abstract class AbstractAppModelLieCui66 extends AppModel
 	{
-		/**
-		 * Recurcivité du model
-		 * @var integer
-		 */
-		public $recursive = -1;
 
 		/**
 		 * Order des find par défaut

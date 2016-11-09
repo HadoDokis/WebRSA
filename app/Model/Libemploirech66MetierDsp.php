@@ -18,6 +18,13 @@
 	{
 		public $name = 'Libemploirech66MetierDsp';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $useTable = 'codesromemetiersdsps66';
 	}
 ?>

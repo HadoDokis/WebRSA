@@ -18,6 +18,13 @@
 	{
 		public $name = 'Suiviinstruction';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'typeserins';
 
 		/**

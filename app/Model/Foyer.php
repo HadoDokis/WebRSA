@@ -18,6 +18,13 @@
 	{
 		public $name = 'Foyer';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
             'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable'

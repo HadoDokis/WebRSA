@@ -18,8 +18,6 @@
 	{
 		public $name = 'Personnecui66';
 
-		public $recursive = -1;
-
 		public $hasOne = array(
 			'Cui66' => array(
 				'className' => 'Cui66',

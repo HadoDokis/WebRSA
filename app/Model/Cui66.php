@@ -23,12 +23,6 @@
 		public $name = 'Cui66';
 
 		/**
-		 * Recurcivité du model
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * Possède des clefs étrangères vers d'autres models
 		 * @var array
 		 */

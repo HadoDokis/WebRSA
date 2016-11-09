@@ -25,13 +25,6 @@
 		public $name = 'Cohorterendezvous';
 
 		/**
-		 * Récursivité par défaut du modèle.
-		 *
-		 * @var integer
-		 */
-		public $recursive = -1;
-
-		/**
 		 * On n'utilise pas de table.
 		 *
 		 * @var boolean

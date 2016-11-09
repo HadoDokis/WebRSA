@@ -18,6 +18,13 @@
 	{
 		public $name = 'Regroupementzonegeo';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $hasAndBelongsToMany = array(
 			'Zonegeographique' => array(
 				'className' => 'Zonegeographique',

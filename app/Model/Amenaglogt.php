@@ -18,6 +18,13 @@
 	{
 		public $name = 'Amenaglogt';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
 			'Aideapre',
 			'Enumerable' => array(

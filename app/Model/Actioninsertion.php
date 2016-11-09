@@ -16,6 +16,14 @@
 	 */
 	class Actioninsertion extends AppModel {
 		public $name = 'Actioninsertion';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $validate = array(
 			'contratinsertion_id' => array(
 				'numeric' => array(

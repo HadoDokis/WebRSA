@@ -21,6 +21,13 @@
 	{
 		public $name = 'Contratinsertion';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $uses = array( 'Option', 'WebrsaContratinsertion' );
 
 		public $actsAs = array(

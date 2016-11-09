@@ -18,6 +18,13 @@
 	{
 		public $name = 'Regroupementep';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $order = array( 'Regroupementep.name ASC' );
 
 		public $actsAs = array(

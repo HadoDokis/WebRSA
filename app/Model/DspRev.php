@@ -18,6 +18,13 @@
 	{
 		public $name = 'DspRev';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $actsAs = array(
 			'Allocatairelie',
 			'Enumerable' => array(

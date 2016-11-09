@@ -18,6 +18,13 @@
 	{
 		public $name = 'Participantcomite';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $order = 'Participantcomite.id ASC';
 
 		public $actsAs = array(

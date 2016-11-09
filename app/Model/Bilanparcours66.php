@@ -18,8 +18,6 @@
 	{
 		public $name = 'Bilanparcours66';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Allocatairelie',
 			'Formattable' => array(

@@ -18,8 +18,6 @@
 	{
 		public $name = 'Modeletypecourrierpcg66Situationpdo';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Autovalidate2',
 			'ValidateTranslate',

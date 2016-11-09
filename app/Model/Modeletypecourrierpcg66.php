@@ -18,6 +18,13 @@
 	{
 		public $name = 'Modeletypecourrierpcg66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $order = 'Modeletypecourrierpcg66.name ASC';
 
 		public $actsAs = array(

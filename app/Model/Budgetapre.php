@@ -18,6 +18,13 @@
 	{
 		public $name = 'Budgetapre';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $displayField = 'exercicebudgetai';
 
 		public $validate = array(

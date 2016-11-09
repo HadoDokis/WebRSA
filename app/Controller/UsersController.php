@@ -322,6 +322,10 @@
 					$permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
 				}
 				if( !empty( $aro ) ) {
+					if( false === $this->Acl->Aro->Permission->Behaviors->attached( 'Containable' ) ) {
+						$this->Acl->Aro->Permission->Behaviors->attach( 'Containable' );
+					}
+
 					$qd_permissions = array(
 						'contain' => array(
 							'Aco'

@@ -18,6 +18,13 @@
 	{
 		public $name = 'Mtpcg66Pmtcpcg66';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $belongsTo = array(
 			'Modeletraitementpcg66' => array(
 				'className' => 'Modeletraitementpcg66',

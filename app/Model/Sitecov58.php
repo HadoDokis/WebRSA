@@ -18,6 +18,13 @@
 	{
 		public $name = 'Sitecov58';
 
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = 1;
+
 		public $order = array( 'Sitecov58.name ASC' );
 
 		public $actsAs = array(

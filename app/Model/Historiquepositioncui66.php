@@ -18,8 +18,6 @@
 	{
 		public $name = 'Historiquepositioncui66';
 
-		public $recursive = -1;
-
 		public $belongsTo = array(
 			'Cui66' => array(
 				'className' => 'Cui66',

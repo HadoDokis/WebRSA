@@ -20,8 +20,6 @@
 
 		public $displayField = 'name';
 
-		public $recursive = -1;
-
 		public $actsAs = array(
 			'Formattable',
 			'Postgres.PostgresAutovalidate'
