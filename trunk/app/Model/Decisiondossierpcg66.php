@@ -289,40 +289,6 @@ class Decisiondossierpcg66 extends AppModel {
 						)
 		);
 	}
-
-	/**
-	 * Change un etat de dossier PCG dans le cas ou la position est 'decisionvalid'.
-	 * Ajoute une date d'impression.
-	 * Renvoi vrai si le dossier PCG a déjà été imprimmé.
-	 *
-	 * @param mixed $ids
-	 * @return boolean
-	 * @deprecated since version 3.1	(utilisé dans Cohortesdossierspcgs66Controller::notificationsCohorte)
-	 */
-	public function updateDossierpcg66Dateimpression($ids) {
-		$query = array(
-			'fields' => array( 'Dossierpcg66.id' ),
-			'conditions' => array(
-				'Decisiondossierpcg66.id' => $ids,
-				'Dossierpcg66.etatdossierpcg' => 'decisionvalid',
-			),
-			'contain' => false,
-			'joins' => array(
-				$this->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'INNER' ) )
-			)
-		);
-		$results = $this->Dossierpcg66->find( 'all', $query );
-
-		return ( count( $results ) === 0 ) || $this->Decisiondossierpcg66->Dossierpcg66->updateAllUnBound(
-			array(
-				'Dossierpcg66.dateimpression' => "'" . date('Y-m-d') . "'",
-				'Dossierpcg66.etatdossierpcg' => '\'atttransmisop\''
-			),
-			array(
-				'Dossierpcg66.id' => Hash::extract( $results, '{n}.Dossierpcg66.id' )
-			)
-		);
-	}
 }
 
 ?>

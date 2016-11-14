@@ -11,10 +11,10 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Dossierspcgs66/search/:heading"
-msgstr "Recherche de dossiers PCGs (nouveau)"
+msgstr "Recherche de dossiers PCGs"
 
 msgid "/Dossierspcgs66/search_gestionnaire/:heading"
-msgstr "Gestionnaire de dossiers PCG (nouveau)"
+msgstr "Gestionnaire de dossiers PCG"
 
 msgid "/Dossierspcgs66/search"
 msgstr "Formulaire"

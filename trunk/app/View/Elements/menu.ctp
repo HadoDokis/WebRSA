@@ -274,13 +274,6 @@
 					'Fiches en attente' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ) ),
 					'Fiches en cours' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ) ),
 				),
-				'Dossiers PCGs' => array(
-					'disabled' => ( $departement != 66 ),
-					'Dossiers en attente d\'affectation' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'enattenteaffectation' ) ),
-					'Dossiers affectés' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'affectes' ) ),
-					'Dossiers à imprimer' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'aimprimer' ) ),
-					'Dossiers à transmettre' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'atransmettre' ) ),
-				),
 				'Non orientation' => array(
 					'disabled' => ( $departement != 66 ),
 					'Inscrits PE' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ) ),
@@ -364,9 +357,7 @@
 				'Par Rendez-vous' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
 				'Par Dossiers PCGs' => array(
 					'disabled' => ( $departement != 66 ),
-					'Dossiers PCGs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) ),
 					'Traitements PCGs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criterestraitementspcgs66', 'action' => 'index'  ) ),
-					'Gestionnaires PCGs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresdossierspcgs66', 'action' => 'gestionnaire'  ) ),
 				),
 				'Par PDOs' => array(
 					'disabled' => ( $departement == 66 ),

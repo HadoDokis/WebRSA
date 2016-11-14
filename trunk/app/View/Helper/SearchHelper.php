@@ -104,35 +104,6 @@
 		}
 
 		/**
-		 * Filtre sur les états du dossierpcg66
-		 *
-		 * @param string $etatdossierpcg
-		 * @param string $path
-		 * @return string
-		 */
-		public function etatDossierPCG66( $etatdossierpcg, $path = 'Dossierpcg66.etatdossierpcg' ) {
-			$fieldsetId = $this->domId( $path );
-
-			$script = $this->_constuctObserve( $this->domId( $path.'_choice' ), $fieldsetId, false );
-
-			$input = $this->Xform->input( $path.'_choice', array( 'label' => 'Filtrer par état du dossier PCG', 'type' => 'checkbox' ) );
-
-			$etatsDossiersPCGCoches = Set::extract( $this->request->data, $path );
-			if( empty( $etatsDossiersPCGCoches ) ) {
-				$etatsDossiersPCGCoches = array_keys( $etatdossierpcg );
-			}
-
-			$input.= $this->Xhtml->tag(
-				'fieldset',
-				$this->Xhtml->tag( 'legend', 'État du dossier PCG' ).
-				$this->Xform->input( $path, array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $etatdossierpcg, 'fieldset' => false ) ),
-				array( 'id' => $fieldsetId )
-			);
-
-			return $script.$input;
-		}
-
-		/**
 		 * Retourne un fieldset de recherche par adresse contenant les champs suivants:
 		 * Adresse.nomcom, Adresse.numcom et Canton.canton (si on utilise les cantons).
 		 *

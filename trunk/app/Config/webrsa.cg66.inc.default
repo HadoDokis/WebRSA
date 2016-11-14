@@ -401,21 +401,6 @@
 	);
 
 	/**
-	 * Permet d'indiquer les valeurs par défaut des formulaires de recherche.
-	 * Utilisé pour le fomulaire de recherche par Dossiers PCGs -> Par Gestionnaires PCGs
-	 *
-	 */
-	Configure::write(
-		'Filtresdefaut.Criteresdossierspcgs66_gestionnaire',
-		array(
-			'Dossierpcg66' => array(
-				'etatdossierpcg_choice' => true, // Cases à cocher "Filtrer par état du dossier PCG "
-				'etatdossierpcg' => array( 'attinstr', 'decisionvalid', 'decisionnonvalid', 'attpj' ) // Case à cocher "Filtrer par état du dossier PCG"
-			)
-		)
-	);
-
-	/**
 	 * Permet de rechercher le dernier dossier d'un allocataire dans la table
 	 * derniersdossiersallocataires (il faudra mettre le shell Derniersdossiersallocataires
 	 * en tâche planifiée) afin de se passer d'une sous-requête coûteuse dans les
