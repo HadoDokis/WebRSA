@@ -3570,7 +3570,7 @@ msgstr "Suppression d'une valeur par sous-sujet du CER"
 msgid "Module:Cohortestransfertspdvs93"
 msgstr "Cohortes de transferts PDV (CG 93)"
 
-msgid "Cohortestransfertspdvs93:atransferer"
+msgid "Transfertspdvs93:cohorte_atransferer"
 msgstr "Transferts PDV : Allocataires à transférer"
 
 msgid "Cohortestransfertspdvs93:transferes"

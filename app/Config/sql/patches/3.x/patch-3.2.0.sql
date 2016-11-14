@@ -565,6 +565,53 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_cohortesreferents93();
 DROP FUNCTION copy_permission_cohortesreferents93();
 
+--------------------------------------------------------------------------------
+-- Cohortestransfertspdvs93:atransferer
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION copy_permission_cohortestransfertspdvs93() RETURNS void AS
+$$
+DECLARE
+	v_row record;
+	module_id integer;
+
+BEGIN
+
+    IF NOT EXISTS(SELECT * FROM acos
+		WHERE alias = 'Module:Transfertspdvs93') THEN
+
+        INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
+			VALUES (0, '', 0, 'Module:Transfertspdvs93', 0, 0);
+
+		module_id := (SELECT id FROM acos WHERE alias = 'Module:Transfertspdvs93');
+
+		FOR v_row IN
+			SELECT * FROM aros_acos rc
+			JOIN acos c ON rc.aco_id = c.id
+			WHERE c.alias = 'Cohortestransfertspdvs93:atransferer'
+
+		LOOP
+
+			INSERT INTO aros_acos (aro_id, aco_id, _create, _read, _update, _delete)
+				VALUES (v_row.aro_id, module_id, v_row._create, v_row._read, v_row._update, v_row._delete);
+
+		END LOOP;
+    END IF;
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Transfertspdvs93');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Transfertspdvs93:cohorte_atransferer'
+		WHERE alias = 'Cohortestransfertspdvs93:atransferer';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_cohortestransfertspdvs93();
+DROP FUNCTION copy_permission_cohortestransfertspdvs93();
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
