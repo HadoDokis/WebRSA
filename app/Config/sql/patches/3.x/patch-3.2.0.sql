@@ -145,6 +145,7 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_actionscandidats_personnes();
 DROP FUNCTION copy_permission_actionscandidats_personnes();
 
+
 --------------------------------------------------------------------------------
 -- Cohortes (d'orientation)
 --------------------------------------------------------------------------------
@@ -258,6 +259,56 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_cohortesci();
 DROP FUNCTION copy_permission_cohortesci();
+
+
+--------------------------------------------------------------------------------
+-- Nonorientes66
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Cohortesnonorientes66';
+
+CREATE OR REPLACE FUNCTION copy_permission_nonorientes66() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Nonorientes66');
+
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Nonorientes66:cohorte_imprimeremploi'
+		WHERE alias = 'Cohortesnonorientes66:notisemploiaimprimer';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Nonorientes66:cohorte_imprimernotifications'
+		WHERE alias = 'Cohortesnonorientes66:notifaenvoyer';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Nonorientes66:cohorte_isemploi'
+		WHERE alias = 'Cohortesnonorientes66:isemploi';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Nonorientes66:cohorte_reponse'
+		WHERE alias = 'Cohortesnonorientes66:notisemploi';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Nonorientes66:recherche_notifie'
+		WHERE alias = 'Cohortesnonorientes66:oriente';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_nonorientes66();
+DROP FUNCTION copy_permission_nonorientes66();
+
 
 -- *****************************************************************************
 COMMIT;
