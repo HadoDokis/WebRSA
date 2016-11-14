@@ -277,11 +277,6 @@
 					'Notifications à envoyer' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notifaenvoyer' ) ),
 					'Orientés et notifiés' => array( 'class' => 'search', 'url' =>  array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ) ),
 				),
-				'Orientation' => array(
-					'Demandes non orientées' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortes', 'action' => 'nouvelles' ) ),
-					'Demandes en attente de validation d\'orientation' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortes', 'action' => 'enattente' ) ),
-					'Demandes orientées' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortes', 'action' => 'orientees' ) ),
-				),
 				'PDOs' => array(
 					'disabled' => ( $departement != 93 ),
 					'Nouvelles demandes' => array(

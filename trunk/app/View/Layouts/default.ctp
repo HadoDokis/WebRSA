@@ -68,20 +68,19 @@
 					$backAllowed = true;
 
 					$pagesBackNotAllowed = array(
-						'Cohortesci::index',
-						'Cohortes::nouvelles',
-						'Cohortes::enattente',
-						'Cohortespdos::avisdemande',
 						'Recours::gracieux',
 						'Recours::contentieux',
 						'Contratsinsertion::valider',
 						'Ajoutdossiers::wizard',
 						'Ajoutdossiers::confirm',
-						'Cohortesindus::index',
 						'Users::login',
 					);
 
-					if( ( $this->action == 'add' ) || ( $this->action == 'edit' ) || ( $this->action == 'delete' ) || in_array( $this->name.'::'.$this->action, $pagesBackNotAllowed ) ) {
+					if( ( in_array( $this->action, array( 'add', 'edit', 'delete' ) ) )
+						|| 0 === strpos( $this->request->params['controller'], 'cohorte' )
+						|| 0 === strpos($this->request->params['action'], 'cohorte')
+						|| in_array( $this->name.'::'.$this->action, $pagesBackNotAllowed )
+					) {
 						$backAllowed = false;
 					}
 				?>
@@ -108,16 +107,16 @@
 					setTimeout(sessionEnd, sessionTime*1000);
 				}
 				<?php endif;?>
-				
+
 				<?php if (Configure::read('textarea.auto_resize.all')
 					|| Configure::read('textarea.auto_resize.'.$this->request->params['controller'].'.all')
 					|| Configure::read('textarea.auto_resize.'.$this->request->params['controller'].'.'.$this->action)
 				): ?>
-					
+
 				$$('textarea').each(function(element) {
 					makeTextareaAutoExpandable(element);
 				});
-				
+
 				<?php endif;?>
 			} );
 
