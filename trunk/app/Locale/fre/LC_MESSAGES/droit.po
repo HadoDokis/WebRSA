@@ -376,29 +376,6 @@ msgstr "Ajout/Edition de codes ROME"
 
 msgid "Codesromesecteursdsps66:delete"
 msgstr "Suppression d'un code ROME"
-###############################################################################
-
-msgid "Module:Cohortes"
-msgstr "Cohorte d'orientation"
-
-msgid "Cohortes:nouvelles"
-msgstr "Demandes non orientées"
-
-msgid "Cohortes:orientees"
-msgstr "Demandes orientées"
-
-msgid "Cohortes:enattente"
-msgstr "Demande en attente de validation d'orientation"
-
-msgid "Cohortes:exportcsv"
-msgstr "Export CSV"
-
-msgid "Cohortes:cohortegedooo"
-msgstr "Impression en cohorte"
-
-msgid "Cohortes:statistiques "
-msgstr "Statistiques des cohortes"
-
 
 ###############################################################################
 
