@@ -359,6 +359,7 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_apres66();
 DROP FUNCTION copy_permission_apres66();
 
+
 --------------------------------------------------------------------------------
 -- Cohortesindus
 --------------------------------------------------------------------------------
@@ -390,6 +391,75 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_cohortesindus();
 DROP FUNCTION copy_permission_cohortesindus();
+
+
+--------------------------------------------------------------------------------
+-- Bilansparcours66
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criteresbilansparcours66';
+
+CREATE OR REPLACE FUNCTION copy_permission_bilansparcours66() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Bilansparcours66');
+
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Bilansparcours66:exportcsv'
+		WHERE alias = 'Criteresbilansparcours66:exportcsv';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Bilansparcours66:search'
+		WHERE alias = 'Criteresbilansparcours66:index';
+	
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_bilansparcours66();
+DROP FUNCTION copy_permission_bilansparcours66();
+
+
+--------------------------------------------------------------------------------
+-- Traitementspcgs66
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criterestraitementspcgs66';
+
+CREATE OR REPLACE FUNCTION copy_permission_traitementspcgs66() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Traitementspcgs66');
+
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Traitementspcgs66:exportcsv'
+		WHERE alias = 'Criterestraitementspcgs66:exportcsv';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Traitementspcgs66:search'
+		WHERE alias = 'Criterestraitementspcgs66:index';
+	
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_traitementspcgs66();
+DROP FUNCTION copy_permission_traitementspcgs66();
+
 
 -- *****************************************************************************
 COMMIT;

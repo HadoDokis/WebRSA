@@ -79,8 +79,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Bilansparcours66:edit',
-			'exportcsv' => 'Criteresbilansparcours66:exportcsv',
-			'search' => 'Criteresbilansparcours66:index',
 		);
 
 		/**

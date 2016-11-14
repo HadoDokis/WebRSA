@@ -11,7 +11,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Traitementspcgs66/search/:heading"
-msgstr "Recherche de traitements PCGs (nouveau)"
+msgstr "Recherche de traitements PCGs"
 
 msgid "/Traitementspcgs66/search"
 msgstr "Formulaire"

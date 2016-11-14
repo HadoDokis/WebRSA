@@ -295,10 +295,6 @@
 				'Par Entretiens' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 				'Par Rendez-vous' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
-				'Par Dossiers PCGs' => array(
-					'disabled' => ( $departement != 66 ),
-					'Traitements PCGs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criterestraitementspcgs66', 'action' => 'index'  ) ),
-				),
 				'Par PDOs' => array(
 					'disabled' => ( $departement == 66 ),
 					'Nouvelles PDOs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criterespdos', 'action' => 'nouvelles'  ) ),
