@@ -241,34 +241,6 @@
 					'Transfert cellule' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),
 					'Traitement cellule' => array( 'class' => 'search', 'url' =>  array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ) ),
 				),
-				'CER' => array(
-					'disabled' => ( !in_array( $departement, array( 66, 93 ) ) ),
-					'Contrats Simples à valider' => array(
-						'class' => 'search',
-						'disabled' => ( $departement != 66 ),
-						'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxsimple' )
-					),
-					'Contrats Particuliers à valider' => array(
-						'class' => 'search',
-						'disabled' => ( $departement != 66 ),
-						'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveauxparticulier' )
-					),
-					'Décisions prises' => array(
-						'class' => 'search',
-						'disabled' => ( $departement != 66 ),
-						'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
-					),
-					'Contrats à valider' => array(
-						'class' => 'search',
-						'disabled' => ( $departement != 93 ),
-						'url' => array( 'controller' => 'cohortesci', 'action' => 'nouveaux' )
-					),
-					'Contrats validés' => array(
-						'class' => 'search',
-						'disabled' => ( $departement != 93 ),
-						'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
-					),
-				),
 				'Non orientation' => array(
 					'disabled' => ( $departement != 66 ),
 					'Inscrits PE' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ) ),
