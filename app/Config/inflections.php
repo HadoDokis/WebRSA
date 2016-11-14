@@ -317,7 +317,6 @@ $irregularPlural = array(
     'objetentretien' => 'objetsentretien',
     'fichiertraitementpdo' => 'fichierstraitementspdos',
     'criteredossiercov58' => 'criteresdossierscovs58',
-    'cohortevalidationapre66' => 'cohortesvalidationapres66',
     'critereentretien' => 'criteresentretiens',
     'courrierpdo' => 'courrierspdos',
     'courrierpdo_traitementpdo' => 'courrierspdos_traitementspdos',
