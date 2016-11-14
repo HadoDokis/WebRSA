@@ -266,11 +266,6 @@
 					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
 				),
 				'Par Contrats' => array(
-					'Par CUI' => array(
-						'class' => 'search',
-						'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
-						'disabled' => ( $departement != 66 )
-					),
 				),
 				'Par Entretiens' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
