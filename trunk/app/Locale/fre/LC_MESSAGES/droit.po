@@ -786,17 +786,6 @@ msgstr "Moteur de recherche"
 
 ###############################################################################
 
-msgid "Module:Criteresci"
-msgstr "Recherche par CER"
-
-msgid "Criteresci:index"
-msgstr "Moteur de recherche"
-
-msgid "Criteresci:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
 msgid "Module:Criterescuis"
 msgstr "Recherche par CUI"
 

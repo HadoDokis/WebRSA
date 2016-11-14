@@ -534,7 +534,7 @@ SELECT copy_permission_propospdos();
 DROP FUNCTION copy_permission_propospdos();
 
 --------------------------------------------------------------------------------
--- Cohortesindus
+-- Cohortesreferents93
 --------------------------------------------------------------------------------
 
 DELETE FROM acos WHERE alias = 'Module:Cohortesreferents93';
@@ -645,6 +645,38 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_orientsstructs();
 DROP FUNCTION copy_permission_orientsstructs();
+
+--------------------------------------------------------------------------------
+-- Criteresci
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criteresci';
+
+CREATE OR REPLACE FUNCTION copy_permission_criteresci() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Contratsinsertion');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Contratsinsertion:exportcsv'
+		WHERE alias = 'Criteresci:index';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Contratsinsertion:search'
+		WHERE alias = 'Criteresci:exportcsv';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_criteresci();
+DROP FUNCTION copy_permission_criteresci();
 
 -- *****************************************************************************
 COMMIT;

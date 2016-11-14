@@ -266,7 +266,6 @@
 					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
 				),
 				'Par Contrats' => array(
-					'Par CER' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresci', 'action' => 'index'  ) ),
 					'Par CUI' => array(
 						'class' => 'search',
 						'url' => array( 'controller' => 'criterescuis', 'action' => 'search'  ),
