@@ -370,7 +370,6 @@ $irregularPlural = array(
     'gestionano' => 'gestionsanos',
     'conditionactiviteprealable' => 'conditionsactivitesprealables',
     'decisionnonorientationproep66' => 'decisionsnonorientationsproseps66',
-    'cohortenonoriente66' => 'cohortesnonorientes66',
     'nonoriente66' => 'nonorientes66',
     'gestionsanctionep58' => 'gestionssanctionseps58',
     // CUI CG66

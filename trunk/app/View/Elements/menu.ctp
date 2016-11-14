@@ -241,14 +241,6 @@
 					'Transfert cellule' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),
 					'Traitement cellule' => array( 'class' => 'search', 'url' =>  array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ) ),
 				),
-				'Non orientation' => array(
-					'disabled' => ( $departement != 66 ),
-					'Inscrits PE' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ) ),
-					'Non inscrits PE' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploiaimprimer' ) ),
-					'Gestion des réponses' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploi' ) ),
-					'Notifications à envoyer' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'notifaenvoyer' ) ),
-					'Orientés et notifiés' => array( 'class' => 'search', 'url' =>  array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ) ),
-				),
 				'PDOs' => array(
 					'disabled' => ( $departement != 93 ),
 					'Nouvelles demandes' => array(

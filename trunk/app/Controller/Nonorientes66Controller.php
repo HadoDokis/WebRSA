@@ -90,13 +90,7 @@
 		 *
 		 * @var array
 		 */
-		public $commeDroit = array(
-			'cohorte_imprimeremploi' => 'Cohortesnonorientes66:notisemploiaimprimer',
-			'cohorte_imprimernotifications' => 'Cohortesnonorientes66:notifaenvoyer',
-			'cohorte_isemploi' => 'Cohortesnonorientes66:isemploi',
-			'cohorte_reponse' => 'Cohortesnonorientes66:notisemploi',
-			'recherche_notifie' => 'Cohortesnonorientes66:oriente',
-		);
+		public $commeDroit = array();
 
 		/**
 		 * Méthodes ne nécessitant aucun droit.
