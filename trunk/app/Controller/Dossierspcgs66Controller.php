@@ -96,15 +96,7 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Dossierspcgs66:edit',
-			'cohorte_atransmettre' => 'Cohortesdossierspcgs66:atransmettre',
-			'cohorte_enattenteaffectation' => 'Cohortesdossierspcgs66:enattenteaffectation',
-			'cohorte_imprimer' => 'Cohortesdossierspcgs66:aimprimer',
-			'exportcsv' => 'Criteresdossierspcgs66:exportcsv',
-			'exportcsv_gestionnaire' => 'Criteresdossierspcgs66:exportcsv',
 			'imprimer' => 'Decisionsdossierspcgs66:decisionproposition',
-			'search' => 'Criteresdossierspcgs66:dossier',
-			'search_affectes' => 'Cohortesdossierspcgs66:affectes',
-			'search_gestionnaire' => 'Criteresdossierspcgs66:gestionnaire',
 			'view' => 'Dossierspcgs66:index',
 		);
 
