@@ -54,7 +54,6 @@
 		 */
 		public $uses = array(
 			'Infofinanciere',
-			'Cohorteindu',
 			'Dossier',
 			'Foyer',
 			'Indu',
@@ -69,8 +68,6 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'exportcsv' => 'Cohortesindus:exportcsv',
-			'search' => 'Cohortesindus:index',
 			'view' => 'Indus:index',
 		);
 

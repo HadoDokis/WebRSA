@@ -57,7 +57,6 @@
 		 */
 		public $uses = array(
 			'Infofinanciere',
-			'Cohorteindu',
 			'Dossier',
 			'Foyer',
 			'Option',

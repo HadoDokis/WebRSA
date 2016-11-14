@@ -293,7 +293,6 @@
 					),
 				),
 				'Par Entretiens' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
-				'Par Indus' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesindus', 'action' => 'index' ) ),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 				'Par Rendez-vous' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
 				'Par Dossiers PCGs' => array(
