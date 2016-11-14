@@ -267,7 +267,6 @@
 				),
 				'Par Contrats' => array(
 				),
-				'Par Entretiens' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 				'Par Rendez-vous' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
 				'Par Dossiers COV' => array(

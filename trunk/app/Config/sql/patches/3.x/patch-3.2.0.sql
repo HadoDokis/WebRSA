@@ -712,6 +712,40 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_cuis();
 DROP FUNCTION copy_permission_cuis();
 
+
+--------------------------------------------------------------------------------
+-- Cuis
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criteresentretiens';
+
+CREATE OR REPLACE FUNCTION copy_permission_entretiens() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Entretiens');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Entretiens:exportcsv'
+		WHERE alias = 'Criteresentretiens:exportcsv';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Entretiens:search'
+		WHERE alias = 'Criteresentretiens:index';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_entretiens();
+DROP FUNCTION copy_permission_entretiens();
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
