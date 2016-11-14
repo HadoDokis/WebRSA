@@ -15,7 +15,12 @@ BEGIN;
 -- commeDroits des anciens moteurs en AroAco
 --------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------
+-- Dossierspcgs66
+--------------------------------------------------------------------------------
+
 DELETE FROM acos WHERE alias = 'Module:Criteresdossierspcgs66';
+DELETE FROM acos WHERE alias = 'Module:Cohortesdossierspcgs66';
 
 CREATE OR REPLACE FUNCTION copy_permission_dossierspcgs66() RETURNS void AS
 $$
@@ -94,6 +99,54 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_dossierspcgs66();
 DROP FUNCTION copy_permission_dossierspcgs66();
+
+
+--------------------------------------------------------------------------------
+-- ActionscandidatsPersonnes
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:CriteresActionscandidatsPersonnes';
+DELETE FROM acos WHERE alias = 'Module:Cohortesfichescandidature66';
+
+CREATE OR REPLACE FUNCTION copy_permission_actionscandidats_personnes() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:ActionscandidatsPersonnes');
+
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'ActionscandidatsPersonnes:cohorte_enattente'
+		WHERE alias = 'Cohortesfichescandidature66:fichesenattente';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'ActionscandidatsPersonnes:cohorte_encours'
+		WHERE alias = 'Cohortesfichescandidature66:fichesencours';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'ActionscandidatsPersonnes:exportcsv'
+		WHERE alias = 'Criteresfichescandidature:exportcsv';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'ActionscandidatsPersonnes:search'
+		WHERE alias = 'Criteresfichescandidature:index';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_actionscandidats_personnes();
+DROP FUNCTION copy_permission_actionscandidats_personnes();
+
+SELECT * FROM acos WHERE alias IN ('ActionscandidatsPersonnes:search', 'Criteresfichescandidature:index');
+
 
 
 -- *****************************************************************************
