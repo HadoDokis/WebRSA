@@ -31,20 +31,15 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Cohortes'=> array(
-				'atransferer'
-			),
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'InsertionsBeneficiaires',
 			'Search.Filtresdefaut' => array(
-				'atransferer',
 				'transferes',
 			),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'atransferer' => array('filter' => 'Search'),
-					'transferes' => array('filter' => 'Search'),
+					'transferes' => array('filter' => 'Search')
 				),
 			),
 		);
@@ -99,7 +94,6 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'atransferer' => 'read',
 			'exportcsv' => 'read',
 			'impression' => 'read',
 			'impressions' => 'read',
@@ -107,59 +101,14 @@
 		);
 
 		/**
-		 * Recherche et traitement des allocataires à transférer.
-		 *
-		 * @deprecated since 3.0.0
-		 *
-		 * @return void
-		 */
-		public function atransferer() {
-			$this->_index();
-		}
-
-		/**
 		 * Recherche des allocataires déjà transférés.
 		 *
 		 * @return void
 		 */
 		public function transferes() {
-			$this->_index();
-		}
-
-		/**
-		 * Méthode commune de recherche et de traitement des allocataires à transférer
-		 * et transférés.
-		 *
-		 * @return void
-		 */
-		protected function _index() {
 			$structuresParZonesGeographiques = $this->Cohortetransfertpdv93->structuresParZonesGeographiquesPourTransfertPdv();
 
 			if( !empty( $this->request->data ) ) {
-				// Traitement des données renvoyées
-				if( $this->action == 'atransferer' && isset( $this->request->data['Transfertpdv93'] ) ) {
-					$dossiers_ids = array_unique( Set::extract( '/Transfertpdv93/dossier_id', $this->request->data ) );
-					$this->Cohortes->get( $dossiers_ids );
-
-					$data = Set::extract( '/Transfertpdv93[action=1]', $this->request->data );
-					if( !empty( $data ) ) {
-						$this->Transfertpdv93->begin();
-						if( $this->Cohortetransfertpdv93->saveCohorte( $data, $this->Session->read( 'Auth.User.id' ) ) ) {
-							$this->Transfertpdv93->commit();
-							unset( $this->request->data['Transfertpdv93'] );
-							$this->Cohortes->release( $dossiers_ids );
-							$this->Session->setFlash( 'Enregistrement effectué', 'flash/success');
-						}
-						else {
-							$this->Transfertpdv93->rollback();
-							$this->Session->setFlash( 'Erreur(s) lors de l\'enregistrement', 'flash/error');
-						}
-					}
-					else {
-						$this->Session->setFlash( 'Aucune donnée à enregistrer', 'flash/error');
-					}
-				}
-
 				// Traitement du formulaire de recherche
 				$querydata = array(
 					'Dossier' => $this->Cohortetransfertpdv93->search(
@@ -167,7 +116,7 @@
 						(array)$this->Session->read( 'Auth.Zonegeographique' ),
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						$this->request->data['Search'],
-						( ( $this->action == 'atransferer' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null ) // FIXME: saisie
+						null
 					)
 				);
 
@@ -179,22 +128,7 @@
 					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
 
-				if( $this->action == 'atransferer' ) {
-					$dossiers_ids = array_unique( Set::extract( '/Dossier/id', $results ) );
-					$this->Cohortes->get( $dossiers_ids );
-				}
-
 				$this->set( compact( 'results' ) );
-
-				if( $this->action == 'atransferer' ) {
-					// Préparation des données du formulaire
-					if( !isset( $this->request->data['Transfertpdv93'] ) ) {
-						$this->request->data = Hash::merge(
-							$this->request->data,
-							$this->Cohortetransfertpdv93->prepareFormDataIndex( $results, $structuresParZonesGeographiques )
-						);
-					}
-				}
 			}
 
 			$options = array(

@@ -242,11 +242,6 @@
 					'Parcours social sans réorientation' => array( 'class' => 'search', 'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) ),
 					'Radiés de Pôle Emploi' => array( 'class' => 'search', 'url' => array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies'  ) ),
 				),
-				'Transferts PDV' => array(
-					'disabled' => ( $departement != 93 ),
-					'Allocataires à transférer' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
-					'Allocataires transférés' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
-				),
 				'Clôture référents' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 93 ),

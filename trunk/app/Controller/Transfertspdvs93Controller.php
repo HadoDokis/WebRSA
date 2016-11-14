@@ -75,7 +75,6 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'cohorte_atransferer' => 'Cohortestransfertspdvs93:atransferer',
 			'exportcsv' => 'Criterestransfertspdvs93:exportcsv',
 			'search' => 'Criterestransfertspdvs93:index',
 		);
