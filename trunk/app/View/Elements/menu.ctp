@@ -260,7 +260,6 @@
 			),
 			'Recherches' => array(
 				'Par dossier / allocataire' => array( 'class' => 'search', 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
-				'Par Orientation' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteres', 'action' => 'index' ) ),
 				'Par APREs' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 66 ),
