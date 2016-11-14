@@ -233,14 +233,6 @@
 		'Anciens moteurs' => array(
 			'disabled' => (!Configure::read('Anciensmoteurs.enabled')),
 			( $departement == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
-				'APRE' => array(
-					'disabled' => ( $departement != 66 ),
-					'À valider' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'apresavalider' ) ),
-					'À notifier' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ) ),
-					'Notifiées' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notifiees' ) ),
-					'Transfert cellule' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ) ),
-					'Traitement cellule' => array( 'class' => 'search', 'url' =>  array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ) ),
-				),
 				'PDOs' => array(
 					'disabled' => ( $departement != 93 ),
 					'Nouvelles demandes' => array(

@@ -189,6 +189,7 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_cohortes();
 DROP FUNCTION copy_permission_cohortes();
 
+
 --------------------------------------------------------------------------------
 -- Cohortesci (de CER)
 --------------------------------------------------------------------------------
@@ -308,6 +309,55 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_nonorientes66();
 DROP FUNCTION copy_permission_nonorientes66();
+
+
+--------------------------------------------------------------------------------
+-- Apres66
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Cohortesvalidationapres66';
+
+CREATE OR REPLACE FUNCTION copy_permission_apres66() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Apres66');
+
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Apres66:cohorte_imprimer'
+		WHERE alias = 'Cohortesvalidationapres66:validees';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Apres66:cohorte_notifiees'
+		WHERE alias = 'Cohortesvalidationapres66:notifiees';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Apres66:cohorte_traitement'
+		WHERE alias = 'Cohortesvalidationapres66:traitement';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Apres66:cohorte_transfert'
+		WHERE alias = 'Cohortesvalidationapres66:transfert';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Apres66:cohorte_validation'
+		WHERE alias = 'Cohortesvalidationapres66:apresavalider';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_apres66();
+DROP FUNCTION copy_permission_apres66();
 
 
 -- *****************************************************************************
