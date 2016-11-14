@@ -81,10 +81,6 @@
 		public $commeDroit = array(
 			'ajaxfiledelete' => 'Orientsstructs:filelink',
 			'ajaxfileupload' => 'Orientsstructs:filelink',
-			'cohorte_enattente' => 'Cohortes:enattente',
-			'cohorte_impressions' => 'Cohortes:cohortegedooo',
-			'cohorte_nouvelles' => 'Cohortes:nouvelles',
-			'cohorte_orientees' => 'Cohortes:orientees',
 			'download' => 'Orientsstructs:filelink',
 			'exportcsv' => 'Criteres:exportcsv',
 			'fileview' => 'Orientsstructs:filelink',

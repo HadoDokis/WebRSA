@@ -33,37 +33,37 @@ BEGIN
 
 	module_id := (SELECT id FROM acos WHERE alias =  'Module:Dossierspcgs66');
 
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Dossierspcgs66:cohorte_atransmettre'
 		WHERE alias = 'Cohortesdossierspcgs66:atransmettre';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Dossierspcgs66:cohorte_enattenteaffectation'
 		WHERE alias = 'Cohortesdossierspcgs66:enattenteaffectation';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Dossierspcgs66:cohorte_imprimer'
 		WHERE alias = 'Cohortesdossierspcgs66:aimprimer';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Dossierspcgs66:exportcsv'
 		WHERE alias = 'Criteresdossierspcgs66:exportcsv';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Dossierspcgs66:search'
 		WHERE alias = 'Criteresdossierspcgs66:dossier';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Dossierspcgs66:search_affectes'
 		WHERE alias = 'Cohortesdossierspcgs66:affectes';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Dossierspcgs66:search_gestionnaire'
@@ -71,7 +71,7 @@ BEGIN
 
 
 
-    IF NOT EXISTS(SELECT * FROM acos 
+    IF NOT EXISTS(SELECT * FROM acos
 		WHERE alias = 'Dossierspcgs66:exportcsv_gestionnaire') THEN
 
         INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
@@ -79,7 +79,7 @@ BEGIN
 
 		exportcsv_aco_id := (SELECT id FROM acos WHERE alias = 'Dossierspcgs66:exportcsv_gestionnaire');
 
-		FOR v_row IN 
+		FOR v_row IN
 			SELECT * FROM aros_acos rc
 			JOIN acos c ON rc.aco_id = c.id
 			WHERE c.alias = 'Dossierspcgs66:exportcsv'
@@ -117,22 +117,22 @@ BEGIN
 
 	module_id := (SELECT id FROM acos WHERE alias =  'Module:ActionscandidatsPersonnes');
 
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'ActionscandidatsPersonnes:cohorte_enattente'
 		WHERE alias = 'Cohortesfichescandidature66:fichesenattente';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'ActionscandidatsPersonnes:cohorte_encours'
 		WHERE alias = 'Cohortesfichescandidature66:fichesencours';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'ActionscandidatsPersonnes:exportcsv'
 		WHERE alias = 'Criteresfichescandidature:exportcsv';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'ActionscandidatsPersonnes:search'
@@ -147,7 +147,50 @@ DROP FUNCTION copy_permission_actionscandidats_personnes();
 
 SELECT * FROM acos WHERE alias IN ('ActionscandidatsPersonnes:search', 'Criteresfichescandidature:index');
 
+--------------------------------------------------------------------------------
+-- Cohortes (d'orientation)
+--------------------------------------------------------------------------------
 
+DELETE FROM acos WHERE alias = 'Module:Cohortes';
+
+CREATE OR REPLACE FUNCTION copy_permission_cohortes() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Orientsstructs');
+
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Orientsstructs:cohorte_enattente'
+		WHERE alias = 'Cohortes:enattente';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Orientsstructs:cohorte_impressions'
+		WHERE alias = 'Cohortes:cohortegedooo';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Orientsstructs:cohorte_nouvelles'
+		WHERE alias = 'Cohortes:nouvelles';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Orientsstructs:cohorte_orientees'
+		WHERE alias = 'Cohortes:orientees';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_cohortes();
+DROP FUNCTION copy_permission_cohortes();
+
+SELECT * FROM acos WHERE alias IN ('Orientsstructs:cohorte_enattente', 'Orientsstructs:cohorte_impressions', 'Orientsstructs:cohorte_nouvelles', 'Orientsstructs:cohorte_orientees');
 
 -- *****************************************************************************
 COMMIT;
