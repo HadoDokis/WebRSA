@@ -11,7 +11,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "/ActionscandidatsPersonnes/search/:heading"
-msgstr "Recherche par Fiches de candidature (nouveau)"
+msgstr "Recherche par Fiches de candidature"
 
 msgid "/ActionscandidatsPersonnes/search"
 msgstr "Formulaire"

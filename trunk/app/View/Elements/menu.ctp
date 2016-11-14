@@ -269,11 +269,6 @@
 						'url' => array( 'controller' => 'cohortesci', 'action' => 'valides' )
 					),
 				),
-				'Fiches de candidature' => array(
-					'disabled' => ( $departement != 66 ),
-					'Fiches en attente' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ) ),
-					'Fiches en cours' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ) ),
-				),
 				'Non orientation' => array(
 					'disabled' => ( $departement != 66 ),
 					'Inscrits PE' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ) ),
@@ -347,11 +342,6 @@
 					),
 				),
 				'Par Entretiens' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
-				'Par Fiches de candidature' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 66 ),
-					'url' => array( 'controller' => 'criteresfichescandidature', 'action' => 'index' )
-				),
 				'Par Indus' => array( 'class' => 'search', 'url' => array( 'controller' => 'cohortesindus', 'action' => 'index' ) ),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 				'Par Rendez-vous' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),

@@ -93,10 +93,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'ActionscandidatsPersonnes:edit',
-			'cohorte_enattente' => 'Cohortesfichescandidature66:fichesenattente',
-			'cohorte_encours' => 'Cohortesfichescandidature66:fichesencours',
-			'exportcsv' => 'Criteresfichescandidature:exportcsv',
-			'search' => 'Criteresfichescandidature:index',
 		);
 
 		/**
