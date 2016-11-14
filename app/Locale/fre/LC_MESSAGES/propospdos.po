@@ -11,16 +11,16 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Propospdos/search/:heading"
-msgstr "Recherche de PDOs (nouveau)"
+msgstr "Recherche de PDOs"
 
 msgid "/Propospdos/search_possibles/:heading"
-msgstr "Liste des personnes pouvant bénéficier d'une PDO (nouveau)"
+msgstr "Liste des personnes pouvant bénéficier d'une PDO"
 
 msgid "/Propospdos/cohorte_nouvelles/:heading"
-msgstr "Nouvelles demandes PDOs (nouveau)"
+msgstr "Nouvelles demandes PDOs"
 
 msgid "/Propospdos/cohorte_validees/:heading"
-msgstr "Liste PDOs (nouveau)"
+msgstr "Liste PDOs"
 
 # ==============================================================================
 

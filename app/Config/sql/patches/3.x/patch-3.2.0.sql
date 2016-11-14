@@ -474,6 +474,65 @@ UPDATE acos
 		WHERE alias = 'Defautsinsertionseps66:selectionradies';
 
 
+--------------------------------------------------------------------------------
+-- Propospdos
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Cohortespdos';
+DELETE FROM acos WHERE alias = 'Module:Criterespdos';
+
+CREATE OR REPLACE FUNCTION copy_permission_propospdos() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Propospdos');
+
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Propospdos:cohorte_nouvelles'
+		WHERE alias = 'Cohortespdos:avisdemande';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Propospdos:cohorte_validees'
+		WHERE alias = 'Cohortespdos:valide';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Propospdos:exportcsv'
+		WHERE alias = 'Criterespdos:exportcsv';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Propospdos:exportcsv_possibles'
+		WHERE alias = 'Criterespdos:nouvelles';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Propospdos:exportcsv_validees'
+		WHERE alias = 'Cohortespdos:exportcsv';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Propospdos:search'
+		WHERE alias = 'Criterespdos:index';
+	
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Propospdos:search_possibles'
+		WHERE alias = 'Criterespdos:nouvelles';
+	
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_propospdos();
+DROP FUNCTION copy_permission_propospdos();
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
