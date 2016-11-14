@@ -379,26 +379,6 @@ msgstr "Suppression d'un code ROME"
 
 ###############################################################################
 
-msgid "Module:Cohortesci"
-msgstr "Cohorte de CER"
-
-msgid "Cohortesci:nouveaux"
-msgstr "Contrats à valider"
-
-msgid "Cohortesci:valides"
-msgstr "Contrats validés"
-
-msgid "Cohortesci:exportcsv"
-msgstr "Export CSV"
-
-msgid "Cohortesci:nouveauxparticulier"
-msgstr "Gestion de listes -> Contrats Particuliers à valider (CG66)"
-
-msgid "Cohortesci:nouveauxsimple"
-msgstr "Gestion de listes -> Contrats Simples à valider (CG66)"
-
-###############################################################################
-
 msgid "Module:Cohortescomitesapres"
 msgstr "Cohorte de comité d'APRE"
 
