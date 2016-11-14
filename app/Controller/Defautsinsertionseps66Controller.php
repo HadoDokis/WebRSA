@@ -74,19 +74,14 @@
 		 *
 		 * @var array
 		 */
-		public $commeDroit = array(
-			'search_noninscrits' => 'Defautsinsertionseps66:selectionnoninscrits',
-			'search_radies' => 'Defautsinsertionseps66:selectionradies',
-		);
+		public $commeDroit = array();
 
 		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
-		public $aucunDroit = array(
-
-		);
+		public $aucunDroit = array();
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -101,76 +96,7 @@
 			'printCourriersInformations' => 'update',
 			'search_noninscrits' => 'read',
 			'search_radies' => 'read',
-			'selectionnoninscrits' => 'read',
-			'selectionradies' => 'read',
 		);
-
-		/**
-		* 'qdNonInscrits', 'noninscriptionpe'
-		*/
-		protected function _selectionPassageDefautinsertionep66( $qdName, $actionbp ) {
-			$this->set( 'etatdosrsa', ClassRegistry::init('Dossier')->enum('etatdosrsa', array('filter' =>  ClassRegistry::init('Situationdossierrsa')->etatOuvert())) );
-
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
-			}
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$mesCodesInsee = ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
-			}
-			else {
-				$mesCodesInsee = ClassRegistry::init( 'Adresse' )->listeCodesInsee();
-			}
-			$this->set( compact( 'mesCodesInsee' ) );
-
-			if( !empty( $this->request->data ) ) {
-				$queryData = $this->Defautinsertionep66->{$qdName}( $this->request->data, ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
-				$queryData['limit'] = 10;
-				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
-
-				if (isset($this->paginate)) {
-					$this->paginate['Personne'] += $queryData;
-				}
-				else{
-					$this->paginate = array( 'Personne' => $queryData );
-				}
-
-				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
-				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne, array(), array(), $progressivePaginate );
-			}
-
-			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
-
-			$this->set( compact( 'personnes' ) );
-
-			$this->set( compact( 'actionbp' ) );
-
-			$this->render( 'selectionnoninscrits' );
-		}
-
-		/**
-		 * @deprecated since version 3.0.0
-		 * @see self::search_noninscrits()
-		 */
-		public function selectionnoninscrits() {
-			$this->_selectionPassageDefautinsertionep66( 'qdNonInscrits', 'noninscriptionpe' );
-		}
-
-		/**
-		 * @deprecated since version 3.0.0
-		 * @see self::search_radies()
-		 */
-		public function selectionradies() {
-			$this->_selectionPassageDefautinsertionep66( 'qdRadies', 'radiationpe' );
-		}
-
-		/**
-		*
-		*/
 
 		public function courriersinformations() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );

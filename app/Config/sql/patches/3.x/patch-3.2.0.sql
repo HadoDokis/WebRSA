@@ -461,6 +461,19 @@ SELECT copy_permission_traitementspcgs66();
 DROP FUNCTION copy_permission_traitementspcgs66();
 
 
+--------------------------------------------------------------------------------
+-- Defautsinsertionseps66
+--------------------------------------------------------------------------------
+
+UPDATE acos
+		SET alias = 'Defautsinsertionseps66:search_noninscrits'
+		WHERE alias = 'Defautsinsertionseps66:selectionnoninscrits';
+
+UPDATE acos
+		SET alias = 'Defautsinsertionseps66:search_radies'
+		WHERE alias = 'Defautsinsertionseps66:selectionradies';
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
