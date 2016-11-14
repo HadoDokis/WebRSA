@@ -441,17 +441,6 @@ msgstr "Fiches de candidature en cours"
 
 ###############################################################################
 
-msgid "Module:Cohortesindus"
-msgstr "Recherche par Indus"
-
-msgid "Cohortesindus:index"
-msgstr "Recherche par indus"
-
-msgid "Cohortesindus:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
 msgid "Module:Cohortespdos"
 msgstr "Cohorte de PDO"
 
