@@ -81,8 +81,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Traitementspcgs66:edit',
-			'exportcsv' => 'Criterestraitementspcgs66:exportcsv',
-			'search' => 'Criterestraitementspcgs66:index',
 			'view' => 'Traitementspcgs66:index',
 		);
 
