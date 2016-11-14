@@ -1953,6 +1953,13 @@ msgstr "Modification d'un référent du parcours"
 
 msgid "PersonnesReferents:cloturer"
 msgstr "Clôturer le référent"
+
+msgid "PersonnesReferents:cohorte_affectation93"
+msgstr "Workflow CER (CG 93): affectation d'un référent"
+
+msgid "PersonnesReferents:exportcsv_affectation93"
+msgstr "Workflow CER (CG 93): affectation d'un référent - télécharger le tableau"
+
 ###############################################################################
 
 msgid "Module:Personnespcgs66"
@@ -3359,17 +3366,6 @@ msgstr "Suppression d'une suspension"
 
 msgid "Suspensionscuis66:filelink"
 msgstr "Lier un fichier à une suspension de CUI"
-
-###############################################################################
-
-msgid "Module:Cohortesreferents93"
-msgstr "CER (CG 93): affectation d'un référent et téléchargement du tableau (workflow CER)"
-
-msgid "Cohortesreferents93:affecter"
-msgstr "Workflow CER: affectation d'un référent"
-
-msgid "Cohortesreferents93:exportcsv"
-msgstr "Workflow CER: affectation d'un référent - télécharger le tableau"
 
 ###############################################################################
 

@@ -78,17 +78,6 @@
 		);
 
 		/**
-		 * Utilise les droits d'un autre Controller:action
-		 * sur une action en particulier
-		 *
-		 * @var array
-		 */
-		public $commeDroit = array(
-			'cohorte_affectation93' => 'Cohortesreferents93:affecter',
-			'exportcsv_affectation93' => 'Cohortesreferents93:exportcsv',
-		);
-
-		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array

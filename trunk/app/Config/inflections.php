@@ -401,7 +401,6 @@ $irregularPlural = array(
     'propoorientsocialecov58' => 'proposorientssocialescovs58',
     'decisionpropoorientsocialecov58' => 'decisionsproposorientssocialescovs58',
     // Workflow CER
-    'cohortereferent93' => 'cohortesreferents93',
     'cer93' => 'cers93',
     'compofoyercer93' => 'composfoyerscers93',
     'diplomecer93' => 'diplomescers93',

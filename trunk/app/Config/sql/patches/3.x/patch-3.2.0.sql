@@ -408,17 +408,17 @@ BEGIN
 
 	module_id := (SELECT id FROM acos WHERE alias =  'Module:Bilansparcours66');
 
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Bilansparcours66:exportcsv'
 		WHERE alias = 'Criteresbilansparcours66:exportcsv';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Bilansparcours66:search'
 		WHERE alias = 'Criteresbilansparcours66:index';
-	
+
 END;
 $$
 LANGUAGE 'plpgsql';
@@ -442,17 +442,17 @@ BEGIN
 
 	module_id := (SELECT id FROM acos WHERE alias =  'Module:Traitementspcgs66');
 
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Traitementspcgs66:exportcsv'
 		WHERE alias = 'Criterestraitementspcgs66:exportcsv';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Traitementspcgs66:search'
 		WHERE alias = 'Criterestraitementspcgs66:index';
-	
+
 END;
 $$
 LANGUAGE 'plpgsql';
@@ -490,48 +490,80 @@ BEGIN
 
 	module_id := (SELECT id FROM acos WHERE alias =  'Module:Propospdos');
 
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Propospdos:cohorte_nouvelles'
 		WHERE alias = 'Cohortespdos:avisdemande';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Propospdos:cohorte_validees'
 		WHERE alias = 'Cohortespdos:valide';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Propospdos:exportcsv'
 		WHERE alias = 'Criterespdos:exportcsv';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Propospdos:exportcsv_possibles'
 		WHERE alias = 'Criterespdos:nouvelles';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Propospdos:exportcsv_validees'
 		WHERE alias = 'Cohortespdos:exportcsv';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Propospdos:search'
 		WHERE alias = 'Criterespdos:index';
-	
+
 	UPDATE acos
 		SET parent_id = module_id,
 			alias = 'Propospdos:search_possibles'
 		WHERE alias = 'Criterespdos:nouvelles';
-	
+
 END;
 $$
 LANGUAGE 'plpgsql';
 
 SELECT copy_permission_propospdos();
 DROP FUNCTION copy_permission_propospdos();
+
+--------------------------------------------------------------------------------
+-- Cohortesindus
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Cohortesreferents93';
+
+CREATE OR REPLACE FUNCTION copy_permission_cohortesreferents93() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:PersonnesReferents');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'PersonnesReferents:cohorte_affectation93'
+		WHERE alias = 'Cohortesreferents93:affecter';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'PersonnesReferents:exportcsv_affectation93'
+		WHERE alias = 'Cohortesreferents93:exportcsv';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_cohortesreferents93();
+DROP FUNCTION copy_permission_cohortesreferents93();
 
 -- *****************************************************************************
 COMMIT;
