@@ -565,6 +565,7 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_cohortesreferents93();
 DROP FUNCTION copy_permission_cohortesreferents93();
 
+
 --------------------------------------------------------------------------------
 -- Cohortestransfertspdvs93:atransferer
 --------------------------------------------------------------------------------
@@ -611,6 +612,39 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_cohortestransfertspdvs93();
 DROP FUNCTION copy_permission_cohortestransfertspdvs93();
+
+
+--------------------------------------------------------------------------------
+-- Orientsstructs
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criteres';
+
+CREATE OR REPLACE FUNCTION copy_permission_orientsstructs() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Orientsstructs');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Orientsstructs:exportcsv'
+		WHERE alias = 'Criteres:exportcsv';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Orientsstructs:search'
+		WHERE alias = 'Criteres:index';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_orientsstructs();
+DROP FUNCTION copy_permission_orientsstructs();
 
 -- *****************************************************************************
 COMMIT;

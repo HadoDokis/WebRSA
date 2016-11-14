@@ -170,7 +170,7 @@ msgstr "Type de notification"
 # ------------------------------------------------------------------------------
 
 msgid "/Orientsstructs/search/:heading"
-msgstr "Recherche par Orientation (nouveau)"
+msgstr "Recherche par Orientation"
 
 msgid "/Orientsstructs/search"
 msgstr "Formulaire"
@@ -249,13 +249,13 @@ msgstr "Code activité"
 # ==============================================================================
 
 msgid "/Orientsstructs/cohorte_nouvelles/:heading"
-msgstr "Demandes non orientées (nouveau)"
+msgstr "Demandes non orientées"
 
 msgid "/Orientsstructs/cohorte_enattente/:heading"
-msgstr "Demandes en attente de validation d'orientation (nouveau)"
+msgstr "Demandes en attente de validation d'orientation"
 
 msgid "/Orientsstructs/cohorte_orientees/:heading"
-msgstr "Demandes orientées (nouveau)"
+msgstr "Demandes orientées"
 
 # ------------------------------------------------------------------------------
 
