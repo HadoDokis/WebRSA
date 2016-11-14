@@ -28,7 +28,7 @@ msgid "/Cuis/view/:heading"
 msgstr "Contrat Unique d'Insertion"
 
 msgid "/Cuis/search/:heading"
-msgstr "Recherche par Contrat Unique d'Insertion (Nouveau)"
+msgstr "Recherche par Contrat Unique d'Insertion"
 
 msgid "/Cuis/add"
 msgstr "Ajouter"

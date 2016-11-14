@@ -47,7 +47,6 @@
 		public $notMyModels = array(
 			58 => array(
 				'Cohorterendezvous',
-				'Criterecui',
 				'Tableausuivipdv93',
 				'WebrsaRechercheActioncandidatPersonne',
 				'WebrsaRechercheApre',
@@ -67,7 +66,6 @@
 				'WebrsaRecherchePropopdo'
 			),
 			93 => array(
-				'Criterecui',
 				'WebrsaRechercheActioncandidatPersonne',
 				'WebrsaRechercheBilanparcours66',
 				'WebrsaRechercheCui',
@@ -79,7 +77,6 @@
 			),
 			976 => array(
 				'Cohorterendezvous',
-				'Criterecui',
 				'Tableausuivipdv93',
 				'WebrsaRechercheActioncandidatPersonne',
 				'WebrsaRechercheApre',
@@ -575,8 +572,6 @@
 				'Nonorganismeagree.Structurereferente.id' => 'isarray',
                 'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray',
                 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe' => 'string',
-				'Criterescuis.search.fields' => 'isarray',
-				'Criterescuis.exportcsv' => 'isarray',
 				'Cui.taux.financementexclusif' => 'numeric',
 				'Cui.taux.fixe' => 'numeric',
 				'Cui.taux.prisencharge' => 'numeric',

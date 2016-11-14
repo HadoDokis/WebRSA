@@ -81,8 +81,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Cuis:edit',
-			'exportcsv' => 'Criterescuis:exportcsv',
-			'search' => 'Criterescuis:search',
 			'view' => 'Cuis:index',
 		);
 

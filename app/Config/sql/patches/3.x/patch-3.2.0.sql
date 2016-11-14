@@ -646,6 +646,7 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_orientsstructs();
 DROP FUNCTION copy_permission_orientsstructs();
 
+
 --------------------------------------------------------------------------------
 -- Criteresci
 --------------------------------------------------------------------------------
@@ -677,6 +678,39 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_criteresci();
 DROP FUNCTION copy_permission_criteresci();
+
+
+--------------------------------------------------------------------------------
+-- Cuis
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criterescuis';
+
+CREATE OR REPLACE FUNCTION copy_permission_cuis() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Cuis');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Cuis:exportcsv'
+		WHERE alias = 'Criterescuis:exportcsv';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Cuis:search'
+		WHERE alias = 'Criterescuis:search';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_cuis();
+DROP FUNCTION copy_permission_cuis();
 
 -- *****************************************************************************
 COMMIT;
