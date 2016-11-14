@@ -79,8 +79,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Entretiens:edit',
-			'exportcsv' => 'Criteresentretiens:exportcsv',
-			'search' => 'Criteresentretiens:index',
 			'view' => 'Entretiens:index',
 		);
 
