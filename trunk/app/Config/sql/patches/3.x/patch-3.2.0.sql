@@ -145,8 +145,6 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_actionscandidats_personnes();
 DROP FUNCTION copy_permission_actionscandidats_personnes();
 
-SELECT * FROM acos WHERE alias IN ('ActionscandidatsPersonnes:search', 'Criteresfichescandidature:index');
-
 --------------------------------------------------------------------------------
 -- Cohortes (d'orientation)
 --------------------------------------------------------------------------------
@@ -190,7 +188,76 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_cohortes();
 DROP FUNCTION copy_permission_cohortes();
 
-SELECT * FROM acos WHERE alias IN ('Orientsstructs:cohorte_enattente', 'Orientsstructs:cohorte_impressions', 'Orientsstructs:cohorte_nouvelles', 'Orientsstructs:cohorte_orientees');
+--------------------------------------------------------------------------------
+-- Cohortesci (de CER)
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Cohortesci';
+
+CREATE OR REPLACE FUNCTION copy_permission_cohortesci() RETURNS void AS
+$$
+DECLARE
+	v_row record;
+	module_id integer;
+	exportcsv_aco_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Contratsinsertion');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Contratsinsertion:cohorte_cerparticulieravalider'
+		WHERE alias = 'Cohortesci:nouveauxparticulier';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Contratsinsertion:cohorte_cersimpleavalider'
+		WHERE alias = 'Cohortesci:nouveauxsimple';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Contratsinsertion:cohorte_nouveaux'
+		WHERE alias = 'Cohortesci:nouveaux';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Contratsinsertion:cohorte_valides'
+		WHERE alias = 'Cohortesci:valides';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Contratsinsertion:search_valides'
+		WHERE alias = 'Cohortesci:valides';
+
+    IF NOT EXISTS(SELECT * FROM acos
+		WHERE alias = 'Contratsinsertion:exportcsv_valides') THEN
+
+        INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
+			VALUES (module_id, '', 0, 'Contratsinsertion:exportcsv_valides', 0, 0);
+
+		exportcsv_aco_id := (SELECT id FROM acos WHERE alias = 'Contratsinsertion:exportcsv_valides');
+
+		FOR v_row IN
+			SELECT * FROM aros_acos rc
+			JOIN acos c ON rc.aco_id = c.id
+			WHERE c.alias = 'Contratsinsertion:cohorte_valides'
+
+		LOOP
+
+			INSERT INTO aros_acos (aro_id, aco_id, _create, _read, _update, _delete)
+				VALUES (v_row.aro_id, exportcsv_aco_id, v_row._create, v_row._read, v_row._update, v_row._delete);
+
+		END LOOP;
+
+    END IF;
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_cohortesci();
+DROP FUNCTION copy_permission_cohortesci();
 
 -- *****************************************************************************
 COMMIT;

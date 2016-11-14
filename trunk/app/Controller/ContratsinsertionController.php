@@ -87,14 +87,8 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Contratsinsertion:edit',
-			'cohorte_cerparticulieravalider' => 'Cohortesci:nouveauxparticulier',
-			'cohorte_cersimpleavalider' => 'Cohortesci:nouveauxsimple',
-			'cohorte_nouveaux' => 'Cohortesci:nouveaux',
-			'cohorte_valides' => 'Cohortesci:valides',
 			'exportcsv' => 'Criteresci:exportcsv',
-			'exportcsv_valides' => 'Cohortesci:valides',
 			'search' => 'Criteresci:index',
-			'search_valides' => 'Cohortesci:valides',
 			'view' => 'Contratsinsertion:index',
 		);
 
@@ -895,7 +889,7 @@
 
 				// TODO: $this->request->data Contratinsertion.forme_ci
 				$valueFormeci = Set::classicExtract($contratinsertion, 'Contratinsertion.forme_ci');
-				
+
 				$tc = Set::classicExtract($contratinsertion, 'Contratinsertion.num_contrat');
 			}
 
