@@ -87,8 +87,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Contratsinsertion:edit',
-			'exportcsv' => 'Criteresci:exportcsv',
-			'search' => 'Criteresci:index',
 			'view' => 'Contratsinsertion:index',
 		);
 
