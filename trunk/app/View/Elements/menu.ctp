@@ -233,19 +233,6 @@
 		'Anciens moteurs' => array(
 			'disabled' => (!Configure::read('Anciensmoteurs.enabled')),
 			( $departement == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
-				'PDOs' => array(
-					'disabled' => ( $departement != 93 ),
-					'Nouvelles demandes' => array(
-						'class' => 'search',
-						'url' => array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ),
-						'title' => 'Avis CG demandé',
-					),
-					'Liste PDOs' => array(
-						'class' => 'search',
-						'url' => array( 'controller' => 'cohortespdos', 'action' => 'valide' ),
-						'title' => 'PDOs validés',
-					),
-				),
 				'EPs' => array(
 					'disabled' => ( $departement != 93 ),
 					'Relances (EP)' => array(
@@ -295,11 +282,6 @@
 				'Par Entretiens' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresentretiens', 'action' => 'index' ) ),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 				'Par Rendez-vous' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
-				'Par PDOs' => array(
-					'disabled' => ( $departement == 66 ),
-					'Nouvelles PDOs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criterespdos', 'action' => 'nouvelles'  ) ),
-					'Liste des PDOs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criterespdos', 'action' => 'index'  ) ),
-				),
 				'Par Dossiers COV' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 58 ),

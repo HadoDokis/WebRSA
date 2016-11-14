@@ -103,7 +103,6 @@ $irregularPlural = array(
 	'entreeromev3' => 'entreesromesv3',
 	// Fin codes ROME V3, nouvelle version
     'cohortecomiteapre' => 'cohortescomitesapres',
-    'cohortepdo' => 'cohortespdos',
     'comiteapre' => 'comitesapres',
     'comiteapre_participantcomite' => 'comitesapres_participantscomites',
     'condadmin' => 'condsadmins',
@@ -120,7 +119,6 @@ $irregularPlural = array(
     'critereapre' => 'criteresapres',
     'critereci' => 'criteresci',
     'criterecui' => 'criterescuis',
-    'criterepdo' => 'criterespdos',
     'critererdv' => 'criteresrdv',
     'decisionpdo' => 'decisionspdos',
     'descriptionpdo' => 'descriptionspdos',

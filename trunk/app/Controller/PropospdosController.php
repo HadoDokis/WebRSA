@@ -92,13 +92,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Propospdos:edit',
-			'cohorte_nouvelles' => 'Cohortespdos:avisdemande',
-			'cohorte_validees' => 'Cohortespdos:valide',
-			'exportcsv' => 'Criterespdos:exportcsv',
-			'exportcsv_possibles' => 'Criterespdos:nouvelles',
-			'exportcsv_validees' => 'Cohortespdos:exportcsv',
-			'search' => 'Criterespdos:index',
-			'search_possibles' => 'Criterespdos:nouvelles',
 			'view' => 'Propospdos:index',
 		);
 
