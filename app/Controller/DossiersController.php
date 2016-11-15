@@ -99,8 +99,6 @@
 		public $crudMap = array(
 			'edit' => 'update',
 			'exportcsv' => 'read',
-			'exportcsv1' => 'read',
-			'index' => 'read',
 			'menu' => 'read',
 			'search' => 'read',
 			'unlock' => 'read',
@@ -193,22 +191,6 @@
 		}
 
 		/**
-		 * Les action index et exportcsv peuvent être consommatrices, donc on augmeta la mémoire
-		 * maximale et le temps d'exécution maximal du script PHP.
-		 *
-		 * @deprecated since 3.0.00
-		 *
-		 * @return voir
-		 */
-		public function beforeFilter() {
-			if( in_array( $this->action, array( 'index', 'exportcsv' ) ) ) {
-				ini_set( 'max_execution_time', 0 );
-				ini_set( 'memory_limit', '512M' );
-			}
-			parent::beforeFilter();
-		}
-
-		/**
 		 * Moteur de recherche par dossier / allocataire
 		 *
 		 * @return void
@@ -227,43 +209,6 @@
 		public function exportcsv() {
 			$Recherches = $this->Components->load( 'WebrsaRecherchesDossiers' );
 			$Recherches->exportcsv();
-		}
-
-		/**
-		 * Moteur de recherche par dossier/allocataire
-		 *
-		 * @deprecated since 3.0.00
-		 *
-		 * @return void
-		 */
-		public function index() {
-			if( !empty( $this->request->data ) ) {
-				$paginate = $this->Dossier->search( $this->request->data );
-
-				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
-				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
-				$paginate = $this->_qdAddFilters( $paginate );
-
-				$paginate['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
-
-				$this->paginate = $paginate;
-				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
-				$dossiers = $this->paginate( 'Dossier', array(), array(), $progressivePaginate );
-
-				$this->set( 'dossiers', $dossiers );
-			}
-			else {
-				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
-				$this->request->data = Set::merge( $this->request->data, $filtresdefaut );
-			}
-
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
-
-			$this->set( 'structuresreferentesparcours', $this->InsertionsBeneficiaires->structuresreferentes( array( 'type' => 'optgroup', 'prefix' => false ) ) );
-			$this->set( 'referentsparcours', $this->InsertionsBeneficiaires->referents( array( 'prefix' => true ) ) );
-
-			$this->_setOptions();
 		}
 
 		/**
@@ -1022,29 +967,6 @@
 			}
 			$this->_setOptions();
 			$this->set( 'id', $id );
-		}
-
-		/**
-		 * Export du tableau de résultats de recherche au format CSV.
-		 *
-		 * @deprecated since 3.0.00
-		 *
-		 * @return void
-		 */
-		public function exportcsv1() {
-			$querydata = $this->Dossier->search( Hash::expand( $this->request->params['named'], '__' ) );
-
-			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
-			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
-			$querydata = $this->_qdAddFilters( $querydata );
-
-			unset( $querydata['limit'] );
-
-			$dossiers = $this->Dossier->find( 'all', $querydata );
-
-			$this->layout = '';
-			$this->set( compact( 'headers', 'dossiers' ) );
-			$this->_setOptions();
 		}
 
 		/**

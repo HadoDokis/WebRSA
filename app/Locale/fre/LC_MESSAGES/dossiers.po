@@ -13,7 +13,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Dossiers/search/:heading"
-msgstr "Recherche par dossier / allocataire (nouveau)"
+msgstr "Recherche par dossier / allocataire"
 
 msgid "/Ajoutdossierscomplets/add"
 msgstr "Ajouter un dossier"
