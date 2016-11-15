@@ -10,22 +10,13 @@ msgstr ""
 
 # ==============================================================================
 
-msgid "/Demenagementshorsdpts/search1/:heading"
-msgstr "Recherche par allocataires sortants, hors département"
-
 msgid "/Demenagementshorsdpts/search/:heading"
-msgstr "Recherche par allocataires sortants, hors département (nouveau)"
-
-msgid "/Demenagementshorsdpts/search1"
-msgstr "Formulaire"
+msgstr "Recherche par allocataires sortants, hors département"
 
 msgid "/Demenagementshorsdpts/search"
 msgstr "Formulaire"
 
 msgid "/Demenagementshorsdpts/search/:title"
-msgstr "Visibilité formulaire"
-
-msgid "/Demenagementshorsdpts/search1/:title"
 msgstr "Visibilité formulaire"
 
 # ==============================================================================
