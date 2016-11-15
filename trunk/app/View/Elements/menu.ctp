@@ -302,10 +302,6 @@
 						'disabled' => ( $departement != 93 ),
 						'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
 					),
-					'Hors département' => array(
-						'class' => 'search',
-						'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search1'  )
-					),
 				),
 				'Par fiches de prescription' => array(
 					'class' => 'search',

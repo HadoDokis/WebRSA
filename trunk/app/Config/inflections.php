@@ -451,7 +451,6 @@ $irregularPlural = array(
 	'motifnonintegrationfp93' => 'motifsnonintegrationsfps93',
 	'documentbeneffp93' => 'documentsbenefsfps93',
 	'documentbeneffp93_ficheprescription93' => 'documentsbenefsfps93_fichesprescriptions93',
-	'demenagementhorsdpt' => 'demenagementshorsdpts',
 	'prestatairehorspdifp93' => 'prestataireshorspdifps93',
 	'cohorterendezvous' => 'cohortesrendezvous',
 	'populationb3pdv93' => 'populationsb3pdvs93',
