@@ -746,6 +746,39 @@ SELECT copy_permission_entretiens();
 DROP FUNCTION copy_permission_entretiens();
 
 
+--------------------------------------------------------------------------------
+-- Rendezvous
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criteresrdv';
+
+CREATE OR REPLACE FUNCTION copy_permission_rendezvous() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Rendezvous');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Rendezvous:exportcsv'
+		WHERE alias = 'Criteresrdv:exportcsv';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Rendezvous:search'
+		WHERE alias = 'Criteresrdv:index';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_rendezvous();
+DROP FUNCTION copy_permission_rendezvous();
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

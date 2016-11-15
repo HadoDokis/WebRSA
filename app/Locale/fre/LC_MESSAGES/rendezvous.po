@@ -94,7 +94,7 @@ msgstr "Thématique(s) du rendez-vous"
 ###############################################################################
 
 msgid "/Rendezvous/search/:heading"
-msgstr "Recherche par rendez-vous (nouveau)"
+msgstr "Recherche par rendez-vous"
 
 msgid "Search.Rendezvous"
 msgstr "Recherche par rendez-vous"
