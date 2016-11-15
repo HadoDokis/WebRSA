@@ -268,7 +268,6 @@
 				'Par Contrats' => array(
 				),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
-				'Par Rendez-vous' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresrdv', 'action' => 'index'  ) ),
 				'Par Dossiers COV' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 58 ),

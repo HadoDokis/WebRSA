@@ -84,8 +84,6 @@
 		 */
 		public $commeDroit = array(
 			'add' => 'Rendezvous:edit',
-			'exportcsv' => 'Criteresrdv:exportcsv',
-			'search' => 'Criteresrdv:index',
 			'view' => 'Rendezvous:index',
 		);
 
