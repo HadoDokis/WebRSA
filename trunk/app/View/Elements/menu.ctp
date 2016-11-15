@@ -259,13 +259,10 @@
 				),
 			),
 			'Recherches' => array(
-				'Par dossier / allocataire' => array( 'class' => 'search', 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
 				'Par APREs' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 66 ),
 					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
-				),
-				'Par Contrats' => array(
 				),
 				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 				'Par Dossiers COV' => array(
