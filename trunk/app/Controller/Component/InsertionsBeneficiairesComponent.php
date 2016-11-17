@@ -47,6 +47,11 @@
 		const TYPE_LINKS = 'links';
 
 		/**
+		 * Type de liste "links" retourné par la méthode communautessrs
+		 */
+		const TYPE_TYPEORIENT_ID = 'typeorient_id';
+
+		/**
 		 * Nom du component
 		 *
 		 * @var string
@@ -416,15 +421,18 @@
 					'ids' => array(),
 					'ids_prefix' => array(),
 					'list' => array(),
-					'list_prefix' => array()
+					'list_prefix' => array(),
+					'typeorient_id' => array(),
+					'typeorient_id_prefix' => array()
 				);
 
 				$structuresreferentes = $Controller->Structurereferente->find( 'all', $query );
 
 				if( !empty( $structuresreferentes ) ) {
 					foreach( $structuresreferentes as $structurereferente ) {
+						$typeorient_id = $structurereferente['Structurereferente']['typeorient_id'];
 						$key = $structurereferente['Structurereferente']['id'];
-						$keyPrefix = "{$structurereferente['Structurereferente']['typeorient_id']}_{$structurereferente['Structurereferente']['id']}";
+						$keyPrefix = "{$typeorient_id}_{$structurereferente['Structurereferente']['id']}";
 
 						// Cas optgroup
 						if( !isset( $results['optgroup'][$structurereferente['Typeorient']['lib_type_orient']] ) ) {
@@ -440,6 +448,10 @@
                         // Cas list
 						$results['list'][$key] = $structurereferente['Structurereferente']['lib_struc'];
 						$results['list_prefix'][$keyPrefix] = $structurereferente['Structurereferente']['lib_struc'];
+
+                        // Cas typeorient_id
+						$results['typeorient_id'][$typeorient_id][$key] = $structurereferente['Structurereferente']['lib_struc'];
+						$results['typeorient_id_prefix'][$typeorient_id][$keyPrefix] = $structurereferente['Structurereferente']['lib_struc'];
 					}
 				}
 
@@ -464,6 +476,9 @@
 				}
 				else if( $options['type'] === self::TYPE_LIST ) {
 					$results = $options['prefix'] ? $results['list_prefix'] : $results['list'];
+				}
+				else if( $options['type'] === self::TYPE_TYPEORIENT_ID ) {
+					$results = $options['prefix'] ? $results['typeorient_id_prefix'] : $results['typeorient_id'];
 				}
 				else {
 					$msgstr = sprintf( 'La valeur du paramètre "type" "%s" n\'est pas acceptée dans la méthode %s::%s', $options['type'], __CLASS__, __FUNCTION__ );

@@ -60,7 +60,7 @@
 				$Controller->loadModel( $params['modelRechercheName'] );
 			}
 
-			$structuresParZonesGeographiques = $Controller->{$params['modelRechercheName']}->structuresParZonesGeographiquesPourTransfertPdv();
+			$structuresreferentesParCodeInsee = $Controller->Dossier->Foyer->Personne->Orientstruct->Structurereferente->WebrsaStructurereferente->listeParCodeInsee();
 
 			return Hash::merge(
 				parent::_optionsRecords( $params ),
@@ -69,7 +69,10 @@
 						'typeorient_id' => $Controller->Dossier->Foyer->Personne->Orientstruct->Typeorient->listOptions()
 					),
 					'Transfertpdv93' => array(
-						'structurereferente_dst_id' => $structuresParZonesGeographiques
+						'structurereferente_dst_id' => array()
+					),
+					'Structurereferente' => array(
+						'listeParCodeInsee' => $structuresreferentesParCodeInsee
 					)
 				)
 			);
@@ -89,6 +92,29 @@
 			return array_merge(
 				parent::_optionsRecordsModels( $params ),
 				array( 'Typeorient', 'Structurereferente', 'StructurereferenteZonegeographique', 'Zonegeographique' )
+			);
+		}
+
+		/**
+		 * Retourne les options stockées en session, liées à l'utilisateur connecté.
+		 *
+		 * @return array
+		 */
+		protected function _optionsSession( array $params ) {
+			$Controller = $this->_Collection->getController();
+
+			return Hash::merge(
+				parent::_optionsSession( $params ),
+				array(
+					'Structurereferente' => array(
+						'listeParTypeorientId' => $Controller->InsertionsBeneficiaires->structuresreferentes(
+							array(
+								'prefix' => false,
+								'type' => 'typeorient_id'
+							)
+						)
+					)
+				)
 			);
 		}
 	}

@@ -304,6 +304,7 @@
 		 */
 		public function saveCohorte( array $data, array $params = array(), $user_id = null ) {
 			$success = true;
+			$validationErrors = array();
 
 			foreach( $data as $key => $line ) {
 				if( (string)Hash::get( $line, 'Transfertpdv93.action' ) === '1' ) {
@@ -339,7 +340,7 @@
 					$this->Orientstruct->Behaviors->enable( 'StorablePdf' );
 
 					if( !empty( $this->Orientstruct->validationErrors ) ) {
-						debug( $this->Orientstruct->validationErrors );
+						$validationErrors[$key]['structurereferente_dst_id'] = array_unique( Hash::extract( $this->Orientstruct->validationErrors, '{s}.{n}' ) );
 					}
 
 					if( $success ) {
@@ -351,7 +352,7 @@
 							$this->Transfertpdv93->create( $line );
 							$success = $this->Transfertpdv93->save() && $success;
 							if( !empty( $this->Transfertpdv93->validationErrors ) ) {
-								debug( $this->Transfertpdv93->validationErrors );
+								$validationErrors[$key]['structurereferente_dst_id'] = array_unique( Hash::extract( $this->Transfertpdv93->validationErrors, '{s}.{n}' ) );
 							}
 						}
 
@@ -397,6 +398,8 @@
 					}
 				}
 			}
+
+			$this->Transfertpdv93->validationErrors = $validationErrors;
 
 			return $success;
 		}

@@ -139,6 +139,50 @@
 		}
 
 		/**
+		 * Retourne un tableau avec en clé le code INSEE et en valeur un array des
+		 * id des structures référentes présentes sur celui-ci.
+		 *
+		 * @return array
+		 */
+		public function listeParCodeInsee() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				$results = array();
+
+				$query = array(
+					'fields' => array(
+						'StructurereferenteZonegeographique.structurereferente_id',
+						'Zonegeographique.codeinsee'
+					),
+					'joins' => array(
+						$this->Structurereferente->StructurereferenteZonegeographique->join( 'Zonegeographique', array( 'type' => 'INNER' ) )
+					),
+					'contain' => false,
+					'order' => array( 'Zonegeographique.codeinsee' )
+				);
+				$tmp = $this->Structurereferente->StructurereferenteZonegeographique->find( 'all', $query );
+
+				foreach( $tmp as $result ) {
+					$codeinsee = $result['Zonegeographique']['codeinsee'];
+					$structurereferente_id = $result['StructurereferenteZonegeographique']['structurereferente_id'];
+
+					if( false === isset( $results[$codeinsee] ) ) {
+						$results[$codeinsee] = array();
+					}
+
+					$results[$codeinsee][] = $structurereferente_id;
+				}
+
+				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Structurereferente', 'StructurereferenteZonegeographique', 'Zonegeographique' ) );
+			}
+
+			return $results;
+		}
+
+		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.
 		 * Utilisé au préchargement de l'application.
 		 *
@@ -146,8 +190,15 @@
 		 * 	null pour les méthodes qui ne font rien.
 		 */
 		public function prechargement() {
+			$success = true;
+
 			$query = $this->searchQuery();
-			return !empty( $query );
+			$success = false === empty( $query ) && $success;
+
+			$query = $this->listeParCodeInsee();
+			$success = false === empty( $query ) && $success;
+
+			return $success;
 		}
 	}
 ?>
