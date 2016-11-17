@@ -37,8 +37,14 @@
 			'Validation.ExtraValidationRules',
 		);
 
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
 		public $uses = array(
-			'Option'
+			'Option',
+			'WebrsaStructurereferente'
 		);
 
 		public $validate = array(
