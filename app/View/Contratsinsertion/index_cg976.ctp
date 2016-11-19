@@ -1,6 +1,6 @@
 <?php
 	echo $this->element('default_index');
-	
+
 	echo $this->Default3->index(
 		$contratsinsertion,
 		$this->Translator->normalize(
@@ -21,7 +21,9 @@
 					'/Contratsinsertion/valider/#Contratinsertion.id#',
 					'/Contratsinsertion/impression/#Contratinsertion.id#',
 					'/Contratsinsertion/cancel/#Contratinsertion.id#',
-					'/Contratsinsertion/delete/#Contratinsertion.id#',
+					'/Contratsinsertion/delete/#Contratinsertion.id#' => array(
+						'confirm' => true
+					),
 					'/Contratsinsertion/filelink/#Contratinsertion.id#',
 				)
 			)

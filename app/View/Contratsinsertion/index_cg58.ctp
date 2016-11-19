@@ -61,7 +61,9 @@
 				) + WebrsaAccess::links(
 					array(
 						'/Proposcontratsinsertioncovs58/edit/#Personne.id#',
-						'/Proposcontratsinsertioncovs58/delete/#Propocontratinsertioncov58.id#' => array('confirm' => true),
+						'/Proposcontratsinsertioncovs58/delete/#Propocontratinsertioncov58.id#' => array(
+							'confirm' => true
+						),
 					)
 				)
 			),
@@ -90,7 +92,9 @@
 					'/Contratsinsertion/view/#Contratinsertion.id#',
 					'/Contratsinsertion/edit/#Contratinsertion.id#',
 					'/Contratsinsertion/impression/#Contratinsertion.id#',
-					'/Contratsinsertion/delete/#Contratinsertion.id#',
+					'/Contratsinsertion/delete/#Contratinsertion.id#' => array(
+						'confirm' => true
+					),
 					'/Sanctionseps58/nonrespectcer/#Contratinsertion.id#',
 					'/Proposcontratsinsertioncovs58/add/#Contratinsertion.personne_id#/#Contratinsertion.id#' => array(
 						'msgid' => 'Avenant',
