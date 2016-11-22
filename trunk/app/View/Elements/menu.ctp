@@ -263,11 +263,6 @@
 					'disabled' => ( $departement != 66 ),
 					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
 				),
-				'Par Dossiers EP' => array(
-					'disabled' => ( $departement != 58 ),
-					'Radiation de Pôle Emploi' => array( 'class' => 'search', 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) ),
-					'Non inscription à Pôle Emploi' => array( 'class' => 'search', 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) ),
-				),
 				'Par Bilans de parcours' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 66 ),

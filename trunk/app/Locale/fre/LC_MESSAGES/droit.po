@@ -2411,10 +2411,10 @@ msgstr "Visualisation d'un rôle"
 msgid "Module:Sanctionseps58"
 msgstr "Passage en EP pour sanction (CG58)"
 
-msgid "Sanctionseps58:selectionnoninscrits"
+msgid "Sanctionseps58:cohorte_noninscritspe"
 msgstr "Sélection des non inscrits au Pôle Emploi"
 
-msgid "Sanctionseps58:selectionradies"
+msgid "Sanctionseps58:cohorte_radiespe"
 msgstr "Sélection des radiés de Pôle Emploi"
 
 msgid "Sanctionseps58:nonrespectcer"
@@ -2423,8 +2423,12 @@ msgstr "Non respect du CER"
 msgid "Sanctionseps58:deleteNonrespectcer"
 msgstr "Suppression des non respect du CER"
 
-msgid "Sanctionseps58:exportcsv"
-msgstr "Export CSV"
+msgid "Sanctionseps58:exportcsv_noninscritspe"
+msgstr "Export CSV des non inscrits au Pôle Emploi"
+
+msgid "Sanctionseps58:exportcsv_radiespe"
+msgstr "Export CSV des radiés de Pôle Emploi"
+
 ###############################################################################
 
 msgid "Module:Savesearchs"

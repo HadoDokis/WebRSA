@@ -795,6 +795,28 @@ UPDATE acos
 	SET alias = 'Dsps:search'
 	WHERE alias = 'Dsps:index';
 
+--------------------------------------------------------------------------------
+-- Sanctionseps58
+--------------------------------------------------------------------------------
+
+UPDATE acos
+	SET alias = 'Sanctionseps58:cohorte_noninscritspe'
+	WHERE alias = 'Sanctionseps58:selectionnoninscrits';
+
+UPDATE acos
+	SET alias = 'Sanctionseps58:cohorte_radiespe'
+	WHERE alias = 'Sanctionseps58:selectionradies';
+
+INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
+	SELECT parent_id, model, foreign_key, 'Sanctionseps58:exportcsv_radiespe', 0, 0
+		FROM acos
+		WHERE alias = 'Sanctionseps58:exportcsv'
+		LIMIT 1;
+
+UPDATE acos
+	SET alias = 'Sanctionseps58:exportcsv_noninscritspe'
+	WHERE alias = 'Sanctionseps58:exportcsv';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
