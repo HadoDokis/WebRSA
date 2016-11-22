@@ -110,53 +110,33 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Formulaire d'ajout d'un service instructeur.
+		 */
 		public function add() {
-			// Retour à l'index en cas d'annulation
-			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'index' ) );
-			}
-			if( !empty( $this->request->data ) ) {
-				$debugLevel = Configure::read( 'debug' );
-				Configure::write( 'debug', 0 );
-				if( $this->Serviceinstructeur->saveAll( $this->request->data ) ) {
-					Configure::write( 'debug', $debugLevel );
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'controller' => 'servicesinstructeurs', 'action' => 'index' ) );
-				}
-				Configure::write( 'debug', $debugLevel );
-			}
-
-			$this->render( 'add_edit' );
+			return $this->edit();
 		}
 
 		/**
-		*
-		*/
-
+		 * Formulaire de modification d'un service instructeur.
+		 *
+		 * @param integer $serviceinstructeur_id
+		 * @throws NotFoundException
+		 */
 		public function edit( $serviceinstructeur_id = null ) {
-			// TODO : vérif param
-			// Vérification du format de la variable
-			$this->assert( valid_int( $serviceinstructeur_id ), 'error404' );
-
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index' ) );
 			}
+
 			if( !empty( $this->request->data ) ) {
-				$debugLevel = Configure::read( 'debug' );
-				Configure::write( 'debug', 0 );
 				if( $this->Serviceinstructeur->saveAll( $this->request->data ) ) {
-					Configure::write( 'debug', $debugLevel );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'servicesinstructeurs', 'action' => 'index' ) );
 				}
 				else {
-					$sqlErrors = $this->Serviceinstructeur->sqrechercheErrors( $this->request->data['Serviceinstructeur']['sqrecherche'] );
-					Configure::write( 'debug', $debugLevel );
-					$this->set( 'sqlErrors', $sqlErrors );
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					$sqlError = $this->Serviceinstructeur->testSqRechercheConditions( $this->request->data['Serviceinstructeur']['sqrecherche'] );
+					$this->set( compact( 'sqlError' ) );
 				}
 			}
 			else if( $this->action == 'edit' ) {
@@ -169,6 +149,10 @@
 						'contain' => false
 					)
 				);
+
+				if( true === empty( $serviceinstructeur ) ) {
+					throw new NotFoundException();
+				}
 
 				$this->request->data = $serviceinstructeur;
 			}

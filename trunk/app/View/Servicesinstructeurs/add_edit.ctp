@@ -76,14 +76,11 @@
 <?php echo $this->Form->end();?>
 
 <?php
-	if( isset( $sqlErrors ) && !empty( $sqlErrors ) ) {
-		echo '<h2>Erreurs SQL dans les moteurs de recherche</h2>';
-		foreach( $sqlErrors as $key => $error ) {
-			echo "<div class=\"query\">";
-			echo "<h3>".__d( Inflector::underscore( $key ), sprintf( "%s::index", Inflector::pluralize( $key ) ) )."</h3>";
-			echo "<div class=\"errormessage\">".nl2br( $error['error'] )."</div>";
-			echo "<div class=\"sql\">".nl2br( str_replace( "\t", "&nbsp;&nbsp;&nbsp;&nbsp;", $error['sql'] ) )."</div>";
-			echo "</div>";
-		}
+	if( isset( $sqlError ) && !empty( $sqlError ) && false === $sqlError['success'] ) {
+		echo '<h2>Erreur SQL dans les moteurs de recherche</h2>';
+		echo "<div class=\"query\">";
+		echo "<div class=\"errormessage\">".nl2br( $sqlError['message'] )."</div>";
+		echo "<div class=\"sql\">".nl2br( str_replace( "\t", "&nbsp;&nbsp;&nbsp;&nbsp;", $sqlError['value'] ) )."</div>";
+		echo "</div>";
 	}
 ?>

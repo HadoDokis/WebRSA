@@ -923,43 +923,8 @@
 		 * @return array
 		 */
 		public function allSqRechercheErrors() {
-			$errors = array( );
-			$modelNames = array( 'Serviceinstructeur' );
-
-			$debugLevel = Configure::read( 'debug' );
-			foreach( $modelNames as $modelName ) {
-				$errors[$modelName] = array();
-
-				if( Configure::read( "Recherche.qdFilters.{$modelName}" ) ) {
-					$Model = ClassRegistry::init( $modelName );
-
-					$results = $Model->find(
-						'all',
-						array(
-							'fields' => array(
-								"{$Model->primaryKey} AS \"{$modelName}__id\"",
-								"{$Model->displayField} AS \"{$modelName}__name\"",
-								"sqrecherche AS \"{$modelName}__sqrecherche\""
-							),
-							'recursive' => -1,
-							'conditions' => array( "{$modelName}.sqrecherche IS NOT NULL" )
-						)
-					);
-
-					Configure::write( 'debug', 0 );
-
-					foreach( $results as $result ) {
-						$error = $Model->sqrechercheErrors( $result[$modelName]['sqrecherche'] );
-						if( !empty( $error ) ) {
-//							$result[$modelName]['errors'] = $error;
-							$errors[$modelName][] = $result;
-						}
-					}
-				}
-			}
-			Configure::write( 'debug', $debugLevel );
-
-			return $errors;
+			$Serviceinstructeur = ClassRegistry::init( 'Serviceinstructeur' );
+			return $Serviceinstructeur->sqRechercheErrors();
 		}
 
 		/**
