@@ -1276,7 +1276,7 @@ msgstr "Visualisation des différences entre les DSPs"
 msgid "Dsps:index"
 msgstr "Recherche par DSPs"
 
-msgid "Dsps:exportcsv"
+msgid "Dsps:search"
 msgstr "Export CSV"
 ###############################################################################
 
