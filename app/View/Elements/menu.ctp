@@ -299,11 +299,6 @@
 						'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
 					),
 				),
-				'Par fiches de prescription' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 93 ),
-					'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search1'  )
-				),
 			)
 		),
 		'APRE' => array(
