@@ -378,52 +378,5 @@
 		 * @var array
 		 */
 		public $uses = array('WebrsaDsp');
-
-		/**
-		 * Exécute les différentes méthods du modèle permettant la mise en cache.
-		 * Utilisé au préchargement de l'application (/prechargements/index).
-		 *
-		 * Export de la liste des champs disponibles pour le moteur de recherche
-		 * dans le fichier app/tmp/Dsp__searchQuery__cgXX.csv.
-		 *
-		 * @return boolean true en cas de succès, false en cas d'erreur,
-		 * 	null pour les méthodes qui ne font rien.
-		 */
-		public function prechargement() {
-			$success = true;
-
-			$query = $this->WebrsaDsp->searchQuery();
-			$success = $success && !empty( $query );
-
-			// Export des champs disponibles
-			App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
-			$fileName = TMP.DS.'logs'.DS.__CLASS__.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
-			ConfigurableQueryFields::exportQueryFields( $query, 'dsps', $fileName );
-
-			$results = $this->WebrsaDsp->options();
-			$success = $success && !empty( $results );
-
-			return $success;
-		}
-
-		/**
-		 * Vérification que les champs spécifiés dans le paramétrage par les clés
-		 * Dsps.index.fields, Dsps.index.innerTable et Dsps.exportcsv dans le
-		 * webrsa.inc existent bien dans la requête de recherche renvoyée par
-		 * la méthode search().
-		 *
-		 * @param array $params Paramètres supplémentaires (clé 'query' possible)
-		 * @return array
-		 * @todo Utiliser AbstractWebrsaRecherche
-		 */
-		public function checkParametrage( array $params = array() ) {
-			$keys = array( 'Dsps.index.fields', 'Dsps.index.innerTable', 'Dsps.exportcsv' );
-			$query = $this->WebrsaDsp->search( array() );
-
-			App::uses( 'ConfigurableQueryFields', 'ConfigurableQuery.Utility' );
-			$return = ConfigurableQueryFields::getErrors( $keys, $query );
-
-			return $return;
-		}
 	}
 ?>

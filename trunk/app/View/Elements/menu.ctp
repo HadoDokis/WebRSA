@@ -264,7 +264,6 @@
 					'disabled' => ( $departement != 66 ),
 					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
 				),
-				'Par DSPs' => array( 'class' => 'search', 'url' => array( 'controller' => 'dsps', 'action' => 'index' ) ),
 				'Par Dossiers COV' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 58 ),
