@@ -1956,9 +1956,7 @@ body.nonorientationsproscovs58 ul.actions li.action a.cohorte {
 	background-image: url("../img/icons/application_form_magnify.png");
 }
 
-body.nonorientationsproscovs58 table td.hidden,
-body.nonorientationsproscovs58 table #TableNonorientationsproscovs58Cohorte1ColumnInputDataCohorteOrientstructPersonneId,
-body.nonorientationsproscovs58 table #TableNonorientationsproscovs58Cohorte1ColumnInputDataCohorteDossierId {
+body.nonorientationsproscovs58 table td.hidden {
 	display: none;
 }
 
@@ -2341,7 +2339,7 @@ div#pageContent div.treemenu a.accompagnementsbeneficiaires.index.selected {
 /*******************************************************************************
  * Redimentionnement automatique des textarea
  ******************************************************************************/
-div.autoExpandTextareaContainer > textarea, 
+div.autoExpandTextareaContainer > textarea,
 div.autoExpandTextareaContainer > pre {
 	margin: 0;
 	padding: 0;

@@ -21,17 +21,6 @@ msgstr "Visibilité formulaire"
 
 # ------------------------------------------------------------------------------
 
-msgid "/Nonorientationsproscovs58/cohorte1/:heading"
-msgstr "Demandes de maintien dans le social"
-
-msgid "/Nonorientationsproscovs58/cohorte1"
-msgstr "Formulaire"
-
-msgid "/Nonorientationsproscovs58/cohorte1/:title"
-msgstr "Visibilité formulaire"
-
-# ------------------------------------------------------------------------------
-
 msgid "Search.Contratinsertion.df_ci"
 msgstr "Contrat arrivant à échéance entre"
 

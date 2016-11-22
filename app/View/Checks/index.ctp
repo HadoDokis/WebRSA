@@ -73,6 +73,7 @@
 										"{$modelName}.id" => array( 'type' => 'integer' ),
 										"{$modelName}.name" => array( 'type' => 'string' ),
 										"{$modelName}.sqrecherche" => array( 'type' => 'string' ),
+										"{$modelName}.message" => array( 'type' => 'string' ),
 									),
 									array(
 										'actions' => array(

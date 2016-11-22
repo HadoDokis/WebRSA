@@ -22,6 +22,13 @@
 
 		public $order = 'Serviceinstructeur.lib_service ASC';
 
+		/**
+		 * Modèles utilisés par ce modèle.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Allocataire' );
+
 		public $actsAs = array(
 			'Autovalidate2',
 			'Formattable'
@@ -323,84 +330,80 @@
 		}
 
 		/**
-		*
-		*/
-
-		protected function _queryDataError( &$model, $querydata ) {
-			$querydata['limit'] = 1;
-			$sql = $model->sq( $querydata );
-			$ds = $model->getDataSource( $model->useDbConfig );
-
-			$result = false;
-			try {
-				$result = @$model->query( "EXPLAIN $sql" );
-			} catch( Exception $e ) {
-			}
-
-			if( $result === false ) {
-				return $sql;
-			}
-			else {
-				return false;
-			}
-		}
-
-		public function sqrechercheErrors( $condition ) {
-			$errors = array();
+		 * Vérifie, pour chacun des enregistrements comportant une valeur pour
+		 * sqrecherche, que la requête fonctionne avec le query du modèle
+		 * Allocataire.
+		 *
+		 * Renvoie un tableau contenant les enregistrements en erreur.
+		 *
+		 * @return array
+		 */
+		public function sqRechercheErrors() {
+			$results = array();
 
 			if( Configure::read( 'Recherche.qdFilters.Serviceinstructeur' ) ) {
-				$models = array(
-					'Dossier' => 'Dossier',
-					'Critere' => 'Orientstruct',
-					'Cohorteci' => 'Contratinsertion',
-					'Criterecui' => 'Cui',
-					'Cohorteindu' => 'Dossier',
-					'Critererdv' => 'Rendezvous',
-					'Criterepdo' => 'Propopdo',
+				$records = $this->find(
+					'all',
+					array(
+						'fields' => array(
+							"{$this->primaryKey} AS \"{$this->alias}__id\"",
+							"{$this->displayField} AS \"{$this->alias}__name\"",
+							"sqrecherche AS \"{$this->alias}__sqrecherche\""
+						),
+						'contain' => false,
+						'conditions' => array( "{$this->alias}.sqrecherche IS NOT NULL" )
+					)
 				);
 
-				foreach( $models as $modelSearch => $modelName ) {
-					$search = ClassRegistry::init( $modelSearch );
-					$model = ClassRegistry::init( $modelName );
+				foreach( $records as $record ) {
+					$check = $this->testSqRechercheConditions( $record[$this->alias]['sqrecherche'] );
 
-					$querydata = @$search->search( array(), array(), array(), array(), array() );
-
-					if( !empty( $condition ) ) {
-						$querydata['conditions'][] = $condition;
-					}
-
-					$model->forceVirtualFields = true;
-					$querydata = $model->beforeFind( $querydata );
-
-					$error = $this->_queryDataError( $model, $querydata );
-
-					if( !empty( $error ) ) {
-						$ds = $model->getDataSource( $model->useDbConfig );
-						$errors[$model->alias] = array(
-							'sql' => $error,
-							'error' => $ds->lastError()
-						);
+					if( true !== $check['success'] ) {
+						$record[$this->alias]['message'] = $check['message'];
+						$results[] = $record;
 					}
 				}
 			}
-			return $errors;
+
+			return false === empty( $results ) ? array( $this->alias => $results ) : array();
 		}
 
 		/**
-		*
-		*/
+		 * Vérification de conditions supplémentaires à utiliser avec le modèle
+		 * Allocataire.
+		 *
+		 * @param string|array $conditions
+		 * @return array
+		 */
+		public function testSqRechercheConditions( $conditions ) {
+			$Dbo = $this->getDataSource();
+			$query = $this->Allocataire->searchQuery();
+			$query['conditions'][] = $conditions;
+			$this->Allocataire->Personne->forceVirtualFields = true;
+			$query = $this->Allocataire->Personne->beforeFind( $query );
+			$sql = $this->Allocataire->Personne->sq( $query );
 
+			return $Dbo->checkPostgresSqlSyntax( $sql );
+		}
+
+		/**
+		 * Validation des conditions supplémentaires éventuelles à utiliser avec
+		 * le modèle Allocataire.
+		 *
+		 * @param mixed $check
+		 * @return boolean
+		 */
 		public function validateSqrecherche( $check ) {
 			if( !is_array( $check ) ) {
 				return false;
 			}
 
-			// TODO: meilleure validation ?
 			$result = true;
-			foreach( Set::normalize( $check ) as $key => $condition ) {
-				$errors = $this->sqrechercheErrors( $condition );
-				$result = empty( $errors ) && $result;
+			foreach( Hash::normalize( $check ) as $key => $condition ) {
+				$tmp = $this->testSqRechercheConditions( $condition );
+				$result = true === $tmp['success'] && $result;
 			}
+
 			return $result;
 		}
 

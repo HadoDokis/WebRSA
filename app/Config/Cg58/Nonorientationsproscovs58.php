@@ -105,27 +105,4 @@
 			'ini_set' => Configure::read( 'ConfigurableQuery.Nonorientationsproscovs58.cohorte.ini_set' ),
 		)
 	);
-
-	//--------------------------------------------------------------------------
-
-	/**
-	 * Valeurs par défaut des filtres pour le moteur de recherche "Recherches" >
-	 * "Par dossiers COV" > "Demande de maintien dans le social"
-	 *
-	 * @deprecated since 3.0.00
-	 */
-	Configure::write(
-		'Filtresdefaut.Nonorientationsproscovs58_cohorte1',
-		array(
-			'Search' => array(
-				'Contratinsertion' => array(
-					'df_ci_from' => strtotime( '-1 week' ),
-					'df_ci_to' => strtotime( 'now' )
-				),
-				'Pagination' => array(
-					'nombre_total' => 0
-				)
-			)
-		)
-	);
 ?>

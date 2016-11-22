@@ -185,8 +185,7 @@
 			'Par Dossiers COV' => array(
 				'disabled' => ( $departement != 58 ),
 				'url' => array( 'class' => 'search', 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ),
-				__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte1/:heading' ) => array( 'url' => array( 'class' => 'search', 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte1' ) ),
-				__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte/:heading' ) => array( 'url' => array( 'class' => 'search', 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte' ) )
+				__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte/:heading' ) => array( 'class' => 'search', 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte' ) )
 			),
 			'Par Dossiers EP' => array(
 				'disabled' => ( $departement != 58 ),
@@ -263,13 +262,6 @@
 					'class' => 'search',
 					'disabled' => ( $departement != 66 ),
 					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
-				),
-				'Par Dossiers COV' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 58 ),
-					'url' => array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ),
-					__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte1/:heading' ) => array( 'class' => 'search', 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte1' ) ),
-					__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte/:heading' ) => array( 'class' => 'search', 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte' ) )
 				),
 				'Par Dossiers EP' => array(
 					'disabled' => ( $departement != 58 ),
