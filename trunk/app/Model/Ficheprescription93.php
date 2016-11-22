@@ -5,7 +5,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'AbstractSearch', 'Model/Abstractclass' );
+	App::uses( 'AppModel', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
 
 	/**
@@ -13,7 +13,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Ficheprescription93 extends AbstractSearch
+	class Ficheprescription93 extends AppModel
 	{
 		/**
 		 * Nom du modèle.
@@ -342,174 +342,6 @@
 				)
 			),
 		);
-
-		/**
-		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
-		 *
-		 * @deprecated
-		 *
-		 * @param array $types Les types de jointure alias => type
-		 * @return array
-		 */
-		public function searchQuery( array $types = array() ) {
-			$types += array(
-				'Ficheprescription93' => 'LEFT OUTER',
-				'Referent' => 'LEFT OUTER',
-				'Actionfp93' => 'LEFT OUTER',
-				'Adresseprestatairefp93' => 'LEFT OUTER',
-				'Prestatairefp93' => 'LEFT OUTER',
-				'Filierefp93' => 'LEFT OUTER',
-				'Prestatairehorspdifp93' => 'LEFT OUTER',
-				'Categoriefp93' => 'LEFT OUTER',
-				'Thematiquefp93' => 'LEFT OUTER',
-				'Detaildroitrsa' => 'LEFT OUTER',
-				'Prestation' => 'LEFT OUTER'
-			);
-
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
-			$query = Cache::read( $cacheKey );
-
-			if( $query === false ) {
-				$Allocataire = ClassRegistry::init( 'Allocataire' );
-
-				$query = $Allocataire->searchQuery( $types );
-
-				// Ajout des champs supplémentaires
-				$query['fields'] = Hash::merge(
-					$query['fields'],
-					$this->fields(),
-					$this->Actionfp93->fields(),
-					$this->Referent->fields(),
-					$this->Filierefp93->fields(),
-					$this->Prestatairehorspdifp93->fields(),
-					$this->Actionfp93->Adresseprestatairefp93->Prestatairefp93->fields(),
-					$this->Filierefp93->Categoriefp93->fields(),
-					$this->Filierefp93->Categoriefp93->Thematiquefp93->fields()
-				);
-
-				// Ajout des jointures supplémentaires
-				$query['joins'][] = $this->Personne->join( 'Ficheprescription93', array( 'type' => $types['Ficheprescription93'] ) );
-				$query['joins'][] = $this->join( 'Actionfp93', array( 'type' => $types['Actionfp93'] ) );
-				$query['joins'][] = $this->join( 'Referent', array( 'type' => $types['Referent'] ) );
-				$query['joins'][] = $this->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) );
-				$query['joins'][] = $this->join( 'Prestatairehorspdifp93', array( 'type' => $types['Prestatairehorspdifp93'] ) );
-				$query['joins'][] = $this->Actionfp93->join( 'Adresseprestatairefp93', array( 'type' => $types['Adresseprestatairefp93'] ) );
-				$query['joins'][] = $this->Actionfp93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) );
-				$query['joins'][] = $this->Filierefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) );
-				$query['joins'][] = $this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => $types['Thematiquefp93'] ) );
-
-				// Enregistrement dans le cache
-				Cache::write( $cacheKey, $query );
-			}
-
-			return $query;
-		}
-
-		/**
-		 * Complète les conditions du querydata avec le contenu des filtres de
-		 * recherche.
-		 *
-		 * @deprecated
-		 *
-		 * @param array $query
-		 * @param array $search
-		 * @return array
-		 */
-		public function searchConditions( array $query, array $search ) {
-			// 1. On complète les conditions de base de l'allocataire
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
-			$query = $Allocataire->searchConditions( $query, $search );
-
-			$ficheprescription93Exists = Hash::get( $search, 'Ficheprescription93.exists' );
-			if( !in_array( $ficheprescription93Exists, array( null, '' ), true ) ) {
-				if( $ficheprescription93Exists ) {
-					$query['conditions'][] = 'Ficheprescription93.id IS NOT NULL';
-				}
-				else {
-					$query['conditions'][] = 'Ficheprescription93.id IS NULL';
-				}
-			}
-
-			// 2.1 Ajout des filtres supplémentaires concernant l'action et le prestataire de la fiche de precription:
-			$paths = array( 'Ficheprescription93.typethematiquefp93_id', 'Ficheprescription93.thematiquefp93_id', 'Ficheprescription93.categoriefp93_id', 'Ficheprescription93.filierefp93_id', 'Ficheprescription93.prestatairefp93_id', 'Ficheprescription93.actionfp93_id' );
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( !empty( $value ) ) {
-					if( isset( $this->correspondances[$path] ) ) {
-						$correspondance = $this->correspondances[$path];
-					}
-					else {
-						$correspondance = $path; // @todo pas utilisé ?
-					}
-					$query['conditions'][$correspondance] = $value;
-				}
-			}
-
-			// 2.2 Ajout des filtres supplémentaires concernant l'action et le prestataire hors pdi de la fiche de precription:
-			$paths = array( 'Ficheprescription93.actionfp93', 'Prestatairehorspdifp93.name' );
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( !empty( $value ) ) {
-					$query['conditions']["UPPER( {$path} ) LIKE"] = '%'.noaccents_upper( Sanitize::clean( $value, array( 'encode' => false ) ) ).'%';
-				}
-			}
-
-			// 3. Recherche par valeur exacte.
-			$paths = array(
-				'Ficheprescription93.statut',
-				'Ficheprescription93.benef_retour_presente',
-				'Ficheprescription93.personne_recue',
-				'Ficheprescription93.personne_retenue',
-				'Ficheprescription93.personne_a_integre',
-			);
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( !in_array( $value, array( null, '' ), true ) ) {
-					$query['conditions'][$path] = $value;
-				}
-			}
-
-			// 4. Recherche par numéro de convention
-			$value = suffix( Hash::get( $search, 'Actionfp93.numconvention' ) );
-			if( !empty( $value ) ) {
-				$query['conditions']['UPPER( Actionfp93.numconvention ) LIKE'] = strtoupper( $value ).'%';
-			}
-
-			// 5. Plages de dates
-			$paths = array( 'Ficheprescription93.created', 'Ficheprescription93.date_signature', 'Ficheprescription93.rdvprestataire_date', 'Ficheprescription93.date_transmission', 'Ficheprescription93.date_retour', 'Ficheprescription93.df_action' );
-			foreach( $paths as $path ) {
-				$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $path );
-			}
-
-			// 6. Possède certaines dates
-			$paths = array( 'Ficheprescription93.has_date_bilan_mi_parcours', 'Ficheprescription93.has_date_bilan_final', 'Ficheprescription93.has_date_retour' );
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( !in_array( $value, array( null, '' ), true ) ) {
-					$path = str_replace( '.has_', '.', $path );
-					if( $value ) {
-						$query['conditions'][] = "{$path} IS NOT NULL";
-					}
-					else {
-						$query['conditions'][] = "{$path} IS NULL";
-					}
-				}
-			}
-
-			// 7. Référent (et sa structure liée) ayant réalisé la fiche
-			$paths = array(
-				'Ficheprescription93.structurereferente_id' => 'Referent.structurereferente_id',
-				'Ficheprescription93.referent_id' => 'Ficheprescription93.referent_id'
-			);
-			foreach( $paths as $searchPath => $realPath ) {
-				$value = suffix( Hash::get( $search, $searchPath ) );
-				if( !empty( $value ) ) {
-					$query['conditions'][] = array( $realPath => $value );
-				}
-			}
-
-			return $query;
-		}
 
 		/**
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
