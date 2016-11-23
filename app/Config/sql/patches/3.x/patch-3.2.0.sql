@@ -817,6 +817,38 @@ UPDATE acos
 	SET alias = 'Sanctionseps58:exportcsv_noninscritspe'
 	WHERE alias = 'Sanctionseps58:exportcsv';
 
+--------------------------------------------------------------------------------
+-- Rendezvous
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criterestransfertspdvs93';
+
+CREATE OR REPLACE FUNCTION copy_permission_transfertspdvs93() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Transfertspdvs93');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Transfertspdvs93:exportcsv'
+		WHERE alias = 'Criterestransfertspdvs93:exportcsv';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Transfertspdvs93:search'
+		WHERE alias = 'Criterestransfertspdvs93:index';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_transfertspdvs93();
+DROP FUNCTION copy_permission_transfertspdvs93();
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

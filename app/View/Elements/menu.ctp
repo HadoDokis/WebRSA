@@ -279,13 +279,6 @@
 					'disabled' => ( $departement != 66 ),
 					'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index'  )
 				),
-				'Par allocataires sortants' => array(
-					'Intra-département' => array(
-						'class' => 'search',
-						'disabled' => ( $departement != 93 ),
-						'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
-					),
-				),
 			)
 		),
 		'APRE' => array(

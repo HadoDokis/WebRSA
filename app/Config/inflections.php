@@ -413,7 +413,6 @@ $irregularPlural = array(
     'valeurparsoussujetcer93' => 'valeursparsoussujetscers93',
     'transfertpdv93' => 'transfertspdvs93',
     'cohortetransfertpdv93' => 'cohortestransfertspdvs93',
-    'criteretransfertpdv93' => 'criterestransfertspdvs93',
     'commentairenormecer93' => 'commentairesnormescers93',
     'commentairenormecer93_histochoixcer93' => 'commentairesnormescers93_histoschoixcers93',
     'secteurcui' => 'secteurscuis',

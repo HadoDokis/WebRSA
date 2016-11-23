@@ -69,17 +69,6 @@
 		);
 
 		/**
-		 * Utilise les droits d'un autre Controller:action
-		 * sur une action en particulier
-		 *
-		 * @var array
-		 */
-		public $commeDroit = array(
-			'exportcsv' => 'Criterestransfertspdvs93:exportcsv',
-			'search' => 'Criterestransfertspdvs93:index',
-		);
-
-		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array

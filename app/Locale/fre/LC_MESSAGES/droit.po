@@ -3597,13 +3597,10 @@ msgstr "Suppression d'un commentaire normé"
 
 ###############################################################################
 
-msgid "Module:Criterestransfertspdvs93"
-msgstr "Recherche par allocataires sortants, intra-département (CG 93)"
-
-msgid "Criterestransfertspdvs93:index"
+msgid "Transfertspdvs93:search"
 msgstr "Moteur de recherche des allocataires sortants, intra-département"
 
-msgid "Criterestransfertspdvs93:exportcsv"
+msgid "Transfertspdvs93:exportcsv"
 msgstr "Export CSV des résultats du moteur de recherche des allocataires sortants, intra-département"
 
 ###############################################################################
