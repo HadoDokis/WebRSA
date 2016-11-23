@@ -3128,17 +3128,11 @@ msgstr "Impression par lot de la sanction 2"
 msgid "Module:Indicateurssuivis"
 msgstr "Indicateur de suivi des référents"
 
-msgid "Indicateurssuivis:index"
+msgid "Indicateurssuivis:search"
 msgstr "Tableau de visualisation des indicateurs de suivi"
 
-msgid "Indicateurssuivis:search"
-msgstr "Tableau de visualisation des indicateurs de suivi (nouveau)"
-
-msgid "Indicateurssuivis:exportcsv"
-msgstr "Export CSV"
-
 msgid "Indicateurssuivis:exportcsv_search"
-msgstr "Export CSV (nouveau)"
+msgstr "Export CSV"
 
 ###############################################################################
 
