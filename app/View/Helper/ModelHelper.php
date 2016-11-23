@@ -132,7 +132,7 @@
 		 */
 		public function type( $modelName, $fieldName = null ) {
 			if( is_null( $fieldName ) ) {
-				list( $modelName, $fieldName ) = Xinflector::modelField( $modelName );
+				list( $modelName, $fieldName ) = model_field( $modelName );
 			}
 			$modelInfos = $this->_modelInfos( $modelName );
 			return $modelInfos['schema'][$fieldName]['type'];
@@ -154,7 +154,7 @@
 		 * </pre>
 		 */
 		protected function _typeInfos( $path ) {
-			list( $modelName, $fieldName ) = Xinflector::modelField( $path );
+			list( $modelName, $fieldName ) = model_field( $path );
 			$modelInfos = $this->_modelInfos( $modelName );
 			return Set::extract( $modelInfos, "schema.{$fieldName}" );
 		}

@@ -48,7 +48,7 @@
 			);
 
 			/// Prepare
-			list( $modelName, $fieldName ) = Xinflector::modelField( $path );
+			list( $modelName, $fieldName ) = model_field( $path );
 			if( isset( $params['model'] ) ) {
 				$modelName = $params['model'];
 			}
@@ -207,7 +207,7 @@
 		*/
 
 		public function format( $data, $path, $params = array() ) {
-			list( $modelName, $fieldName ) = Xinflector::modelField( $path );
+			list( $modelName, $fieldName ) = model_field( $path );
 
 			$defaultParams = array(
 				'tag' => false,
@@ -306,7 +306,7 @@
 
 		public function input( $path, $params = array() ) {
 			$params = $this->prepare( 'input', $path, $params );
-			list( $modelName, $fieldName ) = Xinflector::modelField( $path );
+			list( $modelName, $fieldName ) = model_field( $path );
 
 			if( isset( $params['type'] ) ) {
 				if( $params['type'] == 'text' && isset( $params['length'] ) ) {

@@ -119,7 +119,7 @@
 			}
 
 			// Post.id
-			list( $currentModelName, $currentFieldName ) = Xinflector::modelField( $column );
+			list( $currentModelName, $currentFieldName ) = model_field( $column );
 			if( empty( $options['domain'] ) ) {
 				$domain = Inflector::singularize( Inflector::tableize( $currentModelName ) );
 			}
@@ -358,7 +358,7 @@
 						$params = $this->Type2->prepare( 'output', $path, $params );
 						unset( $params['sort'] );
 
-						list( $model, $field ) = Xinflector::modelField( $path );
+						list( $model, $field ) = model_field( $path );
 						$validationErrors = $this->validationErrors[$modelName];
 
 						$cohortePath = str_replace( ".", ".$key.", $path );
@@ -636,7 +636,7 @@
 			$return = '';
 
 			foreach( $fields as $path => $params ) {
-				list( $fieldModelName, $fieldModelfield ) = Xinflector::modelField( $path );
+				list( $fieldModelName, $fieldModelfield ) = model_field( $path );
 				if( !Set::check( $params, 'options' ) ) {
 					$options = Set::extract( $formParams, "options.{$fieldModelName}.{$fieldModelfield}" );
 					if( !empty( $options ) ) {
@@ -740,14 +740,14 @@
 			}
 
 			foreach( Set::normalize( $fields ) as $fieldName => $options ) {
-				list( $fieldModelName, $fieldModelfield ) = Xinflector::modelField( $fieldName );
+				list( $fieldModelName, $fieldModelfield ) = model_field( $fieldName );
 
 				/// TODO: function ?
 				if( Set::check( $paramsOptions, "{$fieldModelName}.{$fieldModelfield}" ) && empty( $options['options'] ) ) {
 					$options['options'] = Set::classicExtract( $paramsOptions, "{$fieldModelName}.{$fieldModelfield}" );
 				}
 
-				list( $options['model'], $options['field'] ) = Xinflector::modelField( $fieldName );
+				list( $options['model'], $options['field'] ) = model_field( $fieldName );
 				$options = $this->Type2->prepare( 'input', $fieldName, $options );
 				$return .= $this->Type2->input( "Search.$fieldName", $options );
 			}
@@ -786,7 +786,7 @@
 			$lineNr = 1;
 			foreach( Set::normalize( $columns ) as $column => $columnOptions ) {
 				$columnOptions = $this->Type2->prepare( 'output', $column, $columnOptions );
-				list( $columnModel, $columnField ) = Xinflector::modelField( $column );
+				list( $columnModel, $columnField ) = model_field( $column );
 				$columnDomain = Inflector::singularize( Inflector::tableize( $columnModel ) );
 				/// dans une fonction ?
 
