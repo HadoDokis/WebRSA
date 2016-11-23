@@ -849,6 +849,36 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_transfertspdvs93();
 DROP FUNCTION copy_permission_transfertspdvs93();
 
+--------------------------------------------------------------------------------
+-- Indicateurssuivis
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION copy_permission_indicateurssuivis() RETURNS void AS
+$$
+DECLARE
+	module_id integer;
+
+BEGIN
+
+	module_id := (SELECT id FROM acos WHERE alias =  'Module:Indicateurssuivis');
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Indicateurssuivis:exportcsv_search'
+		WHERE alias = 'Indicateurssuivis:exportcsv';
+
+	UPDATE acos
+		SET parent_id = module_id,
+			alias = 'Indicateurssuivis:search'
+		WHERE alias = 'Indicateurssuivis:index';
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_indicateurssuivis();
+DROP FUNCTION copy_permission_indicateurssuivis();
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
