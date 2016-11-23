@@ -231,32 +231,6 @@
 		),
 		'Anciens moteurs' => array(
 			'disabled' => (!Configure::read('Anciensmoteurs.enabled')),
-			( $departement == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
-				'EPs' => array(
-					'disabled' => ( $departement != 93 ),
-					'Relances (EP)' => array(
-						__d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) => array( 'class' => 'search', 'url' => array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ) ),
-						__d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ) => array( 'class' => 'search', 'url' => array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impressions' ) ),
-					),
-					'Parcours social sans réorientation' => array( 'class' => 'search', 'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) ),
-					'Radiés de Pôle Emploi' => array( 'class' => 'search', 'url' => array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies'  ) ),
-				),
-				'Clôture référents' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 93 ),
-					'url' => array( 'controller' => 'referents', 'action' => 'clotureenmasse' )
-				),
-				__d( 'cohortesd2pdvs93', '/Cohortesd2pdvs93/index/:heading' ) => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 93 ),
-					'url' => array( 'controller' => 'cohortesd2pdvs93', 'action' => 'index' )
-				),
-				__d( 'cohortesrendezvous', '/Cohortesrendezvous/cohorte/:heading' ) => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 93 ),
-					'url' => array( 'controller' => 'cohortesrendezvous', 'action' => 'cohorte' )
-				),
-			),
 			'Recherches' => array(
 				'Par APREs' => array(
 					'class' => 'search',
