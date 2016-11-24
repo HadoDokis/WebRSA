@@ -1131,7 +1131,7 @@ msgstr "Flux CAF d'un foyer"
 msgid "Module:Dossiers"
 msgstr "Recherche par dossier/allocataire"
 
-msgid "Dossiers:menu"
+msgid "Dossiers:search"
 msgstr "Recherche de dossiers"
 
 msgid "Dossiers:view"

@@ -20,5 +20,5 @@
 $menu= array(
 	'menuClass' => array('menuNiveau0', 'menuNiveau1'),
 	'currentItem' => 'menuCourant',
-	'items' => array('Accueil' => array('link' => '/dossiers/index')));
+	'items' => array('Accueil' => array('link' => '/dossiers/search')));
 ?>

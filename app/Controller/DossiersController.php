@@ -37,7 +37,6 @@
 			'Jetons2',
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'index',
 					'search',
 				)
 			),
@@ -72,22 +71,13 @@
 		);
 
 		/**
-		 * Utilise les droits d'un autre Controller:action
-		 * sur une action en particulier
-		 *
-		 * @var array
-		 */
-		public $commeDroit = array(
-			'search' => 'Dossiers:index',
-		);
-
-		/**
 		 * Méthodes ne nécessitant aucun droit.
 		 *
 		 * @var array
 		 */
 		public $aucunDroit = array(
-			'unlock',
+			'menu',
+			'unlock'
 		);
 
 		/**
@@ -153,17 +143,6 @@
 				$this->set( 'relance', (array)Hash::get( $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->enums(), 'Nonrespectsanctionep93' ) );
 				$this->set( 'dossierep', (array)Hash::get( $this->Dossier->Foyer->Personne->Dossierep->enums(), 'Dossierep' ) );
 				$this->set( 'options', $this->Dossier->Foyer->Personne->Orientstruct->enums() );
-			}
-			else if( $this->action == 'exportcsv' ) {
-				$typesorient = $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
-				$this->set( 'typesorient', $typesorient );
-			}
-			else if( $this->action == 'index' ) {
-				$this->set( 'typeservice', $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->listOptions() );
-
-				$referents = $this->Dossier->Foyer->Personne->PersonneReferent->Referent->find( 'list', array( 'order' => array( 'Referent.nom' ) ) );
-				$this->set( compact( 'referents') );
-				$this->set( 'exists', array( '1' => 'Oui', '0' => 'Non' ) );
 			}
 			else if( $this->action == 'edit' ) {
 				$optionsDossier = array(
