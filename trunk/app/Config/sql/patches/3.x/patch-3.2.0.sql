@@ -787,6 +787,7 @@ UPDATE acos
 	SET alias = 'Dossiers:search'
 	WHERE alias = 'Dossiers:index';
 
+
 --------------------------------------------------------------------------------
 -- DSPs
 --------------------------------------------------------------------------------
@@ -794,6 +795,7 @@ UPDATE acos
 UPDATE acos
 	SET alias = 'Dsps:search'
 	WHERE alias = 'Dsps:index';
+
 
 --------------------------------------------------------------------------------
 -- Sanctionseps58
@@ -816,6 +818,7 @@ INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
 UPDATE acos
 	SET alias = 'Sanctionseps58:exportcsv_noninscritspe'
 	WHERE alias = 'Sanctionseps58:exportcsv';
+
 
 --------------------------------------------------------------------------------
 -- Rendezvous
@@ -849,6 +852,7 @@ LANGUAGE 'plpgsql';
 SELECT copy_permission_transfertspdvs93();
 DROP FUNCTION copy_permission_transfertspdvs93();
 
+
 --------------------------------------------------------------------------------
 -- Indicateurssuivis
 --------------------------------------------------------------------------------
@@ -878,6 +882,68 @@ LANGUAGE 'plpgsql';
 
 SELECT copy_permission_indicateurssuivis();
 DROP FUNCTION copy_permission_indicateurssuivis();
+
+
+--------------------------------------------------------------------------------
+-- Apre
+--------------------------------------------------------------------------------
+
+DELETE FROM acos WHERE alias = 'Module:Criteresapres';
+
+CREATE OR REPLACE FUNCTION copy_permission_apres() RETURNS void AS
+$$
+DECLARE
+	v_row record;
+	module_id integer;
+	exportcsv_aco_id integer;
+
+BEGIN
+
+		module_id := (SELECT id FROM acos WHERE alias =  'Module:Apres');
+
+		UPDATE acos
+			SET parent_id = module_id,
+				alias = 'Apres:search'
+			WHERE alias = 'Criteresapres:all';
+
+		UPDATE acos
+			SET parent_id = module_id,
+				alias = 'Apres:search_eligibilite'
+			WHERE alias = 'Criteresapres:eligible';
+
+		UPDATE acos
+			SET parent_id = module_id,
+				alias = 'Apres:exportcsv'
+			WHERE alias = 'Criteresapres:exportcsv';
+
+	IF NOT EXISTS(SELECT * FROM acos
+		WHERE alias = 'Apres:exportcsv_eligibilite') THEN
+
+		INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
+			VALUES (module_id, '', 0, 'Apres:exportcsv_eligibilite', 0, 0);
+
+		exportcsv_aco_id := (SELECT id FROM acos WHERE alias = 'Apres:exportcsv_eligibilite');
+
+		FOR v_row IN
+			SELECT * FROM aros_acos rc
+			JOIN acos c ON rc.aco_id = c.id
+			WHERE c.alias = 'Apres:exportcsv'
+
+		LOOP
+
+			INSERT INTO aros_acos (aro_id, aco_id, _create, _read, _update, _delete)
+				VALUES (v_row.aro_id, exportcsv_aco_id, v_row._create, v_row._read, v_row._update, v_row._delete);
+
+		END LOOP;
+
+    END IF;
+
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT copy_permission_apres();
+DROP FUNCTION copy_permission_apres();
 
 -- *****************************************************************************
 COMMIT;

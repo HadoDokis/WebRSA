@@ -93,10 +93,6 @@
 		 * @var array
 		 */
 		public $commeDroit = array(
-			'exportcsv' => 'Criteresapres:exportcsv',
-			'exportcsv_eligibilite' => 'Criteresapres:exportcsv',
-			'search' => 'Criteresapres:all',
-			'search_eligibilite' => 'Criteresapres:eligible',
 			'view' => 'Apres:index',
 		);
 

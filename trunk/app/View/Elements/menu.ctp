@@ -232,11 +232,6 @@
 		'Anciens moteurs' => array(
 			'disabled' => (!Configure::read('Anciensmoteurs.enabled')),
 			'Recherches' => array(
-				'Par APREs' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 66 ),
-					'url' => array( 'controller' => 'criteresapres', 'action' => 'all' )
-				),
 				'Par Bilans de parcours' => array(
 					'class' => 'search',
 					'disabled' => ( $departement != 66 ),
@@ -258,10 +253,8 @@
 		'APRE' => array(
 			'disabled' => ( $departement != 93 || true === $user_externe ),
 			'Liste des demandes d\'APRE' => array(
-				'Toutes les APREs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresapres', 'action' => 'all' ) ),
-				'Toutes les APREs (nouveau)' => array( 'class' => 'search', 'url' => array( 'controller' => 'apres', 'action' => 'search' ) ),
-				'Eligibilité des APREs' => array( 'class' => 'search', 'url' => array( 'controller' => 'criteresapres', 'action' => 'eligible' ) ),
-				'Eligibilité des APREs (nouveau)' => array( 'class' => 'search', 'url' => array( 'controller' => 'apres', 'action' => 'search_eligibilite' ) ),
+				'Toutes les APREs' => array( 'class' => 'search', 'url' => array( 'controller' => 'apres', 'action' => 'search' ) ),
+				'Eligibilité des APREs' => array( 'class' => 'search', 'url' => array( 'controller' => 'apres', 'action' => 'search_eligibilite' ) ),
 				'Demande de recours' => array( 'class' => 'search', 'url' => array( 'controller' => 'recoursapres', 'action' => 'demande' ) ),
 				'Visualisation des recours' => array( 'class' => 'search', 'url' => array( 'controller' => 'recoursapres', 'action' => 'visualisation' ) ),
 			),

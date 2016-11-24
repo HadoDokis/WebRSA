@@ -116,7 +116,6 @@ $irregularPlural = array(
     //
     'controleadministratif' => 'controlesadministratifs',
     'creancealimentaire' => 'creancesalimentaires',
-    'critereapre' => 'criteresapres',
     'decisionpdo' => 'decisionspdos',
     'descriptionpdo' => 'descriptionspdos',
     'detailaccosocfam' => 'detailsaccosocfams',
