@@ -500,8 +500,12 @@
 						'instr',
 						'instrencours',
 					),
-					'Decisiondossierpcg66.id IS NULL',
-				)
+					'OR' => array(
+						'Decisiondossierpcg66.id IS NULL',
+						'Decisiondossierpcg66.validationproposition' => 'N'
+					)
+				),
+				'order' => array('Decisiondossierpcg66.created' => 'DESC')
 			));
 			
 			return !empty($dossierpcg);
