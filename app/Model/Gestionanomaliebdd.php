@@ -305,13 +305,9 @@
 
 		/**
 		* TODO: vérifier que les filtres suivants n'ont pas cassé (à cause de la modification de conditionsPersonneFoyerDossier)
-		* 	- app/models/criterebilanparcours66.php
-		* 	- app/models/criterefichecandidature.php
 		* 	- app/models/defautinsertionep66.php
 		* 	- app/models/dossier.php
 		* 	- app/models/dsp.php
-		* 	- app/models/criteredossierpcg66.php
-		* 	- app/models/criteredossierpcg66.php
 		*/
 		public function search( $mesCodesInsee, $filtre_zone_geo, $params, $sqLockedDossiers ) {
 			$options = array();

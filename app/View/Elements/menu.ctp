@@ -229,27 +229,6 @@
 				'url' => array( 'controller' => 'changementsadresses', 'action' => 'search'  )
 			),
 		),
-		'Anciens moteurs' => array(
-			'disabled' => (!Configure::read('Anciensmoteurs.enabled')),
-			'Recherches' => array(
-				'Par Bilans de parcours' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 66 ),
-					'url' => array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ),
-				),
-				'Pôle Emploi' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 66 ),
-					'Non inscrits au Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits'  ) ),
-					'Radiés de Pôle Emploi' => array( 'url' => array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies'  ) ),
-				),
-				'Demande de maintien dans le social' => array(
-					'class' => 'search',
-					'disabled' => ( $departement != 66 ),
-					'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index'  )
-				),
-			)
-		),
 		'APRE' => array(
 			'disabled' => ( $departement != 93 || true === $user_externe ),
 			'Liste des demandes d\'APRE' => array(
