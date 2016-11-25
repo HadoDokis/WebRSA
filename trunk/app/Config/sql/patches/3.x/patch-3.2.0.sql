@@ -227,11 +227,6 @@ BEGIN
 			alias = 'Contratsinsertion:cohorte_valides'
 		WHERE alias = 'Cohortesci:valides';
 
-	UPDATE acos
-		SET parent_id = module_id,
-			alias = 'Contratsinsertion:search_valides'
-		WHERE alias = 'Cohortesci:valides';
-
     IF NOT EXISTS(SELECT * FROM acos
 		WHERE alias = 'Contratsinsertion:exportcsv_valides') THEN
 
@@ -239,6 +234,28 @@ BEGIN
 			VALUES (module_id, '', 0, 'Contratsinsertion:exportcsv_valides', 0, 0);
 
 		exportcsv_aco_id := (SELECT id FROM acos WHERE alias = 'Contratsinsertion:exportcsv_valides');
+
+		FOR v_row IN
+			SELECT * FROM aros_acos rc
+			JOIN acos c ON rc.aco_id = c.id
+			WHERE c.alias = 'Contratsinsertion:cohorte_valides'
+
+		LOOP
+
+			INSERT INTO aros_acos (aro_id, aco_id, _create, _read, _update, _delete)
+				VALUES (v_row.aro_id, exportcsv_aco_id, v_row._create, v_row._read, v_row._update, v_row._delete);
+
+		END LOOP;
+
+    END IF;
+
+    IF NOT EXISTS(SELECT * FROM acos
+		WHERE alias = 'Contratsinsertion:search_valides') THEN
+
+        INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
+			VALUES (module_id, '', 0, 'Contratsinsertion:search_valides', 0, 0);
+
+		exportcsv_aco_id := (SELECT id FROM acos WHERE alias = 'Contratsinsertion:search_valides');
 
 		FOR v_row IN
 			SELECT * FROM aros_acos rc
@@ -484,7 +501,9 @@ DELETE FROM acos WHERE alias = 'Module:Criterespdos';
 CREATE OR REPLACE FUNCTION copy_permission_propospdos() RETURNS void AS
 $$
 DECLARE
+	v_row record;
 	module_id integer;
+	exportcsv_aco_id integer;
 
 BEGIN
 
@@ -521,10 +540,27 @@ BEGIN
 			alias = 'Propospdos:search'
 		WHERE alias = 'Criterespdos:index';
 
-	UPDATE acos
-		SET parent_id = module_id,
-			alias = 'Propospdos:search_possibles'
-		WHERE alias = 'Criterespdos:nouvelles';
+	IF NOT EXISTS(SELECT * FROM acos
+		WHERE alias = 'Propospdos:search_possibles') THEN
+
+		INSERT INTO acos (parent_id, model, foreign_key, alias, lft, rght)
+			VALUES (module_id, '', 0, 'Propospdos:search_possibles', 0, 0);
+
+		exportcsv_aco_id := (SELECT id FROM acos WHERE alias = 'Propospdos:search_possibles');
+
+		FOR v_row IN
+			SELECT * FROM aros_acos rc
+			JOIN acos c ON rc.aco_id = c.id
+			WHERE c.alias = 'Propospdos:exportcsv_possibles'
+
+		LOOP
+
+			INSERT INTO aros_acos (aro_id, aco_id, _create, _read, _update, _delete)
+				VALUES (v_row.aro_id, exportcsv_aco_id, v_row._create, v_row._read, v_row._update, v_row._delete);
+
+		END LOOP;
+
+    END IF;
 
 END;
 $$

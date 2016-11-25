@@ -3,8 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-msgid ""
-msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-01-25 23:57+0100\n"
@@ -96,11 +94,23 @@ msgstr "Annulation d'une fiche de candidature/prescription"
 msgid "ActionscandidatsPersonnes:maillink"
 msgstr "Envoi de mail"
 
+msgid "ActionscandidatsPersonnes:exportcsv"
+msgstr "Export CSV"
+
 msgid "ActionscandidatsPersonnes:exportcsv_enattente"
 msgstr "Export CSV des fiches de candidature/prescription en attente"
 
 msgid "ActionscandidatsPersonnes:exportcsv_encours"
 msgstr "Export CSV des fiches de candidature/prescription en attente"
+
+msgid "ActionscandidatsPersonnes:cohorte_enattente"
+msgstr "Fiches de candidature en attente"
+
+msgid "ActionscandidatsPersonnes:cohorte_encours"
+msgstr "Fiches de candidature en cours"
+
+msgid "ActionscandidatsPersonnes:search"
+msgstr "Moteur de recherche"
 
 ###############################################################################
 
@@ -230,6 +240,18 @@ msgstr "Export CSV des APREs à transférer par la cellule"
 msgid "Apres66:exportcsv_traitement"
 msgstr "Export CSV des APREs à traiter par la cellule"
 
+msgid "Apres66:cohorte_transfert"
+msgstr "APRE/ADREs à transférer à la cellule"
+
+msgid "Apres66:cohorte_validation"
+msgstr "APREs à valider"
+
+msgid "Apres66:cohorte_notifiees"
+msgstr "APREs notifiées"
+
+msgid "Apres66:cohorte_traitement"
+msgstr "APREs à traiter"
+
 ###############################################################################
 
 msgid "Module:ApresComitesapres"
@@ -258,6 +280,21 @@ msgstr "Édition d'une APRE"
 msgid "Apres:add"
 msgstr "Ajout d'une APRE"
 
+msgid "Apres:impression"
+msgstr "Impression des APREs"
+
+msgid "Apres:search"
+msgstr "Moteur de recherche de toutes les APREs"
+
+msgid "Apres:search_eligibilite"
+msgstr "Éligibilité des APREs"
+
+msgid "Apres:exportcsv"
+msgstr "Export CSV"
+
+msgid "Apres:exportcsv_eligibilite"
+msgstr "Export CSV Éligibilité"
+
 ###############################################################################
 
 msgid "Module:Avispcgdroitsrsa"
@@ -266,19 +303,6 @@ msgstr "Avis du PCG"
 msgid "Avispcgdroitsrsa:index"
 msgstr "Visualisation des avis PCG"
 
-###############################################################################
-
-msgid "Module:Bilanparcours"
-msgstr "Bilans de parcours"
-
-msgid "Bilanparcours:index"
-msgstr "Visualisation des bilans de parcours"
-
-msgid "Bilanparcours:edit"
-msgstr "Ajout/Édition d'un bilan de parcours"
-
-msgid "Bilanparcours:delete"
-msgstr "Suppression d'un bilan de parcours"
 
 ###############################################################################
 
@@ -297,14 +321,18 @@ msgstr "Ajout/Édition d'un bilan de parcours"
 msgid "Bilansparcours66:cancel"
 msgstr "Annulation d'un bilan de parcours"
 
-msgid "Bilansparcours66:courrier_information"
-msgstr "Impression du courrier d'information d'un bilan de parcours"
-
 msgid "Bilansparcours66:impression"
 msgstr "Impression du bilan de parcours"
 
 msgid "Bilansparcours66:view"
 msgstr "Visualisation du bilan de parcours"
+
+msgid "Bilansparcours66:exportcsv"
+msgstr "Export CSV"
+
+msgid "Bilansparcours66:search"
+msgstr "Moteur de recherche"
+
 ###############################################################################
 
 msgid "Module:Budgetsapres"
@@ -396,87 +424,6 @@ msgstr "Ajout/Édition des décisions du comité"
 
 msgid "Cohortescomitesapres:impression"
 msgstr "Notifications du comité en cohorte"
-
-###############################################################################
-
-msgid "Module:Cohortescui"
-msgstr "Cohorte de CUI"
-
-msgid "Cohortescui:nouveaux"
-msgstr "CUIs à valider"
-
-msgid "Cohortescui:valides"
-msgstr "CUIs validés"
-
-msgid "Cohortescui:enattente"
-msgstr "CUIs en attente"
-
-msgid "Cohortescui:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
-msgid "Module:Cohortesdossierspcgs66"
-msgstr "Cohorte de dossiers PCGs"
-
-msgid "Cohortesdossierspcgs66:enattenteaffectation"
-msgstr "Dossiers PCGs en attente d'affectation"
-
-msgid "Cohortesdossierspcgs66:affectes"
-msgstr "Dossiers PCGs affectés"
-
-msgid "Cohortesdossierspcgs66:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
-msgid "Module:Cohortesfichescandidature66"
-msgstr "Cohorte de fiche de candidature"
-
-msgid "Cohortesfichescandidature66:fichesenattente"
-msgstr "Fiches de candidature en attente"
-
-msgid "Cohortesfichescandidature66:fichesencours"
-msgstr "Fiches de candidature en cours"
-
-###############################################################################
-
-msgid "Module:Cohortespdos"
-msgstr "Cohorte de PDO"
-
-msgid "Cohortespdos:avisdemande"
-msgstr "Nouvelles demandes"
-
-msgid "Cohortespdos:valide"
-msgstr "Liste des PDOs"
-
-msgid "Cohortespdos:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
-msgid "Module:Cohortesvalidationapres66"
-msgstr "Cohorte de validation des APREs"
-
-msgid "Cohortesvalidationapres66:notifiees"
-msgstr "APREs notifiées"
-
-msgid "Cohortesvalidationapres66:traitement"
-msgstr "APREs à traiter"
-
-msgid "Cohortesvalidationapres66:notificationsCohorte"
-msgstr "Impression en cohorte des notifications d'APRE"
-
-msgid "Cohortesvalidationapres66:apresavalider"
-msgstr "APREs à valider"
-
-msgid "Cohortesvalidationapres66:validees"
-msgstr "APREs validées (à notifier CG66)"
-
-msgid "Cohortesvalidationapres66:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
 
 msgid "Module:Comitesapres"
 msgstr "Comités d'APRE"
@@ -690,9 +637,6 @@ msgstr "Cohorte des Nouveaux CERs validés"
 msgid "Contratsinsertion:exportcsv_valides"
 msgstr "Export CSV des nouveaux CERs validés"
 
-msgid "Contratsinsertion:cohorte_cersimpleavalider "
-msgstr "Cohorte des CER Simples à valider"
-
 msgid "Contratsinsertion:exportcsv_cersimpleavalider"
 msgstr "Export CSV des CER Simples à valider"
 
@@ -707,6 +651,9 @@ msgstr "Décisions prises sur le CER"
 
 msgid "Contratsinsertion:exportcsv_search_valides"
 msgstr "Export CSV des Décisions prises sur le CER"
+
+msgid "Contratsinsertion:cohorte_cersimpleavalider"
+msgstr "Cohorte des CER Simples à valider"
 
 ###############################################################################
 
@@ -753,112 +700,11 @@ msgstr "Visualisation des décisions"
 
 ###############################################################################
 
-msgid "Module:Criteres"
-msgstr "Recherche par orientation"
-
-msgid "Criteres:index"
-msgstr "Moteur de recherche"
-
-msgid "Criteres:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
-msgid "Module:Criteresapres"
-msgstr "Recherche par APRE"
-
-msgid "Criteresapres:all"
-msgstr "Moteur de recherche de toutes les APREs"
-
-msgid "Criteresapres:eligible"
-msgstr "Éligibilité des APREs"
-
-msgid "Criteresapres:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
-msgid "Module:Criteresbilansparcours66"
-msgstr "Recherche par bilans de parcours (CG66)"
-
-msgid "Criteresbilansparcours66:index"
-msgstr "Moteur de recherche"
-
-###############################################################################
-
-msgid "Module:Criterescuis"
-msgstr "Recherche par CUI"
-
-msgid "Criterescuis:index"
-msgstr "Moteur de recherche"
-
-###############################################################################
-
 msgid "Module:Criteresdossierscovs58"
 msgstr "Recherche par Dossiers COV (CG58)"
 
 msgid "Criteresdossierscovs58:index"
 msgstr "Moteur de recherche"
-
-###############################################################################
-
-msgid "Module:Criteresdossierspcgs66"
-msgstr "Recherche par Dossier PCG (CG66)"
-
-msgid "Criteresdossierspcgs66:index"
-msgstr "Liste des PDOs"
-
-msgid "Criteresdossierspcgs66:nouvelles"
-msgstr "Recherche de nouvelles PDOs"
-
-msgid "Criteresdossierspcgs66:dossier"
-msgstr "Recherche par Dossiers PCGs (CG66)"
-
-msgid "Criteresdossierspcgs66:gestionnaire"
-msgstr "Recherche par Gestionnaires PCGs (CG66)"
-
-###############################################################################
-
-msgid "Module:Criteresentretiens"
-msgstr "Recherche par entretiens"
-
-msgid "Criteresentretiens:index"
-msgstr "Moteur de recherche"
-
-msgid "Criteresentretiens:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
-msgid "Module:Criteresfichescandidature"
-msgstr "Recherche par fiches de candidature"
-
-msgid "Criteresfichescandidature:index"
-msgstr "Moteur de recherche"
-
-###############################################################################
-
-msgid "Module:Criterespdos"
-msgstr "Recherche par PDO (CG 93)"
-
-msgid "Criterespdos:index"
-msgstr "Liste des PDOs"
-
-msgid "Criterespdos:nouvelles"
-msgstr "Recherche des nouvelles PDO"
-
-msgid "Criterespdos:exportcsv"
-msgstr "Export CSV"
-###############################################################################
-
-msgid "Module:Criteresrdv"
-msgstr "Recherche par rendez-vous"
-
-msgid "Criteresrdv:index"
-msgstr "Moteur de recherche"
-
-msgid "Criteresrdv:exportcsv"
-msgstr "Export CSV"
 
 ###############################################################################
 
@@ -871,29 +717,17 @@ msgstr "Visualisation des CUIs"
 msgid "Cuis:edit"
 msgstr "Ajout/Édition d'un CUI"
 
-msgid "Cuis:valider"
-msgstr "Validation d'un CUI"
-
 msgid "Cuis:delete"
 msgstr "Suppression d'un CUI"
-
-msgid "Cuis:indexparams"
-msgstr "Paramétrage des CUIs"
-
-msgid "Cuis:ajaxfiledelete"
-msgstr "Supprimer un fichier lié"
 
 msgid "Cuis:filelink"
 msgstr "Lier des fichiers au CUI"
 
-msgid "Cuis:cancel"
-msgstr "Annulation du CUI"
+msgid "Cuis:search"
+msgstr "Moteur de recherche"
 
-msgid "Cuis:maillink"
-msgstr "Mail à l'employeur"
-
-msgid "Cuis:synthesecui66"
-msgstr "Synthèse"
+msgid "Cuis:exportcsv"
+msgstr "Export CSV"
 
 ###############################################################################
 
@@ -1061,6 +895,9 @@ msgstr "Suppression d'une proposition de décision"
 msgid "Module:Decisionspropospdos"
 msgstr "Propositions de décisions des PDO"
 
+msgid "Decisionspropospdos:view"
+msgstr "Visualisation d'une proposition de décision de PDO"
+
 msgid "Decisionspropospdos:edit"
 msgstr "Ajout/Édition d'une proposition de décision de PDO"
 
@@ -1075,10 +912,10 @@ msgstr "Suppression d'une proposition de décision"
 msgid "Module:Defautsinsertionseps66"
 msgstr "Défaut d'insertion (EP CG66)"
 
-msgid "Defautsinsertionseps66:selectionnoninscrits"
+msgid "Defautsinsertionseps66:search_noninscrits"
 msgstr "Recherche des personnes non inscrites à Pôle Emploi"
 
-msgid "Defautsinsertionseps66:selectionradies"
+msgid "Defautsinsertionseps66:search_radies"
 msgstr "Recherche des personnes radiées de Pôle Emploi"
 
 msgid "Defautsinsertionseps66:courriersinformations"
@@ -1143,9 +980,6 @@ msgstr "Export CSV"
 msgid "Dossiers:edit"
 msgstr "Modification du dossier RSA"
 
-msgid "Dossiers:exportcsv1"
-msgstr "Export CSV"
-
 ###############################################################################
 
 msgid "Module:Dossierscovs58"
@@ -1189,6 +1023,9 @@ msgstr "Suppression d'un dossier d'EP"
 msgid "Dossierseps:deletepassage"
 msgstr "Supprimer le dernier passage en commission"
 
+msgid "Dossierseps:disable"
+msgstr "Désactiver un dossier EP"
+
 ###############################################################################
 
 msgid "Module:Dossierspcgs66"
@@ -1215,6 +1052,9 @@ msgstr "Export CSV de dossiers PCGs en attente d'affectation"
 msgid "Dossierspcgs66:exportcsv_atransmettre"
 msgstr "Export CSV de dossiers PCGs à transmettre"
 
+msgid "Dossierspcgs66:cohorte_atransmettre"
+msgstr "Cohorte de dossiers PCGs à transmettre"
+
 msgid "Dossierspcgs66:cohorte_heberge"
 msgstr "Cohorte de création de dossier PCG pour les allocataires hébergés"
 
@@ -1230,8 +1070,29 @@ msgstr "Export CSV de la Cohorte de création de dossier PCG pour les RSA major�
 msgid "Dossierspcgs66:cohorte_imprimer_impressions"
 msgstr "Action 'Imprimer la cohorte' des PCGs à imprimer"
 
+msgid "Dossierspcgs66:cohorte_imprimer"
+msgstr "Cohorte des dossiers PCGs à imprimer"
+
 msgid "Dossierspcgs66:exportcsv_imprimer"
 msgstr "Export CSV des PCGs à imprimer"
+
+msgid "Dossierspcgs66:exportcsv"
+msgstr "Export CSV"
+
+msgid "Dossierspcgs66:exportcsv_gestionnaire"
+msgstr "Export CSV (Gestionnaire)"
+
+msgid "Dossierspcgs66:cohorte_enattenteaffectation"
+msgstr "Dossiers PCGs en attente d'affectation"
+
+msgid "Dossierspcgs66:search_affectes"
+msgstr "Dossiers PCGs affectés"
+
+msgid "Dossierspcgs66:search"
+msgstr "Recherche par Dossiers PCGs (CG66)"
+
+msgid "Dossierspcgs66:search_gestionnaire"
+msgstr "Recherche par Gestionnaires PCGs (CG66)"
 
 ###############################################################################
 
@@ -1273,11 +1134,12 @@ msgstr "Visualisation d'une version antérieure"
 msgid "Dsps:view_diff"
 msgstr "Visualisation des différences entre les DSPs"
 
-msgid "Dsps:index"
+msgid "Dsps:search"
 msgstr "Recherche par DSPs"
 
-msgid "Dsps:search"
+msgid "Dsps:exportcsv"
 msgstr "Export CSV"
+
 ###############################################################################
 
 msgid "Module:Entretiens"
@@ -1297,6 +1159,12 @@ msgstr "Suppression d'un entretien"
 
 msgid "Entretiens:impression"
 msgstr "Impression d'un entretien"
+
+msgid "Entretiens:search"
+msgstr "Moteur de recherche"
+
+msgid "Entretiens:exportcsv"
+msgstr "Export CSV"
 
 ###############################################################################
 
@@ -1417,17 +1285,8 @@ msgstr "Suppression d'une fonction"
 
 ###############################################################################
 
-msgid "Module:Gedooos"
-msgstr "Impression (Gedooo)"
-
-msgid "Gedooos:notification_structure"
-msgstr "Impression des orientations"
-
 msgid "Contratsinsertion:impression"
 msgstr "Impression des CERs"
-
-msgid "Apres:impression"
-msgstr "Impression des APREs"
 
 msgid "Relancesapres:impression"
 msgstr "Impression des relances d'APRE"
@@ -1546,6 +1405,12 @@ msgstr "Indus"
 
 msgid "Indus:index"
 msgstr "Visualisation des indus"
+
+msgid "Indus:search"
+msgstr "Recherche des indus"
+
+msgid "Indus:exportcsv"
+msgstr "Export CSV"
 
 ###############################################################################
 
@@ -1794,11 +1659,26 @@ msgstr "Impression d'une orientation"
 msgid "Orientsstructs:delete"
 msgstr "Suppression d'une orientation"
 
-msgid "Orientsstructs:printChangementReferent"
-msgstr "Notification de changement de référent (CG66)"
-
 msgid "Orientsstructs:impression_changement_referent"
 msgstr "Notification de changement de référent (CG66)"
+
+msgid "Orientsstructs:cohorte_nouvelles"
+msgstr "Demandes non orientées"
+
+msgid "Orientsstructs:cohorte_enattente"
+msgstr "Demandes en attente de validation d'orientation"
+
+msgid "Orientsstructs:cohorte_impressions"
+msgstr "Impression des personnes orientées"
+
+msgid "Orientsstructs:cohorte_orientees"
+msgstr "Demandes orientées"
+
+msgid "Orientsstructs:search"
+msgstr "Moteur de recherche"
+
+msgid "Orientsstructs:exportcsv"
+msgstr "Export CSV"
 
 ###############################################################################
 
@@ -1874,9 +1754,6 @@ msgstr "Paramétrage des PDOs"
 
 msgid "Pdos:index"
 msgstr "Visualisation des paramétrages PDO"
-
-msgid "Pdos:edit"
-msgstr "Ajout/Édition d'une PDO"
 
 ###############################################################################
 
@@ -1958,6 +1835,9 @@ msgid "Personnespcgs66:edit"
 msgstr "Ajout/Édition d'une personne au dossier PCG"
 
 msgid "Personnespcgs66:delete"
+msgstr "Suppression de la personne"
+
+msgid "Personnespcgs66:view"
 msgstr "Visualisation de la personne"
 
 ###############################################################################
@@ -2014,9 +1894,6 @@ msgstr "Visualisation du préchargement"
 
 msgid "Module:Prestsform"
 msgstr "Prestation pour les actions d'insertion du CER"
-
-msgid "Prestsform:index"
-msgstr "Visualisation des prestations"
 
 msgid "Prestsform:edit"
 msgstr "Modification des prestations"
@@ -2129,9 +2006,6 @@ msgstr "Suppression d'une orientation"
 msgid "Module:Propospdos"
 msgstr "PDOs (CG 93)"
 
-msgid "Propospdos:indexparams"
-msgstr "Paramétrage des PDOs"
-
 msgid "Propospdos:index"
 msgstr "Visualisation des PDOs"
 
@@ -2141,16 +2015,26 @@ msgstr "Ajout/Édition d'une PDO"
 msgid "Propospdos:printCourrier"
 msgstr "Impression d'une PDO"
 
-###############################################################################
+msgid "Propospdos:search_possibles"
+msgstr "Liste des personnes pouvant bénéficier d'une PDO"
 
-msgid "Module:PropospdosTypesnotifspdos"
-msgstr "Type de notifications pour PDO"
+msgid "Propospdos:exportcsv_validees"
+msgstr "Export CSV"
 
-msgid "PropospdosTypesnotifspdos:index"
-msgstr "Visualisation des types de notifications"
+msgid "Propospdos:cohorte_nouvelles"
+msgstr "Nouvelles demandes"
 
-msgid "PropospdosTypesnotifspdos:edit"
-msgstr "Ajout/Édition d'une type de notification"
+msgid "Propospdos:cohorte_validees"
+msgstr "Liste des PDOs"
+
+msgid "Propospdos:exportcsv"
+msgstr "Export CSV"
+
+msgid "Propospdos:search"
+msgstr "Liste des PDOs"
+
+msgid "Propospdos:exportcsv_possibles"
+msgstr "Export CSV (possibles)"
 
 ###############################################################################
 
@@ -2307,6 +2191,12 @@ msgstr "Impression d'un rendez-vous"
 msgid "Rendezvous:delete"
 msgstr "Suppression d'un rendez-vous"
 
+msgid "Rendezvous:search"
+msgstr "Moteur de recherche"
+
+msgid "Rendezvous:exportcsv"
+msgstr "Export CSV"
+
 ###############################################################################
 
 msgid "Module:Reorientationseps93"
@@ -2374,6 +2264,9 @@ msgstr "Liste des requêtes (paramétrage)"
 
 msgid "Requestsmanager:edit"
 msgstr "Modification d'une requête"
+
+msgid "Requestsmanager:delete"
+msgstr "Suppression d'une requête"
 
 ###############################################################################
 
@@ -2611,9 +2504,6 @@ msgstr "Visualisation des types d'aides"
 msgid "Suivisaidesaprestypesaides:edit"
 msgstr "Ajout/Édition d'un type d'aide"
 
-msgid "Suivisaidesaprestypesaides:delete"
-msgstr "Suppression d'un type d'aide"
-
 ###############################################################################
 
 msgid "Module:Suivisinsertion"
@@ -2724,10 +2614,19 @@ msgstr "Marquer un traitement de type courrier comme envoyé"
 msgid "Traitementspcgs66:switch_imprimer"
 msgstr "Inclure le traitement dans la décision/cohorte"
 
+msgid "Traitementspcgs66:search"
+msgstr "Formulaire de recherche par traitements PCGs (CG66)"
+
+msgid "Traitementspcgs66:exportcsv"
+msgstr "Export CSV (CG66)"
+
 ###############################################################################
 
 msgid "Module:Traitementspdos"
 msgstr "Traitements PDOs (CG 93)"
+
+msgid "Traitementspdos:add"
+msgstr "Ajout d'un traitement PDO"
 
 msgid "Traitementspdos:index"
 msgstr "Visualisation des traitements PDO"
@@ -2993,49 +2892,6 @@ msgstr "Ajout d'un dossier complet"
 
 ###############################################################################
 
-msgid "Module:Checks1"
-msgstr "Vérification de l'application"
-
-msgid "Checks1:index"
-msgstr "Visualisation de l'outil de vérification de l'application"
-
-###############################################################################
-
-msgid "Module:Cohortesnonorientes66"
-msgstr "Gestion par liste des non orientés (CG66)"
-
-msgid "Cohortesnonorientes66:isemploi"
-msgstr "Non orientation -> Inscrits PE"
-
-msgid "Cohortesnonorientes66:notisemploi"
-msgstr "Non orientation -> Gestion des réponses"
-
-msgid "Cohortesnonorientes66:notisemploiaimprimer"
-msgstr "Non orientation -> Non inscrits PE"
-
-msgid "Cohortesnonorientes66:notifaenvoyer"
-msgstr "Non orientation -> Notifications à envoyer"
-
-msgid "Cohortesnonorientes66:oriente"
-msgstr "Non orientation -> Orientés et notifiés"
-
-msgid "Cohortesnonorientes66:impression"
-msgstr "Impression du questionnaire avant orientation"
-
-msgid "Cohortesnonorientes66:impressions"
-msgstr "Impression par lot du questionnaire avant orientation"
-
-msgid "Cohortesnonorientes66:impressionOrientation"
-msgstr "Impression de l'orientation effective"
-
-msgid "Cohortesnonorientes66:impressionsOrientation"
-msgstr "Impression par lot de l'orientation effective"
-
-msgid "Cohortesnonorientes66:exportcsv"
-msgstr "Export CSV"
-
-###############################################################################
-
 msgid "Module:Courrierspcgs66"
 msgstr "Paramétrage du module courrier lié aux traitements PCGs (CG66)"
 
@@ -3044,22 +2900,8 @@ msgstr "Visualisation de la liste des courriers"
 
 ###############################################################################
 
-msgid "Module:Criterestraitementspcgs66"
-msgstr "Recherche par traitements PCGs (CG66)"
-
-msgid "Criterestraitementspcgs66:index"
-msgstr "Formulaire de recherche par traitements PCGs (CG66)"
-
-msgid "Criterestraitementspcgs66:exportcsv"
-msgstr "Export CSV (CG66)"
-
-###############################################################################
-
 msgid "Module:Decisionscuis66"
 msgstr "Décisions liées au module CUI (CG66)"
-
-msgid "Decisionscuis66:decisioncui"
-msgstr "Visualisation des décisions du CUI"
 
 msgid "Decisionscuis66:add"
 msgstr "Ajout d'une décision du CUI"
@@ -3072,12 +2914,6 @@ msgstr "Suppression d'une décision du CUI"
 
 msgid "Decisionscuis66:impression"
 msgstr "Impression d'une décision du CUI"
-
-msgid "Decisionscuis66:envoimailemployeur"
-msgstr "Envoi par mail de la décision CUI à l'employeur"
-
-msgid "Decisionscuis66:ajaxfiledelete"
-msgstr "Suppression des fichiers liés"
 
 msgid "Decisionscuis66:filelink"
 msgstr "Pièces jointes"
@@ -3196,23 +3032,6 @@ msgstr "Modification d'un motif de refus d'un CUI"
 msgid "Motifsrefuscuis66:delete"
 msgstr "Suppression d'un motif de refus d'un CUI"
 
-msgid "Motifsrefuscuis66:view"
-msgstr "Visualisation d'un motif de refus d'un CUI"
-
-###############################################################################
-
-msgid "Module:Motifssortiecuis66"
-msgstr "CUI (CG66) : paramétrages, motifs de sortie"
-
-msgid "Motifssortiecuis66:index"
-msgstr "Visualisation des motifs de sortie"
-
-msgid "Motifssortiecuis66:edit"
-msgstr "Modification des motifs de sortie"
-
-msgid "Motifssortiecuis66:delete"
-msgstr "Suppression des motifs de sortie"
-
 ###############################################################################
 
 msgid "Module:Nonorientes66"
@@ -3247,6 +3066,21 @@ msgstr "Action 'Imprimer la cohorte' de la cohorte d'impression de la notificati
 
 msgid "Nonorientes66:exportcsv_notifie"
 msgstr "Export CSV des Orientés et notifiés"
+
+msgid "Nonorientes66:cohorte_isemploi"
+msgstr "Non orientation -> Inscrits PE"
+
+msgid "Nonorientes66:cohorte_reponse"
+msgstr "Non orientation -> Gestion des réponses"
+
+msgid "Nonorientes66:cohorte_imprimeremploi"
+msgstr "Non orientation -> Non inscrits PE"
+
+msgid "Nonorientes66:cohorte_imprimernotifications"
+msgstr "Non orientation -> Notifications à envoyer"
+
+msgid "Nonorientes66:recherche_notifie"
+msgstr "Non orientation -> Orientés et notifiés"
 
 ###############################################################################
 
@@ -3317,9 +3151,6 @@ msgid "Proposdecisionscuis66:notifelucui"
 msgstr "Impression de l'avis pour l'élu"
 
 msgid "Proposdecisionscuis66:delete"
-msgstr "Suppression d'une décision pour le CUI"
-
-msgid "Proposdecisionscuis66:ajaxfiledelete"
 msgstr "Suppression d'une décision pour le CUI"
 
 msgid "Proposdecisionscuis66:filelink"
@@ -3557,6 +3388,9 @@ msgstr "Suppression d'une valeur par sous-sujet du CER"
 msgid "Module:Cohortestransfertspdvs93"
 msgstr "Cohortes de transferts PDV (CG 93)"
 
+msgid "Module:Transfertspdvs93"
+msgstr "Cohortes de transferts PDV (CG 93)"
+
 msgid "Transfertspdvs93:cohorte_atransferer"
 msgstr "Transferts PDV : Allocataires à transférer"
 
@@ -3602,17 +3436,11 @@ msgstr "Export CSV des résultats du moteur de recherche des allocataires sortan
 msgid "Module:Demenagementshorsdpts"
 msgstr "Recherche par allocataires sortants, hors département"
 
-msgid "Demenagementshorsdpts:search1"
-msgstr "Moteur de recherche par allocataires sortants, hors département"
-
 msgid "Demenagementshorsdpts:search"
 msgstr "Moteur de recherche par allocataires sortants, hors département (nouveau)"
 
 msgid "Demenagementshorsdpts:exportcsv"
 msgstr "Export CSV (nouveau)"
-
-msgid "Demenagementshorsdpts:exportcsv1"
-msgstr "Export CSV"
 
 ###############################################################################
 
@@ -3958,9 +3786,6 @@ msgstr "Suppression d'un questionnaire D2"
 msgid "Questionnairesd2pdvs93:edit"
 msgstr "Modification d'un questionnaire D2"
 
-msgid "Questionnairesd2pdvs93:view"
-msgstr "Visualisation d'un questionnaire D2"
-
 ###############################################################################
 
 msgid "Module:Sortiesaccompagnementsd2pdvs93"
@@ -3977,9 +3802,6 @@ msgstr "Suppression d'une sortie de l'accompagnement"
 
 msgid "Sortiesaccompagnementsd2pdvs93:edit"
 msgstr "Modification d'une sortie de l'accompagnement"
-
-msgid "Sortiesaccompagnementsd2pdvs93:view"
-msgstr "Visualisation d'une sortie de l'accompagnement"
 
 ###############################################################################
 # Fiche de prescription (CG 93)
@@ -4110,22 +3932,6 @@ msgstr "Ajout / modification d'un élément du catalogue"
 
 msgid "Cataloguesromesv3:delete"
 msgstr "Suppression d'un élément du catalogue"
-
-###############################################################################
-
-msgid "Search:search"
-msgstr "Recherche magique"
-
-###############################################################################
-
-msgid "Module:Nonorientationsproscovs58"
-msgstr "Module de demandes de maintien dans le social (COV, nouveau)"
-
-msgid "Nonorientationsproscovs58:cohorte"
-msgstr "Recherche de demandes de maintien dans le social (COV, nouveau)"
-
-msgid "Nonorientationsproscovs58:exportcsv"
-msgstr "Export CSV des résultats de la recherche de demandes de maintien dans le social (COV, nouveau)"
 
 #===============================================================================
 
