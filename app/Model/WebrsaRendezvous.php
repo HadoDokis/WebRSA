@@ -480,7 +480,7 @@
 			$rdv['Rendezvous']['heurerdv'] = date( "H:i", strtotime( $rdv['Rendezvous']['heurerdv'] ) );
 
 			// Utilisation des thématiques de RDV ?
-			$rdv = $this->containThematique( $rdv );
+			$rdv = $this->Rendezvous->containThematique( $rdv );
 			$thematiquesrdvs = $rdv['Thematiquerdv'];
 			unset( $rdv['Thematiquerdv'] );
 
