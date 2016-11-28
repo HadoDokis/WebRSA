@@ -718,6 +718,29 @@ function disableElementsOnValues(elements, values, hide, oneValueIsValid, debug)
 }
 
 
+if (config === undefined) {
+	var config = {debug: 1};
+} else {
+	config.debug = 1;
+}
+/**
+ * Même principe que le debug php de cakephp
+ * Peut être désactivé par disable.debug = true;
+ * 
+ * @param {mixed} thing
+ */
+function debug(thing) {
+	var stack = new Error().stack.split("\n");
+
+	if (config.debug) {
+		console.log('------------------------------------------------');
+		console.log('DEBUG '+stack[1]);
+		console.log('('+typeof thing+')');
+		console.log(thing);
+		console.log('------------------------------------------------');
+	}
+}
+
 /*************************************************************************
  * Execution systématique												 *
  *************************************************************************/
