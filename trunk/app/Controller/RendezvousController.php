@@ -772,7 +772,7 @@
 			$personne_id = $this->Rendezvous->personneId( $rdv_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
-			$pdf = $this->Rendezvous->getDefaultPdf( $rdv_id, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Rendezvous->WebrsaRendezvous->getDefaultPdf( $rdv_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'rendezvous-%d-%s.pdf', $rdv_id, date( 'Y-m-d' ) ) );
