@@ -45,3 +45,6 @@ msgstr "Actif"
 
 msgid "Search.Referent.datecloture"
 msgstr "Date de clôture"
+
+msgid "/Referents/delete/#Referent.id# ?"
+msgstr "Supprimer le référent « #Referent.nom# #Referent.prenom# » ?"

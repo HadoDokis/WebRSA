@@ -83,6 +83,7 @@
 					),
 					'/referents/edit/#Referent.id#',
 					'/referents/delete/#Referent.id#' => array(
+						'confirm' => true,
 						'disabled' => "('#Referent.has_linkedrecords#') == 1"
 					),
 				)
